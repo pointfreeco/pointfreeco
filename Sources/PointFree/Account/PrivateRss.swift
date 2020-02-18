@@ -4,7 +4,6 @@ import Either
 import Html
 import HttpPipeline
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude

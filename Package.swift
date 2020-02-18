@@ -58,7 +58,6 @@ let package = Package(
         "ModelsTestSupport",
         "PointFreePrelude",
         .product(name: "Either", package: "swift-prelude"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
       ],
@@ -180,7 +179,6 @@ let package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]
@@ -220,7 +218,6 @@ let package = Package(
         .product(name: "HtmlPlainTextPrint", package: "swift-web"),
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
@@ -381,15 +378,8 @@ let package = Package(
     .target(
       name: "Syndication",
       dependencies: [
+        "Models",
         .product(name: "Html", package: "swift-html")
-      ],
-      swiftSettings: [.warnLongExpressionTypeChecking]
-    ),
-
-    .testTarget(
-      name: "SyndicationTests",
-      dependencies: [
-        "Syndication",
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]
     ),

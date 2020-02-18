@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -18,23 +17,19 @@ final class GhostTests: TestCase {
 
   func testStartGhosting_HappyPath() {
     let adminUser = User.admin
-    let adminSession = Session.loggedIn
-      |> \.user .~ .standard(adminUser.id)
-
-    let ghostee = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
-
-    update(
-      &Current,
-      (\Environment.database) .~ .mock,
-      (\Environment.database.fetchUserById) .~ { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id ? adminUser
-            : userId == ghostee.id ? ghostee
-            : nil
-        )
-      }
-    )
+    var adminSession = Session.loggedIn
+    adminSession.user = .standard(adminUser.id)
+    
+    var ghostee = User.mock
+    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    
+    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+      pure(
+        userId == adminUser.id ? adminUser
+          : userId == ghostee.id ? ghostee
+          : nil
+      )
+    }
 
     let conn = connection(
       from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
@@ -62,22 +57,18 @@ X-XSS-Protection: 1; mode=block
 
   func testStartGhosting_InvalidGhostee() {
     let adminUser = User.admin
-    let adminSession = Session.loggedIn
-      |> \.user .~ .standard(adminUser.id)
+    var adminSession = Session.loggedIn
+    adminSession.user = .standard(adminUser.id)
 
-    let ghostee = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    var ghostee = User.mock
+    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
 
-    update(
-      &Current,
-      (\Environment.database) .~ .mock,
-      (\Environment.database.fetchUserById) .~ { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id ? adminUser
-            : nil
-        )
-      }
-    )
+    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+      pure(
+        userId == adminUser.id ? adminUser
+          : nil
+      )
+    }
 
     let conn = connection(
       from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
@@ -105,23 +96,19 @@ X-XSS-Protection: 1; mode=block
 
   func testStartGhosting_NonAdmin() {
     let user = User.mock
-    let session = Session.loggedIn
-      |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
-    let ghostee = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    var ghostee = User.mock
+    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
 
-    update(
-      &Current,
-      (\Environment.database) .~ .mock,
-      (\Environment.database.fetchUserById) .~ { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == user.id ? user
-            : userId == ghostee.id ? ghostee
-            : nil
-        )
-      }
-    )
+    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+      pure(
+        userId == user.id ? user
+          : userId == ghostee.id ? ghostee
+          : nil
+      )
+    }
 
     let conn = connection(
       from: request(to: .admin(.ghost(.start(ghostee.id))), session: session)
@@ -148,24 +135,20 @@ X-XSS-Protection: 1; mode=block
   }
 
   func testEndGhosting_HappyPath() {
-    let ghostee = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    var ghostee = User.mock
+    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
 
     let adminUser = User.admin
-    let adminSession = Session.loggedIn
-      |> \.user .~ .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
+    var adminSession = Session.loggedIn
+    adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    update(
-      &Current,
-      (\Environment.database) .~ .mock,
-      (\Environment.database.fetchUserById) .~ { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id ? adminUser
-            : userId == ghostee.id ? ghostee
-            : nil
-        )
-      }
-    )
+    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+      pure(
+        userId == adminUser.id ? adminUser
+          : userId == ghostee.id ? ghostee
+          : nil
+      )
+    }
 
     let conn = connection(
       from: request(to: .endGhosting, session: adminSession)

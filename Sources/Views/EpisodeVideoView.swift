@@ -44,6 +44,18 @@ window.addEventListener("load", function (event) {
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
+});
+"""
+    ),
+    progressPollingScript(isEpisodeViewable: isEpisodeViewable)
+  )
+}
+
+private func progressPollingScript(isEpisodeViewable: Bool) -> Node {
+  isEpisodeViewable
+    ? Node.script(safe: """
+window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
 
   var lastSeenPercent = 0
   player.on('timeupdate', function(data) {
@@ -60,7 +72,6 @@ window.addEventListener("load", function (event) {
     }
   });
 });
-"""
-    )
-  )
+""")
+    : []
 }

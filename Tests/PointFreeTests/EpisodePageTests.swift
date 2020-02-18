@@ -6,7 +6,6 @@ import GitHubTestSupport
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -24,13 +23,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRedeemEpisodeCredit_HappyPath() {
-    let episode = Episode.mock
-      |> \.permission .~ .subscriberOnly
+    var episode = Episode.mock
+    episode.permission = .subscriberOnly
 
-    update(
-      &Current,
-      \.episodes .~ unzurry([episode])
-    )
+    Current.episodes = unzurry([episode])
 
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
@@ -58,18 +54,15 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRedeemEpisodeCredit_NotEnoughCredits() {
-    let episode = Episode.mock
-      |> \.permission .~ .subscriberOnly
+    var episode = Episode.mock
+    episode.permission = .subscriberOnly
 
-    let user = User.mock
-      |> \.episodeCreditCount .~ 0
-      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+    var user = User.mock
+    user.episodeCreditCount = 0
+    user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry([episode])
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.episodes = unzurry([episode])
 
     let conn = connection(
       from: request(
@@ -90,18 +83,15 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRedeemEpisodeCredit_PublicEpisode() {
-    let episode = Episode.mock
-      |> \.permission .~ .free
+    var episode = Episode.mock
+    episode.permission = .free
 
-    let user = User.mock
-      |> \.episodeCreditCount .~ 1
-      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+    var user = User.mock
+    user.episodeCreditCount = 1
+    user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry([episode])
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.episodes = unzurry([episode])
 
     let conn = connection(
       from: request(
@@ -122,13 +112,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRedeemEpisodeCredit_AlreadyCredited() {
-    let episode = Episode.mock
-      |> \.permission .~ .free
+    var episode = Episode.mock
+    episode.permission = .free
 
-    update(
-      &Current,
-      \.episodes .~ unzurry([episode])
-    )
+    Current.episodes = unzurry([episode])
 
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
@@ -204,13 +191,10 @@ class EpisodePageTests: TestCase {
   }
 
   func testFreeEpisodePage() {
-    let freeEpisode = Current.episodes()[0]
-      |> \.permission .~ .free
+    var freeEpisode = Current.episodes()[0]
+    freeEpisode.permission = .free
 
-    update(
-      &Current,
-      \.episodes .~ { [freeEpisode] }
-    )
+    Current.episodes = { [freeEpisode] }
 
     let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
 
@@ -232,13 +216,10 @@ class EpisodePageTests: TestCase {
   }
 
   func testFreeEpisodePageSubscriber() {
-    let freeEpisode = Current.episodes()[0]
-      |> \.permission .~ .free
+    var freeEpisode = Current.episodes()[0]
+    freeEpisode.permission = .free
 
-    update(
-      &Current,
-      \.episodes .~ { [freeEpisode] }
-    )
+    Current.episodes = { [freeEpisode] }
 
     let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
 
@@ -277,20 +258,17 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
-    let user = Models.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+    var user = Models.User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 1
 
-    let episode = Current.episodes()[1]
-      |> \.permission .~ .free
+    var episode = Current.episodes()[1]
+    episode.permission = .free
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry([episode]),
-      \.database.fetchEpisodeCredits .~ const(pure([.mock])),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchEpisodeCredits = const(pure([.mock]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.episodes = unzurry([episode])
 
     let conn = connection(
       from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
@@ -312,20 +290,17 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
-    let user = Models.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+    var user = Models.User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 1
 
-    let episode = Current.episodes()[1]
-      |> \.permission .~ .subscriberOnly
+    var episode = Current.episodes()[1]
+    episode.permission = .subscriberOnly
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry([episode]),
-      \.database.fetchEpisodeCredits .~ const(pure([.mock])),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchEpisodeCredits = const(pure([.mock]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.episodes = unzurry([episode])
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -347,20 +322,17 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
-    let user = Models.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+    var user = Models.User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 1
 
-    let episode = Current.episodes().first!
-      |> \.permission .~ .subscriberOnly
+    var episode = Current.episodes().first!
+    episode.permission = .subscriberOnly
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry([episode]),
-      \.database.fetchEpisodeCredits .~ const(pure([])),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.episodes = unzurry([episode])
+    Current.database.fetchEpisodeCredits = const(pure([]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -381,33 +353,29 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-
   func test_permission() {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
-    let episode = Episode.mock
-      |> \.permission .~ .freeDuring(start..<end)
+    var episode = Episode.mock
+    episode.permission = .freeDuring(start..<end)
 
-    update(&Current, \.date .~ { start.addingTimeInterval(-1) })
+    Current.date = { start.addingTimeInterval(-1) }
     XCTAssertTrue(episode.subscriberOnly)
 
-    update(&Current, \.date .~ { start.addingTimeInterval(1) })
+    Current.date = { start.addingTimeInterval(1) }
     XCTAssertFalse(episode.subscriberOnly)
 
-    update(&Current, \.date .~ { end.addingTimeInterval(1) })
+    Current.date = { end.addingTimeInterval(1) }
     XCTAssertTrue(episode.subscriberOnly)
   }
 
   func testEpisodePage_ExercisesAndReferences() {
-    let episode = Current.episodes()[0]
-      |> \.exercises .~ [.mock, .mock]
-      |> \.references .~ [.mock]
-      |> \.transcriptBlocks %~ { Array($0[0...1]) }
+    var episode = Current.episodes()[0]
+    episode.exercises = [.mock, .mock]
+    episode.references = [.mock]
+    episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
 
-    update(
-      &Current,
-      \.episodes .~ { [episode] }
-    )
+    Current.episodes = { [episode] }
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -445,4 +413,43 @@ class EpisodePageTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+
+  func testProgress_LoggedIn() {
+    var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in
+      didUpdate = true
+      return pure(unit)
+    }
+
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedIn
+    )
+    let conn = connection(from: progressRequest)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, true)
+  }
+
+  func testProgress_LoggedOut() {
+    var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in
+      didUpdate = true
+      return pure(unit)
+    }
+
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedOut
+    )
+    let conn = connection(from: progressRequest)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, false)
+  }
+
 }

@@ -8,7 +8,6 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Mailgun
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude

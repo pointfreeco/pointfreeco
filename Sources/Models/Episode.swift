@@ -14,7 +14,7 @@ public struct Episode {
   public var previousEpisodeInCollection: Id?
   public var publishedAt: Date
   public var references: [Reference] = []
-  public var sequence: Int
+  public var sequence: Sequence
   public var title: String
   public var trailerVideo: Video?
   public var transcriptBlocks: [TranscriptBlock]
@@ -32,7 +32,7 @@ public struct Episode {
     previousEpisodeInCollection: Id?,
     publishedAt: Date,
     references: [Reference] = [],
-    sequence: Int,
+    sequence: Sequence,
     title: String,
     trailerVideo: Video?,
     transcriptBlocks: [TranscriptBlock]
@@ -82,6 +82,7 @@ public struct Episode {
   }
 
   public typealias Id = Tagged<Episode, Int>
+  public typealias Sequence = Tagged<(sequence: (), Episode), Int>
 
   public struct Exercise {
     public var problem: String

@@ -5,7 +5,6 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -825,7 +824,10 @@ let moduleRowClass =
     | Class.border.bottom
     | Class.pf.colors.border.gray850
 
-public let currencyFormatter = NumberFormatter()
+public let currencyFormatter: NumberFormatter = {
+  let formatter = NumberFormatter()
   // Workaround for https://bugs.swift.org/browse/SR-7481
-  |> \.minimumIntegerDigits .~ 1
-  |> \.numberStyle .~ .currency
+  formatter.minimumIntegerDigits = 1
+  formatter.numberStyle = .currency
+  return formatter
+}()

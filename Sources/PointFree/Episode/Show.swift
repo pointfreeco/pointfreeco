@@ -7,7 +7,6 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -71,20 +70,41 @@ private let validateUserEpisodePermission
     <<< validateCreditRequest
 
 let progressResponse: M<
-  Tuple5<
+  Tuple4<
   Either<String, Episode.Id>,
-  Int,
   Models.User?,
   SubscriberState,
-  Route?>
+  Int>
   > =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> end
     )
-    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
-    <| writeStatus(.ok)
-    >=> end
+    <| userEpisodePermission
+    >=> updateProgress
+
+private let updateProgress: M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
+  guard case let (permission, episode, .some(user), subscriberState, percent) = lower(conn.data)
+    else {
+      return conn
+        |> writeStatus(.ok)
+        >=> end
+  }
+
+  if isEpisodeViewable(for: permission) {
+    return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+      .run
+      .flatMap { _ in
+        conn
+          |> writeStatus(.ok)
+          >=> end
+    }
+  } else {
+    return  conn
+      |> writeStatus(.ok)
+      >=> end
+  }
+}
 
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
