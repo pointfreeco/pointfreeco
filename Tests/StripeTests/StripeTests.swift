@@ -356,12 +356,12 @@ final class StripeTests: XCTestCase {
       named: "cancel-subscription"
     )
     assertSnapshot(
-      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil).rawValue,
+      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil, balance: nil).rawValue,
       as: .raw,
       named: "create-customer"
     )
     assertSnapshot(
-      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1").rawValue,
+      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1", balance: -18_00).rawValue,
       as: .raw,
       named: "create-customer-vat"
     )

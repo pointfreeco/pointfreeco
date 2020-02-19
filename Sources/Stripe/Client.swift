@@ -8,11 +8,12 @@ import FoundationNetworking
 import FoundationPrelude
 import Logging
 import Tagged
+import TaggedMoney
 import UrlFormEncoding
 
 public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?) -> EitherIO<Error, Customer>
+  public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
@@ -30,7 +31,7 @@ public struct Client {
 
   public init(
     cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
-    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?) -> EitherIO<Error, Customer>,
+    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
@@ -77,7 +78,7 @@ extension Client {
     },
       createCustomer: {
         runStripe(secretKey, logger)(
-          Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3)
+          Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
     },
       createSubscription: {
@@ -120,11 +121,13 @@ func createCustomer(
   token: Token.Id,
   description: String?,
   email: EmailAddress?,
-  vatNumber: Customer.Vat?
+  vatNumber: Customer.Vat?,
+  balance: Cents<Int>?
   )
   -> DecodableRequest<Customer> {
 
     return stripeRequest("customers", .post([
+      "balance": balance?.map(String.init).rawValue,
       "business_vat_id": vatNumber?.rawValue,
       "description": description,
       "email": email?.rawValue,

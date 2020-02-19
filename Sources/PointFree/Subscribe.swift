@@ -31,7 +31,9 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
     let (user, subscribeData, referrer) = lower(conn.data)
 
     let subscriptionOrError = Current.stripe
-      .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, nil)
+      .createCustomer(
+        subscribeData.token, user.id.rawValue.uuidString, user.email, nil, referrer.map(const(018_00))
+    )
       .flatMap { customer in
         Current.stripe.createSubscription(
           customer.id,
