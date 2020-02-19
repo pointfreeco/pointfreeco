@@ -38,7 +38,8 @@ public enum Route: Equatable {
     lane: Pricing.Lane,
     billing: Pricing.Billing?,
     isOwnerTakingSeat: Bool?,
-    teammates: [EmailAddress]?
+    teammates: [EmailAddress]?,
+    referralCode: User.ReferralCode?
   )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
@@ -246,6 +247,7 @@ let routers: [Router<Route>] = [
     <%> queryParam("billing", opt(.rawRepresentable))
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
+    <%> queryParam("ref", opt(.tagged(.string)))
     <% end,
 
   .case(.team(.leave))
@@ -308,20 +310,23 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     let keyValues = parse(query: str)
 
     guard
-      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
-      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
-      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
+      let billing = keyValues.first(where: { k, _ in k == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init),
+      let quantity = keyValues.first(where: { k, _ in k == "pricing[quantity]" })?.1.flatMap(Int.init),
+      let token = keyValues.first(where: { k, _ in k == "token" })?.1.flatMap(Token.Id.init)
       else {
         return nil
     }
 
     let isOwnerTakingSeat = keyValues
-      .first { key, value in key == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
+      .first { k, _ in k == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
       .flatMap(Bool.init)
       ?? false
 
     let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
+    let referralCode = keyValues
+      .first(where: { key, _ in key == SubscribeData.CodingKeys.referralCode.rawValue })?.1
+      .flatMap(User.ReferralCode.init)
     let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
       .compactMap { _, value in value }
       .map(EmailAddress.init(rawValue:))
@@ -330,6 +335,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
       coupon: coupon,
       isOwnerTakingSeat: isOwnerTakingSeat,
       pricing: Pricing(billing: billing, quantity: quantity),
+      referralCode: referralCode,
       teammates: teammates,
       token: token
     )

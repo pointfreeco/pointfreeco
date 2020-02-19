@@ -19,10 +19,11 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testUpdateNameAndEmail() {
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    var user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
+    user.referralCode = "deadbeef"
 
     assertSnapshot(
       matching: user,
@@ -41,11 +42,14 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
       |> siteMiddleware
       |> Prelude.perform
 
+    user = Current.database.fetchUserById(user.id)
+      .run
+      .perform()
+      .right!!
+    user.referralCode = "deadbeef"
+
     assertSnapshot(
-      matching: Current.database.fetchUserById(user.id)
-        .run
-        .perform()
-        .right!!,
+      matching: user,
       as: .dump,
       named: "user_after_update"
     )

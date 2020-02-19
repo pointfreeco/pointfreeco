@@ -10,6 +10,9 @@
   - isAdmin: false
   ▿ name: Optional<String>
     - some: "Blob"
+  ▿ referralCode: deadbeef
+    - rawValue: "deadbeef"
+  - referrerId: Optional<Tagged<User, UUID>>.none
   ▿ rssSalt: 00000000-0000-0000-0000-000000000002
     - rawValue: 00000000-0000-0000-0000-000000000002
   - subscriptionId: Optional<Tagged<Subscription, UUID>>.none

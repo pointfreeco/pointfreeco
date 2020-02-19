@@ -57,7 +57,8 @@ private let fetchAndValidateCoupon
         lane: .personal,
         billing: nil,
         isOwnerTakingSeat: nil,
-        teammates: nil
+        teammates: nil,
+        referralCode: nil
       ),
       headersMiddleware: flash(.error, couponError)
     )
@@ -69,7 +70,8 @@ private let fetchAndValidateCoupon
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         headersMiddleware: flash(.error, couponError)
       )
