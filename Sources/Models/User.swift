@@ -14,6 +14,7 @@ public struct User: Decodable, Equatable {
   public var name: String?
   public var rssSalt: RssSalt
   public var subscriptionId: Subscription.Id?
+//  public var teamInviteCode: 
 
   public init(
     email: EmailAddress,

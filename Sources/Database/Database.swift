@@ -1119,6 +1119,13 @@ private struct _Client {
       "referrer_id" uuid REFERENCES "users" ("id")
       """
       )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "team_invite_code" character varying DEFAULT gen_shortid('users', 'team_invite_code') NOT NULL
+      """
+      )))
       .map(const(unit))
   }
 
