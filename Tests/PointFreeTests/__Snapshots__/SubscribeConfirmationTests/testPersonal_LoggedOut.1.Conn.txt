@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 55573
+Content-Length: 55656
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1887,6 +1887,9 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="personal">
+      <input name="ref"
+             type="hidden"
+             value>
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -2126,8 +2129,8 @@ function updateSeats() {
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
-      ? monthlyPrice
-      : monthlyPrice * 12
+      ? (monthlyPrice - 0)
+      : (monthlyPrice * 12 - 0)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"

@@ -158,7 +158,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> privacyResponse
 
     case let .subscribe(data):
-      return conn.map(const(data .*. user .*. unit))
+      return conn.map(const(user .*. data .*. unit))
         |> subscribeMiddleware
 
     case let .subscribeConfirmation(lane, billing, isOwnerTakingSeat, teammates, referralCode):
