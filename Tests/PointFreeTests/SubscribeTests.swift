@@ -11,6 +11,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 @testable import Stripe
+import TaggedMoney
 import XCTest
 
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
@@ -205,6 +206,126 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
+  func testHappyPath_Referral_Monthly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let referrerSubscription = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    Current.stripe.createSubscription = { _, _, _, _ in
+      pure(update(.mock) { $0.id = "sub_referred" })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Cents<Int>] = []
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates.append($1)
+      return pure(.mock)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [-18_00, -18_00])
+  }
+
+  func testHappyPath_Referral_Yearly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let referrerSubscription = Current
+      .database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualYearly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    Current.stripe.createSubscription = { _, _, _, _ in
+      pure(update(.mock) { $0.id = "sub_referred" })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Cents<Int>] = []
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates.append($1)
+      return pure(.mock)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(balance, -18_00)
+    XCTAssertEqual(balanceUpdates, [-18_00])
+  }
 }
 
 final class SubscribeTests: TestCase {
@@ -307,7 +428,7 @@ final class SubscribeTests: TestCase {
   func testCreateCustomerFailure() {
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
@@ -387,7 +508,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    Current.database.createSubscription = { _, _, _ in throwE(unit as Error) }
+    Current.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 

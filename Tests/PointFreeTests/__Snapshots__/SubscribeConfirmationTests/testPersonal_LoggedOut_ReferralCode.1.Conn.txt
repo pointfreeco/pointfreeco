@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 55629
+Content-Length: 55525
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1887,6 +1887,9 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="personal">
+      <input name="ref"
+             type="hidden"
+             value="cafed00d">
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -1908,19 +1911,11 @@ html {
         </div>
         <div class="start-m
                     col-m">
-          You selected the 
+          Subscribe today to get 
           <strong>
-            Personal
+            one month free*
           </strong>
-           plan
-        </div>
-        <div class="end-m
-                    col-m">
-          <a class="pf-link-gray650
-                    underline-link"
-             href="http://localhost:8080/pricing">
-            Change plan
-          </a>
+           and instant access to:
         </div>
         <div class="col-m
                     col-m-12">
@@ -2126,8 +2121,8 @@ function updateSeats() {
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
-      ? monthlyPrice
-      : monthlyPrice * 12
+      ? (monthlyPrice - 18)
+      : (monthlyPrice * 12 - 18)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"

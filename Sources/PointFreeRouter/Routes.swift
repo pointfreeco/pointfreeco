@@ -351,6 +351,9 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     parts.append("pricing[quantity]=\(data.pricing.quantity)")
     parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))
     parts.append("token=\(data.token.rawValue)")
+    if let referralCode = data.referralCode?.rawValue {
+      parts.append("\(SubscribeData.CodingKeys.referralCode.rawValue)=\(referralCode)")
+    }
     return parts.joined(separator: "&")
 }
 )
