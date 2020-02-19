@@ -50,33 +50,40 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
       )
     }
 
-    let databaseSubscription = stripeSubscription.flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
-      EitherIO(
-        run: zip3(
-          Current.database
-            .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat, referrer?.user.id)
-            .run.parallel,
-          sendInviteEmails(inviter: user, subscribeData: subscribeData)
-            .run.parallel,
-          referrer
-            .map {
-              Current.stripe
-                .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
-                .map(const(unit))
-                .run.parallel
-                // TODO: Email referrer
-                <> (
-                  subscribeData.pricing.interval == .month
-                    ? Current.stripe
-                      .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
-                      .map(const(unit))
-                      .run.parallel
-                    : pure(.right(unit))
-              )
-            }
-            ?? pure(.right(unit))
-        ).sequential.map { subscription, _, _ in subscription }
-      )
+    func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
+      let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
+        .run.parallel
+
+      let updateReferrerBalance = referrer
+        .map {
+          Current.stripe
+            .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+            .map(const(unit))
+            .run.parallel
+        }
+        ?? pure(.right(unit))
+
+      let updateReferredBalance = subscribeData.pricing.interval == .month
+        ? Current.stripe
+          .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+          .map(const(unit))
+          .run.parallel
+        : pure(.right(unit))
+
+      let results = sequence([sendEmails, updateReferrerBalance, updateReferredBalance])
+
+      // TODO: Log errors?
+      return lift(results.sequential).map(const(unit))
+    }
+
+    let databaseSubscription = stripeSubscription.flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
+      Current.database
+        .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat, referrer?.user.id)
+        .mapExcept(requireSome)
+        .flatMap { subscription in
+          runTasksFor(stripeSubscription: stripeSubscription)
+            .map(const(subscription))
+      }
     }
 
     return databaseSubscription.run.flatMap(
