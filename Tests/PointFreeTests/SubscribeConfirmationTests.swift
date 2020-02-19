@@ -391,7 +391,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-    Current.database.fetchUserByReferralCode = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
     Current.stripe.fetchSubscription = const(pure(.mock))
 
     let conn = connection(

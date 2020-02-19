@@ -670,7 +670,8 @@ private func subscriptionPlanRows(
     }
     ?? []
 
-   let creditRow: Node = subscription.customer.right//.filter { $0.balance < 0 }
+   let creditRow: Node = subscription.customer.right
+    .filter { $0.balance < 0 }
     .map { customer in
       .gridRow(
         .gridColumn(
