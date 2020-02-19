@@ -2,6 +2,7 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -169,6 +170,42 @@ private func validateReferrer(
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, SubscribeData>, Data> {
   return { conn in
     let (user, subscribeData) = lower(conn.data)
-    return middleware(conn.map(const(user .*. subscribeData .*. nil .*. unit)))
+
+    guard let referralCode = subscribeData.referralCode else {
+      return middleware(conn.map(const(user .*. subscribeData .*. nil .*. unit)))
+    }
+
+    let isSubscribeDataValidForReferral = subscribeData.pricing.lane == .personal
+
+    let fetchReferrer = isSubscribeDataValidForReferral
+      ? Current.database.fetchUserByReferralCode(referralCode)
+      : throwE(unit as Error)
+
+    return fetchReferrer
+      .mapExcept(requireSome)
+      .flatMap { referrer in
+        Current.database.fetchSubscriptionByOwnerId(referrer.id)
+          // Alternatively, don't hit Stripe:
+//          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
+          .mapExcept(requireSome)
+          .flatMap {
+            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
+              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
+        }
+    }
+    .run
+    .flatMap(
+      either(
+        { _ in
+          var subscribeData = subscribeData
+          subscribeData.referralCode = nil
+          return conn |> redirect(
+            to: subscribeConfirmationWithSubscribeData(subscribeData),
+            headersMiddleware: flash(.error, "Invalid referral code.")
+          )
+      },
+        { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
+      )
+    )
   }
 }

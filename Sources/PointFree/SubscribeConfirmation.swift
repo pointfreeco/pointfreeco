@@ -86,6 +86,8 @@ private func validateReferralCode(
       .mapExcept(requireSome)
       .flatMap { referrer in
         Current.database.fetchSubscriptionByOwnerId(referrer.id)
+          // Alternatively, don't hit Stripe:
+//          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
           .mapExcept(requireSome)
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId)
