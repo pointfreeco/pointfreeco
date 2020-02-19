@@ -5,6 +5,7 @@ extension SubscribeData {
     coupon: nil,
     isOwnerTakingSeat: true,
     pricing: .init(billing: .monthly, quantity: 1),
+    referralCode: nil,
     teammates: [],
     token: "stripe-deadbeef"
   )
@@ -13,6 +14,7 @@ extension SubscribeData {
     coupon: nil,
     isOwnerTakingSeat: true,
     pricing: .init(billing: .yearly, quantity: 1),
+    referralCode: nil,
     teammates: [],
     token: "stripe-deadbeef"
   )
@@ -22,6 +24,7 @@ extension SubscribeData {
       coupon: nil,
       isOwnerTakingSeat: true,
       pricing: .init(billing: .yearly, quantity: quantity),
+      referralCode: nil,
       teammates: [],
       token: "stripe-deadbeef"
     )

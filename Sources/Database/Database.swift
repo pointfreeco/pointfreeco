@@ -363,15 +363,7 @@ private struct _Client {
   func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT "users".*
     FROM "users"
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
@@ -550,15 +542,7 @@ private struct _Client {
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id",
-           "rss_salt"
+    SELECT *
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -573,21 +557,13 @@ private struct _Client {
     case .none:
       condition = ""
     case .some(.left):
-      condition = " AND \"users\".\"subscription_id\" IS NULL"
+      condition = #" AND "users"."subscription_id" IS NULL"#
     case .some(.right):
-      condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
+      condition = #" AND "users"."subscription_id" IS NOT NULL"#
     }
     return self.rows(
       """
-      SELECT "users"."email",
-      "users"."episode_credit_count",
-      "users"."github_user_id",
-      "users"."github_access_token",
-      "users"."id",
-      "users"."is_admin",
-      "users"."name",
-      "users"."subscription_id",
-      "users"."rss_salt"
+      SELECT "users".*
       FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
       WHERE "email_settings"."newsletter" = $1\(condition)
       """,
@@ -600,15 +576,7 @@ private struct _Client {
     return self.rows(
       """
       SELECT
-      "users"."email",
-      "users"."episode_credit_count",
-      "users"."github_user_id",
-      "users"."github_access_token",
-      "users"."id",
-      "users"."is_admin",
-      "users"."name",
-      "users"."subscription_id",
-      "users"."rss_salt"
+      "users".*
       FROM
       "email_settings"
       LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
@@ -640,15 +608,7 @@ private struct _Client {
   func fetchUser(byGitHubUserId userId: GitHubUser.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id",
-           "rss_salt"
+    SELECT *
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -704,15 +664,7 @@ private struct _Client {
   func fetchAdmins() -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT *
     FROM "users"
     WHERE "users"."is_admin" = TRUE
     """,
@@ -774,15 +726,7 @@ private struct _Client {
   func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT "users".*
     FROM "users"
     LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
     LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"

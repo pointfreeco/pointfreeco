@@ -408,7 +408,8 @@ private func pricingPlanCta(
                     lane: $0,
                     billing: nil,
                     isOwnerTakingSeat: nil,
-                    teammates: nil
+                    teammates: nil,
+                    referralCode: nil
                   )
                   return currentUser == nil ? .login(redirect: url(to: route)) : route
                 }
@@ -732,7 +733,8 @@ private func footer(
               lane: .personal,
               billing: nil,
               isOwnerTakingSeat: nil,
-              teammates: nil
+              teammates: nil,
+              referralCode: nil
             )
           )
         ),
