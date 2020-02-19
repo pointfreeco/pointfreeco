@@ -64,7 +64,15 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
                 .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
                 .map(const(unit))
                 .run.parallel
-              // TODO: Email referrer
+                // TODO: Email referrer
+                <> (
+                  subscribeData.pricing.interval == .month
+                    ? Current.stripe
+                      .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+                      .map(const(unit))
+                      .run.parallel
+                    : pure(.right(unit))
+              )
             }
             ?? pure(.right(unit))
         ).sequential.map { subscription, _, _ in subscription }
