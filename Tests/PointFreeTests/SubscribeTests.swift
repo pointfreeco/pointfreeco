@@ -387,7 +387,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    Current.database.createSubscription = { _, _, _ in throwE(unit as Error) }
+    Current.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 

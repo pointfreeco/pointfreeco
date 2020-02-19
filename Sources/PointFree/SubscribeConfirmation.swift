@@ -74,7 +74,7 @@ private func validateReferralCode(
           teammates: subscribeData.teammates,
           referralCode: nil
         ),
-        headersMiddleware: flash(.warning, "Referrals are only valid for personal subscriptions")
+        headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
       )
     }
 
@@ -104,7 +104,7 @@ private func validateReferralCode(
                 teammates: subscribeData.teammates,
                 referralCode: nil
               ),
-              headersMiddleware: flash(.warning, "Invalid referral code.")
+              headersMiddleware: flash(.error, "Invalid referral code.")
             )
           ),
           { referrer in
