@@ -325,7 +325,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
     let referralCode = keyValues
-      .first(where: { key, value in key == SubscribeData.CodingKeys.referralCode.rawValue })?.1
+      .first(where: { key, _ in key == SubscribeData.CodingKeys.referralCode.rawValue })?.1
       .flatMap(User.ReferralCode.init)
     let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
       .compactMap { _, value in value }

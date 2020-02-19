@@ -739,6 +739,11 @@ private func total(
           .name("pricing[quantity]"),
           .type(.hidden),
         ]),
+        .input(attributes: [
+          .name("referrer"),
+          .type(.hidden),
+          .value(referrer?.referralCode ?? ""),
+        ]),
         .script(unsafe: #"""
 function format(money) {
   return "$" + money.toFixed(2).replace(/\.00$/, "")
