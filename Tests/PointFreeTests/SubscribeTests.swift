@@ -345,6 +345,7 @@ final class SubscribeTests: TestCase {
       coupon: nil,
       isOwnerTakingSeat: true,
       pricing: .init(billing: .monthly, quantity: 3),
+      referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
       token: "stripe-deadbeef"
     )
@@ -369,6 +370,7 @@ final class SubscribeTests: TestCase {
       coupon: nil,
       isOwnerTakingSeat: true,
       pricing: .init(billing: .monthly, quantity: 3),
+      referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
       token: "stripe-deadbeef"
     )
