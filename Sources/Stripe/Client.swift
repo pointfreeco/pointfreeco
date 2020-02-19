@@ -25,6 +25,7 @@ public struct Client {
   public var fetchUpcomingInvoice: (Customer.Id) -> EitherIO<Error, Invoice>
   public var invoiceCustomer: (Customer.Id) -> EitherIO<Error, Invoice>
   public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Error, Customer>
+  public var updateCustomerBalance: (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>
   public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Error, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>
   public var js: String
@@ -43,6 +44,7 @@ public struct Client {
     fetchUpcomingInvoice: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
     invoiceCustomer: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
     updateCustomer: @escaping (Customer.Id, Token.Id) -> EitherIO<Error, Customer>,
+    updateCustomerBalance: @escaping (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>,
     updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
     updateSubscription: @escaping (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>,
     js: String
@@ -60,6 +62,7 @@ public struct Client {
     self.fetchUpcomingInvoice = fetchUpcomingInvoice
     self.invoiceCustomer = invoiceCustomer
     self.updateCustomer = updateCustomer
+    self.updateCustomerBalance = updateCustomerBalance
     self.updateCustomerExtraInvoiceInfo = updateCustomerExtraInvoiceInfo
     self.updateSubscription = updateSubscription
     self.js = js
@@ -96,6 +99,7 @@ extension Client {
       fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
       invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
       updateCustomer: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, token: $1)) },
+      updateCustomerBalance: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1)) },
       updateCustomerExtraInvoiceInfo: {
         runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
@@ -202,6 +206,13 @@ func updateCustomer(id: Customer.Id, token: Token.Id)
     return stripeRequest("customers/" + id.rawValue, .post([
       "source": token.rawValue,
       ]))
+}
+
+func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
+
+  return stripeRequest("customers/" + id.rawValue, .post([
+    "balance": balance.rawValue,
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {

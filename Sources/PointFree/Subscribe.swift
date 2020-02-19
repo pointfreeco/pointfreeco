@@ -6,6 +6,7 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
+import TaggedMoney
 import Tuple
 
 let subscribeMiddleware
@@ -19,44 +20,65 @@ private let validateUser
     <<< filterMap(require1 >>> pure, or: loginAndRedirectToPricing)
 
 private let validateSubscribeData
-  : MT<Tuple2<User, SubscribeData?>, Tuple3<User, SubscribeData, User?>>
+  : MT<Tuple2<User, SubscribeData?>, Tuple3<User, SubscribeData, Referrer?>>
   = requireSubscribeData
     <<< validateQuantity
     <<< validateCoupon
     <<< validateReferrer
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, User?>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>)
   -> IO<Conn<ResponseEnded, Data>> {
+
+    let referralDiscount: Cents<Int> = -18_00
 
     let (user, subscribeData, referrer) = lower(conn.data)
 
-    let subscriptionOrError = Current.stripe
-      .createCustomer(
-        subscribeData.token, user.id.rawValue.uuidString, user.email, nil, referrer.map(const(018_00))
+    let customer = Current.stripe.createCustomer(
+      subscribeData.token,
+      user.id.rawValue.uuidString,
+      user.email,
+      nil,
+      subscribeData.pricing.interval == .year ? referrer.map(const(referralDiscount)) : nil
     )
-      .flatMap { customer in
-        Current.stripe.createSubscription(
-          customer.id,
-          subscribeData.pricing.plan,
-          subscribeData.pricing.quantity,
-          subscribeData.coupon
-        )
-      }
-      .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
-        Current.database
-          .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat, referrer?.id)
-          .flatMap { subscription in
-            sendInviteEmails(inviter: user, subscribeData: subscribeData)
-              .map(const(subscription))
-        }
-      }
-      .run
 
-    return subscriptionOrError.flatMap(
+    let stripeSubscription = customer.flatMap { customer in
+      Current.stripe.createSubscription(
+        customer.id,
+        subscribeData.pricing.plan,
+        subscribeData.pricing.quantity,
+        subscribeData.coupon
+      )
+    }
+
+    let databaseSubscription = stripeSubscription.flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
+      EitherIO(
+        run: zip3(
+          Current.database
+            .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat, referrer?.user.id)
+            .run.parallel,
+          sendInviteEmails(inviter: user, subscribeData: subscribeData)
+            .run.parallel,
+          referrer
+            .map {
+              Current.stripe
+                .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+                .map(const(unit))
+                .run.parallel
+              // TODO: Email referrer
+            }
+            ?? pure(.right(unit))
+        ).sequential.map { subscription, _, _ in subscription }
+      )
+    }
+
+    return databaseSubscription.run.flatMap(
       either(
         { error in
           let errorMessage = (error as? StripeErrorEnvelope)?.error.message
-            ?? "Error creating subscription!"
+            ?? """
+          Error creating subscription! If you believe you have been charged in error, please contact \
+          <support@pointfree.co>.
+          """
           return conn
             |> redirect(
               to: subscribeConfirmationWithSubscribeData(subscribeData),
@@ -168,7 +190,7 @@ private func validateCoupon(
 }
 
 private func validateReferrer(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple3<User, SubscribeData, User?>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple3<User, SubscribeData, Referrer?>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, SubscribeData>, Data> {
   return { conn in
     let (user, subscribeData) = lower(conn.data)
@@ -191,8 +213,11 @@ private func validateReferrer(
 //          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
           .mapExcept(requireSome)
           .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
-              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
+            Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
+              $0.isCancellable
+                ? pure(Referrer(user: referrer, stripeSubscription: $0))
+                : throwE(unit as Error)
+            }
         }
     }
     .run
@@ -210,4 +235,9 @@ private func validateReferrer(
       )
     )
   }
+}
+
+struct Referrer {
+  var user: Models.User
+  var stripeSubscription: Stripe.Subscription
 }
