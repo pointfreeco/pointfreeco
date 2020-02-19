@@ -15,7 +15,7 @@ public struct Client {
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
@@ -33,6 +33,7 @@ public struct Client {
   public var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
   public var fetchUserByGitHub: (GitHubUser.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
   public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
@@ -52,7 +53,7 @@ public struct Client {
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
@@ -70,6 +71,7 @@ public struct Client {
     fetchTeamInvites: @escaping (Models.User.Id) -> EitherIO<Error, [TeamInvite]>,
     fetchUserByGitHub: @escaping (GitHubUser.Id) -> EitherIO<Error, Models.User?>,
     fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
     fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
     fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
     incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
@@ -106,6 +108,7 @@ public struct Client {
     self.fetchTeamInvites = fetchTeamInvites
     self.fetchUserByGitHub = fetchUserByGitHub
     self.fetchUserById = fetchUserById
+    self.fetchUserByReferralCode = fetchUserByReferralCode
     self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
     self.fetchUsersToWelcome = fetchUsersToWelcome
     self.incrementEpisodeCredits = incrementEpisodeCredits
@@ -148,7 +151,7 @@ extension Client {
       createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
       createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
-      createSubscription: client.createSubscription(with:for:isOwnerTakingSeat:),
+      createSubscription: client.createSubscription(with:for:isOwnerTakingSeat:referredBy:),
       deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
@@ -166,6 +169,7 @@ extension Client {
       fetchTeamInvites: client.fetchTeamInvites(inviterId:),
       fetchUserByGitHub: client.fetchUser(byGitHubUserId:),
       fetchUserById: client.fetchUser(byUserId:),
+      fetchUserByReferralCode: client.fetchUser(byReferralCode:),
       fetchUsersSubscribedToNewsletter: client.fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
       fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
       incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
@@ -267,7 +271,8 @@ private struct _Client {
   func createSubscription(
     with stripeSubscription: Stripe.Subscription,
     for userId: Models.User.Id,
-    isOwnerTakingSeat: Bool
+    isOwnerTakingSeat: Bool,
+    referredBy referrerId: Models.User.Id?
     )
     -> EitherIO<Error, Models.Subscription?> {
 
@@ -288,11 +293,12 @@ private struct _Client {
         return self.execute(
           """
           UPDATE "users"
-          SET "subscription_id" = $1
-          WHERE "users"."id" = $2
+          SET "subscription_id" = $1, "referrer_id" = $2
+          WHERE "users"."id" = $3
           """,
           [
             subscription?.id,
+            referrerId,
             subscription?.userId
           ]
         )
@@ -548,6 +554,18 @@ private struct _Client {
     LIMIT 1
     """,
       [id.rawValue.uuidString]
+    )
+  }
+
+  func fetchUser(byReferralCode referralCode: Models.User.ReferralCode) -> EitherIO<Error, Models.User?> {
+    return self.firstRow(
+      """
+    SELECT *
+    FROM "users"
+    WHERE "referral_code" = $1
+    LIMIT 1
+    """,
+      [referralCode.rawValue]
     )
   }
 
