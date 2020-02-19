@@ -90,14 +90,17 @@ private func header(
   }
 
   return [
-    .input(
-      attributes: [
-        .name("pricing[lane]"),
-        .type(.hidden),
-        .value(lane.rawValue),
-      ]
-    ),
-    
+    .input(attributes: [
+      .name("pricing[lane]"),
+      .type(.hidden),
+      .value(lane.rawValue),
+    ]),
+    .input(attributes: [
+      .name(SubscribeData.CodingKeys.referralCode.rawValue),
+      .type(.hidden),
+      .value(referrer?.referralCode.rawValue ?? ""),
+    ]),
+
     .gridRow(
       attributes: [.class([moduleRowClass])],
       .gridColumn(
@@ -738,11 +741,6 @@ private func total(
         .input(attributes: [
           .name("pricing[quantity]"),
           .type(.hidden),
-        ]),
-        .input(attributes: [
-          .name("referrer"),
-          .type(.hidden),
-          .value(referrer?.referralCode ?? ""),
         ]),
         .script(unsafe: #"""
 function format(money) {
