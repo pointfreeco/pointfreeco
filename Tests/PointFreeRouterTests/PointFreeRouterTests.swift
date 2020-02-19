@@ -32,6 +32,7 @@ class PointFreeRouterTests: XCTestCase {
       coupon: "student-discount",
       isOwnerTakingSeat: false,
       pricing: .init(billing: .monthly, quantity: 4),
+      referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
       token: "deadbeef"
     )
