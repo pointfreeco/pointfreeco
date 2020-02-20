@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 51227
+Content-Length: 51284
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1964,12 +1964,14 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                    if it doesn't). It is also tied directly to your Point-Free account and regularly 
                    monitored, so please do not share with others.
                 </p>
-                <p>
-                  <a class="underline-link"
-                     href="http://localhost:8080/account/rss/921cf3a5878a7821ab5cc43176ac0abb5527d913d0ca3c13ee3ff85f56f33c8d239b39127d25d33610092e6da9469c0f/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
-                    http://localhost:8080/account/rss/921cf3...
-                  </a>
-                </p>
+                <ul>
+                  <li>
+                    <a class="underline-link"
+                       href="http://localhost:8080/account/rss/921cf3a5878a7821ab5cc43176ac0abb5527d913d0ca3c13ee3ff85f56f33c8d239b39127d25d33610092e6da9469c0f/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
+                      http://localhost:8080/account/rss/921cf3...
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
