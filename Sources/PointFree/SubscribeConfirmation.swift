@@ -78,6 +78,19 @@ private func validateReferralCode(
       )
     }
 
+    guard currentUser?.referrerId == nil else {
+      return conn |> redirect(
+        to: .subscribeConfirmation(
+          lane: lane,
+          billing: subscribeData.billing,
+          isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+          teammates: subscribeData.teammates,
+          referralCode: nil
+        ),
+        headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
+      )
+    }
+
     if let coupon = coupon {
       return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing))
     }
