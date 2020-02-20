@@ -19,6 +19,7 @@ public func accountView(
     titleRowView,
     profileRowView(accountData),
     privateRssFeed(accountData: accountData, appSecret: appSecret),
+    referAFriend(accountData: accountData),
     subscriptionOverview(accountData: accountData, currentDate: currentDate),
     creditsView(accountData: accountData, allEpisodes: allEpisodes),
     logoutView
@@ -263,12 +264,13 @@ private func privateRssFeed(
   let rssLink: Node = rssUrl
     .map { rssUrl in
       [
-        .p(
-          .a(
-            attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
-            .text(String(rssUrl.prefix(40)) + "...")
+        .ul(
+          .li(
+            .a(
+              attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
+              .text(String(rssUrl.prefix(40)) + "...")
+            )
           )
-
         ),
         rssTerms(stripeSubscription: accountData.stripeSubscription)
       ]
@@ -315,8 +317,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
           ),
           " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
           " monitored, so please do not share with others."
-        )
-        ,
+        ),
         rssLink
       )
 
@@ -340,6 +341,68 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
       " To access all episodes from the RSS feed, please consider upgrading to a yearly subscription."
       )
     : []
+}
+
+private func referAFriend(
+  accountData: AccountData
+) -> Node {
+  guard
+    accountData.isSubscriptionOwner,
+    accountData.stripeSubscription?.isCancellable == true
+    else { return [] }
+
+  let referralUrl = url(
+    to: .subscribeConfirmation(
+      lane: .personal,
+      billing: nil,
+      isOwnerTakingSeat: nil,
+      teammates: nil,
+      referralCode: accountData.currentUser.referralCode
+    )
+  )
+
+  return .gridRow(
+    .gridColumn(
+      sizes: [.desktop: 10, .mobile: 12],
+      attributes: [.style(margin(leftRight: .auto))],
+      .div(
+        attributes: [
+          .class(
+            [
+              Class.margin([.mobile: [.bottom: 4]]),
+              Class.padding([.mobile: [.all: 3]]),
+              Class.pf.colors.bg.gray900
+            ]
+          )
+        ],
+        .h4(
+          attributes: [
+            .class(
+              [
+                Class.pf.type.responsiveTitle4,
+                Class.padding([.mobile: [.bottom: 2]])
+              ]
+            )
+          ],
+          "Refer a Friend"
+        ),
+        .p("""
+Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+"""),
+        .ul(
+          .li(
+            .a(
+              attributes: [
+                .class([Class.pf.type.underlineLink]),
+                .href(referralUrl),
+              ],
+              .text(referralUrl)
+            )
+          )
+        )
+      )
+    )
+  )
 }
 
 private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Date) -> Node {
