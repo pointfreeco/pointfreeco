@@ -213,7 +213,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let referrerSubscription = Current.database.createSubscription(.mock, referrer.id, true, nil)
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
       .run
       .perform()
       .right!!
@@ -236,8 +236,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       token: "deadbeef"
     )
 
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) { $0.id = "sub_referred" })
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
     }
 
     var balance: Cents<Int>?
@@ -245,9 +253,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Cents<Int>] = []
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
-      balanceUpdates.append($1)
+      balanceUpdates[$0] = $1
       return pure(.mock)
     }
 
@@ -256,6 +264,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
       |> siteMiddleware
       |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
       .run
@@ -263,7 +274,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertNil(balance)
-    XCTAssertEqual(balanceUpdates, [-18_00, -18_00])
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00, "cus_referred": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 
   func testHappyPath_Referral_Yearly() {
@@ -273,7 +285,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let referrerSubscription = Current
+    /*let referrerSubscription*/_ = Current
       .database.createSubscription(.mock, referrer.id, true, nil)
       .run
       .perform()
@@ -297,8 +309,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       token: "deadbeef"
     )
 
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) { $0.id = "sub_referred" })
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
     }
 
     var balance: Cents<Int>?
@@ -306,9 +326,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Cents<Int>] = []
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
-      balanceUpdates.append($1)
+      balanceUpdates[$0] = $1
       return pure(.mock)
     }
 
@@ -317,6 +337,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
       |> siteMiddleware
       |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
       .run
@@ -324,7 +347,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertEqual(balance, -18_00)
-    XCTAssertEqual(balanceUpdates, [-18_00])
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 }
 
@@ -514,6 +538,80 @@ final class SubscribeTests: TestCase {
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InvalidCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InvalidLane() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .teamYearly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InactiveCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
