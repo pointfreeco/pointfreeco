@@ -23,7 +23,8 @@ let joinTeamLandingMiddleware: M<Tuple3<User?, SubscriberState, User.TeamInviteC
     >=> end
 
 let joinTeamMiddleware: M<Tuple3<User?, SubscriberState, User.TeamInviteCode>>
-  = writeStatus(.ok)
+  = requireOwner
+    <| writeStatus(.ok)
     >=> end
 
 private func requireOwner<Z>(
