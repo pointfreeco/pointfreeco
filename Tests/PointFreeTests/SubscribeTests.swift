@@ -213,7 +213,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let referrerSubscription = Current.database.createSubscription(.mock, referrer.id, true, nil)
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
       .run
       .perform()
       .right!!
@@ -256,6 +256,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
       |> siteMiddleware
       |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
       .run
@@ -264,6 +267,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [-18_00, -18_00])
+
+    #if !os(Linux)
+    assertSnapshot(matching: referredSubscription, as: .dump)
+    #endif
   }
 
   func testHappyPath_Referral_Yearly() {
@@ -273,7 +280,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let referrerSubscription = Current
+    /*let referrerSubscription*/_ = Current
       .database.createSubscription(.mock, referrer.id, true, nil)
       .run
       .perform()
@@ -317,6 +324,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
       |> siteMiddleware
       |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
       .run
@@ -325,6 +335,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(balance, -18_00)
     XCTAssertEqual(balanceUpdates, [-18_00])
+    #if !os(Linux)
+    assertSnapshot(matching: referredSubscription, as: .dump)
+    #endif
   }
 }
 

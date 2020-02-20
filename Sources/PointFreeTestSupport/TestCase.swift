@@ -29,6 +29,17 @@ open class LiveDatabaseTestCase: TestCase {
           """,
         []
       )))
+      .flatMap(const(Current.database.execute(
+        """
+          CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
+          RETURNS text AS $$
+          BEGIN
+            RETURN table_name||'-'||column_name;
+          END; $$
+          LANGUAGE PLPGSQL;
+          """,
+        []
+      )))
       .run
       .perform()
       .unwrap()
