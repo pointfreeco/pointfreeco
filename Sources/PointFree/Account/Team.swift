@@ -18,28 +18,23 @@ let leaveTeamMiddleware: M<Tuple2<User?, SubscriberState>>
 )
 
 let joinTeamLandingMiddleware: M<Tuple3<User?, SubscriberState, User.TeamInviteCode>>
-  = requireOwner
-    <| writeStatus(.ok)
+  = writeStatus(.ok)
     >=> end
 
 let joinTeamMiddleware: M<Tuple3<User?, SubscriberState, User.TeamInviteCode>>
-  = requireOwner
-    <| writeStatus(.ok)
+  = writeStatus(.ok)
     >=> end
 
-private func requireOwner<Z>(
-  _ middleware: @escaping M<T3<User, SubscriberState, Z>>
-) -> M<T3<User?, SubscriberState, Z>> {
-  middleware
-    |> filterMap(require1 >>> pure, or: loginAndRedirect)
+private let requireOwner
+  : MT<Tuple2<User?, SubscriberState>, Tuple2<User, SubscriberState>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filter(
       get2 >>> ^\.isOwner >>> (!),
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "You are the owner of the subscription, you can’t leave.")
       )
-  )
-}
+)
 
 private func leaveTeam<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
