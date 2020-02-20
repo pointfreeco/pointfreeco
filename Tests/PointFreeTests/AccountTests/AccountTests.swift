@@ -306,7 +306,6 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() {
-    record=true
     var user = User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -382,7 +381,6 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithCredit() {
-    record=true
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
     Current = .individualMonthly
