@@ -1,8 +1,0 @@
-▿ Subscription
-  ▿ id: 00000000-0000-0000-0000-000000000006
-    - rawValue: 00000000-0000-0000-0000-000000000006
-  ▿ stripeSubscriptionId: sub_referred
-    - rawValue: "sub_referred"
-  - stripeSubscriptionStatus: Status.active
-  ▿ userId: 00000000-0000-0000-0000-000000000004
-    - rawValue: 00000000-0000-0000-0000-000000000004
