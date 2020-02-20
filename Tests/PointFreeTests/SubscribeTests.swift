@@ -551,4 +551,78 @@ final class SubscribeTests: TestCase {
     assertSnapshot(matching: conn, as: .conn)
     #endif
   }
+
+  func testReferrals_InvalidCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InvalidLane() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .teamYearly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InactiveCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .teamYearly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
 }
