@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65252
+Content-Length: 65842
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1867,6 +1867,9 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="team">
+      <input name="ref"
+             type="hidden"
+             value>
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -2434,16 +2437,32 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : monthlyPrice * 12
+      : (monthlyPrice * 12 - 0)
   )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
+  if (true) {
+    document.getElementById("pricing-preview").innerHTML = (
+      "You will be charged <strong>"
+        + format(monthlyPricePerSeat)
+        + " per month</strong>"
+        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+        + (monthly ? "" : " times <strong>12 months</strong>")
+        + "."
+    )
+  } else {
+    document.getElementById("pricing-preview").innerHTML = (
+      monthly
+        ? (
+          "You and your referrer will receive an <strong>"
+            + format(0)
+            + " credit</strong> when you subscribe. It will apply to future invoices."
+        )
+        : (
+          "You and your referrer will <strong>save "
+            + format(0)
+            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+      )
+    )
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

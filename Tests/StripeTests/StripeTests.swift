@@ -15,38 +15,47 @@ final class StripeTests: XCTestCase {
   func testDecodingCustomer() throws {
     let jsonString = """
 {
-  "id": "cus_D5ERuFUxGA3Rsy",
+  "id": "cus_GlUzpQx6pl4AIh",
   "object": "customer",
-  "account_balance": 0,
-  "created": 1529492122,
+  "address": null,
+  "balance": 0,
+  "created": 1582139637,
   "currency": "usd",
   "default_source": null,
   "delinquent": false,
   "description": null,
   "discount": null,
   "email": null,
-  "invoice_prefix": "E2EC1F7",
-  "livemode": false,
-  "metadata": {
+  "invoice_prefix": "038018A",
+  "invoice_settings": {
+    "custom_fields": null,
+    "default_payment_method": null,
+    "footer": null
   },
+  "livemode": false,
+  "metadata": {},
+  "name": null,
+  "phone": null,
+  "preferred_locales": [],
   "shipping": null,
   "sources": {
     "object": "list",
-    "data": [
-
-    ],
+    "data": [],
     "has_more": false,
-    "total_count": 0,
-    "url": "/v1/customers/cus_D5ERuFUxGA3Rsy/sources"
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/sources"
   },
   "subscriptions": {
     "object": "list",
-    "data": [
-
-    ],
+    "data": [],
     "has_more": false,
-    "total_count": 0,
-    "url": "/v1/customers/cus_D5ERuFUxGA3Rsy/subscriptions"
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/subscriptions"
+  },
+  "tax_exempt": "none",
+  "tax_ids": {
+    "object": "list",
+    "data": [],
+    "has_more": false,
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/tax_ids"
   }
 }
 """
@@ -55,7 +64,7 @@ final class StripeTests: XCTestCase {
 
     XCTAssertEqual(nil, customer.businessVatId)
     XCTAssertEqual(nil, customer.defaultSource)
-    XCTAssertEqual("cus_D5ERuFUxGA3Rsy", customer.id)
+    XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
     XCTAssertEqual([:], customer.metadata)
     XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
@@ -63,39 +72,49 @@ final class StripeTests: XCTestCase {
   func testDecodingCustomer_Metadata() throws {
     let jsonString = """
 {
-  "id": "cus_D5ERuFUxGA3Rsy",
+  "id": "cus_GlUzpQx6pl4AIh",
   "object": "customer",
-  "account_balance": 0,
-  "created": 1529492122,
+  "address": null,
+  "balance": 0,
+  "created": 1582139637,
   "currency": "usd",
   "default_source": null,
   "delinquent": false,
   "description": null,
   "discount": null,
   "email": null,
-  "invoice_prefix": "E2EC1F7",
+  "invoice_prefix": "038018A",
+  "invoice_settings": {
+    "custom_fields": null,
+    "default_payment_method": null,
+    "footer": null
+  },
   "livemode": false,
   "metadata": {
     "extraInvoiceInfo": "VAT: 123456789"
   },
+  "name": null,
+  "phone": null,
+  "preferred_locales": [],
   "shipping": null,
   "sources": {
     "object": "list",
-    "data": [
-
-    ],
+    "data": [],
     "has_more": false,
-    "total_count": 0,
-    "url": "/v1/customers/cus_D5ERuFUxGA3Rsy/sources"
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/sources"
   },
   "subscriptions": {
     "object": "list",
-    "data": [
-
-    ],
+    "data": [],
     "has_more": false,
-    "total_count": 0,
-    "url": "/v1/customers/cus_D5ERuFUxGA3Rsy/subscriptions"
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/subscriptions"
+  },
+  "tax_exempt": "none",
+  "tax_ids": {
+    "object": "list",
+    "data": [],
+    "has_more": false,
+    "url": "/v1/customers/cus_GlUzpQx6pl4AIh/tax_ids"
   }
 }
 """
@@ -104,7 +123,7 @@ final class StripeTests: XCTestCase {
 
     XCTAssertEqual(nil, customer.businessVatId)
     XCTAssertEqual(nil, customer.defaultSource)
-    XCTAssertEqual("cus_D5ERuFUxGA3Rsy", customer.id)
+    XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
     XCTAssertEqual(["extraInvoiceInfo": "VAT: 123456789"], customer.metadata)
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
     XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
@@ -356,12 +375,12 @@ final class StripeTests: XCTestCase {
       named: "cancel-subscription"
     )
     assertSnapshot(
-      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil).rawValue,
+      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil, balance: nil).rawValue,
       as: .raw,
       named: "create-customer"
     )
     assertSnapshot(
-      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1").rawValue,
+      matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1", balance: -18_00).rawValue,
       as: .raw,
       named: "create-customer-vat"
     )

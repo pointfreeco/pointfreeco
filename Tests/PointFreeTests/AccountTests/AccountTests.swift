@@ -379,4 +379,27 @@ final class AccountTests: TestCase {
     }
     #endif
   }
+
+  func testAccountWithCredit() {
+    var subscription = Stripe.Subscription.mock
+    subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
+    Current = .individualMonthly
+    Current.stripe.fetchSubscription = const(pure(subscription))
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
 }

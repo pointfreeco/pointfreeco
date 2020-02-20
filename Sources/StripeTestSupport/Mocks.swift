@@ -7,7 +7,7 @@ import Stripe
 extension Client {
   public static let mock = Client(
     cancelSubscription: const(pure(.canceling)),
-    createCustomer: { _, _, _, _ in pure(.mock) },
+    createCustomer: { _, _, _, _, _ in pure(.mock) },
     createSubscription: { _, _, _, _ in pure(.mock) },
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
@@ -19,6 +19,7 @@ extension Client {
     fetchUpcomingInvoice: const(pure(.upcoming)),
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
     updateCustomer: { _, _ in pure(.mock) },
+    updateCustomerBalance: { _, cents in pure(update(.mock) { $0.balance = cents }) },
     updateCustomerExtraInvoiceInfo: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _, _ in pure(.mock) },
     js: ""
@@ -54,6 +55,7 @@ extension Charge {
 
 extension Customer {
   public static let mock = Customer(
+    balance: 0,
     businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",

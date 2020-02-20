@@ -670,12 +670,32 @@ private func subscriptionPlanRows(
     }
     ?? []
 
+   let creditRow: Node = subscription.customer.right
+    .filter { $0.balance < 0 }
+    .map { customer in
+      .gridRow(
+        .gridColumn(
+          sizes: [.mobile: 3],
+          .p(.div("Account credit"))
+        ),
+        .gridColumn(
+          sizes: [.mobile: 9],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+            .p(.text(format(cents: customer.balance)))
+          )
+        )
+      )
+    }
+    ?? []
+
   return .div(
     attributes: [.class([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
     planRow,
     statusRow,
     nextBillingRow,
-    discountRow
+    discountRow,
+    creditRow
   )
 }
 

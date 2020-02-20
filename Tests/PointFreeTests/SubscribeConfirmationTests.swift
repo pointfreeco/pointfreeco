@@ -327,40 +327,6 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedOut_ReferralCode() {
-    Current.database.fetchUserById = const(pure(nil))
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-
-    let conn = connection(
-      from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: "cafed00d"
-        ),
-        session: .loggedOut
-      )
-    )
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result, as: .ioConn)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
-        ]
-      )
-    }
-    #endif
-  }
-
   func testPersonal_LoggedIn_WithDiscount() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = const(pure(nil))
@@ -419,6 +385,139 @@ class SubscriptionConfirmationTests: TestCase {
       )
     }
     #endif
+  }
+
+  func testPersonal_LoggedOut_ReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testPersonal_LoggedOut_InactiveReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.stripe.fetchSubscription = const(pure(.canceling))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedOut_InvalidReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(nil))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedOut_InvalidReferralLane() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = const(pure(.mock))
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedIn_PreviouslyReferred() {
+    let user = update(User.nonSubscriber) {
+      $0.referrerId = .init(rawValue: .mock)
+    }
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedIn(as: user)
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
   }
 }
 

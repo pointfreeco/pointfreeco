@@ -108,7 +108,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
       .run
       .perform()
 
@@ -186,7 +186,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
       .run
       .perform()
 
@@ -225,7 +225,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id, true)
+    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id, true, nil)
       .run
       .perform()
 
@@ -262,7 +262,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     stripeSubscription.quantity = 2
     let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
-    _ = Current.database.createSubscription(stripeSubscription, currentUser.id, true)
+    _ = Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
       .run
       .perform()
       .right!!

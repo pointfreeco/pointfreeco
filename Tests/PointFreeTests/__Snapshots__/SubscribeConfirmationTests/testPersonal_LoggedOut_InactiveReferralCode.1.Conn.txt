@@ -1,0 +1,12 @@
+GET http://localhost:8080/subscribe/personal?ref=cafed00d
+Cookie: pf_session={}
+
+302 Found
+Location: /subscribe/personal?billing=yearly&isOwnerTakingSeat=true&teammates=
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"Invalid referral code.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

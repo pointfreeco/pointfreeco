@@ -21,7 +21,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testFetchEnterpriseAccount() {
     let user = Current.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
-    let subscription = Current.database.createSubscription(.mock, user.id, true).run.perform().right!!
+    let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
 
     let createdAccount = Current.database.createEnterpriseAccount(
       "Blob, Inc.",
@@ -49,7 +49,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(.mock, user.id, false)
+    _ = Current.database.createSubscription(.mock, user.id, false, nil)
       .run
       .perform()
       .right!!
@@ -68,7 +68,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let subscription = Current.database.createSubscription(.mock, user.id, true)
+    let subscription = Current.database.createSubscription(.mock, user.id, true, nil)
       .run
       .perform()
       .right!!

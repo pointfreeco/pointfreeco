@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 55629
+Content-Length: 56057
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1887,6 +1887,9 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="personal">
+      <input name="ref"
+             type="hidden"
+             value="cafed00d">
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -1908,19 +1911,11 @@ html {
         </div>
         <div class="start-m
                     col-m">
-          You selected the 
+          Subscribe today with this referral code to get 
           <strong>
-            Personal
+            one month free
           </strong>
-           plan
-        </div>
-        <div class="end-m
-                    col-m">
-          <a class="pf-link-gray650
-                    underline-link"
-             href="http://localhost:8080/pricing">
-            Change plan
-          </a>
+           and instant access to:
         </div>
         <div class="col-m
                     col-m-12">
@@ -2127,16 +2122,32 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : monthlyPrice * 12
+      : (monthlyPrice * 12 - 18)
   )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
+  if (false) {
+    document.getElementById("pricing-preview").innerHTML = (
+      "You will be charged <strong>"
+        + format(monthlyPricePerSeat)
+        + " per month</strong>"
+        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+        + (monthly ? "" : " times <strong>12 months</strong>")
+        + "."
+    )
+  } else {
+    document.getElementById("pricing-preview").innerHTML = (
+      monthly
+        ? (
+          "You and your referrer will receive an <strong>"
+            + format(18)
+            + " credit</strong> when you subscribe. It will apply to future invoices."
+        )
+        : (
+          "You and your referrer will <strong>save "
+            + format(18)
+            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+      )
+    )
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

@@ -11,6 +11,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 @testable import Stripe
+import TaggedMoney
 import XCTest
 
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
@@ -205,6 +206,150 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
+  func testHappyPath_Referral_Monthly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
+    Current.stripe.createSubscription = { _, _, _, _ in
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(.mock)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00, "cus_referred": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+  }
+
+  func testHappyPath_Referral_Yearly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current
+      .database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualYearly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
+    Current.stripe.createSubscription = { _, _, _, _ in
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(.mock)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(balance, -18_00)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+  }
 }
 
 final class SubscribeTests: TestCase {
@@ -307,7 +452,7 @@ final class SubscribeTests: TestCase {
   func testCreateCustomerFailure() {
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
@@ -387,12 +532,115 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    Current.database.createSubscription = { _, _, _ in throwE(unit as Error) }
+    Current.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InvalidCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InvalidLane() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .teamYearly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_InactiveCode() {
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testReferrals_PreviouslyReferred() {
+    let user = update(User.nonSubscriber) {
+      $0.referrerId = .init(rawValue: .mock)
+    }
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
       )
       |> siteMiddleware
       |> Prelude.perform
