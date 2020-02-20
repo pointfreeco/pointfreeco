@@ -620,4 +620,33 @@ final class SubscribeTests: TestCase {
     assertSnapshot(matching: conn, as: .conn)
     #endif
   }
+
+  func testReferrals_PreviouslyReferred() {
+    let user = update(User.nonSubscriber) {
+      $0.referrerId = .init(rawValue: .mock)
+    }
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      token: "deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
 }
