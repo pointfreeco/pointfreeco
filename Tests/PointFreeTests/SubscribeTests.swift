@@ -275,10 +275,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00, "cus_referred": -18_00])
-
-    #if !os(Linux)
-    assertSnapshot(matching: referredSubscription, as: .dump)
-    #endif
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 
   func testHappyPath_Referral_Yearly() {
@@ -351,9 +348,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(balance, -18_00)
     XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
-    #if !os(Linux)
-    assertSnapshot(matching: referredSubscription, as: .dump)
-    #endif
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 }
 
@@ -609,7 +604,7 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
-      pricing: .teamYearly,
+      pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
       token: "deadbeef"
