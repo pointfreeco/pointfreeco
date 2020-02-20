@@ -236,8 +236,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       token: "deadbeef"
     )
 
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) { $0.id = "sub_referred" })
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
     }
 
     var balance: Cents<Int>?
@@ -245,9 +253,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Cents<Int>] = []
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
-      balanceUpdates.append($1)
+      balanceUpdates[$0] = $1
       return pure(.mock)
     }
 
@@ -266,7 +274,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertNil(balance)
-    XCTAssertEqual(balanceUpdates, [-18_00, -18_00])
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00, "cus_referred": -18_00])
 
     #if !os(Linux)
     assertSnapshot(matching: referredSubscription, as: .dump)
@@ -304,8 +312,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       token: "deadbeef"
     )
 
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      })
+    }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) { $0.id = "sub_referred" })
+      pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
     }
 
     var balance: Cents<Int>?
@@ -313,9 +329,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Cents<Int>] = []
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
-      balanceUpdates.append($1)
+      balanceUpdates[$0] = $1
       return pure(.mock)
     }
 
@@ -334,7 +350,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertEqual(balance, -18_00)
-    XCTAssertEqual(balanceUpdates, [-18_00])
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
     #if !os(Linux)
     assertSnapshot(matching: referredSubscription, as: .dump)
     #endif
