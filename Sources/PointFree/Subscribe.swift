@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import HttpPipeline
+import Mailgun
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -58,6 +59,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
         .map {
           Current.stripe
             .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+            .flatMap(const(sendReferralEmail(to: $0.user)))
             .map(const(unit))
             .run.parallel
         }
@@ -127,6 +129,15 @@ private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> Ei
   )
   .map(const(unit))
   .catch(const(pure(unit)))
+}
+
+private func sendReferralEmail(to referrer: User) -> EitherIO<Error, SendEmailResponse> {
+
+  sendEmail(
+    to: [referrer.email],
+    subject: "You just got one month free!",
+    content: inj2(referralEmailView(unit))
+  )
 }
 
 private func validateQuantity(_ pricing: Pricing) -> Bool {
