@@ -782,8 +782,16 @@ function updateSeats() {
   } else {
     document.getElementById("pricing-preview").innerHTML = (
       monthly
-        ? "You and your referrer will receive an <strong>$18 credit</strong> when you subscribe. It will apply to future invoices."
-        : "You and your referrer will <strong>save $18</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+        ? (
+          "You and your referrer will receive an <strong>"
+            + format(\#(referralDiscount))
+            + " credit</strong> when you subscribe. It will apply to future invoices."
+        )
+        : (
+          "You and your referrer will <strong>save "
+            + format(\#(referralDiscount))
+            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+      )
     )
   }
 }

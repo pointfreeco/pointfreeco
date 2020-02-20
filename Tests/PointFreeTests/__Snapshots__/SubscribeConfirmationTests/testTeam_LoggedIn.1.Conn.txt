@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63998
+Content-Length: 64116
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2422,8 +2422,16 @@ function updateSeats() {
   } else {
     document.getElementById("pricing-preview").innerHTML = (
       monthly
-        ? "You and your referrer will receive an <strong>$18 credit</strong> when you subscribe. It will apply to future invoices."
-        : "You and your referrer will <strong>save $18</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+        ? (
+          "You and your referrer will receive an <strong>"
+            + format(0)
+            + " credit</strong> when you subscribe. It will apply to future invoices."
+        )
+        : (
+          "You and your referrer will <strong>save "
+            + format(0)
+            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+      )
     )
   }
 }
