@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55417
+Content-Length: 55806
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2215,17 +2215,25 @@ function updateSeats() {
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
-      ? (monthlyPrice - 0)
+      ? monthlyPrice
       : (monthlyPrice * 12 - 0)
   )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
+  if (true) {
+    document.getElementById("pricing-preview").innerHTML = (
+      "You will be charged <strong>"
+        + format(monthlyPricePerSeat)
+        + " per month</strong>"
+        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+        + (monthly ? "" : " times <strong>12 months</strong>")
+        + "."
+    )
+  } else {
+    document.getElementById("pricing-preview").innerHTML = (
+      monthly
+        ? "You and your referrer will receive an <strong>$18 credit</strong> when you subscribe. It will apply to future invoices."
+        : "You and your referrer will <strong>save $18</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+    )
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

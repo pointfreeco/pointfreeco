@@ -492,6 +492,33 @@ class SubscriptionConfirmationTests: TestCase {
 
     assertSnapshot(matching: result, as: .ioConn)
   }
+
+  func testPersonal_LoggedIn_PreviouslyReferred() {
+    let user = update(User.nonSubscriber) {
+      $0.referrerId = .init(rawValue: .mock)
+    }
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedIn(as: user)
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
 }
 
 #if os(iOS) || os(macOS)

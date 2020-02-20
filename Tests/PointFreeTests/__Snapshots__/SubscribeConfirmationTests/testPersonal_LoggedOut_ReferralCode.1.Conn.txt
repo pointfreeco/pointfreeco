@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 55525
+Content-Length: 55937
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1911,9 +1911,9 @@ html {
         </div>
         <div class="start-m
                     col-m">
-          Subscribe today to get 
+          Subscribe today with this referral code to get 
           <strong>
-            one month free*
+            one month free
           </strong>
            and instant access to:
         </div>
@@ -2121,17 +2121,25 @@ function updateSeats() {
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
-      ? (monthlyPrice - 18)
+      ? monthlyPrice
       : (monthlyPrice * 12 - 18)
   )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
+  if (false) {
+    document.getElementById("pricing-preview").innerHTML = (
+      "You will be charged <strong>"
+        + format(monthlyPricePerSeat)
+        + " per month</strong>"
+        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+        + (monthly ? "" : " times <strong>12 months</strong>")
+        + "."
+    )
+  } else {
+    document.getElementById("pricing-preview").innerHTML = (
+      monthly
+        ? "You and your referrer will receive an <strong>$18 credit</strong> when you subscribe. It will apply to future invoices."
+        : "You and your referrer will <strong>save $18</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
+    )
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

@@ -215,6 +215,7 @@ private func validateReferrer(
     }
 
     let isSubscribeDataValidForReferral = subscribeData.pricing.lane == .personal
+      && user.referrerId == nil
 
     let fetchReferrer = isSubscribeDataValidForReferral
       ? Current.database.fetchUserByReferralCode(referralCode)
