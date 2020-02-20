@@ -1088,6 +1088,18 @@ private struct _Client {
       "team_invite_code" character varying DEFAULT gen_shortid('users', 'team_invite_code') NOT NULL
       """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_users_referral_code"
+      ON "users" ("referral_code")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_users_team_invite_code"
+      ON "users" ("team_invite_code")
+      """
+      )))
       .map(const(unit))
   }
 
