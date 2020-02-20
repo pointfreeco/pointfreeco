@@ -82,4 +82,41 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
       request
     )
   }
+
+  func testTeamJoinLanding() {
+    let request = URLRequest(
+      url: URL(string: "http://localhost:8080/team/deadbeef/join")!
+    )
+
+    let route = Route.team(.joinLanding("deadbeef"))
+
+    XCTAssertEqual(
+      pointFreeRouter.match(request: request),
+      route
+    )
+
+    XCTAssertEqual(
+      pointFreeRouter.request(for: route),
+      request
+    )
+  }
+
+  func testTeamJoin() {
+    var request = URLRequest(
+      url: URL(string: "http://localhost:8080/team/deadbeef/join")!
+    )
+    request.httpMethod = "POST"
+
+    let route = Route.team(.join("deadbeef"))
+
+    XCTAssertEqual(
+      pointFreeRouter.match(request: request),
+      route
+    )
+
+    XCTAssertEqual(
+      pointFreeRouter.request(for: route),
+      request
+    )
+  }
 }
