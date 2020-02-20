@@ -74,7 +74,8 @@ extension Models.User {
     referralCode: "deadbeef",
     referrerId: nil,
     rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
-    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    teamInviteCode: "cafed00d"
   )
 
   public static let newUser = update(mock) {

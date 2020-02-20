@@ -16,7 +16,7 @@ public struct User: Decodable, Equatable {
   public var referrerId: Id?
   public var rssSalt: RssSalt
   public var subscriptionId: Subscription.Id?
-//  public var teamInviteCode: 
+  public var teamInviteCode: TeamInviteCode
 
   public init(
     email: EmailAddress,
@@ -29,7 +29,8 @@ public struct User: Decodable, Equatable {
     referralCode: ReferralCode,
     referrerId: Id?,
     rssSalt: RssSalt,
-    subscriptionId: Subscription.Id?
+    subscriptionId: Subscription.Id?,
+    teamInviteCode: TeamInviteCode
     ) {
     self.email = email
     self.episodeCreditCount = episodeCreditCount
@@ -42,10 +43,12 @@ public struct User: Decodable, Equatable {
     self.referrerId = referrerId
     self.rssSalt = rssSalt
     self.subscriptionId = subscriptionId
+    self.teamInviteCode = teamInviteCode
   }
 
   public typealias Id = Tagged<User, UUID>
   public typealias ReferralCode = Tagged<(User, referralCode: ()), String>
+  public typealias TeamInviteCode = Tagged<(User, teamInviteCode: ()), String>
   public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
 
   public enum CodingKeys: String, CodingKey {
@@ -60,6 +63,7 @@ public struct User: Decodable, Equatable {
     case referralCode = "referral_code"
     case referrerId = "referrer_id"
     case subscriptionId = "subscription_id"
+    case teamInviteCode = "team_invite_code"
   }
 
   public var displayName: String {
