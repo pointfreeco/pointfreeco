@@ -34,8 +34,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
         ]
       )
     }
@@ -59,7 +59,7 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
         ]
       )
@@ -90,7 +90,7 @@ final class AccountTests: TestCase {
         matching: conn |> siteMiddleware,
         as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
         ]
       )
     }
@@ -122,8 +122,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
         ]
       )
     }
@@ -142,8 +142,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1300))
         ]
       )
     }
@@ -168,8 +168,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
         ]
       )
     }
@@ -190,8 +190,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
         ]
       )
     }
@@ -211,8 +211,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
         ]
       )
     }
@@ -232,8 +232,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
         ]
       )
     }
@@ -257,7 +257,7 @@ final class AccountTests: TestCase {
         matching: conn |> siteMiddleware,
         as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
         ]
       )
     }
@@ -276,7 +276,7 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2200)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
         ]
       )
@@ -297,8 +297,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
         ]
       )
     }
@@ -306,6 +306,7 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() {
+    record=true
     var user = User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -323,8 +324,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1500))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
         ]
       )
     }
@@ -349,8 +350,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1500))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
         ]
       )
     }
@@ -372,7 +373,7 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
         ]
       )
@@ -381,6 +382,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithCredit() {
+    record=true
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
     Current = .individualMonthly
@@ -395,8 +397,8 @@ final class AccountTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
         ]
       )
     }

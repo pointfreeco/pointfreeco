@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63282
+Content-Length: 64524
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1980,6 +1980,40 @@ Point-Free!</p>
                                 m-mt3"
                          value="Update profile">
                 </form>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div style="margin-right:auto;
+                        margin-left:auto"
+                 class="col-m
+                        col-d-10
+                        col-m-12">
+              <div class="m-mb4
+                          m-pl3
+                          m-pr3
+                          m-pt3
+                          m-pb3
+                          bg-gray900">
+                <h4 class="fg-black
+                           bold
+                           ts-d-r1_5
+                           ts-m-r1_25
+                           lh-2
+                           m-pb2">
+                  Refer a Friend
+                </h4>
+                <p>
+                  Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+                </p>
+                <ul>
+                  <li>
+                    <a class="underline-link"
+                       href="http://localhost:8080/subscribe/personal?ref=deadbeef">
+                      http://localhost:8080/subscribe/personal?ref=deadbeef
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
