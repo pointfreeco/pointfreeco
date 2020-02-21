@@ -3,7 +3,7 @@ import Foundation
 public let post0039_Referrals = BlogPost(
   author: .pointfree,
   blurb: """
-Refer a friend to Point-Free and get a free month!
+Today we're excited to announce support for referral bonuses! When friends and colleagues of yours subscribe to Point-Free with your referral link, both of you will get _one month free_.
 """,
   contentBlocks: [
     .init(
