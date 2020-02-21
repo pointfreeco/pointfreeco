@@ -95,12 +95,15 @@ private func header(
       .type(.hidden),
       .value(lane.rawValue),
     ]),
-    .input(attributes: [
-      .name(SubscribeData.CodingKeys.referralCode.rawValue),
-      .type(.hidden),
-      .value(referrer?.referralCode.rawValue ?? ""),
-    ]),
-
+    referrer
+      .map {
+        .input(attributes: [
+          .name(SubscribeData.CodingKeys.referralCode.rawValue),
+          .type(.hidden),
+          .value($0.referralCode.rawValue),
+        ])
+      }
+      ?? [],
     .gridRow(
       attributes: [.class([moduleRowClass])],
       .gridColumn(
