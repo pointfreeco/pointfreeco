@@ -348,7 +348,8 @@ private func referAFriend(
 ) -> Node {
   guard
     accountData.isSubscriptionOwner,
-    accountData.stripeSubscription?.isCancellable == true
+    accountData.stripeSubscription?.isCancellable == true,
+    !accountData.subscriberState.isEnterpriseSubscriber
     else { return [] }
 
   let referralUrl = url(
