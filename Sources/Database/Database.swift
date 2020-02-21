@@ -343,7 +343,7 @@ private struct _Client {
   func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "id" = $1
     ORDER BY "created_at" DESC
@@ -356,7 +356,7 @@ private struct _Client {
   func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "user_id" = $1
     ORDER BY "created_at" DESC
