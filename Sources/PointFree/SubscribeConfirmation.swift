@@ -12,8 +12,7 @@ import Views
 
 public let subscribeConfirmation
   : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
-  = redirectActiveSubscribers(user: get1)
-    <<< validateReferralCode
+  = validateReferralCode
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
