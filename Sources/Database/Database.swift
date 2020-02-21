@@ -343,7 +343,7 @@ private struct _Client {
   func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "id" = $1
     ORDER BY "created_at" DESC
@@ -356,7 +356,7 @@ private struct _Client {
   func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "user_id" = $1
     ORDER BY "created_at" DESC
@@ -1079,6 +1079,25 @@ private struct _Client {
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "referrer_id" uuid REFERENCES "users" ("id")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "subscriptions"
+      ADD COLUMN IF NOT EXISTS
+      "team_invite_code" character varying DEFAULT gen_shortid('subscriptions', 'team_invite_code') NOT NULL
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_users_referral_code"
+      ON "users" ("referral_code")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_team_invite_code"
+      ON "subscriptions" ("team_invite_code")
       """
       )))
       .map(const(unit))

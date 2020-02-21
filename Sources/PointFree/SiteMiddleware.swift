@@ -172,6 +172,14 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
 
+    case let .team(.joinLanding(teamInviteCode)):
+      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+        |> joinTeamLandingMiddleware
+
+    case let .team(.join(teamInviteCode)):
+      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+        |> joinTeamMiddleware
+
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))
         |> leaveTeamMiddleware

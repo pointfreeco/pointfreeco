@@ -143,6 +143,5 @@ final class DatabaseTests: LiveDatabaseTestCase {
         .run.perform().right!.wrapped.array!.count,
       1
     )
-
   }
 }
