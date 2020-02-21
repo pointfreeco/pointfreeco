@@ -41,6 +41,7 @@ extension Models.Subscription {
     id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     stripeSubscriptionId: Stripe.Subscription.mock.id,
     stripeSubscriptionStatus: .active,
+    teamInviteCode: "cafed00d",
     userId: User.mock.id
   )
 
@@ -74,8 +75,7 @@ extension Models.User {
     referralCode: "deadbeef",
     referrerId: nil,
     rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
-    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
-    teamInviteCode: "cafed00d"
+    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 
   public static let newUser = update(mock) {

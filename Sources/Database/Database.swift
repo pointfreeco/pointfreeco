@@ -1083,9 +1083,9 @@ private struct _Client {
       )))
       .flatMap(const(execute(
         """
-      ALTER TABLE "users"
+      ALTER TABLE "subscriptions"
       ADD COLUMN IF NOT EXISTS
-      "team_invite_code" character varying DEFAULT gen_shortid('users', 'team_invite_code') NOT NULL
+      "team_invite_code" character varying DEFAULT gen_shortid('subscriptions', 'team_invite_code') NOT NULL
       """
       )))
       .flatMap(const(execute(
@@ -1096,8 +1096,8 @@ private struct _Client {
       )))
       .flatMap(const(execute(
         """
-      CREATE UNIQUE INDEX IF NOT EXISTS "index_users_team_invite_code"
-      ON "users" ("team_invite_code")
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_team_invite_code"
+      ON "subscriptions" ("team_invite_code")
       """
       )))
       .map(const(unit))

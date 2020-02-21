@@ -86,8 +86,8 @@ public enum Route: Equatable {
   }
 
   public enum Team: Equatable {
-    case join(User.TeamInviteCode)
-    case joinLanding(User.TeamInviteCode)
+    case join(Models.Subscription.TeamInviteCode)
+    case joinLanding(Models.Subscription.TeamInviteCode)
     case leave
     case remove(User.Id)
   }
