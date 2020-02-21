@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56163
+Content-Length: 56092
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1887,9 +1887,6 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="personal">
-      <input name="ref"
-             type="hidden"
-             value>
       <div class="d-ml4
                   d-mr4
                   m-ml2
