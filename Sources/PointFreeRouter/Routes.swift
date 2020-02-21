@@ -86,6 +86,8 @@ public enum Route: Equatable {
   }
 
   public enum Team: Equatable {
+    case join(Models.Subscription.TeamInviteCode)
+    case joinLanding(Models.Subscription.TeamInviteCode)
     case leave
     case remove(User.Id)
   }
@@ -248,6 +250,14 @@ let routers: [Router<Route>] = [
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <%> queryParam("ref", opt(.tagged(.string)))
+    <% end,
+
+  .case { .team(.join($0)) }
+    <¢> post %> "team" %> pathParam(.tagged(.string)) <% "join"
+    <% end,
+
+  .case { .team(.joinLanding($0)) }
+    <¢> get %> "team" %> pathParam(.tagged(.string)) <% "join"
     <% end,
 
   .case(.team(.leave))
