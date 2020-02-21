@@ -86,6 +86,8 @@ public enum Route: Equatable {
   }
 
   public enum Team: Equatable {
+    case join(Models.Subscription.TeamInviteCode)
+    case joinLanding(Models.Subscription.TeamInviteCode)
     case leave
     case remove(User.Id)
   }
@@ -250,6 +252,14 @@ let routers: [Router<Route>] = [
     <%> queryParam("ref", opt(.tagged(.string)))
     <% end,
 
+  .case { .team(.join($0)) }
+    <¢> post %> "team" %> pathParam(.tagged(.string)) <% "join"
+    <% end,
+
+  .case { .team(.joinLanding($0)) }
+    <¢> get %> "team" %> pathParam(.tagged(.string)) <% "join"
+    <% end,
+
   .case(.team(.leave))
     <¢> post %> "account" %> "team" %> "leave"
     <% end,
@@ -322,13 +332,14 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
       .flatMap(Bool.init)
       ?? false
 
-    let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
+    let rawCouponValue = keyValues.first(where: { k, _ in k == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
     let referralCode = keyValues
-      .first(where: { key, _ in key == SubscribeData.CodingKeys.referralCode.rawValue })?.1
+      .first(where: { k, _ in k == SubscribeData.CodingKeys.referralCode.rawValue })?.1
+      .filter { !$0.isEmpty }
       .flatMap(User.ReferralCode.init)
-    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
-      .compactMap { _, value in value }
+    let teammates = keyValues.filter({ k, _ in k.prefix(9) == "teammates" })
+      .compactMap { _, v in v }
       .map(EmailAddress.init(rawValue:))
 
     return SubscribeData(

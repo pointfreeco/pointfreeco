@@ -19,6 +19,7 @@ open class LiveDatabaseTestCase: TestCase {
       .flatMap(const(Current.database.execute("GRANT ALL ON SCHEMA public TO public", [])))
       .flatMap(const(Current.database.migrate()))
       .flatMap(const(Current.database.execute("CREATE SEQUENCE test_uuids", [])))
+      .flatMap(const(Current.database.execute("CREATE SEQUENCE test_shortids", [])))
       .flatMap(const(Current.database.execute(
         """
           CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
@@ -34,7 +35,7 @@ open class LiveDatabaseTestCase: TestCase {
           CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
           RETURNS text AS $$
           BEGIN
-            RETURN table_name||'-'||column_name;
+            RETURN table_name||'-'||column_name||nextval('test_shortids')::text;
           END; $$
           LANGUAGE PLPGSQL;
           """,

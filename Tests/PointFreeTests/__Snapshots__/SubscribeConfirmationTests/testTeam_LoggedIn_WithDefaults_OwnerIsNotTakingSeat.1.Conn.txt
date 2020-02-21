@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 64344
+Content-Length: 64273
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1867,9 +1867,6 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="team">
-      <input name="ref"
-             type="hidden"
-             value>
       <div class="d-ml4
                   d-mr4
                   m-ml2

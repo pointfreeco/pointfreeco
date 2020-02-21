@@ -9,13 +9,21 @@ import Prelude
 import Styleguide
 import Tuple
 
-let leaveTeamMiddleware
+let leaveTeamMiddleware: M<Tuple2<User?, SubscriberState>>
   = requireOwner
     <<< leaveTeam
     <| redirect(
       to: .account(.index),
       headersMiddleware: flash(.notice, "You are no longer a part of that team.")
 )
+
+let joinTeamLandingMiddleware: M<Tuple3<User?, SubscriberState, Subscription.TeamInviteCode>>
+  = writeStatus(.ok)
+    >=> end
+
+let joinTeamMiddleware: M<Tuple3<User?, SubscriberState, Subscription.TeamInviteCode>>
+  = writeStatus(.ok)
+    >=> end
 
 private let requireOwner
   : MT<Tuple2<User?, SubscriberState>, Tuple2<User, SubscriberState>>
