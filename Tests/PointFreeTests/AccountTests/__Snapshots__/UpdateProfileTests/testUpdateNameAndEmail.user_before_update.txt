@@ -16,5 +16,3 @@
   ▿ rssSalt: 00000000-0000-0000-0000-000000000002
     - rawValue: 00000000-0000-0000-0000-000000000002
   - subscriptionId: Optional<Tagged<Subscription, UUID>>.none
-  ▿ teamInviteCode: users-team_invite_code2
-    - rawValue: "users-team_invite_code2"
