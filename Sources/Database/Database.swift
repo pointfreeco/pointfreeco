@@ -565,7 +565,7 @@ private struct _Client {
     WHERE "referral_code" = $1
     LIMIT 1
     """,
-      [referralCode.rawValue]
+      [referralCode.rawValue.rawValue]
     )
   }
 
