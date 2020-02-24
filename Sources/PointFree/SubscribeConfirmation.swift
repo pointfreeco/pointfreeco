@@ -35,7 +35,9 @@ public let subscribeConfirmation
           ),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
-          title: "Subscribe to Point-Free"
+          title: referrer == nil
+            ? "Subscribe to Point-Free"
+            : "Subscribe and get a free month of Point-Free"
         )
     }
 )
