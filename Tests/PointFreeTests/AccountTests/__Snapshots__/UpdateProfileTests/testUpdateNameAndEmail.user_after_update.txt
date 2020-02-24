@@ -11,7 +11,8 @@
   ▿ name: Optional<String>
     - some: "Blobby McBlob"
   ▿ referralCode: deadbeef
-    - rawValue: "deadbeef"
+    ▿ rawValue: deadbeef
+      - rawValue: "deadbeef"
   - referrerId: Optional<Tagged<User, UUID>>.none
   ▿ rssSalt: 00000000-0000-0000-0000-000000000002
     - rawValue: 00000000-0000-0000-0000-000000000002
