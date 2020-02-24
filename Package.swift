@@ -27,6 +27,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
+    .package(url: "https://github.com/pointfreeco/swift-nonempty.git", .branch("full-collection")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
@@ -165,6 +166,7 @@ let package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
+        .product(name: "NonEmpty", package: "swift-nonempty"),
         .product(name: "Tagged", package: "swift-tagged"),
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]

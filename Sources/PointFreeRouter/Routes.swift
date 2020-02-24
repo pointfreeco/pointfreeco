@@ -249,7 +249,7 @@ let routers: [Router<Route>] = [
     <%> queryParam("billing", opt(.rawRepresentable))
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
-    <%> queryParam("ref", opt(.tagged(.string)))
+    <%> queryParam("ref", opt(.tagged(.rawRepresentable)))
     <% end,
 
   .case { .team(.join($0)) }

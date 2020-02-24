@@ -100,7 +100,7 @@ private func header(
         .input(attributes: [
           .name(SubscribeData.CodingKeys.referralCode.rawValue),
           .type(.hidden),
-          .value($0.referralCode.rawValue),
+          .value($0.referralCode.rawValue.rawValue),
         ])
       }
       ?? [],
