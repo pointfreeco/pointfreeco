@@ -14,6 +14,8 @@ jobs:
       run: brew install cmark postgresql
     - name: Start Postgres
       run: brew services start postgresql
+    - name: Xcode Select
+      run: sudo xcode-select --switch /Applications/Xcode_11.4_beta.app
     - name: Run tests
       run: make test-oss
       env:
