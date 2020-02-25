@@ -11,8 +11,7 @@ import SnapshotTesting
 import XCTest
 @testable import PointFree
 
-
-final class DatabaseTests: TestCase {
+final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() throws {
     let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
     let userB = try Current.database.fetchUserById(userA!.id).run.perform().unwrap()
@@ -22,7 +21,7 @@ final class DatabaseTests: TestCase {
 
   func testFetchEnterpriseAccount() {
     let user = Current.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
-    let subscription = Current.database.createSubscription(.mock, user.id, true).run.perform().right!!
+    let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
 
     let createdAccount = Current.database.createEnterpriseAccount(
       "Blob, Inc.",
@@ -50,7 +49,7 @@ final class DatabaseTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(.mock, user.id, false)
+    _ = Current.database.createSubscription(.mock, user.id, false, nil)
       .run
       .perform()
       .right!!
@@ -69,7 +68,7 @@ final class DatabaseTests: TestCase {
       .perform()
       .right!!
 
-    let subscription = Current.database.createSubscription(.mock, user.id, true)
+    let subscription = Current.database.createSubscription(.mock, user.id, true, nil)
       .run
       .perform()
       .right!!
