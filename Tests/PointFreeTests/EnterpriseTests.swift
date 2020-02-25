@@ -3,7 +3,6 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -22,8 +21,6 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding_LoggedOut() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
 
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
@@ -46,8 +43,6 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding_NonExistentEnterpriseAccount() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
 
     Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
@@ -59,12 +54,11 @@ class EnterpriseTests: TestCase {
 
   func testLanding_AlreadySubscribedToEnterprise() {
     let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
-    let account = EnterpriseAccount.mock
-      |> \.subscriptionId .~ subscriptionId
-    let user = User.mock
-      |> (\User.subscriptionId) .~ subscriptionId
+    var account = EnterpriseAccount.mock
+    account.subscriptionId = subscriptionId
+    var user = User.mock
+    user.subscriptionId = subscriptionId
 
-    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
 
     let req = request(to: .enterprise(.landing(account.domain)), session: .loggedIn(as: user))
@@ -72,9 +66,7 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_LoggedOut() {
-    Current.database = .mock
-
+  func testAcceptInvitation_LoggedOut() {
     let account = EnterpriseAccount.mock
 
     let req = request(
@@ -85,18 +77,18 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_BadEmail() {
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
+  func testAcceptInvitation_BadEmail() {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let loggedInUser = User.mock
-      |> \.id .~ userId
-      |> \.subscriptionId .~ nil
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: "baddata", userId: encryptedUserId)),
@@ -106,18 +98,18 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_BadUserId() {
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
+  func testAcceptInvitation_BadUserId() {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
-    let loggedInUser = User.mock
-      |> \.id .~ userId
-      |> \.subscriptionId .~ nil
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: "baddata")),
@@ -127,19 +119,40 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_EmailDoesntMatchEnterpriseDomain() {
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
+  func testAcceptInvitation_EmailDoesntMatchEnterpriseDomain() {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.biz", with: Current.envVars.appSecret)!
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let loggedInUser = User.mock
-      |> \.id .~ userId
-      |> \.subscriptionId .~ nil
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    
+    let req = request(
+      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      session: .loggedIn(as: loggedInUser)
+    )
+    let conn = connection(from: req)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testAcceptInvitation_RequesterUserDoesntMatchAccepterUserId() {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
+    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    var loggedInUser = User.mock
+    loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
+
+    Current.database = .mock
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -149,18 +162,17 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId() {
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
+  func testAcceptInvitation_EnterpriseAccountDoesntExist() {
+    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let loggedInUser = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
-
-    Current.database = .mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+    var loggedInUser = User.mock
+    loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -170,40 +182,19 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAccceptInvitation_EnterpriseAccountDoesntExist() {
-    Current.database = Database.Client.mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(throwE(unit))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
-
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
+  func testAcceptInvitation_HappyPath() {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let loggedInUser = User.mock
-      |> \.id .~ User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
-
-    let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testAccceptInvitation_HappyPath() {
-    let account = EnterpriseAccount.mock
-      |> \.domain .~ "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let loggedInUser = User.mock
-      |> \.id .~ userId
-      |> \.subscriptionId .~ nil
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),

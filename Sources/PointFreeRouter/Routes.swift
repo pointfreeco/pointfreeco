@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Either
+import EmailAddress
 import Foundation
 import Models
 import PointFreePrelude
@@ -21,8 +22,7 @@ public enum Route: Equatable {
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case endGhosting
   case enterprise(Enterprise)
-  case episode(Either<String, Episode.Id>)
-  case episodes
+  case episode(EpisodeRoute)
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -38,7 +38,8 @@ public enum Route: Equatable {
     lane: Pricing.Lane,
     billing: Pricing.Billing?,
     isOwnerTakingSeat: Bool?,
-    teammates: [EmailAddress]?
+    teammates: [EmailAddress]?,
+    referralCode: User.ReferralCode?
   )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
@@ -64,6 +65,12 @@ public enum Route: Equatable {
     case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
   }
 
+  public enum EpisodeRoute: Equatable {
+    case index
+    case progress(param: Either<String, Episode.Id>, percent: Int)
+    case show(Either<String, Episode.Id>)
+  }
+
   public enum Feed: Equatable {
     case atom
     case episodes
@@ -79,6 +86,8 @@ public enum Route: Equatable {
   }
 
   public enum Team: Equatable {
+    case join(Models.Subscription.TeamInviteCode)
+    case joinLanding(Models.Subscription.TeamInviteCode)
     case leave
     case remove(User.Id)
   }
@@ -151,11 +160,16 @@ let routers: [Router<Route>] = [
   .case { .blog(.show($0)) }
     <¢> get %> "blog" %> "posts" %> pathParam(.blogPostIdOrString) <% end,
 
-  .case(Route.episode)
-    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
-
-  .case(.episodes)
+  .case(.episode(.index))
     <¢> get %> "episodes" <% end,
+
+  parenthesize(.case { .episode(.progress(param: $0, percent: $1)) })
+    <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"
+    %> queryParam("percent", .int)
+    <% end,
+
+  .case { .episode(.show($0)) }
+    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
 
   .case(.feed(.atom))
     <¢> get %> "feed" %> "atom.xml" <% end,
@@ -235,6 +249,15 @@ let routers: [Router<Route>] = [
     <%> queryParam("billing", opt(.rawRepresentable))
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
+    <%> queryParam("ref", opt(.tagged(.string)))
+    <% end,
+
+  .case { .team(.join($0)) }
+    <¢> post %> "team" %> pathParam(.tagged(.string)) <% "join"
+    <% end,
+
+  .case { .team(.joinLanding($0)) }
+    <¢> get %> "team" %> pathParam(.tagged(.string)) <% "join"
     <% end,
 
   .case(.team(.leave))
@@ -297,28 +320,33 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     let keyValues = parse(query: str)
 
     guard
-      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
-      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
-      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
+      let billing = keyValues.first(where: { k, _ in k == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init),
+      let quantity = keyValues.first(where: { k, _ in k == "pricing[quantity]" })?.1.flatMap(Int.init),
+      let token = keyValues.first(where: { k, _ in k == "token" })?.1.flatMap(Token.Id.init)
       else {
         return nil
     }
 
     let isOwnerTakingSeat = keyValues
-      .first { key, value in key == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
+      .first { k, _ in k == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
       .flatMap(Bool.init)
       ?? false
 
-    let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
+    let rawCouponValue = keyValues.first(where: { k, _ in k == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
-    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
-      .compactMap { _, value in value }
+    let referralCode = keyValues
+      .first(where: { k, _ in k == SubscribeData.CodingKeys.referralCode.rawValue })?.1
+      .filter { !$0.isEmpty }
+      .flatMap(User.ReferralCode.init)
+    let teammates = keyValues.filter({ k, _ in k.prefix(9) == "teammates" })
+      .compactMap { _, v in v }
       .map(EmailAddress.init(rawValue:))
 
     return SubscribeData(
       coupon: coupon,
       isOwnerTakingSeat: isOwnerTakingSeat,
       pricing: Pricing(billing: billing, quantity: quantity),
+      referralCode: referralCode,
       teammates: teammates,
       token: token
     )
@@ -334,6 +362,9 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     parts.append("pricing[quantity]=\(data.pricing.quantity)")
     parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))
     parts.append("token=\(data.token.rawValue)")
+    if let referralCode = data.referralCode?.rawValue {
+      parts.append("\(SubscribeData.CodingKeys.referralCode.rawValue)=\(referralCode)")
+    }
     return parts.joined(separator: "&")
 }
 )

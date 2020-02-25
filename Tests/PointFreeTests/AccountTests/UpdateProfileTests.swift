@@ -4,7 +4,6 @@ import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -13,17 +12,18 @@ import SnapshotTesting
 @testable import Stripe
 import XCTest
 
-class UpdateProfileTests: TestCase {
+class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record=true
   }
 
   func testUpdateNameAndEmail() {
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    var user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
+    user.referralCode = "deadbeef"
 
     assertSnapshot(
       matching: user,
@@ -42,11 +42,14 @@ class UpdateProfileTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
+    user = Current.database.fetchUserById(user.id)
+      .run
+      .perform()
+      .right!!
+    user.referralCode = "deadbeef"
+
     assertSnapshot(
-      matching: Current.database.fetchUserById(user.id)
-        .run
-        .perform()
-        .right!!,
+      matching: user,
       as: .dump,
       named: "user_after_update"
     )
@@ -96,21 +99,27 @@ class UpdateProfileTests: TestCase {
     assertSnapshot(matching: output, as: .conn)
     #endif
   }
+}
+
+class UpdateProfileTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
 
   func testUpdateExtraInvoiceInfo() {
     var updatedCustomerWithExtraInvoiceInfo: String!
 
-    let stripeSubscription = Stripe.Subscription.mock
-      |> \.customer .~ .right(
-        .mock
-          |> \.metadata .~ ["extraInvoiceInfo": "VAT: 1234567890"]
-    )
+    var stripeSubscription = Stripe.Subscription.mock
+    var stripeCustomer = Stripe.Customer.mock
+    stripeCustomer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
+    stripeSubscription.customer = .right(stripeCustomer)
 
     Current = .teamYearly
-      |> \.stripe.fetchSubscription .~ const(pure(stripeSubscription))
-      |> \.stripe.updateCustomerExtraInvoiceInfo .~ { _, info -> EitherIO<Error, Stripe.Customer> in
-        updatedCustomerWithExtraInvoiceInfo = info
-        return pure(.mock)
+    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.updateCustomerExtraInvoiceInfo = { _, info -> EitherIO<Error, Stripe.Customer> in
+      updatedCustomerWithExtraInvoiceInfo = info
+      return pure(.mock)
     }
 
     let update = request(

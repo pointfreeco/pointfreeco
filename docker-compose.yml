@@ -1,9 +1,10 @@
-version: '2.1'
+version: '3.7'
 
 services:
   db:
     environment:
       POSTGRES_DB: pointfreeco_development
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: pointfreeco
     image: postgres
     ports:

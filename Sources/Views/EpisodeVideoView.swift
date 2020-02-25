@@ -46,6 +46,32 @@ window.addEventListener("load", function (event) {
   }
 });
 """
-    )
+    ),
+    progressPollingScript(isEpisodeViewable: isEpisodeViewable)
   )
+}
+
+private func progressPollingScript(isEpisodeViewable: Bool) -> Node {
+  isEpisodeViewable
+    ? Node.script(safe: """
+window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  var lastSeenPercent = 0
+  player.on('timeupdate', function(data) {
+    console.log(data.percent - lastSeenPercent)
+    if (data.percent - lastSeenPercent >= 0.01) {
+      lastSeenPercent = data.percent;
+
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open(
+        "POST",
+        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+      );
+      httpRequest.send();
+    }
+  });
+});
+""")
+    : []
 }

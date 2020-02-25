@@ -6,7 +6,6 @@ import FoundationNetworking
 import GitHub
 import HttpPipeline
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
@@ -15,24 +14,28 @@ import Tuple
 
 let gitHubCallbackResponse =
   requireLoggedOutUser
-    <<< filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
-    <<< requireAccessToken
+    <<< requireAuthCodeAndAccessToken
     <| gitHubAuthTokenMiddleware
 
+private let requireAuthCodeAndAccessToken
+  : MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>>
+  = filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
+  <<< requireAccessToken
+
 /// Middleware to run when the GitHub auth code is missing.
-private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =
   writeStatus(.badRequest)
     >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.User?, String?>, Data> =
+let loginResponse: M<Tuple2<Models.User?, String?>> =
   requireLoggedOutUser
     <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
 
-let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let logoutResponse: M<Prelude.Unit> =
   redirect(
     to: path(to: .home),
-    headersMiddleware: writeSessionCookieMiddleware(\.user .~ nil)
+    headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -185,7 +188,7 @@ private func gitHubAuthTokenMiddleware(
         ) { user in
           conn |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
-            headersMiddleware: writeSessionCookieMiddleware(\.user .~ .standard(user.id))
+            headersMiddleware: writeSessionCookieMiddleware { $0.user = .standard(user.id) }
           )
         }
     )

@@ -1,11 +1,7 @@
 import Either
 import Foundation
-import Optics
-import Prelude
-import PointFreePrelude
 import Tagged
 import TaggedMoney
-import UrlFormEncoding
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
@@ -156,6 +152,7 @@ public struct Source: Codable, Equatable {
 }
 
 public struct Customer: Codable, Equatable {
+  public var balance: Cents<Int>
   public var businessVatId: Vat?
   public var defaultSource: Card.Id?
   public var id: Id
@@ -163,12 +160,14 @@ public struct Customer: Codable, Equatable {
   public var sources: ListEnvelope<Either<Card, Source>>
 
   public init(
+    balance: Cents<Int>,
     businessVatId: Vat?,
     defaultSource: Card.Id?,
     id: Id,
     metadata: [String: String],
     sources: ListEnvelope<Either<Card, Source>>
     ) {
+    self.balance = balance
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource
     self.id = id
@@ -180,6 +179,7 @@ public struct Customer: Codable, Equatable {
   public typealias Vat = Tagged<(Customer, vat: ()), String>
 
   private enum CodingKeys: String, CodingKey {
+    case balance
     case businessVatId = "business_vat_id"
     case defaultSource = "default_source"
     case id
@@ -208,7 +208,7 @@ public struct StripeErrorEnvelope: Codable, Error {
   }
 }
 
-public struct StripeError: Codable {
+public struct StripeError: Codable, Error {
   public var message: String
 
   public init(message: String) {

@@ -15,7 +15,7 @@ extension Api {
     var image: String
     var length: Int
     var publishedAt: Date
-    var sequence: Int
+    var sequence: Episode.Sequence
     var subscriberOnly: Bool
     var title: String
 
@@ -40,7 +40,7 @@ extension Api {
     var previousEpisodesInCollection: [EpisodeListItem]
     var publishedAt: Date
     var references: [Episode.Reference]
-    var sequence: Int
+    var sequence: Episode.Sequence
     var subscriberOnly: Bool
     var title: String
     var transcriptBlocks: [Episode.TranscriptBlock]

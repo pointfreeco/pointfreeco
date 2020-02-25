@@ -1,13 +1,12 @@
 import Css
-import FunctionalCss
 import Either
+import FunctionalCss
 import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -15,14 +14,11 @@ import Tuple
 import Views
 
 let episodeResponse =
-  filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-    )
+  fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.episodeView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
@@ -50,14 +46,65 @@ let episodeResponse =
 )
 
 let useCreditResponse =
-  filterMap(
+  fetchEpisodeForParam
+    <<< validateUserEpisodePermission
+    <| applyCreditMiddleware
+
+private let fetchEpisodeForParam
+  : MT<
+  Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
+  Tuple4<Episode, User?, SubscriberState, Route?>
+  >
+  = filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-    )
-    <<< { userEpisodePermission >=> $0 }
+)
+
+private let validateUserEpisodePermission
+  : MT<
+  Tuple4<Episode, User?, SubscriberState, Route?>,
+  Tuple5<EpisodePermission, Episode, User, SubscriberState, Route?>
+  >
+  = { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
-    <| applyCreditMiddleware
+
+let progressResponse: M<
+  Tuple4<
+  Either<String, Episode.Id>,
+  Models.User?,
+  SubscriberState,
+  Int>
+  > =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >=> end
+    )
+    <| userEpisodePermission
+    >=> updateProgress
+
+private let updateProgress: M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
+  guard case let (permission, episode, .some(user), subscriberState, percent) = lower(conn.data)
+    else {
+      return conn
+        |> writeStatus(.ok)
+        >=> end
+  }
+
+  if isEpisodeViewable(for: permission) {
+    return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+      .run
+      .flatMap { _ in
+        conn
+          |> writeStatus(.ok)
+          >=> end
+    }
+  } else {
+    return  conn
+      |> writeStatus(.ok)
+      >=> end
+  }
+}
 
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
@@ -68,7 +115,7 @@ private func applyCreditMiddleware<Z>(
   guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
-        to: .episode(.left(episode.slug)),
+        to: .episode(.show(.left(episode.slug))),
         headersMiddleware: flash(.error, "You do not have any credits to use.")
     )
   }
@@ -83,14 +130,14 @@ private func applyCreditMiddleware<Z>(
         const(
           conn
             |> redirect(
-              to: .episode(.left(episode.slug)),
+              to: .episode(.show(.left(episode.slug))),
               headersMiddleware: flash(.warning, "Something went wrong.")
           )
         ),
         const(
           conn
             |> redirect(
-              to: .episode(.left(episode.slug)),
+              to: .episode(.show(.left(episode.slug))),
               headersMiddleware: flash(.notice, "You now have access to this episode!")
           )
         )
@@ -108,7 +155,7 @@ private func validateCreditRequest<Z>(
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episode(.left(episode.slug)),
+          to: .episode(.show(.left(episode.slug))),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
     }
@@ -119,7 +166,7 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episode(.left(episode.slug)),
+        to: .episode(.show(.left(episode.slug))),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
     )
   }

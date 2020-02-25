@@ -7,14 +7,14 @@ jobs:
     name: MacOS
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Homebrew Update
-      run: brew update
+    - uses: actions/checkout@v2
     - name: Install Dependencies
-      run: brew install cmark postgresql
+      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql || brew update
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
     - name: Start Postgres
-      run: brew services start postgresql
-    - name: Xcode Select
+      run: brew services start postgresql || brew update && brew services start postgresql
+    - name: Select Xcode 11.4
       run: sudo xcode-select --switch /Applications/Xcode_11.4_beta.app
     - name: Run tests
       run: make test-oss
@@ -25,6 +25,6 @@ jobs:
     name: Ubuntu
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Run tests
       run: make test-linux

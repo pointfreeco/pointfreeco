@@ -2,7 +2,6 @@ import ApplicativeRouter
 import SnapshotTesting
 @testable import Models
 import ModelsTestSupport
-import Optics
 import Prelude
 import XCTest
 @testable import PointFree
@@ -30,18 +29,15 @@ class AtomFeedTests: TestCase {
 
   func testEpisodeFeed_WithRecentlyFreeEpisode() {
     let now = Current.date()
-    let freeEpisode = Episode.free
-      |> \.title .~ "Free Episode"
-      |> \.publishedAt .~ now.addingTimeInterval(-60 * 60 * 24 * 7)
-    let recentlyFreeEpisode = Episode.subscriberOnly
-      |> \.title .~ "Subscriber-Only Episode that is now free!"
-      |> \.publishedAt .~ now.addingTimeInterval(-60 * 60 * 24 * 14)
-      |> \.permission .~ Episode.Permission.freeDuring(now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
+    var freeEpisode = Episode.free
+    freeEpisode.title = "Free Episode"
+    freeEpisode.publishedAt = now.addingTimeInterval(-60 * 60 * 24 * 7)
+    var recentlyFreeEpisode = Episode.subscriberOnly
+    recentlyFreeEpisode.title = "Subscriber-Only Episode that is now free!"
+    recentlyFreeEpisode.publishedAt = now.addingTimeInterval(-60 * 60 * 24 * 14)
+    recentlyFreeEpisode.permission = .freeDuring(now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
 
-    update(
-      &Current,
-      \.episodes .~ unzurry([recentlyFreeEpisode, freeEpisode])
-    )
+    Current.episodes = unzurry([recentlyFreeEpisode, freeEpisode])
 
     let conn = connection(from: request(to: .feed(.episodes)))
 

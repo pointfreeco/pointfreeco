@@ -6,27 +6,23 @@ import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
 import XCTest
 
-class AuthTests: TestCase {
+class AuthIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
   }
 
   func testRegister() {
-    let gitHubUserEnvelope = GitHubUserEnvelope.mock
-      |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
-      |> \.gitHubUser.id .~ 1234567890
-      |> \.gitHubUser.name .~ "Blobby McBlob"
+    var gitHubUserEnvelope = GitHubUserEnvelope.mock
+    gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+    gitHubUserEnvelope.gitHubUser.id = 1234567890
+    gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
-    update(
-      &Current,
-      \.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)),
-      \.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken)))
-    )
+    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
+    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
     let result = connection(
       from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
@@ -53,9 +49,23 @@ class AuthTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+  func testLoginWithRedirect() {
+
+    let login = request(to: .login(redirect: url(to: .episode(.show(.right(42))))), session: .loggedIn)
+    let conn = connection(from: login)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+}
+
+class AuthTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    update(&Current, \.gitHub.fetchAuthToken .~ (unit |> throwE >>> const))
+    Current.gitHub.fetchAuthToken = unit |> throwE >>> const
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -64,11 +74,8 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
-    update(
-      &Current,
-      \.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
-    )
+    Current.gitHub.fetchAuthToken
+      = const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -77,20 +84,17 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
-    update(
-      &Current,
-      \.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
-    )
+    Current.gitHub.fetchAuthToken
+      = const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
-    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.show(.right(42))))))
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testAuth_WithFetchUserFailure() {
-    update(&Current, \.gitHub.fetchUser .~ (unit |> throwE >>> const))
+    Current.gitHub.fetchUser = unit |> throwE >>> const
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -106,16 +110,7 @@ class AuthTests: TestCase {
   }
 
   func testLogin_AlreadyLoggedIn() {
-    update(&Current, \.database .~ .mock)
-
     let login = request(to: .login(redirect: nil), session: .loggedIn)
-    let conn = connection(from: login)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testLoginWithRedirect() {
-    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
     let conn = connection(from: login)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -128,16 +123,12 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    update(&Current, \.database .~ .mock)
-
     let conn = connection(from: request(to: .home, session: .loggedOut))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testHome_LoggedIn() {
-    update(&Current, \.database .~ .mock)
-
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

@@ -6,16 +6,15 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
 
-let showNewBlogPostEmailMiddleware: AppMiddleware<Prelude.Unit> =
+let showNewBlogPostEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond({ _ in showNewBlogPostView })
+    >=> respond(const(showNewBlogPostView))
 
 private let showNewBlogPostView = Node.ul(
   .fragment(
@@ -68,21 +67,24 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
   )
 }
 
-let sendNewBlogPostEmailMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>, Data
-  > =
-  filterMap(
-      over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
-      or: redirect(to: .admin(.newBlogPostEmail(.index)))
-    )
+let sendNewBlogPostEmailMiddleware
+  = fetchBlogPostForId
     <<< filterMap(
       require4 >>> pure,
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
     <| sendNewBlogPostEmails
     >=> redirect(to: .admin(.index))
+
+private let fetchBlogPostForId
+  : MT<
+  Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>,
+  Tuple4<User, BlogPost, NewBlogPostFormData?, Bool?>
+  >
+  = filterMap(
+    over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
+    or: redirect(to: .admin(.newBlogPostEmail(.index)))
+)
 
 func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
   return Current.blogPosts()

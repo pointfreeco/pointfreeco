@@ -1,5 +1,5 @@
+import EmailAddress
 import Foundation
-import PointFreePrelude
 import Tagged
 
 public struct TeamInvite: Decodable, Equatable {

@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Either
+import EmailAddress
 import Html
 import HtmlPlainTextPrint
 import Mailgun

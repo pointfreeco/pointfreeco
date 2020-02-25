@@ -174,7 +174,7 @@ private func episodeRowView(episode: Episode, date: () -> Date) -> Node {
             .style(lineHeight(0) <> gradient <> minHeight(.px(300)))
           ],
           .a(
-            attributes: [.href(path(to: .episode(.left(episode.slug))))],
+            attributes: [.href(path(to: .episode(.show(.left(episode.slug)))))],
             .img(
               attributes: [
                 .src(episode.image),
@@ -200,7 +200,7 @@ private func episodeInfoColumnView(episode: Episode, date: () -> Date) -> Node {
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
         attributes: [
-          .href(path(to: .episode(.left(episode.slug)))),
+          .href(path(to: .episode(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])
         ],
         .text("Watch episode (\(episode.length / 60) min)"),
@@ -226,7 +226,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date) -> Node 
         .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])
       ],
       .a(
-        attributes: [.href(path(to: .episode(.left(episode.slug))))],
+        attributes: [.href(path(to: .episode(.show(.left(episode.slug)))))],
         .text(episode.title)
       )
     ),

@@ -3,7 +3,6 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -60,6 +59,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       let subscribeData = SubscribeConfirmationData(
         billing: billing ?? .yearly,
         isOwnerTakingSeat: true,
+        referralCode: nil,
         teammates: []
       )
       return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. subscribeData .*. couponId .*. unit))
@@ -69,13 +69,17 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> endGhostingMiddleware
 
-    case let .episode(param):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
-        |> episodeResponse
-
-    case .episodes:
+    case .episode(.index):
       return conn
         |> redirect(to: path(to: .home))
+
+    case let .episode(.progress(param: param, percent: percent)):
+      return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
+        |> progressResponse
+
+    case let .episode(.show(param)):
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+        |> episodeResponse
 
     case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
       return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
@@ -154,18 +158,27 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> privacyResponse
 
     case let .subscribe(data):
-      return conn.map(const(data .*. user .*. unit))
+      return conn.map(const(user .*. data .*. unit))
         |> subscribeMiddleware
 
-    case let .subscribeConfirmation(lane, billing, isOwnerTakingSeat, teammates):
+    case let .subscribeConfirmation(lane, billing, isOwnerTakingSeat, teammates, referralCode):
       let teammates = lane == .team ? (teammates ?? [""]) : []
       let subscribeData = SubscribeConfirmationData(
         billing: billing ?? .yearly,
         isOwnerTakingSeat: isOwnerTakingSeat ?? true,
+        referralCode: referralCode,
         teammates: teammates
       )
       return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
+
+    case let .team(.joinLanding(teamInviteCode)):
+      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+        |> joinTeamLandingMiddleware
+
+    case let .team(.join(teamInviteCode)):
+      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+        |> joinTeamMiddleware
 
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))

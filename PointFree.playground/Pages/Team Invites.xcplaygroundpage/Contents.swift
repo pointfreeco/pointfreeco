@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-import Optics
 import PlaygroundSupport
 @testable import PointFree
 @testable import PointFreeTestSupport
@@ -9,8 +8,8 @@ import Prelude
 import WebKit
 
 Current = .mock
-  |> \.database.fetchTeamInvite .~ const(pure(.some(.mock)))
-  |> \.database.fetchUserById .~ const(pure(.some(.nonSubscriber)))
+Current.database.fetchTeamInvite = const(pure(.some(.mock)))
+Current.database.fetchUserById = const(pure(.some(.nonSubscriber)))
 
 let teamInviteId = TeamInvite.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
 

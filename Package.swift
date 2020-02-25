@@ -2,6 +2,16 @@
 
 import PackageDescription
 
+extension SwiftSetting {
+  static let warnLongExpressionTypeChecking = unsafeFlags(
+    [
+      "-Xfrontend", "-warn-long-expression-type-checking=200",
+      "-Xfrontend", "-warn-long-function-bodies=200",
+    ],
+    .when(configuration: .debug)
+  )
+}
+
 let package = Package(
   name: "PointFree",
   platforms: [
@@ -10,22 +20,6 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
-    .library(name: "Database", targets: ["Database"]),
-    .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
-    .library(name: "GitHub", targets: ["GitHub"]),
-    .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
-    .library(name: "Mailgun", targets: ["Mailgun"]),
-    .library(name: "Models", targets: ["Models"]),
-    .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
-    .library(name: "PointFree", targets: ["PointFree"]),
-    .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
-    .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
-    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
-    .library(name: "Stripe", targets: ["Stripe"]),
-    .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
-    .library(name: "Styleguide", targets: ["Styleguide"]),
-    .library(name: "Syndication", targets: ["Syndication"]),
-    .library(name: "Views", targets: ["Views"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
@@ -43,6 +37,7 @@ let package = Package(
     .target(
       name: "Database",
       dependencies: [
+        "EmailAddress",
         "GitHub",
         "Models",
         "Stripe",
@@ -51,7 +46,8 @@ let package = Package(
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -62,10 +58,36 @@ let package = Package(
         "ModelsTestSupport",
         "PointFreePrelude",
         .product(name: "Either", package: "swift-prelude"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
+
+    .target(
+      name: "DecodableRequest",
+      dependencies: [
+        .product(name: "Tagged", package: "swift-tagged"),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
+
+    .target(
+      name: "EmailAddress",
+      dependencies: [
+        .product(name: "Tagged", package: "swift-tagged"),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
+
+    .target(
+      name: "FoundationPrelude",
+      dependencies: [
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -74,7 +96,8 @@ let package = Package(
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "Prelude", package: "swift-prelude")
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -84,19 +107,21 @@ let package = Package(
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "GitHub",
       dependencies: [
-        "PointFreePrelude",
+        "DecodableRequest",
+        "EmailAddress",
+        "FoundationPrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Optics", package: "swift-prelude"),
-        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -105,7 +130,8 @@ let package = Package(
         "GitHub",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -114,29 +140,34 @@ let package = Package(
         "GitHub",
         "GitHubTestSupport",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "Mailgun",
       dependencies: [
-        .product(name: "HttpPipeline", package: "swift-web"),
+        "DecodableRequest",
+        "EmailAddress",
+        "FoundationPrelude",
         "Models",
-        "PointFreePrelude",
+        .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "Models",
       dependencies: [
+        "EmailAddress",
         "GitHub",
-        "PointFreePrelude",
         "Stripe",
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -148,9 +179,9 @@ let package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -158,13 +189,15 @@ let package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "PointFree",
       dependencies: [
         "Database",
+        "EmailAddress",
         "GitHub",
         "Mailgun",
         "Models",
@@ -185,35 +218,39 @@ let package = Package(
         .product(name: "HtmlPlainTextPrint", package: "swift-web"),
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
       name: "PointFreeTests",
       dependencies: [
+        "EmailAddress",
         "PointFree",
         "PointFreeTestSupport",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
         .product(name: "HttpPipelineTestSupport", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "PointFreeRouter",
       dependencies: [
+        "EmailAddress",
         "Models",
         .product(name: "ApplicativeRouter", package: "swift-web"),
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -223,20 +260,22 @@ let package = Package(
         "PointFreeRouter",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "UrlFormEncoding", package: "swift-web")
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "PointFreePrelude",
       dependencies: [
+        "FoundationPrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -257,31 +296,38 @@ let package = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "Runner",
       dependencies: [
         "PointFree",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Server",
       dependencies: [
         "PointFree",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Stripe",
       dependencies: [
-        "PointFreePrelude",
+        "DecodableRequest",
+        "EmailAddress",
+        "FoundationPrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -291,9 +337,9 @@ let package = Package(
         "Stripe",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -302,7 +348,8 @@ let package = Package(
         "Stripe",
         "StripeTestSupport",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -313,7 +360,9 @@ let package = Package(
         .product(name: "Html", package: "swift-html"),
         .product(name: "HtmlCssSupport", package: "swift-web"),
         .product(name: "Prelude", package: "swift-prelude"),
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .testTarget(
       name: "StyleguideTests",
@@ -322,36 +371,31 @@ let package = Package(
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Syndication",
       dependencies: [
+        "Models",
         .product(name: "Html", package: "swift-html")
-    ]),
-
-    .testTarget(
-      name: "SyndicationTests",
-      dependencies: [
-        "Syndication",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Views",
       dependencies: [
+        "EmailAddress",
         "FunctionalCss",
         "PointFreeRouter",
         "Styleguide",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "Prelude", package: "swift-prelude"),
-    ]),
-
-    .testTarget(
-      name: "ViewsTests",
-      dependencies: [
-        "Views",
-    ]),
-
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
   ]
 )
