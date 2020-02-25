@@ -1,12 +1,11 @@
+import DecodableRequest
 import Either
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import FoundationPrelude
 import Logging
-import Optics
-import PointFreePrelude
-import Prelude
 import Tagged
 
 public struct Client {
@@ -36,9 +35,11 @@ extension Client {
 
   public init(clientId: Id, clientSecret: Secret, logger: Logger?) {
     self.init(
-      fetchAuthToken: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret) >>> runGitHub(logger),
-      fetchEmails: fetchGitHubEmails >>> runGitHub(logger),
-      fetchUser: fetchGitHubUser >>> runGitHub(logger)
+      fetchAuthToken: {
+        runGitHub(logger)(fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
+    },
+      fetchEmails: { runGitHub(logger)(fetchGitHubEmails(token: $0)) },
+      fetchUser: { runGitHub(logger)(fetchGitHubUser(with: $0)) }
     )
   }
 }
@@ -77,13 +78,10 @@ internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<GitHu
 }
 
 private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableRequest<A> {
-  return DecodableRequest(
-    rawValue: URLRequest(url: URL(string: "https://api.github.com/" + path)!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "token \(token.accessToken)",
-        "Accept": "application/vnd.github.v3+json"
-    ]
-  )
+  var request = URLRequest(url: URL(string: "https://api.github.com/" + path)!)
+  request.addValue("token \(token.accessToken)", forHTTPHeaderField: "Authorization")
+  request.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
+  return DecodableRequest(rawValue: request)
 }
 
 private func runGitHub<A>(_ logger: Logger?) -> (DecodableRequest<A>) -> EitherIO<Error, A> {

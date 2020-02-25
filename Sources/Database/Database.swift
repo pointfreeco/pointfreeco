@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import Foundation
 import GitHub
 import Logging
@@ -14,7 +15,7 @@ public struct Client {
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
@@ -32,15 +33,17 @@ public struct Client {
   public var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
   public var fetchUserByGitHub: (GitHubUser.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
   public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var redeemEpisodeCredit: (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -50,7 +53,7 @@ public struct Client {
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
@@ -68,15 +71,17 @@ public struct Client {
     fetchTeamInvites: @escaping (Models.User.Id) -> EitherIO<Error, [TeamInvite]>,
     fetchUserByGitHub: @escaping (GitHubUser.Id) -> EitherIO<Error, Models.User?>,
     fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
     fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
     fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
     incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
     insertTeamInvite: @escaping (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>,
     migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
-    redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -103,6 +108,7 @@ public struct Client {
     self.fetchTeamInvites = fetchTeamInvites
     self.fetchUserByGitHub = fetchUserByGitHub
     self.fetchUserById = fetchUserById
+    self.fetchUserByReferralCode = fetchUserByReferralCode
     self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
     self.fetchUsersToWelcome = fetchUsersToWelcome
     self.incrementEpisodeCredits = incrementEpisodeCredits
@@ -112,6 +118,7 @@ public struct Client {
     self.registerUser = registerUser
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
     self.sawUser = sawUser
+    self.updateEpisodeProgress = updateEpisodeProgress
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
     self.upsertUser = upsertUser
@@ -144,7 +151,7 @@ extension Client {
       createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
       createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
-      createSubscription: client.createSubscription(with:for:isOwnerTakingSeat:),
+      createSubscription: client.createSubscription(with:for:isOwnerTakingSeat:referredBy:),
       deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
@@ -162,6 +169,7 @@ extension Client {
       fetchTeamInvites: client.fetchTeamInvites(inviterId:),
       fetchUserByGitHub: client.fetchUser(byGitHubUserId:),
       fetchUserById: client.fetchUser(byUserId:),
+      fetchUserByReferralCode: client.fetchUser(byReferralCode:),
       fetchUsersSubscribedToNewsletter: client.fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
       fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
       incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
@@ -171,6 +179,7 @@ extension Client {
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
       sawUser: client.sawUser(id:),
+      updateEpisodeProgress: client.updateEpisodeProgress(episodeSequence:percent:userId:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:rssSalt:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
@@ -262,7 +271,8 @@ private struct _Client {
   func createSubscription(
     with stripeSubscription: Stripe.Subscription,
     for userId: Models.User.Id,
-    isOwnerTakingSeat: Bool
+    isOwnerTakingSeat: Bool,
+    referredBy referrerId: Models.User.Id?
     )
     -> EitherIO<Error, Models.Subscription?> {
 
@@ -283,11 +293,12 @@ private struct _Client {
         return self.execute(
           """
           UPDATE "users"
-          SET "subscription_id" = $1
-          WHERE "users"."id" = $2
+          SET "subscription_id" = $1, "referrer_id" = $2
+          WHERE "users"."id" = $3
           """,
           [
             subscription?.id,
+            referrerId,
             subscription?.userId
           ]
         )
@@ -332,7 +343,7 @@ private struct _Client {
   func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "id" = $1
     ORDER BY "created_at" DESC
@@ -345,7 +356,7 @@ private struct _Client {
   func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
     return self.firstRow(
       """
-    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
+    SELECT *
     FROM "subscriptions"
     WHERE "user_id" = $1
     ORDER BY "created_at" DESC
@@ -358,15 +369,7 @@ private struct _Client {
   func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT "users".*
     FROM "users"
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
@@ -387,6 +390,23 @@ private struct _Client {
     """,
       [userId.rawValue.uuidString]
       )
+      .map(const(unit))
+  }
+
+  func updateEpisodeProgress(
+    episodeSequence: Episode.Sequence,
+    percent: Int,
+    userId: Models.User.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+    return self.execute(
+      #"""
+      INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
+      VALUES ($1, $2, $3)
+      ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
+      SET "percent" = GREATEST(episode_progresses.percent, $2)
+      """#,
+      [episodeSequence.rawValue, percent, userId.rawValue.uuidString]
+    )
       .map(const(unit))
   }
 
@@ -528,20 +548,24 @@ private struct _Client {
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id",
-           "rss_salt"
+    SELECT *
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
     """,
       [id.rawValue.uuidString]
+    )
+  }
+
+  func fetchUser(byReferralCode referralCode: Models.User.ReferralCode) -> EitherIO<Error, Models.User?> {
+    return self.firstRow(
+      """
+    SELECT *
+    FROM "users"
+    WHERE "referral_code" = $1
+    LIMIT 1
+    """,
+      [referralCode.rawValue]
     )
   }
 
@@ -551,21 +575,13 @@ private struct _Client {
     case .none:
       condition = ""
     case .some(.left):
-      condition = " AND \"users\".\"subscription_id\" IS NULL"
+      condition = #" AND "users"."subscription_id" IS NULL"#
     case .some(.right):
-      condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
+      condition = #" AND "users"."subscription_id" IS NOT NULL"#
     }
     return self.rows(
       """
-      SELECT "users"."email",
-      "users"."episode_credit_count",
-      "users"."github_user_id",
-      "users"."github_access_token",
-      "users"."id",
-      "users"."is_admin",
-      "users"."name",
-      "users"."subscription_id",
-      "users"."rss_salt"
+      SELECT "users".*
       FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
       WHERE "email_settings"."newsletter" = $1\(condition)
       """,
@@ -578,15 +594,7 @@ private struct _Client {
     return self.rows(
       """
       SELECT
-      "users"."email",
-      "users"."episode_credit_count",
-      "users"."github_user_id",
-      "users"."github_access_token",
-      "users"."id",
-      "users"."is_admin",
-      "users"."name",
-      "users"."subscription_id",
-      "users"."rss_salt"
+      "users".*
       FROM
       "email_settings"
       LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
@@ -618,15 +626,7 @@ private struct _Client {
   func fetchUser(byGitHubUserId userId: GitHubUser.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id",
-           "rss_salt"
+    SELECT *
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -682,15 +682,7 @@ private struct _Client {
   func fetchAdmins() -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT *
     FROM "users"
     WHERE "users"."is_admin" = TRUE
     """,
@@ -752,15 +744,7 @@ private struct _Client {
   func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
     return self.rows(
       """
-    SELECT "users"."email",
-           "users"."episode_credit_count",
-           "users"."github_user_id",
-           "users"."github_access_token",
-           "users"."id",
-           "users"."is_admin",
-           "users"."name",
-           "users"."subscription_id",
-           "users"."rss_salt"
+    SELECT "users".*
     FROM "users"
     LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
     LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"
@@ -777,7 +761,7 @@ private struct _Client {
     )
   }
 
-  func redeemEpisodeCredit(episodeSequence: Int, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
+  func redeemEpisodeCredit(episodeSequence: Episode.Sequence, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
     return self.execute(
       """
@@ -785,7 +769,7 @@ private struct _Client {
     VALUES ($1, $2)
     """,
       [
-        episodeSequence,
+        episodeSequence.rawValue,
         userId.rawValue.uuidString
       ]
       )
@@ -1028,6 +1012,92 @@ private struct _Client {
         """
       ALTER TABLE "users"
       ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
+      """
+      )))
+      .flatMap(const(execute(
+        #"""
+        CREATE TABLE IF NOT EXISTS "episode_progresses" (
+          "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+          "episode_sequence" smallint NOT NULL,
+          "percent" smallint NOT NULL,
+          "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+          "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+          "updated_at" timestamp without time zone
+        )
+        """#
+      )))
+      .flatMap(const(execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+        ON "episode_progresses" ("episode_sequence", "user_id")
+        """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
+      RETURNS text AS $$
+      DECLARE
+        id text;
+        results text;
+        times integer := 0;
+      BEGIN
+        LOOP
+          id := encode(gen_random_bytes(6), 'base64');
+          id := replace(id, '/', 'p');
+          id := replace(id, '+', 'f');
+          EXECUTE 'SELECT '
+            || quote_ident(column_name)
+            || ' FROM '
+            || quote_ident(table_name)
+            || ' WHERE '
+            || quote_ident(column_name)
+            || ' = '
+            || quote_literal(id) INTO results;
+          IF results IS NULL THEN
+            EXIT;
+          END IF;
+          times := times + 1;
+          IF times > 100 THEN
+            id := NULL;
+            EXIT;
+          END IF;
+        END LOOP;
+        RETURN id;
+      END;
+      $$ LANGUAGE 'plpgsql';
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referral_code" character varying DEFAULT gen_shortid('users', 'referral_code') NOT NULL
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referrer_id" uuid REFERENCES "users" ("id")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "subscriptions"
+      ADD COLUMN IF NOT EXISTS
+      "team_invite_code" character varying DEFAULT gen_shortid('subscriptions', 'team_invite_code') NOT NULL
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_users_referral_code"
+      ON "users" ("referral_code")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_team_invite_code"
+      ON "subscriptions" ("team_invite_code")
       """
       )))
       .map(const(unit))

@@ -4,7 +4,6 @@ import FoundationNetworking
 #endif
 import HttpPipeline
 import Models
-import Optics
 import Prelude
 import Tuple
 
@@ -13,28 +12,30 @@ public enum CookieTransform: String, Codable {
   case encrypted
 }
 
-public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
+private let cookieExpirationDuration: TimeInterval = 315_360_000 // 60 * 60 * 24 * 365 * 10
+
+public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) -> Void)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {
 
     return { conn in
-      let value = update(conn.request.session)
-      guard value != conn.request.session else { return pure(conn) }
-      return setCookie(
-          key: pointFreeUserSessionCookieName,
-          value: value,
-          options: [
-            .expires(Current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
-            .path("/")
-        ]
-        )
-        .map { conn |> writeHeader($0) }
-        ?? pure(conn)
+      var session = conn.request.session
+      update(&session)
+      guard session != conn.request.session else { return pure(conn) }
+      guard let header = setCookie(
+        key: pointFreeUserSessionCookieName,
+        value: session,
+        options: [
+          .expires(Current.date().addingTimeInterval(cookieExpirationDuration)),
+          .path("/")
+      ]) else { return pure(conn) }
+      
+      return writeHeader(header)(conn)
     }
 }
 
 public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<HeadersOpen, HeadersOpen, A, A> {
-  return writeSessionCookieMiddleware(\.flash .~ Flash(priority: priority, message: message))
+  return writeSessionCookieMiddleware { $0.flash = Flash(priority: priority, message: message) }
 }
 
 extension URLRequest {

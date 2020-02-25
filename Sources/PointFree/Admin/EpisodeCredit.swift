@@ -4,7 +4,6 @@ import Foundation
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
@@ -21,15 +20,10 @@ let showEpisodeCreditsMiddleware: Middleware<
   writeStatus(.ok)
     >=> respond({ _ in showEpisodeCreditsView })
 
-let redeemEpisodeCreditMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple3<User, User.Id?, Int?>,
-  Data
-  > =
-  filterMap(
-      over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
-      or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
+let redeemEpisodeCreditMiddleware
+  = filterMap(
+    over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
+    or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
     )
     <<< filterMap(
       over3(fetchEpisode(bySequence:)) >>> require3 >>> pure,
@@ -62,7 +56,7 @@ private func fetchUser(id: User.Id?) -> IO<User?> {
     .map(^\.right)
 }
 
-private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
+private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {
   guard let sequence = sequence else { return nil }
   return Current.episodes()
     .first(where: { $0.sequence == sequence })

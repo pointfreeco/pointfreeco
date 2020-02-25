@@ -9,7 +9,6 @@ import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -78,18 +77,6 @@ struct SimplePageLayoutData<A> {
   }
 }
 
-func _respond<A, B>(
-  view: @escaping (B) -> Node,
-  layoutData: @escaping (A) -> SimplePageLayoutData<B>
-  )
-  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
-
-    return respond(
-      view: view,
-      layoutData: layoutData
-    )
-}
-
 func respond<A, B>(
   view: @escaping (B) -> Node,
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
@@ -115,7 +102,7 @@ func respond<A, B>(
         >>> addGoogleAnalytics
 
       return conn
-        |> writeSessionCookieMiddleware(\.flash .~ nil)
+        |> writeSessionCookieMiddleware { $0.flash = nil }
         >=> respond(
           body: Current.renderHtml(pageLayout(newLayoutData)),
           contentType: .html

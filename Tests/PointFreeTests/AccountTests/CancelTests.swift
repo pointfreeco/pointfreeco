@@ -3,7 +3,6 @@ import Html
 import HtmlPlainTextPrint
 import HtmlSnapshotTesting
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -18,7 +17,6 @@ import XCTest
 final class CancelTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
@@ -35,7 +33,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelNoSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
+    Current.stripe.fetchSubscription = const(throwE(unit))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -43,7 +41,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCancelingSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
+    Current.stripe.fetchSubscription = const(pure(.canceling))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -51,7 +49,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
+    Current.stripe.fetchSubscription = const(pure(.canceled))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -59,7 +57,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() {
-    update(&Current, \.stripe.cancelSubscription .~ const(throwE(unit)))
+    Current.stripe.cancelSubscription = const(throwE(unit))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -85,7 +83,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivate() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
+    Current.stripe.fetchSubscription = const(pure(.canceling))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
@@ -99,7 +97,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateNoSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
+    Current.stripe.fetchSubscription = const(throwE(unit))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
@@ -113,7 +111,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
+    Current.stripe.fetchSubscription = const(pure(.canceled))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
@@ -121,7 +119,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateStripeFailure() {
-    update(&Current, \.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) })
+    Current.stripe.updateSubscription = { _, _, _, _ in throwE(unit) }
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 

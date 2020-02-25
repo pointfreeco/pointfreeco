@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -16,7 +15,6 @@ import XCTest
 class PaymentInfoTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
@@ -39,12 +37,12 @@ class PaymentInfoTests: TestCase {
   }
 
   func testInvoiceBilling() {
-    let customer = Stripe.Customer.mock
-      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
-    let subscription = Stripe.Subscription.teamYearly
-      |> (\Stripe.Subscription.customer) .~ .right(customer)
+    var customer = Stripe.Customer.mock
+    customer.sources = .mock([.right(.mock)])
+    var subscription = Stripe.Subscription.teamYearly
+    subscription.customer = .right(customer)
     Current = .teamYearly
-      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
 

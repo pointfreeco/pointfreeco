@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -20,12 +19,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -33,7 +29,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -56,12 +53,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -69,7 +63,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -92,12 +87,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -105,7 +100,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -128,12 +124,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_WithDefaults() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -141,7 +137,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: .some(.monthly),
           isOwnerTakingSeat: true,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -164,12 +161,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -177,7 +174,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: .some(.monthly),
           isOwnerTakingSeat: false,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -200,12 +198,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_SwitchToMonthly() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -213,7 +211,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -236,12 +235,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_AddTeamMember() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = 1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -249,7 +248,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -272,12 +272,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_ActiveSubscriber() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
     let conn = connection(
       from: request(
@@ -285,7 +282,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -296,12 +294,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(nil)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -309,7 +304,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedOut
       )
@@ -332,12 +328,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_WithDiscount() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -358,12 +351,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_RemoveOwnerFromTeam() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = 1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -371,7 +364,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -391,6 +385,139 @@ class SubscriptionConfirmationTests: TestCase {
       )
     }
     #endif
+  }
+
+  func testPersonal_LoggedOut_ReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testPersonal_LoggedOut_InactiveReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.stripe.fetchSubscription = const(pure(.canceling))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedOut_InvalidReferralCode() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchUserByReferralCode = const(pure(nil))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedOut_InvalidReferralLane() {
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = const(pure(.mock))
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedIn_PreviouslyReferred() {
+    let user = update(User.nonSubscriber) {
+      $0.referrerId = .init(rawValue: .mock)
+    }
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+    Current.stripe.fetchSubscription = const(pure(.mock))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d"
+        ),
+        session: .loggedIn(as: user)
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
   }
 }
 

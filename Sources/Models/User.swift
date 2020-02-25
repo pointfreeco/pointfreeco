@@ -1,6 +1,6 @@
+import EmailAddress
 import Foundation
 import GitHub
-import PointFreePrelude
 import Stripe
 import Tagged
 
@@ -12,6 +12,8 @@ public struct User: Decodable, Equatable {
   public var id: Id
   public var isAdmin: Bool
   public var name: String?
+  public var referralCode: ReferralCode
+  public var referrerId: Id?
   public var rssSalt: RssSalt
   public var subscriptionId: Subscription.Id?
 
@@ -23,6 +25,8 @@ public struct User: Decodable, Equatable {
     id: Id,
     isAdmin: Bool,
     name: String?,
+    referralCode: ReferralCode,
+    referrerId: Id?,
     rssSalt: RssSalt,
     subscriptionId: Subscription.Id?
     ) {
@@ -33,11 +37,14 @@ public struct User: Decodable, Equatable {
     self.id = id
     self.isAdmin = isAdmin
     self.name = name
+    self.referralCode = referralCode
+    self.referrerId = referrerId
     self.rssSalt = rssSalt
     self.subscriptionId = subscriptionId
   }
 
   public typealias Id = Tagged<User, UUID>
+  public typealias ReferralCode = Tagged<(User, referralCode: ()), String>
   public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
 
   public enum CodingKeys: String, CodingKey {
@@ -49,6 +56,8 @@ public struct User: Decodable, Equatable {
     case isAdmin = "is_admin"
     case name
     case rssSalt = "rss_salt"
+    case referralCode = "referral_code"
+    case referrerId = "referrer_id"
     case subscriptionId = "subscription_id"
   }
 

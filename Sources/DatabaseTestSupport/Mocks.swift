@@ -2,7 +2,6 @@ import Database
 import Either
 import Models
 import ModelsTestSupport
-import Optics
 import PointFreePrelude
 import PostgreSQL
 import Prelude
@@ -13,7 +12,7 @@ extension Client {
     createEnterpriseAccount: { _, _, _ in pure(.mock) },
     createEnterpriseEmail: { _, _ in pure(.mock) },
     createFeedRequestEvent: { _, _, _ in pure(unit) },
-    createSubscription: { _, _, _ in pure(.mock) },
+    createSubscription: { _, _, _, _ in pure(.mock) },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     execute: { _, _ in throwE(unit) },
@@ -24,13 +23,14 @@ extension Client {
     fetchEnterpriseEmails: unzurry(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
     fetchFreeEpisodeUsers: { pure([.mock]) },
-    fetchSubscriptionById: { pure(.some(.mock |> \.id .~ $0)) },
-    fetchSubscriptionByOwnerId: { pure(.some(.mock |> \.userId .~ $0)) },
+    fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
+    fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
-    fetchUserById: { pure(.mock |> \.id .~ $0) },
+    fetchUserById: { id in pure(update(.mock) { $0.id = id }) },
+    fetchUserByReferralCode: { code in pure(update(.mock) { $0.referralCode = code }) },
     fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },
     fetchUsersToWelcome: const(pure([.mock])),
     incrementEpisodeCredits: const(pure([])),
@@ -40,6 +40,7 @@ extension Client {
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     sawUser: const(pure(unit)),
+    updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) }

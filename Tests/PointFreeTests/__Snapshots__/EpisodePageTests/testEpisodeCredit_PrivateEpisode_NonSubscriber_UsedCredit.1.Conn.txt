@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 78425
+Content-Length: 79033
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2505,6 +2505,26 @@ future episodes, become a subscriber today!
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
+});
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  var lastSeenPercent = 0
+  player.on('timeupdate', function(data) {
+    console.log(data.percent - lastSeenPercent)
+    if (data.percent - lastSeenPercent >= 0.01) {
+      lastSeenPercent = data.percent;
+
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open(
+        "POST",
+        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+      );
+      httpRequest.send();
+    }
+  });
 });
             </script>
           </div>

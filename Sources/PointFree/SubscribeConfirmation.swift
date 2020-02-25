@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import HttpPipeline
 import Foundation
 import Models
@@ -9,18 +10,14 @@ import Stripe
 import Tuple
 import Views
 
-public let subscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
-  Data
-  >
-  = redirectActiveSubscribers(user: get1)
+public let subscribeConfirmation
+  : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
+  = validateReferralCode
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.subscriptionConfirmation,
-      layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
+      layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon, referrer in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -31,22 +28,130 @@ public let subscribeConfirmation: Middleware<
             coupon,
             currentUser,
             subscriberState,
+            referrer,
             stats(forEpisodes: Current.episodes()),
             Current.stripe.js,
             Current.envVars.stripe.publishableKey
           ),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
-          title: "Subscribe to Point-Free"
+          title: referrer == nil
+            ? "Subscribe to Point-Free"
+            : "Subscribe and get a free month of Point-Free"
         )
     }
 )
 
-public let discountSubscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
+private func validateReferralCode(
+  middleware: @escaping M<Tuple7<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
+) -> M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
+  return { conn in
+    let (currentUser, currentRoute, subscriberState, lane, subscribeData, coupon) = lower(conn.data)
+    guard
+      let referralCode = subscribeData.referralCode
+      else {
+        return middleware(
+          conn.map(
+            const(
+              currentUser
+                .*. currentRoute
+                .*. subscriberState
+                .*. lane
+                .*. subscribeData
+                .*. coupon
+                .*. nil
+                .*. unit
+            )
+          )
+        )
+    }
+
+    guard lane == .personal else {
+      return conn |> redirect(
+        to: .subscribeConfirmation(
+          lane: lane,
+          billing: subscribeData.billing,
+          isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+          teammates: subscribeData.teammates,
+          referralCode: nil
+        ),
+        headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
+      )
+    }
+
+    guard currentUser?.referrerId == nil else {
+      return conn |> redirect(
+        to: .subscribeConfirmation(
+          lane: lane,
+          billing: subscribeData.billing,
+          isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+          teammates: subscribeData.teammates,
+          referralCode: nil
+        ),
+        headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
+      )
+    }
+
+    if let coupon = coupon {
+      return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing))
+    }
+
+    return Current.database.fetchUserByReferralCode(referralCode)
+      .mapExcept(requireSome)
+      .flatMap { referrer in
+        Current.database.fetchSubscriptionByOwnerId(referrer.id)
+          // Alternatively, don't hit Stripe:
+//          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
+          .mapExcept(requireSome)
+          .flatMap {
+            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
+              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
+        }
+    }
+      .run
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .subscribeConfirmation(
+                lane: lane,
+                billing: subscribeData.billing,
+                isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+                teammates: subscribeData.teammates,
+                referralCode: nil
+              ),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
+          ),
+          { referrer in
+            conn.map(
+              const(
+                currentUser
+                  .*. currentRoute
+                  .*. subscriberState
+                  .*. lane
+                  .*. subscribeData
+                  .*. coupon
+                  .*. referrer
+                  .*. unit
+              )
+              ) |> middleware
+        }
+        )
+    )
+  }
+}
+
+public let discountSubscribeConfirmation
+  = fetchAndValidateCoupon
+    <| map(over6(Optional.some))
+    >>> pure
+    >=> subscribeConfirmation
+
+private let fetchAndValidateCoupon
+  : MT<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
-  Data
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
@@ -55,7 +160,8 @@ public let discountSubscribeConfirmation: Middleware<
         lane: .personal,
         billing: nil,
         isOwnerTakingSeat: nil,
-        teammates: nil
+        teammates: nil,
+        referralCode: nil
       ),
       headersMiddleware: flash(.error, couponError)
     )
@@ -67,14 +173,12 @@ public let discountSubscribeConfirmation: Middleware<
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         headersMiddleware: flash(.error, couponError)
       )
-    )
-    <| map(over6(Optional.some))
-    >>> pure
-    >=> subscribeConfirmation
+)
 
 private let couponError = "That coupon code is invalid or has expired."
 
@@ -96,17 +200,11 @@ func redirectActiveSubscribers<A>(
         let user = user(conn.data)
 
         let userSubscription = (user?.subscriptionId)
-          .map(
-            Current.database.fetchSubscriptionById
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let ownerSubscription = (user?.id)
-          .map(
-            Current.database.fetchSubscriptionByOwnerId
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential

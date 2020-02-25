@@ -7,7 +7,7 @@ APIs that interact with the outside world are unpredictable and make it difficul
 """,
   contentBlocks: [
 
-    .init(
+    Episode.TranscriptBlock(
       content: """
 ---
 
@@ -44,7 +44,7 @@ An important part of controlling dependencies is to be able to describe them. Th
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
 }
@@ -52,7 +52,7 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 The properties of this struct will describe the dependencies that our application cares about.
 
@@ -61,7 +61,7 @@ Many applications rely on the current date and time, so we find that this is a g
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 import Foundation
 Date() // 2018-10-08 17:42:42 UTC
@@ -71,28 +71,28 @@ Date() // 2018-10-08 17:42:48 UTC
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Every time this initializer is called we get a different value, which means that any code that calls this initializer may behave differently depending on when it's called. What's the shape of this initializer?
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
-Date.init as () -> Date
+    Date.init as () -> Date
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 It's a function that takes zero arguments and returns a `Date`. This is the shape of the property we'll use to control the date on our `World`.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var date: () -> Date
@@ -101,14 +101,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 The default implementation of this property will wrap a call to the `Date` initializer.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var date: () -> Date = { Date() }
@@ -117,14 +117,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Swift's type inference allows us to describe things even more succinctly.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var date = { Date() }
@@ -133,14 +133,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 With a minimal struct defined to control a single dependency of our application, we merely need to instantiate it. Traditionally, one may be encouraged do so in the app delegate or main function, but we're going to define it globally at the module level.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var date = { Date() }
@@ -151,7 +151,7 @@ var Current = World()
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Now this all may look a little foreign and scary, and not very "Swifty," but the benefits will hopefully become clear.
 
@@ -160,14 +160,14 @@ How do we fetch the current date?
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.date() // 2018-10-08 17:45:24 UTC
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 We like the way `Current.date()` reads: it's succinct and loud at the same time. While you could, alternatively, define a `static var` on `World` and reference `World.current.date()`, we prefer the slightly unusual syntax precisely _because_ it's unusual: it sticks out! It's also a bit shorter and reads a bit more nicely.
 
@@ -178,7 +178,7 @@ Calls to `Current.date()` have a distinct advantage over calls to `Date()`: beca
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 // Send our application back in time.
 Current.date = { Date.distantPast }
@@ -186,42 +186,42 @@ Current.date = { Date.distantPast }
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 We can even use type inference to make things a bit shorter.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.date = { .distantPast }
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 By overriding `Current`'s `date` property with a closure that returns a specific date, `Current.date()` will now return this specific date wherever and whenever it's called.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.date() // 0001-01-01 00:00:00 UTC
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 We've fixed `date` to return the same date every time, which means any of our application code should behave in a consistent manner.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.date() // 0001-01-01 00:00:00 UTC
 Current.date() // 0001-01-01 00:00:00 UTC
@@ -230,14 +230,14 @@ Current.date() // 0001-01-01 00:00:00 UTC
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 If we throw this override into our app delegate, our entire app will behave as if it's running at that specific instant.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 func application(
   _ application: UIApplication,
@@ -253,7 +253,7 @@ func application(
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 This holds true in tests, too: we can now freeze time and make previously untestable things testable.
 
@@ -264,7 +264,7 @@ Just because code calls `Current.date()` doesn't mean it's completely controlled
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 let formatter = DateFormatter()
 
@@ -277,14 +277,14 @@ formatter.string(from: Current.date())
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 This formatted string depends on not only the device time, but on the calendar, locale, and time zone. Formatters hide these dependencies! They look to the outside world by default.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 formatter.calendar // Calendar
 formatter.locale // Locale
@@ -293,14 +293,14 @@ formatter.timeZone // TimeZone
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 In order to control these dependencies, we simply add them to our `World` struct.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var calendar = Calendar.autoupdatingCurrent
@@ -312,14 +312,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 We can describe them by assigning default values, and wherever our code depends on the current calendar, locale, or time zone---explicitly _or_ implicitly, as with our formatters---we should providing the instances that live on `Current`.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 formatter.calendar = Current.calendar
 formatter.locale = Current.locale
@@ -328,7 +328,7 @@ formatter.timeZone = Current.timeZone
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 This code completely controls the formatter so that it produces consistently-formatted strings.
 
@@ -337,7 +337,7 @@ We can even extend `World` to make it responsible for producing obedient formatt
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 extension World {
   func dateFormatter(
@@ -362,14 +362,14 @@ extension World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 And now, in a few lines of code, we can see the world from the perspective of a person from Spain observing the Buddhist calendar while on holiday in Oahu.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.dateFormatter(dateStyle: .long, timeStyle: .long)
   .string(from: Current.date())
@@ -386,7 +386,7 @@ Current.dateFormatter(dateStyle: .long, timeStyle: .long)
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 And remember, we can simulate this perspective throughout our entire application with little ceremony: just a few extra lines in our app delegate. Seeing this perspective normally requires changing simulator settings and simulator restarts.
 
@@ -397,7 +397,7 @@ Controlling the date and device settings is relatively straightforward, but how 
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 APIClient.shared.token = token
 APIClient.shared.fetchCurrentUser { result in
@@ -407,14 +407,14 @@ APIClient.shared.fetchCurrentUser { result in
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Here we have an API client with at least one property and one method. We could control each one individually on `Current`, but it makes more sense to group them in their own structure that mimics the way the `World` struct controls things. Let’s define another struct that is responsible for this subset of dependencies:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct API {
   var setToken = { APIClient.shared.token = $0 }
@@ -424,7 +424,7 @@ struct API {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 It typically takes a single line to take control each operation you care about. In this case, we can capture the assignment of our API client's token in a closure that does that assignment, while we can capture the method that fetches the current user by referencing the method without calling it.
 
@@ -433,7 +433,7 @@ This grouping becomes another property on `World`.
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var api = API()
@@ -443,14 +443,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 As long as our application code exclusively uses `Current.api` and not `APIClient.shared`, we can swap out implementations and simulate various states.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 // Simulate being logged-in as a specific user
 Current.api.fetchCurrentUser = { callback in
@@ -460,7 +460,7 @@ Current.api.fetchCurrentUser = { callback in
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Here we’ve forced the "current user" endpoint to always return a specific user, making our app think that we're in a logged-in state.
 
@@ -471,7 +471,7 @@ Here's another example where we can easily simulate a specific failure when we h
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 // Simulate specific errors
 Current.api.fetchCurrentUser = { callback in
@@ -481,7 +481,7 @@ Current.api.fetchCurrentUser = { callback in
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 And now our application will consistently behave as if the current user has been suspended.
 
@@ -512,7 +512,7 @@ As such, typically, the world isn't mutated in release builds and you can even e
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 #if DEBUG
 var Current = World()
@@ -523,7 +523,7 @@ let Current = World()
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 As long as `Current` is built from a tree of value types, the compiler will not allow you to mutate it in release builds.
 
@@ -536,7 +536,7 @@ Let's see what it looks like to control our API example using a protocol. We'll 
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 protocol APIClientProtocol {
   var token: String? { get set }
@@ -546,28 +546,28 @@ protocol APIClientProtocol {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Next, we need to extend the real-world client with this protocol.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 extension APIClient: APIClientProtocol {}
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 After that, we need to define a mock version, which ends up being pretty verbose: we need to add an extra property to inject the behavior of simulating a logged-in state or failure.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 class MockAPIClient: APIClientProtocol {
   var token: String?
@@ -581,14 +581,14 @@ class MockAPIClient: APIClientProtocol {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Finally, wherever we use this API client, we need to explicitly erase the underlying type with our protocol. For example, if we used the `World` as a more traditional container:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct World {
   var api: APIClientProtocol = APIClient.shared
@@ -597,14 +597,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 If we look at it all at once, it's a lot of work:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 protocol APIClientProtocol {
   var token: String? { get set }
@@ -629,14 +629,14 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Let's compare all of this work to our struct-based approach:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct API {
   var setToken = { APIClient.shared.token = $0 }
@@ -650,7 +650,7 @@ struct World {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Only 7 lines of code instead of 15! Over half the boilerplate goes away, and this boilerplate multiplies with every additional API endpoint we want to control.
 
@@ -661,7 +661,7 @@ The main downside in using struct properties over protocol functions is that clo
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 APIClient.current.fetchUser(byId: Int) { result in
   // …
@@ -670,14 +670,14 @@ APIClient.current.fetchUser(byId: Int) { result in
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Our approach would have to move the label name into the property name.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct API {
   var fetchUserById = APIClient.current.fetchUser(byId:)
@@ -691,14 +691,14 @@ APIClient.current.fetchUser(byId: 1)
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Operations with multiple arguments can make things quite a bit more awkward. For example, an `updateUser` function with multiple named arguments:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 APIClient.current.updateUser(
   withId: 1,
@@ -712,14 +712,14 @@ APIClient.current.updateUser(
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 What would we name this property if we were to control it? Do we include all the argument labels?
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 struct API {
   var updateUserWithIdSetNameEmailStatus = APIClient.current.updateUser
@@ -741,7 +741,7 @@ APIClient.current.updateUser(
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 While the difference isn't too bad, it's certainly awkward.
 
@@ -750,7 +750,7 @@ When the argument types are self-documenting, it's perfectly reasonable to trunc
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 Current.api.updateUser
 // (User.Id, User.Name, User.Email, User.Status, (Result<User, Error>) -> Void)
@@ -758,14 +758,14 @@ Current.api.updateUser
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 But if we're dealing with an `Int` and a bunch of `String`s, we could end up with subtle bugs where we pass an email to the name argument or a name to the email argument. It seems most prudent to either live with the awkward and verbose `updateUserWithIdSetNameEmailStatus` property, or extend `API` with a little bit of boilerplate to smooth things over at the call site.
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 extension API {
   func updateUser(
@@ -797,7 +797,7 @@ APIClient.current.updateUser(
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 It's up to you! You can always add this boilerplate on the rare case that you need it and it's _still_ less boilerplate than the protocol alternative.
 
@@ -812,7 +812,7 @@ Here's a view controller that takes dependencies at initialization (something ca
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 class MyViewController: UIViewController {
   let api: APIClientProtocol
@@ -836,7 +836,7 @@ class MyViewController: UIViewController {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 There's a bunch of boilerplate here. We have boilerplate that declares properties for each dependency. We have boilerplate that declares initializer arguments for each dependency. We have boilerplate that assigns these initializer arguments to properties for each dependency. And whenever a view controller needs an additional dependency, each instance of boilerplate grows.
 
@@ -845,7 +845,7 @@ Sometimes a view controller only needs dependencies to pass them to another obje
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 class MyViewController: UIViewController {
   let api: APIClientProtocol
@@ -885,7 +885,7 @@ class ChildViewController: UIViewController {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 More boilerplate! It's an extra layer that we need to thread new dependencies through.
 
@@ -894,7 +894,7 @@ Boilerplate like this doesn't go unnoticed. People have come up with all sorts o
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 protocol APIClientProvider {
   var api: APIClientProtocol { get }
@@ -928,7 +928,7 @@ class MyViewController: UIViewController {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 This kind of code isn't uncommon to find in a real-world app, and it's even _more_ boilerplate than our first example! This is enough additional work and friction that it may prevent folks from controlling dependencies at all.
 
@@ -937,7 +937,7 @@ To top it off, constructor injection doesn't work with storyboards, so you're st
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 protocol APIClientProvider {
   var api: APIClientProtocol { get }
@@ -982,14 +982,14 @@ class ChildViewController: UIViewController {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 What would this last, most complicated example look like with `Current`:
 """,
       timestamp: nil,
       type: .paragraph
     ),
-    .init(
+    Episode.TranscriptBlock(
       content: """
 class MyViewController: UIViewController {}
 
@@ -1008,7 +1008,7 @@ class ChildViewController: UIViewController {
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-    .init(
+  Episode.TranscriptBlock(
       content: """
 The boilerplate completely disappears. Parent view controllers don't need to worry about passing dependencies along. Storyboard glue code disappears. We're down to the bare essentials.
 
@@ -1041,6 +1041,6 @@ We'll be diving deeper into this approach in the future. We'll show what it look
     ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0021-how-to-control-the-world/poster.jpg",
   id: 21,
-  publishedAt: .init(timeIntervalSince1970: 1_539_093_600),
+  publishedAt: Date(timeIntervalSince1970: 1_539_093_600),
   title: "How to Control the World"
 )

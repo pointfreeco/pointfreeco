@@ -6,7 +6,6 @@ import XCTest
 @testable import PointFree
 import PointFreeTestSupport
 import HttpPipeline
-import Optics
 #if !os(Linux)
 import WebKit
 #endif
