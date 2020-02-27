@@ -1,7 +1,7 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
 [![Swift 5.1](https://img.shields.io/badge/swift-5.1-ED523F.svg?style=flat)](https://swift.org/download/)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fpointfreeco%2Fpointfreeco%2Fbadge&style=flat)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
+[![CI](https://github.com/pointfreeco/pointfreeco/workflows/CI/badge.svg)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
 
 This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a video series exploring Swift and functional programming. The codebase is split into 3 pieces:
@@ -22,6 +22,12 @@ Interested in a [video tour of the code base](https://www.pointfree.co/episodes/
 
 The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
+* Open up a terminal window and grab the code:
+  ``` sh
+  git clone https://github.com/pointfreeco/pointfreeco.git
+  cd pointfreeco
+  ```
+
 * Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
   ``` sh
   brew install cmark # or your preferred installation method
@@ -34,12 +40,6 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   make db
   ```
   (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
-
-* Open up a terminal window and grab the code:
-  ``` sh
-  git clone https://github.com/pointfreeco/pointfreeco.git
-  cd pointfreeco
-  ```
 
 With the project open in Xcode, you can:
 
