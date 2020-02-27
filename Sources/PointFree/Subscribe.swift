@@ -65,12 +65,13 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
         }
         ?? pure(.right(unit))
 
-      let updateReferredBalance = subscribeData.pricing.interval == .month
-        ? Current.stripe
-          .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
-          .map(const(unit))
-          .run.parallel
-        : pure(.right(unit))
+      let updateReferredBalance =
+        referrer != nil && subscribeData.pricing.interval == .month
+          ? Current.stripe
+            .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+            .map(const(unit))
+            .run.parallel
+          : pure(.right(unit))
 
       let results = sequence([sendEmails, updateReferrerBalance, updateReferredBalance])
 

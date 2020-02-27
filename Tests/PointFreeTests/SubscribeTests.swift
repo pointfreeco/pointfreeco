@@ -87,6 +87,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(.mock)
+    }
+
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: session)
       )
@@ -105,6 +116,49 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #if !os(Linux)
     assertSnapshot(matching: subscription, as: .dump)
     #endif
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
+  }
+
+  func testHappyPath_Yearly() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return pure(update(.mock) { $0.id = "cus_referred" })
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(.mock)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualYearly)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
   }
 
   func testHappyPath_Team() {
