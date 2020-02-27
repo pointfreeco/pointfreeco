@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65426
+Content-Length: 65415
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2378,7 +2378,7 @@ that timestamp jumps the video to that spot.</p>
                class="pf-link-yellow
                       m-ml1
                       align-middle">
-              ep2-proof-in-functions.playground
+              ep2-proof-in-functions
             </a>
           </div>
         </div>
