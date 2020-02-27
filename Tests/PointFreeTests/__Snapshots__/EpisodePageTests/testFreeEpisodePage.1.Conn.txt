@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 81677
+Content-Length: 81666
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2698,7 +2698,7 @@ working how we expect:</p>
                class="pf-link-yellow
                       m-ml1
                       align-middle">
-              ep2-proof-in-functions.playground
+              ep2-proof-in-functions
             </a>
           </div>
         </div>
