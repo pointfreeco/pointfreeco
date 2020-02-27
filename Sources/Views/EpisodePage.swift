@@ -174,7 +174,7 @@ private func downloadsView(codeSampleDirectory: String) -> Node {
         .href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
         .class([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
       ],
-      .text("\(codeSampleDirectory)")
+      .text(codeSampleDirectory)
     )
   )
 }
