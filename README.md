@@ -1,7 +1,7 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
 [![Swift 5.1](https://img.shields.io/badge/swift-5.1-ED523F.svg?style=flat)](https://swift.org/download/)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fpointfreeco%2Fpointfreeco%2Fbadge&style=flat)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
+[![CI](https://github.com/pointfreeco/pointfreeco/workflows/CI/badge.svg)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
 
 This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a video series exploring Swift and functional programming. The codebase is split into 3 pieces:
