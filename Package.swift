@@ -29,8 +29,6 @@ extension Array where Element == SwiftSetting {
     : [.warnLongExpressionTypeChecking]
 }
 
-let oss = FileManager.default.fileExists(atPath: "Sources/Models/Transcripts/.git")
-
 let package = Package(
   name: "PointFree",
   platforms: [
