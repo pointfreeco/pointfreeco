@@ -22,6 +22,12 @@ Interested in a [video tour of the code base](https://www.pointfree.co/episodes/
 
 The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
+* Open up a terminal window and grab the code:
+  ``` sh
+  git clone https://github.com/pointfreeco/pointfreeco.git
+  cd pointfreeco
+  ```
+
 * Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
   ``` sh
   brew install cmark # or your preferred installation method
@@ -34,12 +40,6 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   make db
   ```
   (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
-
-* Open up a terminal window and grab the code:
-  ``` sh
-  git clone https://github.com/pointfreeco/pointfreeco.git
-  cd pointfreeco
-  ```
 
 With the project open in Xcode, you can:
 
