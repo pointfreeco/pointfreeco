@@ -16,12 +16,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache Dependencies
-      - uses: actions/cache@v1
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
+      uses: actions/cache@v1
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
 
     - name: Install Dependencies
       run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql || brew update
@@ -46,12 +46,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache Dependencies
-      - uses: actions/cache@v1
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
+      uses: actions/cache@v1
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
 
     - name: Run tests
       run: make test-linux
