@@ -1,0 +1,160 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Bits",
+        "repositoryURL": "https://github.com/vapor/bits.git",
+        "state": {
+          "branch": null,
+          "revision": "03079476b04139a8b744ad96f975176df5ae12bc",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "Cryptor",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
+        "state": {
+          "branch": null,
+          "revision": "12d2bf3ec7207ec3cd004b9582f69ef5fae1da3b",
+          "version": "1.0.32"
+        }
+      },
+      {
+        "package": "Ccmark",
+        "repositoryURL": "https://github.com/pointfreeco/Ccmark.git",
+        "state": {
+          "branch": "master",
+          "revision": "d5a4941c898b65a4c97d6b8565994d6d9de1e08d",
+          "version": null
+        }
+      },
+      {
+        "package": "Core",
+        "repositoryURL": "https://github.com/vapor/core.git",
+        "state": {
+          "branch": null,
+          "revision": "aa15871311b497a24a7f0e96b1ae6865dd600818",
+          "version": "2.2.1"
+        }
+      },
+      {
+        "package": "CPostgreSQL",
+        "repositoryURL": "https://github.com/vapor-community/cpostgresql.git",
+        "state": {
+          "branch": null,
+          "revision": "33f0f94f023ab61ccd0ba2f076dd6a448be853e3",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "Debugging",
+        "repositoryURL": "https://github.com/vapor/debugging.git",
+        "state": {
+          "branch": null,
+          "revision": "fc5a27d6eb236141dc24e5f14eedaa2e035ae7b3",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "Node",
+        "repositoryURL": "https://github.com/vapor/node.git",
+        "state": {
+          "branch": null,
+          "revision": "607aa595081da496f0f04a5c0cffd976e81d2e4e",
+          "version": "2.1.5"
+        }
+      },
+      {
+        "package": "PostgreSQL",
+        "repositoryURL": "https://github.com/vapor-community/postgresql.git",
+        "state": {
+          "branch": null,
+          "revision": "1d23662a0b1b6b4689319607bb8d22daa57e5fca",
+          "version": "2.1.2"
+        }
+      },
+      {
+        "package": "swift-backtrace",
+        "repositoryURL": "https://github.com/ianpartridge/swift-backtrace.git",
+        "state": {
+          "branch": null,
+          "revision": "f244ad10744fc8e1b9f012682df94a27672c7033",
+          "version": "1.1.0"
+        }
+      },
+      {
+        "package": "Html",
+        "repositoryURL": "https://github.com/pointfreeco/swift-html.git",
+        "state": {
+          "branch": "3a1b7e4",
+          "revision": "3a1b7e4d50f4474b50b1e0a0d34fdf0ec9fa6cd2",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "74d7b91ceebc85daf387ebb206003f78813f71aa",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "swift-nio",
+        "repositoryURL": "https://github.com/apple/swift-nio.git",
+        "state": {
+          "branch": null,
+          "revision": "16ab4d657e1ad4e77bd5f8b94af8538561643053",
+          "version": "2.14.0"
+        }
+      },
+      {
+        "package": "swift-nio-extras",
+        "repositoryURL": "https://github.com/apple/swift-nio-extras.git",
+        "state": {
+          "branch": null,
+          "revision": "b4dbfacff47fb8d0f9e0a422d8d37935a9f10570",
+          "version": "1.4.0"
+        }
+      },
+      {
+        "package": "Prelude",
+        "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
+        "state": {
+          "branch": "9240a1f",
+          "revision": "9240a1f951c382e1c7387762c6cd94042baba531",
+          "version": null
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "114882386a815f4a2e6d8f2f7ee4857acd372438",
+          "version": "1.7.2"
+        }
+      },
+      {
+        "package": "Tagged",
+        "repositoryURL": "https://github.com/pointfreeco/swift-tagged.git",
+        "state": {
+          "branch": "fde36b6",
+          "revision": "fde36b6ec05963d5c3327382e3e5f36eb96ee7fa",
+          "version": null
+        }
+      },
+      {
+        "package": "Web",
+        "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
+        "state": {
+          "branch": "148acf4",
+          "revision": "148acf4ee88b2a87fd37ed1052fa21d91ed4db0d",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
