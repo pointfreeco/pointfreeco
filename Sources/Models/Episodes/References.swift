@@ -971,6 +971,50 @@ The Wikipedia entry for monads.
     publishedAt: Date(timeIntervalSince1970: 607410000),
     title: "Why Functional Programming Matters"
   )
+
+  public static let manyFacesOfMap = reference(
+    forEpisode: .ep13_theManyFacesOfMap,
+    additionalBlurb: """
+""",
+    episodeUrl: "https://www.pointfree.co/episodes/ep13-the-many-faces-of-map"
+  )
+
+  public static let pointFreePullbackAndContravariance = reference(
+    forEpisode: .ep14_contravariance,
+    additionalBlurb: """
+We first explored the concept of the `pullback` in our episode on "contravariance", although back then we used a [different](https://www.pointfree.co/blog/posts/22-some-news-about-contramap) name for the operation. The `pullback` is an instrumental form of composition that arises in certain situations, and can often be counter-intuitive at first sight.
+""",
+    episodeUrl: "https://www.pointfree.co/episodes/ep14-contravariance"
+  )
+
+  public static let positiveNegativePosition = reference(
+    forEpisode: .ep14_contravariance,
+    additionalBlurb: """
+We first explored the concept of "positive" and "negative" position of function arguments in our contravariance episode. In this episode we describe a very simple process to determine when it is possible to define a `map` or `pullback` transformation on any function signature.
+""",
+    episodeUrl: "https://www.pointfree.co/episodes/ep14-contravariance"
+  )
+
+  public static let protocolWitnessesAppBuilders2019 = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+  Brandon gave a talk about "protocol witnesses" at the [2019 App Builders](https://appbuilders.ch) conference. The basics of scraping protocols is covered as well as some interesting examples of where this technique really shines when applied to snapshot testing and animations.
+
+  > Protocol-oriented programming is strongly recommended in the Swift community, and Apple has given a lot of guidance on how to use it in your everyday code. However, there has not been a lot of attention on when it is not appropriate, and what to do in that case. We will explore this idea, and show that there is a completely straightforward and mechanical way to translate any protocol into a concrete datatype. Once you do this you can still write your code much like you would with protocols, but all of the complexity inherit in protocols go away. Even more amazing, a new type of composition appears that is difficult to see when dealing with only protocols. We will also demo a real life, open source library that was originally written in the protocol-oriented way, but after running into many problems with the protocols, it was rewritten entirely in this witness-oriented way. The outcome was really surprising, and really powerful.
+  """,
+    link: "https://www.youtube.com/watch?v=3BVkbWXcFS4",
+    publishedAt: referenceDateFormatter.date(from: "2019-05-03"),
+    title: "Protocol Witnesses: App Builders 2019"
+  )
+
+  public static let structs🤝Enums = reference(
+    forEpisode: .ep51_structs🤝Enums,
+    additionalBlurb: #"""
+In this episode we explore the duality of structs and enums and show that even though structs are typically endowed with features absent in enums, we can often recover these imbalances by exploring the corresponding notion.
+"""#,
+    episodeUrl: "https://www.pointfree.co/episodes/ep51-structs-enums"
+  )
+
 }
 
 let referenceDateFormatter = { () -> DateFormatter in
