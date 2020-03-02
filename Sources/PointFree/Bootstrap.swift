@@ -91,7 +91,9 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
 }
 
 private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
+  #if !OSS
   Episode.bootstrapPrivateEpisodes()
+  #endif
   assert(Episode.all.count == Set(Episode.all.map(^\.id)).count)
   assert(Episode.all.count == Set(Episode.all.map(^\.sequence)).count)
 
