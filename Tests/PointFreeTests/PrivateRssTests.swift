@@ -1,6 +1,6 @@
 import Either
 import HttpPipeline
-import Models
+@testable import Models
 import ModelsTestSupport
 @testable import PointFree
 import PointFreePrelude
@@ -21,7 +21,14 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
+    Current.episodes = unzurry([
+      .ep0_introduction,
+      .ep1_functions,
+      .ep2_sideEffects,
+      .ep3_uikitStylingWithFunctions,
+      .ep10_aTaleOfTwoFlatMaps,
+      .ep22_aTourOfPointFree,
+    ])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -41,7 +48,14 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
+    Current.episodes = unzurry([
+      .ep0_introduction,
+      .ep1_functions,
+      .ep2_sideEffects,
+      .ep3_uikitStylingWithFunctions,
+      .ep10_aTaleOfTwoFlatMaps,
+      .ep22_aTourOfPointFree,
+    ])
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -120,7 +134,14 @@ class PrivateRssTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
+    Current.episodes = unzurry([
+      .ep0_introduction,
+      .ep1_functions,
+      .ep2_sideEffects,
+      .ep3_uikitStylingWithFunctions,
+      .ep10_aTaleOfTwoFlatMaps,
+      .ep22_aTourOfPointFree,
+    ])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!

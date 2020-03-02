@@ -351,9 +351,9 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
     description: errorMessage,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: .init(
-      length: introduction.fullVideo.bytesLength,
+      length: Episode.ep0_introduction.fullVideo.bytesLength,
       type: "video/mp4",
-      url: introduction.fullVideo.downloadUrl
+      url: Episode.ep0_introduction.fullVideo.downloadUrl
     ),
     guid: String(Current.date().timeIntervalSince1970),
     itunes: RssItem.Itunes(
@@ -362,7 +362,7 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
       episode: 1,
       episodeType: .full,
       explicit: false,
-      image: introduction.itunesImage ?? "",
+      image: Episode.ep0_introduction.itunesImage ?? "",
       subtitle: errorMessage,
       summary: errorMessage,
       season: 1,
@@ -371,10 +371,10 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
     link: url(to: .home),
     media: .init(
       content: .init(
-        length: introduction.fullVideo.bytesLength,
+        length: Episode.ep0_introduction.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: introduction.fullVideo.downloadUrl
+        url: Episode.ep0_introduction.fullVideo.downloadUrl
       ),
       title: "Invalid Feed URL"
     ),

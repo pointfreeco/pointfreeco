@@ -1,34 +1,36 @@
 import Foundation
 
-public let ep4 = Episode(
-  blurb: """
+extension Episode {
+  static let ep4_algebraicDataTypes = Episode(
+    blurb: """
 What does the Swift type system have to do with algebra? A lot! We’ll begin to explore this correspondence \
 and see how it can help us create type-safe data structures that can catch runtime errors at compile time.
 """,
-  codeSampleDirectory: "0004-algebraic-data-types",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 194_777_227,
-    downloadUrl: "https://player.vimeo.com/external/355115428.hd.mp4?s=03abd49a24efede55881a7cb120e5c6b498a5ad6&profile_id=174&download=1",
-    streamingSource: "https://player.vimeo.com/video/355115428"
-  ),
-  id: 4,
-  image: "https://i.vimeocdn.com/video/807849108.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807849108.jpg",
-  length: 2_172,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
-  references: [
-    .makingIllegalStatesUnrepresentable
-  ],
-  sequence: 4,
-  title: "Algebraic Data Types",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0004-algebraic-data-types",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 194_777_227,
+      downloadUrl: "https://player.vimeo.com/external/355115428.hd.mp4?s=03abd49a24efede55881a7cb120e5c6b498a5ad6&profile_id=174&download=1",
+      streamingSource: "https://player.vimeo.com/video/355115428"
+    ),
+    id: 4,
+    image: "https://i.vimeocdn.com/video/807849108.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807849108.jpg",
+    length: 2_172,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
+    references: [
+      .makingIllegalStatesUnrepresentable
+    ],
+    sequence: 4,
+    title: "Algebraic Data Types",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: """
 What algebraic operation does the function type `(A) -> B` correspond to? Try explicitly enumerating
@@ -177,7 +179,7 @@ It’s `Either<Void, Pair<String, Int>>`, which is expected, since multiplicatio
 ),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 18,

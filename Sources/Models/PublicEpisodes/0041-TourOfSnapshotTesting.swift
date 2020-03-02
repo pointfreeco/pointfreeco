@@ -1,41 +1,43 @@
 import Foundation
 
-public let ep41 = Episode(
-  blurb: """
+extension Episode {
+  static let ep41_aTourOfSnapshotTesting = Episode(
+    blurb: """
 Our snapshot testing library is now officially open source! In order to show just how easy it is to integrate the library into any existing code base, we add some snapshot tests to a popular open source library for attributed strings. This gives us the chance to see how easy it is to write all new, domain-specific snapshot strategies from scratch.
 """,
-  codeSampleDirectory: "",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 450728966,
-    downloadUrl: "https://player.vimeo.com/external/349952472.hd.mp4?s=22357478e55b228d9ea0a50c1719e71fae7cb29e&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349952472"
-  ),
-  id: 41,
-  image: "https://i.vimeocdn.com/video/801301043.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801301043.jpg",
-  length: 29*60+16,
-  permission: .free,
-  previousEpisodeInCollection: 40,
-  publishedAt: .init(timeIntervalSince1970: 1545116400),
-  references: [
-    .swiftSnapshotTesting,
-    .bonMot,
-    .protocolOrientedProgrammingWwdc,
-    .iosSnapshotTestCaseGithub,
-    .snapshotTestingBlogPost,
-  ],
-  sequence: 41,
-  title: "A Tour of Snapshot Testing",
-  trailerVideo: .init(
-    bytesLength: 103111511,
-  downloadUrl: "https://player.vimeo.com/external/349952474.hd.mp4?s=7e0f0940da37c67093fcc57c336957d8640b4ee3&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349952474"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 450728966,
+      downloadUrl: "https://player.vimeo.com/external/349952472.hd.mp4?s=22357478e55b228d9ea0a50c1719e71fae7cb29e&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952472"
+    ),
+    id: 41,
+    image: "https://i.vimeocdn.com/video/801301043.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801301043.jpg",
+    length: 29*60+16,
+    permission: .free,
+    previousEpisodeInCollection: 40,
+    publishedAt: .init(timeIntervalSince1970: 1545116400),
+    references: [
+      .swiftSnapshotTesting,
+      .bonMot,
+      .protocolOrientedProgrammingWwdc,
+      .iosSnapshotTestCaseGithub,
+      .snapshotTestingBlogPost,
+    ],
+    sequence: 41,
+    title: "A Tour of Snapshot Testing",
+    trailerVideo: .init(
+      bytesLength: 103111511,
+      downloadUrl: "https://player.vimeo.com/external/349952474.hd.mp4?s=7e0f0940da37c67093fcc57c336957d8640b4ee3&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952474"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   .init(problem: """
 Write an `.html` strategy for snapshotting `NSAttributedString`. You will want to use the
 `data(from:documentAttributes:)` method on `NSAttributedString` with the
@@ -54,7 +56,7 @@ we haven't yet implemented.
 """),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),

@@ -1,30 +1,32 @@
 import Foundation
 
-public let ep1 = Episode(
-  blurb: """
+extension Episode {
+  static let ep1_functions = Episode(
+    blurb: """
 Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
 """,
-  codeSampleDirectory: "0001-functions",
-  exercises: [],
-  fullVideo: .init(
-    bytesLength: 197667168,
-    downloadUrl: "https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348650932"
-  ),
-  id: 1,
-  image: "https://i.vimeocdn.com/video/803401029.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/803401029.jpg",
-  length: 1219,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
-  sequence: 1,
-  title: "Functions",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0001-functions",
+    exercises: [],
+    fullVideo: .init(
+      bytesLength: 197667168,
+      downloadUrl: "https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348650932"
+    ),
+    id: 1,
+    image: "https://i.vimeocdn.com/video/803401029.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/803401029.jpg",
+    length: 1219,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
+    sequence: 1,
+    title: "Functions",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 5,

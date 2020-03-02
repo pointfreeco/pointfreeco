@@ -1,56 +1,58 @@
 
 import Foundation
 
-public let ep49 = Episode(
-  blurb: """
+extension Episode {
+  static let ep49_generativeArt_pt1 = Episode(
+    blurb: """
 Now that we have made randomness both composable _and_ testable, let's have a little fun with it! We are going to explore making some complex generative art that is built from simple, composable units.
 """,
-  codeSampleDirectory: "0049-generative-art-pt1", // TODO
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 334663601,
-    downloadUrl: "https://player.vimeo.com/external/349952492.hd.mp4?s=e693d19bbb328377d8d845a7074769763cf16d9f&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349952492"
-  ),
-  id: 49,
-  image: "https://i.vimeocdn.com/video/801299534.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801299534.jpg",
-  length: 32*60 + 06,
-  permission: .free,
-  previousEpisodeInCollection: 48,
-  publishedAt: .init(timeIntervalSince1970: 1551682800),
-  references: [
-    .randomUnification,
-    Episode.Reference(
-      author: "Wikipedia contributors",
-      blurb: """
+    codeSampleDirectory: "0049-generative-art-pt1",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 334663601,
+      downloadUrl: "https://player.vimeo.com/external/349952492.hd.mp4?s=e693d19bbb328377d8d845a7074769763cf16d9f&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952492"
+    ),
+    id: 49,
+    image: "https://i.vimeocdn.com/video/801299534.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801299534.jpg",
+    length: 32*60 + 06,
+    permission: .free,
+    previousEpisodeInCollection: 48,
+    publishedAt: .init(timeIntervalSince1970: 1551682800),
+    references: [
+      .randomUnification,
+      Episode.Reference(
+        author: "Wikipedia contributors",
+        blurb: """
 The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
 """,
-      link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
-      publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
-      title: "Unknown Pleasures – Artwork and packaging"
-    ),
-    Episode.Reference(
-      author: "Wikipedia contributors",
-      blurb: """
+        link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
+        publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+        title: "Unknown Pleasures – Artwork and packaging"
+      ),
+      Episode.Reference(
+        author: "Wikipedia contributors",
+        blurb: """
 We used "bump functions" in this episode to construct functions that are zero everywhere except in a small region where they smoothly climb to 1 and then plateau. They are useful in mathematics for taking lots of local descriptions of a function and patching them together into a global function.
 """,
-      link: "https://en.wikipedia.org/wiki/Bump_function",
-      publishedAt: referenceDateFormatter.date(from: "2018-04-06"),
-      title: "Bump Function"
-    )
+        link: "https://en.wikipedia.org/wiki/Bump_function",
+        publishedAt: referenceDateFormatter.date(from: "2018-04-06"),
+        title: "Bump Function"
+      )
     ],
-  sequence: 49,
-  title: "Generative Art: Part 1",
-  trailerVideo: .init(
-    bytesLength: 56799598,
-    downloadUrl: "https://player.vimeo.com/external/349952489.hd.mp4?s=698f147ce21fc61179c8476f5c29e1de15e76f47&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349952489"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    sequence: 49,
+    title: "Generative Art: Part 1",
+    trailerVideo: .init(
+      bytesLength: 56799598,
+      downloadUrl: "https://player.vimeo.com/external/349952489.hd.mp4?s=698f147ce21fc61179c8476f5c29e1de15e76f47&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952489"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   .init(
     problem: """
 Create a generator `Gen<UIColor>` of colors. Can this be expressed in terms of multiple `Gen<CGFloat>` generators?
@@ -66,7 +68,7 @@ Change the `bump` function we created in this episode so that it adds a bit of r
 """)
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),

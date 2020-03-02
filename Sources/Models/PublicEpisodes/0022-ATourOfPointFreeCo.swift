@@ -1,39 +1,41 @@
 import Foundation
 
-public let ep22 = Episode(
-  blurb: """
+extension Episode {
+  static let ep22_aTourOfPointFree = Episode(
+    blurb: """
 Join us for a tour of the code base that powers this very site and see what functional programming can look like in a production code base! We'll walk through cloning the repo and getting the site running on your local machine before showing off some of the fun functional programming we do on a daily basis.
 """,
-  codeSampleDirectory: "0022-a-tour-of-point-free",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 325_311_571,
-    downloadUrl: "https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&profile_id=174",
-    streamingSource: "https://player.vimeo.com/video/355115759"
-  ),
-  id: 22,
-  image: "https://i.vimeocdn.com/video/807848603.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807848603.jpg",
-  length: 39*60 + 21,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1531735023),
-  references: [.serverSideSwiftFromScratch, .pointfreeco],
-  sequence: 22,
-  title: "A Tour of Point-Free",
-  trailerVideo: .init(
-    bytesLength: 27_774_800,
-    downloadUrl: "https://player.vimeo.com/external/355115419.hd.mp4?s=8ba4a82f0c043e6dda797a609a9a53f4ab44b057&profile_id=174&download=1",
-    streamingSource: "https://player.vimeo.com/video/355115419"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0022-a-tour-of-point-free",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 325_311_571,
+      downloadUrl: "https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&profile_id=174",
+      streamingSource: "https://player.vimeo.com/video/355115759"
+    ),
+    id: 22,
+    image: "https://i.vimeocdn.com/video/807848603.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807848603.jpg",
+    length: 39*60 + 21,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1531735023),
+    references: [.serverSideSwiftFromScratch, .pointfreeco],
+    sequence: 22,
+    title: "A Tour of Point-Free",
+    trailerVideo: .init(
+      bytesLength: 27_774_800,
+      downloadUrl: "https://player.vimeo.com/external/355115419.hd.mp4?s=8ba4a82f0c043e6dda797a609a9a53f4ab44b057&profile_id=174&download=1",
+      streamingSource: "https://player.vimeo.com/video/355115419"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
 
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 5,

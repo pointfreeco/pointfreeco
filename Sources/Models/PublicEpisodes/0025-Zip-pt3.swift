@@ -1,35 +1,37 @@
 import Foundation
 
-public let ep25 = Episode(
-  blurb: """
+extension Episode {
+  static let ep25_theManyFacesOfZip_pt3 = Episode(
+    blurb: """
 The third, and final, part of our introductory series to `zip` finally answers the question: "What's the point?"
 """,
-  codeSampleDirectory: "0025-zip-pt3",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 501551082,
-    downloadUrl: "https://player.vimeo.com/external/351397230.hd.mp4?s=1d1d877d1bb0e623b2f4d9efe362d96bc5aded7d&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/351397230"
-  ),
-  id: 25,
-  image: "https://i.vimeocdn.com/video/802690688.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/802690688.jpg",
-  length: 24*60 + 21,
-  permission: .free,
-  previousEpisodeInCollection: 24,
-  publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
-  references: [.swiftValidated],
-  sequence: 25,
-  title: "The Many Faces of Zip: Part 3",
-  trailerVideo: .init(
-    bytesLength: 79605908,
-    downloadUrl: "https://player.vimeo.com/external/351175721.hd.mp4?s=0eb3a8708cb5810b33420c87d5f5ebc224aeefb6&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/351175721"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0025-zip-pt3",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 501551082,
+      downloadUrl: "https://player.vimeo.com/external/351397230.hd.mp4?s=1d1d877d1bb0e623b2f4d9efe362d96bc5aded7d&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/351397230"
+    ),
+    id: 25,
+    image: "https://i.vimeocdn.com/video/802690688.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/802690688.jpg",
+    length: 24*60 + 21,
+    permission: .free,
+    previousEpisodeInCollection: 24,
+    publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
+    references: [.swiftValidated],
+    sequence: 25,
+    title: "The Many Faces of Zip: Part 3",
+    trailerVideo: .init(
+      bytesLength: 79605908,
+      downloadUrl: "https://player.vimeo.com/external/351175721.hd.mp4?s=0eb3a8708cb5810b33420c87d5f5ebc224aeefb6&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/351175721"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
 
   .init(problem: """
 In this series of episodes on `zip` we have described zipping types as a kind of way to swap the order of
@@ -69,7 +71,7 @@ Describe what this function semantically means for each of the types.
 
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),

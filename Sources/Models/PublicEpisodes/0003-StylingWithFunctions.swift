@@ -1,30 +1,32 @@
 import Foundation
 
-public let ep3 = Episode(
-  blurb: """
+extension Episode {
+  static let ep3_uikitStylingWithFunctions = Episode(
+    blurb: """
 We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
 """,
-  codeSampleDirectory: "0003-styling-with-functions",
-  exercises: [],
-  fullVideo: .init(
-    bytesLength: 324873341,
-    downloadUrl: "https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348652413"
-  ),
-  id: 3,
-  image: "https://i.vimeocdn.com/video/807678140.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807678140.jpg",
-  length: 1_634,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
-  sequence: 3,
-  title: "UIKit Styling with Functions",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0003-styling-with-functions",
+    exercises: [],
+    fullVideo: .init(
+      bytesLength: 324873341,
+      downloadUrl: "https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348652413"
+    ),
+    id: 3,
+    image: "https://i.vimeocdn.com/video/807678140.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807678140.jpg",
+    length: 1_634,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
+    sequence: 3,
+    title: "UIKit Styling with Functions",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 30,

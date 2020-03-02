@@ -1,41 +1,43 @@
 import Foundation
 
-public let ep81 = Episode(
-  blurb: """
+extension Episode {
+  static let ep81_theCombineFrameworkAndEffects_pt2 = Episode(
+    blurb: """
 Now that we've explored the Combine framework and identified its correspondence with the `Effect` type, let's refactor our architecture to take full advantage of it.
 """,
-  codeSampleDirectory: "0081-combine-and-effects-pt2",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 405330619,
-    downloadUrl: "https://player.vimeo.com/external/371023664.hd.mp4?s=baaf70ec4a937e28e0a8d5d06af582e801986fad&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/371023664"
-  ),
-  id: 81,
-  image: "https://i.vimeocdn.com/video/830940645.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/830940645.jpg",
-  length: 38*60 + 46,
-  permission: .free,
-  previousEpisodeInCollection: 80,
-  publishedAt: Date(timeIntervalSince1970: 1574056800),
-  references: [
-    .combineFramework,
-    .reactiveSwift,
-    .rxSwift,
-    .reactiveStreams,
-    .deferredPublishers,
-  ],
-  sequence: 81,
-  title: "The Combine Framework and Effects: Part 2",
-  trailerVideo: .init(
-    bytesLength: 34771162,
-    downloadUrl: "https://player.vimeo.com/external/371019239.hd.mp4?s=0f4516b366d8a74d9080bf7fe8168048d7261b41&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/371019239"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0081-combine-and-effects-pt2",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 405330619,
+      downloadUrl: "https://player.vimeo.com/external/371023664.hd.mp4?s=baaf70ec4a937e28e0a8d5d06af582e801986fad&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/371023664"
+    ),
+    id: 81,
+    image: "https://i.vimeocdn.com/video/830940645.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/830940645.jpg",
+    length: 38*60 + 46,
+    permission: .free,
+    previousEpisodeInCollection: 80,
+    publishedAt: Date(timeIntervalSince1970: 1574056800),
+    references: [
+      .combineFramework,
+      .reactiveSwift,
+      .rxSwift,
+      .reactiveStreams,
+      .deferredPublishers,
+    ],
+    sequence: 81,
+    title: "The Combine Framework and Effects: Part 2",
+    trailerVideo: .init(
+      bytesLength: 34771162,
+      downloadUrl: "https://player.vimeo.com/external/371019239.hd.mp4?s=0f4516b366d8a74d9080bf7fe8168048d7261b41&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/371019239"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
 We added a `sync` helper to our `Effect` publisher, which takes a block of work that synchronously returns a value and ultimately returned an effect. It was a composition of the `Deferred` and `Just` publishers.
@@ -118,7 +120,7 @@ Pick your framework of choice (or both!) and refactor the composable architectur
   ),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"Introduction"#,
     timestamp: 5,

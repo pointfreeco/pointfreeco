@@ -1,30 +1,32 @@
 import Foundation
 
-public let ep2 = Episode(
-  blurb: """
+extension Episode {
+  static let ep2_sideEffects = Episode(
+    blurb: """
 Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
 """,
-  codeSampleDirectory: "0002-side-effects",
-  exercises: [],
-  fullVideo: .init(
-    bytesLength: 238_376_744,
-    downloadUrl: "https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&profile_id=174&download=1",
-    streamingSource: "https://player.vimeo.com/video/355115445"
-  ),
-  id: 2,
-  image: "https://i.vimeocdn.com/video/807678088.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807678088.jpg",
-  length: 2676,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
-  sequence: 2,
-  title: "Side Effects",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0002-side-effects",
+    exercises: [],
+    fullVideo: .init(
+      bytesLength: 238_376_744,
+      downloadUrl: "https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&profile_id=174&download=1",
+      streamingSource: "https://player.vimeo.com/video/355115445"
+    ),
+    id: 2,
+    image: "https://i.vimeocdn.com/video/807678088.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807678088.jpg",
+    length: 2676,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
+    sequence: 2,
+    title: "Side Effects",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 5,

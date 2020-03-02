@@ -1,37 +1,39 @@
 import Foundation
 
-public let ep55 = Episode(
-  blurb: """
+extension Episode {
+  static let ep55_swiftSyntaxCommandLineTool = Episode(
+    blurb: """
 Today we finally extract our enum property code generator to a Swift Package Manager library and CLI tool. We'll also do some next-level snapshot testing: not only will we snapshot-test our generated code, but we'll leverage the Swift compiler to verify that our snapshot builds.
 """,
-  codeSampleDirectory: "0055-swift-syntax-command-line-tool",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 456133747,
-    downloadUrl: "https://player.vimeo.com/external/349952509.hd.mp4?s=945bc730c1ec23bd83435ee52953d0ee3478d516&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349952509"
-  ),
-  id: 55,
-  image: "https://i.vimeocdn.com/video/801298340.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801298340.jpg",
-  length: 35*60 + 16,
-  permission: .free,
-  previousEpisodeInCollection: 54,
-  publishedAt: .init(timeIntervalSince1970: 1555912800),
-  references: [],
-  sequence: 55,
-  title: "Swift Syntax Command Line Tool",
-  trailerVideo: .init(
-    bytesLength: 35807367,
-    downloadUrl: "https://player.vimeo.com/external/349952508.hd.mp4?s=a836ebc2e297565c9daaef4e97181ecd90773599&profile_id=175&download=1",
-  streamingSource: "https://player.vimeo.com/video/349952508"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0055-swift-syntax-command-line-tool",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 456133747,
+      downloadUrl: "https://player.vimeo.com/external/349952509.hd.mp4?s=945bc730c1ec23bd83435ee52953d0ee3478d516&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952509"
+    ),
+    id: 55,
+    image: "https://i.vimeocdn.com/video/801298340.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801298340.jpg",
+    length: 35*60 + 16,
+    permission: .free,
+    previousEpisodeInCollection: 54,
+    publishedAt: .init(timeIntervalSince1970: 1555912800),
+    references: [],
+    sequence: 55,
+    title: "Swift Syntax Command Line Tool",
+    trailerVideo: .init(
+      bytesLength: 35807367,
+      downloadUrl: "https://player.vimeo.com/external/349952508.hd.mp4?s=a836ebc2e297565c9daaef4e97181ecd90773599&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349952508"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = []
+private let _exercises: [Episode.Exercise] = []
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Previously",
     timestamp: (0*60 + 05),
