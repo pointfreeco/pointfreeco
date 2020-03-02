@@ -15,7 +15,7 @@ public struct Episode {
   public var references: [Reference] = []
   public var sequence: Sequence
   public var title: String
-  public var trailerVideo: Video?
+  public var trailerVideo: Video
   public var transcriptBlocks: [TranscriptBlock]
 
   public init(
@@ -32,7 +32,7 @@ public struct Episode {
     references: [Reference] = [],
     sequence: Sequence,
     title: String,
-    trailerVideo: Video?,
+    trailerVideo: Video,
     transcriptBlocks: [TranscriptBlock]
   ) {
     self.blurb = blurb

@@ -8,7 +8,7 @@ import Styleguide
 public func videoView(forEpisode episode: Episode, isEpisodeViewable: Bool) -> Node {
   let episodeSource = isEpisodeViewable
     ? episode.fullVideo.streamingSource
-    : episode.trailerVideo?.streamingSource ?? ""
+    : episode.trailerVideo.streamingSource
 
   return .div(
     attributes: [
