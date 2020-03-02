@@ -23,7 +23,11 @@ operation to other structures and derive new, useful code!
     references: [.introduceSequenceCompactMap],
     sequence: 10,
     title: "A Tale of Two Flat-Maps",
-    trailerVideo: nil,
+    trailerVideo: .init(
+      bytesLength: 25231039,
+      downloadUrl: "https://player.vimeo.com/external/354214922.hd.mp4?s=6f5b0a253609ca99df375ff0526ab26cd2e30ba3&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/354214922"
+    ),
     transcriptBlocks: _transcriptBlocks
   )
 }

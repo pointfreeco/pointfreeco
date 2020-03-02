@@ -9,7 +9,7 @@ and see how it can help us create type-safe data structures that can catch runti
     codeSampleDirectory: "0004-algebraic-data-types",
     exercises: _exercises,
     fullVideo: .init(
-      bytesLength: 194_777_227,
+      bytesLength: 194777227,
       downloadUrl: "https://player.vimeo.com/external/355115428.hd.mp4?s=03abd49a24efede55881a7cb120e5c6b498a5ad6&profile_id=174&download=1",
       streamingSource: "https://player.vimeo.com/video/355115428"
     ),
@@ -18,13 +18,17 @@ and see how it can help us create type-safe data structures that can catch runti
     length: 2_172,
     permission: .free,
     previousEpisodeInCollection: nil,
-    publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
+    publishedAt: Date(timeIntervalSince1970: 1519045951),
     references: [
       .makingIllegalStatesUnrepresentable
     ],
     sequence: 4,
     title: "Algebraic Data Types",
-    trailerVideo: nil,
+    trailerVideo: .init(
+      bytesLength: 37267895,
+      downloadUrl: "https://player.vimeo.com/external/354215001.hd.mp4?s=6ac370d37126a11c69c2c69bc0ab05f9cb47c47b&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/354215001"
+    ),
     transcriptBlocks: _transcriptBlocks
   )
 }

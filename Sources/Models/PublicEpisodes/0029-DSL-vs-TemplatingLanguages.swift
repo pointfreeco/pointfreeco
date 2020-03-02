@@ -24,7 +24,11 @@ previously hidden.
     references: [.openSourcingSwiftHtml],
     sequence: 29,
     title: "DSLs vs. Templating Languages",
-    trailerVideo: nil,
+    trailerVideo: .init(
+      bytesLength: 47720856,
+      downloadUrl: "https://player.vimeo.com/external/351396562.hd.mp4?s=ab321eebc13700128d0b9659b45dc8f8fc9fe3f2&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/351396562"
+    ),
     transcriptBlocks: _transcriptBlocks
   )
 }
