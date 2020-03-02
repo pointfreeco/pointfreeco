@@ -14,7 +14,6 @@ Today we finally extract our enum property code generator to a Swift Package Man
     ),
     id: 55,
     image: "https://i.vimeocdn.com/video/801298340.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/801298340.jpg",
     length: 35*60 + 16,
     permission: .free,
     previousEpisodeInCollection: 54,

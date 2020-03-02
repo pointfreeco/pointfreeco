@@ -15,7 +15,6 @@ Take a moment to hear from the hosts about what to expect from this new series.
     ),
     id: 0,
     image: "https://i.vimeocdn.com/video/807678036.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/807678036.jpg",
     length: 179,
     permission: .free,
     previousEpisodeInCollection: nil,

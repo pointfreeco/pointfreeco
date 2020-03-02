@@ -14,7 +14,6 @@ Let's put some finishing touches to our random artwork generator, incorporate it
     ),
     id: 50,
     image: "https://i.vimeocdn.com/video/801299326.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/801299326.jpg",
     length: 27*60 + 22,
     permission: .free,
     previousEpisodeInCollection: 49,
