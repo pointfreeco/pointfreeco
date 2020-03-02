@@ -1,44 +1,46 @@
 import Foundation
 
-public let ep80 = Episode(
-  blurb: """
+extension Episode {
+  static let ep80_theCombineFrameworkAndEffects_pt1 = Episode(
+    blurb: """
 Let's explore the Combine framework and its correspondence with the Effect type. Combine introduces several concepts that overlap with how we model effects in our composable architecture. Let's get an understanding of how they work together and compare them to our humble Effect type.
 """,
-  codeSampleDirectory: "0080-combine-and-effects-pt1",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 269920178,
-    downloadUrl: "https://player.vimeo.com/external/371024746.hd.mp4?s=4599ea8b7854131c6c089f748f9b553bc783860b&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/371024746"
-  ),
-  id: 80,
-  image: "https://i.vimeocdn.com/video/829976257.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/829976257.jpg",
-  length: 25*60 + 10,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1573452000),
-  references: [
-    .combineFramework,
-    .reactiveSwift,
-    .rxSwift,
-    .reactiveStreams,
-    .deferredPublishers,
-    .lazyEvaluation,
-    .whyFunctionalProgrammingMatters,
-    .promisesAreNotNeutralEnough,
-  ],
-  sequence: 80,
-  title: "The Combine Framework and Effects: Part 1",
-  trailerVideo: .init(
-    bytesLength: 58885115,
-    downloadUrl: "https://player.vimeo.com/external/371024665.hd.mp4?s=d094cbf784855ceb5442662bc2b1697304f5b3e6&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/371024665"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0080-combine-and-effects-pt1",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 269920178,
+      downloadUrl: "https://player.vimeo.com/external/371024746.hd.mp4?s=4599ea8b7854131c6c089f748f9b553bc783860b&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/371024746"
+    ),
+    id: 80,
+    image: "https://i.vimeocdn.com/video/829976257.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/829976257.jpg",
+    length: 25*60 + 10,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1573452000),
+    references: [
+      .combineFramework,
+      .reactiveSwift,
+      .rxSwift,
+      .reactiveStreams,
+      .deferredPublishers,
+      .lazyEvaluation,
+      .whyFunctionalProgrammingMatters,
+      .promisesAreNotNeutralEnough,
+    ],
+    sequence: 80,
+    title: "The Combine Framework and Effects: Part 1",
+    trailerVideo: .init(
+      bytesLength: 58885115,
+      downloadUrl: "https://player.vimeo.com/external/371024665.hd.mp4?s=d094cbf784855ceb5442662bc2b1697304f5b3e6&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/371024665"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
 The current version of `Effect` is "lazy": it is only evaluated the moment the `run` functions is called. Define an "eager" version of the `Effect` type that is evaluated the moment it is constructed.
@@ -122,7 +124,7 @@ class Effect<A> {
   )
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"Introduction"#,
     timestamp: 5,
