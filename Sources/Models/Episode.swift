@@ -5,7 +5,7 @@ public struct Episode {
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
-  public var _fullVideo: Video?
+  private var _fullVideo: Video?
   public var id: Id
   public var image: String
   public var length: Int
@@ -16,7 +16,7 @@ public struct Episode {
   public var sequence: Sequence
   public var title: String
   public var trailerVideo: Video
-  public var transcriptBlocks: [TranscriptBlock]
+  private var _transcriptBlocks: [TranscriptBlock]?
 
   public init(
     blurb: String,
@@ -33,7 +33,7 @@ public struct Episode {
     sequence: Sequence,
     title: String,
     trailerVideo: Video,
-    transcriptBlocks: [TranscriptBlock]
+    transcriptBlocks: [TranscriptBlock]? = nil
   ) {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
@@ -49,17 +49,32 @@ public struct Episode {
     self.sequence = sequence
     self.title = title
     self.trailerVideo = trailerVideo
-    self.transcriptBlocks = transcriptBlocks
+    self._transcriptBlocks = transcriptBlocks
   }
 
   public var fullVideo: Video {
     #if OSS
     return self._fullVideo ?? self.trailerVideo
     #else
-    let video = self._fullVideo ?? Video.allPrivateVideos[self.id]
+    let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
     assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
     return video!
     #endif
+  }
+
+  public var transcriptBlocks: [TranscriptBlock] {
+    get {
+      #if OSS
+      return self._transcriptBlocks ?? []
+      #else
+      let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
+      assert(transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
+      return transcripts!
+      #endif
+    }
+    set {
+      self._transcriptBlocks = newValue
+    }
   }
 
   public var slug: String {

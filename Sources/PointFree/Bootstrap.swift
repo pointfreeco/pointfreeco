@@ -91,20 +91,13 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
 }
 
 private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
-  #if OSS
-  let allEpisodes = allPublicEpisodes
-  #else
-  let allEpisodes = allPublicEpisodes + allPrivateEpisodes
-  #endif
-
-  // Ensure every full video is properly set up...
-  allEpisodes.forEach { _ = $0.fullVideo }
-  assert(allEpisodes.count == Set(allEpisodes.map(^\.id)).count)
-  assert(allEpisodes.count == Set(allEpisodes.map(^\.sequence)).count)
+  Episode.bootstrapPrivateEpisodes()
+  assert(Episode.all.count == Set(Episode.all.map(^\.id)).count)
+  assert(Episode.all.count == Set(Episode.all.map(^\.sequence)).count)
 
   Current.episodes = {
     let now = Current.date()
-    return allEpisodes
+    return Episode.all
       .filter {
         Current.envVars.appEnv == .production
           ? $0.publishedAt <= now
