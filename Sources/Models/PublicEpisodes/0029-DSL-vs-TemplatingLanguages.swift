@@ -1,34 +1,36 @@
 import Foundation
 
-public let ep29 = Episode(
-  blurb: """
+extension Episode {
+  static let ep29_dslsVsTemplatingLanguages = Episode(
+    blurb: """
 Templating languages are the most common way to render HTML in web frameworks, but we don't think they \
 are the best way. We compare templating languages to the DSL we previously built, and show that \
 the DSL fixes many problems that templates have, while also revealing amazing compositions that were \
 previously hidden.
 """,
-  codeSampleDirectory: "0029-dsls-vs-templating-languages",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 476109800,
-    downloadUrl: "https://player.vimeo.com/external/351397245.hd.mp4?s=70b609ec1d7733bcf560508e0b02606a2f3948d2&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/351397245"
-  ),
-  id: 29,
-  image: "https://i.vimeocdn.com/video/803400556.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/803400556.jpg",
-  length: 33*60 + 17,
-  permission: .free,
-  previousEpisodeInCollection: 28,
-  publishedAt: Date(timeIntervalSince1970: 1536559023),
-  references: [.openSourcingSwiftHtml],
-  sequence: 29,
-  title: "DSLs vs. Templating Languages",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0029-dsls-vs-templating-languages",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 476109800,
+      downloadUrl: "https://player.vimeo.com/external/351397245.hd.mp4?s=70b609ec1d7733bcf560508e0b02606a2f3948d2&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/351397245"
+    ),
+    id: 29,
+    image: "https://i.vimeocdn.com/video/803400556.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/803400556.jpg",
+    length: 33*60 + 17,
+    permission: .free,
+    previousEpisodeInCollection: 28,
+    publishedAt: Date(timeIntervalSince1970: 1536559023),
+    references: [.openSourcingSwiftHtml],
+    sequence: 29,
+    title: "DSLs vs. Templating Languages",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   .init(problem: """
 In this episode we expressed a lot of HTML “views” as just plain functions from some data type into the
 `Node` type. In past episodes we saw that functions `(A) -> B` have both a `map` and `contramap` defined, the
@@ -79,7 +81,7 @@ types `ChildOf<Ol>`, `ChildOf<Ul>` and `ContainsLi` to accomplish this.
 
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),

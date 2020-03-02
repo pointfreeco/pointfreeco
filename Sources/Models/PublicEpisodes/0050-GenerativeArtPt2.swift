@@ -1,50 +1,52 @@
 import Foundation
 
-public let ep50 = Episode(
-  blurb: """
+extension Episode {
+  static let ep50_generativeArt_pt2 = Episode(
+    blurb: """
 Let's put some finishing touches to our random artwork generator, incorporate it into an app, and write some snapshot tests to help support us in adding a fun easter egg.
 """,
-  codeSampleDirectory: "0050-generative-art-pt2",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 290467801,
-    downloadUrl: "https://player.vimeo.com/external/348480337.hd.mp4?s=8ccbc79a092f485b89ab5bee225ca2d6f324742f&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348480337"
-  ),
-  id: 50,
-  image: "https://i.vimeocdn.com/video/801299326.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801299326.jpg",
-  length: 27*60 + 22,
-  permission: .free,
-  previousEpisodeInCollection: 49,
-  publishedAt: .init(timeIntervalSince1970: 1552284000),
-  references: [
-    .randomUnification,
-    Episode.Reference(
-      author: "Wikipedia contributors",
-      blurb: """
+    codeSampleDirectory: "0050-generative-art-pt2",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 290467801,
+      downloadUrl: "https://player.vimeo.com/external/348480337.hd.mp4?s=8ccbc79a092f485b89ab5bee225ca2d6f324742f&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348480337"
+    ),
+    id: 50,
+    image: "https://i.vimeocdn.com/video/801299326.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801299326.jpg",
+    length: 27*60 + 22,
+    permission: .free,
+    previousEpisodeInCollection: 49,
+    publishedAt: .init(timeIntervalSince1970: 1552284000),
+    references: [
+      .randomUnification,
+      Episode.Reference(
+        author: "Wikipedia contributors",
+        blurb: """
 The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
 """,
-      link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
-      publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
-      title: "Unknown Pleasures – Artwork and packaging"
-    ),
+        link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
+        publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+        title: "Unknown Pleasures – Artwork and packaging"
+      ),
     ],
-  sequence: 50,
-  title: "Generative Art: Part 2",
-  trailerVideo: .init(
-    bytesLength: 29107528,
-    downloadUrl: "https://player.vimeo.com/external/348480265.hd.mp4?s=29454a8e7f80c9b26a1cb191662b9d5f8dc16483&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348480265"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    sequence: 50,
+    title: "Generative Art: Part 2",
+    trailerVideo: .init(
+      bytesLength: 29107528,
+      downloadUrl: "https://player.vimeo.com/external/348480265.hd.mp4?s=29454a8e7f80c9b26a1cb191662b9d5f8dc16483&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348480265"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   // TODO
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Recap",
     timestamp: (0*60 + 05),

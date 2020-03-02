@@ -1,38 +1,40 @@
 import Foundation
 
-public let ep66 = Episode(
-  blurb: """
+extension Episode {
+  static let ep66_swiftuiAndStateManagement_pt2 = Episode(
+    blurb: """
 This week we finish up our moderately complex SwiftUI application by adding more screens, more state, and even sprinkle in a side effect so that we can finally ask: "what's the point!?"
 """,
-  codeSampleDirectory: "0066-swiftui-and-state-management-pt2",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 199193552,
-    downloadUrl: "https://player.vimeo.com/external/348431195.hd.mp4?s=d5927c00bec77533335c9f8525c5f24900a9715b&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348431195"
-  ),
-  id: 66,
-  image: "https://i.vimeocdn.com/video/799121279.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/799121279.jpg",
-  length: 24*60 + 26,
-  permission: .free,
-  previousEpisodeInCollection: 65,
-  publishedAt: .init(timeIntervalSince1970: 1563775200),
-  references: [
-    .swiftUiTutorials,
-    .insideSwiftUIAboutState
-  ],
-  sequence: 66,
-  title: "SwiftUI and State Management: Part 2",
-  trailerVideo: .init(
-    bytesLength: 19831912,
-    downloadUrl: "https://player.vimeo.com/external/348469619.hd.mp4?s=27cdcef7c5042120a302ee9e80aa2d547ae8aa60&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/348469619"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0066-swiftui-and-state-management-pt2",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 199193552,
+      downloadUrl: "https://player.vimeo.com/external/348431195.hd.mp4?s=d5927c00bec77533335c9f8525c5f24900a9715b&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348431195"
+    ),
+    id: 66,
+    image: "https://i.vimeocdn.com/video/799121279.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/799121279.jpg",
+    length: 24*60 + 26,
+    permission: .free,
+    previousEpisodeInCollection: 65,
+    publishedAt: .init(timeIntervalSince1970: 1563775200),
+    references: [
+      .swiftUiTutorials,
+      .insideSwiftUIAboutState
+    ],
+    sequence: 66,
+    title: "SwiftUI and State Management: Part 2",
+    trailerVideo: .init(
+      bytesLength: 19831912,
+      downloadUrl: "https://player.vimeo.com/external/348469619.hd.mp4?s=27cdcef7c5042120a302ee9e80aa2d547ae8aa60&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/348469619"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: """
 SwiftUI provides another state management solution in the form of an [`@EnvironmentObject`](https://developer.apple.com/documentation/swiftui/environmentobject) property wrapper that, like `@ObjectBinding`, wraps a `BindableObject`, but rather than having to pass state via the view's initializer, you must instead inject the object using the `environmentObject` method on the root view (and on views that are presented modally or via presentation).
@@ -42,7 +44,7 @@ Update the playground to use `@EnvironmentObject` instead of `@ObjectBinding`. W
   ),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
 This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
