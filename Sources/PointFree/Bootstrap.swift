@@ -96,8 +96,12 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
   #else
   let allEpisodes = allPublicEpisodes + allPrivateEpisodes
   #endif
+
+  // Ensure every full video is properly set up...
+  allEpisodes.forEach { _ = $0.fullVideo }
   assert(allEpisodes.count == Set(allEpisodes.map(^\.id)).count)
   assert(allEpisodes.count == Set(allEpisodes.map(^\.sequence)).count)
+
   Current.episodes = {
     let now = Current.date()
     return allEpisodes
