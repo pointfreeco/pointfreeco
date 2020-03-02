@@ -206,7 +206,7 @@ public struct Episode {
     }
   }
   
-  public struct Video: Codable{
+  public struct Video: Codable {
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
     public var downloadUrl: String

@@ -16,13 +16,13 @@ class HomeTests: TestCase {
     super.setUp()
 //    record = true
 
-    var e1 = ep10
+    var e1 = Episode.ep10_aTaleOfTwoFlatMaps
     e1.permission = .subscriberOnly
     e1.references = [.mock]
-    let e2 = ep2
-    var e3 = ep1
+    let e2 = Episode.ep2_sideEffects
+    var e3 = Episode.ep1_functions
     e3.permission = .subscriberOnly
-    let e4 = introduction
+    let e4 = Episode.ep0_introduction
 
     Current.episodes = unzurry(
       [e1, e2, e3, e4]

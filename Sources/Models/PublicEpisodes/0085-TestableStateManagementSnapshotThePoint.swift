@@ -1,39 +1,41 @@
 import Foundation
 
-public let ep85 = Episode(
-  blurb: """
+extension Episode {
+  static let ep85_testableStateManagement_thePoint = Episode(
+    blurb: """
 We've made testing in our architecture a joy! We can test deep aspects of our application with minimal ceremony, but it took us a whole 18 episodes to get here! So this week we ask: what's the point!? Can we write these kinds of tests in vanilla SwiftUI?
 """,
-  codeSampleDirectory: "0085-testable-state-management-the-point", // todo
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 325896989,
-    downloadUrl: "https://player.vimeo.com/external/378096729.hd.mp4?s=c9456690590d5fb0ba42a8aec86af5101c0b1213&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/378096729"
-  ),
-  id: 85,
-  image: "https://i.vimeocdn.com/video/837834979.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/837834979.jpg",
-  length: 33*60 + 35,
-  permission: .free,
-  previousEpisodeInCollection: 84,
-  publishedAt: Date(timeIntervalSince1970: 1576476000),
-  references: [
-    .elmHomepage,
-    .reduxHomepage,
-    .composableReducers,
-  ],
-  sequence: 85,
-  title: "Testable State Management: The Point",
-  trailerVideo: .init(
-    bytesLength: 34340125,
-    downloadUrl: "https://player.vimeo.com/external/378096707.hd.mp4?s=b6487b04dfa5d755df58b3f5226854ad852a1144&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/378096707"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0085-testable-state-management-the-point",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 325896989,
+      downloadUrl: "https://player.vimeo.com/external/378096729.hd.mp4?s=c9456690590d5fb0ba42a8aec86af5101c0b1213&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/378096729"
+    ),
+    id: 85,
+    image: "https://i.vimeocdn.com/video/837834979.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/837834979.jpg",
+    length: 33*60 + 35,
+    permission: .free,
+    previousEpisodeInCollection: 84,
+    publishedAt: Date(timeIntervalSince1970: 1576476000),
+    references: [
+      .elmHomepage,
+      .reduxHomepage,
+      .composableReducers,
+    ],
+    sequence: 85,
+    title: "Testable State Management: The Point",
+    trailerVideo: .init(
+      bytesLength: 34340125,
+      downloadUrl: "https://player.vimeo.com/external/378096707.hd.mp4?s=b6487b04dfa5d755df58b3f5226854ad852a1144&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/378096707"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
 Add tests for VanillaPrimeTime's `FavoritePrimesView`, starting with the logic around deleting favorite primes.
@@ -81,7 +83,7 @@ While `saveFavoritePrimes` and `loadFavoritePrimes` have been extracted to metho
   ),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"Introduction"#,
     timestamp: 5,

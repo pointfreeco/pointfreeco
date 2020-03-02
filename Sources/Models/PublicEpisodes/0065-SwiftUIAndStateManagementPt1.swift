@@ -1,38 +1,40 @@
 import Foundation
 
-public let ep65 = Episode(
-  blurb: """
+extension Episode {
+  static let ep65_swiftuiAndStateManagement_pt1 = Episode(
+    blurb: """
 Let's begin exploring application architecture by understanding what are the common problems we encounter when trying to build large, complex applications. We will build an app in SwiftUI to see how Apple's new framework approaches solving these problems.
 """,
-  codeSampleDirectory: "0065-swiftui-and-state-management-pt1",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 241590052,
-    downloadUrl: "https://player.vimeo.com/external/349951720.hd.mp4?s=2e2fde11175184a755a146b9df7377c47d2b85d7&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349951720"
-  ),
-  id: 65,
-  image: "https://i.vimeocdn.com/video/801297149.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801297149.jpg",
-  length: 26*60 + 45,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: .init(timeIntervalSince1970: 1563170400),
-  references: [
-    .swiftUiTutorials,
-    .insideSwiftUIAboutState
-  ],
-  sequence: 65,
-  title: "SwiftUI and State Management: Part 1",
-  trailerVideo: .init(
-    bytesLength: 46867087,
-    downloadUrl: "https://player.vimeo.com/external/349951716.hd.mp4?s=12b2cd19e65c55b2beb83491f89e0ca4ffa0d7e2&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349951716"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0065-swiftui-and-state-management-pt1",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 241590052,
+      downloadUrl: "https://player.vimeo.com/external/349951720.hd.mp4?s=2e2fde11175184a755a146b9df7377c47d2b85d7&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349951720"
+    ),
+    id: 65,
+    image: "https://i.vimeocdn.com/video/801297149.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801297149.jpg",
+    length: 26*60 + 45,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: .init(timeIntervalSince1970: 1563170400),
+    references: [
+      .swiftUiTutorials,
+      .insideSwiftUIAboutState
+    ],
+    sequence: 65,
+    title: "SwiftUI and State Management: Part 1",
+    trailerVideo: .init(
+      bytesLength: 46867087,
+      downloadUrl: "https://player.vimeo.com/external/349951716.hd.mp4?s=12b2cd19e65c55b2beb83491f89e0ca4ffa0d7e2&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349951716"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   .init(problem: """
 Let's make the state even _more_ persistent by saving the state whenever a change is made and loading the state when the app launches. This can be done in a few steps:
 
@@ -65,7 +67,7 @@ These problems can be fixed by creating a generic class `Store<A>` that wraps ac
 """)
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
 This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).

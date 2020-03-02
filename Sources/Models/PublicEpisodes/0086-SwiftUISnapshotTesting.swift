@@ -1,45 +1,47 @@
 import Foundation
 
-public let ep86 = Episode(
-  blurb: """
+extension Episode {
+  static let ep86_swiftUiSnapshotTesting = Episode(
+    blurb: """
 In this week's free holiday episode we show what it looks like to snapshot test a SwiftUI application in our architecture and compare this style of integration testing against XCTest's UI testing tools.
 """,
-  codeSampleDirectory: "0086-swiftui-snapshot-testing",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 367021495,
-    downloadUrl: "https://player.vimeo.com/external/379179506.hd.mp4?s=d4f3ec00986d6cddd05464f3774d683a2a2e6827&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/379179506"
-  ),
-  id: 86,
-  image: "https://i.vimeocdn.com/video/839241671.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/839241671.jpg",
-  length: 34*60 + 13,
-  permission: .free,
-  previousEpisodeInCollection: 85,
-  publishedAt: Date(timeIntervalSince1970: 1577080800),
-  references: [
-    .testingAndDeclarativeUIs,
-    .swiftSnapshotTesting,
-    .snapshotTestingBlogPost,
-    .elmHomepage,
-    .reduxHomepage,
-    .composableReducers,
-  ],
-  sequence: 86,
-  title: "SwiftUI Snapshot Testing",
-  trailerVideo: .init(
-    bytesLength: 14178936,
-    downloadUrl: "https://player.vimeo.com/external/379179491.hd.mp4?s=952c3ee543e8362264a50b109045c30c3ea1fea3&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/379179491"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0086-swiftui-snapshot-testing",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 367021495,
+      downloadUrl: "https://player.vimeo.com/external/379179506.hd.mp4?s=d4f3ec00986d6cddd05464f3774d683a2a2e6827&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/379179506"
+    ),
+    id: 86,
+    image: "https://i.vimeocdn.com/video/839241671.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/839241671.jpg",
+    length: 34*60 + 13,
+    permission: .free,
+    previousEpisodeInCollection: 85,
+    publishedAt: Date(timeIntervalSince1970: 1577080800),
+    references: [
+      .testingAndDeclarativeUIs,
+      .swiftSnapshotTesting,
+      .snapshotTestingBlogPost,
+      .elmHomepage,
+      .reduxHomepage,
+      .composableReducers,
+    ],
+    sequence: 86,
+    title: "SwiftUI Snapshot Testing",
+    trailerVideo: .init(
+      bytesLength: 14178936,
+      downloadUrl: "https://player.vimeo.com/external/379179491.hd.mp4?s=952c3ee543e8362264a50b109045c30c3ea1fea3&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/379179491"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"Introduction"#,
     timestamp: 5,

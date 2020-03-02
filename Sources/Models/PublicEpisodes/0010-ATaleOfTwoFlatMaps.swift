@@ -1,33 +1,35 @@
 import Foundation
 
-public let ep10 = Episode(
-  blurb: """
+extension Episode {
+  static let ep10_aTaleOfTwoFlatMaps = Episode(
+    blurb: """
 Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from \
 the others? We'll explore this and how understanding that difference helps us explore generalizations of the \
 operation to other structures and derive new, useful code!
 """,
-  codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 164582242,
-    downloadUrl: "https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/354238926"
-  ),
-  id: 10,
-  image: "https://i.vimeocdn.com/video/807678771.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807678771.jpg",
-  length: 25*60+4,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
-  references: [.introduceSequenceCompactMap],
-  sequence: 10,
-  title: "A Tale of Two Flat-Maps",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 164582242,
+      downloadUrl: "https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/354238926"
+    ),
+    id: 10,
+    image: "https://i.vimeocdn.com/video/807678771.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807678771.jpg",
+    length: 25*60+4,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
+    references: [.introduceSequenceCompactMap],
+    sequence: 10,
+    title: "A Tale of Two Flat-Maps",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(problem:
 """
 Define `filtered` as a function from `[A?]` to `[A]`.
@@ -58,7 +60,7 @@ Is it possible to define `partitionMap` on `Either`?
 """),
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 5,

@@ -1,31 +1,33 @@
 import Foundation
 
-public let introduction = Episode(
-  blurb: """
+extension Episode {
+  public static let ep0_introduction = Episode(
+    blurb: """
 Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. \
 Take a moment to hear from the hosts about what to expect from this new series.
 """,
-  codeSampleDirectory: "",
-  exercises: [],
-  fullVideo: .init(
-    bytesLength: 90533615,
-    downloadUrl: "https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/354215017"
-  ),
-  id: 0,
-  image: "https://i.vimeocdn.com/video/807678036.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/807678036.jpg",
-  length: 179,
-  permission: .free,
-  previousEpisodeInCollection: nil,
-  publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
-  sequence: 0,
-  title: "We launched!",
-  trailerVideo: nil,
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "",
+    exercises: [],
+    fullVideo: .init(
+      bytesLength: 90533615,
+      downloadUrl: "https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/354215017"
+    ),
+    id: 0,
+    image: "https://i.vimeocdn.com/video/807678036.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/807678036.jpg",
+    length: 179,
+    permission: .free,
+    previousEpisodeInCollection: nil,
+    publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
+    sequence: 0,
+    title: "We launched!",
+    trailerVideo: nil,
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "What is Point-Free?",
     timestamp: 0,

@@ -1,42 +1,44 @@
 import Foundation
 
-public let ep67 = Episode(
-  blurb: """
+extension Episode {
+  static let ep67_swiftuiAndStateManagement_pt3 = Episode(
+    blurb: """
 With our moderately complex SwiftUI application complete we can finally ask ourselves: "what's the point!?" What does SwiftUI have to say about app architecture? What questions are left unanswered? What can we do about it?
 """,
-  codeSampleDirectory: "0067-swiftui-and-state-management-pt3",
-  exercises: exercises,
-  fullVideo: .init(
-    bytesLength: 353885387,
-    downloadUrl: "https://player.vimeo.com/external/349951722.hd.mp4?s=31d3216df94cb67613bf2e34b4d229ed90bc5875&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349951722"
-  ),
-  id: 67,
-  image: "https://i.vimeocdn.com/video/801296903.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801296903.jpg",
-  length: 27 * 60 + 2,
-  permission: .free,
-  previousEpisodeInCollection: 66,
-  publishedAt: .init(timeIntervalSince1970: 1564380000),
-  references: [
-    .swiftUiTutorials,
-    .insideSwiftUIAboutState
-  ],
-  sequence: 67,
-  title: "SwiftUI and State Management: Part 3",
-  trailerVideo: .init(
-    bytesLength: 24833339,
-    downloadUrl: "https://player.vimeo.com/external/349951622.hd.mp4?s=0db48a857039fc8d9da71cac13c8c1d48be96345&profile_id=175&download=1",
-    streamingSource: "https://player.vimeo.com/video/349951622"
-  ),
-  transcriptBlocks: transcriptBlocks
-)
+    codeSampleDirectory: "0067-swiftui-and-state-management-pt3",
+    exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 353885387,
+      downloadUrl: "https://player.vimeo.com/external/349951722.hd.mp4?s=31d3216df94cb67613bf2e34b4d229ed90bc5875&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349951722"
+    ),
+    id: 67,
+    image: "https://i.vimeocdn.com/video/801296903.jpg",
+    itunesImage: "https://i.vimeocdn.com/video/801296903.jpg",
+    length: 27 * 60 + 2,
+    permission: .free,
+    previousEpisodeInCollection: 66,
+    publishedAt: .init(timeIntervalSince1970: 1564380000),
+    references: [
+      .swiftUiTutorials,
+      .insideSwiftUIAboutState
+    ],
+    sequence: 67,
+    title: "SwiftUI and State Management: Part 3",
+    trailerVideo: .init(
+      bytesLength: 24833339,
+      downloadUrl: "https://player.vimeo.com/external/349951622.hd.mp4?s=0db48a857039fc8d9da71cac13c8c1d48be96345&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/349951622"
+    ),
+    transcriptBlocks: _transcriptBlocks
+  )
+}
 
-private let exercises: [Episode.Exercise] = [
+private let _exercises: [Episode.Exercise] = [
   // todo
 ]
 
-private let transcriptBlocks: [Episode.TranscriptBlock] = [
+private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
 This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
