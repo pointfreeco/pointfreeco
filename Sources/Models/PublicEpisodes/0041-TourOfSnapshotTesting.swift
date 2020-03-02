@@ -14,7 +14,6 @@ Our snapshot testing library is now officially open source! In order to show jus
     ),
     id: 41,
     image: "https://i.vimeocdn.com/video/801301043.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/801301043.jpg",
     length: 29*60+16,
     permission: .free,
     previousEpisodeInCollection: 40,

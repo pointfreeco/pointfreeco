@@ -14,7 +14,6 @@ Join us for a tour of the code base that powers this very site and see what func
     ),
     id: 22,
     image: "https://i.vimeocdn.com/video/807848603.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/807848603.jpg",
     length: 39*60 + 21,
     permission: .free,
     previousEpisodeInCollection: nil,

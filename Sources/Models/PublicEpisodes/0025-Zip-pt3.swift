@@ -14,7 +14,6 @@ The third, and final, part of our introductory series to `zip` finally answers t
     ),
     id: 25,
     image: "https://i.vimeocdn.com/video/802690688.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/802690688.jpg",
     length: 24*60 + 21,
     permission: .free,
     previousEpisodeInCollection: 24,

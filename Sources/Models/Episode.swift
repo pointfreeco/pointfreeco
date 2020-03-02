@@ -8,7 +8,6 @@ public struct Episode {
   public var fullVideo: Video
   public var id: Id
   public var image: String
-  public var itunesImage: String?
   public var length: Int
   public var permission: Permission
   public var previousEpisodeInCollection: Id?
@@ -26,7 +25,6 @@ public struct Episode {
     fullVideo: Video,
     id: Id,
     image: String,
-    itunesImage: String,
     length: Int,
     permission: Permission,
     previousEpisodeInCollection: Id?,
@@ -36,14 +34,13 @@ public struct Episode {
     title: String,
     trailerVideo: Video?,
     transcriptBlocks: [TranscriptBlock]
-    ) {
+  ) {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
     self.fullVideo = fullVideo
     self.id = id
     self.image = image
-    self.itunesImage = itunesImage
     self.length = length
     self.permission = permission
     self.previousEpisodeInCollection = previousEpisodeInCollection
@@ -113,7 +110,7 @@ public struct Episode {
       link: String,
       publishedAt: Date?,
       title: String
-      ) {
+    ) {
       self.author = author
       self.blurb = blurb
       self.link = link
@@ -179,7 +176,12 @@ public struct Episode {
       }
 
       public init(from decoder: Decoder) throws {
-        fatalError() // TODO
+        throw DecodingError.dataCorrupted(
+          .init(
+            codingPath: decoder.codingPath,
+            debugDescription: "Unimplemented"
+          )
+        )
       }
 
       public static func image(src: String) -> BlockType {
@@ -216,7 +218,7 @@ public struct Episode {
       bytesLength: Int,
       downloadUrl: String,
       streamingSource: String
-      ) {
+    ) {
       self.bytesLength = bytesLength
       self.downloadUrl = downloadUrl
       self.streamingSource = streamingSource
@@ -227,22 +229,22 @@ public struct Episode {
 func slug(for string: String) -> String {
   return string
     .lowercased()
-    .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
-    .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
+    .replacingOccurrences(of: #"[\W]+"#, with: "-", options: .regularExpression)
+    .replacingOccurrences(of: #"\A-|-\z"#, with: "", options: .regularExpression)
 }
 
 func reference(
   forEpisode episode: Episode,
   additionalBlurb: String,
   episodeUrl: String
-  ) -> Episode.Reference {
+) -> Episode.Reference {
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-    \(additionalBlurb)
+\(additionalBlurb)
 
-    > \(episode.blurb)
-    """,
+> \(episode.blurb)
+""",
     link: episodeUrl,
     publishedAt: episode.publishedAt,
     title: episode.title

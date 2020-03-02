@@ -14,7 +14,6 @@ We've made testing in our architecture a joy! We can test deep aspects of our ap
     ),
     id: 85,
     image: "https://i.vimeocdn.com/video/837834979.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/837834979.jpg",
     length: 33*60 + 35,
     permission: .free,
     previousEpisodeInCollection: 84,
