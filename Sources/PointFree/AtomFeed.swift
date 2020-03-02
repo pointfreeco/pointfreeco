@@ -125,32 +125,21 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
   }
 
   func enclosure(episode: Episode) -> RssItem.Enclosure {
-    return episode.subscriberOnly
-      ? .init(
-        length: episode.trailerVideo?.bytesLength ?? 0,
-        type: "video/mp4",
-        url: episode.trailerVideo?.downloadUrl ?? ""
-        )
-      : .init(
-        length: episode.fullVideo.bytesLength,
-        type: "video/mp4",
-        url: episode.fullVideo.downloadUrl
+    let video = episode.subscriberOnly ? episode.trailerVideo : episode.fullVideo
+    return .init(
+      length: video.bytesLength,
+      type: "video/mp4",
+      url: video.downloadUrl
     )
   }
 
   func mediaContent(episode: Episode) -> RssItem.Media.Content {
-    return episode.subscriberOnly
-      ? .init(
-        length: episode.trailerVideo?.bytesLength ?? 0,
-        medium: "video",
-        type: "video/mp4",
-        url: episode.trailerVideo?.downloadUrl ?? ""
-        )
-      : .init(
-        length: episode.fullVideo.bytesLength,
-        medium: "video",
-        type: "video/mp4",
-        url: episode.fullVideo.downloadUrl
+    let video = episode.subscriberOnly ? episode.trailerVideo : episode.fullVideo
+    return .init(
+      length: video.bytesLength,
+      medium: "video",
+      type: "video/mp4",
+      url: video.downloadUrl
     )
   }
 
