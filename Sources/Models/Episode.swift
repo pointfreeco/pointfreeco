@@ -5,14 +5,14 @@ public struct Episode {
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
-  public var fullVideo: Video
+  public var _fullVideo: Video?
   public var id: Id
   public var image: String
   public var length: Int
   public var permission: Permission
   public var previousEpisodeInCollection: Id?
   public var publishedAt: Date
-  public var references: [Reference] = []
+  public var references: [Reference]
   public var sequence: Sequence
   public var title: String
   public var trailerVideo: Video
@@ -21,8 +21,8 @@ public struct Episode {
   public init(
     blurb: String,
     codeSampleDirectory: String,
-    exercises: [Exercise],
-    fullVideo: Video,
+    exercises: [Exercise] = [],
+    fullVideo: Video? = nil,
     id: Id,
     image: String,
     length: Int,
@@ -38,7 +38,7 @@ public struct Episode {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
-    self.fullVideo = fullVideo
+    self._fullVideo = fullVideo
     self.id = id
     self.image = image
     self.length = length
@@ -50,6 +50,16 @@ public struct Episode {
     self.title = title
     self.trailerVideo = trailerVideo
     self.transcriptBlocks = transcriptBlocks
+  }
+
+  public var fullVideo: Video {
+    #if OSS
+    return self._fullVideo ?? self.trailerVideo
+    #else
+    let video = self._fullVideo ?? Video.allPrivateVideos[self.id]
+    assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
+    return video!
+    #endif
   }
 
   public var slug: String {
