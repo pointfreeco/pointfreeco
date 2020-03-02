@@ -17,7 +17,6 @@ previously hidden.
     ),
     id: 29,
     image: "https://i.vimeocdn.com/video/803400556.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/803400556.jpg",
     length: 33*60 + 17,
     permission: .free,
     previousEpisodeInCollection: 28,

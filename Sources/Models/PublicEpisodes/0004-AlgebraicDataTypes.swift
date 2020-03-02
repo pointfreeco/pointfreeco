@@ -15,7 +15,6 @@ and see how it can help us create type-safe data structures that can catch runti
     ),
     id: 4,
     image: "https://i.vimeocdn.com/video/807849108.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/807849108.jpg",
     length: 2_172,
     permission: .free,
     previousEpisodeInCollection: nil,

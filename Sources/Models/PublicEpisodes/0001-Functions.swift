@@ -14,7 +14,6 @@ Our first episode is all about functions! We talk a bit about what makes functio
     ),
     id: 1,
     image: "https://i.vimeocdn.com/video/803401029.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/803401029.jpg",
     length: 1219,
     permission: .free,
     previousEpisodeInCollection: nil,

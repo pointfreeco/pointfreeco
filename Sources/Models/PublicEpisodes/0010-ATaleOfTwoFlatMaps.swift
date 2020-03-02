@@ -16,7 +16,6 @@ operation to other structures and derive new, useful code!
     ),
     id: 10,
     image: "https://i.vimeocdn.com/video/807678771.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/807678771.jpg",
     length: 25*60+4,
     permission: .free,
     previousEpisodeInCollection: nil,

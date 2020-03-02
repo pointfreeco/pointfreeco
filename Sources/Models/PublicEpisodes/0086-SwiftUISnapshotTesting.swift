@@ -14,7 +14,6 @@ In this week's free holiday episode we show what it looks like to snapshot test 
     ),
     id: 86,
     image: "https://i.vimeocdn.com/video/839241671.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/839241671.jpg",
     length: 34*60 + 13,
     permission: .free,
     previousEpisodeInCollection: 85,
