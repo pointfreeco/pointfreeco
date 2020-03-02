@@ -165,7 +165,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
       episode: episode.sequence,
       episodeType: episode.subscriberOnly ? .trailer : .full,
       explicit: false,
-      image: episode.itunesImage ?? "",
+      image: episode.image,
       subtitle: summary(episode: episode),
       summary: summary(episode: episode),
       season: 1,

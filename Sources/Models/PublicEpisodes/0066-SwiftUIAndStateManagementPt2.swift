@@ -14,7 +14,6 @@ This week we finish up our moderately complex SwiftUI application by adding more
     ),
     id: 66,
     image: "https://i.vimeocdn.com/video/799121279.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/799121279.jpg",
     length: 24*60 + 26,
     permission: .free,
     previousEpisodeInCollection: 65,

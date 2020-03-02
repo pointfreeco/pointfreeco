@@ -14,7 +14,6 @@ Let's explore the Combine framework and its correspondence with the Effect type.
     ),
     id: 80,
     image: "https://i.vimeocdn.com/video/829976257.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/829976257.jpg",
     length: 25*60 + 10,
     permission: .free,
     previousEpisodeInCollection: nil,

@@ -14,7 +14,6 @@ With our moderately complex SwiftUI application complete we can finally ask ours
     ),
     id: 67,
     image: "https://i.vimeocdn.com/video/801296903.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/801296903.jpg",
     length: 27 * 60 + 2,
     permission: .free,
     previousEpisodeInCollection: 66,

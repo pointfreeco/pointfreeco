@@ -14,7 +14,6 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
     ),
     id: 2,
     image: "https://i.vimeocdn.com/video/807678088.jpg",
-    itunesImage: "https://i.vimeocdn.com/video/807678088.jpg",
     length: 2676,
     permission: .free,
     previousEpisodeInCollection: nil,
