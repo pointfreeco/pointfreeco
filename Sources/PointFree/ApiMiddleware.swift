@@ -62,7 +62,7 @@ extension Api {
       self.title = episode.title
       self.transcriptBlocks = episode.transcriptBlocks
       self.video = subscriberOnly
-        ? episode.trailerVideo!
+        ? episode.trailerVideo
         : episode.fullVideo // TODO: use subscriber data to determine this
     }
   }

@@ -17,10 +17,14 @@ We bring tools from previous episodes down to earth and apply them to an everyda
     length: 1_634,
     permission: .free,
     previousEpisodeInCollection: nil,
-    publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
+    publishedAt: Date(timeIntervalSince1970: 1518441151),
     sequence: 3,
     title: "UIKit Styling with Functions",
-    trailerVideo: nil,
+    trailerVideo: .init(
+      bytesLength: 37767144,
+      downloadUrl: "https://player.vimeo.com/external/354215006.hd.mp4?s=b21ff531c35d0ab9c3147bd57d49a1aab0be3afc&profile_id=175&download=1",
+      streamingSource: "https://player.vimeo.com/video/354215006"
+    ),
     transcriptBlocks: _transcriptBlocks
   )
 }
