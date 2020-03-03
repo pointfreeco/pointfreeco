@@ -100,9 +100,11 @@ By using `subscribe(on:)` and `receive(on:)`, you can ensure that the work is do
 
 ```swift
 public func offlineNthPrime(_ n: Int) -> Effect<Int?> {
-  Future { callback in
-    …
-    callback(.success(nthPrime))
+  Deferred {
+    Future { callback in
+      …
+      callback(.success(nthPrime))
+    }
   }
   .subscribe(on: DispatchQueue.global())
   .receive(on: DispatchQueue.main)
@@ -120,7 +122,7 @@ You can describe the dependency of plucking a date out of the reducer's environm
 ```swift
 func activityFeed(
   _ reducer: @escaping Reducer<AppState, AppAction, AppEnvironment>,
-  date: @escaping (Environment) -> Date
+  date: @escaping (AppEnvironment) -> Date
 ) -> Reducer<AppState, AppAction, AppEnvironment>
 ```
 
