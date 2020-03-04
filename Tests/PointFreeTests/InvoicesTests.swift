@@ -36,6 +36,17 @@ final class InvoicesTests: TestCase {
   }
 
   func testInvoice() {
+    var customer = Stripe.Customer.mock
+    customer.metadata = ["extraInvoiceInfo": """
+      123 Street
+      Brooklyn, NY
+
+      VAT: 1234567890
+      """]
+    var subscription = Stripe.Subscription.mock
+    subscription.customer = .right(customer)
+    Current.stripe.fetchSubscription = const(pure(subscription))
+
     let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
