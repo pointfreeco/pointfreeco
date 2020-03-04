@@ -203,7 +203,7 @@ private func episodeInfoColumnView(episode: Episode, date: () -> Date) -> Node {
           .href(path(to: .episode(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])
         ],
-        .text("Watch episode (\(episode.length / 60) min)"),
+        .text("Watch episode (\(episode.length.rawValue / 60) min)"),
         .img(
           base64: rightArrowSvgBase64(fill: "#974DFF"),
           type: .image(.svg),

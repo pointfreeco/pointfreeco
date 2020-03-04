@@ -13,30 +13,27 @@ TODO
           .init(episode: .ep27_domainSpecificLanguages_pt2),
         ],
         related: [
-          // TODO
-        ],
-        title: "Introduction to DSLs",
-        whereToGoFromHere: #"""
-TODO
-"""#
-      ),
-      .init(
-        blurb: #"""
+          .init(
+            blurb: #"""
 TODO
 """#,
-        coreLessons: [
-          .init(episode: .ep28_anHtmlDsl),
-          .init(episode: .ep29_dslsVsTemplatingLanguages),
+            content: .episode(.ep28_anHtmlDsl)
+          ),
+          .init(
+            blurb: #"""
+TODO
+"""#,
+            content: .episode(.ep29_dslsVsTemplatingLanguages)
+          )
         ],
-        related: [
-          // TODO
-        ],
+        slug: "introduction-to-dsls",
         title: "Introduction to DSLs",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
+    slug: "domain-specific-languages",
     title: "Domain Specific Languages"
   )
 }

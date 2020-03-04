@@ -273,7 +273,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
     guid: url(to: .episode(.show(.left(episode.slug)))),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
-      duration: episode.length,
+      duration: episode.length.rawValue,
       episode: episode.sequence,
       episodeType: .full,
       explicit: false,

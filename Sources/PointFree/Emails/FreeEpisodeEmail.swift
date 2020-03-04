@@ -66,7 +66,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
-          .p(.text("This episode is \(ep.length / 60) minutes long.")),
+          .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(

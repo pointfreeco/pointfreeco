@@ -23,7 +23,7 @@ public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
   return EpisodeStats(
     allEpisodeCount: .init(rawValue: episodes.count),
     episodeHourCount: .init(
-      rawValue: episodes.reduce(0) { $0 + $1.length } / 3600
+      rawValue: episodes.reduce(into: 0) { $0 += $1.length.rawValue } / 3600
     ),
     freeEpisodeCount: .init(
       rawValue: episodes.lazy.filter { $0.permission == .free }.count
