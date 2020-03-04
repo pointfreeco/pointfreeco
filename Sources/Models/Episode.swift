@@ -106,6 +106,81 @@ public struct Episode {
   public typealias Id = Tagged<Episode, Int>
   public typealias Sequence = Tagged<(sequence: (), Episode), Int>
 
+  public struct Collection {
+    public var blurb: String?
+    public var sections: [Section]
+    public var title: String?
+
+    public init(
+      blurb: String,
+      sections: [Section],
+      title: String
+    ) {
+      self.blurb = blurb
+      self.sections = sections
+      self.title = title
+    }
+
+    public init(section: Section) {
+      self.blurb = nil
+      self.sections = [section]
+      self.title = nil
+    }
+
+    public struct Section {
+      public var blurb: String
+      public var coreLessons: [Lesson]
+      public var related: [Related]
+      public var title: String
+      public var whereToGoFromHere: String
+
+      public init(
+        blurb: String,
+        coreLessons: [Lesson],
+        related: [Related],
+        title: String,
+        whereToGoFromHere: String
+      ) {
+        self.blurb = blurb
+        self.coreLessons = coreLessons
+        self.related = related
+        self.title = title
+        self.whereToGoFromHere = whereToGoFromHere
+      }
+
+      public struct Lesson {
+        public var blurb: String?
+        public var episode: Episode
+
+        public init(
+          blurb: String? = nil,
+          episode: Episode
+        ) {
+          self.blurb = blurb
+          self.episode = episode
+        }
+      }
+
+      public struct Related {
+        public var blurb: String
+        public var content: Content
+
+        public init(
+          blurb: String,
+          content: Content
+        ) {
+          self.blurb = blurb
+          self.content = content
+        }
+
+        public enum Content {
+          case episode(Episode)
+          case collection(Collection)
+        }
+      }
+    }
+  }
+
   public struct Exercise {
     public var problem: String
     public var solution: String?
