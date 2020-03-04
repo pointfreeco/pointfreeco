@@ -157,7 +157,7 @@ private func sectionRow(_ section: Episode.Collection.Section) -> Node {
   )
 }
 
-extension Episode.Collection {
+fileprivate extension Episode.Collection {
   var length: Seconds<Int> {
     self.sections
       .flatMap { $0.coreLessons.map { $0.episode.length } }
@@ -165,11 +165,7 @@ extension Episode.Collection {
   }
 
   var lengthDescription: String {
-    formatter.string(from: self.length.timeInterval) ?? ""
+    let length = self.length.rawValue
+    return "\(length / 3600)hr \((length / 60) % 60)min"
   }
-}
-
-private let formatter = update(DateComponentsFormatter()) {
-  $0.allowedUnits = [.hour, .minute]
-  $0.unitsStyle = .brief // .short
 }
