@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices/in_test
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 33560
+Content-Length: 34222
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1854,6 +1854,28 @@ html {
                             col-m-12">
                   <div>
                     Visa ⋯ 4242
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="bold
+                            col-m
+                            col-d-6
+                            col-m-12">
+                  <div>
+                    User info
+                  </div>
+                </div>
+                <div class="m-pb1
+                            col-m
+                            col-d-6
+                            col-m-12">
+                  <div>
+                    123 Street
+                    <br>
+                    Brooklyn, NY
+                    <br>
+                    VAT: 1234567890
                   </div>
                 </div>
               </div>
