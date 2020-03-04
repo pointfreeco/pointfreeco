@@ -120,21 +120,27 @@ public func invoiceView(
     )
   )
 
-  func section(_ pairs: [(Int, String, Int, String)]) -> Node {
+  struct SectionData {
+    let leftColumnCount: Int
+    let leftColumnName: String
+    let rightColumnCount: Int
+    let rightColumnContent: Node
+  }
+  func section(_ data: [SectionData]) -> Node {
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 6],
       .fragment(
-        pairs.map { lcol, lstr, rcol, rstr in
+        data.map { data in
           .gridRow(
             .gridColumn(
-              sizes: [.mobile: 12, .desktop: lcol],
+              sizes: [.mobile: 12, .desktop: data.leftColumnCount],
               attributes: [.class([Class.type.bold])],
-              .div(.text(lstr))
+              .div(.text(data.leftColumnName))
             ),
             .gridColumn(
-              sizes: [.mobile: 12, .desktop: rcol],
+              sizes: [.mobile: 12, .desktop: data.rightColumnCount],
               attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-              .div(.text(rstr))
+              .div(data.rightColumnContent)
             )
           )
         }
@@ -144,14 +150,56 @@ public func invoiceView(
 
   let billingHeader = Node.gridRow(
     attributes: [.class([Class.padding([.mobile: [.topBottom: 3]])])],
-    section([(2, "Bill to", 10, currentUser.displayName)]),
+    section([
+      SectionData(
+        leftColumnCount: 2,
+        leftColumnName: "Bill to",
+        rightColumnCount: 10,
+        rightColumnContent: .text(currentUser.displayName)
+      )
+    ]),
     section(
       [
-        invoice.number.map { (6, "Invoice number", 6, $0.rawValue) },
-        (6, "Billed on", 6, dateFormatter.string(from: invoice.created)),
-        invoice.charge?.right?.source.left.map { (6, "Payment method", 6, $0.brand.rawValue + " ⋯ \($0.last4)") },
-        subscription.customer.right?.businessVatId.map { (6, "VAT", 6, $0.rawValue) }
-        ].compactMap { $0 }
+        invoice.number.map {
+          SectionData(
+            leftColumnCount: 6,
+            leftColumnName: "Invoice number",
+            rightColumnCount: 6,
+            rightColumnContent: .text($0.rawValue)
+          )
+        },
+        SectionData(
+          leftColumnCount: 6,
+          leftColumnName: "Billed on",
+          rightColumnCount: 6,
+          rightColumnContent: .text(dateFormatter.string(from: invoice.created))
+        ),
+        invoice.charge?.right?.source.left.map {
+          SectionData(
+            leftColumnCount: 6,
+            leftColumnName: "Payment method",
+            rightColumnCount: 6,
+            rightColumnContent: .text($0.brand.rawValue + " ⋯ \($0.last4)")
+          )
+        },
+        subscription.customer.right?.businessVatId.map {
+          SectionData(
+            leftColumnCount: 6,
+            leftColumnName: "VAT",
+            rightColumnCount: 6,
+            rightColumnContent: .text($0.rawValue)
+          )
+        },
+        subscription.customer.right?.extraInvoiceInfo.map {
+          SectionData(
+            leftColumnCount: 6,
+            leftColumnName: "User info",
+            rightColumnCount: 6,
+            rightColumnContent: extraInvoiceInfo(for: $0)
+          )
+        }
+        ]
+        .compactMap { $0 }
     )
   )
 
@@ -280,30 +328,17 @@ public func invoiceView(
   )
 }
 
-private func extraInvoiceInfo(subscription: Stripe.Subscription) -> Node {
-  guard let extraInvoiceInfo = subscription.customer.right?.extraInvoiceInfo else { return [] }
-
+private func extraInvoiceInfo(for info: String) -> Node {
   let extraInvoiceInfoNodes = Node.fragment(
     intersperse(.br)(
-      extraInvoiceInfo
+      info
         .components(separatedBy: CharacterSet.newlines)
         .filter { !$0.isEmpty }
         .map(Node.text)
     )
   )
 
-  return .gridRow(
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 6],
-      attributes: [.class([Class.type.bold])],
-      .div("User Info")
-    ),
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 6],
-      attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-      .div(extraInvoiceInfoNodes)
-    )
-  )
+  return extraInvoiceInfoNodes
 }
 
 private let dateFormatter: DateFormatter = {
