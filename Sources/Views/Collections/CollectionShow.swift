@@ -16,7 +16,14 @@ import TaggedTime
 
 public func collectionIndex(_ collection: Episode.Collection) -> Node {
   [
-    collectionHeader(collection),
+    collectionHeader(
+      title: collection.title ?? "",
+      category: "Collection",
+      subcategory: "sections",
+      subcategoryCount: collection.sections.count,
+      length: collection.length,
+      blurb: collection.blurb ?? ""
+    ),
     sectionsTitle,
     .div(
       attributes: [
@@ -27,65 +34,6 @@ public func collectionIndex(_ collection: Episode.Collection) -> Node {
       .fragment(collection.sections.map(sectionRow))
     )
   ]
-}
-
-private func collectionHeader(_ collection: Episode.Collection) -> Node {
-  .div(
-    attributes: [
-      .class([
-        Class.pf.colors.bg.black,
-        Class.border.top,
-      ]),
-      .style(key("border-top-color", "#333")),
-    ],
-    .gridRow(
-      attributes: [
-        .class([
-          Class.grid.middle(.desktop),
-          Class.padding([
-            .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .topBottom: 4],
-          ]),
-        ]),
-        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
-      ],
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [],
-        .h1(
-          attributes: [
-            .class([
-              Class.pf.colors.fg.white,
-              Class.pf.type.responsiveTitle2,
-              Class.type.align.center,
-            ]),
-            .style(lineHeight(1.2))
-          ],
-          .text(collection.title ?? "")
-        ),
-        .div(
-          attributes: [
-            .class([
-              Class.pf.colors.fg.gray650,
-              Class.pf.type.body.small,
-              Class.type.align.center,
-            ]),
-          ],
-          "Collection • \(String(collection.sections.count)) sections • \(collection.lengthDescription)"
-        ),
-        .div(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.top: 3, .leftRight: 4]]),
-              Class.pf.colors.fg.gray850,
-              Class.pf.type.body.regular,
-            ]),
-          ],
-          .text(collection.blurb ?? "")
-        )
-      )
-    )
-  )
 }
 
 private let sectionsTitle = Node.div(
@@ -195,20 +143,5 @@ fileprivate extension Class {
   enum `private` {
     static let hoverBackground = CssSelector.class("col-idx-hover")
     static let hoverLink = CssSelector.class("col-idx-hover")
-  }
-}
-
-// MARK: - Helpers
-
-fileprivate extension Episode.Collection {
-  var length: Seconds<Int> {
-    self.sections
-      .flatMap { $0.coreLessons.map { $0.episode.length } }
-      .reduce(into: 0, +=)
-  }
-
-  var lengthDescription: String {
-    let length = self.length.rawValue
-    return "\(length / 3600) hr \((length / 60) % 60) min"
   }
 }

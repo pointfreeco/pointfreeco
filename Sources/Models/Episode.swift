@@ -134,6 +134,12 @@ public struct Episode {
       self.title = nil
     }
 
+    public var length: Seconds<Int> {
+      self.sections
+        .flatMap { $0.coreLessons.map { $0.episode.length } }
+        .reduce(into: 0, +=)
+    }
+
     public struct Section {
       public var blurb: String
       public var coreLessons: [Lesson]
