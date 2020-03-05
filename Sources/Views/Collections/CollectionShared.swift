@@ -61,7 +61,7 @@ func collectionHeader(
               Class.type.align.center,
             ]),
           ],
-          "\(category) • \(String(subcategoryCount)) \(subcategory) • \(length.formattedDescription)"
+          "\(category) • \(subcategory.pluralize(subcategoryCount)) • \(length.formattedDescription)"
         ),
         .div(
           attributes: [
@@ -71,16 +71,29 @@ func collectionHeader(
               Class.pf.type.body.regular,
             ]),
           ],
-          .text(blurb)
+          .markdownBlock(blurb)
         )
       )
     )
   )
 }
 
-fileprivate extension Tagged where Tag == SecondsTag, RawValue == Int {
+fileprivate extension String {
+  func pluralize(_ count: Int) -> String {
+    let string = "\(count) \(self)"
+    return count == 1 ? string
+      : string.hasSuffix("y") ? string.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression)
+      : "\(string)s"
+  }
+}
+
+fileprivate extension Seconds where RawValue == Int {
   var formattedDescription: String {
     let length = self.rawValue
-    return "\(length / 3600) hr \((length / 60) % 60) min"
+    let hours = length / 3600
+    let minutes = (length / 60) % 60
+    return hours > 0
+      ? "\(hours) hr \(minutes) min"
+      : "\(minutes) min"
   }
 }
