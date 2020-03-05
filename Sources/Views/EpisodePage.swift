@@ -452,14 +452,14 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> N
 
 let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
 
-private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
+func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
   return .div(
     attributes: [
       .id("transcript"),
       .class(
         [
           Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-          Class.pf.colors.bg.white
+//          Class.pf.colors.bg.white
         ]
       )
     ],

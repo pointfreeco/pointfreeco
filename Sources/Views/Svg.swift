@@ -5,6 +5,32 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
+public let playIconSvgBase64 = base64EncodedString("""
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#FFF" d="M-73-1123H951v3583H-73z"/>
+    <path d="M8 14.5l6-4.5-6-4.5v9zM10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#121212"/>
+  </g>
+</svg>
+""")
+
+public let exercisesIconSvgBase64 = base64EncodedString("""
+<svg width="16" height="18" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#FFF" d="M-75-1329H949v3583H-75z"/>
+    <path d="M13.8333 2.5H10.35C10 1.5333 9.0833.8333 8 .8333c-1.0833 0-2 .7-2.35 1.6667H2.1667C1.25 2.5.5 3.25.5 4.1667v11.6666C.5 16.75 1.25 17.5 2.1667 17.5h11.6666c.9167 0 1.6667-.75 1.6667-1.6667V4.1667C15.5 3.25 14.75 2.5 13.8333 2.5zM8 2.5c.4583 0 .8333.375.8333.8333 0 .4584-.375.8334-.8333.8334-.4583 0-.8333-.375-.8333-.8334 0-.4583.375-.8333.8333-.8333zm1.6667 11.6667H3.8333V12.5h5.8334v1.6667zm2.5-3.3334H3.8333V9.1667h8.3334v1.6666zm0-3.3333H3.8333V5.8333h8.3334V7.5z" fill="#000"/>
+  </g>
+</svg>
+""")
+
+public let referencesIconSvgBase64 = base64EncodedString("""
+<svg width="16" height="10" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" d="M-75-1370H949v3583H-75z"/><path d="M.5 5.8333h1.6667V4.1667H.5v1.6666zm0 3.3334h1.6667V7.5H.5v1.6667zM.5 2.5h1.6667V.8333H.5V2.5zm3.3333 3.3333H15.5V4.1667H3.8333v1.6666zm0 3.3334H15.5V7.5H3.8333v1.6667zm0-8.3334V2.5H15.5V.8333H3.8333z" fill="#000"/></g></svg>
+""")
+
+public let downloadIconSvgBase64 = base64EncodedString("""
+<svg width="12" height="15" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" d="M-77-1403H947v3583H-77z"/><path d="M11.8333 5.5H8.5v-5h-5v5H.1667L6 11.3333 11.8333 5.5zM.1667 13v1.6667h11.6666V13H.1667z" fill="#000"/></g></svg>
+""")
+
 public func newWindowSvgBase64(fill: String) -> String {
   return base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
