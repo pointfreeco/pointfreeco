@@ -12,6 +12,8 @@ import Styleguide
 import Tagged
 import TaggedTime
 
+// MARK: - HTML
+
 public func collectionIndex(_ collection: Episode.Collection) -> Node {
   [
     collectionHeader(collection),
@@ -127,6 +129,7 @@ private func sectionRow(_ section: Episode.Collection.Section) -> Node {
     attributes: [
       .class([
         Class.border.bottom,
+        Class.private.hoverBackground,
       ]),
       .style(key("border-bottom-color", "#E8E8E8")),
     ],
@@ -135,7 +138,7 @@ private func sectionRow(_ section: Episode.Collection.Section) -> Node {
         .class([
           Class.padding([
             .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .topBottom: 2]
+            .mobile: [.leftRight: 3]
           ]),
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
@@ -146,16 +149,56 @@ private func sectionRow(_ section: Episode.Collection.Section) -> Node {
         .a(
           attributes: [
             .class([
+              Class.display.block,
+              Class.grid.row,
+              Class.padding([.mobile: [.topBottom: 2]]),
+              Class.private.hoverLink,
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
+            .href("#TODO"),
           ],
-          .text(section.title)
+          .gridRow(
+            attributes: [
+              .class([
+                Class.align.middle,
+              ]),
+            ],
+            .gridColumn(
+              sizes: [.mobile: 6],
+              .text(section.title)
+            ),
+            .gridColumn(
+              sizes: [.mobile: 6],
+              attributes: [
+                .class([
+                  Class.grid.end(.mobile),
+                ]),
+              ],
+              .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "")
+            )
+          )
         )
       )
     )
   )
 }
+
+// MARK: - Stylesheet
+
+public let collectionIndexStylesheet = Stylesheet.concat(
+  (Class.private.hoverBackground & .pseudo(.hover)) % backgroundColor(.white(0.9)),
+  (Class.private.hoverLink & .pseudo(.hover)) % key("text-decoration", "none")
+)
+
+fileprivate extension Class {
+  enum `private` {
+    static let hoverBackground = CssSelector.class("col-idx-hover")
+    static let hoverLink = CssSelector.class("col-idx-hover")
+  }
+}
+
+// MARK: - Helpers
 
 fileprivate extension Episode.Collection {
   var length: Seconds<Int> {

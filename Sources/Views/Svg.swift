@@ -27,7 +27,6 @@ public let rightChevronSvgBase64 = base64EncodedString <| """
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Lesson-/-Row-/-Info-/-Collapsed" transform="translate(-594.000000, -26.000000)">
             <g>
-                <rect id="background" fill="#FFFFFF" x="0" y="0" width="610" height="64"></rect>
                 <g id="icon/navigation/expand_more_24px" transform="translate(598.000000, 32.000000) rotate(-90.000000) translate(-598.000000, -32.000000) translate(586.000000, 20.000000)" fill="#000000">
                     <polygon id="-↳Color" points="16.59 8.59 12 13.17 7.41 8.59 6 10 12 16 18 10"></polygon>
                 </g>
