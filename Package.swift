@@ -183,6 +183,7 @@ let package = Package(
         "GitHub",
         "Stripe",
         .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
       ],
       swiftSettings: .pointFreeSettings
     ),
@@ -236,7 +237,9 @@ let package = Package(
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
         .product(name: "PostgreSQL", package: "postgresql"),
+        .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
       ],
@@ -411,6 +414,8 @@ let package = Package(
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
       ],
       swiftSettings: .pointFreeSettings
     ),

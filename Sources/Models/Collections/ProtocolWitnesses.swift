@@ -17,6 +17,7 @@ TODO
         related: [
           // TODO
         ],
+        slug: "protocol-alternatives",
         title: "Alternatives to Protocols",
         whereToGoFromHere: #"""
 TODO
@@ -34,12 +35,14 @@ TODO
         related: [
           // TODO
         ],
+        slug: "library-design",
         title: "Library Design without Protocols",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
+    slug: "protocol-witnesses",
     title: "Protocol Witnesses"
   )
 }

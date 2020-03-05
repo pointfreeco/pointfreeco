@@ -111,7 +111,7 @@ private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard isSubscriber else { return [] }
   
   return [
-    .p(.text("This episode is \(ep.length / 60) minutes long.")),
+    .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),
     .p(
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
       .a(

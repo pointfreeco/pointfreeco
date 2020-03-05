@@ -19,6 +19,7 @@ public enum Route: Equatable {
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
+  case collections(Collections)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case endGhosting
   case enterprise(Enterprise)
@@ -57,6 +58,11 @@ public enum Route: Equatable {
     public static func show(id: BlogPost.Id) -> Blog {
       return .show(.right(id))
     }
+  }
+
+  public enum Collections: Equatable {
+    case index
+    case show(Episode.Collection.Slug)
   }
 
   public enum Enterprise: Equatable {
@@ -159,6 +165,9 @@ let routers: [Router<Route>] = [
 
   .case { .blog(.show($0)) }
     <¢> get %> "blog" %> "posts" %> pathParam(.blogPostIdOrString) <% end,
+
+  .case { .collections(.show($0)) }
+    <¢> get %> "collections" %> pathParam(.tagged(.string)) <% end,
 
   .case(.episode(.index))
     <¢> get %> "episodes" <% end,

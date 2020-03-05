@@ -1,5 +1,6 @@
 import Foundation
 import Tagged
+import TaggedTime
 
 public struct Episode {
   public var blurb: String
@@ -8,7 +9,7 @@ public struct Episode {
   private var _fullVideo: Video?
   public var id: Id
   public var image: String
-  public var length: Int
+  public var length: Seconds<Int>
   public var permission: Permission
   public var previousEpisodeInCollection: Id?
   public var publishedAt: Date
@@ -25,7 +26,7 @@ public struct Episode {
     fullVideo: Video? = nil,
     id: Id,
     image: String,
-    length: Int,
+    length: Seconds<Int>,
     permission: Permission,
     previousEpisodeInCollection: Id?,
     publishedAt: Date,
@@ -109,28 +110,41 @@ public struct Episode {
   public struct Collection {
     public var blurb: String?
     public var sections: [Section]
+    public var slug: Slug?
     public var title: String?
 
     public init(
       blurb: String,
       sections: [Section],
+      slug: Slug,
       title: String
     ) {
       self.blurb = blurb
       self.sections = sections
+      self.slug = slug
       self.title = title
     }
 
-    public init(section: Section) {
+    public init(
+      section: Section
+    ) {
       self.blurb = nil
       self.sections = [section]
+      self.slug = nil
       self.title = nil
+    }
+
+    public var length: Seconds<Int> {
+      self.sections
+        .flatMap { $0.coreLessons.map { $0.episode.length } }
+        .reduce(into: 0, +=)
     }
 
     public struct Section {
       public var blurb: String
       public var coreLessons: [Lesson]
       public var related: [Related]
+      public var slug: Slug
       public var title: String
       public var whereToGoFromHere: String
 
@@ -138,12 +152,14 @@ public struct Episode {
         blurb: String,
         coreLessons: [Lesson],
         related: [Related],
+        slug: Slug,
         title: String,
         whereToGoFromHere: String
       ) {
         self.blurb = blurb
         self.coreLessons = coreLessons
         self.related = related
+        self.slug = slug
         self.title = title
         self.whereToGoFromHere = whereToGoFromHere
       }
@@ -178,7 +194,11 @@ public struct Episode {
           case collection(Collection)
         }
       }
+
+      public typealias Slug = Tagged<Self, String>
     }
+
+    public typealias Slug = Tagged<Self, String>
   }
 
   public struct Exercise {
