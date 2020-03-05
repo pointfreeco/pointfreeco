@@ -63,6 +63,7 @@ public enum Route: Equatable {
   public enum Collections: Equatable {
     case index
     case show(Episode.Collection.Slug)
+    case section(Episode.Collection.Slug, Episode.Collection.Section.Slug)
   }
 
   public enum Enterprise: Equatable {
@@ -168,6 +169,9 @@ let routers: [Router<Route>] = [
 
   .case { .collections(.show($0)) }
     <¢> get %> "collections" %> pathParam(.tagged(.string)) <% end,
+
+  .case { .collections(.section($0, $1)) }
+    <¢> get %> "collections" %> pathParam(.tagged(.string)) <%> pathParam(.tagged(.string)) <% end,
 
   .case(.episode(.index))
     <¢> get %> "episodes" <% end,

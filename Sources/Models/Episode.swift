@@ -164,6 +164,12 @@ public struct Episode {
         self.whereToGoFromHere = whereToGoFromHere
       }
 
+      public var length: Seconds<Int> {
+        self.coreLessons
+          .map { $0.episode.length }
+          .reduce(into: 0, +=)
+      }
+
       public struct Lesson {
         public var blurb: String?
         public var episode: Episode
