@@ -166,6 +166,6 @@ fileprivate extension Episode.Collection {
 
   var lengthDescription: String {
     let length = self.length.rawValue
-    return "\(length / 3600)hr \((length / 60) % 60)min"
+    return "\(length / 3600) hr \((length / 60) % 60) min"
   }
 }

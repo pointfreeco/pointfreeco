@@ -1,8 +1,9 @@
 GET http://localhost:8080/collections/map-zip-flatmap
+Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 48937
+Content-Length: 48939
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1860,7 +1861,7 @@ html {
             Collection • 
             3
              sections • 
-            4hr 27min
+            4 hr 27 min
           </div>
           <div class="m-pt3
                       m-pl4

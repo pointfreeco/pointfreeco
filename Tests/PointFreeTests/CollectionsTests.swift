@@ -21,7 +21,7 @@ class CollectionsTests: TestCase {
 
   func testCollectionShow() {
     let conn = connection(
-      from: request(to: .collections(.show("map-zip-flatmap")))
+      from: request(to: .collections(.show("map-zip-flatmap")), basicAuth: true)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

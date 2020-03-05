@@ -7,7 +7,11 @@ import Views
 
 let collectionMiddleware
   : M<Tuple3<User?, SubscriberState, Episode.Collection.Slug>>
-  = fetchCollectionMiddleware
+  = basicAuth(
+    user: Current.envVars.basicAuth.username,
+    password: Current.envVars.basicAuth.password
+    )
+    <<< fetchCollectionMiddleware
     <| map(lower)
     >>> writeStatus(.ok)
     >=> respond(
