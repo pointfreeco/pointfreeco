@@ -26,6 +26,7 @@ TODO
             content: .collection(.algebraicDataTypes)
           )
         ],
+        slug: "enum-properties",
         title: "Enum Properties",
         whereToGoFromHere: #"""
 TODO
@@ -48,12 +49,14 @@ TODO
             content: .episode(.ep90_composingArchitectureWithCasePaths))
           // TODO: swift-case-paths
         ],
+        slug: "case-paths",
         title: "Case Paths",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
+    slug: "enums-and-structs",
     title: "Enums and Structs"
   )
 }
