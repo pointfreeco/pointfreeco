@@ -150,7 +150,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
     guid: String(Int((episode.freeSince ?? episode.publishedAt).timeIntervalSince1970)),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
-      duration: episode.length,
+      duration: episode.length.rawValue,
       episode: episode.sequence,
       episodeType: episode.subscriberOnly ? .trailer : .full,
       explicit: false,

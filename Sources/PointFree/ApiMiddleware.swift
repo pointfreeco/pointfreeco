@@ -3,6 +3,7 @@ import HttpPipeline
 import Models
 import PointFreeRouter
 import Prelude
+import TaggedTime
 import Tuple
 
 // TODO: make an Api module
@@ -13,7 +14,7 @@ extension Api {
     var blurb: String
     var id: Episode.Id
     var image: String
-    var length: Int
+    var length: Seconds<Int>
     var publishedAt: Date
     var sequence: Episode.Sequence
     var subscriberOnly: Bool
@@ -36,7 +37,7 @@ extension Api {
     var codeSampleDirectory: String
     var id: Episode.Id
     var image: String
-    var length: Int
+    var length: Seconds<Int>
     var previousEpisodesInCollection: [EpisodeListItem]
     var publishedAt: Date
     var references: [Episode.Reference]
