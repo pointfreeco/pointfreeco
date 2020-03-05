@@ -15,7 +15,7 @@ let collectionMiddleware
     <| map(lower)
     >>> writeStatus(.ok)
     >=> respond(
-      view: collectionIndex,
+      view: collectionShow,
       layoutData: { currentUser, _, collection in
         SimplePageLayoutData(
           currentUser: currentUser,
