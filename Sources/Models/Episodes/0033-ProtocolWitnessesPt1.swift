@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep33_protocolWitnesses_pt1 = Episode(
+  public static let ep33_protocolWitnesses_pt1 = Episode(
     blurb: """
 Protocols are a great tool for abstraction, but aren't the only one. This week we begin to explore the tradeoffs of using protocols by highlighting a few areas in which they fall short in order to demonstrate how we can recover from these problems using a different tool and different tradeoffs.
 """,

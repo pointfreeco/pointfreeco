@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/atom.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7424
+Content-Length: 7344
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -85,13 +85,13 @@ X-XSS-Protection: 1; mode=block
     </itunes:category>
     <item>
       <title>
-        🆓 Type-Safe HTML in Swift
+        🆓 Functions
       </title>
       <pubDate>
         Tue, 20 Jun 2017 12:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+        http://localhost:8080/episodes/ep1-functions
       </link>
       <guid>
         1497960000
@@ -133,7 +133,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         1
       </itunes:episode>
       <itunes:title>
-        🆓 Type-Safe HTML in Swift
+        🆓 Functions
       </itunes:title>
       <itunes:episodeType>
         full
@@ -147,19 +147,19 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
                      type="video/mp4"
                      medium="video">
         <media:title>
-          🆓 Type-Safe HTML in Swift
+          🆓 Functions
         </media:title>
       </media:content>
     </item>
     <item>
       <title>
-        Proof in Functions
+        Side Effects
       </title>
       <pubDate>
         Tue, 20 Dec 2016 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep2-proof-in-functions
+        http://localhost:8080/episodes/ep2-side-effects
       </link>
       <guid>
         1482192000
@@ -204,7 +204,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         2
       </itunes:episode>
       <itunes:title>
-        Proof in Functions
+        Side Effects
       </itunes:title>
       <itunes:episodeType>
         trailer
@@ -218,7 +218,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
                      type="video/mp4"
                      medium="video">
         <media:title>
-          Proof in Functions
+          Side Effects
         </media:title>
       </media:content>
     </item>

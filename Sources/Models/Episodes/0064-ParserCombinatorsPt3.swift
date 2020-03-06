@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep64_parserCombinators_pt3 = Episode(
+  public static let ep64_parserCombinators_pt3 = Episode(
     blurb: """
 Now that we've looked at how to parse multiple values given a single parser, let's try to parse a single value using multiple parsers! And after defining a bunch of these parser combinators we'll finally be able to ask: "what's the point!?"
 """,

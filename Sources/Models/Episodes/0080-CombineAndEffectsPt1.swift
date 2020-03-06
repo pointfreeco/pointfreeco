@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep80_theCombineFrameworkAndEffects_pt1 = Episode(
+  public static let ep80_theCombineFrameworkAndEffects_pt1 = Episode(
     blurb: """
 Let's explore the Combine framework and its correspondence with the Effect type. Combine introduces several concepts that overlap with how we model effects in our composable architecture. Let's get an understanding of how they work together and compare them to our humble Effect type.
 """,

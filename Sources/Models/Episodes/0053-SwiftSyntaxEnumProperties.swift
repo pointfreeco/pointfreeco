@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep53_swiftSyntaxEnumProperties = Episode(
+  public static let ep53_swiftSyntaxEnumProperties = Episode(
     blurb: """
 We've seen how "enum properties" help close the gap between the ergonomics of accessing data on structs and enums, but defining them by hand requires a _lot_ of boilerplate. This week we join forces with Apple's Swift Syntax library to generate this boilerplate automatically!
 """,

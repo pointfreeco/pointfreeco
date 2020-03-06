@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep56_whatIsAParser_pt1 = Episode(
+  public static let ep56_whatIsAParser_pt1 = Episode(
     blurb: """
 Parsing is a difficult, but surprisingly ubiquitous programming problem, and functional programming has a lot to say about it. Let's take a moment to understand the problem space of parsing, and see what tools Swift and Apple gives us to parse complex text formats.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep59_composableParsing_map = Episode(
+  public static let ep59_composableParsing_map = Episode(
     blurb: """
 We now have a precise, efficient definition for parsing, but we haven't even scratched the surface of its relation to functional programming. In this episode we begin to show how all of the functional operators we know and love come into play, starting with map.
 """,

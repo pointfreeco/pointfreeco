@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep3_uikitStylingWithFunctions = Episode(
+  public static let ep3_uikitStylingWithFunctions = Episode(
     blurb: """
 We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep47_predictableRandomness_pt1 = Episode(
+  public static let ep47_predictableRandomness_pt1 = Episode(
     blurb: """
 Let's set out to make the untestable testable. This week we make composable randomness compatible with Swift's new APIs and explore various ways of controlling those APIs, both locally and globally.
 """,

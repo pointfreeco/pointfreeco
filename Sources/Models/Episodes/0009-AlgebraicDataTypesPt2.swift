@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep9_algebraicDataTypes_exponents = Episode(
+  public static let ep9_algebraicDataTypes_exponents = Episode(
     blurb: """
 We continue our explorations into algebra and the Swift type system. We show that exponents correspond to functions in Swift, and that by using the properties of exponents we can better understand what makes some functions more complex than others.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep27_domainSpecificLanguages_pt2 = Episode(
+  public static let ep27_domainSpecificLanguages_pt2 = Episode(
     blurb: """
 We finish our introduction to DSLs by adding two new features to our toy example: support for multiple variables and support for let-bindings so that we can share subexpressions within a larger expression. With these fundamentals out of the way, we will be ready to tackle a real-world DSL soon!
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep1_functions = Episode(
+  public static let ep1_functions = Episode(
     blurb: """
 Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
 """,

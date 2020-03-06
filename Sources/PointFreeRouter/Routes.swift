@@ -43,7 +43,7 @@ public enum Route: Equatable {
     referralCode: User.ReferralCode?
   )
   case team(Team)
-  case useEpisodeCredit(Episode.Id)
+  case useEpisodeCredit(Episode)
   case webhooks(Webhooks)
 
   public enum Blog: Equatable {
@@ -74,8 +74,8 @@ public enum Route: Equatable {
 
   public enum EpisodeRoute: Equatable {
     case index
-    case progress(param: Either<String, Episode.Id>, percent: Int)
-    case show(Either<String, Episode.Id>)
+    case progress(Episode, percent: Int)
+    case show(Episode)
   }
 
   public enum Feed: Equatable {
@@ -176,13 +176,13 @@ let routers: [Router<Route>] = [
   .case(.episode(.index))
     <¢> get %> "episodes" <% end,
 
-  parenthesize(.case { .episode(.progress(param: $0, percent: $1)) })
-    <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"
+  parenthesize(.case { .episode(.progress($0, percent: $1)) })
+    <¢> post %> "episodes" %> pathParam(.episode) <%> "progress"
     %> queryParam("percent", .int)
     <% end,
 
   .case { .episode(.show($0)) }
-    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
+    <¢> get %> "episodes" %> pathParam(.episode) <% end,
 
   .case(.feed(.atom))
     <¢> get %> "feed" %> "atom.xml" <% end,
@@ -282,7 +282,7 @@ let routers: [Router<Route>] = [
     <% end,
 
   .case(Route.useEpisodeCredit)
-    <¢> post %> "episodes" %> pathParam(.tagged(.int)) <% "credit" <% end,
+    <¢> post %> "episodes" %> pathParam(.episode) <% "credit" <% end,
 
   .case { .webhooks(.stripe(.knownEvent($0))) }
     <¢> post %> "webhooks" %> "stripe"
@@ -324,8 +324,11 @@ extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
   static let blogPostIdOrString = either(.string, .tagged(.int))
 }
 
-extension PartialIso where A == String, B == Either<String, Episode.Id> {
-  static var episodeIdOrString = either(.string, .tagged(.int))
+extension PartialIso where A == String, B == Episode {
+  static let episode = Self(
+    apply: { slug in Episode.all.first(where: { $0.slug == slug }) },
+    unapply: { $0.slug }
+  )
 }
 
 private let subscriberDataIso = PartialIso<String, SubscribeData?>(

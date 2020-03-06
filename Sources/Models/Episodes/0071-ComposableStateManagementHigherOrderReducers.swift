@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep71_composableStateManagement_higherOrderReducers = Episode(
+  public static let ep71_composableStateManagement_higherOrderReducers = Episode(
     blurb: """
 We will explore a form of reducer composition that will take our applications to the _next level_. Higher-order reducers will allow us to implement broad, cross-cutting functionality on top of our applications with very little work, and without littering our application code with unnecessary logic. And, we'll finally answer "what's the point?!"
 """,

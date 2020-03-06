@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep78_effectfulStateManagement_asynchronousEffects = Episode(
+  public static let ep78_effectfulStateManagement_asynchronousEffects = Episode(
     blurb: """
 It's time to finish our architecture's story for side effects. We've described synchronous effects and unidirectional effects, but we still haven't captured the complexity of async effects. Let's fix that with a final, functional refactor.
 """,

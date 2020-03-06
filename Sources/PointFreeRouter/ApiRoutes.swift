@@ -5,7 +5,7 @@ import Models
 extension Route {
   public enum Api: Equatable {
     case episodes
-    case episode(Episode.Id)
+    case episode(Episode)
   }
 }
 
@@ -17,5 +17,5 @@ private let apiRouters: [Router<Route.Api>] = [
     <¢> "episodes" <% end,
 
   .case(Route.Api.episode)
-    <¢> "episodes" %> pathParam(.tagged(.int)) <% end
+    <¢> "episodes" %> pathParam(.episode) <% end
 ]

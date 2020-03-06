@@ -84,22 +84,15 @@ func apiMiddleware(
       |> writeStatus(.ok)
       >=> respondJson
 
-  case let .episode(id):
-    let episode = Current.episodes()
-      .first { $0.id == id }
-      .map {
-        Api.EpisodeDetail(
-          episode: $0,
-          currentDate: Current.date()
-        )
-    }
+  case let .episode(episode):
+    let episode = Api.EpisodeDetail(
+      episode: episode,
+      currentDate: Current.date()
+    )
 
     return conn.map(const(episode))
-      |> (
-        filterMap(pure, or: routeNotFoundMiddleware) // TODO: make a JSON 404 payload?
-          <| writeStatus(.ok)
-          >=> respondJson
-    )
+      |> writeStatus(.ok)
+      >=> respondJson
   }
 }
 

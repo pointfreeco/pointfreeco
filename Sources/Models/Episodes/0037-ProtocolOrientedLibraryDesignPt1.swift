@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep37_protocolOrientedLibraryDesign_pt1 = Episode(
+  public static let ep37_protocolOrientedLibraryDesign_pt1 = Episode(
     blurb: """
 Perhaps the most popular approach to code reuse and extensibility in Swift is to liberally adopt protocol-oriented programming, and many Swift libraries are designed with protocol-heavy APIs. In today's episode we refactor a sample library to use protocols and examine the pros and cons of this approach.
 """,

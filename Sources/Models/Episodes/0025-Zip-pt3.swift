@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep25_theManyFacesOfZip_pt3 = Episode(
+  public static let ep25_theManyFacesOfZip_pt3 = Episode(
     blurb: """
 The third, and final, part of our introductory series to `zip` finally answers the question: "What's the point?"
 """,

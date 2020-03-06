@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep32_decodableRandomness_pt2 = Episode(
+  public static let ep32_decodableRandomness_pt2 = Episode(
     blurb: """
 This week we compare our `Decodable` solution to building random structures with a composable solution involving the `Gen` type, exploring the differences and trade-offs of each approach. Along the way we'll rediscover a familiar old friend with a brand new application.
 """,

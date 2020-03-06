@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep82_testableStateManagement_reducers = Episode(
+  public static let ep82_testableStateManagement_reducers = Episode(
     blurb: """
 It's time to see how our architecture handles the fifth and final problem we identified as being important to solve when building a moderately complex application: testing! Let's get our feet wet and write some tests for all of the reducers powering our application.
 """,

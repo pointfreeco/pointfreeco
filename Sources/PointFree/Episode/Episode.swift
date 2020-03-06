@@ -29,7 +29,7 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
 
     > \(episode.blurb)
     """,
-    link: url(to: .episode(.show(.left(episode.slug)))),
+    link: url(to: .episode(.show(episode))),
     publishedAt: episode.publishedAt,
     title: episode.title
   )

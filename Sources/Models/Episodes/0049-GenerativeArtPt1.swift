@@ -2,7 +2,7 @@
 import Foundation
 
 extension Episode {
-  static let ep49_generativeArt_pt1 = Episode(
+  public static let ep49_generativeArt_pt1 = Episode(
     blurb: """
 Now that we have made randomness both composable _and_ testable, let's have a little fun with it! We are going to explore making some complex generative art that is built from simple, composable units.
 """,

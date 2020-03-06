@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep81_theCombineFrameworkAndEffects_pt2 = Episode(
+  public static let ep81_theCombineFrameworkAndEffects_pt2 = Episode(
     blurb: """
 Now that we've explored the Combine framework and identified its correspondence with the `Effect` type, let's refactor our architecture to take full advantage of it.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep5_higherOrderFunctions = Episode(
+  public static let ep5_higherOrderFunctions = Episode(
     blurb: """
 Most of the time we interact with code we did not write, and it doesn’t always play nicely with the types \
 of compositions we have developed in previous episodes. We explore how higher-order functions can help \

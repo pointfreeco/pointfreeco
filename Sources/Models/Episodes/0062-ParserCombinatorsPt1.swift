@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep62_parserCombinators_pt1 = Episode(
+  public static let ep62_parserCombinators_pt1 = Episode(
     blurb: """
 Even though `map`, `flatMap` and `zip` pack a punch, there are still many parsing operations that can't be done using them alone. This is where "parser combinators" come into play. Let's look at a few common parsing problems and solve them using parser combinators!
 """,

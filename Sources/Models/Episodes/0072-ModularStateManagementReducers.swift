@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep72_modularStateManagement_reducers = Episode(
+  public static let ep72_modularStateManagement_reducers = Episode(
     blurb: """
 In exploring four forms of composition on reducer functions, we made the claim that it gave us the power to fully isolate app logic, making it simpler and easier to understand. This week we put our money where our mouth is and show just how modular these reducers are!
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep21_playgroundDrivenDevelopment = Episode(
+  public static let ep21_playgroundDrivenDevelopment = Episode(
     blurb: """
 We use Swift playgrounds on this series as a tool to dive deep into functional programming concepts, but they can be so much more. Today we demonstrate a few tricks to allow you to use playgrounds for everyday development, allowing for a faster iteration cycle.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep55_swiftSyntaxCommandLineTool = Episode(
+  public static let ep55_swiftSyntaxCommandLineTool = Episode(
     blurb: """
 Today we finally extract our enum property code generator to a Swift Package Manager library and CLI tool. We'll also do some next-level snapshot testing: not only will we snapshot-test our generated code, but we'll leverage the Swift compiler to verify that our snapshot builds.
 """,

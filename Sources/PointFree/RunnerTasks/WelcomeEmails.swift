@@ -177,7 +177,7 @@ func welcomeEmail2Content(user: User) -> Node {
     .filter { !$0.subscriberOnly }
     .map {
       """
-      * [\($0.title)](\(url(to: .episode(.show(.left($0.slug))))))
+      * [\($0.title)](\(url(to: .episode(.show($0)))))
       """
   }
   .joined(separator: "\n")

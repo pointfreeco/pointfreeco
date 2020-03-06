@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep31_decodableRandomness_pt1 = Episode(
+  public static let ep31_decodableRandomness_pt1 = Episode(
     blurb: """
 This week we dive deeper into randomness and composition by looking to a seemingly random place: the `Decodable` protocol. While we're used to using the `Codable` set of protocols when working with JSON serialization and deserialization, it opens the opportunity for so much more.
 """,

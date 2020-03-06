@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep42_theManyFacesOfFlatMap_pt1 = Episode(
+  public static let ep42_theManyFacesOfFlatMap_pt1 = Episode(
     blurb: """
 Previously we've discussed the `map` and `zip` operations in detail, and today we start completing the trilogy by exploring `flatMap`. This operation is precisely the tool needed to solve a nesting problem that `map` and `zip` alone cannot.
 """,

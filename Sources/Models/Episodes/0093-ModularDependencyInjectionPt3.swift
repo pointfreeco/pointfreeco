@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep93_modularDependencyInjection_pt3 = Episode(
+  public static let ep93_modularDependencyInjection_pt3 = Episode(
     blurb: """
 It's time to prove that baking an "environment" of dependencies directly into the composable architecture solves three crucial problems that the global environment pattern could not.
 """,

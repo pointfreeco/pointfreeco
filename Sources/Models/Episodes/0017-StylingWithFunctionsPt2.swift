@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep17_stylingWithOverture = Episode(
+  public static let ep17_stylingWithOverture = Episode(
     blurb: """
 We revisit an old topic: styling UIKit components. Using some of the machinery we have built from previous episodes, in particular setters and function composition, we refactor a screen's styles to be more modular and composable.
 """,

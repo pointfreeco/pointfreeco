@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep66_swiftuiAndStateManagement_pt2 = Episode(
+  public static let ep66_swiftuiAndStateManagement_pt2 = Episode(
     blurb: """
 This week we finish up our moderately complex SwiftUI application by adding more screens, more state, and even sprinkle in a side effect so that we can finally ask: "what's the point!?"
 """,

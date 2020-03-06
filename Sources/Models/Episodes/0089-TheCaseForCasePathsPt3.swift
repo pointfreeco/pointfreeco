@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep89_theCaseForCasePaths_pt3 = Episode(
+  public static let ep89_theCaseForCasePaths_pt3 = Episode(
     blurb: """
 Although case paths are powerful and a natural extension of key paths, they are difficult to work with right now. They require either hand-written boilerplate, or code generation. However, there's another way to generate case paths for free, and it will make them just as ergonomic to use as key paths.
 """,

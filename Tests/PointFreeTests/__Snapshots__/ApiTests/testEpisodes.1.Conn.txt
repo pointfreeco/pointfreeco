@@ -2,7 +2,7 @@ GET http://localhost:8080/api/episodes
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 785
+Content-Length: 765
 Content-Type: application/json
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -20,7 +20,7 @@ X-XSS-Protection: 1; mode=block
     "publishedAt" : 503884800,
     "sequence" : 2,
     "subscriberOnly" : true,
-    "title" : "Proof in Functions"
+    "title" : "Side Effects"
   },
   {
     "blurb" : "As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.",
@@ -30,6 +30,6 @@ X-XSS-Protection: 1; mode=block
     "publishedAt" : 519652800,
     "sequence" : 1,
     "subscriberOnly" : false,
-    "title" : "Type-Safe HTML in Swift"
+    "title" : "Functions"
   }
 ]

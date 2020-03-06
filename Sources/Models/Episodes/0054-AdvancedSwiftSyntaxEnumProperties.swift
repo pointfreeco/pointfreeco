@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep54_advancedSwiftSyntaxEnumProperties = Episode(
+  public static let ep54_advancedSwiftSyntaxEnumProperties = Episode(
     blurb: """
 This week we'll put the finishing touches on our enum property code generation tool. We'll add support for enum cases with multiple associated values and enum cases with no associated values, and we'll add a feature that will make enums even more ergonomic to work with!
 """,

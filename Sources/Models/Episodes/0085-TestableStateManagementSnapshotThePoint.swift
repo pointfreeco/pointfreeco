@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep85_testableStateManagement_thePoint = Episode(
+  public static let ep85_testableStateManagement_thePoint = Episode(
     blurb: """
 We've made testing in our architecture a joy! We can test deep aspects of our application with minimal ceremony, but it took us a whole 18 episodes to get here! So this week we ask: what's the point!? Can we write these kinds of tests in vanilla SwiftUI?
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep92_modularDependencyInjection_pt2 = Episode(
+  public static let ep92_modularDependencyInjection_pt2 = Episode(
     blurb: """
 Now that we've baked the "environment" of dependencies directly into the composable architecture, we're ready to refactor our app's frameworks and tests to work with them in a modular and more lightweight way.
 """,

@@ -2,7 +2,7 @@ import Foundation
 import Tagged
 import TaggedTime
 
-public struct Episode {
+public struct Episode: Equatable {
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
@@ -207,7 +207,7 @@ public struct Episode {
     public typealias Slug = Tagged<Self, String>
   }
 
-  public struct Exercise {
+  public struct Exercise: Equatable {
     public var problem: String
     public var solution: String?
 
@@ -223,7 +223,7 @@ public struct Episode {
     case subscriberOnly
   }
 
-  public struct Reference: Codable {
+  public struct Reference: Codable, Equatable {
     public var author: String?
     public var blurb: String?
     public var link: String
@@ -334,7 +334,7 @@ public struct Episode {
     }
   }
   
-  public struct Video: Codable {
+  public struct Video: Codable, Equatable {
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
     public var downloadUrl: String

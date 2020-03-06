@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep69_composableStateManagement_statePullbacks = Episode(
+  public static let ep69_composableStateManagement_statePullbacks = Episode(
     blurb: """
 So far we have pulled a lot of our application's logic into a reducer, but that reducer is starting to get big. Turns out that reducers emit many types of powerful compositions, and this week we explore two of them: combines and pullbacks.
 """,

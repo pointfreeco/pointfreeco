@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep38_protocolOrientedLibraryDesign_pt2 = Episode(
+  public static let ep38_protocolOrientedLibraryDesign_pt2 = Episode(
     blurb: """
 With our library fully generalized using protocols, we show off the flexibility of our abstraction by adding new conformances and functionality. In fleshing out our library we find out why protocols may not be the right tool for the job.
 """,
