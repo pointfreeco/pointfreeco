@@ -33,6 +33,7 @@ public func collectionSection(
     coreLessons(section.coreLessons),
     relatedItems(section.related),
     whereToGoFromHere(section.whereToGoFromHere),
+    sectionNavigation(),
   ]
 }
 
@@ -208,7 +209,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func whereToGoFromHere(_ string: String) -> Node {
   .div(
     attributes: [
-      .style(backgroundColor(.other("fafafa"))),
+      .style(backgroundColor(.other("#fafafa"))),
     ],
     .gridRow(
       attributes: [
@@ -237,6 +238,55 @@ private func whereToGoFromHere(_ string: String) -> Node {
           "Where to go from here"
         ),
         .markdownBlock(string)
+      )
+    )
+  )
+}
+
+private func sectionNavigation() -> Node {
+  .div(
+    attributes: [
+      .class([
+        Class.border.top,
+      ]),
+      .style(
+        backgroundColor(.other("#fafafa"))
+          <> borderColor(top: .other("#e8e8e8"))
+      ),
+    ],
+    .gridRow(
+      attributes: [
+        .class([
+          Class.grid.center(.mobile),
+        ]),
+        .style(
+          height(.px(88))
+            <> maxWidth(.px(1080))
+            <> margin(topBottom: nil, leftRight: .auto)
+        ),
+      ],
+      .gridColumn(
+        sizes: [.mobile: 6],
+        attributes: [
+          .class([
+            Class.border.right
+          ]),
+          .style(borderColor(right: .other("#e8e8e8"))),
+        ],
+        ""
+      ),
+      .gridColumn(
+        sizes: [.mobile: 6],
+        attributes: [
+          .class([
+            Class.grid.end(.mobile),
+            Class.padding([
+              .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
+              .mobile: [.leftRight: 3, .topBottom: 2],
+            ]),
+          ]),
+        ],
+        ""
       )
     )
   )

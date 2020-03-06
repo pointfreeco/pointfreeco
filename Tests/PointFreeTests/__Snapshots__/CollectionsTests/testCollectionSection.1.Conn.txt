@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56314
+Content-Length: 57100
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2126,7 +2126,7 @@ html {
         </div>
       </div>
     </div>
-    <div style="background-color:fafafa">
+    <div style="background-color:#fafafa">
       <div class="between-d
                   row"
            style="max-width:1080px;
@@ -2154,6 +2154,34 @@ html {
             <p>You can accomplish quite a bit with the <code>map</code> and <code>zip</code> operations alone, such as transforming the underlying value of a computation, or combining multiple computations into a single one. But there are still some things they cannot accomplish, such as combining multiple computations together in such a way that later computations depend on earlier computations. This property alone is what motivates us to introduce the <code>flatMap</code> operation.</p>
 
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-top"
+         style="background-color:#fafafa;
+                border-top-color:#e8e8e8">
+      <div class="center-m
+                  row"
+           style="height:88px;
+                  max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="border-right
+                    col-m
+                    col-m-6"
+             style="border-right-color:#e8e8e8">
+        </div>
+        <div class="end-m
+                    d-pb4
+                    d-pt3
+                    d-pl5
+                    d-pr5
+                    m-pl3
+                    m-pr3
+                    m-pt2
+                    m-pb2
+                    col-m
+                    col-m-6">
         </div>
       </div>
     </div>
