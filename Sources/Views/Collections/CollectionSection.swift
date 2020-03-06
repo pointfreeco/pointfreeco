@@ -96,15 +96,19 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
     attributes: [
       .style(margin(top: .px(4))),
     ],
-    .gridRow(
+    .a(
       attributes: [
         .class([
           Class.border.left,
-          Class.padding([.mobile: [.leftRight: 2]]),
           Class.flex.items.center,
+          Class.grid.row,
+          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.pf.collections.hoverBackground,
+          Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
+        .href(url(to: .episode(.show(.right(lesson.episode.id))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
@@ -186,19 +190,23 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
       .style(margin(top: .px(4))),
     ],
     .markdownBlock(relatedItem.blurb),
-    .gridRow(
+    .a(
       attributes: [
         .class([
           Class.border.left,
+          Class.flex.items.center,
+          Class.grid.row,
           Class.margin([
             .desktop: [.top: 2, .bottom: 3],
             .mobile: [.top: 1, .bottom: 2],
           ]),
           Class.padding([.mobile: [.leftRight: 2]]),
-          Class.flex.items.center,
+          Class.pf.collections.hoverBackground,
+          Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.gray900,
         ]),
+        .href(url(to: .episode(.show(.right(episode.id))))),
         .style(
           backgroundColor(.other("#fafafa"))
           <> borderColor(all: .other("#e8e8e8"))
@@ -406,6 +414,8 @@ private func sectionNavigation(
     )
   )
 }
+
+// MARK: - Helpers
 
 private extension Seconds where RawValue == Int {
   var formattedDescription: String {

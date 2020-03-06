@@ -79,7 +79,7 @@ private func sectionRow(
     attributes: [
       .class([
         Class.border.bottom,
-        Class.private.hoverBackground,
+        Class.pf.collections.hoverBackground,
       ]),
       .style(key("border-bottom-color", "#E8E8E8")),
     ],
@@ -102,7 +102,7 @@ private func sectionRow(
               Class.display.block,
               Class.grid.row,
               Class.padding([.mobile: [.topBottom: 2]]),
-              Class.private.hoverLink,
+              Class.pf.collections.hoverLink,
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
@@ -133,18 +133,4 @@ private func sectionRow(
       )
     )
   )
-}
-
-// MARK: - Stylesheet
-
-public let collectionIndexStylesheet = Stylesheet.concat(
-  (Class.private.hoverBackground & .pseudo(.hover)) % backgroundColor(.white(0.9)),
-  (Class.private.hoverLink & .pseudo(.hover)) % key("text-decoration", "none")
-)
-
-fileprivate extension Class {
-  enum `private` {
-    static let hoverBackground = CssSelector.class("col-idx-hover")
-    static let hoverLink = CssSelector.class("col-idx-hover")
-  }
 }

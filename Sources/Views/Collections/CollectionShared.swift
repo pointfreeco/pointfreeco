@@ -12,6 +12,8 @@ import Styleguide
 import Tagged
 import TaggedTime
 
+// MARK: HTML -
+
 func collectionNavigation(
   left: (title: String, url: String)?
 ) -> Node {
@@ -133,6 +135,22 @@ func collectionHeader(
     )
   )
 }
+
+// MARK: - Stylesheet
+
+public let collectionsStylesheet = Stylesheet.concat(
+  (Class.pf.collections.hoverBackground & .pseudo(.hover)) % backgroundColor(.white(0.9)),
+  (Class.pf.collections.hoverLink & .pseudo(.hover)) % key("text-decoration", "none")
+)
+
+extension Class.pf {
+  enum collections {
+    static let hoverBackground = CssSelector.class("col-idx-hover")
+    static let hoverLink = CssSelector.class("col-idx-link")
+  }
+}
+
+// MARK: - Helpers
 
 fileprivate extension String {
   func pluralize(_ count: Int) -> String {

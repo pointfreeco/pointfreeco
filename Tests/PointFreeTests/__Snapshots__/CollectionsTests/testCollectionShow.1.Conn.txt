@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51553
+Content-Length: 51549
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1699,7 +1699,7 @@ html {
   background-color : #e6e6e6;
 }
 
-.col-idx-hover:hover {
+.col-idx-link:hover {
   text-decoration : none;
 }
 
@@ -1931,7 +1931,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5
@@ -1973,7 +1973,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5
@@ -2015,7 +2015,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5
