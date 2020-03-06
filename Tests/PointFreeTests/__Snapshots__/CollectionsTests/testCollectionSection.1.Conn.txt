@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56266
+Content-Length: 56314
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1837,7 +1837,9 @@ html {
     <div class="bg-black
                 border-top"
          style="border-top-color:#000000">
-      <div class="middle-d
+      <div class="m-pl1
+                  m-pr1
+                  middle-m
                   row"
            style="color:#7d7d7d;
                   height:50px;

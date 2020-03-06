@@ -26,7 +26,8 @@ func collectionNavigation(
     .gridRow(
       attributes: [
         .class([
-          Class.grid.middle(.desktop),
+          Class.padding([.mobile: [.leftRight: 1]]),
+          Class.grid.middle(.mobile),
         ]),
         .style(
           color(.other("#7d7d7d"))
