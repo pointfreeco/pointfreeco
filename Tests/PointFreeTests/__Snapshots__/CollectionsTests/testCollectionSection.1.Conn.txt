@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 58858
+Content-Length: 62253
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1956,10 +1956,16 @@ html {
                         border-left-color:#e8e8e8;
                         border-left-width:4px;
                         height:48px">
-              <div class="start-m
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 1
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 1
+                </div>
               </div>
               <div class="end-m
                           col-m
@@ -1984,10 +1990,16 @@ html {
                         border-left-color:#e8e8e8;
                         border-left-width:4px;
                         height:48px">
-              <div class="start-m
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 2
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 2
+                </div>
               </div>
               <div class="end-m
                           col-m
@@ -2012,10 +2024,16 @@ html {
                         border-left-color:#e8e8e8;
                         border-left-width:4px;
                         height:48px">
-              <div class="start-m
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 3
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 3
+                </div>
               </div>
               <div class="end-m
                           col-m
@@ -2074,10 +2092,16 @@ html {
                         border-left-color:#e8e8e8;
                         border-left-width:4px;
                         height:48px">
-              <div class="start-m
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                Composable Parsing: Zip
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  Composable Parsing: Zip
+                </div>
               </div>
               <div class="end-m
                           col-m
@@ -2111,10 +2135,16 @@ html {
                         border-left-color:#e8e8e8;
                         border-left-width:4px;
                         height:48px">
-              <div class="start-m
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                Decodable Randomness: Part 2
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  Decodable Randomness: Part 2
+                </div>
               </div>
               <div class="end-m
                           col-m

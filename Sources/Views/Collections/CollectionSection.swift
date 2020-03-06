@@ -115,10 +115,16 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
         sizes: [.mobile: 9],
         attributes: [
           .class([
+            Class.flex.items.center,
             Class.grid.start(.mobile),
           ]),
         ],
-        .text(lesson.episode.title)
+        .gridRow(
+          .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
+            .class([Class.padding([.mobile: [.right: 1]])]),
+          ]),
+          .text(lesson.episode.title)
+        )
       ),
       .gridColumn(
         sizes: [.mobile: 3],
@@ -204,10 +210,16 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
         sizes: [.mobile: 9],
         attributes: [
           .class([
+            Class.flex.items.center,
             Class.grid.start(.mobile),
           ]),
         ],
-        .text(episode.title)
+        .gridRow(
+          .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
+            .class([Class.padding([.mobile: [.right: 1]])]),
+          ]),
+          .text(episode.title)
+        )
       ),
       .gridColumn(
         sizes: [.mobile: 3],
