@@ -4,6 +4,7 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeRouter
 import Prelude
 import Styleguide
 
@@ -12,7 +13,8 @@ public struct NewEpisodePageData {
   var user: User?
   var subscriberState: SubscriberState
   var episode: Episode
-  var previousEpisodes: [Episode]
+  var previousEpisode: Episode?
+  var nextEpisode: Episode?
   var date: () -> Date
 
   public init(
@@ -20,14 +22,16 @@ public struct NewEpisodePageData {
     user: User?,
     subscriberState: SubscriberState,
     episode: Episode,
-    previousEpisodes: [Episode],
+    previousEpisode: Episode?,
+    nextEpisode: Episode?,
     date: @escaping () -> Date
     ) {
     self.permission = permission
     self.user = user
     self.subscriberState = subscriberState
     self.episode = episode
-    self.previousEpisodes = previousEpisodes
+    self.previousEpisode = previousEpisode
+    self.nextEpisode = nextEpisode
     self.date = date
   }
 }
@@ -35,7 +39,6 @@ public struct NewEpisodePageData {
 public func newEpisodePageView(
   episodePageData data: NewEpisodePageData
 ) -> Node {
-
   [
     episodeHeader(
       episode: data.episode,
@@ -46,23 +49,127 @@ public func newEpisodePageView(
       isEpisodeViewable: isEpisodeViewable(for: data.permission)
     ),
     mainContent(
-      episode: data.episode,
+      data: data,
       isEpisodeViewable: isEpisodeViewable(for: data.permission)
     )
   ]
 }
 
-private func toc(
+private func sideBar(
+  data: NewEpisodePageData
+) -> Node {
+  .div(
+    attributes: [
+      .class([
+        Class.border.all,
+        Class.border.rounded.all,
+        Class.pf.colors.border.gray850,
+      ])
+    ],
+    sequentialEpisodeRow(episode: data.previousEpisode, type: .previous),
+    currentEpisodeInfoRow(episode: data.episode),
+    sequentialEpisodeRow(episode: data.nextEpisode, type: .next)
+  )
+}
+
+private enum SequentialEpisodeType {
+  case next
+  case previous
+
+  var label: String {
+    switch self {
+    case .next:     return "Next episode"
+    case .previous: return "Previous episode"
+    }
+  }
+}
+private func sequentialEpisodeRow(
+  episode: Episode?,
+  type: SequentialEpisodeType
+) -> Node {
+  guard let episode = episode else { return [] }
+
+  return .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.all: 2]]),
+        type == .next ? Class.border.top : Class.border.bottom,
+        Class.pf.colors.border.gray850,
+        Class.grid.middle(.desktop),
+      ])
+    ],
+    .gridColumn(
+      sizes: [.mobile: 1],
+      attributes: [
+        .class([Class.type.align.center])
+      ],
+      .img(
+        base64: playIconSvgBase64(fill: "a1a1a1"),
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([Class.align.middle]),
+          .style(margin(top: .px(2)))
+        ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 11],
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.left: 1]]),
+        ])
+      ],
+      .h6(
+        attributes: [
+          .class([
+            Class.pf.type.responsiveTitle8,
+            Class.type.lineHeight(0),
+            Class.pf.colors.fg.gray650,
+            Class.padding([.mobile: [.all: 0]]),
+            Class.margin([.mobile: [.all: 0]])
+          ])
+        ],
+        .text(type.label)
+      ),
+      .p(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.all: 0]]),
+            Class.margin([.mobile: [.all: 0]]),
+            Class.pf.colors.fg.gray650,
+          ]),
+          .style(unsafe: type == .previous ? """
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            """ : "")
+        ],
+        .a(
+          attributes: [
+            .class([
+              Class.pf.colors.link.gray650,
+              Class.pf.type.body.leading,
+              Class.type.lineHeight(1)
+            ]),
+            .href(url(to: .episode(.show(.left(episode.slug)))))
+          ],
+          .text(episode.title)
+        )
+      )
+    )
+  )
+}
+
+private func currentEpisodeInfoRow(
   episode: Episode
 ) -> Node {
   .div(
     attributes: [
       .class([
-        Class.padding([.mobile: [.all: 2]]),
-        Class.border.all,
-        Class.border.rounded.all,
-        Class.pf.colors.border.gray850,
-      ])
+        Class.padding([.mobile: [.all: 2]])
+      ]),
+      .style(backgroundColor(.rgba(250, 250, 250, 1.0)))
     ],
     .gridRow(
       attributes: [
@@ -74,7 +181,7 @@ private func toc(
           .class([Class.type.align.center])
         ],
         .img(
-          base64: playIconSvgBase64,
+          base64: playIconSvgBase64(),
           type: .image(.svg),
           alt: "",
           attributes: [
@@ -88,13 +195,9 @@ private func toc(
         attributes: [
           .class([
             Class.pf.type.body.leading,
-            Class.padding([.mobile: [.left: 1]])
-          ]),
-          .style(unsafe: """
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
-""")
+            Class.padding([.mobile: [.left: 1]]),
+            Class.type.lineHeight(1)
+          ])
         ],
         .text(episode.title)
       )
@@ -147,7 +250,12 @@ private func chaptersRow(episode: Episode) -> Node {
               ]),
               .style(padding(topBottom: .px(2)))
             ],
-            .text(block.content)
+            .a(
+              attributes: [
+                .href("#t\(block.timestamp ?? 0)")
+              ],
+              .text(block.content)
+            )
           ),
           .gridColumn(
             sizes: [.mobile: 2],
@@ -191,7 +299,12 @@ private func exercisesRow(episode: Episode) -> Node {
           Class.padding([.mobile: [.left: 1]])
         ])
       ],
-      "Exercises"
+      .a(
+        attributes: [
+          .href("#exercises")
+        ],
+        "Exercises"
+      )
     )
   )
 }
@@ -222,7 +335,12 @@ private func referencesRow(episode: Episode) -> Node {
           Class.padding([.mobile: [.left: 1]])
         ])
       ],
-      "References"
+      .a(
+        attributes: [
+          .href("#references")
+        ],
+        "References"
+      )
     )
   )
 }
@@ -251,12 +369,17 @@ private let downloadRow = Node.gridRow(
         Class.padding([.mobile: [.left: 1]])
       ])
     ],
-    "Downloads"
+    .a(
+      attributes: [
+        .href("#downloads")
+      ],
+      "Downloads"
+    )
   )
 )
 
 private func mainContent(
-  episode: Episode,
+  data: NewEpisodePageData,
   isEpisodeViewable: Bool
 ) -> Node {
 
@@ -278,16 +401,70 @@ private func mainContent(
       sizes: [.mobile: 12, .desktop: 4],
       attributes: [
         .class([
-          Class.margin([.mobile: [.top: 3]])
+          Class.padding([.mobile: [.top: 3]]),
+          Class.position.sticky(.desktop),
+          Class.position.top0
         ])
       ],
-      toc(episode: episode)
+      sideBar(data: data)
     ),
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
       transcriptView(
-        blocks: episode.transcriptBlocks,
+        blocks: data.episode.transcriptBlocks,
         isEpisodeViewable: isEpisodeViewable
+      ),
+      exercisesView(exercises: data.episode.exercises),
+      referencesView(references: data.episode.references),
+      downloadsView(episode: data.episode)
+    )
+  )
+}
+
+private func downloadsView(episode: Episode) -> Node {
+  //.href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory)))
+  .div(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+        ])
+    ],
+    .h2(
+      attributes: [
+        .id("downloads"),
+        .class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+      ],
+      "Downloads"
+    ),
+    .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]])
+        ])
+      ],
+      .h3(
+        attributes: [
+          .class([
+            Class.pf.type.responsiveTitle5
+          ])
+        ],
+        "Sample Code"
+      ),
+      .img(
+        base64: gitHubSvgBase64(fill: "#974dff"),
+        type: .image(.svg),
+        alt: "",
+        attributes: [.class([Class.align.middle]), .width(20), .height(20)]
+      ),
+      .a(
+        attributes: [
+          .href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: episode.codeSampleDirectory))),
+          .class([Class.pf.colors.link.purple, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+        ],
+        .text(episode.codeSampleDirectory)
       )
     )
   )

@@ -5,14 +5,16 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
-public let playIconSvgBase64 = base64EncodedString("""
+public func playIconSvgBase64(fill: String = "121212") -> String {
+  base64EncodedString("""
 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
   <g fill="none" fill-rule="evenodd">
     <path fill="#FFF" d="M-73-1123H951v3583H-73z"/>
-    <path d="M8 14.5l6-4.5-6-4.5v9zM10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#121212"/>
+    <path d="M8 14.5l6-4.5-6-4.5v9zM10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#\(fill)"/>
   </g>
 </svg>
 """)
+}
 
 public let exercisesIconSvgBase64 = base64EncodedString("""
 <svg width="16" height="18" xmlns="http://www.w3.org/2000/svg">

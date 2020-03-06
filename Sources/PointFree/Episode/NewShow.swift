@@ -7,15 +7,21 @@ import Tuple
 import Views
 
 let newEpisodeResponse: M<Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>>
-  =
-  fetchEpisodeForParam
+  = basicAuth(
+    user: Current.envVars.basicAuth.username,
+    password: Current.envVars.basicAuth.password
+    )
+    <<< fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
       view: Views.newEpisodePageView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
-        SimplePageLayoutData(
+        let previousEpisode = Current.episodes().first(where: { $0.sequence == episode.sequence - 1 })
+        let nextEpisode = Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
+        
+        return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
@@ -24,7 +30,8 @@ let newEpisodeResponse: M<Tuple4<Either<String, Episode.Id>, User?, SubscriberSt
             user: currentUser,
             subscriberState: subscriberState,
             episode: episode,
-            previousEpisodes: episode.previousEpisodes,
+            previousEpisode: previousEpisode,
+            nextEpisode: nextEpisode,
             date: Current.date
           ),
           description: episode.blurb,
