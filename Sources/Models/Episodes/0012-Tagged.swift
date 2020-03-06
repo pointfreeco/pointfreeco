@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep12_tagged = Episode(
+  public static let ep12_tagged = Episode(
     blurb: """
 We typically model our data with very general types, like strings and ints, but the values themselves are often far more specific, like emails and ids. We'll explore how this can lead to subtle runtime bugs and how we can strengthen these types in an ergonomic way using several features new to Swift 4.1.
 """,

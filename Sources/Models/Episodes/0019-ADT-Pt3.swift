@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep19_algebraicDataTypes_genericsAndRecursion = Episode(
+  public static let ep19_algebraicDataTypes_genericsAndRecursion = Episode(
     blurb: """
 Our third installment of algebraic data types explores how generics and recursive data types manifest themselves in algebra. This exploration allows us to construct a useful, precise type that can be useful in everyday programming.
 """,

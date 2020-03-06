@@ -1,4 +1,4 @@
-POST http://localhost:8080/episodes/ep2-proof-in-functions/progress?percent=20
+POST http://localhost:8080/episodes/ep2-side-effects/progress?percent=20
 Cookie: pf_session={}
 
 200 OK

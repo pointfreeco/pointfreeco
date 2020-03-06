@@ -48,8 +48,8 @@ private let subscriberOnlyEpisode = Episode(
   permission: .subscriberOnly,
   previousEpisodeInCollection: 1,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
-  sequence: 2,
-  title: "Proof in Functions",
+  sequence: Episode.ep2_sideEffects.sequence,
+  title: Episode.ep2_sideEffects.title,
   trailerVideo: .init(
     bytesLength: 5_000_000,
     downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",
@@ -179,8 +179,8 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   permission: .free,
   previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
-  sequence: 1,
-  title: "Type-Safe HTML in Swift",
+  sequence: Episode.ep1_functions.sequence,
+  title: Episode.ep1_functions.title,
   trailerVideo: .init(
     bytesLength: 5_000_000,
     downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",

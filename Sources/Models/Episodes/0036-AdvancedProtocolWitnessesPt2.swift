@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep36_advancedProtocolWitnesses_pt2 = Episode(
+  public static let ep36_advancedProtocolWitnesses_pt2 = Episode(
     blurb: """
 We complete our dictionary for translating Swift protocol concepts into concrete datatypes and functions. This includes protocol inheritance, protocol extensions, default implementations _and_ protocols with associated types. Along the way we will also show how concrete types can express things that are currently impossible with Swift protocols.
 """,

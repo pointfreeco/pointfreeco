@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep18_dependencyInjectionMadeComfortable = Episode(
+  public static let ep18_dependencyInjectionMadeComfortable = Episode(
     blurb: """
 Let's have some fun with the "environment" form of dependency injection we previously explored. We're going to extract out a few more dependencies, strengthen our mocks, and use our Overture library to make manipulating the environment friendlier.
 """,

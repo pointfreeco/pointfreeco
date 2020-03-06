@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep15_settersErgonomicsAndPerformance = Episode(
+  public static let ep15_settersErgonomicsAndPerformance = Episode(
     blurb: """
 Functional setters can be very powerful, but the way we have defined them so far is not super ergonomic \
 or performant. We will provide a friendlier API to use setters and take advantage of Swift's value mutation \

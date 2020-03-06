@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep65_swiftuiAndStateManagement_pt1 = Episode(
+  public static let ep65_swiftuiAndStateManagement_pt1 = Episode(
     blurb: """
 Let's begin exploring application architecture by understanding what are the common problems we encounter when trying to build large, complex applications. We will build an app in SwiftUI to see how Apple's new framework approaches solving these problems.
 """,

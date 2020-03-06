@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep8_gettersAndKeyPaths = Episode(
+  public static let ep8_gettersAndKeyPaths = Episode(
     blurb: """
 Key paths aren’t just for setting. They also assist in getting values inside nested structures in a \
 composable way. This can be powerful, allowing us to make the Swift standard library more expressive with \

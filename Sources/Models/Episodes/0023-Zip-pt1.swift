@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep23_theManyFacesOfZip_pt1 = Episode(
+  public static let ep23_theManyFacesOfZip_pt1 = Episode(
     blurb: """
 The `zip` function comes with the Swift standard library, but its utility goes far beyond what we can see there. Turns out, `zip` generalizes a function that we are all familiar with, and it can unify many seemingly disparate concepts. Today we begin a multipart journey into exploring the power behind `zip`.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep67_swiftuiAndStateManagement_pt3 = Episode(
+  public static let ep67_swiftuiAndStateManagement_pt3 = Episode(
     blurb: """
 With our moderately complex SwiftUI application complete we can finally ask ourselves: "what's the point!?" What does SwiftUI have to say about app architecture? What questions are left unanswered? What can we do about it?
 """,

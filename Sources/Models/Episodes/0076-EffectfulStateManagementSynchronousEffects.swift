@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep76_effectfulStateManagement_synchronousEffects = Episode(
+  public static let ep76_effectfulStateManagement_synchronousEffects = Episode(
     blurb: """
 Side effects are one of the biggest sources of complexity in any application. It's time to figure out how to model effects in our architecture. We begin by adding a few new side effects, and then showing how synchronous effects can be handled by altering the signature of our reducers.
 """,

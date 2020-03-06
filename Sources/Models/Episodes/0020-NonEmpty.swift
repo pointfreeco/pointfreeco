@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep20_nonEmpty = Episode(
+  public static let ep20_nonEmpty = Episode(
     blurb: """
 We often deal with collections that we know can never be empty, yet we use arrays to model them. Using the ideas from our last episode on algebraic data types, we develop a `NonEmpty` type that can be used to transform any collection into a non-empty version of itself.
 """,

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep40_asyncFunctionalRefactoring = Episode(
+  public static let ep40_asyncFunctionalRefactoring = Episode(
     blurb: """
 The snapshot testing library we have been designing over the past few weeks has a serious problem: it can't snapshot asynchronous values, like web views and anything that uses delegates or callbacks. Today we embark on a no-regret refactor to fix this problem with the help of a well-studied and well-understood functional type that we have discussed numerous times before.
 """,

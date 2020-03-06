@@ -1,7 +1,7 @@
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import Models
+@testable import Models
 import PointFreeRouter
 import SnapshotTesting
 import UrlFormEncoding
@@ -49,9 +49,9 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
   }
 
   func testEpisodeShowRoute() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
+    let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep1-functions")!)
 
-    let route = Route.episode(.show(.left("ep10-hello-world")))
+    let route = Route.episode(.show(.ep1_functions))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),
@@ -66,11 +66,11 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
 
   func testEpisodeProgressRoute() {
     var request = URLRequest(
-      url: URL(string: "http://localhost:8080/episodes/ep10-hello-world/progress?percent=50")!
+      url: URL(string: "http://localhost:8080/episodes/ep1-functions/progress?percent=50")!
     )
     request.httpMethod = "POST"
 
-    let route = Route.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
+    let route = Route.episode(.progress(.ep1_functions, percent: 50))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),

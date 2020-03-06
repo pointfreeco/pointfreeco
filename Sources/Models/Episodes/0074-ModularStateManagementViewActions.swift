@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep74_modularStateManagement_viewActions = Episode(
+  public static let ep74_modularStateManagement_viewActions = Episode(
     blurb: """
 It's time to fully modularize our app! Our views can still send any app action, so let's explore transforming stores to focus in on just the local actions a view cares about.
 """,

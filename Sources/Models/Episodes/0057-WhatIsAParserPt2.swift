@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep57_whatIsAParser_pt2 = Episode(
+  public static let ep57_whatIsAParser_pt2 = Episode(
     blurb: """
 Now that we've looked at a bunch of parsers that are at our disposal, let's ask ourselves what a parser really is from the perspective of functional programming and functions. We'll take a multi-step journey and optimize using Swift language features.
 """,

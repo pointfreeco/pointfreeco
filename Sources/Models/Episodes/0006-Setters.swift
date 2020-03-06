@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep6_setters = Episode(
+  public static let ep6_setters = Episode(
     blurb: """
 The programs we write can be reduced to transforming data from one form into another. We’re used to transforming this data imperatively, with setters. There’s a strange world of composition hiding here in plain sight, and it has a surprising link to a familiar functional friend.
 """,

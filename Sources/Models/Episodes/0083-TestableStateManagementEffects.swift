@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep83_testableStateManagement_effects = Episode(
+  public static let ep83_testableStateManagement_effects = Episode(
     blurb: """
 Side effects are by far the hardest thing to test in an application. They speak to the outside world and they tend to be sprinkled around to get the job done. However, we can get broad test coverage of our reducer's effects with very little work, and it will all be thanks to a simple technique we covered in the past.
 """,

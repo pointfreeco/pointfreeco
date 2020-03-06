@@ -1,8 +1,8 @@
-GET http://localhost:8080/api/episodes/1
+GET http://localhost:8080/api/episodes/ep2-side-effects
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 8261
+Content-Length: 55024
 Content-Type: application/json
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,205 +12,1361 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 {
-  "blurb" : "As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.",
-  "codeSampleDirectory" : "ep1-type-safe-html",
-  "id" : 1,
-  "image" : "",
-  "length" : 1380,
+  "blurb" : "Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.",
+  "codeSampleDirectory" : "0002-side-effects",
+  "id" : 2,
+  "image" : "https:\/\/i.vimeocdn.com\/video\/807678088.jpg",
+  "length" : 2676,
   "previousEpisodesInCollection" : [
 
   ],
-  "publishedAt" : 519652800,
+  "publishedAt" : 539503869,
   "references" : [
 
   ],
-  "sequence" : 1,
+  "sequence" : 2,
   "subscriberOnly" : false,
-  "title" : "Type-Safe HTML in Swift",
+  "title" : "Side Effects",
   "transcriptBlocks" : [
     {
-      "content" : "As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.",
-      "timestamp" : 1,
-      "type" : {
-        "type" : "paragraph"
-      }
-    },
-    {
-      "content" : "Template Languages",
-      "timestamp" : 0,
-      "type" : {
-        "type" : "title"
-      }
-    },
-    {
-      "content" : "A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:",
-      "timestamp" : 2,
-      "type" : {
-        "type" : "paragraph"
-      }
-    },
-    {
-      "content" : "<h1>{{title}}<\/h1>",
-      "timestamp" : 3,
-      "type" : {
-        "lang" : {
-          "identifier" : "html"
-        },
-        "type" : "code"
-      }
-    },
-    {
-      "content" : "and here is a Leaf template:",
-      "timestamp" : 4,
-      "type" : {
-        "type" : "paragraph"
-      }
-    },
-    {
-      "content" : "<h1>#(title)<\/h1>",
+      "content" : "Introduction",
       "timestamp" : 5,
       "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "We've now had an entire episode just about functions where we emphasized the importance of looking at the input and output types of functions to understand how they compose, but there are a lot of things a function can do that aren't captured by its signature alone. These things are called \"side effects.\"\n\nSide effects are one of the biggest sources of complexity in code, and to make things worse they're very difficult to test and they don't compose well. We've seen from the last episode that we get a lot of benefits from embracing function composition, but side effects throw a wrench in that.\n\nIn this episode we'll cover a few kinds of side effects, show why they're so difficult to test, why they don't compose, and try to address these problems in a nice way.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Side effect is a pretty overloaded term, so in order to define it, let's first look at a function that has no side effects:",
+      "timestamp" : 43,
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func compute(_ x: Int) -> Int {\n  return x * x + 1\n}",
+      "type" : {
         "lang" : {
-          "identifier" : "html"
+          "identifier" : "swift"
         },
         "type" : "code"
       }
     },
     {
-      "content" : "You can then render these templates by providing a dictionary of key\/value pairs to interpolate, e.g. [\"title\": \"Hello World!\"], and then it will generate HTML that can be sent to the browser:",
-      "timestamp" : 6,
+      "content" : "When we call our function, we get a result back:",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "<h1>Hello World!<\/h1>",
-      "timestamp" : 7,
+      "content" : "compute(2) \/\/ 5",
       "type" : {
         "lang" : {
-          "identifier" : "html"
+          "identifier" : "swift"
         },
         "type" : "code"
       }
     },
     {
-      "content" : "Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:",
-      "timestamp" : 8,
+      "content" : "A really nice property of functions without side effects is that no matter how many times we call one with the same input, we always get the same output:",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "{{#if show}}\n  <span>I’m here!<\/span>\n{{\/if}}",
-      "timestamp" : 9,
+      "content" : "compute(2) \/\/ 5\ncompute(2) \/\/ 5\ncompute(2) \/\/ 5",
       "type" : {
         "lang" : {
-          "identifier" : "html"
+          "identifier" : "swift"
         },
         "type" : "code"
       }
     },
     {
-      "content" : "#if(show) {\n  <span>I’m here!<\/span>\n}",
-      "timestamp" : 10,
+      "content" : "This predictability makes it incredibly simple to write tests for them.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "assertEqual(5, compute(2)) \/\/ ✅",
       "type" : {
         "lang" : {
-          "identifier" : "html"
+          "identifier" : "swift"
         },
         "type" : "code"
       }
     },
     {
-      "content" : "The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.",
-      "timestamp" : 11,
+      "content" : "If we ever write a test with the wrong expectation or the wrong input for an expectation, it will _always_ fail.",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.",
-      "timestamp" : 12,
+      "content" : "assertEqual(4, compute(2)) \/\/ ❌\nassertEqual(5, compute(3)) \/\/ ❌",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Let's add a side effect to our function.",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.",
-      "timestamp" : 13,
+      "content" : "func computeWithEffect(_ x: Int) -> Int {\n  let computation = x * x + 1\n  print(\"Computed \\(computation)\")\n  return computation\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We've inserted a `print` statement right in the middle.\n\nWhen we call `computeWithEffect` with the same input as before, we get the same output:",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.",
-      "timestamp" : 14,
+      "content" : "computeWithEffect(2) \/\/ 5",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "But if we look at our console, there's some _additional_ output here.",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "Embedded Domain Specific Language",
-      "timestamp" : 3,
+      "content" : "Computed 5",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "If we compare function signatures, `computeWithEffect` is exactly the same as `compute`, but work is being done that we couldn't have accounted for by looking at the signature alone. The `print` function is reaching out into the world and making a change, in this case, printing to our console. Side effects require understanding the body of the function to know they're hiding in there.\n\nLet's write a test for this function:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "assertEqual(5, computeWithEffect(2)) \/\/ ✅",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "It passes! But now we have an _additional_ line in our console.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Computed 5\nComputed 5",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And this is behavior that we just can't test. Here we're just printing to the console, so it may not seem like a big deal, but if we swapped printing out for another effect, like writing to disk, making an API request, or analytics tracking, we start to care more that this behavior is happening and that we can test it.\n\nSide-effects can also break compositional intuitions we build. In our episode on functions, we discussed how mapping over an array with two functions is the same as mapping over an array with the composition of those functions:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "[2, 10].map(compute).map(compute) \/\/ [26, 10202]\n[2, 10].map(compute >>> compute)  \/\/ [26, 10202]",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Now let's try that with `computeWithEffect`:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "[2, 10].map(computeWithEffect).map(computeWithEffect)\n\/\/ [26, 10202]\n[2, 10].map(computeWithEffect >>> computeWithEffect)\n\/\/ [26, 10202]",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "The return values are equal, but when we look at the console, the behavior is not!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Computed 5\nComputed 101\nComputed 26\nComputed 10202\n--\nComputed 5\nComputed 26\nComputed 101\nComputed 10202",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can no longer take advantage of this property without having to consider the side effects. Our ability to make this kind of refactor is a real-world performance optimization: instead of traversing our array twice, we traverse it just once. If our functions have side effects, though, they won't execute in the same order, and order may be something we depend on! Making this kind of performance optimization in the world of side effects could break our code!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Hidden outputs",
+      "timestamp" : 320,
       "type" : {
         "type" : "title"
       }
     },
     {
-      "content" : "An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:",
-      "timestamp" : 15,
+      "content" : "Let's look at the simplest way to control this side effect. Rather than performing the effect in the body of the function, we can return an extra value that describes what needs to be printed. A function could print many things, so we'll use an array of strings to model this.",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "<header>\n  <h1 id=\"welcome\">Welcome!<\/h1>\n  <p>\n    Welcome to you, who has come here. See <a href=\"\/more\">more<\/a>.\n  <\/p>\n<\/header>",
-      "timestamp" : 2,
+      "content" : "func computeAndPrint(_ x: Int) -> (Int, [String]) {\n  let computation = x * x + 1\n  return (computation, [\"Computed \\(computation)\"])\n}\n\ncomputeAndPrint(2) \/\/ (5, [\"Computed 5\"])",
       "type" : {
         "lang" : {
-          "identifier" : "html"
+          "identifier" : "swift"
         },
         "type" : "code"
       }
     },
     {
-      "content" : "Making the EDSL easier to use",
-      "timestamp" : 7,
-      "type" : {
-        "type" : "title"
-      }
-    },
-    {
-      "content" : "Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!",
-      "timestamp" : 3,
+      "content" : "We get a result of not only the computation, but an array of logs we may want to print.\n\nLet's write a test:",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "Safer Attributes",
-      "timestamp" : 9,
+      "content" : "assertEqual(\n  (5, [\"Computed 5\"]),\n  computeAndPrint(2)\n)\n\/\/ ✅",
       "type" : {
-        "type" : "title"
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
       }
     },
     {
-      "content" : "Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width=\"foo\". We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.",
-      "timestamp" : 4,
+      "content" : "Now we're getting coverage not only on the computation, but on the effect we want to perform! Our test will now fail if the side effect is in an unexpected format.",
       "type" : {
         "type" : "paragraph"
       }
     },
     {
-      "content" : "We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. \"id\", \"href\", etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:",
-      "timestamp" : 6,
+      "content" : "assertEqual(\n  (5, [\"Computed 3\"]),\n  computeAndPrint(2)\n)\n\/\/ ❌",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "The data is quite simple here, but remember, it could potentially be more critical data that describes an API request or analytics event, and we could be writing assertions that these effects are being prepared the way we expect them to.\n\nViewed in this way, a side effect that makes a change to the outside world is nothing but a hidden, implicit output of the function. Implicit is usually not a good thing when it comes to programming.\n\nNow you may ask, \"Well, who performs the effect?\" By pulling the effect out into the return type, we have pushed responsibility for this effect to whoever calls this function. For example:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "let (computation, logs) = computeAndPrint(2)\nlogs.forEach { print($0) }",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We may not want the caller to have side effects, though, so it may have to pass them along, as well. And maybe _its_ caller doesn't want to have side effects, and so on! This sounds like a messy problem, but there are nice ways to solve it. Before we can solve _that_ problem, though, we need to understand _this_ one in detail.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "It may seem like we've solved the effects problem: we just need to substitute them with descriptions in the output of our functions. Unfortunately, we've broken one of the most important features of functions: composition.\n\nOur `compute` function is nice because it forward-composes with itself.",
+      "timestamp" : 495,
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "compute >>> compute \/\/ (Int) -> Int",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And our `computeWithEffect` function is actually kind of nice because it _also_ forward-composes with itself.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "computeWithEffect >>> computeWithEffect \/\/ (Int) -> Int",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can pipe values into them and get results.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2 |> compute >>> compute \/\/ 26\n2 |> computeWithEffect >>> computeWithEffect \/\/ 26",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Of course, now we're back to having `computeWithEffect` printing to the console.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Computed 5\nComputed 26",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Meanwhile, our attempt to solve this problem, `computeAndPrint`, does _not_ compose.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "computeAndPrint >>> computeAndPrint\n\/\/ Cannot convert value of type '(Int) -> (Int, [String])' to expected argument type '((Int, [String])) -> (Int, [String])'",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "The output of `computeAndPrint` is a tuple, `(Int, [String])`, but the input is just `Int`.\n\nWe'll see this time and again: anytime we have a function that needs to execute a side effect, we'll augment the return type to describe the effect, and we'll break function composition. Then it'll be our job to cook up some kind of way to enhance composition on these kinds of functions.\n\nIn the case of functions that return tuples, we can fix the composition quite nicely and do so even more generally than our `computeAndPrint` function. Let's define a function whose entire job is to compose these kinds of functions.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func compose<A, B, C>(\n  _ f: @escaping (A) -> (B, [String]),\n  _ g: @escaping (B) -> (C, [String])\n  ) -> (A) -> (C, [String]) {\n\n  \/\/ …\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This looks kind of familiar. It has a signature similar to our `>>>` function: we see `(A) -> B`, `(B) -> C`, and `(A) -> C`, but with a little extra information alongside.\n\nWe can implement this function by looking at the type of functions and the values we have at our disposal.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func compose<A, B, C>(\n  _ f: @escaping (A) -> (B, [String]),\n  _ g: @escaping (B) -> (C, [String])\n  ) -> (A) -> (C, [String]) {\n\n  return { a in\n    let (b, logs) = f(a)\n    let (c, moreLogs) = g(b)\n    return (c, logs + moreLogs)\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We know we're returning a function, so we start by opening it up and binding `a`. We also have a function, `f`, that takes `A`s, so let's pass it `a` and bind the return values, in this case, a `b` and some `logs`. Now that we have a `b` that plugs nicely into the function `g`, and it returns a `c` and some `moreLogs`. And now that we have a `c`, we can return it from our function alongside some logs. We could return `logs` or `moreLogs`, but in this case it makes sense to return the concatenation of both.\n\nSo let's compose our functions!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "compose(computeAndPrint, computeAndPrint)\n\/\/ (Int) -> (Int, [String])",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We've now created a whole new function that calls `computeAndPrint` twice. When we feed data into it, we get not only the final computation, but logs of every step along the way.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2 |> compose(computeAndPrint, computeAndPrint)\n\/\/ (26, [\"Computed 5\", \"Computed 26\"])",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Introducing >=>",
+      "timestamp" : 660,
+      "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "It seems like we've recovered composition and completely solved the problem, but things start to get messy when we compose more than two functions.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "What's maybe worse is that there are two different ways to make the same composition:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)\n2 |> compose(computeAndPrint, compose(computeAndPrint, computeAndPrint))",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Parentheses always seem to be the enemy of composition. What's the enemy of parentheses? An infix operator.\n\nWe know we want to be able to compose multiple times in a row, and we know we want to be able to pipe values into these compositions, so let's define an associative precedence group that's higher than our `|>` operator.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "precedencegroup EffectfulComposition {\n  associativity: left\n  higherThan: ForwardApplication\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Now we can define an infix operator that looks a little familiar.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "infix operator >=>: EffectfulComposition",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "It's very close to `>>>`, but we've swapped out the inner arrow for a tube-like `=`. A fun name for this operator is the \"fish\" operator.\n\nWe can now rename our `compose` function and we can glue our effectful functions together without the noise and burden of having to reason about parentheses.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func >=> <A, B, C>(\n  _ f: @escaping (A) -> (B, [String]),\n  _ g: @escaping (B) -> (C, [String])\n  ) -> (A) -> (C, [String]) {\n\n  return { a in\n    let (b, logs) = f(a)\n    let (c, moreLogs) = g(b)\n    return (c, logs + moreLogs)\n  }\n}\n\ncomputeAndPrint >=> computeAndPrint >=> computeAndPrint \/\/ (Int) -> (Int, [String])",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can pipe values through and use multiple lines to create pipelines that read nicely from top to bottom.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2\n  |> computeAndPrint\n  >=> computeAndPrint\n  >=> computeAndPrint",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Another nice thing about bringing our composition into the operator world is that it plays more nicely with existing operators like `>>>`.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2\n  |> computeAndPrint\n  >=> (incr >>> computeAndPrint)\n  >=> (square >>> computeAndPrint)",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Here we're able to take the results of effectful functions and apply them to functions that don't have side effects, all with composition. We have a new parentheses problem, but we can solve it! Function composition is maybe the strongest form of composition, and given where the parentheses appear, and the input and output types along the way, we can come to the conclusion that it should always have a higher precedence. This means we need to update our `EffectfulComposition` precedence group.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "precedencegroup EffectfulComposition {\n  associativity: left\n  higherThan: ForwardApplication\n  lowerThan: ForwardComposition\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We no longer need parentheses and we can further pipeline our composition.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "2\n  |> computeAndPrint\n  >=> incr\n  >>> computeAndPrint\n  >=> square\n  >>> computeAndPrint",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Every line is now annotated with an operator that provides meaning. Lines prefixed with `>>>` are dealing with the result of a function that has no side effect, while lines prefixed with `>=>` are a bit fishier: they're dealing with the result of an effectful computation.\n\nWe've introduced a new operator, so it's time to justify its addition to our code.\n\n1. Does this operator have existing meaning in Swift? Nope. There's no chance of overloading existing meaning.\n\n2. Does this operator have prior art and does it have a nice, descriptive shape? Yep! The fish operator ships with Haskell and PureScript, and many other programming languages communities have adopted it in functional libraries. The shape is nice, especially alongside `>>>`, where it's just different enough to indicate that something else is going on.\n\n3. Is this a universal operator or is it only solving a domain specific problem? The way the operator is defined right now is quite specific to working on tuples, but the shape it's describing shows up all the time in programming. We can even define the operator on a couple Swift types:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func >=> <A, B, C>(\n  _ f: @escaping (A) -> B?,\n  _ g: @escaping (B) -> C?\n  ) -> ((A) -> C?) {\n\n  return { a in\n    fatalError() \/\/ an exercise for the viewer\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We've replaced our tuples with optionals and now have an operator that aids in composing functions that return optionals. We can now chain a couple failable initializers together:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "String.init(utf8String:) >=> URL.init(string:)\n\/\/ (UnsafePointer<Int8>) -> URL?",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And we get a brand new failable initializer for free!\n\nWe could also use the operator to enhance composition with functions that return arrays:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func >=> <A, B, C>(\n  _ f: @escaping (A) -> [B],\n  _ g: @escaping (B) -> [C]\n  ) -> ((A) -> [C]) {\n\n  return { a in\n    fatalError() \/\/ an exercise for the viewer\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And if we were using a `Promise` or `Future` type, we could use the operator to compose functions that return promises.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func >=> <A, B, C>(\n  _ f: @escaping (A) -> Promise<B>,\n  _ g: @escaping (B) -> Promise<C>\n  ) -> ((A) -> Promise<C>) {\n\n  return { a in\n    fatalError() \/\/ an exercise for the viewer\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We'll see this shape come up time and time again. In some languages with very powerful type systems, it's possible to define this operator a single time and get all of these implementations immediately. Swift does not yet have these features, so we have to define them for new types as we go. We're still able to build an intuition for this shape, though, and share it over many, many types. Now when we see `>=>` we can know that it's chaining into some kind of effect.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Hidden inputs",
+      "timestamp" : 1131,
+      "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "We've covered a side effect that leads to a hidden output and shown how to control it by making that output explicit in our functions, all while retaining composability. There's another kind of side effect that's a bit trickier.\n\nLet's look at a simple function that produces a greeting for a user.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func greetWithEffect(_ name: String) -> String {\n  let seconds = Int(Date().timeIntervalSince1970) % 60\n  return \"Hello \\(name)! It's \\(seconds) seconds past the minute.\"\n}\n\ngreetWithEffect(\"Blob\")\n\/\/ \"Hello Blob! It's 14 seconds past the minute.\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "When we run this code again, we're likely to get a different value. This is the opposite of the predictability we had with our `compute` function.\n\nIf we write a test, it's almost always going to fail.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "assertEqual(\n  \"Hello Blob! It's 32 seconds past the minute.\",\n  greetWithEffect(\"Blob\")\n)\n\/\/ ❌",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This is a particularly bad side effect. In our previous case we could at the very least write assertions against its output, we just weren't covering the whole story. In this case we cant even write a test because the output keeps changing.\n\nOur previous side effect was `print`, which is a function that takes input but has no return value. In this case we have `Date`, which is a function that _has_ a return value but takes no input.\n\nLet's see if we can use a similar solution for this side effect. Earlier we made `print`'s effect explicit in `compute`'s return value, and here we can make `Date`'s effect explicit as an argument to the function.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func greet(at date: Date, name: String) -> String {\n  let seconds = Int(date.timeIntervalSince1970) % 60\n  return \"Hello \\(name)! It's \\(seconds) seconds past the minute.\"\n}\n\ngreet(at: Date(), name: \"Blob\")",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This function behaves the same as before but with one crucial difference: we can now control the date and have a test that always passes.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "assertEqual(\n  \"Hello Blob! It's 39 seconds past the minute.\",\n  greet(at: Date(timeIntervalSince1970: 39), name: \"Blob\")\n)\n\/\/ ✅",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We've recovered testability at the cost of some boilerplate. The caller of the function needs to pass the date explicitly, which seems unnecessary outside of our tests. We may be tempted to hide this implementation detail by specifying a default argument and inject this dependency on the current date into our function to clean up the call site.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func greet(at date: Date = Date(), name: String) -> String {\n  let s = Int(date.timeIntervalSince1970) % 60\n  return \"Hello \\(name)! It's \\(s) seconds past the minute.\"\n}\n\ngreet(name: \"Blob\")",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This reads a bit nicer, but we have a bigger problem: we've broken composition again.\n\nOur first `greetWithEffect` function had a nice `(String) -> String` shape that could be composed with other functions that return strings and functions take strings as input.\n\nLet's take a simple function that uppercases a string:",
+      "timestamp" : 1355,
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func uppercased(_ string: String) -> String {\n  return string.uppercased()\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This composes nicely on either side of `greetWithEffect`.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "uppercased >>> greetWithEffect\ngreetWithEffect >>> uppercased",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can pipe a name through and get different behavior for each composition.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "\"Blob\" |> uppercased >>> greetWithEffect\n\/\/ \"Hello BLOB! It's 56 seconds past the minute.\"\n\"Blob\" |> greetWithEffect >>> uppercased\n\/\/ \"HELLO BLOB! IT'S 56 SECONDS PAST THE MINUTE.\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Our `greet` function, however, does not compose.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "\"Blob\" |> uppercased >>> greet\n\"Blob\" |> greet >>> uppercased\n\/\/ Cannot convert value of type '(Date, String) -> String' to expected argument type '(_) -> _'",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "It takes two inputs, so there's no way to compose the output of a function into it. If we ignore the `Date` input, we can kind of still see that `(String) -> String` shape. In fact, there's a bit of a trick we can do to pull the `Date` out of that signature: we can rewrite `greet` to take a `Date` as input, but return a brand new function from `(String) -> String` that handles the actual greeting logic:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func greet(at date: Date) -> (String) -> String {\n  return { name in\n    let s = Int(date.timeIntervalSince1970) % 60\n    return \"Hello \\(name)! It's \\(s) seconds past the minute.\"\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Now we can call our greet function with a date and get a brand new `(String) -> String` function.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "greet(at: Date()) \/\/ (String) -> String",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This function composes!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "uppercased >>> greet(at: Date()) \/\/ (String) -> String\ngreet(at: Date()) >>> uppercased \/\/ (String) -> String",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And we can pipe values through!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "\"Blob\" |> uppercased >>> greet(at: Date())\n\/\/ \"Hello BLOB! It's 37 seconds past the minute.\"\n\"Blob\" |> greet(at: Date()) >>> uppercased\n\/\/ \"HELLO BLOB! IT'S 37 SECONDS PAST THE MINUTE.\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We've restored composition and still have testability.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "assertEqual(\n  \"Hello Blob! It's 37 seconds past the minute.\",\n  \"Blob\" |> greet(at: Date(timeIntervalSince1970: 37))\n)\n\/\/ ✅",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "So now we've encountered an effect that was impossible to test and we were able to control it by moving that context into the input of the function, which is the dual version of the effect we came across earlier. Our first effect reached out into the world and made a change, which is kind of like a hidden output, while this effect depends on some state of the outside world, which is kind of like a hidden input! All effects manifest in this way.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Mutation",
+      "timestamp" : 1589,
+      "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "Let's look at a very particular type of effect and really analyze it: mutation. We've all had to deal with mutation in code and it can lead to a lot of complexity. Luckily, Swift provides some type-level features to help control mutation and properly document how and where it can happen.\n\nHere's example of how mutation can get messy. This sample is inspired by actual code we wrote in the past, and it kept getting uglier and more of a pain to work with until we finally rewrote it to control the mutation.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "let formatter = NumberFormatter()\n\nfunc decimalStyle(_ format: NumberFormatter) {\n  format.numberStyle = .decimal\n  format.maximumFractionDigits = 2\n}\n\nfunc currencyStyle(_ format: NumberFormatter) {\n  format.numberStyle = .currency\n  format.roundingMode = .down\n}\n\nfunc wholeStyle(_ format: NumberFormatter) {\n  format.maximumFractionDigits = 0\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Here we have a `NumberFormatter` from `Foundation` and several functions that configure number formatters with specific styles. To use these styling functions, we can apply them directly to our formatter.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "decimalStyle(formatter)\nwholeStyle(formatter)\nformatter.string(for: 1234.6) \/\/ \"1,235\"\n\ncurrencyStyle(formatter)\nformatter.string(for: 1234.6) \/\/ \"$1,234\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "If we now re-apply our first set of formatters, we have a problem.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "decimalStyle(formatter)\nwholeStyle(formatter)\nformatter.string(for: 1234.6) \/\/ \"1,234\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "The output's changed from `\"1,235\"` to `\"1,234\"`. The reason it's changed? Mutation. The `currencyStyle` function's changes have bled into other uses of our formatter, resulting in a bug that in a larger context might be hard to track down.\n\nThis is an example of why mutation is so tricky. It's impossible to know what a line is doing until we trace back to learn what every line before it has done. Mutation is a manifestation of both of the side effects we've encountered so far, where mutable data passed between functions is a hidden input and output in one!\n\nThe reason we're seeing this particular kind of mutation is because `NumberFormatter` is a \"reference\" type. In Swift, classes are reference types. An instance of a reference type is a single object that, when mutated, has changed for any part of the code base that holds onto or may hold onto a reference of this object. There's no easy way to track down which parts of a code base may hold onto the same reference of an object, which can lead to a lot of confusion when mutation is involved. If our example code were used in an application and a new feature were written to depend on this formatter, subtle bugs could creep into a totally new part of the code base.\n\nSwift also has \"value\" types. This is Swift's answer to controlling mutation. When you assign a value, you get a brand new copy to work with for the given scope. All mutations are local and anything else holding onto the same value upstream won't see these changes.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Let's refactor this code to use values.\n\nWe'll start with a struct that is a wrapper around the configuration we do with `NumberFormatter`.",
+      "timestamp" : 1773,
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "struct NumberFormatterConfig {\n  var numberStyle: NumberFormatter.Style = .none\n  var roundingMode: NumberFormatter.RoundingMode = .up\n  var maximumFractionDigits: Int = 0\n\n  var formatter: NumberFormatter {\n    let result = NumberFormatter()\n    result.numberStyle = self.numberStyle\n    result.roundingMode = self.roundingMode\n    result.maximumFractionDigits = self.maximumFractionDigits\n    return result\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "It has some nice defaults and a `formatter` computed property that we can use to derive new, \"honest\" `NumberFormatter`s. What does it look like to update our styling functions to use `NumberFormatterConfig` instead?",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func decimalStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {\n  var format = format\n  format.numberStyle = .decimal\n  format.maximumFractionDigits = 2\n  return format\n}\n\nfunc currencyStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {\n  var format = format\n  format.numberStyle = .currency\n  format.roundingMode = .down\n  return format\n}\n\nfunc wholeStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {\n  var format = format\n  format.maximumFractionDigits = 0\n  return format\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Each styling function takes a `NumberFormatterConfig`, copies it using the `var` keyword, and mutates the local copy before returning it to the caller.\n\nUsing it looks a bit different.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "let config = NumberFormatterConfig()\n\nwholeStyle(decimalStyle(config))\n  .formatter\n  .string(for: 1234.6)\n\/\/ \"1,235\"\n\ncurrencyStyle(config)\n  .formatter\n  .string(for: 1234.6)\n\/\/ \"$1,234\"\n\nwholeStyle(decimalStyle(config))\n  .formatter\n  .string(for: 1234.6)\n\/\/ \"1,235\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This time, whenever we pass `config` to a styling function, we get a brand new copy, and our bug goes away!\n\nWe could have done something similar with reference types using the `copy` method on classes that implement `NSCopying` and return this copy explicitly:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func decimalStyle(_ format: NumberFormatter) -> NumberFormatter {\n  let format = format.copy() as! NumberFormatter\n  format.numberStyle = .decimal\n  format.maximumFractionDigits = 2\n  return format\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Unfortunately here, the compiler gives us no guarantees that we don't mutate the original formatter. On top of that, the caller may expect a copy, feel free to make further mutations, and the complexity builds from there!\n\nBecause reference types aren't automatically copied, they do have some nice performance benefits. Luckily, Swift provides a nice, semantic way of mutating values in place: the `inout` keyword.\n\nLet's modify our config styling function to use `inout`.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func inoutDecimalStyle(_ format: inout NumberFormatterConfig) {\n  format.numberStyle = .decimal\n  format.maximumFractionDigits = 2\n}\n\nfunc inoutCurrencyStyle(_ format: inout NumberFormatterConfig) {\n  format.numberStyle = .currency\n  format.roundingMode = .down\n}\n\nfunc inoutWholeStyle(_ format: inout NumberFormatterConfig) {\n  format.maximumFractionDigits = 0\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This looks a lot like our original, mutating functions on `NumberFormatter`. We can perform mutations right away and don't have to worry about copying values or returning them. Let's try using these styling functions the same way we used the original ones.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "let config = NumberFormatterConfig()\n\ninoutDecimalStyle(config)\ninoutWholeStyle(config)\nconfig.formatter.string(from: 1234.6)",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We get a compiler error!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Cannot pass immutable value as inout argument: 'config' is a 'let' constant",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Swift even offers to fix this for us, transforming `let` into `var`.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "var config = NumberFormatterConfig()\n\ninoutDecimalStyle(config)\ninoutWholeStyle(config)\nconfig.formatter.string(from: 1234.6)",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "But that wasn't enough. We have another compiler error!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Passing value of type 'NumberFormatterConfig' to an inout parameter requires explicit '&'",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Swift requires us to annotate, at the call site, that we're agreeing to let this data be mutated.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "inoutDecimalStyle(&config)\ninoutWholeStyle(&config)\nconfig.formatter.string(from: 1234.6) \/\/ \"1,235\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can continue to call our mutating style functions in a similar fashion.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "inoutCurrencyStyle(&config)\nconfig.formatter.string(from: 1234.6) \/\/ \"$1,234\"\n\ninoutDecimalStyle(&config)\ninoutWholeStyle(&config)\nconfig.formatter.string(from: 1234.6) \/\/ \"1,234\"",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And there's our bug again, but the code involved now has a lot of syntax that screams \"mutation\" and it makes this kind of bug much easier to track down.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "It's great that Swift provides a nice solution to mutation problems by providing type-level features to control where mutation can happen and how far it can travel. We still have a problem to solve if we want to use it, though.\n\nThe styling functions we used that returned brand new copies have a nice shape:",
+      "timestamp" : 2082,
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "(NumberFormatterConfig) -> NumberFormatterConfig",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "They have the same input and output which means they compose with each other, _and_ they compose with any other functions that return or take a `NumberFormatterConfig`!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "decimalStyle >>> currencyStyle\n\/\/ (NumberFormatterConfig) -> NumberFormatterConfig",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Now we have a brand new styling function that we've composed from smaller pieces.\n\nMeanwhile, our `inout` functions don't have this shape: their inputs and outputs don't match and they don't compose with many functions in general. These functions have the same logic, though, so there must be a way to bridge the `inout` world with the function world.\n\nIt turns out that we can define a function called `toInout` that converts a function with the same input and output type into an `inout` function.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func toInout<A>(\n  _ f: @escaping (A) -> A\n  ) -> ((inout A) -> Void) {\n\n  return { a in\n    a = f(a)\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "We can also define a dual function, `fromInout`, that does the inverse transformation.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func fromInout<A>(\n  _ f: @escaping (inout A) -> Void\n  ) -> ((A) -> A) {\n\n  return { a in\n    var copy = a\n    f(&copy)\n    return copy\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "What we see here is there's a natural correspondence between `(A) -> A` functions and `(inout A) -> Void` functions. Functions from `(A) -> A` compose very nicely, so through this correspondence, we would hope that functions from `(inout A) -> Void` could share these compositional qualities.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Introducing <>",
+      "timestamp" : 2275,
+      "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "Even though we saw that `(A) -> A` functions compose using `>>>`, we shouldn't reuse this operator because it has way too much freedom. We're looking at a much more constrained, single-type composition. So let's define a new operator. Let's start with the precedence group.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "precedencegroup SingleTypeComposition {\n  associativity: left\n  higherThan: ForwardApplication\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And let's define our operator.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "infix operator <>: SingleTypeComposition",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "A fun name for this operator is the \"diamond\" operator.\n\nWe can define the operator against `(A) -> A` simply enough:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func <> <A>(\n  f: @escaping (A) -> A,\n  g: @escaping (A) -> A)\n  -> ((A) -> A) {\n\n  return f >>> g\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "It may looks silly to have just wrapped one operator with another, but we've constrained how it can be used and encoded some meaning: when we see this operator we know we're dealing with a single type!\n\nLet's define `<>` for `inout` functions:",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func <> <A>(\n  f: @escaping (inout A) -> Void,\n  g: @escaping (inout A) -> Void)\n  -> ((inout A) -> Void) {\n\n  return { a in\n    f(&a)\n    g(&a)\n  }\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Our previous composition works.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "decimalStyle <> currencyStyle",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Better yet, we can compose our `inout` styling functions!",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "inoutDecimalStyle <> inoutCurrencyStyle",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "What happens when we start piping values into our compositions?",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "config |> decimalStyle <> currencyStyle\nconfig |> inoutDecimalStyle <> inoutCurrencyStyle",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "Our `inout` version produces an error.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "Cannot convert value of type '(inout Int) -> ()' to expected argument type '(_) -> _'",
+      "type" : {
+        "lang" : {
+          "identifier" : "txt"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This is because `|>` doesn't yet work in the world of `inout`, but we can define an overload that does.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "func |> <A>(a: inout A, f: (inout A) -> Void) -> Void {\n  f(&a)\n}",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "And now we can freely pipe values into these mutable pipelines.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "config |> inoutDecimalStyle <> inoutCurrencyStyle",
+      "type" : {
+        "lang" : {
+          "identifier" : "swift"
+        },
+        "type" : "code"
+      }
+    },
+    {
+      "content" : "This is great! We don't have to sacrifice composability to take advantage of some nice Swift features.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "We've solved this problem at the cost of yet another operator, so it's time to check the boxes.\n\n1. Does this operator exist in Swift? Nope, so no potential for confusion there.\n\n2. Is there prior art? Yep. It exists in Haskell, PureScript, and other languages with strong functional communities that have adopted it. It has a nice shape that points in both directions and kind of signals a joining together.\n\n3. Is this a universal operator or is it only solving a domain specific problem? We've only defined this operator for `(A) -> A` functions and `(inout A) -> Void` functions so far, but it turns out that `<>` is used far more generally for combining two things of the same type into one, which is kind of the most fundamental unit of computation there is. We're going to encounter this operator all over the place.",
+      "type" : {
+        "type" : "paragraph"
+      }
+    },
+    {
+      "content" : "What’s the point?",
+      "timestamp" : 2597,
+      "type" : {
+        "type" : "title"
+      }
+    },
+    {
+      "content" : "It's time to slow down and ask: \"What's the point?\" We've encountered a lot of effects that introduced complexity into our code and made it more difficult to test. We decided to fix this by doing a little bit of upfront work to make the effects explicit in the types, both inputs and outputs, but then we broke composition. Then we introduced operators that aid in composition specifically for composing effects. Was it worth it?\n\nWe'd say so! We were able to lift our effectful code, which was untestable and difficult to reason about in isolation, up into a world where effects were explicit and we could test and understand a single line without understanding any of the lines that came before it. We did all of this without breaking composition. That's really powerful!\n\nMeanwhile, our extra bit of upfront work should save us an immeasurable amount of time spent debugging code that has a complex web of mutation, time fixing bugs in side effects that are sprinkled everywhere, and time jumping through hoops to make code testable.\n\nSide effects are a _huge_ topic, and we've only scratched the surface. We're going to be exploring lots of interesting ways to control side effects in the future. Stay tuned!",
       "type" : {
         "type" : "paragraph"
       }
     }
   ],
   "video" : {
-    "bytesLength" : 500000000,
-    "downloadUrl" : "https:\/\/www.vimeo.com\/pointfreeco\/download-video.mp4",
-    "streamingSource" : "https:\/\/www.vimeo.com\/pointfreeco\/stream-video.m3u8"
+    "bytesLength" : 238376744,
+    "downloadUrl" : "https:\/\/player.vimeo.com\/external\/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&profile_id=174&download=1",
+    "streamingSource" : "https:\/\/player.vimeo.com\/video\/355115445"
   }
 }

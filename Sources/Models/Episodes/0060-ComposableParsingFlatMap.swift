@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep60_composableParsing_flatMap = Episode(
+  public static let ep60_composableParsing_flatMap = Episode(
     blurb: """
 The `map` function on parsers is powerful, but there are still a lot of things it cannot do. We will see that in trying to solve some of its limitations we are naturally led to our old friend the `flatMap` function.
 """,

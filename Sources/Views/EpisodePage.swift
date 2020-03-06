@@ -284,7 +284,7 @@ private func creditBlurb(permission: EpisodePermission, episode: Episode) -> Nod
     ),
 
     .form(
-      attributes: [.action(path(to: .useEpisodeCredit(episode.id))), .method(.post)],
+      attributes: [.action(path(to: .useEpisodeCredit(episode))), .method(.post)],
       .input(
         attributes: [
           .type(.submit),
@@ -316,7 +316,7 @@ private func signUpBlurb(permission: EpisodePermission, episode: Episode) -> Nod
 
     .a(
       attributes: [
-        .href(path(to: .login(redirect: path(to: .episode(.show(.left(episode.slug))))))),
+        .href(path(to: .login(redirect: path(to: .episode(.show(episode)))))),
         .class([Class.pf.components.button(color: .black)])
       ],
       "Sign up for free episode"
@@ -364,7 +364,7 @@ private func loginLink(user: User?, ep: Episode) -> Node {
     .span(attributes: [.class([Class.padding([.mobile: [.left: 2]])])], "or"),
     .a(
       attributes: [
-        .href(path(to: .login(redirect: url(to: .episode(.show(.left(ep.slug))))))),
+        .href(path(to: .login(redirect: url(to: .episode(.show(ep)))))),
         .class([Class.pf.components.button(color: .black, style: .underline)])
       ],
       "Log in"
@@ -409,7 +409,7 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
             .a(
               attributes: [
                 .class([Class.pf.colors.link.purple]),
-                .href(url(to: .episode(.show(.left($0.slug)))))
+                .href(url(to: .episode(.show($0))))
               ],
               .text($0.title)
             )

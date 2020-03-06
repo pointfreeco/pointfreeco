@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep63_parserCombinators_pt2 = Episode(
+  public static let ep63_parserCombinators_pt2 = Episode(
     blurb: """
 Let's solve another common parsing problem using parser combinators! It's common to want to parse multiple values off a string, and while `zip` gets us part of the way there, it doesn't let us parse _any_ number of values! Luckily there's a parser combinator that can help, and it really packs a punch.
 """,

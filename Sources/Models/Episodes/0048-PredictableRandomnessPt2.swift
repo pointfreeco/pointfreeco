@@ -2,7 +2,7 @@
 import Foundation
 
 extension Episode {
-  static let ep48_predictableRandomness_pt2 = Episode(
+  public static let ep48_predictableRandomness_pt2 = Episode(
     blurb: """
 This week we finally make our untestable Gen type testable. We'll compare several different ways of controlling Gen, consider how they affect Gen's API, and find ourselves face-to-face with yet another `flatMap`.
 """,

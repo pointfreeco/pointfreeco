@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep28_anHtmlDsl = Episode(
+  public static let ep28_anHtmlDsl = Episode(
     blurb: """
 This week we apply domain specific languages to a very real-world problem: representing and rendering HTML. We code up a simple but powerful solution that forms the foundation of what we use to build the Point-Free website.
 """,

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 49788
+Content-Length: 49760
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1979,9 +1979,9 @@ html {
                 </h3>
                 <ul>
                   <li>
-                    <a href="/episodes/ep1-type-safe-html-in-swift"
+                    <a href="/episodes/ep1-functions"
                        class="pf-link-purple">
-                      #1: Type-Safe HTML in Swift
+                      #1: Functions
                     </a>
                   </li>
                 </ul>

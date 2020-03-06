@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep50_generativeArt_pt2 = Episode(
+  public static let ep50_generativeArt_pt2 = Episode(
     blurb: """
 Let's put some finishing touches to our random artwork generator, incorporate it into an app, and write some snapshot tests to help support us in adding a fun easter egg.
 """,

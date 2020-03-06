@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep88_theCaseForCasePaths_pt2 = Episode(
+  public static let ep88_theCaseForCasePaths_pt2 = Episode(
     blurb: """
 We've now seen that it's possible to define "case paths": the enum equivalent of key paths. So what are their features? Let's explore a few properties of key paths to see if there are corresponding concepts on case paths.
 """,

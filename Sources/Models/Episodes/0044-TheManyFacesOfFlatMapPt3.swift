@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep44_theManyFacesOfFlatMap_pt3 = Episode(
+  public static let ep44_theManyFacesOfFlatMap_pt3 = Episode(
     blurb: """
 We are now ready to answer the all-important question: what's the point? We will describe 3 important ideas that are now more accessible due to our deep study of `map`, `zip` and `flatMap`. We will start by showing that this trio of operations forms a kind of functional, domain-specific language for data transformations.
 """,

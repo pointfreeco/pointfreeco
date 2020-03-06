@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep45_theManyFacesOfFlatMap_pt4 = Episode(
+  public static let ep45_theManyFacesOfFlatMap_pt4 = Episode(
     blurb: """
 Continuing our 3-part answer to the all-important question "what's the point?", we show that the definitions of `map`, `zip` and `flatMap` are precise and concisely describe their purpose. Knowing this we can strengthen our APIs by not smudging their definitions when convenient.
 """,

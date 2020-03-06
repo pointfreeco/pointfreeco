@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep61_composableParsing_zip = Episode(
+  public static let ep61_composableParsing_zip = Episode(
     blurb: """
 While `flatMap` allowed us to take our parser type to the next level, it introduced a nesting problem. Isn't `flatMap` all about solving nesting problems!? Well, we have one more operation at our disposal: `zip`! Let's define `zip` on the parser type, see what it brings to the table, and finally ask, "what's the point?"
 """,

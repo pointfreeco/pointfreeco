@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep58_whatIsAParser_pt3 = Episode(
+  public static let ep58_whatIsAParser_pt3 = Episode(
     blurb: """
 It's time to ask the all important question: what's the point? We now have a properly defined parser type, one that can parse efficiently and incrementally, but does it give us anything new over existing tools?
 """,

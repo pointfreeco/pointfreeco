@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep90_composingArchitectureWithCasePaths = Episode(
+  public static let ep90_composingArchitectureWithCasePaths = Episode(
     blurb: #"""
 Let's explore a real world application of "case paths," which provide key path-like functionality to enum cases. We'll upgrade our composable architecture to use them and see why they're a better fit than our existing approach.
 """#,

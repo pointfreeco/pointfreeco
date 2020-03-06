@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep7_settersAndKeyPaths = Episode(
+  public static let ep7_settersAndKeyPaths = Episode(
     blurb: """
 This week we explore how functional setters can be used with the types we build and use everyday. It turns out that Swift generates a whole set of functional setters for you to use, but it can be hard to see just how powerful they are without a little help.
 """,

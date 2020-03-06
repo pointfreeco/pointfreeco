@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep30_composableRandomness = Episode(
+  public static let ep30_composableRandomness = Episode(
     blurb: """
 Randomness is a topic that may not seem so functional, but it gives us a wonderful opportunity to explore composition. After a survey of what randomness looks like in Swift today, we'll build a complex set of random APIs from just a single unit.
 """,

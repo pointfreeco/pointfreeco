@@ -1,8 +1,8 @@
-GET http://localhost:8080/login?redirect=http://localhost:8080/episodes/42
+GET http://localhost:8080/login?redirect=http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 302 Found
-Location: https://github.com/login/oauth/authorize?client_id=deadbeef-client-id&redirect_uri=http://localhost:8080/github-auth?redirect%3Dhttp://localhost:8080/episodes/42&scope=user:email
+Location: https://github.com/login/oauth/authorize?client_id=deadbeef-client-id&redirect_uri=http://localhost:8080/github-auth?redirect%3Dhttp://localhost:8080/account&scope=user:email
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen

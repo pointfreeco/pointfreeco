@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep77_effectfulStateManagement_unidirectionalEffects = Episode(
+  public static let ep77_effectfulStateManagement_unidirectionalEffects = Episode(
     blurb: """
 We've modeled side effects in our architecture, but it's not quite right yet: a reducer can write to the outside world, but it can't read data back in! This week our architecture's dedication to unidirectional data flow will lead us there.
 """,

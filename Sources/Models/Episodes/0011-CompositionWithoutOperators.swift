@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep11_compositionWithoutOperators = Episode(
+  public static let ep11_compositionWithoutOperators = Episode(
     blurb: """
 While we unabashedly promote custom operators in this series, we understand that not every codebase can \
 adopt them. Composition is too important to miss out on due to operators, so we want to explore some \

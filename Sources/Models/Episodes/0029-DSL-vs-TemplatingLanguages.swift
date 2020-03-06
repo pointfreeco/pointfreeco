@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep29_dslsVsTemplatingLanguages = Episode(
+  public static let ep29_dslsVsTemplatingLanguages = Episode(
     blurb: """
 Templating languages are the most common way to render HTML in web frameworks, but we don't think they \
 are the best way. We compare templating languages to the DSL we previously built, and show that \

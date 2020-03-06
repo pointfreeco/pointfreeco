@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep43_theManyFacesOfFlatMap_pt2 = Episode(
+  public static let ep43_theManyFacesOfFlatMap_pt2 = Episode(
     blurb: """
 Now that we know that `flatMap` is important for flattening nested arrays and optionals, we should feel empowered to define it on our own types. This leads us to understanding its structure more in depth and how it's different from `map` and `zip`.
 """,

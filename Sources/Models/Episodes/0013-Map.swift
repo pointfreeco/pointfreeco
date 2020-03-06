@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep13_theManyFacesOfMap = Episode(
+  public static let ep13_theManyFacesOfMap = Episode(
     blurb: """
 Why does the `map` function appear in every programming language supporting "functional" concepts? And why does Swift have _two_ `map` functions? We will answer these questions and show that `map` has many universal properties, and is in some sense unique.
 """,

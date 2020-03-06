@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep39_witnessOrientedLibraryDesign = Episode(
+  public static let ep39_witnessOrientedLibraryDesign = Episode(
     blurb: """
 We previously refactored a library using protocols to make it more flexible and extensible but found that it wasn't quite as flexible or extensible as we wanted it to be. This week we re-refactor our protocols away to concrete datatypes using our learnings from earlier in the series.
 """,

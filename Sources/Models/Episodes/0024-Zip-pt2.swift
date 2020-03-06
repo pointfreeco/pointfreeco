@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep24_theManyFacesOfZip_pt2 = Episode(
+  public static let ep24_theManyFacesOfZip_pt2 = Episode(
     blurb: """
 In part two of our series on `zip` we will show that many types support a `zip`-like operation, and some even support multiple distinct implementations. However, not all `zip`s are created equal, and understanding this can lead to some illuminating properties of our types.
 """,

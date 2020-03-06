@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep10_aTaleOfTwoFlatMaps = Episode(
+  public static let ep10_aTaleOfTwoFlatMaps = Episode(
     blurb: """
 Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from \
 the others? We'll explore this and how understanding that difference helps us explore generalizations of the \

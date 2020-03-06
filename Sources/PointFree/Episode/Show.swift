@@ -13,9 +13,9 @@ import Styleguide
 import Tuple
 import Views
 
-let episodeResponse =
-  fetchEpisodeForParam
-    <| writeStatus(.ok)
+let episodeResponse
+  : M<Tuple4<Episode, User?, SubscriberState, Route>>
+  = writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
@@ -45,20 +45,9 @@ let episodeResponse =
     }
 )
 
-let useCreditResponse =
-  fetchEpisodeForParam
-    <<< validateUserEpisodePermission
+let useCreditResponse
+  = validateUserEpisodePermission
     <| applyCreditMiddleware
-
-private let fetchEpisodeForParam
-  : MT<
-  Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
-  Tuple4<Episode, User?, SubscriberState, Route?>
-  >
-  = filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-)
 
 private let validateUserEpisodePermission
   : MT<
@@ -71,16 +60,12 @@ private let validateUserEpisodePermission
 
 let progressResponse: M<
   Tuple4<
-  Either<String, Episode.Id>,
+  Episode,
   Models.User?,
   SubscriberState,
   Int>
-  > =
-  filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> end
-    )
-    <| userEpisodePermission
+  >
+  = userEpisodePermission
     >=> updateProgress
 
 private let updateProgress: M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
@@ -115,7 +100,7 @@ private func applyCreditMiddleware<Z>(
   guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
-        to: .episode(.show(.left(episode.slug))),
+        to: .episode(.show(episode)),
         headersMiddleware: flash(.error, "You do not have any credits to use.")
     )
   }
@@ -130,14 +115,14 @@ private func applyCreditMiddleware<Z>(
         const(
           conn
             |> redirect(
-              to: .episode(.show(.left(episode.slug))),
+              to: .episode(.show(episode)),
               headersMiddleware: flash(.warning, "Something went wrong.")
           )
         ),
         const(
           conn
             |> redirect(
-              to: .episode(.show(.left(episode.slug))),
+              to: .episode(.show(episode)),
               headersMiddleware: flash(.notice, "You now have access to this episode!")
           )
         )
@@ -155,7 +140,7 @@ private func validateCreditRequest<Z>(
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episode(.show(.left(episode.slug))),
+          to: .episode(.show(episode)),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
     }
@@ -166,7 +151,7 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episode(.show(.left(episode.slug))),
+        to: .episode(.show(episode)),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
     )
   }

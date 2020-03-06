@@ -20,7 +20,7 @@ final class ApiTests: TestCase {
   }
 
   func testEpisode() {
-    let conn = connection(from: request(to: .api(.episode(1))))
+    let conn = connection(from: request(to: .api(.episode(Current.episodes().first!))))
       |> siteMiddleware
       |> Prelude.perform
 
@@ -28,13 +28,5 @@ final class ApiTests: TestCase {
     // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
     assertSnapshot(matching: conn, as: .conn)
     #endif
-  }
-
-  func testEpisode_NotFound() {
-    let conn = connection(from: request(to: .api(.episode(424242))))
-      |> siteMiddleware
-      |> Prelude.perform
-
-    assertSnapshot(matching: conn, as: .conn)
   }
 }

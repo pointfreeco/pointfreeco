@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep87_theCaseForCasePaths_pt1 = Episode(
+  public static let ep87_theCaseForCasePaths_pt1 = Episode(
     blurb: """
 You've heard of key paths, but…case paths!? Today we introduce the concept of "case paths," a tool that helps you generically pick apart an enum just like key paths allow you to do for structs. It's the tool you never knew you needed.
 """,

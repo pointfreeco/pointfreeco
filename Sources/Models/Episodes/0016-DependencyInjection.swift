@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep16_dependencyInjectionMadeEasy = Episode(
+  public static let ep16_dependencyInjectionMadeEasy = Episode(
     blurb: """
 Today we're going to control the world! Well, dependencies to the outside world, at least. We'll define the \
 "dependency injection" problem and show a lightweight solution that can be implemented in your code base \

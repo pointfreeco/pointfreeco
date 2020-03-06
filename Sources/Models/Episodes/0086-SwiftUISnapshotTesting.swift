@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  static let ep86_swiftUiSnapshotTesting = Episode(
+  public static let ep86_swiftUiSnapshotTesting = Episode(
     blurb: """
 In this week's free holiday episode we show what it looks like to snapshot test a SwiftUI application in our architecture and compare this style of integration testing against XCTest's UI testing tools.
 """,

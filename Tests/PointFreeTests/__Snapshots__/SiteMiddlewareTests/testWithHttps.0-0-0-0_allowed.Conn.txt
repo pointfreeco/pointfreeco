@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 59571
+Content-Length: 59491
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1977,8 +1977,8 @@ html {
                      ts-m-r1_25
                      lh-2
                      m-mt2">
-            <a href="/episodes/ep2-proof-in-functions">
-              Proof in Functions
+            <a href="/episodes/ep2-side-effects">
+              Side Effects
             </a>
           </h1>
           <div class="body-leading
@@ -1992,7 +1992,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </div>
           </div>
           <div class="m-mt3">
-            <a href="/episodes/ep2-proof-in-functions"
+            <a href="/episodes/ep2-side-effects"
                class="align-middle
                       pf-link-purple
                       fg-black
@@ -2019,7 +2019,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
-          <a href="/episodes/ep2-proof-in-functions">
+          <a href="/episodes/ep2-side-effects">
             <img src
                  alt
                  class="w-100p
@@ -2062,8 +2062,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                      ts-m-r1_25
                      lh-2
                      m-mt2">
-            <a href="/episodes/ep1-type-safe-html-in-swift">
-              Type-Safe HTML in Swift
+            <a href="/episodes/ep1-functions">
+              Functions
             </a>
           </h1>
           <div class="body-leading
@@ -2076,7 +2076,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </div>
           </div>
           <div class="m-mt3">
-            <a href="/episodes/ep1-type-safe-html-in-swift"
+            <a href="/episodes/ep1-functions"
                class="align-middle
                       pf-link-purple
                       fg-black
@@ -2103,7 +2103,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
-          <a href="/episodes/ep1-type-safe-html-in-swift">
+          <a href="/episodes/ep1-functions">
             <img src
                  alt
                  class="w-100p

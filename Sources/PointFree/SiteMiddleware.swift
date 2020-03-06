@@ -86,12 +86,12 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn
         |> redirect(to: path(to: .home))
 
-    case let .episode(.progress(param: param, percent: percent)):
-      return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
+    case let .episode(.progress(episode, percent: percent)):
+      return conn.map(const(episode .*. user .*. subscriberState .*. percent .*. unit))
         |> progressResponse
 
-    case let .episode(.show(param)):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+    case let .episode(.show(episode)):
+      return conn.map(const(episode .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
 
     case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
@@ -201,8 +201,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
 
-    case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
+    case let .useEpisodeCredit(episode):
+      return conn.map(const(episode .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.knownEvent(event))):
