@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 57100
+Content-Length: 58858
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2160,28 +2160,62 @@ html {
     <div class="border-top"
          style="background-color:#fafafa;
                 border-top-color:#e8e8e8">
-      <div class="center-m
+      <div class="items-center
+                  center-m
                   row"
            style="height:88px;
                   max-width:1080px;
                   margin-right:auto;
                   margin-left:auto">
         <div class="border-right
+                    start-m
+                    m-pl2
+                    m-pr2
                     col-m
                     col-m-6"
              style="border-right-color:#e8e8e8">
+          <a class="row"
+             href="http://localhost:8080/collections/map-zip-flatmap/map">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB2aWV3Qm94PSIwIDAgOCAxMiIgd2lkdGg9IjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJtLTIxNS0xNTk5aDEwMjR2MTY0OWgtMTAyNHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtMCAwaDEwMjR2MzgxaC0xMDI0eiIgZmlsbD0iI2ZhZmFmYSIgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgLTIxNSA1MCkiLz48cGF0aCBkPSJtMTUuNDEgNy40MS0xLjQxLTEuNDEtNiA2IDYgNiAxLjQxLTEuNDEtNC41OC00LjU5eiIgZmlsbD0iIzAwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTggLTYpIi8+PC9nPjwvc3ZnPg=="
+                 alt
+                 class="d-pr2
+                        m-pr1">
+            <div class="col-m">
+              <div class="fg-black
+                          normal
+                          h6
+                          lh-4">
+                Back to
+              </div>
+              <div class="semi-bold">
+                Map
+              </div>
+            </div>
+          </a>
         </div>
         <div class="end-m
-                    d-pb4
-                    d-pt3
-                    d-pl5
-                    d-pr5
-                    m-pl3
-                    m-pr3
-                    m-pt2
-                    m-pb2
+                    m-pl2
+                    m-pr2
                     col-m
                     col-m-6">
+          <a class="row"
+             href="http://localhost:8080/collections/map-zip-flatmap/flatmap">
+            <div class="col-m">
+              <div class="fg-black
+                          normal
+                          h6
+                          lh-4">
+                Next up
+              </div>
+              <div class="semi-bold">
+                Flat-Map
+              </div>
+            </div>
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLjU5IDEuNDEgNC41OCA0LjU5LTQuNTggNC41OSAxLjQxIDEuNDEgNi02LTYtNnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
+                 alt
+                 class="d-pl2
+                        m-pl1">
+          </a>
         </div>
       </div>
     </div>

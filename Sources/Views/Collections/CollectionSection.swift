@@ -17,7 +17,19 @@ public func collectionSection(
   _ collection: Episode.Collection,
   _ section: Episode.Collection.Section
 ) -> Node {
-  [
+  let currentIndex = collection.sections.firstIndex(where: { $0 == section })
+  let previousSection = currentIndex.flatMap {
+    $0 == collection.sections.startIndex
+      ? nil
+      : collection.sections[collection.sections.index(before: $0)]
+  }
+  let nextSection = currentIndex.flatMap {
+    $0 == collection.sections.index(before: collection.sections.endIndex)
+      ? nil
+      : collection.sections[collection.sections.index(after: $0)]
+  }
+
+  return [
     collectionNavigation(
       left: zip(collection.title, collection.slug)
         .map { ($0, url(to: .collections(.show($1)))) }
@@ -33,7 +45,11 @@ public func collectionSection(
     coreLessons(section.coreLessons),
     relatedItems(section.related),
     whereToGoFromHere(section.whereToGoFromHere),
-    sectionNavigation(),
+    sectionNavigation(
+      collection: collection,
+      previousSection: previousSection,
+      nextSection: nextSection
+    ),
   ]
 }
 
@@ -243,8 +259,90 @@ private func whereToGoFromHere(_ string: String) -> Node {
   )
 }
 
-private func sectionNavigation() -> Node {
-  .div(
+private func sectionNavigation(
+  collection: Episode.Collection,
+  previousSection: Episode.Collection.Section?,
+  nextSection: Episode.Collection.Section?
+) -> Node {
+  guard let collectionSlug = collection.slug else { return [] }
+
+  let previousLink = previousSection.map { section in
+    Node.a(
+      attributes: [
+        .class([
+          Class.grid.row,
+        ]),
+        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+      ],
+      .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.right: 1],
+            .desktop: [.right: 2]
+          ]),
+        ]),
+      ]),
+      .gridColumn(
+        sizes: [:],
+        .div(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+            ]),
+          ],
+          "Back to"
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.type.semiBold,
+            ]),
+          ],
+          .text(section.title)
+        )
+      )
+    )
+  }
+
+  let nextLink = nextSection.map { section in
+    Node.a(
+      attributes: [
+        .class([
+          Class.grid.row,
+        ]),
+        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+      ],
+      .gridColumn(
+        sizes: [:],
+        .div(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+            ]),
+          ],
+          "Next up"
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.type.semiBold,
+            ]),
+          ],
+          .text(section.title)
+        )
+      ),
+      .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.left: 1],
+            .desktop: [.left: 2]
+          ]),
+        ]),
+      ])
+    )
+  }
+
+  return .div(
     attributes: [
       .class([
         Class.border.top,
@@ -257,6 +355,7 @@ private func sectionNavigation() -> Node {
     .gridRow(
       attributes: [
         .class([
+          Class.flex.items.center,
           Class.grid.center(.mobile),
         ]),
         .style(
@@ -269,11 +368,15 @@ private func sectionNavigation() -> Node {
         sizes: [.mobile: 6],
         attributes: [
           .class([
-            Class.border.right
+            Class.border.right,
+            Class.grid.start(.mobile),
+            Class.padding([
+              .mobile: [.leftRight: 2],
+            ]),
           ]),
-          .style(borderColor(right: .other("#e8e8e8"))),
+          .style(/*height(.pct(100)) <> */borderColor(right: .other("#e8e8e8"))),
         ],
-        ""
+        previousLink ?? []
       ),
       .gridColumn(
         sizes: [.mobile: 6],
@@ -281,12 +384,12 @@ private func sectionNavigation() -> Node {
           .class([
             Class.grid.end(.mobile),
             Class.padding([
-              .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
-              .mobile: [.leftRight: 3, .topBottom: 2],
+              .mobile: [.leftRight: 2],
             ]),
           ]),
+//          .style(height(.pct(100))),
         ],
-        ""
+        nextLink ?? []
       )
     )
   )

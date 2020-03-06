@@ -22,6 +22,10 @@ public let leftNavigationChevronSvgBase64 = base64EncodedString <| """
 <svg height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m-57-78h1024v1649h-1024z" fill="#fff"/><path d="m-57-22h1024v412h-1024z" fill="#121212"/><path d="m10.2733333 4.94-.93999997-.94-4 4 4 4 .93999997-.94-3.0533333-3.06z" fill="#595959" transform="translate(-5 -4)"/></g></svg>
 """
 
+public let leftChevronSvgBase64 = base64EncodedString <| """
+<svg height="12" viewBox="0 0 8 12" width="8" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m-215-1599h1024v1649h-1024z" fill="#fff"/><path d="m0 0h1024v381h-1024z" fill="#fafafa" transform="matrix(1 0 0 -1 -215 50)"/><path d="m15.41 7.41-1.41-1.41-6 6 6 6 1.41-1.41-4.58-4.59z" fill="#000" transform="translate(-8 -6)"/></g></svg>
+"""
+
 public let rightChevronSvgBase64 = base64EncodedString <| """
 <svg height="12" width="8" xmlns="http://www.w3.org/2000/svg"><path d="m.59 1.41 4.58 4.59-4.58 4.59 1.41 1.41 6-6-6-6z" fill-rule="evenodd"/></svg>
 """
