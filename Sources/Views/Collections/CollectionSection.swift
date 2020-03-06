@@ -18,6 +18,10 @@ public func collectionSection(
   _ section: Episode.Collection.Section
 ) -> Node {
   [
+    collectionNavigation(
+      left: zip(collection.title, collection.slug)
+        .map { ($0, url(to: .collections(.show($1)))) }
+    ),
     collectionHeader(
       title: section.title,
       category: "Section",
@@ -35,9 +39,7 @@ public func collectionSection(
 private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node {
   .div(
     attributes: [
-      .class([
-        Class.pf.colors.bg.gray900,
-      ]),
+      .style(backgroundColor(.other("#fafafa"))),
     ],
     .gridRow(
       attributes: [
@@ -86,7 +88,11 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .style(borderWidth(left: .px(4)) <> height(.px(48))),
+        .style(
+          borderColor(all: .other("#e8e8e8"))
+            <> borderWidth(left: .px(4))
+            <> height(.px(48))
+        ),
       ],
       .gridColumn(
         sizes: [.mobile: 9],
@@ -170,7 +176,12 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.gray900,
         ]),
-        .style(borderWidth(left: .px(4)) <> height(.px(48))),
+        .style(
+          backgroundColor(.other("#fafafa"))
+          <> borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> height(.px(48))
+        ),
       ],
       .gridColumn(
         sizes: [.mobile: 9],
@@ -197,9 +208,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func whereToGoFromHere(_ string: String) -> Node {
   .div(
     attributes: [
-      .class([
-        Class.pf.colors.bg.gray900,
-      ]),
+      .style(backgroundColor(.other("fafafa"))),
     ],
     .gridRow(
       attributes: [
