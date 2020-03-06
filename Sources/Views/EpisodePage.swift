@@ -458,8 +458,7 @@ func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) 
       .id("transcript"),
       .class(
         [
-          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-//          Class.pf.colors.bg.white
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]])
         ]
       )
     ],

@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 200 OK
-Content-Length: 59571
+Content-Length: 59619
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -71,6 +71,10 @@ body {
 
 .bg-gray650 {
   background-color : #a8a8a8;
+}
+
+.bg-gray-850 {
+  background-color : #d8d8d8;
 }
 
 .bg-gray900 {
