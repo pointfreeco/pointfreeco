@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-side-effects
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 140501
+Content-Length: 72353
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1814,15 +1814,18 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta property="og:description"
-          content="Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:description"
-          content="Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:image"
-          content="https://i.vimeocdn.com/video/807678088.jpg">
+          content>
     <meta property="og:image"
-          content="https://i.vimeocdn.com/video/807678088.jpg">
+          content>
     <meta name="title"
           content="Episode #2: Side Effects">
     <meta property="og:title"
@@ -1913,7 +1916,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            ts-m-r0_75
                            lh-1
                            caps">
-              #2 • Monday Feb 5, 2018 • Free Episode
+              #2 • Tuesday Dec 20, 2016 • Subscriber-only
             </strong>
             <h1 class="fg-black
                        bold
@@ -1930,9 +1933,47 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                         normal
                         lh-4">
               <div class="md-ctn">
-                <p>Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.</p>
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
+            </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-functions">
+                  Functions
+                </a>
+              </li>
+            </ul>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
             </div>
           </div>
         </div>
@@ -1957,7 +1998,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            ts-m-r0_75
                            lh-1
                            caps">
-              #2 • Monday Feb 5, 2018 • Free Episode
+              #2 • Tuesday Dec 20, 2016 • Subscriber-only
             </strong>
             <h1 class="fg-black
                        bold
@@ -1974,9 +2015,47 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                         normal
                         lh-4">
               <div class="md-ctn">
-                <p>Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.</p>
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
+            </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-functions">
+                  Functions
+                </a>
+              </li>
+            </ul>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
             </div>
           </div>
         </div>
@@ -2000,1348 +2079,130 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           <h2 class="h4
                      lh-3
                      m-pt2"
-              id="t5">
-            <a href="#t5">
+              id="t0">
+            <a href="#t0">
               Introduction
             </a>
           </h2>
           <div>
-            <div class="md-ctn">
-              <p>We’ve now had an entire episode just about functions where we emphasized the importance of looking at the input and output types of functions to understand how they compose, but there are a lot of things a function can do that aren’t captured by its signature alone. These things are called “side effects.”</p>
-<p>Side effects are one of the biggest sources of complexity in code, and to make things worse they’re very difficult to test and they don’t compose well. We’ve seen from the last episode that we get a lot of benefits from embracing function composition, but side effects throw a wrench in that.</p>
-<p>In this episode we’ll cover a few kinds of side effects, show why they’re so difficult to test, why they don’t compose, and try to address these problems in a nice way.</p>
-
-            </div>
-          </div>
-          <div>
-            <div id="t43"
+            <div id="t0"
                  class="block">
-              <a href="#t43"
+              <a href="#t0"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                00:43
+                00:00
               </a>
             </div>
             <div class="md-ctn">
-              <p>Side effect is a pretty overloaded term, so in order to define it, let’s first look at a function that has no side effects:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func compute(_ x: Int) -> Int {
-  return x * x + 1
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>When we call our function, we get a result back:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              compute(2) // 5
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>A really nice property of functions without side effects is that no matter how many times we call one with the same input, we always get the same output:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              compute(2) // 5
-compute(2) // 5
-compute(2) // 5
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This predictability makes it incredibly simple to write tests for them.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(5, compute(2)) // ✅
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>If we ever write a test with the wrong expectation or the wrong input for an expectation, it will <em>always</em> fail.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(4, compute(2)) // ❌
-assertEqual(5, compute(3)) // ❌
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Let’s add a side effect to our function.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func computeWithEffect(_ x: Int) -> Int {
-  let computation = x * x + 1
-  print("Computed \(computation)")
-  return computation
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve inserted a <code>print</code> statement right in the middle.</p>
-<p>When we call <code>computeWithEffect</code> with the same input as before, we get the same output:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              computeWithEffect(2) // 5
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>But if we look at our console, there’s some <em>additional</em> output here.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Computed 5
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>If we compare function signatures, <code>computeWithEffect</code> is exactly the same as <code>compute</code>, but work is being done that we couldn’t have accounted for by looking at the signature alone. The <code>print</code> function is reaching out into the world and making a change, in this case, printing to our console. Side effects require understanding the body of the function to know they’re hiding in there.</p>
-<p>Let’s write a test for this function:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(5, computeWithEffect(2)) // ✅
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>It passes! But now we have an <em>additional</em> line in our console.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Computed 5
-Computed 5
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And this is behavior that we just can’t test. Here we’re just printing to the console, so it may not seem like a big deal, but if we swapped printing out for another effect, like writing to disk, making an API request, or analytics tracking, we start to care more that this behavior is happening and that we can test it.</p>
-<p>Side-effects can also break compositional intuitions we build. In our episode on functions, we discussed how mapping over an array with two functions is the same as mapping over an array with the composition of those functions:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [2, 10].map(compute).map(compute) // [26, 10202]
-[2, 10].map(compute >>> compute)  // [26, 10202]
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now let’s try that with <code>computeWithEffect</code>:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [2, 10].map(computeWithEffect).map(computeWithEffect)
-// [26, 10202]
-[2, 10].map(computeWithEffect >>> computeWithEffect)
-// [26, 10202]
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>The return values are equal, but when we look at the console, the behavior is not!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Computed 5
-Computed 101
-Computed 26
-Computed 10202
---
-Computed 5
-Computed 26
-Computed 101
-Computed 10202
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can no longer take advantage of this property without having to consider the side effects. Our ability to make this kind of refactor is a real-world performance optimization: instead of traversing our array twice, we traverse it just once. If our functions have side effects, though, they won’t execute in the same order, and order may be something we depend on! Making this kind of performance optimization in the world of side effects could break our code!</p>
+              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
+that timestamp jumps the video to that spot.</p>
 
             </div>
           </div>
           <h2 class="h4
                      lh-3
                      m-pt2"
-              id="t320">
-            <a href="#t320">
-              Hidden outputs
+              id="t0">
+            <a href="#t0">
+              Title
             </a>
           </h2>
           <div>
-            <div class="md-ctn">
-              <p>Let’s look at the simplest way to control this side effect. Rather than performing the effect in the body of the function, we can return an extra value that describes what needs to be printed. A function could print many things, so we’ll use an array of strings to model this.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func computeAndPrint(_ x: Int) -> (Int, [String]) {
-  let computation = x * x + 1
-  return (computation, ["Computed \(computation)"])
-}
-
-computeAndPrint(2) // (5, ["Computed 5"])
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We get a result of not only the computation, but an array of logs we may want to print.</p>
-<p>Let’s write a test:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(
-  (5, ["Computed 5"]),
-  computeAndPrint(2)
-)
-// ✅
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now we’re getting coverage not only on the computation, but on the effect we want to perform! Our test will now fail if the side effect is in an unexpected format.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(
-  (5, ["Computed 3"]),
-  computeAndPrint(2)
-)
-// ❌
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>The data is quite simple here, but remember, it could potentially be more critical data that describes an API request or analytics event, and we could be writing assertions that these effects are being prepared the way we expect them to.</p>
-<p>Viewed in this way, a side effect that makes a change to the outside world is nothing but a hidden, implicit output of the function. Implicit is usually not a good thing when it comes to programming.</p>
-<p>Now you may ask, “Well, who performs the effect?” By pulling the effect out into the return type, we have pushed responsibility for this effect to whoever calls this function. For example:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              let (computation, logs) = computeAndPrint(2)
-logs.forEach { print($0) }
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We may not want the caller to have side effects, though, so it may have to pass them along, as well. And maybe <em>its</em> caller doesn’t want to have side effects, and so on! This sounds like a messy problem, but there are nice ways to solve it. Before we can solve <em>that</em> problem, though, we need to understand <em>this</em> one in detail.</p>
-
-            </div>
-          </div>
-          <div>
-            <div id="t495"
+            <div id="t0"
                  class="block">
-              <a href="#t495"
+              <a href="#t0"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                08:15
+                00:00
               </a>
             </div>
             <div class="md-ctn">
-              <p>It may seem like we’ve solved the effects problem: we just need to substitute them with descriptions in the output of our functions. Unfortunately, we’ve broken one of the most important features of functions: composition.</p>
-<p>Our <code>compute</code> function is nice because it forward-composes with itself.</p>
+              <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+However, you cannot associate a timestamp with this paragraph.</p>
 
             </div>
           </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              compute >>> compute // (Int) -> Int
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And our <code>computeWithEffect</code> function is actually kind of nice because it <em>also</em> forward-composes with itself.</p>
+          <div class="m-ml2
+                      m-mr2
+                      m-mt3
+                      m-mb3
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2"
+               style="background-color: #ffdbdd;
+                      border-left: 3px solid #eb1c26">
+            <h3 class="fg-black
+                       bold
+                       ts-d-r1
+                       ts-m-r0_875
+                       lh-1">
+              Correction
+            </h3>
+            <div class="fg-black
+                        normal
+                        h5
+                        lh-4">
+              <div class="md-ctn">
+                <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
+including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
 
+              </div>
             </div>
           </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              computeWithEffect >>> computeWithEffect // (Int) -> Int
-            </code>
-          </pre>
           <div>
-            <div class="md-ctn">
-              <p>We can pipe values into them and get results.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> compute >>> compute // 26
-2 |> computeWithEffect >>> computeWithEffect // 26
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Of course, now we’re back to having <code>computeWithEffect</code> printing to the console.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Computed 5
-Computed 26
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Meanwhile, our attempt to solve this problem, <code>computeAndPrint</code>, does <em>not</em> compose.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              computeAndPrint >>> computeAndPrint
-// Cannot convert value of type '(Int) -> (Int, [String])' to expected argument type '((Int, [String])) -> (Int, [String])'
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>The output of <code>computeAndPrint</code> is a tuple, <code>(Int, [String])</code>, but the input is just <code>Int</code>.</p>
-<p>We’ll see this time and again: anytime we have a function that needs to execute a side effect, we’ll augment the return type to describe the effect, and we’ll break function composition. Then it’ll be our job to cook up some kind of way to enhance composition on these kinds of functions.</p>
-<p>In the case of functions that return tuples, we can fix the composition quite nicely and do so even more generally than our <code>computeAndPrint</code> function. Let’s define a function whose entire job is to compose these kinds of functions.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func compose<A, B, C>(
-  _ f: @escaping (A) -> (B, [String]),
-  _ g: @escaping (B) -> (C, [String])
-  ) -> (A) -> (C, [String]) {
-
-  // …
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This looks kind of familiar. It has a signature similar to our <code>&gt;&gt;&gt;</code> function: we see <code>(A) -&gt; B</code>, <code>(B) -&gt; C</code>, and <code>(A) -&gt; C</code>, but with a little extra information alongside.</p>
-<p>We can implement this function by looking at the type of functions and the values we have at our disposal.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func compose<A, B, C>(
-  _ f: @escaping (A) -> (B, [String]),
-  _ g: @escaping (B) -> (C, [String])
-  ) -> (A) -> (C, [String]) {
-
-  return { a in
-    let (b, logs) = f(a)
-    let (c, moreLogs) = g(b)
-    return (c, logs + moreLogs)
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We know we’re returning a function, so we start by opening it up and binding <code>a</code>. We also have a function, <code>f</code>, that takes <code>A</code>s, so let’s pass it <code>a</code> and bind the return values, in this case, a <code>b</code> and some <code>logs</code>. Now that we have a <code>b</code> that plugs nicely into the function <code>g</code>, and it returns a <code>c</code> and some <code>moreLogs</code>. And now that we have a <code>c</code>, we can return it from our function alongside some logs. We could return <code>logs</code> or <code>moreLogs</code>, but in this case it makes sense to return the concatenation of both.</p>
-<p>So let’s compose our functions!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              compose(computeAndPrint, computeAndPrint)
-// (Int) -> (Int, [String])
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve now created a whole new function that calls <code>computeAndPrint</code> twice. When we feed data into it, we get not only the final computation, but logs of every step along the way.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> compose(computeAndPrint, computeAndPrint)
-// (26, ["Computed 5", "Computed 26"])
-            </code>
-          </pre>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t660">
-            <a href="#t660">
-              Introducing >=>
-            </a>
-          </h2>
-          <div>
-            <div class="md-ctn">
-              <p>It seems like we’ve recovered composition and completely solved the problem, but things start to get messy when we compose more than two functions.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>What’s maybe worse is that there are two different ways to make the same composition:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)
-2 |> compose(computeAndPrint, compose(computeAndPrint, computeAndPrint))
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Parentheses always seem to be the enemy of composition. What’s the enemy of parentheses? An infix operator.</p>
-<p>We know we want to be able to compose multiple times in a row, and we know we want to be able to pipe values into these compositions, so let’s define an associative precedence group that’s higher than our <code>|&gt;</code> operator.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              precedencegroup EffectfulComposition {
-  associativity: left
-  higherThan: ForwardApplication
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now we can define an infix operator that looks a little familiar.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              infix operator >=>: EffectfulComposition
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>It’s very close to <code>&gt;&gt;&gt;</code>, but we’ve swapped out the inner arrow for a tube-like <code>=</code>. A fun name for this operator is the “fish” operator.</p>
-<p>We can now rename our <code>compose</code> function and we can glue our effectful functions together without the noise and burden of having to reason about parentheses.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func >=> <A, B, C>(
-  _ f: @escaping (A) -> (B, [String]),
-  _ g: @escaping (B) -> (C, [String])
-  ) -> (A) -> (C, [String]) {
-
-  return { a in
-    let (b, logs) = f(a)
-    let (c, moreLogs) = g(b)
-    return (c, logs + moreLogs)
-  }
-}
-
-computeAndPrint >=> computeAndPrint >=> computeAndPrint // (Int) -> (Int, [String])
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can pipe values through and use multiple lines to create pipelines that read nicely from top to bottom.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2
-  |> computeAndPrint
-  >=> computeAndPrint
-  >=> computeAndPrint
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Another nice thing about bringing our composition into the operator world is that it plays more nicely with existing operators like <code>&gt;&gt;&gt;</code>.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2
-  |> computeAndPrint
-  >=> (incr >>> computeAndPrint)
-  >=> (square >>> computeAndPrint)
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Here we’re able to take the results of effectful functions and apply them to functions that don’t have side effects, all with composition. We have a new parentheses problem, but we can solve it! Function composition is maybe the strongest form of composition, and given where the parentheses appear, and the input and output types along the way, we can come to the conclusion that it should always have a higher precedence. This means we need to update our <code>EffectfulComposition</code> precedence group.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              precedencegroup EffectfulComposition {
-  associativity: left
-  higherThan: ForwardApplication
-  lowerThan: ForwardComposition
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We no longer need parentheses and we can further pipeline our composition.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2
-  |> computeAndPrint
-  >=> incr
-  >>> computeAndPrint
-  >=> square
-  >>> computeAndPrint
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Every line is now annotated with an operator that provides meaning. Lines prefixed with <code>&gt;&gt;&gt;</code> are dealing with the result of a function that has no side effect, while lines prefixed with <code>&gt;=&gt;</code> are a bit fishier: they’re dealing with the result of an effectful computation.</p>
-<p>We’ve introduced a new operator, so it’s time to justify its addition to our code.</p>
-<ol>
-<li>
-<p>Does this operator have existing meaning in Swift? Nope. There’s no chance of overloading existing meaning.</p>
-</li>
-<li>
-<p>Does this operator have prior art and does it have a nice, descriptive shape? Yep! The fish operator ships with Haskell and PureScript, and many other programming languages communities have adopted it in functional libraries. The shape is nice, especially alongside <code>&gt;&gt;&gt;</code>, where it’s just different enough to indicate that something else is going on.</p>
-</li>
-<li>
-<p>Is this a universal operator or is it only solving a domain specific problem? The way the operator is defined right now is quite specific to working on tuples, but the shape it’s describing shows up all the time in programming. We can even define the operator on a couple Swift types:</p>
-</li>
-</ol>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func >=> <A, B, C>(
-  _ f: @escaping (A) -> B?,
-  _ g: @escaping (B) -> C?
-  ) -> ((A) -> C?) {
-
-  return { a in
-    fatalError() // an exercise for the viewer
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve replaced our tuples with optionals and now have an operator that aids in composing functions that return optionals. We can now chain a couple failable initializers together:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              String.init(utf8String:) >=> URL.init(string:)
-// (UnsafePointer<Int8>) -> URL?
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And we get a brand new failable initializer for free!</p>
-<p>We could also use the operator to enhance composition with functions that return arrays:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func >=> <A, B, C>(
-  _ f: @escaping (A) -> [B],
-  _ g: @escaping (B) -> [C]
-  ) -> ((A) -> [C]) {
-
-  return { a in
-    fatalError() // an exercise for the viewer
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And if we were using a <code>Promise</code> or <code>Future</code> type, we could use the operator to compose functions that return promises.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func >=> <A, B, C>(
-  _ f: @escaping (A) -> Promise<B>,
-  _ g: @escaping (B) -> Promise<C>
-  ) -> ((A) -> Promise<C>) {
-
-  return { a in
-    fatalError() // an exercise for the viewer
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ll see this shape come up time and time again. In some languages with very powerful type systems, it’s possible to define this operator a single time and get all of these implementations immediately. Swift does not yet have these features, so we have to define them for new types as we go. We’re still able to build an intuition for this shape, though, and share it over many, many types. Now when we see <code>&gt;=&gt;</code> we can know that it’s chaining into some kind of effect.</p>
-
-            </div>
-          </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t1131">
-            <a href="#t1131">
-              Hidden inputs
-            </a>
-          </h2>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve covered a side effect that leads to a hidden output and shown how to control it by making that output explicit in our functions, all while retaining composability. There’s another kind of side effect that’s a bit trickier.</p>
-<p>Let’s look at a simple function that produces a greeting for a user.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func greetWithEffect(_ name: String) -> String {
-  let seconds = Int(Date().timeIntervalSince1970) % 60
-  return "Hello \(name)! It's \(seconds) seconds past the minute."
-}
-
-greetWithEffect("Blob")
-// "Hello Blob! It's 14 seconds past the minute."
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>When we run this code again, we’re likely to get a different value. This is the opposite of the predictability we had with our <code>compute</code> function.</p>
-<p>If we write a test, it’s almost always going to fail.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(
-  "Hello Blob! It's 32 seconds past the minute.",
-  greetWithEffect("Blob")
-)
-// ❌
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This is a particularly bad side effect. In our previous case we could at the very least write assertions against its output, we just weren’t covering the whole story. In this case we cant even write a test because the output keeps changing.</p>
-<p>Our previous side effect was <code>print</code>, which is a function that takes input but has no return value. In this case we have <code>Date</code>, which is a function that <em>has</em> a return value but takes no input.</p>
-<p>Let’s see if we can use a similar solution for this side effect. Earlier we made <code>print</code>’s effect explicit in <code>compute</code>’s return value, and here we can make <code>Date</code>’s effect explicit as an argument to the function.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func greet(at date: Date, name: String) -> String {
-  let seconds = Int(date.timeIntervalSince1970) % 60
-  return "Hello \(name)! It's \(seconds) seconds past the minute."
-}
-
-greet(at: Date(), name: "Blob")
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This function behaves the same as before but with one crucial difference: we can now control the date and have a test that always passes.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(
-  "Hello Blob! It's 39 seconds past the minute.",
-  greet(at: Date(timeIntervalSince1970: 39), name: "Blob")
-)
-// ✅
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve recovered testability at the cost of some boilerplate. The caller of the function needs to pass the date explicitly, which seems unnecessary outside of our tests. We may be tempted to hide this implementation detail by specifying a default argument and inject this dependency on the current date into our function to clean up the call site.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func greet(at date: Date = Date(), name: String) -> String {
-  let s = Int(date.timeIntervalSince1970) % 60
-  return "Hello \(name)! It's \(s) seconds past the minute."
-}
-
-greet(name: "Blob")
-            </code>
-          </pre>
-          <div>
-            <div id="t1355"
+            <div id="t30"
                  class="block">
-              <a href="#t1355"
+              <a href="#t30"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                22:35
+                00:30
               </a>
             </div>
             <div class="md-ctn">
-              <p>This reads a bit nicer, but we have a bigger problem: we’ve broken composition again.</p>
-<p>Our first <code>greetWithEffect</code> function had a nice <code>(String) -&gt; String</code> shape that could be composed with other functions that return strings and functions take strings as input.</p>
-<p>Let’s take a simple function that uppercases a string:</p>
+              <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
 
             </div>
           </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func uppercased(_ string: String) -> String {
-  return string.uppercased()
-}
-            </code>
-          </pre>
           <div>
             <div class="md-ctn">
-              <p>This composes nicely on either side of <code>greetWithEffect</code>.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              uppercased >>> greetWithEffect
-greetWithEffect >>> uppercased
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can pipe a name through and get different behavior for each composition.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              "Blob" |> uppercased >>> greetWithEffect
-// "Hello BLOB! It's 56 seconds past the minute."
-"Blob" |> greetWithEffect >>> uppercased
-// "HELLO BLOB! IT'S 56 SECONDS PAST THE MINUTE."
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Our <code>greet</code> function, however, does not compose.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              "Blob" |> uppercased >>> greet
-"Blob" |> greet >>> uppercased
-// Cannot convert value of type '(Date, String) -> String' to expected argument type '(_) -> _'
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>It takes two inputs, so there’s no way to compose the output of a function into it. If we ignore the <code>Date</code> input, we can kind of still see that <code>(String) -&gt; String</code> shape. In fact, there’s a bit of a trick we can do to pull the <code>Date</code> out of that signature: we can rewrite <code>greet</code> to take a <code>Date</code> as input, but return a brand new function from <code>(String) -&gt; String</code> that handles the actual greeting logic:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func greet(at date: Date) -> (String) -> String {
-  return { name in
-    let s = Int(date.timeIntervalSince1970) % 60
-    return "Hello \(name)! It's \(s) seconds past the minute."
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now we can call our greet function with a date and get a brand new <code>(String) -&gt; String</code> function.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              greet(at: Date()) // (String) -> String
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This function composes!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              uppercased >>> greet(at: Date()) // (String) -> String
-greet(at: Date()) >>> uppercased // (String) -> String
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And we can pipe values through!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              "Blob" |> uppercased >>> greet(at: Date())
-// "Hello BLOB! It's 37 seconds past the minute."
-"Blob" |> greet(at: Date()) >>> uppercased
-// "HELLO BLOB! IT'S 37 SECONDS PAST THE MINUTE."
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve restored composition and still have testability.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              assertEqual(
-  "Hello Blob! It's 37 seconds past the minute.",
-  "Blob" |> greet(at: Date(timeIntervalSince1970: 37))
-)
-// ✅
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>So now we’ve encountered an effect that was impossible to test and we were able to control it by moving that context into the input of the function, which is the dual version of the effect we came across earlier. Our first effect reached out into the world and made a change, which is kind of like a hidden output, while this effect depends on some state of the outside world, which is kind of like a hidden input! All effects manifest in this way.</p>
+              <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
+time at the beginning of the text. That’s what we have done here.</p>
 
             </div>
           </div>
           <h2 class="h4
                      lh-3
                      m-pt2"
-              id="t1589">
-            <a href="#t1589">
-              Mutation
+              id="t60">
+            <a href="#t60">
+              Title Block
             </a>
           </h2>
           <div>
-            <div class="md-ctn">
-              <p>Let’s look at a very particular type of effect and really analyze it: mutation. We’ve all had to deal with mutation in code and it can lead to a lot of complexity. Luckily, Swift provides some type-level features to help control mutation and properly document how and where it can happen.</p>
-<p>Here’s example of how mutation can get messy. This sample is inspired by actual code we wrote in the past, and it kept getting uglier and more of a pain to work with until we finally rewrote it to control the mutation.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              let formatter = NumberFormatter()
-
-func decimalStyle(_ format: NumberFormatter) {
-  format.numberStyle = .decimal
-  format.maximumFractionDigits = 2
-}
-
-func currencyStyle(_ format: NumberFormatter) {
-  format.numberStyle = .currency
-  format.roundingMode = .down
-}
-
-func wholeStyle(_ format: NumberFormatter) {
-  format.maximumFractionDigits = 0
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Here we have a <code>NumberFormatter</code> from <code>Foundation</code> and several functions that configure number formatters with specific styles. To use these styling functions, we can apply them directly to our formatter.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              decimalStyle(formatter)
-wholeStyle(formatter)
-formatter.string(for: 1234.6) // "1,235"
-
-currencyStyle(formatter)
-formatter.string(for: 1234.6) // "$1,234"
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>If we now re-apply our first set of formatters, we have a problem.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              decimalStyle(formatter)
-wholeStyle(formatter)
-formatter.string(for: 1234.6) // "1,234"
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>The output’s changed from <code>&quot;1,235&quot;</code> to <code>&quot;1,234&quot;</code>. The reason it’s changed? Mutation. The <code>currencyStyle</code> function’s changes have bled into other uses of our formatter, resulting in a bug that in a larger context might be hard to track down.</p>
-<p>This is an example of why mutation is so tricky. It’s impossible to know what a line is doing until we trace back to learn what every line before it has done. Mutation is a manifestation of both of the side effects we’ve encountered so far, where mutable data passed between functions is a hidden input and output in one!</p>
-<p>The reason we’re seeing this particular kind of mutation is because <code>NumberFormatter</code> is a “reference” type. In Swift, classes are reference types. An instance of a reference type is a single object that, when mutated, has changed for any part of the code base that holds onto or may hold onto a reference of this object. There’s no easy way to track down which parts of a code base may hold onto the same reference of an object, which can lead to a lot of confusion when mutation is involved. If our example code were used in an application and a new feature were written to depend on this formatter, subtle bugs could creep into a totally new part of the code base.</p>
-<p>Swift also has “value” types. This is Swift’s answer to controlling mutation. When you assign a value, you get a brand new copy to work with for the given scope. All mutations are local and anything else holding onto the same value upstream won’t see these changes.</p>
-
-            </div>
-          </div>
-          <div>
-            <div id="t1773"
+            <div id="t60"
                  class="block">
-              <a href="#t1773"
+              <a href="#t60"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                29:33
+                01:00
               </a>
             </div>
             <div class="md-ctn">
-              <p>Let’s refactor this code to use values.</p>
-<p>We’ll start with a struct that is a wrapper around the configuration we do with <code>NumberFormatter</code>.</p>
+              <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
+chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
+episode video.</p>
+<p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
+highlighted snippet of code:</p>
 
             </div>
           </div>
@@ -3354,635 +2215,113 @@ formatter.string(for: 1234.6) // "1,234"
                          m-pb3
                          overflow-auto-x
                          language-swift">
-              struct NumberFormatterConfig {
-  var numberStyle: NumberFormatter.Style = .none
-  var roundingMode: NumberFormatter.RoundingMode = .up
-  var maximumFractionDigits: Int = 0
+              infix operator |>
 
-  var formatter: NumberFormatter {
-    let result = NumberFormatter()
-    result.numberStyle = self.numberStyle
-    result.roundingMode = self.roundingMode
-    result.maximumFractionDigits = self.maximumFractionDigits
-    return result
-  }
+func |> <A, B>(x: A, f: (A) -> B) -> B {
+  return f(x)
 }
             </code>
           </pre>
           <div>
-            <div class="md-ctn">
-              <p>It has some nice defaults and a <code>formatter</code> computed property that we can use to derive new, “honest” <code>NumberFormatter</code>s. What does it look like to update our styling functions to use <code>NumberFormatterConfig</code> instead?</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func decimalStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
-  var format = format
-  format.numberStyle = .decimal
-  format.maximumFractionDigits = 2
-  return format
-}
-
-func currencyStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
-  var format = format
-  format.numberStyle = .currency
-  format.roundingMode = .down
-  return format
-}
-
-func wholeStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
-  var format = format
-  format.maximumFractionDigits = 0
-  return format
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Each styling function takes a <code>NumberFormatterConfig</code>, copies it using the <code>var</code> keyword, and mutates the local copy before returning it to the caller.</p>
-<p>Using it looks a bit different.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              let config = NumberFormatterConfig()
-
-wholeStyle(decimalStyle(config))
-  .formatter
-  .string(for: 1234.6)
-// "1,235"
-
-currencyStyle(config)
-  .formatter
-  .string(for: 1234.6)
-// "$1,234"
-
-wholeStyle(decimalStyle(config))
-  .formatter
-  .string(for: 1234.6)
-// "1,235"
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This time, whenever we pass <code>config</code> to a styling function, we get a brand new copy, and our bug goes away!</p>
-<p>We could have done something similar with reference types using the <code>copy</code> method on classes that implement <code>NSCopying</code> and return this copy explicitly:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func decimalStyle(_ format: NumberFormatter) -> NumberFormatter {
-  let format = format.copy() as! NumberFormatter
-  format.numberStyle = .decimal
-  format.maximumFractionDigits = 2
-  return format
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Unfortunately here, the compiler gives us no guarantees that we don’t mutate the original formatter. On top of that, the caller may expect a copy, feel free to make further mutations, and the complexity builds from there!</p>
-<p>Because reference types aren’t automatically copied, they do have some nice performance benefits. Luckily, Swift provides a nice, semantic way of mutating values in place: the <code>inout</code> keyword.</p>
-<p>Let’s modify our config styling function to use <code>inout</code>.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func inoutDecimalStyle(_ format: inout NumberFormatterConfig) {
-  format.numberStyle = .decimal
-  format.maximumFractionDigits = 2
-}
-
-func inoutCurrencyStyle(_ format: inout NumberFormatterConfig) {
-  format.numberStyle = .currency
-  format.roundingMode = .down
-}
-
-func inoutWholeStyle(_ format: inout NumberFormatterConfig) {
-  format.maximumFractionDigits = 0
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This looks a lot like our original, mutating functions on <code>NumberFormatter</code>. We can perform mutations right away and don’t have to worry about copying values or returning them. Let’s try using these styling functions the same way we used the original ones.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              let config = NumberFormatterConfig()
-
-inoutDecimalStyle(config)
-inoutWholeStyle(config)
-config.formatter.string(from: 1234.6)
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We get a compiler error!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Cannot pass immutable value as inout argument: 'config' is a 'let' constant
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Swift even offers to fix this for us, transforming <code>let</code> into <code>var</code>.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              var config = NumberFormatterConfig()
-
-inoutDecimalStyle(config)
-inoutWholeStyle(config)
-config.formatter.string(from: 1234.6)
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>But that wasn’t enough. We have another compiler error!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Passing value of type 'NumberFormatterConfig' to an inout parameter requires explicit '&'
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Swift requires us to annotate, at the call site, that we’re agreeing to let this data be mutated.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              inoutDecimalStyle(&config)
-inoutWholeStyle(&config)
-config.formatter.string(from: 1234.6) // "1,235"
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can continue to call our mutating style functions in a similar fashion.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              inoutCurrencyStyle(&config)
-config.formatter.string(from: 1234.6) // "$1,234"
-
-inoutDecimalStyle(&config)
-inoutWholeStyle(&config)
-config.formatter.string(from: 1234.6) // "1,234"
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And there’s our bug again, but the code involved now has a lot of syntax that screams “mutation” and it makes this kind of bug much easier to track down.</p>
-
-            </div>
-          </div>
-          <div>
-            <div id="t2082"
+            <div id="t90"
                  class="block">
-              <a href="#t2082"
+              <a href="#t90"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                34:42
+                01:30
               </a>
             </div>
             <div class="md-ctn">
-              <p>It’s great that Swift provides a nice solution to mutation problems by providing type-level features to control where mutation can happen and how far it can travel. We still have a problem to solve if we want to use it, though.</p>
-<p>The styling functions we used that returned brand new copies have a nice shape:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              (NumberFormatterConfig) -> NumberFormatterConfig
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>They have the same input and output which means they compose with each other, <em>and</em> they compose with any other functions that return or take a <code>NumberFormatterConfig</code>!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              decimalStyle >>> currencyStyle
-// (NumberFormatterConfig) -> NumberFormatterConfig
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now we have a brand new styling function that we’ve composed from smaller pieces.</p>
-<p>Meanwhile, our <code>inout</code> functions don’t have this shape: their inputs and outputs don’t match and they don’t compose with many functions in general. These functions have the same logic, though, so there must be a way to bridge the <code>inout</code> world with the function world.</p>
-<p>It turns out that we can define a function called <code>toInout</code> that converts a function with the same input and output type into an <code>inout</code> function.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func toInout<A>(
-  _ f: @escaping (A) -> A
-  ) -> ((inout A) -> Void) {
-
-  return { a in
-    a = f(a)
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can also define a dual function, <code>fromInout</code>, that does the inverse transformation.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func fromInout<A>(
-  _ f: @escaping (inout A) -> Void
-  ) -> ((A) -> A) {
-
-  return { a in
-    var copy = a
-    f(&copy)
-    return copy
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>What we see here is there’s a natural correspondence between <code>(A) -&gt; A</code> functions and <code>(inout A) -&gt; Void</code> functions. Functions from <code>(A) -&gt; A</code> compose very nicely, so through this correspondence, we would hope that functions from <code>(inout A) -&gt; Void</code> could share these compositional qualities.</p>
+              <p>You can write as much code as you want in that block, and you can specify the language of the code
+so that its syntax is highlighted nicely.</p>
 
             </div>
           </div>
           <h2 class="h4
                      lh-3
                      m-pt2"
-              id="t2275">
-            <a href="#t2275">
-              Introducing <>
+              id="t120">
+            <a href="#t120">
+              Another Title
             </a>
           </h2>
           <div>
+            <div id="t120"
+                 class="block">
+              <a href="#t120"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                02:00
+              </a>
+            </div>
             <div class="md-ctn">
-              <p>Even though we saw that <code>(A) -&gt; A</code> functions compose using <code>&gt;&gt;&gt;</code>, we shouldn’t reuse this operator because it has way too much freedom. We’re looking at a much more constrained, single-type composition. So let’s define a new operator. Let’s start with the precedence group.</p>
+              <p>That was another title. See how the title create the “table of contents” under the video?</p>
+<p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
+working how we expect:</p>
+<blockquote>
+<p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
+</blockquote>
 
             </div>
           </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              precedencegroup SingleTypeComposition {
-  associativity: left
-  higherThan: ForwardApplication
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And let’s define our operator.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              infix operator <>: SingleTypeComposition
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>A fun name for this operator is the “diamond” operator.</p>
-<p>We can define the operator against <code>(A) -&gt; A</code> simply enough:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func <> <A>(
-  f: @escaping (A) -> A,
-  g: @escaping (A) -> A)
-  -> ((A) -> A) {
-
-  return f >>> g
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>It may looks silly to have just wrapped one operator with another, but we’ve constrained how it can be used and encoded some meaning: when we see this operator we know we’re dealing with a single type!</p>
-<p>Let’s define <code>&lt;&gt;</code> for <code>inout</code> functions:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func <> <A>(
-  f: @escaping (inout A) -> Void,
-  g: @escaping (inout A) -> Void)
-  -> ((inout A) -> Void) {
-
-  return { a in
-    f(&a)
-    g(&a)
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Our previous composition works.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              decimalStyle <> currencyStyle
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Better yet, we can compose our <code>inout</code> styling functions!</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              inoutDecimalStyle <> inoutCurrencyStyle
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>What happens when we start piping values into our compositions?</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              config |> decimalStyle <> currencyStyle
-config |> inoutDecimalStyle <> inoutCurrencyStyle
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Our <code>inout</code> version produces an error.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-txt">
-              Cannot convert value of type '(inout Int) -> ()' to expected argument type '(_) -> _'
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This is because <code>|&gt;</code> doesn’t yet work in the world of <code>inout</code>, but we can define an overload that does.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func |> <A>(a: inout A, f: (inout A) -> Void) -> Void {
-  f(&a)
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And now we can freely pipe values into these mutable pipelines.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              config |> inoutDecimalStyle <> inoutCurrencyStyle
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This is great! We don’t have to sacrifice composability to take advantage of some nice Swift features.</p>
-
-            </div>
-          </div>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve solved this problem at the cost of yet another operator, so it’s time to check the boxes.</p>
-<ol>
-<li>
-<p>Does this operator exist in Swift? Nope, so no potential for confusion there.</p>
-</li>
-<li>
-<p>Is there prior art? Yep. It exists in Haskell, PureScript, and other languages with strong functional communities that have adopted it. It has a nice shape that points in both directions and kind of signals a joining together.</p>
-</li>
-<li>
-<p>Is this a universal operator or is it only solving a domain specific problem? We’ve only defined this operator for <code>(A) -&gt; A</code> functions and <code>(inout A) -&gt; Void</code> functions so far, but it turns out that <code>&lt;&gt;</code> is used far more generally for combining two things of the same type into one, which is kind of the most fundamental unit of computation there is. We’re going to encounter this operator all over the place.</p>
-</li>
-</ol>
-
-            </div>
-          </div>
-          <h2 class="h4
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
                      lh-3
-                     m-pt2"
-              id="t2597">
-            <a href="#t2597">
-              What’s the point?
-            </a>
+                     m-pt2">
+            Exercises
           </h2>
-          <div>
-            <div class="md-ctn">
-              <p>It’s time to slow down and ask: “What’s the point?” We’ve encountered a lot of effects that introduced complexity into our code and made it more difficult to test. We decided to fix this by doing a little bit of upfront work to make the effects explicit in the types, both inputs and outputs, but then we broke composition. Then we introduced operators that aid in composition specifically for composing effects. Was it worth it?</p>
-<p>We’d say so! We were able to lift our effectful code, which was untestable and difficult to reason about in isolation, up into a world where effects were explicit and we could test and understand a single line without understanding any of the lines that came before it. We did all of this without breaking composition. That’s really powerful!</p>
-<p>Meanwhile, our extra bit of upfront work should save us an immeasurable amount of time spent debugging code that has a complex web of mutation, time fixing bugs in side effects that are sprinkled everywhere, and time jumping through hoops to make code testable.</p>
-<p>Side effects are a <em>huge</em> topic, and we’ve only scratched the surface. We’re going to be exploring lots of interesting ways to control side effects in the future. Stay tuned!</p>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
 
-            </div>
-          </div>
+                </div>
+                <details>
+                  <summary class="cursor-pointer">
+                    Solution
+                  </summary>
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150
@@ -4000,7 +2339,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                            w-100p
                            absolute
                            bg-gray650"
-                    src="https://player.vimeo.com/video/355115445"
+                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
                     frameborder="0"
                     allow="autoplay; fullscreen"
                     allowfullscreen>
@@ -4069,7 +2408,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t5"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -4080,7 +2419,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t5"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -4097,7 +2436,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  00:05
+                  00:00
                 </div>
               </div>
             </div>
@@ -4106,25 +2445,25 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t320"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Hidden outputs
+                      Title
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t320"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Hidden outputs
+                      Title
                     </a>
                   </div>
                 </div>
@@ -4134,7 +2473,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  05:20
+                  00:00
                 </div>
               </div>
             </div>
@@ -4143,25 +2482,25 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t660"
+                    <a href="#t60"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introducing >=>
+                      Title Block
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t660"
+                    <a href="#t60"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introducing >=>
+                      Title Block
                     </a>
                   </div>
                 </div>
@@ -4171,7 +2510,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  11:00
+                  01:00
                 </div>
               </div>
             </div>
@@ -4180,25 +2519,25 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t1131"
+                    <a href="#t120"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Hidden inputs
+                      Another Title
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t1131"
+                    <a href="#t120"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Hidden inputs
+                      Another Title
                     </a>
                   </div>
                 </div>
@@ -4208,118 +2547,7 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  18:51
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t1589"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Mutation
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t1589"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Mutation
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  26:29
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t2275"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Introducing <>
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t2275"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Introducing <>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  37:55
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t2597"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      What’s the point?
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t2597"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      What’s the point?
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  43:17
+                  02:00
                 </div>
               </div>
             </div>
@@ -4343,11 +2571,11 @@ config |> inoutDecimalStyle <> inoutCurrencyStyle
                  class="align-middle"
                  width="20"
                  height="20">
-            <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/0002-side-effects"
+            <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep2-proof-in-functions"
                class="pf-link-yellow
                       m-ml1
                       align-middle">
-              0002-side-effects
+              ep2-proof-in-functions
             </a>
           </div>
         </div>

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 115988
+Content-Length: 78876
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1814,15 +1814,15 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description"
-          content="Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:description"
-          content="Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:image"
-          content="https://i.vimeocdn.com/video/803401029.jpg">
+          content>
     <meta property="og:image"
-          content="https://i.vimeocdn.com/video/803401029.jpg">
+          content>
     <meta name="title"
           content="Episode #1: Functions">
     <meta property="og:title"
@@ -1920,7 +1920,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            ts-m-r0_75
                            lh-1
                            caps">
-              #1 • Monday Jan 29, 2018 • Free Episode
+              #1 • Tuesday Jun 20, 2017 • Free Episode
             </strong>
             <h1 class="fg-black
                        bold
@@ -1937,9 +1937,22 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                         normal
                         lh-4">
               <div class="md-ctn">
-                <p>Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.</p>
+                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
               </div>
+            </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
             </div>
           </div>
         </div>
@@ -1964,7 +1977,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            ts-m-r0_75
                            lh-1
                            caps">
-              #1 • Monday Jan 29, 2018 • Free Episode
+              #1 • Tuesday Jun 20, 2017 • Free Episode
             </strong>
             <h1 class="fg-black
                        bold
@@ -1981,9 +1994,22 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                         normal
                         lh-4">
               <div class="md-ctn">
-                <p>Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.</p>
+                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
               </div>
+            </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
             </div>
           </div>
         </div>
@@ -2061,224 +2087,43 @@ future episodes, become a subscriber today!
                     m-pt3
                     m-pb3
                     bg-white">
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t5">
-            <a href="#t5">
-              Introduction
-            </a>
-          </h2>
           <div>
-            <div class="md-ctn">
-              <p>Thanks for joining us for the first episode of Point-Free! Point-Free is going to cover a lot of functional programming concepts so let’s start by defining what a function is: a computation with an input and output.</p>
-
-            </div>
-          </div>
-          <div>
-            <div class="md-ctn">
-              <p>Let’s define a function. We can define an increment function that takes an <code>Int</code> and returns an <code>Int</code>:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func incr(_ x: Int) -> Int {
-  return x + 1
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>To call our function, we pass a value to it.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              incr(2) // 3
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>Now let’s define a <code>square</code> function to square an integer:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func square(_ x: Int) -> Int {
-  return x * x
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can call it in a similar fashion:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              square(2) // 4
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We can even nest our function calls. In order to first increment, then square a value:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              square(incr(2)) // 9
-            </code>
-          </pre>
-          <div>
-            <div id="t68"
+            <div id="t1"
                  class="block">
-              <a href="#t68"
+              <a href="#t1"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                01:08
+                00:01
               </a>
             </div>
             <div class="md-ctn">
-              <p>This is pretty simple, but it’s not very common in Swift. Top-level, free functions are generally avoided in favor of methods.</p>
-<p>We can define <code>incr</code> and <code>square</code> as methods by extending <code>Int</code>:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              extension Int {
-  func incr() -> Int {
-    return self + 1
-  }
-
-  func square() -> Int {
-    return self * self
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>To use our <code>incr</code> method, we can call it directly:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2.incr() // 3
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>And we can square the result by chaining our method calls:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2.incr().square() // 9
-            </code>
-          </pre>
-          <div>
-            <div id="t110"
-                 class="block">
-              <a href="#t110"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                01:50
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This reads nicely from left-to-right whereas free functions read from inside-out, and it takes more mental work to see that we call <code>incr</code> before we call <code>square</code>. This is probably why free functions are less common in Swift. A very simple expression is much more difficult to read using traditional function calls. We can imagine that a more complicated nest of function calls would be all the more difficult to unpack. Methods don’t have this problem.</p>
+              <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.</p>
 
             </div>
           </div>
           <h2 class="h4
                      lh-3
                      m-pt2"
-              id="t141">
-            <a href="#t141">
-              Introducing |>
+              id="t0">
+            <a href="#t0">
+              Template Languages
             </a>
           </h2>
           <div>
-            <div id="t141"
+            <div id="t2"
                  class="block">
-              <a href="#t141"
+              <a href="#t2"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                02:21
+                00:02
               </a>
             </div>
             <div class="md-ctn">
-              <p>There are several languages out there that have free functions but retain this kind of readability by using an infix operator for function application. Swift lets us define our own operators, so let’s see if we can do the same.</p>
+              <p>A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:</p>
 
             </div>
           </div>
@@ -2290,24 +2135,23 @@ future episodes, become a subscriber today!
                          m-pt3
                          m-pb3
                          overflow-auto-x
-                         language-swift">
-              infix operator |>
+                         language-html">
+              <h1>{{title}}</h1>
             </code>
           </pre>
           <div>
-            <div id="t154"
+            <div id="t4"
                  class="block">
-              <a href="#t154"
+              <a href="#t4"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                02:34
+                00:04
               </a>
             </div>
             <div class="md-ctn">
-              <p>Here we’re defining a “pipe-forward” operator. It’s based on prior art: F#, Elixir, and Elm all use this operator for function application.</p>
-<p>To define this operator, we write a function:</p>
+              <p>and here is a Leaf template:</p>
 
             </div>
           </div>
@@ -2319,26 +2163,167 @@ future episodes, become a subscriber today!
                          m-pt3
                          m-pb3
                          overflow-auto-x
-                         language-swift">
-              func |> <A, B>(a: A, f: (A) -> B) -> B {
-  return f(a)
+                         language-html">
+              <h1>#(title)</h1>
+            </code>
+          </pre>
+          <div>
+            <div id="t6"
+                 class="block">
+              <a href="#t6"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:06
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. [“title”: “Hello World!”], and then it will generate HTML that can be sent to the browser:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              <h1>Hello World!</h1>
+            </code>
+          </pre>
+          <div>
+            <div id="t8"
+                 class="block">
+              <a href="#t8"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:08
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              {{#if show}}
+  <span>I’m here!</span>
+{{/if}}
+            </code>
+          </pre>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              #if(show) {
+  <span>I’m here!</span>
 }
             </code>
           </pre>
           <div>
-            <div id="t170"
+            <div id="t11"
                  class="block">
-              <a href="#t170"
+              <a href="#t11"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                02:50
+                00:11
               </a>
             </div>
             <div class="md-ctn">
-              <p>It’s generic over two types: <code>A</code> and <code>B</code>. The lefthand side is our value, of type <code>A</code>, while the righthand side is a function from <code>A</code> to <code>B</code>. We finally return <code>B</code> by applying our value to our function.</p>
-<p>Now we can take a value and pipe it into our free function.</p>
+              <p>The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t12"
+                 class="block">
+              <a href="#t12"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:12
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t13"
+                 class="block">
+              <a href="#t13"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:13
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t14"
+                 class="block">
+              <a href="#t14"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:14
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.</p>
+
+            </div>
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t3">
+            <a href="#t3">
+              Embedded Domain Specific Language
+            </a>
+          </h2>
+          <div>
+            <div id="t15"
+                 class="block">
+              <a href="#t15"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:15
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:</p>
 
             </div>
           </div>
@@ -2350,1033 +2335,133 @@ future episodes, become a subscriber today!
                          m-pt3
                          m-pb3
                          overflow-auto-x
-                         language-swift">
-              2 |> incr // 3
+                         language-html">
+              <header>
+  <h1 id="welcome">Welcome!</h1>
+  <p>
+    Welcome to you, who has come here. See <a href="/more">more</a>.
+  </p>
+</header>
             </code>
           </pre>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t7">
+            <a href="#t7">
+              Making the EDSL easier to use
+            </a>
+          </h2>
           <div>
-            <div class="md-ctn">
-              <p>We should be able to take this result and pipe it into another free function:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr |> square
-            </code>
-          </pre>
-          <div>
-            <div id="t206"
+            <div id="t3"
                  class="block">
-              <a href="#t206"
+              <a href="#t3"
                  class="vid-time-link
                         text-decoration-none
                         pf-link-gray650
                         h6">
-                03:26
+                00:03
               </a>
             </div>
             <div class="md-ctn">
-              <p>But we get an error.</p>
-<pre><code>Adjacent operators are in non-associative precedence group 'DefaultPrecedence'
+              <p>Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!</p>
+
+            </div>
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t9">
+            <a href="#t9">
+              Safer Attributes
+            </a>
+          </h2>
+          <div>
+            <div id="t4"
+                 class="block">
+              <a href="#t4"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:04
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width=“foo”. We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t6"
+                 class="block">
+              <a href="#t6"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:06
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. “id”, “href”, etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:</p>
+
+            </div>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
 </code></pre>
-<p>When our operator is used multiple times in a row, Swift doesn’t know which side of the operator to evaluate first. On the lefthand side, we have:</p>
 
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p><code>2</code> piped into <code>incr</code> makes sense, since <code>incr</code> takes an integer. On the righthand side, we have:</p>
+                </div>
+                <details>
+                  <summary class="cursor-pointer">
+                    Solution
+                  </summary>
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
 
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              incr |> square
-            </code>
-          </pre>
-          <div>
-            <div id="t230"
-                 class="block">
-              <a href="#t230"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                03:50
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Piping our <code>incr</code> function into our <code>square</code> function makes less sense: <code>square</code> expects an integer, not a function.</p>
-<p>We need to give Swift a hint as to which expression to evaluate first. One way to do this is to wrap the lefthand expression with parentheses so it evaluates first.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              (2 |> incr) |> square // 9
-            </code>
-          </pre>
-          <div>
-            <div id="t240"
-                 class="block">
-              <a href="#t240"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                04:00
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This works but it’s kind of messy. This is a pretty simple composition, but a more complicated example would require more nested parentheses and would be more difficult to follow. Let’s give Swift a better hint.</p>
-<p>Swift lets us define the associativity of an operator by using a precedence group. Let’s define a precedence group for function application:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              precedencegroup ForwardApplication {
-  associativity: left
-}
-            </code>
-          </pre>
-          <div>
-            <div id="t260"
-                 class="block">
-              <a href="#t260"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                04:20
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We gave it a left associativity to ensure that the lefthand expression evaluates first.</p>
-<p>Now we need to make sure our operator conforms to our precedence group.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              infix operator |>: ForwardApplication
-            </code>
-          </pre>
-          <div>
-            <div id="t275"
-                 class="block">
-              <a href="#t275"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                04:35
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We can now get rid of our parentheses.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr |> square // 9
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>This looks a lot like our earlier method version:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2.incr().square() // 9
-            </code>
-          </pre>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t294">
-            <a href="#t294">
-              Operator interlude
-            </a>
-          </h2>
-          <div>
-            <div id="t294"
-                 class="block">
-              <a href="#t294"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                04:54
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We’ve solved the readability problem of nested functions, but we have a new problem: custom operators. Custom operators aren’t very common. In fact, many of us avoid them because they have a bad reputation. A typical encounter with custom operators is within a subset of the idea: overloaded operators.</p>
-<p>For example, in C++ you can’t define new operators, but you can overload existing operators the language provides. If we were to write a vector library in C++, we could overload <code>+</code> to mean the sum of two vectors and we could overload <code>*</code> to mean the dot product of two vectors. Then again, <code>*</code> could mean the cross product of two vectors, so any choice to use <code>*</code> is going to require an opinion and lead to confusion.</p>
-<p>We would never suggest overloading multiplication with function application:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 * incr // What does this mean!?
-            </code>
-          </pre>
-          <div>
-            <div id="t354"
-                 class="block">
-              <a href="#t354"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                05:54
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>It would be very difficult to encounter this in a code base and understand what it means.</p>
-<p>Luckily we don’t have this problem here. We’re using a brand new operator, <code>|&gt;</code>, which Swift has no prior knowledge about. One may argue that an operator that Swift doesn’t know about is an operator that a Swift developer doesn’t know about, but in this case, we’re looking to prior art: F#, Elixir, and Elm all use this operator in the same way. Swift engineers that are familiar with these languages are going to be familiar with the operator. It also has a nice shape! The pipe (<code>|</code>) evokes Unix, where we pipe the output of programs as input into other programs. The arrow also goes to the right (<code>&gt;</code>), which gives us a nice left-to-right reading. Let’s look back at our usage of this operator:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr
-            </code>
-          </pre>
-          <div>
-            <div id="t394"
-                 class="block">
-              <a href="#t394"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                06:34
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Even if we’re not familiar with this operator, we can kind of piece together what’s going on here.</p>
-<p>We’re going to be using operators a lot in Point-Free, so let’s make sure that we’re responsible and justify the symbols that we introduce. There are a few boxes we’ll want tick before we should introduce a new operator:</p>
-<ol>
-<li>
-<p>We shouldn’t overload an operator with existing meaning with new meaning.</p>
-</li>
-<li>
-<p>We should leverage prior art as much as possible and make sure our operator has a nice “shape” that evokes its semantics: in this case <code>|&gt;</code> nicely describes piping a value forward into a function.</p>
-</li>
-<li>
-<p>We shouldn’t be inventing operators to solve very domain-specific problems. We should only introduce operators that can be used and reused in very general ways.</p>
-</li>
-</ol>
-<p>Our <code>|&gt;</code> operator ticks all these boxes.</p>
-
-            </div>
-          </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t458">
-            <a href="#t458">
-              What about autocompletion?
-            </a>
-          </h2>
-          <div>
-            <div id="t458"
-                 class="block">
-              <a href="#t458"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                07:38
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>While operators give us this readability, we’re still missing a feature that methods have: autocomplete.</p>
-<p>In Xcode, we can refer to a value, type a dot, and be presented with a whole list of methods we can call on this value.</p>
-<!-- raw HTML omitted -->
-<p>We can even type a few characters to limit the list to a subset of methods, including our <code>incr</code> method.</p>
-<!-- raw HTML omitted -->
-<p>This is really nice for code discoverability, and is a nice win for methods, but autocomplete really doesn’t have anything to do with methods. Autocomplete works with our free functions, as well.</p>
-<!-- raw HTML omitted -->
-<p>This is at the top-level, though, so we lose some of the scoping we get with method completion. Still, there’s nothing preventing our IDEs from understanding that, given a value and <code>|&gt;</code>, should autocomplete functions that take that value as input. Hopefully this will get better with newer versions of Xcode.</p>
-
-            </div>
-          </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t537">
-            <a href="#t537">
-              Introducing >>>
-            </a>
-          </h2>
-          <div>
-            <div id="t537"
-                 class="block">
-              <a href="#t537"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                08:57
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Meanwhile, there’s something in the free function world that isn’t possible in the method world: function composition. Function composition is the ability to take two functions where the output of one matches the input of another so that we can glue them together and get a whole new function. In order to embrace this, we’re going to introduce another operator:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              infix operator >>>
-            </code>
-          </pre>
-          <div>
-            <div id="t565"
-                 class="block">
-              <a href="#t565"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                09:25
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This is known as the “forward compose” or “right arrow” operator. Let’s define it:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              func >>> <A, B, C>(f: @escaping (A) -> B, g: @escaping (B) -> C) -> ((A) -> C) {
-  return { a in
-    g(f(a))
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div id="t572"
-                 class="block">
-              <a href="#t572"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                09:32
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>It’s a function that’s generic over three generic parameters: <code>A</code>, <code>B</code>, and <code>C</code>. It takes two functions, one from <code>A</code> to <code>B</code>, and one from <code>B</code> to <code>C</code>, and glues them together by returning a new function that passes the value in <code>A</code> to the function that takes <code>A</code>, and passing the result, <code>B</code>, to the function that takes <code>B</code>.</p>
-<p>Now we can take our <code>incr</code> function and forward-compose it into our <code>square</code> function:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              incr >>> square
-            </code>
-          </pre>
-          <div>
-            <div id="t628"
-                 class="block">
-              <a href="#t628"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                10:28
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We now have a whole new function from <code>(Int) -&gt; Int</code> that increments and then squares.</p>
-<p>We can even flip it and have a new function that squares and then increments:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              square >>> incr
-            </code>
-          </pre>
-          <div>
-            <div id="t640"
-                 class="block">
-              <a href="#t640"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                10:40
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We can call these new functions the traditional way, with parentheses:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              (square >>> incr)(3) // 10
-            </code>
-          </pre>
-          <div>
-            <div id="t647"
-                 class="block">
-              <a href="#t647"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                10:47
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This doesn’t read nicely, but we should be able to use our <code>|&gt;</code> operator to help us with that:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr >>> square
-            </code>
-          </pre>
-          <div>
-            <div id="t653"
-                 class="block">
-              <a href="#t653"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                10:53
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Unfortunately we get another error:</p>
-<pre><code>Adjacent operators are in unordered precedence groups 'ForwardApplication' and 'DefaultPrecedence'
-</code></pre>
-<p>We’re mixing two operators and Swift doesn’t know which to use first. Our functions need to compose before we can apply a value to them. We can’t apply a value to one function and compose the result with another.</p>
-<p>We can use precedence groups to solve this problem without parentheses. Let’s define a new precedence group for function composition:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              precedencegroup ForwardComposition {
-  associativity: left
-  higherThan: ForwardApplication
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>We’ve specified that this group has a higher precedence than <code>ForwardApplication</code> so that it will be called first. Now we just need to make our arrow operator conform:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              infix operator >>>: ForwardComposition
-            </code>
-          </pre>
-          <div>
-            <div id="t692"
-                 class="block">
-              <a href="#t692"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                11:32
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Now our operators play nicely together:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr >>> square // 9
-            </code>
-          </pre>
-          <div>
-            <div id="t710"
-                 class="block">
-              <a href="#t710"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                11:50
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Before we get too excited about this new operator, let’s make sure it ticks all the boxes that justify its existence.</p>
-<ol>
-<li>
-<p>This operator does not exist in Swift currently, so no chance of overloaded confusion.</p>
-</li>
-<li>
-<p>This operator has a lot of prior art: Haskell, PureScript, and other languages with large functional programming communities. It also has a great shape that goes from left-to-right, matching our composition.</p>
-</li>
-<li>
-<p>Does it solve a universal problem or does it solve a domain-specific problem? The operator has three generic types, which is quite general, and function composition is a <em>very</em> universal thing.</p>
-</li>
-</ol>
-<p>Looks like <code>&gt;&gt;&gt;</code> ticks all our boxes!</p>
-
-            </div>
-          </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t779">
-            <a href="#t779">
-              Method composition
-            </a>
-          </h2>
-          <div>
-            <div id="t779"
-                 class="block">
-              <a href="#t779"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                12:59
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>What does function composition look like in the method world? If we want to combine this functionality, we have no other choice than to extend our type again and write another method that composes each method together.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              extension Int {
-  func incrAndSquare() -> Int {
-    return self.incr().square()
-  }
-}
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>In use, we can call the new method on a value:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2.incrAndSquare() // 9
-            </code>
-          </pre>
-          <div>
-            <div id="t805"
-                 class="block">
-              <a href="#t805"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                13:25
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This works, but there’s a lot going on! We’ve written five lines of code, used four keywords, had to specify types, and when we zoom in on the part that we care about, <code>square().incr()</code>, it’s such a small part of the overall picture. When composition takes this much boilerplate and effort, we have to ask ourselves: is it even worth it?</p>
-<p>Meanwhile, function composition is a bite-sized piece that is wholly intact without any noise:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              incr >>> square
-            </code>
-          </pre>
-          <div>
-            <div id="t851"
-                 class="block">
-              <a href="#t851"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                14:11
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>You can further see the reuse by looking at the smallest valid components. If we delete parts of function composition and application, we still have a valid program.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr >>> square
-// every composed unit still compiles:
-2 |> incr
-2 |> square
-incr >>> square
-            </code>
-          </pre>
-          <div>
-            <div class="md-ctn">
-              <p>With methods, we can’t refer to them or their composition without a value at hand.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              // valid:
-2.incr().square()
-
-// not:
-.incr().square()
-incr().square()
-            </code>
-          </pre>
-          <div>
-            <div id="t890"
-                 class="block">
-              <a href="#t890"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                14:50
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Because of this, they’re less reusable by default!</p>
-<p>While it can feel like we generally work with methods, not functions, in Swift, we use functions every day and we may not even think about it.</p>
-<p>One very common function that we use every day is the initializer! It’s a global function that produces a value. And all of Swift’s initializers are at our disposal for function composition. We can take a previous composition and forward-compose it into a <code>String</code> initializer.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              incr >>> square >>> String.init
-// (Int) -> String
-            </code>
-          </pre>
-          <div>
-            <div id="t924"
-                 class="block">
-              <a href="#t924"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                15:24
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>And we can pipe a value through to produce a string result.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              2 |> incr >>> square >>> String.init // "9"
-            </code>
-          </pre>
-          <div>
-            <div id="t943"
-                 class="block">
-              <a href="#t943"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                15:43
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Meanwhile, in the method world, we can’t chain the result along to our initializer. We need to change the order in which we read things by wrapping the initializer around the methods.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              String(2.incr().square())
-            </code>
-          </pre>
-          <div>
-            <div id="t951"
-                 class="block">
-              <a href="#t951"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                15:51
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>In addition to there being a lot of free functions that initializers give us, there are also a ton of functions in the standard library that take free functions as input. On <code>Array</code>, we have a method called <code>map</code>:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [1, 2, 3].map
-// (transform: (Int) throws -> T) rethrows -> [T]
-            </code>
-          </pre>
-          <div>
-            <div id="t961"
-                 class="block">
-              <a href="#t961"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                16:01
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This method takes a free function from the array’s element type to another type <code>T</code> and transforms every element to return a new array of <code>T</code>s.</p>
-<p>Typically, we pass an ad hoc function here. For example, we could increment and square:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [1, 2, 3].map { ($0 + 1) * ($0 + 1) } // [4, 9, 16]
-            </code>
-          </pre>
-          <div>
-            <div id="t986"
-                 class="block">
-              <a href="#t986"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                16:26
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>When we only work with methods, we seem to avoid reusability. We’re working with functions, though, and we can reuse them directly.</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [1, 2, 3]
-  .map(incr)
-  .map(square)
-// [4, 9, 16]
-            </code>
-          </pre>
-          <div>
-            <div id="t999"
-                 class="block">
-              <a href="#t999"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                16:39
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>We didn’t have to open up a new ad hoc function or specify arguments, and this is known as “point-free” style. When we define functions and specify arguments, even <code>$0</code>, these arguments are known as “points”. Programming in the “point-free” style emphasizes a focus on functions and composition so that we don’t have to even refer to the data being operated on. That’s what this series was named after!</p>
-<p>Mapping over our array with <code>square</code> before mapping over the resulting array with <code>incr</code> is equivalent to function composition! We can just map once and forward-compose <code>incr</code> into <code>square</code>:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
-                         overflow-auto-x
-                         language-swift">
-              [1, 2, 3].map(incr >>> square) // [4, 9, 16]
-            </code>
-          </pre>
-          <div>
-            <div id="t1051"
-                 class="block">
-              <a href="#t1051"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                17:31
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This is really cool! We can see a relationship that our composition operator has with <code>map</code> that would have been difficult to see with methods. Here, <code>map</code> distributes over <code>&gt;&gt;&gt;</code> composition: the composition of <code>map</code> twice over two functions is the composition of two functions over a <code>map</code>. There are a lot of patterns like this and we’ll be exploring them in the future!</p>
-
-            </div>
-          </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
-              id="t1114">
-            <a href="#t1114">
-              What’s the point?
-            </a>
-          </h2>
-          <div>
-            <div id="t1113"
-                 class="block">
-              <a href="#t1113"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                18:33
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Let’s slow down and ask ourselves: <em>what’s the point?</em> Why are we doing all of this? In this episode we’ve introduced <em>two</em> custom operators and polluted the global namespace with free functions. Why not continue to use the methods we know and love?</p>
-<p>Hopefully the code we’ve written today has made a strong case for introducing functions into our workflows: functions compose in ways that methods cannot. Composing functionality with methods requires a lot more work and boilerplate, and trying to see that composition afterwards requires filtering that noise. With just a couple operators, we unlock a world of composition that we didn’t have before, and we retain a lot of the readability we expect!</p>
-<p>Swift also doesn’t really have a “global namespace” that we need to be worried about. We can scope our functions in a lot of different ways:</p>
-<ul>
-<li>
-<p>We can define functions that are private to a file.</p>
-</li>
-<li>
-<p>We can define functions that are static members on structs and enums.</p>
-</li>
-<li>
-<p>We can define functions that are scoped to modules. We can use several libraries that define the same function name, but qualify them by the library’s module name.</p>
-</li>
-</ul>
-<p>I think it’s safe to say: “Don’t fear the function.”</p>
-<p>We’re going to be using functions a lot on Point-Free. It’s hard to imagine an episode in which we’re not going to be using free functions. We’ll be building very complex systems that under the hood are just functions and composition. It’s really beautiful and exciting to see how it all works and how everything pieces together. Function composition will continue to help us see things that we couldn’t have seen without it.</p>
-<p>That’s enough for this episode, though. Stay tuned!</p>
-
-            </div>
-          </div>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150
@@ -3394,7 +2479,7 @@ incr().square()
                            w-100p
                            absolute
                            bg-gray650"
-                    src="https://player.vimeo.com/video/348650932"
+                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
                     frameborder="0"
                     allow="autoplay; fullscreen"
                     allowfullscreen>
@@ -3463,25 +2548,25 @@ incr().square()
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t5"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introduction
+                      Template Languages
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t5"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introduction
+                      Template Languages
                     </a>
                   </div>
                 </div>
@@ -3491,7 +2576,7 @@ incr().square()
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  00:05
+                  00:00
                 </div>
               </div>
             </div>
@@ -3500,25 +2585,25 @@ incr().square()
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t141"
+                    <a href="#t3"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introducing |>
+                      Embedded Domain Specific Language
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t141"
+                    <a href="#t3"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Introducing |>
+                      Embedded Domain Specific Language
                     </a>
                   </div>
                 </div>
@@ -3528,7 +2613,7 @@ incr().square()
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  02:21
+                  00:03
                 </div>
               </div>
             </div>
@@ -3537,25 +2622,25 @@ incr().square()
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t294"
+                    <a href="#t7"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Operator interlude
+                      Making the EDSL easier to use
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t294"
+                    <a href="#t7"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      Operator interlude
+                      Making the EDSL easier to use
                     </a>
                   </div>
                 </div>
@@ -3565,7 +2650,7 @@ incr().square()
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  04:54
+                  00:07
                 </div>
               </div>
             </div>
@@ -3574,25 +2659,25 @@ incr().square()
                           col-m-10">
                 <div>
                   <div class="hide-m">
-                    <a href="#t458"
+                    <a href="#t9"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      What about autocompletion?
+                      Safer Attributes
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#t458"
+                    <a href="#t9"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                      What about autocompletion?
+                      Safer Attributes
                     </a>
                   </div>
                 </div>
@@ -3602,118 +2687,7 @@ incr().square()
                 <div class="fg-purple
                             end-align
                             opacity-75">
-                  07:38
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t537"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Introducing >>>
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t537"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Introducing >>>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  08:57
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t779"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Method composition
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t779"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Method composition
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  12:59
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t1114"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      What’s the point?
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t1114"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      What’s the point?
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  18:34
+                  00:09
                 </div>
               </div>
             </div>
@@ -3737,11 +2711,11 @@ incr().square()
                  class="align-middle"
                  width="20"
                  height="20">
-            <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/0001-functions"
+            <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep1-type-safe-html"
                class="pf-link-yellow
                       m-ml1
                       align-middle">
-              0001-functions
+              ep1-type-safe-html
             </a>
           </div>
         </div>
