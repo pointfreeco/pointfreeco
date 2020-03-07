@@ -20,7 +20,7 @@ let collectionSectionMiddleware
         SimplePageLayoutData(
           currentUser: currentUser,
           data: (collection, section),
-          extraStyles: collectionIndexStylesheet,
+          extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
           title: collection.title ?? "Point-Free"
         )
