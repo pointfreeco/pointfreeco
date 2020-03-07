@@ -117,7 +117,8 @@ private func coreLesson(
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .href(url(to: .episode(.show(.right(lesson.episode.id))))),
+        // TODO: figure out force unwrap
+        .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
