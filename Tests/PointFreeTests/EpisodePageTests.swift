@@ -147,7 +147,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 class EpisodePageTests: TestCase {
   override func setUp() {
     super.setUp()
-    record = true
+//    record = true
   }
 
   func testEpisodePage() {
