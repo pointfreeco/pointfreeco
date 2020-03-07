@@ -452,14 +452,13 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> N
 
 let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
 
-private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
+func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
   return .div(
     attributes: [
       .id("transcript"),
       .class(
         [
-          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-          Class.pf.colors.bg.white
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]])
         ]
       )
     ],
@@ -526,7 +525,7 @@ private func subscriberCalloutView(isEpisodeViewable: Bool) -> Node {
   )
 }
 
-private func referencesView(references: [Episode.Reference]) -> Node {
+func referencesView(references: [Episode.Reference]) -> Node {
   guard !references.isEmpty else { return [] }
 
   return [
@@ -615,7 +614,7 @@ private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String
     .joined(separator: " • ")
 }
 
-private func exercisesView(exercises: [Episode.Exercise]) -> Node {
+func exercisesView(exercises: [Episode.Exercise]) -> Node {
   guard !exercises.isEmpty else { return [] }
 
   return [

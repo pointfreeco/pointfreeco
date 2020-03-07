@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 74945
+Content-Length: 74963
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -72,6 +72,10 @@ body {
 
 .bg-gray650 {
   background-color : #a8a8a8;
+}
+
+.bg-gray850 {
+  background-color : #d8d8d8;
 }
 
 .bg-gray900 {
@@ -2219,8 +2223,7 @@ subscriber-only episode of your choosing!
                     m-pl3
                     m-pr3
                     m-pt3
-                    m-pb3
-                    bg-white">
+                    m-pb3">
           <h2 class="h4
                      lh-3
                      m-pt2"
