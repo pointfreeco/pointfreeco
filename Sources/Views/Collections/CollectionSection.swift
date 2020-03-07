@@ -150,7 +150,7 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
     .gridRow(
       attributes: [
         .class([
-          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 3, .bottom: 4]])
+          Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 3]])
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -183,6 +183,11 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
   guard case let .episode(episode) = relatedItem.content else { return [] }
   return .gridColumn(
     sizes: [.mobile: 12],
+    attributes: [
+    .class([
+      Class.padding([.mobile: [.bottom: 2]])
+    ])
+    ],
     .markdownBlock(relatedItem.blurb),
     .a(
       attributes: [
@@ -200,7 +205,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.gray900,
         ]),
-        .href(url(to: .episode(.show(.right(episode.id))))),
+        .href(url(to: .episode(.show(.left(episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))

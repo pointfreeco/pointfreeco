@@ -93,7 +93,7 @@ func collectionHeader(
         .class([
           Class.grid.middle(.desktop),
           Class.padding([
-            .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
+            .desktop: [.leftRight: 4, .top: 3, .bottom: 4],
             .mobile: [.leftRight: 2, .topBottom: 3],
           ]),
         ]),
