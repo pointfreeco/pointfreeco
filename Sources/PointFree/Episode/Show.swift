@@ -50,7 +50,7 @@ let useCreditResponse =
     <<< validateUserEpisodePermission
     <| applyCreditMiddleware
 
-private let fetchEpisodeForParam
+let fetchEpisodeForParam
   : MT<
   Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
   Tuple4<Episode, User?, SubscriberState, Route?>
@@ -172,7 +172,7 @@ private func validateCreditRequest<Z>(
   }
 }
 
-private func userEpisodePermission<I, Z>(
+func userEpisodePermission<I, Z>(
   _ conn: Conn<I, T4<Episode, User?, SubscriberState, Z>>
   )
   -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>> {
