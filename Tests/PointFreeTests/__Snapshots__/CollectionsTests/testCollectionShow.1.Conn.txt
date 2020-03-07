@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51593
+Content-Length: 51596
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1703,7 +1703,7 @@ html {
   background-color : #e6e6e6;
 }
 
-.col-idx-hover:hover {
+.col-idx-link:hover {
   text-decoration : none;
 }
 
@@ -1840,7 +1840,7 @@ html {
     </div>
     <div class="bg-black
                 border-top"
-         style="border-top-color:#333">
+         style="border-top-color:#000000">
       <div class="middle-d
                   d-pl5
                   d-pr5
@@ -1864,12 +1864,12 @@ html {
               style="line-height:1.2">
             Map, Zip, Flat-Map
           </h1>
-          <div class="fg-gray650
-                      fg-black
+          <div class="fg-black
                       normal
                       h6
                       lh-4
-                      center">
+                      center"
+               style="color:#a1a1a1">
             Collection
              • 
             3 sections
@@ -1935,7 +1935,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5
@@ -1977,7 +1977,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5
@@ -2019,7 +2019,7 @@ html {
                       row
                       m-pt2
                       m-pb2
-                      col-idx-hover
+                      col-idx-link
                       fg-black
                       bold
                       ts-d-r1_5

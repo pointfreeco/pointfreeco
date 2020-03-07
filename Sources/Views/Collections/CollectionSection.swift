@@ -17,7 +17,23 @@ public func collectionSection(
   _ collection: Episode.Collection,
   _ section: Episode.Collection.Section
 ) -> Node {
-  [
+  let currentIndex = collection.sections.firstIndex(where: { $0 == section })
+  let previousSection = currentIndex.flatMap {
+    $0 == collection.sections.startIndex
+      ? nil
+      : collection.sections[collection.sections.index(before: $0)]
+  }
+  let nextSection = currentIndex.flatMap {
+    $0 == collection.sections.index(before: collection.sections.endIndex)
+      ? nil
+      : collection.sections[collection.sections.index(after: $0)]
+  }
+
+  return [
+    collectionNavigation(
+      left: zip(collection.title, collection.slug)
+        .map { ($0, url(to: .collections(.show($1)))) }
+    ),
     collectionHeader(
       title: section.title,
       category: "Section",
@@ -29,6 +45,11 @@ public func collectionSection(
     coreLessons(collection: collection, section: section),
     relatedItems(section.related),
     whereToGoFromHere(section.whereToGoFromHere),
+    sectionNavigation(
+      collection: collection,
+      previousSection: previousSection,
+      nextSection: nextSection
+    ),
   ]
 }
 
@@ -38,9 +59,7 @@ private func coreLessons(
 ) -> Node {
   .div(
     attributes: [
-      .class([
-        Class.pf.colors.bg.gray900,
-      ]),
+      .style(backgroundColor(.other("#fafafa"))),
     ],
     .gridRow(
       attributes: [
@@ -86,32 +105,40 @@ private func coreLesson(
     attributes: [
       .style(margin(top: .px(4))),
     ],
-    .gridRow(
+    .a(
       attributes: [
         .class([
           Class.border.left,
-          Class.padding([.mobile: [.leftRight: 2]]),
           Class.flex.items.center,
+          Class.grid.row,
+          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.pf.collections.hoverBackground,
+          Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .style(borderWidth(left: .px(4)) <> height(.px(48))),
+        .href(url(to: .episode(.show(.right(lesson.episode.id))))),
+        .style(
+          borderColor(all: .other("#e8e8e8"))
+            <> borderWidth(left: .px(4))
+            <> height(.px(48))
+        ),
       ],
       .gridColumn(
         sizes: [.mobile: 9],
         attributes: [
           .class([
+            Class.flex.items.center,
             Class.grid.start(.mobile),
           ]),
         ],
-        .a(
-          attributes: [
+        .gridRow(
+          .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
             // TODO: why is collection.slug optional?
-            .href(url(to: .collections(.episode(collection.slug!, section.slug, .left	(lesson.episode.slug)))))
-          ],
+            .class([Class.padding([.mobile: [.right: 1]])]),
+          ]),
           .text(lesson.episode.title)
         )
-
       ),
       .gridColumn(
         sizes: [.mobile: 3],
@@ -173,29 +200,44 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
       .style(margin(top: .px(4))),
     ],
     .markdownBlock(relatedItem.blurb),
-    .gridRow(
+    .a(
       attributes: [
         .class([
           Class.border.left,
+          Class.flex.items.center,
+          Class.grid.row,
           Class.margin([
             .desktop: [.top: 2, .bottom: 3],
             .mobile: [.top: 1, .bottom: 2],
           ]),
           Class.padding([.mobile: [.leftRight: 2]]),
-          Class.flex.items.center,
+          Class.pf.collections.hoverBackground,
+          Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.gray900,
         ]),
-        .style(borderWidth(left: .px(4)) <> height(.px(48))),
+        .href(url(to: .episode(.show(.right(episode.id))))),
+        .style(
+          backgroundColor(.other("#fafafa"))
+          <> borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> height(.px(48))
+        ),
       ],
       .gridColumn(
         sizes: [.mobile: 9],
         attributes: [
           .class([
+            Class.flex.items.center,
             Class.grid.start(.mobile),
           ]),
         ],
-        .text(episode.title)
+        .gridRow(
+          .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
+            .class([Class.padding([.mobile: [.right: 1]])]),
+          ]),
+          .text(episode.title)
+        )
       ),
       .gridColumn(
         sizes: [.mobile: 3],
@@ -213,9 +255,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func whereToGoFromHere(_ string: String) -> Node {
   .div(
     attributes: [
-      .class([
-        Class.pf.colors.bg.gray900,
-      ]),
+      .style(backgroundColor(.other("#fafafa"))),
     ],
     .gridRow(
       attributes: [
@@ -248,6 +288,144 @@ private func whereToGoFromHere(_ string: String) -> Node {
     )
   )
 }
+
+private func sectionNavigation(
+  collection: Episode.Collection,
+  previousSection: Episode.Collection.Section?,
+  nextSection: Episode.Collection.Section?
+) -> Node {
+  guard let collectionSlug = collection.slug else { return [] }
+
+  let previousLink = previousSection.map { section in
+    Node.a(
+      attributes: [
+        .class([
+          Class.grid.row,
+        ]),
+        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+      ],
+      .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.right: 1],
+            .desktop: [.right: 2]
+          ]),
+        ]),
+      ]),
+      .gridColumn(
+        sizes: [:],
+        .div(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+            ]),
+          ],
+          "Back to"
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.type.semiBold,
+            ]),
+          ],
+          .text(section.title)
+        )
+      )
+    )
+  }
+
+  let nextLink = nextSection.map { section in
+    Node.a(
+      attributes: [
+        .class([
+          Class.grid.row,
+        ]),
+        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+      ],
+      .gridColumn(
+        sizes: [:],
+        .div(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+            ]),
+          ],
+          "Next up"
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.type.semiBold,
+            ]),
+          ],
+          .text(section.title)
+        )
+      ),
+      .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.left: 1],
+            .desktop: [.left: 2]
+          ]),
+        ]),
+      ])
+    )
+  }
+
+  return .div(
+    attributes: [
+      .class([
+        Class.border.top,
+      ]),
+      .style(
+        backgroundColor(.other("#fafafa"))
+          <> borderColor(top: .other("#e8e8e8"))
+      ),
+    ],
+    .gridRow(
+      attributes: [
+        .class([
+          Class.flex.items.center,
+          Class.grid.center(.mobile),
+        ]),
+        .style(
+          height(.px(88))
+            <> maxWidth(.px(1080))
+            <> margin(topBottom: nil, leftRight: .auto)
+        ),
+      ],
+      .gridColumn(
+        sizes: [.mobile: 6],
+        attributes: [
+          .class([
+            Class.border.right,
+            Class.grid.start(.mobile),
+            Class.padding([
+              .mobile: [.leftRight: 2],
+            ]),
+          ]),
+          .style(/*height(.pct(100)) <> */borderColor(right: .other("#e8e8e8"))),
+        ],
+        previousLink ?? []
+      ),
+      .gridColumn(
+        sizes: [.mobile: 6],
+        attributes: [
+          .class([
+            Class.grid.end(.mobile),
+            Class.padding([
+              .mobile: [.leftRight: 2],
+            ]),
+          ]),
+//          .style(height(.pct(100))),
+        ],
+        nextLink ?? []
+      )
+    )
+  )
+}
+
+// MARK: - Helpers
 
 private extension Seconds where RawValue == Int {
   var formattedDescription: String {

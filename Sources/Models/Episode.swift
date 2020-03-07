@@ -2,7 +2,7 @@ import Foundation
 import Tagged
 import TaggedTime
 
-public struct Episode {
+public struct Episode: Equatable {
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
@@ -107,7 +107,7 @@ public struct Episode {
   public typealias Id = Tagged<Episode, Int>
   public typealias Sequence = Tagged<(sequence: (), Episode), Int>
 
-  public struct Collection {
+  public struct Collection: Equatable {
     public var blurb: String?
     public var sections: [Section]
     public var slug: Slug?
@@ -141,7 +141,7 @@ public struct Episode {
         .reduce(into: 0, +=)
     }
 
-    public struct Section {
+    public struct Section: Equatable {
       public var blurb: String
       public var coreLessons: [Lesson]
       public var related: [Related]
@@ -171,7 +171,7 @@ public struct Episode {
           .reduce(into: 0, +=)
       }
 
-      public struct Lesson {
+      public struct Lesson: Equatable {
         public var blurb: String?
         public var episode: Episode
 
@@ -184,7 +184,7 @@ public struct Episode {
         }
       }
 
-      public struct Related {
+      public struct Related: Equatable {
         public var blurb: String
         public var content: Content
 
@@ -196,7 +196,7 @@ public struct Episode {
           self.content = content
         }
 
-        public enum Content {
+        public enum Content: Equatable {
           case episode(Episode)
           case collection(Collection)
         }
@@ -208,7 +208,7 @@ public struct Episode {
     public typealias Slug = Tagged<Self, String>
   }
 
-  public struct Exercise {
+  public struct Exercise: Equatable {
     public var problem: String
     public var solution: String?
 
@@ -224,7 +224,7 @@ public struct Episode {
     case subscriberOnly
   }
 
-  public struct Reference: Codable {
+  public struct Reference: Codable, Equatable {
     public var author: String?
     public var blurb: String?
     public var link: String
@@ -335,7 +335,7 @@ public struct Episode {
     }
   }
   
-  public struct Video: Codable {
+  public struct Video: Codable, Equatable {
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
     public var downloadUrl: String
