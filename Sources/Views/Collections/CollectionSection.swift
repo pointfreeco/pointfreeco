@@ -26,13 +26,16 @@ public func collectionSection(
       length: section.length,
       blurb: section.blurb
     ),
-    coreLessons(section.coreLessons),
+    coreLessons(collection: collection, section: section),
     relatedItems(section.related),
     whereToGoFromHere(section.whereToGoFromHere),
   ]
 }
 
-private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node {
+private func coreLessons(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section
+) -> Node {
   .div(
     attributes: [
       .class([
@@ -65,13 +68,19 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
           ],
           "Core lessons"
         ),
-        .fragment(lessons.map(coreLesson))
+        .fragment(
+          section.coreLessons.map { coreLesson(collection: collection, section: section, lesson: $0) }
+        )
       )
     )
   )
 }
 
-private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
+private func coreLesson(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section,
+  lesson: Episode.Collection.Section.Lesson
+) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
@@ -95,7 +104,14 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
             Class.grid.start(.mobile),
           ]),
         ],
-        .text(lesson.episode.title)
+        .a(
+          attributes: [
+            // TODO: why is collection.slug optional?
+            .href(url(to: .collections(.episode(collection.slug!, section.slug, .left	(lesson.episode.slug)))))
+          ],
+          .text(lesson.episode.title)
+        )
+
       ),
       .gridColumn(
         sizes: [.mobile: 3],

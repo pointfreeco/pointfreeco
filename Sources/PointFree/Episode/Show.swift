@@ -7,43 +7,75 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 import Views
 
-let episodeResponse =
+let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Episode.Collection.Slug?>> =
   fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
-      view: Views.episodeView(episodePageData:),
-      layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
+      view: newOrLegacyEpisodeView(data:),
+      layoutData: { permission, episode, currentUser, subscriberState, currentRoute, collectionSlug in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
-        return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: EpisodePageData(
+        let data: Either<EpisodePageData, NewEpisodePageData>
+        if currentUser?.isAdmin == .some(true) {
+          let context: NewEpisodePageData.Context
+          if let collection = Episode.Collection.all.first(where: { $0.slug == collectionSlug }) {
+            context = .collection(collection)
+          } else {
+            context = .direct(
+              previousEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence - 1 }),
+              nextEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
+            )
+          }
+
+          data = .right(NewEpisodePageData(
+            context: context,
+            date: Current.date,
+            episode: episode,
+            permission: permission,
+            subscriberState: subscriberState,
+            user: currentUser
+          ))
+        } else {
+          data = .left(EpisodePageData(
             permission: permission,
             user: currentUser,
             subscriberState: subscriberState,
             episode: episode,
             previousEpisodes: episode.previousEpisodes,
             date: Current.date
-          ),
+          ))
+        }
+
+        return SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriberState: subscriberState,
+          currentUser: currentUser,
+          data: data,
           description: episode.blurb,
           extraStyles: markdownBlockStyles,
           image: episode.image,
-          style: .base(navStyle),
+          style: currentUser?.isAdmin == .some(true) ? .base(.some(.minimal(.black))) : .base(navStyle),
           title: "Episode #\(episode.sequence): \(episode.title)",
           usePrismJs: true
         )
     }
 )
+
+func newOrLegacyEpisodeView(data: Either<EpisodePageData, NewEpisodePageData>) -> Node {
+  switch data {
+  case let .left(data): return episodeView(episodePageData: data)
+  case let .right(data): return newEpisodePageView(episodePageData: data)
+  }
+}
 
 let useCreditResponse =
   fetchEpisodeForParam
@@ -52,8 +84,8 @@ let useCreditResponse =
 
 let fetchEpisodeForParam
   : MT<
-  Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
-  Tuple4<Episode, User?, SubscriberState, Route?>
+  Tuple5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Episode.Collection.Slug?>,
+  Tuple5<Episode, User?, SubscriberState, Route?, Episode.Collection.Slug?>
   >
   = filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
@@ -62,8 +94,8 @@ let fetchEpisodeForParam
 
 private let validateUserEpisodePermission
   : MT<
-  Tuple4<Episode, User?, SubscriberState, Route?>,
-  Tuple5<EpisodePermission, Episode, User, SubscriberState, Route?>
+  Tuple5<Episode, User?, SubscriberState, Route?, Episode.Collection.Slug?>,
+  Tuple6<EpisodePermission, Episode, User, SubscriberState, Route?, Episode.Collection.Slug?>
   >
   = { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
@@ -174,7 +206,7 @@ private func validateCreditRequest<Z>(
 
 func userEpisodePermission<I, Z>(
   _ conn: Conn<I, T4<Episode, User?, SubscriberState, Z>>
-  )
+)
   -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>> {
 
     let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -210,17 +242,16 @@ func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-
-private let episodeNotFoundView = { param, user, subscriberState, route in
+private let episodeNotFoundView = { param, user, subscriberState, route, collectionSlug in
   SimplePageLayoutData(
     currentSubscriberState: subscriberState,
     currentUser: user,
-    data: (param, user, subscriberState, route),
+    data: (param, user, subscriberState, route, collectionSlug),
     title: "Episode not found :("
   )
   } >>> simplePageLayout(_episodeNotFoundView)
 
-private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> Node {
+private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?, _: Episode.Collection.Slug?) -> Node {
   return .gridRow(
     attributes: [.class([Class.grid.center(.mobile)])],
     .gridColumn(
@@ -242,7 +273,7 @@ private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: Su
   )
 }
 
-private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
+func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
   return Current.episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id)

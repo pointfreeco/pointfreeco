@@ -9,30 +9,32 @@ import Prelude
 import Styleguide
 
 public struct NewEpisodePageData {
-  var permission: EpisodePermission
-  var user: User?
-  var subscriberState: SubscriberState
-  var episode: Episode
-  var previousEpisode: Episode?
-  var nextEpisode: Episode?
+  var context: Context
   var date: () -> Date
+  var episode: Episode
+  var permission: EpisodePermission
+  var subscriberState: SubscriberState
+  var user: User?
+
+  public enum Context {
+    case collection(Episode.Collection)
+    case direct(previousEpisode: Episode?, nextEpisode: Episode?)
+  }
 
   public init(
-    permission: EpisodePermission,
-    user: User?,
-    subscriberState: SubscriberState,
+    context: Context,
+    date: @escaping () -> Date,
     episode: Episode,
-    previousEpisode: Episode?,
-    nextEpisode: Episode?,
-    date: @escaping () -> Date
-    ) {
-    self.permission = permission
-    self.user = user
-    self.subscriberState = subscriberState
-    self.episode = episode
-    self.previousEpisode = previousEpisode
-    self.nextEpisode = nextEpisode
+    permission: EpisodePermission,
+    subscriberState: SubscriberState,
+    user: User?
+  ) {
+    self.context = context
     self.date = date
+    self.episode = episode
+    self.permission = permission
+    self.subscriberState = subscriberState
+    self.user = user
   }
 }
 
@@ -58,17 +60,169 @@ public func newEpisodePageView(
 private func sideBar(
   data: NewEpisodePageData
 ) -> Node {
-  .div(
+  switch data.context {
+  case let .collection(collection):
+    guard let section = collection.sections
+      .first(where: { section in
+        section.coreLessons.contains(where: { lesson in
+          // TODO: equatable
+          lesson.episode.id == data.episode.id
+        })
+      })
+      // TODO: is it possible for a section to not be found?
+      else { return [] }
+    guard
+      let currentEpisodeIndex = section.coreLessons.firstIndex(where: { $0.episode.id == data.episode.id })
+      else { return [] }
+
+    let previousEpisodes = section.coreLessons[0..<currentEpisodeIndex].map { $0.episode }
+    let nextEpisodes = section.coreLessons[(currentEpisodeIndex+1)...].map { $0.episode }
+
+    return .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+        ])
+      ],
+      collectionHeaderRow(collection: collection, section: section),
+      sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section),
+      currentEpisodeInfoRow(episode: data.episode),
+      sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section)
+    )
+  case let .direct(previousEpisode: previousEpisode, nextEpisode: nextEpisode):
+    return .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+        ])
+      ],
+      sequentialEpisodeRow(episode: previousEpisode, type: .previous),
+      currentEpisodeInfoRow(episode: data.episode),
+      sequentialEpisodeRow(episode: nextEpisode, type: .next)
+    )
+  }
+}
+
+private func sequentialEpisodes(
+  episodes: [Episode],
+  collection: Episode.Collection,
+  section: Episode.Collection.Section
+) -> Node {
+  .fragment(episodes.map { episode in
+    .gridRow(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.all: 2]]),
+          Class.border.top,
+          Class.pf.colors.border.gray850,
+          Class.grid.middle(.desktop),
+        ])
+      ],
+      .gridColumn(
+        sizes: [.mobile: 1],
+        attributes: [
+          .class([Class.type.align.center])
+        ],
+        .img(
+          base64: playIconSvgBase64(fill: "a1a1a1"),
+          type: .image(.svg),
+          alt: "",
+          attributes: [
+            .class([Class.align.middle]),
+            .style(margin(top: .px(2)))
+          ]
+        )
+      ),
+      .gridColumn(
+        sizes: [.mobile: 11],
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.left: 1]]),
+          ])
+        ],
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.all: 0]]),
+              Class.margin([.mobile: [.all: 0]]),
+            ])
+          ],
+          .a(
+            attributes: [
+              .class([
+                Class.pf.type.body.regular,
+                Class.pf.colors.link.gray650,
+                Class.type.lineHeight(1)
+              ]),
+              // TODO: why is collection.slug optional?
+              .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(episode.slug)))))
+            ],
+            .text(episode.title)
+          )
+        )
+      )
+    )
+  })
+}
+
+private func collectionHeaderRow(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section
+) -> Node {
+  .gridRow(
     attributes: [
       .class([
-        Class.border.all,
-        Class.border.rounded.all,
+        Class.padding([.mobile: [.leftRight: 2]]),
         Class.pf.colors.border.gray850,
-      ])
+        Class.grid.middle(.desktop),
+      ]),
+      .style(padding(topBottom: .rem(1.5)))
     ],
-    sequentialEpisodeRow(episode: data.previousEpisode, type: .previous),
-    currentEpisodeInfoRow(episode: data.episode),
-    sequentialEpisodeRow(episode: data.nextEpisode, type: .next)
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.left: 1]]),
+        ])
+      ],
+      .h6(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.gray650,
+            Class.typeScale([.mobile: .r0_75]),
+            Class.type.lineHeight(1),
+            Class.type.caps,
+            Class.type.normal,
+            Class.padding([.mobile: [.all: 0]]),
+            Class.margin([.mobile: [.leftRight: 0, .top: 0, .bottom: 1]])
+          ])
+        ],
+        "Collection"
+      ),
+      .p(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.all: 0]]),
+            Class.margin([.mobile: [.all: 0]]),
+          ])
+        ],
+        .a(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular,
+              Class.type.lineHeight(1)
+            ]),
+            // TODO: why is collection.slug optional?
+            .href(url(to: .collections(.section(collection.slug!, section.slug))))
+          ],
+          .text(collection.title.map { $0 + " › " + section.title } ?? section.title)
+        )
+      )
+    )
   )
 }
 
@@ -83,6 +237,7 @@ private enum SequentialEpisodeType {
     }
   }
 }
+
 private func sequentialEpisodeRow(
   episode: Episode?,
   type: SequentialEpisodeType
@@ -149,7 +304,7 @@ private func sequentialEpisodeRow(
           attributes: [
             .class([
               Class.pf.colors.link.gray650,
-              Class.pf.type.body.leading,
+              Class.pf.type.body.regular,
               Class.type.lineHeight(1)
             ]),
             .href(url(to: .episode(.show(.left(episode.slug)))))
@@ -167,7 +322,9 @@ private func currentEpisodeInfoRow(
   .div(
     attributes: [
       .class([
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
+        Class.border.top,
+        Class.pf.colors.border.gray850,
       ]),
       .style(backgroundColor(.rgba(250, 250, 250, 1.0)))
     ],
@@ -194,7 +351,7 @@ private func currentEpisodeInfoRow(
         sizes: [.mobile: 11],
         attributes: [
           .class([
-            Class.pf.type.body.leading,
+            Class.pf.type.body.regular,
             Class.padding([.mobile: [.left: 1]]),
             Class.type.lineHeight(1)
           ])
@@ -295,7 +452,7 @@ private func exercisesRow(episode: Episode) -> Node {
       sizes: [.mobile: 11],
       attributes: [
         .class([
-          Class.pf.type.body.leading,
+          Class.pf.type.body.regular,
           Class.padding([.mobile: [.left: 1]])
         ])
       ],
@@ -312,6 +469,11 @@ private func exercisesRow(episode: Episode) -> Node {
 private func referencesRow(episode: Episode) -> Node {
   guard !episode.references.isEmpty else { return [] }
   return .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.topBottom: 1]])
+      ])
+    ],
     .gridColumn(
       sizes: [.mobile: 1],
       attributes: [
@@ -331,7 +493,7 @@ private func referencesRow(episode: Episode) -> Node {
       sizes: [.mobile: 11],
       attributes: [
         .class([
-          Class.pf.type.body.leading,
+          Class.pf.type.body.regular,
           Class.padding([.mobile: [.left: 1]])
         ])
       ],
@@ -365,7 +527,7 @@ private let downloadRow = Node.gridRow(
     sizes: [.mobile: 11],
     attributes: [
       .class([
-        Class.pf.type.body.leading,
+        Class.pf.type.body.regular,
         Class.padding([.mobile: [.left: 1]])
       ])
     ],

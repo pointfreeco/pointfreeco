@@ -17,6 +17,7 @@ TODO
       whereToGoFromHere: #"""
 TODO
 """#
-    )
+    ),
+    slug: "algebraic-data-types"
   )
 }

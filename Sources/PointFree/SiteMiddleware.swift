@@ -55,6 +55,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
+    case let .collections(.episode(collectionSlug, sectionSlug, episodeParam)):
+      return conn.map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
+        |> episodeResponse
+
     case .collections(.index):
       return conn
         |> writeStatus(.internalServerError)
@@ -86,16 +90,12 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn
         |> redirect(to: path(to: .home))
 
-    case let .episode(.newShow(param)):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
-        |> newEpisodeResponse
-
     case let .episode(.progress(param: param, percent: percent)):
       return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
         |> progressResponse
 
     case let .episode(.show(param)):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. nil .*. unit))
         |> episodeResponse
 
     case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
@@ -206,7 +206,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
+      // TODO: get rid of this `nil` ----------------------------------------------------------V
+      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. nil .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.knownEvent(event))):
