@@ -87,9 +87,9 @@ private func sideBar(
         ])
       ],
       collectionHeaderRow(collection: collection, section: section),
-      sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section),
+      sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section, type: .previous),
       currentEpisodeInfoRow(episode: data.episode),
-      sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section)
+      sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section, type: .next)
     )
   case let .direct(previousEpisode: previousEpisode, nextEpisode: nextEpisode):
     return .div(
@@ -110,7 +110,8 @@ private func sideBar(
 private func sequentialEpisodes(
   episodes: [Episode],
   collection: Episode.Collection,
-  section: Episode.Collection.Section
+  section: Episode.Collection.Section,
+  type: SequentialEpisodeType
 ) -> Node {
   .fragment(episodes.map { episode in
     .gridRow(
@@ -119,7 +120,7 @@ private func sequentialEpisodes(
           Class.padding([.mobile: [.all: 2]]),
           Class.border.top,
           Class.pf.colors.border.gray850,
-          Class.grid.middle(.desktop),
+          Class.grid.middle(.mobile),
         ])
       ],
       .gridColumn(
@@ -132,8 +133,7 @@ private func sequentialEpisodes(
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle]),
-            .style(margin(top: .px(2)))
+            .class([Class.align.middle])
           ]
         )
       ),
@@ -149,6 +149,7 @@ private func sequentialEpisodes(
             .class([
               Class.padding([.mobile: [.all: 0]]),
               Class.margin([.mobile: [.all: 0]]),
+              Class.type.lineHeight(1)
             ])
           ],
           .a(
@@ -178,7 +179,7 @@ private func collectionHeaderRow(
       .class([
         Class.padding([.mobile: [.leftRight: 2]]),
         Class.pf.colors.border.gray850,
-        Class.grid.middle(.desktop),
+        Class.grid.middle(.mobile),
       ]),
       .style(padding(topBottom: .rem(1.5)))
     ],
@@ -250,7 +251,7 @@ private func sequentialEpisodeRow(
         Class.padding([.mobile: [.all: 2]]),
         type == .next ? Class.border.top : Class.border.bottom,
         Class.pf.colors.border.gray850,
-        Class.grid.middle(.desktop),
+        Class.grid.middle(.mobile),
       ])
     ],
     .gridColumn(
@@ -263,8 +264,7 @@ private func sequentialEpisodeRow(
         type: .image(.svg),
         alt: "",
         attributes: [
-          .class([Class.align.middle]),
-          .style(margin(top: .px(2)))
+          .class([Class.align.middle])
         ]
       )
     ),
@@ -324,13 +324,16 @@ private func currentEpisodeInfoRow(
       .class([
         Class.padding([.mobile: [.all: 2]]),
         Class.border.top,
-        Class.pf.colors.border.gray850,
+        Class.pf.colors.border.gray850
       ]),
       .style(backgroundColor(.rgba(250, 250, 250, 1.0)))
     ],
     .gridRow(
       attributes: [
-        .class([Class.margin([.mobile: [.bottom: 2]])])
+        .class([
+          Class.margin([.mobile: [.bottom: 2]]),
+          Class.grid.middle(.mobile)
+        ])
       ],
       .gridColumn(
         sizes: [.mobile: 1],
@@ -342,8 +345,7 @@ private func currentEpisodeInfoRow(
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle]),
-            .style(margin(top: .px(2)))
+            .class([Class.align.middle])
           ]
         )
       ),
@@ -373,7 +375,7 @@ private func chaptersRow(episode: Episode) -> Node {
   return .div(
     attributes: [
       .class([
-        Class.margin([.mobile: [.bottom: 2]]),
+        Class.margin([.mobile: [.bottom: 1]]),
       ])
     ],
     .fragment(
@@ -433,6 +435,12 @@ private func chaptersRow(episode: Episode) -> Node {
 private func exercisesRow(episode: Episode) -> Node {
   guard !episode.exercises.isEmpty else { return [] }
   return .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile)
+      ])
+    ],
     .gridColumn(
       sizes: [.mobile: 1],
       attributes: [
@@ -444,7 +452,7 @@ private func exercisesRow(episode: Episode) -> Node {
         alt: "",
         attributes: [
           .class([Class.align.middle]),
-          .style(margin(top: .px(2)))
+          .style(margin(top: .px(-2)))
         ]
       )
     ),
@@ -471,7 +479,8 @@ private func referencesRow(episode: Episode) -> Node {
   return .gridRow(
     attributes: [
       .class([
-        Class.padding([.mobile: [.topBottom: 1]])
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile)
       ])
     ],
     .gridColumn(
@@ -484,8 +493,7 @@ private func referencesRow(episode: Episode) -> Node {
         type: .image(.svg),
         alt: "",
         attributes: [
-          .class([Class.align.middle]),
-          .style(margin(top: .px(2)))
+          .class([Class.align.middle])
         ]
       )
     ),
@@ -508,6 +516,12 @@ private func referencesRow(episode: Episode) -> Node {
 }
 
 private let downloadRow = Node.gridRow(
+  attributes: [
+    .class([
+      Class.padding([.mobile: [.top: 1]]),
+      Class.grid.middle(.mobile)
+    ])
+  ],
   .gridColumn(
     sizes: [.mobile: 1],
     attributes: [
@@ -519,7 +533,7 @@ private let downloadRow = Node.gridRow(
       alt: "",
       attributes: [
         .class([Class.align.middle]),
-        .style(margin(top: .px(2)))
+        .style(margin(top: .px(-2)))
       ]
     )
   ),
