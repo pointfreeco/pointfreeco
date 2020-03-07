@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 54468
+Content-Length: 54467
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -75,7 +75,7 @@ body {
   background-color : #a8a8a8;
 }
 
-.bg-gray-850 {
+.bg-gray850 {
   background-color : #d8d8d8;
 }
 

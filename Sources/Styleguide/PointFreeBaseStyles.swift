@@ -30,7 +30,7 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let gray150 = CssSelector.class("bg-gray150")
         public static let gray650 = CssSelector.class("bg-gray650")
-        public static let gray850 = CssSelector.class("bg-gray-850")
+        public static let gray850 = CssSelector.class("bg-gray850")
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let green = CssSelector.class("bg-green")
         public static let inherit = CssSelector.class("bg-inherit")
