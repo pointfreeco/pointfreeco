@@ -64,6 +64,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. slug .*. unit))
         |> collectionMiddleware
 
+    case let .collections(.section(collectionSlug, sectionSlug)):
+      return conn.map(const(user .*. subscriberState .*. collectionSlug .*. sectionSlug .*. unit))
+        |> collectionSectionMiddleware
+
     case let .discounts(couponId, billing):
       let subscribeData = SubscribeConfirmationData(
         billing: billing ?? .yearly,

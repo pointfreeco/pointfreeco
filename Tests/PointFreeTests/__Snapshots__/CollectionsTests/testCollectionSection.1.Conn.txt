@@ -1,9 +1,9 @@
-GET http://localhost:8080/collections/map-zip-flatmap
+GET http://localhost:8080/collections/map-zip-flatmap/zip
 Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 54467
+Content-Length: 53871
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -73,10 +73,6 @@ body {
 
 .bg-gray650 {
   background-color : #a8a8a8;
-}
-
-.bg-gray850 {
-  background-color : #d8d8d8;
 }
 
 .bg-gray900 {
@@ -1862,7 +1858,7 @@ html {
                      lh-2
                      center"
               style="line-height:1.2">
-            Map, Zip, Flat-Map
+            Zip
           </h1>
           <div class="fg-gray650
                       fg-black
@@ -1870,11 +1866,11 @@ html {
                       h6
                       lh-4
                       center">
-            Collection
+            Section
              • 
-            3 sections
+            3 episodes
              • 
-            4 hr 27 min
+            1 hr 29 min
           </div>
           <div class="m-pt3
                       m-pl4
@@ -1885,21 +1881,22 @@ html {
                       h5
                       lh-4">
             <div class="md-ctn">
-              <p>This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It’s no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!</p>
+              <p>The <code>zip</code> operation is the next powerful operation in the functional trio. It is a generalization of the <code>map</code> operation that allows you to perform <code>map</code>-like transformations on multiple generic containers at once. The <code>map</code> operation alone is incapable of doing that, and exploring this generalization leads us to some exciting new topics, such as multiple <code>zip</code> implementations and context-independent computation.</p>
 
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="border-bottom"
-         style="border-bottom-color:#E8E8E8">
+    <div class="bg-gray900">
       <div class="between-d
                   row"
            style="max-width:1080px;
                   margin-right:auto;
                   margin-left:auto">
-        <div class="d-pl5
+        <div class="d-pb4
+                    d-pt3
+                    d-pl5
                     d-pr5
                     m-pl3
                     m-pr3
@@ -1907,140 +1904,205 @@ html {
                     m-pb2
                     col-m
                     col-m-12">
-          <h2 class="fg-black
+          <h2 class="m-pb1
+                     fg-black
                      bold
-                     ts-d-r2
-                     ts-m-r1_5
+                     ts-d-r1_5
+                     ts-m-r1_25
                      lh-2">
-            Sections
+            Core lessons
           </h2>
+          <div style="margin-top:4px"
+               class="col-m
+                      col-m-12">
+            <div class="border-left
+                        m-pl2
+                        m-pr2
+                        items-center
+                        border-gray-800
+                        bg-white
+                        row"
+                 style="border-left-width:4px;
+                        height:48px">
+              <div class="start-m
+                          col-m
+                          col-m-9">
+                The Many Faces of Zip: Part 1
+              </div>
+              <div class="end-m
+                          col-m
+                          col-m-3">
+                28 min
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:4px"
+               class="col-m
+                      col-m-12">
+            <div class="border-left
+                        m-pl2
+                        m-pr2
+                        items-center
+                        border-gray-800
+                        bg-white
+                        row"
+                 style="border-left-width:4px;
+                        height:48px">
+              <div class="start-m
+                          col-m
+                          col-m-9">
+                The Many Faces of Zip: Part 2
+              </div>
+              <div class="end-m
+                          col-m
+                          col-m-3">
+                36 min
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:4px"
+               class="col-m
+                      col-m-12">
+            <div class="border-left
+                        m-pl2
+                        m-pr2
+                        items-center
+                        border-gray-800
+                        bg-white
+                        row"
+                 style="border-left-width:4px;
+                        height:48px">
+              <div class="start-m
+                          col-m
+                          col-m-9">
+                The Many Faces of Zip: Part 3
+              </div>
+              <div class="end-m
+                          col-m
+                          col-m-3">
+                24 min
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="m-pb5">
-      <div class="border-bottom
-                  col-idx-hover"
-           style="border-bottom-color:#E8E8E8">
-        <div class="d-pl5
+    <div class="bg-white">
+      <div class="between-d
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="d-pt3
+                    d-pl5
                     d-pr5
+                    m-pt2
                     m-pl3
                     m-pr3
-                    row"
-             style="max-width:1080px;
-                    margin-right:auto;
-                    margin-left:auto">
-          <div class="col-m
+                    col-m
+                    col-m-12">
+          <h2 class="m-pb1
+                     fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Related episodes
+          </h2>
+          <div style="margin-top:4px"
+               class="col-m
                       col-m-12">
-            <a class="block
-                      row
-                      m-pt2
-                      m-pb2
-                      col-idx-hover
-                      fg-black
-                      bold
-                      ts-d-r1_5
-                      ts-m-r1_25
-                      lh-2
-                      light"
-               href="http://localhost:8080/collections/map-zip-flatmap/map">
-              <div class="align-middle
-                          row">
-                <div class="col-m
-                            col-m-6">
-                  Map
-                </div>
-                <div class="end-m
-                            col-m
-                            col-m-6">
-                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLjU5IDEuNDEgNC41OCA0LjU5LTQuNTggNC41OSAxLjQxIDEuNDEgNi02LTYtNnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
-                       alt>
-                </div>
+            <div class="md-ctn">
+              <p>The <code>zip</code> operation came to our rescue in this episode where we need to be able to run multiple parses on an input string, independent of each other. This was not possible using <code>map</code> and <code>flatMap</code> alone.</p>
+
+            </div>
+            <div class="border-left
+                        d-mb3
+                        d-mt2
+                        m-mb2
+                        m-mt1
+                        m-pl2
+                        m-pr2
+                        items-center
+                        border-gray-800
+                        bg-gray900
+                        row"
+                 style="border-left-width:4px;
+                        height:48px">
+              <div class="start-m
+                          col-m
+                          col-m-9">
+                Composable Parsing: Zip
               </div>
-            </a>
+              <div class="end-m
+                          col-m
+                          col-m-3">
+                27 min
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:4px"
+               class="col-m
+                      col-m-12">
+            <div class="md-ctn">
+              <p>In <a href="TODO">the episode before this one</a> we discovered that we could leverage Swift’s <code>Decodable</code> protocol to instantly unlock randomness for any decodable type, including your own custom types. However, the random values produced weren’t the easiset to work with and was difficult to customize. So, we turned to the <code>zip</code> operation to fix those problems, and came up with something surprising.</p>
+
+            </div>
+            <div class="border-left
+                        d-mb3
+                        d-mt2
+                        m-mb2
+                        m-mt1
+                        m-pl2
+                        m-pr2
+                        items-center
+                        border-gray-800
+                        bg-gray900
+                        row"
+                 style="border-left-width:4px;
+                        height:48px">
+              <div class="start-m
+                          col-m
+                          col-m-9">
+                Decodable Randomness: Part 2
+              </div>
+              <div class="end-m
+                          col-m
+                          col-m-3">
+                26 min
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="border-bottom
-                  col-idx-hover"
-           style="border-bottom-color:#E8E8E8">
-        <div class="d-pl5
+    </div>
+    <div class="bg-gray900">
+      <div class="between-d
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="d-pb4
+                    d-pt3
+                    d-pl5
                     d-pr5
                     m-pl3
                     m-pr3
-                    row"
-             style="max-width:1080px;
-                    margin-right:auto;
-                    margin-left:auto">
-          <div class="col-m
-                      col-m-12">
-            <a class="block
-                      row
-                      m-pt2
-                      m-pb2
-                      col-idx-hover
-                      fg-black
-                      bold
-                      ts-d-r1_5
-                      ts-m-r1_25
-                      lh-2
-                      light"
-               href="http://localhost:8080/collections/map-zip-flatmap/zip">
-              <div class="align-middle
-                          row">
-                <div class="col-m
-                            col-m-6">
-                  Zip
-                </div>
-                <div class="end-m
-                            col-m
-                            col-m-6">
-                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLjU5IDEuNDEgNC41OCA0LjU5LTQuNTggNC41OSAxLjQxIDEuNDEgNi02LTYtNnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
-                       alt>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="border-bottom
-                  col-idx-hover"
-           style="border-bottom-color:#E8E8E8">
-        <div class="d-pl5
-                    d-pr5
-                    m-pl3
-                    m-pr3
-                    row"
-             style="max-width:1080px;
-                    margin-right:auto;
-                    margin-left:auto">
-          <div class="col-m
-                      col-m-12">
-            <a class="block
-                      row
-                      m-pt2
-                      m-pb2
-                      col-idx-hover
-                      fg-black
-                      bold
-                      ts-d-r1_5
-                      ts-m-r1_25
-                      lh-2
-                      light"
-               href="http://localhost:8080/collections/map-zip-flatmap/flatmap">
-              <div class="align-middle
-                          row">
-                <div class="col-m
-                            col-m-6">
-                  Flat-Map
-                </div>
-                <div class="end-m
-                            col-m
-                            col-m-6">
-                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLjU5IDEuNDEgNC41OCA0LjU5LTQuNTggNC41OSAxLjQxIDEuNDEgNi02LTYtNnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
-                       alt>
-                </div>
-              </div>
-            </a>
+                    m-pt2
+                    m-pb2
+                    col-m
+                    col-m-12">
+          <h2 class="m-pb1
+                     fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Where to go from here
+          </h2>
+          <div class="md-ctn">
+            <p>You can accomplish quite a bit with the <code>map</code> and <code>zip</code> operations alone, such as transforming the underlying value of a computation, or combining multiple computations into a single one. But there are still some things they cannot accomplish, such as combining multiple computations together in such a way that later computations depend on earlier computations. This property alone is what motivates us to introduce the <code>flatMap</code> operation.</p>
+
           </div>
         </div>
       </div>

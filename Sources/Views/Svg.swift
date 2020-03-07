@@ -47,21 +47,7 @@ public func newWindowSvgBase64(fill: String) -> String {
 }
 
 public let rightChevronSvgBase64 = base64EncodedString <| """
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="8px" height="12px" viewBox="0 0 8 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
-    <title>icon/navigation/expand_less_24px</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Lesson-/-Row-/-Info-/-Collapsed" transform="translate(-594.000000, -26.000000)">
-            <g>
-                <g id="icon/navigation/expand_more_24px" transform="translate(598.000000, 32.000000) rotate(-90.000000) translate(-598.000000, -32.000000) translate(586.000000, 20.000000)" fill="#000000">
-                    <polygon id="-↳Color" points="16.59 8.59 12 13.17 7.41 8.59 6 10 12 16 18 10"></polygon>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg height="12" width="8" xmlns="http://www.w3.org/2000/svg"><path d="m.59 1.41 4.58 4.59-4.58 4.59 1.41 1.41 6-6-6-6z" fill-rule="evenodd"/></svg>
 """
 
 public func pointFreeTextLogoSvgBase64(color: String) -> String {

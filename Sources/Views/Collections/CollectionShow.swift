@@ -1,5 +1,4 @@
 import Css
-import EmailAddress
 import Foundation
 import FunctionalCss
 import Html
@@ -14,12 +13,12 @@ import TaggedTime
 
 // MARK: - HTML
 
-public func collectionIndex(_ collection: Episode.Collection) -> Node {
+public func collectionShow(_ collection: Episode.Collection) -> Node {
   [
     collectionHeader(
       title: collection.title ?? "",
       category: "Collection",
-      subcategory: "sections",
+      subcategory: "section",
       subcategoryCount: collection.sections.count,
       length: collection.length,
       blurb: collection.blurb ?? ""
@@ -31,7 +30,7 @@ public func collectionIndex(_ collection: Episode.Collection) -> Node {
           Class.padding([.mobile: [.bottom: 5]])
         ]),
       ],
-      .fragment(collection.sections.map(sectionRow))
+      .fragment(collection.sections.map { sectionRow(collection: collection, section: $0) })
     )
   ]
 }
@@ -72,7 +71,10 @@ private let sectionsTitle = Node.div(
   )
 )
 
-private func sectionRow(_ section: Episode.Collection.Section) -> Node {
+private func sectionRow(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section
+) -> Node {
   .div(
     attributes: [
       .class([
@@ -104,7 +106,8 @@ private func sectionRow(_ section: Episode.Collection.Section) -> Node {
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
-            .href("#TODO"),
+            // FIXME:
+            .href(url(to: .collections(.section(collection.slug!, section.slug)))),
           ],
           .gridRow(
             attributes: [
