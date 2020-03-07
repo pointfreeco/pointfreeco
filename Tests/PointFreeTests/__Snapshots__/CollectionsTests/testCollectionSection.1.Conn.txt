@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62362
+Content-Length: 62476
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1949,7 +1949,8 @@ html {
                      lh-2">
             Core lessons
           </h2>
-          <div class="col-m
+          <div style="margin-top:4px"
+               class="col-m
                       col-m-12">
             <a class="border-left
                       items-center
@@ -1985,7 +1986,8 @@ html {
               </div>
             </a>
           </div>
-          <div class="col-m
+          <div style="margin-top:4px"
+               class="col-m
                       col-m-12">
             <a class="border-left
                       items-center
@@ -2021,7 +2023,8 @@ html {
               </div>
             </a>
           </div>
-          <div class="col-m
+          <div style="margin-top:4px"
+               class="col-m
                       col-m-12">
             <a class="border-left
                       items-center

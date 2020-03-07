@@ -93,6 +93,9 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
 private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
+    attributes: [
+      .style(margin(top: .px(4))),
+    ],
     .a(
       attributes: [
         .class([
