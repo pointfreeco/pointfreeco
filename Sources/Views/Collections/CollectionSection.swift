@@ -102,17 +102,16 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
           Class.border.left,
           Class.flex.items.center,
           Class.grid.row,
-          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
           Class.pf.collections.hoverBackground,
           Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .href(url(to: .episode(.show(.right(lesson.episode.id))))),
+        .href(url(to: .episode(.show(.left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
-            <> height(.px(48))
         ),
       ],
       .gridColumn(
@@ -202,7 +201,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
             .desktop: [.top: 2],
             .mobile: [.top: 1],
           ]),
-          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
           Class.pf.collections.hoverBackground,
           Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
@@ -212,7 +211,6 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
-            <> height(.px(48))
         ),
       ],
       .gridColumn(
