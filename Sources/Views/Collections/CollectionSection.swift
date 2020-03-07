@@ -71,7 +71,7 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
           .class([
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
-              .mobile: [.leftRight: 3, .topBottom: 2],
+              .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
             ]),
           ]),
         ],
@@ -153,7 +153,7 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
     .gridRow(
       attributes: [
         .class([
-          Class.grid.between(.desktop),
+          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 3, .bottom: 4]])
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -162,8 +162,8 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
         attributes: [
           .class([
             Class.padding([
-              .desktop: [.leftRight: 5, .top: 3],
-              .mobile: [.leftRight: 3, .top: 2],
+              .desktop: [.leftRight: 5],
+              .mobile: [.leftRight: 3],
             ]),
           ]),
         ],
@@ -197,8 +197,8 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           Class.flex.items.center,
           Class.grid.row,
           Class.margin([
-            .desktop: [.top: 2, .bottom: 3],
-            .mobile: [.top: 1, .bottom: 2],
+            .desktop: [.top: 2],
+            .mobile: [.top: 1],
           ]),
           Class.padding([.mobile: [.leftRight: 2]]),
           Class.pf.collections.hoverBackground,
@@ -208,8 +208,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
         ]),
         .href(url(to: .episode(.show(.right(episode.id))))),
         .style(
-          backgroundColor(.other("#fafafa"))
-            <> borderColor(all: .other("#e8e8e8"))
+          borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
             <> height(.px(48))
         ),
@@ -260,7 +259,7 @@ private func whereToGoFromHere(_ string: String) -> Node {
           .class([
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
-              .mobile: [.leftRight: 3, .topBottom: 2],
+              .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
             ]),
           ]),
         ],
