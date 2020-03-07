@@ -93,9 +93,6 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
 private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
-    attributes: [
-      .style(margin(top: .px(4))),
-    ],
     .a(
       attributes: [
         .class([
@@ -186,9 +183,6 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
   guard case let .episode(episode) = relatedItem.content else { return [] }
   return .gridColumn(
     sizes: [.mobile: 12],
-    attributes: [
-      .style(margin(top: .px(4))),
-    ],
     .markdownBlock(relatedItem.blurb),
     .a(
       attributes: [
