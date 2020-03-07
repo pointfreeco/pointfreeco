@@ -22,6 +22,9 @@ let episodeResponse
       view: Views.episodeView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
+        #if DEBUG
+        var episode = Current.episodes().first(where: { $0.sequence == episode.sequence }) ?? episode
+        #endif
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
