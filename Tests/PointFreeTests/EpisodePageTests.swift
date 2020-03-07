@@ -19,7 +19,7 @@ import XCTest
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+    record = true
   }
 
   func testRedeemEpisodeCredit_HappyPath() {
@@ -152,6 +152,29 @@ class EpisodePageTests: TestCase {
 
   func testEpisodePage() {
     let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedOut)
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testNew_EpisodePage() {
+    let user = User.admin
+    Current.database.fetchUserById = const(pure(user))
+
+    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: user))
 
     let conn = connection(from: episode)
 

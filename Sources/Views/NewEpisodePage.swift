@@ -84,6 +84,7 @@ private func sideBar(
           Class.border.all,
           Class.border.rounded.all,
           Class.pf.colors.border.gray850,
+          Class.margin([.mobile: [.leftRight: 3]])
         ])
       ],
       collectionHeaderRow(collection: collection, section: section),
@@ -98,6 +99,7 @@ private func sideBar(
           Class.border.all,
           Class.border.rounded.all,
           Class.pf.colors.border.gray850,
+          Class.margin([.mobile: [.leftRight: 3]])
         ])
       ],
       sequentialEpisodeRow(episode: previousEpisode, type: .previous),
@@ -249,10 +251,10 @@ private func sequentialEpisodeRow(
     attributes: [
       .class([
         Class.padding([.mobile: [.all: 2]]),
-        type == .next ? Class.border.top : Class.border.bottom,
+        type == .next ? Class.border.top : nil,
         Class.pf.colors.border.gray850,
         Class.grid.middle(.mobile),
-      ])
+        ].compactMap { $0 })
     ],
     .gridColumn(
       sizes: [.mobile: 1],
@@ -564,8 +566,8 @@ private func mainContent(
       .class([
         Class.grid.top(.desktop),
         Class.padding([
-          .desktop: [.leftRight: 3, .top: 0],
-          .mobile: [.leftRight: 3, .top: 4, .bottom: 2],
+          .desktop: [.leftRight: 0, .top: 0],
+          .mobile: [.leftRight: 0, .top: 3, .bottom: 2],
         ]),
       ]),
       .style(
@@ -577,7 +579,7 @@ private func mainContent(
       sizes: [.mobile: 12, .desktop: 4],
       attributes: [
         .class([
-          Class.padding([.mobile: [.top: 3]]),
+          Class.padding([.desktop: [.top: 3]]),
           Class.position.sticky(.desktop),
           Class.position.top0
         ])
