@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62774
+Content-Length: 62362
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1853,8 +1853,8 @@ html {
         <div class="col-m
                     col-m-6">
           <a href="http://localhost:8080/collections/map-zip-flatmap"
-             style="color:#7d7d7d">
-            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iIzU5NTk1OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
+             class="pf-link-gray650">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
                  alt
                  class="m-pr1">
             Map, Zip, Flat-Map
@@ -1870,12 +1870,14 @@ html {
                 border-top"
          style="border-top-color:#000000">
       <div class="middle-d
-                  d-pl5
-                  d-pr5
-                  m-pl3
-                  m-pr3
-                  m-pt4
-                  m-pb4
+                  d-pb4
+                  d-pt3
+                  d-pl4
+                  d-pr4
+                  m-pl2
+                  m-pr2
+                  m-pt3
+                  m-pb3
                   row"
            style="max-width:1080px;
                   margin-right:auto;
@@ -1904,9 +1906,12 @@ html {
              • 
             1 hr 29 min
           </div>
-          <div class="m-pt3
-                      m-pl4
-                      m-pr4
+          <div class="d-pt3
+                      d-pl4
+                      d-pr4
+                      m-pt2
+                      m-pl2
+                      m-pr2
                       fg-gray850
                       fg-black
                       normal
@@ -1930,10 +1935,10 @@ html {
                     d-pt3
                     d-pl5
                     d-pr5
+                    m-pb3
+                    m-pt2
                     m-pl3
                     m-pr3
-                    m-pt2
-                    m-pb2
                     col-m
                     col-m-12">
           <h2 class="m-pb1
@@ -1944,8 +1949,7 @@ html {
                      lh-2">
             Core lessons
           </h2>
-          <div style="margin-top:4px"
-               class="col-m
+          <div class="col-m
                       col-m-12">
             <a class="border-left
                       items-center
@@ -1968,7 +1972,7 @@ html {
                           col-m
                           col-m-9">
                 <div class="row">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                        alt
                        class="m-pr1">
                   The Many Faces of Zip: Part 1
@@ -1981,8 +1985,7 @@ html {
               </div>
             </a>
           </div>
-          <div style="margin-top:4px"
-               class="col-m
+          <div class="col-m
                       col-m-12">
             <a class="border-left
                       items-center
@@ -2005,7 +2008,7 @@ html {
                           col-m
                           col-m-9">
                 <div class="row">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                        alt
                        class="m-pr1">
                   The Many Faces of Zip: Part 2
@@ -2018,8 +2021,7 @@ html {
               </div>
             </a>
           </div>
-          <div style="margin-top:4px"
-               class="col-m
+          <div class="col-m
                       col-m-12">
             <a class="border-left
                       items-center
@@ -2042,7 +2044,7 @@ html {
                           col-m
                           col-m-9">
                 <div class="row">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                        alt
                        class="m-pr1">
                   The Many Faces of Zip: Part 3
@@ -2059,15 +2061,16 @@ html {
       </div>
     </div>
     <div class="bg-white">
-      <div class="between-d
+      <div class="d-pt3
+                  d-pb3
+                  m-pt2
+                  m-pb2
                   row"
            style="max-width:1080px;
                   margin-right:auto;
                   margin-left:auto">
-        <div class="d-pt3
-                    d-pl5
+        <div class="d-pl5
                     d-pr5
-                    m-pt2
                     m-pl3
                     m-pr3
                     col-m
@@ -2080,8 +2083,8 @@ html {
                      lh-2">
             Related episodes
           </h2>
-          <div style="margin-top:4px"
-               class="col-m
+          <div class="m-pb2
+                      col-m
                       col-m-12">
             <div class="md-ctn">
               <p>The <code>zip</code> operation came to our rescue in this episode where we need to be able to run multiple parses on an input string, independent of each other. This was not possible using <code>map</code> and <code>flatMap</code> alone.</p>
@@ -2090,9 +2093,7 @@ html {
             <a class="border-left
                       items-center
                       row
-                      d-mb3
                       d-mt2
-                      m-mb2
                       m-mt1
                       m-pl2
                       m-pr2
@@ -2100,9 +2101,8 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-gray900"
-               href="http://localhost:8080/episodes/61"
-               style="background-color:#fafafa;
-                      border-top-color:#e8e8e8;
+               href="http://localhost:8080/episodes/ep61-composable-parsing-zip"
+               style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
                       border-left-color:#e8e8e8;
@@ -2113,7 +2113,7 @@ html {
                           col-m
                           col-m-9">
                 <div class="row">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                        alt
                        class="m-pr1">
                   Composable Parsing: Zip
@@ -2126,8 +2126,8 @@ html {
               </div>
             </a>
           </div>
-          <div style="margin-top:4px"
-               class="col-m
+          <div class="m-pb2
+                      col-m
                       col-m-12">
             <div class="md-ctn">
               <p>In <a href="TODO">the episode before this one</a> we discovered that we could leverage Swift’s <code>Decodable</code> protocol to instantly unlock randomness for any decodable type, including your own custom types. However, the random values produced weren’t the easiset to work with and was difficult to customize. So, we turned to the <code>zip</code> operation to fix those problems, and came up with something surprising.</p>
@@ -2136,9 +2136,7 @@ html {
             <a class="border-left
                       items-center
                       row
-                      d-mb3
                       d-mt2
-                      m-mb2
                       m-mt1
                       m-pl2
                       m-pr2
@@ -2146,9 +2144,8 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-gray900"
-               href="http://localhost:8080/episodes/32"
-               style="background-color:#fafafa;
-                      border-top-color:#e8e8e8;
+               href="http://localhost:8080/episodes/ep32-decodable-randomness-part-2"
+               style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
                       border-left-color:#e8e8e8;
@@ -2159,7 +2156,7 @@ html {
                           col-m
                           col-m-9">
                 <div class="row">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                        alt
                        class="m-pr1">
                   Decodable Randomness: Part 2
@@ -2185,10 +2182,10 @@ html {
                     d-pt3
                     d-pl5
                     d-pr5
+                    m-pb3
+                    m-pt2
                     m-pl3
                     m-pr3
-                    m-pt2
-                    m-pb2
                     col-m
                     col-m-12">
           <h2 class="m-pb1
@@ -2211,15 +2208,18 @@ html {
                 border-top-color:#e8e8e8">
       <div class="items-center
                   center-m
+                  d-pl5
+                  d-pr5
+                  m-pl3
+                  m-pr3
                   row"
-           style="height:88px;
-                  max-width:1080px;
+           style="max-width:1080px;
                   margin-right:auto;
                   margin-left:auto">
         <div class="border-right
                     start-m
-                    m-pl2
-                    m-pr2
+                    m-pt3
+                    m-pb3
                     col-m
                     col-m-6"
              style="border-right-color:#e8e8e8">
@@ -2243,8 +2243,8 @@ html {
           </a>
         </div>
         <div class="end-m
-                    m-pl2
-                    m-pr2
+                    m-pt3
+                    m-pb3
                     col-m
                     col-m-6">
           <a class="row"
