@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 53918
+Content-Length: 62774
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1703,7 +1703,7 @@ html {
   background-color : #e6e6e6;
 }
 
-.col-idx-hover:hover {
+.col-idx-link:hover {
   text-decoration : none;
 }
 
@@ -1840,7 +1840,35 @@ html {
     </div>
     <div class="bg-black
                 border-top"
-         style="border-top-color:#333">
+         style="border-top-color:#000000">
+      <div class="m-pl1
+                  m-pr1
+                  middle-m
+                  row"
+           style="color:#7d7d7d;
+                  height:50px;
+                  max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="col-m
+                    col-m-6">
+          <a href="http://localhost:8080/collections/map-zip-flatmap"
+             style="color:#7d7d7d">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iIzU5NTk1OSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
+                 alt
+                 class="m-pr1">
+            Map, Zip, Flat-Map
+          </a>
+        </div>
+        <div class="end-m
+                    col-m
+                    col-m-6">
+        </div>
+      </div>
+    </div>
+    <div class="bg-black
+                border-top"
+         style="border-top-color:#000000">
       <div class="middle-d
                   d-pl5
                   d-pr5
@@ -1864,12 +1892,12 @@ html {
               style="line-height:1.2">
             Zip
           </h1>
-          <div class="fg-gray650
-                      fg-black
+          <div class="fg-black
                       normal
                       h6
                       lh-4
-                      center">
+                      center"
+               style="color:#a1a1a1">
             Section
              • 
             3 episodes
@@ -1892,7 +1920,7 @@ html {
         </div>
       </div>
     </div>
-    <div class="bg-gray900">
+    <div style="background-color:#fafafa">
       <div class="between-d
                   row"
            style="max-width:1080px;
@@ -1919,74 +1947,113 @@ html {
           <div style="margin-top:4px"
                class="col-m
                       col-m-12">
-            <div class="border-left
-                        m-pl2
-                        m-pr2
-                        items-center
-                        border-gray-800
-                        bg-white
-                        row"
-                 style="border-left-width:4px;
-                        height:48px">
-              <div class="start-m
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-white"
+               href="http://localhost:8080/episodes/23"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      height:48px">
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 1
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 1
+                </div>
               </div>
               <div class="end-m
                           col-m
                           col-m-3">
                 28 min
               </div>
-            </div>
+            </a>
           </div>
           <div style="margin-top:4px"
                class="col-m
                       col-m-12">
-            <div class="border-left
-                        m-pl2
-                        m-pr2
-                        items-center
-                        border-gray-800
-                        bg-white
-                        row"
-                 style="border-left-width:4px;
-                        height:48px">
-              <div class="start-m
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-white"
+               href="http://localhost:8080/episodes/24"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      height:48px">
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 2
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 2
+                </div>
               </div>
               <div class="end-m
                           col-m
                           col-m-3">
                 36 min
               </div>
-            </div>
+            </a>
           </div>
           <div style="margin-top:4px"
                class="col-m
                       col-m-12">
-            <div class="border-left
-                        m-pl2
-                        m-pr2
-                        items-center
-                        border-gray-800
-                        bg-white
-                        row"
-                 style="border-left-width:4px;
-                        height:48px">
-              <div class="start-m
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-white"
+               href="http://localhost:8080/episodes/25"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      height:48px">
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                The Many Faces of Zip: Part 3
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  The Many Faces of Zip: Part 3
+                </div>
               </div>
               <div class="end-m
                           col-m
                           col-m-3">
                 24 min
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -2020,30 +2087,44 @@ html {
               <p>The <code>zip</code> operation came to our rescue in this episode where we need to be able to run multiple parses on an input string, independent of each other. This was not possible using <code>map</code> and <code>flatMap</code> alone.</p>
 
             </div>
-            <div class="border-left
-                        d-mb3
-                        d-mt2
-                        m-mb2
-                        m-mt1
-                        m-pl2
-                        m-pr2
-                        items-center
-                        border-gray-800
-                        bg-gray900
-                        row"
-                 style="border-left-width:4px;
-                        height:48px">
-              <div class="start-m
+            <a class="border-left
+                      items-center
+                      row
+                      d-mb3
+                      d-mt2
+                      m-mb2
+                      m-mt1
+                      m-pl2
+                      m-pr2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-gray900"
+               href="http://localhost:8080/episodes/61"
+               style="background-color:#fafafa;
+                      border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      height:48px">
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                Composable Parsing: Zip
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  Composable Parsing: Zip
+                </div>
               </div>
               <div class="end-m
                           col-m
                           col-m-3">
                 27 min
               </div>
-            </div>
+            </a>
           </div>
           <div style="margin-top:4px"
                class="col-m
@@ -2052,35 +2133,49 @@ html {
               <p>In <a href="TODO">the episode before this one</a> we discovered that we could leverage Swift’s <code>Decodable</code> protocol to instantly unlock randomness for any decodable type, including your own custom types. However, the random values produced weren’t the easiset to work with and was difficult to customize. So, we turned to the <code>zip</code> operation to fix those problems, and came up with something surprising.</p>
 
             </div>
-            <div class="border-left
-                        d-mb3
-                        d-mt2
-                        m-mb2
-                        m-mt1
-                        m-pl2
-                        m-pr2
-                        items-center
-                        border-gray-800
-                        bg-gray900
-                        row"
-                 style="border-left-width:4px;
-                        height:48px">
-              <div class="start-m
+            <a class="border-left
+                      items-center
+                      row
+                      d-mb3
+                      d-mt2
+                      m-mb2
+                      m-mt1
+                      m-pl2
+                      m-pr2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-gray900"
+               href="http://localhost:8080/episodes/32"
+               style="background-color:#fafafa;
+                      border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      height:48px">
+              <div class="items-center
+                          start-m
                           col-m
                           col-m-9">
-                Decodable Randomness: Part 2
+                <div class="row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzMtMTEyM0g5NTF2MzU4M0gtNzN6Ii8+CiAgICA8cGF0aCBkPSJNOCAxNC41bDYtNC41LTYtNC41djl6TTEwIDBDNC40OCAwIDAgNC40OCAwIDEwczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNS41MiAwIDEwIDB6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzEyMTIxMiIvPgogIDwvZz4KPC9zdmc+"
+                       alt
+                       class="m-pr1">
+                  Decodable Randomness: Part 2
+                </div>
               </div>
               <div class="end-m
                           col-m
                           col-m-3">
                 26 min
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
     </div>
-    <div class="bg-gray900">
+    <div style="background-color:#fafafa">
       <div class="between-d
                   row"
            style="max-width:1080px;
@@ -2108,6 +2203,68 @@ html {
             <p>You can accomplish quite a bit with the <code>map</code> and <code>zip</code> operations alone, such as transforming the underlying value of a computation, or combining multiple computations into a single one. But there are still some things they cannot accomplish, such as combining multiple computations together in such a way that later computations depend on earlier computations. This property alone is what motivates us to introduce the <code>flatMap</code> operation.</p>
 
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-top"
+         style="background-color:#fafafa;
+                border-top-color:#e8e8e8">
+      <div class="items-center
+                  center-m
+                  row"
+           style="height:88px;
+                  max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="border-right
+                    start-m
+                    m-pl2
+                    m-pr2
+                    col-m
+                    col-m-6"
+             style="border-right-color:#e8e8e8">
+          <a class="row"
+             href="http://localhost:8080/collections/map-zip-flatmap/map">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB2aWV3Qm94PSIwIDAgOCAxMiIgd2lkdGg9IjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJtLTIxNS0xNTk5aDEwMjR2MTY0OWgtMTAyNHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtMCAwaDEwMjR2MzgxaC0xMDI0eiIgZmlsbD0iI2ZhZmFmYSIgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgLTIxNSA1MCkiLz48cGF0aCBkPSJtMTUuNDEgNy40MS0xLjQxLTEuNDEtNiA2IDYgNiAxLjQxLTEuNDEtNC41OC00LjU5eiIgZmlsbD0iIzAwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTggLTYpIi8+PC9nPjwvc3ZnPg=="
+                 alt
+                 class="d-pr2
+                        m-pr1">
+            <div class="col-m">
+              <div class="fg-black
+                          normal
+                          h6
+                          lh-4">
+                Back to
+              </div>
+              <div class="semi-bold">
+                Map
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="end-m
+                    m-pl2
+                    m-pr2
+                    col-m
+                    col-m-6">
+          <a class="row"
+             href="http://localhost:8080/collections/map-zip-flatmap/flatmap">
+            <div class="col-m">
+              <div class="fg-black
+                          normal
+                          h6
+                          lh-4">
+                Next up
+              </div>
+              <div class="semi-bold">
+                Flat-Map
+              </div>
+            </div>
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLjU5IDEuNDEgNC41OCA0LjU5LTQuNTggNC41OSAxLjQxIDEuNDEgNi02LTYtNnoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="
+                 alt
+                 class="d-pl2
+                        m-pl1">
+          </a>
         </div>
       </div>
     </div>

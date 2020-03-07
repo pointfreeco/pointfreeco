@@ -12,6 +12,64 @@ import Styleguide
 import Tagged
 import TaggedTime
 
+// MARK: HTML -
+
+func collectionNavigation(
+  left: (title: String, url: String)?
+) -> Node {
+  .div(
+    attributes: [
+      .class([
+        Class.pf.colors.bg.black,
+        Class.border.top,
+      ]),
+      .style(borderColor(top: .black)),
+    ],
+    .gridRow(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.leftRight: 1]]),
+          Class.grid.middle(.mobile),
+        ]),
+        .style(
+          color(.other("#7d7d7d"))
+            <> height(.px(50))
+            <> maxWidth(.px(1080))
+            <> margin(topBottom: nil, leftRight: .auto)
+        ),
+      ],
+      .gridColumn(
+        sizes: [.mobile: 6],
+        left
+          .map {
+            .a(
+              attributes: [
+                .href($0.url),
+                .style(color(.other("#7d7d7d"))),
+              ],
+              .img(base64: leftNavigationChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
+                .class([
+                  Class.padding([.mobile: [.right: 1]]),
+                ]),
+              ]),
+              .text($0.title)
+            )
+          }
+          ?? []
+      ),
+      .gridColumn(
+        sizes: [.mobile: 6],
+        attributes: [
+          .class([
+            Class.grid.end(.mobile)
+          ]),
+        ],
+        "" // TODO
+      )
+    )
+  )
+}
+
 func collectionHeader(
   title: String,
   category: String,
@@ -26,7 +84,7 @@ func collectionHeader(
         Class.pf.colors.bg.black,
         Class.border.top,
       ]),
-      .style(key("border-top-color", "#333")),
+      .style(borderColor(top: .black)),
     ],
     .gridRow(
       attributes: [
@@ -56,10 +114,10 @@ func collectionHeader(
         .div(
           attributes: [
             .class([
-              Class.pf.colors.fg.gray650,
               Class.pf.type.body.small,
               Class.type.align.center,
             ]),
+            .style(color(.other("#a1a1a1")))
           ],
           "\(category) • \(subcategory.pluralize(subcategoryCount)) • \(length.formattedDescription)"
         ),
@@ -77,6 +135,22 @@ func collectionHeader(
     )
   )
 }
+
+// MARK: - Stylesheet
+
+public let collectionsStylesheet = Stylesheet.concat(
+  (Class.pf.collections.hoverBackground & .pseudo(.hover)) % backgroundColor(.white(0.9)),
+  (Class.pf.collections.hoverLink & .pseudo(.hover)) % key("text-decoration", "none")
+)
+
+extension Class.pf {
+  enum collections {
+    static let hoverBackground = CssSelector.class("col-idx-hover")
+    static let hoverLink = CssSelector.class("col-idx-link")
+  }
+}
+
+// MARK: - Helpers
 
 fileprivate extension String {
   func pluralize(_ count: Int) -> String {
