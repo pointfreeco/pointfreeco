@@ -74,6 +74,7 @@ public enum Route: Equatable {
 
   public enum EpisodeRoute: Equatable {
     case index
+    case newShow(Either<String, Episode.Id>)
     case progress(param: Either<String, Episode.Id>, percent: Int)
     case show(Either<String, Episode.Id>)
   }
@@ -175,6 +176,9 @@ let routers: [Router<Route>] = [
 
   .case(.episode(.index))
     <¢> get %> "episodes" <% end,
+
+  .case { .episode(.newShow($0)) }
+    <¢> get %> "new" %> "episodes" %> pathParam(.episodeIdOrString) <% end,
 
   parenthesize(.case { .episode(.progress(param: $0, percent: $1)) })
     <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"

@@ -30,6 +30,7 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let gray150 = CssSelector.class("bg-gray150")
         public static let gray650 = CssSelector.class("bg-gray650")
+        public static let gray850 = CssSelector.class("bg-gray850")
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let green = CssSelector.class("bg-green")
         public static let inherit = CssSelector.class("bg-inherit")
@@ -354,6 +355,7 @@ private let colorStyles: Stylesheet = concat([
   Class.pf.colors.bg.dark % backgroundColor(Colors.black),
   Class.pf.colors.bg.gray150 % backgroundColor(Colors.gray150),
   Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650),
+  Class.pf.colors.bg.gray850 % backgroundColor(Colors.gray850),
   Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900),
   Class.pf.colors.bg.green % backgroundColor(Colors.green),
   Class.pf.colors.bg.inherit % backgroundColor(.inherit),
