@@ -209,9 +209,9 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
         .href(url(to: .episode(.show(.right(episode.id))))),
         .style(
           backgroundColor(.other("#fafafa"))
-          <> borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> height(.px(48))
+            <> borderColor(all: .other("#e8e8e8"))
+            <> borderWidth(left: .px(4))
+            <> height(.px(48))
         ),
       ],
       .gridColumn(
@@ -377,10 +377,13 @@ private func sectionNavigation(
         .class([
           Class.flex.items.center,
           Class.grid.center(.mobile),
+          Class.padding([
+            .desktop: [.leftRight: 5],
+            .mobile: [.leftRight: 3],
+          ])
         ]),
         .style(
-          height(.px(88))
-            <> maxWidth(.px(1080))
+          maxWidth(.px(1080))
             <> margin(topBottom: nil, leftRight: .auto)
         ),
       ],
@@ -391,10 +394,10 @@ private func sectionNavigation(
             Class.border.right,
             Class.grid.start(.mobile),
             Class.padding([
-              .mobile: [.leftRight: 2],
+              .mobile: [.topBottom: 3]
             ]),
           ]),
-          .style(/*height(.pct(100)) <> */borderColor(right: .other("#e8e8e8"))),
+          .style(borderColor(right: .other("#e8e8e8"))),
         ],
         previousLink ?? []
       ),
@@ -403,11 +406,8 @@ private func sectionNavigation(
         attributes: [
           .class([
             Class.grid.end(.mobile),
-            Class.padding([
-              .mobile: [.leftRight: 2],
-            ]),
+            Class.padding([.mobile: [.topBottom: 3]]),
           ]),
-//          .style(height(.pct(100))),
         ],
         nextLink ?? []
       )
