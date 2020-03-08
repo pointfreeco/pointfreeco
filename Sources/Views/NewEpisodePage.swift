@@ -590,7 +590,8 @@ private func mainContent(
       sizes: [.mobile: 12, .desktop: 8],
       transcriptView(
         blocks: data.episode.transcriptBlocks,
-        isEpisodeViewable: isEpisodeViewable
+        isEpisodeViewable: isEpisodeViewable,
+        needsExtraPadding: false
       ),
       exercisesView(exercises: data.episode.exercises),
       referencesView(references: data.episode.references),
