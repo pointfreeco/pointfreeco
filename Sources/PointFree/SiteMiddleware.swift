@@ -206,8 +206,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      // TODO: get rid of this `nil` ----------------------------------------------------------V
-      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. nil .*. unit))
+      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.knownEvent(event))):

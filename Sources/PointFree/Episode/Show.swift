@@ -86,36 +86,48 @@ private func episodePageData(
   }
 }
 
-func newOrLegacyEpisodeView(data: Either<EpisodePageData, NewEpisodePageData>) -> Node {
+private func newOrLegacyEpisodeView(data: Either<EpisodePageData, NewEpisodePageData>) -> Node {
   switch data {
   case let .left(data): return episodeView(episodePageData: data)
   case let .right(data): return newEpisodePageView(episodePageData: data)
   }
 }
 
-let useCreditResponse =
-  fetchEpisodeForParam
+func useCreditResponse<Z>(
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+) -> IO<Conn<ResponseEnded, Data>> {
+  conn
+    |> (fetchEpisodeForParam
     <<< validateUserEpisodePermission
-    <| applyCreditMiddleware
+    <| applyCreditMiddleware)
+}
 
-let fetchEpisodeForParam
-  : MT<
-  Tuple5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Episode.Collection.Slug?>,
-  Tuple5<Episode, User?, SubscriberState, Route?, Episode.Collection.Slug?>
-  >
-  = filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-)
+private func fetchEpisodeForParam<Z>(
+  middleware: @escaping M<T5<Episode, User?, SubscriberState, Route?, Z>>
+) -> M<T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>> {
+  middleware
+    |> filterMap(
+      over1(episode(forParam:)) >>> require1 >>> pure,
+      or: episodeNotFoundResponse
+  )
+}
 
-private let validateUserEpisodePermission
-  : MT<
-  Tuple5<Episode, User?, SubscriberState, Route?, Episode.Collection.Slug?>,
-  Tuple6<EpisodePermission, Episode, User, SubscriberState, Route?, Episode.Collection.Slug?>
-  >
-  = { userEpisodePermission >=> $0 }
+private func episodeNotFoundResponse<Z>(
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+) -> IO<Conn<ResponseEnded, Data>> {
+  conn
+    |> writeStatus(.notFound)
+    >=> respond { episodeNotFoundView(user: get2($0), subscriberState: get3($0), route: get4($0)) }
+}
+
+private func validateUserEpisodePermission<Z>(
+  middleware: @escaping M<T5<EpisodePermission, Episode, User, SubscriberState, Z>>
+) -> M<T4<Episode, User?, SubscriberState, Z>> {
+  middleware
+    |> { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
+}
 
 let progressResponse: M<
   Tuple4<
@@ -258,35 +270,38 @@ func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private let episodeNotFoundView = { param, user, subscriberState, route, collectionSlug in
+private func episodeNotFoundView(
+  user: User?,
+  subscriberState: SubscriberState,
+  route: Route?
+) -> Node {
   SimplePageLayoutData(
     currentSubscriberState: subscriberState,
     currentUser: user,
-    data: (param, user, subscriberState, route, collectionSlug),
+    data: (),
     title: "Episode not found :("
-  )
-  } >>> simplePageLayout(_episodeNotFoundView)
-
-private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?, _: Episode.Collection.Slug?) -> Node {
-  return .gridRow(
-    attributes: [.class([Class.grid.center(.mobile)])],
-    .gridColumn(
-      sizes: [.mobile: 6],
-      .div(
-        attributes: [.style(padding(topBottom: .rem(12)))],
-        .h5(
-          attributes: [.class([Class.h5])],
-          "Episode not found :("
-        ),
-        .pre(
-          .code(
-            attributes: [.class([Class.pf.components.code(lang: "swift")])],
-            "f: (Episode) -> Never"
+    )
+    |> simplePageLayout({
+      .gridRow(
+        attributes: [.class([Class.grid.center(.mobile)])],
+        .gridColumn(
+          sizes: [.mobile: 6],
+          .div(
+            attributes: [.style(padding(topBottom: .rem(12)))],
+            .h5(
+              attributes: [.class([Class.h5])],
+              "Episode not found :("
+            ),
+            .pre(
+              .code(
+                attributes: [.class([Class.pf.components.code(lang: "swift")])],
+                "f: (Episode) -> Never"
+              )
+            )
           )
         )
       )
-    )
-  )
+    })
 }
 
 func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
