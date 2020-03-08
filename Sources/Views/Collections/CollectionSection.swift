@@ -135,7 +135,6 @@ private func coreLesson(
         ],
         .gridRow(
           .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
-            // TODO: why is collection.slug optional?
             .class([Class.padding([.mobile: [.right: 1]])]),
           ]),
           .text(lesson.episode.title)
