@@ -304,7 +304,7 @@ private func episodeNotFoundView(
     })
 }
 
-func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
+private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
   return Current.episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id)
