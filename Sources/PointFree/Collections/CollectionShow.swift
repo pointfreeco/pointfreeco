@@ -42,5 +42,5 @@ private let fetchCollectionMiddleware
 )
 
 private func fetchCollection(_ slug: Episode.Collection.Slug) -> Episode.Collection? {
-  Episode.Collection.all.first(where: { $0.slug == slug })
+  Current.collections.first(where: { $0.slug == slug })
 }

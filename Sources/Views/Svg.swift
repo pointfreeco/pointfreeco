@@ -63,6 +63,10 @@ public let rightChevronSvgBase64 = base64EncodedString <| """
 <svg height="12" width="8" xmlns="http://www.w3.org/2000/svg"><path d="m.59 1.41 4.58 4.59-4.58 4.59 1.41 1.41 6-6-6-6z" fill-rule="evenodd"/></svg>
 """
 
+public let collectionsIconSvgBase64 = base64EncodedString(#"""
+<svg width="132" height="80" xmlns="http://www.w3.org/2000/svg"><g fill="#FFF" fill-rule="evenodd"><path d="M40 .07L79.93 40 40 79.93.07 40 40 .07z" opacity=".25"/><path d="M94.93 29H82v22h12.93L66 79.93 26.07 40 66 .07 94.93 29zm7.07 7.07l3.93 3.93-3.93 3.93v-7.86z" opacity=".5"/><path d="M92 .07L131.93 40 92 79.93 52.07 40 92 .07zm-6.655 46.585c3.503 3.503 9.557 3.753 13.31 0 3.803-3.803 3.503-9.807 0-13.31s-9.507-3.803-13.31 0c-3.753 3.753-3.503 9.807 0 13.31z"/></g></svg>
+"""#)
+
 public func pointFreeTextLogoSvgBase64(color: String) -> String {
   return base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
