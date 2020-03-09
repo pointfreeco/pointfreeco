@@ -1,5 +1,8 @@
 extension Episode.Collection {
   public static let algebraicDataTypes = Self(
+    blurb: #"""
+TODO
+"""#,
     section: .init(
       blurb: #"""
 TODO
@@ -18,6 +21,7 @@ TODO
 TODO
 """#
     ),
-    slug: "algebraic-data-types"
+    slug: "algebraic-data-types",
+    title: "Algebraic Data Types"
   )
 }

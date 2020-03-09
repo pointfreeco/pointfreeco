@@ -126,13 +126,15 @@ public struct Episode: Equatable {
     }
 
     public init(
+      blurb: String? = nil,
       section: Section,
-      slug: Episode.Collection.Slug? = nil
+      slug: Episode.Collection.Slug? = nil,
+      title: String? = nil
     ) {
-      self.blurb = nil
+      self.blurb = blurb
       self.sections = [section]
       self.slug = slug
-      self.title = nil
+      self.title = title
     }
 
     public var length: Seconds<Int> {
