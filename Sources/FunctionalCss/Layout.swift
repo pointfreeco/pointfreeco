@@ -18,6 +18,7 @@ extension Class {
     public static let clearFix = CssSelector.class("clear-fix")
     public static let left = CssSelector.class("left")
     public static let right = CssSelector.class("right")
+    public static let bottom = CssSelector.class("bottom")
   }
 }
 

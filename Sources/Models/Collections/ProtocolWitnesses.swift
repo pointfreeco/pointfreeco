@@ -1,7 +1,7 @@
 extension Episode.Collection {
   public static let protocolWitnesses = Self(
     blurb: #"""
-TODO
+Protocols are great! We love them, you probably love them, and Apple certainly loves them! However, they aren't without their drawbacks. There are many times that using protocols can become cumbersome, such as when using associated types, and there are some things that are just impossible to do using protocols. We will explore some alternatives to protocols that open up whole new worlds of composability that were previously impossible to see.
 """#,
     sections: [
       .init(

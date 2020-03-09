@@ -21,6 +21,7 @@ let collectionsIndexMiddleware: M<Tuple3<User?, SubscriberState, Route?>>
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (),
+          extraStyles: collectionIndexStyles,
           style: .base(.some(.minimal(.black))),
           title: "Point-Free Collections"
         )

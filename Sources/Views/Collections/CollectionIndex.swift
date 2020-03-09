@@ -44,20 +44,33 @@ public let collectionIndex: Node = [
       .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
     ],
     .fragment(
-      Episode.Collection.all.map(collectionItem(collection:))
+      Episode.Collection.all.enumerated().map { idx, collection in
+        collectionItem(collection: collection, index: idx)
+      }
     )
   )
 ]
 
-private func collectionItem(collection: Episode.Collection) -> ChildOf<Tag.Ul> {
-  .li(
+private func collectionItem(collection: Episode.Collection, index: Int) -> ChildOf<Tag.Ul> {
+  let colors = ["#4cccff", "#79f2b0", "#fff080", "#974dff"]
+  let combos = colors
+    .flatMap { color in colors.map { (color, $0) } }
+    .filter { $0 != $1 }
+  let (lower, upper) = combos[index % combos.count]
+  print("lower", lower, "upper", upper)
+
+  return .li(
     attributes: [
       .class([
-        Class.padding([.mobile: [.all: 2], .desktop: [.all: 1]]),
+        Class.padding([
+          .mobile: [.top: 2, .bottom: 3, .leftRight: 2],
+          .desktop: [.top: 0, .bottom: 4, .leftRight: 3]
+        ]),
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
-      ]),
-      .style(width(.pct(50)))
+        itemClass
+      ])
+      //      .style(width(.pct(100)))
     ],
     .a(
       attributes: [
@@ -65,45 +78,59 @@ private func collectionItem(collection: Episode.Collection) -> ChildOf<Tag.Ul> {
           Class.flex.column,
           Class.size.width100pct,
           Class.flex.flex,
-          Class.border.rounded.all
+          Class.border.rounded.all,
+          Class.layout.overflowHidden,
+          Class.border.all,
+          Class.pf.colors.border.gray850,
         ]),
         // TODO: figure out force unwrap
         .href(url(to: .collections(.show(collection.slug!))))
       ],
       .div(
         attributes: [
-        .class([
-          Class.flex.flex,
-          Class.flex.justify.center,
-          Class.flex.align.center
-        ]),
-          .style(unsafe: #"""
-background: rgb(110,56,186);
-background: linear-gradient(0deg, rgba(110,56,186,1) 0%, rgba(151,77,255,1) 25%, rgba(121,242,176,1) 100%);
-"""#)
+          .class([
+            Class.flex.flex,
+            Class.flex.justify.center,
+            Class.flex.align.center
+          ]),
+          .style(unsafe: """
+background: \(lower);
+background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
+""")
         ],
         .img(
           base64: collectionsIconSvgBase64,
           type: .image(.svg),
           alt: "",
           attributes: [
-            .style(margin(topBottom: .rem(6)))
+            .style(margin(topBottom: .rem(5)))
           ]
         )
       ),
       .div(
         attributes: [
-          .class([Class.padding([.mobile: [.all: 2]])])
+          .class([
+            Class.padding([.mobile: [.top: 3, .leftRight: 3, .bottom: 2]])
+          ])
         ],
         .h6(
           attributes: [
-            .class([Class.pf.type.responsiveTitle7])
+            .class([
+              Class.pf.colors.fg.gray400,
+              Class.type.normal,
+              Class.pf.type.responsiveTitle8,
+              Class.margin([.mobile: [.all: 0]])
+            ])
           ],
           .text("Collection")
         ),
         .h4(
           attributes: [
-            .class([Class.pf.type.responsiveTitle4])
+            .class([
+              Class.pf.type.responsiveTitle4,
+              Class.type.normal,
+              Class.margin([.mobile: [.top: 0]])
+            ])
           ],
           // TODO: figure out force unwrap
           .text(collection.title!)
@@ -112,10 +139,8 @@ background: linear-gradient(0deg, rgba(110,56,186,1) 0%, rgba(151,77,255,1) 25%,
           attributes: [
             .class([
               Class.padding([.mobile: [.all: 0]]),
-              Class.pf.colors.fg.gray400,
               Class.pf.type.body.regular,
-              Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
-              Class.pf.colors.fg.gray400
+              Class.pf.colors.fg.black
             ]),
             .style(flex(grow: 1, shrink: 0, basis: .auto))
           ],
@@ -128,4 +153,12 @@ background: linear-gradient(0deg, rgba(110,56,186,1) 0%, rgba(151,77,255,1) 25%,
   )
 }
 
+public let collectionIndexStyles: Stylesheet
+  = Breakpoint.mobile.query(only: screen) {
+    itemClass % width(.pct(100))
+    }
+    <> Breakpoint.desktop.query(only: screen) {
+      itemClass % width(.pct(50))
+}
 
+private let itemClass = CssSelector.class("collection-item")
