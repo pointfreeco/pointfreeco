@@ -161,8 +161,7 @@ private func sequentialEpisodes(
                 Class.pf.colors.link.gray650,
                 Class.type.lineHeight(1)
               ]),
-              // TODO: why is collection.slug optional?
-              .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(episode.slug)))))
+              .href(url(to: .collections(.episode(collection.slug, section.slug, .left(episode.slug)))))
             ],
             .text(episode.title)
           )
@@ -219,10 +218,13 @@ private func collectionHeaderRow(
               Class.pf.type.body.regular,
               Class.type.lineHeight(1)
             ]),
-            // TODO: why is collection.slug optional?
-            .href(url(to: .collections(.section(collection.slug!, section.slug))))
+            .href(url(to: .collections(.section(collection.slug, section.slug))))
           ],
-          .text(collection.title.map { $0 + " › " + section.title } ?? section.title)
+          .text(
+            collection.sections.count == 1
+              ? section.title
+              : collection.title + " › " + section.title
+          )
         )
       )
     )

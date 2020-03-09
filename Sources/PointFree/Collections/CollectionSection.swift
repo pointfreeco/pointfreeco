@@ -22,7 +22,7 @@ let collectionSectionMiddleware
           data: (collection, section),
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
-          title: collection.title ?? "Point-Free"
+          title: collection.title
         )
     }
 )

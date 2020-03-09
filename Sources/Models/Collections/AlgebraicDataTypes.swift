@@ -12,12 +12,10 @@ TODO
       related: [
         // TODO
       ],
-      slug: "algebraic-data-types",
       title: "Algebraic Data Types",
       whereToGoFromHere: #"""
 TODO
 """#
-    ),
-    slug: "algebraic-data-types"
+    )
   )
 }
