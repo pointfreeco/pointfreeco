@@ -7,7 +7,6 @@ extension Class {
     pill: CssSelector.class("pill"),
     rounded: (
       all: CssSelector.class("rounded"),
-      bottom: CssSelector.class("rounded-bottom"),
       left: CssSelector.class("rounded-left"),
       right: CssSelector.class("rounded-right")
     ),
@@ -53,6 +52,5 @@ private let roundedStyles =
   Class.border.rounded.all % borderRadius(all: .px(cornerRadius))
     <> Class.border.rounded.left % borderRadius(topLeft: .px(cornerRadius), bottomLeft: .px(cornerRadius))
     <> Class.border.rounded.right % borderRadius(topRight: .px(cornerRadius), bottomRight: .px(cornerRadius))
-    <> Class.border.rounded.bottom % borderRadius(bottomRight: .px(cornerRadius), bottomLeft: .px(cornerRadius))
     <> Class.border.circle % borderRadius(all: .pct(50))
     <> Class.border.pill % borderRadius(all: .px(9999))

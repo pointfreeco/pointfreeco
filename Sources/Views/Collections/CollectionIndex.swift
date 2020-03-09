@@ -76,7 +76,6 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
         Class.flex.flex,
         itemClass
       ])
-      //      .style(width(.pct(100)))
     ],
     .div(
       attributes: [
