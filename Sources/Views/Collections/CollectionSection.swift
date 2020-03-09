@@ -135,7 +135,7 @@ private func coreLesson(
           .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
             .class([Class.padding([.mobile: [.right: 1]])]),
           ]),
-          .text(lesson.episode.title)
+          .text(lesson.episode.fullTitle)
         )
       ),
       .gridColumn(
@@ -234,7 +234,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
             .class([Class.padding([.mobile: [.right: 1]])]),
           ]),
-          .text(episode.title)
+          .text(episode.fullTitle)
         )
       ),
       .gridColumn(

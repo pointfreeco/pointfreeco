@@ -24,7 +24,8 @@ We've made testing in our architecture a joy! We can test deep aspects of our ap
       .composableReducers,
     ],
     sequence: 85,
-    title: "Testable State Management: The Point",
+    subtitle: "The Point",
+    title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 34340125,
       downloadUrl: "https://player.vimeo.com/external/378096707.hd.mp4?s=b6487b04dfa5d755df58b3f5226854ad852a1144&profile_id=175&download=1",

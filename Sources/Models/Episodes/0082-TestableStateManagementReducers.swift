@@ -19,7 +19,8 @@ It's time to see how our architecture handles the fifth and final problem we ide
       .composableReducers,
     ],
     sequence: 82,
-    title: "Testable State Management: Reducers",
+    subtitle: "Reducers",
+    title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 55954991,
       downloadUrl: "https://player.vimeo.com/external/373001794.hd.mp4?s=d86bf515e2c83d4f62e6eabfae46909e1bec0431&profile_id=175&download=1",

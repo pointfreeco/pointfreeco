@@ -27,7 +27,8 @@ We first discussed the idea of equivalence between functions of the form `(A) ->
       )
     ],
     sequence: 68,
-    title: "Composable State Management: Reducers",
+    subtitle: "Reducers",
+    title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 59339942,
       downloadUrl: "https://player.vimeo.com/external/351832614.hd.mp4?s=58db5a30394acaedeba4843d76dca1d211fe7040&profile_id=175&download=1",
