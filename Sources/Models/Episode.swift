@@ -15,6 +15,7 @@ public struct Episode: Equatable {
   public var publishedAt: Date
   public var references: [Reference]
   public var sequence: Sequence
+  public var subtitle: String?
   public var title: String
   public var trailerVideo: Video
   private var _transcriptBlocks: [TranscriptBlock]?
@@ -32,6 +33,7 @@ public struct Episode: Equatable {
     publishedAt: Date,
     references: [Reference] = [],
     sequence: Sequence,
+    subtitle: String? = nil,
     title: String,
     trailerVideo: Video,
     transcriptBlocks: [TranscriptBlock]? = nil
@@ -48,9 +50,14 @@ public struct Episode: Equatable {
     self.publishedAt = publishedAt
     self.references = references
     self.sequence = sequence
+    self.subtitle = subtitle
     self.title = title
     self.trailerVideo = trailerVideo
     self._transcriptBlocks = transcriptBlocks
+  }
+
+  public var fullTitle: String {
+    self.subtitle.map { "\(self.title): \($0)" } ?? self.title
   }
 
   public var fullVideo: Video {
@@ -79,7 +86,7 @@ public struct Episode: Equatable {
   }
 
   public var slug: String {
-    return "ep\(self.sequence)-\(Models.slug(for: self.title))"
+    return "ep\(self.sequence)-\(Models.slug(for: self.fullTitle))"
   }
 
   public func isSubscriberOnly(currentDate: Date) -> Bool {

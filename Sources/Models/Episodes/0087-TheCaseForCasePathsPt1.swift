@@ -21,7 +21,8 @@ You've heard of key paths, but…case paths!? Today we introduce the concept of 
       .opticsByExample,
     ],
     sequence: 87,
-    title: "The Case for Case Paths: Introduction",
+    subtitle: "Introduction",
+    title: "The Case for Case Paths",
     trailerVideo: .init(
       bytesLength: 48_631_704,
       downloadUrl: "https://player.vimeo.com/external/385885943.hd.mp4?s=420b92a57d842c272f3f3bce38621a58b66b11c7&profile_id=175&download=1",
