@@ -34,11 +34,9 @@ public let collectionIndex: Node = .gridRow(
             .li(
               .a(
                 attributes: [
-                  // TODO: deal with optional slug
-                  .href(url(to: .collections(.show(collection.slug ?? ""))))
+                  .href(url(to: .collections(.show(collection.slug))))
                 ],
-                // TODO: does title need to be optional?
-                .text(collection.title ?? "")
+                .text(collection.title)
               )
             )
           }
