@@ -84,6 +84,11 @@ private func contentColumnView(currentUser: User?) -> Node {
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(path(to: .home))], "Videos")
       ),
+      currentUser?.isAdmin == .some(true)
+        ? .li(
+          .a(attributes: [.class([footerLinkClass]), .href(path(to: .collections(.index)))], "Collections")
+          )
+        : [],
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(path(to: .blog(.index)))], "Blog")
       ),

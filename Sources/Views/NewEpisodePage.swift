@@ -451,7 +451,7 @@ private func chaptersRow(episode: Episode) -> Node {
             attributes: [
               .class([
                 Class.pf.type.body.small,
-                Class.padding([.mobile: [.left: 1]])
+                Class.padding([.mobile: [.leftRight: 1]])
               ]),
               .style(padding(topBottom: .px(2)))
             ],
@@ -470,7 +470,16 @@ private func chaptersRow(episode: Episode) -> Node {
                 Class.pf.colors.fg.gray650
               ])
             ],
-            .text(timestampLabel(for: block.timestamp ?? 0))
+            .a(
+              attributes: [
+                .href("#t\(block.timestamp ?? 0)"),
+                .class([
+                  Class.pf.type.body.small,
+                  Class.pf.colors.link.gray650
+                ])
+              ],
+              .text(timestampLabel(for: block.timestamp ?? 0))
+            )
           )
         )
       }

@@ -28,7 +28,7 @@ extension Api {
       self.publishedAt = episode.publishedAt
       self.sequence = episode.sequence
       self.subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate)
-      self.title = episode.title
+      self.title = episode.fullTitle
     }
   }
 
