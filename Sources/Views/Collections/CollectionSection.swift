@@ -31,8 +31,15 @@ public func collectionSection(
 
   return [
     collectionNavigation(
-      left: zip(collection.title, collection.slug)
-        .map { ($0, url(to: .collections(.show($1)))) }
+      left: .a(
+        attributes: [
+          .href(path(to: .collections(.show(collection.slug)))),
+          .class([
+            Class.pf.colors.link.gray650
+          ])
+        ],
+        .text(collection.title)
+      )
     ),
     collectionHeader(
       title: section.title,
