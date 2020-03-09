@@ -26,7 +26,8 @@ We've got the basic story of side effects in our architecture, but the story is 
       .composableReducers,
     ],
     sequence: 79,
-    title: "Effectful State Management: The Point",
+    subtitle: "The Point",
+    title: "Effectful State Management",
     trailerVideo: .init(
       bytesLength: 29754584,
       downloadUrl: "https://player.vimeo.com/external/369058178.hd.mp4?s=c5ac19402690f4129805871b9b4b9823b5621b18&profile_id=175&download=1",

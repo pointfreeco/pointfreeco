@@ -20,7 +20,7 @@ public func freeEpisodeView(episodes: [Episode], today: Date) -> Node {
 
 private func row(episode: Episode) -> Node {
   return .p(
-    .text(episode.title),
+    .text(episode.fullTitle),
     .form(
       attributes: [
         .action(pointFreeRouter.path(to: .admin(.freeEpisodeEmail(.send(episode.id))))),
