@@ -54,12 +54,17 @@ TODO
           .init(episode: .ep77_effectfulStateManagement_unidirectionalEffects),
           .init(episode: .ep78_effectfulStateManagement_asynchronousEffects),
           .init(episode: .ep79_effectfulStateManagement_thePoint),
-
-          .init(episode: .ep80_theCombineFrameworkAndEffects_pt1), // Optional/Related?
-          .init(episode: .ep81_theCombineFrameworkAndEffects_pt2), // Optional/Related?
         ],
         related: [
-          // TODO
+          .init(
+            blurb: """
+TODO
+""",
+            content: .episodes([
+              .ep80_theCombineFrameworkAndEffects_pt1,
+              .ep81_theCombineFrameworkAndEffects_pt2,
+            ])
+          )
         ],
         title: "Side Effects",
         whereToGoFromHere: #"""
