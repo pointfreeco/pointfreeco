@@ -14,6 +14,7 @@ public struct Environment {
   public var assets = Assets()
   public var blogPosts = allBlogPosts
   public var cookieTransform = CookieTransform.encrypted
+  public var collections = Episode.Collection.all
   public var database: Database.Client!
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()

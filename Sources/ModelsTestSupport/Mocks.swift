@@ -99,6 +99,17 @@ extension Models.User {
   }
 }
 
+extension Episode.Collection {
+  public static let mock = Episode.Collection(
+    blurb: #"""
+This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.
+"""#,
+    sections: [],
+    slug: "functions",
+    title: "Functions"
+  )
+}
+
 fileprivate extension Date {
   static let mock = Date(timeIntervalSince1970: 1517356800)
 }

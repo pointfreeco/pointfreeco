@@ -19,6 +19,33 @@ class CollectionsTests: TestCase {
 //    record = true
   }
 
+  func testCollectionIndex() {
+    Current.collections = [
+      .mock,
+      .mock,
+      .mock,
+      .mock,
+    ]
+
+    let conn = connection(
+      from: request(to: .collections(.index), basicAuth: true)
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 1500)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 1900))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testCollectionShow() {
     let conn = connection(
       from: request(to: .collections(.show("map-zip-flatmap")), basicAuth: true)

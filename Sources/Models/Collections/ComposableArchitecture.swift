@@ -79,12 +79,18 @@ TODO
           .init(episode: .ep77_effectfulStateManagement_unidirectionalEffects),
           .init(episode: .ep78_effectfulStateManagement_asynchronousEffects),
           .init(episode: .ep79_effectfulStateManagement_thePoint),
-
-          .init(episode: .ep80_theCombineFrameworkAndEffects_pt1), // Optional/Related?
-          .init(episode: .ep81_theCombineFrameworkAndEffects_pt2), // Optional/Related?
         ],
         related: [
-          // TODO
+          Episode.Collection.Section.Related(
+            blurb: #"""
+"""#,
+            content: .episode(.ep80_theCombineFrameworkAndEffects_pt1)
+          ),
+          Episode.Collection.Section.Related(
+            blurb: #"""
+"""#,
+            content: .episode(.ep81_theCombineFrameworkAndEffects_pt2)
+          ),
         ],
         slug: "side-effects",
         title: "Side Effects",

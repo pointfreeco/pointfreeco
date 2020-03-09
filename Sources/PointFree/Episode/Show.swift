@@ -57,7 +57,7 @@ private func episodePageData(
 ) -> Either<EpisodePageData, NewEpisodePageData> {
   if currentUser?.isAdmin == .some(true) {
     let context: NewEpisodePageData.Context
-    if let collection = Episode.Collection.all.first(where: { $0.slug == collectionSlug }) {
+    if let collection = Current.collections.first(where: { $0.slug == collectionSlug }) {
       context = .collection(collection)
     } else {
       context = .direct(

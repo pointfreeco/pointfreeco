@@ -7,64 +7,70 @@ import PointFreeRouter
 import Styleguide
 import Prelude
 
-public let collectionIndex: Node = [
-  .gridRow(
-    attributes: [
-      .class([
-        Class.padding([.mobile: [.top: 3], .desktop: [.top: 4]]),
-        Class.grid.between(.desktop)
-      ]),
-      .style(
-        maxWidth(.px(1080))
-          <> margin(leftRight: .auto)
-      )
-    ],
-    .gridColumn(
-      sizes: [.mobile: 12],
+public func collectionIndex(
+  collections: [Episode.Collection]
+) -> Node {
+  [
+    .gridRow(
       attributes: [
-        .class([Class.padding([.desktop: [.bottom: 2]])])
+        .class([
+          Class.padding([.mobile: [.top: 3], .desktop: [.top: 4]]),
+          Class.grid.between(.desktop)
+        ]),
+        .style(
+          maxWidth(.px(1080))
+            <> margin(leftRight: .auto)
+        )
       ],
-      .h3(
+      .gridColumn(
+        sizes: [.mobile: 12],
         attributes: [
-          .class([Class.pf.type.responsiveTitle2])
+          .class([
+            Class.padding([.mobile: [.bottom: 2, .leftRight: 2], .desktop: [.leftRight: 3]])
+          ])
         ],
-        "Collections"
+        .h3(
+          attributes: [
+            .class([Class.pf.type.responsiveTitle2])
+          ],
+          "Collections"
+        )
+      )
+    ),
+    .ul(
+      attributes: [
+        .class([
+          Class.margin([.mobile: [.all: 0]]),
+          Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
+          Class.type.list.styleNone,
+          Class.flex.wrap,
+          Class.flex.flex
+        ]),
+        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+      ],
+      .fragment(
+        collections.enumerated().map { idx, collection in
+          collectionItem(collection: collection, index: idx)
+        }
       )
     )
-  ),
-  .ul(
-    attributes: [
-      .class([
-        Class.margin([.mobile: [.all: 0]]),
-        Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
-        Class.type.list.styleNone,
-        Class.flex.wrap,
-        Class.flex.flex
-      ]),
-      .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
-    ],
-    .fragment(
-      Episode.Collection.all.enumerated().map { idx, collection in
-        collectionItem(collection: collection, index: idx)
-      }
-    )
-  )
-]
+  ]
+}
+
+private let colors = ["#4cccff", "#79f2b0", "#fff080", "#974dff"]
+private let combos = colors
+  .flatMap { color in colors.map { (color, $0) } }
+  .filter { $0 != $1 }
 
 private func collectionItem(collection: Episode.Collection, index: Int) -> ChildOf<Tag.Ul> {
-  let colors = ["#4cccff", "#79f2b0", "#fff080", "#974dff"]
-  let combos = colors
-    .flatMap { color in colors.map { (color, $0) } }
-    .filter { $0 != $1 }
   let (lower, upper) = combos[index % combos.count]
-  print("lower", lower, "upper", upper)
 
   return .li(
     attributes: [
       .class([
         Class.padding([
           .mobile: [.top: 2, .bottom: 3, .leftRight: 2],
-          .desktop: [.top: 0, .bottom: 4, .leftRight: 3]
+          .desktop: [.top: 0, .bottom: 4]
         ]),
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
@@ -72,7 +78,7 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
       ])
       //      .style(width(.pct(100)))
     ],
-    .a(
+    .div(
       attributes: [
         .class([
           Class.flex.column,
@@ -82,21 +88,21 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
           Class.layout.overflowHidden,
           Class.border.all,
           Class.pf.colors.border.gray850,
-        ]),
-        // TODO: figure out force unwrap
-        .href(url(to: .collections(.show(collection.slug!))))
+        ])
       ],
-      .div(
+      .a(
         attributes: [
           .class([
             Class.flex.flex,
             Class.flex.justify.center,
             Class.flex.align.center
           ]),
+          // TODO: figure out force unwrap
+          .href(url(to: .collections(.show(collection.slug!)))),
           .style(unsafe: """
-background: \(lower);
-background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
-""")
+            background: \(lower);
+            background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
+            """)
         ],
         .img(
           base64: collectionsIconSvgBase64,
@@ -132,8 +138,14 @@ background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
               Class.margin([.mobile: [.top: 0]])
             ])
           ],
-          // TODO: figure out force unwrap
-          .text(collection.title!)
+          .a(
+            attributes: [
+              // TODO: figure out force unwrap
+              .href(url(to: .collections(.show(collection.slug!))))
+            ],
+            // TODO: figure out force unwrap
+            .text(collection.title!)
+          )
         ),
         .p(
           attributes: [
@@ -145,9 +157,28 @@ background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
             .style(flex(grow: 1, shrink: 0, basis: .auto))
           ],
           // TODO: handle force unwrap
-          .text(collection.blurb!)
-          // TODO: link
+          .div(.markdownBlock(collection.blurb!))
         )
+        // TODO: bring this back when we have time
+//        .a(
+//          attributes: [
+//            // TODO: figure out force unwrap
+//            .href(url(to: .collections(.show(collection.slug!)))),
+//            .class([
+//              Class.align.middle,
+//              Class.pf.colors.link.purple,
+//              Class.pf.type.body.regular,
+//              Class.margin([.mobile: [.top: 4]])
+//            ])
+//          ],
+//          .text("See collection (\(10) episodes)"),
+//          .img(
+//            base64: rightArrowSvgBase64(fill: "#974DFF"),
+//            type: .image(.svg),
+//            alt: "",
+//            attributes: [.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
+//          )
+//        )
       )
     )
   )
