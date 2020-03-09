@@ -22,7 +22,6 @@ TODO
             content: .episode(.ep65_swiftuiAndStateManagement_pt1)
           )
         ],
-        slug: "reducers-and-stores",
         title: "Reducers and Stores",
         whereToGoFromHere: #"""
 TODO
@@ -41,7 +40,6 @@ TODO
         related: [
           // TODO
         ],
-        slug: "modularity",
         title: "Modularity",
         whereToGoFromHere: #"""
 TODO
@@ -63,7 +61,6 @@ TODO
         related: [
           // TODO
         ],
-        slug: "side-effects",
         title: "Side Effects",
         whereToGoFromHere: #"""
 TODO
@@ -88,14 +85,12 @@ TODO
           ),
           // TODO
         ],
-        slug: "testing",
         title: "Testing",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
-    slug: "composable-architecture",
     title: "Composable Architecture"
   )
 }
