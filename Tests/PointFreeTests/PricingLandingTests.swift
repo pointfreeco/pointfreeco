@@ -19,7 +19,7 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testLanding_LoggedIn_InactiveSubscriber() {
-    var user = User.admin
+    var user = User.mock
     user.subscriptionId = nil
     
     Current.database.fetchUserById = const(pure(user))
@@ -50,7 +50,7 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() {
-    Current.database.fetchUserById = const(pure(.admin))
+    Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = const(pure(.mock))
     Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
