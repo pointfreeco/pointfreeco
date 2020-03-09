@@ -22,7 +22,7 @@ let collectionMiddleware
           data: collection,
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
-          title: collection.title ?? "Point-Free"
+          title: collection.title
         )
     }
 )
