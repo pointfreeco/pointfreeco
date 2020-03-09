@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51672
+Content-Length: 52930
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1836,6 +1836,34 @@ html {
             </a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div class="bg-black
+                border-top"
+         style="border-top-color:#000000">
+      <div class="m-pl1
+                  m-pr1
+                  middle-m
+                  row"
+           style="color:#7d7d7d;
+                  height:50px;
+                  max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="col-m
+                    col-m-6">
+          <a href="http://localhost:8080/collections"
+             class="pf-link-gray650">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
+                 alt
+                 class="m-pr1">
+            Collections
+          </a>
+        </div>
+        <div class="end-m
+                    col-m
+                    col-m-6">
+        </div>
       </div>
     </div>
     <div class="bg-black
