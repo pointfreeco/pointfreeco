@@ -757,6 +757,7 @@ private func episodeHeader(
         .div(
           attributes: [
             .class([
+              Class.padding([.mobile: [.bottom: 2]]),
               Class.pf.colors.fg.gray650,
               Class.pf.type.body.small,
               Class.type.align.center,
