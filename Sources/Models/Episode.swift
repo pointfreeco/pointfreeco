@@ -179,14 +179,11 @@ public struct Episode: Equatable {
       }
 
       public struct Lesson: Equatable {
-        public var blurb: String?
         public var episode: Episode
 
         public init(
-          blurb: String? = nil,
           episode: Episode
         ) {
-          self.blurb = blurb
           self.episode = episode
         }
       }
