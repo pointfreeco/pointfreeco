@@ -36,7 +36,7 @@ TODO
         ],
         title: "Library Design without Protocols",
         whereToGoFromHere: #"""
-TODO
+Now that we understand the drawbacks of protocols and the alternatives to protocols, its time to apply this knowledge to a real-world use case.
 """#
       ),
     ],
