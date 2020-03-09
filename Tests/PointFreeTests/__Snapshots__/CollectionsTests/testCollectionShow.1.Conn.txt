@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51596
+Content-Length: 51672
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1842,12 +1842,14 @@ html {
                 border-top"
          style="border-top-color:#000000">
       <div class="middle-d
-                  d-pl5
-                  d-pr5
-                  m-pl3
-                  m-pr3
-                  m-pt4
-                  m-pb4
+                  d-pb4
+                  d-pt3
+                  d-pl4
+                  d-pr4
+                  m-pl2
+                  m-pr2
+                  m-pt3
+                  m-pb3
                   row"
            style="max-width:1080px;
                   margin-right:auto;
@@ -1876,9 +1878,12 @@ html {
              • 
             4 hr 27 min
           </div>
-          <div class="m-pt3
-                      m-pl4
-                      m-pr4
+          <div class="d-pt3
+                      d-pl4
+                      d-pr4
+                      m-pt2
+                      m-pl2
+                      m-pr2
                       fg-gray850
                       fg-black
                       normal
@@ -1894,7 +1899,7 @@ html {
     </div>
     <div class="border-bottom"
          style="border-bottom-color:#E8E8E8">
-      <div class="between-d
+      <div class="m-pt4
                   row"
            style="max-width:1080px;
                   margin-right:auto;
@@ -1903,8 +1908,6 @@ html {
                     d-pr5
                     m-pl3
                     m-pr3
-                    m-pt2
-                    m-pb2
                     col-m
                     col-m-12">
           <h2 class="fg-black
@@ -1917,7 +1920,7 @@ html {
         </div>
       </div>
     </div>
-    <div class="m-pb5">
+    <div class="m-pb4">
       <div class="border-bottom
                   col-idx-hover"
            style="border-bottom-color:#E8E8E8">

@@ -27,7 +27,7 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
     .div(
       attributes: [
         .class([
-          Class.padding([.mobile: [.bottom: 5]])
+          Class.padding([.mobile: [.bottom: 4]])
         ]),
       ],
       .fragment(collection.sections.map { sectionRow(collection: collection, section: $0) })
@@ -45,7 +45,7 @@ private let sectionsTitle = Node.div(
   .gridRow(
     attributes: [
       .class([
-        Class.grid.between(.desktop),
+        Class.padding([.mobile: [.top: 4]])
       ]),
       .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
     ],
@@ -55,7 +55,7 @@ private let sectionsTitle = Node.div(
         .class([
           Class.padding([
             .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .topBottom: 2],
+            .mobile: [.leftRight: 3],
           ]),
         ]),
       ],

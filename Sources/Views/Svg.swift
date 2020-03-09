@@ -9,7 +9,6 @@ public func playIconSvgBase64(fill: String = "121212") -> String {
   base64EncodedString("""
 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
   <g fill="none" fill-rule="evenodd">
-    <path fill="#FFF" d="M-73-1123H951v3583H-73z"/>
     <path d="M8 14.5l6-4.5-6-4.5v9zM10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#\(fill)"/>
   </g>
 </svg>
@@ -47,7 +46,7 @@ public func newWindowSvgBase64(fill: String) -> String {
 }
 
 public let leftNavigationChevronSvgBase64 = base64EncodedString <| """
-<svg height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m-57-78h1024v1649h-1024z" fill="#fff"/><path d="m-57-22h1024v412h-1024z" fill="#121212"/><path d="m10.2733333 4.94-.93999997-.94-4 4 4 4 .93999997-.94-3.0533333-3.06z" fill="#595959" transform="translate(-5 -4)"/></g></svg>
+<svg height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m-57-78h1024v1649h-1024z" fill="#fff"/><path d="m-57-22h1024v412h-1024z" fill="#121212"/><path d="m10.2733333 4.94-.93999997-.94-4 4 4 4 .93999997-.94-3.0533333-3.06z" fill="#a8a8a8" transform="translate(-5 -4)"/></g></svg>
 """
 
 public let leftChevronSvgBase64 = base64EncodedString <| """
