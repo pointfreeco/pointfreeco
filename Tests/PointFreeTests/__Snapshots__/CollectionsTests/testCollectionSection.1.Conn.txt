@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62750
+Content-Length: 62655
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1851,18 +1851,15 @@ html {
                   margin-right:auto;
                   margin-left:auto">
         <div class="col-m
-                    col-m-6">
-          <a href="http://localhost:8080/collections/map-zip-flat-map"
+                    col-d-6
+                    col-m-12">
+          <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
+               alt
+               class="m-pr1">
+          <a href="/collections/map-zip-flat-map"
              class="pf-link-gray650">
-            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
-                 alt
-                 class="m-pr1">
             Map, Zip, Flat-Map
           </a>
-        </div>
-        <div class="end-m
-                    col-m
-                    col-m-6">
         </div>
       </div>
     </div>

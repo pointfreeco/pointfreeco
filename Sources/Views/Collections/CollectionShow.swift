@@ -16,7 +16,15 @@ import TaggedTime
 public func collectionShow(_ collection: Episode.Collection) -> Node {
   [
     collectionNavigation(
-      left: ("Collections", url(to: .collections(.index)))
+      left: .a(
+        attributes: [
+          .href( path(to: .collections(.index))),
+          .class([
+            Class.pf.colors.link.gray650
+          ])
+        ],
+        .text("Collections")
+      )
     ),
     collectionHeader(
       title: collection.title,
