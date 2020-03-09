@@ -4,6 +4,7 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -36,12 +37,33 @@ public struct NewEpisodePageData {
     self.subscriberState = subscriberState
     self.user = user
   }
+
+  public var collection: Episode.Collection? {
+    guard case let .collection(collection) = self.context else { return nil }
+    return collection
+  }
+
+  public var section: Episode.Collection.Section? {
+    guard
+      let collection = self.collection,
+      let section = collection.sections
+        .first(where: { $0.coreLessons.contains(where: { $0.episode == self.episode }) })
+      else { return nil }
+    return section
+  }
 }
 
 public func newEpisodePageView(
   episodePageData data: NewEpisodePageData
 ) -> Node {
   [
+    zip(data.collection, data.section)
+      .map { collection, section in
+        collectionNavigation(
+          left: (section.title, path(to: .collections(.section(collection.slug!, section.slug))))
+        )
+      }
+      ?? [],
     episodeHeader(
       episode: data.episode,
       date: data.date
@@ -703,7 +725,7 @@ private func episodeHeader(
         Class.pf.colors.bg.black,
         Class.border.top,
       ]),
-      .style(key("border-top-color", "#333")),
+      .style(key("border-top-color", "#000")),
     ],
     .gridRow(
       attributes: [
@@ -719,21 +741,6 @@ private func episodeHeader(
       .gridColumn(
         sizes: [.mobile: 12],
         attributes: [],
-        .div(
-          attributes: [
-            .class([
-              Class.pf.colors.fg.gray650,
-              Class.pf.type.body.small,
-              Class.type.align.center,
-              Class.type.caps,
-            ]),
-          ],
-          .text("""
-            Episode #\(episode.sequence) • \
-            \(newEpisodeDateFormatter.string(from: episode.publishedAt)) \
-            • \(episode.isSubscriberOnly(currentDate: date()) ? "Subscriber-only" : "Free Episode")
-            """)
-        ),
         .h1(
           attributes: [
             .class([
@@ -744,6 +751,20 @@ private func episodeHeader(
             .style(lineHeight(1.2))
           ],
           .raw(nonBreaking(title: episode.title))
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.pf.colors.fg.gray650,
+              Class.pf.type.body.small,
+              Class.type.align.center,
+            ]),
+          ],
+          .text("""
+            Episode #\(episode.sequence) • \
+            \(newEpisodeDateFormatter.string(from: episode.publishedAt)) \
+            • \(episode.isSubscriberOnly(currentDate: date()) ? "Subscriber-only" : "Free Episode")
+            """)
         ),
         .div(
           attributes: [
