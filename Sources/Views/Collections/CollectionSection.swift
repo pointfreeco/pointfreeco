@@ -42,7 +42,7 @@ public func collectionSection(
       length: section.length,
       blurb: section.blurb
     ),
-    coreLessons(section.coreLessons),
+    coreLessons(collection: collection, section: section),
     relatedItems(section.related),
     whereToGoFromHere(section.whereToGoFromHere),
     sectionNavigation(
@@ -53,7 +53,10 @@ public func collectionSection(
   ]
 }
 
-private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node {
+private func coreLessons(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section
+) -> Node {
   .div(
     attributes: [
       .style(backgroundColor(.other("#fafafa"))),
@@ -84,13 +87,19 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
           ],
           "Core lessons"
         ),
-        .fragment(lessons.map(coreLesson))
+        .fragment(
+          section.coreLessons.map { coreLesson(collection: collection, section: section, lesson: $0) }
+        )
       )
     )
   )
 }
 
-private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
+private func coreLesson(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section,
+  lesson: Episode.Collection.Section.Lesson
+) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
@@ -108,7 +117,8 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .href(url(to: .episode(.show(.left(lesson.episode.slug))))),
+        // TODO: figure out force unwrap
+        .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
