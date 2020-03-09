@@ -1,6 +1,7 @@
 import Css
 import Prelude
 
+// http://flexboxgrid.com
 extension Class {
   public enum grid {
     public static let row = CssSelector.class("row")

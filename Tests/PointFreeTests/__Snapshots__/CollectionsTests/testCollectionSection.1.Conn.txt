@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62674
+Content-Length: 62743
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1963,7 +1963,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/episodes/ep23-the-many-faces-of-zip-part-1"
+               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep23-the-many-faces-of-zip-part-1"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2001,7 +2001,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/episodes/ep24-the-many-faces-of-zip-part-2"
+               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep24-the-many-faces-of-zip-part-2"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2039,7 +2039,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/episodes/ep25-the-many-faces-of-zip-part-3"
+               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep25-the-many-faces-of-zip-part-3"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;

@@ -7,33 +7,36 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 import Views
 
-let episodeResponse =
+let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Episode.Collection.Slug?>> =
   fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
-      view: Views.episodeView(episodePageData:),
-      layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
-        let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
+      view: newOrLegacyEpisodeView(data:),
+      layoutData: { permission, episode, currentUser, subscriberState, currentRoute, collectionSlug in
+        let navStyle: NavStyle =
+          currentUser?.isAdmin == .some(true) ? .minimal(.black)
+            : currentUser == nil ? .mountains(.main)
+            : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: EpisodePageData(
-            permission: permission,
-            user: currentUser,
-            subscriberState: subscriberState,
+          data: episodePageData(
+            currentUser: currentUser,
+            collectionSlug: collectionSlug,
             episode: episode,
-            previousEpisodes: episode.previousEpisodes,
-            date: Current.date
+            permission: permission,
+            subscriberState: subscriberState
           ),
           description: episode.blurb,
           extraStyles: markdownBlockStyles,
@@ -45,29 +48,86 @@ let episodeResponse =
     }
 )
 
-let useCreditResponse =
-  fetchEpisodeForParam
+private func episodePageData(
+  currentUser: User?,
+  collectionSlug: Episode.Collection.Slug?,
+  episode: Episode,
+  permission: EpisodePermission,
+  subscriberState: SubscriberState
+) -> Either<EpisodePageData, NewEpisodePageData> {
+  if currentUser?.isAdmin == .some(true) {
+    let context: NewEpisodePageData.Context
+    if let collection = Episode.Collection.all.first(where: { $0.slug == collectionSlug }) {
+      context = .collection(collection)
+    } else {
+      context = .direct(
+        previousEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence - 1 }),
+        nextEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
+      )
+    }
+
+    return .right(NewEpisodePageData(
+      context: context,
+      date: Current.date,
+      episode: episode,
+      permission: permission,
+      subscriberState: subscriberState,
+      user: currentUser
+    ))
+  } else {
+    return .left(EpisodePageData(
+      permission: permission,
+      user: currentUser,
+      subscriberState: subscriberState,
+      episode: episode,
+      previousEpisodes: episode.previousEpisodes,
+      date: Current.date
+    ))
+  }
+}
+
+private func newOrLegacyEpisodeView(data: Either<EpisodePageData, NewEpisodePageData>) -> Node {
+  switch data {
+  case let .left(data): return episodeView(episodePageData: data)
+  case let .right(data): return newEpisodePageView(episodePageData: data)
+  }
+}
+
+func useCreditResponse<Z>(
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+) -> IO<Conn<ResponseEnded, Data>> {
+  conn
+    |> (fetchEpisodeForParam
     <<< validateUserEpisodePermission
-    <| applyCreditMiddleware
+    <| applyCreditMiddleware)
+}
 
-let fetchEpisodeForParam
-  : MT<
-  Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
-  Tuple4<Episode, User?, SubscriberState, Route?>
-  >
-  = filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-)
+private func fetchEpisodeForParam<Z>(
+  middleware: @escaping M<T5<Episode, User?, SubscriberState, Route?, Z>>
+) -> M<T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>> {
+  middleware
+    |> filterMap(
+      over1(episode(forParam:)) >>> require1 >>> pure,
+      or: episodeNotFoundResponse
+  )
+}
 
-private let validateUserEpisodePermission
-  : MT<
-  Tuple4<Episode, User?, SubscriberState, Route?>,
-  Tuple5<EpisodePermission, Episode, User, SubscriberState, Route?>
-  >
-  = { userEpisodePermission >=> $0 }
+private func episodeNotFoundResponse<Z>(
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+) -> IO<Conn<ResponseEnded, Data>> {
+  conn
+    |> writeStatus(.notFound)
+    >=> respond { episodeNotFoundView(user: get2($0), subscriberState: get3($0), route: get4($0)) }
+}
+
+private func validateUserEpisodePermission<Z>(
+  middleware: @escaping M<T5<EpisodePermission, Episode, User, SubscriberState, Z>>
+) -> M<T4<Episode, User?, SubscriberState, Z>> {
+  middleware
+    |> { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
+}
 
 let progressResponse: M<
   Tuple4<
@@ -174,7 +234,7 @@ private func validateCreditRequest<Z>(
 
 func userEpisodePermission<I, Z>(
   _ conn: Conn<I, T4<Episode, User?, SubscriberState, Z>>
-  )
+)
   -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>> {
 
     let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -210,36 +270,38 @@ func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-
-private let episodeNotFoundView = { param, user, subscriberState, route in
+private func episodeNotFoundView(
+  user: User?,
+  subscriberState: SubscriberState,
+  route: Route?
+) -> Node {
   SimplePageLayoutData(
     currentSubscriberState: subscriberState,
     currentUser: user,
-    data: (param, user, subscriberState, route),
+    data: (),
     title: "Episode not found :("
-  )
-  } >>> simplePageLayout(_episodeNotFoundView)
-
-private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> Node {
-  return .gridRow(
-    attributes: [.class([Class.grid.center(.mobile)])],
-    .gridColumn(
-      sizes: [.mobile: 6],
-      .div(
-        attributes: [.style(padding(topBottom: .rem(12)))],
-        .h5(
-          attributes: [.class([Class.h5])],
-          "Episode not found :("
-        ),
-        .pre(
-          .code(
-            attributes: [.class([Class.pf.components.code(lang: "swift")])],
-            "f: (Episode) -> Never"
+    )
+    |> simplePageLayout({
+      .gridRow(
+        attributes: [.class([Class.grid.center(.mobile)])],
+        .gridColumn(
+          sizes: [.mobile: 6],
+          .div(
+            attributes: [.style(padding(topBottom: .rem(12)))],
+            .h5(
+              attributes: [.class([Class.h5])],
+              "Episode not found :("
+            ),
+            .pre(
+              .code(
+                attributes: [.class([Class.pf.components.code(lang: "swift")])],
+                "f: (Episode) -> Never"
+              )
+            )
           )
         )
       )
-    )
-  )
+    })
 }
 
 private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
