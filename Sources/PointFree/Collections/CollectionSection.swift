@@ -39,7 +39,7 @@ private let fetchCollectionSectionMiddleware
   = filterMap(
     {
       let (user, subscriberState, route, collectionSlug, sectionSlug) = lower($0)
-      return pure(Episode.Collection.all.first(where: { $0.slug == collectionSlug }).flatMap { collection in
+      return pure(Current.collections.first(where: { $0.slug == collectionSlug }).flatMap { collection in
         collection.sections.first(where: { $0.slug == sectionSlug }).map { section in
           lift((user, subscriberState, route, collection, section))
         }

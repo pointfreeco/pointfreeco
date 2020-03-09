@@ -34,6 +34,7 @@ extension Environment {
     assets: .mock,
     blogPosts: { [.mock] },
     cookieTransform: .plaintext,
+    collections: [.mock],
     database: .some(.mock),
     date: unzurry(.mock),
     envVars: .mock,

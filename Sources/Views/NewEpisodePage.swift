@@ -801,7 +801,7 @@ private func episodeHeader(
         .div(
           attributes: [
             .class([
-              Class.padding([.mobile: [.top: 1, .leftRight: 4]]),
+              Class.padding([.mobile: [.top: 1, .leftRight: 2], .desktop: [.leftRight: 4]]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
             ]),

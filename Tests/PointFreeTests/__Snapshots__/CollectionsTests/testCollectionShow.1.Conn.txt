@@ -1,9 +1,9 @@
-GET http://localhost:8080/collections/map-zip-flat-map
+GET http://localhost:8080/collections/functions
 Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52476
+Content-Length: 51271
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -17,7 +17,7 @@ X-XSS-Protection: 1; mode=block
   <head>
     <meta charset="utf-8">
     <title>
-      Map, Zip, Flat-Map
+      Functions
     </title>
     <style>
       /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
@@ -1735,21 +1735,21 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
+          content="This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.">
     <meta property="og:description"
-          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
+          content="This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.">
     <meta name="twitter:description"
-          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
+          content="This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
-          content="Map, Zip, Flat-Map">
+          content="Functions">
     <meta property="og:title"
-          content="Map, Zip, Flat-Map">
+          content="Functions">
     <meta name="twitter:title"
-          content="Map, Zip, Flat-Map">
+          content="Functions">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1757,9 +1757,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/collections/map-zip-flat-map">
+          content="http://localhost:8080/collections/functions">
     <meta name="twitter:url"
-          content="http://localhost:8080/collections/map-zip-flat-map">
+          content="http://localhost:8080/collections/functions">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1819,7 +1819,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/login?redirect=http://localhost:8080/collections/map-zip-flat-map"
+                <a href="/login?redirect=http://localhost:8080/collections/functions"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -1902,7 +1902,7 @@ html {
                      lh-2
                      center"
               style="line-height:1.2">
-            Map, Zip, Flat-Map
+            Functions
           </h1>
           <div class="fg-black
                       normal
@@ -1914,7 +1914,7 @@ html {
              • 
             3 sections
              • 
-            4 hr 27 min
+            2 hr 18 min
           </div>
           <div class="d-pt3
                       d-pl4
@@ -1928,7 +1928,7 @@ html {
                       h5
                       lh-4">
             <div class="md-ctn">
-              <p>This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It’s no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!</p>
+              <p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
 
             </div>
           </div>
@@ -1983,12 +1983,12 @@ html {
                       ts-m-r1_25
                       lh-2
                       light"
-               href="http://localhost:8080/collections/map-zip-flat-map/map">
+               href="http://localhost:8080/collections/functions/functions-that-begin-with-a">
               <div class="align-middle
                           row">
                 <div class="col-m
                             col-m-6">
-                  Map
+                  Functions that begin with A
                 </div>
                 <div class="end-m
                             col-m
@@ -2025,12 +2025,12 @@ html {
                       ts-m-r1_25
                       lh-2
                       light"
-               href="http://localhost:8080/collections/map-zip-flat-map/zip">
+               href="http://localhost:8080/collections/functions/functions-that-begin-with-b">
               <div class="align-middle
                           row">
                 <div class="col-m
                             col-m-6">
-                  Zip
+                  Functions that begin with B
                 </div>
                 <div class="end-m
                             col-m
@@ -2067,12 +2067,12 @@ html {
                       ts-m-r1_25
                       lh-2
                       light"
-               href="http://localhost:8080/collections/map-zip-flat-map/flat-map">
+               href="http://localhost:8080/collections/functions/functions-that-begin-with-c">
               <div class="align-middle
                           row">
                 <div class="col-m
                             col-m-6">
-                  Flat-Map
+                  Functions that begin with C
                 </div>
                 <div class="end-m
                             col-m
