@@ -23,6 +23,7 @@ let collectionMiddleware
           currentSubscriberState: currentSubscriberState,
           currentUser: currentUser,
           data: collection,
+          description: collection.blurb,
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
           title: collection.title

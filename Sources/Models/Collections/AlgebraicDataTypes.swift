@@ -14,7 +14,7 @@ There is a wonderful correspondence between Swift's type system and algebra that
           blurb: #"""
 TODO
 """#,
-          content: Section.Related.Content.episode(.ep20_nonEmpty)
+          content: .episode(.ep20_nonEmpty)
         )
       ],
       title: "Algebraic Data Types",

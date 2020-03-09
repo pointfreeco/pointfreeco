@@ -23,9 +23,10 @@ let collectionSectionMiddleware
           currentSubscriberState: currentSubscriberState,
           currentUser: currentUser,
           data: (collection, section),
+          description: section.blurb,
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
-          title: collection.title
+          title: collection.title + " › " + section.title
         )
     }
 )
