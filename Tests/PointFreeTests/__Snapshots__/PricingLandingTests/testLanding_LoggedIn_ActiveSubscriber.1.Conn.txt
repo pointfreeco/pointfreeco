@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 195654
+Content-Length: 195435
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1845,13 +1845,6 @@ personal, team and enterprise subscriptions.">
                        normal
                        h6
                        lh-4">
-              <li class="m-pl2
-                         inline">
-                <a class="pf-link-gray650"
-                   href="/collections">
-                  Collections
-                </a>
-              </li>
               <li class="m-pl2
                          inline">
                 <a href="/blog"
