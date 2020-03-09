@@ -45,7 +45,9 @@ func collectionNavigation(
             .a(
               attributes: [
                 .href($0.url),
-                .style(color(.other("#7d7d7d"))),
+                .class([
+                  Class.pf.colors.link.gray650
+                ])
               ],
               .img(base64: leftNavigationChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
                 .class([
@@ -91,8 +93,8 @@ func collectionHeader(
         .class([
           Class.grid.middle(.desktop),
           Class.padding([
-            .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .topBottom: 4],
+            .desktop: [.leftRight: 4, .top: 3, .bottom: 4],
+            .mobile: [.leftRight: 2, .topBottom: 3],
           ]),
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
@@ -124,7 +126,7 @@ func collectionHeader(
         .div(
           attributes: [
             .class([
-              Class.padding([.mobile: [.top: 3, .leftRight: 4]]),
+              Class.padding([.mobile: [.top: 2, .leftRight: 2], .desktop: [.top: 3, .leftRight: 4]]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
             ]),

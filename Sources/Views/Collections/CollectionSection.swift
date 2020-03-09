@@ -71,7 +71,7 @@ private func coreLessons(_ lessons: [Episode.Collection.Section.Lesson]) -> Node
           .class([
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
-              .mobile: [.leftRight: 3, .topBottom: 2],
+              .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
             ]),
           ]),
         ],
@@ -102,17 +102,16 @@ private func coreLesson(_ lesson: Episode.Collection.Section.Lesson) -> Node {
           Class.border.left,
           Class.flex.items.center,
           Class.grid.row,
-          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
           Class.pf.collections.hoverBackground,
           Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        .href(url(to: .episode(.show(.right(lesson.episode.id))))),
+        .href(url(to: .episode(.show(.left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
-            <> height(.px(48))
         ),
       ],
       .gridColumn(
@@ -153,7 +152,7 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
     .gridRow(
       attributes: [
         .class([
-          Class.grid.between(.desktop),
+          Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 3]])
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -162,8 +161,8 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
         attributes: [
           .class([
             Class.padding([
-              .desktop: [.leftRight: 5, .top: 3],
-              .mobile: [.leftRight: 3, .top: 2],
+              .desktop: [.leftRight: 5],
+              .mobile: [.leftRight: 3],
             ]),
           ]),
         ],
@@ -187,7 +186,9 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
   return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
-      .style(margin(top: .px(4))),
+    .class([
+      Class.padding([.mobile: [.bottom: 2]])
+    ])
     ],
     .markdownBlock(relatedItem.blurb),
     .a(
@@ -197,21 +198,19 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           Class.flex.items.center,
           Class.grid.row,
           Class.margin([
-            .desktop: [.top: 2, .bottom: 3],
-            .mobile: [.top: 1, .bottom: 2],
+            .desktop: [.top: 2],
+            .mobile: [.top: 1],
           ]),
-          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
           Class.pf.collections.hoverBackground,
           Class.pf.collections.hoverLink,
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.gray900,
         ]),
-        .href(url(to: .episode(.show(.right(episode.id))))),
+        .href(url(to: .episode(.show(.left(episode.slug))))),
         .style(
-          backgroundColor(.other("#fafafa"))
-          <> borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> height(.px(48))
+          borderColor(all: .other("#e8e8e8"))
+            <> borderWidth(left: .px(4))
         ),
       ],
       .gridColumn(
@@ -260,7 +259,7 @@ private func whereToGoFromHere(_ string: String) -> Node {
           .class([
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
-              .mobile: [.leftRight: 3, .topBottom: 2],
+              .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
             ]),
           ]),
         ],
@@ -377,10 +376,13 @@ private func sectionNavigation(
         .class([
           Class.flex.items.center,
           Class.grid.center(.mobile),
+          Class.padding([
+            .desktop: [.leftRight: 5],
+            .mobile: [.leftRight: 3],
+          ])
         ]),
         .style(
-          height(.px(88))
-            <> maxWidth(.px(1080))
+          maxWidth(.px(1080))
             <> margin(topBottom: nil, leftRight: .auto)
         ),
       ],
@@ -391,10 +393,10 @@ private func sectionNavigation(
             Class.border.right,
             Class.grid.start(.mobile),
             Class.padding([
-              .mobile: [.leftRight: 2],
+              .mobile: [.topBottom: 3]
             ]),
           ]),
-          .style(/*height(.pct(100)) <> */borderColor(right: .other("#e8e8e8"))),
+          .style(borderColor(right: .other("#e8e8e8"))),
         ],
         previousLink ?? []
       ),
@@ -403,11 +405,8 @@ private func sectionNavigation(
         attributes: [
           .class([
             Class.grid.end(.mobile),
-            Class.padding([
-              .mobile: [.leftRight: 2],
-            ]),
+            Class.padding([.mobile: [.topBottom: 3]]),
           ]),
-//          .style(height(.pct(100))),
         ],
         nextLink ?? []
       )
