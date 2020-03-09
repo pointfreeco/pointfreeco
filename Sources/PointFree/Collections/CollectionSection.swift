@@ -1,12 +1,13 @@
 import HttpPipeline
 import Models
+import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Tuple
 import Views
 
 let collectionSectionMiddleware
-  : M<Tuple4<User?, SubscriberState, Episode.Collection.Slug, Episode.Collection.Section.Slug>>
+  : M<Tuple5<User?, SubscriberState, Route, Episode.Collection.Slug, Episode.Collection.Section.Slug>>
   = basicAuth(
     user: Current.envVars.basicAuth.username,
     password: Current.envVars.basicAuth.password
@@ -16,8 +17,9 @@ let collectionSectionMiddleware
     >>> writeStatus(.ok)
     >=> respond(
       view: collectionSection,
-      layoutData: { currentUser, currentSubscriberState, collection, section in
+      layoutData: { currentUser, currentSubscriberState, currentRoute, collection, section in
         SimplePageLayoutData(
+          currentRoute: currentRoute,
           currentSubscriberState: currentSubscriberState,
           currentUser: currentUser,
           data: (collection, section),
@@ -30,21 +32,17 @@ let collectionSectionMiddleware
 
 private let fetchCollectionSectionMiddleware
   : MT<
-  Tuple4<User?, SubscriberState, Episode.Collection.Slug, Episode.Collection.Section.Slug>,
-  Tuple4<User?, SubscriberState, Episode.Collection, Episode.Collection.Section>
+  Tuple5<User?, SubscriberState, Route, Episode.Collection.Slug, Episode.Collection.Section.Slug>,
+  Tuple5<User?, SubscriberState, Route, Episode.Collection, Episode.Collection.Section>
   >
   = filterMap(
     {
-      let (user, subscriberState, collectionSlug, sectionSlug) = lower($0)
+      let (user, subscriberState, route, collectionSlug, sectionSlug) = lower($0)
       return pure(Episode.Collection.all.first(where: { $0.slug == collectionSlug }).flatMap { collection in
         collection.sections.first(where: { $0.slug == sectionSlug }).map { section in
-          lift((user, subscriberState, collection, section))
+          lift((user, subscriberState, route, collection, section))
         }
       })
   },
     or: routeNotFoundMiddleware
 )
-
-private func fetchCollection(_ slug: Episode.Collection.Slug) -> Episode.Collection? {
-  Episode.Collection.all.first(where: { $0.slug == slug })
-}
