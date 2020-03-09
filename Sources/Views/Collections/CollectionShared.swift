@@ -15,7 +15,7 @@ import TaggedTime
 // MARK: HTML -
 
 func collectionNavigation(
-  left: (title: String, url: String)?
+  left: Node?
 ) -> Node {
   .div(
     attributes: [
@@ -39,35 +39,29 @@ func collectionNavigation(
         ),
       ],
       .gridColumn(
-        sizes: [.mobile: 6],
+        sizes: [.desktop: 6, .mobile: 12],
         left
           .map {
-            .a(
-              attributes: [
-                .href($0.url),
-                .class([
-                  Class.pf.colors.link.gray650
-                ])
-              ],
+            [
               .img(base64: leftNavigationChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
                 .class([
                   Class.padding([.mobile: [.right: 1]]),
                 ]),
               ]),
-              .text($0.title)
-            )
+              $0
+            ]
           }
           ?? []
-      ),
-      .gridColumn(
-        sizes: [.mobile: 6],
-        attributes: [
-          .class([
-            Class.grid.end(.mobile)
-          ]),
-        ],
-        "" // TODO
-      )
+      )//,
+//      .gridColumn(
+//        sizes: [.desktop: 6, .mobile: 12],
+//        attributes: [
+//          .class([
+//            Class.grid.end(.mobile)
+//          ]),
+//        ],
+//        ""
+//      )
     )
   )
 }
