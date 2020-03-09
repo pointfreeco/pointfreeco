@@ -41,46 +41,48 @@ public func minimalNavView(
   subscriberState: SubscriberState,
   currentRoute: Route?
 ) -> Node {
-  return .gridRow(
+  return .div(
     attributes: [.class([newNavBarClass(for: style)])],
-    .gridColumn(
-      sizes: [:],
-      .div(
-        attributes: [.class([Class.hide(.desktop)])],
-        .a(
-          attributes: [.href(path(to: .home))],
-          .img(
-            base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
-            type: .image(.svg),
-            alt: "",
-            attributes: [.class([Class.hide(.desktop)])]
+    .div(
+      attributes: [
+        .style(.concat(maxWidth(.px(1080)), margin(topBottom: nil, leftRight: .auto))),
+      ],
+      .gridRow(
+        attributes: [.class([Class.flex.items.center])],
+        .gridColumn(
+          sizes: [:],
+          attributes: [.class([Class.hide(.desktop)])],
+          .a(
+            attributes: [
+              .class([Class.grid.start(.mobile)]),
+              .href(path(to: .home)),
+            ],
+            .img(
+              base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
+              type: .image(.svg),
+              alt: "Point-Free"
+            )
           )
-        )
-      )
-    ),
-    .gridColumn(
-      sizes: [:],
-      .div(
-        attributes: [.class([Class.grid.center(.mobile)])],
-        .div(
+        ),
+        .gridColumn(
+          sizes: [.desktop: 3],
           attributes: [.class([Class.hide(.mobile)])],
           .a(
             attributes: [.href(path(to: .home))],
             .img(
-              base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
+              base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: style)),
               type: .image(.svg),
-              alt: "",
-              attributes: [.class([Class.hide(.mobile)])]
+              alt: "Point-Free"
             )
           )
+        ),
+        .gridColumn(
+          sizes: [.desktop: 9],
+          currentUser
+            .map { loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState) }
+            ?? loggedOutNavItemsView(style: style, currentRoute: currentRoute)
         )
       )
-    ),
-    .gridColumn(
-      sizes: [:],
-      currentUser
-        .map { loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState) }
-        ?? loggedOutNavItemsView(style: style, currentRoute: currentRoute)
     )
   )
 }
@@ -92,6 +94,12 @@ private func loggedInNavItemsView(
 ) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
+    currentUser.isAdmin
+      ? .li(
+        attributes: [.class([navListItemClass])],
+        collectionsLinkView(style: style)
+        )
+      : [],
     .li(
       attributes: [.class([navListItemClass])],
       blogLinkView(style: style)
@@ -106,9 +114,19 @@ private func loggedInNavItemsView(
 private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: Route?) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
+//    .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], blogLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], logInLinkView(style: style, currentRoute: currentRoute))
+  )
+}
+
+private func collectionsLinkView(style: NavStyle.MinimalStyle) -> Node {
+  .a(
+    attributes: [
+      .class([navLinkClass(for: style)]),
+      .href(path(to: .collections(.index))),
+    ], "Collections"
   )
 }
 
@@ -117,7 +135,7 @@ private func blogLinkView(style: NavStyle.MinimalStyle) -> Node {
 }
 
 private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClass(for: style)])], "Subscribe")
+  return .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClass(for: style)])], "Pricing")
 }
 
 private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
@@ -128,7 +146,8 @@ private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: Route?) -
   return .gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),
-    href: path(to: .login(redirect: currentRoute.map(url(to:))))
+    href: path(to: .login(redirect: currentRoute.map(url(to:)))),
+    size: .small
   )
 }
 
@@ -155,12 +174,13 @@ private func navLinkClass(for style: NavStyle.MinimalStyle) -> CssSelector {
 }
 
 private let navListItemClass =
-  Class.padding([.mobile: [.left: 3]])
+  Class.padding([.mobile: [.left: 2]])
     | Class.display.inline
 
 private let navListClass =
   Class.type.list.reset
     | Class.grid.end(.mobile)
+    | Class.pf.type.body.small
 
 private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   let colorClass: CssSelector
@@ -174,7 +194,7 @@ private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   }
 
   return colorClass
-    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.topBottom: 4]])
+    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.topBottom: 2]])
     | Class.grid.middle(.mobile)
     | Class.grid.between(.mobile)
 }

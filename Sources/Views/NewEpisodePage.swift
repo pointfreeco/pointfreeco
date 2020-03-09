@@ -797,7 +797,7 @@ private func episodeHeader(
               Class.pf.type.body.regular,
             ]),
           ],
-          .text(episode.blurb)
+          .markdownBlock(episode.blurb)
         )
       )
     )

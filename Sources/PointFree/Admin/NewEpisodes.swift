@@ -27,7 +27,7 @@ private let showNewEpisodeView = Node.ul(
 
 private func newEpisodeEmailRowView(ep: Episode) -> Node {
   return .p(
-    .text("Episode #\(ep.sequence): \(ep.title)"),
+    .text("Episode #\(ep.sequence): \(ep.fullTitle)"),
     .form(
       attributes: [
         .action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))),
@@ -108,7 +108,7 @@ private func sendEmail(
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
-          subject: "\(subjectPrefix)New Point-Free Episode: \(episode.title)",
+          subject: "\(subjectPrefix)New Point-Free Episode: \(episode.fullTitle)",
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
           )

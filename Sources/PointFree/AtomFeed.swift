@@ -80,8 +80,8 @@ private func item(episode: Episode) -> RssItem {
 
   func title(episode: Episode) -> String {
     return episode.subscriberOnly
-      ? episode.title
-      : "🆓 \(episode.title)"
+      ? episode.fullTitle
+      : "🆓 \(episode.fullTitle)"
   }
 
   func summary(episode: Episode) -> String {

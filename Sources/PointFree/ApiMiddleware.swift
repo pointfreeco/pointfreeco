@@ -60,7 +60,7 @@ extension Api {
       self.references = episode.references
       self.sequence = episode.sequence
       self.subscriberOnly = subscriberOnly
-      self.title = episode.title
+      self.title = episode.fullTitle
       self.transcriptBlocks = episode.transcriptBlocks
       self.video = subscriberOnly
         ? episode.trailerVideo
