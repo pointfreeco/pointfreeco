@@ -115,31 +115,26 @@ public struct Episode: Equatable {
   public typealias Sequence = Tagged<(sequence: (), Episode), Int>
 
   public struct Collection: Equatable {
-    public var blurb: String?
+    public var blurb: String
     public var sections: [Section]
-    public var slug: Slug?
-    public var title: String?
+    public var title: String
 
     public init(
       blurb: String,
       sections: [Section],
-      slug: Slug,
       title: String
     ) {
       self.blurb = blurb
       self.sections = sections
-      self.slug = slug
       self.title = title
     }
 
     public init(
-      section: Section,
-      slug: Episode.Collection.Slug? = nil
+      section: Section
     ) {
-      self.blurb = nil
+      self.blurb = section.blurb
       self.sections = [section]
-      self.slug = slug
-      self.title = nil
+      self.title = section.title
     }
 
     public var length: Seconds<Int> {
@@ -148,11 +143,14 @@ public struct Episode: Equatable {
         .reduce(into: 0, +=)
     }
 
+    public var slug: Slug {
+      .init(rawValue: Models.slug(for: self.title))
+    }
+
     public struct Section: Equatable {
       public var blurb: String
       public var coreLessons: [Lesson]
       public var related: [Related]
-      public var slug: Slug
       public var title: String
       public var whereToGoFromHere: String
 
@@ -160,14 +158,12 @@ public struct Episode: Equatable {
         blurb: String,
         coreLessons: [Lesson],
         related: [Related],
-        slug: Slug,
         title: String,
         whereToGoFromHere: String
       ) {
         self.blurb = blurb
         self.coreLessons = coreLessons
         self.related = related
-        self.slug = slug
         self.title = title
         self.whereToGoFromHere = whereToGoFromHere
       }
@@ -176,6 +172,10 @@ public struct Episode: Equatable {
         self.coreLessons
           .map { $0.episode.length }
           .reduce(into: 0, +=)
+      }
+
+      public var slug: Slug {
+        .init(rawValue: Models.slug(for: self.title))
       }
 
       public struct Lesson: Equatable {

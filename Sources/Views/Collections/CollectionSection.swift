@@ -117,8 +117,7 @@ private func coreLesson(
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        // TODO: figure out force unwrap
-        .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(lesson.episode.slug))))),
+        .href(url(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
@@ -293,15 +292,13 @@ private func sectionNavigation(
   previousSection: Episode.Collection.Section?,
   nextSection: Episode.Collection.Section?
 ) -> Node {
-  guard let collectionSlug = collection.slug else { return [] }
-
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+        .href(url(to: .collections(.section(collection.slug, section.slug)))),
       ],
       .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
         .class([
@@ -339,7 +336,7 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+        .href(url(to: .collections(.section(collection.slug, section.slug)))),
       ],
       .gridColumn(
         sizes: [:],

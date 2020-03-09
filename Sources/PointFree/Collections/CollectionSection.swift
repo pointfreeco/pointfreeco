@@ -16,13 +16,14 @@ let collectionSectionMiddleware
     >>> writeStatus(.ok)
     >=> respond(
       view: collectionSection,
-      layoutData: { currentUser, _, collection, section in
+      layoutData: { currentUser, currentSubscriberState, collection, section in
         SimplePageLayoutData(
+          currentSubscriberState: currentSubscriberState,
           currentUser: currentUser,
           data: (collection, section),
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
-          title: collection.title ?? "Point-Free"
+          title: collection.title
         )
     }
 )
