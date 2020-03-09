@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51438
+Content-Length: 52476
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1735,11 +1735,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="This trio of operations forms the basis of our functional programming toolkit. Each one provides a well-defined, succinct unit of transformation that helps us build up large unit from smaller units. It's no coincidence that the Swift standard library comes with these operations defined on arrays, optionals, results and more; they are truly powerful operations that can help you take your libraries to the next level!">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
