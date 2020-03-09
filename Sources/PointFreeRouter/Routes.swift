@@ -168,6 +168,9 @@ let routers: [Router<Route>] = [
   .case { .blog(.show($0)) }
     <¢> get %> "blog" %> "posts" %> pathParam(.blogPostIdOrString) <% end,
 
+  .case { .collections(.index) }
+    <¢> get %> "collections" <% end,
+
   .case { .collections(.show($0)) }
     <¢> get %> "collections" %> pathParam(.tagged(.string)) <% end,
 

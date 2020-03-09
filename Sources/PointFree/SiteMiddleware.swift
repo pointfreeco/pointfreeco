@@ -56,9 +56,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> blogMiddleware
 
     case .collections(.index):
-      return conn
-        |> writeStatus(.internalServerError)
-        >=> respond(text: "500 Internal Server Error")
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> collectionsIndexMiddleware
 
     case let .collections(.show(slug)):
       return conn.map(const(user .*. subscriberState .*. slug .*. unit))
