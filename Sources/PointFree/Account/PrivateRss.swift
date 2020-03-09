@@ -281,7 +281,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
       subtitle: episode.blurb,
       summary: episode.blurb,
       season: 1,
-      title: episode.title
+      title: episode.fullTitle
     ),
     link: url(to: .episode(.show(.left(episode.slug)))),
     media: .init(
@@ -291,10 +291,10 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
         type: "video/mp4",
         url: episode.fullVideo.downloadUrl
       ),
-      title: episode.title
+      title: episode.fullTitle
     ),
     pubDate: episode.publishedAt,
-    title: episode.title
+    title: episode.fullTitle
   )
 }
 

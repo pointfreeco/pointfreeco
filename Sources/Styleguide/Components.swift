@@ -16,20 +16,25 @@ public enum GitHubLinkType {
     }
   }
 
-  public var buttonClass: CssSelector {
+  public func buttonClass(size: Class.pf.components.Size) -> CssSelector {
     switch self {
-    case .black:  return Class.pf.components.button(color: .black)
-    case .white:  return Class.pf.components.button(color: .white)
+    case .black:  return Class.pf.components.button(color: .black, size: size)
+    case .white:  return Class.pf.components.button(color: .white, size: size)
     }
   }
 }
 
 extension Node {
-  public static func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Node {
+  public static func gitHubLink(
+    text: String,
+    type: GitHubLinkType,
+    href: String?,
+    size: Class.pf.components.Size = .regular
+  ) -> Node {
     return .a(
       attributes: [
         .href(href ?? ""),
-        .class([type.buttonClass])
+        .class([type.buttonClass(size: size)])
       ],
       .img(
         base64: gitHubSvgBase64(fill: type.iconFillColor),

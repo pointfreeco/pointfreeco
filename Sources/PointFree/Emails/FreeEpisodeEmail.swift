@@ -15,7 +15,7 @@ let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent) <<< { ep, user
   SimpleEmailLayoutData(
     user: user,
     newsletter: .newEpisode,
-    title: "Point-Freebie: \(ep.title)",
+    title: "Point-Freebie: \(ep.fullTitle)",
     preheader: freeEpisodeBlurb,
     template: .default,
     data: ep
@@ -57,7 +57,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
           ),
           .h4(
             attributes: [.class([Class.pf.type.responsiveTitle5])],
-            .text(ep.title)
+            .text(ep.fullTitle)
           ),
           .p(.text(ep.blurb)),
           .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],

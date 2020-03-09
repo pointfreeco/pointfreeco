@@ -47,7 +47,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
-          subject: "Free Point-Free Episode: \(episode.title)",
+          subject: "Free Point-Free Episode: \(episode.fullTitle)",
           unsubscribeData: (user.id, .newEpisode),
           content: nodes
           )

@@ -31,6 +31,6 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
     """,
     link: url(to: .episode(.show(.left(episode.slug)))),
     publishedAt: episode.publishedAt,
-    title: episode.title
+    title: episode.fullTitle
   )
 }
