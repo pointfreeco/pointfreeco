@@ -1,9 +1,9 @@
-GET http://localhost:8080/collections/map-zip-flatmap/zip
+GET http://localhost:8080/collections/map-zip-flat-map/zip
 Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61081
+Content-Length: 60993
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1860,18 +1860,15 @@ html {
                   margin-right:auto;
                   margin-left:auto">
         <div class="col-m
-                    col-m-6">
-          <a href="http://localhost:8080/collections/map-zip-flatmap"
+                    col-d-6
+                    col-m-12">
+          <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
+               alt
+               class="m-pr1">
+          <a href="/collections/map-zip-flat-map"
              class="pf-link-gray650">
-            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCA2IDgiIHdpZHRoPSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibS01Ny03OGgxMDI0djE2NDloLTEwMjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibS01Ny0yMmgxMDI0djQxMmgtMTAyNHoiIGZpbGw9IiMxMjEyMTIiLz48cGF0aCBkPSJtMTAuMjczMzMzMyA0Ljk0LS45Mzk5OTk5Ny0uOTQtNCA0IDQgNCAuOTM5OTk5OTctLjk0LTMuMDUzMzMzMy0zLjA2eiIgZmlsbD0iI2E4YThhOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTQpIi8+PC9nPjwvc3ZnPg=="
-                 alt
-                 class="m-pr1">
             Map, Zip, Flat-Map
           </a>
-        </div>
-        <div class="end-m
-                    col-m
-                    col-m-6">
         </div>
       </div>
     </div>
@@ -1972,7 +1969,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep23-the-many-faces-of-zip-part-1"
+               href="http://localhost:8080/collections/map-zip-flat-map/zip/ep23-the-many-faces-of-zip-part-1"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2010,7 +2007,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep24-the-many-faces-of-zip-part-2"
+               href="http://localhost:8080/collections/map-zip-flat-map/zip/ep24-the-many-faces-of-zip-part-2"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2048,7 +2045,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-white"
-               href="http://localhost:8080/collections/map-zip-flatmap/zip/ep25-the-many-faces-of-zip-part-3"
+               href="http://localhost:8080/collections/map-zip-flat-map/zip/ep25-the-many-faces-of-zip-part-3"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2241,7 +2238,7 @@ html {
                     col-m-6"
              style="border-right-color:#e8e8e8">
           <a class="row"
-             href="http://localhost:8080/collections/map-zip-flatmap/map">
+             href="http://localhost:8080/collections/map-zip-flat-map/map">
             <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEyIiB2aWV3Qm94PSIwIDAgOCAxMiIgd2lkdGg9IjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJtLTIxNS0xNTk5aDEwMjR2MTY0OWgtMTAyNHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtMCAwaDEwMjR2MzgxaC0xMDI0eiIgZmlsbD0iI2ZhZmFmYSIgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgLTIxNSA1MCkiLz48cGF0aCBkPSJtMTUuNDEgNy40MS0xLjQxLTEuNDEtNiA2IDYgNiAxLjQxLTEuNDEtNC41OC00LjU5eiIgZmlsbD0iIzAwMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTggLTYpIi8+PC9nPjwvc3ZnPg=="
                  alt
                  class="d-pr2
@@ -2265,7 +2262,7 @@ html {
                     col-m
                     col-m-6">
           <a class="row"
-             href="http://localhost:8080/collections/map-zip-flatmap/flatmap">
+             href="http://localhost:8080/collections/map-zip-flat-map/flat-map">
             <div class="col-m">
               <div class="fg-black
                           normal

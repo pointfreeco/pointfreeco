@@ -411,7 +411,7 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
                 .class([Class.pf.colors.link.purple]),
                 .href(url(to: .episode(.show(.left($0.slug)))))
               ],
-              .text($0.title)
+              .text($0.fullTitle)
             )
           )
         }

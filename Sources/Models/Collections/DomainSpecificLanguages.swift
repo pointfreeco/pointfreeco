@@ -26,14 +26,12 @@ TODO
             content: .episode(.ep29_dslsVsTemplatingLanguages)
           )
         ],
-        slug: "introduction-to-dsls",
         title: "Introduction to DSLs",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
-    slug: "domain-specific-languages",
     title: "Domain Specific Languages"
   )
 }

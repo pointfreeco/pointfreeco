@@ -22,7 +22,6 @@ TODO
           ),
           // TODO: Zip, Flat-Map?
         ],
-        slug: "composability",
         title: "Composable Randomness",
         whereToGoFromHere: #"""
 TODO
@@ -50,14 +49,12 @@ TODO
             content: .episode(.ep50_generativeArt_pt2)
           ),
         ],
-        slug: "predictability",
         title: "Predictable Randomness",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
-    slug: "randomness",
     title: "Randomness"
   )
 }

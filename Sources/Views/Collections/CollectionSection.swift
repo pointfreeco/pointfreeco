@@ -31,8 +31,15 @@ public func collectionSection(
 
   return [
     collectionNavigation(
-      left: zip(collection.title, collection.slug)
-        .map { ($0, url(to: .collections(.show($1)))) }
+      left: .a(
+        attributes: [
+          .href(path(to: .collections(.show(collection.slug)))),
+          .class([
+            Class.pf.colors.link.gray650
+          ])
+        ],
+        .text(collection.title)
+      )
     ),
     collectionHeader(
       title: section.title,
@@ -117,8 +124,7 @@ private func coreLesson(
           Class.pf.colors.border.gray800,
           Class.pf.colors.bg.white,
         ]),
-        // TODO: figure out force unwrap
-        .href(url(to: .collections(.episode(collection.slug!, section.slug, .left(lesson.episode.slug))))),
+        .href(url(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))),
         .style(
           borderColor(all: .other("#e8e8e8"))
             <> borderWidth(left: .px(4))
@@ -136,7 +142,7 @@ private func coreLesson(
           .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
             .class([Class.padding([.mobile: [.right: 1]])]),
           ]),
-          .text(lesson.episode.title)
+          .text(lesson.episode.fullTitle)
         )
       ),
       .gridColumn(
@@ -235,7 +241,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
           .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
             .class([Class.padding([.mobile: [.right: 1]])]),
           ]),
-          .text(episode.title)
+          .text(episode.fullTitle)
         )
       ),
       .gridColumn(
@@ -293,15 +299,13 @@ private func sectionNavigation(
   previousSection: Episode.Collection.Section?,
   nextSection: Episode.Collection.Section?
 ) -> Node {
-  guard let collectionSlug = collection.slug else { return [] }
-
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+        .href(url(to: .collections(.section(collection.slug, section.slug)))),
       ],
       .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
         .class([
@@ -339,7 +343,7 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collectionSlug, section.slug)))),
+        .href(url(to: .collections(.section(collection.slug, section.slug)))),
       ],
       .gridColumn(
         sizes: [:],

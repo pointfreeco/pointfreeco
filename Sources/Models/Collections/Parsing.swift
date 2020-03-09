@@ -14,7 +14,6 @@ TODO
           .init(episode: .ep58_whatIsAParser_pt3),
         ],
         related: [],
-        slug: "what-is-parsing",
         title: "What Is Parsing?",
         whereToGoFromHere: #"""
 TODO
@@ -30,7 +29,6 @@ TODO
           .init(episode: .ep61_composableParsing_zip),
         ],
         related: [],
-        slug: "composable-parsing",
         title: "Composable Parsing: Map, Zip, Flat-Map",
         whereToGoFromHere: #"""
 """#
@@ -45,14 +43,12 @@ TODO
           .init(episode: .ep64_parserCombinators_pt3),
         ],
         related: [],
-        slug: "parser-combinators",
         title: "Parser Combinators",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
-    slug: "parsing",
     title: "Parsing"
   )
 }
