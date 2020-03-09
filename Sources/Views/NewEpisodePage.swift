@@ -163,7 +163,7 @@ private func sequentialEpisodes(
               ]),
               .href(url(to: .collections(.episode(collection.slug, section.slug, .left(episode.slug)))))
             ],
-            .text(episode.title)
+            .text(episode.subtitle ?? episode.title)
           )
         )
       )
@@ -313,7 +313,7 @@ private func sequentialEpisodeRow(
             ]),
             .href(url(to: .episode(.show(.left(episode.slug)))))
           ],
-          .text(episode.title)
+          .text(episode.fullTitle)
         )
       )
     )
@@ -362,7 +362,7 @@ private func currentEpisodeInfoRow(
             Class.type.lineHeight(1)
           ])
         ],
-        .text(episode.title)
+        .text(episode.subtitle ?? episode.title)
       )
     ),
     chaptersRow(episode: episode),
@@ -745,7 +745,7 @@ private func episodeHeader(
             ]),
             .style(lineHeight(1.2))
           ],
-          .raw(nonBreaking(title: episode.title))
+          .raw(nonBreaking(title: episode.fullTitle))
         ),
         .div(
           attributes: [

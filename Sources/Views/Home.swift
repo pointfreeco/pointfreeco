@@ -227,7 +227,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date) -> Node 
       ],
       .a(
         attributes: [.href(path(to: .episode(.show(.left(episode.slug)))))],
-        .text(episode.title)
+        .text(episode.fullTitle)
       )
     ),
     .div(

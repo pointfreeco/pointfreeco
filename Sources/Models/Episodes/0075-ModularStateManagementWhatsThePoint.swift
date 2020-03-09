@@ -29,7 +29,8 @@ This week's episode took "playground-driven development" to the next level by sh
       .composableReducers,
     ],
     sequence: 75,
-    title: "Modular State Management: The Point",
+    subtitle: "The Point",
+    title: "Modular State Management",
     trailerVideo: .init(
       bytesLength: 54413353,
       downloadUrl: "https://player.vimeo.com/external/363166208.hd.mp4?s=47bf7363dd306a34c18c77b02a25cca90de6b02c&profile_id=175&download=1",

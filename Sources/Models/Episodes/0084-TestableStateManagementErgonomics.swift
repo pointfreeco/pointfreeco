@@ -20,7 +20,8 @@ We not only want our architecture to be testable, but we want it to be super eas
       // todo
     ],
     sequence: 84,
-    title: "Testable State Management: Ergonomics",
+    subtitle: "Ergonomics",
+    title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 39298144,
       downloadUrl: "https://player.vimeo.com/external/378096709.hd.mp4?s=bd1f389fcc025df919d5b35550c1a1fa23673581&profile_id=175&download=1",
