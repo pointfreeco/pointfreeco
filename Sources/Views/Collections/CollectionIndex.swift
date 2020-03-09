@@ -97,8 +97,7 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
             Class.flex.justify.center,
             Class.flex.align.center
           ]),
-          // TODO: figure out force unwrap
-          .href(url(to: .collections(.show(collection.slug!)))),
+          .href(url(to: .collections(.show(collection.slug)))),
           .style(unsafe: """
             background: \(lower);
             background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
@@ -140,11 +139,9 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
           ],
           .a(
             attributes: [
-              // TODO: figure out force unwrap
-              .href(url(to: .collections(.show(collection.slug!))))
+              .href(url(to: .collections(.show(collection.slug))))
             ],
-            // TODO: figure out force unwrap
-            .text(collection.title!)
+            .text(collection.title)
           )
         ),
         .p(
@@ -156,8 +153,7 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
             ]),
             .style(flex(grow: 1, shrink: 0, basis: .auto))
           ],
-          // TODO: handle force unwrap
-          .div(.markdownBlock(collection.blurb!))
+          .div(.markdownBlock(collection.blurb))
         )
         // TODO: bring this back when we have time
 //        .a(

@@ -37,7 +37,8 @@ One of the easiest ways to control side effects is through the use of "dependenc
       .composableReducers,
     ],
     sequence: 76,
-    title: "Effectful State Management: Synchronous Effects",
+    subtitle: "Synchronous Effects",
+    title: "Effectful State Management",
     trailerVideo: .init(
       bytesLength: 35772530,
       downloadUrl: "https://player.vimeo.com/external/365501991.hd.mp4?s=7ac3b690e2fe618eee428b80e31a06fb8499445e&profile_id=175&download=1",

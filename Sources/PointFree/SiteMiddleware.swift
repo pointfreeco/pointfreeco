@@ -64,11 +64,11 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> collectionsIndexMiddleware
 
     case let .collections(.show(slug)):
-      return conn.map(const(user .*. subscriberState .*. slug .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. slug .*. unit))
         |> collectionMiddleware
 
     case let .collections(.section(collectionSlug, sectionSlug)):
-      return conn.map(const(user .*. subscriberState .*. collectionSlug .*. sectionSlug .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
         |> collectionSectionMiddleware
 
     case let .discounts(couponId, billing):

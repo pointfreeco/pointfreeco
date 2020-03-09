@@ -1,12 +1,13 @@
 import HttpPipeline
 import Models
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Tuple
 import Views
 
 let collectionMiddleware
-  : M<Tuple3<User?, SubscriberState, Episode.Collection.Slug>>
+  : M<Tuple4<User?, SubscriberState, Route, Episode.Collection.Slug>>
   = basicAuth(
     user: Current.envVars.basicAuth.username,
     password: Current.envVars.basicAuth.password
@@ -16,24 +17,26 @@ let collectionMiddleware
     >>> writeStatus(.ok)
     >=> respond(
       view: collectionShow,
-      layoutData: { currentUser, _, collection in
+      layoutData: { currentUser, currentSubscriberState, currentRoute, collection in
         SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriberState: currentSubscriberState,
           currentUser: currentUser,
           data: collection,
           extraStyles: collectionsStylesheet,
           style: .base(.some(.minimal(.black))),
-          title: collection.title ?? "Point-Free"
+          title: collection.title
         )
     }
 )
 
 private let fetchCollectionMiddleware
   : MT<
-  Tuple3<User?, SubscriberState, Episode.Collection.Slug>,
-  Tuple3<User?, SubscriberState, Episode.Collection>
+  Tuple4<User?, SubscriberState, Route, Episode.Collection.Slug>,
+  Tuple4<User?, SubscriberState, Route, Episode.Collection>
   >
   = filterMap(
-    over3(fetchCollection >>> pure) >>> sequence3 >>> map(require3),
+    over4(fetchCollection >>> pure) >>> sequence4 >>> map(require4),
     or: routeNotFoundMiddleware
 )
 

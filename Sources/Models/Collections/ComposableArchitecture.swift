@@ -21,7 +21,6 @@ We begin our exploration of application architecture by understanding the core p
         ],
         related: [
         ],
-        slug: "swiftui-and-state-management",
         title: "SwiftUI and State Managment",
         whereToGoFromHere: #"""
 TODO
@@ -45,7 +44,6 @@ TODO
             content: .episode(.ep65_swiftuiAndStateManagement_pt1)
           )
         ],
-        slug: "reducers-and-stores",
         title: "Reducers and Stores",
         whereToGoFromHere: #"""
 TODO
@@ -64,7 +62,6 @@ TODO
         related: [
           // TODO
         ],
-        slug: "modularity",
         title: "Modularity",
         whereToGoFromHere: #"""
 TODO
@@ -81,18 +78,16 @@ TODO
           .init(episode: .ep79_effectfulStateManagement_thePoint),
         ],
         related: [
-          Episode.Collection.Section.Related(
-            blurb: #"""
-"""#,
-            content: .episode(.ep80_theCombineFrameworkAndEffects_pt1)
-          ),
-          Episode.Collection.Section.Related(
-            blurb: #"""
-"""#,
-            content: .episode(.ep81_theCombineFrameworkAndEffects_pt2)
-          ),
+          .init(
+            blurb: """
+TODO
+""",
+            content: .episodes([
+              .ep80_theCombineFrameworkAndEffects_pt1,
+              .ep81_theCombineFrameworkAndEffects_pt2,
+            ])
+          )
         ],
-        slug: "side-effects",
         title: "Side Effects",
         whereToGoFromHere: #"""
 TODO
@@ -117,14 +112,12 @@ TODO
           ),
           // TODO
         ],
-        slug: "testing",
         title: "Testing",
         whereToGoFromHere: #"""
 TODO
 """#
       ),
     ],
-    slug: "composable-architecture",
     title: "Composable Architecture"
   )
 }

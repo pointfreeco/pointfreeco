@@ -42,7 +42,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
           extraStyles: markdownBlockStyles,
           image: episode.image,
           style: .base(navStyle),
-          title: "Episode #\(episode.sequence): \(episode.title)",
+          title: "Episode #\(episode.sequence): \(episode.fullTitle)",
           usePrismJs: true
         )
     }

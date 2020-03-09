@@ -114,7 +114,7 @@ private func episodeLinkView(_ episode: Episode) -> Node {
       .href(path(to: .episode(.show(.left(episode.slug))))),
       .class([Class.pf.colors.link.purple])
     ],
-    .text("#\(episode.sequence): \(episode.title)")
+    .text("#\(episode.sequence): \(episode.fullTitle)")
   )
 }
 

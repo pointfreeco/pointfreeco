@@ -20,7 +20,8 @@ We will explore a form of reducer composition that will take our applications to
       .composableReducers,
     ],
     sequence: 71,
-    title: "Composable State Management: Higher-Order Reducers",
+    subtitle: "Higher-Order Reducers",
+    title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 54187542,
       downloadUrl: "https://player.vimeo.com/external/355452269.hd.mp4?s=56afb7b0c522691a881fd757ead9eff17c34ac49&profile_id=175&download=1",

@@ -48,7 +48,7 @@ class CollectionsTests: TestCase {
 
   func testCollectionShow() {
     let conn = connection(
-      from: request(to: .collections(.show("map-zip-flatmap")), basicAuth: true)
+      from: request(to: .collections(.show(Current.collections[0].slug)), basicAuth: true)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -68,7 +68,15 @@ class CollectionsTests: TestCase {
 
   func testCollectionSection() {
     let conn = connection(
-      from: request(to: .collections(.section("map-zip-flatmap", "zip")), basicAuth: true)
+      from: request(
+        to: .collections(
+          .section(
+            Current.collections[0].slug,
+            Current.collections[0].sections[1].slug
+          )
+        ),
+        basicAuth: true
+      )
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

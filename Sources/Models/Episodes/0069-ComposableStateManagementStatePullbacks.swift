@@ -23,7 +23,8 @@ So far we have pulled a lot of our application's logic into a reducer, but that 
       .composableReducers,
     ],
     sequence: 69,
-    title: "Composable State Management: State Pullbacks",
+    subtitle: "State Pullbacks",
+    title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 25_380_000,
       downloadUrl: "https://player.vimeo.com/external/353049110.hd.mp4?s=01f74c914424d5005780a54fb755092be8473a89&profile_id=175&download=1",

@@ -25,7 +25,6 @@ Not only can `map` be defined on types that represent parsing, but it can even b
             content: .episode(.ep30_composableRandomness)
           ),
         ],
-        slug: "map",
         title: "Map",
         whereToGoFromHere: #"""
 Now that you understand the basics of the `map` operation and how it can be applied to real world library design, it’s time to explore the `zip` operation. This operation allows you to do things that `map` alone is not capable of.
@@ -54,7 +53,6 @@ In [the episode before this one](TODO) we discovered that we could leverage Swif
             content: .episode(.ep32_decodableRandomness_pt2)
           ),
         ],
-        slug: "zip",
         title: "Zip",
         whereToGoFromHere: #"""
 You can accomplish quite a bit with the `map` and `zip` operations alone, such as transforming the underlying value of a computation, or combining multiple computations into a single one. But there are still some things they cannot accomplish, such as combining multiple computations together in such a way that later computations depend on earlier computations. This property alone is what motivates us to introduce the `flatMap` operation.
@@ -79,14 +77,12 @@ TODO
             content: .episode(.ep32_decodableRandomness_pt2)
           )
         ],
-        slug: "flatmap",
         title: "Flat-Map",
         whereToGoFromHere: #"""
 Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little flip!
 """#
       ),
     ],
-    slug: "map-zip-flatmap",
     title: "Map, Zip, Flat-Map"
   )
 }

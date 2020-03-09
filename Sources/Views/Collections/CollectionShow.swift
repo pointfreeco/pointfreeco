@@ -16,15 +16,23 @@ import TaggedTime
 public func collectionShow(_ collection: Episode.Collection) -> Node {
   [
     collectionNavigation(
-      left: ("Collections", url(to: .collections(.index)))
+      left: .a(
+        attributes: [
+          .href( path(to: .collections(.index))),
+          .class([
+            Class.pf.colors.link.gray650
+          ])
+        ],
+        .text("Collections")
+      )
     ),
     collectionHeader(
-      title: collection.title ?? "",
+      title: collection.title,
       category: "Collection",
       subcategory: "section",
       subcategoryCount: collection.sections.count,
       length: collection.length,
-      blurb: collection.blurb ?? ""
+      blurb: collection.blurb
     ),
     sectionsTitle,
     .div(
@@ -109,8 +117,7 @@ private func sectionRow(
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
-            // FIXME:
-            .href(url(to: .collections(.section(collection.slug!, section.slug)))),
+            .href(url(to: .collections(.section(collection.slug, section.slug)))),
           ],
           .gridRow(
             attributes: [
