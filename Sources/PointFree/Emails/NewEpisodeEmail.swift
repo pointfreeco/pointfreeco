@@ -17,7 +17,7 @@ public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
-      title: "New Point-Free Episode: \(episode.title)",
+      title: "New Point-Free Episode: \(episode.fullTitle)",
       preheader: episode.blurb,
       template: .default,
       data: (
@@ -41,7 +41,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
           announcementView(announcement: announcement),
           .a(
             attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
-            .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], .text("#\(ep.sequence): \(ep.title)"))
+            .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], .text("#\(ep.sequence): \(ep.fullTitle)"))
           ),
           .p(.text(ep.blurb)),
           .p(

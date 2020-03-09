@@ -381,6 +381,6 @@ func reference(
 """,
     link: episodeUrl,
     publishedAt: episode.publishedAt,
-    title: episode.title
+    title: episode.fullTitle
   )
 }
