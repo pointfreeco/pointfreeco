@@ -60,7 +60,27 @@ public func newEpisodePageView(
     zip(data.collection, data.section)
       .map { collection, section in
         collectionNavigation(
-          left: (section.title, path(to: .collections(.section(collection.slug!, section.slug))))
+          left: [
+            .a(
+              attributes: [
+                .href(path(to: .collections(.show(collection.slug)))),
+                .class([
+                  Class.pf.colors.link.gray650
+                ])
+              ],
+              .text(collection.title)
+            ),
+            " › ",
+            .a(
+              attributes: [
+                .href(path(to: .collections(.section(collection.slug, section.slug)))),
+                .class([
+                  Class.pf.colors.link.gray650
+                ])
+              ],
+              .text(section.title)
+            ),
+          ]
         )
       }
       ?? [],
