@@ -1,7 +1,7 @@
 extension Episode.Collection {
   public static let parsing = Self(
     blurb: #"""
-It's easy to write code and be completely unaware of how ubiquitous "parsing" is or how often we turn to parsers for many of our everyday tasks. We'll define what "parsing" is generally, see what functional programming has to say about it, and uncover a wonderful story of composition along the way.
+Parsing is a surprisingly ubiquitous problem in programming. Every time we construct an integer or a URL from a string, we are technically doing parsing. After demonstrating the many types of parsing that Apple gives us access to, we will take a step back and define the essence of parsing in a single type. That type supports many wonderful types of compositions, and allows us to break large, complex parsing problems into small, understandable units.
 """#,
     sections: [
       .init(
@@ -21,7 +21,7 @@ Now that we've distilled parsing into a core, functional unit, it's time to expl
       ),
       .init(
         blurb: #"""
-We'll define the trio of operations that form the basis of our functional programming toolkit on the `Parser` type. They introduce a familiar means of transforming and combining more basic parsers into more and more complex parsers that can pluck data out of some seriously complicated formats.
+We'll define the functional trio of operations on the `Parser` type: `map`, `zip` and `flatMap`. They introduce a familiar means of transforming and combining simple parsers into more and more complex parsers that can extract out first class data from nebulous blobs of data.
 """#,
         coreLessons: [
           .init(episode: .ep59_composableParsing_map),
@@ -31,7 +31,7 @@ We'll define the trio of operations that form the basis of our functional progra
         related: [
           .init(
             blurb: #"""
-We go much deeper exploring `map`, `zip`, and `flatMap` in this collection of episodes. Parsers aren't alone! These operations are defined on a bunch of types in the Swift standard library and other Apple frameworks, and you should be empowered to define them on your own types as well.
+The `Parser` type isn't the only type that supports `map`, `zip` and `flatMap` operations. There are many types that can be transformed in similar ways, and even the Swift standard library and Apple frameworks ship with many examples. This collection of episodes explores this topic deeply, and hopes to empower you to define these operations on your own types as well.
 """#,
             content: .collection(.mapZipFlatMap)
           )
@@ -50,10 +50,21 @@ It's time to explore "parser combinators": functions that enhance and combine pa
           .init(episode: .ep63_parserCombinators_pt2),
           .init(episode: .ep64_parserCombinators_pt3),
         ],
-        related: [],
+        related: [
+          // TODO: bring back when we figure out recursive references
+//          .init(
+//            blurb: #"""
+//Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
+//"""#,
+//            content: .collections([
+//              .randomness,
+//              .composableArchitecture,
+//            ])
+//          ),
+        ],
         title: "Parser Combinators",
         whereToGoFromHere: #"""
-The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), linked above.
+The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), where we define a core type to express a certain domain and then explore all of the kinds of composition that type supports.
 """#
       ),
     ],
