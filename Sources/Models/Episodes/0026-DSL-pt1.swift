@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   static let ep26_domainSpecificLanguages_pt1 = Episode(
     blurb: """
-We interact with domain specific languages on a daily basis, but what does it take to build your own? After introducing the topic, we will begin building a toy example directly in Swift, which will set the foundation for a future DSL with far-reaching applications.
+We interact with domain-specific languages on a daily basis, but what does it take to build your own? After introducing the topic, we will begin building a toy example directly in Swift, which will set the foundation for a future DSL with far-reaching applications.
 """,
     codeSampleDirectory: "0026-edsls-pt1",
     exercises: _exercises,
@@ -14,7 +14,7 @@ We interact with domain specific languages on a daily basis, but what does it ta
     previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1534744623),
     sequence: 26,
-    title: "Domain Specific Languages: Part 1",
+    title: "Domain‑Specific Languages: Part 1",
     trailerVideo: .init(
       bytesLength: 27200230,
       downloadUrl: "https://player.vimeo.com/external/348628453.hd.mp4?s=27ba1e0796d802020fe141ab3102fce35052d43a&profile_id=175&download=1",

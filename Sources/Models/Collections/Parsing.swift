@@ -21,7 +21,7 @@ Now that we've distilled parsing into a core, functional unit, it's time to expl
       ),
       .init(
         blurb: #"""
-TODO
+We'll define the trio of operations that form the basis of our functional programming toolkit on the `Parser` type. They introduce a familiar means of transforming and combining more basic parsers into more and more complex parsers that can pluck data out of some seriously complicated formats.
 """#,
         coreLessons: [
           .init(episode: .ep59_composableParsing_map),
@@ -43,17 +43,27 @@ Now that we've seen that parsers have `map`, `zip`, and `flatMap` operations, it
       ),
       .init(
         blurb: #"""
-TODO
+It's time to explore "parser combinators": functions that enhance and combine parsers in interesting ways. They will unlock some very powerful, expressive machinery and allow us to define some truly impressive parsers with little work.
 """#,
         coreLessons: [
           .init(episode: .ep62_parserCombinators_pt1),
           .init(episode: .ep63_parserCombinators_pt2),
           .init(episode: .ep64_parserCombinators_pt3),
         ],
-        related: [],
+        related: [
+          .init(
+            blurb: #"""
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
+"""#,
+            content: .collections([
+              .randomness,
+              .composableArchitecture,
+            ])
+          ),
+        ],
         title: "Parser Combinators",
         whereToGoFromHere: #"""
-TODO
+The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), linked above.
 """#
       ),
     ],

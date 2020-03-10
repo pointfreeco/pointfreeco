@@ -152,14 +152,14 @@ public struct Episode: Equatable {
       public var coreLessons: [Lesson]
       public var related: [Related]
       public var title: String
-      public var whereToGoFromHere: String
+      public var whereToGoFromHere: String?
 
       public init(
         blurb: String,
         coreLessons: [Lesson],
         related: [Related],
         title: String,
-        whereToGoFromHere: String
+        whereToGoFromHere: String?
       ) {
         self.blurb = blurb
         self.coreLessons = coreLessons
@@ -202,11 +202,15 @@ public struct Episode: Equatable {
 
         public enum Content: Equatable {
           case episodes([Episode])
-          case collection(Collection)
+          case collections([Collection])
           case section(Collection, index: Int)
 
           public static func episode(_ episode: Episode) -> Content {
             .episodes([episode])
+          }
+
+          public static func collection(_ collection: Collection) -> Content {
+            .collections([collection])
           }
         }
       }
