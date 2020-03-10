@@ -33,12 +33,12 @@ public func collectionSection(
     collectionNavigation(
       left: .a(
         attributes: [
-          .href(path(to: .collections(.show(collection.slug)))),
+          .href(path(to: .collections(collection.sections.count == 1 ? .index : .show(collection.slug)))),
           .class([
             Class.pf.colors.link.gray650
           ])
         ],
-        .text(collection.title)
+        .text(collection.sections.count == 1 ? "Collections" : collection.title)
       )
     ),
     collectionHeader(
