@@ -23,12 +23,12 @@ We begin our exploration of application architecture by understanding the core p
         ],
         title: "SwiftUI and State Managment",
         whereToGoFromHere: #"""
-TODO
+Now that we understand the 5 main problems that any architecture tries to solve, and we see how SwiftUI approaches some of those problems, it's time to chart a course for ourselves. We will begin building our composable architecture from scratch by deciding on the core units that make up the architecture. We will emphasize simplicity of these types by using value types and by making sure they support composition.
 """#
       ),
       .init(
         blurb: #"""
-TODO
+We begin building the composable architecture by settling on the core types that make up the architecture. We want to use value types as much as possible, because they are inherently simple, and we want the types to be composable so that we can break large problems down into small problems. We achieve both of these goals with reducers, while delegating the messy runtime of our application to a unit known as a "store."
 """#,
         coreLessons: [
           .init(episode: .ep68_composableStateManagement_reducers),
@@ -37,16 +37,10 @@ TODO
           .init(episode: .ep71_composableStateManagement_higherOrderReducers),
         ],
         related: [
-          .init(
-            blurb: #"""
-TODO
-"""#,
-            content: .episode(.ep65_swiftuiAndStateManagement_pt1)
-          )
         ],
         title: "Reducers and Stores",
         whereToGoFromHere: #"""
-TODO
+Although we have shown that reducers and stores are simple and composable, we haven't seen what that unlocks for us in our architecture. We will begin by showing that the composable architecture is super modular. We can break out each screen of our application into their own modules, which means each screen can be built and run in complete isolation, without building any other part of the application.
 """#
       ),
       .init(
