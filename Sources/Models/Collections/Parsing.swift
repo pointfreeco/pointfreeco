@@ -50,17 +50,7 @@ It's time to explore "parser combinators": functions that enhance and combine pa
           .init(episode: .ep63_parserCombinators_pt2),
           .init(episode: .ep64_parserCombinators_pt3),
         ],
-        related: [
-          .init(
-            blurb: #"""
-Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
-"""#,
-            content: .collections([
-              .randomness,
-              .composableArchitecture,
-            ])
-          ),
-        ],
+        related: [],
         title: "Parser Combinators",
         whereToGoFromHere: #"""
 The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), linked above.
