@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 79838
+Content-Length: 79890
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1957,8 +1957,8 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           <div class="d-pl4
                       d-pr4
                       m-pt1
-                      m-pl2
-                      m-pr2
+                      m-pl0
+                      m-pr0
                       fg-gray850
                       fg-black
                       normal
@@ -2072,8 +2072,10 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
         <div class="border
                     rounded
                     border-gray-850
-                    m-ml3
-                    m-mr1">
+                    d-ml3
+                    d-mr0
+                    m-ml2
+                    m-mr2">
           <div class="m-pl2
                       m-pr2
                       m-pt2
