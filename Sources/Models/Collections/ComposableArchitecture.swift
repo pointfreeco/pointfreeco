@@ -10,9 +10,9 @@ We begin our exploration of application architecture by understanding the core p
 
 * How to manage state across an entire application
 * How to model the architecture with simple units, such as value types.
-* How to modularize an application built in the architecture.
-* How to model side effects in the architecture
-* How to easily write comprehensive tests for features built in the architecture.
+* How to modularize each feature of the application
+* How to model side effects in the application
+* How to easily write comprehensive tests for each feature
 """#,
         coreLessons: [
           .init(episode: .ep65_swiftuiAndStateManagement_pt1),
@@ -22,7 +22,7 @@ We begin our exploration of application architecture by understanding the core p
         related: [
           .init(
             blurb: #"""
-As we've seen in this section, SwiftUI is incredibly powerful and is a true paradigm shifting way of building applications. However, some things are still quite difficult to do in SwiftUI, for example, testing. In this episode we explore how one would test a vanilla SwiftUI application so that we can compare it to testing an application built with the composable architecture.
+As we've seen in this section, SwiftUI is incredibly powerful and is a true paradigm shifting way of building applications. However, some things are still quite difficult to do in SwiftUI, like testing. In this episode we explore how one would test a vanilla SwiftUI application so that we can compare it to testing an application built with the composable architecture.
 """#,
             content: .episode(.ep85_testableStateManagement_thePoint)
           )
