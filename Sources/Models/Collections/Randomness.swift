@@ -1,7 +1,7 @@
 extension Episode.Collection {
   public static let randomness = Self(
     blurb: #"""
-TODO
+Randomness can seem like a concept at odds with functional programming. By its very nature it is unpredictable and difficult to test. Nevertheless it quickly proves itself to be an ideal case study of composition. We will distill the idea of randomness into a single core unit (a function!) and define a bunch of operations around it that allow us to build up more and more complex notions of randomness that the Swift standard library couldn't dream of.
 """#,
     sections: [
       .init(
