@@ -464,7 +464,12 @@ func transcriptView(
         [
           Class.padding([
             .mobile: [.all: 3],
-            .desktop: [.leftRight: needsExtraPadding ? 4 : 3, .bottom: 4, .top: 2]
+            .desktop: [
+              .top: 2,
+              .bottom: 4,
+              .left: 4,
+              .right: needsExtraPadding ? 4 : 3
+            ]
           ])
         ]
       )
