@@ -47,11 +47,7 @@ We begin building the composable architecture by settling on the core types that
             blurb: #"""
 The composable architecture isn't the first time we've distilled the essence of some functionality into a type, and then explored its compositional properties. We did the same when we explored parsing and randomness, and we were able to cook up some impressive examples of breaking large, complex problems into very simple units.
 """#,
-            content: .collection(.parsing)
-          ),
-          .init(
-            blurb: "",
-            content: .collection(.randomness)
+            content: .collections([.parsing, .randomness])
           ),
           .init(
             blurb: #"""
@@ -151,9 +147,7 @@ Although the environment technique is powerful, and can help you get test covera
             ]))
         ],
         title: "Testing",
-        whereToGoFromHere: #"""
-TODO
-"""#
+        whereToGoFromHere: nil
       ),
     ],
     title: "Composable Architecture"

@@ -23,7 +23,8 @@ We now have a precise, efficient definition for parsing, but we haven't even scr
       .ledgeMacAppParsingTechniques,
     ],
     sequence: 59,
-    title: "Composable Parsing: Map",
+    subtitle: "Map",
+    title: "Composable Parsing",
     trailerVideo: .init(
       bytesLength: 54937265,
       downloadUrl: "https://player.vimeo.com/external/349952515.hd.mp4?s=18f323dc2d8a15ae347893efc991c55108c27e2d&profile_id=175&download=1",
