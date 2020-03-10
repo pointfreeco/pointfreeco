@@ -693,7 +693,7 @@ We've introduced a new operator, so it's time to justify its addition to our cod
 
 2. Does this operator have prior art and does it have a nice, descriptive shape? Yep! The fish operator ships with Haskell and PureScript, and many other programming languages communities have adopted it in functional libraries. The shape is nice, especially alongside `>>>`, where it's just different enough to indicate that something else is going on.
 
-3. Is this a universal operator or is it only solving a domain specific problem? The way the operator is defined right now is quite specific to working on tuples, but the shape it's describing shows up all the time in programming. We can even define the operator on a couple Swift types:
+3. Is this a universal operator or is it only solving a domain-specific problem? The way the operator is defined right now is quite specific to working on tuples, but the shape it's describing shows up all the time in programming. We can even define the operator on a couple Swift types:
 """,
     timestamp: nil,
     type: .paragraph
@@ -1659,7 +1659,7 @@ We've solved this problem at the cost of yet another operator, so it's time to c
 
 2. Is there prior art? Yep. It exists in Haskell, PureScript, and other languages with strong functional communities that have adopted it. It has a nice shape that points in both directions and kind of signals a joining together.
 
-3. Is this a universal operator or is it only solving a domain specific problem? We've only defined this operator for `(A) -> A` functions and `(inout A) -> Void` functions so far, but it turns out that `<>` is used far more generally for combining two things of the same type into one, which is kind of the most fundamental unit of computation there is. We're going to encounter this operator all over the place.
+3. Is this a universal operator or is it only solving a domain-specific problem? We've only defined this operator for `(A) -> A` functions and `(inout A) -> Void` functions so far, but it turns out that `<>` is used far more generally for combining two things of the same type into one, which is kind of the most fundamental unit of computation there is. We're going to encounter this operator all over the place.
 """,
     timestamp: nil,
     type: .paragraph
