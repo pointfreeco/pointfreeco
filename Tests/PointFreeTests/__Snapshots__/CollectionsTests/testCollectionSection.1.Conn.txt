@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59750
+Content-Length: 59897
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2053,8 +2053,7 @@ html {
                     m-pr3
                     col-m
                     col-m-12">
-          <h2 class="m-pb1
-                     fg-black
+          <h2 class="fg-black
                      bold
                      ts-d-r1_5
                      ts-m-r1_25
@@ -2064,9 +2063,12 @@ html {
           <div class="m-pb2
                       col-m
                       col-m-12">
-            <div class="md-ctn">
-              <p>This is a blurb for some related grouping of episodes.</p>
+            <div class="m-pb1
+                        m-pt1">
+              <div class="md-ctn">
+                <p>This is a blurb for some related grouping of episodes.</p>
 
+              </div>
             </div>
             <a class="border-left
                       items-center
@@ -2142,9 +2144,12 @@ html {
           <div class="m-pb2
                       col-m
                       col-m-12">
-            <div class="md-ctn">
-              <p>This is a blurb for a single related episode</p>
+            <div class="m-pb1
+                        m-pt1">
+              <div class="md-ctn">
+                <p>This is a blurb for a single related episode</p>
 
+              </div>
             </div>
             <a class="border-left
                       items-center

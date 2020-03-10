@@ -403,9 +403,6 @@ private func chaptersRow(episode: Episode) -> Node {
     .fragment(
       titleBlocks.map { block in
         .gridRow(
-          attributes: [
-            .style(padding(topBottom: .px(2))),
-          ],
           .gridColumn(
             sizes: [.mobile: 1],
             attributes: [
@@ -455,7 +452,8 @@ private func chaptersRow(episode: Episode) -> Node {
                 .class([
                   Class.pf.type.body.small,
                   Class.pf.colors.link.gray650
-                ])
+                ]),
+                .style(safe: "font-variant-numeric: tabular-nums")
               ],
               .text(timestampLabel(for: block.timestamp ?? 0))
             )

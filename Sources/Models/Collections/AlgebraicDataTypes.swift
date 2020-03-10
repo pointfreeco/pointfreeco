@@ -12,7 +12,7 @@ There is a wonderful correspondence between Swift's type system and algebra that
       related: [
         Episode.Collection.Section.Related(
           blurb: #"""
-TODO
+Using algebraic data types as our guiding light we are able to model a collection type in Swift which is compiler prove to be non-empty. That is, you are not allowed to construct an instance of this type unless you prove that it contains at least one element.
 """#,
           content: .episode(.ep20_nonEmpty)
         )
