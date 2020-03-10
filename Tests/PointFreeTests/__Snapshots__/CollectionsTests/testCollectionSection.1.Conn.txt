@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59814
+Content-Length: 59750
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2059,7 +2059,7 @@ html {
                      ts-d-r1_5
                      ts-m-r1_25
                      lh-2">
-            Related episodes
+            Related content
           </h2>
           <div class="m-pb2
                       col-m
@@ -2079,7 +2079,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-gray900"
-               href="http://localhost:8080/episodes/ep2-proof-in-functions"
+               href="/episodes/ep2-proof-in-functions"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2114,7 +2114,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-gray900"
-               href="http://localhost:8080/episodes/ep2-proof-in-functions"
+               href="/episodes/ep2-proof-in-functions"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;
@@ -2157,7 +2157,7 @@ html {
                       col-idx-link
                       border-gray-800
                       bg-gray900"
-               href="http://localhost:8080/episodes/ep2-proof-in-functions"
+               href="/episodes/ep2-proof-in-functions"
                style="border-top-color:#e8e8e8;
                       border-right-color:#e8e8e8;
                       border-bottom-color:#e8e8e8;

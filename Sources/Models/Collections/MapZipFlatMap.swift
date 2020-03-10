@@ -77,12 +77,12 @@ TODO
             content: .episode(.ep32_decodableRandomness_pt2)
           )
         ],
-        title: "Flat-Map",
+        title: "Flat‑Map",
         whereToGoFromHere: #"""
 Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little flip!
 """#
       ),
     ],
-    title: "Map, Zip, Flat-Map"
+    title: "Map, Zip, Flat‑Map"
   )
 }

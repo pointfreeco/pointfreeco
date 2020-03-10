@@ -57,7 +57,7 @@ private let codeMarkdownStyles: Stylesheet =
         <> padding(topBottom: .px(1), leftRight: .px(5))
         <> borderWidth(all: .px(1))
         <> borderRadius(all: .px(3))
-        <> backgroundColor(Color.other("#f7f7f7"))
+        <> backgroundColor(.white(0, 0.03))
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =
