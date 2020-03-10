@@ -36,7 +36,7 @@ We go much deeper exploring `map`, `zip`, and `flatMap` in this collection of ep
             content: .collection(.mapZipFlatMap)
           )
         ],
-        title: "Composable Parsing: Map, Zip, Flat-Map",
+        title: "Composable Parsing: Map, Zip, Flat‑Map",
         whereToGoFromHere: #"""
 Now that we've seen that parsers have `map`, `zip`, and `flatMap` operations, it's time to take things to the next level and explore a whole bunch of what are commonly called "parser combinators": or "higher-order" functions that enhance and combine parsers in more and more interesting, complex ways.
 """#
