@@ -2098,9 +2098,9 @@ want to use it to view this episode for free right now?
                    bg-white">
         <div id="transcript"
              class="d-pb4
-                    d-pt2
                     d-pl4
                     d-pr4
+                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
