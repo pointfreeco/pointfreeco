@@ -203,6 +203,7 @@ public struct Episode: Equatable {
         public enum Content: Equatable {
           case episodes([Episode])
           case collection(Collection)
+          case section(Collection, index: Int)
 
           public static func episode(_ episode: Episode) -> Content {
             .episodes([episode])

@@ -63,16 +63,6 @@ public func newEpisodePageView(
           left: [
             .a(
               attributes: [
-                .href(path(to: .collections(.show(collection.slug)))),
-                .class([
-                  Class.pf.colors.link.gray650
-                ])
-              ],
-              .text(collection.title)
-            ),
-            " › ",
-            .a(
-              attributes: [
                 .href(path(to: .collections(.section(collection.slug, section.slug)))),
                 .class([
                   Class.pf.colors.link.gray650
@@ -126,7 +116,7 @@ private func sideBar(
           Class.border.all,
           Class.border.rounded.all,
           Class.pf.colors.border.gray850,
-          Class.margin([.mobile: [.leftRight: 3]])
+          Class.margin([.mobile: [.left: 3]])
         ])
       ],
       collectionHeaderRow(collection: collection, section: section),
@@ -141,7 +131,7 @@ private func sideBar(
           Class.border.all,
           Class.border.rounded.all,
           Class.pf.colors.border.gray850,
-          Class.margin([.mobile: [.leftRight: 3]])
+          Class.margin([.mobile: [.left: 3, .right: 1]])
         ])
       ],
       sequentialEpisodeRow(episode: previousEpisode, type: .previous),
@@ -173,11 +163,12 @@ private func sequentialEpisodes(
           .class([Class.type.align.center])
         ],
         .img(
-          base64: playIconSvgBase64(fill: "a1a1a1"),
+          base64: playIconSvgBase64(),
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle])
+            .class([Class.align.middle]),
+            .style(margin(top: .px(-2)))
           ]
         )
       ),
@@ -200,7 +191,6 @@ private func sequentialEpisodes(
             attributes: [
               .class([
                 Class.pf.type.body.regular,
-                Class.pf.colors.link.gray650,
                 Class.type.lineHeight(1)
               ]),
               .href(url(to: .collections(.episode(collection.slug, section.slug, .left(episode.slug)))))
@@ -228,21 +218,10 @@ private func collectionHeaderRow(
     ],
     .gridColumn(
       sizes: [.mobile: 12],
-      attributes: [
-        .class([
-          Class.padding([.mobile: [.left: 1]]),
-        ])
-      ],
       .h6(
         attributes: [
           .class([
-            Class.pf.colors.fg.gray650,
-            Class.typeScale([.mobile: .r0_75]),
-            Class.type.lineHeight(1),
-            Class.type.caps,
-            Class.type.normal,
-            Class.padding([.mobile: [.all: 0]]),
-            Class.margin([.mobile: [.leftRight: 0, .top: 0, .bottom: 1]])
+            sidebarShoutTitleClass
           ])
         ],
         "Collection"
@@ -257,7 +236,9 @@ private func collectionHeaderRow(
         .a(
           attributes: [
             .class([
-              Class.pf.type.body.regular,
+              Class.pf.colors.fg.black,
+              Class.h5,
+              Class.type.medium,
               Class.type.lineHeight(1)
             ]),
             .href(url(to: .collections(.section(collection.slug, section.slug))))
@@ -291,75 +272,69 @@ private func sequentialEpisodeRow(
 ) -> Node {
   guard let episode = episode else { return [] }
 
-  return .gridRow(
-    attributes: [
-      .class([
-        Class.padding([.mobile: [.all: 2]]),
-        type == .next ? Class.border.top : nil,
-        Class.pf.colors.border.gray850,
-        Class.grid.middle(.mobile),
-        ].compactMap { $0 })
-    ],
-    .gridColumn(
-      sizes: [.mobile: 1],
-      attributes: [
-        .class([Class.type.align.center])
-      ],
-      .img(
-        base64: playIconSvgBase64(fill: "a1a1a1"),
-        type: .image(.svg),
-        alt: "",
-        attributes: [
-          .class([Class.align.middle])
-        ]
-      )
-    ),
-    .gridColumn(
-      sizes: [.mobile: 11],
+  return [
+    .gridRow(
       attributes: [
         .class([
-          Class.padding([.mobile: [.left: 1]]),
-        ])
+          Class.padding([.mobile: [.all: 2]]),
+          type == .next ? Class.border.top : nil,
+          Class.pf.colors.border.gray850,
+          Class.grid.middle(.mobile),
+          ].compactMap { $0 })
       ],
-      .h6(
-        attributes: [
-          .class([
-            Class.pf.type.responsiveTitle8,
-            Class.type.lineHeight(0),
-            Class.pf.colors.fg.gray650,
-            Class.padding([.mobile: [.all: 0]]),
-            Class.margin([.mobile: [.all: 0]])
-          ])
-        ],
-        .text(type.label)
+      .gridColumn(
+        sizes: [.mobile: 12],
+        .h6(
+          attributes: [
+            .class([
+              sidebarShoutTitleClass
+            ])
+          ],
+          .text(type.label)
+        )
       ),
-      .p(
+      .gridColumn(
+        sizes: [.mobile: 1],
+        attributes: [
+          .class([Class.type.align.center])
+        ],
+        .img(
+          base64: playIconSvgBase64(),
+          type: .image(.svg),
+          alt: "",
+          attributes: [
+            .class([Class.align.middle]),
+            .style(margin(top: .px(-2)))
+          ]
+        )
+      ),
+      .gridColumn(
+        sizes: [.mobile: 11],
         attributes: [
           .class([
-            Class.padding([.mobile: [.all: 0]]),
-            Class.margin([.mobile: [.all: 0]]),
-            Class.pf.colors.fg.gray650,
+            Class.padding([.mobile: [.left: 1]]),
           ]),
           .style(unsafe: type == .previous ? """
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            """ : "")
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          """ : "")
         ],
         .a(
           attributes: [
             .class([
-              Class.pf.colors.link.gray650,
               Class.pf.type.body.regular,
-              Class.type.lineHeight(1)
+              Class.type.lineHeight(1),
+              Class.padding([.mobile: [.all: 0]]),
+              Class.margin([.mobile: [.all: 0]]),
             ]),
-            .href(url(to: .episode(.show(.left(episode.slug)))))
+            .href(url(to: .episode(.show(.left(episode.slug))))),
           ],
           .text(episode.fullTitle)
         )
       )
     )
-  )
+  ]
 }
 
 private func currentEpisodeInfoRow(
@@ -391,7 +366,8 @@ private func currentEpisodeInfoRow(
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle])
+            .class([Class.align.middle]),
+            .style(margin(top: .px(-2)))
           ]
         )
       ),
@@ -427,6 +403,9 @@ private func chaptersRow(episode: Episode) -> Node {
     .fragment(
       titleBlocks.map { block in
         .gridRow(
+          attributes: [
+            .style(padding(topBottom: .px(2))),
+          ],
           .gridColumn(
             sizes: [.mobile: 1],
             attributes: [
@@ -450,10 +429,9 @@ private func chaptersRow(episode: Episode) -> Node {
             sizes: [.mobile: 9],
             attributes: [
               .class([
+                Class.padding([.mobile: [.leftRight: 1]]),
                 Class.pf.type.body.small,
-                Class.padding([.mobile: [.leftRight: 1]])
-              ]),
-              .style(padding(topBottom: .px(2)))
+              ])
             ],
             .a(
               attributes: [
@@ -467,7 +445,8 @@ private func chaptersRow(episode: Episode) -> Node {
             attributes: [
               .class([
                 Class.pf.type.body.small,
-                Class.pf.colors.fg.gray650
+                Class.pf.colors.fg.gray650,
+                Class.type.align.end
               ])
             ],
             .a(
@@ -508,7 +487,7 @@ private func exercisesRow(episode: Episode) -> Node {
         alt: "",
         attributes: [
           .class([Class.align.middle]),
-          .style(margin(top: .px(-2)))
+          .style(margin(top: .px(-4)))
         ]
       )
     ),
@@ -549,7 +528,8 @@ private func referencesRow(episode: Episode) -> Node {
         type: .image(.svg),
         alt: "",
         attributes: [
-          .class([Class.align.middle])
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-2)))
         ]
       )
     ),
@@ -720,7 +700,7 @@ private func video(
           Class.grid.middle(.desktop),
           Class.padding([
             .desktop: [.leftRight: 3],
-            .mobile: [.leftRight: 3, .bottom: 2],
+            .mobile: [.leftRight: 1, .bottom: 2],
           ]),
         ]),
         .style(
@@ -831,3 +811,12 @@ private let newEpisodeDateFormatter: DateFormatter = {
   df.timeZone = TimeZone(secondsFromGMT: 0)
   return df
 }()
+
+private let sidebarShoutTitleClass
+  = Class.pf.colors.fg.gray650
+    | Class.typeScale([.mobile: .r0_75])
+    | Class.type.lineHeight(1)
+    | Class.type.caps
+    | Class.type.bold
+    | Class.padding([.mobile: [.all: 0]])
+    | Class.margin([.mobile: [.leftRight: 0, .top: 0, .bottom: 1]])
