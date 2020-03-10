@@ -403,9 +403,6 @@ private func chaptersRow(episode: Episode) -> Node {
     .fragment(
       titleBlocks.map { block in
         .gridRow(
-          attributes: [
-            .style(padding(topBottom: .px(2))),
-          ],
           .gridColumn(
             sizes: [.mobile: 1],
             attributes: [
