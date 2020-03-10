@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 66307
+Content-Length: 66309
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1983,7 +1983,7 @@ html {
                      lh-2
                      m-mt2">
             <a href="/episodes/ep10-a-tale-of-two-flat-maps">
-              A Tale of Two Flat-Maps
+              A Tale of Two Flat‑Maps
             </a>
           </h1>
           <div class="body-leading

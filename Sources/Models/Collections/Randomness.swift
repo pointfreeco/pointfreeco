@@ -49,7 +49,7 @@ TODO
           ),
           .init(
             blurb: #"""
-TODO
+These supplemental episodes take the machinery we've built so far for a fun spin by building a generator of random art.
 """#,
             content: .episodes([
               .ep49_generativeArt_pt1,
