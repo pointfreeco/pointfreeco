@@ -186,7 +186,6 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
         .h2(
           attributes: [
             .class([
-              Class.padding([.mobile: [.bottom: 1]]),
               Class.pf.type.responsiveTitle4,
             ]),
           ],
@@ -206,7 +205,14 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
       Class.padding([.mobile: [.bottom: 2]])
     ])
     ],
-    .markdownBlock(relatedItem.blurb),
+    .div(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.bottom: 1, .top: 1]])
+        ])
+      ],
+      .markdownBlock(relatedItem.blurb)
+    ),
     relatedItemContent(relatedItem.content)
   )
 }
