@@ -1,7 +1,7 @@
 extension Episode.Collection {
   public static let randomness = Self(
     blurb: #"""
-TODO
+Randomness can seem like a concept at odds with functional programming. By its very nature it is unpredictable and difficult to test. Nevertheless it quickly proves itself to be an ideal case study of composition. We will distill the idea of randomness into a single core unit (a function!) and define a bunch of operations around it that allow us to build up more and more complex notions of randomness that the Swift standard library couldn't dream of.
 """#,
     sections: [
       .init(
@@ -18,9 +18,14 @@ TODO
             blurb: #"""
 TODO
 """#,
-            content: .episode(.ep13_theManyFacesOfMap)
+            content: .section(.mapZipFlatMap, index: 0)
           ),
-          // TODO: Zip, Flat-Map?
+          .init(
+            blurb: #"""
+TODO
+"""#,
+            content: .section(.mapZipFlatMap, index: 1)
+          ),
         ],
         title: "Composable Randomness",
         whereToGoFromHere: #"""
@@ -40,13 +45,16 @@ TODO
             blurb: #"""
 TODO
 """#,
-            content: .episode(.ep49_generativeArt_pt1)
+            content: .section(.mapZipFlatMap, index: 2)
           ),
           .init(
             blurb: #"""
-TODO
+These supplemental episodes take the machinery we've built so far for a fun spin by building a generator of random art.
 """#,
-            content: .episode(.ep50_generativeArt_pt2)
+            content: .episodes([
+              .ep49_generativeArt_pt1,
+              .ep50_generativeArt_pt2,
+            ])
           ),
         ],
         title: "Predictable Randomness",

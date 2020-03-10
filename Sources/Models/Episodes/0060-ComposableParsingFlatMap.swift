@@ -23,7 +23,7 @@ The `map` function on parsers is powerful, but there are still a lot of things i
       .ledgeMacAppParsingTechniques,
     ],
     sequence: 60,
-    title: "Composable Parsing: Flat-Map",
+    title: "Composable Parsing: Flat‑Map",
     trailerVideo: .init(
       bytesLength: 18429291,
       downloadUrl: "https://player.vimeo.com/external/348472169.hd.mp4?s=ac9385054499981ac66564121817ad6ba9b9e218&profile_id=175&download=1",

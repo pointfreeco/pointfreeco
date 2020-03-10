@@ -25,7 +25,7 @@ Up until Swift 4.1 there was an additional `flatMap` on sequences that we did no
       monadRef,
     ],
     sequence: 46,
-    title: "The Many Faces of Flat-Map: Part 5",
+    title: "The Many Faces of Flat‑Map: Part 5",
     trailerVideo: .init(
       bytesLength: 103605774,
       downloadUrl: "https://player.vimeo.com/external/348489897.hd.mp4?s=33c84c90dbffbfa3ec727f0d0d2a7eef6a31320b&profile_id=175&download=1",
