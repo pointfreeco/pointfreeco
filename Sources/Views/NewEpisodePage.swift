@@ -177,7 +177,8 @@ private func sequentialEpisodes(
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle])
+            .class([Class.align.middle]),
+            .style(margin(top: .px(-2)))
           ]
         )
       ),
@@ -375,7 +376,8 @@ private func currentEpisodeInfoRow(
           type: .image(.svg),
           alt: "",
           attributes: [
-            .class([Class.align.middle])
+            .class([Class.align.middle]),
+            .style(margin(top: .px(-2)))
           ]
         )
       ),
@@ -492,7 +494,7 @@ private func exercisesRow(episode: Episode) -> Node {
         alt: "",
         attributes: [
           .class([Class.align.middle]),
-          .style(margin(top: .px(-2)))
+          .style(margin(top: .px(-4)))
         ]
       )
     ),
@@ -533,7 +535,8 @@ private func referencesRow(episode: Episode) -> Node {
         type: .image(.svg),
         alt: "",
         attributes: [
-          .class([Class.align.middle])
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-2)))
         ]
       )
     ),
