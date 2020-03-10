@@ -222,6 +222,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
   case let .collections(collections):
     return .fragment(collections.map { collection in
       relatedItemRow(
+        icon: collectionIconSvgBase64,
         title: collection.title,
         length: collection.length,
         url: path(to: .collections(.show(collection.slug)))
@@ -230,6 +231,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
   case let .episodes(episodes):
     return .fragment(episodes.map { episode in
       relatedItemRow(
+        icon: playIconSvgBase64(),
         title: episode.fullTitle,
         length: episode.length,
         url: path(to: .episode(.show(.left(episode.slug))))
@@ -238,6 +240,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
   case let .section(collection, index):
     let section = collection.sections[index]
     return relatedItemRow(
+      icon: collectionIconSvgBase64,
       title: section.title,
       length: section.length,
       url: path(to: .collections(.section(collection.slug, section.slug)))
@@ -246,6 +249,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
 }
 
 private func relatedItemRow(
+  icon: String,
   title: String,
   length: Seconds<Int>,
   url: String
@@ -278,9 +282,12 @@ private func relatedItemRow(
         ]),
       ],
       .gridRow(
-        .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
-          .class([Class.padding([.mobile: [.right: 1]])]),
-        ]),
+        .img(
+          base64: icon,
+          type: .image(.svg),
+          alt: "",
+          attributes: [.class([Class.padding([.mobile: [.right: 1]])])]
+        ),
         .text(title)
       )
     ),
