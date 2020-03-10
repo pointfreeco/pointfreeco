@@ -26,7 +26,7 @@ public func unsafeMark(from markdown: String) -> String {
   return String(cString: cString)
 }
 
-private let markdownContainerClass = CssSelector.class("md-ctn")
+public let markdownContainerClass = CssSelector.class("md-ctn")
 public let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
     hrMarkdownStyles
