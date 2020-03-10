@@ -467,8 +467,8 @@ func transcriptView(
             .desktop: [
               .left: 4,
               .right: needsExtraPadding ? 4 : 3,
-              .top: 2,
               .bottom: 4,
+              .top: 2,
             ]
           ])
         ]
