@@ -24,6 +24,12 @@ Not only can `map` be defined on types that represent parsing, but it can even b
 """#,
             content: .episode(.ep30_composableRandomness)
           ),
+          .init(
+            blurb: #"""
+In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little _flip_!
+"""#,
+            content: .episode(.ep14_contravariance)
+          )
         ],
         title: "Map",
         whereToGoFromHere: #"""
@@ -60,7 +66,7 @@ You can accomplish quite a bit with the `map` and `zip` operations alone, such a
       ),
       .init(
         blurb: #"""
-TODO
+The `flatMap` operation completes the functional trio, and gives us the power to sequence computations. Where `map` allowed us to transform a single computation, and `zip` allowed us to transform many independent computations at once, `flatMap` instead allows us to run one computation after another so that each subsequent computation can depend on the result of the previous.
 """#,
         coreLessons: [
           .init(episode: .ep42_theManyFacesOfFlatMap_pt1),
@@ -72,14 +78,16 @@ TODO
         related: [
           .init(
             blurb: #"""
-TODO
+When exploring ways to cook up complex form of randomness, such as randomly sized arrays of random values, we were naturally led to the concept of `flatMap`. It was exactly what we needed to allow new random values to depend on previous random values.
 """#,
-            content: .episode(.ep32_decodableRandomness_pt2)
+            content: .episode(.ep48_predictableRandomness_pt2)
           )
         ],
         title: "Flat‑Map",
         whereToGoFromHere: #"""
-Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little flip!
+Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little _flip_!
+
+* [Contravariance](/episodes/\#(Episode.ep14_contravariance.slug))
 """#
       ),
     ],
