@@ -18,9 +18,14 @@ TODO
             blurb: #"""
 TODO
 """#,
-            content: .episode(.ep13_theManyFacesOfMap)
+            content: .section(.mapZipFlatMap, index: 0)
           ),
-          // TODO: Zip, Flat-Map?
+          .init(
+            blurb: #"""
+TODO
+"""#,
+            content: .section(.mapZipFlatMap, index: 1)
+          ),
         ],
         title: "Composable Randomness",
         whereToGoFromHere: #"""
@@ -40,13 +45,16 @@ TODO
             blurb: #"""
 TODO
 """#,
-            content: .episode(.ep49_generativeArt_pt1)
+            content: .section(.mapZipFlatMap, index: 2)
           ),
           .init(
             blurb: #"""
 TODO
 """#,
-            content: .episode(.ep50_generativeArt_pt2)
+            content: .episodes([
+              .ep49_generativeArt_pt1,
+              .ep50_generativeArt_pt2,
+            ])
           ),
         ],
         title: "Predictable Randomness",

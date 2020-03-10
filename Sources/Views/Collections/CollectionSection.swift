@@ -217,16 +217,23 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
     return relatedItemRow(
       title: collection.title,
       length: collection.length,
-      url: url(to: .collections(.show(collection.slug)))
+      url: path(to: .collections(.show(collection.slug)))
     )
   case let .episodes(episodes):
     return .fragment(episodes.map { episode in
       relatedItemRow(
         title: episode.fullTitle,
         length: episode.length,
-        url: url(to: .episode(.show(.left(episode.slug))))
+        url: path(to: .episode(.show(.left(episode.slug))))
       )
     })
+  case let .section(collection, index):
+    let section = collection.sections[index]
+    return relatedItemRow(
+      title: section.title,
+      length: section.length,
+      url: path(to: .collections(.section(collection.slug, section.slug)))
+    )
   }
 }
 
