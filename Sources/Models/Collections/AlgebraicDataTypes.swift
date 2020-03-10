@@ -19,7 +19,9 @@ Using algebraic data types as our guiding light we are able to model a collectio
       ],
       title: "Algebraic Data Types",
       whereToGoFromHere: #"""
-TODO
+Once you see that enums and structs correspond to addition and multiplication from algebra, and therefore are deeply related concepts, you might wonder what else is there to their connection? Well, quite a bit, and we have an entire collection of episodes dedicated to discovering more about what unites enums and structs:
+
+* [Enums and Structs](/collections/enums-and-structs)
 """#
     )
   )
