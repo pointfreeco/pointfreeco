@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62765
+Content-Length: 63262
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1808,6 +1808,13 @@ Point-Free!</p>
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a class="pf-link-black"
+                   href="/collections">
+                  Collections
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/blog"
                    class="pf-link-black">
                   Blog
@@ -2441,6 +2448,16 @@ per month. Your first invoice will be prorated based on your current billing cyc
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>
