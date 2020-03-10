@@ -438,15 +438,10 @@ private func chaptersRow(data: NewEpisodePageData) -> Node {
                 Class.pf.type.body.small,
               ])
             ],
-            .a(
-              attributes: [
-                .href(
-                  isEpisodeViewable(for: data.permission)
-                    ? "#t\(block.timestamp ?? 0)"
-                    : ""
-                ),
-              ],
-              .text(block.content)
+            timestampChapterLink(
+              isEpisodeViewable: isEpisodeViewable(for: data.permission),
+              timestamp: block.timestamp,
+              title: block.content
             )
           ),
           .gridColumn(
@@ -458,26 +453,68 @@ private func chaptersRow(data: NewEpisodePageData) -> Node {
                 Class.type.align.end
               ])
             ],
-            .a(
-              attributes: [
-                .href(
-                  isEpisodeViewable(for: data.permission)
-                    ? "#t\(block.timestamp ?? 0)"
-                    : ""
-                ),
-                .class([
-                  Class.pf.type.body.small,
-                  Class.pf.colors.link.gray650
-                ]),
-                .style(safe: "font-variant-numeric: tabular-nums")
-              ],
-              .text(timestampLabel(for: block.timestamp ?? 0))
-            )
+            block.timestamp
+              .map {
+                timestampLink(
+                  isEpisodeViewable: isEpisodeViewable(for: data.permission),
+                  timestamp: $0
+                )
+              }
+              ?? []
           )
         )
       }
     )
   )
+}
+
+private func timestampChapterLink(
+  isEpisodeViewable: Bool,
+  timestamp: Int?,
+  title: String
+) -> Node {
+  assert(timestamp != nil)
+  guard let timestamp = timestamp else { return [] }
+  if isEpisodeViewable {
+    return .a(
+      attributes: [
+        .href("#t\(timestamp)"),
+      ],
+      .text(title)
+    )
+  } else {
+    return .text(title)
+  }
+}
+
+private func timestampLink(
+  isEpisodeViewable: Bool,
+  timestamp: Int
+) -> Node {
+  if isEpisodeViewable {
+    return .a(
+      attributes: [
+        .href("#t\(timestamp)"),
+        .class([
+          Class.pf.type.body.small,
+          Class.pf.colors.link.gray650,
+        ]),
+        .style(safe: "font-variant-numeric: tabular-nums")
+      ],
+      .text(timestampLabel(for: timestamp))
+    )
+  } else {
+    return .span(
+      attributes: [
+        .class([
+          Class.pf.type.body.small,
+          Class.pf.colors.fg.gray650,
+        ]),
+        .style(safe: "font-variant-numeric: tabular-nums")
+      ],
+      .text(timestampLabel(for: timestamp))
+    )
+  }
 }
 
 private func exercisesRow(episode: Episode) -> Node {

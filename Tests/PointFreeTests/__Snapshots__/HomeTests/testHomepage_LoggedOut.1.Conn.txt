@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 66804
+Content-Length: 66802
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1873,7 +1873,7 @@ html {
                         pf-link-black
                         d-mr3
                         m-mr2">
-                Subscribe
+                Pricing
               </a>
               <a href="/login?redirect=http://localhost:8080"
                  class="medium

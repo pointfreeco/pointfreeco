@@ -2189,9 +2189,7 @@ text-overflow: ellipsis">
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Introduction
-                  </a>
+                  Introduction
                 </div>
                 <div class="fg-black
                             normal
@@ -2201,15 +2199,14 @@ text-overflow: ellipsis">
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     00:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2230,9 +2227,7 @@ text-overflow: ellipsis">
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Title
-                  </a>
+                  Title
                 </div>
                 <div class="fg-black
                             normal
@@ -2242,15 +2237,14 @@ text-overflow: ellipsis">
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     00:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2271,9 +2265,7 @@ text-overflow: ellipsis">
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Title Block
-                  </a>
+                  Title Block
                 </div>
                 <div class="fg-black
                             normal
@@ -2283,15 +2275,14 @@ text-overflow: ellipsis">
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     01:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2312,9 +2303,7 @@ text-overflow: ellipsis">
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Another Title
-                  </a>
+                  Another Title
                 </div>
                 <div class="fg-black
                             normal
@@ -2324,15 +2313,14 @@ text-overflow: ellipsis">
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     02:00
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
