@@ -7,11 +7,7 @@ import Tuple
 import Views
 
 let collectionsIndexMiddleware: M<Tuple3<User?, SubscriberState, Route?>>
-  = basicAuth(
-    user: Current.envVars.basicAuth.username,
-    password: Current.envVars.basicAuth.password
-    )
-    <| map(lower)
+  = map(lower)
     >>> writeStatus(.ok)
     >=> respond(
       view: collectionIndex(collections:),

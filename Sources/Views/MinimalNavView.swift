@@ -94,12 +94,10 @@ private func loggedInNavItemsView(
 ) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
-    currentUser.isAdmin
-      ? .li(
+    .li(
         attributes: [.class([navListItemClass])],
         collectionsLinkView(style: style)
-        )
-      : [],
+    ),
     .li(
       attributes: [.class([navListItemClass])],
       blogLinkView(style: style)
@@ -114,7 +112,7 @@ private func loggedInNavItemsView(
 private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: Route?) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
-//    .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
+    .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], blogLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], logInLinkView(style: style, currentRoute: currentRoute))

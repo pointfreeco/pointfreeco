@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 77237
+Content-Length: 79838
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1848,7 +1848,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
     </script>
   </head>
   <body>
-    <div class="bg-blue900
+    <div class="bg-black
                 d-pt2
                 d-pb2
                 m-pl2
@@ -1866,7 +1866,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                       col-m">
             <a class="start-m"
                href="/">
-              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzJweCIgaGVpZ2h0PSI3MnB4IiB2aWV3Qm94PSIwIDAgNzIgNzIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iR3JvdXAiIGZpbGw9IiMxMjEyMTIiPgogICAgICAgICAgICA8cGF0aCBkPSJNNTQuMzM2MzI4Niw1My42NjM2NzE0IEwzNiw3MiBMMTcuNjYzNjcxNCw1My42NjM2NzE0IEwxOC4xMTkxMTg2LDUzLjY2MzY3MTQgTDE4LjExOTExODYsNDkuNjkxMjY2MSBMMjIuNjM3NDkzLDQ5LjY5MTI2NjEgTDIyLjYzNzQ5Myw0Ni44Nzc0Nzg5IEwxOC4xMTkxMTg2LDQ2Ljg3NzQ3ODkgTDE4LjExOTExODYsNDMuOTcxNzM4IEwyMy4yNDExNjI1LDQzLjk3MTczOCBMMjMuMjQxMTYyNSw0MS4xNTc5NTA5IEwxNC43ODk3OTAxLDQxLjE1Nzk1MDkgTDE0Ljc4OTc5MDEsNTAuNzg5NzkwMSBMMi4xMzE2MjgyMWUtMTQsMzYgTDcuNzk3Mjg1NTksMjguMjAyNzE0NCBMNy43OTcyODU1OSwzNS4yNzI5MDU5IEwxMS4xMjY2MTQxLDM1LjI3MjkwNTkgTDExLjEyNjYxNDEsMzIuNTY5NDYzNCBMMTIuNTE2ODgzMSwzMi41Njk0NjM0IEMxNS44NjQ1MDQ3LDMyLjU2OTQ2MzQgMTcuNzQ4Njg1MSwzMC40NTQ1MjU0IDE3Ljc0ODY4NTEsMjcuNjc3NTE5OCBDMTcuNzQ4Njg1MSwyNS4wOTU5MTI5IDE2LjEyMDMyOTcsMjMuMDcwNTg3NSAxMy4yMDE2NDc0LDIyLjc5ODM1MjYgTDM2LDIuMTMxNjI4MjFlLTE0IEw1OC43NjcxODU0LDIyLjc2NzE4NTQgTDU0LjI5ODEyNjcsMjIuNzY3MTg1NCBMNTQuMjk4MTI2NywyNS41ODA5NzI1IEw1Ny41OTA4NjkxLDI1LjU4MDk3MjUgTDU3LjU5MDg2OTEsMzUuMjcyOTA1OSBMNjAuOTIwMTk3NiwzNS4yNzI5MDU5IEw2MC45MjAxOTc2LDI1LjU4MDk3MjUgTDYxLjU4MDk3MjUsMjUuNTgwOTcyNSBMNzIsMzYgTDU3LjE1MDExNTcsNTAuODQ5ODg0MyBMNTIuMDI5NzkyOSw1MC44NDk4ODQzIEw1Mi4wMjk3OTI5LDQ5LjU0NDEzOTkgTDU2LjUyOTg3NDMsNDkuNTQ0MTM5OSBMNTYuNTI5ODc0Myw0Ni44Nzc0Nzg5IEw1Mi4wMjk3OTI5LDQ2Ljg3NzQ3ODkgTDUyLjAyOTc5MjksNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDEuMTU3OTUwOSBMNDguNzAwNDY0NCw0MS4xNTc5NTA5IEw0OC43MDA0NjQ0LDUzLjY2MzY3MTQgTDU0LjMzNjMyODYsNTMuNjYzNjcxNCBaIE0xMS4xMjY2MTQxLDI5LjczNzI4NTUgTDExLjEyNjYxNDEsMjUuNTk5MzYzMyBMMTIuMzUyMjQ2LDI1LjU5OTM2MzMgQzEzLjg1MjI3MzIsMjUuNTk5MzYzMyAxNC40MDEwNjM2LDI2LjQ2MzcyOTMgMTQuNDAxMDYzNiwyNy42Nzc1MTk4IEMxNC40MDEwNjM2LDI4Ljg5MTMxMDMgMTMuODUyMjczMiwyOS43MzcyODU1IDEyLjM1MjI0NiwyOS43MzcyODU1IEwxMS4xMjY2MTQxLDI5LjczNzI4NTUgWiBNMjYuMDIxNzAwNiwzNS40Mzg0MjI4IEMyOS42MDcxMzEzLDM1LjQzODQyMjggMzIuNjk4NjUwNiwzMi43OTAxNTI2IDMyLjY5ODY1MDYsMjkuMDIwMDQ1NyBDMzIuNjk4NjUwNiwyNS4yNDk5Mzg3IDI5LjYwNzEzMTMsMjIuNjIwMDU5MyAyNi4wMjE3MDA2LDIyLjYyMDA1OTMgQzIyLjQzNjI2OTksMjIuNjIwMDU5MyAxOS4zNDQ3NTA1LDI1LjI0OTkzODcgMTkuMzQ0NzUwNSwyOS4wMjAwNDU3IEMxOS4zNDQ3NTA1LDMyLjc5MDE1MjYgMjIuNDM2MjY5OSwzNS40Mzg0MjI4IDI2LjAyMTcwMDYsMzUuNDM4NDIyOCBaIE0yNi4wMjE3MDA2LDMyLjUzMjY4MTkgQzIzLjkzNjI5NywzMi41MzI2ODE5IDIyLjc0NzI1MTEsMzAuOTg3ODU3NiAyMi43NDcyNTExLDI5LjAyMDA0NTcgQzIyLjc0NzI1MTEsMjcuMDUyMjMzOCAyMy45MzYyOTcsMjUuNTI1ODAwMiAyNi4wMjE3MDA2LDI1LjUyNTgwMDIgQzI4LjEwNzEwNDIsMjUuNTI1ODAwMiAyOS4yOTYxNSwyNy4wNTIyMzM4IDI5LjI5NjE1LDI5LjAyMDA0NTcgQzI5LjI5NjE1LDMwLjk4Nzg1NzYgMjguMTA3MTA0MiwzMi41MzI2ODE5IDI2LjAyMTcwMDYsMzIuNTMyNjgxOSBaIE0zNC44OTgzODU1LDM1LjI3MjkwNTkgTDM4LjIyNzcxNCwzNS4yNzI5MDU5IEwzOC4yMjc3MTQsMjIuNzY3MTg1NCBMMzQuODk4Mzg1NSwyMi43NjcxODU0IEwzNC44OTgzODU1LDM1LjI3MjkwNTkgWiBNNTEuOTcwMzQwNiwzNS40OTM1OTUxIEM1Mi4xNzE1NjM4LDM1LjY1OTExMiA1Mi4yMjY0NDI4LDM1LjYwMzkzOTcgNTIuMjI2NDQyOCwzNS40NTY4MTM2IEw1Mi4yMjY0NDI4LDIyLjc2NzE4NTQgTDQ5LjA5ODMzNzUsMjIuNzY3MTg1NCBMNDkuMDk4MzM3NSwyOS4wMzg0MzY0IEw0MS4yODcyMjA2LDIyLjU2NDg4NyBDNDEuMDg1OTk3NCwyMi4zOTkzNzAxIDQxLjAzMTExODQsMjIuNDkxMzIzOSA0MS4wMzExMTg0LDIyLjYwMTY2ODUgTDQxLjAzMTExODQsMzUuMjcyOTA1OSBMNDQuMTU5MjIzOCwzNS4yNzI5MDU5IEw0NC4xNTkyMjM4LDI5LjAzODQzNjQgTDUxLjk3MDM0MDYsMzUuNDkzNTk1MSBaIE0zMy4xNjA1NDkyLDUwLjExNDI1MzcgQzM0LjYyMzk5MDMsNDkuMzA1MDYgMzUuNDEwNTg5OSw0Ny44NzA1ODAzIDM1LjQxMDU4OTksNDYuMDY4Mjg1MyBDMzUuNDEwNTg5OSw0My4yOTEyNzk3IDMzLjUyNjQwOTUsNDEuMTU3OTUwOSAzMC4xNzg3ODgsNDEuMTU3OTUwOSBMMjUuNDU5MTkwNCw0MS4xNTc5NTA5IEwyNS40NTkxOTA0LDUzLjY2MzY3MTQgTDI4Ljc4ODUxODksNTMuNjYzNjcxNCBMMjguNzg4NTE4OSw1MC43OTQ3MTIgTDMwLjAzMjQ0MzksNTAuNzk0NzEyIEwzMS43NzAyODAyLDUzLjY2MzY3MTQgTDM1LjM3NDAwMzksNTMuNjYzNjcxNCBMMzMuMTYwNTQ5Miw1MC4xMTQyNTM3IFogTTI4Ljc4ODUxODksNDguMTI4MDUxIEwyOC43ODg1MTg5LDQzLjk5MDEyODggTDMwLjAxNDE1MDgsNDMuOTkwMTI4OCBDMzEuNTE0MTc4LDQzLjk5MDEyODggMzIuMDYyOTY4NCw0NC44NTQ0OTQ3IDMyLjA2Mjk2ODQsNDYuMDY4Mjg1MyBDMzIuMDYyOTY4NCw0Ny4yODIwNzU4IDMxLjUxNDE3OCw0OC4xMjgwNTEgMzAuMDE0MTUwOCw0OC4xMjgwNTEgTDI4Ljc4ODUxODksNDguMTI4MDUxIFogTTM3LjUzNzE1MjgsNTMuNjYzNjcxNCBMNDYuNTE5MDIyNSw1My42NjM2NzE0IEw0Ni41MTkwMjI1LDUwLjg0OTg4NDMgTDQwLjg2NjQ4MTMsNTAuODQ5ODg0MyBMNDAuODY2NDgxMyw0OS41NDQxMzk5IEw0NS4zNjY1NjI3LDQ5LjU0NDEzOTkgTDQ1LjM2NjU2MjcsNDYuODc3NDc4OSBMNDAuODY2NDgxMyw0Ni44Nzc0Nzg5IEw0MC44NjY0ODEzLDQzLjk3MTczOCBMNDYuMjYyOTIwMyw0My45NzE3MzggTDQ2LjI2MjkyMDMsNDEuMTU3OTUwOSBMMzcuNTM3MTUyOCw0MS4xNTc5NTA5IEwzNy41MzcxNTI4LDUzLjY2MzY3MTQgWiIgaWQ9ImdseXBoIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
+              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzJweCIgaGVpZ2h0PSI3MnB4IiB2aWV3Qm94PSIwIDAgNzIgNzIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iR3JvdXAiIGZpbGw9IiNmZmZmZmYiPgogICAgICAgICAgICA8cGF0aCBkPSJNNTQuMzM2MzI4Niw1My42NjM2NzE0IEwzNiw3MiBMMTcuNjYzNjcxNCw1My42NjM2NzE0IEwxOC4xMTkxMTg2LDUzLjY2MzY3MTQgTDE4LjExOTExODYsNDkuNjkxMjY2MSBMMjIuNjM3NDkzLDQ5LjY5MTI2NjEgTDIyLjYzNzQ5Myw0Ni44Nzc0Nzg5IEwxOC4xMTkxMTg2LDQ2Ljg3NzQ3ODkgTDE4LjExOTExODYsNDMuOTcxNzM4IEwyMy4yNDExNjI1LDQzLjk3MTczOCBMMjMuMjQxMTYyNSw0MS4xNTc5NTA5IEwxNC43ODk3OTAxLDQxLjE1Nzk1MDkgTDE0Ljc4OTc5MDEsNTAuNzg5NzkwMSBMMi4xMzE2MjgyMWUtMTQsMzYgTDcuNzk3Mjg1NTksMjguMjAyNzE0NCBMNy43OTcyODU1OSwzNS4yNzI5MDU5IEwxMS4xMjY2MTQxLDM1LjI3MjkwNTkgTDExLjEyNjYxNDEsMzIuNTY5NDYzNCBMMTIuNTE2ODgzMSwzMi41Njk0NjM0IEMxNS44NjQ1MDQ3LDMyLjU2OTQ2MzQgMTcuNzQ4Njg1MSwzMC40NTQ1MjU0IDE3Ljc0ODY4NTEsMjcuNjc3NTE5OCBDMTcuNzQ4Njg1MSwyNS4wOTU5MTI5IDE2LjEyMDMyOTcsMjMuMDcwNTg3NSAxMy4yMDE2NDc0LDIyLjc5ODM1MjYgTDM2LDIuMTMxNjI4MjFlLTE0IEw1OC43NjcxODU0LDIyLjc2NzE4NTQgTDU0LjI5ODEyNjcsMjIuNzY3MTg1NCBMNTQuMjk4MTI2NywyNS41ODA5NzI1IEw1Ny41OTA4NjkxLDI1LjU4MDk3MjUgTDU3LjU5MDg2OTEsMzUuMjcyOTA1OSBMNjAuOTIwMTk3NiwzNS4yNzI5MDU5IEw2MC45MjAxOTc2LDI1LjU4MDk3MjUgTDYxLjU4MDk3MjUsMjUuNTgwOTcyNSBMNzIsMzYgTDU3LjE1MDExNTcsNTAuODQ5ODg0MyBMNTIuMDI5NzkyOSw1MC44NDk4ODQzIEw1Mi4wMjk3OTI5LDQ5LjU0NDEzOTkgTDU2LjUyOTg3NDMsNDkuNTQ0MTM5OSBMNTYuNTI5ODc0Myw0Ni44Nzc0Nzg5IEw1Mi4wMjk3OTI5LDQ2Ljg3NzQ3ODkgTDUyLjAyOTc5MjksNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDEuMTU3OTUwOSBMNDguNzAwNDY0NCw0MS4xNTc5NTA5IEw0OC43MDA0NjQ0LDUzLjY2MzY3MTQgTDU0LjMzNjMyODYsNTMuNjYzNjcxNCBaIE0xMS4xMjY2MTQxLDI5LjczNzI4NTUgTDExLjEyNjYxNDEsMjUuNTk5MzYzMyBMMTIuMzUyMjQ2LDI1LjU5OTM2MzMgQzEzLjg1MjI3MzIsMjUuNTk5MzYzMyAxNC40MDEwNjM2LDI2LjQ2MzcyOTMgMTQuNDAxMDYzNiwyNy42Nzc1MTk4IEMxNC40MDEwNjM2LDI4Ljg5MTMxMDMgMTMuODUyMjczMiwyOS43MzcyODU1IDEyLjM1MjI0NiwyOS43MzcyODU1IEwxMS4xMjY2MTQxLDI5LjczNzI4NTUgWiBNMjYuMDIxNzAwNiwzNS40Mzg0MjI4IEMyOS42MDcxMzEzLDM1LjQzODQyMjggMzIuNjk4NjUwNiwzMi43OTAxNTI2IDMyLjY5ODY1MDYsMjkuMDIwMDQ1NyBDMzIuNjk4NjUwNiwyNS4yNDk5Mzg3IDI5LjYwNzEzMTMsMjIuNjIwMDU5MyAyNi4wMjE3MDA2LDIyLjYyMDA1OTMgQzIyLjQzNjI2OTksMjIuNjIwMDU5MyAxOS4zNDQ3NTA1LDI1LjI0OTkzODcgMTkuMzQ0NzUwNSwyOS4wMjAwNDU3IEMxOS4zNDQ3NTA1LDMyLjc5MDE1MjYgMjIuNDM2MjY5OSwzNS40Mzg0MjI4IDI2LjAyMTcwMDYsMzUuNDM4NDIyOCBaIE0yNi4wMjE3MDA2LDMyLjUzMjY4MTkgQzIzLjkzNjI5NywzMi41MzI2ODE5IDIyLjc0NzI1MTEsMzAuOTg3ODU3NiAyMi43NDcyNTExLDI5LjAyMDA0NTcgQzIyLjc0NzI1MTEsMjcuMDUyMjMzOCAyMy45MzYyOTcsMjUuNTI1ODAwMiAyNi4wMjE3MDA2LDI1LjUyNTgwMDIgQzI4LjEwNzEwNDIsMjUuNTI1ODAwMiAyOS4yOTYxNSwyNy4wNTIyMzM4IDI5LjI5NjE1LDI5LjAyMDA0NTcgQzI5LjI5NjE1LDMwLjk4Nzg1NzYgMjguMTA3MTA0MiwzMi41MzI2ODE5IDI2LjAyMTcwMDYsMzIuNTMyNjgxOSBaIE0zNC44OTgzODU1LDM1LjI3MjkwNTkgTDM4LjIyNzcxNCwzNS4yNzI5MDU5IEwzOC4yMjc3MTQsMjIuNzY3MTg1NCBMMzQuODk4Mzg1NSwyMi43NjcxODU0IEwzNC44OTgzODU1LDM1LjI3MjkwNTkgWiBNNTEuOTcwMzQwNiwzNS40OTM1OTUxIEM1Mi4xNzE1NjM4LDM1LjY1OTExMiA1Mi4yMjY0NDI4LDM1LjYwMzkzOTcgNTIuMjI2NDQyOCwzNS40NTY4MTM2IEw1Mi4yMjY0NDI4LDIyLjc2NzE4NTQgTDQ5LjA5ODMzNzUsMjIuNzY3MTg1NCBMNDkuMDk4MzM3NSwyOS4wMzg0MzY0IEw0MS4yODcyMjA2LDIyLjU2NDg4NyBDNDEuMDg1OTk3NCwyMi4zOTkzNzAxIDQxLjAzMTExODQsMjIuNDkxMzIzOSA0MS4wMzExMTg0LDIyLjYwMTY2ODUgTDQxLjAzMTExODQsMzUuMjcyOTA1OSBMNDQuMTU5MjIzOCwzNS4yNzI5MDU5IEw0NC4xNTkyMjM4LDI5LjAzODQzNjQgTDUxLjk3MDM0MDYsMzUuNDkzNTk1MSBaIE0zMy4xNjA1NDkyLDUwLjExNDI1MzcgQzM0LjYyMzk5MDMsNDkuMzA1MDYgMzUuNDEwNTg5OSw0Ny44NzA1ODAzIDM1LjQxMDU4OTksNDYuMDY4Mjg1MyBDMzUuNDEwNTg5OSw0My4yOTEyNzk3IDMzLjUyNjQwOTUsNDEuMTU3OTUwOSAzMC4xNzg3ODgsNDEuMTU3OTUwOSBMMjUuNDU5MTkwNCw0MS4xNTc5NTA5IEwyNS40NTkxOTA0LDUzLjY2MzY3MTQgTDI4Ljc4ODUxODksNTMuNjYzNjcxNCBMMjguNzg4NTE4OSw1MC43OTQ3MTIgTDMwLjAzMjQ0MzksNTAuNzk0NzEyIEwzMS43NzAyODAyLDUzLjY2MzY3MTQgTDM1LjM3NDAwMzksNTMuNjYzNjcxNCBMMzMuMTYwNTQ5Miw1MC4xMTQyNTM3IFogTTI4Ljc4ODUxODksNDguMTI4MDUxIEwyOC43ODg1MTg5LDQzLjk5MDEyODggTDMwLjAxNDE1MDgsNDMuOTkwMTI4OCBDMzEuNTE0MTc4LDQzLjk5MDEyODggMzIuMDYyOTY4NCw0NC44NTQ0OTQ3IDMyLjA2Mjk2ODQsNDYuMDY4Mjg1MyBDMzIuMDYyOTY4NCw0Ny4yODIwNzU4IDMxLjUxNDE3OCw0OC4xMjgwNTEgMzAuMDE0MTUwOCw0OC4xMjgwNTEgTDI4Ljc4ODUxODksNDguMTI4MDUxIFogTTM3LjUzNzE1MjgsNTMuNjYzNjcxNCBMNDYuNTE5MDIyNSw1My42NjM2NzE0IEw0Ni41MTkwMjI1LDUwLjg0OTg4NDMgTDQwLjg2NjQ4MTMsNTAuODQ5ODg0MyBMNDAuODY2NDgxMyw0OS41NDQxMzk5IEw0NS4zNjY1NjI3LDQ5LjU0NDEzOTkgTDQ1LjM2NjU2MjcsNDYuODc3NDc4OSBMNDAuODY2NDgxMyw0Ni44Nzc0Nzg5IEw0MC44NjY0ODEzLDQzLjk3MTczOCBMNDYuMjYyOTIwMyw0My45NzE3MzggTDQ2LjI2MjkyMDMsNDEuMTU3OTUwOSBMMzcuNTM3MTUyOCw0MS4xNTc5NTA5IEwzNy41MzcxNTI4LDUzLjY2MzY3MTQgWiIgaWQ9ImdseXBoIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
                    alt="Point-Free">
             </a>
           </div>
@@ -1874,7 +1874,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                       col-m
                       col-d-3">
             <a href="/">
-              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iIzEyMTIxMiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"
+              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"
                    alt="Point-Free">
             </a>
           </div>
@@ -1888,22 +1888,29 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a class="pf-link-gray650"
+                   href="/collections">
+                  Collections
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/blog"
-                   class="pf-link-black">
+                   class="pf-link-gray650">
                   Blog
                 </a>
               </li>
               <li class="m-pl2
                          inline">
                 <a href="/pricing"
-                   class="pf-link-black">
+                   class="pf-link-gray650">
                   Pricing
                 </a>
               </li>
               <li class="m-pl2
                          inline">
                 <a href="/account"
-                   class="pf-link-black">
+                   class="pf-link-gray650">
                   Account
                 </a>
               </li>
@@ -1912,186 +1919,412 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="hide-d
-                  col-m
-                  col-m-12">
-        <div>
+    <div class="bg-black
+                border-top"
+         style="border-top-color:#000">
+      <div class="middle-d
+                  d-pl5
+                  d-pr5
+                  m-pb5
+                  m-pt4
+                  m-pl3
+                  m-pr3
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="col-m
+                    col-m-12">
+          <h1 class="fg-white
+                     fg-black
+                     bold
+                     ts-d-r3
+                     ts-m-r2
+                     lh-2
+                     center"
+              style="line-height:1.2">
+            Type-Safe HTML in Swift
+          </h1>
+          <div class="m-pb2
+                      fg-gray650
+                      fg-black
+                      normal
+                      h6
+                      lh-4
+                      center">
+            Episode #1 • Jun 20, 2017 • Free Episode
+          </div>
           <div class="d-pl4
                       d-pr4
-                      d-pt4
-                      d-pb4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <strong class="fg-black
-                           bold
-                           ts-m-r0_75
-                           lh-1
-                           caps">
-              #1 • Tuesday Jun 20, 2017 • Free Episode
-            </strong>
-            <h1 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2
-                       m-mt2">
-              <a href="/episodes/ep1-type-safe-html-in-swift">
-                Type-Safe HTML in Swift
-              </a>
-            </h1>
-            <div class="body-leading
-                        fg-black
-                        normal
-                        lh-4">
-              <div class="md-ctn">
-                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
+                      m-pt1
+                      m-pl2
+                      m-pr2
+                      fg-gray850
+                      fg-black
+                      normal
+                      h5
+                      lh-4">
+            <div class="md-ctn">
+              <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
-              </div>
-            </div>
-            <div class="d-pt3
-                        m-pt2">
-              <a class="pf-link-purple
-                        m-mr2"
-                 href="#transcript">
-                Transcript
-              </a>
-              <a class="pf-link-purple
-                        m-mr2"
-                 href="#exercises">
-                Exercises
-              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-m
-                  col-d-6
-                  col-m-12">
-        <div class="hide-m">
-          <div class="d-pl4
-                      d-pr4
-                      d-pt4
-                      d-pb4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <strong class="fg-black
-                           bold
-                           ts-m-r0_75
-                           lh-1
-                           caps">
-              #1 • Tuesday Jun 20, 2017 • Free Episode
-            </strong>
-            <h1 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2
-                       m-mt2">
-              <a href="/episodes/ep1-type-safe-html-in-swift">
-                Type-Safe HTML in Swift
-              </a>
-            </h1>
-            <div class="body-leading
-                        fg-black
-                        normal
-                        lh-4">
-              <div class="md-ctn">
-                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
+    <div class="border-top"
+         style="border-top-color:#333">
+      <div class="middle-d
+                  d-pl3
+                  d-pr3
+                  m-pb2
+                  m-pl1
+                  m-pr1
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto;
+                  margin-top:-4rem">
+        <div style="-webkit-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
+                    -moz-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
+                    -ms-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
+                    -o-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
+                    box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)"
+             class="col-m
+                    col-m-12">
+          <div class="w-100p
+                      relative"
+               style="padding-bottom:56.25%">
+            <iframe class="h-100p
+                           w-100p
+                           absolute
+                           bg-gray650"
+                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+            </iframe>
+            <script src="https://player.vimeo.com/api/player.js">
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
 
+  jump(window.location.hash, false);
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (target.tagName != "A") { return; }
+    var hash = new URL(target.href).hash;
+    jump(hash, true);
+  });
+
+  function jump(hash, play) {
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+    if (time <= 0) { return; }
+    player.setCurrentTime(time);
+    if (play) { player.play(); }
+  }
+});
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  var lastSeenPercent = 0
+  player.on('timeupdate', function(data) {
+    console.log(data.percent - lastSeenPercent)
+    if (data.percent - lastSeenPercent >= 0.01) {
+      lastSeenPercent = data.percent;
+
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open(
+        "POST",
+        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+      );
+      httpRequest.send();
+    }
+  });
+});
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="top-d
+                d-pt0
+                d-pl0
+                d-pr0
+                m-pb2
+                m-pt3
+                m-pl0
+                m-pr0
+                row"
+         style="max-width:1080px;
+                margin-right:auto;
+                margin-left:auto">
+      <div class="d-pt3
+                  sticky-d
+                  top-0
+                  col-m
+                  col-d-4
+                  col-m-12">
+        <div class="border
+                    rounded
+                    border-gray-850
+                    m-ml3
+                    m-mr1">
+          <div class="m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      border-top
+                      border-gray-850"
+               style="background-color:#fafafa">
+            <div class="m-mb2
+                        middle-m
+                        row">
+              <div class="center
+                          col-m
+                          col-m-1">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
+                     alt
+                     class="align-middle"
+                     style="margin-top:-2px">
+              </div>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4
+                          m-pl1
+                          lh-1
+                          col-m
+                          col-m-11">
+                Type-Safe HTML in Swift
               </div>
             </div>
-            <div class="d-pt3
-                        m-pt2">
-              <a class="pf-link-purple
-                        m-mr2"
-                 href="#transcript">
-                Transcript
-              </a>
-              <a class="pf-link-purple
-                        m-mr2"
-                 href="#exercises">
-                Exercises
-              </a>
+            <div class="m-mb1">
+              <div class="row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <div class="bg-gray850
+                              inline-block"
+                       style="width:2px;
+                              height:100%">
+                  </div>
+                </div>
+                <div class="m-pl1
+                            m-pr1
+                            fg-black
+                            normal
+                            h6
+                            lh-4
+                            col-m
+                            col-m-9">
+                  <a href="#t0">
+                    Template Languages
+                  </a>
+                </div>
+                <div class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            fg-gray650
+                            end-align
+                            col-m
+                            col-m-2">
+                  <a href="#t0"
+                     class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            pf-link-gray650"
+                     style="font-variant-numeric: tabular-nums">
+                    00:00
+                  </a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <div class="bg-gray850
+                              inline-block"
+                       style="width:2px;
+                              height:100%">
+                  </div>
+                </div>
+                <div class="m-pl1
+                            m-pr1
+                            fg-black
+                            normal
+                            h6
+                            lh-4
+                            col-m
+                            col-m-9">
+                  <a href="#t3">
+                    Embedded Domain Specific Language
+                  </a>
+                </div>
+                <div class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            fg-gray650
+                            end-align
+                            col-m
+                            col-m-2">
+                  <a href="#t3"
+                     class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            pf-link-gray650"
+                     style="font-variant-numeric: tabular-nums">
+                    00:03
+                  </a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <div class="bg-gray850
+                              inline-block"
+                       style="width:2px;
+                              height:100%">
+                  </div>
+                </div>
+                <div class="m-pl1
+                            m-pr1
+                            fg-black
+                            normal
+                            h6
+                            lh-4
+                            col-m
+                            col-m-9">
+                  <a href="#t7">
+                    Making the EDSL easier to use
+                  </a>
+                </div>
+                <div class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            fg-gray650
+                            end-align
+                            col-m
+                            col-m-2">
+                  <a href="#t7"
+                     class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            pf-link-gray650"
+                     style="font-variant-numeric: tabular-nums">
+                    00:07
+                  </a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <div class="bg-gray850
+                              inline-block"
+                       style="width:2px;
+                              height:100%">
+                  </div>
+                </div>
+                <div class="m-pl1
+                            m-pr1
+                            fg-black
+                            normal
+                            h6
+                            lh-4
+                            col-m
+                            col-m-9">
+                  <a href="#t9">
+                    Safer Attributes
+                  </a>
+                </div>
+                <div class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            fg-gray650
+                            end-align
+                            col-m
+                            col-m-2">
+                  <a href="#t9"
+                     class="fg-black
+                            normal
+                            h6
+                            lh-4
+                            pf-link-gray650"
+                     style="font-variant-numeric: tabular-nums">
+                    00:09
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="m-pt1
+                        middle-m
+                        row">
+              <div class="center
+                          col-m
+                          col-m-1">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzUtMTMyOUg5NDl2MzU4M0gtNzV6Ii8+CiAgICA8cGF0aCBkPSJNMTMuODMzMyAyLjVIMTAuMzVDMTAgMS41MzMzIDkuMDgzMy44MzMzIDggLjgzMzNjLTEuMDgzMyAwLTIgLjctMi4zNSAxLjY2NjdIMi4xNjY3QzEuMjUgMi41LjUgMy4yNS41IDQuMTY2N3YxMS42NjY2Qy41IDE2Ljc1IDEuMjUgMTcuNSAyLjE2NjcgMTcuNWgxMS42NjY2Yy45MTY3IDAgMS42NjY3LS43NSAxLjY2NjctMS42NjY3VjQuMTY2N0MxNS41IDMuMjUgMTQuNzUgMi41IDEzLjgzMzMgMi41ek04IDIuNWMuNDU4MyAwIC44MzMzLjM3NS44MzMzLjgzMzMgMCAuNDU4NC0uMzc1LjgzMzQtLjgzMzMuODMzNC0uNDU4MyAwLS44MzMzLS4zNzUtLjgzMzMtLjgzMzQgMC0uNDU4My4zNzUtLjgzMzMuODMzMy0uODMzM3ptMS42NjY3IDExLjY2NjdIMy44MzMzVjEyLjVoNS44MzM0djEuNjY2N3ptMi41LTMuMzMzNEgzLjgzMzNWOS4xNjY3aDguMzMzNHYxLjY2NjZ6bTAtMy4zMzMzSDMuODMzM1Y1LjgzMzNoOC4zMzM0VjcuNXoiIGZpbGw9IiMwMDAiLz4KICA8L2c+Cjwvc3ZnPg=="
+                     alt
+                     class="align-middle"
+                     style="margin-top:-4px">
+              </div>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4
+                          m-pl1
+                          col-m
+                          col-m-11">
+                <a href="#exercises">
+                  Exercises
+                </a>
+              </div>
+            </div>
+            <div class="m-pt1
+                        middle-m
+                        row">
+              <div class="center
+                          col-m
+                          col-m-1">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRkZGIiBkPSJNLTc3LTE0MDNIOTQ3djM1ODNILTc3eiIvPjxwYXRoIGQ9Ik0xMS44MzMzIDUuNUg4LjV2LTVoLTV2NUguMTY2N0w2IDExLjMzMzMgMTEuODMzMyA1LjV6TS4xNjY3IDEzdjEuNjY2N2gxMS42NjY2VjEzSC4xNjY3eiIgZmlsbD0iIzAwMCIvPjwvZz48L3N2Zz4="
+                     alt
+                     class="align-middle"
+                     style="margin-top:-2px">
+              </div>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4
+                          m-pl1
+                          col-m
+                          col-m-11">
+                <a href="#downloads">
+                  Downloads
+                </a>
+              </div>
             </div>
           </div>
         </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
-        <div class="center
-                    d-ml4
-                    d-mr4
-                    d-mt4
-                    d-mb4
-                    m-ml3
-                    m-mr3
-                    m-mt3
-                    m-mb3
-                    d-pt2
-                    d-pl2
-                    d-pr2
-                    m-pb3
-                    m-pt1
-                    m-pl1
-                    m-pr1
-                    bg-gray900">
-          <h3 class="fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2">
-            Subscribe to Point&#8209;Free
-          </h3>
-          <p class="body-leading
-                    fg-black
-                    normal
-                    lh-4
-                    m-pb3
-                    m-pt2">
-            You have access to this episode because you used a free episode credit. To get access to all past and
-future episodes, become a subscriber today!
-          </p>
-          <a href="/pricing"
-             class="medium
-                    cursor-pointer
-                    nowrap
-                    btn-normal
-                    rounded
-                    border-none
-                    text-decoration-none
-                    pf-link-white
-                    fg-white
-                    bg-purple
-                    h5
-                    m-pl2
-                    m-pr2">
-            See subscription options
-          </a>
-        </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
+      </div>
+      <div class="col-m
+                  col-d-8
+                  col-m-12">
         <div id="transcript"
              class="d-pb4
                     d-pl4
-                    d-pr4
+                    d-pr3
                     d-pt2
                     m-pl3
                     m-pr3
@@ -2473,256 +2706,41 @@ future episodes, become a subscriber today!
             </li>
           </ol>
         </div>
-      </div>
-      <div class="bg-purple150
-                  first-m
-                  last-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="sticky-d
-                    top-0">
-          <div class="w-100p
-                      relative"
-               style="padding-bottom:56.25%">
-            <iframe class="h-100p
-                           w-100p
-                           absolute
-                           bg-gray650"
-                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
-                    frameborder="0"
-                    allow="autoplay; fullscreen"
-                    allowfullscreen>
-            </iframe>
-            <script src="https://player.vimeo.com/api/player.js">
-            </script>
-            <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
-
-  jump(window.location.hash, false);
-
-  document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.tagName != "A") { return; }
-    var hash = new URL(target.href).hash;
-    jump(hash, true);
-  });
-
-  function jump(hash, play) {
-    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
-    if (time <= 0) { return; }
-    player.setCurrentTime(time);
-    if (play) { player.play(); }
-  }
-});
-            </script>
-            <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
-
-  var lastSeenPercent = 0
-  player.on('timeupdate', function(data) {
-    console.log(data.percent - lastSeenPercent)
-    if (data.percent - lastSeenPercent >= 0.01) {
-      lastSeenPercent = data.percent;
-
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open(
-        "POST",
-        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-      );
-      httpRequest.send();
-    }
-  });
-});
-            </script>
-          </div>
-          <div class="d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3">
-            <h6 class="fg-black
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3">
+          <h2 id="downloads"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Downloads
+          </h2>
+          <div class="border
+                      rounded
+                      border-gray-850
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2">
+            <h3 class="fg-black
                        bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       fg-gray850
-                       m-pb1">
-              Chapters
-            </h6>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t0"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Template Languages
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t0"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Template Languages
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  00:00
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t3"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Embedded Domain Specific Language
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t3"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Embedded Domain Specific Language
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  00:03
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t7"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Making the EDSL easier to use
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t7"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Making the EDSL easier to use
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  00:07
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="hide-m">
-                    <a href="#t9"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Safer Attributes
-                    </a>
-                  </div>
-                  <div class="hide-d">
-                    <a href="#t9"
-                       class="pf-link-green
-                              text-decoration-none
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                      Safer Attributes
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  00:09
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pb3">
-            <h6 class="fg-black
-                       bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       fg-gray850
-                       m-pb1">
-              Downloads
-            </h6>
-            <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGMDgwIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Sample Code
+            </h3>
+            <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjOTc0ZGZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
                  alt
                  class="align-middle"
                  width="20"
                  height="20">
             <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep1-type-safe-html"
-               class="pf-link-yellow
+               class="pf-link-purple
                       m-ml1
                       align-middle">
               ep1-type-safe-html
@@ -2810,6 +2828,16 @@ future episodes, become a subscriber today!
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>

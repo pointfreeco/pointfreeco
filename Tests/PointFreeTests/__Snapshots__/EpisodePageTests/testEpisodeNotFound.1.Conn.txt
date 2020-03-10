@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/object-oriented-programming
 Cookie: pf_session={}
 
 404 Not Found
-Content-Length: 41979
+Content-Length: 42476
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1767,6 +1767,13 @@ html {
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a class="pf-link-black"
+                   href="/collections">
+                  Collections
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/blog"
                    class="pf-link-black">
                   Blog
@@ -1916,6 +1923,16 @@ html {
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>
