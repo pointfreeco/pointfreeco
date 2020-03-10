@@ -45,9 +45,7 @@ We used our snapshot testing library, in conjunction with the [composable archit
             content: .episode(.ep86_swiftUiSnapshotTesting))
         ],
         title: "Library Design without Protocols",
-        whereToGoFromHere: #"""
-TODO
-"""#
+        whereToGoFromHere: nil
       ),
     ],
     title: "Protocol Witnesses"
