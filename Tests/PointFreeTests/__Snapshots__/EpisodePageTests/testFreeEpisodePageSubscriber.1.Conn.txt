@@ -2031,9 +2031,9 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                    bg-white">
         <div id="transcript"
              class="d-pb4
-                    d-pt2
                     d-pl4
                     d-pr4
+                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
