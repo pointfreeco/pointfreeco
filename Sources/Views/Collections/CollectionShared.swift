@@ -157,7 +157,7 @@ fileprivate extension String {
   }
 }
 
-fileprivate extension Seconds where RawValue == Int {
+extension Seconds where RawValue == Int {
   var formattedDescription: String {
     let length = self.rawValue
     let hours = length / 3600

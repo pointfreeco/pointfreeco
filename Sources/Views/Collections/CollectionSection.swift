@@ -33,12 +33,12 @@ public func collectionSection(
     collectionNavigation(
       left: .a(
         attributes: [
-          .href(path(to: .collections(.show(collection.slug)))),
+          .href(path(to: .collections(collection.sections.count == 1 ? .index : .show(collection.slug)))),
           .class([
             Class.pf.colors.link.gray650
           ])
         ],
-        .text(collection.title)
+        .text(collection.sections.count == 1 ? "Collections" : collection.title)
       )
     ),
     collectionHeader(
@@ -190,7 +190,7 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
               Class.pf.type.responsiveTitle4,
             ]),
           ],
-          "Related episodes"
+          "Related content"
         ),
         .fragment(relatedItems.map(relatedItem))
       )
@@ -199,7 +199,6 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
 }
 
 private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> Node {
-  guard case let .episodes(episodes) = relatedItem.content else { return [] }
   return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
@@ -208,52 +207,84 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
     ])
     ],
     .markdownBlock(relatedItem.blurb),
-    .fragment(episodes.map { episode in
-      .a(
-        attributes: [
-          .class([
-            Class.border.left,
-            Class.flex.items.center,
-            Class.grid.row,
-            Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
-            Class.pf.collections.hoverBackground,
-            Class.pf.collections.hoverLink,
-            Class.pf.colors.border.gray800,
-            Class.pf.colors.bg.gray900,
-          ]),
-          .href(url(to: .episode(.show(.left(episode.slug))))),
-          .style(
-            borderColor(all: .other("#e8e8e8"))
-              <> borderWidth(left: .px(4))
-              <> margin(top: .px(4))
-          ),
-        ],
-        .gridColumn(
-          sizes: [.mobile: 9],
-          attributes: [
-            .class([
-              Class.flex.items.center,
-              Class.grid.start(.mobile),
-            ]),
-          ],
-          .gridRow(
-            .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
-              .class([Class.padding([.mobile: [.right: 1]])]),
-            ]),
-            .text(episode.fullTitle)
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 3],
-          attributes: [
-            .class([
-              Class.grid.end(.mobile),
-            ]),
-          ],
-          .text(episode.length.formattedDescription)
-        )
+    relatedItemContent(relatedItem.content)
+  )
+}
+
+private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
+  switch content {
+  case let .collection(collection):
+    return relatedItemRow(
+      title: collection.title,
+      length: collection.length,
+      url: path(to: .collections(.show(collection.slug)))
+    )
+  case let .episodes(episodes):
+    return .fragment(episodes.map { episode in
+      relatedItemRow(
+        title: episode.fullTitle,
+        length: episode.length,
+        url: path(to: .episode(.show(.left(episode.slug))))
       )
     })
+  case let .section(collection, index):
+    let section = collection.sections[index]
+    return relatedItemRow(
+      title: section.title,
+      length: section.length,
+      url: path(to: .collections(.section(collection.slug, section.slug)))
+    )
+  }
+}
+
+private func relatedItemRow(
+  title: String,
+  length: Seconds<Int>,
+  url: String
+) -> Node {
+  .a(
+    attributes: [
+      .class([
+        Class.border.left,
+        Class.flex.items.center,
+        Class.grid.row,
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+        Class.pf.collections.hoverBackground,
+        Class.pf.collections.hoverLink,
+        Class.pf.colors.border.gray800,
+        Class.pf.colors.bg.gray900,
+      ]),
+      .href(url),
+      .style(
+        borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> margin(top: .px(4))
+      ),
+    ],
+    .gridColumn(
+      sizes: [.mobile: 9],
+      attributes: [
+        .class([
+          Class.flex.items.center,
+          Class.grid.start(.mobile),
+        ]),
+      ],
+      .gridRow(
+        .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
+          .class([Class.padding([.mobile: [.right: 1]])]),
+        ]),
+        .text(title)
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 3],
+      attributes: [
+        .class([
+          Class.grid.end(.mobile),
+        ]),
+      ],
+      .text(length.formattedDescription)
+    )
   )
 }
 
@@ -299,6 +330,7 @@ private func sectionNavigation(
   previousSection: Episode.Collection.Section?,
   nextSection: Episode.Collection.Section?
 ) -> Node {
+  guard previousSection != nil || nextSection != nil else { return [] }
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [
@@ -426,12 +458,4 @@ private func sectionNavigation(
       )
     )
   )
-}
-
-// MARK: - Helpers
-
-private extension Seconds where RawValue == Int {
-  var formattedDescription: String {
-    "\(self.rawValue / 60) min"
-  }
 }

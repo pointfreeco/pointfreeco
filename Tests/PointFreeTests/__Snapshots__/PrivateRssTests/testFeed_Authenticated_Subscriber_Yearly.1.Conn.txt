@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 15839
+Content-Length: 15845
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -166,7 +166,7 @@ with anyone else.
     </item>
     <item>
       <title>
-        A Tale of Two Flat-Maps
+        A Tale of Two Flat‑Maps
       </title>
       <pubDate>
         Tue, 27 Mar 2018 09:57:03 +0000
@@ -211,7 +211,7 @@ with anyone else.
         10
       </itunes:episode>
       <itunes:title>
-        A Tale of Two Flat-Maps
+        A Tale of Two Flat‑Maps
       </itunes:title>
       <itunes:episodeType>
         full
@@ -225,7 +225,7 @@ with anyone else.
                      type="video/mp4"
                      medium="video">
         <media:title>
-          A Tale of Two Flat-Maps
+          A Tale of Two Flat‑Maps
         </media:title>
       </media:content>
     </item>
