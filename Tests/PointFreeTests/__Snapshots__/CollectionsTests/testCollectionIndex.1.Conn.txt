@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56599
+Content-Length: 57098
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1811,6 +1811,13 @@ html {
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a class="pf-link-gray650"
+                   href="/collections">
+                  Collections
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/blog"
                    class="pf-link-gray650">
                   Blog
@@ -2302,6 +2309,16 @@ background: linear-gradient(135deg, #79f2b0 0%, #4cccff 100%)">
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>

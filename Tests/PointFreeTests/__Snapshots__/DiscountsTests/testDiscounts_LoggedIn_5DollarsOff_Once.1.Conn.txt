@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54096
+Content-Length: 54595
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1845,6 +1845,13 @@ html {
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a class="pf-link-gray650"
+                   href="/collections">
+                  Collections
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/blog"
                    class="pf-link-gray650">
                   Blog
@@ -2368,6 +2375,16 @@ window.addEventListener("load", function() {
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>
