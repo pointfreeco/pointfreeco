@@ -213,12 +213,14 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 
 private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
   switch content {
-  case let .collection(collection):
-    return relatedItemRow(
-      title: collection.title,
-      length: collection.length,
-      url: path(to: .collections(.show(collection.slug)))
-    )
+  case let .collections(collections):
+    return .fragment(collections.map { collection in
+      relatedItemRow(
+        title: collection.title,
+        length: collection.length,
+        url: path(to: .collections(.show(collection.slug)))
+      )
+    })
   case let .episodes(episodes):
     return .fragment(episodes.map { episode in
       relatedItemRow(
@@ -288,8 +290,9 @@ private func relatedItemRow(
   )
 }
 
-private func whereToGoFromHere(_ string: String) -> Node {
-  .div(
+private func whereToGoFromHere(_ string: String?) -> Node {
+  guard let string = string else { return [] }
+  return .div(
     attributes: [
       .style(backgroundColor(.other("#fafafa"))),
     ],

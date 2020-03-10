@@ -178,8 +178,8 @@ powers the HTML rendering of this very site!
 
 The design of this library was covered in 4 episodes:
 
-* [Domain Specific Languages: Part 1](/episodes/ep26-domain-specific-languages-part-1)
-* [Domain Specific Languages: Part 2](/episodes/ep27-domain-specific-languages-part-2)
+* [Domain-Specific Languages: Part 1](/episodes/ep26-domain-specific-languages-part-1)
+* [Domain-Specific Languages: Part 2](/episodes/ep27-domain-specific-languages-part-2)
 * [An HTML DSL](/episodes/ep28-an-html-dsl)
 * [DSLs vs. Templating Languages](/episodes/ep29-dsls-vs-templating-languages) 🆓
 

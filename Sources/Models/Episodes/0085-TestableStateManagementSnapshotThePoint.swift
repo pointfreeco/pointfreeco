@@ -851,7 +851,7 @@ var body: some View {
   ),
   Episode.TranscriptBlock(
     content: #"""
-However, all of that logic is trapped inside our `body` property, and there is nothing domain specific in there:
+However, all of that logic is trapped inside our `body` property, and there is nothing domain-specific in there:
 """#,
     timestamp: (12*60 + 37),
     type: .paragraph
