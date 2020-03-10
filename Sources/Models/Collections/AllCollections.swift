@@ -3,10 +3,10 @@ extension Episode.Collection {
     .composableArchitecture,
     .mapZipFlatMap,
     .protocolWitnesses,
-    .enumsAndStructs,
-    .algebraicDataTypes,
-    .domainSpecificLanguages,
     .parsing,
+    .algebraicDataTypes,
+    .enumsAndStructs,
+    .domainSpecificLanguages,
     .randomness,
   ]
 }
