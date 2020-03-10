@@ -146,12 +146,10 @@ private func headerLinks(
   currentRoute: Route?
 ) -> Node {
   return [
-    currentUser?.isAdmin == .some(true)
-      ?.a(
-        attributes: [.href(path(to: .collections(.index))), .class([navLinkClasses])],
-        "Collections"
-        )
-      : [],
+    .a(
+      attributes: [.href(path(to: .collections(.index))), .class([navLinkClasses])],
+      "Collections"
+    ),
 
     .a(
       attributes: [.href(path(to: .blog(.index))), .class([navLinkClasses])],

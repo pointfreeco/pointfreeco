@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 200 OK
-Content-Length: 59627
+Content-Length: 60122
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1853,6 +1853,13 @@ html {
                       col-d-6
                       col-m-12">
             <div class="end-m">
+              <a href="/collections"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Collections
+              </a>
               <a href="/blog"
                  class="medium
                         pf-link-black
@@ -2237,6 +2244,16 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         lh-4"
                  href="/">
                 Videos
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/collections">
+                Collections
               </a>
             </li>
             <li>

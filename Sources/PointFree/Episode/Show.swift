@@ -20,12 +20,8 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
-      view: newOrLegacyEpisodeView(data:),
+      view: newEpisodePageView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute, collectionSlug in
-        let navStyle: NavStyle =
-          currentUser?.isAdmin == .some(true) ? .minimal(.black)
-            : currentUser == nil ? .mountains(.main)
-            : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
@@ -41,7 +37,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
           description: episode.blurb,
           extraStyles: markdownBlockStyles,
           image: episode.image,
-          style: .base(navStyle),
+          style: .base(.minimal(.black)),
           title: "Episode #\(episode.sequence): \(episode.fullTitle)",
           usePrismJs: true
         )
@@ -54,43 +50,25 @@ private func episodePageData(
   episode: Episode,
   permission: EpisodePermission,
   subscriberState: SubscriberState
-) -> Either<EpisodePageData, NewEpisodePageData> {
-  if currentUser?.isAdmin == .some(true) {
-    let context: NewEpisodePageData.Context
-    if let collection = Current.collections.first(where: { $0.slug == collectionSlug }) {
-      context = .collection(collection)
-    } else {
-      context = .direct(
-        previousEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence - 1 }),
-        nextEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
-      )
-    }
-
-    return .right(NewEpisodePageData(
-      context: context,
-      date: Current.date,
-      episode: episode,
-      permission: permission,
-      subscriberState: subscriberState,
-      user: currentUser
-    ))
+) -> NewEpisodePageData {
+  let context: NewEpisodePageData.Context
+  if let collection = Current.collections.first(where: { $0.slug == collectionSlug }) {
+    context = .collection(collection)
   } else {
-    return .left(EpisodePageData(
-      permission: permission,
-      user: currentUser,
-      subscriberState: subscriberState,
-      episode: episode,
-      previousEpisodes: episode.previousEpisodes,
-      date: Current.date
-    ))
+    context = .direct(
+      previousEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence - 1 }),
+      nextEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
+    )
   }
-}
 
-private func newOrLegacyEpisodeView(data: Either<EpisodePageData, NewEpisodePageData>) -> Node {
-  switch data {
-  case let .left(data): return episodeView(episodePageData: data)
-  case let .right(data): return newEpisodePageView(episodePageData: data)
-  }
+  return NewEpisodePageData(
+    context: context,
+    date: Current.date,
+    episode: episode,
+    permission: permission,
+    subscriberState: subscriberState,
+    user: currentUser
+  )
 }
 
 func useCreditResponse<Z>(
