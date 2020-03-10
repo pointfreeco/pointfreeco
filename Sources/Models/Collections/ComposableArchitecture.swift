@@ -45,6 +45,12 @@ We begin building the composable architecture by settling on the core types that
         related: [
           .init(
             blurb: #"""
+When exploring the kinds of composition reducers supported we were inevitably led to an unintuitive concept known as "contravariance." This form of composition goes in the opposite direction that you would typically expect. We first explored contravariance early on in Point-Free where it can be seen to be quite natural if you look at things the right way.
+"""#,
+            content: .episode(.ep14_contravariance)
+          ),
+          .init(
+            blurb: #"""
 The composable architecture isn't the first time we've distilled the essence of some functionality into a type, and then explored its compositional properties. We did the same when we explored parsing and randomness, and we were able to cook up some impressive examples of breaking large, complex problems into very simple units.
 """#,
             content: .collections([.parsing, .randomness])
