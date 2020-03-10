@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63062
+Content-Length: 63073
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1767,7 +1767,7 @@ html {
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : #f7f7f7;
+  background-color           : rgba(0,0,0,0.03);
 }
 
 
@@ -1957,7 +1957,7 @@ html {
                      lh-2
                      m-mt2">
             <a href="/episodes/ep10-a-tale-of-two-flat-maps">
-              A Tale of Two Flat-Maps
+              A Tale of Two Flat‑Maps
             </a>
           </h1>
           <div class="body-leading
