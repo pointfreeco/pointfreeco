@@ -121,7 +121,7 @@ private func sideBar(
       ],
       collectionHeaderRow(collection: collection, section: section),
       sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section, type: .previous),
-      currentEpisodeInfoRow(episode: data.episode),
+      currentEpisodeInfoRow(data: data),
       sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section, type: .next)
     )
   case let .direct(previousEpisode: previousEpisode, nextEpisode: nextEpisode):
@@ -135,7 +135,7 @@ private func sideBar(
         ])
       ],
       sequentialEpisodeRow(episode: previousEpisode, type: .previous),
-      currentEpisodeInfoRow(episode: data.episode),
+      currentEpisodeInfoRow(data: data),
       sequentialEpisodeRow(episode: nextEpisode, type: .next)
     )
   }
@@ -338,7 +338,7 @@ private func sequentialEpisodeRow(
 }
 
 private func currentEpisodeInfoRow(
-  episode: Episode
+  data: NewEpisodePageData
 ) -> Node {
   .div(
     attributes: [
@@ -380,17 +380,19 @@ private func currentEpisodeInfoRow(
             Class.type.lineHeight(1)
           ])
         ],
-        .text(episode.subtitle ?? episode.title)
+        .text(data.episode.subtitle ?? data.episode.title)
       )
     ),
-    chaptersRow(episode: episode),
-    exercisesRow(episode: episode),
-    referencesRow(episode: episode),
+    chaptersRow(data: data),
+    exercisesRow(episode: data.episode),
+    referencesRow(episode: data.episode),
     downloadRow
   )
 }
 
-private func chaptersRow(episode: Episode) -> Node {
+private func chaptersRow(data: NewEpisodePageData) -> Node {
+  let episode = data.episode
+
   let titleBlocks = episode.transcriptBlocks
     .filter { $0.type == .title && $0.timestamp != nil }
 
@@ -432,7 +434,11 @@ private func chaptersRow(episode: Episode) -> Node {
             ],
             .a(
               attributes: [
-                .href("#t\(block.timestamp ?? 0)")
+                .href(
+                  isEpisodeViewable(for: data.permission)
+                    ? "#t\(block.timestamp ?? 0)"
+                    : ""
+                ),
               ],
               .text(block.content)
             )
@@ -448,7 +454,11 @@ private func chaptersRow(episode: Episode) -> Node {
             ],
             .a(
               attributes: [
-                .href("#t\(block.timestamp ?? 0)"),
+                .href(
+                  isEpisodeViewable(for: data.permission)
+                    ? "#t\(block.timestamp ?? 0)"
+                    : ""
+                ),
                 .class([
                   Class.pf.type.body.small,
                   Class.pf.colors.link.gray650
