@@ -116,7 +116,7 @@ private func sideBar(
           Class.border.all,
           Class.border.rounded.all,
           Class.pf.colors.border.gray850,
-          Class.margin([.mobile: [.left: 3]])
+          Class.margin([.mobile: [.leftRight: 2], .desktop: [.left: 3, .right: 0]])
         ])
       ],
       collectionHeaderRow(collection: collection, section: section),
@@ -789,7 +789,7 @@ private func episodeHeader(
         .div(
           attributes: [
             .class([
-              Class.padding([.mobile: [.top: 1, .leftRight: 2], .desktop: [.leftRight: 4]]),
+              Class.padding([.mobile: [.top: 1, .leftRight: 0], .desktop: [.leftRight: 4]]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
             ]),
