@@ -63,16 +63,6 @@ public func newEpisodePageView(
           left: [
             .a(
               attributes: [
-                .href(path(to: .collections(.show(collection.slug)))),
-                .class([
-                  Class.pf.colors.link.gray650
-                ])
-              ],
-              .text(collection.title)
-            ),
-            " › ",
-            .a(
-              attributes: [
                 .href(path(to: .collections(.section(collection.slug, section.slug)))),
                 .class([
                   Class.pf.colors.link.gray650
@@ -413,6 +403,9 @@ private func chaptersRow(episode: Episode) -> Node {
     .fragment(
       titleBlocks.map { block in
         .gridRow(
+          attributes: [
+            .style(padding(topBottom: .px(2))),
+          ],
           .gridColumn(
             sizes: [.mobile: 1],
             attributes: [
@@ -436,10 +429,9 @@ private func chaptersRow(episode: Episode) -> Node {
             sizes: [.mobile: 9],
             attributes: [
               .class([
+                Class.padding([.mobile: [.leftRight: 1]]),
                 Class.pf.type.body.small,
-                Class.padding([.mobile: [.leftRight: 1]])
-              ]),
-              .style(padding(topBottom: .px(2)))
+              ])
             ],
             .a(
               attributes: [

@@ -14,7 +14,11 @@ let collectionSectionMiddleware
     )
     <<< fetchCollectionSectionMiddleware
     <| map(lower)
-    >>> writeStatus(.ok)
+    >>> collectionSectionEndpoint
+
+let collectionSectionEndpoint
+  : M<(User?, SubscriberState, Route, Episode.Collection, Episode.Collection.Section)>
+  = writeStatus(.ok)
     >=> respond(
       view: collectionSection,
       layoutData: { currentUser, currentSubscriberState, currentRoute, collection, section in
