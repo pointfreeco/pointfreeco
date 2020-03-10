@@ -8,11 +8,7 @@ import Views
 
 let collectionSectionMiddleware
   : M<Tuple5<User?, SubscriberState, Route, Episode.Collection.Slug, Episode.Collection.Section.Slug>>
-  = basicAuth(
-    user: Current.envVars.basicAuth.username,
-    password: Current.envVars.basicAuth.password
-    )
-    <<< fetchCollectionSectionMiddleware
+  = fetchCollectionSectionMiddleware
     <| map(lower)
     >>> collectionSectionEndpoint
 

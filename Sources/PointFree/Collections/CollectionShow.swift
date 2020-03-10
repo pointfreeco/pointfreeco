@@ -8,11 +8,7 @@ import Views
 
 let collectionMiddleware
   : M<Tuple4<User?, SubscriberState, Route, Episode.Collection.Slug>>
-  = basicAuth(
-    user: Current.envVars.basicAuth.username,
-    password: Current.envVars.basicAuth.password
-    )
-    <<< fetchCollectionMiddleware
+  = fetchCollectionMiddleware
     <| map(lower)
     >>> { conn in
       let (user, subscriberState, route, collection) = conn.data
