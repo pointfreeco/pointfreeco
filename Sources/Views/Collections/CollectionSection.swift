@@ -330,6 +330,7 @@ private func sectionNavigation(
   previousSection: Episode.Collection.Section?,
   nextSection: Episode.Collection.Section?
 ) -> Node {
+  guard previousSection != nil || nextSection != nil else { return [] }
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [
