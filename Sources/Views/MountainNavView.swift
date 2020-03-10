@@ -157,7 +157,7 @@ private func headerLinks(
     ),
 
     subscriberState.isNonSubscriber
-      ? .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClasses])], "Subscribe")
+      ? .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClasses])], "Pricing")
       : [],
 
     currentUser == nil

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68295
+Content-Length: 68047
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2106,9 +2106,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Introduction
-                  </a>
+                  Introduction
                 </div>
                 <div class="fg-black
                             normal
@@ -2118,15 +2116,14 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     00:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2147,9 +2144,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Title
-                  </a>
+                  Title
                 </div>
                 <div class="fg-black
                             normal
@@ -2159,15 +2154,14 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     00:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2188,9 +2182,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Title Block
-                  </a>
+                  Title Block
                 </div>
                 <div class="fg-black
                             normal
@@ -2200,15 +2192,14 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     01:00
-                  </a>
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -2229,9 +2220,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             lh-4
                             col-m
                             col-m-9">
-                  <a href>
-                    Another Title
-                  </a>
+                  Another Title
                 </div>
                 <div class="fg-black
                             normal
@@ -2241,15 +2230,14 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                             end-align
                             col-m
                             col-m-2">
-                  <a href
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
+                  <span class="fg-black
+                               normal
+                               h6
+                               lh-4
+                               fg-gray650"
+                        style="font-variant-numeric: tabular-nums">
                     02:00
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
