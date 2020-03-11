@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep2-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 74505
+Content-Length: 74534
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -593,6 +593,7 @@ a:link.btn-normal {
   flex-shrink        : 1;
   flex-basis         : auto;
   flex-direction     : row;
+  flex-wrap          : wrap;
 }
 
 .row.reverse {
