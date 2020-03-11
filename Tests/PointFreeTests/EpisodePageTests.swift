@@ -392,6 +392,38 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() {
+    var user = Models.User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 0
+
+    var episode = Current.episodes().first!
+    episode.permission = .subscriberOnly
+
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.episodes = unzurry([episode])
+    Current.database.fetchEpisodeCredits = const(pure([]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let conn = connection(
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
+        ]
+      )
+    }
+    #endif
+  }
+
   func test_permission() {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)

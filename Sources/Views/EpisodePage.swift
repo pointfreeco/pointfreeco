@@ -718,8 +718,11 @@ private func topCallout(data: EpisodePageData) -> Node {
     return []
   case .loggedOut(isEpisodeSubscriberOnly: true):
     return pad(unlockLoggedOutCallout(data: data))
-  case .loggedIn(let user, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
+  case .loggedIn(let user, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true)))
+    where user.episodeCreditCount > 0:
     return pad(unlockLoggedInCallout(user: user, data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
+    return pad(subscribeCallout(data: data))
   case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
     return pad(creditSubscribeCallout(data: data))
   case .loggedOut(isEpisodeSubscriberOnly: false),
