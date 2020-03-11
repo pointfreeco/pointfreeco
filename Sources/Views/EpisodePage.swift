@@ -689,12 +689,103 @@ private func mainContent(
     ),
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
-      creditSubscribeCallout(data: data),
-      unlockCallout(data: data),
+      topCallout(data: data),
       transcriptView(data: data),
       exercisesView(exercises: data.episode.exercises),
       referencesView(references: data.episode.references),
       downloadsView(episode: data.episode)
+    )
+  )
+}
+
+private func calloutBar(
+  icon svgBase64: String,
+  _ content: String
+) -> Node {
+  .gridRow(
+    attributes: [
+      .class([
+        Class.border.bottom,
+        Class.flex.items.center,
+        Class.flex.justify.center,
+        Class.h6,
+        Class.padding([
+          .mobile: [.topBottom: 1, .leftRight: 2]
+        ]),
+        Class.pf.colors.bg.gray900,
+        Class.pf.colors.border.gray850,
+        Class.pf.colors.fg.gray650,
+        Class.type.align.center,
+        Class.type.lineHeight(4),
+        Class.type.semiBold,
+      ]),
+    ],
+    .img(base64: svgBase64, type: .image(.svg), alt: "", attributes: [
+      .class([
+        Class.padding([
+          .mobile: [.right: 1],
+        ])
+      ]),
+    ]),
+    .text(content)
+  )
+}
+
+private func callout(
+  bar: Node = [],
+  icon svgBase64: String? = nil,
+  title: String,
+  body: String,
+  _ cta: Node...
+) -> Node {
+
+  .div(
+    attributes: [
+      .class([
+        Class.border.all,
+        Class.border.rounded.all,
+        Class.pf.colors.border.gray850,
+      ])
+    ],
+    bar,
+    .div(
+      attributes: [
+        .class([
+          Class.padding([
+            .desktop: [.leftRight: 4],
+            .mobile: [.all: 3],
+          ]),
+          Class.type.align.center,
+        ]),
+      ],
+      svgBase64
+        .map { .img(base64: $0, type: .image(.svg), alt: "") }
+        ?? [],
+      .h3(
+        attributes: [
+          .class([
+            Class.pf.type.responsiveTitle5
+          ])
+        ],
+        .text(title)
+      ),
+      .p(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.bottom: 3]]),
+            Class.pf.colors.fg.gray650,
+          ]),
+        ],
+        .text(body)
+      ),
+      .div(
+        attributes: [
+          .class([
+            Class.margin([.mobile: [.bottom: 2]]),
+          ]),
+        ],
+        .fragment(cta)
+      )
     )
   )
 }
@@ -751,307 +842,136 @@ private func downloadsView(episode: Episode) -> Node {
 }
 
 private func creditSubscribeCallout(data: EpisodePageData) -> Node {
-  guard case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)) = data.permission else { return [] }
 
-  return .div(
-    attributes: [
-      .class([
-        Class.padding([
-          .mobile: [.leftRight: 3, .top: 3],
-          .desktop: [.left: 4, .right: 3],
-        ]),
-      ])
-    ],
-    .div(
+  return callout(
+    bar: calloutBar(icon: unlockSvgBase64, "You unlocked this episode with a credit."),
+    title: "Subscribe to Point-Free",
+    body: "Access all past and future episodes when you become a subscriber.",
+    .a(
       attributes: [
         .class([
-          Class.border.all,
-          Class.border.rounded.all,
-          Class.pf.colors.border.gray850,
-        ])
-      ],
-      .gridRow(
-        attributes: [
-          .class([
-            Class.border.bottom,
-            Class.flex.items.center,
-            Class.flex.justify.center,
-            Class.h6,
-            Class.padding([
-              .mobile: [.topBottom: 1, .leftRight: 2]
-            ]),
-            Class.pf.colors.bg.gray900,
-            Class.pf.colors.border.gray850,
-            Class.pf.colors.fg.gray650,
-            Class.type.align.center,
-            Class.type.lineHeight(4),
-            Class.type.semiBold,
-          ]),
-        ],
-        .img(base64: unlockSvgBase64, type: .image(.svg), alt: "", attributes: [
-          .class([
-            Class.padding([
-              .mobile: [.right: 1],
-            ])
-          ]),
+          Class.pf.components.button(color: .purple),
         ]),
-        "You unlocked this episode with a credit."
-      ),
-      .div(
-        attributes: [
-          .class([
-            Class.padding([
-              .desktop: [.leftRight: 4],
-              .mobile: [.all: 3],
-            ]),
-            Class.type.align.center,
-          ]),
-        ],
-        .h3(
-          attributes: [
-            .class([
-              Class.pf.type.responsiveTitle5
-            ])
-          ],
-          "Subscribe to ", pointFreeRaw
-        ),
-        .p(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.bottom: 3]]),
-              Class.pf.colors.fg.gray650,
-            ]),
-          ],
-          "Access all past and future episodes when you become a subscriber."
-        ),
-        .div(
-          attributes: [
-            .class([
-              Class.margin([.mobile: [.bottom: 2]]),
-            ]),
-          ],
-          .a(
-            attributes: [
-              .class([
-                Class.pf.components.button(color: .purple),
-              ]),
-              .href(path(to: .pricingLanding))
-            ],
-            "See plans and pricing"
-          )
-        )
-      )
+        .href(path(to: .pricingLanding))
+      ],
+      "See plans and pricing"
     )
   )
 }
 
 private func subscribeCallout(data: EpisodePageData) -> Node {
-  guard !isEpisodeViewable(for: data.permission) else { return [] }
 
-  return .div(
-    attributes: [
-      .class([
-        Class.padding([
-          .mobile: [.topBottom: 3],
+  callout(
+    bar: calloutBar(icon: lockSvgBase64, "This episode is for subscribers only."),
+    title: "Subscribe to Point-Free",
+    body: "Access this episode, plus all past and future episodes when you become a subscriber.",
+    .a(
+      attributes: [
+        .class([
+          Class.pf.components.button(color: .purple),
         ]),
-      ])
-    ],
+        .href(path(to: .pricingLanding))
+      ],
+      "See plans and pricing"
+    ),
+    data.user == nil
+      ? .p(
+        attributes: [
+          .class([
+            Class.margin([.mobile: [.top: 2]]),
+            Class.pf.colors.fg.gray650,
+            Class.pf.type.body.small,
+          ]),
+        ],
+        "Already a subscriber? ",
+        .a(
+          attributes: [
+            .class([
+              Class.pf.colors.link.purple,
+            ]),
+            .href(path(to: .login(redirect: url(to: data.route)))),
+          ],
+          "Log in"
+        )
+        )
+      : []
+  )
+}
+
+private func topCallout(data: EpisodePageData) -> Node {
+  func pad(_ node: Node) -> Node {
     .div(
       attributes: [
         .class([
-          Class.border.all,
-          Class.border.rounded.all,
-          Class.pf.colors.border.gray850,
+          Class.padding([
+            .mobile: [.leftRight: 3, .top: 3],
+            .desktop: [.left: 4, .right: 3],
+          ]),
         ])
       ],
-      .gridRow(
-        attributes: [
-          .class([
-            Class.border.bottom,
-            Class.flex.items.center,
-            Class.flex.justify.center,
-            Class.h6,
-            Class.padding([
-              .mobile: [.topBottom: 1, .leftRight: 2]
-            ]),
-            Class.pf.colors.bg.gray900,
-            Class.pf.colors.border.gray850,
-            Class.pf.colors.fg.gray650,
-            Class.type.align.center,
-            Class.type.lineHeight(4),
-            Class.type.semiBold,
-          ]),
-        ],
-        .img(base64: lockSvgBase64, type: .image(.svg), alt: "", attributes: [
-          .class([
-            Class.padding([
-              .mobile: [.right: 1],
-            ])
-          ]),
-        ]),
-        "This episode is for subscribers only."
-      ),
-      .div(
-        attributes: [
-          .class([
-            Class.padding([
-              .desktop: [.leftRight: 4],
-              .mobile: [.all: 3],
-            ]),
-            Class.type.align.center,
-          ]),
-        ],
-        .h3(
-          attributes: [
-            .class([
-              Class.pf.type.responsiveTitle5
-            ])
-          ],
-          "Subscribe to ", pointFreeRaw
-        ),
-        .p(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.bottom: 3]]),
-              Class.pf.colors.fg.gray650,
-            ]),
-          ],
-          "Access this episode, plus all past and future episodes when you become a subscriber."
-        ),
-        .div(
-          attributes: [
-            .class([
-              Class.margin([.mobile: [.bottom: 2]]),
-            ]),
-          ],
-          .a(
-            attributes: [
-              .class([
-                Class.pf.components.button(color: .purple),
-              ]),
-              .href(path(to: .pricingLanding))
-            ],
-            "See plans and pricing"
-          )
-        ),
-        .div(
-          attributes: [
-            .class([
-              Class.margin([.mobile: [.bottom: 2]]),
-            ]),
-          ],
-          data.user == nil
-            ? .p(
-              attributes: [
-                .class([
-                  Class.pf.colors.fg.gray650,
-                  Class.pf.type.body.small,
-                ]),
-              ],
-              "Already a subscriber? ",
-              .a(
-                attributes: [
-                  .class([
-                    Class.pf.colors.link.purple,
-                  ]),
-                  .href(path(to: .login(redirect: url(to: data.route)))),
-                ],
-                "Log in"
-              )
-              )
-            : []
-        )
-      )
+      node
     )
+  }
+
+  switch data.permission {
+  case .loggedIn(_, .isSubscriber):
+    return []
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(true))), .loggedOut(true):
+    return pad(unlockCallout(data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
+    return pad(creditSubscribeCallout(data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))), .loggedOut(false):
+    return pad(subscribeCallout(data: data))
+  }
+}
+
+private func bottomCallout(data: EpisodePageData) -> Node {
+  .div(
+    attributes: [
+      .class([
+        Class.padding([
+          .desktop: [.topBottom: 3],
+          .mobile: [.topBottom: 2],
+        ]),
+      ]),
+    ],
+    subscribeCallout(data: data)
   )
 }
 
 private func unlockCallout(data: EpisodePageData) -> Node {
-
-  guard
-    !isEpisodeViewable(for: data.permission),
-    data.subscriberState.isNonSubscriber,
-    (data.user?.episodeCreditCount ?? 1) > 0
-    else { return [] }
-
-  return .div(
-    attributes: [
-      .class([
-        Class.padding([
-          .mobile: [.leftRight: 3, .top: 3],
-          .desktop: [.left: 4, .right: 3],
-        ]),
-      ])
-    ],
-    .div(
-      attributes: [
-        .class([
-          Class.border.all,
-          Class.border.rounded.all,
-          Class.pf.colors.border.gray850,
-          Class.padding([.mobile: [.all: 2]])
-        ])
-      ],
-      .div(
+  callout(
+    icon: circleLockSvgBase64,
+    title: "Unlock This Episode",
+    body: data.user
+      .map {
+        """
+        You have \(String($0.episodeCreditCount)) episode credit\($0.episodeCreditCount == 1 ? "" : "s"). \
+        Spend \($0.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?
+        """
+      }
+      ?? """
+    Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter.
+    """,
+    data.user == nil
+      ? .gitHubLink(
+        text: "Sign in with GitHub",
+        type: .black,
+        href: path(to: .login(redirect: url(to: data.route)))
+        )
+      : .form(
         attributes: [
-          .class([
-            Class.padding([
-              .mobile: [.all: 3],
-              .desktop: [.leftRight: 4, .top: 2, .bottom: 3],
-            ]),
-            Class.type.align.center,
-          ]),
+          .action(path(to: .useEpisodeCredit(data.episode.id))),
+          .method(.post),
         ],
-        .img(
-          base64: circleLockSvgBase64,
-          type: .image(.svg),
-          alt: ""
-        ),
-        .h3(
+        .button(
           attributes: [
             .class([
-              Class.pf.type.responsiveTitle5
+              Class.pf.components.button(color: .black),
             ])
           ],
-          "Unlock This Episode"
-        ),
-        .p(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.bottom: 3]]),
-              Class.pf.colors.fg.gray650,
-            ]),
-          ],
-          data.user
-            .map {
-              [
-                "You have \(String($0.episodeCreditCount)) episode credit\($0.episodeCreditCount == 1 ? "" : "s"). ",
-                "Spend \($0.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?"
-              ]
-            }
-            ?? "Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter."
-        ),
-        data.user == nil
-          ? .gitHubLink(
-            text: "Sign in with GitHub",
-            type: .black,
-            href: path(to: .login(redirect: url(to: data.route)))
-            )
-          : .form(
-            attributes: [
-              .action(path(to: .useEpisodeCredit(data.episode.id))),
-              .method(.post),
-            ],
-            .button(
-              attributes: [
-                .class([
-                  Class.pf.components.button(color: .black),
-                ])
-              ],
-              "Redeem this episode"
-            )
+          "Redeem this episode"
         )
-      )
     )
   )
 }
@@ -1216,7 +1136,7 @@ private func transcript(data: EpisodePageData) -> Node {
             )]
           : []
       }
-      .nodes + [subscribeCallout(data: data)]
+      .nodes + [bottomCallout(data: data)]
   )
 }
 

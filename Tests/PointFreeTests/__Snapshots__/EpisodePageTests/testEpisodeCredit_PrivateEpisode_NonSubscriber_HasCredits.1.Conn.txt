@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 72834
+Content-Length: 72621
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2306,14 +2306,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     m-pr3">
           <div class="border
                       rounded
-                      border-gray-850
-                      m-pl2
-                      m-pr2
-                      m-pt2
-                      m-pb2">
-            <div class="d-pb3
-                        d-pt2
-                        d-pl4
+                      border-gray-850">
+            <div class="d-pl4
                         d-pr4
                         m-pl3
                         m-pr3
@@ -2331,31 +2325,27 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               </h3>
               <p class="m-pb3
                         fg-gray650">
-                You have 
-                1
-                 episode credit
-                . 
-                Spend 
-                it
-                 to watch this episode for free?
+                You have 1 episode credit. Spend it to watch this episode for free?
               </p>
-              <form action="/episodes/2/credit"
-                    method="post">
-                <button class="medium
-                               cursor-pointer
-                               nowrap
-                               btn-normal
-                               border-none
-                               text-decoration-none
-                               pf-link-white
-                               fg-white
-                               bg-black
-                               h5
-                               m-pl2
-                               m-pr2">
-                  Redeem this episode
-                </button>
-              </form>
+              <div class="m-mb2">
+                <form action="/episodes/2/credit"
+                      method="post">
+                  <button class="medium
+                                 cursor-pointer
+                                 nowrap
+                                 btn-normal
+                                 border-none
+                                 text-decoration-none
+                                 pf-link-white
+                                 fg-white
+                                 bg-black
+                                 h5
+                                 m-pl2
+                                 m-pr2">
+                    Redeem this episode
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -2392,8 +2382,10 @@ that timestamp jumps the video to that spot.</p>
 
             </div>
           </div>
-          <div class="m-pt3
-                      m-pb3">
+          <div class="d-pt3
+                      d-pb3
+                      m-pt2
+                      m-pb2">
             <div class="border
                         rounded
                         border-gray-850">
@@ -2429,8 +2421,7 @@ that timestamp jumps the video to that spot.</p>
                            ts-d-r1_25
                            ts-m-r1
                            lh-1">
-                  Subscribe to 
-                  Point&#8209;Free
+                  Subscribe to Point-Free
                 </h3>
                 <p class="m-pb3
                           fg-gray650">
@@ -2452,8 +2443,6 @@ that timestamp jumps the video to that spot.</p>
                      href="/pricing">
                     See plans and pricing
                   </a>
-                </div>
-                <div class="m-mb2">
                 </div>
               </div>
             </div>
