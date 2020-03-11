@@ -201,17 +201,19 @@ public struct Episode: Equatable {
         }
 
         public enum Content: Equatable {
-          case episodes([Episode])
-          case collections([Collection])
-          case section(Collection, index: Int)
+          case episodes(@autoclosure () -> [Episode])
+          case collections(@autoclosure () -> [Collection])
+          case section(@autoclosure () -> Collection, index: Int)
 
-          public static func episode(_ episode: Episode) -> Content {
-            .episodes([episode])
+          public static func episode(_ episode: @escaping @autoclosure() -> Episode) -> Content {
+            .episodes([episode()])
           }
 
-          public static func collection(_ collection: Collection) -> Content {
-            .collections([collection])
+          public static func collection(_ collection: @escaping @autoclosure() -> Collection) -> Content {
+            .collections([collection()])
           }
+
+          public static func == (lhs: Content, rhs: Content) -> Bool { return true }
         }
       }
 
