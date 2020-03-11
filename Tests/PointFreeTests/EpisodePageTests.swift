@@ -181,7 +181,6 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePage_InCollectionContext() {
-    record = true
     let episode = request(
       to: .collections(
         .episode(
