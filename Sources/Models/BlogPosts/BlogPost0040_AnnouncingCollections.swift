@@ -10,7 +10,7 @@ After over two years and nearly 100 episodes we are finally launching episode co
       content: #"""
 After over two years and nearly 100 episodes we are finally launching [episode collections](/collections) on Point-Free!
 
-Collections allow us to contextualize broad themes that we have covered on Point-Free, while also demonstrating that many of the seemingly disparate concepts are deeply connected in a beautiful way. Everything from [parsers](/collections/parsers) to [randomness](/collections/randomness), and [snapshot testing](/collections/protocol-witnesses/library-design-without-protocols) to [composable architecture](/collections/composable-architecture), all of these things are built on a common foundation of composition.
+Collections allow us to contextualize broad themes that we have covered on Point-Free, while also demonstrating that many of the seemingly disparate concepts are deeply connected in a beautiful way. Everything from [parsing](/collections/parsing) to [randomness](/collections/randomness), and [snapshot testing](/collections/protocol-witnesses/library-design-without-protocols) to [composable architecture](/collections/composable-architecture), all of these things are built on a common foundation of composition.
 
 We have also redesigned our episode page (for [example](/episodes/ep77-effectful-state-management-unidirectional-effects)), which brings our episode videos front and center, and provides new ways of navigating to related content.
 
