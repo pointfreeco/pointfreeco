@@ -111,17 +111,7 @@ private func sideBar(
     let nextEpisodes = section.coreLessons[(currentEpisodeIndex+1)...].map { $0.episode }
 
     return .div(
-      attributes: [
-        .class([
-          Class.border.all,
-          Class.border.rounded.all,
-          Class.pf.colors.border.gray850,
-          Class.margin([
-            .mobile: [.leftRight: 2],
-            .desktop: [.left: 3, .right: 0]
-          ])
-        ])
-      ],
+      attributes: [.class([sideBarClasses])],
       collectionHeaderRow(collection: collection, section: section),
       sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section, type: .previous),
       currentEpisodeInfoRow(data: data),
@@ -129,23 +119,23 @@ private func sideBar(
     )
   case let .direct(previousEpisode: previousEpisode, nextEpisode: nextEpisode):
     return .div(
-      attributes: [
-        .class([
-          Class.border.all,
-          Class.border.rounded.all,
-          Class.pf.colors.border.gray850,
-          Class.margin([
-            .mobile: [.leftRight: 2],
-            .desktop: [.left: 3, .right: 0]
-          ])
-        ])
-      ],
+      attributes: [.class([sideBarClasses])],
       sequentialEpisodeRow(episode: previousEpisode, type: .previous),
       currentEpisodeInfoRow(data: data),
       sequentialEpisodeRow(episode: nextEpisode, type: .next)
     )
   }
 }
+
+private let sideBarClasses
+  = Class.border.all
+    | Class.border.rounded.all
+    | Class.pf.colors.border.gray850
+    | Class.layout.overflowHidden
+    | Class.margin([
+      .mobile: [.leftRight: 2],
+      .desktop: [.left: 3, .right: 0]
+    ])
 
 private func sequentialEpisodes(
   episodes: [Episode],
@@ -644,7 +634,6 @@ private func mainContent(
   data: EpisodePageData,
   isEpisodeViewable: Bool
 ) -> Node {
-
   .gridRow(
     attributes: [
       .class([
