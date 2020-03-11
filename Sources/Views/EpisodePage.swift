@@ -689,6 +689,7 @@ private func mainContent(
     ),
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
+      creditSubscribeCallout(data: data),
       unlockCallout(data: data),
       transcriptView(data: data),
       exercisesView(exercises: data.episode.exercises),
@@ -749,8 +750,103 @@ private func downloadsView(episode: Episode) -> Node {
   )
 }
 
+private func creditSubscribeCallout(data: EpisodePageData) -> Node {
+  guard case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)) = data.permission else { return [] }
+
+  return .div(
+    attributes: [
+      .class([
+        Class.padding([
+          .mobile: [.leftRight: 3, .top: 3],
+          .desktop: [.left: 4, .right: 3],
+        ]),
+      ])
+    ],
+    .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+        ])
+      ],
+      .gridRow(
+        attributes: [
+          .class([
+            Class.border.bottom,
+            Class.flex.items.center,
+            Class.flex.justify.center,
+            Class.h6,
+            Class.padding([
+              .mobile: [.topBottom: 1, .leftRight: 2]
+            ]),
+            Class.pf.colors.bg.gray900,
+            Class.pf.colors.border.gray850,
+            Class.pf.colors.fg.gray650,
+            Class.type.align.center,
+            Class.type.lineHeight(4),
+            Class.type.semiBold,
+          ]),
+        ],
+        .img(base64: unlockSvgBase64, type: .image(.svg), alt: "", attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.right: 1],
+            ])
+          ]),
+        ]),
+        "You unlocked this episode with a credit."
+      ),
+      .div(
+        attributes: [
+          .class([
+            Class.padding([
+              .desktop: [.leftRight: 4],
+              .mobile: [.all: 3],
+            ]),
+            Class.type.align.center,
+          ]),
+        ],
+        .h3(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle5
+            ])
+          ],
+          "Subscribe to ", pointFreeRaw
+        ),
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.bottom: 3]]),
+              Class.pf.colors.fg.gray650,
+            ]),
+          ],
+          "Access all past and future episodes when you become a subscriber."
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.margin([.mobile: [.bottom: 2]]),
+            ]),
+          ],
+          .a(
+            attributes: [
+              .class([
+                Class.pf.components.button(color: .purple),
+              ]),
+              .href(path(to: .pricingLanding))
+            ],
+            "See plans and pricing"
+          )
+        )
+      )
+    )
+  )
+}
+
 private func subscribeCallout(data: EpisodePageData) -> Node {
-  guard data.subscriberState.isNonSubscriber else { return [] }
+  guard !isEpisodeViewable(for: data.permission) else { return [] }
 
   return .div(
     attributes: [
