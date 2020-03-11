@@ -2,7 +2,7 @@ GET http://localhost:8080/privacy
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 50511
+Content-Length: 50547
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -152,6 +152,10 @@ body {
 
 .fg-gray400 {
   color : #666666;
+}
+
+.fg-gray500 {
+  color : #808080;
 }
 
 .fg-gray650 {

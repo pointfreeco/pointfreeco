@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 69119
+Content-Length: 67787
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -152,6 +152,10 @@ body {
 
 .fg-gray400 {
   color : #666666;
+}
+
+.fg-gray500 {
+  color : #808080;
 }
 
 .fg-gray650 {
@@ -2221,22 +2225,18 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                   col-d-8
                   col-m-12">
         <div id="transcript"
-             class="d-pb4
-                    d-pl4
+             class="d-pl4
                     d-pr3
-                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
                     m-pb3">
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t0">
             <a href="#t0">
               Introduction
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t0"
                  class="block">
@@ -2256,30 +2256,21 @@ that timestamp jumps the video to that spot.</p>
             </div>
           </div>
         </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
-        <div class="d-pb4
-                    d-pt2
+        <div class="d-pb2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
+                    m-pt3
                     m-pl3
                     m-pr3
-                    m-pt3
-                    m-pb3
                     bg-white">
-          <h2 id="exercises"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="exercises"
+              class="h3">
             Exercises
-          </h2>
-          <ol>
-            <li id="exercise-1">
+          </h3>
+          <ol style="padding-left: 1.5rem">
+            <li id="exercise-1"
+                class="m-pb2">
               <div>
                 <div class="md-ctn">
                   <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
@@ -2308,7 +2299,8 @@ that timestamp jumps the video to that spot.</p>
                 </details>
               </div>
             </li>
-            <li id="exercise-2">
+            <li id="exercise-2"
+                class="m-pb2">
               <div>
                 <div class="md-ctn">
                   <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
@@ -2339,36 +2331,36 @@ that timestamp jumps the video to that spot.</p>
             </li>
           </ol>
         </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
-        <div class="d-pb4
+        <div class="d-pl4
+                    d-pr3
                     d-pt2
-                    d-pl4
-                    d-pr4
+                    m-pt3
                     m-pl3
                     m-pr3
-                    m-pt3
-                    m-pb3
                     bg-white">
-          <h2 id="references"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="references"
+              class="h3">
             References
-          </h2>
-          <ul>
-            <li id="reference-1"
-                class="m-mb3">
+          </h3>
+          <div class="row">
+            <div id="reference-1"
+                 class="m-mb3
+                        m-pl3
+                        m-pr3
+                        m-pt3
+                        m-pb3
+                        border
+                        rounded
+                        border-gray-850
+                        col-m
+                        col-m-12">
               <h4 class="fg-black
                          bold
-                         ts-d-r1_25
-                         ts-m-r1
-                         lh-1
+                         ts-d-r1_5
+                         ts-m-r1_25
+                         lh-2
+                         normal
+                         m-mt0
                          m-mb0">
                 <a href="https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url"
                    target="_blank"
@@ -2376,51 +2368,49 @@ that timestamp jumps the video to that spot.</p>
                   Functional Programming is Fun!
                 </a>
               </h4>
-              <strong class="fg-black
+              <strong class="block
+                             fg-black
                              normal
                              h6
-                             lh-4">
+                             lh-4
+                             fg-gray500
+                             m-mb2">
                 Blob • Friday Feb 13, 2009
               </strong>
-              <div>
+              <div class="m-mb2">
                 <div class="md-ctn">
                   <p>Blob uses functional programming to impress all of their friends.</p>
 
                 </div>
               </div>
-              <div>
-                <a style="word-break: break-all"
-                   href="https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url"
+              <div class="fg-purple"
+                   style="white-space: nowrap;
+                          
+overflow: hidden;
+                          
+text-overflow: ellipsis">
+                <a href="https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url"
                    class="pf-link-purple"
                    target="_blank"
                    rel="noopener noreferrer">
-                  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMThweCIgaGVpZ2h0PSIxOHB4IiB2aWV3Qm94PSIwIDAgMTggMTgiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBmaWxsPSIjOTc0REZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNMTEuMDE1NjI1LDAgTDE4LDAgTDE4LDYuOTg0Mzc1IEwxNS45ODQzNzUsNi45ODQzNzUgTDE1Ljk4NDM3NSwzLjQyMTg3NSBMNi4xODc1LDEzLjIxODc1IEw0Ljc4MTI1LDExLjgxMjUgTDE0LjU3ODEyNSwyLjAxNTYyNSBMMTEuMDE1NjI1LDIuMDE1NjI1IEwxMS4wMTU2MjUsMCBaIE0xNS45ODQzNzUsMTUuOTg0Mzc1IEwxNS45ODQzNzUsOSBMMTgsOSBMMTgsMTUuOTg0Mzc1IEMxOCwxNy4wNjI1IDE3LjA2MjUsMTggMTUuOTg0Mzc1LDE4IEwyLjAxNTYyNSwxOCBDMC44OTA2MjUsMTggMCwxNy4wNjI1IDAsMTUuOTg0Mzc1IEwwLDIuMDE1NjI1IEMwLDAuOTM3NSAwLjg5MDYyNSwwIDIuMDE1NjI1LDAgTDksMCBMOSwyLjAxNTYyNSBMMi4wMTU2MjUsMi4wMTU2MjUgTDIuMDE1NjI1LDE1Ljk4NDM3NSBMMTUuOTg0Mzc1LDE1Ljk4NDM3NSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=="
-                       alt
-                       class="align-middle
-                              m-mr1"
-                       width="14"
-                       height="14"
-                       style="margin-top:-2px">
                   https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url
                 </a>
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
         <div class="d-pb4
-                    d-pt2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
                     m-pb3">
-          <h2 id="downloads"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="downloads"
+              class="h3">
             Downloads
-          </h2>
+          </h3>
           <div class="border
                       rounded
                       border-gray-850
