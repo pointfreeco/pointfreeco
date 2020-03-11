@@ -213,7 +213,18 @@ public struct Episode: Equatable {
             .collections([collection()])
           }
 
-          public static func == (lhs: Content, rhs: Content) -> Bool { return true }
+          public static func == (lhs: Content, rhs: Content) -> Bool {
+            switch (lhs, rhs) {
+            case let (.episodes(lhs), .episodes(rhs)):
+              return lhs() == rhs()
+            case let (.collections(lhs), .collections(rhs)):
+              return lhs() == rhs()
+            case let (.section(lhs, lhsIdx), .section(rhs, rhsIdx)):
+              return lhs() == rhs() && lhsIdx == rhsIdx
+            case (_, .episodes), (_, .collections), (_, .section):
+              return false
+            }
+          }
         }
       }
 
