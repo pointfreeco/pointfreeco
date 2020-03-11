@@ -50,8 +50,8 @@ private func episodePageData(
   episode: Episode,
   permission: EpisodePermission,
   subscriberState: SubscriberState
-) -> NewEpisodePageData {
-  let context: NewEpisodePageData.Context
+) -> EpisodePageData {
+  let context: EpisodePageData.Context
   if let collection = Current.collections.first(where: { $0.slug == collectionSlug }) {
     context = .collection(collection)
   } else {
@@ -61,7 +61,7 @@ private func episodePageData(
     )
   }
 
-  return NewEpisodePageData(
+  return EpisodePageData(
     context: context,
     date: Current.date,
     episode: episode,

@@ -147,11 +147,51 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 class EpisodePageTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+    record = true
   }
 
   func testEpisodePage() {
-    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedOut)
+    let titles = ["Domain-Specific Languages", "Proof in Functions", "Composable Architecture"]
+    let episodes = (0...2).map { idx -> Episode in
+      var episode = Episode.mock
+      episode.id = .init(rawValue: idx)
+      episode.sequence = .init(rawValue: idx)
+      episode.title = titles[idx]
+      return episode
+    }
+
+    Current.episodes = { episodes }
+    let episode = request(to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedOut)
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testEpisodePage_InCollectionContext() {
+    record = true
+    let episode = request(
+      to: .collections(
+        .episode(
+          Current.collections[0].slug,
+          Current.collections[0].sections[0].slug,
+          .left(Current.episodes()[0].slug)
+        )
+      ),
+      session: .loggedOut
+    )
 
     let conn = connection(from: episode)
 
