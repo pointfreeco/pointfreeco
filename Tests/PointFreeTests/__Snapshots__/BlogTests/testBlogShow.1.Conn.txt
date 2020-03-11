@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 121164
+Content-Length: 121132
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1907,7 +1907,6 @@ text, no markdown.">
                         cursor-pointer
                         nowrap
                         btn-normal
-                        rounded
                         border-none
                         text-decoration-none
                         pf-link-white

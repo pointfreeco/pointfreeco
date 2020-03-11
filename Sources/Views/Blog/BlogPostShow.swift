@@ -78,7 +78,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
 
     .div(
       attributes: [.class([Class.pf.colors.bg.white])],
-      .fragment(post.contentBlocks.map(transcriptBlockView))
+      .fragment(post.contentBlocks.map { transcriptBlockView($0) })
     )
   ]
 }

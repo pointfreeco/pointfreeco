@@ -179,7 +179,6 @@ extension Class.pf {
       switch style {
       case .normal:
         borderStyles = baseNormalButtonClass
-          | Class.border.rounded.all
           | Class.border.none
           | Class.type.textDecorationNone
       case .outline:
