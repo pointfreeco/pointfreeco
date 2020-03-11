@@ -282,6 +282,9 @@ private func relatedItemRow(
         ]),
       ],
       .gridRow(
+        attributes: [
+          .style(flex(wrap: .nowrap))
+        ],
         .img(
           base64: icon,
           type: .image(.svg),
