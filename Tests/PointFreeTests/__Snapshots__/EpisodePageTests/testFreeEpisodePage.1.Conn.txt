@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 75316
+Content-Length: 82858
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1921,7 +1921,6 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                           cursor-pointer
                           nowrap
                           btn-normal
-                          rounded
                           border-none
                           text-decoration-none
                           pf-link-black
@@ -2354,6 +2353,84 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-8
                   col-m-12">
+        <div class="d-pl4
+                    d-pr3
+                    m-pt3
+                    m-pl3
+                    m-pr3">
+          <div class="border
+                      rounded
+                      border-gray-850">
+            <div class="border-bottom
+                        items-center
+                        justify-center
+                        h6
+                        m-pl2
+                        m-pr2
+                        m-pt1
+                        m-pb1
+                        bg-gray900
+                        border-gray-850
+                        fg-gray650
+                        center
+                        lh-4
+                        semi-bold
+                        row">
+              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                   alt
+                   class="m-pr1">
+              This episode is free for everyone.
+            </div>
+            <div class="d-pl4
+                        d-pr4
+                        m-pl3
+                        m-pr3
+                        m-pt3
+                        m-pb3
+                        center">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1_25
+                         ts-m-r1
+                         lh-1">
+                Subscribe to Point-Free
+              </h3>
+              <p class="m-pb3
+                        fg-gray650">
+                Access all past and future episodes when you become a subscriber.
+              </p>
+              <div class="m-mb2">
+                <a class="medium
+                          cursor-pointer
+                          nowrap
+                          btn-normal
+                          border-none
+                          text-decoration-none
+                          pf-link-white
+                          fg-white
+                          bg-purple
+                          h5
+                          m-pl2
+                          m-pr2"
+                   href="/pricing">
+                  See plans and pricing
+                </a>
+                <p class="m-mt2
+                          fg-gray650
+                          fg-black
+                          normal
+                          h6
+                          lh-4">
+                  Already a subscriber? 
+                  <a class="pf-link-purple"
+                     href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">
+                    Log in
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="transcript"
              class="d-pl4
                     d-pr3
@@ -2543,6 +2620,83 @@ working how we expect:</p>
 <p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
 </blockquote>
 
+            </div>
+          </div>
+          <div class="d-pt3
+                      d-pb3
+                      m-pt2
+                      m-pb2">
+            <div class="border
+                        rounded
+                        border-gray-850">
+              <div class="border-bottom
+                          items-center
+                          justify-center
+                          h6
+                          m-pl2
+                          m-pr2
+                          m-pt1
+                          m-pb1
+                          bg-gray900
+                          border-gray-850
+                          fg-gray650
+                          center
+                          lh-4
+                          semi-bold
+                          row">
+                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                     alt
+                     class="m-pr1">
+                This episode is free for everyone.
+              </div>
+              <div class="d-pl4
+                          d-pr4
+                          m-pl3
+                          m-pr3
+                          m-pt3
+                          m-pb3
+                          center">
+                <h3 class="fg-black
+                           bold
+                           ts-d-r1_25
+                           ts-m-r1
+                           lh-1">
+                  Subscribe to Point-Free
+                </h3>
+                <p class="m-pb3
+                          fg-gray650">
+                  Access all past and future episodes when you become a subscriber.
+                </p>
+                <div class="m-mb2">
+                  <a class="medium
+                            cursor-pointer
+                            nowrap
+                            btn-normal
+                            border-none
+                            text-decoration-none
+                            pf-link-white
+                            fg-white
+                            bg-purple
+                            h5
+                            m-pl2
+                            m-pr2"
+                     href="/pricing">
+                    See plans and pricing
+                  </a>
+                  <p class="m-mt2
+                            fg-gray650
+                            fg-black
+                            normal
+                            h6
+                            lh-4">
+                    Already a subscriber? 
+                    <a class="pf-link-purple"
+                       href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">
+                      Log in
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 60156
+Content-Length: 60124
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1883,7 +1883,6 @@ html {
                         cursor-pointer
                         nowrap
                         btn-normal
-                        rounded
                         border-none
                         text-decoration-none
                         pf-link-white

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 66535
+Content-Length: 66202
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1961,7 +1961,6 @@ html {
                                 cursor-pointer
                                 nowrap
                                 btn-normal
-                                rounded
                                 border-none
                                 text-decoration-none
                                 pf-link-white
@@ -2070,7 +2069,6 @@ html {
                                                  cursor-pointer
                                                  nowrap
                                                  btn-normal
-                                                 rounded
                                                  border-none
                                                  text-decoration-none
                                                  pf-link-white
@@ -2205,7 +2203,6 @@ html {
                                               cursor-pointer
                                               nowrap
                                               btn-normal
-                                              rounded
                                               border-none
                                               text-decoration-none
                                               pf-link-white
@@ -2239,7 +2236,6 @@ html {
                                               cursor-pointer
                                               nowrap
                                               btn-normal
-                                              rounded
                                               border-none
                                               text-decoration-none
                                               pf-link-white
@@ -2300,7 +2296,6 @@ html {
                                         cursor-pointer
                                         nowrap
                                         btn-normal
-                                        rounded
                                         border-none
                                         text-decoration-none
                                         pf-link-white
@@ -2368,7 +2363,6 @@ per month. Your first invoice will be prorated based on your current billing cyc
                                         cursor-pointer
                                         nowrap
                                         btn-normal
-                                        rounded
                                         border-none
                                         text-decoration-none
                                         pf-link-white
@@ -2418,7 +2412,6 @@ per month. Your first invoice will be prorated based on your current billing cyc
                         cursor-pointer
                         nowrap
                         btn-normal
-                        rounded
                         border-none
                         text-decoration-none
                         pf-link-white
