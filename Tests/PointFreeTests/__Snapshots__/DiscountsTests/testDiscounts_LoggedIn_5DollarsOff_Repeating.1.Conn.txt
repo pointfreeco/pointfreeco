@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54624
+Content-Length: 54660
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -153,6 +153,10 @@ body {
 
 .fg-gray400 {
   color : #666666;
+}
+
+.fg-gray500 {
+  color : #808080;
 }
 
 .fg-gray650 {

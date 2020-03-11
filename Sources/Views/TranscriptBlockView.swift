@@ -58,9 +58,9 @@ public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> Node {
     )
 
   case .title:
-    return .h2(
+    return .h3(
       attributes: [
-        .class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
+        .class([Class.h3]),
         block.timestamp.map { .id("t\($0)") }
         ]
         .compactMap(id),

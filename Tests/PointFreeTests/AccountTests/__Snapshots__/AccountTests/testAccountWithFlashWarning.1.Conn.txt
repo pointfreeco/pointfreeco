@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65146
+Content-Length: 65182
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -153,6 +153,10 @@ body {
 
 .fg-gray400 {
   color : #666666;
+}
+
+.fg-gray500 {
+  color : #808080;
 }
 
 .fg-gray650 {
