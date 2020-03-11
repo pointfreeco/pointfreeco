@@ -51,7 +51,7 @@ open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
-    record = true
+//    record = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
     pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
