@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 79890
+Content-Length: 79399
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -152,6 +152,10 @@ body {
 
 .fg-gray400 {
   color : #666666;
+}
+
+.fg-gray500 {
+  color : #808080;
 }
 
 .fg-gray650 {
@@ -2324,10 +2328,8 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                   col-d-8
                   col-m-12">
         <div id="transcript"
-             class="d-pb4
-                    d-pl4
+             class="d-pl4
                     d-pr3
-                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
@@ -2348,14 +2350,12 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t0">
             <a href="#t0">
               Template Languages
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t2"
                  class="block">
@@ -2548,14 +2548,12 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t3">
             <a href="#t3">
               Embedded Domain Specific Language
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t15"
                  class="block">
@@ -2589,14 +2587,12 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
 </header>
             </code>
           </pre>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t7">
             <a href="#t7">
               Making the EDSL easier to use
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t3"
                  class="block">
@@ -2613,14 +2609,12 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t9">
             <a href="#t9">
               Safer Attributes
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t4"
                  class="block">
@@ -2654,30 +2648,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
             </div>
           </div>
         </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
-        <div class="d-pb4
-                    d-pt2
+        <div class="d-pb2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
+                    m-pt3
                     m-pl3
                     m-pr3
-                    m-pt3
-                    m-pb3
                     bg-white">
-          <h2 id="exercises"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="exercises"
+              class="h3">
             Exercises
-          </h2>
-          <ol>
-            <li id="exercise-1">
+          </h3>
+          <ol style="padding-left: 1.5rem">
+            <li id="exercise-1"
+                class="m-pb2">
               <div>
                 <div class="md-ctn">
                   <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
@@ -2709,19 +2694,17 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </ol>
         </div>
         <div class="d-pb4
-                    d-pt2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
                     m-pb3">
-          <h2 id="downloads"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="downloads"
+              class="h3">
             Downloads
-          </h2>
+          </h3>
           <div class="border
                       rounded
                       border-gray-850
