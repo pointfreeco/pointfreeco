@@ -50,4 +50,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0037_2019YearInReview,
   post0038_openSourcingCasePaths,
   post0039_Referrals,
+  post0040_Collections,
 ]
