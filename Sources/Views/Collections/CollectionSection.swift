@@ -296,8 +296,7 @@ private func relatedItemRow(
       attributes: [
         .class([
           Class.grid.end(.mobile),
-        ]),
-        .style(flex(wrap: .nowrap))
+        ])
       ],
       .text(length.formattedDescription)
     )
