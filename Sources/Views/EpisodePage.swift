@@ -51,6 +51,22 @@ public struct EpisodePageData {
       else { return nil }
     return section
   }
+
+  public var route: Route {
+    switch context {
+    case let .collection(collection):
+      guard
+        let section = collection.sections.first(where: {
+          $0.coreLessons.contains(where: {
+            $0.episode == self.episode
+          })
+        })
+        else { return .episode(.show(.left(self.episode.slug))) }
+      return .collections(.episode(collection.slug, section.slug, .left(self.episode.slug)))
+    case .direct:
+      return .episode(.show(.left(self.episode.slug)))
+    }
+  }
 }
 
 public func newEpisodePageView(
@@ -386,7 +402,7 @@ private func currentEpisodeInfoRow(
             Class.type.lineHeight(1)
           ])
         ],
-        .text(data.episode.subtitle ?? data.episode.title)
+        .raw(nonBreaking(title: data.episode.subtitle ?? data.episode.title))
       )
     ),
     chaptersRow(data: data),
@@ -673,10 +689,8 @@ private func mainContent(
     ),
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
-      transcriptView(
-        blocks: data.episode.transcriptBlocks,
-        isEpisodeViewable: isEpisodeViewable
-      ),
+      unlockCallout(data: data),
+      transcriptView(data: data),
       exercisesView(exercises: data.episode.exercises),
       referencesView(references: data.episode.references),
       downloadsView(episode: data.episode)
@@ -730,6 +744,217 @@ private func downloadsView(episode: Episode) -> Node {
           .class([Class.pf.colors.link.purple, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
         ],
         .text(episode.codeSampleDirectory)
+      )
+    )
+  )
+}
+
+private func subscribeCallout(data: EpisodePageData) -> Node {
+  guard data.subscriberState.isNonSubscriber else { return [] }
+
+  return .div(
+    attributes: [
+      .class([
+        Class.padding([
+          .mobile: [.topBottom: 3],
+        ]),
+      ])
+    ],
+    .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+        ])
+      ],
+      .gridRow(
+        attributes: [
+          .class([
+            Class.border.bottom,
+            Class.flex.items.center,
+            Class.flex.justify.center,
+            Class.h6,
+            Class.padding([
+              .mobile: [.topBottom: 1, .leftRight: 2]
+            ]),
+            Class.pf.colors.bg.gray900,
+            Class.pf.colors.border.gray850,
+            Class.pf.colors.fg.gray650,
+            Class.type.align.center,
+            Class.type.lineHeight(4),
+            Class.type.semiBold,
+          ]),
+        ],
+        .img(base64: lockSvgBase64, type: .image(.svg), alt: "", attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.right: 1],
+            ])
+          ]),
+        ]),
+        "This episode is for subscribers only."
+      ),
+      .div(
+        attributes: [
+          .class([
+            Class.padding([
+              .desktop: [.leftRight: 4],
+              .mobile: [.all: 3],
+            ]),
+            Class.type.align.center,
+          ]),
+        ],
+        .h3(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle5
+            ])
+          ],
+          "Subscribe to ", pointFreeRaw
+        ),
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.bottom: 3]]),
+              Class.pf.colors.fg.gray650,
+            ]),
+          ],
+          "Access this episode, plus all past and future episodes when you become a subscriber."
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.margin([.mobile: [.bottom: 2]]),
+            ]),
+          ],
+          .a(
+            attributes: [
+              .class([
+                Class.pf.components.button(color: .purple),
+              ]),
+              .href(path(to: .pricingLanding))
+            ],
+            "See plans and pricing"
+          )
+        ),
+        .div(
+          attributes: [
+            .class([
+              Class.margin([.mobile: [.bottom: 2]]),
+            ]),
+          ],
+          data.user == nil
+            ? .p(
+              attributes: [
+                .class([
+                  Class.pf.colors.fg.gray650,
+                  Class.pf.type.body.small,
+                ]),
+              ],
+              "Already a subscriber? ",
+              .a(
+                attributes: [
+                  .class([
+                    Class.pf.colors.link.purple,
+                  ]),
+                  .href(path(to: .login(redirect: url(to: data.route)))),
+                ],
+                "Log in"
+              )
+              )
+            : []
+        )
+      )
+    )
+  )
+}
+
+private func unlockCallout(data: EpisodePageData) -> Node {
+
+  guard
+    !isEpisodeViewable(for: data.permission),
+    data.subscriberState.isNonSubscriber,
+    (data.user?.episodeCreditCount ?? 1) > 0
+    else { return [] }
+
+  return .div(
+    attributes: [
+      .class([
+        Class.padding([
+          .mobile: [.leftRight: 3, .top: 3],
+          .desktop: [.left: 4, .right: 3],
+        ]),
+      ])
+    ],
+    .div(
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.border.rounded.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]])
+        ])
+      ],
+      .div(
+        attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.all: 3],
+              .desktop: [.leftRight: 4, .top: 2, .bottom: 3],
+            ]),
+            Class.type.align.center,
+          ]),
+        ],
+        .img(
+          base64: circleLockSvgBase64,
+          type: .image(.svg),
+          alt: ""
+        ),
+        .h3(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle5
+            ])
+          ],
+          "Unlock This Episode"
+        ),
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.bottom: 3]]),
+              Class.pf.colors.fg.gray650,
+            ]),
+          ],
+          data.user
+            .map {
+              [
+                "You have \(String($0.episodeCreditCount)) episode credit\($0.episodeCreditCount == 1 ? "" : "s"). ",
+                "Spend \($0.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?"
+              ]
+            }
+            ?? "Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter."
+        ),
+        data.user == nil
+          ? .gitHubLink(
+            text: "Sign in with GitHub",
+            type: .black,
+            href: path(to: .login(redirect: url(to: data.route)))
+            )
+          : .form(
+            attributes: [
+              .action(path(to: .useEpisodeCredit(data.episode.id))),
+              .method(.post),
+            ],
+            .button(
+              attributes: [
+                .class([
+                  Class.pf.components.button(color: .black),
+                ])
+              ],
+              "Redeem this episode"
+            )
+        )
       )
     )
   )
@@ -850,11 +1075,8 @@ public let useCreditCTA = "Use an episode credit"
 
 let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
 
-private func transcriptView(
-  blocks: [Episode.TranscriptBlock],
-  isEpisodeViewable: Bool
-) -> Node {
-  return .div(
+private func transcriptView(data: EpisodePageData) -> Node {
+  .div(
     attributes: [
       .id("transcript"),
       .class(
@@ -869,66 +1091,22 @@ private func transcriptView(
         ]
       )
     ],
-    transcript(blocks: blocks, isEpisodeViewable: isEpisodeViewable)
+    transcript(data: data)
   )
 }
 
-private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
+private func transcript(data: EpisodePageData) -> Node {
   struct State { var nodes: [Node] = [], titleCount = 0 }
 
   return .fragment(
-    blocks
+    data.episode.transcriptBlocks
       .reduce(into: State()) { state, block in
         if case .title = block.type { state.titleCount += 1 }
-        state.nodes += state.titleCount <= 1 || isEpisodeViewable
+        state.nodes += state.titleCount <= 1 || isEpisodeViewable(for: data.permission)
           ? [transcriptBlockView(block)]
           : []
       }
-      .nodes + [subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)]
-  )
-}
-
-private func subscriberCalloutView(isEpisodeViewable: Bool) -> Node {
-  guard !isEpisodeViewable else { return [] }
-
-  return .gridRow(
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [.style(margin(leftRight: .auto))],
-      .div(
-        attributes: [
-          .class(
-            [
-              Class.margin([.mobile: [.top: 4]]),
-              Class.padding([.mobile: [.all: 3]]),
-              Class.pf.colors.bg.gray900
-            ]
-          )
-        ],
-        .h4(
-          attributes: [
-            .class(
-              [
-                Class.pf.type.responsiveTitle4,
-                Class.padding([.mobile: [.bottom: 2]])
-              ]
-            )
-          ],
-          "Subscribe to Point-Free"
-        ),
-        .p(
-          "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
-          .a(
-            attributes: [
-              .href(path(to: .pricingLanding)),
-              .class([Class.pf.type.underlineLink])
-            ],
-            "subscribe"
-          ),
-          " so that you get access to this episodes and more!"
-        )
-      )
-    )
+      .nodes + [subscribeCallout(data: data)]
   )
 }
 

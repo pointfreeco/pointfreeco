@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55377
+Content-Length: 55315
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1875,7 +1875,6 @@ html {
                           cursor-pointer
                           nowrap
                           btn-normal
-                          rounded
                           border-none
                           text-decoration-none
                           pf-link-black
@@ -2215,7 +2214,6 @@ window.addEventListener("load", function() {
                     cursor-pointer
                     nowrap
                     btn-normal
-                    rounded
                     border-none
                     text-decoration-none
                     pf-link-white

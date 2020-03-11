@@ -384,8 +384,8 @@ class EpisodePageTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2100))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
         ]
       )
     }

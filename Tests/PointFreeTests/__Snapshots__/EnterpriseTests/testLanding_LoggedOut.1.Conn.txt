@@ -2,7 +2,7 @@ GET http://localhost:8080/enterprise/blob.biz
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 46121
+Content-Length: 46059
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1822,7 +1822,6 @@ html {
                           cursor-pointer
                           nowrap
                           btn-normal
-                          rounded
                           border-none
                           text-decoration-none
                           pf-link-black
@@ -1885,7 +1884,6 @@ html {
                     cursor-pointer
                     nowrap
                     btn-normal
-                    rounded
                     border-none
                     text-decoration-none
                     pf-link-black

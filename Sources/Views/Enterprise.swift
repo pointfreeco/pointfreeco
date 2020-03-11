@@ -88,7 +88,7 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
   )
 }
 
-private let pointFreeRaw = Node.raw("Point&#8209;Free")
+let pointFreeRaw = Node.raw("Point&#8209;Free")
 
 private let enterpriseRowClass =
   Class.pf.colors.bg.purple150

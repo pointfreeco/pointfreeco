@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67767
+Content-Length: 72658
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2299,6 +2299,66 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-8
                   col-m-12">
+        <div class="d-pl4
+                    d-pr3
+                    m-pt3
+                    m-pl3
+                    m-pr3">
+          <div class="border
+                      rounded
+                      border-gray-850
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2">
+            <div class="d-pb3
+                        d-pt2
+                        d-pl4
+                        d-pr4
+                        m-pl3
+                        m-pr3
+                        m-pt3
+                        m-pb3
+                        center">
+              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxMjEyMTIiIHI9IjI0Ii8+PHBhdGggZD0ibTEyIDE3YzEuMSAwIDItLjkgMi0ycy0uOS0yLTItMi0yIC45LTIgMiAuOSAyIDIgMnptNi05aC0xdi0yYzAtMi43Ni0yLjI0LTUtNS01cy01IDIuMjQtNSA1aDEuOWMwLTEuNzEgMS4zOS0zLjEgMy4xLTMuMXMzLjEgMS4zOSAzLjEgMy4xdjJoLTkuMWMtMS4xIDAtMiAuOS0yIDJ2MTBjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMnYtMTBjMC0xLjEtLjktMi0yLTJ6bTAgMTJoLTEydi0xMGgxMnoiIGZpbGw9IiNmZmYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDEyKSIvPjwvZz48L3N2Zz4="
+                   alt>
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1_25
+                         ts-m-r1
+                         lh-1">
+                Unlock This Episode
+              </h3>
+              <p class="m-pb3
+                        fg-gray650">
+                You have 
+                1
+                 episode credit
+                . 
+                Spend 
+                it
+                 to watch this episode for free?
+              </p>
+              <form action="/episodes/2/credit"
+                    method="post">
+                <button class="medium
+                               cursor-pointer
+                               nowrap
+                               btn-normal
+                               border-none
+                               text-decoration-none
+                               pf-link-white
+                               fg-white
+                               bg-black
+                               h5
+                               m-pl2
+                               m-pr2">
+                  Redeem this episode
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
         <div id="transcript"
              class="d-pl4
                     d-pr3
@@ -2330,33 +2390,69 @@ that timestamp jumps the video to that spot.</p>
 
             </div>
           </div>
-          <div class="row">
-            <div style="margin-right:auto;
-                        margin-left:auto"
-                 class="col-m
-                        col-m-12">
-              <div class="m-mt4
+          <div class="m-pt3
+                      m-pb3">
+            <div class="border
+                        rounded
+                        border-gray-850">
+              <div class="border-bottom
+                          items-center
+                          justify-center
+                          h6
+                          m-pl2
+                          m-pr2
+                          m-pt1
+                          m-pb1
+                          bg-gray900
+                          border-gray-850
+                          fg-gray650
+                          center
+                          lh-4
+                          semi-bold
+                          row">
+                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTIgNS4zMzMzMzMzM2gtLjY2NjY2Njd2LTEuMzMzMzMzMzNjMC0xLjg0LTEuNDkzMzMzMy0zLjMzMzMzMzMzLTMuMzMzMzMzMy0zLjMzMzMzMzMzcy0zLjMzMzMzMzMzIDEuNDkzMzMzMzMtMy4zMzMzMzMzMyAzLjMzMzMzMzMzdjEuMzMzMzMzMzNoLS42NjY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bS00IDUuOTk5OTk5OTdjLS43MzMzMzMzMyAwLTEuMzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzMtMS4zMzMzMzMzM3MxLjMzMzMzMzMzLjYgMS4zMzMzMzMzMyAxLjMzMzMzMzMzYzAgLjczMzMzMzMtLjYgMS4zMzMzMzMzLTEuMzMzMzMzMzMgMS4zMzMzMzMzem0yLjA2NjY2NjctNS45OTk5OTk5N2gtNC4xMzMzMzMzN3YtMS4zMzMzMzMzM2MwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                     alt
+                     class="m-pr1">
+                This episode is for subscribers only.
+              </div>
+              <div class="d-pl4
+                          d-pr4
                           m-pl3
                           m-pr3
                           m-pt3
                           m-pb3
-                          bg-gray900">
-                <h4 class="fg-black
+                          center">
+                <h3 class="fg-black
                            bold
-                           ts-d-r1_5
-                           ts-m-r1_25
-                           lh-2
-                           m-pb2">
-                  Subscribe to Point-Free
-                </h4>
-                <p>
-                  👋 Hey there! Does this episode sound interesting? Well, then you may want to 
-                  <a href="/pricing"
-                     class="underline-link">
-                    subscribe
-                  </a>
-                   so that you get access to this episodes and more!
+                           ts-d-r1_25
+                           ts-m-r1
+                           lh-1">
+                  Subscribe to 
+                  Point&#8209;Free
+                </h3>
+                <p class="m-pb3
+                          fg-gray650">
+                  Access this episode, plus all past and future episodes when you become a subscriber.
                 </p>
+                <div class="m-mb2">
+                  <a class="medium
+                            cursor-pointer
+                            nowrap
+                            btn-normal
+                            border-none
+                            text-decoration-none
+                            pf-link-white
+                            fg-white
+                            bg-purple
+                            h5
+                            m-pl2
+                            m-pr2"
+                     href="/pricing">
+                    See plans and pricing
+                  </a>
+                </div>
+                <div class="m-mb2">
+                </div>
               </div>
             </div>
           </div>
