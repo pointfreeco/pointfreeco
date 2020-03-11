@@ -154,6 +154,10 @@ body {
   color : #666666;
 }
 
+.fg-gray500 {
+  color : #808080;
+}
+
 .fg-gray650 {
   color : #a8a8a8;
 }
@@ -2322,22 +2326,18 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                   col-d-8
                   col-m-12">
         <div id="transcript"
-             class="d-pb4
-                    d-pl4
+             class="d-pl4
                     d-pr3
-                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
                     m-pb3">
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t0">
             <a href="#t0">
               Introduction
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t0"
                  class="block">
@@ -2356,14 +2356,12 @@ that timestamp jumps the video to that spot.</p>
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t0">
             <a href="#t0">
               Title
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t0"
                  class="block">
@@ -2432,14 +2430,12 @@ time at the beginning of the text. That’s what we have done here.</p>
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t60">
             <a href="#t60">
               Title Block
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t60"
                  class="block">
@@ -2493,14 +2489,12 @@ so that its syntax is highlighted nicely.</p>
 
             </div>
           </div>
-          <h2 class="h4
-                     lh-3
-                     m-pt2"
+          <h3 class="h3"
               id="t120">
             <a href="#t120">
               Another Title
             </a>
-          </h2>
+          </h3>
           <div>
             <div id="t120"
                  class="block">
@@ -2523,30 +2517,21 @@ working how we expect:</p>
             </div>
           </div>
         </div>
-        <hr class="pf-divider
-                   border-top
-                   m-ml0
-                   m-mr0
-                   m-mt0
-                   m-mb0
-                   bg-white">
-        <div class="d-pb4
-                    d-pt2
+        <div class="d-pb2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
+                    m-pt3
                     m-pl3
                     m-pr3
-                    m-pt3
-                    m-pb3
                     bg-white">
-          <h2 id="exercises"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="exercises"
+              class="h3">
             Exercises
-          </h2>
-          <ol>
-            <li id="exercise-1">
+          </h3>
+          <ol style="padding-left: 1.5rem">
+            <li id="exercise-1"
+                class="m-pb2">
               <div>
                 <div class="md-ctn">
                   <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
@@ -2578,19 +2563,17 @@ working how we expect:</p>
           </ol>
         </div>
         <div class="d-pb4
-                    d-pt2
                     d-pl4
-                    d-pr4
+                    d-pr3
+                    d-pt2
                     m-pl3
                     m-pr3
                     m-pt3
                     m-pb3">
-          <h2 id="downloads"
-              class="h4
-                     lh-3
-                     m-pt2">
+          <h3 id="downloads"
+              class="h3">
             Downloads
-          </h2>
+          </h3>
           <div class="border
                       rounded
                       border-gray-850

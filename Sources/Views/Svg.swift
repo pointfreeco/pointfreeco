@@ -42,19 +42,6 @@ public let downloadIconSvgBase64 = base64EncodedString("""
 <svg width="12" height="15" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" d="M-77-1403H947v3583H-77z"/><path d="M11.8333 5.5H8.5v-5h-5v5H.1667L6 11.3333 11.8333 5.5zM.1667 13v1.6667h11.6666V13H.1667z" fill="#000"/></g></svg>
 """)
 
-public func newWindowSvgBase64(fill: String) -> String {
-  return base64EncodedString <| """
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g fill="\(fill)" fill-rule="nonzero">
-            <path d="M11.015625,0 L18,0 L18,6.984375 L15.984375,6.984375 L15.984375,3.421875 L6.1875,13.21875 L4.78125,11.8125 L14.578125,2.015625 L11.015625,2.015625 L11.015625,0 Z M15.984375,15.984375 L15.984375,9 L18,9 L18,15.984375 C18,17.0625 17.0625,18 15.984375,18 L2.015625,18 C0.890625,18 0,17.0625 0,15.984375 L0,2.015625 C0,0.9375 0.890625,0 2.015625,0 L9,0 L9,2.015625 L2.015625,2.015625 L2.015625,15.984375 L15.984375,15.984375 Z" id="Shape"></path>
-        </g>
-    </g>
-</svg>
-"""
-}
-
 public let leftNavigationChevronSvgBase64 = base64EncodedString <| """
 <svg height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m-57-78h1024v1649h-1024z" fill="#fff"/><path d="m-57-22h1024v412h-1024z" fill="#121212"/><path d="m10.2733333 4.94-.93999997-.94-4 4 4 4 .93999997-.94-3.0533333-3.06z" fill="#a8a8a8" transform="translate(-5 -4)"/></g></svg>
 """
