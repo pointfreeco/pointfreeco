@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 202726
+Content-Length: 202638
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1877,7 +1877,6 @@ personal, team and enterprise subscriptions.">
                           cursor-pointer
                           nowrap
                           btn-normal
-                          rounded
                           border-none
                           text-decoration-none
                           pf-link-black
@@ -1952,7 +1951,6 @@ personal, team and enterprise subscriptions.">
                       cursor-pointer
                       nowrap
                       btn-normal
-                      rounded
                       border-none
                       text-decoration-none
                       pf-link-black
@@ -4180,7 +4178,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
                 cursor-pointer
                 nowrap
                 btn-normal
-                rounded
                 border-none
                 text-decoration-none
                 pf-link-black

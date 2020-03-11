@@ -2,7 +2,7 @@ GET http://localhost:8080/account/payment-info
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 47907
+Content-Length: 47866
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2003,7 +2003,6 @@ form.addEventListener('submit', function(event) {
                                  cursor-pointer
                                  nowrap
                                  btn-normal
-                                 rounded
                                  border-none
                                  text-decoration-none
                                  pf-link-white

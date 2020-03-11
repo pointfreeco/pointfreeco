@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 43427
+Content-Length: 43387
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1871,7 +1871,6 @@ access to all of the videos, transcripts, and code samples on this site.
                                 cursor-pointer
                                 nowrap
                                 btn-normal
-                                rounded
                                 border-none
                                 text-decoration-none
                                 pf-link-white

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"An error has occurred!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65171
+Content-Length: 64946
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1976,7 +1976,6 @@ html {
                                 cursor-pointer
                                 nowrap
                                 btn-normal
-                                rounded
                                 border-none
                                 text-decoration-none
                                 pf-link-white
@@ -2140,7 +2139,6 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                                  cursor-pointer
                                                  nowrap
                                                  btn-normal
-                                                 rounded
                                                  border-none
                                                  text-decoration-none
                                                  pf-link-white
@@ -2279,7 +2277,6 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                         cursor-pointer
                                         nowrap
                                         btn-normal
-                                        rounded
                                         border-none
                                         text-decoration-none
                                         pf-link-white
@@ -2347,7 +2344,6 @@ per month. Your first invoice will be prorated based on your current billing cyc
                                         cursor-pointer
                                         nowrap
                                         btn-normal
-                                        rounded
                                         border-none
                                         text-decoration-none
                                         pf-link-white
@@ -2397,7 +2393,6 @@ per month. Your first invoice will be prorated based on your current billing cyc
                         cursor-pointer
                         nowrap
                         btn-normal
-                        rounded
                         border-none
                         text-decoration-none
                         pf-link-white
