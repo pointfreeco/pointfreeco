@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep2-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 80910
+Content-Length: 81086
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2499,7 +2499,9 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               Introduction
             </a>
           </h3>
-          <div>
+          <div style="-webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+                      
+mask-image: linear-gradient(to bottom, black 20%, transparent 100%)">
             <div id="t0"
                  class="block">
               <a href="#t0"

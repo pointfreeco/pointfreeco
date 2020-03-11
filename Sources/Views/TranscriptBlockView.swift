@@ -7,7 +7,10 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> Node {
+public func transcriptBlockView(
+  _ block: Episode.TranscriptBlock,
+  fadeOutBlock: Bool = false
+  ) -> Node {
   switch block.type {
   case let .code(lang):
     return .pre(
@@ -53,6 +56,12 @@ public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> Node {
 
   case .paragraph:
     return .div(
+      attributes: fadeOutBlock ? [
+      .style(safe: #"""
+      -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+      """#)
+      ] : [],
       timestampLinkView(block.timestamp),
       .markdownBlock(block.content)
     )

@@ -1196,10 +1196,24 @@ private func transcript(data: EpisodePageData) -> Node {
 
   return .fragment(
     data.episode.transcriptBlocks
-      .reduce(into: State()) { state, block in
+      .enumerated()
+      .reduce(into: State()) { state, idxAndBlock in
+        let (idx, block) = idxAndBlock
         if case .title = block.type { state.titleCount += 1 }
+
+        let isLastParagraphInFirstChapter: Bool
+        if idx + 1 < data.episode.transcriptBlocks.count,
+          case .title = data.episode.transcriptBlocks[idx + 1].type {
+          isLastParagraphInFirstChapter = true
+        } else {
+          isLastParagraphInFirstChapter = false
+        }
+
         state.nodes += state.titleCount <= 1 || isEpisodeViewable(for: data.permission)
-          ? [transcriptBlockView(block)]
+          ? [transcriptBlockView(
+            block,
+            fadeOutBlock: isLastParagraphInFirstChapter && !isEpisodeViewable(for: data.permission)
+            )]
           : []
       }
       .nodes + [subscribeCallout(data: data)]
