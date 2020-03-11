@@ -33,7 +33,7 @@ public func collectionIndex(
           attributes: [
             .class([Class.pf.type.responsiveTitle2])
           ],
-          "Collections"
+          "Episode Collections"
         )
       )
     ),
