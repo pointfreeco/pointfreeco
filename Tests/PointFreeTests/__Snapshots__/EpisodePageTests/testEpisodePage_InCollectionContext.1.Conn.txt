@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep2-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 81021
+Content-Length: 81057
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2106,6 +2106,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
         <div class="border
                     rounded
                     border-gray-850
+                    overflow-hidden
                     d-ml3
                     d-mr0
                     m-ml2

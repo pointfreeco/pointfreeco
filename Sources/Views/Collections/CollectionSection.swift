@@ -220,7 +220,7 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
   switch content {
   case let .collections(collections):
-    return .fragment(collections.map { collection in
+    return .fragment(collections().map { collection in
       relatedItemRow(
         icon: collectionIconSvgBase64,
         title: collection.title,
@@ -229,7 +229,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
       )
     })
   case let .episodes(episodes):
-    return .fragment(episodes.map { episode in
+    return .fragment(episodes().map { episode in
       relatedItemRow(
         icon: playIconSvgBase64(),
         title: episode.fullTitle,
@@ -238,6 +238,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
       )
     })
   case let .section(collection, index):
+    let collection = collection()
     let section = collection.sections[index]
     return relatedItemRow(
       icon: collectionIconSvgBase64,
