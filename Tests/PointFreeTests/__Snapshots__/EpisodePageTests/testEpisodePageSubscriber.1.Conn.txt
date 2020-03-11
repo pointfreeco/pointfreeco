@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 78644
+Content-Length: 75240
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2572,71 +2572,6 @@ working how we expect:</p>
 <p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
 </blockquote>
 
-            </div>
-          </div>
-          <div class="d-pt3
-                      d-pb3
-                      m-pt2
-                      m-pb2">
-            <div class="border
-                        rounded
-                        border-gray-850">
-              <div class="border-bottom
-                          items-center
-                          justify-center
-                          h6
-                          m-pl2
-                          m-pr2
-                          m-pt1
-                          m-pb1
-                          bg-gray900
-                          border-gray-850
-                          fg-gray650
-                          center
-                          lh-4
-                          semi-bold
-                          row">
-                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTIgNS4zMzMzMzMzM2gtLjY2NjY2Njd2LTEuMzMzMzMzMzNjMC0xLjg0LTEuNDkzMzMzMy0zLjMzMzMzMzMzLTMuMzMzMzMzMy0zLjMzMzMzMzMzcy0zLjMzMzMzMzMzIDEuNDkzMzMzMzMtMy4zMzMzMzMzMyAzLjMzMzMzMzMzdjEuMzMzMzMzMzNoLS42NjY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bS00IDUuOTk5OTk5OTdjLS43MzMzMzMzMyAwLTEuMzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzMtMS4zMzMzMzMzM3MxLjMzMzMzMzMzLjYgMS4zMzMzMzMzMyAxLjMzMzMzMzMzYzAgLjczMzMzMzMtLjYgMS4zMzMzMzMzLTEuMzMzMzMzMzMgMS4zMzMzMzMzem0yLjA2NjY2NjctNS45OTk5OTk5N2gtNC4xMzMzMzMzN3YtMS4zMzMzMzMzM2MwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
-                     alt
-                     class="m-pr1">
-                This episode is for subscribers only.
-              </div>
-              <div class="d-pl4
-                          d-pr4
-                          m-pl3
-                          m-pr3
-                          m-pt3
-                          m-pb3
-                          center">
-                <h3 class="fg-black
-                           bold
-                           ts-d-r1_25
-                           ts-m-r1
-                           lh-1">
-                  Subscribe to Point-Free
-                </h3>
-                <p class="m-pb3
-                          fg-gray650">
-                  Access this episode, plus all past and future episodes when you become a subscriber.
-                </p>
-                <div class="m-mb2">
-                  <a class="medium
-                            cursor-pointer
-                            nowrap
-                            btn-normal
-                            border-none
-                            text-decoration-none
-                            pf-link-white
-                            fg-white
-                            bg-purple
-                            h5
-                            m-pl2
-                            m-pr2"
-                     href="/pricing">
-                    See plans and pricing
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>

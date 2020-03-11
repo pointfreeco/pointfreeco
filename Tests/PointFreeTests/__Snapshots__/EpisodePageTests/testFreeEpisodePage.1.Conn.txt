@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 82882
+Content-Length: 82822
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2375,10 +2375,10 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         lh-4
                         semi-bold
                         row">
-              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTIgNS4zMzMzMzMzM2gtLjY2NjY2Njd2LTEuMzMzMzMzMzNjMC0xLjg0LTEuNDkzMzMzMy0zLjMzMzMzMzMzLTMuMzMzMzMzMy0zLjMzMzMzMzMzcy0zLjMzMzMzMzMzIDEuNDkzMzMzMzMtMy4zMzMzMzMzMyAzLjMzMzMzMzMzdjEuMzMzMzMzMzNoLS42NjY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bS00IDUuOTk5OTk5OTdjLS43MzMzMzMzMyAwLTEuMzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzMtMS4zMzMzMzMzM3MxLjMzMzMzMzMzLjYgMS4zMzMzMzMzMyAxLjMzMzMzMzMzYzAgLjczMzMzMzMtLjYgMS4zMzMzMzMzLTEuMzMzMzMzMzMgMS4zMzMzMzMzem0yLjA2NjY2NjctNS45OTk5OTk5N2gtNC4xMzMzMzMzN3YtMS4zMzMzMzMzM2MwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
                    alt
                    class="m-pr1">
-              This episode is for subscribers only.
+              This episode is free for everyone.
             </div>
             <div class="d-pl4
                         d-pr4
@@ -2396,7 +2396,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               </h3>
               <p class="m-pb3
                         fg-gray650">
-                Access this episode, plus all past and future episodes when you become a subscriber.
+                Access all past and future episodes when you become a subscriber.
               </p>
               <div class="m-mb2">
                 <a class="medium
@@ -2643,10 +2643,10 @@ working how we expect:</p>
                           lh-4
                           semi-bold
                           row">
-                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTIgNS4zMzMzMzMzM2gtLjY2NjY2Njd2LTEuMzMzMzMzMzNjMC0xLjg0LTEuNDkzMzMzMy0zLjMzMzMzMzMzLTMuMzMzMzMzMy0zLjMzMzMzMzMzcy0zLjMzMzMzMzMzIDEuNDkzMzMzMzMtMy4zMzMzMzMzMyAzLjMzMzMzMzMzdjEuMzMzMzMzMzNoLS42NjY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bS00IDUuOTk5OTk5OTdjLS43MzMzMzMzMyAwLTEuMzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzMtMS4zMzMzMzMzM3MxLjMzMzMzMzMzLjYgMS4zMzMzMzMzMyAxLjMzMzMzMzMzYzAgLjczMzMzMzMtLjYgMS4zMzMzMzMzLTEuMzMzMzMzMzMgMS4zMzMzMzMzem0yLjA2NjY2NjctNS45OTk5OTk5N2gtNC4xMzMzMzMzN3YtMS4zMzMzMzMzM2MwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
                      alt
                      class="m-pr1">
-                This episode is for subscribers only.
+                This episode is free for everyone.
               </div>
               <div class="d-pl4
                           d-pr4
@@ -2664,7 +2664,7 @@ working how we expect:</p>
                 </h3>
                 <p class="m-pb3
                           fg-gray650">
-                  Access this episode, plus all past and future episodes when you become a subscriber.
+                  Access all past and future episodes when you become a subscriber.
                 </p>
                 <div class="m-mb2">
                   <a class="medium

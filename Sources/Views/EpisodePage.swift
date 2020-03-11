@@ -698,6 +698,64 @@ private func mainContent(
   )
 }
 
+private func topCallout(data: EpisodePageData) -> Node {
+  func pad(_ node: Node) -> Node {
+    .div(
+      attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.leftRight: 3, .top: 3],
+            .desktop: [.left: 4, .right: 3],
+          ]),
+        ])
+      ],
+      node
+    )
+  }
+
+  switch data.permission {
+  case .loggedIn(_, .isSubscriber):
+    return []
+  case .loggedOut(isEpisodeSubscriberOnly: true):
+    return pad(unlockLoggedOutCallout(data: data))
+  case .loggedIn(let user, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
+    return pad(unlockLoggedInCallout(user: user, data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
+    return pad(creditSubscribeCallout(data: data))
+  case .loggedOut(isEpisodeSubscriberOnly: false),
+       .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
+    return pad(subscribeFreeCallout(data: data))
+  }
+}
+
+private func bottomCallout(data: EpisodePageData) -> Node {
+  func pad(_ node: Node) -> Node {
+    .div(
+      attributes: [
+        .class([
+          Class.padding([
+            .desktop: [.topBottom: 3],
+            .mobile: [.topBottom: 2],
+          ]),
+        ])
+      ],
+      node
+    )
+  }
+
+  switch data.permission {
+  case .loggedIn(_, .isSubscriber):
+    return []
+  case .loggedOut(isEpisodeSubscriberOnly: true),
+       .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
+    return pad(subscribeCallout(data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
+    return pad(creditSubscribeCallout(data: data))
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))), .loggedOut(false):
+    return pad(subscribeFreeCallout(data: data))
+  }
+}
+
 private func calloutBar(
   icon svgBase64: String,
   _ content: String
@@ -898,80 +956,79 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
   )
 }
 
-private func topCallout(data: EpisodePageData) -> Node {
-  func pad(_ node: Node) -> Node {
-    .div(
+private func subscribeFreeCallout(data: EpisodePageData) -> Node {
+
+  callout(
+    bar: calloutBar(icon: unlockSvgBase64, "This episode is free for everyone."),
+    title: "Subscribe to Point-Free",
+    body: "Access all past and future episodes when you become a subscriber.",
+    .a(
       attributes: [
         .class([
-          Class.padding([
-            .mobile: [.leftRight: 3, .top: 3],
-            .desktop: [.left: 4, .right: 3],
-          ]),
-        ])
-      ],
-      node
-    )
-  }
-
-  switch data.permission {
-  case .loggedIn(_, .isSubscriber):
-    return []
-  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(true))), .loggedOut(true):
-    return pad(unlockCallout(data: data))
-  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
-    return pad(creditSubscribeCallout(data: data))
-  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))), .loggedOut(false):
-    return pad(subscribeCallout(data: data))
-  }
-}
-
-private func bottomCallout(data: EpisodePageData) -> Node {
-  .div(
-    attributes: [
-      .class([
-        Class.padding([
-          .desktop: [.topBottom: 3],
-          .mobile: [.topBottom: 2],
+          Class.pf.components.button(color: .purple),
         ]),
-      ]),
-    ],
-    subscribeCallout(data: data)
+        .href(path(to: .pricingLanding))
+      ],
+      "See plans and pricing"
+    ),
+    data.user == nil
+      ? .p(
+        attributes: [
+          .class([
+            Class.margin([.mobile: [.top: 2]]),
+            Class.pf.colors.fg.gray650,
+            Class.pf.type.body.small,
+          ]),
+        ],
+        "Already a subscriber? ",
+        .a(
+          attributes: [
+            .class([
+              Class.pf.colors.link.purple,
+            ]),
+            .href(path(to: .login(redirect: url(to: data.route)))),
+          ],
+          "Log in"
+        )
+        )
+      : []
   )
 }
 
-private func unlockCallout(data: EpisodePageData) -> Node {
+private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
   callout(
     icon: circleLockSvgBase64,
     title: "Unlock This Episode",
-    body: data.user
-      .map {
-        """
-        You have \(String($0.episodeCreditCount)) episode credit\($0.episodeCreditCount == 1 ? "" : "s"). \
-        Spend \($0.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?
-        """
-      }
-      ?? """
-    Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter.
-    """,
-    data.user == nil
-      ? .gitHubLink(
-        text: "Sign in with GitHub",
-        type: .black,
-        href: path(to: .login(redirect: url(to: data.route)))
-        )
-      : .form(
+    body: "Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter.",
+    .gitHubLink(
+      text: "Sign in with GitHub",
+      type: .black,
+      href: path(to: .login(redirect: url(to: data.route)))
+    )
+  )
+}
+
+private func unlockLoggedInCallout(user: User, data: EpisodePageData) -> Node {
+  callout(
+    icon: circleLockSvgBase64,
+    title: "Unlock This Episode",
+    body: """
+You have \(String(user.episodeCreditCount)) episode credit\(user.episodeCreditCount == 1 ? "" : "s"). \
+Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?
+""",
+    .form(
+      attributes: [
+        .action(path(to: .useEpisodeCredit(data.episode.id))),
+        .method(.post),
+      ],
+      .button(
         attributes: [
-          .action(path(to: .useEpisodeCredit(data.episode.id))),
-          .method(.post),
+          .class([
+            Class.pf.components.button(color: .black),
+          ])
         ],
-        .button(
-          attributes: [
-            .class([
-              Class.pf.components.button(color: .black),
-            ])
-          ],
-          "Redeem this episode"
-        )
+        "Redeem this episode"
+      )
     )
   )
 }
