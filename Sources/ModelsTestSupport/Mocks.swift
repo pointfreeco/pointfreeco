@@ -111,7 +111,7 @@ This is the blurb for the collection. It can be as long as you want, and it _can
     """#,
         coreLessons: [
           .init(episode: .mock),
-          .init(episode: .mock),
+          .init(episode: .free),
         ],
         related: [
           .init(
@@ -138,7 +138,7 @@ This is the blurb for the collection. It can be as long as you want, and it _can
           """#,
         coreLessons: [
           .init(episode: .mock),
-          .init(episode: .mock),
+          .init(episode: .free),
         ],
         related: [
           .init(
@@ -165,7 +165,7 @@ This is the blurb for the collection. It can be as long as you want, and it _can
           """#,
         coreLessons: [
           .init(episode: .mock),
-          .init(episode: .mock),
+          .init(episode: .free),
         ],
         related: [
           .init(
