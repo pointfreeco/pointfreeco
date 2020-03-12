@@ -48,16 +48,21 @@ private let codeMarkdownStyles: Stylesheet =
   pre % (
     code % (
       padding(topBottom: .rem(0.5), leftRight: .rem(1))
+        <> borderRadius(all: .px(6))
         <> display(.block)
         <> overflow(x: .auto)
+        <> margin(bottom: .rem(1.5))
     )
     )
     <> code % (
       fontFamily(["monospace"])
-        <> padding(topBottom: .px(1), leftRight: .px(5))
-        <> borderWidth(all: .px(1))
+        <> backgroundColor(.other("#fafafa"))
+        <> borderColor(all: Colors.gray850)
         <> borderRadius(all: .px(3))
-        <> backgroundColor(.white(0, 0.02))
+        <> borderStyle(all: .solid)
+        <> borderWidth(all: .px(1))
+        <> padding(topBottom: .px(1), leftRight: .px(5))
+        <> key("white-space", "nowrap")
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =
