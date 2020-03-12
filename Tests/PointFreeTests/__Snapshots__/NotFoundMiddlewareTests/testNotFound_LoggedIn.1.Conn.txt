@@ -2,7 +2,7 @@ GET http://localhost:8080/404
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 404 Not Found
-Content-Length: 42056
+Content-Length: 42358
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1842,12 +1842,21 @@ html {
           </h5>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-swift">
               f: (Page) -> Never
             </code>
