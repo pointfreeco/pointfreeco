@@ -56,8 +56,10 @@ private let codeMarkdownStyles: Stylesheet =
     )
     <> code % (
       fontFamily(["monospace"])
-        <> backgroundColor(.other("#fafafa"))
-        <> borderColor(all: Colors.gray850)
+//        <> backgroundColor(.other("#fafafa"))
+//        <> borderColor(all: Colors.gray850)
+        <> backgroundColor(.white(0, 0.02))
+        <> borderColor(all: .white(0, 0.15))
         <> borderRadius(all: .px(3))
         <> borderStyle(all: .solid)
         <> borderWidth(all: .px(1))

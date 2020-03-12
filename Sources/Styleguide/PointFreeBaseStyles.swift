@@ -273,7 +273,6 @@ extension Class.pf {
       _codeClass
         | Class.border.all
         | Class.border.rounded.all
-        | Class.pf.colors.border.gray850
         | Class.display.block
         | Class.margin([
           .desktop: [.topBottom: 1],
@@ -410,9 +409,12 @@ private let colorStyles: Stylesheet = concat([
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
   _codeClass % (
-    backgroundColor(.other("#fafafa"))
+//    backgroundColor(.other("#fafafa"))
+    backgroundColor(.white(0, 0.02))
+      <> borderColor(all: .white(0, 0.15))
       <> color(.other("#24292e"))
       <> fontFamily(["monospace"])
+
 )
 
 private let inlineCodeStyles =
@@ -422,7 +424,8 @@ private let inlineCodeStyles =
       <> padding(topBottom: .px(1), leftRight: .px(5))
       <> borderWidth(all: .px(1))
       <> borderRadius(all: .px(3))
-      <> backgroundColor(Color.other("#fafafa"))
+//      <> backgroundColor(Color.other("#fafafa"))
+      <> backgroundColor(.white(0, 0.02))
 )
 
 private let token = CssSelector.class("token")
