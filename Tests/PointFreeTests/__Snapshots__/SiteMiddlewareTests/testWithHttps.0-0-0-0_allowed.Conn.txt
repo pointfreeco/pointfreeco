@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 60124
+Content-Length: 60725
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1748,29 +1748,43 @@ html {
 
 
 .md-ctn pre code {
-  padding-top    : 2rem;
-  padding-right  : 2rem;
-  padding-bottom : 2rem;
-  padding-left   : 2rem;
-  display        : block;
-  overflow-x     : auto;
+  padding-top                : 0.5rem;
+  padding-bottom             : 0.5rem;
+  padding-right              : 1rem;
+  padding-left               : 1rem;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  display                    : block;
+  overflow-x                 : auto;
+  margin-bottom              : 1.5rem;
 }
 
 .md-ctn code {
   font-family                : monospace;
-  padding-top                : 1px;
-  padding-bottom             : 1px;
-  padding-right              : 5px;
-  padding-left               : 5px;
-  border-top-width           : 1px;
-  border-right-width         : 1px;
-  border-bottom-width        : 1px;
-  border-left-width          : 1px;
+  background-color           : #fafafa;
+  border-top-color           : #d8d8d8;
+  border-right-color         : #d8d8d8;
+  border-bottom-color        : #d8d8d8;
+  border-left-color          : #d8d8d8;
   border-top-left-radius     : 3px;
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.03);
+  border-top-style           : solid;
+  border-right-style         : solid;
+  border-bottom-style        : solid;
+  border-left-style          : solid;
+  border-top-width           : 1px;
+  border-right-width         : 1px;
+  border-bottom-width        : 1px;
+  border-left-width          : 1px;
+  padding-top                : 1px;
+  padding-bottom             : 1px;
+  padding-right              : 5px;
+  padding-left               : 5px;
+  white-space                : nowrap;
 }
 
 
