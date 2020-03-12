@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61866
+Content-Length: 61870
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1750,10 +1750,10 @@ html {
 
 
 .md-ctn pre code {
-  padding-top    : 2rem;
-  padding-right  : 2rem;
-  padding-bottom : 2rem;
-  padding-left   : 2rem;
+  padding-top    : 0.5rem;
+  padding-bottom : 0.5rem;
+  padding-right  : 1rem;
+  padding-left   : 1rem;
   display        : block;
   overflow-x     : auto;
 }
@@ -1772,7 +1772,7 @@ html {
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.03);
+  background-color           : rgba(0,0,0,0.02);
 }
 
 .col-idx-hover:hover {

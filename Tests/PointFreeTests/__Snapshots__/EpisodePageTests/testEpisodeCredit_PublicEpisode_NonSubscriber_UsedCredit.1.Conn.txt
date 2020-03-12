@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 86091
+Content-Length: 87907
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1749,10 +1749,10 @@ html {
 
 
 .md-ctn pre code {
-  padding-top    : 2rem;
-  padding-right  : 2rem;
-  padding-bottom : 2rem;
-  padding-left   : 2rem;
+  padding-top    : 0.5rem;
+  padding-bottom : 0.5rem;
+  padding-right  : 1rem;
+  padding-left   : 1rem;
   display        : block;
   overflow-x     : auto;
 }
@@ -1771,7 +1771,7 @@ html {
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.03);
+  background-color           : rgba(0,0,0,0.02);
 }
 
 
@@ -2441,12 +2441,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </div>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               <h1>{{title}}</h1>
             </code>
@@ -2469,12 +2478,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </div>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               <h1>#(title)</h1>
             </code>
@@ -2497,12 +2515,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </div>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               <h1>Hello World!</h1>
             </code>
@@ -2525,12 +2552,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </div>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               {{#if show}}
   <span>I’m here!</span>
@@ -2539,12 +2575,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </pre>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               #if(show) {
   <span>I’m here!</span>
@@ -2639,12 +2684,21 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           </div>
           <pre>
             <code class="code
+                         border
+                         rounded
+                         border-gray-850
                          block
-                         m-pl3
-                         m-pr3
-                         m-pt3
-                         m-pb3
+                         d-mt1
+                         d-mb1
+                         m-mb3
+                         m-mt2
+                         m-mb2
+                         m-pl2
+                         m-pr2
+                         m-pt1
+                         m-pb1
                          overflow-auto-x
+                         overflow-hidden
                          language-html">
               <header>
   <h1 id="welcome">Welcome!</h1>

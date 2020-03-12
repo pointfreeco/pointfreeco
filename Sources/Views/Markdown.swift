@@ -47,7 +47,7 @@ private let pMarkdownStyles: Stylesheet =
 private let codeMarkdownStyles: Stylesheet =
   pre % (
     code % (
-      padding(top: .rem(2), right: .rem(2), bottom: .rem(2), left: .rem(2))
+      padding(topBottom: .rem(0.5), leftRight: .rem(1))
         <> display(.block)
         <> overflow(x: .auto)
     )
@@ -57,7 +57,7 @@ private let codeMarkdownStyles: Stylesheet =
         <> padding(topBottom: .px(1), leftRight: .px(5))
         <> borderWidth(all: .px(1))
         <> borderRadius(all: .px(3))
-        <> backgroundColor(.white(0, 0.03))
+        <> backgroundColor(.white(0, 0.02))
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =

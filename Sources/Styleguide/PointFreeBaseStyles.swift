@@ -271,9 +271,17 @@ extension Class.pf {
 
     private static let _codeClasses =
       _codeClass
+        | Class.border.all
+        | Class.border.rounded.all
+        | Class.pf.colors.border.gray850
         | Class.display.block
-        | Class.padding([.mobile: [.all: 3]])
+        | Class.margin([
+          .desktop: [.topBottom: 1],
+          .mobile: [.topBottom: 2, .bottom: 3]
+        ])
+        | Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
         | Class.layout.overflowAuto(.x)
+        | Class.layout.overflowHidden
 
     public static func code(lang: String?) -> CssSelector {
       return _codeClasses | .class(lang.map { "language-\($0)" } ?? "")
