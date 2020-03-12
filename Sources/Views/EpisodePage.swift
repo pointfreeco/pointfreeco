@@ -131,7 +131,8 @@ private func sideBar(
       collectionHeaderRow(collection: collection, section: section),
       sequentialEpisodes(episodes: previousEpisodes, collection: collection, section: section, type: .previous),
       currentEpisodeInfoRow(data: data),
-      sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section, type: .next)
+      sequentialEpisodes(episodes: nextEpisodes, collection: collection, section: section, type: .next),
+      collectionFooterRow(collection: collection, section: section, isOnLastEpisode: nextEpisodes.isEmpty)
     )
   case let .direct(previousEpisode: previousEpisode, nextEpisode: nextEpisode):
     return .div(
@@ -259,6 +260,65 @@ private func collectionHeaderRow(
             collection.sections.count == 1
               ? section.title
               : collection.title + " › " + section.title
+          )
+        )
+      )
+    )
+  )
+}
+
+private func collectionFooterRow(
+  collection: Episode.Collection,
+  section: Episode.Collection.Section,
+  isOnLastEpisode: Bool
+) -> Node {
+  guard
+    isOnLastEpisode,
+    let currentIndex = collection.sections.firstIndex(where: { $0 == section }),
+    currentIndex != collection.sections.index(before: collection.sections.endIndex)
+    else { return [] }
+
+  let nextSection = collection.sections[collection.sections.index(after: currentIndex)]
+
+  return .gridRow(
+    attributes: [
+      .class([
+        Class.border.top,
+        Class.padding([.mobile: [.leftRight: 2]]),
+        Class.pf.colors.border.gray850,
+        Class.grid.middle(.mobile),
+      ]),
+      .style(padding(topBottom: .rem(1.5)))
+    ],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      .h6(
+        attributes: [
+          .class([
+            sidebarShoutTitleClass
+          ])
+        ],
+        "Next Up"
+      ),
+      .p(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.all: 0]]),
+            Class.margin([.mobile: [.all: 0]]),
+          ])
+        ],
+        .a(
+          attributes: [
+            .class([
+              Class.pf.colors.fg.black,
+              Class.h5,
+              Class.type.medium,
+              Class.type.lineHeight(1)
+            ]),
+            .href(url(to: .collections(.section(collection.slug, nextSection.slug))))
+          ],
+          .text(
+            nextSection.title
           )
         )
       )
