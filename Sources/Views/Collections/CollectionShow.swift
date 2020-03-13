@@ -126,11 +126,11 @@ private func sectionRow(
               ]),
             ],
             .gridColumn(
-              sizes: [.mobile: 6],
+              sizes: [.mobile: 11],
               .text(section.title)
             ),
             .gridColumn(
-              sizes: [.mobile: 6],
+              sizes: [.mobile: 1],
               attributes: [
                 .class([
                   Class.grid.end(.mobile),
