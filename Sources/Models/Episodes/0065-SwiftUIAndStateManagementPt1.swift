@@ -450,7 +450,7 @@ And in order to get the title in place, we need to add a navigation title to the
   ),
   Episode.TranscriptBlock(
     content: """
-.navigationTitle("Counter demo")
+.navigationBarTitle("Counter demo")
 """,
     timestamp: nil,
     type: .code(lang: .swift)
