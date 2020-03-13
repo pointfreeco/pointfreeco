@@ -115,7 +115,7 @@ private func coreLesson(
     contentRow(
       backgroundColor: Class.pf.colors.bg.white,
       icon: playIconSvgBase64(),
-      title: lesson.episode.title,
+      title: lesson.episode.fullTitle,
       length: lesson.episode.length,
       url: path(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
     )
