@@ -112,48 +112,12 @@ private func coreLesson(
     attributes: [
       .style(margin(top: .px(4))),
     ],
-    .a(
-      attributes: [
-        .class([
-          Class.border.left,
-          Class.flex.items.center,
-          Class.grid.row,
-          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
-          Class.pf.collections.hoverBackground,
-          Class.pf.collections.hoverLink,
-          Class.pf.colors.border.gray800,
-          Class.pf.colors.bg.white,
-        ]),
-        .href(url(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))),
-        .style(
-          borderColor(all: .other("#e8e8e8"))
-            <> borderWidth(left: .px(4))
-        ),
-      ],
-      .gridColumn(
-        sizes: [.mobile: 9],
-        attributes: [
-          .class([
-            Class.flex.items.center,
-            Class.grid.start(.mobile),
-          ]),
-        ],
-        .gridRow(
-          .img(base64: playIconSvgBase64(), type: .image(.svg), alt: "", attributes: [
-            .class([Class.padding([.mobile: [.right: 1]])]),
-          ]),
-          .text(lesson.episode.fullTitle)
-        )
-      ),
-      .gridColumn(
-        sizes: [.mobile: 3],
-        attributes: [
-          .class([
-            Class.grid.end(.mobile),
-          ]),
-        ],
-        .text(lesson.episode.length.formattedDescription)
-      )
+    contentRow(
+      backgroundColor: Class.pf.colors.bg.white,
+      icon: playIconSvgBase64(),
+      title: lesson.episode.title,
+      length: lesson.episode.length,
+      url: path(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
     )
   )
 }
@@ -201,9 +165,9 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
   return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
-    .class([
-      Class.padding([.mobile: [.bottom: 2]])
-    ])
+      .class([
+        Class.padding([.mobile: [.bottom: 2]]),
+      ]),
     ],
     .div(
       attributes: [
@@ -221,7 +185,8 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
   switch content {
   case let .collections(collections):
     return .fragment(collections().map { collection in
-      relatedItemRow(
+      contentRow(
+        backgroundColor: Class.pf.colors.bg.gray900,
         icon: collectionIconSvgBase64,
         title: collection.title,
         length: collection.length,
@@ -230,7 +195,8 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
     })
   case let .episodes(episodes):
     return .fragment(episodes().map { episode in
-      relatedItemRow(
+      contentRow(
+        backgroundColor: Class.pf.colors.bg.gray900,
         icon: playIconSvgBase64(),
         title: episode.fullTitle,
         length: episode.length,
@@ -240,71 +206,14 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
   case let .section(collection, index):
     let collection = collection()
     let section = collection.sections[index]
-    return relatedItemRow(
+    return contentRow(
+      backgroundColor: Class.pf.colors.bg.gray900,
       icon: collectionIconSvgBase64,
       title: section.title,
       length: section.length,
       url: path(to: .collections(.section(collection.slug, section.slug)))
     )
   }
-}
-
-private func relatedItemRow(
-  icon: String,
-  title: String,
-  length: Seconds<Int>,
-  url: String
-) -> Node {
-  .a(
-    attributes: [
-      .class([
-        Class.border.left,
-        Class.flex.items.center,
-        Class.grid.row,
-        Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
-        Class.pf.collections.hoverBackground,
-        Class.pf.collections.hoverLink,
-        Class.pf.colors.border.gray800,
-        Class.pf.colors.bg.gray900,
-      ]),
-      .href(url),
-      .style(
-        borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> margin(top: .px(4))
-      ),
-    ],
-    .gridColumn(
-      sizes: [.mobile: 9],
-      attributes: [
-        .class([
-          Class.flex.items.center,
-          Class.grid.start(.mobile),
-        ]),
-      ],
-      .gridRow(
-        attributes: [
-          .style(flex(wrap: .nowrap))
-        ],
-        .img(
-          base64: icon,
-          type: .image(.svg),
-          alt: "",
-          attributes: [.class([Class.padding([.mobile: [.right: 1]])])]
-        ),
-        .text(title)
-      )
-    ),
-    .gridColumn(
-      sizes: [.mobile: 3],
-      attributes: [
-        .class([
-          Class.grid.end(.mobile),
-        ])
-      ],
-      .text(length.formattedDescription)
-    )
-  )
 }
 
 private func whereToGoFromHere(_ string: String?) -> Node {
@@ -476,6 +385,58 @@ private func sectionNavigation(
         ],
         nextLink ?? []
       )
+    )
+  )
+}
+
+private func contentRow(
+  backgroundColor: CssSelector,
+  icon: String,
+  title: String,
+  length: Seconds<Int>,
+  url: String
+) -> Node {
+  .a(
+    attributes: [
+      .class([
+        Class.border.left,
+        Class.flex.items.center,
+        Class.grid.row,
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+        Class.pf.collections.hoverBackground,
+        Class.pf.collections.hoverLink,
+        Class.pf.colors.border.gray800,
+        backgroundColor,
+      ]),
+      .href(url),
+      .style(
+        borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> margin(top: .px(4))
+          <> flex(wrap: .nowrap)
+      ),
+    ],
+    .img(
+      base64: icon,
+      type: .image(.svg),
+      alt: "",
+      attributes: [.class([Class.padding([.mobile: [.right: 1]])])]
+    ),
+    .div(
+      attributes: [.style(flex(grow: 1))],
+      .text(title)
+    ),
+    .div(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.left: 1]])
+        ]),
+        .style(
+          flex(wrap: .nowrap)
+            <> key("font-variant-numeric", "tabular-nums")
+        ),
+      ],
+      .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
     )
   )
 }

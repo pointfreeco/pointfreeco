@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 64205
+Content-Length: 64445
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -243,9 +243,13 @@ a:visited.pf-link-yellow {
 }
 
 .code {
-  background-color : #fafafa;
-  color            : #24292e;
-  font-family      : monospace;
+  background-color    : rgba(0,0,0,0.02);
+  border-top-color    : rgba(0,0,0,0.15);
+  border-right-color  : rgba(0,0,0,0.15);
+  border-bottom-color : rgba(0,0,0,0.15);
+  border-left-color   : rgba(0,0,0,0.15);
+  color               : #24292e;
+  font-family         : monospace;
 }
 
 .inline-code {
@@ -263,7 +267,7 @@ a:visited.pf-link-yellow {
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : #fafafa;
+  background-color           : rgba(0,0,0,0.02);
 }
 
 .opacity-25 {
@@ -1764,11 +1768,11 @@ html {
 
 .md-ctn code {
   font-family                : monospace;
-  background-color           : #fafafa;
-  border-top-color           : #d8d8d8;
-  border-right-color         : #d8d8d8;
-  border-bottom-color        : #d8d8d8;
-  border-left-color          : #d8d8d8;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
   border-top-left-radius     : 3px;
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;

@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54629
+Content-Length: 54824
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -244,9 +244,13 @@ a:visited.pf-link-yellow {
 }
 
 .code {
-  background-color : #fafafa;
-  color            : #24292e;
-  font-family      : monospace;
+  background-color    : rgba(0,0,0,0.02);
+  border-top-color    : rgba(0,0,0,0.15);
+  border-right-color  : rgba(0,0,0,0.15);
+  border-bottom-color : rgba(0,0,0,0.15);
+  border-left-color   : rgba(0,0,0,0.15);
+  color               : #24292e;
+  font-family         : monospace;
 }
 
 .inline-code {
@@ -264,7 +268,7 @@ a:visited.pf-link-yellow {
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : #fafafa;
+  background-color           : rgba(0,0,0,0.02);
 }
 
 .opacity-25 {
