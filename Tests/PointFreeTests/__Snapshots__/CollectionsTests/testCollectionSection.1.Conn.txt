@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62173
+Content-Length: 62134
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1790,7 +1790,6 @@ html {
   padding-bottom             : 1px;
   padding-right              : 5px;
   padding-left               : 5px;
-  white-space                : nowrap;
 }
 
 .col-idx-hover:hover {
