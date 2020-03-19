@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 121633
+Content-Length: 121594
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1789,7 +1789,6 @@ html {
   padding-bottom             : 1px;
   padding-right              : 5px;
   padding-left               : 5px;
-  white-space                : nowrap;
 }
 
 

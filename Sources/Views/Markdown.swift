@@ -62,7 +62,6 @@ private let codeMarkdownStyles: Stylesheet =
         <> borderStyle(all: .solid)
         <> borderWidth(all: .px(1))
         <> padding(topBottom: .px(1), leftRight: .px(5))
-        <> key("white-space", "nowrap")
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =
