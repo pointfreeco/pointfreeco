@@ -7,11 +7,6 @@ It's time to put the finishing touches to our architecture so that we can use it
 """,
     codeSampleDirectory: "0093-adaptive-state-management-pt1",
     exercises: _exercises,
-    fullVideo: .init(
-      bytesLength: 280_117_781,
-      downloadUrl: "https://player.vimeo.com/external/397834995.hd.mp4?s=1296457548047d5a19bea0fb0bc8dfd38ee74e76&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/397834995"
-    ),
     id: 94,
     image: "https://i.vimeocdn.com/video/865220919.jpg",
     length: 21*60 + 20,
