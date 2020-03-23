@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep95_adaptiveStateManagement_pt2 = Episode(
     blurb: """
-In solving a potential performance problem with how the composable architecture interfaces with SwiftUI, we're given a wonderful opportunity to make it more adaptive to many situations.
+There's a potential performance problem lurking in the composable architecture, and it's time to finally solve it. But, in doing so, we will stumble upon a wonderful way to make the architecture adaptive to many more situations.
 """,
     codeSampleDirectory: "0095-adaptive-state-management-pt2",
     exercises: _exercises,
