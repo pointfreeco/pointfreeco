@@ -7,11 +7,7 @@ TODO
 """,
     codeSampleDirectory: "TODO",
     exercises: _exercises,
-    fullVideo: .init(
-      bytesLength: 0, // TODO
-      downloadUrl: "TODO",
-      streamingSource: "TODO"
-    ),
+    fullVideo: nil, // Only for free episodes!
     id: 0, // TODO
     image: "TODO",
     length: 0*60 + 0, // TODO
