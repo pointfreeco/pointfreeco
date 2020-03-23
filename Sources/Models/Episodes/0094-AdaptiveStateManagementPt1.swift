@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
 It's time to put the finishing touches to our architecture so that we can use it in production. This week we begin exploring how to make the composable architecture adapt to many use cases, and we will use a potential performance problem as inspiration for this exploration.
 """,
-    codeSampleDirectory: "0093-adaptive-state-management-pt1",
+    codeSampleDirectory: "0094-adaptive-state-management-pt1",
     exercises: _exercises,
     id: 94,
     image: "https://i.vimeocdn.com/video/865220919.jpg",
