@@ -269,7 +269,7 @@ func assert<Value: Equatable, Action: Equatable>(
       let effect = effects.removeFirst()
       var action: Action!
       let receivedCompletion = XCTestExpectation(description: "receivedCompletion")
-      _ = effect.sink(
+      let cancellable = effect.sink(
         receiveCompletion: { _ in
           receivedCompletion.fulfill()
       },
