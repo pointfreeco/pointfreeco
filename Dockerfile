@@ -1,4 +1,4 @@
-FROM swift:5.1.5 as build
+FROM swift:5.2 as build
 
 RUN apt-get update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
@@ -18,7 +18,7 @@ RUN make -C cmark install
 RUN swift build --configuration release --enable-pubgrub-resolver --enable-test-discovery --product Server -Xswiftc -g \
   && swift build --configuration release --enable-pubgrub-resolver --enable-test-discovery --product Runner -Xswiftc -g
 
-FROM swift:5.1.5-slim
+FROM swift:5.2-slim
 
 RUN apt-get update
 RUN apt-get install -y libpq-dev libssl-dev libz-dev openssl
