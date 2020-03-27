@@ -1,12 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,8 +14,8 @@ jobs:
         HOMEBREW_NO_AUTO_UPDATE: 1
     - name: Start Postgres
       run: brew services start postgresql || brew update && brew services start postgresql
-    - name: Select Xcode 11.3
-      run: sudo xcode-select -s /Applications/Xcode_11.3.app
+    - name: Select Xcode 11.4
+      run: sudo xcode-select -s /Applications/Xcode_11.4_beta.app
     - name: Run tests
       run: make test-oss
       env:
