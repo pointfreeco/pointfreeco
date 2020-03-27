@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 import Foundation
 import PackageDescription
@@ -42,12 +42,12 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
-    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
-    .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
+    .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
+    .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
+    .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
+    .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
+    .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
+    .package(name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [
 
