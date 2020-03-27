@@ -79,7 +79,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (item, subscription, user) = conn.data
-    return Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity, nil)
+    return Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
       .run
       .flatMap(
         either(

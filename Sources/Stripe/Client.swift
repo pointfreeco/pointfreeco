@@ -27,7 +27,7 @@ public struct Client {
   public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Error, Customer>
   public var updateCustomerBalance: (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>
   public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Error, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>
+  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
   public init(
@@ -46,7 +46,7 @@ public struct Client {
     updateCustomer: @escaping (Customer.Id, Token.Id) -> EitherIO<Error, Customer>,
     updateCustomerBalance: @escaping (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>,
     updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
-    updateSubscription: @escaping (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>,
+    updateSubscription: @escaping (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>,
     js: String
     ) {
     self.cancelSubscription = cancelSubscription
@@ -107,7 +107,7 @@ extension Client {
     },
       updateSubscription: {
         runStripe(secretKey, logger)(
-          Stripe.updateSubscription($0, $1, $2, $3)
+          Stripe.updateSubscription($0, $1, $2)
         )
     },
       js: "https://js.stripe.com/v3/"
@@ -225,8 +225,7 @@ func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableReque
 func updateSubscription(
   _ currentSubscription: Subscription,
   _ plan: Plan.Id,
-  _ quantity: Int,
-  _ prorate: Bool?
+  _ quantity: Int
   )
   -> DecodableRequest<Subscription>? {
 
@@ -239,9 +238,8 @@ func updateSubscription(
         "items[0][id]": item.id.rawValue,
         "items[0][plan]": plan.rawValue,
         "items[0][quantity]": String(quantity),
-        "prorate": prorate.map(String.init(describing:)),
+        "proration_behavior": "always_invoice",
       ]
-        .compactMapValues { $0 }
       ))
 }
 

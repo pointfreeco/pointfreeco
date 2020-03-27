@@ -42,31 +42,8 @@ func changeSubscription(
     return { conn in
       let (currentSubscription, newPricing) = conn.data
 
-      let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
-      let currentPrice = currentSubscription.plan.amount(for: currentSubscription.quantity)
-
-      let plansMatch = newPricing.plan == currentSubscription.plan.id
-      let seatsIncreased = newPricing.quantity > currentSubscription.quantity
-      let intervalsMatch = newPricing.interval == currentSubscription.plan.interval
-      let shouldProrate = newPrice > currentPrice
-
-      let shouldInvoice = plansMatch && seatsIncreased
-        || intervalsMatch && shouldProrate
-
       return Current.stripe
-        .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
-        .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
-          if shouldInvoice {
-            parallel(
-              Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
-                .withExcept(notifyError(subject: "Invoice Failed"))
-                .run
-              )
-              .run(const(()))
-          }
-
-          return pure(sub)
-        }
+        .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity)
         .run
         .flatMap(
           either(
