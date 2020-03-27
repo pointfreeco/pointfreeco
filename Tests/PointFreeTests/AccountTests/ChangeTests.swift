@@ -85,29 +85,18 @@ final class ChangeTests: TestCase {
   }
 
   func testChangeUpdateAddSeatsIndividualPlan() {
-//    record = true
     #if !os(Linux)
-    let invoiceCustomer = expectation(description: "invoiceCustomer")
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
-    Current.stripe.invoiceCustomer = { _ in
-      invoiceCustomer.fulfill()
-      return pure(.mock(charge: .right(.mock)))
-    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    waitForExpectations(timeout: 0.1, handler: nil)
     #endif
   }
 
   func testChangeUpgradeIndividualMonthlyToTeamYearly() {
     #if !os(Linux)
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
-    Current.stripe.invoiceCustomer = { _ in
-      XCTFail()
-      return pure(.mock(charge: .right(.mock)))
-    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
@@ -117,13 +106,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsTeamPlan() {
     #if !os(Linux)
-    let invoiceCustomer = expectation(description: "invoiceCustomer")
-
     Current.stripe.fetchSubscription = const(pure(.teamMonthly))
-    Current.stripe.invoiceCustomer = { _ in
-      invoiceCustomer.fulfill()
-      return pure(.mock(charge: .right(.mock)))
-    }
     var pricing = Pricing.teamMonthly
     pricing.quantity += 4
 
@@ -131,7 +114,6 @@ final class ChangeTests: TestCase {
     let result = conn |> siteMiddleware
 
     let performed = result.perform()
-    waitForExpectations(timeout: 0.1, handler: nil)
     assertSnapshot(matching: performed, as: .conn)
     #endif
   }
