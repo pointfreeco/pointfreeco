@@ -20,7 +20,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
     >=> userEpisodePermission
     >=> map(lower)
     >>> respond(
-      view: newEpisodePageView(episodePageData:),
+      view: episodePageView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute, collectionSlug in
 
         return SimplePageLayoutData(
