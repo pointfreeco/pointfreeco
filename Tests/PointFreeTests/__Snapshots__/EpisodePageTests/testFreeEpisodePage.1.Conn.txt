@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 83921
+Content-Length: 85316
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2097,560 +2097,285 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
         </div>
       </div>
     </div>
-    <div class="top-d
-                d-pt0
-                d-pl0
-                d-pr0
-                m-pb2
-                m-pt3
-                m-pl0
-                m-pr0
-                row"
-         style="max-width:1080px;
-                margin-right:auto;
-                margin-left:auto">
-      <div class="d-pt3
-                  sticky-d
-                  top-0
-                  col-m
-                  col-d-4
-                  col-m-12">
-        <div class="border
-                    rounded
-                    border-gray-850
-                    overflow-hidden
-                    d-ml3
-                    d-mr0
-                    m-ml2
-                    m-mr2">
-          <div class="m-pl2
-                      m-pr2
-                      m-pt2
-                      m-pb2
-                      border-top
-                      border-gray-850"
-               style="background-color:#fafafa">
-            <div class="m-mb2
-                        middle-m
-                        row">
-              <div class="center
-                          col-m
-                          col-m-1">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
-                     alt
-                     class="align-middle"
-                     style="margin-top:-2px">
-              </div>
-              <div class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pl1
-                          lh-1
-                          col-m
-                          col-m-11">
-                Proof in Functions
-              </div>
-            </div>
-            <div class="m-mb1">
-              <div class="row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <div class="bg-gray850
-                              inline-block"
-                       style="width:2px;
-                              height:100%">
-                  </div>
-                </div>
-                <div class="m-pl1
-                            m-pr1
-                            fg-black
-                            normal
-                            h6
-                            lh-4
-                            col-m
-                            col-m-9">
-                  <a href="#t0">
-                    Introduction
-                  </a>
-                </div>
-                <div class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            fg-gray650
-                            end-align
-                            col-m
-                            col-m-2">
-                  <a href="#t0"
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
-                    00:00
-                  </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <div class="bg-gray850
-                              inline-block"
-                       style="width:2px;
-                              height:100%">
-                  </div>
-                </div>
-                <div class="m-pl1
-                            m-pr1
-                            fg-black
-                            normal
-                            h6
-                            lh-4
-                            col-m
-                            col-m-9">
-                  <a href="#t0">
-                    Title
-                  </a>
-                </div>
-                <div class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            fg-gray650
-                            end-align
-                            col-m
-                            col-m-2">
-                  <a href="#t0"
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
-                    00:00
-                  </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <div class="bg-gray850
-                              inline-block"
-                       style="width:2px;
-                              height:100%">
-                  </div>
-                </div>
-                <div class="m-pl1
-                            m-pr1
-                            fg-black
-                            normal
-                            h6
-                            lh-4
-                            col-m
-                            col-m-9">
-                  <a href="#t60">
-                    Title Block
-                  </a>
-                </div>
-                <div class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            fg-gray650
-                            end-align
-                            col-m
-                            col-m-2">
-                  <a href="#t60"
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
-                    01:00
-                  </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <div class="bg-gray850
-                              inline-block"
-                       style="width:2px;
-                              height:100%">
-                  </div>
-                </div>
-                <div class="m-pl1
-                            m-pr1
-                            fg-black
-                            normal
-                            h6
-                            lh-4
-                            col-m
-                            col-m-9">
-                  <a href="#t120">
-                    Another Title
-                  </a>
-                </div>
-                <div class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            fg-gray650
-                            end-align
-                            col-m
-                            col-m-2">
-                  <a href="#t120"
-                     class="fg-black
-                            normal
-                            h6
-                            lh-4
-                            pf-link-gray650"
-                     style="font-variant-numeric: tabular-nums">
-                    02:00
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="m-pt1
-                        middle-m
-                        row">
-              <div class="center
-                          col-m
-                          col-m-1">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzUtMTMyOUg5NDl2MzU4M0gtNzV6Ii8+CiAgICA8cGF0aCBkPSJNMTMuODMzMyAyLjVIMTAuMzVDMTAgMS41MzMzIDkuMDgzMy44MzMzIDggLjgzMzNjLTEuMDgzMyAwLTIgLjctMi4zNSAxLjY2NjdIMi4xNjY3QzEuMjUgMi41LjUgMy4yNS41IDQuMTY2N3YxMS42NjY2Qy41IDE2Ljc1IDEuMjUgMTcuNSAyLjE2NjcgMTcuNWgxMS42NjY2Yy45MTY3IDAgMS42NjY3LS43NSAxLjY2NjctMS42NjY3VjQuMTY2N0MxNS41IDMuMjUgMTQuNzUgMi41IDEzLjgzMzMgMi41ek04IDIuNWMuNDU4MyAwIC44MzMzLjM3NS44MzMzLjgzMzMgMCAuNDU4NC0uMzc1LjgzMzQtLjgzMzMuODMzNC0uNDU4MyAwLS44MzMzLS4zNzUtLjgzMzMtLjgzMzQgMC0uNDU4My4zNzUtLjgzMzMuODMzMy0uODMzM3ptMS42NjY3IDExLjY2NjdIMy44MzMzVjEyLjVoNS44MzM0djEuNjY2N3ptMi41LTMuMzMzNEgzLjgzMzNWOS4xNjY3aDguMzMzNHYxLjY2NjZ6bTAtMy4zMzMzSDMuODMzM1Y1LjgzMzNoOC4zMzM0VjcuNXoiIGZpbGw9IiMwMDAiLz4KICA8L2c+Cjwvc3ZnPg=="
-                     alt
-                     class="align-middle"
-                     style="margin-top:-4px">
-              </div>
-              <div class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pl1
-                          col-m
-                          col-m-11">
-                <a href="#exercises">
-                  Exercises
-                </a>
-              </div>
-            </div>
-            <div class="m-pt1
-                        middle-m
-                        row">
-              <div class="center
-                          col-m
-                          col-m-1">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRkZGIiBkPSJNLTc3LTE0MDNIOTQ3djM1ODNILTc3eiIvPjxwYXRoIGQ9Ik0xMS44MzMzIDUuNUg4LjV2LTVoLTV2NUguMTY2N0w2IDExLjMzMzMgMTEuODMzMyA1LjV6TS4xNjY3IDEzdjEuNjY2N2gxMS42NjY2VjEzSC4xNjY3eiIgZmlsbD0iIzAwMCIvPjwvZz48L3N2Zz4="
-                     alt
-                     class="align-middle"
-                     style="margin-top:-2px">
-              </div>
-              <div class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pl1
-                          col-m
-                          col-m-11">
-                <a href="#downloads">
-                  Downloads
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-8
-                  col-m-12">
-        <div class="d-pl4
-                    d-pr3
-                    m-pt3
-                    m-pl3
-                    m-pr3">
+    <article>
+      <div class="top-d
+                  d-pt0
+                  d-pl0
+                  d-pr0
+                  m-pb2
+                  m-pt3
+                  m-pl0
+                  m-pr0
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="d-pt3
+                    sticky-d
+                    top-0
+                    col-m
+                    col-d-4
+                    col-m-12">
           <div class="border
                       rounded
-                      border-gray-850">
-            <div class="border-bottom
-                        items-center
-                        justify-center
-                        h6
-                        m-pl2
+                      border-gray-850
+                      overflow-hidden
+                      d-ml3
+                      d-mr0
+                      m-ml2
+                      m-mr2">
+            <div class="m-pl2
                         m-pr2
-                        m-pt1
-                        m-pb1
-                        bg-gray900
-                        border-gray-850
-                        fg-gray650
-                        center
-                        lh-4
-                        semi-bold
-                        row">
-              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
-                   alt
-                   class="m-pr1">
-              This episode is free for everyone.
-            </div>
-            <div class="d-pl4
-                        d-pr4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        center">
-              <h3 class="fg-black
-                         bold
-                         ts-d-r1_25
-                         ts-m-r1
-                         lh-1">
-                Subscribe to Point-Free
-              </h3>
-              <p class="m-pb3
-                        fg-gray650">
-                Access all past and future episodes when you become a subscriber.
-              </p>
-              <div class="m-mb2">
-                <a class="medium
-                          cursor-pointer
-                          nowrap
-                          btn-normal
-                          border-none
-                          text-decoration-none
-                          pf-link-white
-                          fg-white
-                          bg-purple
-                          h5
-                          m-pl2
-                          m-pr2"
-                   href="/pricing">
-                  See plans and pricing
-                </a>
-                <p class="m-mt2
-                          fg-gray650
-                          fg-black
-                          normal
-                          h6
-                          lh-4">
-                  Already a subscriber? 
-                  <a class="pf-link-purple"
-                     href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">
-                    Log in
+                        m-pt2
+                        m-pb2
+                        border-top
+                        border-gray-850"
+                 style="background-color:#fafafa">
+              <div class="m-mb2
+                          middle-m
+                          row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
+                       alt
+                       class="align-middle"
+                       style="margin-top:-2px">
+                </div>
+                <div class="fg-black
+                            normal
+                            h5
+                            lh-4
+                            m-pl1
+                            lh-1
+                            col-m
+                            col-m-11">
+                  Proof in Functions
+                </div>
+              </div>
+              <div class="m-mb1">
+                <div class="row">
+                  <div class="center
+                              col-m
+                              col-m-1">
+                    <div class="bg-gray850
+                                inline-block"
+                         style="width:2px;
+                                height:100%">
+                    </div>
+                  </div>
+                  <div class="m-pl1
+                              m-pr1
+                              fg-black
+                              normal
+                              h6
+                              lh-4
+                              col-m
+                              col-m-9">
+                    <a href="#t0">
+                      Introduction
+                    </a>
+                  </div>
+                  <div class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              fg-gray650
+                              end-align
+                              col-m
+                              col-m-2">
+                    <a href="#t0"
+                       class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              pf-link-gray650"
+                       style="font-variant-numeric: tabular-nums">
+                      00:00
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="center
+                              col-m
+                              col-m-1">
+                    <div class="bg-gray850
+                                inline-block"
+                         style="width:2px;
+                                height:100%">
+                    </div>
+                  </div>
+                  <div class="m-pl1
+                              m-pr1
+                              fg-black
+                              normal
+                              h6
+                              lh-4
+                              col-m
+                              col-m-9">
+                    <a href="#t0">
+                      Title
+                    </a>
+                  </div>
+                  <div class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              fg-gray650
+                              end-align
+                              col-m
+                              col-m-2">
+                    <a href="#t0"
+                       class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              pf-link-gray650"
+                       style="font-variant-numeric: tabular-nums">
+                      00:00
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="center
+                              col-m
+                              col-m-1">
+                    <div class="bg-gray850
+                                inline-block"
+                         style="width:2px;
+                                height:100%">
+                    </div>
+                  </div>
+                  <div class="m-pl1
+                              m-pr1
+                              fg-black
+                              normal
+                              h6
+                              lh-4
+                              col-m
+                              col-m-9">
+                    <a href="#t60">
+                      Title Block
+                    </a>
+                  </div>
+                  <div class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              fg-gray650
+                              end-align
+                              col-m
+                              col-m-2">
+                    <a href="#t60"
+                       class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              pf-link-gray650"
+                       style="font-variant-numeric: tabular-nums">
+                      01:00
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="center
+                              col-m
+                              col-m-1">
+                    <div class="bg-gray850
+                                inline-block"
+                         style="width:2px;
+                                height:100%">
+                    </div>
+                  </div>
+                  <div class="m-pl1
+                              m-pr1
+                              fg-black
+                              normal
+                              h6
+                              lh-4
+                              col-m
+                              col-m-9">
+                    <a href="#t120">
+                      Another Title
+                    </a>
+                  </div>
+                  <div class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              fg-gray650
+                              end-align
+                              col-m
+                              col-m-2">
+                    <a href="#t120"
+                       class="fg-black
+                              normal
+                              h6
+                              lh-4
+                              pf-link-gray650"
+                       style="font-variant-numeric: tabular-nums">
+                      02:00
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="m-pt1
+                          middle-m
+                          row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzUtMTMyOUg5NDl2MzU4M0gtNzV6Ii8+CiAgICA8cGF0aCBkPSJNMTMuODMzMyAyLjVIMTAuMzVDMTAgMS41MzMzIDkuMDgzMy44MzMzIDggLjgzMzNjLTEuMDgzMyAwLTIgLjctMi4zNSAxLjY2NjdIMi4xNjY3QzEuMjUgMi41LjUgMy4yNS41IDQuMTY2N3YxMS42NjY2Qy41IDE2Ljc1IDEuMjUgMTcuNSAyLjE2NjcgMTcuNWgxMS42NjY2Yy45MTY3IDAgMS42NjY3LS43NSAxLjY2NjctMS42NjY3VjQuMTY2N0MxNS41IDMuMjUgMTQuNzUgMi41IDEzLjgzMzMgMi41ek04IDIuNWMuNDU4MyAwIC44MzMzLjM3NS44MzMzLjgzMzMgMCAuNDU4NC0uMzc1LjgzMzQtLjgzMzMuODMzNC0uNDU4MyAwLS44MzMzLS4zNzUtLjgzMzMtLjgzMzQgMC0uNDU4My4zNzUtLjgzMzMuODMzMy0uODMzM3ptMS42NjY3IDExLjY2NjdIMy44MzMzVjEyLjVoNS44MzM0djEuNjY2N3ptMi41LTMuMzMzNEgzLjgzMzNWOS4xNjY3aDguMzMzNHYxLjY2NjZ6bTAtMy4zMzMzSDMuODMzM1Y1LjgzMzNoOC4zMzM0VjcuNXoiIGZpbGw9IiMwMDAiLz4KICA8L2c+Cjwvc3ZnPg=="
+                       alt
+                       class="align-middle"
+                       style="margin-top:-4px">
+                </div>
+                <div class="fg-black
+                            normal
+                            h5
+                            lh-4
+                            m-pl1
+                            col-m
+                            col-m-11">
+                  <a href="#exercises">
+                    Exercises
                   </a>
-                </p>
+                </div>
+              </div>
+              <div class="m-pt1
+                          middle-m
+                          row">
+                <div class="center
+                            col-m
+                            col-m-1">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRkZGIiBkPSJNLTc3LTE0MDNIOTQ3djM1ODNILTc3eiIvPjxwYXRoIGQ9Ik0xMS44MzMzIDUuNUg4LjV2LTVoLTV2NUguMTY2N0w2IDExLjMzMzMgMTEuODMzMyA1LjV6TS4xNjY3IDEzdjEuNjY2N2gxMS42NjY2VjEzSC4xNjY3eiIgZmlsbD0iIzAwMCIvPjwvZz48L3N2Zz4="
+                       alt
+                       class="align-middle"
+                       style="margin-top:-2px">
+                </div>
+                <div class="fg-black
+                            normal
+                            h5
+                            lh-4
+                            m-pl1
+                            col-m
+                            col-m-11">
+                  <a href="#downloads">
+                    Downloads
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="transcript"
-             class="d-pl4
-                    d-pr3
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3">
-          <h3 class="h3"
-              id="t0">
-            <a href="#t0">
-              Introduction
-            </a>
-          </h3>
-          <div>
-            <div id="t0"
-                 class="block">
-              <a href="#t0"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                00:00
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
-also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
-that timestamp jumps the video to that spot.</p>
-
-            </div>
-          </div>
-          <h3 class="h3"
-              id="t0">
-            <a href="#t0">
-              Title
-            </a>
-          </h3>
-          <div>
-            <div id="t0"
-                 class="block">
-              <a href="#t0"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                00:00
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
-However, you cannot associate a timestamp with this paragraph.</p>
-
-            </div>
-          </div>
-          <div class="m-ml2
-                      m-mr2
-                      m-mt3
-                      m-mb3
-                      m-pl2
-                      m-pr2
-                      m-pt2
-                      m-pb2"
-               style="background-color: #ffdbdd;
-                      border-left: 3px solid #eb1c26">
-            <h3 class="fg-black
-                       bold
-                       ts-d-r1
-                       ts-m-r0_875
-                       lh-1">
-              Correction
-            </h3>
-            <div class="fg-black
-                        normal
-                        h5
-                        lh-4">
-              <div class="md-ctn">
-                <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
-including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
-
-              </div>
-            </div>
-          </div>
-          <div>
-            <div id="t30"
-                 class="block">
-              <a href="#t30"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                00:30
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
-
-            </div>
-          </div>
-          <div>
-            <div class="md-ctn">
-              <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
-time at the beginning of the text. That’s what we have done here.</p>
-
-            </div>
-          </div>
-          <h3 class="h3"
-              id="t60">
-            <a href="#t60">
-              Title Block
-            </a>
-          </h3>
-          <div>
-            <div id="t60"
-                 class="block">
-              <a href="#t60"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                01:00
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
-chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
-episode video.</p>
-<p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
-highlighted snippet of code:</p>
-
-            </div>
-          </div>
-          <pre>
-            <code class="code
-                         border
-                         rounded
-                         block
-                         d-mt1
-                         d-mb1
-                         m-mb3
-                         m-mt2
-                         m-mb2
-                         m-pl2
-                         m-pr2
-                         m-pt1
-                         m-pb1
-                         overflow-auto-x
-                         overflow-hidden
-                         language-swift">
-              infix operator |>
-
-func |> <A, B>(x: A, f: (A) -> B) -> B {
-  return f(x)
-}
-            </code>
-          </pre>
-          <div>
-            <div id="t90"
-                 class="block">
-              <a href="#t90"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                01:30
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>You can write as much code as you want in that block, and you can specify the language of the code
-so that its syntax is highlighted nicely.</p>
-
-            </div>
-          </div>
-          <h3 class="h3"
-              id="t120">
-            <a href="#t120">
-              Another Title
-            </a>
-          </h3>
-          <div>
-            <div id="t120"
-                 class="block">
-              <a href="#t120"
-                 class="vid-time-link
-                        text-decoration-none
-                        pf-link-gray650
-                        h6">
-                02:00
-              </a>
-            </div>
-            <div class="md-ctn">
-              <p>That was another title. See how the title create the “table of contents” under the video?</p>
-<p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
-working how we expect:</p>
-<blockquote>
-<p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
-</blockquote>
-
-            </div>
-          </div>
-          <div class="d-pt3
-                      d-pb3
-                      m-pt2
-                      m-pb2">
+        <div class="col-m
+                    col-d-8
+                    col-m-12">
+          <div class="d-pl4
+                      d-pr3
+                      m-pt3
+                      m-pl3
+                      m-pr3">
             <div class="border
                         rounded
                         border-gray-850">
@@ -2724,93 +2449,370 @@ working how we expect:</p>
               </div>
             </div>
           </div>
-        </div>
-        <div class="d-pb2
-                    d-pl4
-                    d-pr3
-                    d-pt2
-                    m-pt3
-                    m-pl3
-                    m-pr3
-                    bg-white">
-          <h3 id="exercises"
-              class="h3">
-            Exercises
-          </h3>
-          <ol style="padding-left: 1.5rem">
-            <li id="exercise-1"
-                class="m-pb2">
-              <div>
+          <div id="transcript"
+               class="d-pl4
+                      d-pr3
+                      m-pl3
+                      m-pr3
+                      m-pt3
+                      m-pb3">
+            <h3 class="h3"
+                id="t0">
+              <a href="#t0">
+                Introduction
+              </a>
+            </h3>
+            <div>
+              <div id="t0"
+                   class="block">
+                <a href="#t0"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
+that timestamp jumps the video to that spot.</p>
+
+              </div>
+            </div>
+            <h3 class="h3"
+                id="t0">
+              <a href="#t0">
+                Title
+              </a>
+            </h3>
+            <div>
+              <div id="t0"
+                   class="block">
+                <a href="#t0"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+However, you cannot associate a timestamp with this paragraph.</p>
+
+              </div>
+            </div>
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
+                        m-pl2
+                        m-pr2
+                        m-pt2
+                        m-pb2"
+                 style="background-color: #ffdbdd;
+                        border-left: 3px solid #eb1c26">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1">
+                Correction
+              </h3>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4">
                 <div class="md-ctn">
-                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+                  <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
+including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
+
+                </div>
+              </div>
+            </div>
+            <div>
+              <div id="t30"
+                   class="block">
+                <a href="#t30"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:30
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
+
+              </div>
+            </div>
+            <div>
+              <div class="md-ctn">
+                <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
+time at the beginning of the text. That’s what we have done here.</p>
+
+              </div>
+            </div>
+            <h3 class="h3"
+                id="t60">
+              <a href="#t60">
+                Title Block
+              </a>
+            </h3>
+            <div>
+              <div id="t60"
+                   class="block">
+                <a href="#t60"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  01:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
+chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
+episode video.</p>
+<p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
+highlighted snippet of code:</p>
+
+              </div>
+            </div>
+            <pre>
+              <code class="code
+                           border
+                           rounded
+                           block
+                           d-mt1
+                           d-mb1
+                           m-mb3
+                           m-mt2
+                           m-mb2
+                           m-pl2
+                           m-pr2
+                           m-pt1
+                           m-pb1
+                           overflow-auto-x
+                           overflow-hidden
+                           language-swift">
+                infix operator |>
+
+func |> <A, B>(x: A, f: (A) -> B) -> B {
+  return f(x)
+}
+              </code>
+            </pre>
+            <div>
+              <div id="t90"
+                   class="block">
+                <a href="#t90"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  01:30
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>You can write as much code as you want in that block, and you can specify the language of the code
+so that its syntax is highlighted nicely.</p>
+
+              </div>
+            </div>
+            <h3 class="h3"
+                id="t120">
+              <a href="#t120">
+                Another Title
+              </a>
+            </h3>
+            <div>
+              <div id="t120"
+                   class="block">
+                <a href="#t120"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  02:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>That was another title. See how the title create the “table of contents” under the video?</p>
+<p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
+working how we expect:</p>
+<blockquote>
+<p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
+</blockquote>
+
+              </div>
+            </div>
+            <div class="d-pt3
+                        d-pb3
+                        m-pt2
+                        m-pb2">
+              <div class="border
+                          rounded
+                          border-gray-850">
+                <div class="border-bottom
+                            items-center
+                            justify-center
+                            h6
+                            m-pl2
+                            m-pr2
+                            m-pt1
+                            m-pb1
+                            bg-gray900
+                            border-gray-850
+                            fg-gray650
+                            center
+                            lh-4
+                            semi-bold
+                            row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                       alt
+                       class="m-pr1">
+                  This episode is free for everyone.
+                </div>
+                <div class="d-pl4
+                            d-pr4
+                            m-pl3
+                            m-pr3
+                            m-pt3
+                            m-pb3
+                            center">
+                  <h3 class="fg-black
+                             bold
+                             ts-d-r1_25
+                             ts-m-r1
+                             lh-1">
+                    Subscribe to Point-Free
+                  </h3>
+                  <p class="m-pb3
+                            fg-gray650">
+                    Access all past and future episodes when you become a subscriber.
+                  </p>
+                  <div class="m-mb2">
+                    <a class="medium
+                              cursor-pointer
+                              nowrap
+                              btn-normal
+                              border-none
+                              text-decoration-none
+                              pf-link-white
+                              fg-white
+                              bg-purple
+                              h5
+                              m-pl2
+                              m-pr2"
+                       href="/pricing">
+                      See plans and pricing
+                    </a>
+                    <p class="m-mt2
+                              fg-gray650
+                              fg-black
+                              normal
+                              h6
+                              lh-4">
+                      Already a subscriber? 
+                      <a class="pf-link-purple"
+                         href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">
+                        Log in
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-pb2
+                      d-pl4
+                      d-pr3
+                      d-pt2
+                      m-pt3
+                      m-pl3
+                      m-pr3
+                      bg-white">
+            <h3 id="exercises"
+                class="h3">
+              Exercises
+            </h3>
+            <ol style="padding-left: 1.5rem">
+              <li id="exercise-1"
+                  class="m-pb2">
+                <div>
+                  <div class="md-ctn">
+                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
 <pre><code>pi_1(X) = 0
 </code></pre>
 
-                </div>
-                <details>
-                  <summary class="cursor-pointer">
-                    Solution
-                  </summary>
-                  <div class="border-left
-                              border-gray-850
-                              bg-white
-                              m-pl2
-                              m-pr2
-                              m-pt1
-                              m-pb1
-                              m-mb3
-                              overflow-auto-x">
-                    <div class="md-ctn">
-                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
-
-                    </div>
                   </div>
-                </details>
-              </div>
-            </li>
-          </ol>
-        </div>
-        <div class="d-pb4
-                    d-pl4
-                    d-pr3
-                    d-pt2
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3">
-          <h3 id="downloads"
-              class="h3">
-            Downloads
-          </h3>
-          <div class="border
-                      rounded
-                      border-gray-850
-                      m-pl2
-                      m-pr2
-                      m-pt2
-                      m-pb2">
-            <h3 class="fg-black
-                       bold
-                       ts-d-r1_25
-                       ts-m-r1
-                       lh-1">
-              Sample Code
+                  <details>
+                    <summary class="cursor-pointer">
+                      Solution
+                    </summary>
+                    <div class="border-left
+                                border-gray-850
+                                bg-white
+                                m-pl2
+                                m-pr2
+                                m-pt1
+                                m-pb1
+                                m-mb3
+                                overflow-auto-x">
+                      <div class="md-ctn">
+                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="d-pb4
+                      d-pl4
+                      d-pr3
+                      d-pt2
+                      m-pl3
+                      m-pr3
+                      m-pt3
+                      m-pb3">
+            <h3 id="downloads"
+                class="h3">
+              Downloads
             </h3>
-            <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjOTc0ZGZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
-                 alt
-                 class="align-middle"
-                 width="20"
-                 height="20">
-            <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep2-proof-in-functions"
-               class="pf-link-purple
-                      m-ml1
-                      align-middle">
-              ep2-proof-in-functions
-            </a>
+            <div class="border
+                        rounded
+                        border-gray-850
+                        m-pl2
+                        m-pr2
+                        m-pt2
+                        m-pb2">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1_25
+                         ts-m-r1
+                         lh-1">
+                Sample Code
+              </h3>
+              <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjOTc0ZGZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
+                   alt
+                   class="align-middle"
+                   width="20"
+                   height="20">
+              <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep2-proof-in-functions"
+                 class="pf-link-purple
+                        m-ml1
+                        align-middle">
+                ep2-proof-in-functions
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
     <footer class="row
                    d-pl4
                    d-pr4

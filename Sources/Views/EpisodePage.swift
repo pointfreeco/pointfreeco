@@ -69,7 +69,7 @@ public struct EpisodePageData {
   }
 }
 
-public func newEpisodePageView(
+public func episodePageView(
   episodePageData data: EpisodePageData
 ) -> Node {
   [
@@ -711,38 +711,40 @@ private func mainContent(
   data: EpisodePageData,
   isEpisodeViewable: Bool
 ) -> Node {
-  .gridRow(
-    attributes: [
-      .class([
-        Class.grid.top(.desktop),
-        Class.padding([
-          .desktop: [.leftRight: 0, .top: 0],
-          .mobile: [.leftRight: 0, .top: 3, .bottom: 2],
-        ]),
-      ]),
-      .style(
-        maxWidth(.px(1080))
-          <> margin(topBottom: nil, leftRight: .auto)
-      ),
-    ],
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 4],
+  .article(
+    .gridRow(
       attributes: [
         .class([
-          Class.padding([.desktop: [.top: 3]]),
-          Class.position.sticky(.desktop),
-          Class.position.top0
-        ])
+          Class.grid.top(.desktop),
+          Class.padding([
+            .desktop: [.leftRight: 0, .top: 0],
+            .mobile: [.leftRight: 0, .top: 3, .bottom: 2],
+          ]),
+        ]),
+        .style(
+          maxWidth(.px(1080))
+            <> margin(topBottom: nil, leftRight: .auto)
+        ),
       ],
-      sideBar(data: data)
-    ),
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 8],
-      topCallout(data: data),
-      transcriptView(data: data),
-      exercisesView(exercises: data.episode.exercises),
-      referencesView(references: data.episode.references),
-      downloadsView(episode: data.episode)
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 4],
+        attributes: [
+          .class([
+            Class.padding([.desktop: [.top: 3]]),
+            Class.position.sticky(.desktop),
+            Class.position.top0
+          ])
+        ],
+        sideBar(data: data)
+      ),
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 8],
+        topCallout(data: data),
+        transcriptView(data: data),
+        exercisesView(exercises: data.episode.exercises),
+        referencesView(references: data.episode.references),
+        downloadsView(episode: data.episode)
+      )
     )
   )
 }
