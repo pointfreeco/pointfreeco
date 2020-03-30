@@ -155,6 +155,20 @@ Although the "environment" technique of dependency injection is powerful, and ca
         title: "Testing",
         whereToGoFromHere: nil
       ),
+//      .init(
+//        blurb: #"""
+//TODO
+//"""#,
+//        coreLessons: [
+//          .init(episode: .ep94_adaptiveStateManagement_pt1),
+//          .init(episode: .ep95_adaptiveStateManagement_pt2),
+//          .init(episode: .ep96_adaptiveStateManagement_pt3),
+//        ],
+//        related: [
+//        ],
+//        title: "Adaptation",
+//        whereToGoFromHere: nil
+//      ),
     ],
     title: "Composable Architecture"
   )
