@@ -369,6 +369,7 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
+//    record=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
       as: .raw,
@@ -454,7 +455,7 @@ final class StripeTests: XCTestCase {
       named: "update-customer"
     )
     assertSnapshot(
-      matching: Stripe.updateSubscription(.mock, .yearly, 1, nil)!.rawValue,
+      matching: Stripe.updateSubscription(.mock, .yearly, 1)!.rawValue,
       as: .raw,
       named: "update-subscription"
     )
