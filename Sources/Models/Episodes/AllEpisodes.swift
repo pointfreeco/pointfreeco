@@ -96,5 +96,6 @@ extension Episode {
     .ep93_modularDependencyInjection_pt3,
     .ep94_adaptiveStateManagement_pt1,
     .ep95_adaptiveStateManagement_pt2,
+    .ep96_adaptiveStateManagement_pt3,
   ]
 }
