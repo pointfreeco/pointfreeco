@@ -8,8 +8,8 @@ When we fixed a performance problem in the Composable Architecture it gave us an
     codeSampleDirectory: "0096-adaptive-state-management-pt3",
     exercises: _exercises,
     id: 96,
-    image: "TODO",
-    length: 0, // TODO
+    image: "https://i.vimeocdn.com/video/871011689.jpg",
+    length: 42 * 60 + 37,
     permission: .subscriberOnly,
     previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1585544400),
