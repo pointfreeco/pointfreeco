@@ -9,13 +9,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Dependencies
-      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql || brew update
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
+      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql
     - name: Start Postgres
-      run: |
-        brew services start postgresql || brew update && brew services start postgresql
-        pg_ctl -D /usr/local/var/postgres status
+      run: brew services start postgresql
     - name: Select Xcode 11.4
       run: sudo xcode-select -s /Applications/Xcode_11.4.app
     - name: Run tests
