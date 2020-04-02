@@ -13,7 +13,9 @@ jobs:
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
     - name: Start Postgres
-      run: brew services start postgresql || brew update && brew services start postgresql
+      run: |
+        brew services start postgresql || brew update && brew services start postgresql
+        pg_ctl -D /usr/local/var/postgres status
     - name: Select Xcode 11.4
       run: sudo xcode-select -s /Applications/Xcode_11.4.app
     - name: Run tests
