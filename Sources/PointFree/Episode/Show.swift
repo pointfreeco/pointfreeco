@@ -122,7 +122,11 @@ let progressResponse: M<
     >=> updateProgress
 
 private let updateProgress: M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
-  guard case let (permission, episode, .some(user), subscriberState, percent) = lower(conn.data)
+  guard
+    // NB: `lower` crashes on Linux 5.2. https://bugs.swift.org/browse/SR-12437
+    case let (permission, episode, .some(user), subscriberState, percent) = (
+      get1(conn.data), get2(conn.data), get3(conn.data), get4(conn.data), get5(conn.data)
+    )
     else {
       return conn
         |> writeStatus(.ok)
