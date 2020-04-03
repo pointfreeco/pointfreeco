@@ -1,4 +1,4 @@
-FROM swift:5.1.5
+FROM swift:5.2.1
 
 RUN apt-get update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
