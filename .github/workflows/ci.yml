@@ -8,10 +8,13 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v2
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v2
     - name: Install Dependencies
-      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql
+      run: |
+        brew install cmark postgresql
+        brew link --overwrite postgresql
+        initdb /usr/local/var/postgres
     - name: Start Postgres
       run: brew services start postgresql
     - name: Select Xcode 11.4
