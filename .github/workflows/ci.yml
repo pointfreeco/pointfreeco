@@ -12,8 +12,8 @@ jobs:
       #   uses: mxschmitt/action-tmate@v2
     - name: Install Dependencies
       run: |
+        brew uninstall --ignore-dependencies libpq
         brew install cmark postgresql
-        brew link --overwrite postgresql
         initdb /usr/local/var/postgres
     - name: Start Postgres
       run: brew services start postgresql
