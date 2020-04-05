@@ -161,9 +161,9 @@ private func mailgunRequest<A>(_ path: String, _ method: FoundationPrelude.Metho
 private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableRequest<SendEmailResponse> {
   var params: [String: String] = [:]
   params["from"] = email.from.rawValue
-  params["to"] = email.to.map { $0.rawValue }.joined(separator: ",")
-  params["cc"] = email.cc?.map { $0.rawValue }.joined(separator: ",")
-  params["bcc"] = email.bcc?.map { $0.rawValue }.joined(separator: ",")
+  params["to"] = email.to.map(\.rawValue).joined(separator: ",")
+  params["cc"] = email.cc?.map(\.rawValue).joined(separator: ",")
+  params["bcc"] = email.bcc?.map(\.rawValue).joined(separator: ",")
   params["subject"] = email.subject
   params["text"] = email.text
   params["html"] = email.html

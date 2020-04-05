@@ -203,7 +203,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .run
       .perform()
       .right!
-    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
+    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
   }
 
   func testHappyPath_Team_OwnerIsNotTakingSeat() {
@@ -250,7 +250,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .run
       .perform()
       .right!
-    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
+    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
 
     let freshUser = Current.database.fetchUserById(user.id)
       .run

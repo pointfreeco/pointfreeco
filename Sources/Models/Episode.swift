@@ -139,7 +139,7 @@ public struct Episode: Equatable {
 
     public var length: Seconds<Int> {
       self.sections
-        .flatMap { $0.coreLessons.map { $0.episode.length } }
+        .flatMap { $0.coreLessons.map(\.episode.length) }
         .reduce(into: 0, +=)
     }
 
@@ -170,7 +170,7 @@ public struct Episode: Equatable {
 
       public var length: Seconds<Int> {
         self.coreLessons
-          .map { $0.episode.length }
+          .map(\.episode.length)
           .reduce(into: 0, +=)
       }
 
