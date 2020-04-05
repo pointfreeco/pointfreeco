@@ -122,7 +122,7 @@ extension Node {
   }
 
   public static func author(_ content: ChildOf<Tag.Author>...) -> Node {
-    return .element("author", [], .fragment(content.map { $0.rawValue }))
+    return .element("author", [], .fragment(content.map(\.rawValue)))
   }
 
   public static func content(attributes: [Attribute<Tag.Content>], _ content: Node...) -> Node {

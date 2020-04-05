@@ -284,11 +284,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .right!
     XCTAssertEqual(
       [teammateEmailAddress],
-      teamInvites.map { $0.email }
+      teamInvites.map(\.email)
     )
     XCTAssertEqual(
       [currentUser.id],
-      teamInvites.map { $0.inviterUserId }
+      teamInvites.map(\.inviterUserId)
     )
   }
 
