@@ -132,7 +132,7 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Mod
 private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
   return Current.gitHub.fetchEmails(env.accessToken)
-    .map { emails in emails.first(where: { $0.primary }) }
+    .map { emails in emails.first(where: \.primary) }
     .mapExcept(requireSome) // todo: better error messaging
     .flatMap { email in
 

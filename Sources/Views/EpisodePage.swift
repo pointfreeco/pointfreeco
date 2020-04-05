@@ -123,8 +123,8 @@ private func sideBar(
       let currentEpisodeIndex = section.coreLessons.firstIndex(where: { $0.episode.id == data.episode.id })
       else { return [] }
 
-    let previousEpisodes = section.coreLessons[0..<currentEpisodeIndex].map { $0.episode }
-    let nextEpisodes = section.coreLessons[(currentEpisodeIndex+1)...].map { $0.episode }
+    let previousEpisodes = section.coreLessons[0..<currentEpisodeIndex].map(\.episode)
+    let nextEpisodes = section.coreLessons[(currentEpisodeIndex+1)...].map(\.episode)
 
     return .div(
       attributes: [.class([sideBarClasses])],
