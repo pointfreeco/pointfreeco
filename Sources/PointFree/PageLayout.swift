@@ -195,8 +195,6 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 }
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
-  guard data.currentSubscriberState.isPastDue else { return [] }
-
   switch data.currentSubscriberState {
   case .nonSubscriber:
     return []
