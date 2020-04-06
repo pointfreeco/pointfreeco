@@ -216,7 +216,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         priority: .warning,
         message: """
         Your subscription is past-due! Please
-        [contact us](mailto:support@pointfree.co) to regain access to Point-Free.
+        contact us at <support@pointfree.co> to regain access to Point-Free.
         """
       )
     )
@@ -226,8 +226,8 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       .init(
         priority: .warning,
         message: """
-        Your subscription was canceled. To regain access to Point-Free,
-        [resubscribe](\(path(to: .pricingLanding)))) anytime!
+        Your subscription is canceled. To regain access to Point-Free,
+        [resubscribe](\(path(to: .pricingLanding))) anytime!
         """
       )
     )
@@ -237,8 +237,8 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       .init(
         priority: .warning,
         message: """
-        Your subscription was canceled. Please
-        [contact us](mailto:support@pointfree.co) to regain access to Point-Free.
+        Your subscription is canceled. Please
+        contact us at <support@pointfree.co> to regain access to Point-Free.
         """
       )
     )
@@ -261,7 +261,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       .init(
         priority: .warning,
         message: """
-        Your team's subscription was canceled. Please contact the team owner to regain access to Point-Free.
+        Your team's subscription is canceled. Please contact the team owner to regain access to Point-Free.
         """
       )
     )
