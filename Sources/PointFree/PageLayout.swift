@@ -197,18 +197,80 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard data.currentSubscriberState.isPastDue else { return [] }
 
-  // TODO: custom messages for owner vs teammate
-
-  return flashView(
-    .init(
-      priority: .warning,
-      message: """
-      Your subscription is past-due! Please
-      [update your payment info](\(path(to: .account(.paymentInfo(.show))))) to ensure access to
-      Point-Free!
-      """
+  switch data.currentSubscriberState {
+  case .nonSubscriber:
+    return []
+  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your subscription is past-due! Please
+        [update your payment info](\(path(to: .account(.paymentInfo(.show))))) to ensure access to
+        Point-Free!
+        """
+      )
     )
-  )
+
+  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your subscription is past-due! Please
+        [contact us](mailto:support@pointfree.co) to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your subscription was canceled. To regain access to Point-Free,
+        [resubscribe](\(path(to: .pricingLanding)))) anytime!
+        """
+      )
+    )
+
+  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your subscription was canceled. Please
+        [contact us](mailto:support@pointfree.co) to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .owner(hasSeat: _, status: _, enterpriseAccount: _):
+    return []
+
+  case .teammate(status: .pastDue, enterpriseAccount: _):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your team's subscription is past-due! Please contact the team owner to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .teammate(status: .canceled, enterpriseAccount: _):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your team's subscription was canceled. Please contact the team owner to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .teammate(status: _, enterpriseAccount: _):
+    return []
+  }
 }
 
 private func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
