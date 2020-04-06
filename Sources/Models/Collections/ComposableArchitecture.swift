@@ -153,22 +153,25 @@ Although the "environment" technique of dependency injection is powerful, and ca
             ]))
         ],
         title: "Testing",
+        whereToGoFromHere: #"""
+The Composable Architecture is now quite robust and handles many things that are important to real life applications, such as composition, modularity, side-effects and testing. With this foundation set we can now look for ways to take the architecture to the _next_ level.
+"""#
+      ),
+      .init(
+        blurb: #"""
+We have built up quite a few features for the Composable Architecture over the past 16 episodes, but it still has a few tricks up its sleeve. The architecture can also be adaptive so that it is capable of being used in multiple situations. After discussing the basics of this idea, we demonstrate it by porting our demo application to macOS.
+"""#,
+        coreLessons: [
+          .init(episode: .ep94_adaptiveStateManagement_pt1),
+          .init(episode: .ep95_adaptiveStateManagement_pt2),
+          .init(episode: .ep96_adaptiveStateManagement_pt3),
+          .init(episode: .ep97_adaptiveStateManagement_pt4),
+        ],
+        related: [
+        ],
+        title: "Adaptation",
         whereToGoFromHere: nil
       ),
-//      .init(
-//        blurb: #"""
-//TODO
-//"""#,
-//        coreLessons: [
-//          .init(episode: .ep94_adaptiveStateManagement_pt1),
-//          .init(episode: .ep95_adaptiveStateManagement_pt2),
-//          .init(episode: .ep96_adaptiveStateManagement_pt3),
-//        ],
-//        related: [
-//        ],
-//        title: "Adaptation",
-//        whereToGoFromHere: nil
-//      ),
     ],
     title: "Composable Architecture"
   )
