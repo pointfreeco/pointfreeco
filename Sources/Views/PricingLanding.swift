@@ -858,6 +858,12 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
 """
     ),
     Faq(
+      question: "Do you offer referral discounts?",
+      answer: """
+We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
+"""
+    ),
+    Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
 Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
