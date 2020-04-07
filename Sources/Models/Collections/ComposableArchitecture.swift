@@ -92,24 +92,17 @@ The toy application we have been building to explore the composable architecture
       ),
       .init(
         blurb: #"""
-Side effects are by far the most complicated part of any application. They speak to the outside world, they're hard to control, and they're hard to test. Any architecture should provide a concise story for where and how to introduce them. The composable architecture makes side effects a first class citizen so that they are easily understood, all without sacrificing simplicity or composability.
+Side effects are by far the most complicated part of any application. They speak to the outside world, they're hard to control, and they're hard to test. Any architecture should provide a concise story for where and how to introduce them. The composable architecture makes side effects a first class citizen so that they are easily understood, all without sacrificing simplicity or composability, and we can even leverage the Combine framework to do a lot of the heavy lifting!
 """#,
         coreLessons: [
           .init(episode: .ep76_effectfulStateManagement_synchronousEffects),
           .init(episode: .ep77_effectfulStateManagement_unidirectionalEffects),
           .init(episode: .ep78_effectfulStateManagement_asynchronousEffects),
           .init(episode: .ep79_effectfulStateManagement_thePoint),
+          .init(episode: .ep80_theCombineFrameworkAndEffects_pt1),
+          .init(episode: .ep81_theCombineFrameworkAndEffects_pt2),
         ],
         related: [
-          .init(
-            blurb: """
-This section modeled side effects using a custom `Effect` type built from scratch. It turns out that any type that models asynchrony (such as reactive and promise libraries) can be used to model effects. So, we refactor the composable architecture to take advantage of Combine, Apple's reactive framework.
-""",
-            content: .episodes([
-              .ep80_theCombineFrameworkAndEffects_pt1,
-              .ep81_theCombineFrameworkAndEffects_pt2,
-            ])
-          )
         ],
         title: "Side Effects",
         whereToGoFromHere: #"""
