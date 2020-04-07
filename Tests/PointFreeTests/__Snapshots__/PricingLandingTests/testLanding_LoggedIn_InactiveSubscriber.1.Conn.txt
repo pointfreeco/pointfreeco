@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 196464
+Content-Length: 196880
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2548,6 +2548,14 @@ directly to that point in the video.
                     m-pb2">
             We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
 student status (e.g. scan of ID card) we will give you a 50% discount off of the Personal plan.
+          </p>
+          <p class="bold
+                    fg-black">
+            Do you offer referral discounts?
+          </p>
+          <p class="fg-gray400
+                    m-pb2">
+            We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
           </p>
           <p class="bold
                     fg-black">
