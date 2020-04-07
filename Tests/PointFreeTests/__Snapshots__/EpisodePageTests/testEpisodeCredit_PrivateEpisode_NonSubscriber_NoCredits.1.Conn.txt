@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 75470
+Content-Length: 75496
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2029,7 +2029,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     allow="autoplay; fullscreen"
                     allowfullscreen>
             </iframe>
-            <script src="https://player.vimeo.com/api/player.js">
+            <script async
+                    src="https://player.vimeo.com/api/player.js">
             </script>
             <script>
               window.addEventListener("load", function (event) {

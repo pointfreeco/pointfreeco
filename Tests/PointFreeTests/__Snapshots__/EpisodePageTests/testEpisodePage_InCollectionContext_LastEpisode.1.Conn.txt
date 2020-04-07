@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 99254
+Content-Length: 99280
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2071,7 +2071,8 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                     allow="autoplay; fullscreen"
                     allowfullscreen>
             </iframe>
-            <script src="https://player.vimeo.com/api/player.js">
+            <script async
+                    src="https://player.vimeo.com/api/player.js">
             </script>
             <script>
               window.addEventListener("load", function (event) {

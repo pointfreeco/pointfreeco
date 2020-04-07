@@ -24,7 +24,7 @@ public func videoView(forEpisode episode: Episode, isEpisodeViewable: Bool) -> N
         Attribute("allowfullscreen", "")
       ]
     ),
-    .script(attributes: [.src("https://player.vimeo.com/api/player.js")]),
+    .script(attributes: [.async(true), .src("https://player.vimeo.com/api/player.js")]),
     .script(safe: """
 window.addEventListener("load", function (event) {
   var player = new Vimeo.Player(document.querySelector("iframe"));
