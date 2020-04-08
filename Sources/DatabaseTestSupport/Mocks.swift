@@ -22,6 +22,7 @@ extension Client {
     fetchEnterpriseAccountForSubscription: const(pure(.none)),
     fetchEnterpriseEmails: unzurry(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
+    fetchEpisodeProgress: { _, _ in pure(nil) },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
     fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },

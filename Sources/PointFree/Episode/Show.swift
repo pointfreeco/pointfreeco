@@ -18,10 +18,11 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
   fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
+    >=> fetchEpisodeProgress
     >=> map(lower)
     >>> respond(
       view: episodePageView(episodePageData:),
-      layoutData: { permission, episode, currentUser, subscriberState, currentRoute, collectionSlug in
+      layoutData: { permission, episode, episodeProgress, currentUser, subscriberState, currentRoute, collectionSlug in
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
@@ -31,6 +32,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
             currentUser: currentUser,
             collectionSlug: collectionSlug,
             episode: episode,
+            episodeProgress: episodeProgress,
             permission: permission,
             subscriberState: subscriberState
           ),
@@ -48,6 +50,7 @@ private func episodePageData(
   currentUser: User?,
   collectionSlug: Episode.Collection.Slug?,
   episode: Episode,
+  episodeProgress: Int?,
   permission: EpisodePermission,
   subscriberState: SubscriberState
 ) -> EpisodePageData {
@@ -65,6 +68,7 @@ private func episodePageData(
     context: context,
     date: Current.date,
     episode: episode,
+    episodeProgress: episodeProgress,
     permission: permission,
     subscriberState: subscriberState,
     user: currentUser
@@ -212,6 +216,25 @@ private func validateCreditRequest<Z>(
         headersMiddleware: flash(.warning, "This episode is already available to you.")
     )
   }
+}
+
+func fetchEpisodeProgress<I, Z>(
+  _ conn: Conn<I, T4<EpisodePermission, Episode, User?, Z>>
+)
+  -> IO<Conn<I, T5<EpisodePermission, Episode, Int?, User?, Z>>> {
+
+    let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
+
+    return (
+      currentUser
+      .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
+      ?? pure(nil)
+      )
+    .run
+      .map { $0.right ?? nil }
+      .map {
+        conn.map(const(permission .*. episode .*. $0 .*. currentUser .*. rest(conn.data)))
+    }
 }
 
 func userEpisodePermission<I, Z>(

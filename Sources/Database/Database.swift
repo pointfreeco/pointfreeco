@@ -25,6 +25,7 @@ public struct Client {
   public var fetchEnterpriseAccountForSubscription: (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var fetchEnterpriseEmails: () -> EitherIO<Error, [EnterpriseEmail]>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
+  public var fetchEpisodeProgress: (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
   public var fetchSubscriptionByOwnerId: (Models.User.Id) -> EitherIO<Error, Models.Subscription?>
@@ -63,6 +64,7 @@ public struct Client {
     fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     fetchEnterpriseEmails: @escaping () -> EitherIO<Error, [EnterpriseEmail]>,
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
+    fetchEpisodeProgress: @escaping (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
     fetchSubscriptionByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -100,6 +102,7 @@ public struct Client {
     self.fetchEnterpriseAccountForSubscription = fetchEnterpriseAccountForSubscription
     self.fetchEnterpriseEmails = fetchEnterpriseEmails
     self.fetchEpisodeCredits = fetchEpisodeCredits
+    self.fetchEpisodeProgress = fetchEpisodeProgress
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchSubscriptionById = fetchSubscriptionById
     self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
@@ -161,6 +164,7 @@ extension Client {
       fetchEnterpriseAccountForSubscription: client.fetchEnterpriseAccount(forSubscriptionId:),
       fetchEnterpriseEmails: client.fetchEnterpriseEmails,
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
+      fetchEpisodeProgress: client.fetchEpisodeProgress(userId:sequence:),
       fetchFreeEpisodeUsers: client.fetchFreeEpisodeUsers,
       fetchSubscriptionById: client.fetchSubscription(id:),
       fetchSubscriptionByOwnerId: client.fetchSubscription(ownerId:),
@@ -739,6 +743,21 @@ private struct _Client {
     """,
       [userId.rawValue.uuidString]
     )
+  }
+
+  func fetchEpisodeProgress(userId: User.Id, sequence: Episode.Sequence) -> EitherIO<Error, Int?> {
+    return self.execute(
+      #"""
+      SELECT "percent"
+      FROM "episode_progresses"
+      WHERE "user_id" = $1
+      AND "episode_sequence" = $2
+      """#,
+      [
+        userId.rawValue,
+        sequence.rawValue
+      ]
+    ).map { $0.array?.first?.object?["percent"]?.int }
   }
 
   func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
