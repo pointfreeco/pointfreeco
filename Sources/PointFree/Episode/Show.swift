@@ -218,22 +218,19 @@ private func validateCreditRequest<Z>(
   }
 }
 
-func fetchEpisodeProgress<I, Z>(
-  _ conn: Conn<I, T4<EpisodePermission, Episode, User?, Z>>
-)
+func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, User?, Z>>)
   -> IO<Conn<I, T5<EpisodePermission, Episode, Int?, User?, Z>>> {
 
     let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
     return (
       currentUser
-      .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
-      ?? pure(nil)
+        .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
+        ?? pure(nil)
       )
-    .run
-      .map { $0.right ?? nil }
+      .run
       .map {
-        conn.map(const(permission .*. episode .*. $0 .*. currentUser .*. rest(conn.data)))
+        conn.map(const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
     }
 }
 

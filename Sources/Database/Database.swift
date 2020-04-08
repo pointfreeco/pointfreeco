@@ -757,7 +757,8 @@ private struct _Client {
         userId.rawValue,
         sequence.rawValue
       ]
-    ).map { $0.array?.first?.object?["percent"]?.int }
+    )
+      .map(\.array?.first?.object?["percent"]?.int)
   }
 
   func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
