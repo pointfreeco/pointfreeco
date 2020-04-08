@@ -552,4 +552,12 @@ class EpisodePageTests: TestCase {
     XCTAssertEqual(didUpdate, false)
   }
 
+  func testEpisodePage_WithEpisodeProgress() {
+    Current.database.fetchEpisodeProgress = { _, _ in pure(20) }
+    let episode = request(to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
 }
