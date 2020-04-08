@@ -13,6 +13,7 @@ public struct EpisodePageData {
   var context: Context
   var date: () -> Date
   var episode: Episode
+  var episodeProgress: Int?
   var permission: EpisodePermission
   var subscriberState: SubscriberState
   var user: User?
@@ -26,6 +27,7 @@ public struct EpisodePageData {
     context: Context,
     date: @escaping () -> Date,
     episode: Episode,
+    episodeProgress: Int?,
     permission: EpisodePermission,
     subscriberState: SubscriberState,
     user: User?
@@ -33,6 +35,7 @@ public struct EpisodePageData {
     self.context = context
     self.date = date
     self.episode = episode
+    self.episodeProgress = episodeProgress
     self.permission = permission
     self.subscriberState = subscriberState
     self.user = user
@@ -96,7 +99,8 @@ public func episodePageView(
     ),
     video(
       forEpisode: data.episode,
-      isEpisodeViewable: isEpisodeViewable(for: data.permission)
+      isEpisodeViewable: isEpisodeViewable(for: data.permission),
+      episodeProgress: data.episodeProgress
     ),
     mainContent(
       data: data,
@@ -1089,7 +1093,8 @@ Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this episode for f
 
 private func video(
   forEpisode episode: Episode,
-  isEpisodeViewable: Bool
+  isEpisodeViewable: Bool,
+  episodeProgress: Int?
 ) -> Node {
   .div(
     attributes: [
@@ -1125,7 +1130,11 @@ private func video(
             )
           )
         ],
-        videoView(forEpisode: episode, isEpisodeViewable: isEpisodeViewable)
+        videoView(
+          forEpisode: episode,
+          isEpisodeViewable: isEpisodeViewable,
+          episodeProgress: episodeProgress
+        )
       )
     )
   )

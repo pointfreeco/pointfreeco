@@ -144,4 +144,40 @@ final class DatabaseTests: LiveDatabaseTestCase {
       1
     )
   }
+
+  func testFetchEpisodeProgress() throws {
+    let progress = 20
+    let episodeSequence: Episode.Sequence = 1
+
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    _ = Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
+      .run
+      .perform()
+      .right!
+
+    let fetchedProgress = try XCTUnwrap(
+      Current.database.fetchEpisodeProgress(user.id, episodeSequence).run.perform().right
+    )
+
+    XCTAssertEqual(fetchedProgress, .some(20))
+  }
+
+  func testFetchEpisodeProgress_NoProgress() throws {
+    let episodeSequence: Episode.Sequence = 1
+
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let fetchedProgress = try XCTUnwrap(
+      Current.database.fetchEpisodeProgress(user.id, episodeSequence).run.perform().right
+    )
+
+    XCTAssertEqual(fetchedProgress, .none)
+  }
 }

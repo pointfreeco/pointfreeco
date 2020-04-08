@@ -5,10 +5,17 @@ import HtmlCssSupport
 import Models
 import Styleguide
 
-public func videoView(forEpisode episode: Episode, isEpisodeViewable: Bool) -> Node {
-  let episodeSource = isEpisodeViewable
+public func videoView(
+  forEpisode episode: Episode,
+  isEpisodeViewable: Bool,
+  episodeProgress: Int?
+) -> Node {
+  let episodeSourceRoot = isEpisodeViewable
     ? episode.fullVideo.streamingSource
     : episode.trailerVideo.streamingSource
+
+  let episodeSource = episodeSourceRoot
+    + (episodeProgress.map { "#t=\(Int(Double(episode.length.rawValue * $0) / 100.0))s" } ?? "")
 
   return .div(
     attributes: [
