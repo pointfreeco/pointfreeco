@@ -36,8 +36,8 @@ Now that the `Reducer` type is a proper struct we can provide specialized initia
     solution: #"""
 ```swift
 extension Reducer where Environment == Void {
-  init(_ reducer: (inout State, Action) -> Void) {
-    self.reducer = {state, action, _ in
+  init(_ reducer: @escaping (inout Value, Action) -> Void) {
+    self.reducer = { state, action, _ in
       reducer(&state, action)
       return []
     }
@@ -55,9 +55,11 @@ There is a slight alteration we can make to the reducer so that it is not handed
     solution: #"""
 ```swift
 extension Reducer {
-  init(_ reducer: (inout State, Action) -> (Environment) -> Effect<Action>) {
-    self.reducer = {state, action, enviroment in
-      reducer(&state, action)(enviroment)
+  static func strict(
+    _ reducer: @escaping (inout Value, Action) -> (Environment) -> [Effect<Action>]
+  ) -> Reducer {
+    .init { value, action, environment in
+      reducer(&value, action)(environment)
     }
   }
 }
