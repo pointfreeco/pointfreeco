@@ -173,7 +173,7 @@ func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
 }
 
 func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
-  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
+  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
