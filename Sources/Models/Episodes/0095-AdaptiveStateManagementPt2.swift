@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep95_adaptiveStateManagement_pt2 = Episode(
     blurb: """
-There's a potential performance problem lurking in the composable architecture, and it's time to finally solve it. But, in doing so, we will stumble upon a wonderful way to make the architecture adaptive to many more situations.
+There's a potential performance problem lurking in the Composable Architecture, and it's time to finally solve it. But, in doing so, we will stumble upon a wonderful way to make the architecture adaptive to many more situations.
 """,
     codeSampleDirectory: "0095-adaptive-state-management-pt2",
     exercises: _exercises,

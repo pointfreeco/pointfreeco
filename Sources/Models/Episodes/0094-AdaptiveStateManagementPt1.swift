@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep94_adaptiveStateManagement_pt1 = Episode(
     blurb: """
-It's time to put the finishing touches to our architecture so that we can use it in production. This week we begin exploring how to make the composable architecture adapt to many use cases, and we will use a potential performance problem as inspiration for this exploration.
+It's time to put the finishing touches to our architecture so that we can use it in production. This week we begin exploring how to make the Composable Architecture adapt to many use cases, and we will use a potential performance problem as inspiration for this exploration.
 """,
     codeSampleDirectory: "0094-adaptive-state-management-pt1",
     exercises: _exercises,

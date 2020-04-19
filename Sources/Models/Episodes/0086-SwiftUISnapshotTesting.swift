@@ -55,14 +55,14 @@ Today we have a surprise holiday edition of Point-Free! We wanted to end the yea
   ),
   Episode.TranscriptBlock(
     content: #"""
-We want to add screenshot testing to the application we have been building. We've already seen that the composable architecture we've been covering for the past 18 weeks gives us the ability to write incredibly deep tests with very little work, but we want to take things to the next level.
+We want to add screenshot testing to the application we have been building. We've already seen that the Composable Architecture we've been covering for the past 18 weeks gives us the ability to write incredibly deep tests with very little work, but we want to take things to the next level.
 """#,
     timestamp: (0*60 + 20),
     type: .paragraph
   ),
   Episode.TranscriptBlock(
     content: #"""
-We will show that the snapshot testing library we open sourced over a year ago can be combined with the composable architecture and SwiftUI to create some amazing, end-to-end testing of our application.
+We will show that the snapshot testing library we open sourced over a year ago can be combined with the Composable Architecture and SwiftUI to create some amazing, end-to-end testing of our application.
 """#,
     timestamp: (0*60 + 26),
     type: .paragraph
@@ -204,7 +204,7 @@ let store = Store(
   ),
   Episode.TranscriptBlock(
     content: #"""
-And to do that we need to import the composable architecture:
+And to do that we need to import the Composable Architecture:
 """#,
     timestamp: (3*60 + 00),
     type: .paragraph
@@ -388,7 +388,7 @@ And that's all it takes to get snapshot testing working with SwiftUI!
   ),
   Episode.TranscriptBlock(
     content: #"""
-But let's take this to the next level by flexing some of the muscles we gained from introducing the composable architecture. What if I wanted to simulate the user tapping on the increment button? As we have seen previously, everything inside the the body of a SwiftUI is basically hidden from us. We have no ability to go in and simulate tapping one of the buttons on the inside.
+But let's take this to the next level by flexing some of the muscles we gained from introducing the Composable Architecture. What if I wanted to simulate the user tapping on the increment button? As we have seen previously, everything inside the the body of a SwiftUI is basically hidden from us. We have no ability to go in and simulate tapping one of the buttons on the inside.
 """#,
     timestamp: (5*60 + 36),
     type: .paragraph

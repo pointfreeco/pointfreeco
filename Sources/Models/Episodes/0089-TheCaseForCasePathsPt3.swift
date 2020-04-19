@@ -59,7 +59,7 @@ An early exploration of how an enum's associated values can be extracted using r
 private let _exercises: [Episode.Exercise] = [
   .init(
     problem: #"""
-In the composable architecture we have been building, the [`pullback`](https://github.com/pointfreeco/episode-code-samples/blob/master/0084-testable-state-management-ergonomics/PrimeTime/ComposableArchitecture/ComposableArchitecture.swift#L97-L115) operation on reducers took two transformations: a writable key path for state and a writable key path for actions. Replace the key path on actions with a case path, and update the project to use this new API.
+In the Composable Architecture we have been building, the [`pullback`](https://github.com/pointfreeco/episode-code-samples/blob/master/0084-testable-state-management-ergonomics/PrimeTime/ComposableArchitecture/ComposableArchitecture.swift#L97-L115) operation on reducers took two transformations: a writable key path for state and a writable key path for actions. Replace the key path on actions with a case path, and update the project to use this new API.
 """#,
     solution: #"""
 ```swift
