@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   static let ep93_modularDependencyInjection_pt3 = Episode(
     blurb: """
-It's time to prove that baking an "environment" of dependencies directly into the composable architecture solves three crucial problems that the global environment pattern could not.
+It's time to prove that baking an "environment" of dependencies directly into the Composable Architecture solves three crucial problems that the global environment pattern could not.
 """,
     codeSampleDirectory: "0093-modular-dependency-injection-pt3",
     exercises: _exercises,
@@ -32,7 +32,7 @@ It's time to prove that baking an "environment" of dependencies directly into th
       ),
       reference(
         forEpisode: .ep82_testableStateManagement_reducers,
-        additionalBlurb: #"This is the start of our series of episodes on "testable" state management, in which we explore just how testable the composable architecture is, effects and all!"#,
+        additionalBlurb: #"This is the start of our series of episodes on "testable" state management, in which we explore just how testable the Composable Architecture is, effects and all!"#,
         episodeUrl: "https://www.pointfree.co/episodes/ep82-testable-state-management-reducers"
       ),
     ],

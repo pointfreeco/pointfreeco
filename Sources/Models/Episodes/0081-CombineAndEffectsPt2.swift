@@ -100,7 +100,7 @@ extension Publisher {
 """#
   ),
   .init(problem: """
-Refactor the composable architecture and app to use a `Reducer` of the form:
+Refactor the Composable Architecture and app to use a `Reducer` of the form:
 
 ```swift
 typealias Reducer<Value, Action> = (inout Value, Action) -> Effect<Action>
@@ -114,7 +114,7 @@ What Combine operator can you use for the times that you need to return multiple
     problem: #"""
 In the episode we note that while we chose to refactor the architecture with the Combine framework, we could have just as easily refactored it to work with [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift) or [RxSwift](https://github.com/ReactiveX/RxSwift)
 
-Pick your framework of choice (or both!) and refactor the composable architecture accordingly. If using ReactiveSwift you will need to decide between `Signal` and `SignalProducer` for your effect type.
+Pick your framework of choice (or both!) and refactor the Composable Architecture accordingly. If using ReactiveSwift you will need to decide between `Signal` and `SignalProducer` for your effect type.
 """#
   ),
 ]
@@ -141,7 +141,7 @@ To recap: in the Combine world we have publishers and in the Effect world we hav
   ),
   Episode.TranscriptBlock(
     content: #"""
-That's the basic correspondence, so the question is can we refactor the composable architecture that we have been building to leverage Combine's functionality rather than building it ourselves from scratch?
+That's the basic correspondence, so the question is can we refactor the Composable Architecture that we have been building to leverage Combine's functionality rather than building it ourselves from scratch?
 """#,
     timestamp: (1*60 + 3),
     type: .paragraph
@@ -1783,7 +1783,7 @@ Unfortunately Swift's type system is not powerful enough to express this idea, b
   ),
   Episode.TranscriptBlock(
     content: #"""
-So, that's it for this episode. We took a little detour from our episodes building out the composable architecture so that we could address the strangeness of the `Effect` type from last time. But next week we pick up where we left off last time: testing! We want to show how testable this architecture is, even when effects are involved.
+So, that's it for this episode. We took a little detour from our episodes building out the Composable Architecture so that we could address the strangeness of the `Effect` type from last time. But next week we pick up where we left off last time: testing! We want to show how testable this architecture is, even when effects are involved.
 """#,
     timestamp: (37*60 + 59),
     type: .paragraph

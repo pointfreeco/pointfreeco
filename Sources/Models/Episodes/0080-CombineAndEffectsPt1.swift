@@ -1081,7 +1081,7 @@ To recap: in the Combine world we have publishers and in the Effect world we hav
   ),
   Episode.TranscriptBlock(
     content: #"""
-That's the basic correspondence, so the question is can we refactor the composable architecture that we have been building to leverage Combine's functionality rather than building it ourselves from scratch?
+That's the basic correspondence, so the question is can we refactor the Composable Architecture that we have been building to leverage Combine's functionality rather than building it ourselves from scratch?
 """#,
     timestamp: (24*60 + 46),
     type: .paragraph

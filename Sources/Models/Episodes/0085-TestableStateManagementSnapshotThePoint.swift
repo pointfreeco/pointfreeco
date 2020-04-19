@@ -91,7 +91,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-So we've now demonstrated that not only is the composable architecture we have been developing super testable, but it can also test deep aspects of our application, and it can be done with minimal set up and ceremony. This is key if people are going to be motivated to write tests. There should be as little friction as possible to writing tests, and we should be confident we are testing some real world aspects of our application.
+So we've now demonstrated that not only is the Composable Architecture we have been developing super testable, but it can also test deep aspects of our application, and it can be done with minimal set up and ceremony. This is key if people are going to be motivated to write tests. There should be as little friction as possible to writing tests, and we should be confident we are testing some real world aspects of our application.
 """#,
     timestamp: 5,
     type: .paragraph
@@ -105,7 +105,7 @@ But no matter how cool this is, we always like to end a series of episodes on Po
   ),
   Episode.TranscriptBlock(
     content: #"""
-Unfortunately, we do indeed think it's necessary to do some amount of work to gain testability in a SwiftUI application. You don't necessarily need to use the composable architecture we've been building, but it seems that if you want to test your SwiftUI application you will be inevitably led to introducing some layers on top of SwiftUI to achieve this.
+Unfortunately, we do indeed think it's necessary to do some amount of work to gain testability in a SwiftUI application. You don't necessarily need to use the Composable Architecture we've been building, but it seems that if you want to test your SwiftUI application you will be inevitably led to introducing some layers on top of SwiftUI to achieve this.
 """#,
     timestamp: (0*60 + 56),
     type: .paragraph
@@ -178,7 +178,7 @@ The `count` and array of `favoritePrimes` is the core data we want to persist ac
   ),
   Episode.TranscriptBlock(
     content: #"""
-This class is like a less opinionated, more ad hoc version of the composable architecture's `Store`, which also conforms to `ObservableObject` and has a single `@Published` field for its entire state.
+This class is like a less opinionated, more ad hoc version of the Composable Architecture's `Store`, which also conforms to `ObservableObject` and has a single `@Published` field for its entire state.
 """#,
     timestamp: (2*60 + 41),
     type: .paragraph
@@ -1578,7 +1578,7 @@ So, although `@State` fields were not directly testable, we could at least extra
   ),
   Episode.TranscriptBlock(
     content: #"""
-However, even with that done we still haven't recovered them same testing capabilities as we had with our architecture. When we wrote tests for this screen with the composable architecture we saw that we could easily add an integration test, that is, a test that exercises multiple independent pieces of the application at once. We were able to write a test for the prime modal logic as it is embedded in the counter logic, just to make sure that those two features play nicely together.
+However, even with that done we still haven't recovered them same testing capabilities as we had with our architecture. When we wrote tests for this screen with the Composable Architecture we saw that we could easily add an integration test, that is, a test that exercises multiple independent pieces of the application at once. We were able to write a test for the prime modal logic as it is embedded in the counter logic, just to make sure that those two features play nicely together.
 """#,
     timestamp: (27*60 + 37),
     type: .paragraph
@@ -1613,7 +1613,7 @@ I think what we are seeing here is that there really is no such thing as testing
     content: #"""
 - At a bare minimum you need to move as much of your logic out of the `body` property of your view as possible, and either put it in methods on the view or as methods on your state. This allows you to at the very least invoke those methods and assert that the state was changed in the way you expect.
 
-    - But, this is quite similar to what we did in the composable architecture. We decided we did not want to perform mutations directly in the view, and instead described the mutations via enums and wrote reducers to actually perform the mutations.
+    - But, this is quite similar to what we did in the Composable Architecture. We decided we did not want to perform mutations directly in the view, and instead described the mutations via enums and wrote reducers to actually perform the mutations.
 """#,
     timestamp: (29*60 + 17),
     type: .paragraph
@@ -1622,7 +1622,7 @@ I think what we are seeing here is that there really is no such thing as testing
     content: #"""
 - If you want to take a step further, you should also think about what SwiftUI features you use to model your state. It is convenient to project out a few fields of your big blob of state into bindings, but if you do that you lose the ability to exhaustively assert how state changes in a test. And if you want to recover the exhaustivity you have to bundle up those fields into a struct of its own and create a computed property on your app state to derive that sub-state.
 
-    - But again, this is quite similar to what we did in the composable architecture. We created little state structs to hold the state specific to a view, and created the composability tools necessary to plug it back into the global state, and because we did that we got exhaustive testing for free.
+    - But again, this is quite similar to what we did in the Composable Architecture. We created little state structs to hold the state specific to a view, and created the composability tools necessary to plug it back into the global state, and because we did that we got exhaustive testing for free.
 """#,
     timestamp: (29*60 + 43),
     type: .paragraph
@@ -1631,21 +1631,21 @@ I think what we are seeing here is that there really is no such thing as testing
     content: #"""
 - It is also convenient to use `@State` to model local state in a view. But this comes at the cost of essentially being untestable. There appears to be nothing we can do to make those values change as we invoke various methods on the view. The only way to gain testability is to move that state out of local `@State` bindings and into your app state, which means converting to either `@Binding` or `@ObservedObject`.
 
-    - And yet again, this is exactly what we did in the composable architecture. We needed to move a few of these `@State` fields out of the view and into our global app state, like the alert state and button disabled state. At the time we did this because the logic that controlled that state was subtle, and we wanted to move it to our reducers. But then later we showed it gave us the ability to write some really amazing tests, including the ability to play out a full script of user actions (such as tapping a button, running an effect, triggering an alert, and dismissing the alert) and make sure the state changes how we expect.
+    - And yet again, this is exactly what we did in the Composable Architecture. We needed to move a few of these `@State` fields out of the view and into our global app state, like the alert state and button disabled state. At the time we did this because the logic that controlled that state was subtle, and we wanted to move it to our reducers. But then later we showed it gave us the ability to write some really amazing tests, including the ability to play out a full script of user actions (such as tapping a button, running an effect, triggering an alert, and dismissing the alert) and make sure the state changes how we expect.
 """#,
     timestamp: (30*60 + 50),
     type: .paragraph
   ),
   Episode.TranscriptBlock(
     content: #"""
-And this is the point of all the work we've been doing on the composable architecture for the past 18 episodes of Point-Free. We claim that there really is no such thing as a "vanilla SwiftUI" app if you want that app to be testable. Although SwiftUI solves some of the hardest problems when it comes to building an application, there are many problems it does not attempt to solve. The moment you start to solve these problems, you are inevitably led to needing to add a layer on top of SwiftUI that Apple has not officially sanctioned or provided guidance on. Further, if you do not construct that extra layer in a principled way the tests will be difficult to write, and you may not be able to write integration tests that test many layers of your application at once.
+And this is the point of all the work we've been doing on the Composable Architecture for the past 18 episodes of Point-Free. We claim that there really is no such thing as a "vanilla SwiftUI" app if you want that app to be testable. Although SwiftUI solves some of the hardest problems when it comes to building an application, there are many problems it does not attempt to solve. The moment you start to solve these problems, you are inevitably led to needing to add a layer on top of SwiftUI that Apple has not officially sanctioned or provided guidance on. Further, if you do not construct that extra layer in a principled way the tests will be difficult to write, and you may not be able to write integration tests that test many layers of your application at once.
 """#,
     timestamp: (31*60 + 23),
     type: .paragraph
   ),
   Episode.TranscriptBlock(
     content: #"""
-And so if we accept all that, then we can see that the composable architecture we have been building feels right at home in SwiftUI. It doesn't really go against the grain of how SwiftUI wants to handle our applications, it only enhances it. We are just preemptively moving mutations and side effects out of the view and into a dedicated, testable place.
+And so if we accept all that, then we can see that the Composable Architecture we have been building feels right at home in SwiftUI. It doesn't really go against the grain of how SwiftUI wants to handle our applications, it only enhances it. We are just preemptively moving mutations and side effects out of the view and into a dedicated, testable place.
 """#,
     timestamp: (31*60 + 49),
     type: .paragraph
@@ -1659,7 +1659,7 @@ Further, it gives us a nice mental model for thinking about our applications. Ra
   ),
   Episode.TranscriptBlock(
     content: #"""
-Ok! That actually concludes our introductory series of episodes on the composable architecture. I don't think we planned on spending 18 weeks on this topic when we started, but it's an incredibly deep topic. And honestly, we've only barely scratched the surface of this topic.
+Ok! That actually concludes our introductory series of episodes on the Composable Architecture. I don't think we planned on spending 18 weeks on this topic when we started, but it's an incredibly deep topic. And honestly, we've only barely scratched the surface of this topic.
 """#,
     timestamp: (32*60 + 37),
     type: .paragraph
@@ -1673,7 +1673,7 @@ There are so many more questions to answers and things to explore. Things like:
   ),
   Episode.TranscriptBlock(
     content: #"""
-- How to properly handle alerts, modals and popovers in the composable architecture?
+- How to properly handle alerts, modals and popovers in the Composable Architecture?
 """#,
     timestamp: (32*60 + 55),
     type: .paragraph
