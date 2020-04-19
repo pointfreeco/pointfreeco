@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   static let ep92_modularDependencyInjection_pt2 = Episode(
     blurb: """
-Now that we've baked the "environment" of dependencies directly into the composable architecture, we're ready to refactor our app's frameworks and tests to work with them in a modular and more lightweight way.
+Now that we've baked the "environment" of dependencies directly into the Composable Architecture, we're ready to refactor our app's frameworks and tests to work with them in a modular and more lightweight way.
 """,
     codeSampleDirectory: "0092-modular-dependency-injection-pt2",
     exercises: _exercises,
@@ -32,7 +32,7 @@ Now that we've baked the "environment" of dependencies directly into the composa
       ),
       reference(
         forEpisode: .ep82_testableStateManagement_reducers,
-        additionalBlurb: #"This is the start of our series of episodes on "testable" state management, in which we explore just how testable the composable architecture is, effects and all!"#,
+        additionalBlurb: #"This is the start of our series of episodes on "testable" state management, in which we explore just how testable the Composable Architecture is, effects and all!"#,
         episodeUrl: "https://www.pointfree.co/episodes/ep82-testable-state-management-reducers"
       ),
     ],
