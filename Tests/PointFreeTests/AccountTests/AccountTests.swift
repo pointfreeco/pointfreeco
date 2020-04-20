@@ -57,17 +57,13 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(
       Current.database.fetchUserById(currentUser.id)
-        .run
-        .perform()
-        .right!!.subscriptionId,
+        .run.perform().right!!.subscriptionId,
       nil
     )
 
     XCTAssertEqual(
       Current.database.fetchEnterpriseEmails()
-        .run
-        .perform()
-        .right!,
+        .run.perform().right!,
       []
     )
   }
