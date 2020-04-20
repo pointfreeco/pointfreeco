@@ -52,7 +52,7 @@ extension Reducer {
     problem: #"""
 There is also no easy way of working with collections in state. In particular, it is not possible to write a reducer on an element of state and use `pullback` to transform it to a reducer that works on a collection of state.
 
-Define an `indexed` method on `Reducer` that handles this kind of transformation such that the state's key path is of the form `WritableKeyPath<GlobalValue, [Value]>. In order to send an action to a particular element of the array, it must identify the element in some way. Take inspiration from the method's name. 😁
+Define an `indexed` method on `Reducer` that handles this kind of transformation such that the state's key path is of the form `WritableKeyPath<GlobalValue, [Value]>`. In order to send an action to a particular element of the array, it must identify the element in some way. Take inspiration from the method's name. 😁
 """#,
     solution: #"""
 Given some global app state:
