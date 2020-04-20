@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep99_ergonomicStateManagement_pt2 = Episode(
     blurb: """
-We've made creating and enhancing reducers, but we still haven't given much attention to the ergonomics of the view layer of the Composable Architecture. This week we'll make the Store much nicer to use by taking advantage of a new Swift feature and by enhancing it with a SwiftUI helper.
+We've made creating and enhancing reducers more ergonomic, but we still haven't given much attention to the ergonomics of the view layer of the Composable Architecture. This week we'll make the Store much nicer to use by taking advantage of a new Swift feature and by enhancing it with a SwiftUI helper.
 """,
     codeSampleDirectory: "0099-ergonomic-state-management-pt2",
     exercises: _exercises,
