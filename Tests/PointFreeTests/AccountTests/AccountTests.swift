@@ -1,6 +1,7 @@
 import Database
 import DatabaseTestSupport
 import Either
+import GitHub
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -15,6 +16,58 @@ import StripeTestSupport
 import WebKit
 #endif
 import XCTest
+
+final class AccountIntegrationTests: LiveDatabaseTestCase {
+  func testLeaveTeam() {
+    let currentUser = Current.database.registerUser(
+      .init(
+        accessToken: .init(accessToken: "deadbeef-currentUser"),
+        gitHubUser: .init(id: 1, name: "Blob")
+      ),
+      "blob@pointfree.co"
+    )
+      .run.perform().right!!
+
+    _ = Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
+      .run.perform().right!!
+
+    let owner = Current.database.registerUser(
+      .init(
+        accessToken: .init(accessToken: "deadbeef-owner"),
+        gitHubUser: .init(id: 2, name: "Owner")
+      ),
+      "owner@pointfree.co"
+    )
+    .run.perform().right!!
+
+    let subscription = Current.database.createSubscription(
+      Stripe.Subscription.mock,
+      owner.id,
+      false,
+      nil
+    )
+      .run.perform().right!!
+
+    _ = Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+      .run.perform().right!
+
+    let conn = connection(from: request(to: .team(.leave), session: .loggedIn(as: currentUser)))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    XCTAssertEqual(
+      Current.database.fetchUserById(currentUser.id)
+        .run.perform().right!!.subscriptionId,
+      nil
+    )
+
+    XCTAssertEqual(
+      Current.database.fetchEnterpriseEmails()
+        .run.perform().right!,
+      []
+    )
+  }
+}
 
 final class AccountTests: TestCase {
   override func setUp() {

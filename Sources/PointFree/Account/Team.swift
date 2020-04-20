@@ -44,8 +44,10 @@ private func leaveTeam<Z>(
     let user = get1(conn.data)
 
     let removed = user.subscriptionId
-      .map { Current.database.removeTeammateUserIdFromSubscriptionId(user.id, $0) }
-      .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
+      .map { subId in
+        Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subId)
+          .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
+      }
       ?? pure(unit)
 
     return removed
