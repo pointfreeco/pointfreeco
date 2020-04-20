@@ -99,5 +99,6 @@ extension Episode {
     .ep96_adaptiveStateManagement_pt3,
     .ep97_adaptiveStateManagement_pt4,
     .ep98_ergonomicStateManagement_pt1,
+    .ep99_ergonomicStateManagement_pt2,
   ]
 }
