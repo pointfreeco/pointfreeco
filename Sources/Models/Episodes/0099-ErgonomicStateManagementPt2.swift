@@ -91,7 +91,11 @@ extension Reducer {
         localAction,
         environment(globalEnvironment)
       )
-      .map { toLocalAction.embed((index, $0)) }
+      .map { effect in
+        effect
+          .map { action.embed((index, $0)) }
+          .eraseToEffect()
+      }
     }
   }
 }
