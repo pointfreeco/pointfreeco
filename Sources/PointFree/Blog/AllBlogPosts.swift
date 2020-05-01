@@ -51,4 +51,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0038_openSourcingCasePaths,
   post0039_Referrals,
   post0040_Collections,
+  post0041_AnnouncingTheComosableArchitecture,
 ]
