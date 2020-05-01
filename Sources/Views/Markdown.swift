@@ -10,17 +10,18 @@ import Styleguide
 extension Node {
   public static func markdownBlock(
     attributes: [Attribute<Tag.Div>] = [],
-    _ markdown: String
+    _ markdown: String,
+    options: Int32 = 0
     ) -> Node {
     return .div(
       attributes: _addClasses([markdownContainerClass], to: attributes),
-      .raw(unsafeMark(from: markdown))
+      .raw(unsafeMark(from: markdown, options: options))
     )
   }
 }
 
-public func unsafeMark(from markdown: String) -> String {
-  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, CMARK_OPT_SMART)
+public func unsafeMark(from markdown: String, options: Int32 = 0) -> String {
+  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, CMARK_OPT_SMART | options)
     else { return markdown }
   defer { free(cString) }
   return String(cString: cString)

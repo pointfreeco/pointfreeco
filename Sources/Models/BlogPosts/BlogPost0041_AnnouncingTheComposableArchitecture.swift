@@ -10,15 +10,14 @@ Today we are releasing the Composable Architecture as an open-source library. A 
       content: #"""
 We [first](/episodes/ep65-swiftui-and-state-management-part-1) began discussing application architecture nearly 9 months ago, and in that time we have built up a [comprehensive story](/collections/composable-architecture) of how one can build applications in a consistent and understand way. We focused on a few key topics:
 
-* [**State management**](todo): How can we build the majority of our application using simple value types, and how can disparate parts of the application communicate with each other by sharing state.
-* [**Composition**](todo): How can we break a large, complex feature down into smaller pieces that glue together to form the whole?
-* [**Modularity**](todo): After having broken down a large problem into small ones, how can we put each of the pieces in their own modules, with as few dependencies as possible between them, so that we can run features in isolation without having to build the entire application?
-* [**Side effects**](todo): How can we let our features communicate with the outside world, and vice-versa, in an understandable and composable way?
-* [**Testing**](todo): How can we accomplish the above without sacrificing testability? We want to test our features so that it doesn't take a lot of work to set up a test, and so that we can test very deep properties of our system, including how effects are executed and how their outputs are fed back into the feature.
-* [**Adaptability**](todo): How can implement the core business logic of our features a single time, while still allowing that logic to be used on multiple platforms, such as iOS, macOS, watchOS and tvOS?
+* [**State management**](/collections/composable-architecture/reducers-and-stores): How can we build the majority of our application using simple value types, and how can disparate parts of the application communicate with each other by sharing state.
+* [**Composition**](/collections/composable-architecture/reducers-and-stores): How can we break a large, complex feature down into smaller pieces that glue together to form the whole?
+* [**Modularity**](/collections/composable-architecture/modularity): After having broken down a large problem into small ones, how can we put each of the pieces in their own modules, with as few dependencies as possible between them, so that we can run features in isolation without having to build the entire application?
+* [**Side effects**](/collections/composable-architecture/side-effects): How can we let our features communicate with the outside world, and vice-versa, in an understandable and composable way?
+* [**Testing**](/collections/composable-architecture/testing): How can we accomplish the above without sacrificing testability? We want to test our features so that it doesn't take a lot of work to set up a test, and so that we can test very deep properties of our system, including how effects are executed and how their outputs are fed back into the feature.
+* [**Adaptability**](/collections/composable-architecture/adaptation): How can implement the core business logic of our features a single time, while still allowing that logic to be used on multiple platforms, such as iOS, macOS, watchOS and tvOS?
 
 And today we are excited to announce that we are finally [open-sourcing](https://github.com/pointfreeco/swift-composable-architecture) the Composable Architecture, a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind. It can be used in SwiftUI, UIKit applications, and more, and on any Apple platform (iOS, macOS, tvOS, and watchOS).
-
 
 ## Basic Usage
 
@@ -195,8 +194,8 @@ It is also straightforward to have a UIKit controller driven off of this store. 
     }
   }
   ```
-
 </details>
+<br>
 
 Once we are ready to display this view, for example in the scene delegate, we can construct a store. This is the moment where we need to supply the dependencies, and for now we can just use an effect that immediately returns a mocked string:
 
@@ -262,6 +261,10 @@ store.assert(
 
 That is the basics of building and testing a feature in the Composable Architecture. There are _a lot_ more things to be explored, such as composition, modularity, and more complex effects. The [Examples](./Examples) directory has a bunch of projects to explore to see more advanced usages.
 
+
+## Check it out today!
+
+So, that's the basics of the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). There is a ton more to say about what the library is capable of, and the repo contains lots of case studies and demos showing how to solve common appliation problems in isolation. We hope you'll it out, and [let us know](https://www.twitter.com/pointfreeco) what you think!
 """#,
       timestamp: nil,
       type: .paragraph
