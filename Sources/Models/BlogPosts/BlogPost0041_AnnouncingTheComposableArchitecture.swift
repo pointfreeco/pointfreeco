@@ -17,7 +17,7 @@ We [first](/episodes/ep65-swiftui-and-state-management-part-1) began discussing 
 * [**Testing**](/collections/composable-architecture/testing): How can we accomplish the above without sacrificing testability? We want to test our features so that it doesn't take a lot of work to set up a test, and so that we can test very deep properties of our system, including how effects are executed and how their outputs are fed back into the feature.
 * [**Adaptability**](/collections/composable-architecture/adaptation): How can implement the core business logic of our features a single time, while still allowing that logic to be used on multiple platforms, such as iOS, macOS, watchOS and tvOS?
 
-And today we are excited to announce that we are finally open-sourcing [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind. It can be used in SwiftUI, UIKit applications, and more, and on any Apple platform (iOS, macOS, tvOS, and watchOS).
+And today we are excited to announce that we are finally open-sourcing the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind. It can be used in SwiftUI, UIKit applications, and more, and on any Apple platform (iOS, macOS, tvOS, and watchOS).
 
 ## Basic Usage
 
@@ -46,15 +46,17 @@ Next we have the actions in the feature. There are the obvious actions, such as 
 
 ```swift
 enum AppAction {
-  case dismissFactAlert
+  case factAlertDismissed
   case decrementButtonTapped
   case incrementButtonTapped
   case numberFactButtonTapped
   case numberFactResponse(Result<String, ApiError>)
 }
+
+struct ApiError: Error {}
 ```
 
-Next we model the environment of dependencies this feature needs to do its job. In particular, to fetch a fact we need to construct an `Effect` value that encapsulates the network request. So that dependency is a function from `Int` to `Effect<String, ApiError>`, where `String` represents the response from the request. Further, the effect will typically do its work on a background thread (as is common with `URLSession`), and so we need a way to receive the effect's values on the main queue. We do this via a main queue scheduler, which is a dependency that is important to control so that we can write tests:
+Next we model the environment of dependencies this feature needs to do its job. In particular, to fetch a fact we need to construct an `Effect` value that encapsulates the network request. So that dependency is a function from `Int` to `Effect<String, ApiError>`, where `String` represents the response from the request. Further, the effect will typically do its work on a background thread (as is common with `URLSession`), and so we need a way to receive the effect's values on the main queue. We do this via a main queue scheduler, which is a dependency that is important to control so that we can write tests (the `AnyScheduler` is necessary since `Scheduler` is a protocol with associated types in Combine):
 
 ```swift
 struct AppEnvironment {
@@ -68,7 +70,7 @@ Next, we implement a reducer that implements the logic for this domain. It descr
 ```swift
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
   switch action {
-  case .dismissFactAlert:
+  case .factAlertDismissed:
     state.numberFactAlert = nil
     return .none
 
@@ -91,7 +93,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
     return .none
 
   case let .numberFactResponse(.failure):
-    state.numberFactAlert = nil
+    state.numberFactAlert = "Could not load a number fact :("
     return .none
   }
 }
@@ -100,11 +102,6 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
 And then finally we define the view that displays the feature. It holds onto a `Store<AppState, AppAction>` so that it can observe all changes to the state and re-render, and we can send all user actions to the store so that state changes. We must also introduce a struct wrapper around the fact alert to make it `Identifiable`, which the `.alert` view modifier requires:
 
 ```swift
-struct FactAlert: Identifiable {
-  var title: String
-  var id: String { self.title }
-}
-
 struct AppView: View {
   let store: Store<AppState, AppAction>
 
@@ -122,16 +119,21 @@ struct AppView: View {
       .alert(
         item: viewStore.binding(
           get: { $0.numberFactAlert.map(FactAlert.init(title:)) },
-          send: .dismissFactAlert
+          send: .factAlertDismissed
         ),
         content: { Alert(title: Text($0.title)) }
       )
     }
   }
 }
+
+struct FactAlert: Identifiable {
+  var title: String
+  var id: String { self.title }
+}
 ```
 
-It's important to note that we were able to implement this entire feature without having a real life effect at hand. This is important because it means features can be built in isolation without building their dependencies, which can help compile times.
+It's important to note that we were able to implement this entire feature without having a real, live effect at hand. This is important because it means features can be built in isolation without building their dependencies, which can help compile times.
 
 It is also straightforward to have a UIKit controller driven off of this store. You subscribe to the store in `viewDidLoad` in order to update the UI and show alerts. The code is a bit longer than the SwiftUI version, so we have collapsed it here:
 
@@ -175,7 +177,7 @@ It is also straightforward to have a UIKit controller driven off of this store. 
             UIAlertAction(
               title: "Ok",
               style: .default,
-              handler: { _ in self?.viewStore.send(.dismissFactAlert) }
+              handler: { _ in self?.viewStore.send(.factAlertDismissed) }
             )
           )
           self?.present(alertController, animated: true, completion: nil)
@@ -253,14 +255,13 @@ store.assert(
   },
 
   // And finally dismiss the alert
-  .send(.dismissFactAlert) {
+  .send(.factAlertDismissed) {
     $0.numberFactAlert = nil
   }
 )
 ```
 
 That is the basics of building and testing a feature in the Composable Architecture. There are _a lot_ more things to be explored, such as composition, modularity, and more complex effects. The [Examples](./Examples) directory has a bunch of projects to explore to see more advanced usages.
-
 
 ## Check it out today!
 
