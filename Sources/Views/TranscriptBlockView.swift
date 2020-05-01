@@ -1,3 +1,4 @@
+import Ccmark
 import Css
 import FunctionalCss
 import Html
@@ -32,7 +33,7 @@ public func transcriptBlockView(
         .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], "Correction"),
         .div(
           attributes: [.class([Class.pf.type.body.regular])],
-          .markdownBlock(block.content)
+          .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
         )
     )
 
@@ -63,7 +64,7 @@ public func transcriptBlockView(
       """#)
       ] : [],
       timestampLinkView(block.timestamp),
-      .markdownBlock(block.content)
+      .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
     )
 
   case .title:
