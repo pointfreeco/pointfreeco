@@ -58,7 +58,10 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, 
       let updateReferrerBalance = referrer
         .map {
           Current.stripe
-            .updateCustomerBalance($0.stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+            .updateCustomerBalance(
+              $0.stripeSubscription.customer.either(id, ^\.id),
+              ($0.stripeSubscription.customer.right?.balance ?? 0) + referralDiscount
+          )
             .flatMap(const(sendReferralEmail(to: $0.user)))
             .map(const(unit))
             .run.parallel
