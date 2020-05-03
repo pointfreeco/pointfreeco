@@ -245,12 +245,11 @@ store.assert(
     $0.count = 0
   },
 
-  // Test that tapping the fact button causes us to receive a response
-  // from the effect. Note that we have to advance the scheduler
-  // because we used `.receive(on:)` in the reducer.
+  // Test that tapping the fact button causes us to receive a response from the effect. Note
+  // that we have to advance the scheduler because we used `.receive(on:)` in the reducer.
   .send(.numberFactButtonTapped),
   .do { scheduler.advance() },
-  .receive(.numberFactResponse("0 is a good number Brent")) {
+  .receive(.numberFactResponse(.success("0 is a good number Brent"))) {
     $0.numberFactAlert = "0 is a good number Brent"
   },
 
