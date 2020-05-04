@@ -292,7 +292,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     Current.stripe.fetchSubscription = { _ in
       pure(update(.mock) {
-        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          { update($0) {
+            $0.id = "cus_referrer"
+            $0.balance = -18_00
+          }
+        })
       })
     }
     Current.stripe.createSubscription = { _, _, _, _ in
@@ -328,7 +334,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertNil(balance)
-    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00, "cus_referred": -18_00])
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -18_00])
     XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 

@@ -11,10 +11,7 @@ jobs:
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v2
     - name: Install Dependencies
-      run: |
-        brew uninstall --ignore-dependencies libpq
-        brew install cmark postgresql
-        initdb /usr/local/var/postgres
+      run: brew install cmark
     - name: Start Postgres
       run: brew services start postgresql
     - name: Select Xcode 11.4

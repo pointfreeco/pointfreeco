@@ -403,3 +403,21 @@ func reference(
     title: episode.fullTitle
   )
 }
+
+func reference(
+  forCollection collection: Episode.Collection,
+  additionalBlurb: String,
+  collectionUrl: String
+) -> Episode.Reference {
+  return Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+\(additionalBlurb)
+
+> \(collection.blurb)
+""",
+    link: collectionUrl,
+    publishedAt: nil,
+    title: collection.title
+  )
+}
