@@ -26,7 +26,9 @@ The Composable Architecture was designed over the course of nearly 9 months of e
 """#,
         collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
       ),
-      .theComposableArchitecture
+      .theComposableArchitecture,
+      .elmHomepage,
+      .reduxHomepage,
     ],
     sequence: 100,
     subtitle: nil,

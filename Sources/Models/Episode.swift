@@ -418,6 +418,6 @@ func reference(
 """,
     link: collectionUrl,
     publishedAt: nil,
-    title: collection.title
+    title: "Collection: \(collection.title)"
   )
 }
