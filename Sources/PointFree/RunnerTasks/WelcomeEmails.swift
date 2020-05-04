@@ -25,9 +25,9 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       .run.parallel
   )
   let flattenedEmails = zippedEmails.map { $0 <> $1 <> $2 }
-    .debug { "📧: Sending \($0.count) welcome emails..." }
 
   let emails = EitherIO(run: flattenedEmails.sequential)
+    .debug { "📧: Sending \($0.count) welcome emails..." }
 
   let delayedSend = send(email:)
     >>> delay(.milliseconds(200))
