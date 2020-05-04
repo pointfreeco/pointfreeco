@@ -56,7 +56,7 @@ enum AppAction {
 struct ApiError: Error {}
 ```
 
-Next we model the environment of dependencies this feature needs to do its job. In particular, to fetch a fact we need to construct an `Effect` value that encapsulates the network request. So that dependency is a function from `Int` to `Effect<String, ApiError>`, where `String` represents the response from the request. Further, the effect will typically do its work on a background thread (as is common with `URLSession`), and so we need a way to receive the effect's values on the main queue. We do this via a main queue scheduler, which is a dependency that is important to control so that we can write tests (the `AnyScheduler` is necessary since `Scheduler` is a protocol with associated types in Combine):
+Next we model the environment of dependencies this feature needs to do its job. In particular, to fetch a number fact we need to construct an `Effect` value that encapsulates the network request. So that dependency is a function from `Int` to `Effect<String, ApiError>`, where `String` represents the response from the request. Further, the effect will typically do its work on a background thread (as is the case with `URLSession`), and so we need a way to receive the effect's values on the main queue. We do this via a main queue scheduler, which is a dependency that is important to control so that we can write tests. We must use an `AnyScheduler` so that we can use a live `DispatchQueue` in production and a test scheduler in tests.
 
 ```swift
 struct AppEnvironment {
@@ -164,8 +164,9 @@ It is also straightforward to have a UIKit controller driven off of this store. 
 
       // Omitted: Add subviews and set up constraints...
 
-      self.viewStore.publisher.count
-        .sink { [weak countLabel] count in countLabel?.text = "\(count)" }
+      self.viewStore.publisher
+        .map { "\($0.count)" }
+        .assign(to: \.text, on: countLabel)
         .store(in: &self.cancellables)
 
       self.viewStore.publisher.numberFactAlert
@@ -233,7 +234,7 @@ let store = TestStore(
 
 Once the test store is created we can use it to make an assertion of an entire user flow of steps. Each step of the way we need to prove that state changed how we expect. Further, if a step causes an effect to be executed, which feeds data back into the store, we must assert that those actions were received properly.
 
-This test has the user increment and decrement the count, then they ask for a number fact, and the response of that effect triggers an alert to be shown, and then dismissing the alert causes the alert to go away.
+The test below has the user increment and decrement the count, then they ask for a number fact, and the response of that effect triggers an alert to be shown, and then dismissing the alert causes the alert to go away.
 
 ```swift
 store.assert(
@@ -260,7 +261,7 @@ store.assert(
 )
 ```
 
-That is the basics of building and testing a feature in the Composable Architecture. There are _a lot_ more things to be explored, such as composition, modularity, and more complex effects. The [Examples](./Examples) directory has a bunch of projects to explore to see more advanced usages.
+That is the basics of building and testing a feature in the Composable Architecture. There are _a lot_ more things to be explored, such as composition, modularity, adaptability, and complex effects. The [Examples](./Examples) directory has a bunch of projects to explore to see more advanced usages.
 
 ## Check it out today!
 
