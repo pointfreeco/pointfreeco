@@ -76,7 +76,7 @@ public func prepareEmail(
 }
 
 public func send(email: Email) -> EitherIO<Error, SendEmailResponse> {
-  return Current.mailgun.sendEmail(email)
+  Current.mailgun.sendEmail(email)
 }
 
 public func sendEmail(
