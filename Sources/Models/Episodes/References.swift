@@ -2,6 +2,18 @@ import Foundation
 
 extension Episode.Reference {
 
+    public static let theComposableArchitecture = Episode.Reference(
+      author: "Brandon Williams & Stephen Celis",
+      blurb: """
+The Composable Architecture is a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind.
+""",
+      link: "http://github.com/pointfreeco/swift-composable-architecture",
+      publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
+      title: "Composable Architecture"
+    )
+
+
+
   public static let accessControl = Episode.Reference(
     author: "Apple",
     blurb: "This chapter of the Swift Programming Language book explains access control in depth and how it affects module imports.",
