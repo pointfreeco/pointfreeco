@@ -8,7 +8,7 @@ Today we are releasing the Composable Architecture as an open-source library. It
   contentBlocks: [
     .init(
       content: #"""
-We [first](/episodes/ep65-swiftui-and-state-management-part-1) began discussing application architecture nearly 9 months ago, and in that time we have built up a [comprehensive story](/collections/composable-architecture) of how one can build applications in a consistent and understandable way. We focused on a few key topics:
+We [first](/episodes/ep65-swiftui-and-state-management-part-1) began discussing application architecture nearly 9 months ago, and in that time we have built up a [comprehensive story](/collections/composable-architecture) of how one can build applications in Swift for Apple's platforms in a consistent and understandable way. We focused on a few key topics:
 
 * [**State management**](/collections/composable-architecture/reducers-and-stores): How can we build the majority of our application using simple value types, and how can disparate parts of the application communicate with each other by sharing state?
 * [**Composition**](/collections/composable-architecture/reducers-and-stores): How can we break a large, complex feature down into smaller pieces that glue together to form the whole?
