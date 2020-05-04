@@ -190,7 +190,7 @@ Let's get started in a fresh Xcode project:
     content: #"""
 Then we can add the library to this project by using Xcode's SPM integration:
 
-> https://github.com/pointfreeco/swift-composable-architecture
+> [https://github.com/pointfreeco/swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture)
 """#,
     timestamp:(7*60 + 10),
     type: .paragraph
