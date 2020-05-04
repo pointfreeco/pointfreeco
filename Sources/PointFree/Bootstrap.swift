@@ -9,35 +9,28 @@ import PointFreeRouter
 import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
-  return print(message: "⚠️ Bootstrapping PointFree...")
+  return EitherIO.debug(prefix: "⚠️ Bootstrapping PointFree...")
     .flatMap(const(installBacktrace))
     .flatMap(const(loadEnvironment))
     .flatMap(const(connectToPostgres))
-    .flatMap(const(print(message: "✅ PointFree Bootstrapped!")))
+    .flatMap(const(.debug(prefix: "✅ PointFree Bootstrapped!")))
 }
 
 private let installBacktrace =
-  print(message: "  ⚠️ Installing Backtrace...")
+  EitherIO.debug(prefix: "  ⚠️ Installing Backtrace...")
     .flatMap(const(EitherIO<Error, Prelude.Unit>(run: IO {
       Backtrace.install()
       return .right(unit)
     })))
-    .flatMap(const(print(message: "  ✅ Backtrace installed!")))
+    .flatMap(const(.debug(prefix: "  ✅ Backtrace installed!")))
 
-private func print(message: @autoclosure @escaping () -> String) -> EitherIO<Error, Prelude.Unit> {
-  return EitherIO<Error, Prelude.Unit>(run: IO {
-    print(message())
-    return .right(unit)
-  })
-}
-
-private let stepDivider = print(message: "  -----------------------------")
+private let stepDivider = EitherIO.debug(prefix: "  -----------------------------")
 
 private let loadEnvironment =
-  print(message: "  ⚠️ Loading environment...")
+  EitherIO.debug(prefix: "  ⚠️ Loading environment...")
     .flatMap(loadEnvVars)
     .flatMap(loadEpisodes)
-    .flatMap(const(print(message: "  ✅ Loaded!")))
+    .flatMap(const(.debug(prefix: "  ✅ Loaded!")))
 
 private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
   let envFilePath = URL(fileURLWithPath: #file)
@@ -111,9 +104,9 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
 }
 
 private let connectToPostgres =
-  print(message: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
+  EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
     .flatMap { _ in Current.database.migrate() }
-    .catch { print(message: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
+    .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
     .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
-    .flatMap(const(print(message: "  ✅ Connected to PostgreSQL!")))
+    .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
     .flatMap(const(stepDivider))
