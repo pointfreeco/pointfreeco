@@ -413,7 +413,7 @@ private func pricingPlanCta(
                     isOwnerTakingSeat: nil,
                     teammates: nil,
                     referralCode: nil,
-                    useRegionCoupon: false
+                    useRegionalCoupon: false
                   )
                   return currentUser == nil ? .login(redirect: url(to: route)) : route
                 }
@@ -739,7 +739,7 @@ private func footer(
               isOwnerTakingSeat: nil,
               teammates: nil,
               referralCode: nil,
-              useRegionCoupon: false
+              useRegionalCoupon: false
             )
           )
         ),

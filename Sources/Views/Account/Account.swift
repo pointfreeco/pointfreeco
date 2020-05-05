@@ -358,7 +358,7 @@ private func referAFriend(
       isOwnerTakingSeat: nil,
       teammates: nil,
       referralCode: accountData.currentUser.referralCode,
-      useRegionCoupon: false
+      useRegionalCoupon: false
     )
   )
 

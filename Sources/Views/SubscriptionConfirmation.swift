@@ -39,7 +39,7 @@ public func subscriptionConfirmation(
       episodeStats: episodeStats,
       lane: lane,
       coupon: coupon,
-      useRegionalCoupon: subscribeData.useRegionCoupon
+      useRegionalCoupon: subscribeData.useRegionalCoupon
     ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
@@ -51,7 +51,7 @@ public func subscriptionConfirmation(
       lane: lane,
       coupon: coupon,
       referrer: referrer,
-      useRegionCoupon: subscribeData.useRegionCoupon
+      useRegionalCoupon: subscribeData.useRegionalCoupon
     )
   )
 }
@@ -66,32 +66,73 @@ private func additionalPricingInfo(
   let message: Node
   if let referrer = referrer {
     title = "Referral credit"
-    message = """
+    message = [
+      """
       Subscribe today with referral code \(.strong(.text(referrer.referralCode.rawValue))) to
       receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
       free month.
-      """
-  } else if coupon != nil {
+      """,
+      .input(attributes: [
+        .name(SubscribeData.CodingKeys.referralCode.rawValue),
+        .type(.hidden),
+        .value(referrer.referralCode.rawValue),
+      ])
+    ]
+  } else if let coupon = coupon {
     title = "Coupon applied"
     message = [
-      (coupon?.name)
-        .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
         ?? " You are using a coupon",
-      ", which gives you \(coupon!.formattedDescription)."
+      ", which gives you \(coupon.formattedDescription).",
+      .input(
+        attributes: [
+          .class([Class.display.none]),
+          .disabled(true),
+          .name(SubscribeData.CodingKeys.coupon.rawValue),
+          .placeholder("Coupon Code"),
+          .type(.hidden),
+          .value(coupon.id.rawValue)
+        ]
+      )
     ]
   } else if useRegionalCoupon {
     title = "Regional discount"
-    message = .raw("""
-    To make up for currency discrepencies between the United States and other countries we offer
-    a region discount
-
-    A 50% discount will be applied to your subscription if your credit card's issuing country
-
-
-
-    """)
-// The regional rates are available in certain countries to adjust for disparity in average
-// income and currency exchange rates. All prices are in USD.
+    message = [
+      .raw("""
+      To make up for currency discrepencies between the United States and other countries, we offer
+      a regional discount. If your credit card's issuing country is one of the countries listed
+      below we will apply a 50% discount to every billing cycle.
+      """),
+      .details(
+        .summary(attributes: [.class([Class.cursor.pointer])], "Expand country list"),
+        .div(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+              ])
+          ],
+          .ul(
+            .fragment(
+              DiscountCountry.all.map { country in
+                .li(
+                  .text(country.name)
+                )
+              }
+            )
+          )
+        )
+      ),
+      .input(
+        attributes: [
+          .class([Class.display.none]),
+          .disabled(true),
+          .name(SubscribeData.CodingKeys.useRegionalCoupon.rawValue),
+          .placeholder("Coupon Code"),
+          .type(.hidden),
+          .value("\(useRegionalCoupon)")
+        ]
+      )
+    ]
   } else {
     return []
   }
@@ -124,51 +165,6 @@ private func additionalPricingInfo(
     )
   )
 }
-
-//  if referrer != nil {
-//    header.append(
-//      .gridColumn(
-//        sizes: [:],
-//        attributes: [.class([Class.grid.start(.mobile)])],
-//        "Subscribe today with this referral code to get \(.strong("one month free")) and instant access to:"
-//      )
-//    )
-//  } else {
-//    header.append(
-//      .gridColumn(
-//        sizes: [.mobile: 12],
-//        attributes: [.style(margin(leftRight: .auto))],
-//        .div(
-//          attributes: [
-//            .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
-//            .class(
-//              [
-//                Class.margin([.mobile: [.top: 2]]),
-//                Class.padding([.mobile: [.all: 2]])
-//              ]
-//            )
-//          ],
-//          .h4(
-//            attributes: [
-//              .class(
-//                [
-//                  Class.pf.type.responsiveTitle6,
-//                  Class.padding([.mobile: [.bottom: 1]])
-//                ]
-//              )
-//            ],
-//            "Coupon applied"
-//          ),
-//          .p(
-//            (coupon?.name)
-//              .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
-//              ?? " You are using a coupon",
-//            ", which gives you \(coupon!.formattedDescription)."
-//          )
-//        )
-//      )
-//    )
-//  }
 
 private func header(
   currentUser: User? = nil,
@@ -209,15 +205,6 @@ private func header(
       .type(.hidden),
       .value(lane.rawValue),
     ]),
-    referrer
-      .map {
-        .input(attributes: [
-          .name(SubscribeData.CodingKeys.referralCode.rawValue),
-          .type(.hidden),
-          .value($0.referralCode.rawValue),
-        ])
-      }
-      ?? [],
     .gridRow(
       attributes: [.class([moduleRowClass])],
       .gridColumn(
@@ -766,8 +753,7 @@ window.addEventListener("load", function() {
   })
 })
 """)
-    ),
-    coupon.map(discount) ?? []
+    )
   )
 }
 
@@ -790,25 +776,12 @@ private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
   )
 }
 
-private func discount(coupon: Stripe.Coupon) -> Node {
-  return .input(
-    attributes: [
-      .class([Class.display.none]),
-      .disabled(true),
-      .name("coupon"),
-      .placeholder("Coupon Code"),
-      .type(.hidden),
-      .value(coupon.id.rawValue)
-    ]
-  )
-}
-
 private func total(
   isLoggedIn: Bool,
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
   referrer: User?,
-  useRegionCoupon: Bool
+  useRegionalCoupon: Bool
 ) -> Node {
   let discount = coupon?.discount ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
@@ -967,7 +940,7 @@ window.addEventListener("load", function() {
                     isOwnerTakingSeat: nil,
                     teammates: nil,
                     referralCode: referrer?.referralCode,
-                    useRegionCoupon: useRegionCoupon
+                    useRegionalCoupon: useRegionalCoupon
                 )
               )
             )
@@ -997,3 +970,115 @@ public let currencyFormatter: NumberFormatter = {
   formatter.numberStyle = .currency
   return formatter
 }()
+
+public struct DiscountCountry {
+  public var countryCode: String
+  public var name: String
+
+  public static let all = [
+    DiscountCountry(countryCode: "AF", name: "Afghanistan"),
+    DiscountCountry(countryCode: "AL", name: "Albania"),
+    DiscountCountry(countryCode: "DZ", name: "Algeria"),
+    DiscountCountry(countryCode: "AO", name: "Angola"),
+    DiscountCountry(countryCode: "AG", name: "Antigua and Barbuda"),
+    DiscountCountry(countryCode: "AR", name: "Argentina"),
+    DiscountCountry(countryCode: "BS", name: "Bahamas"),
+    DiscountCountry(countryCode: "BD", name: "Bangladesh"),
+    DiscountCountry(countryCode: "BB", name: "Barbados"),
+    DiscountCountry(countryCode: "BY", name: "Belarus"),
+    DiscountCountry(countryCode: "BM", name: "Bermuda"),
+    DiscountCountry(countryCode: "BZ", name: "Belize"),
+    DiscountCountry(countryCode: "BJ", name: "Benin"),
+    DiscountCountry(countryCode: "BO", name: "Bolivia"),
+    DiscountCountry(countryCode: "BW", name: "Botswana"),
+    DiscountCountry(countryCode: "BR", name: "*Brazil"),
+    DiscountCountry(countryCode: "BG", name: "Bulgaria"),
+    DiscountCountry(countryCode: "BF", name: "Burkina Faso"),
+    DiscountCountry(countryCode: "BI", name: "Burundi"),
+    DiscountCountry(countryCode: "CM", name: "Cameroon"),
+    DiscountCountry(countryCode: "CV", name: "Cape Verde"),
+    DiscountCountry(countryCode: "CF", name: "Central African Republic"),
+    DiscountCountry(countryCode: "TD", name: "Chad"),
+    DiscountCountry(countryCode: "CL", name: "Chile"),
+    DiscountCountry(countryCode: "CO", name: "Colombia"),
+    DiscountCountry(countryCode: "KM", name: "Comoros"),
+    DiscountCountry(countryCode: "CG", name: "Democratic Republic of Congo"),
+    DiscountCountry(countryCode: "CR", name: "Costa Rica"),
+    DiscountCountry(countryCode: "HR", name: "Croatia"),
+    DiscountCountry(countryCode: "CU", name: "Cuba"),
+    DiscountCountry(countryCode: "DJ", name: "Djibouti"),
+    DiscountCountry(countryCode: "DM", name: "Dominica"),
+    DiscountCountry(countryCode: "DO", name: "Dominican Republic"),
+    DiscountCountry(countryCode: "EC", name: "Ecuador"),
+    DiscountCountry(countryCode: "EG", name: "Egypt"),
+    DiscountCountry(countryCode: "SV", name: "El Salvador"),
+    DiscountCountry(countryCode: "GQ", name: "Equatorial Guinea"),
+    DiscountCountry(countryCode: "ER", name: "Eritrea"),
+    DiscountCountry(countryCode: "ET", name: "Ethiopia"),
+    DiscountCountry(countryCode: "FK", name: "Falkland Islands"),
+    DiscountCountry(countryCode: "GF", name: "French Guiana"),
+    DiscountCountry(countryCode: "GA", name: "Gabon"),
+    DiscountCountry(countryCode: "GM", name: "Gambia"),
+    DiscountCountry(countryCode: "GH", name: "Ghana"),
+    DiscountCountry(countryCode: "GD", name: "Grenada"),
+    DiscountCountry(countryCode: "GT", name: "Guatemala"),
+    DiscountCountry(countryCode: "GN", name: "Guinea"),
+    DiscountCountry(countryCode: "GW", name: "Guinea-Bissau"),
+    DiscountCountry(countryCode: "GY", name: "Guyana"),
+    DiscountCountry(countryCode: "HT", name: "Haiti"),
+    DiscountCountry(countryCode: "HN", name: "Honduras"),
+    DiscountCountry(countryCode: "IN", name: "*India"),
+    DiscountCountry(countryCode: "ID", name: "Indonesia"),
+    DiscountCountry(countryCode: "CI", name: "Ivory Coast"),
+    DiscountCountry(countryCode: "JM", name: "Jamaica"),
+    DiscountCountry(countryCode: "KE", name: "Kenya"),
+    DiscountCountry(countryCode: "LA", name: "Laos"),
+    DiscountCountry(countryCode: "LS", name: "Lesotho"),
+    DiscountCountry(countryCode: "LR", name: "Liberia"),
+    DiscountCountry(countryCode: "LY", name: "Libya"),
+    DiscountCountry(countryCode: "MK", name: "Macedonia"),
+    DiscountCountry(countryCode: "MG", name: "Madagascar"),
+    DiscountCountry(countryCode: "MW", name: "Malawi"),
+    DiscountCountry(countryCode: "ML", name: "Mali"),
+    DiscountCountry(countryCode: "MR", name: "Mauritania"),
+    DiscountCountry(countryCode: "MU", name: "Mauritius"),
+    DiscountCountry(countryCode: "MA", name: "Morocco"),
+    DiscountCountry(countryCode: "MZ", name: "Mozambique"),
+    DiscountCountry(countryCode: "MM", name: "Myanmar"),
+    DiscountCountry(countryCode: "NA", name: "Namibia"),
+    DiscountCountry(countryCode: "NP", name: "Nepal"),
+    DiscountCountry(countryCode: "NI", name: "Nicaragua"),
+    DiscountCountry(countryCode: "NE", name: "Niger"),
+    DiscountCountry(countryCode: "NG", name: "Nigeria"),
+    DiscountCountry(countryCode: "PK", name: "Pakistan"),
+    DiscountCountry(countryCode: "PA", name: "Panama"),
+    DiscountCountry(countryCode: "PY", name: "Paraguay"),
+    DiscountCountry(countryCode: "PE", name: "Peru"),
+    DiscountCountry(countryCode: "PH", name: "Philippines"),
+    DiscountCountry(countryCode: "PL", name: "Poland"),
+    DiscountCountry(countryCode: "RO", name: "*Romania"),
+    DiscountCountry(countryCode: "RW", name: "Rwanda"),
+    DiscountCountry(countryCode: "SN", name: "Senegal"),
+    DiscountCountry(countryCode: "SC", name: "Seychelles"),
+    DiscountCountry(countryCode: "SL", name: "Sierra Leone"),
+    DiscountCountry(countryCode: "SO", name: "Somalia"),
+    DiscountCountry(countryCode: "ZA", name: "*South Africa"),
+    DiscountCountry(countryCode: "GS", name: "South Georgia"),
+    DiscountCountry(countryCode: "SD", name: "Sudan"),
+    DiscountCountry(countryCode: "SR", name: "Suriname"),
+    DiscountCountry(countryCode: "SZ", name: "Swaziland"),
+    DiscountCountry(countryCode: "TZ", name: "Tanzania"),
+    DiscountCountry(countryCode: "TG", name: "Togo"),
+    DiscountCountry(countryCode: "TT", name: "Trinidad and Tobago"),
+    DiscountCountry(countryCode: "TN", name: "Tunisia"),
+    DiscountCountry(countryCode: "UG", name: "Uganda"),
+    DiscountCountry(countryCode: "UA", name: "Ukraine"),
+    DiscountCountry(countryCode: "UY", name: "Uruguay"),
+    DiscountCountry(countryCode: "VE", name: "Venezuela"),
+    DiscountCountry(countryCode: "VN", name: "Vietnam"),
+    DiscountCountry(countryCode: "EH", name: "Western Sahara"),
+    DiscountCountry(countryCode: "YE", name: "Yemen"),
+    DiscountCountry(countryCode: "ZM", name: "Zambia"),
+    DiscountCountry(countryCode: "ZW", name: "Zimbabwe"),
+  ]
+}

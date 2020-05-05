@@ -6,19 +6,19 @@ public struct SubscribeConfirmationData: Equatable {
   public var isOwnerTakingSeat: Bool
   public var referralCode: User.ReferralCode?
   public var teammates: [EmailAddress]
-  public var useRegionCoupon: Bool
+  public var useRegionalCoupon: Bool
 
   public init(
     billing: Pricing.Billing,
     isOwnerTakingSeat: Bool,
     referralCode: User.ReferralCode?,
     teammates: [EmailAddress],
-    useRegionCoupon: Bool
+    useRegionalCoupon: Bool
   ) {
     self.billing = billing
     self.isOwnerTakingSeat = isOwnerTakingSeat
     self.referralCode = referralCode
     self.teammates = teammates
-    self.useRegionCoupon = useRegionCoupon
+    self.useRegionalCoupon = useRegionalCoupon
   }
 }
