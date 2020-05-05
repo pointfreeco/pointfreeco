@@ -357,7 +357,10 @@ func pricingPlan(
           plan.features.map { feature in
             .li(
               attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-              [.text(feature)]
+              .div(
+                attributes: [.class([pricingPlanFeatureClass])],
+                .raw(unsafeMark(from: feature))
+              )
             )
           }
         )
@@ -409,7 +412,8 @@ private func pricingPlanCta(
                     billing: nil,
                     isOwnerTakingSeat: nil,
                     teammates: nil,
-                    referralCode: nil
+                    referralCode: nil,
+                    useRegionCoupon: false
                   )
                   return currentUser == nil ? .login(redirect: url(to: route)) : route
                 }
@@ -734,7 +738,8 @@ private func footer(
               billing: nil,
               isOwnerTakingSeat: nil,
               teammates: nil,
-              referralCode: nil
+              referralCode: nil,
+              useRegionCoupon: false
             )
           )
         ),
@@ -814,7 +819,7 @@ struct PricingPlan {
         "Over \(episodeHourCount.rawValue) hours of video",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
-        "Regional and education discounts available"
+        "[Regional](todo) and [education](/blog/posts/10-announcing-student-discounts) discounts available"
       ],
       title: "Personal"
     )
@@ -924,6 +929,7 @@ public let extraSubscriptionLandingStyles =
   Breakpoint.desktop.query(only: screen) {
     extraSubscriptionLandingDesktopStyles
     }
+    <> pricingPlanFeatureStyle
     <> planItem % width(.pct(100))
     <> testimonialContainer % (
       height(.px(380))
@@ -954,3 +960,7 @@ private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
 private let planItem = CssSelector.class("plan-item")
 private let testimonialContainer = CssSelector.class("testimonial-container")
 private let testimonialItem = CssSelector.class("testimonial-item")
+
+private let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
+private let pricingPlanFeatureStyle: Stylesheet =
+  (pricingPlanFeatureClass > "p") % margin(all: 0)

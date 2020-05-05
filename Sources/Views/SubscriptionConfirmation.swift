@@ -37,57 +37,171 @@ public func subscriptionConfirmation(
       subscriberState: subscriberState,
       referrer: referrer,
       episodeStats: episodeStats,
-      lane: lane
+      lane: lane,
+      coupon: coupon,
+      useRegionalCoupon: subscribeData.useRegionCoupon
     ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
     currentUser != nil
       ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
       : [],
-    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon, referrer: referrer)
+    total(
+      isLoggedIn: currentUser != nil,
+      lane: lane,
+      coupon: coupon,
+      referrer: referrer,
+      useRegionCoupon: subscribeData.useRegionCoupon
+    )
   )
 }
+
+private func additionalPricingInfo(
+  referrer: User?,
+  coupon: Coupon?,
+  useRegionalCoupon: Bool
+) -> Node {
+
+  let title: String
+  let message: Node
+  if let referrer = referrer {
+    title = "Referral credit"
+    message = """
+      Subscribe today with referral code \(.strong(.text(referrer.referralCode.rawValue))) to
+      receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
+      free month.
+      """
+  } else if coupon != nil {
+    title = "Coupon applied"
+    message = [
+      (coupon?.name)
+        .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+        ?? " You are using a coupon",
+      ", which gives you \(coupon!.formattedDescription)."
+    ]
+  } else if useRegionalCoupon {
+    title = "Regional discount"
+    message = .raw("""
+    To make up for currency discrepencies between the United States and other countries we offer
+    a region discount
+
+    A 50% discount will be applied to your subscription if your credit card's issuing country
+
+
+
+    """)
+// The regional rates are available in certain countries to adjust for disparity in average
+// income and currency exchange rates. All prices are in USD.
+  } else {
+    return []
+  }
+
+  return .gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [.style(margin(leftRight: .auto))],
+    .div(
+      attributes: [
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+        .class(
+          [
+            Class.margin([.mobile: [.top: 2]]),
+            Class.padding([.mobile: [.all: 2]])
+          ]
+        )
+      ],
+      .h4(
+        attributes: [
+          .class(
+            [
+              Class.pf.type.responsiveTitle6,
+              Class.padding([.mobile: [.bottom: 1]])
+            ]
+          )
+        ],
+        .text(title)
+      ),
+      .p(message)
+    )
+  )
+}
+
+//  if referrer != nil {
+//    header.append(
+//      .gridColumn(
+//        sizes: [:],
+//        attributes: [.class([Class.grid.start(.mobile)])],
+//        "Subscribe today with this referral code to get \(.strong("one month free")) and instant access to:"
+//      )
+//    )
+//  } else {
+//    header.append(
+//      .gridColumn(
+//        sizes: [.mobile: 12],
+//        attributes: [.style(margin(leftRight: .auto))],
+//        .div(
+//          attributes: [
+//            .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+//            .class(
+//              [
+//                Class.margin([.mobile: [.top: 2]]),
+//                Class.padding([.mobile: [.all: 2]])
+//              ]
+//            )
+//          ],
+//          .h4(
+//            attributes: [
+//              .class(
+//                [
+//                  Class.pf.type.responsiveTitle6,
+//                  Class.padding([.mobile: [.bottom: 1]])
+//                ]
+//              )
+//            ],
+//            "Coupon applied"
+//          ),
+//          .p(
+//            (coupon?.name)
+//              .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+//              ?? " You are using a coupon",
+//            ", which gives you \(coupon!.formattedDescription)."
+//          )
+//        )
+//      )
+//    )
+//  }
 
 private func header(
   currentUser: User? = nil,
   subscriberState: SubscriberState = .nonSubscriber,
   referrer: User?,
   episodeStats: EpisodeStats,
-  lane: Pricing.Lane
+  lane: Pricing.Lane,
+  coupon: Coupon?,
+  useRegionalCoupon: Bool
 ) -> Node {
 
-  let header: Node
-  if referrer != nil {
-    header = [
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.start(.mobile)])],
-        "Subscribe today with this referral code to get \(.strong("one month free")) and instant access to:"
-      ),
-    ]
-  } else {
-    header = [
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.start(.mobile)])],
-        "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
-      ),
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.end(.mobile)])],
-        .a(
-          attributes: [
-            .class([
-              Class.pf.colors.link.gray650,
-              Class.pf.type.underlineLink
-            ]),
-            .href(url(to: .pricingLanding))
-          ],
-          "Change plan"
-        )
-      ),
-    ]
-  }
+  let header: Node = [
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.start(.mobile)])],
+      "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
+    ),
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.end(.mobile)])],
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.gray650,
+            Class.pf.type.underlineLink
+          ]),
+          .href(url(to: .pricingLanding))
+        ],
+        "Change plan"
+      )
+    ),
+    additionalPricingInfo(referrer: referrer, coupon: coupon, useRegionalCoupon: useRegionalCoupon)
+  ]
 
   return [
     .input(attributes: [
@@ -693,7 +807,8 @@ private func total(
   isLoggedIn: Bool,
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
-  referrer: User?
+  referrer: User?,
+  useRegionCoupon: Bool
 ) -> Node {
   let discount = coupon?.discount ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
@@ -851,7 +966,8 @@ window.addEventListener("load", function() {
                     billing: nil,
                     isOwnerTakingSeat: nil,
                     teammates: nil,
-                    referralCode: referrer?.referralCode
+                    referralCode: referrer?.referralCode,
+                    useRegionCoupon: useRegionCoupon
                 )
               )
             )

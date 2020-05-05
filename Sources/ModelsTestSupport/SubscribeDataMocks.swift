@@ -8,7 +8,7 @@ extension SubscribeData {
     referralCode: nil,
     teammates: [],
     token: "stripe-deadbeef",
-    useLocaleCoupon: false
+    useRegionCoupon: false
   )
 
   public static let individualYearly = SubscribeData(
@@ -18,7 +18,7 @@ extension SubscribeData {
     referralCode: nil,
     teammates: [],
     token: "stripe-deadbeef",
-    useLocaleCoupon: false
+    useRegionCoupon: false
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
@@ -29,7 +29,7 @@ extension SubscribeData {
       referralCode: nil,
       teammates: [],
       token: "stripe-deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
   }
 }

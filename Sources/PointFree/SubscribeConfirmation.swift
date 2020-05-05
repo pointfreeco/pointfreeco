@@ -73,7 +73,8 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: subscribeData.useRegionCoupon
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
       )
@@ -86,7 +87,8 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: subscribeData.useRegionCoupon
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
       )
@@ -118,7 +120,8 @@ private func validateReferralCode(
                 billing: subscribeData.billing,
                 isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
                 teammates: subscribeData.teammates,
-                referralCode: nil
+                referralCode: nil,
+                useRegionCoupon: subscribeData.useRegionCoupon
               ),
               headersMiddleware: flash(.error, "Invalid referral code.")
             )
@@ -161,7 +164,8 @@ private let fetchAndValidateCoupon
         billing: nil,
         isOwnerTakingSeat: nil,
         teammates: nil,
-        referralCode: nil
+        referralCode: nil,
+        useRegionCoupon: false
       ),
       headersMiddleware: flash(.error, couponError)
     )
@@ -174,7 +178,8 @@ private let fetchAndValidateCoupon
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         headersMiddleware: flash(.error, couponError)
       )

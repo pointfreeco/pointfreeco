@@ -320,7 +320,6 @@ to consume our videos: an RSS feed that can be used with podcast apps!
         ),
         rssLink
       )
-
     )
   )
 }
@@ -358,7 +357,8 @@ private func referAFriend(
       billing: nil,
       isOwnerTakingSeat: nil,
       teammates: nil,
-      referralCode: accountData.currentUser.referralCode
+      referralCode: accountData.currentUser.referralCode,
+      useRegionCoupon: false
     )
   )
 

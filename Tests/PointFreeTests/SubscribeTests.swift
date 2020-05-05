@@ -288,7 +288,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       referralCode: referrer.referralCode,
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -368,7 +368,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       referralCode: referrer.referralCode,
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -555,7 +555,7 @@ final class SubscribeTests: TestCase {
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
       token: "stripe-deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(
@@ -581,7 +581,7 @@ final class SubscribeTests: TestCase {
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
       token: "stripe-deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(
@@ -623,7 +623,7 @@ final class SubscribeTests: TestCase {
       referralCode: "cafed00d",
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(
@@ -648,7 +648,7 @@ final class SubscribeTests: TestCase {
       referralCode: "cafed00d",
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(
@@ -674,7 +674,7 @@ final class SubscribeTests: TestCase {
       referralCode: "cafed00d",
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(
@@ -704,7 +704,7 @@ final class SubscribeTests: TestCase {
       referralCode: "cafed00d",
       teammates: [],
       token: "deadbeef",
-      useLocaleCoupon: false
+      useRegionCoupon: false
     )
 
     let conn = connection(

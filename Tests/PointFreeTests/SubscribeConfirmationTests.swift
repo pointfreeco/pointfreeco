@@ -30,7 +30,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -64,7 +65,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -101,7 +103,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -138,7 +141,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: .some(.monthly),
           isOwnerTakingSeat: true,
           teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -175,7 +179,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: .some(.monthly),
           isOwnerTakingSeat: false,
           teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -212,7 +217,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -249,7 +255,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -283,7 +290,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -305,7 +313,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedOut
       )
@@ -365,7 +374,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionCoupon: false
         ),
         session: .loggedIn
       )
@@ -401,7 +411,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionCoupon: false
         ),
         session: .loggedOut
       )
@@ -437,7 +448,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionCoupon: false
         ),
         session: .loggedOut
       )
@@ -459,7 +471,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionCoupon: false
         ),
         session: .loggedOut
       )
@@ -483,7 +496,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionCoupon: false
         ),
         session: .loggedOut
       )
@@ -510,7 +524,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionCoupon: false
         ),
         session: .loggedIn(as: user)
       )
