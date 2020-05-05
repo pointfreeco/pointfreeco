@@ -1037,7 +1037,7 @@ Next, when the text field is changed for a particular todo we want to do somethi
   Episode.TranscriptBlock(
     content: #"""
 case .todoTextFieldChanged(index: let index, text: let text):
-  state.todos[index].description = value
+  state.todos[index].description = text
   return .none
 """#,
     timestamp: nil,
