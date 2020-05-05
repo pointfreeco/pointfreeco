@@ -74,7 +74,7 @@ private func subscribe(
           )
       }
 
-      let localeCouponId = subscribeData.useRegionalDiscount
+      let regionalDiscountCouponId = subscribeData.useRegionalDiscount
         ? Current.envVars.regionalDiscountCouponId
         : nil
 
@@ -82,7 +82,7 @@ private func subscribe(
         customer.id,
         subscribeData.pricing.plan,
         subscribeData.pricing.quantity,
-        subscribeData.coupon ?? localeCouponId
+        subscribeData.coupon ?? regionalDiscountCouponId
       )
   }
 
@@ -279,8 +279,6 @@ private func validateReferrer(
       .mapExcept(requireSome)
       .flatMap { referrer in
         Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          // Alternatively, don't hit Stripe:
-          //          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
           .mapExcept(requireSome)
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {

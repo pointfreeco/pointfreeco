@@ -354,11 +354,7 @@ private func referAFriend(
   let referralUrl = url(
     to: .subscribeConfirmation(
       lane: .personal,
-      billing: nil,
-      isOwnerTakingSeat: nil,
-      teammates: nil,
-      referralCode: accountData.currentUser.referralCode,
-      useRegionalDiscount: false
+      referralCode: accountData.currentUser.referralCode
     )
   )
 

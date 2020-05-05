@@ -5,7 +5,7 @@ import TaggedMoney
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
-  public var country: String
+  public var country: Country
   public var customer: Customer.Id
   public var expMonth: Int
   public var expYear: Int
@@ -15,7 +15,7 @@ public struct Card: Codable, Equatable {
 
   public init(
     brand: Brand,
-    country: String,
+    country: Country,
     customer: Customer.Id,
     expMonth: Int,
     expYear: Int,
@@ -33,6 +33,7 @@ public struct Card: Codable, Equatable {
     self.object = object
   }
 
+  public typealias Country = Tagged<(Card, country: ()), String>
   public typealias Id = Tagged<Card, String>
 
   public enum Object: String, Codable { case card }
