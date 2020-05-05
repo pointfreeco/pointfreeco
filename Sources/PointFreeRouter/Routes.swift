@@ -37,11 +37,11 @@ public enum Route: Equatable {
   case subscribe(SubscribeData?)
   case subscribeConfirmation(
     lane: Pricing.Lane,
-    billing: Pricing.Billing?,
-    isOwnerTakingSeat: Bool?,
-    teammates: [EmailAddress]?,
-    referralCode: User.ReferralCode?,
-    useRegionalCoupon: Bool?
+    billing: Pricing.Billing? = nil,
+    isOwnerTakingSeat: Bool? = nil,
+    teammates: [EmailAddress]? = nil,
+    referralCode: User.ReferralCode? = nil,
+    useRegionalCoupon: Bool? = nil
   )
   case team(Team)
   case useEpisodeCredit(Episode.Id)

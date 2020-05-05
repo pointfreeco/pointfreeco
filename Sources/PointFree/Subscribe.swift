@@ -65,9 +65,9 @@ private func subscribe(
             StripeErrorEnvelope(
               error: .init(
                 message: """
-                  Your credit card's country is not on the list of countries that qualify for a
-                  regional discount. Please use a different credit card, or subscribe without the
-                  discount.
+                  The issuing country of your credit card is not on the list of countries that
+                  qualify for a regional discount. Please use a different credit card, or subscribe
+                  without the discount.
                   """
               )
             )

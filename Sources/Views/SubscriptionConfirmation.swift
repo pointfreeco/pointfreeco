@@ -56,7 +56,7 @@ public func subscriptionConfirmation(
   )
 }
 
-private func additionalPricingInfo(
+private func additionalDiscountInfo(
   referrer: User?,
   coupon: Coupon?,
   useRegionalCoupon: Bool
@@ -98,11 +98,11 @@ private func additionalPricingInfo(
   } else if useRegionalCoupon {
     title = "Regional discount"
     message = [
-      .raw("""
+      """
       To make up for currency discrepencies between the United States and other countries, we offer
       a regional discount. If your credit card's issuing country is one of the countries listed
-      below we will apply a 50% discount to every billing cycle.
-      """),
+      below we will apply a \(.strong("50% discount")) to every billing cycle.
+      """,
       .details(
         .summary(attributes: [.class([Class.cursor.pointer])], "Expand country list"),
         .div(
@@ -196,7 +196,7 @@ private func header(
         "Change plan"
       )
     ),
-    additionalPricingInfo(referrer: referrer, coupon: coupon, useRegionalCoupon: useRegionalCoupon)
+    additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalCoupon: useRegionalCoupon)
   ]
 
   return [
@@ -549,7 +549,11 @@ private func billingPeriod(
           ],
           lane == .team
             ? "$144 per member per year"
-            : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
+            : discountedBillingIntervalSubtitle(
+              interval: .year,
+              coupon: coupon,
+              useRegionalDiscount: subscribeData.useRegionalCoupon
+          )
         )
       )
     )
@@ -607,7 +611,11 @@ private func billingPeriod(
           ],
           lane == .team
             ? "$16 per member, per month"
-            : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
+            : discountedBillingIntervalSubtitle(
+              interval: .month,
+              coupon: coupon,
+              useRegionalDiscount: subscribeData.useRegionalCoupon
+          )
         )
       )
     )
@@ -621,14 +629,20 @@ private func billingPeriod(
   )
 }
 
-private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: Coupon?) -> Node {
+private func discountedBillingIntervalSubtitle(
+  interval: Plan.Interval,
+  coupon: Coupon?,
+  useRegionalDiscount: Bool
+) -> Node {
+  let regionalFactor = useRegionalDiscount ? 0.5 : 1.0
+
   switch interval {
   case .month:
-    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
+    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per month")
   case .year:
-    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
+    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per year")
   }
@@ -757,25 +771,6 @@ window.addEventListener("load", function() {
   )
 }
 
-private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
-  guard let coupon = coupon else { return [] }
-
-  return .span(
-    attributes: [
-      .class([
-        Class.pf.type.body.small,
-        Class.pf.colors.fg.gray400
-      ]),
-    ],
-    .br,
-    .br,
-    coupon.name
-      .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
-      ?? " You are using a coupon",
-    ", which gives you \(coupon.formattedDescription)."
-  )
-}
-
 private func total(
   isLoggedIn: Bool,
   lane: Pricing.Lane,
@@ -803,10 +798,8 @@ private func total(
             Class.pf.colors.fg.gray400
           ]),
           .id("pricing-preview"),
-        ],
-        []
-      ),
-      discountedTotalDisclaimer(coupon: coupon)
+        ]
+      )
     ),
     .gridColumn(
       sizes: [:],
@@ -849,11 +842,12 @@ function updateSeats() {
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
+  var regionalDiscount = \#(useRegionalCoupon ? 0.5 : 1.0)
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
-      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01
-      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01
+      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
   )
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
@@ -861,30 +855,14 @@ function updateSeats() {
       ? monthlyPrice
       : (monthlyPrice * 12 - \#(referralDiscount))
   )
-  if (\#(referrer == nil)) {
-    document.getElementById("pricing-preview").innerHTML = (
-      "You will be charged <strong>"
-        + format(monthlyPricePerSeat)
-        + " per month</strong>"
-        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-        + (monthly ? "" : " times <strong>12 months</strong>")
-        + "."
-    )
-  } else {
-    document.getElementById("pricing-preview").innerHTML = (
-      monthly
-        ? (
-          "You and your referrer will receive an <strong>"
-            + format(\#(referralDiscount))
-            + " credit</strong> when you subscribe. It will apply to future invoices."
-        )
-        : (
-          "You and your referrer will <strong>save "
-            + format(\#(referralDiscount))
-            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
-      )
-    )
-  }
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPricePerSeat)
+      + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
 }
 window.addEventListener("load", function() {
   updateSeats()

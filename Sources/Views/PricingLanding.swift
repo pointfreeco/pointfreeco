@@ -819,7 +819,10 @@ struct PricingPlan {
         "Over \(episodeHourCount.rawValue) hours of video",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
-        "[Regional](todo) and [education](/blog/posts/10-announcing-student-discounts) discounts available"
+        """
+        [Regional](\(url(to: .subscribeConfirmation(lane: .personal, useRegionalCoupon: true))))
+        and [education](/blog/posts/10-announcing-student-discounts) discounts available
+        """
       ],
       title: "Personal"
     )
