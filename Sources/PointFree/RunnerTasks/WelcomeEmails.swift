@@ -34,13 +34,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
     >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
 
   return emails
-    .flatMap(
-      map { email in
-        delayedSend(email).map(const(email))
-          .debug { "📧: Sent welcome email to \($0)" }
-        }
-        >>> sequence
-  )
+    .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
     .flatMap { (emails: [Email]) -> EitherIO<Error, SendEmailResponse> in
       let stats = emails
         .reduce(into: [String: [EmailAddress]]()) { dict, email in
