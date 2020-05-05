@@ -413,7 +413,7 @@ private func pricingPlanCta(
                     isOwnerTakingSeat: nil,
                     teammates: nil,
                     referralCode: nil,
-                    useRegionalCoupon: false
+                    useRegionalDiscount: false
                   )
                   return currentUser == nil ? .login(redirect: url(to: route)) : route
                 }
@@ -739,7 +739,7 @@ private func footer(
               isOwnerTakingSeat: nil,
               teammates: nil,
               referralCode: nil,
-              useRegionalCoupon: false
+              useRegionalDiscount: false
             )
           )
         ),
@@ -820,7 +820,7 @@ struct PricingPlan {
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
         """
-        [Regional](\(url(to: .subscribeConfirmation(lane: .personal, useRegionalCoupon: true))))
+        [Regional](\(url(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
         and [education](/blog/posts/10-announcing-student-discounts) discounts available
         """
       ],

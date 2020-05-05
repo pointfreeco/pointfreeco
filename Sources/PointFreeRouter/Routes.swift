@@ -41,7 +41,7 @@ public enum Route: Equatable {
     isOwnerTakingSeat: Bool? = nil,
     teammates: [EmailAddress]? = nil,
     referralCode: User.ReferralCode? = nil,
-    useRegionalCoupon: Bool? = nil
+    useRegionalDiscount: Bool? = nil
   )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
@@ -275,7 +275,7 @@ let routers: [Router<Route>] = [
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <%> queryParam("ref", opt(.tagged(.string)))
-    <%> queryParam("useRegionalCoupon", opt(.bool))
+    <%> queryParam("useRegionalDiscount", opt(.bool))
     <% end,
 
   .case { .team(.join($0)) }
@@ -368,8 +368,8 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
       .compactMap { _, v in v }
       .map(EmailAddress.init(rawValue:))
 
-    let useRegionalCoupon = keyValues
-      .first(where: { k, _ in k == SubscribeData.CodingKeys.useRegionalCoupon.rawValue })?
+    let useRegionalDiscount = keyValues
+      .first(where: { k, _ in k == SubscribeData.CodingKeys.useRegionalDiscount.rawValue })?
       .1 == "true"
 
     return SubscribeData(
@@ -379,7 +379,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
       referralCode: referralCode,
       teammates: teammates,
       token: token,
-      useRegionalCoupon: useRegionalCoupon
+      useRegionalDiscount: useRegionalDiscount
     )
 },
   unapply: { data in

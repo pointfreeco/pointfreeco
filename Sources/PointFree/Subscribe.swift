@@ -46,7 +46,7 @@ private func subscribe(
     .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
       let country = customer.sources.data.first?.left?.country
 
-      guard country != nil || !subscribeData.useRegionalCoupon else {
+      guard country != nil || !subscribeData.useRegionalDiscount else {
         return throwE(
           StripeErrorEnvelope(
             error: .init(
@@ -58,7 +58,7 @@ private func subscribe(
         )
       }
 
-      guard !subscribeData.useRegionalCoupon
+      guard !subscribeData.useRegionalDiscount
         || DiscountCountry.all.contains(where: { $0.countryCode == country })
         else {
           return throwE(
@@ -74,7 +74,7 @@ private func subscribe(
           )
       }
 
-      let localeCouponId = subscribeData.useRegionalCoupon
+      let localeCouponId = subscribeData.useRegionalDiscount
         ? Current.envVars.regionalDiscountCouponId
         : nil
 
@@ -206,7 +206,7 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       isOwnerTakingSeat: true,
       teammates: [""],
       referralCode: nil,
-      useRegionalCoupon: false
+      useRegionalDiscount: false
     )
   }
   guard let coupon = subscribeData.coupon else {
@@ -216,7 +216,7 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
       teammates: subscribeData.teammates,
       referralCode: subscribeData.referralCode,
-      useRegionalCoupon: subscribeData.useRegionalCoupon
+      useRegionalDiscount: subscribeData.useRegionalDiscount
     )
   }
   return .discounts(code: coupon, subscribeData.pricing.billing)

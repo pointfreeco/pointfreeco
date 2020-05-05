@@ -39,7 +39,7 @@ public func subscriptionConfirmation(
       episodeStats: episodeStats,
       lane: lane,
       coupon: coupon,
-      useRegionalCoupon: subscribeData.useRegionalCoupon
+      useRegionalDiscount: subscribeData.useRegionalDiscount
     ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
@@ -51,7 +51,7 @@ public func subscriptionConfirmation(
       lane: lane,
       coupon: coupon,
       referrer: referrer,
-      useRegionalCoupon: subscribeData.useRegionalCoupon
+      useRegionalDiscount: subscribeData.useRegionalDiscount
     )
   )
 }
@@ -59,7 +59,7 @@ public func subscriptionConfirmation(
 private func additionalDiscountInfo(
   referrer: User?,
   coupon: Coupon?,
-  useRegionalCoupon: Bool
+  useRegionalDiscount: Bool
 ) -> Node {
 
   let title: String
@@ -95,7 +95,7 @@ private func additionalDiscountInfo(
         ]
       )
     ]
-  } else if useRegionalCoupon {
+  } else if useRegionalDiscount {
     title = "Regional discount"
     message = [
       """
@@ -126,10 +126,10 @@ private func additionalDiscountInfo(
         attributes: [
           .class([Class.display.none]),
           .disabled(true),
-          .name(SubscribeData.CodingKeys.useRegionalCoupon.rawValue),
+          .name(SubscribeData.CodingKeys.useRegionalDiscount.rawValue),
           .placeholder("Coupon Code"),
           .type(.hidden),
-          .value("\(useRegionalCoupon)")
+          .value("\(useRegionalDiscount)")
         ]
       )
     ]
@@ -173,7 +173,7 @@ private func header(
   episodeStats: EpisodeStats,
   lane: Pricing.Lane,
   coupon: Coupon?,
-  useRegionalCoupon: Bool
+  useRegionalDiscount: Bool
 ) -> Node {
 
   let header: Node = [
@@ -196,7 +196,7 @@ private func header(
         "Change plan"
       )
     ),
-    additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalCoupon: useRegionalCoupon)
+    additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount)
   ]
 
   return [
@@ -552,7 +552,7 @@ private func billingPeriod(
             : discountedBillingIntervalSubtitle(
               interval: .year,
               coupon: coupon,
-              useRegionalDiscount: subscribeData.useRegionalCoupon
+              useRegionalDiscount: subscribeData.useRegionalDiscount
           )
         )
       )
@@ -614,7 +614,7 @@ private func billingPeriod(
             : discountedBillingIntervalSubtitle(
               interval: .month,
               coupon: coupon,
-              useRegionalDiscount: subscribeData.useRegionalCoupon
+              useRegionalDiscount: subscribeData.useRegionalDiscount
           )
         )
       )
@@ -776,7 +776,7 @@ private func total(
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
   referrer: User?,
-  useRegionalCoupon: Bool
+  useRegionalDiscount: Bool
 ) -> Node {
   let discount = coupon?.discount ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
@@ -842,7 +842,7 @@ function updateSeats() {
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
-  var regionalDiscount = \#(useRegionalCoupon ? 0.5 : 1.0)
+  var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
@@ -918,7 +918,7 @@ window.addEventListener("load", function() {
                     isOwnerTakingSeat: nil,
                     teammates: nil,
                     referralCode: referrer?.referralCode,
-                    useRegionalCoupon: useRegionalCoupon
+                    useRegionalDiscount: useRegionalDiscount
                 )
               )
             )
