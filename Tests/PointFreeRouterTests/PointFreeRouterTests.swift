@@ -34,7 +34,8 @@ class PointFreeRouterTests: XCTestCase {
       pricing: .init(billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
     let route = Route.subscribe(subscribeData)
     let request = pointFreeRouter.request(for: route)!

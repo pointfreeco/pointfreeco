@@ -814,6 +814,7 @@ struct PricingPlan {
         "Over \(episodeHourCount.rawValue) hours of video",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
+        "Regional and education discounts available"
       ],
       title: "Personal"
     )

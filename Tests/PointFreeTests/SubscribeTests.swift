@@ -287,7 +287,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -366,7 +367,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -552,7 +554,8 @@ final class SubscribeTests: TestCase {
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-      token: "stripe-deadbeef"
+      token: "stripe-deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(
@@ -577,7 +580,8 @@ final class SubscribeTests: TestCase {
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
-      token: "stripe-deadbeef"
+      token: "stripe-deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(
@@ -618,7 +622,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(
@@ -642,7 +647,8 @@ final class SubscribeTests: TestCase {
       pricing: .teamYearly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(
@@ -667,7 +673,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(
@@ -696,7 +703,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useLocaleCoupon: false
     )
 
     let conn = connection(

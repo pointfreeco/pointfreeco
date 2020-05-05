@@ -5,6 +5,7 @@ import TaggedMoney
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
+  public var country: String
   public var customer: Customer.Id
   public var expMonth: Int
   public var expYear: Int
@@ -14,6 +15,7 @@ public struct Card: Codable, Equatable {
 
   public init(
     brand: Brand,
+    country: String,
     customer: Customer.Id,
     expMonth: Int,
     expYear: Int,
@@ -22,6 +24,7 @@ public struct Card: Codable, Equatable {
     object: Object
     ) {
     self.brand = brand
+    self.country = country
     self.customer = customer
     self.expMonth = expMonth
     self.expYear = expYear
@@ -53,6 +56,7 @@ public struct Card: Codable, Equatable {
 
   private enum CodingKeys: String, CodingKey {
     case brand
+    case country
     case customer
     case expMonth = "exp_month"
     case expYear = "exp_year"

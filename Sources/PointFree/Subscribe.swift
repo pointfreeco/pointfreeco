@@ -27,29 +27,54 @@ private let validateSubscribeData
     <<< validateCoupon
     <<< validateReferrer
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>)
-  -> IO<Conn<ResponseEnded, Data>> {
+let discountedCountryCodes = ["US"]
+
+private func subscribe(
+  _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
+) -> IO<Conn<ResponseEnded, Data>> {
 
     let referralDiscount: Cents<Int> = -18_00
 
     let (user, subscribeData, referrer) = lower(conn.data)
 
-    let customer = Current.stripe.createCustomer(
+    let stripeSubscription = Current.stripe.createCustomer(
       subscribeData.token,
       user.id.rawValue.uuidString,
       user.email,
       nil,
       subscribeData.pricing.interval == .year ? referrer.map(const(referralDiscount)) : nil
     )
+      .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
+//        var subscribeData = subscribeData
+//        subscribeData.useLocaleCoupon = true
+        
+        guard let country = customer.sources.data.first?.left?.country else {
+          if subscribeData.useLocaleCoupon {
+            // TODO: error, trying to use locale coupon but cannot verify country
+          }
+          //        return customer
+          fatalError()
+        }
 
-    let stripeSubscription = customer.flatMap { customer in
-      Current.stripe.createSubscription(
-        customer.id,
-        subscribeData.pricing.plan,
-        subscribeData.pricing.quantity,
-        subscribeData.coupon
-      )
-    }
+        guard !subscribeData.useLocaleCoupon || discountedCountryCodes.contains(country)
+          else {
+            // TODO: erroy, trying to use locale coupon but credit card is not in allowed country list
+
+            //        return customer
+            fatalError()
+        }
+
+        let localeCouponId = subscribeData.useLocaleCoupon
+        ? Stripe.Coupon.Id(rawValue: "luze225P")
+        : nil
+
+        return Current.stripe.createSubscription(
+          customer.id,
+          subscribeData.pricing.plan,
+          subscribeData.pricing.quantity,
+          subscribeData.coupon ?? localeCouponId
+        )
+  }
 
     func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
       let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)

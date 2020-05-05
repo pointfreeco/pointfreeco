@@ -366,13 +366,18 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
       .compactMap { _, v in v }
       .map(EmailAddress.init(rawValue:))
 
+    let useLocaleCoupon = keyValues
+      .first(where: { k, _ in k == SubscribeData.CodingKeys.useLocaleCoupon.rawValue })?
+      .1 == "true"
+
     return SubscribeData(
       coupon: coupon,
       isOwnerTakingSeat: isOwnerTakingSeat,
       pricing: Pricing(billing: billing, quantity: quantity),
       referralCode: referralCode,
       teammates: teammates,
-      token: token
+      token: token,
+      useLocaleCoupon: useLocaleCoupon
     )
 },
   unapply: { data in
