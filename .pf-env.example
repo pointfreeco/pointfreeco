@@ -8,7 +8,7 @@
   "GITHUB_CLIENT_SECRET": "deadbeef-client-secret",
   "MAILGUN_DOMAIN": "mg.domain.com",
   "MAILGUN_PRIVATE_API_KEY": "deadbeef-mg-api-key",
-  "REGIONAL_DISCOUNT_COUPON_ID": "luze225P",
+  "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
   "RSS_USER_AGENT_WATCHLIST": "",
   "STRIPE_ENDPOINT_SECRET": "whsec_test",
   "STRIPE_PUBLISHABLE_KEY": "pk_test",
