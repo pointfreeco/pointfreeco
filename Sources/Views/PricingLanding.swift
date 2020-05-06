@@ -824,8 +824,6 @@ struct PricingPlan {
         and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
         available
         """
-
-        ///blog/posts/10-announcing-student-discounts
       ],
       title: "Personal"
     )
