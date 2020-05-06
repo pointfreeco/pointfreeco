@@ -32,16 +32,21 @@ private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
-  let referralDiscount: Cents<Int> = -18_00
-
   let (user, subscribeData, referrer) = lower(conn.data)
+  let referrerDiscount: Cents<Int> =
+    referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
+      ? -9_00
+      : -18_00
+  let referredDiscount: Cents<Int> = subscribeData.useRegionalDiscount
+    ? -9_00
+    : -18_00
 
   let stripeSubscription = Current.stripe.createCustomer(
     subscribeData.token,
     user.id.rawValue.uuidString,
     user.email,
     nil,
-    subscribeData.pricing.interval == .year ? referrer.map(const(referralDiscount)) : nil
+    subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
   )
     .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
       let country = customer.sources.data.first?.left?.country
@@ -95,7 +100,7 @@ private func subscribe(
         Current.stripe
           .updateCustomerBalance(
             $0.stripeSubscription.customer.either(id, ^\.id),
-            ($0.stripeSubscription.customer.right?.balance ?? 0) + referralDiscount
+            ($0.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
         )
           .flatMap(const(sendReferralEmail(to: $0.user)))
           .map(const(unit))
@@ -106,7 +111,7 @@ private func subscribe(
     let updateReferredBalance =
       referrer != nil && subscribeData.pricing.interval == .month
         ? Current.stripe
-          .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referralDiscount)
+          .updateCustomerBalance(stripeSubscription.customer.either(id, ^\.id), referredDiscount)
           .map(const(unit))
           .run.parallel
         : pure(.right(unit))
@@ -117,14 +122,20 @@ private func subscribe(
     return lift(results.sequential).map(const(unit))
   }
 
-  let databaseSubscription = stripeSubscription.flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
-    Current.database
-      .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat, referrer?.user.id)
-      .mapExcept(requireSome)
-      .flatMap { subscription in
-        runTasksFor(stripeSubscription: stripeSubscription)
-          .map(const(subscription))
-    }
+  let databaseSubscription = stripeSubscription
+    .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
+      Current.database
+        .createSubscription(
+          stripeSubscription,
+          user.id,
+          subscribeData.isOwnerTakingSeat,
+          referrer?.user.id
+      )
+        .mapExcept(requireSome)
+        .flatMap { subscription in
+          runTasksFor(stripeSubscription: stripeSubscription)
+            .map(const(subscription))
+      }
   }
 
   return databaseSubscription.run.flatMap(

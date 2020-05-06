@@ -254,7 +254,10 @@ private func planFeatures(
           .map { feature in
             .li(
               attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-              .text(feature)
+              .div(
+                attributes: [.class([pricingPlanFeatureClass])],
+                .raw(unsafeMark(from: feature))
+              )
             )
         }
       )

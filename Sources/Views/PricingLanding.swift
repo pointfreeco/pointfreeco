@@ -820,9 +820,12 @@ struct PricingPlan {
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
         """
-        [Regional](\(url(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
-        and [education](/blog/posts/10-announcing-student-discounts) discounts available
+        [Regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
+        and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+        available
         """
+
+        ///blog/posts/10-announcing-student-discounts
       ],
       title: "Personal"
     )
@@ -964,6 +967,6 @@ private let planItem = CssSelector.class("plan-item")
 private let testimonialContainer = CssSelector.class("testimonial-container")
 private let testimonialItem = CssSelector.class("testimonial-item")
 
-private let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
-private let pricingPlanFeatureStyle: Stylesheet =
+let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
+let pricingPlanFeatureStyle: Stylesheet =
   (pricingPlanFeatureClass > "p") % margin(all: 0)

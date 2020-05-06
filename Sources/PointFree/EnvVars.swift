@@ -25,7 +25,7 @@ public struct EnvVars: Codable {
   public var mailgun = Mailgun()
   public var port = 8080
   public var postgres = Postgres()
-  public var regionalDiscountCouponId: Coupon.Id = .init(rawValue: "deadbeef")
+  public var regionalDiscountCouponId: Coupon.Id = .init(rawValue: "regional-discount")
   public var rssUserAgentWatchlist: [String] = []
   public var stripe = Stripe()
 

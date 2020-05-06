@@ -33,7 +33,7 @@ public struct Card: Codable, Equatable {
     self.object = object
   }
 
-  public typealias Country = Tagged<(Card, country: ()), String>
+  public typealias Country = Tagged<(country: (), Card), String>
   public typealias Id = Tagged<Card, String>
 
   public enum Object: String, Codable { case card }
