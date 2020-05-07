@@ -1,8 +1,8 @@
-GET http://localhost:8080/subscribe/personal
+GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54283
+Content-Length: 55941
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1706,6 +1706,98 @@ html {
     </style>
     <style>
       
+
+.md-ctn hr {
+  margin-top       : 2rem;
+  margin-right     : 30%;
+  margin-bottom    : 2rem;
+  margin-left      : 30%;
+  border-top-style : solid;
+  border-top-width : 1px;
+  background-color : #ffffff;
+  border-top-color : #ddd;
+  height           : 0px;
+}
+
+.md-ctn a {
+  text-decoration : underline;
+}
+
+.md-ctn a:link {
+  color : #291a40;
+}
+
+.md-ctn a:visited {
+  color : #291a40;
+}
+
+.md-ctn a:hover {
+  color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
+}
+
+.md-ctn blockquote {
+  font-style : italic;
+}
+
+.md-ctn p {
+  word-wrap : break-word;
+}
+
+.md-ctn p:not(:last-child) {
+  margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top                : 0.5rem;
+  padding-bottom             : 0.5rem;
+  padding-right              : 1rem;
+  padding-left               : 1rem;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  display                    : block;
+  overflow-x                 : auto;
+  margin-bottom              : 1.5rem;
+}
+
+.md-ctn code {
+  font-family                : monospace;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
+  border-top-left-radius     : 3px;
+  border-top-right-radius    : 3px;
+  border-bottom-right-radius : 3px;
+  border-bottom-left-radius  : 3px;
+  border-top-style           : solid;
+  border-right-style         : solid;
+  border-bottom-style        : solid;
+  border-left-style          : solid;
+  border-top-width           : 1px;
+  border-right-width         : 1px;
+  border-bottom-width        : 1px;
+  border-left-width          : 1px;
+  padding-top                : 1px;
+  padding-bottom             : 1px;
+  padding-right              : 5px;
+  padding-left               : 5px;
+}
+
+.pricing-plan-feature > p {
+  margin-top    : 0;
+  margin-right  : 0;
+  margin-bottom : 0;
+  margin-left   : 0;
+}
+
 .plan-item {
   width : 100%;
 }
@@ -1804,9 +1896,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/subscribe/personal">
+          content="http://localhost:8080/subscribe/personal?useRegionalDiscount=false">
     <meta name="twitter:url"
-          content="http://localhost:8080/subscribe/personal">
+          content="http://localhost:8080/subscribe/personal?useRegionalDiscount=false">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -2210,11 +2302,12 @@ function updateSeats() {
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
+  var regionalDiscount = 1.0
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
-      ? 1800 * 0.01
-      : 1400 * 0.01
+      ? 1800 * 0.01 * regionalDiscount
+      : 1400 * 0.01 * regionalDiscount
   )
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
@@ -2222,30 +2315,14 @@ function updateSeats() {
       ? monthlyPrice
       : (monthlyPrice * 12 - 0)
   )
-  if (true) {
-    document.getElementById("pricing-preview").innerHTML = (
-      "You will be charged <strong>"
-        + format(monthlyPricePerSeat)
-        + " per month</strong>"
-        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-        + (monthly ? "" : " times <strong>12 months</strong>")
-        + "."
-    )
-  } else {
-    document.getElementById("pricing-preview").innerHTML = (
-      monthly
-        ? (
-          "You and your referrer will receive an <strong>"
-            + format(0)
-            + " credit</strong> when you subscribe. It will apply to future invoices."
-        )
-        : (
-          "You and your referrer will <strong>save "
-            + format(0)
-            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
-      )
-    )
-  }
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPricePerSeat)
+      + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
 }
 window.addEventListener("load", function() {
   updateSeats()
