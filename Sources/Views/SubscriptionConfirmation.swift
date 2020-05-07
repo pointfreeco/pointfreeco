@@ -235,6 +235,11 @@ private func header(
         "Change plan"
       )
     ),
+    planFeatures(
+      currentUser: currentUser,
+      episodeStats: episodeStats,
+      lane: lane
+    ),
     additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount)
   ]
 
@@ -250,12 +255,7 @@ private func header(
         sizes: [.mobile: 12],
         .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
       ),
-      header,
-      planFeatures(
-        currentUser: currentUser,
-        episodeStats: episodeStats,
-        lane: lane
-      )
+      header
     )
   ]
 }

@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54824
+Content-Length: 54954
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1707,6 +1707,13 @@ html {
     </style>
     <style>
       
+.pricing-plan-feature > p {
+  margin-top    : 0;
+  margin-right  : 0;
+  margin-bottom : 0;
+  margin-left   : 0;
+}
+
 .plan-item {
   width : 100%;
 }
@@ -1928,6 +1935,38 @@ html {
              href="http://localhost:8080/pricing">
             Change plan
           </a>
+        </div>
+        <div style="margin-right:auto;
+                    margin-left:auto"
+             class="col-m
+                    col-m-12">
+          <div style="background-color:#ffffdd"
+               class="m-mt2
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1
+                       ts-m-r0_875
+                       lh-1
+                       m-pb1">
+              Coupon applied
+            </h4>
+            <p>
+               You are using the coupon <strong>50% off forever</strong>
+              , which gives you 
+              50% off every billing period
+              .
+              <input class="none"
+                     disabled
+                     name="coupon"
+                     placeholder="Coupon Code"
+                     type="hidden"
+                     value="deadbeef">
+            </p>
+          </div>
         </div>
       </div>
       <input name="isOwnerTakingSeat"
@@ -2156,12 +2195,6 @@ html {
 })
           </script>
         </div>
-        <input class="none"
-               disabled
-               name="coupon"
-               placeholder="Coupon Code"
-               type="hidden"
-               value="deadbeef">
       </div>
       <div class="d-ml4
                   d-mr4
@@ -2182,18 +2215,6 @@ html {
                        lh-4
                        fg-gray400"
                 id="pricing-preview">
-          </span>
-          <span class="fg-black
-                       normal
-                       h6
-                       lh-4
-                       fg-gray400">
-            <br>
-            <br>
-             You are using the coupon <strong>50% off forever</strong>
-            , which gives you 
-            50% off every billing period
-            .
           </span>
         </div>
         <div class="start-m
@@ -2229,11 +2250,12 @@ function updateSeats() {
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
+  var regionalDiscount = 1.0
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
-      ? 900 * 0.01
-      : 700 * 0.01
+      ? 900 * 0.01 * regionalDiscount
+      : 700 * 0.01 * regionalDiscount
   )
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
@@ -2241,30 +2263,14 @@ function updateSeats() {
       ? monthlyPrice
       : (monthlyPrice * 12 - 0)
   )
-  if (true) {
-    document.getElementById("pricing-preview").innerHTML = (
-      "You will be charged <strong>"
-        + format(monthlyPricePerSeat)
-        + " per month</strong>"
-        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-        + (monthly ? "" : " times <strong>12 months</strong>")
-        + "."
-    )
-  } else {
-    document.getElementById("pricing-preview").innerHTML = (
-      monthly
-        ? (
-          "You and your referrer will receive an <strong>"
-            + format(0)
-            + " credit</strong> when you subscribe. It will apply to future invoices."
-        )
-        : (
-          "You and your referrer will <strong>save "
-            + format(0)
-            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
-      )
-    )
-  }
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPricePerSeat)
+      + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
 }
 window.addEventListener("load", function() {
   updateSeats()
