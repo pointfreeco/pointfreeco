@@ -62,42 +62,48 @@ private func additionalDiscountInfo(
   useRegionalDiscount: Bool
 ) -> Node {
 
-  let title: String
-  let message: Node
-  if let referrer = referrer {
-    title = "Referral credit"
-    message = [
-      """
-      Subscribe today with referral code \(.strong(.text(referrer.referralCode.rawValue))) to
-      receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
-      free month.
-      """,
-      .input(attributes: [
-        .name(SubscribeData.CodingKeys.referralCode.rawValue),
-        .type(.hidden),
-        .value(referrer.referralCode.rawValue),
-      ])
-    ]
-  } else if let coupon = coupon {
-    title = "Coupon applied"
-    message = [
-      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
-        ?? " You are using a coupon",
-      ", which gives you \(coupon.formattedDescription).",
-      .input(
-        attributes: [
-          .class([Class.display.none]),
-          .disabled(true),
-          .name(SubscribeData.CodingKeys.coupon.rawValue),
-          .placeholder("Coupon Code"),
+  func additionalReferrerInfo(referrer: User) -> (title: String, message: Node) {
+    (
+      "Referral credit",
+      [
+        """
+        Subscribe today with referral code \(.strong(.text(referrer.referralCode.rawValue))) to
+        receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
+        free month.
+        """,
+        .input(attributes: [
+          .name(SubscribeData.CodingKeys.referralCode.rawValue),
           .type(.hidden),
-          .value(coupon.id.rawValue)
-        ]
-      )
-    ]
-  } else if useRegionalDiscount {
-    title = "Regional discount"
-    message = [
+          .value(referrer.referralCode.rawValue),
+        ])
+      ]
+    )
+  }
+
+  func additionalCouponInfo(coupon: Coupon) -> (title: String, message: Node) {
+    (
+      "Coupon applied",
+      [
+        coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+          ?? " You are using a coupon",
+        ", which gives you \(coupon.formattedDescription).",
+        .input(
+          attributes: [
+            .class([Class.display.none]),
+            .disabled(true),
+            .name(SubscribeData.CodingKeys.coupon.rawValue),
+            .placeholder("Coupon Code"),
+            .type(.hidden),
+            .value(coupon.id.rawValue)
+          ]
+        )
+      ]
+    )
+  }
+
+  let additionalRegionalDiscountInfo: (title: String, message: Node) = (
+    "Regional discount",
+    [
       """
       To make up for currency discrepencies between the United States and other countries, we offer
       a regional discount. If your credit card's issuing country is one of the countries listed
@@ -133,35 +139,66 @@ private func additionalDiscountInfo(
         ]
       )
     ]
-  } else {
-    return []
+  )
+
+  if let referrer = referrer, useRegionalDiscount {
+    let (referrerTitle, referrerMessage) = additionalReferrerInfo(referrer: referrer)
+    let (_, regionalDiscountMessage) = additionalRegionalDiscountInfo
+    return additionalDiscountInfo(
+      title: referrerTitle,
+      message: [
+        .p(referrerMessage),
+        .p(regionalDiscountMessage)
+      ]
+    )
   }
 
-  return .gridColumn(
+  if let referrer = referrer, useRegionalDiscount {
+    let (referrerTitle, referrerMessage) = additionalReferrerInfo(referrer: referrer)
+    return additionalDiscountInfo(
+      title: referrerTitle,
+      message: .p(referrerMessage)
+    )
+  }
+
+  if let coupon = coupon {
+    let (couponTitle, couponMessage) = additionalCouponInfo(coupon: coupon)
+    return additionalDiscountInfo(
+      title: couponTitle,
+      message: .p(couponMessage)
+    )
+  }
+
+  if useRegionalDiscount {
+    let (regionalDiscountTitle, regionalDiscountMessage) = additionalRegionalDiscountInfo
+    return additionalDiscountInfo(
+      title: regionalDiscountTitle,
+      message: .p(regionalDiscountMessage)
+    )
+  }
+
+  return []
+}
+
+private func additionalDiscountInfo(
+  title: String,
+  message: Node
+) -> Node {
+  .gridColumn(
     sizes: [.mobile: 12],
     attributes: [.style(margin(leftRight: .auto))],
     .div(
       attributes: [
         .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
-        .class(
-          [
-            Class.margin([.mobile: [.top: 2]]),
-            Class.padding([.mobile: [.all: 2]])
-          ]
-        )
+        .class([Class.margin([.mobile: [.top: 2]]), Class.padding([.mobile: [.all: 2]])])
       ],
       .h4(
         attributes: [
-          .class(
-            [
-              Class.pf.type.responsiveTitle6,
-              Class.padding([.mobile: [.bottom: 1]])
-            ]
-          )
+          .class([Class.pf.type.responsiveTitle6, Class.padding([.mobile: [.bottom: 1]])])
         ],
         .text(title)
       ),
-      .p(message)
+      message
     )
   )
 }
@@ -1036,7 +1073,7 @@ public struct DiscountCountry {
     DiscountCountry(countryCode: "PY", name: "Paraguay"),
     DiscountCountry(countryCode: "PE", name: "Peru"),
     DiscountCountry(countryCode: "PH", name: "Philippines"),
-    DiscountCountry(countryCode: "PL", name: "Poland"),
+    DiscountCountry(countryCode: "PL", name: "*Poland"),
     DiscountCountry(countryCode: "RO", name: "*Romania"),
     DiscountCountry(countryCode: "RW", name: "Rwanda"),
     DiscountCountry(countryCode: "SN", name: "Senegal"),
