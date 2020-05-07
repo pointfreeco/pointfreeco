@@ -396,6 +396,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     if let referralCode = data.referralCode?.rawValue {
       parts.append("\(SubscribeData.CodingKeys.referralCode.rawValue)=\(referralCode)")
     }
+    parts.append("\(SubscribeData.CodingKeys.useRegionalDiscount.rawValue)=\(data.useRegionalDiscount)")
     return parts.joined(separator: "&")
 }
 )
