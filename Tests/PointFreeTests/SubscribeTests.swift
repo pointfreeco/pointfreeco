@@ -512,6 +512,181 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
   }
+
+  func testRegionalDiscountWithReferral_Monthly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef",
+      useRegionalDiscount: true
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          { update($0) {
+            $0.id = "cus_referrer"
+            $0.balance = -18_00
+          }
+        })
+      })
+    }
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+  }
+
+  func testRegionalDiscountWithReferral_Yearly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualYearly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef",
+      useRegionalDiscount: true
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          { update($0) {
+            $0.id = "cus_referrer"
+            $0.balance = -18_00
+          }
+        })
+      })
+    }
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(balance, -9_00)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+  }
+
 }
 
 final class SubscribeTests: TestCase {
