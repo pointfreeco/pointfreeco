@@ -88,6 +88,41 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
+  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: nil,
+          useRegionalDiscount: true
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let html = String(decoding: result.perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
+
+      assertSnapshot(
+        matching: webView,
+        as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
+        named: "desktop"
+      )
+    }
+    #endif
+  }
+
   func testTeam_LoggedIn() {
     var user = User.mock
     user.gitHubUserId = -1

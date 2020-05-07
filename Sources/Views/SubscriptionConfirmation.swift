@@ -804,7 +804,7 @@ private func total(
   referrer: User?,
   useRegionalDiscount: Bool
 ) -> Node {
-  let discount = coupon?.discount ?? { $0 }
+  let discount = coupon?.discount(for:) ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
   return .gridRow(
     attributes: [
