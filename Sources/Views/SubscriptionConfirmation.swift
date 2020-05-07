@@ -67,7 +67,7 @@ private func additionalDiscountInfo(
       "Referral credit",
       [
         """
-        Subscribe today with referral code \(.strong(.text(referrer.referralCode.rawValue))) to
+        You are using the referral code \(.strong(.text(referrer.referralCode.rawValue))) to
         receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
         free month.
         """,
@@ -142,18 +142,20 @@ private func additionalDiscountInfo(
   )
 
   if let referrer = referrer, useRegionalDiscount {
-    let (referrerTitle, referrerMessage) = additionalReferrerInfo(referrer: referrer)
+    let (_, referrerMessage) = additionalReferrerInfo(referrer: referrer)
     let (_, regionalDiscountMessage) = additionalRegionalDiscountInfo
     return additionalDiscountInfo(
-      title: referrerTitle,
+      title: "Referral credit and regional discount",
       message: [
-        .p(referrerMessage),
-        .p(regionalDiscountMessage)
+        .ul(
+          .li(.p(referrerMessage)),
+          .li(.p(regionalDiscountMessage))
+        )
       ]
     )
   }
 
-  if let referrer = referrer, useRegionalDiscount {
+  if let referrer = referrer {
     let (referrerTitle, referrerMessage) = additionalReferrerInfo(referrer: referrer)
     return additionalDiscountInfo(
       title: referrerTitle,
