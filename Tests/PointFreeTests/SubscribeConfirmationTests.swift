@@ -434,6 +434,39 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
+  func testPersonal_ReferralCodeAndRegionalDiscount() {
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d",
+          useRegionalDiscount: true
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testPersonal_LoggedOut_InactiveReferralCode() {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = const(pure(nil))
