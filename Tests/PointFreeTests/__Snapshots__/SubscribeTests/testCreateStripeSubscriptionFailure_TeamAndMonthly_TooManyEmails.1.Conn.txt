@@ -4,7 +4,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 isOwnerTakingSeat=true&pricing[billing]=monthly&pricing[quantity]=3&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.co&teammates[2]=fake@pointfree.co&token=stripe-deadbeef
 
 302 Found
-Location: /subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co,fake@pointfree.co
+Location: /subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co,fake@pointfree.co&useRegionalDiscount=false
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"Your card has insufficient funds.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff
