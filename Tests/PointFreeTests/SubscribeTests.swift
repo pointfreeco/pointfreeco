@@ -412,6 +412,60 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
     XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
+
+  func testHappyPath_RegionalDiscount() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(.mock)
+    }
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.useRegionalDiscount = true
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
+  }
 }
 
 final class SubscribeTests: TestCase {

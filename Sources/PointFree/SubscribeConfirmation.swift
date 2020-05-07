@@ -187,6 +187,7 @@ private let couponError = "That coupon code is invalid or has expired."
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.Id?) -> IO<Stripe.Coupon?> {
   guard let couponId = couponId else { return pure(nil) }
+  guard couponId != Current.envVars.regionalDiscountCouponId else { return pure(nil) }
   return Current.stripe.fetchCoupon(couponId)
     .run
     .map(^\.right)
