@@ -687,6 +687,35 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
   }
 
+  func testSubscribingWithRegionalDiscountAndCoupon() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    Current.stripe.createCustomer = { _, _, _, _, _ in
+      var customer = Customer.mock
+      let card = update(Card.mock) { $0.country = "BO" }
+      customer.sources = .mock([.left(card)])
+      return pure(customer)
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
+    subscribeData.useRegionalDiscount = true
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
 }
 
 final class SubscribeTests: TestCase {

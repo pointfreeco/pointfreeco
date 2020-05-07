@@ -204,9 +204,18 @@ private func loginAndRedirectToPricing<A>(
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
-  return subscribeData.coupon == nil
+  subscribeData.coupon == nil
+    // Do not allow using coupons on team subscriptions
     || subscribeData.pricing.quantity == 1
+    // Do not allow using regional discount coupon id directly
     && subscribeData.coupon != Current.envVars.regionalDiscountCouponId
+}
+
+private func validateCouponAndRegionalDiscount(
+  forSubscribeData subscribeData: SubscribeData
+) -> Bool {
+  // Don't allow using coupon and regional discount at once
+  subscribeData.coupon == nil || !subscribeData.useRegionalDiscount
 }
 
 private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
@@ -260,12 +269,20 @@ private func validateQuantity(
 private func validateCoupon(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, SubscribeData>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, SubscribeData>, Data> {
-  return middleware |> filter(
-    get2 >>> validateCoupon(forSubscribeData:),
-    or: redirect(
-      with: get2 >>> subscribeConfirmationWithSubscribeData,
-      headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
+  return middleware
+    |> filter(
+      get2 >>> validateCoupon(forSubscribeData:),
+      or: redirect(
+        with: get2 >>> subscribeConfirmationWithSubscribeData,
+        headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
+      )
     )
+    |> filter(
+      get2 >>> validateCouponAndRegionalDiscount(forSubscribeData:),
+      or: redirect(
+        with: get2 >>> subscribeConfirmationWithSubscribeData,
+        headersMiddleware: flash(.error, "Coupons cannot be used with regional discounts.")
+      )
   )
 }
 
