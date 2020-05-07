@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-isOwnerTakingSeat=true&pricing[billing]=monthly&pricing[quantity]=3&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.co&teammates[2]=fake@pointfree.co&token=stripe-deadbeef
+isOwnerTakingSeat=true&pricing[billing]=monthly&pricing[quantity]=3&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.co&teammates[2]=fake@pointfree.co&token=stripe-deadbeef&useRegionalDiscount=false
 
 302 Found
 Location: /subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co,fake@pointfree.co&useRegionalDiscount=false

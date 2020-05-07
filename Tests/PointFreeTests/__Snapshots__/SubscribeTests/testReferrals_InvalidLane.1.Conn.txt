@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-isOwnerTakingSeat=true&pricing[billing]=yearly&pricing[quantity]=4&token=deadbeef&ref=cafed00d
+isOwnerTakingSeat=true&pricing[billing]=yearly&pricing[quantity]=4&token=deadbeef&ref=cafed00d&useRegionalDiscount=false
 
 302 Found
 Location: /subscribe/team?billing=yearly&isOwnerTakingSeat=true&teammates=&useRegionalDiscount=false
