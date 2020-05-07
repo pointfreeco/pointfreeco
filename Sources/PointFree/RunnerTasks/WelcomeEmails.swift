@@ -25,7 +25,9 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       .run.parallel
   )
   let flattenedEmails = zippedEmails.map { $0 <> $1 <> $2 }
+
   let emails = EitherIO(run: flattenedEmails.sequential)
+    .debug { "📧: Sending \($0.count) welcome emails..." }
 
   let delayedSend = send(email:)
     >>> delay(.milliseconds(200))
@@ -37,22 +39,22 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       let stats = emails
         .reduce(into: [String: [EmailAddress]]()) { dict, email in
           dict[email.subject, default: []].append(contentsOf: email.to)
-        }
-        .map { subject, emails in
-          """
-          \(emails.count) \"\(subject)\" emails
-          \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
-          """
-        }
-        .joined(separator: "\n\n")
+      }
+      .map { subject, emails in
+        """
+        \(emails.count) \"\(subject)\" emails
+        \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
+        """
+      }
+      .joined(separator: "\n\n")
       return sendEmail(
         to: adminEmails,
         subject: "Welcome emails sent",
         content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
       )
-    }
-    .map(const(unit))
-    .catch(notifyAdmins(subject: "Welcome emails failed"))
+  }
+  .map(const(unit))
+  .catch(notifyAdmins(subject: "Welcome emails failed"))
 }
 
 func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {

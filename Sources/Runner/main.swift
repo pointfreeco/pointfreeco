@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import PointFree
+import Prelude
 
 // Bootstrap
 
@@ -10,7 +11,8 @@ _ = try! PointFree
   .perform()
   .unwrap()
 
-_ = sendWelcomeEmails()
+_ = EitherIO.debug(prefix: "📧 Sending welcome emails...")
+  .flatMap(const(sendWelcomeEmails()))
   .run
   .perform()
 
