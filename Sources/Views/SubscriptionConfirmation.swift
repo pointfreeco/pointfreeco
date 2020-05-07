@@ -62,120 +62,104 @@ private func additionalDiscountInfo(
   useRegionalDiscount: Bool
 ) -> Node {
 
-  func additionalReferrerInfo(referrer: User) -> (title: String, message: Node) {
-    (
-      "Referral credit",
-      [
-        """
-        You are using the referral code \(.strong(.text(referrer.referralCode.rawValue))) to
-        receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
-        free month.
-        """,
-        .input(attributes: [
-          .name(SubscribeData.CodingKeys.referralCode.rawValue),
-          .type(.hidden),
-          .value(referrer.referralCode.rawValue),
-        ])
-      ]
-    )
-  }
-
-  func additionalCouponInfo(coupon: Coupon) -> (title: String, message: Node) {
-    (
-      "Coupon applied",
-      [
-        coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
-          ?? " You are using a coupon",
-        ", which gives you \(coupon.formattedDescription).",
-        .input(
-          attributes: [
-            .class([Class.display.none]),
-            .disabled(true),
-            .name(SubscribeData.CodingKeys.coupon.rawValue),
-            .placeholder("Coupon Code"),
-            .type(.hidden),
-            .value(coupon.id.rawValue)
-          ]
-        )
-      ]
-    )
-  }
-
-  let additionalRegionalDiscountInfo: (title: String, message: Node) = (
-    "Regional discount",
+  func additionalReferrerInfo(referrer: User) -> Node {
     [
       """
-      To make up for currency discrepencies between the United States and other countries, we offer
-      a regional discount. If your credit card's issuing country is one of the countries listed
-      below we will apply a \(.strong("50% discount")) to every billing cycle.
+      You are using the referral code \(.strong(.text(referrer.referralCode.rawValue))) to
+      receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
+      free month.
       """,
-      .details(
-        .summary(attributes: [.class([Class.cursor.pointer])], "Expand country list"),
-        .div(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
-              ])
-          ],
-          .ul(
-            .fragment(
-              DiscountCountry.all.map { country in
-                .li(
-                  .text(country.name)
-                )
-              }
-            )
-          )
-        )
-      ),
+      .input(attributes: [
+        .name(SubscribeData.CodingKeys.referralCode.rawValue),
+        .type(.hidden),
+        .value(referrer.referralCode.rawValue),
+      ])
+    ]
+  }
+
+  func additionalCouponInfo(coupon: Coupon) -> Node {
+    [
+      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+        ?? " You are using a coupon",
+      ", which gives you \(coupon.formattedDescription).",
       .input(
         attributes: [
           .class([Class.display.none]),
           .disabled(true),
-          .name(SubscribeData.CodingKeys.useRegionalDiscount.rawValue),
+          .name(SubscribeData.CodingKeys.coupon.rawValue),
           .placeholder("Coupon Code"),
           .type(.hidden),
-          .value("\(useRegionalDiscount)")
+          .value(coupon.id.rawValue)
         ]
       )
     ]
-  )
+  }
+
+  let additionalRegionalDiscountInfo: Node = [
+    """
+    To make up for currency discrepencies between the United States and other countries, we offer
+    a regional discount. If your credit card's issuing country is one of the countries listed
+    below we will apply a \(.strong("50% discount")) to every billing cycle.
+    """,
+    .details(
+      .summary(attributes: [.class([Class.cursor.pointer])], "Expand country list"),
+      .div(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+          ])
+        ],
+        .ul(
+          .fragment(
+            DiscountCountry.all.map { country in
+              .li(.text(country.name))
+            }
+          )
+        )
+      )
+    ),
+    .input(
+      attributes: [
+        .class([Class.display.none]),
+        .disabled(true),
+        .name(SubscribeData.CodingKeys.useRegionalDiscount.rawValue),
+        .placeholder("Coupon Code"),
+        .type(.hidden),
+        .value("\(useRegionalDiscount)")
+      ]
+    )
+  ]
 
   if let referrer = referrer, useRegionalDiscount {
-    let (_, referrerMessage) = additionalReferrerInfo(referrer: referrer)
-    let (_, regionalDiscountMessage) = additionalRegionalDiscountInfo
     return additionalDiscountInfo(
       title: "Referral credit and regional discount",
       message: [
         .ul(
-          .li(.p(referrerMessage)),
-          .li(.p(regionalDiscountMessage))
+          .li(.p(additionalReferrerInfo(referrer: referrer))),
+          .li(.p(additionalRegionalDiscountInfo))
         )
       ]
     )
   }
 
   if let referrer = referrer {
-    let (referrerTitle, referrerMessage) = additionalReferrerInfo(referrer: referrer)
     return additionalDiscountInfo(
-      title: referrerTitle,
-      message: .p(referrerMessage)
+      title: "Referral credit",
+      message: .p(additionalReferrerInfo(referrer: referrer))
     )
   }
 
   if let coupon = coupon {
-    let (couponTitle, couponMessage) = additionalCouponInfo(coupon: coupon)
     return additionalDiscountInfo(
-      title: couponTitle,
-      message: .p(couponMessage)
+      title: "Coupon applied",
+      message: .p(additionalCouponInfo(coupon: coupon))
     )
   }
 
   if useRegionalDiscount {
-    let (regionalDiscountTitle, regionalDiscountMessage) = additionalRegionalDiscountInfo
     return additionalDiscountInfo(
-      title: regionalDiscountTitle,
-      message: .p(regionalDiscountMessage)
+      title: "Regional discount",
+      message: .p(additionalRegionalDiscountInfo)
     )
   }
 
