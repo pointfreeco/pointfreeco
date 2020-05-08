@@ -52,8 +52,8 @@ private let subscriberOnlyEpisode = Episode(
   title: "Proof in Functions",
   trailerVideo: .init(
     bytesLength: 5_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",
-    streamingSource: "https://www.vimeo.com/pointfreeco/stream-trailer.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.hd.mp4?s=deadbeef&id=1",
+    streamingSource: "https://www.vimeo.com/pointfreeco/123456"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
