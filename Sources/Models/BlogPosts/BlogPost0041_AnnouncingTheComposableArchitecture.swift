@@ -19,6 +19,8 @@ We [first](/episodes/ep65-swiftui-and-state-management-part-1) began discussing 
 
 And today we are excited to announce that we are finally open-sourcing the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind. It can be used in SwiftUI, UIKit applications, and more, and on any Apple platform (iOS, macOS, tvOS, and watchOS).
 
+We have also release the [first part](/blog/posts/41-composable-architecture-the-library) of a multipart tour of the library, and it's completely 🆓 for everyone to [watch](/blog/posts/41-composable-architecture-the-library). Enjoy!
+
 ## Basic Usage
 
 To build a feature using the Composable Architecture you define some types and values that model your domain:
