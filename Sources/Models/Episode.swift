@@ -364,8 +364,15 @@ public struct Episode: Equatable {
   public struct Video: Codable, Equatable {
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
-    public var downloadUrl: String
-    public var streamingSource: String
+    public var vimeoId: Int
+    public var vimeoSecret: String
+
+    public var downloadUrl: String {
+      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=175&download=1"
+    }
+    public var streamingSource: String {
+      "https://player.vimeo.com/video/\(self.vimeoId)"
+    }
 
     public init(
       bytesLength: Int,
@@ -373,8 +380,20 @@ public struct Episode: Equatable {
       streamingSource: String
     ) {
       self.bytesLength = bytesLength
-      self.downloadUrl = downloadUrl
-      self.streamingSource = streamingSource
+      self.vimeoId = Int(streamingSource.split(separator: "/").last!)!
+      self.vimeoSecret = String(
+        downloadUrl.components(separatedBy: ".hd.mp4?s=")[1].split(separator: "&")[0]
+      )
+    }
+
+    public init(
+      bytesLength: Int,
+      vimeoId: Int,
+      vimeoSecret: String
+    ) {
+      self.bytesLength = bytesLength
+      self.vimeoId = vimeoId
+      self.vimeoSecret = vimeoSecret
     }
   }
 }

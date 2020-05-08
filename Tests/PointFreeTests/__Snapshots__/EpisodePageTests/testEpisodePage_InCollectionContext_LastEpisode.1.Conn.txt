@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 99280
+Content-Length: 99270
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2066,7 +2066,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            w-100p
                            absolute
                            bg-gray650"
-                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+                    src="https://player.vimeo.com/video/1234567890"
                     frameborder="0"
                     allow="autoplay; fullscreen"
                     allowfullscreen>

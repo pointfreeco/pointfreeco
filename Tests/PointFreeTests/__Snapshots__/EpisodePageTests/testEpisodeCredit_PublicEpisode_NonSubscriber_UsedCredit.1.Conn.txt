@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 90180
+Content-Length: 90170
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2020,7 +2020,7 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
                            w-100p
                            absolute
                            bg-gray650"
-                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+                    src="https://player.vimeo.com/video/1234567890"
                     frameborder="0"
                     allow="autoplay; fullscreen"
                     allowfullscreen>
