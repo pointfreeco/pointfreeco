@@ -39,8 +39,8 @@ private let subscriberOnlyEpisode = Episode(
   exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.mp4",
-    streamingSource: "https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.hd.mp4?s=deadbeef&id=1",
+    streamingSource: "https://www.vimeo.com/pointfreeco/1234567890"
   ),
   id: 2,
   image: "",
