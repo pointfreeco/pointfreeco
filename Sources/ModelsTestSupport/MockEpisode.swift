@@ -168,11 +168,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
 """,
   codeSampleDirectory: "ep1-type-safe-html",
   exercises: [.mock],
-  fullVideo: .init(
-    bytesLength: 500_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.mp4",
-    streamingSource: "https://www.vimeo.com/pointfreeco/stream-video.m3u8"
-  ),
+  fullVideo: Episode.mock.fullVideo,
   id: 1,
   image: "",
   length: 1380,
@@ -181,11 +177,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 1,
   title: "Type-Safe HTML in Swift",
-  trailerVideo: .init(
-    bytesLength: 5_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",
-    streamingSource: "https://www.vimeo.com/pointfreeco/stream-trailer.m3u8"
-  ),
+  trailerVideo: Episode.mock.trailerVideo,
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: """
