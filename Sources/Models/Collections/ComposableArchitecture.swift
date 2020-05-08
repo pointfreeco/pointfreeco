@@ -25,6 +25,12 @@ We begin our exploration of application architecture by understanding the core p
 As we've seen in this section, SwiftUI is incredibly powerful and is a true paradigm shift in way of building applications. However, some things are still quite difficult to do in SwiftUI, like testing. In this episode we explore how one would test a vanilla SwiftUI application so that we can compare it to testing an application built with the Composable Architecture.
 """#,
             content: .episode(.ep85_testableStateManagement_thePoint)
+          ),
+          .init(
+            blurb: #"""
+The Composable Architecture unlocks some incredible ways to perform snapshot testing in SwiftUI. We are able to use the `Store` to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
+"""#,
+            content: .episode(.ep86_swiftUiSnapshotTesting)
           )
         ],
         title: "SwiftUI and State Management",
@@ -122,7 +128,7 @@ An architecture is only as strong as its testability, and the Composable Archite
         related: [
           .init(
             blurb: #"""
-the Composable Architecture also unlocks some incredibly ways to perform snapshot testing in SwiftUI. We are able to use the store to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
+The Composable Architecture also unlocks some incredible ways to perform snapshot testing in SwiftUI. We are able to use the `Store` to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
 """#,
             content: .episode(.ep86_swiftUiSnapshotTesting)
           ),
