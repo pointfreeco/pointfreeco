@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=tr
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67915
+Content-Length: 67910
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2114,7 +2114,7 @@ below we will apply a
                           Botswana
                         </li>
                         <li>
-                          *Brazil
+                          Brazil
                         </li>
                         <li>
                           Bulgaria
@@ -2222,7 +2222,7 @@ below we will apply a
                           Honduras
                         </li>
                         <li>
-                          *India
+                          India
                         </li>
                         <li>
                           Indonesia
@@ -2306,10 +2306,10 @@ below we will apply a
                           Philippines
                         </li>
                         <li>
-                          *Poland
+                          Poland
                         </li>
                         <li>
-                          *Romania
+                          Romania
                         </li>
                         <li>
                           Rwanda
@@ -2327,7 +2327,7 @@ below we will apply a
                           Somalia
                         </li>
                         <li>
-                          *South Africa
+                          South Africa
                         </li>
                         <li>
                           South Georgia
