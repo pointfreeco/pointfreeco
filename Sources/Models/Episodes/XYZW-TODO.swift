@@ -22,8 +22,8 @@ TODO
     title: "TODO",
     trailerVideo: .init(
       bytesLength: 0, // TODO
-      downloadUrl: "TODO",
-      streamingSource: "TODO"
+      vimeoId: 0, // TODO
+      vimeoSecret: "" // TODO
     )
   )
 }
