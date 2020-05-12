@@ -249,12 +249,7 @@ private func planFeatures(
   episodeStats: EpisodeStats,
   lane: Pricing.Lane
 ) -> Node {
-  guard
-    currentUser == nil,
-    lane == .personal
-    else { return [] }
-
-  return .gridColumn(
+  .gridColumn(
     sizes: [.mobile: 12],
     .ul(
       attributes: [
