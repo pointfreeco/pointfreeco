@@ -25,6 +25,7 @@ public struct EnvVars: Codable {
   public var mailgun = Mailgun()
   public var port = 8080
   public var postgres = Postgres()
+  public var regionalDiscountCouponId: Coupon.Id = .init(rawValue: "regional-discount")
   public var rssUserAgentWatchlist: [String] = []
   public var stripe = Stripe()
 
@@ -34,6 +35,7 @@ public struct EnvVars: Codable {
     case baseUrl = "BASE_URL"
     case port = "PORT"
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
+    case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
   }
 
   public enum AppEnv: String, Codable {

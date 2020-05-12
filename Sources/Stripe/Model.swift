@@ -5,6 +5,7 @@ import TaggedMoney
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
+  public var country: Country
   public var customer: Customer.Id
   public var expMonth: Int
   public var expYear: Int
@@ -14,6 +15,7 @@ public struct Card: Codable, Equatable {
 
   public init(
     brand: Brand,
+    country: Country,
     customer: Customer.Id,
     expMonth: Int,
     expYear: Int,
@@ -22,6 +24,7 @@ public struct Card: Codable, Equatable {
     object: Object
     ) {
     self.brand = brand
+    self.country = country
     self.customer = customer
     self.expMonth = expMonth
     self.expYear = expYear
@@ -30,6 +33,7 @@ public struct Card: Codable, Equatable {
     self.object = object
   }
 
+  public typealias Country = Tagged<(country: (), Card), String>
   public typealias Id = Tagged<Card, String>
 
   public enum Object: String, Codable { case card }
@@ -53,6 +57,7 @@ public struct Card: Codable, Equatable {
 
   private enum CodingKeys: String, CodingKey {
     case brand
+    case country
     case customer
     case expMonth = "exp_month"
     case expYear = "exp_year"
@@ -98,7 +103,7 @@ public struct Coupon: Equatable {
     case let .percentOff(percentOff):
       return cents.map { cents -> Int in
         let discountPercent = Double(100 - percentOff) / 100
-        return Int(Double(cents) * discountPercent)
+        return Int(round(Double(cents) * discountPercent))
       }
     }
   }

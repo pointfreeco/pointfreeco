@@ -8,6 +8,7 @@ public struct SubscribeData: Equatable {
   public var referralCode: User.ReferralCode?
   public var teammates: [EmailAddress]
   public var token: Stripe.Token.Id
+  public var useRegionalDiscount: Bool
 
   public init(
     coupon: Stripe.Coupon.Id?,
@@ -15,7 +16,8 @@ public struct SubscribeData: Equatable {
     pricing: Pricing,
     referralCode: User.ReferralCode?,
     teammates: [EmailAddress],
-    token: Stripe.Token.Id
+    token: Stripe.Token.Id,
+    useRegionalDiscount: Bool
   ) {
     self.coupon = coupon
     self.isOwnerTakingSeat = isOwnerTakingSeat
@@ -23,6 +25,7 @@ public struct SubscribeData: Equatable {
     self.referralCode = referralCode
     self.teammates = teammates
     self.token = token
+    self.useRegionalDiscount = useRegionalDiscount
   }
 
   public enum CodingKeys: String, CodingKey {
@@ -32,5 +35,6 @@ public struct SubscribeData: Equatable {
     case referralCode = "ref"
     case teammates
     case token
+    case useRegionalDiscount
   }
 }

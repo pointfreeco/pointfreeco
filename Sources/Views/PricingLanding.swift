@@ -1,3 +1,4 @@
+import Ccmark
 import Css
 import FunctionalCss
 import Html
@@ -357,7 +358,10 @@ func pricingPlan(
           plan.features.map { feature in
             .li(
               attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-              [.text(feature)]
+              .div(
+                attributes: [.class([pricingPlanFeatureClass])],
+                .raw(unsafeMark(from: feature))
+              )
             )
           }
         )
@@ -409,7 +413,8 @@ private func pricingPlanCta(
                     billing: nil,
                     isOwnerTakingSeat: nil,
                     teammates: nil,
-                    referralCode: nil
+                    referralCode: nil,
+                    useRegionalDiscount: false
                   )
                   return currentUser == nil ? .login(redirect: url(to: route)) : route
                 }
@@ -560,14 +565,15 @@ private let faqItems: [Node] = Faq.allFaqs.flatMap { faq in
       ],
       .text(faq.question)
     ),
-    .p(
+    .markdownBlock(
       attributes: [
         .class([
           Class.pf.colors.fg.gray400,
           Class.padding([.mobile: [.bottom: 2]]),
           ])
       ],
-      .raw(faq.answer)
+      faq.answer,
+      options: CMARK_OPT_UNSAFE
     )
   ]
 }
@@ -734,7 +740,8 @@ private func footer(
               billing: nil,
               isOwnerTakingSeat: nil,
               teammates: nil,
-              referralCode: nil
+              referralCode: nil,
+              useRegionalDiscount: false
             )
           )
         ),
@@ -814,6 +821,11 @@ struct PricingPlan {
         "Over \(episodeHourCount.rawValue) hours of video",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
+        """
+        [Regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
+        and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+        available
+        """
       ],
       title: "Personal"
     )
@@ -851,19 +863,6 @@ private struct Faq {
 
   static let allFaqs = [
     Faq(
-      question: "Do you offer student discounts?",
-      answer: """
-We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
-student status (e.g. scan of ID card) we will give you a 50% discount off of the Personal plan.
-"""
-    ),
-    Faq(
-      question: "Do you offer referral discounts?",
-      answer: """
-We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
-"""
-    ),
-    Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
 Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
@@ -875,6 +874,25 @@ time you have left in your current billing period.
 A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
 and reassigned at any time. Colleagues are invited to your team over email.
 """),
+    Faq(
+      question: "Do you offer student discounts?",
+      answer: """
+We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
+student status (e.g. scan of ID card) we will give you a <strong>50% discount</strong> off of the Personal plan.
+"""
+    ),
+    Faq(
+      question: "Do you offer referral discounts?",
+      answer: """
+We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
+"""
+    ),
+    Faq(
+      question: "Do you offer country-based discounts?",
+      answer: """
+Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
+"""
+    ),
   ]
 }
 
@@ -923,6 +941,8 @@ public let extraSubscriptionLandingStyles =
   Breakpoint.desktop.query(only: screen) {
     extraSubscriptionLandingDesktopStyles
     }
+    <> markdownBlockStyles
+    <> pricingPlanFeatureStyle
     <> planItem % width(.pct(100))
     <> testimonialContainer % (
       height(.px(380))
@@ -953,3 +973,7 @@ private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
 private let planItem = CssSelector.class("plan-item")
 private let testimonialContainer = CssSelector.class("testimonial-container")
 private let testimonialItem = CssSelector.class("testimonial-item")
+
+let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
+let pricingPlanFeatureStyle: Stylesheet =
+  (pricingPlanFeatureClass > "p") % margin(all: 0)

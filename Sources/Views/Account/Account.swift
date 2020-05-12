@@ -320,7 +320,6 @@ to consume our videos: an RSS feed that can be used with podcast apps!
         ),
         rssLink
       )
-
     )
   )
 }
@@ -355,9 +354,6 @@ private func referAFriend(
   let referralUrl = url(
     to: .subscribeConfirmation(
       lane: .personal,
-      billing: nil,
-      isOwnerTakingSeat: nil,
-      teammates: nil,
       referralCode: accountData.currentUser.referralCode
     )
   )

@@ -287,7 +287,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -366,7 +367,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     Current.stripe.fetchSubscription = { _ in
@@ -409,6 +411,310 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(balance, -18_00)
     XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
     XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+  }
+
+  func testHappyPath_RegionalDiscount() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(.mock)
+    }
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.useRegionalDiscount = true
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
+  }
+
+  func testUnhappyPath_RegionalDiscount() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "US" }
+    customer.sources = .mock([.left(card)])
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(.mock)
+    }
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.useRegionalDiscount = true
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    XCTAssertEqual(subscriptionCoupon, nil)
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
+  }
+
+  func testRegionalDiscountWithReferral_Monthly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualMonthly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef",
+      useRegionalDiscount: true
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          { update($0) {
+            $0.id = "cus_referrer"
+            $0.balance = -18_00
+          }
+        })
+      })
+    }
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+  }
+
+  func testRegionalDiscountWithReferral_Yearly() {
+    let referrer = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    let referred = Current.database
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    var session = Session.loggedIn
+    session.user = .standard(referred.id)
+
+    var customer = Customer.mock
+    let card = update(Card.mock) { $0.country = "BO" }
+    customer.sources = .mock([.left(card)])
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      pricing: .individualYearly,
+      referralCode: referrer.referralCode,
+      teammates: [],
+      token: "deadbeef",
+      useRegionalDiscount: true
+    )
+
+    Current.stripe.fetchSubscription = { _ in
+      pure(update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          { update($0) {
+            $0.id = "cus_referrer"
+            $0.balance = -18_00
+          }
+        })
+      })
+    }
+
+    var subscriptionCoupon: Coupon.Id?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return pure(update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      })
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return pure(customer)
+    }
+    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return pure(customer)
+    }
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(balance, -9_00)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+  }
+
+  func testSubscribingWithRegionalDiscountAndCoupon() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    Current.stripe.createCustomer = { _, _, _, _, _ in
+      var customer = Customer.mock
+      let card = update(Card.mock) { $0.country = "BO" }
+      customer.sources = .mock([.left(card)])
+      return pure(customer)
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
+    subscribeData.useRegionalDiscount = true
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 }
 
@@ -552,7 +858,8 @@ final class SubscribeTests: TestCase {
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-      token: "stripe-deadbeef"
+      token: "stripe-deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(
@@ -577,7 +884,8 @@ final class SubscribeTests: TestCase {
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
-      token: "stripe-deadbeef"
+      token: "stripe-deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(
@@ -618,7 +926,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(
@@ -642,7 +951,8 @@ final class SubscribeTests: TestCase {
       pricing: .teamYearly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(
@@ -667,7 +977,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(
@@ -696,7 +1007,8 @@ final class SubscribeTests: TestCase {
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef"
+      token: "deadbeef",
+      useRegionalDiscount: false
     )
 
     let conn = connection(

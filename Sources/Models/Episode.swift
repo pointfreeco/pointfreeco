@@ -277,7 +277,7 @@ public struct Episode: Equatable {
     public var timestamp: Int?
     public var type: BlockType
 
-    public init(content: String, timestamp: Int?, type: BlockType) {
+    public init(content: String, timestamp: Int? = nil, type: BlockType) {
       self.content = content
       self.timestamp = timestamp
       self.type = type
