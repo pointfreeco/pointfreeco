@@ -25,7 +25,7 @@ public struct EnvVars: Codable {
   public var mailgun = Mailgun()
   public var port = 8080
   public var postgres = Postgres()
-  public var regionalDiscountCouponId: Coupon.Id = .init(rawValue: "regional-discount")
+  public var regionalDiscountCouponId: Coupon.Id = "regional-discount"
   public var rssUserAgentWatchlist: [String] = []
   public var stripe = Stripe()
 
@@ -110,6 +110,7 @@ extension EnvVars {
     self.mailgun = try .init(from: decoder)
     self.port = Int(try container.decode(String.self, forKey: .port))!
     self.postgres = try .init(from: decoder)
+    self.regionalDiscountCouponId = try container.decode(Coupon.Id.self, forKey: .regionalDiscountCouponId)
     self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
       .split(separator: ",")
       .map(String.init)
@@ -130,6 +131,7 @@ extension EnvVars {
     try container.encode(
       String(self.rssUserAgentWatchlist.joined(separator: ",")), forKey: .rssUserAgentWatchlist
     )
+    try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try self.stripe.encode(to: encoder)
   }
 }
