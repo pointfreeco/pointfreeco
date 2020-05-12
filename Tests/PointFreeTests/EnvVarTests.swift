@@ -17,6 +17,7 @@ class EnvVarTests: TestCase {
       "MAILGUN_DOMAIN": "mg.domain.com",
       "MAILGUN_PRIVATE_API_KEY": "deadbeef-mg-api-key",
       "PORT": "8080",
+      "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
       "RSS_USER_AGENT_WATCHLIST": "blob,gob",
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
