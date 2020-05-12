@@ -30,7 +30,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -64,7 +65,43 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let html = String(decoding: result.perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
+
+      assertSnapshot(
+        matching: webView,
+        as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
+        named: "desktop"
+      )
+    }
+    #endif
+  }
+
+  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: nil,
+          useRegionalDiscount: true
         ),
         session: .loggedIn
       )
@@ -101,7 +138,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -138,7 +176,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: .some(.monthly),
           isOwnerTakingSeat: true,
           teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -175,7 +214,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: .some(.monthly),
           isOwnerTakingSeat: false,
           teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -212,7 +252,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -249,7 +290,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -283,7 +325,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -305,7 +348,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedOut
       )
@@ -365,7 +409,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         session: .loggedIn
       )
@@ -401,9 +446,43 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
         ),
         session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testPersonal_ReferralCodeAndRegionalDiscount() {
+    Current.database.fetchUserByReferralCode = { code in pure(update(.mock) { $0.referralCode = code }) }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: "cafed00d",
+          useRegionalDiscount: true
+        ),
+        session: .loggedIn
       )
     )
     let result = conn |> siteMiddleware
@@ -437,7 +516,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
         ),
         session: .loggedOut
       )
@@ -459,7 +539,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
         ),
         session: .loggedOut
       )
@@ -483,7 +564,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
         ),
         session: .loggedOut
       )
@@ -510,7 +592,8 @@ class SubscriptionConfirmationTests: TestCase {
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: "cafed00d"
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
         ),
         session: .loggedIn(as: user)
       )

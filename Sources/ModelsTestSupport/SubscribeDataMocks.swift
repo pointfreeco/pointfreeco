@@ -7,7 +7,8 @@ extension SubscribeData {
     pricing: .init(billing: .monthly, quantity: 1),
     referralCode: nil,
     teammates: [],
-    token: "stripe-deadbeef"
+    token: "stripe-deadbeef",
+    useRegionalDiscount: false
   )
 
   public static let individualYearly = SubscribeData(
@@ -16,7 +17,8 @@ extension SubscribeData {
     pricing: .init(billing: .yearly, quantity: 1),
     referralCode: nil,
     teammates: [],
-    token: "stripe-deadbeef"
+    token: "stripe-deadbeef",
+    useRegionalDiscount: false
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
@@ -26,7 +28,8 @@ extension SubscribeData {
       pricing: .init(billing: .yearly, quantity: quantity),
       referralCode: nil,
       teammates: [],
-      token: "stripe-deadbeef"
+      token: "stripe-deadbeef",
+      useRegionalDiscount: false
     )
   }
 }
