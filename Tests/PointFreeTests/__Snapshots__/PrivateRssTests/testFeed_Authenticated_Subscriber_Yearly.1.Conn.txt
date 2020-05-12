@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 15845
+Content-Length: 15875
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -151,11 +151,11 @@ with anyone else.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&amp;profile_id=174"
+      <enclosure url="https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&amp;profile_id=175&amp;download=1"
                  length="325311571"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&amp;profile_id=174"
+      <media:content url="https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&amp;profile_id=175&amp;download=1"
                      length="325311571"
                      type="video/mp4"
                      medium="video">
@@ -346,11 +346,11 @@ with anyone else.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&amp;profile_id=174&amp;download=1"
+      <enclosure url="https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&amp;profile_id=175&amp;download=1"
                  length="238376744"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&amp;profile_id=174&amp;download=1"
+      <media:content url="https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&amp;profile_id=175&amp;download=1"
                      length="238376744"
                      type="video/mp4"
                      medium="video">

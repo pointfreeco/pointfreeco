@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/atom.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7424
+Content-Length: 7588
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -138,11 +138,11 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://www.vimeo.com/pointfreeco/download-video.mp4"
+      <enclosure url="https://player.vimeo.com/external/1234567890.hd.mp4?s=deadbeef&amp;profile_id=175&amp;download=1"
                  length="500000000"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://www.vimeo.com/pointfreeco/download-video.mp4"
+      <media:content url="https://player.vimeo.com/external/1234567890.hd.mp4?s=deadbeef&amp;profile_id=175&amp;download=1"
                      length="500000000"
                      type="video/mp4"
                      medium="video">
@@ -209,11 +209,11 @@ text, no markdown allowed. Here is some more text just to have some filler.
       <itunes:episodeType>
         trailer
       </itunes:episodeType>
-      <enclosure url="https://www.vimeo.com/pointfreeco/download-trailer.mp4"
+      <enclosure url="https://player.vimeo.com/external/123456.hd.mp4?s=deadbeef&amp;profile_id=175&amp;download=1"
                  length="5000000"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://www.vimeo.com/pointfreeco/download-trailer.mp4"
+      <media:content url="https://player.vimeo.com/external/123456.hd.mp4?s=deadbeef&amp;profile_id=175&amp;download=1"
                      length="5000000"
                      type="video/mp4"
                      medium="video">

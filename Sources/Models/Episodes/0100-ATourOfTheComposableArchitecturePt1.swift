@@ -1,7 +1,7 @@
 import Foundation
 
 extension Episode {
-  public static let ep100_ATourOfTheComposableArchitecture = Episode(
+  public static let ep100_ATourOfTheComposableArchitecture_pt1 = Episode(
     blurb: """
 It's our 100th episode 🎉! To celebrate, we are finally releasing the Composable Architecture as an open source library, which means you can start using it in your applications today! Let's take a tour of the library, see how it's changed from what we built in earlier episodes, and build a brand new app with it.
 """,
@@ -9,8 +9,8 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 402161784,
-      downloadUrl: "https://player.vimeo.com/external/414016119.hd.mp4?s=2859c821cb22e295fb771d60b979b4f9039e8bab&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/414016119"
+      vimeoId: 414016119,
+      vimeoSecret: "2859c821cb22e295fb771d60b979b4f9039e8bab"
     ),
     id: 100,
     image: "https://i.vimeocdn.com/video/887735650.jpg",
@@ -34,9 +34,9 @@ The Composable Architecture was designed over the course of nearly 9 months of e
     subtitle: nil,
     title: "A Tour of the Composable Architecture: Part 1",
     trailerVideo: .init(
-      bytesLength: 127800813,
-      downloadUrl: "https://player.vimeo.com/external/414015638.hd.mp4?s=0adee8e9d00f457d1afbcb1189d391e88ca76f4f&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/414015638"
+      bytesLength: 402161784,
+      vimeoId: 414015638,
+      vimeoSecret: "0adee8e9d00f457d1afbcb1189d391e88ca76f4f"
     ),
     transcriptBlocks: _transcriptBlocks
   )

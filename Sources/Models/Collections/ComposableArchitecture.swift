@@ -25,6 +25,12 @@ We begin our exploration of application architecture by understanding the core p
 As we've seen in this section, SwiftUI is incredibly powerful and is a true paradigm shift in way of building applications. However, some things are still quite difficult to do in SwiftUI, like testing. In this episode we explore how one would test a vanilla SwiftUI application so that we can compare it to testing an application built with the Composable Architecture.
 """#,
             content: .episode(.ep85_testableStateManagement_thePoint)
+          ),
+          .init(
+            blurb: #"""
+The Composable Architecture unlocks some incredible ways to perform snapshot testing in SwiftUI. We are able to use the `Store` to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
+"""#,
+            content: .episode(.ep86_swiftUiSnapshotTesting)
           )
         ],
         title: "SwiftUI and State Management",
@@ -122,7 +128,7 @@ An architecture is only as strong as its testability, and the Composable Archite
         related: [
           .init(
             blurb: #"""
-the Composable Architecture also unlocks some incredibly ways to perform snapshot testing in SwiftUI. We are able to use the store to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
+The Composable Architecture also unlocks some incredible ways to perform snapshot testing in SwiftUI. We are able to use the `Store` to play a series of user actions, and then take snapshots of the UI at each step of the way. This gives us lightweight integration testing of our UI with very little work that rivals the tools that Xcode gives us out of the box.
 """#,
             content: .episode(.ep86_swiftUiSnapshotTesting)
           ),
@@ -150,6 +156,33 @@ Although the "environment" technique of dependency injection is powerful, and ca
 The Composable Architecture is now quite robust and handles many things that are important to real life applications, such as composition, modularity, side-effects and testing. With this foundation set we can now look for ways to take the architecture to the _next_ level.
 """#
       ),
+
+      .init(
+        blurb: #"""
+We can now perform effects in the Composable Architecture and we can even test how those effects interact with the system. However, the way in which we give the effects the dependencies they need to do their job is not ideal. Turns out we can bake the notion of dependencies directly into the architecture, and this opens up whole new worlds of possibilities.
+"""#,
+        coreLessons: [
+          .init(episode: .ep91_modularDependencyInjection_pt1),
+          .init(episode: .ep92_modularDependencyInjection_pt2),
+          .init(episode: .ep93_modularDependencyInjection_pt3),
+        ],
+        related: [
+          .init(
+            blurb: #"""
+The way we model dependencies in the Composable Architecture is heavily inspired by the dependencies approached we covered in the early episodes of Point-Free. These episodes demonstrate a lightweight way of modeling dependencies that eschews protocols in favor of simple data types, and shows that testing and mocking becomes much easier.
+"""#,
+            content: .episodes([
+              .ep16_dependencyInjectionMadeEasy,
+              .ep18_dependencyInjectionMadeComfortable
+            ])
+          ),
+        ],
+        title: "Dependency Management",
+        whereToGoFromHere: #"""
+Next we explore adaptation of the Composable Architecture, which is the act of allowing a single unit of business logic power multiple use cases and multiple platforms. This comes with lots of benefits, and helps unlock new capabilities of the architecture.
+"""#
+      ),
+
       .init(
         blurb: #"""
 We have built up quite a few features for the Composable Architecture over the past 16 episodes, but it still has a few tricks up its sleeve. The architecture can also be adaptive so that it is capable of being used in multiple situations. After discussing the basics of this idea, we demonstrate it by porting our demo application to macOS.
