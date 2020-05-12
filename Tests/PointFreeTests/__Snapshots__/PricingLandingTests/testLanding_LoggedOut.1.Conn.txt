@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 203249
+Content-Length: 207854
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1706,6 +1706,98 @@ html {
     </style>
     <style>
       
+
+.md-ctn hr {
+  margin-top       : 2rem;
+  margin-right     : 30%;
+  margin-bottom    : 2rem;
+  margin-left      : 30%;
+  border-top-style : solid;
+  border-top-width : 1px;
+  background-color : #ffffff;
+  border-top-color : #ddd;
+  height           : 0px;
+}
+
+.md-ctn a {
+  text-decoration : underline;
+}
+
+.md-ctn a:link {
+  color : #291a40;
+}
+
+.md-ctn a:visited {
+  color : #291a40;
+}
+
+.md-ctn a:hover {
+  color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
+}
+
+.md-ctn blockquote {
+  font-style : italic;
+}
+
+.md-ctn p {
+  word-wrap : break-word;
+}
+
+.md-ctn p:not(:last-child) {
+  margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top                : 0.5rem;
+  padding-bottom             : 0.5rem;
+  padding-right              : 1rem;
+  padding-left               : 1rem;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  display                    : block;
+  overflow-x                 : auto;
+  margin-bottom              : 1.5rem;
+}
+
+.md-ctn code {
+  font-family                : monospace;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
+  border-top-left-radius     : 3px;
+  border-top-right-radius    : 3px;
+  border-bottom-right-radius : 3px;
+  border-bottom-left-radius  : 3px;
+  border-top-style           : solid;
+  border-right-style         : solid;
+  border-bottom-style        : solid;
+  border-left-style          : solid;
+  border-top-width           : 1px;
+  border-right-width         : 1px;
+  border-bottom-width        : 1px;
+  border-left-width          : 1px;
+  padding-top                : 1px;
+  padding-bottom             : 1px;
+  padding-right              : 5px;
+  padding-left               : 5px;
+}
+
+.pricing-plan-feature > p {
+  margin-top    : 0;
+  margin-right  : 0;
+  margin-bottom : 0;
+  margin-left   : 0;
+}
+
 .plan-item {
   width : 100%;
 }
@@ -2087,16 +2179,28 @@ personal, team and enterprise subscriptions.">
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              Weekly newsletter access
+              <div class="pricing-plan-feature">
+                <p>Weekly newsletter access</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              1 free episodes with transcripts
+              <div class="pricing-plan-feature">
+                <p>1 free episodes with transcripts</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              1 free credit to redeem any subscriber-only episode
+              <div class="pricing-plan-feature">
+                <p>1 free credit to redeem any subscriber-only episode</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Download all episode playgrounds
+              <div class="pricing-plan-feature">
+                <p>Download all episode playgrounds</p>
+
+              </div>
             </li>
           </ul>
           <a href="/login?redirect=http://localhost:8080/pricing"
@@ -2188,19 +2292,39 @@ personal, team and enterprise subscriptions.">
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              All 2 episodes with transcripts
+              <div class="pricing-plan-feature">
+                <p>All 2 episodes with transcripts</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Over 0 hours of video
+              <div class="pricing-plan-feature">
+                <p>Over 0 hours of video</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Private RSS feed for offline viewing in podcast apps
+              <div class="pricing-plan-feature">
+                <p>Private RSS feed for offline viewing in podcast apps</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Download all episode playgrounds
+              <div class="pricing-plan-feature">
+                <p>Download all episode playgrounds</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
+and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
+available</p>
+
+              </div>
             </li>
           </ul>
-          <a href="/login?redirect=http://localhost:8080/subscribe/personal"
+          <a href="/login?redirect=http://localhost:8080/subscribe/personal?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2289,19 +2413,31 @@ personal, team and enterprise subscriptions.">
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              All personal plan features
+              <div class="pricing-plan-feature">
+                <p>All personal plan features</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              For teams of 2 or more
+              <div class="pricing-plan-feature">
+                <p>For teams of 2 or more</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Add teammates at any time with prorated billing
+              <div class="pricing-plan-feature">
+                <p>Add teammates at any time with prorated billing</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Remove and reassign teammates at any time
+              <div class="pricing-plan-feature">
+                <p>Remove and reassign teammates at any time</p>
+
+              </div>
             </li>
           </ul>
-          <a href="/login?redirect=http://localhost:8080/subscribe/team"
+          <a href="/login?redirect=http://localhost:8080/subscribe/team?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2365,19 +2501,34 @@ personal, team and enterprise subscriptions.">
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              For large teams
+              <div class="pricing-plan-feature">
+                <p>For large teams</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Unlimited, company-wide access to all content
+              <div class="pricing-plan-feature">
+                <p>Unlimited, company-wide access to all content</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Hassle-free team management
+              <div class="pricing-plan-feature">
+                <p>Hassle-free team management</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Custom sign up landing page for your company
+              <div class="pricing-plan-feature">
+                <p>Custom sign up landing page for your company</p>
+
+              </div>
             </li>
             <li class="m-pt1">
-              Invoiced billing
+              <div class="pricing-plan-feature">
+                <p>Invoiced billing</p>
+
+              </div>
             </li>
           </ul>
           <a href="mailto:support@pointfree.co"
@@ -2615,39 +2766,57 @@ directly to that point in the video.
           </h3>
           <p class="bold
                     fg-black">
-            Do you offer student discounts?
-          </p>
-          <p class="fg-gray400
-                    m-pb2">
-            We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
-student status (e.g. scan of ID card) we will give you a 50% discount off of the Personal plan.
-          </p>
-          <p class="bold
-                    fg-black">
-            Do you offer referral discounts?
-          </p>
-          <p class="fg-gray400
-                    m-pb2">
-            We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
-          </p>
-          <p class="bold
-                    fg-black">
             Can I upgrade my subscription from monthly to yearly?
           </p>
-          <p class="fg-gray400
-                    m-pb2">
-            Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
-time you have left in your current billing period.
-          </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
+time you have left in your current billing period.</p>
+
+          </div>
           <p class="bold
                     fg-black">
             How do team subscriptions work?
           </p>
-          <p class="fg-gray400
-                    m-pb2">
-            A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
-and reassigned at any time. Colleagues are invited to your team over email.
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
+and reassigned at any time. Colleagues are invited to your team over email.</p>
+
+          </div>
+          <p class="bold
+                    fg-black">
+            Do you offer student discounts?
           </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
+student status (e.g. scan of ID card) we will give you a <strong>50% discount</strong> off of the Personal plan.</p>
+
+          </div>
+          <p class="bold
+                    fg-black">
+            Do you offer referral discounts?
+          </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free!</p>
+
+          </div>
+          <p class="bold
+                    fg-black">
+            Do you offer country-based discounts?
+          </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer <a href="/subscribe/personal?useRegionalDiscount=true">regional</a> discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, <a href="/subscribe/personal?useRegionalDiscount=true">see here</a>.</p>
+
+          </div>
         </div>
       </div>
     </div>

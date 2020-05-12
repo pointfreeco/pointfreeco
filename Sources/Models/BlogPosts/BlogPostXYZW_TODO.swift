@@ -8,7 +8,7 @@ TODO
   contentBlocks: [
     // TODO
   ],
-  coverImage: "TODO",
+  coverImage: nil, // TODO
   id: 0, // TODO
   publishedAt: .distantFuture, // TODO
   title: "TODO"

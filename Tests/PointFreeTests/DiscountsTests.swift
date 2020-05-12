@@ -191,4 +191,19 @@ class DiscountsTests: TestCase {
       as: .ioConn
     )
   }
+  
+  func testDiscounts_UsingRegionalCouponId() {
+    assertSnapshot(
+      matching: siteMiddleware(
+        connection(
+          from: request(
+            with: secureRequest(
+              "http://localhost:8080/discounts/\(Current.envVars.regionalDiscountCouponId.rawValue)"
+            )
+          )
+        )
+      ),
+      as: .ioConn
+    )
+  }
 }

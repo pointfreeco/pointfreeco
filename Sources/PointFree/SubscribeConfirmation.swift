@@ -73,7 +73,8 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
       )
@@ -86,7 +87,8 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
       )
@@ -100,8 +102,6 @@ private func validateReferralCode(
       .mapExcept(requireSome)
       .flatMap { referrer in
         Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          // Alternatively, don't hit Stripe:
-//          .flatMap { $0?.stripeSubscriptionStatus == .active ? pure(referrer) : throwE(unit as Error) }
           .mapExcept(requireSome)
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId)
@@ -118,7 +118,8 @@ private func validateReferralCode(
                 billing: subscribeData.billing,
                 isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
                 teammates: subscribeData.teammates,
-                referralCode: nil
+                referralCode: nil,
+                useRegionalDiscount: subscribeData.useRegionalDiscount
               ),
               headersMiddleware: flash(.error, "Invalid referral code.")
             )
@@ -161,7 +162,8 @@ private let fetchAndValidateCoupon
         billing: nil,
         isOwnerTakingSeat: nil,
         teammates: nil,
-        referralCode: nil
+        referralCode: nil,
+        useRegionalDiscount: false
       ),
       headersMiddleware: flash(.error, couponError)
     )
@@ -174,7 +176,8 @@ private let fetchAndValidateCoupon
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil,
-          referralCode: nil
+          referralCode: nil,
+          useRegionalDiscount: false
         ),
         headersMiddleware: flash(.error, couponError)
       )
@@ -184,6 +187,7 @@ private let couponError = "That coupon code is invalid or has expired."
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.Id?) -> IO<Stripe.Coupon?> {
   guard let couponId = couponId else { return pure(nil) }
+  guard couponId != Current.envVars.regionalDiscountCouponId else { return pure(nil) }
   return Current.stripe.fetchCoupon(couponId)
     .run
     .map(^\.right)

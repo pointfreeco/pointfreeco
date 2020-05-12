@@ -273,7 +273,7 @@ So, that's the basics of the [Composable Architecture](https://github.com/pointf
       type: .paragraph
     )
   ],
-  coverImage: "TODO",
+  coverImage: nil,
   id: 41,
   publishedAt: .init(timeIntervalSince1970: 1588568400),
   title: "Composable Architecture, the library"

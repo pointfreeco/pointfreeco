@@ -76,7 +76,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         billing: billing ?? .yearly,
         isOwnerTakingSeat: true,
         referralCode: nil,
-        teammates: []
+        teammates: [],
+        useRegionalDiscount: false
       )
       return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. subscribeData .*. couponId .*. unit))
         |> discountSubscribeConfirmation
@@ -177,13 +178,16 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. data .*. unit))
         |> subscribeMiddleware
 
-    case let .subscribeConfirmation(lane, billing, isOwnerTakingSeat, teammates, referralCode):
+    case let .subscribeConfirmation(
+      lane, billing, isOwnerTakingSeat, teammates, referralCode, useRegionalDiscount
+      ):
       let teammates = lane == .team ? (teammates ?? [""]) : []
       let subscribeData = SubscribeConfirmationData(
         billing: billing ?? .yearly,
         isOwnerTakingSeat: isOwnerTakingSeat ?? true,
         referralCode: referralCode,
-        teammates: teammates
+        teammates: teammates,
+        useRegionalDiscount: useRegionalDiscount ?? false
       )
       return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation

@@ -37,14 +37,155 @@ public func subscriptionConfirmation(
       subscriberState: subscriberState,
       referrer: referrer,
       episodeStats: episodeStats,
-      lane: lane
+      lane: lane,
+      coupon: coupon,
+      useRegionalDiscount: subscribeData.useRegionalDiscount
     ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
     currentUser != nil
       ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
       : [],
-    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon, referrer: referrer)
+    total(
+      isLoggedIn: currentUser != nil,
+      lane: lane,
+      coupon: coupon,
+      referrer: referrer,
+      useRegionalDiscount: subscribeData.useRegionalDiscount
+    )
+  )
+}
+
+private func additionalDiscountInfo(
+  referrer: User?,
+  coupon: Coupon?,
+  useRegionalDiscount: Bool
+) -> Node {
+
+  func additionalReferrerInfo(referrer: User) -> Node {
+    [
+      """
+      You are using the referral code \(.strong(.text(referrer.referralCode.rawValue))) to
+      receive one month free and to give \(.strong(.text(referrer.name ?? "your referrer"))) a
+      free month.
+      """,
+      .input(attributes: [
+        .name(SubscribeData.CodingKeys.referralCode.rawValue),
+        .type(.hidden),
+        .value(referrer.referralCode.rawValue),
+      ])
+    ]
+  }
+
+  func additionalCouponInfo(coupon: Coupon) -> Node {
+    [
+      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+        ?? " You are using a coupon",
+      ", which gives you \(coupon.formattedDescription).",
+      .input(
+        attributes: [
+          .class([Class.display.none]),
+          .disabled(true),
+          .name(SubscribeData.CodingKeys.coupon.rawValue),
+          .placeholder("Coupon Code"),
+          .type(.hidden),
+          .value(coupon.id.rawValue)
+        ]
+      )
+    ]
+  }
+
+  let additionalRegionalDiscountInfo: Node = [
+    """
+    To make up for currency discrepencies between the United States and other countries, we offer
+    a regional discount. If your credit card's issuing country is one of the countries listed
+    below we will apply a \(.strong("50% discount")) to every billing cycle.
+    """,
+    .details(
+      .summary(attributes: [.class([Class.cursor.pointer])], "Expand country list"),
+      .div(
+        attributes: [
+          .class([
+            Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+          ])
+        ],
+        .ul(
+          .fragment(
+            DiscountCountry.all.map { country in
+              .li(.text(country.name))
+            }
+          )
+        )
+      )
+    ),
+    .input(
+      attributes: [
+        .class([Class.display.none]),
+        .disabled(true),
+        .name(SubscribeData.CodingKeys.useRegionalDiscount.rawValue),
+        .placeholder("Coupon Code"),
+        .type(.hidden),
+        .value("\(useRegionalDiscount)")
+      ]
+    )
+  ]
+
+  if let referrer = referrer, useRegionalDiscount {
+    return additionalDiscountInfo(
+      title: "Referral credit and regional discount",
+      message: [
+        .ul(
+          .li(.p(additionalReferrerInfo(referrer: referrer))),
+          .li(.p(additionalRegionalDiscountInfo))
+        )
+      ]
+    )
+  }
+
+  if let referrer = referrer {
+    return additionalDiscountInfo(
+      title: "Referral credit",
+      message: .p(additionalReferrerInfo(referrer: referrer))
+    )
+  }
+
+  if let coupon = coupon {
+    return additionalDiscountInfo(
+      title: "Coupon applied",
+      message: .p(additionalCouponInfo(coupon: coupon))
+    )
+  }
+
+  if useRegionalDiscount {
+    return additionalDiscountInfo(
+      title: "Regional discount",
+      message: .p(additionalRegionalDiscountInfo)
+    )
+  }
+
+  return []
+}
+
+private func additionalDiscountInfo(
+  title: String,
+  message: Node
+) -> Node {
+  .gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [.style(margin(leftRight: .auto))],
+    .div(
+      attributes: [
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+        .class([Class.margin([.mobile: [.top: 2]]), Class.padding([.mobile: [.all: 2]])])
+      ],
+      .h4(
+        attributes: [
+          .class([Class.pf.type.responsiveTitle6, Class.padding([.mobile: [.bottom: 1]])])
+        ],
+        .text(title)
+      ),
+      message
+    )
   )
 }
 
@@ -53,41 +194,38 @@ private func header(
   subscriberState: SubscriberState = .nonSubscriber,
   referrer: User?,
   episodeStats: EpisodeStats,
-  lane: Pricing.Lane
+  lane: Pricing.Lane,
+  coupon: Coupon?,
+  useRegionalDiscount: Bool
 ) -> Node {
 
-  let header: Node
-  if referrer != nil {
-    header = [
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.start(.mobile)])],
-        "Subscribe today with this referral code to get \(.strong("one month free")) and instant access to:"
-      ),
-    ]
-  } else {
-    header = [
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.start(.mobile)])],
-        "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
-      ),
-      .gridColumn(
-        sizes: [:],
-        attributes: [.class([Class.grid.end(.mobile)])],
-        .a(
-          attributes: [
-            .class([
-              Class.pf.colors.link.gray650,
-              Class.pf.type.underlineLink
-            ]),
-            .href(url(to: .pricingLanding))
-          ],
-          "Change plan"
-        )
-      ),
-    ]
-  }
+  let header: Node = [
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.start(.mobile)])],
+      "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
+    ),
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.end(.mobile)])],
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.gray650,
+            Class.pf.type.underlineLink
+          ]),
+          .href(url(to: .pricingLanding))
+        ],
+        "Change plan"
+      )
+    ),
+    planFeatures(
+      currentUser: currentUser,
+      episodeStats: episodeStats,
+      lane: lane
+    ),
+    additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount)
+  ]
 
   return [
     .input(attributes: [
@@ -95,27 +233,13 @@ private func header(
       .type(.hidden),
       .value(lane.rawValue),
     ]),
-    referrer
-      .map {
-        .input(attributes: [
-          .name(SubscribeData.CodingKeys.referralCode.rawValue),
-          .type(.hidden),
-          .value($0.referralCode.rawValue),
-        ])
-      }
-      ?? [],
     .gridRow(
       attributes: [.class([moduleRowClass])],
       .gridColumn(
         sizes: [.mobile: 12],
         .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
       ),
-      header,
-      planFeatures(
-        currentUser: currentUser,
-        episodeStats: episodeStats,
-        lane: lane
-      )
+      header
     )
   ]
 }
@@ -125,12 +249,7 @@ private func planFeatures(
   episodeStats: EpisodeStats,
   lane: Pricing.Lane
 ) -> Node {
-  guard
-    currentUser == nil,
-    lane == .personal
-    else { return [] }
-
-  return .gridColumn(
+  .gridColumn(
     sizes: [.mobile: 12],
     .ul(
       attributes: [
@@ -153,7 +272,10 @@ private func planFeatures(
           .map { feature in
             .li(
               attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-              .text(feature)
+              .div(
+                attributes: [.class([pricingPlanFeatureClass])],
+                .raw(unsafeMark(from: feature))
+              )
             )
         }
       )
@@ -448,7 +570,11 @@ private func billingPeriod(
           ],
           lane == .team
             ? "$144 per member per year"
-            : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
+            : discountedBillingIntervalSubtitle(
+              interval: .year,
+              coupon: coupon,
+              useRegionalDiscount: subscribeData.useRegionalDiscount
+          )
         )
       )
     )
@@ -506,7 +632,11 @@ private func billingPeriod(
           ],
           lane == .team
             ? "$16 per member, per month"
-            : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
+            : discountedBillingIntervalSubtitle(
+              interval: .month,
+              coupon: coupon,
+              useRegionalDiscount: subscribeData.useRegionalDiscount
+          )
         )
       )
     )
@@ -520,14 +650,20 @@ private func billingPeriod(
   )
 }
 
-private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: Coupon?) -> Node {
+private func discountedBillingIntervalSubtitle(
+  interval: Plan.Interval,
+  coupon: Coupon?,
+  useRegionalDiscount: Bool
+) -> Node {
+  let regionalFactor = useRegionalDiscount ? 0.5 : 1.0
+
   switch interval {
   case .month:
-    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
+    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per month")
   case .year:
-    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
+    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per year")
   }
@@ -652,40 +788,7 @@ window.addEventListener("load", function() {
   })
 })
 """)
-    ),
-    coupon.map(discount) ?? []
-  )
-}
-
-private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
-  guard let coupon = coupon else { return [] }
-
-  return .span(
-    attributes: [
-      .class([
-        Class.pf.type.body.small,
-        Class.pf.colors.fg.gray400
-      ]),
-    ],
-    .br,
-    .br,
-    coupon.name
-      .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
-      ?? " You are using a coupon",
-    ", which gives you \(coupon.formattedDescription)."
-  )
-}
-
-private func discount(coupon: Stripe.Coupon) -> Node {
-  return .input(
-    attributes: [
-      .class([Class.display.none]),
-      .disabled(true),
-      .name("coupon"),
-      .placeholder("Coupon Code"),
-      .type(.hidden),
-      .value(coupon.id.rawValue)
-    ]
+    )
   )
 }
 
@@ -693,9 +796,10 @@ private func total(
   isLoggedIn: Bool,
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
-  referrer: User?
+  referrer: User?,
+  useRegionalDiscount: Bool
 ) -> Node {
-  let discount = coupon?.discount ?? { $0 }
+  let discount = coupon?.discount(for:) ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
   return .gridRow(
     attributes: [
@@ -715,10 +819,8 @@ private func total(
             Class.pf.colors.fg.gray400
           ]),
           .id("pricing-preview"),
-        ],
-        []
-      ),
-      discountedTotalDisclaimer(coupon: coupon)
+        ]
+      )
     ),
     .gridColumn(
       sizes: [:],
@@ -761,11 +863,12 @@ function updateSeats() {
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
+  var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
-      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01
-      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01
+      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
   )
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
@@ -773,30 +876,14 @@ function updateSeats() {
       ? monthlyPrice
       : (monthlyPrice * 12 - \#(referralDiscount))
   )
-  if (\#(referrer == nil)) {
-    document.getElementById("pricing-preview").innerHTML = (
-      "You will be charged <strong>"
-        + format(monthlyPricePerSeat)
-        + " per month</strong>"
-        + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-        + (monthly ? "" : " times <strong>12 months</strong>")
-        + "."
-    )
-  } else {
-    document.getElementById("pricing-preview").innerHTML = (
-      monthly
-        ? (
-          "You and your referrer will receive an <strong>"
-            + format(\#(referralDiscount))
-            + " credit</strong> when you subscribe. It will apply to future invoices."
-        )
-        : (
-          "You and your referrer will <strong>save "
-            + format(\#(referralDiscount))
-            + "</strong> when you subscribe. You will be charged $150 today and $168 on renewal."
-      )
-    )
-  }
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPricePerSeat)
+      + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
 }
 window.addEventListener("load", function() {
   updateSeats()
@@ -851,7 +938,8 @@ window.addEventListener("load", function() {
                     billing: nil,
                     isOwnerTakingSeat: nil,
                     teammates: nil,
-                    referralCode: referrer?.referralCode
+                    referralCode: referrer?.referralCode,
+                    useRegionalDiscount: useRegionalDiscount
                 )
               )
             )
@@ -881,3 +969,115 @@ public let currencyFormatter: NumberFormatter = {
   formatter.numberStyle = .currency
   return formatter
 }()
+
+public struct DiscountCountry {
+  public var countryCode: Stripe.Card.Country
+  public var name: String
+
+  public static let all = [
+    DiscountCountry(countryCode: "AF", name: "Afghanistan"),
+    DiscountCountry(countryCode: "AL", name: "Albania"),
+    DiscountCountry(countryCode: "DZ", name: "Algeria"),
+    DiscountCountry(countryCode: "AO", name: "Angola"),
+    DiscountCountry(countryCode: "AG", name: "Antigua and Barbuda"),
+    DiscountCountry(countryCode: "AR", name: "Argentina"),
+    DiscountCountry(countryCode: "BS", name: "Bahamas"),
+    DiscountCountry(countryCode: "BD", name: "Bangladesh"),
+    DiscountCountry(countryCode: "BB", name: "Barbados"),
+    DiscountCountry(countryCode: "BY", name: "Belarus"),
+    DiscountCountry(countryCode: "BM", name: "Bermuda"),
+    DiscountCountry(countryCode: "BZ", name: "Belize"),
+    DiscountCountry(countryCode: "BJ", name: "Benin"),
+    DiscountCountry(countryCode: "BO", name: "Bolivia"),
+    DiscountCountry(countryCode: "BW", name: "Botswana"),
+    DiscountCountry(countryCode: "BR", name: "Brazil"),
+    DiscountCountry(countryCode: "BG", name: "Bulgaria"),
+    DiscountCountry(countryCode: "BF", name: "Burkina Faso"),
+    DiscountCountry(countryCode: "BI", name: "Burundi"),
+    DiscountCountry(countryCode: "CM", name: "Cameroon"),
+    DiscountCountry(countryCode: "CV", name: "Cape Verde"),
+    DiscountCountry(countryCode: "CF", name: "Central African Republic"),
+    DiscountCountry(countryCode: "TD", name: "Chad"),
+    DiscountCountry(countryCode: "CL", name: "Chile"),
+    DiscountCountry(countryCode: "CO", name: "Colombia"),
+    DiscountCountry(countryCode: "KM", name: "Comoros"),
+    DiscountCountry(countryCode: "CG", name: "Democratic Republic of Congo"),
+    DiscountCountry(countryCode: "CR", name: "Costa Rica"),
+    DiscountCountry(countryCode: "HR", name: "Croatia"),
+    DiscountCountry(countryCode: "CU", name: "Cuba"),
+    DiscountCountry(countryCode: "DJ", name: "Djibouti"),
+    DiscountCountry(countryCode: "DM", name: "Dominica"),
+    DiscountCountry(countryCode: "DO", name: "Dominican Republic"),
+    DiscountCountry(countryCode: "EC", name: "Ecuador"),
+    DiscountCountry(countryCode: "EG", name: "Egypt"),
+    DiscountCountry(countryCode: "SV", name: "El Salvador"),
+    DiscountCountry(countryCode: "GQ", name: "Equatorial Guinea"),
+    DiscountCountry(countryCode: "ER", name: "Eritrea"),
+    DiscountCountry(countryCode: "ET", name: "Ethiopia"),
+    DiscountCountry(countryCode: "FK", name: "Falkland Islands"),
+    DiscountCountry(countryCode: "GF", name: "French Guiana"),
+    DiscountCountry(countryCode: "GA", name: "Gabon"),
+    DiscountCountry(countryCode: "GM", name: "Gambia"),
+    DiscountCountry(countryCode: "GH", name: "Ghana"),
+    DiscountCountry(countryCode: "GD", name: "Grenada"),
+    DiscountCountry(countryCode: "GT", name: "Guatemala"),
+    DiscountCountry(countryCode: "GN", name: "Guinea"),
+    DiscountCountry(countryCode: "GW", name: "Guinea-Bissau"),
+    DiscountCountry(countryCode: "GY", name: "Guyana"),
+    DiscountCountry(countryCode: "HT", name: "Haiti"),
+    DiscountCountry(countryCode: "HN", name: "Honduras"),
+    DiscountCountry(countryCode: "IN", name: "India"),
+    DiscountCountry(countryCode: "ID", name: "Indonesia"),
+    DiscountCountry(countryCode: "CI", name: "Ivory Coast"),
+    DiscountCountry(countryCode: "JM", name: "Jamaica"),
+    DiscountCountry(countryCode: "KE", name: "Kenya"),
+    DiscountCountry(countryCode: "LA", name: "Laos"),
+    DiscountCountry(countryCode: "LS", name: "Lesotho"),
+    DiscountCountry(countryCode: "LR", name: "Liberia"),
+    DiscountCountry(countryCode: "LY", name: "Libya"),
+    DiscountCountry(countryCode: "MK", name: "Macedonia"),
+    DiscountCountry(countryCode: "MG", name: "Madagascar"),
+    DiscountCountry(countryCode: "MW", name: "Malawi"),
+    DiscountCountry(countryCode: "ML", name: "Mali"),
+    DiscountCountry(countryCode: "MR", name: "Mauritania"),
+    DiscountCountry(countryCode: "MU", name: "Mauritius"),
+    DiscountCountry(countryCode: "MA", name: "Morocco"),
+    DiscountCountry(countryCode: "MZ", name: "Mozambique"),
+    DiscountCountry(countryCode: "MM", name: "Myanmar"),
+    DiscountCountry(countryCode: "NA", name: "Namibia"),
+    DiscountCountry(countryCode: "NP", name: "Nepal"),
+    DiscountCountry(countryCode: "NI", name: "Nicaragua"),
+    DiscountCountry(countryCode: "NE", name: "Niger"),
+    DiscountCountry(countryCode: "NG", name: "Nigeria"),
+    DiscountCountry(countryCode: "PK", name: "Pakistan"),
+    DiscountCountry(countryCode: "PA", name: "Panama"),
+    DiscountCountry(countryCode: "PY", name: "Paraguay"),
+    DiscountCountry(countryCode: "PE", name: "Peru"),
+    DiscountCountry(countryCode: "PH", name: "Philippines"),
+    DiscountCountry(countryCode: "PL", name: "Poland"),
+    DiscountCountry(countryCode: "RO", name: "Romania"),
+    DiscountCountry(countryCode: "RW", name: "Rwanda"),
+    DiscountCountry(countryCode: "SN", name: "Senegal"),
+    DiscountCountry(countryCode: "SC", name: "Seychelles"),
+    DiscountCountry(countryCode: "SL", name: "Sierra Leone"),
+    DiscountCountry(countryCode: "SO", name: "Somalia"),
+    DiscountCountry(countryCode: "ZA", name: "South Africa"),
+    DiscountCountry(countryCode: "GS", name: "South Georgia"),
+    DiscountCountry(countryCode: "SD", name: "Sudan"),
+    DiscountCountry(countryCode: "SR", name: "Suriname"),
+    DiscountCountry(countryCode: "SZ", name: "Swaziland"),
+    DiscountCountry(countryCode: "TZ", name: "Tanzania"),
+    DiscountCountry(countryCode: "TG", name: "Togo"),
+    DiscountCountry(countryCode: "TT", name: "Trinidad and Tobago"),
+    DiscountCountry(countryCode: "TN", name: "Tunisia"),
+    DiscountCountry(countryCode: "UG", name: "Uganda"),
+    DiscountCountry(countryCode: "UA", name: "Ukraine"),
+    DiscountCountry(countryCode: "UY", name: "Uruguay"),
+    DiscountCountry(countryCode: "VE", name: "Venezuela"),
+    DiscountCountry(countryCode: "VN", name: "Vietnam"),
+    DiscountCountry(countryCode: "EH", name: "Western Sahara"),
+    DiscountCountry(countryCode: "YE", name: "Yemen"),
+    DiscountCountry(countryCode: "ZM", name: "Zambia"),
+    DiscountCountry(countryCode: "ZW", name: "Zimbabwe"),
+  ]
+}

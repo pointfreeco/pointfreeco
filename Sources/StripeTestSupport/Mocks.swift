@@ -29,6 +29,7 @@ extension Client {
 extension Card {
   public static let mock = Card(
     brand: .visa,
+    country: "US",
     customer: "cus_test",
     expMonth: 1,
     expYear: 2020,
