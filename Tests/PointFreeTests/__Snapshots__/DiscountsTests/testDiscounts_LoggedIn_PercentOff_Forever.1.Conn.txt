@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 56891
+Content-Length: 58473
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2020,6 +2020,58 @@ html {
              href="http://localhost:8080/pricing">
             Change plan
           </a>
+        </div>
+        <div class="col-m
+                    col-m-12">
+          <ul class="m-pl0
+                     m-pr0
+                     m-pt0
+                     m-pb0
+                     m-ml3
+                     fg-gray400
+                     fg-black
+                     normal
+                     h5
+                     lh-4
+                     ts-d-r0_875
+                     ts-m-r1
+                     fg-gray400"
+              style="flex-grow:1;
+                     flex-shrink:0;
+                     flex-basis:auto">
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p>All 2 episodes with transcripts</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p>Over 0 hours of video</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p>Private RSS feed for offline viewing in podcast apps</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p>Download all episode playgrounds</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
+                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
+and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
+available</p>
+
+              </div>
+            </li>
+          </ul>
         </div>
         <div style="margin-right:auto;
                     margin-left:auto"
