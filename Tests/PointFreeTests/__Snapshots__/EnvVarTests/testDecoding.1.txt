@@ -1,4 +1,4 @@
-▿ 15 elements
+▿ 16 elements
   ▿ (2 elements)
     - key: "APP_ENV"
     - value: "development"
@@ -32,6 +32,9 @@
   ▿ (2 elements)
     - key: "PORT"
     - value: "8080"
+  ▿ (2 elements)
+    - key: "REGIONAL_DISCOUNT_COUPON_ID"
+    - value: "regional-discount"
   ▿ (2 elements)
     - key: "RSS_USER_AGENT_WATCHLIST"
     - value: "blob,gob"
