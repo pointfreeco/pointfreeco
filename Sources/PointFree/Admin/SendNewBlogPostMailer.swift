@@ -156,7 +156,6 @@ private func sendEmail(
           unsubscribeData: (user.id, .newBlogPost),
           content: inj2(nodes)
           )
-          .delay(.milliseconds(200))
           .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
     }
   }
