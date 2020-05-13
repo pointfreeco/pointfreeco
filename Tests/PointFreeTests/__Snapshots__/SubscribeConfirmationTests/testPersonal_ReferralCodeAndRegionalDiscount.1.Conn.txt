@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=tr
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 69307
+Content-Length: 69585
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2139,6 +2139,9 @@ below we will apply a
                           Argentina
                         </li>
                         <li>
+                          Armenia
+                        </li>
+                        <li>
                           Bahamas
                         </li>
                         <li>
@@ -2248,6 +2251,9 @@ below we will apply a
                         </li>
                         <li>
                           Gambia
+                        </li>
+                        <li>
+                          Georgia
                         </li>
                         <li>
                           Ghana
@@ -2362,6 +2368,9 @@ below we will apply a
                         </li>
                         <li>
                           Senegal
+                        </li>
+                        <li>
+                          Serbia
                         </li>
                         <li>
                           Seychelles
