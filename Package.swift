@@ -57,6 +57,7 @@ let package = Package(
         "EmailAddress",
         "GitHub",
         "Models",
+        "PointFreePrelude",
         "Stripe",
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
