@@ -179,14 +179,17 @@ private func sequentialEpisodes(
         attributes: [
           .class([Class.type.align.center])
         ],
-        .img(
-          base64: playIconSvgBase64(),
-          type: .image(.svg),
-          alt: "",
-          attributes: [
-            .class([Class.align.middle]),
-            .style(margin(top: .px(-2)))
-          ]
+        .a(
+          attributes: [.href(url(to: .episode(.show(.left(episode.slug)))))],
+          .img(
+            base64: playIconSvgBase64(),
+            type: .image(.svg),
+            alt: "",
+            attributes: [
+              .class([Class.align.middle]),
+              .style(margin(top: .px(-2)))
+            ]
+          )
         )
       ),
       .gridColumn(
@@ -374,14 +377,17 @@ private func sequentialEpisodeRow(
         attributes: [
           .class([Class.type.align.center])
         ],
-        .img(
-          base64: playIconSvgBase64(),
-          type: .image(.svg),
-          alt: "",
-          attributes: [
-            .class([Class.align.middle]),
-            .style(margin(top: .px(-2)))
-          ]
+        .a(
+          attributes: [.href(url(to: .episode(.show(.left(episode.slug)))))],
+          .img(
+            base64: playIconSvgBase64(),
+            type: .image(.svg),
+            alt: "",
+            attributes: [
+              .class([Class.align.middle]),
+              .style(margin(top: .px(-2)))
+            ]
+          )
         )
       ),
       .gridColumn(
