@@ -8,23 +8,23 @@ It's time to start proving that our business logic works the way we expect. We a
     codeSampleDirectory: "0102-swift-composable-architecture-tour-pt3",
     exercises: _exercises,
     fullVideo: .init(
-      bytesLength: 372_928_086, 
+      bytesLength: 372_928_086,
       vimeoId: 416344329,
       vimeoSecret: "41600b1214a102b688fc46c171b71787c2ef667c"
 
     ),
-    id: 102, 
+    id: 102,
     image: "https://i.vimeocdn.com/video/890370745.jpg",
     length: 32*60 + 28,
     permission: .free,
     previousEpisodeInCollection: nil,
-    publishedAt: Date(timeIntervalSince1970: 1589778000),
+    publishedAt: Date(timeIntervalSince1970: 1589778001),
     references: [
       reference(
         forCollection: .composableArchitecture,
         additionalBlurb: #"""
-    The Composable Architecture was designed over the course of nearly 9 months of episodes, exploring many facets of application architecture. Explore all 13+ hours of episodes in this collection.
-    """#,
+The Composable Architecture was designed over the course of nearly 9 months of episodes, exploring many facets of application architecture. Explore all 13+ hours of episodes in this collection.
+"""#,
         collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
       ),
       .theComposableArchitecture,
@@ -33,7 +33,7 @@ It's time to start proving that our business logic works the way we expect. We a
     ],
     sequence: 102,
     subtitle: nil,
-    title: "Tour of the Composable Architecture: Part 3",
+    title: "A Tour of the Composable Architecture: Part 3",
     trailerVideo: .init(
       bytesLength: 61_680_473,
       vimeoId: 416533116,
