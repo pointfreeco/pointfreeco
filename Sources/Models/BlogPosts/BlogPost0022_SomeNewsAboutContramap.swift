@@ -28,7 +28,7 @@ more intuitive name for this operation, and in doing so make our code much easie
 
 ---
 
-A few months ago we introduced the idea of [contravariance](/episodes/ep14-contravriance), and showed that
+A few months ago we introduced the idea of [contravariance](/episodes/ep14-contravariance), and showed that
 it’s a very natural idea hidden in a very counterintuitive package. It’s like the
 [`map`](/episodes/ep13-the-many-faces-of-map) we all know and love on arrays and optionals, but it goes in
 the opposite direction. We applied it to the idea of predicate sets, and showed that it helps us see a form
@@ -58,7 +58,7 @@ great name for this operation.
 
 ## Taking `pullback` for a spin
 
-[Recall](/episodes/ep14-contravriance) that we previously defined a `PredicateSet` type that simply wrapped
+[Recall](/episodes/ep14-contravariance) that we previously defined a `PredicateSet` type that simply wrapped
 a function that returns boolean values.
 """,
       timestamp: nil,
