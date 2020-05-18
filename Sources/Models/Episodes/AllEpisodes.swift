@@ -102,7 +102,7 @@ extension Episode {
     .ep99_ergonomicStateManagement_pt2,
     .ep100_ATourOfTheComposableArchitecture_pt1,
     .ep101_ATourOfTheComposableArchitecture_pt2,
-//    .ep102_ATourOfTheComposableArchitecture_pt3,
+    .ep102_ATourOfTheComposableArchitecture_pt3,
 //    .ep103_ATourOfTheComposableArchitecture_pt4,
   ]
 }
