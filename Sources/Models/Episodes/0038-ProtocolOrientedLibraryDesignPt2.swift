@@ -11,7 +11,6 @@ With our library fully generalized using protocols, we show off the flexibility 
     image: "https://i.vimeocdn.com/video/803400334.jpg",
     length: 22*60+22,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 37,
     publishedAt: .init(timeIntervalSince1970: 1542607200),
     references: [
       .protocolOrientedProgrammingWwdc,

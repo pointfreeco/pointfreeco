@@ -11,7 +11,6 @@ Side effects are one of the biggest sources of complexity in any application. It
     image: "https://i.vimeocdn.com/video/822059615.jpg",
     length: 25*60 + 24,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 75,
     publishedAt: Date(timeIntervalSince1970: 1571032800),
     references: [
       reference(

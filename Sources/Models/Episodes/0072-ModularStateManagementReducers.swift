@@ -11,7 +11,6 @@ In exploring four forms of composition on reducer functions, we made the claim t
     image: "https://i.vimeocdn.com/video/812114100.jpg",
     length: 26*60 + 24,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 71,
     publishedAt: .init(timeIntervalSince1970: 1568008800),
     references: [
       .whyFunctionalProgrammingMatters,

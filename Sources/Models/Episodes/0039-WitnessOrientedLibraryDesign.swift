@@ -11,7 +11,6 @@ We previously refactored a library using protocols to make it more flexible and 
     image: "https://i.vimeocdn.com/video/801301315.jpg",
     length: 39 * 60 + 1,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 38,
     publishedAt: .init(timeIntervalSince1970: 1543208400),
     references: [
       .protocolOrientedProgrammingWwdc,

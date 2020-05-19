@@ -16,7 +16,6 @@ In this week's free holiday episode we show what it looks like to snapshot test 
     image: "https://i.vimeocdn.com/video/839241671.jpg",
     length: 34*60 + 13,
     permission: .free,
-    previousEpisodeInCollection: 85,
     publishedAt: Date(timeIntervalSince1970: 1577080800),
     references: [
       .testingAndDeclarativeUIs,

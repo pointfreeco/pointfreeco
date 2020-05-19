@@ -11,7 +11,6 @@ The `map` function on parsers is powerful, but there are still a lot of things i
     image: "https://i.vimeocdn.com/video/799156431.jpg",
     length: 14 * 60 + 0,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 59,
     publishedAt: .init(timeIntervalSince1970: 1559541600),
     references: [
       .combinatorsDanielSteinberg,

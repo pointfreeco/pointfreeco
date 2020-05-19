@@ -11,7 +11,6 @@ It's time to finish our architecture's story for side effects. We've described s
     image: "https://i.vimeocdn.com/video/825833058.jpg",
     length: 35 * 60 + 48,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 77,
     publishedAt: Date(timeIntervalSince1970: 1572242400),
     references: [
       .elmCommandsAndSubscriptions,

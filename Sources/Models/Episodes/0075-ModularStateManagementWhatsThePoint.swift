@@ -11,7 +11,6 @@ We’ve now fully modularized our app by extracting its reducers and views into 
     image: "https://i.vimeocdn.com/video/820093778.jpg",
     length: 19*60 + 59,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 74,
     publishedAt: .init(timeIntervalSince1970: 1570428000),
     references: [
       reference(

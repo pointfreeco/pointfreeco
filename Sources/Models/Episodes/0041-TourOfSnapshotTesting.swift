@@ -16,7 +16,6 @@ Our snapshot testing library is now officially open source! In order to show jus
     image: "https://i.vimeocdn.com/video/801301043.jpg",
     length: 29*60+16,
     permission: .free,
-    previousEpisodeInCollection: 40,
     publishedAt: .init(timeIntervalSince1970: 1545116400),
     references: [
       .swiftSnapshotTesting,

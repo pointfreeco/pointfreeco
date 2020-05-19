@@ -11,7 +11,6 @@ We've modeled side effects in our architecture, but it's not quite right yet: a 
     image: "https://i.vimeocdn.com/video/824231505.jpg",
     length: 25*60 + 24,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 76,
     publishedAt: Date(timeIntervalSince1970: 1571637600),
     references: [
       .elmCommandsAndSubscriptions,

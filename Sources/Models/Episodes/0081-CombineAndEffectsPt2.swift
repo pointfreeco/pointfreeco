@@ -16,7 +16,6 @@ Now that we've explored the Combine framework and identified its correspondence 
     image: "https://i.vimeocdn.com/video/830940645.jpg",
     length: 38*60 + 46,
     permission: .free,
-    previousEpisodeInCollection: 80,
     publishedAt: Date(timeIntervalSince1970: 1574056800),
     references: [
       .combineFramework,

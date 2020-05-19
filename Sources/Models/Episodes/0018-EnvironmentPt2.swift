@@ -10,7 +10,6 @@ Let's have some fun with the "environment" form of dependency injection we previ
     image: "https://i.vimeocdn.com/video/804928206.jpg",
     length: 28*60 + 36,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 16,
     publishedAt: Date(timeIntervalSince1970: 1_528_106_223),
     references: [
       .structureAndInterpretationOfSwiftPrograms,

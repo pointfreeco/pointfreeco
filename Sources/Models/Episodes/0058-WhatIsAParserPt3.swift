@@ -11,7 +11,6 @@ It's time to ask the all important question: what's the point? We now have a pro
     image: "https://i.vimeocdn.com/video/799155963.jpg",
     length: 20*60 + 0,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 57,
     publishedAt: .init(timeIntervalSince1970: 1558332000),
     references: [
       .parseDontValidate,

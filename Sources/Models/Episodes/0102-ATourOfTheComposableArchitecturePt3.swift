@@ -17,7 +17,6 @@ It's time to start proving that our business logic works the way we expect. We a
     image: "https://i.vimeocdn.com/video/890370745.jpg",
     length: 32*60 + 28,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1589778001),
     references: [
       reference(

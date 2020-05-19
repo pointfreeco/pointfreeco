@@ -17,7 +17,6 @@ Take a moment to hear from the hosts about what to expect from this new series.
     image: "https://i.vimeocdn.com/video/807678036.jpg",
     length: 179,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
     sequence: 0,
     title: "We launched!",

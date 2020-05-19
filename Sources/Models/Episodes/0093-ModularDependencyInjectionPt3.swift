@@ -11,7 +11,6 @@ It's time to prove that baking an "environment" of dependencies directly into th
     image: "https://i.vimeocdn.com/video/860844665.jpg",
     length: 44*60 + 54,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 92,
     publishedAt: Date(timeIntervalSince1970: 1583128800),
     references: [
       reference(

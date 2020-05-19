@@ -16,7 +16,6 @@ Continuing the tour of our recently open-sourced library, the Composable Archite
     image: "https://i.vimeocdn.com/video/890370805.jpg",
     length: 28*60 + 21,
     permission: .free,
-    previousEpisodeInCollection: 100,
     publishedAt: Date(timeIntervalSince1970: 1589173200),
     references: [
       reference(

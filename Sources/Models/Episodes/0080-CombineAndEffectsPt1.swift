@@ -16,7 +16,6 @@ Let's explore the Combine framework and its correspondence with the Effect type.
     image: "https://i.vimeocdn.com/video/829976257.jpg",
     length: 25*60 + 10,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1573452000),
     references: [
       .combineFramework,

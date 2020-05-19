@@ -10,7 +10,6 @@ Protocols are a great tool for abstraction, but aren't the only one. This week w
     image: "https://i.vimeocdn.com/video/801301947.jpg",
     length: 18*60 + 12,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1539582522),
     references: [
       .protocolOrientedProgrammingWwdc,

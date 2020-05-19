@@ -11,7 +11,6 @@ We've got the basic story of side effects in our architecture, but the story is 
     image: "https://i.vimeocdn.com/video/827840387.jpg",
     length: 28*60 + 36,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 78,
     publishedAt: Date(timeIntervalSince1970: 1572847200),
     references: [
       .elmCommandsAndSubscriptions,

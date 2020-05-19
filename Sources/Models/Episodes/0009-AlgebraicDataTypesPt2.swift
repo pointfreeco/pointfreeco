@@ -11,7 +11,6 @@ We continue our explorations into algebra and the Swift type system. We show tha
     image: "https://i.vimeocdn.com/video/807678680.jpg",
     length: 38*60 + 21,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 4,
     publishedAt: Date(timeIntervalSince1970: 1_522_058_223),
     sequence: 9,
     title: "Algebraic Data Types: Exponents",

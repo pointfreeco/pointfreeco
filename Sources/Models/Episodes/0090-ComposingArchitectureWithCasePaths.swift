@@ -11,7 +11,6 @@ Let's explore a real world application of "case paths," which provide key path-l
     image: "https://i.vimeocdn.com/video/853209211.jpg",
     length: 22*60 + 24,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 89,
     publishedAt: Date(timeIntervalSince1970: 1581314400),
     references: [
       .swiftCasePaths,

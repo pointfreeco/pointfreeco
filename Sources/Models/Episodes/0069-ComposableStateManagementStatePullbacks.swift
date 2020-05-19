@@ -11,7 +11,6 @@ So far we have pulled a lot of our application's logic into a reducer, but that 
     image: "https://i.vimeocdn.com/video/805102611.jpg",
     length: 25*60 + 42,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 68,
     publishedAt: .init(timeIntervalSince1970: 1565589600),
     references: [
       .pointFreePullbackAndContravariance,

@@ -11,7 +11,6 @@ This week we apply domain-specific languages to a very real-world problem: repre
     image: "https://i.vimeocdn.com/video/801301977.jpg",
     length: 23*60 + 6,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 27,
     publishedAt: Date(timeIntervalSince1970: 1535954223),
     references: [.openSourcingSwiftHtml],
     sequence: 28,
