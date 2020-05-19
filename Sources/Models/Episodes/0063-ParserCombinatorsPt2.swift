@@ -11,7 +11,6 @@ Let's solve another common parsing problem using parser combinators! It's common
     image: "https://i.vimeocdn.com/video/801297305.jpg",
     length: 17*60 + 59,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 62,
     publishedAt: .init(timeIntervalSince1970: 1561960800),
     references: [
       .combinatorsDanielSteinberg,

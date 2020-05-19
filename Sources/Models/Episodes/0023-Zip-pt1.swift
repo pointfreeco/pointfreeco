@@ -11,7 +11,6 @@ The `zip` function comes with the Swift standard library, but its utility goes f
     image: "https://i.vimeocdn.com/video/803400861.jpg",
     length: 28*60 + 53,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1531735023 + 604_800),
     sequence: 23,
     title: "The Many Faces of Zip: Part 1",

@@ -11,7 +11,6 @@ Let's explore a type of composition that defies our intuitions. It appears to go
     image: "https://i.vimeocdn.com/video/807679247.jpg",
     length: 38*60 + 39,
     permission: .freeDuring(Date(timeIntervalSince1970: 1_528_797_423) ..< Date(timeIntervalSince1970: 1_529_920_623)),
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_525_082_223),
     references: [.someNewsAboutContramap, .contravariance],
     sequence: 14,

@@ -11,7 +11,6 @@ We often deal with collections that we know can never be empty, yet we use array
     image: "https://i.vimeocdn.com/video/804928456.jpg",
     length: 49*60 + 2,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 19,
     publishedAt: Date(timeIntervalSince1970: 1_529_920_623),
     references: [.swiftNonEmpty, .swiftValidated],
     sequence: 20,

@@ -10,7 +10,6 @@ Let's set out to make the untestable testable. This week we make composable rand
     image: "https://i.vimeocdn.com/video/801299773.jpg",
     length: 32*60 + 05,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 32,
     publishedAt: .init(timeIntervalSince1970: 1550473200),
     references: [
       .randomUnification,

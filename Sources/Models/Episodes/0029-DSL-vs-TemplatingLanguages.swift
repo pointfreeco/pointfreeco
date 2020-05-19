@@ -19,7 +19,6 @@ previously hidden.
     image: "https://i.vimeocdn.com/video/803400556.jpg",
     length: 33*60 + 17,
     permission: .free,
-    previousEpisodeInCollection: 28,
     publishedAt: Date(timeIntervalSince1970: 1536559023),
     references: [.openSourcingSwiftHtml],
     sequence: 29,

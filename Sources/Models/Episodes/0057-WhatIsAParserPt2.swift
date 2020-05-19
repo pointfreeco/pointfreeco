@@ -11,7 +11,6 @@ Now that we've looked at a bunch of parsers that are at our disposal, let's ask 
     image: "https://i.vimeocdn.com/video/801298234.jpg",
     length: 20 * 60 + 36,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 56,
     publishedAt: .init(timeIntervalSince1970: 1557727200),
     references: [
       .parseDontValidate,

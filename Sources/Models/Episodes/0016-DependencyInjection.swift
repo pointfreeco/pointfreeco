@@ -13,7 +13,6 @@ with little work and no third party library.
     image: "https://i.vimeocdn.com/video/804927879.jpg",
     length: 35*60 + 14,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_526_896_623),
     references: [
       .structureAndInterpretationOfSwiftPrograms,

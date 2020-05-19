@@ -11,7 +11,6 @@ Why does the `map` function appear in every programming language supporting "fun
     image: "https://i.vimeocdn.com/video/807679165.jpg",
     length: 31*60 + 48,
     permission: .freeDuring(Date(timeIntervalSince1970: 1_524_477_423)..<Date(timeIntervalSince1970: 1559541600)),
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_524_477_423),
     references: [.theoremsForFree],
     sequence: 13,

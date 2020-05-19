@@ -11,7 +11,6 @@ We interact with domain-specific languages on a daily basis, but what does it ta
     image: "https://i.vimeocdn.com/video/801302705.jpg",
     length: 24*60 + 19,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1534744623),
     sequence: 26,
     title: "Domain‑Specific Languages: Part 1",

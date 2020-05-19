@@ -11,7 +11,6 @@ In part two of our series on `zip` we will show that many types support a `zip`-
     image: "https://i.vimeocdn.com/video/802690757.jpg",
     length: 36*60 + 01,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 23,
     publishedAt: Date(timeIntervalSince1970: 1_532_930_223),
     references: [.swiftValidated],
     sequence: 24,

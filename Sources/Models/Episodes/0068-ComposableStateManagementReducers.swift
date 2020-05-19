@@ -11,7 +11,6 @@ Now that we understand some of the fundamental problems that we will encounter w
     image: "https://i.vimeocdn.com/video/803546602.jpg",
     length: 41*60 + 42,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 67,
     publishedAt: .init(timeIntervalSince1970: 1564984800),
     references: [
       .reduceWithInout,

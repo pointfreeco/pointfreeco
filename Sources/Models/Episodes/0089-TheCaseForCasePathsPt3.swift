@@ -11,7 +11,6 @@ Although case paths are powerful and a natural extension of key paths, they are 
     image: "https://i.vimeocdn.com/video/850265054.jpg",
     length: 35*60 + 7,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 88,
     publishedAt: Date(timeIntervalSince1970: 1580709600),
     references: [
       .init(

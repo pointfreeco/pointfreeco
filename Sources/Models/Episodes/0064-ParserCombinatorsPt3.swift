@@ -11,7 +11,6 @@ Now that we've looked at how to parse multiple values given a single parser, let
     image: "https://i.vimeocdn.com/video/799115426.jpg",
     length: 19*60 + 47,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 63,
     publishedAt: .init(timeIntervalSince1970: 1562565600),
     references: [
       .combinatorsDanielSteinberg,

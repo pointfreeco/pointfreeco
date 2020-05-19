@@ -11,7 +11,6 @@ This week we dive deeper into randomness and composition by looking to a seeming
     image: "https://i.vimeocdn.com/video/802690082.jpg",
     length: 21*60 + 07,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 30,
     publishedAt: Date(timeIntervalSince1970: 1537768623),
     sequence: 31,
     title: "Decodable Randomness: Part 1",

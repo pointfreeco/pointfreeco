@@ -12,7 +12,6 @@ The Composable Architecture is robust and solves all of the problems we set out 
     image: "https://i.vimeocdn.com/video/877567536.jpg",
     length: 27*60 + 45,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 97,
     publishedAt: Date(timeIntervalSince1970: 1586754000),
     references: [
       // TODO

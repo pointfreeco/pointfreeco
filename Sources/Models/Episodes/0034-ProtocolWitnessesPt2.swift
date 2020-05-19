@@ -11,7 +11,6 @@ Last time we covered some basics with protocols, and demonstrated one of their b
     image: "https://i.vimeocdn.com/video/802688980.jpg",
     length: 22*60 + 41,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 33,
     publishedAt: Date(timeIntervalSince1970: 1540187322),
     references: [
       .protocolOrientedProgrammingWwdc,

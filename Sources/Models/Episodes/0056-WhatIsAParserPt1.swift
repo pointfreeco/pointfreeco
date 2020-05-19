@@ -10,7 +10,6 @@ Parsing is a difficult, but surprisingly ubiquitous programming problem, and fun
     image: "https://i.vimeocdn.com/video/799120275.jpg",
     length: 16*60 + 44,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: .init(timeIntervalSince1970: 1557122400),
     references: [
       .scannerAppleDocs,
