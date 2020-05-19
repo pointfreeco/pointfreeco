@@ -279,7 +279,7 @@ And if we run this test we will get a failure, and the failure message will show
     −       isComplete: false,
     +       isComplete: true,
             description: "Milk",
-            id: 00000000-0000-0000-0000-000000000000 // FIXME
+            id: 00000000-0000-0000-0000-000000000000
           ),
         ]
       )
