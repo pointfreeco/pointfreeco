@@ -16,7 +16,6 @@ Let's begin exploring application architecture by understanding what are the com
     image: "https://i.vimeocdn.com/video/801297149.jpg",
     length: 26*60 + 45,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: .init(timeIntervalSince1970: 1563170400),
     references: [
       .swiftUiTutorials,

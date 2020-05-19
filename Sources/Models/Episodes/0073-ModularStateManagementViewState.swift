@@ -11,7 +11,6 @@ While we've seen that each reducer we've written is super modular, and we were e
     image: "https://i.vimeocdn.com/video/816196940.jpg",
     length: 28*60 + 16,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 72,
     publishedAt: .init(timeIntervalSince1970: 1569218400),
     references: [
       .manyFacesOfMap,

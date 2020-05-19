@@ -11,7 +11,6 @@ We complete our dictionary for translating Swift protocol concepts into concrete
     image: "https://i.vimeocdn.com/video/802688572.jpg",
     length: 37 * 60 + 41,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 35,
     publishedAt: .init(timeIntervalSince1970: 1541408400),
     references: [
       .protocolOrientedProgrammingWwdc,

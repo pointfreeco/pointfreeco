@@ -17,7 +17,6 @@ Now that we have made randomness both composable _and_ testable, let's have a li
     image: "https://i.vimeocdn.com/video/801299534.jpg",
     length: 32*60 + 06,
     permission: .free,
-    previousEpisodeInCollection: 48,
     publishedAt: .init(timeIntervalSince1970: 1551682800),
     references: [
       .randomUnification,

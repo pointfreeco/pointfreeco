@@ -11,7 +11,6 @@ Perhaps the most popular approach to code reuse and extensibility in Swift is to
     image: "https://i.vimeocdn.com/video/801301580.jpg",
     length: 22*60 + 59,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 36,
     publishedAt: .init(timeIntervalSince1970: 1542013200),
     references: [
       .protocolOrientedProgrammingWwdc,

@@ -11,7 +11,6 @@ While we love the "environment" approach to dependency injection, which we intro
     image: "https://i.vimeocdn.com/video/856735090.jpg",
     length: 32*60 + 48,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1581919200),
     references: [
       reference(

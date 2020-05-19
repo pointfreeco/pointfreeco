@@ -16,7 +16,6 @@ With our moderately complex SwiftUI application complete we can finally ask ours
     image: "https://i.vimeocdn.com/video/801296903.jpg",
     length: 27 * 60 + 2,
     permission: .free,
-    previousEpisodeInCollection: 66,
     publishedAt: .init(timeIntervalSince1970: 1564380000),
     references: [
       .swiftUiTutorials,

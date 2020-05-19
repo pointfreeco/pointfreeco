@@ -11,7 +11,6 @@ Name a more iconic duo... We'll wait. Structs and enums go together like peanut 
     image: "https://i.vimeocdn.com/video/801299196.jpg",
     length: 30*60 + 50,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: .init(timeIntervalSince1970: 1553493600),
     references: [
       reference(

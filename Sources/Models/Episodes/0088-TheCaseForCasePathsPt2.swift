@@ -11,7 +11,6 @@ We've now seen that it's possible to define "case paths": the enum equivalent of
     image: "https://i.vimeocdn.com/video/850265068.jpg",
     length: 24*60 + 55,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 87,
     publishedAt: Date(timeIntervalSince1970: 1580104800),
     references: [
       .structs🤝Enums,

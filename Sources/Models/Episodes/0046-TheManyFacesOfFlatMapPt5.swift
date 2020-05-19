@@ -11,7 +11,6 @@ Finishing our 3-part answer to the all-important question "what's the point?", w
     image: "https://i.vimeocdn.com/video/801300060.jpg",
     length: 32*60+40,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 45,
     publishedAt: .init(timeIntervalSince1970: 1549263600),
     references: [
       .railwayOrientedProgramming,

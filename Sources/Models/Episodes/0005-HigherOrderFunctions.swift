@@ -13,7 +13,6 @@ unlock even more composability in our everyday code.
     image: "https://i.vimeocdn.com/video/807678237.jpg",
     length: 1350,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_519_653_423),
     references: [
       .everythingsAFunction

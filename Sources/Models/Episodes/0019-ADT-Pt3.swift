@@ -11,7 +11,6 @@ Our third installment of algebraic data types explores how generics and recursiv
     image: "https://i.vimeocdn.com/video/804928343.jpg",
     length: 47*60 + 01,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 9,
     publishedAt: Date(timeIntervalSince1970: 1_528_711_023),
     sequence: 19,
     title: "Algebraic Data Types: Generics and Recursion",

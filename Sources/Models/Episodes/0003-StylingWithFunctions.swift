@@ -16,7 +16,6 @@ We bring tools from previous episodes down to earth and apply them to an everyda
     image: "https://i.vimeocdn.com/video/807678140.jpg",
     length: 1_634,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1518441151),
     sequence: 3,
     title: "UIKit Styling with Functions",

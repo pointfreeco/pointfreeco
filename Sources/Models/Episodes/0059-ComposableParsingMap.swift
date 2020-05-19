@@ -11,7 +11,6 @@ We now have a precise, efficient definition for parsing, but we haven't even scr
     image: "https://i.vimeocdn.com/video/801298075.jpg",
     length: 23*60 + 12,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: .init(timeIntervalSince1970: 1558936800),
     references: [
       .combinatorsDanielSteinberg,

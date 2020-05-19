@@ -13,7 +13,6 @@ semantics to make setters a viable tool to bring into your code base _today_.
     image: "https://i.vimeocdn.com/video/804927717.jpg",
     length: 34*60 + 19,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 7,
     publishedAt: Date(timeIntervalSince1970: 1_525_082_223 + 604_800*2),
     references: [
       .swiftOverture,

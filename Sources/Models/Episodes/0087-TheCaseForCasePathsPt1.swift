@@ -11,7 +11,6 @@ You've heard of key paths, but…case paths!? Today we introduce the concept of 
     image: "https://i.vimeocdn.com/video/848203050.jpg",
     length: 28*60 + 58,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1579500000),
     references: [
       .structs🤝Enums,

@@ -11,7 +11,6 @@ This week we compare our `Decodable` solution to building random structures with
     image: "https://i.vimeocdn.com/video/802688834.jpg",
     length: 26*60 + 25,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 31,
     publishedAt: Date(timeIntervalSince1970: 1538373423),
     sequence: 32,
     title: "Decodable Randomness: Part 2",

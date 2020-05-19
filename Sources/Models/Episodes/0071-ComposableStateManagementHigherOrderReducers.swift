@@ -11,7 +11,6 @@ We will explore a form of reducer composition that will take our applications to
     image: "https://i.vimeocdn.com/video/808240582.jpg",
     length: 32*60 + 38,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 70,
     publishedAt: .init(timeIntervalSince1970: 1566799200),
     references: [
       .pointFreePullbackAndContravariance,

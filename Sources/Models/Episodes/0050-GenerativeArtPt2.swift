@@ -16,7 +16,6 @@ Let's put some finishing touches to our random artwork generator, incorporate it
     image: "https://i.vimeocdn.com/video/801299326.jpg",
     length: 27*60 + 22,
     permission: .free,
-    previousEpisodeInCollection: 49,
     publishedAt: .init(timeIntervalSince1970: 1552284000),
     references: [
       .randomUnification,

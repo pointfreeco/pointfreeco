@@ -11,7 +11,6 @@ Swift makes it easy for us to access the data inside a struct via dot-syntax and
     image: "https://i.vimeocdn.com/video/801298760.jpg",
     length: 24*60 + 38,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 51,
     publishedAt: .init(timeIntervalSince1970: 1554098400),
     references: [
       reference(

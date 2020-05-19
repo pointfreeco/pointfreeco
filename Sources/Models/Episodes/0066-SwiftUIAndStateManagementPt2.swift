@@ -16,7 +16,6 @@ This week we finish up our moderately complex SwiftUI application by adding more
     image: "https://i.vimeocdn.com/video/799121279.jpg",
     length: 24*60 + 26,
     permission: .free,
-    previousEpisodeInCollection: 65,
     publishedAt: .init(timeIntervalSince1970: 1563775200),
     references: [
       .swiftUiTutorials,

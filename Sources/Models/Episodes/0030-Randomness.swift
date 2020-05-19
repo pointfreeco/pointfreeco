@@ -11,7 +11,6 @@ Randomness is a topic that may not seem so functional, but it gives us a wonderf
     image: "https://i.vimeocdn.com/video/802688724.jpg",
     length: 40*60 + 30,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1537163823),
     references: [.randomZalgoGenerator],
     sequence: 30,

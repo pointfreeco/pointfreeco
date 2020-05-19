@@ -13,7 +13,6 @@ alternatives to unlock these benefits.
     image: "https://i.vimeocdn.com/video/807678863.jpg",
     length: 21*60 + 5,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_523_267_823),
     references: [.swiftOverture],
     sequence: 11,

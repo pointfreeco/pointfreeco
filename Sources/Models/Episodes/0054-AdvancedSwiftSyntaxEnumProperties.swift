@@ -10,7 +10,6 @@ This week we'll put the finishing touches on our enum property code generation t
     image: "https://i.vimeocdn.com/video/799156617.jpg",
     length: 31*60 + 20,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 53,
     publishedAt: .init(timeIntervalSince1970: 1555308000),
     references: [],
     sequence: 54,

@@ -12,7 +12,6 @@ This week we finally make our untestable Gen type testable. We'll compare severa
     image: "https://i.vimeocdn.com/video/801299668.jpg",
     length: 37*60 + 02,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 47,
     publishedAt: .init(timeIntervalSince1970: 1551078000),
     references: [
       .randomUnification,

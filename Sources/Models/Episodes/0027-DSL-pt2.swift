@@ -11,7 +11,6 @@ We finish our introduction to DSLs by adding two new features to our toy example
     image: "https://i.vimeocdn.com/video/802690547.jpg",
     length: 20*60 + 17,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 26,
     publishedAt: Date(timeIntervalSince1970: 1535349423),
     sequence: 27,
     title: "Domain‑Specific Languages: Part 2",

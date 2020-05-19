@@ -11,7 +11,6 @@ We've seen how "enum properties" help close the gap between the ergonomics of ac
     image: "https://i.vimeocdn.com/video/801298447.jpg",
     length: 23*60 + 49,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 52,
     publishedAt: .init(timeIntervalSince1970: 1554703200),
     references: [],
     sequence: 53,
