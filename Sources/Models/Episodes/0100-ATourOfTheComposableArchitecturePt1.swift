@@ -16,7 +16,6 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
     image: "https://i.vimeocdn.com/video/887735650.jpg",
     length: 32*60 + 56,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1588568400),
     references: [
       reference(

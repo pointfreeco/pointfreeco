@@ -10,7 +10,6 @@ We revisit an old topic: styling UIKit components. Using some of the machinery w
     image: "https://i.vimeocdn.com/video/804928073.jpg",
     length: 29*60 + 20,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 11,
     publishedAt: Date(timeIntervalSince1970: 1_527_501_423),
     sequence: 17,
     title: "Styling with Overture",

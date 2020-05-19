@@ -11,7 +11,6 @@ Side effects are by far the hardest thing to test in an application. They speak 
     image: "https://i.vimeocdn.com/video/831975769.jpg",
     length: 50*60 + 15,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 82,
     publishedAt: Date(timeIntervalSince1970: 1575266400),
     references: [
       reference(

@@ -10,7 +10,6 @@ We use Swift playgrounds on this series as a tool to dive deep into functional p
     image: "https://i.vimeocdn.com/video/804928551.jpg",
     length: 24*60 + 50,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_531_130_223),
     references: [.playgroundDrivenDevelopmentFrenchKit, .playgroundDrivenDevelopmentAtKickstarter],
     sequence: 21,

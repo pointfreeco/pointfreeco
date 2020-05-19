@@ -11,7 +11,6 @@ The snapshot testing library we have been designing over the past few weeks has 
     image: "https://i.vimeocdn.com/video/801301102.jpg",
     length: 34 * 60 + 8,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 39,
     publishedAt: .init(timeIntervalSince1970: 1545030000),
     references: [
       .protocolOrientedProgrammingWwdc,

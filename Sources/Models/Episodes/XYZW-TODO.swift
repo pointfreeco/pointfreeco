@@ -12,7 +12,6 @@ TODO
     image: "TODO",
     length: 0*60 + 0, // TODO
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: .distantFuture, // TODO
     references: [
       // TODO

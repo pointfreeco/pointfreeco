@@ -10,7 +10,6 @@ Now that we know that `flatMap` is important for flattening nested arrays and op
     image: "https://i.vimeocdn.com/video/801300768.jpg",
     length: 27 * 60 + 19,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 42,
     publishedAt: .init(timeIntervalSince1970: 1547622000),
     references: [
       .se0235AddResultToTheStandardLibrary,

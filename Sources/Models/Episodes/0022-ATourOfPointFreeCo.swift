@@ -16,7 +16,6 @@ Join us for a tour of the code base that powers this very site and see what func
     image: "https://i.vimeocdn.com/video/807848603.jpg",
     length: 39*60 + 21,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1531735023),
     references: [.serverSideSwiftFromScratch, .pointfreeco],
     sequence: 22,

@@ -11,7 +11,6 @@ Previously we've discussed the `map` and `zip` operations in detail, and today w
     image: "https://i.vimeocdn.com/video/801300837.jpg",
     length: 25 * 60 + 9,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: .init(timeIntervalSince1970: 1546844400),
     references: [
       .railwayOrientedProgramming,

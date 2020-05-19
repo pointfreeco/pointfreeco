@@ -11,7 +11,6 @@ It's time to see how our architecture handles the fifth and final problem we ide
     image: "https://i.vimeocdn.com/video/831975803.jpg",
     length: 35*60 + 56,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 79,
     publishedAt: Date(timeIntervalSince1970: 1574661600),
     references: [
       .elmHomepage,

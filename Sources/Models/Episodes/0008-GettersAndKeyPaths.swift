@@ -13,7 +13,6 @@ no boilerplate.
     image: "https://i.vimeocdn.com/video/807678567.jpg",
     length: 1711,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 7,
     publishedAt: Date(timeIntervalSince1970: 1_521_453_423),
     references: [
       .se0249KeyPathExpressionsAsFunctions

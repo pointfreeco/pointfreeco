@@ -11,7 +11,6 @@ There's a potential performance problem lurking in the Composable Architecture, 
     image: "https://i.vimeocdn.com/video/867881736.jpg",
     length: 40*60 + 25,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1584939600),
     references: [
       // TODO

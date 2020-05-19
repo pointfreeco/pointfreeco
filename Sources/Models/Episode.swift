@@ -11,7 +11,6 @@ public struct Episode: Equatable {
   public var image: String
   public var length: Seconds<Int>
   public var permission: Permission
-  public var previousEpisodeInCollection: Id?
   public var publishedAt: Date
   public var references: [Reference]
   public var sequence: Sequence
@@ -29,7 +28,6 @@ public struct Episode: Equatable {
     image: String,
     length: Seconds<Int>,
     permission: Permission,
-    previousEpisodeInCollection: Id?,
     publishedAt: Date,
     references: [Reference] = [],
     sequence: Sequence,
@@ -46,7 +44,6 @@ public struct Episode: Equatable {
     self.image = image
     self.length = length
     self.permission = permission
-    self.previousEpisodeInCollection = previousEpisodeInCollection
     self.publishedAt = publishedAt
     self.references = references
     self.sequence = sequence

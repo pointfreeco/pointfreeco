@@ -11,7 +11,6 @@ Now that we've baked the "environment" of dependencies directly into the Composa
     image: "https://i.vimeocdn.com/video/858808009.jpg",
     length: 34*60 + 23,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 91,
     publishedAt: Date(timeIntervalSince1970: 1582524000),
     references: [
       reference(

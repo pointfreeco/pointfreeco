@@ -11,7 +11,6 @@ We've now shown that the Composable Architecture is also quite adaptive, allowin
     image: "https://i.vimeocdn.com/video/874349070.jpg",
     length: 27 * 60 + 26,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 96,
     publishedAt: Date(timeIntervalSince1970: 1586149200),
     references: [
       // TODO

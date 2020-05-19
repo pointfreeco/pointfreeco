@@ -11,7 +11,6 @@ We typically model our data with very general types, like strings and ints, but 
     image: "https://i.vimeocdn.com/video/807679080.jpg",
     length: 26*60 + 49,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_523_872_623),
     references: [.swiftTagged, .taggedSecondsAndMilliseconds, .typeSafeFilePathsWithPhantomTypes],
     sequence: 12,

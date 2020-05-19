@@ -11,7 +11,6 @@ This week we explore how functional setters can be used with the types we build 
     image: "https://i.vimeocdn.com/video/807678530.jpg",
     length: 1872,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 6,
     publishedAt: Date(timeIntervalSince1970: 1_520_848_623),
     references: [.composableSetters, .semanticEditorCombinators],
     sequence: 7,

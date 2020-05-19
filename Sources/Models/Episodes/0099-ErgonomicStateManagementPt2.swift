@@ -12,7 +12,6 @@ We've made creating and enhancing reducers more ergonomic, but we still haven't 
     image: "https://i.vimeocdn.com/video/880871976.jpg",
     length: 24*60 + 3,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 98,
     publishedAt: Date(timeIntervalSince1970: 1587358800),
     references: [
       // TODO

@@ -18,7 +18,6 @@ operation to other structures and derive new, useful code!
     image: "https://i.vimeocdn.com/video/807678771.jpg",
     length: 25*60+4,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
     references: [.introduceSequenceCompactMap],
     sequence: 10,

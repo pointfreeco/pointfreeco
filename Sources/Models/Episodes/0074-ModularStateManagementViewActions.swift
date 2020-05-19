@@ -11,7 +11,6 @@ It's time to fully modularize our app! Our views can still send any app action, 
     image: "https://i.vimeocdn.com/video/818256265.jpg",
     length: 25*60 + 54,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 73,
     publishedAt: .init(timeIntervalSince1970: 1569823200),
     references: [
       .pointFreePullbackAndContravariance,

@@ -11,7 +11,6 @@ While `flatMap` allowed us to take our parser type to the next level, it introdu
     image: "https://i.vimeocdn.com/video/801297709.jpg",
     length: 27 * 60 + 22,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 60,
     publishedAt: .init(timeIntervalSince1970: 1560146400),
     references: [
       .combinatorsDanielSteinberg,

@@ -11,7 +11,6 @@ The programs we write can be reduced to transforming data from one form into ano
     image: "https://i.vimeocdn.com/video/807678320.jpg",
     length: 1238,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1_520_247_423),
     references: [.composableSetters, .semanticEditorCombinators],
     sequence: 6,

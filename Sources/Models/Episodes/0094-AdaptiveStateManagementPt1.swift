@@ -11,7 +11,6 @@ It's time to put the finishing touches to our architecture so that we can use it
     image: "https://i.vimeocdn.com/video/865220919.jpg",
     length: 21*60 + 20,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1584334800),
     references: [
       Episode.Reference(

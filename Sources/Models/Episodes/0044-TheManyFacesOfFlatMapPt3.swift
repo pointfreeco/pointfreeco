@@ -10,7 +10,6 @@ We are now ready to answer the all-important question: what's the point? We will
     image: "https://i.vimeocdn.com/video/801300524.jpg",
     length: 36*60 + 52,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 43,
     publishedAt: .init(timeIntervalSince1970: 1548054000),
     references: [
       .se0235AddResultToTheStandardLibrary,

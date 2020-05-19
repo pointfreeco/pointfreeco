@@ -11,7 +11,6 @@ Now that we know it's possible to replace protocols with concrete datatypes, and
     image: "https://i.vimeocdn.com/video/801301639.jpg",
     length: 35*60 + 18,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 34,
     publishedAt: .init(timeIntervalSince1970: 1_540_803_600),
     references: [
       .protocolOrientedProgrammingWwdc,

@@ -17,7 +17,6 @@ and see how it can help us create type-safe data structures that can catch runti
     image: "https://i.vimeocdn.com/video/807849108.jpg",
     length: 2_172,
     permission: .free,
-    previousEpisodeInCollection: nil,
     publishedAt: Date(timeIntervalSince1970: 1519045951),
     references: [
       .makingIllegalStatesUnrepresentable

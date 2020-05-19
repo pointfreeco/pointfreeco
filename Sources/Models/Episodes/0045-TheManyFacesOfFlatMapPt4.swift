@@ -10,7 +10,6 @@ Continuing our 3-part answer to the all-important question "what's the point?", 
     image: "https://i.vimeocdn.com/video/801300469.jpg",
     length: 24*60+37,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 44,
     publishedAt: .init(timeIntervalSince1970: 1548658800),
     references: [
       .nioRenameThenToFlatMap,

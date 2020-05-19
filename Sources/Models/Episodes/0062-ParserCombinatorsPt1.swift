@@ -11,7 +11,6 @@ Even though `map`, `flatMap` and `zip` pack a punch, there are still many parsin
     image: "https://i.vimeocdn.com/video/799122174.jpg",
     length: 19*60 + 14,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 61,
     publishedAt: .init(timeIntervalSince1970: 1561356000),
     references: [
       .combinatorsDanielSteinberg,

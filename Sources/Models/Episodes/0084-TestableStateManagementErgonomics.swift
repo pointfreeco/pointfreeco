@@ -11,7 +11,6 @@ We not only want our architecture to be testable, but we want it to be super eas
     image: "https://i.vimeocdn.com/video/837834964.jpg",
     length: 42*60 + 35,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 83,
     publishedAt: Date(timeIntervalSince1970: 1575871200),
     references: [
       .elmHomepage,

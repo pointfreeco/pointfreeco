@@ -11,7 +11,6 @@ Turns out, reducers that work on local actions can be _pulled back_ to work on g
     image: "https://i.vimeocdn.com/video/806923746.jpg",
     length: 28*60 + 16,
     permission: .subscriberOnly,
-    previousEpisodeInCollection: 69,
     publishedAt: .init(timeIntervalSince1970: 1566194400),
     references: [
       .pointFreePullbackAndContravariance,
