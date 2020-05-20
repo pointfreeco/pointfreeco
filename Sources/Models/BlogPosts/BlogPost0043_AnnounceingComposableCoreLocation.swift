@@ -44,7 +44,7 @@ struct AppEnvironment {
 }
 ```
 
-Next, we create a location manager and request authorization from our application's reducer by returning an effect from an action to kick things off. One good choice for such an action is the `onAppear` of your view. Also you must provide a unique identifier to associate with the location manager you create since it is possible to have multiple managers running at once if that's what you need.
+Next, we create a location manager and request authorization from our application's reducer by returning an effect from an action to kick things off. One good choice for such an action is the `onAppear` of your view. You must also provide a unique identifier to associate with the location manager you create since it is possible to have multiple managers running at once.
 
 ```swift
 let appReducer = AppReducer<AppState, AppAction, AppEnvironment> {
