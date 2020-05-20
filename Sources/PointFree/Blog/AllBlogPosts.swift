@@ -53,5 +53,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0040_Collections,
   post0041_AnnouncingTheComposableArchitecture,
   post0042_RegionalDiscounts,
-  post0043_AnnounceingComposableCoreLocation,
+  post0043_AnnouncingComposableCoreLocation,
 ]
