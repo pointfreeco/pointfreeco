@@ -16,7 +16,9 @@ However, this also means that many libraries and SDKs you interact with on a dai
 
 ## `ComposableCoreLocation`
 
-The first such wrapper we are providing is `ComposableCoreLocation`, a wrapper around `CLLocationManager` that makes it easy to use from a reducer, and easy to write tests on how your logic interacts with `CLLocationManager`'s functionality. To use it, one begins by adding an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
+The first such wrapper we are providing is `ComposableCoreLocation`, a wrapper around `CLLocationManager` that makes it easy to use from a reducer, and easy to write tests on how your logic interacts with `CLLocationManager`'s functionality.
+
+To use it, one begins by adding an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
 
 ```swift
 import ComposableCoreLocation
@@ -108,7 +110,7 @@ case .locationManager:
 
 Accessing any functionality on the location manager is done by returning effects from the reducer. For example, if you want to request the user's current location when they tap a button, then you can do the following:
 
-And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManager`, which is to say a client instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
+And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManager`, which is to say an instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
 
 ```swift
 let store = Store(
@@ -125,8 +127,7 @@ That is enough to implement a basic application that interacts with Core Locatio
 
 ## Testing Core Location
 
-
-The true power of building your application and interfacing with Core Location this way is the ability to _test_ how your application interacts with Core Location. It starts by creating a `TestStore` whose environment contains the `.mock` version of the `LocationManager`. The `.mock` function allows you to create a fully controlled version of the client that does not interact with a `CLLocationManager` at all. Instead, you override whichever endpoints your feature needs to supply deterministic functionality.
+The true power of building your application and interfacing with Core Location this way is the ability to _test_ how your application interacts with Core Location. It starts by creating a `TestStore` whose environment contains the `.mock` version of the `LocationManager`. The `.mock` function allows you to create a fully controlled version of the manager that does not interact with a `CLLocationManager` at all. Instead, you override whichever endpoints your feature needs to supply deterministic functionality.
 
 For example, to test the flow of asking for location authorization, being denied, and showing an alert we need to override the `create` endpoint and the `requestWhenInUseAuthorization` endpoint. The `create` endpoint needs to return an effect that emits the delegate actions, which we can control via a publish subject. And the `requestWhenInUseAuthorization` endpoint is a fire-and-forget effect, but we can make assertions that it was called how we expect.
 
