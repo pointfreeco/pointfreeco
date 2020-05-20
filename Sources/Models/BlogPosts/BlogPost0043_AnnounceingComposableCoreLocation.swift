@@ -22,20 +22,20 @@ The first such wrapper we are providing is `ComposableCoreLocation`, a wrapper a
 import ComposableCoreLocation
 
 enum AppAction {
-  case locationManager(LocationManagerClient.Action)
+  case locationManager(LocationManager.Action)
 
   // Your domain's other actions:
   ...
 }
 ```
 
-The `LocationManagerClient.Action` enum holds a case for each delegate method of `CLLocationManagerDelegate`, such as `didUpdateLocations`, `didEnterRegion`, `didUpdateHeading` and more.
+The `LocationManager.Action` enum holds a case for each delegate method of `CLLocationManagerDelegate`, such as `didUpdateLocations`, `didEnterRegion`, `didUpdateHeading` and more.
 
-Next we add `LocationManagerClient`, which is the wrapper type around `CLLocationManager` that the library provides, to the application's environment of dependencies:
+Next we add `LocationManager`, which is the wrapper type around `CLLocationManager` that the library provides, to the application's environment of dependencies:
 
 ```swift
 struct AppEnvironment {
-  var locationManager: LocationManagerClient
+  var locationManager: LocationManager
 
   // Your domain's other dependencies:
   ...
@@ -108,7 +108,7 @@ case .locationManager:
 
 Accessing any functionality on the location manager is done by returning effects from the reducer. For example, if you want to request the user's current location when they tap a button, then you can do the following:
 
-And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManagerClient`, which is to say a client instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
+And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManager`, which is to say a client instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
 
 ```swift
 let store = Store(
@@ -125,13 +125,13 @@ That is enough to implement a basic application that interacts with CoreLocation
 
 ## Testing CoreLocation
 
-The true power of building your application this way and interfacing with CoreLocation this way is the ability to test how your application interacts with CoreLocation. It starts by creating a `TestStore` whose environment contains the `.mock` version of the `LocationManagerClient`. The `.mock` function allows you to create a fully controlled version of the client that does not interact with a `CLLocationManager` at all. Instead, you override whichever endpoints your feature needs to supply deterministic functionality.
+The true power of building your application this way and interfacing with CoreLocation this way is the ability to test how your application interacts with CoreLocation. It starts by creating a `TestStore` whose environment contains the `.mock` version of the `LocationManager`. The `.mock` function allows you to create a fully controlled version of the client that does not interact with a `CLLocationManager` at all. Instead, you override whichever endpoints your feature needs to supply deterministic functionality.
 
 For example, to test the flow of asking for location authorization, being denied, and showing an alert we need to override the `create` endpoint and the `requestWhenInUseAuthorization` endpoint. The `create` endpoint needs to return an effect that emits the delegate actions, which we can control via a publish subject. And the `requestWhenInUseAuthorization` endpoint is a fire-and-forget effect, but we can make assertions that it was called how we expect.
 
 ```swift
 var didRequestInUseAuthorization = false
-let locationManagerSubject = PassthroughSubject<LocationManagerClient.Action, Never>()
+let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
 
 let store = TestStore(
   initialState: AppState(),
