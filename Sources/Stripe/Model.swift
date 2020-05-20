@@ -494,7 +494,7 @@ public struct Subscription: Codable, Equatable {
   }
 
   public var isCancellable: Bool {
-    return self.status == .active && !self.cancelAtPeriodEnd
+    return (self.status == .active || self.status == .pastDue) && !self.cancelAtPeriodEnd
   }
 
   public var isRenewing: Bool {
