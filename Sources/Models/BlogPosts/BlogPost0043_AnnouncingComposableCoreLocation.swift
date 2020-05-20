@@ -153,6 +153,11 @@ Then we can write an assertion that simulates a sequence of user steps and locat
 store.assert(
   .send(.onAppear),
 
+  // Make sure that the request for authorization was made
+  .do {
+    XCTAssertEqual(didRequestInUseAuthorization)
+  },
+
   // Simulate the user denying location access
   .do {
     locationManagerSubject.send(.didChangeAuthorization(.denied))
