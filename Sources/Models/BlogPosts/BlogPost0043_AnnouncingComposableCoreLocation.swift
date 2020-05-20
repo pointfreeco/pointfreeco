@@ -193,7 +193,9 @@ To show a more advanced usage of `ComposableCoreLocation` we have built a new [d
 
 ## Try it out today
 
-We're excited to release this support library for the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), and hope it can help simplify and strengthen your application's interaction with Core Location. We will have more support libraries like this coming soon, so keep an eye out!
+We're excited to release this support library for the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), and hope it can help simplify and strengthen your application's interaction with Core Location. Get access to it today by updating to version [0.2.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.2.0).
+
+We will have more support libraries like this coming soon, so keep an eye out!
 """#,
       type: .paragraph
     )
