@@ -190,8 +190,8 @@ We're excited to release this support library for the [Composable Architecture](
       type: .paragraph
     )
   ],
-  coverImage: nil, // TODO
-  id: 43, // TODO
+  coverImage: nil,
+  id: 43,
   publishedAt: .init(timeIntervalSince1970: 1589950800),
   title: "CoreLocation support in the Composable Architecture"
 )
