@@ -109,8 +109,6 @@ case .locationManager:
   return .none
 ```
 
-Accessing any functionality on the location manager is done by returning effects from the reducer. For example, if you want to request the user's current location when they tap a button, then you can do the following:
-
 And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManager`, which is to say an instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
 
 ```swift
