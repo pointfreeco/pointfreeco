@@ -16,7 +16,7 @@ However, this also means that many libraries and SDKs you interact with on a dai
 
 ## `ComposableCoreLocation`
 
-The first such wrapper we are providing is `ComposableCoreLocation`, a wrapper around `CLLocationManager` that makes it easy to use from a reducer, and easy to write tests on how your logic interacts with `CLLocationManager`'s functionality. To use it, one begins by add an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
+The first such wrapper we are providing is `ComposableCoreLocation`, a wrapper around `CLLocationManager` that makes it easy to use from a reducer, and easy to write tests on how your logic interacts with `CLLocationManager`'s functionality. To use it, one begins by adding an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
 
 ```swift
 import ComposableCoreLocation
@@ -106,7 +106,7 @@ case .locationManager:
   return .none
 ```
 
-Accessing any functionality on the location manager is done by return effects from the reducer. For example, if you want to request the user's current location when they tap a button, then you can do the following:
+Accessing any functionality on the location manager is done by returning effects from the reducer. For example, if you want to request the user's current location when they tap a button, then you can do the following:
 
 And finally, when creating the `Store` to power your application you will supply the "live" implementation of the `LocationManagerClient`, which is to say a client instance that actually holds onto a `CLLocationManager` on the inside and interacts with it directly:
 
