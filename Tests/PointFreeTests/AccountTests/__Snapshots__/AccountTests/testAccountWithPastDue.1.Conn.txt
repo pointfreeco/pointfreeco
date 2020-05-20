@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63268
+Content-Length: 63225
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2139,7 +2139,7 @@ Point-Free!</p>
                             <div class="m-pl1
                                         m-pr1">
                               <p>
-                                Active
+                                Past due
                               </p>
                             </div>
                           </div>
@@ -2192,7 +2192,6 @@ Point-Free!</p>
                         <div class="m-pl1
                                     m-pr1">
                           <p>
-                            $17.00 on 3/2/18
                           </p>
                         </div>
                       </div>
