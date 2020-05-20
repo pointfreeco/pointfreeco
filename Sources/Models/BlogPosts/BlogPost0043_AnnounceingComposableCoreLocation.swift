@@ -88,8 +88,9 @@ If the user denies location access we can show an alert telling them that we nee
 case .locationManager(.didChangeAuthorization(.denied)),
      .locationManager(.didChangeAuthorization(.restricted)):
 
-  state.alert
-    = "Please give location access so that we can show you some cool stuff."
+  state.alert = """
+    Please give location access so that we can show you some cool stuff.
+    """
   return .none
 ```
 
@@ -161,7 +162,9 @@ store.assert(
 
   // We receive the authorization change delegate action from the effect
   .receive(.locationManager(.didChangeAuthorization(.denied))) {
-    $0.alert = "Please give location access so that we can show you some cool stuff."
+    $0.alert = """
+      Please give location access so that we can show you some cool stuff.
+      """
   },
 
   // Store assertions require all effects to be completed, so we complete
