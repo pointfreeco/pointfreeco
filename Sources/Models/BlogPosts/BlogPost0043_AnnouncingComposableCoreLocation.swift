@@ -3,7 +3,7 @@ import Foundation
 public let post0043_AnnouncingComposableCoreLocation = BlogPost(
   author: .pointfree,
   blurb: """
-We are releasing a mini-library that makes working with Core Location easier to work with in the Composable Architecture.
+We are releasing a mini-library that makes it easy to use Core Location inside the Composable Architecture.
 """,
   contentBlocks: [
     .init(
