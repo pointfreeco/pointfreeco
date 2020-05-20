@@ -297,8 +297,13 @@ final class AccountTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
+    var stripeSubscription = Stripe.Subscription.mock
+    stripeSubscription.cancelAtPeriodEnd = false
+    stripeSubscription.status = .pastDue
+
     Current.database.fetchSubscriptionById = const(pure(subscription))
     Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
+    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
