@@ -69,7 +69,7 @@ let appReducer = AppReducer<AppState, AppAction, AppEnvironment> {
 }
 ```
 
-With that initial set up we will now get all of `CLLocationManagerDelegate`'s methods delivered to our reducer via actions. To handle a particular delegate action we simply need to destructure it inside the `.locationManager` case we added to our `AppAction`. For example, one we get location authorization from the user we could request their current location:
+With that initial set up we will now get all of `CLLocationManagerDelegate`'s methods delivered to our reducer via actions. To handle a particular delegate action we simply need to destructure it inside the `.locationManager` case we added to our `AppAction`. For example, once we get location authorization from the user we could request their current location:
 
 ```swift
 case .locationManager(.didChangeAuthorization(.authorizedAlways)),
