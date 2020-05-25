@@ -1033,6 +1033,7 @@ public struct DiscountCountry {
     DiscountCountry(countryCode: "CI", name: "Ivory Coast"),
     DiscountCountry(countryCode: "JM", name: "Jamaica"),
     DiscountCountry(countryCode: "KE", name: "Kenya"),
+    DiscountCountry(countryCode: "KZ", name: "Kazakhstan"),
     DiscountCountry(countryCode: "LA", name: "Laos"),
     DiscountCountry(countryCode: "LS", name: "Lesotho"),
     DiscountCountry(countryCode: "LR", name: "Liberia"),
