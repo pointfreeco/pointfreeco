@@ -196,6 +196,24 @@ We have built up quite a few features for the Composable Architecture over the p
         related: [
         ],
         title: "Adaptation",
+        whereToGoFromHere: """
+We have now built up the core of a library that could be dropped into your application _today_. Only thing left to do is open source it...
+"""
+      ),
+
+      .init(
+        blurb: #"""
+After 9 long months of developing the Composable Architecture from first principles, we _finally_ open sourced a library that you can drop into your application today. To celebrate we have a 4-part series on giving a tour of the library where we build a new app from scratch and explore some advanced aspects of the library that we didn't have time to cover in episodes.
+"""#,
+        coreLessons: [
+          .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
+          .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
+          .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
+          .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
+        ],
+        related: [
+        ],
+        title: "A Tour of the Composable Architecture",
         whereToGoFromHere: nil
       ),
     ],
