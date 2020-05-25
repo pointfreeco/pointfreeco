@@ -64,7 +64,7 @@ func filterActions<Value, Action>(_ predicate: @escaping (Action) -> Bool)
 """#),
   .init(
     problem: #"""
-Create a higher-order reducer that adds the functionality of undo to any reducer. You can start by providing new types to augument the existing state and actions of a reducer:
+Create a higher-order reducer that adds the functionality of undo to any reducer. You can start by providing new types to augment the existing state and actions of a reducer:
 
 ```swift
 struct UndoState<Value> {
