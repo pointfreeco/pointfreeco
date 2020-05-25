@@ -23,8 +23,8 @@ We conclude our tour of the Composable Architecture by demonstrating how to test
       .reduxHomepage,
     ],
     sequence: 103,
-    subtitle: nil,
-    title: "A Tour of the Composable Architecture: Part 4",
+    subtitle: "Part 4",
+    title: "A Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 21_727_020,
       vimeoId: 416533236,

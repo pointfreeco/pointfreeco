@@ -23,8 +23,8 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
       .reduxHomepage,
     ],
     sequence: 100,
-    subtitle: nil,
-    title: "A Tour of the Composable Architecture: Part 1",
+    subtitle: "Part 1",
+    title: "A Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 402161784,
       vimeoId: 414015638,
