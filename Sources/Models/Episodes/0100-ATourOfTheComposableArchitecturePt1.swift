@@ -18,13 +18,6 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1588568400),
     references: [
-      reference(
-        forCollection: .composableArchitecture,
-        additionalBlurb: #"""
-The Composable Architecture was designed over the course of nearly 9 months of episodes, exploring many facets of application architecture. Explore all 13+ hours of episodes in this collection.
-"""#,
-        collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
-      ),
       .theComposableArchitecture,
       .elmHomepage,
       .reduxHomepage,
