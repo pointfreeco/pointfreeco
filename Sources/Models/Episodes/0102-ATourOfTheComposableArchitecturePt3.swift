@@ -24,8 +24,8 @@ It's time to start proving that our business logic works the way we expect. We a
       .reduxHomepage,
     ],
     sequence: 102,
-    subtitle: nil,
-    title: "A Tour of the Composable Architecture: Part 3",
+    subtitle: "Part 3",
+    title: "A Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 61_680_473,
       vimeoId: 416533116,
