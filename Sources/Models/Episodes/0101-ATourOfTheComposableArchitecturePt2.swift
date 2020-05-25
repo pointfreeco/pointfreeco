@@ -23,8 +23,8 @@ Continuing the tour of our recently open-sourced library, the Composable Archite
       .reduxHomepage,
     ],
     sequence: 101,
-    subtitle: nil,
-    title: "A Tour of the Composable Architecture: Part 2",
+    subtitle: "Part 2",
+    title: "A Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 30_074_314,
       vimeoId: 416533021,
