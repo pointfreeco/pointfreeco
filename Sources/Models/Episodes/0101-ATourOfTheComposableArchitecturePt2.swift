@@ -18,13 +18,6 @@ Continuing the tour of our recently open-sourced library, the Composable Archite
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1589173200),
     references: [
-      reference(
-        forCollection: .composableArchitecture,
-        additionalBlurb: #"""
-The Composable Architecture was designed over the course of nearly 9 months of episodes, exploring many facets of application architecture. Explore all 13+ hours of episodes in this collection.
-"""#,
-        collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
-      ),
       .theComposableArchitecture,
       .elmHomepage,
       .reduxHomepage,
