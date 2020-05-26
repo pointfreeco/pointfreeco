@@ -54,6 +54,10 @@ That will set up beginning and ending signposts for each reducer invocation, all
 
 This method will also start a signpost when the effect returned from the reducer starts, and end the signpost when the effect completes (either successfully, failed or cancelled). This gives you insight into what effects are currently executing and how long it takes them to finish. This is particularly useful for inspecting the lifecycle of long-living effects. For example, if you start an effect (e.g. a location manager) in `onAppear` and forget to tear down the effect in `onDisappear`, it will clearly show in instruments that the effect was never completed.
 
+To read the stats from these signposts simply run your application in instruments (⌘I), start with a blank instrument, add the `os_signpost` library by tapping the `+` icon in the top-right, and then start recording your app by tapping the red button in the top-left.
+
+You can apply this method locally if you are interested in just a certain feature's performance, or you can apply it to the base, app-level reducer that powers your entire application.
+
 ## Start instrumenting today
 
 We've just released version TODO of the Composable Architecture, and so you can start using this new feature immediately. Let us [know](https://twitter.com/pointfreeco) what you think!
