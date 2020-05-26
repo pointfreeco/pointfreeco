@@ -52,9 +52,9 @@ That's it 🤯.
 
 This will set up beginning and ending signposts for each reducer invocation, allowing you to see how many times each action is sent and how long each reducer takes to execute. This can help find any business logic that is taking too long to execute, which might benefit from being moved to an effect that is executed on a background thread.
 
-This method will also start a signpost when an effect returned from the reducer starts, and end the signpost when the effect completes (either successfully or by cancellation). This gives you insight into what effects are currently executing and how long it takes them to finish. This is particularly useful for inspecting the lifecycle of long-living effects. For example, if you fire up a long-living effect (e.g. a location manager) in `onAppear` and forget to tear down the effect in `onDisappear`, it will clearly show in instruments that the effect was never completed.
+This method will also start a signpost when an effect returned from the reducer starts, and end the signpost when the effect completes (either successfully or by cancellation). This gives you insight into what effects are currently executing and how long it takes them to finish. This is particularly useful for inspecting the lifecycle of long-living effects. For example, if you fire up a long-living effect (e.g. a location manager) in `onAppear` and forget to tear down the effect in `onDisappear`, it will clearly show in Instruments that the effect never completed.
 
-To read the stats from these signposts simply run your application in instruments (⌘I), start with a blank instrument, add the `os_signpost` library by tapping the `+` icon in the top-right, and then start recording your app by tapping the red button in the top-left.
+To read the stats from these signposts simply run your application in Instruments (⌘I), start with a blank instrument, add the `os_signpost` library by tapping the `+` icon in the top-right, and then start recording your app by tapping the red button in the top-left.
 
 You can apply this method locally if you are interested in just a certain feature's performance, or you can apply it to the base, app-level reducer that powers your entire application.
 
