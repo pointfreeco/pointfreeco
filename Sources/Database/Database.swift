@@ -1121,6 +1121,14 @@ private struct _Client {
       """
       )))
       .map(const(unit))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "subscriptions"
+      ADD COLUMN IF NOT EXISTS
+      "deactivated" boolean NOT NULL DEFAULT FALSE
+      """
+      )))
+      .map(const(unit))
   }
 
   func rows<T: Decodable>(

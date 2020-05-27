@@ -258,6 +258,30 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  func testEpisodePageSubscriber_Deactivated() {
+    let deactivated = update(Subscription.mock) { $0.deactivated = true }
+    Current.database.fetchSubscriptionById = const(pure(deactivated))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(deactivated))
+
+    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2600))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testFreeEpisodePage() {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free

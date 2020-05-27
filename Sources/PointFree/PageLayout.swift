@@ -198,7 +198,8 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   switch data.currentSubscriberState {
   case .nonSubscriber:
     return []
-  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none):
+
+  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -210,7 +211,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some):
+  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -221,7 +222,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none):
+  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -232,7 +233,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some):
+  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -243,10 +244,22 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .owner(hasSeat: _, status: _, enterpriseAccount: _):
+  case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
+       .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your subscription has been deactivated. Please
+        contact us at <support@pointfree.co> to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .owner(hasSeat: _, status: _, enterpriseAccount: _, deactivated: _):
     return []
 
-  case .teammate(status: .pastDue, enterpriseAccount: _):
+  case .teammate(status: .pastDue, enterpriseAccount: _, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -256,7 +269,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .teammate(status: .canceled, enterpriseAccount: _):
+  case .teammate(status: .canceled, enterpriseAccount: _, deactivated: _):
     return flashView(
       .init(
         priority: .warning,
@@ -266,7 +279,18 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
       )
     )
 
-  case .teammate(status: _, enterpriseAccount: _):
+  case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
+       .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+    return flashView(
+      .init(
+        priority: .warning,
+        message: """
+        Your team's subscription is deactivated. Please contact the team owner to regain access to Point-Free.
+        """
+      )
+    )
+
+  case .teammate(status: _, enterpriseAccount: _, deactivated: _):
     return []
   }
 }

@@ -435,7 +435,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
 private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
   guard let subscription = data.stripeSubscription else { return [] }
   guard
-    case let .owner(_, _, .some(enterpriseAccount)) = data.subscriberState
+    case let .owner(_, _, .some(enterpriseAccount), _) = data.subscriberState
     else { return [] }
 
   let planRow = Node.gridRow(
@@ -538,7 +538,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
   guard data.stripeSubscription != nil else { return [] }
 
   var enterpriseShareLink: Node
-  if case let .teammate(_, .some(enterpriseAccount)) = data.subscriberState {
+  if case let .teammate(_, .some(enterpriseAccount), _) = data.subscriberState {
     let shareUrl = url(to: .enterprise(.landing(enterpriseAccount.domain)))
     enterpriseShareLink = .p(
       "Share Point-Free with your co-workers by sending them this link: ",
