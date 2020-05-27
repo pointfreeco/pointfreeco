@@ -53,7 +53,6 @@ private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberSt
   ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
   ("dark_logged-in_inactive-subscriber", (.dark, .mock, .teammate(status: .canceled, enterpriseAccount: nil, deactivated: false), nil)),
   ("dark_logged-in_active-subscriber", (.dark, .mock, .teammate(status: .active, enterpriseAccount: nil, deactivated: false), nil)),
-  ("dark_logged-in_deactivated-subscriber", (.dark, .mock, .teammate(status: .active, enterpriseAccount: nil, deactivated: true), nil)),
 
   ("light_logged-out", (.light, nil, .nonSubscriber, nil)),
   ("light_logged-in_non-subscriber", (.light, .mock, .nonSubscriber, nil)),
