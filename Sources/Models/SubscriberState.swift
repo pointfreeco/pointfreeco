@@ -43,9 +43,8 @@ public enum SubscriberState {
     switch self {
     case .nonSubscriber:
       return nil
-    case let .owner(_, _, _, deactivated):
-      return deactivated
-    case let .teammate(_, _, deactivated):
+    case let .owner(_, _, _, deactivated),
+             .teammate(_, _, deactivated):
       return deactivated
     }
   }
