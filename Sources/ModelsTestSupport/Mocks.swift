@@ -38,6 +38,7 @@ extension EpisodeCredit {
 
 extension Models.Subscription {
   public static let mock = Subscription(
+    deactivated: false,
     id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     stripeSubscriptionId: Stripe.Subscription.mock.id,
     stripeSubscriptionStatus: .active,
