@@ -238,6 +238,7 @@ func updateSubscription(
         "items[0][id]": item.id.rawValue,
         "items[0][plan]": plan.rawValue,
         "items[0][quantity]": String(quantity),
+        "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
       ]
       ))
