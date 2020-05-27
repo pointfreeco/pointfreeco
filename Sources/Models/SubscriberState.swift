@@ -44,7 +44,7 @@ public enum SubscriberState {
     case .nonSubscriber:
       return nil
     case let .owner(_, _, _, deactivated),
-             .teammate(_, _, deactivated):
+         let .teammate(_, _, deactivated):
       return deactivated
     }
   }
