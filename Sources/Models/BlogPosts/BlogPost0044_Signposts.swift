@@ -1,9 +1,9 @@
 import Foundation
 
 public let post0044 = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
-TODO
+Today we are releasing first-party support for instrumenting features built in the Composable Architecture.
 """,
   contentBlocks: [
     .init(
@@ -17,7 +17,7 @@ Today we are releasing first-party support for instrumenting features built in t
     .init(
       content: "",
       type: .image(
-        src: "https://s3.amazonaws.com/pointfreeco-production/point-free-pointers/0044-signposts-cover.jpg", // TODO: cloudfront
+        src: "https://d3rccdn33rt8ze.cloudfront.net/point-free-pointers/0044-signposts-cover.jpg",
         sizing: .fullWidth
       )
     ),
@@ -31,7 +31,7 @@ In 2018 Apple introduced [signposts](https://developer.apple.com/documentation/o
 
 Signposts, and more generally `os_log`, were designed to be lightweight and highly performant so that we shouldn't be afraid of dropping in dozens or hundreds of this measurements in our application. However, doing that at your whim without any regard to the code quality of your application is likely to lead to a lot of disparate metrics cluttering your logs and application logic.
 
-Lucky for us, features built in the [Composable Architecture](https://www.pointfree.co/collections/composable-architecture) have a single place that application logic is performed: in the reducer! Also lucky for us, reducers are super composable and allow us to layer on additional functionality at a high level without littering its core implementation. This has allowed us to introduce [`.signpost()`](TODO: link to PR), a new [higher-order reducer](https://www.pointfree.co/collections/composable-architecture/reducers-and-stores/ep71-composable-state-management-higher-order-reducers) that instruments any reducer with signpost marks, giving you instant insight into the statistical performance of your code.
+Lucky for us, features built in the [Composable Architecture](https://www.pointfree.co/collections/composable-architecture) have a single place that application logic is performed: in the reducer! Also lucky for us, reducers are super composable and allow us to layer on additional functionality at a high level without littering its core implementation. This has allowed us to introduce [`.signpost()`](https://github.com/pointfreeco/swift-composable-architecture/pull/142), a new [higher-order reducer](https://www.pointfree.co/collections/composable-architecture/reducers-and-stores/ep71-composable-state-management-higher-order-reducers) that instruments any reducer with signpost marks, giving you instant insight into the statistical performance of your code.
 
 ## How?
 
@@ -60,12 +60,12 @@ You can apply this method locally if you are interested in just a certain featur
 
 ## Start instrumenting today
 
-We've just released version TODO of the Composable Architecture, and so you can start using this new feature immediately. [Let us know](https://twitter.com/pointfreeco) what you think!
+We've just released version [version 0.3.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.3.0) of the Composable Architecture, and so you can start using this new feature immediately. [Let us know](https://twitter.com/pointfreeco) what you think!
 """,
       type: .paragraph
     )
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-production/point-free-pointers/0044-metadata-cover.jpg", // TODO: cloudfront
+  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/point-free-pointers/0044-metadata-cover.jpg",
   id: 44,
   publishedAt: .init(timeIntervalSince1970: 1590555600),
   title: "Instrumenting features built in the Composable Architecture"
