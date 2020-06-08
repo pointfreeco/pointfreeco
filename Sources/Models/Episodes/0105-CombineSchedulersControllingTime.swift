@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep105_combineSchedulers_controllingTime = Episode(
     blurb: """
-The `Scheduler` protocol of Combine is a powerful abstraction that unifies many ways of executing asynchronous work, and it can even control the flow of time through our code. Unfortunately Combine doesn't give us this abililty out of the box, so let's build it from scratch.
+The `Scheduler` protocol of Combine is a powerful abstraction that unifies many ways of executing asynchronous work, and it can even control the flow of time through our code. Unfortunately Combine doesn't give us this ability out of the box, so let's build it from scratch.
 """,
     codeSampleDirectory: "0105-combine-schedulers-pt2",
     exercises: _exercises,
