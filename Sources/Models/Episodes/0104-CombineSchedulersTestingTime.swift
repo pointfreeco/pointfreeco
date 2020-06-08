@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
 Combine is a powerful framework and is the de facto way to power SwiftUI applications, but how does one test reactive code? We will build a view model from scratch that involves asynchrony and time-based effects and explore what it takes to exhaustively test its functionality.
 """,
-    codeSampleDirectory: "combine-schedulers-pt1",
+    codeSampleDirectory: "0104-combine-schedulers-pt1",
     exercises: _exercises,
     id: 104,
     image: "https://i.vimeocdn.com/video/903757923.jpg",
