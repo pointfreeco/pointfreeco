@@ -145,7 +145,7 @@ extension Plan {
     nickname: "Individual Monthly",
     tiers: [
       Tier(unitAmount: 16_00, upTo: 1),
-      Tier(unitAmount: 18_00, upTo: nil)
+      Tier(unitAmount: 18_00, upTo: nil),
     ]
   )
 
@@ -254,6 +254,6 @@ extension Plan.Tier {
   public static let mock = Plan.Tier(unitAmount: 17_00, upTo: nil)
 }
 
-fileprivate extension Date {
-  static let mock = Date(timeIntervalSince1970: 1517356800)
+extension Date {
+  fileprivate static let mock = Date(timeIntervalSince1970: 1_517_356_800)
 }

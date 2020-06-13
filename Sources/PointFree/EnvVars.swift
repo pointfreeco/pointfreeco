@@ -110,7 +110,8 @@ extension EnvVars {
     self.mailgun = try .init(from: decoder)
     self.port = Int(try container.decode(String.self, forKey: .port))!
     self.postgres = try .init(from: decoder)
-    self.regionalDiscountCouponId = try container.decode(Coupon.Id.self, forKey: .regionalDiscountCouponId)
+    self.regionalDiscountCouponId = try container.decode(
+      Coupon.Id.self, forKey: .regionalDiscountCouponId)
     self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
       .split(separator: ",")
       .map(String.init)
@@ -138,7 +139,8 @@ extension EnvVars {
 
 extension EnvVars {
   public func assigningValuesFrom(_ env: [String: String]) -> EnvVars {
-    let decoded = (try? encoder.encode(self))
+    let decoded =
+      (try? encoder.encode(self))
       .flatMap { try? decoder.decode([String: String].self, from: $0) }
       ?? [:]
 

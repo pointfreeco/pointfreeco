@@ -7,16 +7,18 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView) <<< { inviter, invite in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    preheader: "Your colleague \(inviter.displayName) has invited you to join their team account on Point-Free.",
-    template: .default,
-    data: (inviter, invite)
-  )
-}
+let teamInviteEmailView =
+  simpleEmailLayout(teamInviteEmailBodyView) <<< { inviter, invite in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
+      preheader:
+        "Your colleague \(inviter.displayName) has invited you to join their team account on Point-Free.",
+      template: .default,
+      data: (inviter, invite)
+    )
+  }
 
 private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node {
   return .emailTable(
@@ -43,7 +45,7 @@ private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node 
             .a(
               attributes: [
                 .href(url(to: .invite(.show(invite.id)))),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Click here to accept!"
             )
@@ -54,16 +56,17 @@ private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node 
   )
 }
 
-let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView) <<< { inviter, invitee in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "\(invitee.displayName) has accepted your invitation!",
-    preheader: "",
-    template: .default,
-    data: (inviter, invitee)
-  )
-}
+let inviteeAcceptedEmailView =
+  simpleEmailLayout(inviteeAcceptedEmailBodyView) <<< { inviter, invitee in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "\(invitee.displayName) has accepted your invitation!",
+      preheader: "",
+      template: .default,
+      data: (inviter, invitee)
+    )
+  }
 
 private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> Node {
   return .emailTable(
@@ -72,7 +75,9 @@ private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> Node 
       .td(
         attributes: [.valign(.top)],
         .h3(
-          attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.bottom: 2]])])],
+          attributes: [
+            .class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.bottom: 2]])])
+          ],
           "Your invitation was accepted!"
         ),
         .p("Hey ", .text(inviter.displayName), "!"),

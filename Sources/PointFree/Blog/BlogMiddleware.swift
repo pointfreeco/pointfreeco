@@ -10,7 +10,7 @@ import Tuple
 
 func blogMiddleware(
   conn: Conn<StatusLineOpen, Tuple4<User?, SubscriberState, Route, Route.Blog>>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+) -> IO<Conn<ResponseEnded, Data>> {
 
   let (user, subscriberState, route, subRoute) = lower(conn.data)
 

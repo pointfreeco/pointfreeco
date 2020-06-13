@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -11,20 +11,21 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent) <<< { ep, user in
-  SimpleEmailLayoutData(
-    user: user,
-    newsletter: .newEpisode,
-    title: "Point-Freebie: \(ep.fullTitle)",
-    preheader: freeEpisodeBlurb,
-    template: .default,
-    data: ep
-  )
-}
+let freeEpisodeEmail =
+  simpleEmailLayout(freeEpisodeEmailContent) <<< { ep, user in
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: .newEpisode,
+      title: "Point-Freebie: \(ep.fullTitle)",
+      preheader: freeEpisodeBlurb,
+      template: .default,
+      data: ep
+    )
+  }
 
 let freeEpisodeBlurb = """
-Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
-"""
+  Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
+  """
 
 func freeEpisodeEmailContent(ep: Episode) -> Node {
   return .emailTable(
@@ -40,7 +41,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
                 Class.padding([.mobile: [.all: 2]]),
                 Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
                 Class.pf.colors.bg.blue900,
-                Class.type.italic
+                Class.type.italic,
               ])
             ],
             .text(freeEpisodeBlurb),
@@ -60,8 +61,9 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             .text(ep.fullTitle)
           ),
           .p(.text(ep.blurb)),
-          .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-             .a(
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            .a(
               attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
@@ -72,7 +74,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             .a(
               attributes: [
                 .href(url(to: .episode(.show(.left(ep.slug))))),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Watch now!"
             )

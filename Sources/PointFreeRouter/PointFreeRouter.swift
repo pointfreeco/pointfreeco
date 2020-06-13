@@ -1,7 +1,8 @@
 import ApplicativeRouter
 import Foundation
+
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+  import FoundationNetworking
 #endif
 
 public struct PointFreeRouter {

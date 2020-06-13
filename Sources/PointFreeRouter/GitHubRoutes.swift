@@ -25,8 +25,7 @@ public enum GitHubRoute {
   }
 }
 
-public let gitHubRouter
- = gitHubRouters.reduce(.empty, <|>)
+public let gitHubRouter = gitHubRouters.reduce(.empty, <|>)
 
 private let gitHubRouters: [Router<GitHubRoute>] = [
 

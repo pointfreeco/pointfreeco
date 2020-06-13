@@ -16,9 +16,10 @@ extension EitherIO {
 
 extension EitherIO where A == Prelude.Unit, E == Error {
   public static func debug(prefix: String) -> EitherIO {
-    EitherIO(run: IO {
-      print(prefix)
-      return .right(unit)
-    })
+    EitherIO(
+      run: IO {
+        print(prefix)
+        return .right(unit)
+      })
   }
 }

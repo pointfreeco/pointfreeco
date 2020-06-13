@@ -17,8 +17,8 @@ public let twitterRouter: Router<TwitterRoute> = [
 
   .case(.stephencelis)
     <¢> get %> "stephencelis" <% end,
-  ]
-  .reduce(.empty, <|>)
+]
+.reduce(.empty, <|>)
 
 public func twitterUrl(to route: TwitterRoute) -> String {
   return twitterRouter.url(for: route, base: twitterBaseUrl)?.absoluteString ?? ""

@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -11,36 +11,36 @@ import Models
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Stripe
+import Styleguide
 
-let stripeWebhookMiddleware
-  = validateStripeSignature
-    <<< filterInvalidInvoices
-    <<< requireSubscriptionId
-    <| handleFailedPayment
+let stripeWebhookMiddleware =
+  validateStripeSignature
+  <<< filterInvalidInvoices
+  <<< requireSubscriptionId
+  <| handleFailedPayment
 
-private let filterInvalidInvoices
-  : MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>>
-  = filter(
-    { $0.data.object.either({ $0.number != nil }, const(true)) },
-    or: writeStatus(.ok) >=> respond(text: "OK")
-)
+private let filterInvalidInvoices:
+  MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>> =
+    filter(
+      { $0.data.object.either({ $0.number != nil }, const(true)) },
+      or: writeStatus(.ok) >=> respond(text: "OK")
+    )
 
-private let requireSubscriptionId
-  : MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id>
-  = filterMap(
+private let requireSubscriptionId:
+  MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id> = filterMap(
     extraSubscriptionId(fromEvent:) >>> pure,
     or: stripeHookFailure(
       subject: "[PointFree Error] Stripe Hook Failed!",
       body: "Couldn't extract subscription id from event payload."
     )
-)
+  )
 
 private func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
-  
+
   return { conn in
-    let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+    let pairs =
+      conn.request.value(forHTTPHeaderField: "Stripe-Signature")
       .map(keysWithAllValues(separator: ","))
       ?? []
 
@@ -52,11 +52,11 @@ private func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
       let signatures = params["v1"],
       let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
       signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
-      else {
-        return conn
-          |> stripeHookFailure(
-            subject: "[PointFree Error] Stripe Hook Failed!",
-            body: "Couldn't verify signature."
+    else {
+      return conn
+        |> stripeHookFailure(
+          subject: "[PointFree Error] Stripe Hook Failed!",
+          body: "Couldn't verify signature."
         )
     }
 
@@ -67,12 +67,14 @@ private func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
     let secret = Current.envVars.stripe.endpointSecret
-    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret.rawValue) else { return false }
+    guard
+      let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret.rawValue)
+    else { return false }
 
     let constantTimeSignature =
       signature.count == digest.count
-        ? signature
-        : String(repeating: " ", count: digest.count)
+      ? signature
+      : String(repeating: " ", count: digest.count)
 
     // NB: constant-time equality check
     return zip(constantTimeSignature.utf8, digest.utf8).reduce(true) { $0 && $1.0 == $1.1 }
@@ -90,60 +92,63 @@ private func keysWithAllValues(separator: Character) -> (String) -> [(String, [S
       .compactMap { pair -> (String, [String])? in
         let pair = pair.split(separator: "=", maxSplits: 1).map(String.init)
         return tuple <¢> pair.first <*> (pair.count == 2 ? [pair[1]] : nil)
-    }
+      }
   }
 }
 
 private func handleFailedPayment(
   _ conn: Conn<StatusLineOpen, Stripe.Subscription.Id>
-  )
-  -> IO<Conn<ResponseEnded, Data>> {
+)
+  -> IO<Conn<ResponseEnded, Data>>
+{
 
-    return Current.stripe.fetchSubscription(conn.data)
-      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
-      .flatMap(Current.database.updateStripeSubscription)
-      .mapExcept(requireSome)
-      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
-      .flatMap { subscription in
-        Current.database.fetchUserById(subscription.userId)
-          .mapExcept(requireSome)
-          .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
-          .map { ($0, subscription) }
-      }
-      .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
-      .run
-      .flatMap(
-        either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
-          if subscription.stripeSubscriptionStatus == .pastDue {
-            parallel(sendPastDueEmail(to: user).run)
-              .run { _ in }
-          }
-
-          return conn |> writeStatus(.ok) >=> end
+  return Current.stripe.fetchSubscription(conn.data)
+    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
+    .flatMap(Current.database.updateStripeSubscription)
+    .mapExcept(requireSome)
+    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
+    .flatMap { subscription in
+      Current.database.fetchUserById(subscription.userId)
+        .mapExcept(requireSome)
+        .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
+        .map { ($0, subscription) }
+    }
+    .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
+    .run
+    .flatMap(
+      either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
+        if subscription.stripeSubscriptionStatus == .pastDue {
+          parallel(sendPastDueEmail(to: user).run)
+            .run { _ in }
         }
+
+        return conn |> writeStatus(.ok) >=> end
+      }
     )
 }
 
 private func sendPastDueEmail(to owner: User)
-  -> EitherIO<Error, SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse>
+{
 
-    return sendEmail(
-      to: [owner.email],
-      subject: "Your subscription is past-due",
-      content: inj2(pastDueEmailView(unit))
-    )
-}
-
-let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView) <<< { unit in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "Your subscription is past-due",
-    preheader: "Your most recent payment was declined.",
-    template: .default,
-    data: unit
+  return sendEmail(
+    to: [owner.email],
+    subject: "Your subscription is past-due",
+    content: inj2(pastDueEmailView(unit))
   )
 }
+
+let pastDueEmailView =
+  simpleEmailLayout(pastDueEmailBodyView) <<< { unit in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your subscription is past-due",
+      preheader: "Your most recent payment was declined.",
+      template: .default,
+      data: unit
+    )
+  }
 
 private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
   return .emailTable(
@@ -176,7 +181,7 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
             .a(
               attributes: [
                 .href(url(to: .account(.paymentInfo(.show)))),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Update payment info"
             )
@@ -190,42 +195,43 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
 private func stripeHookFailure<A>(
   subject: String = "[PointFree Error] Stripe Hook Failed!",
   body: String
-  )
+)
   -> (Conn<StatusLineOpen, A>)
-  -> IO<Conn<ResponseEnded, Data>> {
+  -> IO<Conn<ResponseEnded, Data>>
+{
 
-    return { conn in
-      return IO<Void> {
-        var requestDump = body + "\n\n"
-        print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
-        print(
-          "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
-          to: &requestDump
-        )
-        print("\nHeaders:", to: &requestDump)
-        dump(conn.request.allHTTPHeaderFields, to: &requestDump)
-        print("\nBody:", to: &requestDump)
-        print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
+  return { conn in
+    return IO<Void> {
+      var requestDump = body + "\n\n"
+      print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
+      print(
+        "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
+        to: &requestDump
+      )
+      print("\nHeaders:", to: &requestDump)
+      dump(conn.request.allHTTPHeaderFields, to: &requestDump)
+      print("\nBody:", to: &requestDump)
+      print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
 
-        parallel(
-          sendEmail(
-            to: adminEmails,
-            subject: subject,
-            content: inj1(requestDump)
-            ).run
-          ).run { _ in }
-        }
-        .flatMap {
-          conn
-            |> writeStatus(.badRequest)
-            >=> respond(text: body)
-      }
+      parallel(
+        sendEmail(
+          to: adminEmails,
+          subject: subject,
+          content: inj1(requestDump)
+        ).run
+      ).run { _ in }
     }
+    .flatMap {
+      conn
+        |> writeStatus(.badRequest)
+        >=> respond(text: body)
+    }
+  }
 }
 
 private func extraSubscriptionId(
   fromEvent event: Event<Either<Invoice, Stripe.Subscription>>
-  ) -> Stripe.Subscription.Id? {
+) -> Stripe.Subscription.Id? {
 
   switch event.data.object {
   case let .left(invoice):

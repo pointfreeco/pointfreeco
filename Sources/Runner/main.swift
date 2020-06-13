@@ -5,7 +5,8 @@ import Prelude
 
 // Bootstrap
 
-_ = try! PointFree
+_ = try!
+  PointFree
   .bootstrap()
   .run
   .perform()

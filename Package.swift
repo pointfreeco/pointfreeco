@@ -24,7 +24,8 @@ extension SwiftSetting {
 }
 
 extension Array where Element == SwiftSetting {
-  static let pointFreeSettings: Array = isOss
+  static let pointFreeSettings: Array =
+    isOss
     ? [.define("OSS"), .warnLongExpressionTypeChecking]
     : [.warnLongExpressionTypeChecking]
 }
@@ -42,12 +43,20 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
-    .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
-    .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
-    .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
-    .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
-    .package(name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
+    .package(
+      name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
+    .package(
+      name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")
+    ),
+    .package(
+      name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      from: "1.7.1"),
+    .package(
+      name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
+    .package(
+      name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
+    .package(
+      name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [
 
@@ -113,7 +122,7 @@ let package = Package(
       dependencies: [
         .product(name: "Css", package: "Web"),
         .product(name: "Html", package: "Html"),
-        .product(name: "Prelude", package: "Prelude")
+        .product(name: "Prelude", package: "Prelude"),
       ],
       swiftSettings: .pointFreeSettings
     ),
@@ -280,7 +289,7 @@ let package = Package(
         "Models",
         "PointFreeRouter",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
-        .product(name: "UrlFormEncoding", package: "Web")
+        .product(name: "UrlFormEncoding", package: "Web"),
       ],
       swiftSettings: .pointFreeSettings
     ),
@@ -400,7 +409,7 @@ let package = Package(
       name: "Syndication",
       dependencies: [
         "Models",
-        .product(name: "Html", package: "Html")
+        .product(name: "Html", package: "Html"),
       ],
       swiftSettings: .pointFreeSettings
     ),

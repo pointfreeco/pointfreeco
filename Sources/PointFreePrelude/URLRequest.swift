@@ -1,13 +1,14 @@
 import Either
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import FoundationPrelude
-import Prelude
 import Logging
+import Prelude
 import Tagged
 import UrlFormEncoding
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 extension URLRequest {
   public var cookies: [String: String] {
@@ -19,7 +20,7 @@ extension URLRequest {
       }
       .compactMap { (pair: [String]) -> (String, String) in
         (pair[0], pair.count == 2 ? pair[1] : "")
-    }
+      }
     return .init(pairs, uniquingKeysWith: { $1 })
   }
 }
@@ -29,7 +30,7 @@ public func logError<A>(
   logger: Logger,
   file: StaticString = #file,
   line: UInt = #line
-  ) -> (Error) -> EitherIO<Error, A> {
+) -> (Error) -> EitherIO<Error, A> {
 
   return { error in
     var errorDump = ""

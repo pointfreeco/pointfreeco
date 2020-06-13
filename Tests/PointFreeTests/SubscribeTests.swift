@@ -1,23 +1,24 @@
 import Either
 import EmailAddress
-@testable import GitHub
 import HttpPipeline
 import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-@testable import Stripe
 import TaggedMoney
 import XCTest
+
+@testable import GitHub
+@testable import PointFree
+@testable import Stripe
 
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testCoupon_Individual() {
@@ -31,14 +32,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -47,7 +49,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
   }
 
@@ -62,14 +64,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -98,14 +101,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(.mock)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -114,7 +118,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -139,14 +143,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(.mock)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualYearly)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualYearly)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -155,7 +160,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -183,12 +188,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       to: .subscribe(.some(subscribeData)),
       session: session
     )
-    let conn = connection(from: req)
+    let conn =
+      connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
       .run
@@ -196,7 +202,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
 
     let invites = Current.database.fetchTeamInvites(user.id)
@@ -230,12 +236,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       to: .subscribe(.some(subscribeData)),
       session: session
     )
-    let conn = connection(from: req)
+    let conn =
+      connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
       .run
@@ -243,7 +250,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
 
     let invites = Current.database.fetchTeamInvites(user.id)
@@ -267,10 +274,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
-      .run
-      .perform()
-      .right!!
+    /*let referrerSubscription*/_ = Current.database.createSubscription(
+      .mock, referrer.id, true, nil
+    )
+    .run
+    .perform()
+    .right!!
 
     let referred = Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
@@ -292,21 +301,25 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(update(.mock) {
-        $0.customer = $0.customer.bimap(
-          { _ in "cus_referrer" },
-          { update($0) {
-            $0.id = "cus_referrer"
-            $0.balance = -18_00
-          }
+      pure(
+        update(.mock) {
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referrer" },
+            {
+              update($0) {
+                $0.id = "cus_referrer"
+                $0.balance = -18_00
+              }
+            })
         })
-      })
     }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) {
-        $0.id = "sub_referred"
-        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-      })
+      pure(
+        update(.mock) {
+          $0.id = "sub_referred"
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+        })
     }
 
     var balance: Cents<Int>?
@@ -320,13 +333,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(.mock)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -372,15 +386,19 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(update(.mock) {
-        $0.customer = $0.customer.bimap({ _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
-      })
+      pure(
+        update(.mock) {
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+        })
     }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(update(.mock) {
-        $0.id = "sub_referred"
-        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-      })
+      pure(
+        update(.mock) {
+          $0.id = "sub_referred"
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+        })
     }
 
     var balance: Cents<Int>?
@@ -394,13 +412,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(.mock)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -444,14 +463,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.useRegionalDiscount = true
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -460,7 +480,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+      assertSnapshot(matching: subscription, as: .dump)
     #endif
     XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
     XCTAssertNil(balance)
@@ -498,14 +518,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.useRegionalDiscount = true
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     XCTAssertEqual(subscriptionCoupon, nil)
@@ -520,10 +541,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
-      .run
-      .perform()
-      .right!!
+    /*let referrerSubscription*/_ = Current.database.createSubscription(
+      .mock, referrer.id, true, nil
+    )
+    .run
+    .perform()
+    .right!!
 
     let referred = Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
@@ -549,24 +572,28 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(update(.mock) {
-        $0.customer = $0.customer.bimap(
-          { _ in "cus_referrer" },
-          { update($0) {
-            $0.id = "cus_referrer"
-            $0.balance = -18_00
-          }
+      pure(
+        update(.mock) {
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referrer" },
+            {
+              update($0) {
+                $0.id = "cus_referrer"
+                $0.balance = -18_00
+              }
+            })
         })
-      })
     }
 
     var subscriptionCoupon: Coupon.Id?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(update(.mock) {
-        $0.id = "sub_referred"
-        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-      })
+      return pure(
+        update(.mock) {
+          $0.id = "sub_referred"
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+        })
     }
 
     var balance: Cents<Int>?
@@ -580,13 +607,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(customer)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -607,10 +635,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    /*let referrerSubscription*/_ = Current.database.createSubscription(.mock, referrer.id, true, nil)
-      .run
-      .perform()
-      .right!!
+    /*let referrerSubscription*/_ = Current.database.createSubscription(
+      .mock, referrer.id, true, nil
+    )
+    .run
+    .perform()
+    .right!!
 
     let referred = Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
@@ -636,24 +666,28 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(update(.mock) {
-        $0.customer = $0.customer.bimap(
-          { _ in "cus_referrer" },
-          { update($0) {
-            $0.id = "cus_referrer"
-            $0.balance = -18_00
-          }
+      pure(
+        update(.mock) {
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referrer" },
+            {
+              update($0) {
+                $0.id = "cus_referrer"
+                $0.balance = -18_00
+              }
+            })
         })
-      })
     }
 
     var subscriptionCoupon: Coupon.Id?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(update(.mock) {
-        $0.id = "sub_referred"
-        $0.customer = $0.customer.bimap({ _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-      })
+      return pure(
+        update(.mock) {
+          $0.id = "sub_referred"
+          $0.customer = $0.customer.bimap(
+            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+        })
     }
 
     var balance: Cents<Int>?
@@ -667,13 +701,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return pure(customer)
     }
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -706,14 +741,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     subscribeData.coupon = "deadbeef"
     subscribeData.useRegionalDiscount = true
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 }
@@ -721,16 +757,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testNotLoggedIn_IndividualMonthly() {
-    let conn = connection(from: request(to: .subscribe(.some(.individualMonthly))))
+    let conn =
+      connection(from: request(to: .subscribe(.some(.individualMonthly))))
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -749,69 +786,75 @@ final class SubscribeTests: TestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
   func testNotLoggedIn_IndividualYearly() {
-    let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
+    let conn =
+      connection(from: request(to: .subscribe(.some(.individualYearly))))
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
   func testNotLoggedIn_Team() {
-    let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
+    let conn =
+      connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
   func testCurrentSubscribers() {
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
   func testInvalidQuantity() {
     #if !os(Linux)
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      Current.database.fetchSubscriptionById = const(pure(nil))
+      Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+      let conn =
+        connection(
+          from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
+        )
+        |> siteMiddleware
+        |> Prelude.perform
 
-    assertSnapshot(matching: conn, as: .conn, named: "too_high")
+      assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
-    let conn2 = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+      let conn2 =
+        connection(
+          from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
+        )
+        |> siteMiddleware
+        |> Prelude.perform
 
-    assertSnapshot(matching: conn2, as: .conn, named: "too_low")
+      assertSnapshot(matching: conn2, as: .conn, named: "too_low")
     #endif
   }
 
@@ -820,14 +863,15 @@ final class SubscribeTests: TestCase {
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -836,14 +880,15 @@ final class SubscribeTests: TestCase {
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -862,14 +907,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -888,14 +934,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -904,14 +951,15 @@ final class SubscribeTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -930,14 +978,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -955,14 +1004,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -981,14 +1031,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -1011,14 +1062,15 @@ final class SubscribeTests: TestCase {
       useRegionalDiscount: false
     )
 
-    let conn = connection(
-      from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+    let conn =
+      connection(
+        from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
       )
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
+      assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 }

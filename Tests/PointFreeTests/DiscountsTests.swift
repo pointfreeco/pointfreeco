@@ -1,15 +1,17 @@
 import Either
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import HttpPipeline
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Stripe
 import XCTest
+
+@testable import PointFree
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 private func secureRequest(_ urlString: String) -> URLRequest {
   var request = URLRequest(url: URL(string: urlString)!)
@@ -20,32 +22,33 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testDiscounts_LoggedOut() {
     assertSnapshot(
-      matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
+      matching: connection(
+        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
         |> siteMiddleware,
       as: .ioConn
     )
 
     #if !os(Linux)
-     if self.isScreenshotTestingAvailable {
-       assertSnapshots(
-         matching: connection(
-           from: request(
-             with: secureRequest("http://localhost:8080/discounts/blobfest")
-           )
-           )
-           |> siteMiddleware,
-         as: [
-           "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-           "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-         ]
-       )
-     }
-     #endif
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: connection(
+            from: request(
+              with: secureRequest("http://localhost:8080/discounts/blobfest")
+            )
+          )
+            |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
+    #endif
   }
 
   func testDiscounts_LoggedIn_PercentOff_Forever() {
@@ -62,29 +65,30 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
 
     #if !os(Linux)
-     if self.isScreenshotTestingAvailable {
-       assertSnapshots(
-         matching: connection(
-           from: request(
-             with: secureRequest("http://localhost:8080/discounts/blobfest"),
-             session: .loggedIn
-           )
-           )
-           |> siteMiddleware,
-         as: [
-           "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-           "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-         ]
-       )
-     }
-     #endif
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: connection(
+            from: request(
+              with: secureRequest("http://localhost:8080/discounts/blobfest"),
+              session: .loggedIn
+            )
+          )
+            |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
+    #endif
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Forever() {
@@ -101,8 +105,9 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
@@ -122,8 +127,9 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
@@ -143,8 +149,9 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
@@ -164,8 +171,9 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
@@ -185,13 +193,14 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+      )
         |> siteMiddleware,
       as: .ioConn
     )
   }
-  
+
   func testDiscounts_UsingRegionalCouponId() {
     assertSnapshot(
       matching: siteMiddleware(

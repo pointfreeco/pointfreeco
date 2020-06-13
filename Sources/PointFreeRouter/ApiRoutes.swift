@@ -1,6 +1,6 @@
 import ApplicativeRouter
-import Prelude
 import Models
+import Prelude
 
 extension Route {
   public enum Api: Equatable {
@@ -9,13 +9,12 @@ extension Route {
   }
 }
 
-let apiRouter
-  = apiRouters.reduce(.empty, <|>)
+let apiRouter = apiRouters.reduce(.empty, <|>)
 
 private let apiRouters: [Router<Route.Api>] = [
   .case(.episodes)
     <¢> "episodes" <% end,
 
   .case(Route.Api.episode)
-    <¢> "episodes" %> pathParam(.tagged(.int)) <% end
+    <¢> "episodes" %> pathParam(.tagged(.int)) <% end,
 ]

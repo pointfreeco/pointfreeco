@@ -6,15 +6,15 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 
 let showNewBlogPostEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(const(showNewBlogPostView))
+  >=> respond(const(showNewBlogPostView))
 
 private let showNewBlogPostView = Node.ul(
   .fragment(
@@ -31,7 +31,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
     .form(
       attributes: [
         .action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))),
-        .method(.post)
+        .method(.post),
       ],
       .input(
         attributes: [
@@ -44,7 +44,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
       .textarea(
         attributes: [
           .name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
-          .placeholder("Subscriber announcement")
+          .placeholder("Subscriber announcement"),
         ]
       ),
       .input(
@@ -58,7 +58,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
       .textarea(
         attributes: [
           .name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
-          .placeholder("Non-subscriber announcement")
+          .placeholder("Non-subscriber announcement"),
         ]
       ),
       .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
@@ -67,24 +67,23 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
   )
 }
 
-let sendNewBlogPostEmailMiddleware
-  = fetchBlogPostForId
-    <<< filterMap(
-      require4 >>> pure,
-      or: redirect(to: .admin(.newBlogPostEmail(.index)))
-    )
-    <| sendNewBlogPostEmails
-    >=> redirect(to: .admin(.index))
+let sendNewBlogPostEmailMiddleware =
+  fetchBlogPostForId
+  <<< filterMap(
+    require4 >>> pure,
+    or: redirect(to: .admin(.newBlogPostEmail(.index)))
+  )
+  <| sendNewBlogPostEmails
+  >=> redirect(to: .admin(.index))
 
-private let fetchBlogPostForId
-  : MT<
-  Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>,
-  Tuple4<User, BlogPost, NewBlogPostFormData?, Bool?>
-  >
-  = filterMap(
+private let fetchBlogPostForId:
+  MT<
+    Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>,
+    Tuple4<User, BlogPost, NewBlogPostFormData?, Bool?>
+  > = filterMap(
     over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
     or: redirect(to: .admin(.newBlogPostEmail(.index)))
-)
+  )
 
 func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
   return Current.blogPosts()
@@ -93,7 +92,7 @@ func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
 
 private func sendNewBlogPostEmails<I>(
   _ conn: Conn<I, Tuple4<User, BlogPost, NewBlogPostFormData?, Bool>>
-  ) -> IO<Conn<I, Prelude.Unit>> {
+) -> IO<Conn<I, Prelude.Unit>> {
 
   let (_, post, optionalFormData, isTest) = lower(conn.data)
 
@@ -113,11 +112,14 @@ private func sendNewBlogPostEmails<I>(
     return pure(conn.map(const(unit)))
   }
 
-  let users = isTest
+  let users =
+    isTest
     ? Current.database.fetchAdmins()
-    : Current.database.fetchUsersSubscribedToNewsletter(.newBlogPost, nonsubscriberOrSubscribersOnly)
+    : Current.database.fetchUsersSubscribedToNewsletter(
+      .newBlogPost, nonsubscriberOrSubscribersOnly)
 
-  return users
+  return
+    users
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in
       sendEmail(
@@ -142,7 +144,7 @@ private func sendEmail(
   nonsubscriberAnnouncement: String,
   nonsubscriberDeliver: Bool?,
   isTest: Bool
-  ) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
   let subjectPrefix = isTest ? "[TEST] " : ""
 
@@ -155,9 +157,9 @@ private func sendEmail(
           subject: "\(subjectPrefix)Point-Free Pointer: \(post.title)",
           unsubscribeData: (user.id, .newBlogPost),
           content: inj2(nodes)
-          )
-          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-    }
+        )
+        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+      }
   }
 
   // An email to send to admins once all user emails are sent
@@ -177,9 +179,9 @@ private func sendEmail(
             )
           )
         )
-        )
-        .run
-  }
+      )
+      .run
+    }
 
   let fireAndForget = IO { () -> Prelude.Unit in
     newBlogPostEmailReport

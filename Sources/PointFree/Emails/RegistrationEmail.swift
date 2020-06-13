@@ -6,16 +6,17 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let registrationEmailView = simpleEmailLayout(registrationEmailBody) <<< { user in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "Thanks for signing up!",
-    preheader: "",
-    template: .default,
-    data: user
-  )
-}
+let registrationEmailView =
+  simpleEmailLayout(registrationEmailBody) <<< { user in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Thanks for signing up!",
+      preheader: "",
+      template: .default,
+      data: user
+    )
+  }
 
 private func registrationEmailBody(user: GitHubUser) -> Node {
   return .emailTable(
@@ -43,7 +44,7 @@ private func registrationEmailBody(user: GitHubUser) -> Node {
             .a(
               attributes: [
                 .href(url(to: .pricingLanding)),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Choose a subscription plan!"
             )

@@ -16,12 +16,12 @@ extension Class {
 
 public let sizeStyles =
   heightStyles
-    <> widthStyles
+  <> widthStyles
 
 private let heightStyles: Stylesheet =
   [1, 2, 3, 4].map { Class.size.height(rem: $0) % height(.rem(Double($0))) }.concat()
 
 private let widthStyles =
   Class.size.width50pct % width(.pct(50))
-    <> Class.size.width100pct % width(.pct(100))
-    <> Class.size.height100pct % height(.pct(100))
+  <> Class.size.width100pct % width(.pct(100))
+  <> Class.size.height100pct % height(.pct(100))

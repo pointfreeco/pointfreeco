@@ -1,10 +1,11 @@
 import ApplicativeRouter
-#if canImport(Darwin)
-import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#endif
 import Prelude
+
+#if canImport(Darwin)
+  import Darwin
+#elseif canImport(Glibc)
+  import Glibc
+#endif
 
 extension PartialIso {
   @inlinable
@@ -56,6 +57,6 @@ func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root)
     let (rootPath, child) = extractHelp(from: root),
     let (otherPath, _) = extractHelp(from: embed(child)),
     rootPath == otherPath
-    else { return nil }
+  else { return nil }
   return child
 }

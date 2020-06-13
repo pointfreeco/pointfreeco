@@ -8,7 +8,8 @@ public func render(classes: [CssSelector]) -> String {
 
 public func render(class selector: CssSelector) -> String {
   switch selector {
-  case .star, .elem, .id, .pseudo, .pseudoElem, .attr, .child, .sibling, .deep, .adjacent, .combined:
+  case .star, .elem, .id, .pseudo, .pseudoElem, .attr, .child, .sibling, .deep, .adjacent,
+    .combined:
     return ""
   case let .class(str):
     return str

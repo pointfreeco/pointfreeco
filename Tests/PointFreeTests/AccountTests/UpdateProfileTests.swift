@@ -1,21 +1,22 @@
 import Either
-@testable import GitHub
 import HtmlSnapshotTesting
-@testable import HttpPipeline
 import HttpPipelineTestSupport
 import Models
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-@testable import Stripe
 import XCTest
+
+@testable import GitHub
+@testable import HttpPipeline
+@testable import PointFree
+@testable import Stripe
 
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testUpdateNameAndEmail() {
@@ -33,12 +34,16 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let update = request(
       to: .account(
-        .update(ProfileData(email: "blobby@blob.co", extraInvoiceInfo: nil, emailSettings: [:], name: "Blobby McBlob"))
+        .update(
+          ProfileData(
+            email: "blobby@blob.co", extraInvoiceInfo: nil, emailSettings: [:],
+            name: "Blobby McBlob"))
       ),
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output = connection(from: update)
+    let output =
+      connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
 
@@ -55,7 +60,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     )
 
     #if !os(Linux)
-    assertSnapshot(matching: output, as: .conn)
+      assertSnapshot(matching: output, as: .conn)
     #endif
   }
 
@@ -77,12 +82,16 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let update = request(
       to: .account(
-        .update(.init(email: user.email, extraInvoiceInfo: nil, emailSettings: ["newEpisode": "on"], name: user.name))
+        .update(
+          .init(
+            email: user.email, extraInvoiceInfo: nil, emailSettings: ["newEpisode": "on"],
+            name: user.name))
       ),
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output = connection(from: update)
+    let output =
+      connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
 
@@ -96,7 +105,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     )
 
     #if !os(Linux)
-    assertSnapshot(matching: output, as: .conn)
+      assertSnapshot(matching: output, as: .conn)
     #endif
   }
 }
@@ -104,7 +113,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 class UpdateProfileTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testUpdateExtraInvoiceInfo() {
@@ -133,15 +142,18 @@ class UpdateProfileTests: TestCase {
           )
         )
       ),
-      session: .init(flash: nil, userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+      session: .init(
+        flash: nil,
+        userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
     )
 
-    let output = connection(from: update)
+    let output =
+      connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: output, as: .conn)
+      assertSnapshot(matching: output, as: .conn)
     #endif
 
     XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)

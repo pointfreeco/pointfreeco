@@ -1,10 +1,11 @@
 import Either
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Logging
 import UrlFormEncoding
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 extension URLRequest {
   public mutating func guaranteeHeaders() {
@@ -31,14 +32,17 @@ extension URLRequest {
 public func dataTask(
   with request: URLRequest,
   logger: Logger?
-  )
-  -> EitherIO<Error, (Data, URLResponse)> {
+)
+  -> EitherIO<Error, (Data, URLResponse)>
+{
   return .init(
     run: .init { callback in
 
       let startTime = Date().timeIntervalSince1970
       let uuid = UUID().uuidString
-      logger?.debug("[Data Task] \(uuid) \(request.url?.absoluteString ?? "nil") \(request.httpMethod ?? "UNKNOWN")")
+      logger?.debug(
+        "[Data Task] \(uuid) \(request.url?.absoluteString ?? "nil") \(request.httpMethod ?? "UNKNOWN")"
+      )
 
       let session = URLSession.shared
       var request = request
@@ -53,7 +57,8 @@ public func dataTask(
           let responseMsg = response.map { _ in "some" } ?? "none"
           let errorMsg = error.map(String.init(describing:)) ?? "none"
 
-          logger?.debug("""
+          logger?.debug(
+            """
             [Data Task] \(uuid) \(delta)ms, \
             \(request.url?.absoluteString ?? "nil"), \
             (data, response, error) = \
@@ -79,20 +84,20 @@ public func jsonDataTask<A>(
   with request: URLRequest,
   decoder: JSONDecoder? = nil,
   logger: Logger?
-  )
+)
   -> EitherIO<Error, A>
-  where A: Decodable {
+where A: Decodable {
 
-    return dataTask(with: request, logger: logger)
-      .map { data, _ in data }
-      .flatMap { data in
-        .wrap {
-          do {
-            return try (decoder ?? defaultDecoder).decode(A.self, from: data)
-          } catch {
-            throw JSONError.error(String(decoding: data, as: UTF8.self), error)
-          }
+  return dataTask(with: request, logger: logger)
+    .map { data, _ in data }
+    .flatMap { data in
+      .wrap {
+        do {
+          return try (decoder ?? defaultDecoder).decode(A.self, from: data)
+        } catch {
+          throw JSONError.error(String(decoding: data, as: UTF8.self), error)
         }
+      }
     }
 }
 

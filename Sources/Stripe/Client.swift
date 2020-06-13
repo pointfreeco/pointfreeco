@@ -2,19 +2,22 @@ import DecodableRequest
 import Either
 import EmailAddress
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import FoundationPrelude
 import Logging
 import Tagged
 import TaggedMoney
 import UrlFormEncoding
 
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
+  public var createCustomer:
+    (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+  public var createSubscription:
+    (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Error, Invoice>
@@ -32,8 +35,11 @@ public struct Client {
 
   public init(
     cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
-    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
-    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
+    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
+      EitherIO<Error, Customer>,
+    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<
+      Error, Subscription
+    >,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
     fetchInvoice: @escaping (Invoice.Id) -> EitherIO<Error, Invoice>,
@@ -48,7 +54,7 @@ public struct Client {
     updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
     updateSubscription: @escaping (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>,
     js: String
-    ) {
+  ) {
     self.cancelSubscription = cancelSubscription
     self.createCustomer = createCustomer
     self.createSubscription = createSubscription
@@ -78,17 +84,17 @@ extension Client {
     self.init(
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0))
-    },
+      },
       createCustomer: {
         runStripe(secretKey, logger)(
           Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
-    },
+      },
       createSubscription: {
         runStripe(secretKey, logger)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
-    },
+      },
       fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
       fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
       fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
@@ -99,26 +105,30 @@ extension Client {
       fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
       invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
       updateCustomer: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, token: $1)) },
-      updateCustomerBalance: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1)) },
+      updateCustomerBalance: {
+        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+      },
       updateCustomerExtraInvoiceInfo: {
         runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
         )
-    },
+      },
       updateSubscription: {
         runStripe(secretKey, logger)(
           Stripe.updateSubscription($0, $1, $2)
         )
-    },
+      },
       js: "https://js.stripe.com/v3/"
     )
   }
 }
 
 func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
-    "cancel_at_period_end": "true"
-  ]))
+  return stripeRequest(
+    "subscriptions/" + id.rawValue + "?expand[]=customer",
+    .post([
+      "cancel_at_period_end": "true"
+    ]))
 }
 
 func createCustomer(
@@ -127,18 +137,22 @@ func createCustomer(
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
   balance: Cents<Int>?
-  )
-  -> DecodableRequest<Customer> {
+)
+  -> DecodableRequest<Customer>
+{
 
-    return stripeRequest("customers", .post([
-      "balance": balance?.map(String.init).rawValue,
-      "business_vat_id": vatNumber?.rawValue,
-      "description": description,
-      "email": email?.rawValue,
-      "source": token.rawValue,
+  return stripeRequest(
+    "customers",
+    .post(
+      [
+        "balance": balance?.map(String.init).rawValue,
+        "business_vat_id": vatNumber?.rawValue,
+        "description": description,
+        "email": email?.rawValue,
+        "source": token.rawValue,
       ]
       .compactMapValues { $0 }
-      ))
+    ))
 }
 
 func createSubscription(
@@ -146,16 +160,17 @@ func createSubscription(
   plan: Plan.Id,
   quantity: Int,
   coupon: Coupon.Id?
-  )
-  -> DecodableRequest<Subscription> {
+)
+  -> DecodableRequest<Subscription>
+{
 
-    var params: [String: Any] = [:]
-    params["customer"] = customer.rawValue
-    params["items[0][plan]"] = plan.rawValue
-    params["items[0][quantity]"] = String(quantity)
-    params["coupon"] = coupon?.rawValue
+  var params: [String: Any] = [:]
+  params["customer"] = customer.rawValue
+  params["items[0][plan]"] = plan.rawValue
+  params["items[0][quantity]"] = String(quantity)
+  params["coupon"] = coupon?.rawValue
 
-    return stripeRequest("subscriptions?expand[]=customer", .post(params))
+  return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
@@ -173,7 +188,8 @@ func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
 }
 
 func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
-  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
+  return stripeRequest(
+    "invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
@@ -193,32 +209,42 @@ func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> 
 }
 
 func invoiceCustomer(_ customer: Customer.Id)
-  -> DecodableRequest<Invoice> {
+  -> DecodableRequest<Invoice>
+{
 
-    return stripeRequest("invoices", .post([
+  return stripeRequest(
+    "invoices",
+    .post([
       "customer": customer.rawValue,
-      ]))
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, token: Token.Id)
-  -> DecodableRequest<Customer> {
+  -> DecodableRequest<Customer>
+{
 
-    return stripeRequest("customers/" + id.rawValue, .post([
+  return stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
       "source": token.rawValue,
-      ]))
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
 
-  return stripeRequest("customers/" + id.rawValue, .post([
-    "balance": balance.rawValue,
+  return stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
+      "balance": balance.rawValue,
     ]))
 }
 
 func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
 
-  return stripeRequest("customers/" + id.rawValue, .post([
-    "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
+  return stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
+      "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
     ]))
 }
 
@@ -226,12 +252,15 @@ func updateSubscription(
   _ currentSubscription: Subscription,
   _ plan: Plan.Id,
   _ quantity: Int
-  )
-  -> DecodableRequest<Subscription>? {
+)
+  -> DecodableRequest<Subscription>?
+{
 
-    guard let item = currentSubscription.items.data.first else { return nil }
+  guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
+  return stripeRequest(
+    "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer",
+    .post(
       [
         "cancel_at_period_end": "false",
         "coupon": "",
@@ -241,7 +270,7 @@ func updateSubscription(
         "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
       ]
-      ))
+    ))
 }
 
 public let jsonDecoder: JSONDecoder = {
@@ -258,7 +287,9 @@ public let jsonEncoder: JSONEncoder = {
 }()
 //  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
-func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
+func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:]))
+  -> DecodableRequest<A>
+{
   var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
   request.setHeader(name: "Stripe-Version", value: "2019-12-03")
   request.attach(method: method)
@@ -266,11 +297,13 @@ func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get(
   return DecodableRequest(rawValue: request)
 }
 
-private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
+  DecodableRequest<A>?
+) -> EitherIO<Error, A> {
   return { stripeRequest in
     guard
       var stripeRequest = stripeRequest?.rawValue
-      else { return throwE(StripeError(message: "Stripe request is nil.")) }
+    else { return throwE(StripeError(message: "Stripe request is nil.")) }
 
     stripeRequest.attachBasicAuth(username: secretKey.rawValue)
 
@@ -287,8 +320,8 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
                   ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
               }
             }
-        }
-    }
+          }
+      }
 
     return task
   }

@@ -55,23 +55,24 @@ extension Api {
       self.id = episode.id
       self.image = episode.image
       self.length = episode.length
-      self.previousEpisodesInCollection = [] // TODO
+      self.previousEpisodesInCollection = []  // TODO
       self.publishedAt = episode.publishedAt
       self.references = episode.references
       self.sequence = episode.sequence
       self.subscriberOnly = subscriberOnly
       self.title = episode.fullTitle
       self.transcriptBlocks = episode.transcriptBlocks
-      self.video = subscriberOnly
+      self.video =
+        subscriberOnly
         ? episode.trailerVideo
-        : episode.fullVideo // TODO: use subscriber data to determine this
+        : episode.fullVideo  // TODO: use subscriber data to determine this
     }
   }
 }
 
 func apiMiddleware(
   _ conn: Conn<StatusLineOpen, Tuple2<User?, Route.Api>>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+) -> IO<Conn<ResponseEnded, Data>> {
 
   let (_ /* user */, route) = lower(conn.data)
 
@@ -92,26 +93,24 @@ func apiMiddleware(
           episode: $0,
           currentDate: Current.date()
         )
-    }
+      }
 
     return conn.map(const(episode))
-      |> (
-        filterMap(pure, or: routeNotFoundMiddleware) // TODO: make a JSON 404 payload?
-          <| writeStatus(.ok)
-          >=> respondJson
-    )
+      |> (filterMap(pure, or: routeNotFoundMiddleware)  // TODO: make a JSON 404 payload?
+        <| writeStatus(.ok)
+        >=> respondJson)
   }
 }
 
 public func respondJson<A: Encodable>(
   _ conn: Conn<HeadersOpen, A>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+) -> IO<Conn<ResponseEnded, Data>> {
 
   let encoder = JSONEncoder()
   if Current.envVars.appEnv == .testing {
     encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
   }
-  let data = try! encoder.encode(conn.data) // TODO: 400 on badly formed data
+  let data = try! encoder.encode(conn.data)  // TODO: 400 on badly formed data
 
   return conn.map(const(data))
     |> writeHeader(.contentType(.json))

@@ -11,12 +11,13 @@ extension Node {
     sizes: [Breakpoint: Int],
     attributes: [Attribute<Tag.Div>] = [],
     _ content: Node...
-    ) -> Node {
+  ) -> Node {
 
-    let classes = [Class.grid.col(.mobile, nil)]
+    let classes =
+      [Class.grid.col(.mobile, nil)]
       + sizes
-        .sorted(by: { $0.key.rawValue < $1.key.rawValue })
-        .map(Class.grid.col(_:_:))
+      .sorted(by: { $0.key.rawValue < $1.key.rawValue })
+      .map(Class.grid.col(_:_:))
 
     return .div(attributes: _addClasses(classes, to: attributes), .fragment(content))
   }
@@ -24,17 +25,20 @@ extension Node {
 
 // todo: where should this live?
 // todo: render `CssSelector.union` better
-public func _addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
+public func _addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<
+  T
+>] {
   return guaranteeClassAttributeExists(attributes)
     .map { attribute in
       guard attribute.key == "class" else { return attribute }
 
-      let newValue = (attribute.value ?? "")
+      let newValue =
+        (attribute.value ?? "")
         + " "
         + render(classes: classes)
 
       return .init("class", newValue)
-  }
+    }
 }
 
 private func guaranteeClassAttributeExists<T>(_ attributes: [Attribute<T>]) -> [Attribute<T>] {

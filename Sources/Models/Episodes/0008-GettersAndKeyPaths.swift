@@ -3,10 +3,10 @@ import Foundation
 extension Episode {
   static let ep8_gettersAndKeyPaths = Episode(
     blurb: """
-Key paths aren’t just for setting. They also assist in getting values inside nested structures in a \
-composable way. This can be powerful, allowing us to make the Swift standard library more expressive with \
-no boilerplate.
-""",
+      Key paths aren’t just for setting. They also assist in getting values inside nested structures in a \
+      composable way. This can be powerful, allowing us to make the Swift standard library more expressive with \
+      no boilerplate.
+      """,
     codeSampleDirectory: "0008-getters-and-key-paths",
     exercises: _exercises,
     id: 8,
@@ -21,71 +21,80 @@ no boilerplate.
     title: "Getters and Key Paths",
     trailerVideo: .init(
       bytesLength: 14_431_137,
-      downloadUrl: "https://player.vimeo.com/external/355113874.hd.mp4?s=0f4e4bfd5f69424f79e6afe2c00cc43c26e1a345&profile_id=174&download=1",
+      downloadUrl:
+        "https://player.vimeo.com/external/355113874.hd.mp4?s=0f4e4bfd5f69424f79e6afe2c00cc43c26e1a345&profile_id=174&download=1",
       streamingSource: "https://player.vimeo.com/video/355113874"
     )
   )
 }
 
 private let _exercises: [Episode.Exercise] = [
-  Episode.Exercise(problem: """
-Find three more standard library APIs that can be used with our `get` and `^` helpers.
-"""),
+  Episode.Exercise(
+    problem: """
+      Find three more standard library APIs that can be used with our `get` and `^` helpers.
+      """),
 
-  Episode.Exercise(problem: """
-The one downside to key paths being _only_ compiler generated is that we do not get to create new ones
-ourselves. We only get the ones the compiler gives us.
+  Episode.Exercise(
+    problem: """
+      The one downside to key paths being _only_ compiler generated is that we do not get to create new ones
+      ourselves. We only get the ones the compiler gives us.
 
-And there are a lot of getters and setters that are not representable by key paths. For example, the
-"identity" key path `KeyPath<A, A>` that simply returns `self` for the getter and that setting on it
-leaves it unchanged. Can you think of any other interesting getters/setters that cannot be represented
-by key paths?
-"""),
+      And there are a lot of getters and setters that are not representable by key paths. For example, the
+      "identity" key path `KeyPath<A, A>` that simply returns `self` for the getter and that setting on it
+      leaves it unchanged. Can you think of any other interesting getters/setters that cannot be represented
+      by key paths?
+      """),
 
-  Episode.Exercise(problem: """
-In our [Setters and Key Paths](/episodes/ep7-setters-and-key-paths) episode we showed how `map` could
-kinda be seen as a "setter" by saying:
+  Episode.Exercise(
+    problem: """
+      In our [Setters and Key Paths](/episodes/ep7-setters-and-key-paths) episode we showed how `map` could
+      kinda be seen as a "setter" by saying:
 
-> "If you tell me how to transform an `A` into a `B`, I will tell you how to transform an `[A]` into a `[B]`."
+      > "If you tell me how to transform an `A` into a `B`, I will tell you how to transform an `[A]` into a `[B]`."
 
-There is also a way to think of `map` as a "getter" by saying:
+      There is also a way to think of `map` as a "getter" by saying:
 
-> "If you tell me how to get a `B` out of an `A`, I will tell you how to get an `[B]` out of an `[A]`."
+      > "If you tell me how to get a `B` out of an `A`, I will tell you how to get an `[B]` out of an `[A]`."
 
-Try composing `get` with free `map` function to construct getters that go even deeper into a structure.
-You may want to use the data types we defined [last time](https://github.com/pointfreeco/episode-code-samples/blob/1998e897e1535a948324d590f2b53b6240662379/0007-setters-and-key-paths/Setters%20and%20Key%20Paths.playground/Contents.swift#L2-L20).
-"""),
+      Try composing `get` with free `map` function to construct getters that go even deeper into a structure.
+      You may want to use the data types we defined [last time](https://github.com/pointfreeco/episode-code-samples/blob/1998e897e1535a948324d590f2b53b6240662379/0007-setters-and-key-paths/Setters%20and%20Key%20Paths.playground/Contents.swift#L2-L20).
+      """),
 
-  Episode.Exercise(problem: """
-Repeat the above exercise by seeing how the free optional `map` can allow you to dive deeper into an
-optional value to extract out a part.
+  Episode.Exercise(
+    problem: """
+      Repeat the above exercise by seeing how the free optional `map` can allow you to dive deeper into an
+      optional value to extract out a part.
 
-Key paths even give first class support for this operation. Do you know what it is?
-"""),
+      Key paths even give first class support for this operation. Do you know what it is?
+      """),
 
-  Episode.Exercise(problem: """
-Key paths aid us in getter composition for structs, but enums don't have any stored properties. Write a
-getter function for `Result` that plucks out a value if it exists, such that it can compose with `get`.
-Use this function with a value in `Result<User, String>` to return the user's name.
-"""),
+  Episode.Exercise(
+    problem: """
+      Key paths aid us in getter composition for structs, but enums don't have any stored properties. Write a
+      getter function for `Result` that plucks out a value if it exists, such that it can compose with `get`.
+      Use this function with a value in `Result<User, String>` to return the user's name.
+      """),
 
-  Episode.Exercise(problem: """
-Key paths work immediately with all fields in a struct, but only work with computed properties on an
-enum. We saw in [Algebra Data Types](https://www.pointfree.co/episodes/ep4-algebraic-data-types) that
-structs and enums are really just two sides of a coin: neither one is more important or better than
-the other.
+  Episode.Exercise(
+    problem: """
+      Key paths work immediately with all fields in a struct, but only work with computed properties on an
+      enum. We saw in [Algebra Data Types](https://www.pointfree.co/episodes/ep4-algebraic-data-types) that
+      structs and enums are really just two sides of a coin: neither one is more important or better than
+      the other.
 
-What would it look like to define an `EnumKeyPath<Root, Value>` type that encapsulates the idea of
-"getting" and "setting" cases in an enum?
-"""),
+      What would it look like to define an `EnumKeyPath<Root, Value>` type that encapsulates the idea of
+      "getting" and "setting" cases in an enum?
+      """),
 
-  Episode.Exercise(problem: """
-Given a value in `EnumKeyPath<A, B>` and `EnumKeyPath<B, C>`, can you construct a value in
-`EnumKeyPath<A, C>`?
-"""),
+  Episode.Exercise(
+    problem: """
+      Given a value in `EnumKeyPath<A, B>` and `EnumKeyPath<B, C>`, can you construct a value in
+      `EnumKeyPath<A, C>`?
+      """),
 
-  Episode.Exercise(problem: """
-Given a value in `EnumKeyPath<A, B>` and a value in `EnumKeyPath<A, C>`, can you construct a value in
-`EnumKeyPath<A, Either<B, C>>`?
-"""),
+  Episode.Exercise(
+    problem: """
+      Given a value in `EnumKeyPath<A, B>` and a value in `EnumKeyPath<A, C>`, can you construct a value in
+      `EnumKeyPath<A, Either<B, C>>`?
+      """),
 ]

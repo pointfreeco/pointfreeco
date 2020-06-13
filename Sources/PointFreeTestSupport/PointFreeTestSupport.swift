@@ -1,14 +1,8 @@
-#if os(macOS)
-import Cocoa
-#endif
 import Cryptor
 import Database
 import DatabaseTestSupport
 import Either
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import GitHub
 import GitHubTestSupport
 import Html
@@ -18,15 +12,23 @@ import Logging
 import Mailgun
 import Models
 import ModelsTestSupport
-@testable import PointFree
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import SnapshotTesting
 import Stripe
 import StripeTestSupport
+
+@testable import PointFree
+
 #if os(macOS)
-import WebKit
+  import Cocoa
+#endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+#if os(macOS)
+  import WebKit
 #endif
 
 extension Environment {
@@ -101,7 +103,7 @@ extension Mailgun.Client {
 }
 
 extension Date {
-  public static let mock = Date(timeIntervalSince1970: 1517356800)
+  public static let mock = Date(timeIntervalSince1970: 1_517_356_800)
 }
 
 extension Session {
@@ -135,14 +137,16 @@ extension Snapshotting {
   }
 
   #if os(macOS)
-  @available(OSX 10.13, *)
-  public static func ioConnWebView(size: CGSize) -> Snapshotting<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Snapshotting<NSView, NSImage>.image.pullback { io in
-      let webView = WKWebView(frame: .init(origin: .zero, size: size))
-      webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
-      return webView
+    @available(OSX 10.13, *)
+    public static func ioConnWebView(size: CGSize) -> Snapshotting<
+      IO<Conn<ResponseEnded, Data>>, NSImage
+    > {
+      return Snapshotting<NSView, NSImage>.image.pullback { io in
+        let webView = WKWebView(frame: .init(origin: .zero, size: size))
+        webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
+        return webView
+      }
     }
-  }
   #endif
 }
 
@@ -150,7 +154,7 @@ public func request(
   with baseRequest: URLRequest,
   session: Session = .loggedOut,
   basicAuth: Bool = false
-  ) -> URLRequest {
+) -> URLRequest {
 
   var request = baseRequest
 
@@ -172,7 +176,7 @@ public func request(
   guard
     let sessionData = try? cookieJsonEncoder.encode(session),
     let sessionCookie = String(data: sessionData, encoding: .utf8)
-    else { return request }
+  else { return request }
 
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
     .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
@@ -180,7 +184,9 @@ public func request(
   return request
 }
 
-public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
+public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false)
+  -> URLRequest
+{
   return request(
     with: pointFreeRouter.request(for: route)!,
     session: session,

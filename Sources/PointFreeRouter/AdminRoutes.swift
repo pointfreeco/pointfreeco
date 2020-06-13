@@ -31,7 +31,9 @@ public enum Admin: Equatable {
   }
 
   public enum NewEpisodeEmail: Equatable {
-    case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
+    case send(
+      Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?
+    )
     case show
   }
 }

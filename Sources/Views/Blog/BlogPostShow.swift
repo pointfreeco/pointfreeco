@@ -13,7 +13,8 @@ public func blogPostShowView(
   post: BlogPost,
   subscriberState: SubscriberState
 ) -> Node {
-  let showHolidaySpecialCallout = holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
+  let showHolidaySpecialCallout =
+    holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
     && subscriberState.isNonSubscriber
     && post.id != 36
 
@@ -26,7 +27,9 @@ public func blogPostShowView(
           attributes: [.style(margin(leftRight: .auto))],
           showHolidaySpecialCallout ? holidaySpecialCallout : [],
           .div(
-            attributes: [.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
+            attributes: [
+              .class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])
+            ],
             blogPostContentView(post),
             subscriberCalloutView(subscriberState)
           )
@@ -49,7 +52,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
     .div(
       attributes: [
         .class([Class.flex.flex, Class.flex.items.baseline]),
-        .style(flex(direction: .row))
+        .style(flex(direction: .row)),
       ],
       .div(.p(.text(episodeDateFormatter.string(from: post.publishedAt)))),
       .div(
@@ -70,16 +73,16 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
         .class(
           [
             Class.pf.colors.bg.green,
-            Class.margin([.mobile: [.bottom: 3]])
+            Class.margin([.mobile: [.bottom: 3]]),
           ]
-        )
+        ),
       ]
     ),
 
     .div(
       attributes: [.class([Class.pf.colors.bg.white])],
       .fragment(post.contentBlocks.map { transcriptBlockView($0) })
-    )
+    ),
   ]
 }
 
@@ -87,7 +90,9 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   guard !subscriberState.isActive else { return [] }
 
   return [
-    .hr(attributes: [.class([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
+    .hr(attributes: [
+      .class([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])
+    ]),
 
     .div(
       attributes: [
@@ -95,7 +100,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
           [
             Class.margin([.mobile: [.leftRight: 3]]),
             Class.padding([.mobile: [.all: 3]]),
-            Class.pf.colors.bg.gray900
+            Class.pf.colors.bg.gray900,
           ]
         )
       ],
@@ -104,7 +109,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
           .class(
             [
               Class.pf.type.responsiveTitle4,
-              Class.padding([.mobile: [.bottom: 2]])
+              Class.padding([.mobile: [.bottom: 2]]),
             ]
           )
         ],
@@ -116,13 +121,13 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
         .a(
           attributes: [
             .href(pointFreeRouter.path(to: .home)),
-            .class([Class.pf.type.underlineLink])
+            .class([Class.pf.type.underlineLink]),
           ],
           "Point-Free"
         ),
         ", a video series on functional programming and Swift."
       )
-    )
+    ),
   ]
 }
 

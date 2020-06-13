@@ -1,6 +1,6 @@
-import XCTest
 import Models
 import ModelsTestSupport
+import XCTest
 
 final class BlogPostTests: XCTestCase {
 

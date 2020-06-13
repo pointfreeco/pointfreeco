@@ -11,7 +11,7 @@ import Styleguide
 public func transcriptBlockView(
   _ block: Episode.TranscriptBlock,
   fadeOutBlock: Bool = false
-  ) -> Node {
+) -> Node {
   switch block.type {
   case let .code(lang):
     return .pre(
@@ -23,26 +23,29 @@ public func transcriptBlockView(
 
   case .correction:
     return .div(
-        attributes: [
-          .class([
-            Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
-            Class.padding([.mobile: [.all: 2]]),
-            ]),
-          .style(safe: "background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
-        ],
-        .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], "Correction"),
-        .div(
-          attributes: [.class([Class.pf.type.body.regular])],
-          .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
-        )
+      attributes: [
+        .class([
+          Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
+          Class.padding([.mobile: [.all: 2]]),
+        ]),
+        .style(safe: "background-color: #ffdbdd;border-left: 3px solid #eb1c26;"),
+      ],
+      .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], "Correction"),
+      .div(
+        attributes: [.class([Class.pf.type.body.regular])],
+        .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
+      )
     )
 
   case let .image(src, sizing):
-    let imageClasses = sizing == .inset
-      ? [innerImageContainerClass,
-         Class.margin([.mobile: [.topBottom: 3]]),
-         Class.padding([.mobile: [.leftRight: 3]]),
-         Class.pf.colors.bg.white]
+    let imageClasses =
+      sizing == .inset
+      ? [
+        innerImageContainerClass,
+        Class.margin([.mobile: [.topBottom: 3]]),
+        Class.padding([.mobile: [.leftRight: 3]]),
+        Class.pf.colors.bg.white,
+      ]
       : [innerImageContainerClass]
 
     return .a(
@@ -57,12 +60,14 @@ public func transcriptBlockView(
 
   case .paragraph:
     return .div(
-      attributes: fadeOutBlock ? [
-      .style(safe: #"""
-      -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-      mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-      """#)
-      ] : [],
+      attributes: fadeOutBlock
+        ? [
+          .style(
+            safe: #"""
+              -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+              mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+              """#)
+        ] : [],
       timestampLinkView(block.timestamp),
       .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
     )
@@ -71,9 +76,9 @@ public func transcriptBlockView(
     return .h3(
       attributes: [
         .class([Class.h3]),
-        block.timestamp.map { .id("t\($0)") }
-        ]
-        .compactMap(id),
+        block.timestamp.map { .id("t\($0)") },
+      ]
+      .compactMap(id),
       .a(
         attributes: block.timestamp.map { [.href("#t\($0)")] } ?? [],
         .text(block.content)
@@ -82,22 +87,22 @@ public func transcriptBlockView(
 
   case let .video(poster, sources):
     return .div(
+      attributes: [
+        .class([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
+        .style(outerVideoContainerStyle),
+      ],
+      .video(
         attributes: [
-          .class([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
-          .style(outerVideoContainerStyle)
+          .class([innerVideoContainerClass]),
+          .controls(true),
+          .playsinline(true),
+          .autoplay(false),
+          .poster(poster),
+          .style(objectFit(.cover)),
         ],
-          .video(
-            attributes: [
-              .class([innerVideoContainerClass]),
-              .controls(true),
-              .playsinline(true),
-              .autoplay(false),
-              .poster(poster),
-              .style(objectFit(.cover))
-            ],
-            .fragment(sources.map { .source(src: $0) })
-          )
+        .fragment(sources.map { .source(src: $0) })
       )
+    )
   }
 }
 
@@ -132,21 +137,21 @@ public func timestampLinkAttributes(timestamp: Int) -> [Attribute<Tag.A>] {
 
 let outerVideoContainerClass: CssSelector =
   Class.size.width100pct
-    | Class.position.relative
+  | Class.position.relative
 
 let outerVideoContainerStyle: Stylesheet =
   padding(bottom: .pct(56.25))
 
 let innerVideoContainerClass: CssSelector =
   Class.size.height100pct
-    | Class.size.width100pct
-    | Class.position.absolute
-    | Class.pf.colors.bg.gray650
+  | Class.size.width100pct
+  | Class.position.absolute
+  | Class.pf.colors.bg.gray650
 
 let outerImageContainerClass: CssSelector =
   Class.size.width100pct
-    | Class.position.relative
+  | Class.position.relative
 
 let innerImageContainerClass: CssSelector =
   Class.size.width100pct
-    | Class.pf.colors.bg.gray650
+  | Class.pf.colors.bg.gray650

@@ -2,15 +2,16 @@ import DecodableRequest
 import Either
 import EmailAddress
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import FoundationPrelude
 import HttpPipeline
 import Logging
 import Models
 import Tagged
 import UrlFormEncoding
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 public struct Client {
   public typealias ApiKey = Tagged<(Client, apiKey: ()), String>
@@ -34,14 +35,16 @@ public struct Client {
 
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.mailboxVerification = Bool(try container.decode(String.self, forKey: .mailboxVerification)) ?? false
+      self.mailboxVerification =
+        Bool(try container.decode(String.self, forKey: .mailboxVerification)) ?? false
     }
   }
 
   public init(
     appSecret: AppSecret,
     sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>,
-    validate: @escaping (EmailAddress) -> EitherIO<Error, Validation>) {
+    validate: @escaping (EmailAddress) -> EitherIO<Error, Validation>
+  ) {
     self.appSecret = appSecret
     self.sendEmail = sendEmail
     self.validate = validate
@@ -51,7 +54,8 @@ public struct Client {
     apiKey: ApiKey,
     appSecret: AppSecret,
     domain: Client.Domain,
-    logger: Logger) {
+    logger: Logger
+  ) {
     self.appSecret = appSecret
 
     self.sendEmail = { email in
@@ -65,12 +69,14 @@ public struct Client {
     fromUserId userId: User.Id,
     andNewsletter newsletter: EmailSetting.Newsletter,
     boundary: String = "--"
-    ) -> EmailAddress? {
+  ) -> EmailAddress? {
 
-    guard let payload = encrypted(
-      text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
-      secret: self.appSecret.rawValue
-      ) else { return nil }
+    guard
+      let payload = encrypted(
+        text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
+        secret: self.appSecret.rawValue
+      )
+    else { return nil }
 
     return .init(rawValue: "unsub-\(payload)@pointfree.co")
   }
@@ -79,7 +85,7 @@ public struct Client {
   public func userIdAndNewsletter(
     fromUnsubscribeEmail email: EmailAddress,
     boundary: String = "--"
-    ) -> (User.Id, EmailSetting.Newsletter)? {
+  ) -> (User.Id, EmailSetting.Newsletter)? {
 
     let payload = email.rawValue
       .components(separatedBy: "unsub-")
@@ -87,17 +93,18 @@ public struct Client {
       .flatMap { $0.split(separator: "@").first }
       .map(String.init)
 
-    return payload
+    return
+      payload
       .flatMap { decrypted(text: $0, secret: self.appSecret.rawValue) }
       .map { $0.components(separatedBy: boundary) }
       .flatMap { components in
         guard
           let userId = components.first.flatMap(UUID.init(uuidString:)).flatMap(User.Id.init),
           let newsletter = components.last.flatMap(EmailSetting.Newsletter.init(rawValue:))
-          else { return nil }
+        else { return nil }
 
         return (userId, newsletter)
-    }
+      }
   }
 
   public func verify(payload: MailgunForwardPayload, with apiKey: ApiKey) -> Bool {
@@ -111,20 +118,21 @@ public struct Client {
 
 extension URLRequest {
   fileprivate mutating func set(baseUrl: URL) {
-    self.url = URLComponents(url: self.url!, resolvingAgainstBaseURL: false)?.url(relativeTo: baseUrl)
+    self.url = URLComponents(url: self.url!, resolvingAgainstBaseURL: false)?.url(
+      relativeTo: baseUrl)
   }
 }
 
 private func runMailgun<A>(
   apiKey: Client.ApiKey,
   logger: Logger
-  ) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
 
   return { mailgunRequest in
     guard let baseUrl = URL(string: "https://api.mailgun.net")
-      else { return throwE(MailgunError()) }
+    else { return throwE(MailgunError()) }
     guard var mailgunRequest = mailgunRequest
-      else { return throwE(MailgunError()) }
+    else { return throwE(MailgunError()) }
 
     mailgunRequest.rawValue.set(baseUrl: baseUrl)
     mailgunRequest.rawValue.attachBasicAuth(username: "api", password: apiKey.rawValue)
@@ -140,11 +148,13 @@ private func runMailgun<A>(
               ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
           }
         }
-    }
+      }
   }
 }
 
-private func mailgunRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
+private func mailgunRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:]))
+  -> DecodableRequest<A>
+{
 
   var components = URLComponents(url: URL(string: path)!, resolvingAgainstBaseURL: false)!
   if case let .get(params) = method {
@@ -158,7 +168,8 @@ private func mailgunRequest<A>(_ path: String, _ method: FoundationPrelude.Metho
   return DecodableRequest(rawValue: request)
 }
 
-private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableRequest<SendEmailResponse> {
+private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableRequest<SendEmailResponse>
+{
   var params: [String: String] = [:]
   params["from"] = email.from.rawValue
   params["to"] = email.to.map(\.rawValue).joined(separator: ",")
@@ -182,8 +193,8 @@ private func mailgunValidate(email: EmailAddress) -> DecodableRequest<Client.Val
     "v3/address/private/validate",
     .get([
       "address": email.rawValue,
-      "mailbox_verification": true
-      ])
+      "mailbox_verification": true,
+    ])
   )
 }
 

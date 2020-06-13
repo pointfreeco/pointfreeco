@@ -1,6 +1,6 @@
 import Css
-import FunctionalCss
 import Foundation
+import FunctionalCss
 import Html
 import Models
 import PointFreeRouter
@@ -82,7 +82,8 @@ private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoic
 }
 
 private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
-  return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name ?? discount.coupon.id.rawValue))"
+  return
+    "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name ?? discount.coupon.id.rawValue))"
 }
 
 public func invoiceView(
@@ -90,24 +91,25 @@ public func invoiceView(
   currentUser: User,
   invoice: Stripe.Invoice
 ) -> Node {
-  let discountRow: Node = invoice.discount.map { discount in
-    .gridRow(
-      attributes: [.class([Class.padding([.mobile: [.topBottom: 1]])])],
-      .gridColumn(
-        sizes: [.mobile: 2, .desktop: 8],
-        []
-      ),
-      .gridColumn(
-        sizes: [.mobile: 6, .desktop: 2],
-        attributes: [.class([Class.type.align.end])],
-        .div("Discount")
-      ),
-      .gridColumn(
-        sizes: [.mobile: 4, .desktop: 2],
-        attributes: [.class([Class.type.align.end])],
-        .div(.text(discountDescription(for: discount, invoice: invoice)))
+  let discountRow: Node =
+    invoice.discount.map { discount in
+      .gridRow(
+        attributes: [.class([Class.padding([.mobile: [.topBottom: 1]])])],
+        .gridColumn(
+          sizes: [.mobile: 2, .desktop: 8],
+          []
+        ),
+        .gridColumn(
+          sizes: [.mobile: 6, .desktop: 2],
+          attributes: [.class([Class.type.align.end])],
+          .div("Discount")
+        ),
+        .gridColumn(
+          sizes: [.mobile: 4, .desktop: 2],
+          attributes: [.class([Class.type.align.end])],
+          .div(.text(discountDescription(for: discount, invoice: invoice)))
+        )
       )
-    )
     } ?? []
 
   let pfAddress = Node.gridRow(
@@ -197,9 +199,9 @@ public func invoiceView(
             rightColumnCount: 6,
             rightColumnContent: extraInvoiceInfo(for: $0)
           )
-        }
-        ]
-        .compactMap { $0 }
+        },
+      ]
+      .compactMap { $0 }
     )
   )
 
@@ -310,7 +312,7 @@ public func invoiceView(
         attributes: [.class([Class.type.align.end])],
         .div(.text(format(cents: invoice.amountDue)))
       )
-    )
+    ),
   ]
 
   return .gridRow(

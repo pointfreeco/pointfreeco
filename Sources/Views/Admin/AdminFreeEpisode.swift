@@ -14,7 +14,7 @@ public func freeEpisodeView(episodes: [Episode], today: Date) -> Node {
           .sorted(by: their(^\.sequence))
           .map { .li(row(episode: $0)) }
       )
-    )
+    ),
   ]
 }
 
@@ -24,7 +24,7 @@ private func row(episode: Episode) -> Node {
     .form(
       attributes: [
         .action(pointFreeRouter.path(to: .admin(.freeEpisodeEmail(.send(episode.id))))),
-        .method(.post)
+        .method(.post),
       ],
       .input(attributes: [.type(.submit), .value("Send email!")])
     )

@@ -55,7 +55,8 @@ public struct Email {
     trackingClicks: TrackingClicks? = nil,
     trackingOpens: TrackingOpens? = nil,
     domain: String,
-    headers: [(String, String)] = []) {
+    headers: [(String, String)] = []
+  ) {
     self.from = from
     self.to = to
     self.cc = cc

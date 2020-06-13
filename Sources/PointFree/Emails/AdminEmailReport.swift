@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -10,7 +10,9 @@ import Models
 import Prelude
 import Styleguide
 
-public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAttempted: Int)) -> Node {
+public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAttempted: Int)) ->
+  Node
+{
   return { data in
     SimpleEmailLayoutData(
       user: nil,
@@ -23,7 +25,9 @@ public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAtt
   } >>> simpleEmailLayout(adminEmailReportContent)
 }
 
-func adminEmailReportContent(data: (type: String, erroredUsers: [User], totalAttempted: Int)) -> Node {
+func adminEmailReportContent(data: (type: String, erroredUsers: [User], totalAttempted: Int))
+  -> Node
+{
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

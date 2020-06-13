@@ -4,4 +4,4 @@ import Prelude
 
 public let styleguide =
   pointFreeBaseStyles
-    <> functionalCss
+  <> functionalCss

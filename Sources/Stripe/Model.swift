@@ -22,7 +22,7 @@ public struct Card: Codable, Equatable {
     id: Id,
     last4: String,
     object: Object
-    ) {
+  ) {
     self.brand = brand
     self.country = country
     self.customer = customer
@@ -171,7 +171,7 @@ public struct Customer: Codable, Equatable {
     id: Id,
     metadata: [String: String],
     sources: ListEnvelope<Either<Card, Source>>
-    ) {
+  ) {
     self.balance = balance
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource
@@ -282,7 +282,7 @@ public struct Invoice: Codable, Equatable {
     subscription: Subscription.Id?,
     subtotal: Cents<Int>,
     total: Cents<Int>
-    ) {
+  ) {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
     self.charge = charge
@@ -337,7 +337,7 @@ public struct LineItem: Codable, Equatable {
     plan: Plan?,
     quantity: Int,
     subscription: Subscription.Id?
-    ) {
+  ) {
     self.amount = amount
     self.description = description
     self.id = id
@@ -370,13 +370,16 @@ public struct Plan: Codable, Equatable {
   public var id: Id
   public var interval: Interval
   public var metadata: [String: String]
-  private var name: String? // FIXME: remove
-  private var _nickname: String? // FIXME: remove
+  private var name: String?  // FIXME: remove
+  private var _nickname: String?  // FIXME: remove
   public var tiers: [Tier]?
 
   public var nickname: String {
     get { return self._nickname ?? self.name ?? "" }
-    set { self._nickname = newValue; self.name = newValue }
+    set {
+      self._nickname = newValue
+      self.name = newValue
+    }
   }
 
   public init(
@@ -387,7 +390,7 @@ public struct Plan: Codable, Equatable {
     metadata: [String: String],
     nickname: String,
     tiers: [Tier]?
-    ) {
+  ) {
     self.created = created
     self.currency = currency
     self.id = id
@@ -398,7 +401,8 @@ public struct Plan: Codable, Equatable {
   }
 
   public func amount(for quantity: Int) -> Cents<Int> {
-    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
+    let amount =
+      (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
       ?? -1
     return amount.map { $0 * quantity }
   }
@@ -436,7 +440,7 @@ public struct Plan: Codable, Equatable {
     case interval
     case metadata
     case name
-    case _nickname = "nickname" // FIXME: remove
+    case _nickname = "nickname"  // FIXME: remove
     case tiers
   }
 }
@@ -472,7 +476,7 @@ public struct Subscription: Codable, Equatable {
     quantity: Int,
     startDate: Date,
     status: Status
-    ) {
+  ) {
     self.canceledAt = canceledAt
     self.cancelAtPeriodEnd = cancelAtPeriodEnd
     self.created = created
@@ -514,7 +518,7 @@ public struct Subscription: Codable, Equatable {
       id: Id,
       plan: Plan,
       quantity: Int
-      ) {
+    ) {
       self.created = created
       self.id = id
       self.plan = plan

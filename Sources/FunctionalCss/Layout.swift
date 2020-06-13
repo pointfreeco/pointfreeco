@@ -23,25 +23,24 @@ extension Class {
 
 public let layoutStyles =
   Class.layout.overflowHidden % overflow(.hidden)
-    <> Class.layout.overflowScroll % overflow(.scroll)
-    <> Class.layout.overflowAuto % overflow(.auto)
-    <> Class.layout.overflowAuto(.x) % overflow(x: .auto)
-    <> Class.layout.overflowAuto(.y) % overflow(y: .auto)
-    <> clearFixStyles
-    <> floatStyles
-    <> widthStyles
-    <> ".border-box" % boxSizing(.borderBox)
+  <> Class.layout.overflowScroll % overflow(.scroll)
+  <> Class.layout.overflowAuto % overflow(.auto)
+  <> Class.layout.overflowAuto(.x) % overflow(x: .auto)
+  <> Class.layout.overflowAuto(.y) % overflow(y: .auto)
+  <> clearFixStyles
+  <> floatStyles
+  <> widthStyles
+  <> ".border-box" % boxSizing(.borderBox)
 
 private let clearFixStyles =
-  (Class.layout.clearFix & .pseudoElem(.before) | Class.layout.clearFix & .pseudoElem(.after)) % (
-    content(stringContent(""))
-      <> display(.table)
-  )
+  (Class.layout.clearFix & .pseudoElem(.before) | Class.layout.clearFix & .pseudoElem(.after))
+  % (content(stringContent(""))
+    <> display(.table))
   <> (Class.layout.clearFix & .pseudoElem(.after)) % clear(.both)
 
 private let floatStyles =
-       Class.layout.left % float(.left)
-    <> Class.layout.right % float(.right)
+  Class.layout.left % float(.left)
+  <> Class.layout.right % float(.right)
 
 private let widthStyles =
   Class.layout.fit % maxWidth(.pct(100))

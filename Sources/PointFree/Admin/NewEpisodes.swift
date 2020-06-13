@@ -6,15 +6,15 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 
 let showNewEpisodeEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond({ _ in showNewEpisodeView })
+  >=> respond({ _ in showNewEpisodeView })
 
 private let showNewEpisodeView = Node.ul(
   .fragment(
@@ -30,54 +30,64 @@ private func newEpisodeEmailRowView(ep: Episode) -> Node {
     .text("Episode #\(ep.sequence): \(ep.fullTitle)"),
     .form(
       attributes: [
-        .action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))),
-        .method(.post)
+        .action(
+          path(
+            to: .admin(
+              .newEpisodeEmail(
+                .send(
+                  ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil)))
+          )),
+        .method(.post),
       ],
-      .textarea(attributes: [.name("subscriber_announcement"), .placeholder("Subscriber announcement")]),
-      .textarea(attributes: [.name("nonsubscriber_announcement"), .placeholder("Non-subscribers announcements")]),
+      .textarea(attributes: [
+        .name("subscriber_announcement"), .placeholder("Subscriber announcement"),
+      ]),
+      .textarea(attributes: [
+        .name("nonsubscriber_announcement"), .placeholder("Non-subscribers announcements"),
+      ]),
       .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
       .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
     )
   )
 }
 
-let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, Bool?>>
-  = requireEpisode
-    <<< requireIsTest
-    <| sendNewEpisodeEmails
-    >=> redirect(to: .admin(.index))
+let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, Bool?>> =
+  requireEpisode
+  <<< requireIsTest
+  <| sendNewEpisodeEmails
+  >=> redirect(to: .admin(.index))
 
-private let requireEpisode
-  : MT<
-  Tuple5<User, Episode.Id, String?, String?, Bool?>,
-  Tuple5<User, Episode, String?, String?, Bool?>
-  >
-  = filterMap(
+private let requireEpisode:
+  MT<
+    Tuple5<User, Episode.Id, String?, String?, Bool?>,
+    Tuple5<User, Episode, String?, String?, Bool?>
+  > = filterMap(
     over2(fetchEpisode) >>> require2 >>> pure,
     or: redirect(to: .admin(.newEpisodeEmail(.show)))
-)
+  )
 
-private let requireIsTest
-  : MT<
-  Tuple5<User, Episode, String?, String?, Bool?>,
-  Tuple5<User, Episode, String?, String?, Bool>
-  >
-  = filterMap(
+private let requireIsTest:
+  MT<
+    Tuple5<User, Episode, String?, String?, Bool?>,
+    Tuple5<User, Episode, String?, String?, Bool>
+  > = filterMap(
     require5 >>> pure,
     or: redirect(to: .admin(.newEpisodeEmail(.show)))
-)
+  )
 
 private func sendNewEpisodeEmails<I>(
-  _ conn: Conn<I, Tuple5<User, Episode, String?, String? , Bool>>
+  _ conn: Conn<I, Tuple5<User, Episode, String?, String?, Bool>>
 ) -> IO<Conn<I, Prelude.Unit>> {
 
   let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
-  let users = isTest
+  let users =
+    isTest
     ? Current.database.fetchAdmins()
     : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
 
-  return users
+  return
+    users
     .withExcept(const(unit))
     .flatMap { users in
       sendEmail(
@@ -98,7 +108,7 @@ private func sendEmail(
   subscriberAnnouncement: String?,
   nonSubscriberAnnouncement: String?,
   isTest: Bool
-  ) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
   let subjectPrefix = isTest ? "[TEST] " : ""
 
@@ -111,9 +121,9 @@ private func sendEmail(
           subject: "\(subjectPrefix)New Point-Free Episode: \(episode.fullTitle)",
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
-          )
-          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-    }
+        )
+        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+      }
   }
 
   // An email to send to admins once all user emails are sent
@@ -133,9 +143,9 @@ private func sendEmail(
             )
           )
         )
-        )
-        .run
-  }
+      )
+      .run
+    }
 
   let fireAndForget = IO { () -> Prelude.Unit in
     newEpisodeEmailReport

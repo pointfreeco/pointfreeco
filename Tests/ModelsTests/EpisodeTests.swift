@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Models
 
 final class EpisodeTests: XCTestCase {
@@ -21,8 +22,8 @@ final class EpisodeTests: XCTestCase {
     episode.permission = .subscriberOnly
     XCTAssertEqual(true, episode.isSubscriberOnly(currentDate: Date()))
 
-    let start = Date(timeIntervalSince1970: 123456789)
-    let end = start.addingTimeInterval(60*60*24*7)
+    let start = Date(timeIntervalSince1970: 123_456_789)
+    let end = start.addingTimeInterval(60 * 60 * 24 * 7)
     episode.permission = .freeDuring(start..<end)
     XCTAssertEqual(
       true,
@@ -48,8 +49,8 @@ final class EpisodeTests: XCTestCase {
     episode.permission = .free
     XCTAssertEqual(.some(episode.publishedAt), episode.freeSince)
 
-    let start = Date(timeIntervalSince1970: 123456789)
-    let end = start.addingTimeInterval(60*60*24*7)
+    let start = Date(timeIntervalSince1970: 123_456_789)
+    let end = start.addingTimeInterval(60 * 60 * 24 * 7)
     episode.permission = .freeDuring(start..<end)
     XCTAssertEqual(.some(start), episode.freeSince)
 

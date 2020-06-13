@@ -1,42 +1,43 @@
 import Either
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import GitHub
 import HttpPipeline
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
-import UrlFormEncoding
 import Tuple
+import UrlFormEncoding
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 let gitHubCallbackResponse =
   requireLoggedOutUser
-    <<< requireAuthCodeAndAccessToken
-    <| gitHubAuthTokenMiddleware
+  <<< requireAuthCodeAndAccessToken
+  <| gitHubAuthTokenMiddleware
 
-private let requireAuthCodeAndAccessToken
-  : MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>>
-  = filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
-  <<< requireAccessToken
+private let requireAuthCodeAndAccessToken:
+  MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>> =
+    filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
+    <<< requireAccessToken
 
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =
   writeStatus(.badRequest)
-    >=> respond(text: "GitHub code wasn't found :(")
+  >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: M<Tuple2<Models.User?, String?>> =
   requireLoggedOutUser
-    <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
+  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
 
 let logoutResponse: M<Prelude.Unit> =
   redirect(
     to: path(to: .home),
     headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
-)
+  )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   return conn
@@ -44,54 +45,57 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 }
 
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>> {
+  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
+{
 
-    if let userId = conn.request.session.userId {
-      Current.database.sawUser(userId)
+  if let userId = conn.request.session.userId {
+    Current.database.sawUser(userId)
+      .run
+      .parallel
+      .run { _ in }
+  }
+
+  let user =
+    conn.request.session.userId
+    .flatMap {
+      Current.database.fetchUserById($0)
         .run
-        .parallel
-        .run { _ in }
+        .map(either(const(nil), id))
     }
+    ?? pure(nil)
 
-    let user = conn.request.session.userId
-      .flatMap {
-        Current.database.fetchUserById($0)
-          .run
-          .map(either(const(nil), id))
-      }
-      ?? pure(nil)
-
-    return user.map { conn.map(const($0 .*. conn.data)) }
+  return user.map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func requireLoggedOutUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.User?, A>, Data> {
+) -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.User?, A>, Data> {
 
   return { conn in
     return conn.map(const(conn.data.second))
-      |> (
-        get1(conn.data) == nil
-          ? middleware
-          : redirect(to: .account(.index), headersMiddleware: flash(.warning, "You’re already logged in."))
-    )
+      |> (get1(conn.data) == nil
+        ? middleware
+        : redirect(
+          to: .account(.index), headersMiddleware: flash(.warning, "You’re already logged in.")))
   }
 }
 
 public func currentSubscriptionMiddleware<A, I>(
   _ conn: Conn<I, T2<Models.User?, A>>
-  ) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
+) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
 
   let user = conn.data.first
 
-  let userSubscription = (user?.subscriptionId)
+  let userSubscription =
+    (user?.subscriptionId)
     .map(
       Current.database.fetchSubscriptionById
         >>> mapExcept(requireSome)
     )
     ?? throwE(unit)
 
-  let ownerSubscription = (user?.id)
+  let ownerSubscription =
+    (user?.id)
     .map(
       Current.database.fetchSubscriptionByOwnerId
         >>> mapExcept(requireSome)
@@ -116,11 +120,12 @@ public func currentSubscriptionMiddleware<A, I>(
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.Id, A>>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>> {
+  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
+{
 
-    return Current.database.fetchUserById(get1(conn.data))
-      .run
-      .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
+  return Current.database.fetchUserById(get1(conn.data))
+    .run
+    .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
 }
 
 private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
@@ -133,94 +138,102 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
 
   return Current.gitHub.fetchEmails(env.accessToken)
     .map { emails in emails.first(where: \.primary) }
-    .mapExcept(requireSome) // todo: better error messaging
+    .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
 
       Current.database.registerUser(env, email.email)
         .mapExcept(requireSome)
         .flatMap { user in
-          EitherIO(run: IO { () -> Either<Error, Models.User> in
+          EitherIO(
+            run: IO { () -> Either<Error, Models.User> in
 
-            // Fire-and-forget notify user that they signed up
-            parallel(
-              sendEmail(
-                to: [email.email],
-                subject: "Point-Free Registration",
-                content: inj2(registrationEmailView(env.gitHubUser))
+              // Fire-and-forget notify user that they signed up
+              parallel(
+                sendEmail(
+                  to: [email.email],
+                  subject: "Point-Free Registration",
+                  content: inj2(registrationEmailView(env.gitHubUser))
                 )
                 .run
               )
               .run({ _ in })
 
-            return .right(user)
-          })
-      }
-  }
+              return .right(user)
+            })
+        }
+    }
 }
 
 /// Exchanges a github code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
   _ conn: Conn<StatusLineOpen, Tuple2<GitHub.AccessToken, String?>>
-  )
-  -> IO<Conn<ResponseEnded, Data>> {
-    let (token, redirect) = lower(conn.data)
+)
+  -> IO<Conn<ResponseEnded, Data>>
+{
+  let (token, redirect) = lower(conn.data)
 
-    return Current.gitHub.fetchUser(token)
-      .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
-      .flatMap(fetchOrRegisterUser(env:))
-      .flatMap { user in
-        refreshStripeSubscription(for: user)
-          .map(const(user))
-      }
-      .withExcept(notifyError(subject: "GitHub Auth Failed"))
-      .run
-      .flatMap(
-        either(
-          const(
-            conn |> PointFree.redirect(
+  return Current.gitHub.fetchUser(token)
+    .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
+    .flatMap(fetchOrRegisterUser(env:))
+    .flatMap { user in
+      refreshStripeSubscription(for: user)
+        .map(const(user))
+    }
+    .withExcept(notifyError(subject: "GitHub Auth Failed"))
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> PointFree.redirect(
               to: .home,
               headersMiddleware: flash(
                 .error,
                 "We were not able to log you in with GitHub. Please try again."
               )
             )
-          )
-        ) { user in
-          conn |> HttpPipeline.redirect(
+        )
+      ) { user in
+        conn
+          |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
             headersMiddleware: writeSessionCookieMiddleware { $0.user = .standard(user.id) }
           )
-        }
+      }
     )
 }
 
 private func requireAccessToken<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<GitHub.AccessToken, String?, A>, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<String, String?, A>, Data> {
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, T3<GitHub.AccessToken, String?, A>, Data
+  >
+)
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<String, String?, A>, Data>
+{
 
-    return { conn in
-      let (code, redirect) = (get1(conn.data), get2(conn.data))
+  return { conn in
+    let (code, redirect) = (get1(conn.data), get2(conn.data))
 
-      return Current.gitHub.fetchAuthToken(code)
-        .run
-        .flatMap { errorOrToken in
-          switch errorOrToken {
-          case let .right(.right(token)):
-            return conn.map(const(token .*. conn.data.second)) |> middleware
-          case let .right(.left(error)) where error.error == .badVerificationCode:
-            return conn |> PointFree.redirect(to: .login(redirect: redirect))
-          case .right(.left), .left:
-            return conn |> PointFree.redirect(
+    return Current.gitHub.fetchAuthToken(code)
+      .run
+      .flatMap { errorOrToken in
+        switch errorOrToken {
+        case let .right(.right(token)):
+          return conn.map(const(token .*. conn.data.second)) |> middleware
+        case let .right(.left(error)) where error.error == .badVerificationCode:
+          return conn |> PointFree.redirect(to: .login(redirect: redirect))
+        case .right(.left), .left:
+          return conn
+            |> PointFree.redirect(
               to: .home,
               headersMiddleware: flash(
                 .error,
                 "We were not able to log you in with GitHub. Please try again."
               )
             )
-          }
+        }
       }
-    }
+  }
 }
 
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
@@ -232,7 +245,7 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
       Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
           Current.database.updateStripeSubscription(stripeSubscription)
-            .map(const(unit)) // FIXME: mapExcept(requireSome) / handle failure?
+            .map(const(unit))  // FIXME: mapExcept(requireSome) / handle failure?
         }
     }
 }

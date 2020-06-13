@@ -35,8 +35,7 @@ public enum Account: Equatable {
   }
 }
 
-let accountRouter
-  = accountRouters.reduce(.empty, <|>)
+let accountRouter = accountRouters.reduce(.empty, <|>)
 
 private let accountRouters: [Router<Account>] = [
   .case(Account.confirmEmailChange)

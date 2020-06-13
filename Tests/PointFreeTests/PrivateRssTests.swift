@@ -1,8 +1,6 @@
 import Either
 import HttpPipeline
-@testable import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -11,10 +9,13 @@ import SnapshotTesting
 import Stripe
 import XCTest
 
+@testable import Models
+@testable import PointFree
+
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+    //    record = true
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {
@@ -117,7 +118,8 @@ class PrivateRssTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(user)))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(
+      "BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
@@ -169,7 +171,8 @@ class PrivateRssTests: TestCase {
     Current.envVars.rssUserAgentWatchlist = ["blob"]
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(
+      "BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
 
     var req = request(
       to: .account(.rss(userId: userId, rssSalt: rssSalt)),

@@ -18,19 +18,23 @@ public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
 
 private let installBacktrace =
   EitherIO.debug(prefix: "  ⚠️ Installing Backtrace...")
-    .flatMap(const(EitherIO<Error, Prelude.Unit>(run: IO {
-      Backtrace.install()
-      return .right(unit)
-    })))
-    .flatMap(const(.debug(prefix: "  ✅ Backtrace installed!")))
+  .flatMap(
+    const(
+      EitherIO<Error, Prelude.Unit>(
+        run: IO {
+          Backtrace.install()
+          return .right(unit)
+        }))
+  )
+  .flatMap(const(.debug(prefix: "  ✅ Backtrace installed!")))
 
 private let stepDivider = EitherIO.debug(prefix: "  -----------------------------")
 
 private let loadEnvironment =
   EitherIO.debug(prefix: "  ⚠️ Loading environment...")
-    .flatMap(loadEnvVars)
-    .flatMap(loadEpisodes)
-    .flatMap(const(.debug(prefix: "  ✅ Loaded!")))
+  .flatMap(loadEnvVars)
+  .flatMap(loadEpisodes)
+  .flatMap(const(.debug(prefix: "  ✅ Loaded!")))
 
 private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
   let envFilePath = URL(fileURLWithPath: #file)
@@ -42,19 +46,23 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
   let decoder = JSONDecoder()
   let encoder = JSONEncoder()
 
-  let defaultEnvVarDict = (try? encoder.encode(Current.envVars))
+  let defaultEnvVarDict =
+    (try? encoder.encode(Current.envVars))
     .flatMap { try? decoder.decode([String: String].self, from: $0) }
     ?? [:]
 
-  let localEnvVarDict = (try? Data(contentsOf: envFilePath))
+  let localEnvVarDict =
+    (try? Data(contentsOf: envFilePath))
     .flatMap { try? decoder.decode([String: String].self, from: $0) }
     ?? [:]
 
-  let envVarDict = defaultEnvVarDict
+  let envVarDict =
+    defaultEnvVarDict
     .merging(localEnvVarDict, uniquingKeysWith: { $1 })
     .merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
-  let envVars = (try? JSONSerialization.data(withJSONObject: envVarDict))
+  let envVars =
+    (try? JSONSerialization.data(withJSONObject: envVarDict))
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
@@ -85,7 +93,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
 
 private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
   #if !OSS
-  Episode.bootstrapPrivateEpisodes()
+    Episode.bootstrapPrivateEpisodes()
   #endif
   assert(Episode.all.count == Set(Episode.all.map(^\.id)).count)
   assert(Episode.all.count == Set(Episode.all.map(^\.sequence)).count)
@@ -97,16 +105,16 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
         Current.envVars.appEnv == .production
           ? $0.publishedAt <= now
           : true
-    }
-    .sorted(by: their(^\.sequence))
+      }
+      .sorted(by: their(^\.sequence))
   }
   return pure(unit)
 }
 
 private let connectToPostgres =
   EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
-    .flatMap { _ in Current.database.migrate() }
-    .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
-    .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
-    .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
-    .flatMap(const(stepDivider))
+  .flatMap { _ in Current.database.migrate() }
+  .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
+  .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
+  .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
+  .flatMap(const(stepDivider))
