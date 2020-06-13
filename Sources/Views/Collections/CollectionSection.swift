@@ -33,10 +33,12 @@ public func collectionSection(
     collectionNavigation(
       left: .a(
         attributes: [
-          .href(path(to: .collections(collection.sections.count == 1 ? .index : .show(collection.slug)))),
+          .href(
+            path(to: .collections(collection.sections.count == 1 ? .index : .show(collection.slug)))
+          ),
           .class([
             Class.pf.colors.link.gray650
-          ])
+          ]),
         ],
         .text(collection.sections.count == 1 ? "Collections" : collection.title)
       )
@@ -95,7 +97,9 @@ private func coreLessons(
           "Core lessons"
         ),
         .fragment(
-          section.coreLessons.map { coreLesson(collection: collection, section: section, lesson: $0) }
+          section.coreLessons.map {
+            coreLesson(collection: collection, section: section, lesson: $0)
+          }
         )
       )
     )
@@ -117,7 +121,8 @@ private func coreLesson(
       icon: playIconSvgBase64(),
       title: lesson.episode.fullTitle,
       length: lesson.episode.length,
-      url: path(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
+      url: path(
+        to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
     )
   )
 }
@@ -184,25 +189,27 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
   switch content {
   case let .collections(collections):
-    return .fragment(collections().map { collection in
-      contentRow(
-        backgroundColor: Class.pf.colors.bg.gray900,
-        icon: collectionIconSvgBase64,
-        title: collection.title,
-        length: collection.length,
-        url: path(to: .collections(.show(collection.slug)))
-      )
-    })
+    return .fragment(
+      collections().map { collection in
+        contentRow(
+          backgroundColor: Class.pf.colors.bg.gray900,
+          icon: collectionIconSvgBase64,
+          title: collection.title,
+          length: collection.length,
+          url: path(to: .collections(.show(collection.slug)))
+        )
+      })
   case let .episodes(episodes):
-    return .fragment(episodes().map { episode in
-      contentRow(
-        backgroundColor: Class.pf.colors.bg.gray900,
-        icon: playIconSvgBase64(),
-        title: episode.fullTitle,
-        length: episode.length,
-        url: path(to: .episode(.show(.left(episode.slug))))
-      )
-    })
+    return .fragment(
+      episodes().map { episode in
+        contentRow(
+          backgroundColor: Class.pf.colors.bg.gray900,
+          icon: playIconSvgBase64(),
+          title: episode.fullTitle,
+          length: episode.length,
+          url: path(to: .episode(.show(.left(episode.slug))))
+        )
+      })
   case let .section(collection, index):
     let collection = collection()
     let section = collection.sections[index]
@@ -268,14 +275,16 @@ private func sectionNavigation(
         ]),
         .href(url(to: .collections(.section(collection.slug, section.slug)))),
       ],
-      .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
-        .class([
-          Class.padding([
-            .mobile: [.right: 1],
-            .desktop: [.right: 2]
+      .img(
+        base64: leftChevronSvgBase64, type: .image(.svg), alt: "",
+        attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.right: 1],
+              .desktop: [.right: 2],
+            ]),
           ]),
         ]),
-      ]),
       .gridColumn(
         sizes: [:],
         .div(
@@ -325,14 +334,16 @@ private func sectionNavigation(
           .text(section.title)
         )
       ),
-      .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
-        .class([
-          Class.padding([
-            .mobile: [.left: 1],
-            .desktop: [.left: 2]
+      .img(
+        base64: rightChevronSvgBase64, type: .image(.svg), alt: "",
+        attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.left: 1],
+              .desktop: [.left: 2],
+            ]),
           ]),
-        ]),
-      ])
+        ])
     )
   }
 
@@ -354,7 +365,7 @@ private func sectionNavigation(
           Class.padding([
             .desktop: [.leftRight: 5],
             .mobile: [.leftRight: 3],
-          ])
+          ]),
         ]),
         .style(
           maxWidth(.px(1080))

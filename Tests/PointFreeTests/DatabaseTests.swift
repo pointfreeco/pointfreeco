@@ -1,14 +1,15 @@
 import Database
 import DatabaseTestSupport
 import GitHub
-import PointFreeTestSupport
-import Prelude
-import Models
-import ModelsTestSupport
 import GitHubTestSupport
 import Logging
+import Models
+import ModelsTestSupport
+import PointFreeTestSupport
+import Prelude
 import SnapshotTesting
 import XCTest
+
 @testable import PointFree
 
 final class DatabaseTests: LiveDatabaseTestCase {
@@ -21,16 +22,17 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testFetchEnterpriseAccount() {
     let user = Current.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
-    let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
+    let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform()
+      .right!!
 
     let createdAccount = Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
-      )
-      .run
-      .perform()
-      .right!!
+    )
+    .run
+    .perform()
+    .right!!
 
     let fetchedAccount = Current.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
       .run
@@ -102,7 +104,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
         """#,
         [user.id.rawValue.uuidString, 20]
       )
-        .run.perform().right!.wrapped.array!.count,
+      .run.perform().right!.wrapped.array!.count,
       1
     )
 
@@ -121,7 +123,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
         """#,
         [user.id.rawValue.uuidString, 20]
       )
-        .run.perform().right!.wrapped.array!.count,
+      .run.perform().right!.wrapped.array!.count,
       1
     )
 
@@ -140,7 +142,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
         """#,
         [user.id.rawValue.uuidString, 30]
       )
-        .run.perform().right!.wrapped.array!.count,
+      .run.perform().right!.wrapped.array!.count,
       1
     )
   }

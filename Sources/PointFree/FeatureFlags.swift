@@ -11,7 +11,8 @@ extension Array where Element == Feature {
   ]
 
   func hasAccess(to feature: Feature, for user: User?) -> Bool {
-    return self
+    return
+      self
       .first(where: { $0.name == feature.name })
       .map {
         $0.isEnabled

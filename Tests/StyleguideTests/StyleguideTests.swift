@@ -1,19 +1,20 @@
 import Css
 import CssTestSupport
-import HtmlSnapshotTesting
 import Html
+import HtmlSnapshotTesting
 import SnapshotTesting
 import Styleguide
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 class StyleguideTests: XCTestCase {
   override func setUp() {
     super.setUp()
     diffTool = "ksdiff"
-//    record = true
+    //    record = true
   }
 
   func testStyleguide() {
@@ -40,17 +41,17 @@ class StyleguideTests: XCTestCase {
             href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
           )
         )
-      )
+      ),
     ]
 
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CI"] == nil {
-      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
-      webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, as: .image)
-    }
+      if ProcessInfo.processInfo.environment["CI"] == nil {
+        let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 
@@ -69,17 +70,17 @@ class StyleguideTests: XCTestCase {
             href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
           )
         )
-      )
+      ),
     ]
 
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CI"] == nil {
-      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
-      webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, as: .image)
-    }
+      if ProcessInfo.processInfo.environment["CI"] == nil {
+        let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 
@@ -93,17 +94,17 @@ class StyleguideTests: XCTestCase {
         .body(
           .twitterShareLink(text: "Tweet", url: "https://www.pointfree.co", via: "pointfreeco")
         )
-      )
+      ),
     ]
 
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CI"] == nil {
-      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
-      webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, as: .image)
-    }
+      if ProcessInfo.processInfo.environment["CI"] == nil {
+        let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 }

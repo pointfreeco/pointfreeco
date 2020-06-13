@@ -13,7 +13,7 @@ public struct TeamInvite: Decodable, Equatable {
     email: EmailAddress,
     id: Id,
     inviterUserId: User.Id
-    ) {
+  ) {
     self.createdAt = createdAt
     self.email = email
     self.id = id

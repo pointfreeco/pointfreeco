@@ -1,6 +1,6 @@
 import Css
-import FunctionalCss
 import Foundation
+import FunctionalCss
 import Html
 import Models
 import PointFreePrelude
@@ -22,7 +22,7 @@ public func accountView(
     referAFriend(accountData: accountData),
     subscriptionOverview(accountData: accountData, currentDate: currentDate),
     creditsView(accountData: accountData, allEpisodes: allEpisodes),
-    logoutView
+    logoutView,
   ]
 
   return .gridRow(
@@ -39,7 +39,8 @@ public func accountView(
 
 private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> Node {
   guard !accountData.subscriberState.isActive else { return [] }
-  guard accountData.currentUser.episodeCreditCount > 0 || accountData.episodeCredits.count > 0 else { return [] }
+  guard accountData.currentUser.episodeCreditCount > 0 || accountData.episodeCredits.count > 0
+  else { return [] }
 
   return .gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 4]])])],
@@ -52,7 +53,9 @@ private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> No
         ),
         .p(
           "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-          .text("subscription. You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "),
+          .text(
+            "subscription. You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "
+          ),
           "remaining."
         ),
         subscribeCallout(accountData.subscriberState),
@@ -90,7 +93,7 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
         .class(
           [
             Class.pf.type.responsiveTitle5,
-            Class.padding([.mobile: [.top: 2]])
+            Class.padding([.mobile: [.top: 2]]),
           ]
         ),
       ],
@@ -104,7 +107,7 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
           .reversed()
           .map { ep in .li([episodeLinkView(ep)]) }
       )
-    )
+    ),
   ]
 }
 
@@ -112,7 +115,7 @@ private func episodeLinkView(_ episode: Episode) -> Node {
   return .a(
     attributes: [
       .href(path(to: .episode(.show(.left(episode.slug))))),
-      .class([Class.pf.colors.link.purple])
+      .class([Class.pf.colors.link.purple]),
     ],
     .text("#\(episode.sequence): \(episode.fullTitle)")
   )
@@ -139,7 +142,7 @@ private func profileRowView(_ data: AccountData) -> Node {
         .type(.text),
         .value(data.currentUser.name ?? ""),
       ]
-    )
+    ),
   ]
 
   let emailFields: Node = [
@@ -149,29 +152,33 @@ private func profileRowView(_ data: AccountData) -> Node {
         .class([blockInputClass]),
         .name(ProfileData.CodingKeys.email.stringValue),
         .type(.email),
-        .value(data.currentUser.email.rawValue)
+        .value(data.currentUser.email.rawValue),
       ]
-    )
+    ),
   ]
 
-  let showExtraInvoiceInfo = data.isSubscriptionOwner && !data.subscriberState.isEnterpriseSubscriber
-  let extraInvoiceInfoFields: Node = !showExtraInvoiceInfo ? [] : [
-    .label(attributes: [.class([labelClass])], "Extra Invoice Info"),
-    .textarea(
-      attributes: [
-        .placeholder("Company name, billing address, VAT number, ..."),
-        .class([blockInputClass]),
-        .name(ProfileData.CodingKeys.extraInvoiceInfo.stringValue),
-      ],
-      data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
-    )
-  ]
+  let showExtraInvoiceInfo =
+    data.isSubscriptionOwner && !data.subscriberState.isEnterpriseSubscriber
+  let extraInvoiceInfoFields: Node =
+    !showExtraInvoiceInfo
+    ? []
+    : [
+      .label(attributes: [.class([labelClass])], "Extra Invoice Info"),
+      .textarea(
+        attributes: [
+          .placeholder("Company name, billing address, VAT number, ..."),
+          .class([blockInputClass]),
+          .name(ProfileData.CodingKeys.extraInvoiceInfo.stringValue),
+        ],
+        data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
+      ),
+    ]
 
   let submit = Node.input(
     attributes: [
       .type(.submit),
       .class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
-      .value("Update profile")
+      .value("Update profile"),
     ]
   )
 
@@ -180,7 +187,7 @@ private func profileRowView(_ data: AccountData) -> Node {
     emailFields,
     extraInvoiceInfoFields,
     emailSettingCheckboxes(data.emailSettings, data.subscriberState),
-    submit
+    submit,
   ]
 
   return .gridRow(
@@ -198,8 +205,11 @@ private func profileRowView(_ data: AccountData) -> Node {
   )
 }
 
-private func emailSettingCheckboxes(_ currentEmailSettings: [EmailSetting], _ subscriberState: SubscriberState) -> Node {
-  let newsletters = subscriberState.isNonSubscriber
+private func emailSettingCheckboxes(
+  _ currentEmailSettings: [EmailSetting], _ subscriberState: SubscriberState
+) -> Node {
+  let newsletters =
+    subscriberState.isNonSubscriber
     ? EmailSetting.Newsletter.allNewsletters
     : EmailSetting.Newsletter.subscriberNewsletters
 
@@ -217,14 +227,14 @@ private func emailSettingCheckboxes(_ currentEmailSettings: [EmailSetting], _ su
                 .type(.checkbox),
                 .name("emailSettings[\(newsletter.rawValue)]"),
                 .checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
-                .class([Class.margin([.mobile: [.right: 1]])])
+                .class([Class.margin([.mobile: [.right: 1]])]),
               ]
             ),
             .text(newsletterDescription(newsletter))
           )
         }
       )
-    )
+    ),
   ]
 }
 
@@ -261,7 +271,8 @@ private func privateRssFeed(
   let encryptedRssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: appSecret)
   let rssUrl = zip(encryptedUserId, encryptedRssSalt)
     .map { url(to: .account(.rss(userId: $0, rssSalt: $1))) }
-  let rssLink: Node = rssUrl
+  let rssLink: Node =
+    rssUrl
     .map { rssUrl in
       [
         .ul(
@@ -272,7 +283,7 @@ private func privateRssFeed(
             )
           )
         ),
-        rssTerms(stripeSubscription: accountData.stripeSubscription)
+        rssTerms(stripeSubscription: accountData.stripeSubscription),
       ]
     }
     ?? []
@@ -287,7 +298,7 @@ private func privateRssFeed(
             [
               Class.margin([.mobile: [.bottom: 4]]),
               Class.padding([.mobile: [.all: 3]]),
-              Class.pf.colors.bg.gray900
+              Class.pf.colors.bg.gray900,
             ]
           )
         ],
@@ -296,22 +307,23 @@ private func privateRssFeed(
             .class(
               [
                 Class.pf.type.responsiveTitle4,
-                Class.padding([.mobile: [.bottom: 2]])
+                Class.padding([.mobile: [.bottom: 2]]),
               ]
             )
           ],
           "Private RSS Feed"
         ),
-        .p("""
-Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
-to consume our videos: an RSS feed that can be used with podcast apps!
-"""),
+        .p(
+          """
+          Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
+          to consume our videos: an RSS feed that can be used with podcast apps!
+          """),
         .p(
           "The link below should work with most podcast apps out there today (please ",
           .a(
             attributes: [
               .class([Class.pf.type.underlineLink]),
-              .href("mailto:support@pointfree.co")
+              .href("mailto:support@pointfree.co"),
             ],
             "email us"
           ),
@@ -332,13 +344,13 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
     ? .p(
       attributes: [
         .class([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.top: 2]])]),
-        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd)))
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
       ],
       "Because you are on a monthly subscription plan, you get access to the last ",
       .text("\(nonYearlyMaxRssItems)"),
       " episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).",
       " To access all episodes from the RSS feed, please consider upgrading to a yearly subscription."
-      )
+    )
     : []
 }
 
@@ -349,7 +361,7 @@ private func referAFriend(
     accountData.isSubscriptionOwner,
     accountData.stripeSubscription?.isCancellable == true,
     !accountData.subscriberState.isEnterpriseSubscriber
-    else { return [] }
+  else { return [] }
 
   let referralUrl = url(
     to: .subscribeConfirmation(
@@ -368,7 +380,7 @@ private func referAFriend(
             [
               Class.margin([.mobile: [.bottom: 4]]),
               Class.padding([.mobile: [.all: 3]]),
-              Class.pf.colors.bg.gray900
+              Class.pf.colors.bg.gray900,
             ]
           )
         ],
@@ -377,15 +389,16 @@ private func referAFriend(
             .class(
               [
                 Class.pf.type.responsiveTitle4,
-                Class.padding([.mobile: [.bottom: 2]])
+                Class.padding([.mobile: [.bottom: 2]]),
               ]
             )
           ],
           "Refer a Friend"
         ),
-        .p("""
-Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
-"""),
+        .p(
+          """
+          Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+          """),
         .ul(
           .li(
             .a(
@@ -405,7 +418,8 @@ Refer Point-Free to a friend! You'll both get one month free (an $18 credit) whe
 private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Date) -> Node {
   guard let subscription = accountData.stripeSubscription else { return [] }
 
-  let content: Node = accountData.subscriberState.isEnterpriseSubscriber
+  let content: Node =
+    accountData.subscriberState.isEnterpriseSubscriber
     ? enterpriseSubscriptionOverview(accountData)
     : [
       subscriptionPlanRows(
@@ -417,8 +431,8 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       subscriptionInvitesRowView(accountData.teamInvites),
       subscriptionInviteMoreRowView(accountData),
       addTeammateToSubscriptionRow(accountData),
-      subscriptionPaymentInfoView(subscription)
-  ]
+      subscriptionPaymentInfoView(subscription),
+    ]
 
   return .gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 4]])])],
@@ -436,7 +450,7 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
   guard let subscription = data.stripeSubscription else { return [] }
   guard
     case let .owner(_, _, .some(enterpriseAccount), _) = data.subscriberState
-    else { return [] }
+  else { return [] }
 
   let planRow = Node.gridRow(
     .gridColumn(
@@ -515,7 +529,9 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
             .p(
               .a(
-                attributes: [.class([Class.pf.colors.link.purple]), .mailto("support@pointfree.co")],
+                attributes: [
+                  .class([Class.pf.colors.link.purple]), .mailto("support@pointfree.co"),
+                ],
                 "support@pointfree.co"
               )
             )
@@ -560,7 +576,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
           .a(
             attributes: [
               .mailto(data.subscriptionOwner?.email.rawValue ?? ""),
-              .class([Class.pf.colors.link.purple])
+              .class([Class.pf.colors.link.purple]),
             ],
             .text(data.subscriptionOwner?.name ?? "the owner")
           ),
@@ -575,7 +591,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
             attributes: [
               .class([Class.pf.components.button(color: .red, size: .small)]),
               .type(.submit),
-              .value("Leave this team")
+              .value("Leave this team"),
             ]
           )
         )
@@ -593,7 +609,8 @@ private func planName(for subscription: Stripe.Subscription) -> String {
 public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
-    let currentPeriodEndString = subscription.cancelAtPeriodEnd
+    let currentPeriodEndString =
+      subscription.cancelAtPeriodEnd
       ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
       : ""
     return "Active" + currentPeriodEndString
@@ -623,7 +640,7 @@ public func nextBilling(
       ? "Cancels " + dateFormatter.string(from: subscription.currentPeriodEnd)
       : "Canceled"
   case (.active, .none), (.pastDue, _), (.unpaid, _), (.trialing, _):
-    return "" // FIXME
+    return ""  // FIXME
   }
 }
 
@@ -651,7 +668,9 @@ private func subscriptionPlanRows(
         .gridColumn(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
-            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
+            attributes: [
+              .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+            ],
             .p(mainAction(for: subscription))
           )
         )
@@ -677,7 +696,9 @@ private func subscriptionPlanRows(
         .gridColumn(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
-            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
+            attributes: [
+              .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+            ],
             .p(
               subscription.isCancellable
                 ? cancelAction(for: subscription)
@@ -689,7 +710,8 @@ private func subscriptionPlanRows(
     )
   )
 
-  let nextBillingRow: Node = subscription.cancelAtPeriodEnd || subscription.status == .canceled
+  let nextBillingRow: Node =
+    subscription.cancelAtPeriodEnd || subscription.status == .canceled
     ? []
     : .gridRow(
       .gridColumn(
@@ -711,26 +733,28 @@ private func subscriptionPlanRows(
           )
         )
       )
-  )
+    )
 
-  let discountRow: Node = subscription.discount.map { discount in
-    .gridRow(
-      .gridColumn(
-        sizes: [.mobile: 3],
-        .p(.div("Discount"))
-      ),
-      .gridColumn(
-        sizes: [.mobile: 9],
-        .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-          .p(.text(discountDescription(for: discount)))
+  let discountRow: Node =
+    subscription.discount.map { discount in
+      .gridRow(
+        .gridColumn(
+          sizes: [.mobile: 3],
+          .p(.div("Discount"))
+        ),
+        .gridColumn(
+          sizes: [.mobile: 9],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+            .p(.text(discountDescription(for: discount)))
+          )
         )
       )
-    )
     }
     ?? []
 
-   let creditRow: Node = subscription.customer.right
+  let creditRow: Node =
+    subscription.customer.right
     .filter { $0.balance < 0 }
     .map { customer in
       .gridRow(
@@ -760,7 +784,8 @@ private func subscriptionPlanRows(
 }
 
 private func discountDescription(for discount: Stripe.Discount) -> String {
-  return "\(discount.coupon.name ?? discount.coupon.id.rawValue): \(discount.coupon.formattedDescription)"
+  return
+    "\(discount.coupon.name ?? discount.coupon.id.rawValue): \(discount.coupon.formattedDescription)"
 }
 
 private func cancelAction(for subscription: Stripe.Subscription) -> Node {
@@ -768,14 +793,17 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
     attributes: [
       .action(path(to: .account(.subscription(.cancel)))),
       .method(.post),
-      .onsubmit(unsafe: """
-if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
-  return false
-}
-"""),
+      .onsubmit(
+        unsafe: """
+          if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
+            return false
+          }
+          """),
     ],
     .button(
-      attributes: [.class([Class.pf.components.button(color: .black, size: .small, style: .underline)])],
+      attributes: [
+        .class([Class.pf.components.button(color: .black, size: .small, style: .underline)])
+      ],
       "Cancel"
     )
   )
@@ -794,7 +822,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return .a(
       attributes: [
         .class([Class.pf.components.button(color: .purple, size: .small)]),
-        .href(path(to: .pricingLanding))
+        .href(path(to: .pricingLanding)),
       ],
       "Resubscribe"
     )
@@ -804,16 +832,18 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       let discount = subscription.discount?.coupon.discount ?? { $0 }
       let amount = discount(subscription.quantity == 1 ? 168_00 : 144_00)
         .map { $0 * subscription.quantity }
-      let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
+      let formattedAmount = currencyFormatter.string(
+        from: NSNumber(value: Double(amount.rawValue) / 100))
       return .form(
         attributes: [
           .action(path(to: .account(.subscription(.change(.update(nil)))))),
           .method(.post),
-          .onsubmit(unsafe: """
-if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
-  return false
-}
-"""),
+          .onsubmit(
+            unsafe: """
+              if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
+                return false
+              }
+              """),
         ],
         .input(attributes: [
           .name("billing"),
@@ -834,16 +864,18 @@ if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?
       let discount = subscription.discount?.coupon.discount ?? { $0 }
       let amount = discount(subscription.quantity == 1 ? 18_00 : 16_00)
         .map { $0 * subscription.quantity }
-      let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
+      let formattedAmount = currencyFormatter.string(
+        from: NSNumber(value: Double(amount.rawValue) / 100))
       return .form(
         attributes: [
           .action(path(to: .account(.subscription(.change(.update(nil)))))),
           .method(.post),
-          .onsubmit(unsafe: """
-if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
-  return false
-}
-"""),
+          .onsubmit(
+            unsafe: """
+              if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
+                return false
+              }
+              """),
         ],
         .input(attributes: [
           .name("billing"),
@@ -869,7 +901,7 @@ private func subscriptionTeamRow(_ data: AccountData) -> Node {
     !data.teammates.isEmpty,
     data.isTeamSubscription,
     !data.subscriberState.isEnterpriseSubscriber
-    else { return [] }
+  else { return [] }
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -890,7 +922,8 @@ private func subscriptionTeamRow(_ data: AccountData) -> Node {
 
 private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
 
-  let teammateLabel = currentUser.id == teammate.id
+  let teammateLabel =
+    currentUser.id == teammate.id
     ? "\(teammate.displayName) (you)"
     : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
@@ -901,7 +934,10 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
       .form(
         attributes: [.action(path(to: .team(.remove(teammate.id)))), .method(.post)],
         .p(
-          .input(attributes: [.type(.submit), .class([Class.pf.components.button(color: .purple, size: .small)]), .value("Remove")])
+          .input(attributes: [
+            .type(.submit), .class([Class.pf.components.button(color: .purple, size: .small)]),
+            .value("Remove"),
+          ])
         )
       )
     )
@@ -941,14 +977,14 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
         attributes: [
           .action(path(to: .invite(.resend(invite.id)))),
           .method(.post),
-          .class([Class.display.inlineBlock])
+          .class([Class.display.inlineBlock]),
         ],
         .p(
           .input(
             attributes: [
               .type(.submit),
               .class([Class.pf.components.button(color: .purple, size: .small)]),
-              .value("Resend")
+              .value("Resend"),
             ]
           )
         )
@@ -958,14 +994,16 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
         attributes: [
           .action(path(to: .invite(.revoke(invite.id)))),
           .method(.post),
-          .class([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])
+          .class([
+            Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]]),
+          ]),
         ],
         .p(
           .input(
             attributes: [
               .type(.submit),
               .class([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
-              .value("Revoke")
+              .value("Revoke"),
             ]
           )
         )
@@ -981,7 +1019,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
 
-  let amount = subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+  let amount =
+    subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
   let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
 
   return .gridRow(
@@ -998,7 +1037,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           attributes: [
             .action(path(to: .invite(.addTeammate(nil)))),
             .method(.post),
-            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
+            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
           ],
           .input(
             attributes: [
@@ -1014,9 +1053,9 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
               .class([
                 Class.pf.components.button(color: .purple, size: .small),
                 Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]])
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
               ]),
-              .value("Add")
+              .value("Add"),
             ]
           )
         ),
@@ -1025,10 +1064,11 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
             .class([
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray400,
-              Class.padding([.mobile: [.top: 1]])
+              Class.padding([.mobile: [.top: 1]]),
             ])
           ],
-          .text("""
+          .text(
+            """
             Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
             per \(interval). Your first invoice will be prorated based on your current billing cycle.
             """)
@@ -1064,7 +1104,7 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
           attributes: [
             .action(path(to: .invite(.send(nil)))),
             .method(.post),
-            .class([Class.flex.flex])
+            .class([Class.flex.flex]),
           ],
           .input(
             attributes: [
@@ -1080,9 +1120,9 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
               .class([
                 Class.pf.components.button(color: .purple, size: .small),
                 Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]])
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
               ]),
-              .value("Invite")
+              .value("Invite"),
             ]
           )
         )
@@ -1092,13 +1132,13 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
 }
 
 private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
-  let seats = invitesRemaining == 1 ? "1 open seat": "\(invitesRemaining) open seats"
+  let seats = invitesRemaining == 1 ? "1 open seat" : "\(invitesRemaining) open seats"
   return .text("You have \(seats) on your team. Invite a team member below:")
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> Node {
   guard let card = subscription.customer.right?.sources.data.first?.left
-    else { return subscriptionInvoiceBillingInfoView }
+  else { return subscriptionInvoiceBillingInfoView }
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -1120,7 +1160,9 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
         .gridColumn(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
-            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
+            attributes: [
+              .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+            ],
             .p(
               .a(
                 attributes: [
@@ -1133,7 +1175,9 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
             .p(
               .a(
                 attributes: [
-                  .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
+                  .class([
+                    Class.pf.components.button(color: .black, size: .small, style: .underline)
+                  ]),
                   .href(path(to: .account(.invoices(.index)))),
                 ],
                 "Payment history"
@@ -1164,7 +1208,7 @@ private let subscriptionInvoiceBillingInfoView = Node.gridRow(
             .a(
               attributes: [
                 .class([Class.pf.type.underlineLink]),
-                .href("mailto:support@pointfree.co")
+                .href("mailto:support@pointfree.co"),
               ],
               "contact us"
             ),
@@ -1175,11 +1219,14 @@ private let subscriptionInvoiceBillingInfoView = Node.gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
+          attributes: [
+            .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+          ],
           .p(
             .a(
               attributes: [
-                .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
+                .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]
+                ),
                 .href(path(to: .account(.invoices(.index)))),
               ],
               "Payment history"
@@ -1209,27 +1256,27 @@ private let logoutView = Node.gridRow(
 
 private let subscriptionInfoRowClass =
   Class.border.top
-    | Class.pf.colors.border.gray800
-    | Class.padding([.mobile: [.top: 2, .bottom: 3]])
+  | Class.pf.colors.border.gray800
+  | Class.padding([.mobile: [.top: 2, .bottom: 3]])
 
 let labelClass =
   Class.h5
-    | Class.type.bold
-    | Class.display.block
-    | Class.margin([.mobile: [.bottom: 1]])
+  | Class.type.bold
+  | Class.display.block
+  | Class.margin([.mobile: [.bottom: 1]])
 
 let smallInputClass =
   baseInputClass
-    | Class.size.height(rem: 2)
-    | Class.padding([.mobile: [.all: 1]])
+  | Class.size.height(rem: 2)
+  | Class.padding([.mobile: [.all: 1]])
 
 let blockSelectClass =
   Class.display.block
-    | Class.margin([.mobile: [.bottom: 2]])
-    | Class.size.height(rem: 3)
-    | Class.size.width100pct
-    | Class.pf.colors.border.gray800
-    | Class.type.fontFamily.inherit
+  | Class.margin([.mobile: [.bottom: 2]])
+  | Class.size.height(rem: 3)
+  | Class.size.width100pct
+  | Class.pf.colors.border.gray800
+  | Class.type.fontFamily.inherit
 
 public struct AccountData {
   public let currentUser: User
@@ -1242,7 +1289,7 @@ public struct AccountData {
   public let teamInvites: [TeamInvite]
   public let teammates: [User]
   public let upcomingInvoice: Stripe.Invoice?
-  
+
   public init(
     currentUser: User,
     emailSettings: [EmailSetting],

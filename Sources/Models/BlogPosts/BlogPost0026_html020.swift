@@ -3,109 +3,109 @@ import Foundation
 public let post0026_html020 = BlogPost(
   author: .pointfree,
   blurb: """
-Announcing swift-html 0.2.0: support for CocoaPods, Carthage, SnapshotTesting, and more!
-""",
+    Announcing swift-html 0.2.0: support for CocoaPods, Carthage, SnapshotTesting, and more!
+    """,
   contentBlocks: [
     .init(
       content: """
-Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](https://github.com/pointfreeco/swift-html), a Swift DSL for type-safe, extensible, and transformable HTML documents. In fact, this very page was rendered with it!
+        Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](https://github.com/pointfreeco/swift-html), a Swift DSL for type-safe, extensible, and transformable HTML documents. In fact, this very page was rendered with it!
 
-We've been battle-testing this library for awhile now, long before its [initial release last September](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift). Today's release contains a number of new features and fixes, including several patches from the community!
+        We've been battle-testing this library for awhile now, long before its [initial release last September](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift). Today's release contains a number of new features and fixes, including several patches from the community!
 
-### Support for new platforms and dependency managers
+        ### Support for new platforms and dependency managers
 
-While we imagined swift-html to be most useful on the server with server-side Swift becoming more and more popular, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now support being embedded in your iOS, tvOS, and watchOS apps. Now you can render HTML in a type-safe manner just about anywhere!
+        While we imagined swift-html to be most useful on the server with server-side Swift becoming more and more popular, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now support being embedded in your iOS, tvOS, and watchOS apps. Now you can render HTML in a type-safe manner just about anywhere!
 
-We've also made installing swift-html on these platforms easier than ever by adding support for [Carthage](https://github.com/Carthage/Carthage) and [CocoaPods](https://cocoapods.org). Check out [the installation instructions](https://github.com/pointfreeco/swift-html#installation) to get started.
+        We've also made installing swift-html on these platforms easier than ever by adding support for [Carthage](https://github.com/Carthage/Carthage) and [CocoaPods](https://cocoapods.org). Check out [the installation instructions](https://github.com/pointfreeco/swift-html#installation) to get started.
 
-### `debugRender`
+        ### `debugRender`
 
-We've added a new `debugRender` function that will render HTML nodes in a more human-readable format by indenting each node.
-""",
+        We've added a new `debugRender` function that will render HTML nodes in a more human-readable format by indenting each node.
+        """,
       timestamp: nil,
       type: .paragraph
     ),
     .init(
       content: """
-let doc = html([
-  body([
-    h1(["Welcome!"]),
-    p(["You’ve found our site!"])
-    ])
-  ])
+        let doc = html([
+          body([
+            h1(["Welcome!"]),
+            p(["You’ve found our site!"])
+            ])
+          ])
 
-render(doc)
-// <html><body><h1>Welcome!</h1><p>You’ve found our site!</p></body></html>
+        render(doc)
+        // <html><body><h1>Welcome!</h1><p>You’ve found our site!</p></body></html>
 
-debugRender(doc)
-// <html>
-//   <body>
-//     <h1>
-//       Welcome!
-//     </h1>
-//     <p>
-//       You’ve found our site!
-//     </p>
-//   </body>
-// </html>
-""",
+        debugRender(doc)
+        // <html>
+        //   <body>
+        //     <h1>
+        //       Welcome!
+        //     </h1>
+        //     <p>
+        //       You’ve found our site!
+        //     </p>
+        //   </body>
+        // </html>
+        """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
     .init(
       content: """
-While this rendering format is not suitable for the browser (it can introduce additional, unwanted whitespace), it's perfect for reading and snapshot testing.
+        While this rendering format is not suitable for the browser (it can introduce additional, unwanted whitespace), it's perfect for reading and snapshot testing.
 
-### `HtmlSnapshotTesting`
+        ### `HtmlSnapshotTesting`
 
-Speaking of snapshot testing, swift-html now comes with a helper module, `HtmlSnapshotTesting`!
+        Speaking of snapshot testing, swift-html now comes with a helper module, `HtmlSnapshotTesting`!
 
-A couple months ago we had [our first official release](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) of [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
+        A couple months ago we had [our first official release](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) of [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
 
-You can snapshot test swift-html's `Node` type using the `html` strategy.
-""",
+        You can snapshot test swift-html's `Node` type using the `html` strategy.
+        """,
       timestamp: nil,
       type: .paragraph
     ),
     .init(
       content: """
-import HtmlSnapshotTesting
-import SnapshotTesting
-import XCTest
+        import HtmlSnapshotTesting
+        import SnapshotTesting
+        import XCTest
 
-class MyWebPageTests: XCTestCase {
-  func testMyWebPage() {
-    let doc = html([
-      body([
-        h1(["Welcome!"]),
-        p(["You’ve found our site!"])
-        ])
-      ])
+        class MyWebPageTests: XCTestCase {
+          func testMyWebPage() {
+            let doc = html([
+              body([
+                h1(["Welcome!"]),
+                p(["You’ve found our site!"])
+                ])
+              ])
 
-    // Assert against an HTML reference on disk
-    assertSnapshot(matching: doc, as: .html)
-  }
-}
-""",
+            // Assert against an HTML reference on disk
+            assertSnapshot(matching: doc, as: .html)
+          }
+        }
+        """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
     .init(
       content: """
-### Bug fixes and performance improvements
+        ### Bug fixes and performance improvements
 
-This release also contains a few bug fixes from the community and free rendering performance improvements thanks to a heavy dose of `inout`.
+        This release also contains a few bug fixes from the community and free rendering performance improvements thanks to a heavy dose of `inout`.
 
----
+        ---
 
-To give swift-html a try today, check out [its GitHub page](https://github.com/pointfreeco/swift-html).
-""",
+        To give swift-html a try today, check out [its GitHub page](https://github.com/pointfreeco/swift-html).
+        """,
       timestamp: nil,
       type: .paragraph
-    )
-    ],
+    ),
+  ],
   coverImage: "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png",
   id: 26,
-  publishedAt: .init(timeIntervalSince1970: 1546938000),
+  publishedAt: .init(timeIntervalSince1970: 1_546_938_000),
   title: "Announcing swift-html 0.2.0"
 )

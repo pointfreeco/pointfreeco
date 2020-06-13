@@ -1,12 +1,12 @@
+import Either
 import EmailAddress
 import FunctionalCss
-import Either
 import Html
 import HtmlCssSupport
 import Mailgun
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Views
@@ -29,32 +29,35 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let emails = EitherIO(run: flattenedEmails.sequential)
     .debug { "📧: Sending \($0.count) welcome emails..." }
 
-  let delayedSend = send(email:)
+  let delayedSend =
+    send(email:)
     >>> delay(.milliseconds(200))
     >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
 
-  return emails
+  return
+    emails
     .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
     .flatMap { (emails: [Email]) -> EitherIO<Error, SendEmailResponse> in
-      let stats = emails
+      let stats =
+        emails
         .reduce(into: [String: [EmailAddress]]()) { dict, email in
           dict[email.subject, default: []].append(contentsOf: email.to)
-      }
-      .map { subject, emails in
-        """
-        \(emails.count) \"\(subject)\" emails
-        \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
-        """
-      }
-      .joined(separator: "\n\n")
+        }
+        .map { subject, emails in
+          """
+          \(emails.count) \"\(subject)\" emails
+          \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
+          """
+        }
+        .joined(separator: "\n\n")
       return sendEmail(
         to: adminEmails,
         subject: "Welcome emails sent",
         content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
       )
-  }
-  .map(const(unit))
-  .catch(notifyAdmins(subject: "Welcome emails failed"))
+    }
+    .map(const(unit))
+    .catch(notifyAdmins(subject: "Welcome emails failed"))
 }
 
 func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
@@ -66,8 +69,8 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
       to: adminEmails,
       subject: "[PointFree Error] \(subject)",
       content: inj1(errorDump)
-      )
-      .flatMap(const(throwE(error)))
+    )
+    .flatMap(const(throwE(error)))
   }
 }
 
@@ -150,9 +153,8 @@ func welcomeEmail1Content(user: User) -> Node {
         * [SwiftUI and State Management: Part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1)
         * [Composable State Management: Reducers](https://www.pointfree.co/episodes/ep68-composable-state-management-reducers)
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       When you're ready to subscribe for yourself _or_ your team, visit
@@ -160,7 +162,7 @@ func welcomeEmail1Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
@@ -181,8 +183,8 @@ func welcomeEmail2Content(user: User) -> Node {
       """
       * [\($0.fullTitle)](\(url(to: .episode(.show(.left($0.slug))))))
       """
-  }
-  .joined(separator: "\n")
+    }
+    .joined(separator: "\n")
 
   return [
     .markdownBlock(
@@ -203,9 +205,8 @@ func welcomeEmail2Content(user: User) -> Node {
         You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
         completely for free! Just visit [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       If you have any questions, don't hesitate to reply to this email!
@@ -215,7 +216,7 @@ func welcomeEmail2Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
@@ -244,9 +245,8 @@ func welcomeEmail3Content(user: User) -> Node {
         It looks like you may have been saving the last one for a rainy day! But now you have
         \(user.episodeCreditCount), so it's time to cash one in! 🤑
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       Please use it to check out _any_ subscriber-only episode, completely free! Just visit [our site](\(url(to: .home))), go to
@@ -278,14 +278,16 @@ func welcomeEmail3Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
 private let subscribeButton = Node.p(
   attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
   .a(
-    attributes: [.href(url(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+    attributes: [
+      .href(url(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)]),
+    ],
     "Subscribe to Point-Free!"
   )
 )

@@ -19,7 +19,8 @@ public struct BlogPost: Equatable {
     hidden: Bool = false,
     id: Id,
     publishedAt: Date,
-    title: String) {
+    title: String
+  ) {
     self.author = author
     self.blurb = blurb
     self.contentBlocks = contentBlocks

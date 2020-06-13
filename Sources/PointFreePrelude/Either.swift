@@ -25,8 +25,9 @@ public func retry<E, A>(maxRetries: Int) -> (EitherIO<E, A>) -> EitherIO<E, A> {
 
 public func retry<E, A>(maxRetries: Int, backoff: @escaping (Int) -> DispatchTimeInterval)
   -> (EitherIO<E, A>)
-  -> EitherIO<E, A> {
-    return { $0.retry(maxRetries: maxRetries, backoff: backoff) }
+  -> EitherIO<E, A>
+{
+  return { $0.retry(maxRetries: maxRetries, backoff: backoff) }
 }
 
 public func delay<E, A>(_ interval: DispatchTimeInterval) -> (EitherIO<E, A>) -> (EitherIO<E, A>) {
@@ -36,5 +37,3 @@ public func delay<E, A>(_ interval: DispatchTimeInterval) -> (EitherIO<E, A>) ->
 public func delay<E, A>(_ interval: TimeInterval) -> (EitherIO<E, A>) -> (EitherIO<E, A>) {
   return { $0.delay(interval) }
 }
-
-

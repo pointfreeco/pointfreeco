@@ -23,7 +23,7 @@ extension Class {
 
 public let spacingStyles =
   responsivePaddingStyles
-    <> responsiveMarginStyles
+  <> responsiveMarginStyles
 
 extension Side {
   fileprivate static let allSides: [Side] = [.bottom, .left, .right, .top]
@@ -42,12 +42,12 @@ private let responsivePaddingStyles =
       Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
           Class.padding([breakpoint: [side: n]]) % paddingStyle(side: side, size: size)
-          }
         }
-        .concat()
       }
+      .concat()
     }
-    .concat()
+  }
+  .concat()
 
 private let responsiveMarginStyles =
   Breakpoint.all.compactMap { breakpoint in
@@ -56,11 +56,11 @@ private let responsiveMarginStyles =
         spacings.enumerated().map { n, size in
           Class.margin([breakpoint: [side: n]]) % marginStyle(side: side, size: size)
         }
-        }
-        .concat()
       }
+      .concat()
     }
-    .concat()
+  }
+  .concat()
 
 private func paddingStyle(side: Side, size: Size) -> Stylesheet {
   switch side {
@@ -106,23 +106,26 @@ private let spacings: [Size] = [
   .rem(1.0),
   .rem(2.0),
   .rem(4.0),
-  .rem(8.0)
+  .rem(8.0),
 ]
 
 private func selector(_ data: [Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {
-  let classes = data
+  let classes =
+    data
     .sorted(by: { $0.key.rawValue < $1.key.rawValue })
     .flatMap { breakpoint, sides in
       sides
         .sorted(by: { $0.key.rawValue < $1.key.rawValue })
         .map { side, n in
           selector(side: side, breakpoint: breakpoint, n: n, whitespace: whitespace)
-      }
-  }
+        }
+    }
   return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
 }
 
-private func selector(side: Side, breakpoint: Breakpoint, n: Int, whitespace: Whitespace) -> CssSelector {
+private func selector(side: Side, breakpoint: Breakpoint, n: Int, whitespace: Whitespace)
+  -> CssSelector
+{
   switch side {
   case .all:
     return selector(side: .left, breakpoint: breakpoint, n: n, whitespace: whitespace)
@@ -138,7 +141,7 @@ private func selector(side: Side, breakpoint: Breakpoint, n: Int, whitespace: Wh
       | selector(side: .right, breakpoint: breakpoint, n: n, whitespace: whitespace)
 
   case .topBottom:
-    return  selector(side: .top, breakpoint: breakpoint, n: n, whitespace: whitespace)
+    return selector(side: .top, breakpoint: breakpoint, n: n, whitespace: whitespace)
       | selector(side: .bottom, breakpoint: breakpoint, n: n, whitespace: whitespace)
   }
 }

@@ -31,7 +31,7 @@ private let privacyPolicy: Node = [
   complianceWithChildrensOnlinePrivacyProtectionAct,
   terms,
   changesToThisPrivacyPolicy,
-  contactingUs
+  contactingUs,
 ]
 
 private let personalIdentificationInformation: Node = [
@@ -45,7 +45,7 @@ private let personalIdentificationInformation: Node = [
     forms on the Site. None of this information is sold or provided to third parties, except to provide
     the products and services you've requested, with your permission, or as required by law.
     """
-  )
+  ),
 ]
 
 private let nonPersonalIdentificationInformation: Node = [
@@ -59,7 +59,7 @@ private let nonPersonalIdentificationInformation: Node = [
     Site, This may include: the browser name, the type of computer, the operating system, and other
     similar information.
     """
-  )
+  ),
 ]
 
 private let webBrowserCookies: Node = [
@@ -73,7 +73,7 @@ private let webBrowserCookies: Node = [
     refuse cookies, or to indicate when cookies are being sent. Note that this may cause some parts of
     the Site to function improperly.
     """
-  )
+  ),
 ]
 
 private let howWeUseCollectedInformation: Node = [
@@ -107,7 +107,7 @@ private let howWeUseCollectedInformation: Node = [
       we include detailed unsubscribe instructions at the bottom of each email.
       """
     )
-  )
+  ),
 ]
 
 private let howWeProtectYourInformation: Node = [
@@ -142,7 +142,7 @@ private let sharingYourPersonalInformation: Node = [
     regarding visitors and users with our business partners and trusted affiliates for the purposes
     outlined above.
     """
-  )
+  ),
 ]
 
 private let complianceWithChildrensOnlinePrivacyProtectionAct: Node = [
@@ -156,7 +156,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct: Node = [
     or maintain information at our Site from those we actually know are under 13, and no part of our
     website is structured to attract anyone under 13.
     """
-  )
+  ),
 ]
 
 private let terms: Node = [
@@ -166,7 +166,7 @@ private let terms: Node = [
   ),
   .p(
     "Individual subscriptions are only valid for use by an individual person. Team subscriptions are only valid for use by the number of persons allotted seats. We reserve the right to cancel subscriptions at our own discretion."
-  )
+  ),
 ]
 
 private let changesToThisPrivacyPolicy: Node = [
@@ -179,7 +179,7 @@ private let changesToThisPrivacyPolicy: Node = [
     Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will
     revise the updated date at the bottom of this page.
     """
-  )
+  ),
 ]
 
 private let contactingUs: Node = [
@@ -191,5 +191,5 @@ private let contactingUs: Node = [
     "Questions about this policy can be sent to ",
     .a(attributes: [.mailto("support@pointfree.co")], "support@pointfree.co"),
     "."
-  )
+  ),
 ]

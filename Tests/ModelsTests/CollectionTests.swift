@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Models
 
 final class CollectionTests: XCTestCase {

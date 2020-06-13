@@ -11,10 +11,10 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-    \(additionalBlurb)
+      \(additionalBlurb)
 
-    > \(episode.blurb)
-    """,
+      > \(episode.blurb)
+      """,
     link: url(to: .episode(.show(.left(episode.slug)))),
     publishedAt: episode.publishedAt,
     title: episode.fullTitle

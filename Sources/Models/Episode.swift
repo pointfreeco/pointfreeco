@@ -59,22 +59,23 @@ public struct Episode: Equatable {
 
   public var fullVideo: Video {
     #if OSS
-    return self._fullVideo ?? self.trailerVideo
+      return self._fullVideo ?? self.trailerVideo
     #else
-    let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
-    assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
-    return video!
+      let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
+      assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
+      return video!
     #endif
   }
 
   public var transcriptBlocks: [TranscriptBlock] {
     get {
       #if OSS
-      return self._transcriptBlocks ?? []
+        return self._transcriptBlocks ?? []
       #else
-      let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
-      assert(transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
-      return transcripts!
+        let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
+        assert(
+          transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
+        return transcripts!
       #endif
     }
     set {
@@ -202,11 +203,13 @@ public struct Episode: Equatable {
           case collections(@autoclosure () -> [Collection])
           case section(@autoclosure () -> Collection, index: Int)
 
-          public static func episode(_ episode: @escaping @autoclosure() -> Episode) -> Content {
+          public static func episode(_ episode: @escaping @autoclosure () -> Episode) -> Content {
             .episodes([episode()])
           }
 
-          public static func collection(_ collection: @escaping @autoclosure() -> Collection) -> Content {
+          public static func collection(_ collection: @escaping @autoclosure () -> Collection)
+            -> Content
+          {
             .collections([collection()])
           }
 
@@ -357,7 +360,7 @@ public struct Episode: Equatable {
       }
     }
   }
-  
+
   public struct Video: Codable, Equatable {
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
@@ -396,7 +399,8 @@ public struct Episode: Equatable {
 }
 
 func slug(for string: String) -> String {
-  return string
+  return
+    string
     .lowercased()
     .replacingOccurrences(of: #"[\W]+"#, with: "-", options: .regularExpression)
     .replacingOccurrences(of: #"\A-|-\z"#, with: "", options: .regularExpression)
@@ -410,10 +414,10 @@ func reference(
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-\(additionalBlurb)
+      \(additionalBlurb)
 
-> \(episode.blurb)
-""",
+      > \(episode.blurb)
+      """,
     link: episodeUrl,
     publishedAt: episode.publishedAt,
     title: episode.fullTitle
@@ -428,10 +432,10 @@ func reference(
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-\(additionalBlurb)
+      \(additionalBlurb)
 
-> \(collection.blurb)
-""",
+      > \(collection.blurb)
+      """,
     link: collectionUrl,
     publishedAt: nil,
     title: "Collection: \(collection.title)"

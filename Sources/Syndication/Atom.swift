@@ -5,7 +5,7 @@ public struct AtomAuthor {
   public var email: String
   public var name: String
 
-  public init (email: String, name: String) {
+  public init(email: String, name: String) {
     self.email = email
     self.name = name
   }
@@ -17,7 +17,7 @@ public struct AtomEntry {
   public var title: String
   public var updated: Date
 
-  public init (content: Node, siteUrl: String, title: String, updated: Date) {
+  public init(content: Node, siteUrl: String, title: String, updated: Date) {
     self.title = title
     self.siteUrl = siteUrl
     self.updated = updated
@@ -32,7 +32,9 @@ public struct AtomFeed {
   public var siteUrl: String
   public var title: String
 
-  public init(atomUrl: String, author: AtomAuthor, entries: [AtomEntry], siteUrl: String, title: String) {
+  public init(
+    atomUrl: String, author: AtomAuthor, entries: [AtomEntry], siteUrl: String, title: String
+  ) {
     self.atomUrl = atomUrl
     self.author = author
     self.entries = entries
@@ -50,7 +52,8 @@ public func atomLayout(atomFeed: AtomFeed) -> Node {
   )
 
   return [
-    .raw("""
+    .raw(
+      """
       <?xml version="1.0" encoding="utf-8"?>
       """
     ),
@@ -61,7 +64,7 @@ public func atomLayout(atomFeed: AtomFeed) -> Node {
         "link",
         [
           ("href", atomFeed.atomUrl),
-          ("rel", "self")
+          ("rel", "self"),
         ],
         // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
         ""
@@ -75,7 +78,7 @@ public func atomLayout(atomFeed: AtomFeed) -> Node {
       ),
       updatedFields,
       .fragment(atomFeed.entries.map(atomEntry))
-    )
+    ),
   ]
 }
 

@@ -1,40 +1,46 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import HttpPipeline
 import Models
 import Prelude
 import Tuple
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 public enum CookieTransform: String, Codable {
   case plaintext
   case encrypted
 }
 
-private let cookieExpirationDuration: TimeInterval = 315_360_000 // 60 * 60 * 24 * 365 * 10
+private let cookieExpirationDuration: TimeInterval = 315_360_000  // 60 * 60 * 24 * 365 * 10
 
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) -> Void)
   -> (Conn<HeadersOpen, A>)
-  -> IO<Conn<HeadersOpen, A>> {
+  -> IO<Conn<HeadersOpen, A>>
+{
 
-    return { conn in
-      var session = conn.request.session
-      update(&session)
-      guard session != conn.request.session else { return pure(conn) }
-      guard let header = setCookie(
+  return { conn in
+    var session = conn.request.session
+    update(&session)
+    guard session != conn.request.session else { return pure(conn) }
+    guard
+      let header = setCookie(
         key: pointFreeUserSessionCookieName,
         value: session,
         options: [
           .expires(Current.date().addingTimeInterval(cookieExpirationDuration)),
-          .path("/")
-      ]) else { return pure(conn) }
-      
-      return writeHeader(header)(conn)
-    }
+          .path("/"),
+        ])
+    else { return pure(conn) }
+
+    return writeHeader(header)(conn)
+  }
 }
 
-public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<HeadersOpen, HeadersOpen, A, A> {
+public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<
+  HeadersOpen, HeadersOpen, A, A
+> {
   return writeSessionCookieMiddleware { $0.flash = Flash(priority: priority, message: message) }
 }
 
@@ -59,7 +65,7 @@ public struct Session: Equatable {
   public var user: User?
 
   public static let empty = Session(flash: nil, user: nil)
-  
+
   public var userId: Models.User.Id? {
     switch self.user {
     case let .some(.ghosting(ghosteeId, _)):
@@ -150,9 +156,10 @@ extension Session: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
-    self.user = (try? container.decode(Models.User.Id.self, forKey: .userId)).map(User.standard)
-        ?? (try? container.decode(Session.User.self, forKey: .user))
-        ?? .empty
+    self.user =
+      (try? container.decode(Models.User.Id.self, forKey: .userId)).map(User.standard)
+      ?? (try? container.decode(Session.User.self, forKey: .user))
+      ?? .empty
   }
 }
 
@@ -176,7 +183,9 @@ public struct Flash: Codable, Equatable {
 
 private let pointFreeUserSessionCookieName = "pf_session"
 
-private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
+private func setCookie<A: Encodable>(
+  key: String, value: A, options: Set<Response.Header.CookieOption> = []
+) -> Response.Header? {
   switch Current.cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))
@@ -191,7 +200,7 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
         options: options,
         secret: Current.envVars.appSecret.rawValue,
         encrypt: true
-    )
+      )
   }
 }
 

@@ -11,7 +11,8 @@ public struct ProfileData: Encodable, Equatable {
     email: EmailAddress,
     extraInvoiceInfo: String?,
     emailSettings: [String: String],
-    name: String?) {
+    name: String?
+  ) {
     self.email = email
     self.extraInvoiceInfo = extraInvoiceInfo
     self.emailSettings = emailSettings
@@ -31,7 +32,8 @@ extension ProfileData: Decodable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.email = try container.decode(EmailAddress.self, forKey: .email)
-    self.emailSettings = (try? container.decode([String: String].self, forKey: .emailSettings)) ?? [:]
+    self.emailSettings =
+      (try? container.decode([String: String].self, forKey: .emailSettings)) ?? [:]
     self.extraInvoiceInfo = try? container.decode(String.self, forKey: .extraInvoiceInfo)
     self.name = try container.decodeIfPresent(String.self, forKey: .name)
   }

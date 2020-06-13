@@ -1,22 +1,24 @@
 import Either
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import HttpPipeline
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import PointFree
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+#if !os(Linux)
+  import WebKit
+#endif
 
 final class NotFoundMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testNotFound() {
@@ -25,15 +27,15 @@ final class NotFoundMiddlewareTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -45,15 +47,15 @@ final class NotFoundMiddlewareTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+          ]
+        )
+      }
     #endif
   }
 }

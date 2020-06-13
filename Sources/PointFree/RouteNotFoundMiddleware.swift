@@ -1,6 +1,6 @@
 import Css
-import FunctionalCss
 import Foundation
+import FunctionalCss
 import Html
 import HttpPipeline
 import PointFreeRouter
@@ -9,22 +9,22 @@ import Tuple
 
 func routeNotFoundMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+) -> IO<Conn<ResponseEnded, Data>> {
   return
     conn.map { $0 .*. unit }
-      |> currentUserMiddleware
-      >=> writeStatus(.notFound)
-      >=> map(lower)
-      >>> respond(
-        view: { _ in routeNotFoundView },
-        layoutData: { currentUser, _ in
-          SimplePageLayoutData(
-            currentUser: currentUser,
-            data: unit,
-            title: "Page not found"
-          )
+    |> currentUserMiddleware
+    >=> writeStatus(.notFound)
+    >=> map(lower)
+    >>> respond(
+      view: { _ in routeNotFoundView },
+      layoutData: { currentUser, _ in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: unit,
+          title: "Page not found"
+        )
       }
-  )
+    )
 }
 
 private let routeNotFoundView = Node.gridRow(

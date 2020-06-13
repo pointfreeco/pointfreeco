@@ -144,6 +144,9 @@ scorch-docker:
 clean-snapshots:
 	find Tests -name "__Snapshots__" | xargs -n1 rm -fr
 
+format:
+	swift format --in-place --recursive ./Package.swift ./Sources ./Tests
+
 .PHONY: bootstrap \
 	uninstall-colortheme \
 	check-cmark \

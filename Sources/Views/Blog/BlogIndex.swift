@@ -11,9 +11,10 @@ public func blogIndexView(
   blogPosts: [BlogPost],
   currentUser: User?,
   subscriberState: SubscriberState
-  ) -> Node {
+) -> Node {
 
-  let allPosts = blogPosts
+  let allPosts =
+    blogPosts
     .sorted(by: their(^\.id, >))
     .filter { !$0.hidden }
   let newPosts = allPosts.prefix(3)
@@ -38,7 +39,7 @@ private func newBlogPostView(_ post: BlogPost) -> Node {
       attributes: [.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
       blogPostContentView(post)
     ),
-    .hr(attributes: [.class([Class.pf.components.divider])])
+    .hr(attributes: [.class([Class.pf.components.divider])]),
   ]
 }
 
@@ -53,7 +54,7 @@ private func oldBlogPostsView(_ posts: ArraySlice<BlogPost>) -> Node {
     .div(
       attributes: [.class([Class.padding([.mobile: [.bottom: 3]])])],
       .fragment(posts.map(oldBlogPostView))
-    )
+    ),
   ]
 }
 

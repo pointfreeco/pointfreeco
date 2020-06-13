@@ -1,11 +1,11 @@
+import Foundation
 import FunctionalCss
 import Html
 import HtmlCssSupport
-import Foundation
 import Models
 import PointFreeRouter
-import Styleguide
 import Prelude
+import Styleguide
 
 let hostSignOffView: Node = [
   .p(
@@ -16,7 +16,7 @@ let hostSignOffView: Node = [
     .a(attributes: [.href(twitterUrl(to: .mbrandonw))], .raw("Brandon&nbsp;Williams")),
     " & ",
     .a(attributes: [.href(twitterUrl(to: .stephencelis))], .raw("Stephen&nbsp;Celis"))
-  )
+  ),
 ]
 
 func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node {
@@ -50,16 +50,17 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
   guard
     let user = user,
     let newsletter = newsletter
-    else { return [] }
+  else { return [] }
 
   guard
-    let unsubUrl = expressUnsubscribeIso
+    let unsubUrl =
+      expressUnsubscribeIso
       .unapply((user.id, newsletter))
       .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
       .map({ url(to: .expressUnsubscribe(payload: $0)) })
-    else {
-      Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
-      return []
+  else {
+    Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
+    return []
   }
 
   return .p(
@@ -75,22 +76,22 @@ private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
   switch newsletter {
   case .announcements:
     return """
-    You are receiving this email because you expressed interest in hearing about new announcements,
-    such as new features and new projects of ours.
-    """
+      You are receiving this email because you expressed interest in hearing about new announcements,
+      such as new features and new projects of ours.
+      """
   case .newBlogPost:
     return """
-    You are receiving this email because you expressed interest in being notified about new posts on our
-    blog, Point-Free Pointers.
-    """
+      You are receiving this email because you expressed interest in being notified about new posts on our
+      blog, Point-Free Pointers.
+      """
   case .newEpisode:
     return """
-    You are receiving this email because you wanted to be notified whenever a new episode is available.
-    """
+      You are receiving this email because you wanted to be notified whenever a new episode is available.
+      """
   case .welcomeEmails:
     return """
-    You are receiving this email because you recently signed up for Point-Free.
-    """
+      You are receiving this email because you recently signed up for Point-Free.
+      """
   }
 }
 
@@ -100,6 +101,7 @@ extension Node {
     attributes: [Attribute<Tag.Table>],
     _ content: ChildOf<Tag.Table>...
   ) -> Node {
-    return .table(attributes: [.border(0), .cellpadding(0), .cellspacing(0)] + attributes, .fragment(content))
+    return .table(
+      attributes: [.border(0), .cellpadding(0), .cellspacing(0)] + attributes, .fragment(content))
   }
 }

@@ -18,10 +18,10 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
     collectionNavigation(
       left: .a(
         attributes: [
-          .href( path(to: .collections(.index))),
+          .href(path(to: .collections(.index))),
           .class([
             Class.pf.colors.link.gray650
-          ])
+          ]),
         ],
         .text("Collections")
       )
@@ -42,7 +42,7 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
         ]),
       ],
       .fragment(collection.sections.map { sectionRow(collection: collection, section: $0) })
-    )
+    ),
   ]
 }
 
@@ -99,7 +99,7 @@ private func sectionRow(
         .class([
           Class.padding([
             .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3]
+            .mobile: [.leftRight: 3],
           ]),
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),

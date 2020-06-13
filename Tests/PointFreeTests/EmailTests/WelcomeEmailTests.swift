@@ -1,22 +1,24 @@
 import Either
-@testable import GitHub
 import Html
 import HttpPipeline
 import Models
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import GitHub
+@testable import PointFree
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testIncrementEpisodeCredits() {
@@ -31,14 +33,16 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 
     let updatedUsers = users.map { Current.database.fetchUserById($0.id).run.perform().right!! }
 
-    zip(users, updatedUsers).forEach { XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount) }
+    zip(users, updatedUsers).forEach {
+      XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount)
+    }
   }
 }
 
 final class WelcomeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+    //    record=true
   }
 
   func testWelcomeEmail1() {
@@ -47,12 +51,12 @@ final class WelcomeEmailTests: TestCase {
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+        webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView, as: .image)
-    }
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 
@@ -62,12 +66,12 @@ final class WelcomeEmailTests: TestCase {
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+        webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView, as: .image)
-    }
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 
@@ -77,12 +81,12 @@ final class WelcomeEmailTests: TestCase {
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+        webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView, as: .image)
-    }
+        assertSnapshot(matching: webView, as: .image)
+      }
     #endif
   }
 

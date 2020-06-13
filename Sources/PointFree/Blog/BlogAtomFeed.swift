@@ -10,7 +10,7 @@ import Views
 
 let blogAtomFeedResponse =
   writeStatus(.ok)
-    >=> respond(feedView, contentType: .application(.atom))
+  >=> respond(feedView, contentType: .application(.atom))
 
 private func feedView(posts: [BlogPost]) -> Node {
   return atomLayout(

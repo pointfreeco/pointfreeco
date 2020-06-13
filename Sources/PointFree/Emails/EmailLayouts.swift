@@ -32,7 +32,8 @@ struct SimpleEmailLayoutData<A> {
   let data: A
 }
 
-let emailStylesheet = styleguide
+let emailStylesheet =
+  styleguide
   <> a % key("border-bottom", "1px solid black")
 
 func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayoutData<A>) -> Node {
@@ -44,7 +45,8 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
         .head(
           .style(emailStylesheet),
           .meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          .meta(attributes: [.init("http-equiv", "content-type"), .content("html"), .charset(.utf8)]),
+          .meta(attributes: [.init("http-equiv", "content-type"), .content("html"), .charset(.utf8)]
+          ),
           .title(layoutData.title)
         ),
         .body(
@@ -73,31 +75,31 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
             )
           )
         )
-      )
+      ),
     ]
-    }
+  }
     >>> { applyInlineStyles(node: $0, stylesheet: emailStylesheet) }
 }
 
 let bodyTableStyles =
   display(.block)
-    <> width(.pct(100))
-    <> maxWidth(.px(600))
-    <> margin(topBottom: 0, leftRight: .auto)
-    <> clear(.both)
+  <> width(.pct(100))
+  <> maxWidth(.px(600))
+  <> margin(topBottom: 0, leftRight: .auto)
+  <> clear(.both)
 
 let contentTableStyles =
   padding(all: .px(16))
-    <> maxWidth(.px(600))
-    <> margin(topBottom: 0, leftRight: .auto)
-    <> display(.block)
+  <> maxWidth(.px(600))
+  <> margin(topBottom: 0, leftRight: .auto)
+  <> display(.block)
 
 private let preheaderStyles =
   color(.transparent)
-    <> display(.none)
-    <> opacity(0)
-    <> height(0)
-    <> width(0)
-    <> maxHeight(0)
-    <> maxWidth(0)
-    <> overflow(.hidden)
+  <> display(.none)
+  <> opacity(0)
+  <> height(0)
+  <> width(0)
+  <> maxHeight(0)
+  <> maxWidth(0)
+  <> overflow(.hidden)

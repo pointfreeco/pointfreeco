@@ -13,7 +13,7 @@ public struct EnterpriseAccount: Decodable, Equatable {
     domain: Domain,
     id: Id,
     subscriptionId: Subscription.Id
-    ) {
+  ) {
     self.companyName = companyName
     self.domain = domain
     self.id = id

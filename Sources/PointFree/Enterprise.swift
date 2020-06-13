@@ -1,8 +1,8 @@
 import Css
 import Either
 import EmailAddress
-import FunctionalCss
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -18,79 +18,80 @@ import Tuple
 import UrlFormEncoding
 import Views
 
-let enterpriseLandingResponse
-  = requireEnterpriseAccount
-    <| writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: enterpriseView,
-      layoutData: { user, subscriberState, enterpriseAccount in
-        SimplePageLayoutData(
-          currentSubscriberState: subscriberState,
-          currentUser: user,
-          data: (user, enterpriseAccount),
-          style: .base(.minimal(.dark)),
-          title: "Point-Free 🤝 \(enterpriseAccount.companyName)"
-        )
+let enterpriseLandingResponse =
+  requireEnterpriseAccount
+  <| writeStatus(.ok)
+  >=> map(lower)
+  >>> respond(
+    view: enterpriseView,
+    layoutData: { user, subscriberState, enterpriseAccount in
+      SimplePageLayoutData(
+        currentSubscriberState: subscriberState,
+        currentUser: user,
+        data: (user, enterpriseAccount),
+        style: .base(.minimal(.dark)),
+        title: "Point-Free 🤝 \(enterpriseAccount.companyName)"
+      )
     }
-)
+  )
 
-private let requireEnterpriseAccount
-  : MT<
-  Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>,
-  Tuple3<User?, SubscriberState, EnterpriseAccount>
-  >
-  = filterMap(
+private let requireEnterpriseAccount:
+  MT<
+    Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>,
+    Tuple3<User?, SubscriberState, EnterpriseAccount>
+  > = filterMap(
     over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
     or: redirect(
       to: .home,
       headersMiddleware: flash(.warning, "That enterprise account does not exist.")
     )
-)
+  )
 
-let enterpriseRequestMiddleware
-  = requireEnterpriseAccountWithFormData
-    <<< validateMembership
-    <<< filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< sendEnterpriseInvitation
-    <| { conn in
-      conn |> redirect(
+let enterpriseRequestMiddleware =
+  requireEnterpriseAccountWithFormData
+  <<< validateMembership
+  <<< filterMap(require1 >>> pure, or: loginAndRedirect)
+  <<< sendEnterpriseInvitation
+  <| { conn in
+    conn
+      |> redirect(
         to: .enterprise(.landing(get2(conn.data).domain)),
-        headersMiddleware: flash(.notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
+        headersMiddleware: flash(
+          .notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
       )
-}
+  }
 
-private let requireEnterpriseAccountWithFormData
-  : MT<
-  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
-  Tuple3<User?, EnterpriseAccount, EnterpriseRequestFormData>
-  >
-  = filterMap(
+private let requireEnterpriseAccountWithFormData:
+  MT<
+    Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
+    Tuple3<User?, EnterpriseAccount, EnterpriseRequestFormData>
+  > = filterMap(
     over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home)
-)
+  )
 
-let enterpriseAcceptInviteMiddleware
-  = redirectCurrentSubscribersAndRequireEnterpriseAccount
-    <<< validateInvitationAndLink
-    <| successfullyAcceptedInviteMiddleware
+let enterpriseAcceptInviteMiddleware =
+  redirectCurrentSubscribersAndRequireEnterpriseAccount
+  <<< validateInvitationAndLink
+  <| successfullyAcceptedInviteMiddleware
 
-private let redirectCurrentSubscribersAndRequireEnterpriseAccount
-  : MT<
-  Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>,
-  Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
-  >
-  = filterMap(require1 >>> pure, or: loginAndRedirect) <<< redirectCurrentSubscribers <<< requireEnterpriseAccount
+private let redirectCurrentSubscribersAndRequireEnterpriseAccount:
+  MT<
+    Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>,
+    Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
+  > =
+    filterMap(require1 >>> pure, or: loginAndRedirect) <<< redirectCurrentSubscribers
+    <<< requireEnterpriseAccount
 
-private let validateInvitationAndLink
-  : MT<
-  Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>,
-  Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
-  >
-  = filterMap(
-    validateInvitation >>> pure,
-    or: invalidInvitationLinkMiddleware(
-      reason: "Something is wrong with your invitation link. Please try again."
-    )
+private let validateInvitationAndLink:
+  MT<
+    Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>,
+    Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
+  > =
+    filterMap(
+      validateInvitation >>> pure,
+      or: invalidInvitationLinkMiddleware(
+        reason: "Something is wrong with your invitation link. Please try again."
+      )
     )
     <<< filterMap(
       createEnterpriseEmail,
@@ -101,12 +102,12 @@ private let validateInvitationAndLink
       or: invalidInvitationLinkMiddleware(
         reason: "Something is wrong with your invitation link. Please try again."
       )
-)
+    )
 
 private func requireEnterpriseAccount<A, Z>(
   _ middleware: @escaping M<T3<A, EnterpriseAccount, Z>>
-  ) -> M<T3<A, EnterpriseAccount.Domain, Z>> {
-  
+) -> M<T3<A, EnterpriseAccount.Domain, Z>> {
+
   return middleware
     |> filterMap(
       over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
@@ -114,13 +115,13 @@ private func requireEnterpriseAccount<A, Z>(
         to: .home,
         headersMiddleware: flash(.warning, "That enterprise account does not exist.")
       )
-  )
+    )
 }
 
 private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
-  ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>?> {
-  
+) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>?> {
+
   return Current.database.createEnterpriseEmail(get3(data), get4(data))
     .map(const(data))
     .run
@@ -129,8 +130,8 @@ private func createEnterpriseEmail(
 
 private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
-  ) -> IO<T3<User, EnterpriseAccount, Z>?> {
-  
+) -> IO<T3<User, EnterpriseAccount, Z>?> {
+
   return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
     .map(const(data))
     .run
@@ -139,44 +140,46 @@ private func linkToEnterpriseSubscription<Z>(
 
 private func successfullyAcceptedInviteMiddleware<A, Z>(
   _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>
-  ) -> IO<Conn<ResponseEnded, Data>> {
-  
+) -> IO<Conn<ResponseEnded, Data>> {
+
   let account = get2(conn.data)
-  
+
   return conn
     |> redirect(
       to: pointFreeRouter.path(to: .account(.index)),
       headersMiddleware: flash(.notice, "You have joined \(account.companyName)'s subscription!")
-  )
+    )
 }
 
 private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
   -> (Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>)
-  -> IO<Conn<ResponseEnded, Data>> {
-    return { conn in
-      conn
-        |> redirect(
-          to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
-          headersMiddleware: flash(.error, reason)
+  -> IO<Conn<ResponseEnded, Data>>
+{
+  return { conn in
+    conn
+      |> redirect(
+        to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
+        headersMiddleware: flash(.error, reason)
       )
-    }
+  }
 }
 
 private func validateMembership<Z>(
   _ middleware: @escaping M<T3<User?, EnterpriseAccount, Z>>
-  ) -> M<T3<User?, EnterpriseAccount, Z>> {
-  
+) -> M<T3<User?, EnterpriseAccount, Z>> {
+
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
-    
+
     if user?.subscriptionId == account.subscriptionId {
-      return conn |> redirect(
-        to: .account(.index),
-        headersMiddleware: flash(
-          .notice,
-          "🙌 You're already enrolled in \(account.companyName)'s subscription!"
+      return conn
+        |> redirect(
+          to: .account(.index),
+          headersMiddleware: flash(
+            .notice,
+            "🙌 You're already enrolled in \(account.companyName)'s subscription!"
+          )
         )
-      )
     } else {
       return middleware(conn)
     }
@@ -185,30 +188,32 @@ private func validateMembership<Z>(
 
 private func validateInvitation(
   _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
-  ) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>? {
-  
+) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>? {
+
   let (user, account, encryptedEmail, encryptedUserId) = lower(data)
-  
+
   // Make sure email decrypts correctly
-  guard let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
-    .map(EmailAddress.init(rawValue:))
-    else { return nil }
-  
+  guard
+    let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
+      .map(EmailAddress.init(rawValue:))
+  else { return nil }
+
   // Make sure email address is on the same domain as the enterprise account
   guard email.hasDomain(account.domain)
-    else { return nil }
-  
+  else { return nil }
+
   // Make sure user id decrypts correctly.
-  guard let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
-    .flatMap(UUID.init(uuidString:))
-    .map(User.Id.init(rawValue:))
-    else { return nil }
-  
+  guard
+    let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
+      .flatMap(UUID.init(uuidString:))
+      .map(User.Id.init(rawValue:))
+  else { return nil }
+
   // Validates that the userId encrypted into the invite link is the same as the email accepting the
   // invitation.
   guard userId == user.id
-    else { return nil }
-  
+  else { return nil }
+
   return .some(
     data
       |> over3(const(email))
@@ -218,11 +223,11 @@ private func validateInvitation(
 
 private func sendEnterpriseInvitation<Z>(
   _ middleware: @escaping M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
-  ) -> M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
-  
+) -> M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
+
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
-    
+
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
@@ -231,19 +236,20 @@ private func sendEnterpriseInvitation<Z>(
             .error,
             "The email you entered does not come from the @\(account.domain) domain."
           )
-      )
-    } else if
-      let encryptedEmail = Encrypted(request.email.rawValue, with: Current.envVars.appSecret),
-      let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret) {
-      
+        )
+    } else if let encryptedEmail = Encrypted(
+      request.email.rawValue, with: Current.envVars.appSecret),
+      let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)
+    {
+
       sendEmail(
         to: [request.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
         content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
-        )
-        .run
-        .parallel
-        .run({ _ in })
+      )
+      .run
+      .parallel
+      .run({ _ in })
       return conn
         |> middleware
     } else {
@@ -254,7 +260,7 @@ private func sendEnterpriseInvitation<Z>(
             .warning,
             "Something went wrong. Please try again or contact <support@pointfree.co>."
           )
-      )
+        )
     }
   }
 }
@@ -266,7 +272,8 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
     .map(^\.right)
 }
 
-let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
+let enterpriseInviteEmailView =
+  simpleEmailLayout(enterpriseInviteEmailBodyView)
   <<< { account, encryptedEmail, encryptedUserId in
     SimpleEmailLayoutData(
       user: nil,
@@ -276,7 +283,7 @@ let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
       template: .default,
       data: (account, encryptedEmail, encryptedUserId)
     )
-}
+  }
 
 private func enterpriseInviteEmailBodyView(
   account: EnterpriseAccount,
@@ -292,17 +299,23 @@ private func enterpriseInviteEmailBodyView(
           attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
           .h3(
             attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
-          .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-             "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
-             "about functional programming and the Swift programming language. To accept, simply click the ",
-             "link below!"
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            "You’re invited to join the ", .text(account.companyName),
+            " team on Point-Free, a video series ",
+            "about functional programming and the Swift programming language. To accept, simply click the ",
+            "link below!"
           ),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
-                .class([Class.pf.components.button(color: .purple)])
+                .href(
+                  url(
+                    to: .enterprise(
+                      .acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId))
+                  )),
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Click here to accept!"
             )
@@ -313,28 +326,28 @@ private func enterpriseInviteEmailBodyView(
   )
 }
 
-fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {
-  func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
+extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {
+  fileprivate func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
     return self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
   }
 }
 
 private func redirectCurrentSubscribers<Z>(
   _ middleware: @escaping M<T2<User, Z>>
-  ) -> M<T2<User, Z>> {
-  
+) -> M<T2<User, Z>> {
+
   return { conn in
     let user = get1(conn.data)
     guard let subscriptionId = user.subscriptionId
-      else { return middleware(conn) }
-    
+    else { return middleware(conn) }
+
     let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
       .mapExcept(requireSome)
       .bimap(const(unit), id)
       .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
       .run
       .map { $0.right?.isRenewing ?? false }
-    
+
     return hasActiveSubscription.flatMap {
       $0
         ? conn
