@@ -55,4 +55,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0042_RegionalDiscounts,
   post0043_AnnouncingComposableCoreLocation,
   post0044,
+  post0045_OpenSourcingCombinePublishers,
 ]
