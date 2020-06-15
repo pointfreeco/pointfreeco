@@ -106,5 +106,6 @@ extension Episode {
     .ep103_ATourOfTheComposableArchitecture_pt4,
     .ep104_combineSchedulers_testingTime,
     .ep105_combineSchedulers_controllingTime,
+    .ep106_combineSchedulers_erasingTime,
   ]
 }
