@@ -3,7 +3,7 @@ import Foundation
 public let post0027_openSourcingGen = BlogPost(
   author: .pointfree,
   blurb: """
-Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness API's that makes randomess more composable, transformable and controllable!
+Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness API's that makes randomness more composable, transformable and controllable!
 """,
   contentBlocks: [
     .init(
@@ -16,7 +16,7 @@ Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness 
       content: """
 ---
 
-> Today we are open sourcing [Gen](https://github.com/pointfreeco/swift-gen): a lightweight wrapper around Swift's randomness API's that makes randomess more composable, transformable and controllable!
+> Today we are open sourcing [Gen](https://github.com/pointfreeco/swift-gen): a lightweight wrapper around Swift's randomness API's that makes randomness more composable, transformable and controllable!
 
 ---
 
