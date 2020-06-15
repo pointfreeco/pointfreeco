@@ -3,13 +3,13 @@ import Foundation
 public let post0045_OpenSourcingCombinePublishers = BlogPost(
   author: .pointfree,
   blurb: """
-Today we are open-sourcing CombineSchedulers, a library that introduces a few schedulers that help make working with Combine more testable and versatile.
+Today we are open-sourcing CombineSchedulers, a library that introduces a few schedulers that makes working with Combine more testable and more versatile.
 """,
   contentBlocks: [
 
     .init(
       content: """
-We are excited to announce the 0.1.0 release of [CombineSchedulers](https://github.com/pointfreeco/combine-schedulers), a library that introduces a few schedulers that help make working with Combine more testable and versatile.
+We are excited to announce the 0.1.0 release of [CombineSchedulers](https://github.com/pointfreeco/combine-schedulers), a library that introduces a few schedulers that makes working with Combine more testable and more versatile.
 
 ## Motivation
 
