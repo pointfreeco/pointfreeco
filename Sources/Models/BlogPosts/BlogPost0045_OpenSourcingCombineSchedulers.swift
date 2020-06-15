@@ -347,6 +347,6 @@ The official 0.1.0 release of [CombineSchedulers](http://github.com/pointfreeco/
   ],
   coverImage: nil,
   id: 45,
-  publishedAt: Date(timeIntervalSince1970: 1592229600),
+  publishedAt: Date(timeIntervalSince1970: 1592193600),
   title: "Open Sourcing CombineSchedulers"
 )
