@@ -269,15 +269,19 @@ public struct Episode: Equatable {
     }
   }
 
-  public struct TranscriptBlock: Codable, Equatable {
+  public struct TranscriptBlock: Codable, Equatable, ExpressibleByStringLiteral {
     public var content: String
     public var timestamp: Int?
     public var type: BlockType
 
-    public init(content: String, timestamp: Int? = nil, type: BlockType) {
+    public init(content: String, timestamp: Int? = nil, type: BlockType = .paragraph) {
       self.content = content
       self.timestamp = timestamp
       self.type = type
+    }
+
+    public init(stringLiteral value: String) {
+      self = .init(content: value)
     }
 
     public enum BlockType: Codable, Equatable {
