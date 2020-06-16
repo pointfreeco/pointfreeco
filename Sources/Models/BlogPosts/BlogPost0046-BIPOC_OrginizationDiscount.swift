@@ -15,5 +15,5 @@ We are incredibly lucky to be able to do what we love by working on Point-Free, 
   coverImage: nil,
   id: 46,
   publishedAt: Date(timeIntervalSince1970: 1592366400),
-  title: "Free subscriptions for BIPOC-focused organizations"
+  title: "Free subscriptions for students of BIPOC-focused organizations"
 )
