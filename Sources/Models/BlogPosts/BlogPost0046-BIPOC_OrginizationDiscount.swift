@@ -7,14 +7,9 @@ We are offering free, lifetime subscriptions to Point-Free to any current or pas
 """,
   contentBlocks: [
 #"""
-Today we are offering free, lifetime [Point-Free](https://www.pointfree.co) subscriptions to any current or past student of certain organizations that focus on training and education of BIPOC in tech. We will continue to the grow the list of supported organizations as we reach out to more, but for now we support the following:
+We are now offering free, lifetime [Point-Free](https://www.pointfree.co) subscriptions to current and past students of any organization that focuses on tech education and pushing forward equitable change for BIPOC, such as [Black Girls Code](https://www.blackgirlscode.com). If this applies to you and you are interested in gaining access to Point-Free, please [email us](mailto:support@pointfree.co?subject=Student%20Discount) with proof of enrollment and we'll get you set up right away!
 
-* [Black Girls Code](https://www.blackgirlscode.com)
-* [Pursuit](https://www.pursuit.org)
-
-If you are a current or past student of one of these organizations and are interested in gaining access to Point-Free, please [email us](mailto:support@pointfree.co) with proof of enrollment and we'll get you set up right away!
-
-We are incredibly lucky to be able to do what we love by working on Point-Free, but it is thanks to years of opportunity and privilege that were afforded to us based on where we were born and the color of our skin. We would like to share this privilege with this offer, which now accompanies two other discounts we offer: [student discounts](/blog/posts/10-announcing-student-discounts) and [regional discounts](/blog/posts/42-regional-discounts). We can, and hope to, do more in the future.
+We are incredibly lucky to be able to do what we love by working on Point-Free, but it is thanks to years of opportunity and privilege that were afforded to us based on where we were born and the color of our skin. We would like to share this privilege with this offer, which now accompanies two other discounts we offer: [student discounts](/blog/posts/10-announcing-student-discounts) and [regional discounts](/blog/posts/42-regional-discounts). We can, and will, do more in the future.
 """#
   ],
   coverImage: nil,
