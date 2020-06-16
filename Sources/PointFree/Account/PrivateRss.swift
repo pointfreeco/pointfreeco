@@ -62,7 +62,7 @@ private let requireSubscriptionNotDeactivated: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data> =
   filter(
-    { get1($0)?.deactivated == .some(false) },
+    { get1($0)?.deactivated != .some(true) },
     or: invalidatedFeedMiddleware(errorMessage: """
       ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access \
       to Point-Free.
