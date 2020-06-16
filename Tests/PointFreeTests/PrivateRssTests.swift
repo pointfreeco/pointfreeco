@@ -111,6 +111,27 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
+  func testFeed_Authenticated_DeactivatedSubscriber() {
+    let user = Models.User.nonSubscriber
+    var subscription = Models.Subscription.mock
+    subscription.deactivated = true
+
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
   func testFeed_BadSalt() {
     let user = Models.User.mock
 

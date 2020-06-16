@@ -27,7 +27,10 @@ private let validateUserAndSaltAndUserAgent
 
 private let fetchActiveStripeSubscription
   : MT<Tuple1<User>, Tuple2<Stripe.Subscription?, User>>
-  = fetchUserSubscription <<< requireActiveSubscription <<< fetchStripeSubscriptionForUser
+  = fetchUserSubscription
+    <<< requireSubscriptionNotDeactivated
+    <<< requireActiveSubscription
+    <<< fetchStripeSubscriptionForUser
 
 private let decryptUrl: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>
@@ -54,6 +57,17 @@ private func requireUser<Z>(
         """)
   )
 }
+
+private let requireSubscriptionNotDeactivated: (
+  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data> =
+  filter(
+    { get1($0)?.deactivated == .some(false) },
+    or: invalidatedFeedMiddleware(errorMessage: """
+      ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access \
+      to Point-Free.
+      """)
+)
 
 private let requireActiveSubscription: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
