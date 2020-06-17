@@ -75,7 +75,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.nonSubscriber
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.database.fetchSubscriptionByOwnerId = const(throwE(unit))
+    Current.database.fetchSubscriptionById = const(throwE(unit))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
     let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -96,7 +96,28 @@ class PrivateRssTests: TestCase {
     subscription.stripeSubscriptionStatus = .pastDue
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_DeactivatedSubscriber() {
+    let user = Models.User.mock
+    var subscription = Models.Subscription.mock
+    subscription.deactivated = true
+
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
     let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
