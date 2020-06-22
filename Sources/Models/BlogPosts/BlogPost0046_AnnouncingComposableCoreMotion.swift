@@ -153,10 +153,7 @@ store.assert(
 )
 ```
 
-This is only the tip of the iceberg. We can access any part of the `CMMotionManager` API in this
-way, and instantly unlock testability with how the motion functionality integrates with our core
-application logic. This can be incredibly powerful, and is typically not the kind of thing one
-can test easily.
+This is only the tip of the iceberg. We can access any part of the `CMMotionManager` API in this way, and instantly unlock testability with how the motion functionality integrates with our core application logic. This can be incredibly powerful, and is typically not the kind of thing one can test easily.
 
 To see a more advanced usage of `ComposableCoreMotion`, check out our [demo application](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Examples/MotionManager), which uses a `MotionManager` to show a sinusoidal curve of a device's motion, and tracks the direction a device is facing, reflecting this in the background color of the interface. It is also [fully tested](https://github.com/pointfreeco/swift-composable-architecture/blob/master/Examples/MotionManager/MotionManagerTests/MotionTests.swift).
 
