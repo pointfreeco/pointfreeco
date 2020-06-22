@@ -10,12 +10,12 @@ We are releasing our second mini-library for the Composable Architecture, which 
       content: #"""
 Just over a month a month ago [we released `ComposableCoreLocation`](/blog/posts/43-core-location-support-in-the-composable-architecture), our first mini-library for the Composable Architecture, which made it easy to integrate with Core Location. We teased more support libraries coming soon, so today, to pass the time in the morning before the WWDC keynote, we're excited to release [`ComposableCoreMotion`](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Sources/ComposableCoreMotion), which makes it easy to use Core Motion in the Composable Architecture.
 
-`ComposableCoreLocation` is a wrapper around Core Motion's `CMMotionManager` that exposes its functionality through effects and actions, making it easy to use with the Composable Architecture, and easy to test.
+`ComposableCoreMotion` is a wrapper around Core Motion's `CMMotionManager` that exposes its functionality through effects and actions, making it easy to use with the Composable Architecture, and easy to test.
 
 To use in your application, you can add an action to your feature's domain that represents the type of motion data you are interested in receiving. For example, if you only want motion updates, then you can add the following action:
 
 ```swift
-import ComposableCoreLocation
+import ComposableCoreMotion
 
 enum FeatureAction {
   case motionUpdate(Result<DeviceMotion, NSError>)
