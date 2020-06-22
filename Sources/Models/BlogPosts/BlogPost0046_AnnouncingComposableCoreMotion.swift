@@ -123,6 +123,8 @@ func testFeature() {
       )
     )
   )
+
+  ...
 }
 ```
 
