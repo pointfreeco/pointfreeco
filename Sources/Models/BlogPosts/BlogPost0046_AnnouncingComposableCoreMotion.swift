@@ -167,7 +167,7 @@ Keep an eye out for future support libraries!
     )
   ],
   coverImage: nil,
-  id: 45,
+  id: 46,
   publishedAt: .init(timeIntervalSince1970: 1592798400),
   title: "Core Motion support in the Composable Architecture"
 )
