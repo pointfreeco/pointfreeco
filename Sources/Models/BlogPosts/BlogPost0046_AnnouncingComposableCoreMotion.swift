@@ -8,7 +8,7 @@ We are releasing our second mini-library for the Composable Architecture, which 
   contentBlocks: [
     .init(
       content: #"""
-Just over a month a month ago [we released `ComposableCoreLocation`](/blog/posts/43-core-location-support-in-the-composable-architecture), our first mini-library for the Composable Architecture, which made it easy to integrate with Core Location. We teased more support libraries coming soon, so today, to pass the time in the morning before the WWDC keynote, we're excited to release [`ComposableCoreMotion`](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Sources/ComposableCoreMotion), which makes it easy to use Core Motion in the Composable Architecture.
+Just over a month a month ago [we released `ComposableCoreLocation`](/blog/posts/43-core-location-support-in-the-composable-architecture), our first mini-library for the Composable Architecture, which made it easy to integrate with Core Location. We teased more support libraries coming soon, so today, to pass the time in the morning before the WWDC keynote, we're excited to release [`ComposableCoreMotion`](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Sources/ComposableCoreMotion), which makes it easy to use Core Motion in the Composable Architecture.
 
 `ComposableCoreMotion` is a wrapper around Core Motion's `CMMotionManager` that exposes its functionality through effects and actions, making it easy to use with the Composable Architecture, and easy to test.
 
@@ -157,7 +157,7 @@ store.assert(
 
 This is only the tip of the iceberg. We can access any part of the `CMMotionManager` API in this way, and instantly unlock testability with how the motion functionality integrates with our core application logic. This can be incredibly powerful, and is typically not the kind of thing one can test easily.
 
-To see a more advanced usage of `ComposableCoreMotion`, check out our [demo application](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Examples/MotionManager), which uses a `MotionManager` to show a sinusoidal curve of a device's motion, and tracks the direction a device is facing, reflecting this in the background color of the interface. It is also [fully tested](https://github.com/pointfreeco/swift-composable-architecture/blob/master/Examples/MotionManager/MotionManagerTests/MotionTests.swift).
+To see a more advanced usage of `ComposableCoreMotion`, check out our [demo application](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/MotionManager), which uses a `MotionManager` to show a sinusoidal curve of a device's motion, and tracks the direction a device is facing, reflecting this in the background color of the interface. It is also [fully tested](https://github.com/pointfreeco/swift-composable-architecture/blob/main/Examples/MotionManager/MotionManagerTests/MotionTests.swift).
 
 ## Try it out today
 

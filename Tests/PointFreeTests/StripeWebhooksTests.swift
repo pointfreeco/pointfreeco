@@ -16,7 +16,7 @@ import XCTest
 final class StripeWebhooksTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testDecoding() throws {

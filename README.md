@@ -50,7 +50,7 @@ With the project open in Xcode, you can:
 * Explore our playgrounds
   * Select the `PointFree` target
   * Build: Command+B
-  * Open a [playground](https://github.com/pointfreeco/pointfreeco/tree/master/PointFree.playground)!
+  * Open a [playground](https://github.com/pointfreeco/pointfreeco/tree/main/PointFree.playground)!
 
 ## Some fun things to explore
 

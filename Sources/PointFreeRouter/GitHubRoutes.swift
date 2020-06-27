@@ -38,12 +38,12 @@ private let gitHubRouters: [Router<GitHubRoute>] = [
     <% end,
 
   .case(GitHubRoute.episodeCodeSample)
-    <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "master"
+    <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "main"
     %> pathParam(.string)
     <% end,
 
   .case(.license)
-    <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "master" %> "LICENSE" %> end,
+    <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "main" %> "LICENSE" %> end,
 
   .case(.organization)
     <¢> get <% "pointfreeco" <% end,

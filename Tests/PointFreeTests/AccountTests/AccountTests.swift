@@ -72,7 +72,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testAccount() {
