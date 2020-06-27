@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 
 import Foundation
 import PackageDescription
@@ -32,7 +32,7 @@ extension Array where Element == SwiftSetting {
 let package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v10_15),
+    .macOS(.v10_16),
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -126,6 +126,9 @@ let package = Package(
         .product(name: "Html", package: "Html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
+      exclude: [
+        "__Snapshots__",
+      ],
       swiftSettings: .pointFreeSettings
     ),
 
@@ -158,6 +161,9 @@ let package = Package(
         "GitHub",
         "GitHubTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+      ],
+      exclude: [
+        "__Snapshots__",
       ],
       swiftSettings: .pointFreeSettings
     ),
@@ -256,6 +262,11 @@ let package = Package(
         .product(name: "CssTestSupport", package: "Web"),
         .product(name: "HtmlSnapshotTesting", package: "Html"),
         .product(name: "HttpPipelineTestSupport", package: "Web"),
+      ],
+      exclude: [
+        "__Snapshots__",
+        "AccountTests/__Snapshots__",
+        "EmailTests/__Snapshots__",
       ],
       swiftSettings: .pointFreeSettings
     ),
@@ -370,6 +381,9 @@ let package = Package(
         "StripeTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
+      exclude: [
+        "__Snapshots__",
+      ],
       swiftSettings: .pointFreeSettings
     ),
 
@@ -392,6 +406,9 @@ let package = Package(
         .product(name: "CssTestSupport", package: "Web"),
         .product(name: "HtmlSnapshotTesting", package: "Html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+      ],
+      exclude: [
+        "__Snapshots__",
       ],
       swiftSettings: .pointFreeSettings
     ),
