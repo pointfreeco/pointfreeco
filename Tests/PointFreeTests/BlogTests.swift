@@ -16,7 +16,7 @@ import XCTest
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testBlogIndex() {

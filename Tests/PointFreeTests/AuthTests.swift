@@ -12,7 +12,7 @@ import XCTest
 class AuthIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testRegister() {
@@ -61,7 +61,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 class AuthTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testAuth_WithFetchAuthTokenFailure() {

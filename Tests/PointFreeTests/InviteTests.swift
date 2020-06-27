@@ -18,7 +18,7 @@ import XCTest
 class InviteIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testResendInvite_HappyPath() {
@@ -321,7 +321,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 class InviteTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testShowInvite_LoggedOut() {

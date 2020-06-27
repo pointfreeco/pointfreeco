@@ -8,7 +8,7 @@ We are releasing a mini-library that makes it easy to use Core Location inside t
   contentBlocks: [
     .init(
       content: #"""
-A little over 2 weeks ago we released the [Composable Architecture](/blog/posts/41-composable-architecture-the-library), a library for building applications in a consistent and understandable way, with composition, testing, and ergonomics in mind. Today we are releasing our first support library to go along with it: [`ComposableCoreLocation`](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Sources/ComposableCoreLocation).
+A little over 2 weeks ago we released the [Composable Architecture](/blog/posts/41-composable-architecture-the-library), a library for building applications in a consistent and understandable way, with composition, testing, and ergonomics in mind. Today we are releasing our first support library to go along with it: [`ComposableCoreLocation`](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Sources/ComposableCoreLocation).
 
 One of the most important principles of the Composable Architecture is that side effects are never performed directly, but instead are wrapped in the `Effect` type and is returned from reducers, and then the `Store` later performs the effect. This is crucial for simplifying how data flows through an application and for gaining testability on the full end-to-end cycle of user action to effect execution.
 
@@ -184,7 +184,7 @@ And this is only the tip of the iceberg. We can further test what happens when w
 
 [<img width="100%" alt="macOS and iOS demo applications using the Core Location library" src="https://user-images.githubusercontent.com/135203/82390225-0187c880-99f3-11ea-8ae7-e33f6993f89d.png">](https://user-images.githubusercontent.com/135203/82390225-0187c880-99f3-11ea-8ae7-e33f6993f89d.png)
 
-To show a more advanced usage of `ComposableCoreLocation` we have built a new [demo application](https://github.com/pointfreeco/swift-composable-architecture/tree/master/Examples/LocationManager) in the library repo. It shows how to:
+To show a more advanced usage of `ComposableCoreLocation` we have built a new [demo application](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/LocationManager) in the library repo. It shows how to:
 
 * Ask for the user's current location, showing an alert if denied and centering the map on the location if authorized.
 * Search the region on the map for certain categories of points of interest, such as cafes, museums, etc.

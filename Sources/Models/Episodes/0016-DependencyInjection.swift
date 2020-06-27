@@ -32,7 +32,7 @@ private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(problem: """
 Today's episode was powered by playground-driven development, but we're talking about real-world code and that kind of code usually lives in an application target. The following exercises explore how to apply playground-driven development to actual application code.
 
-1. [Download the episode code](https://github.com/pointfreeco/episode-code-samples/tree/master/0016-dependency-injection) and copy it into a new iOS project called "Repos". The app should display the repos navigation controller as the window's root view controller.
+1. [Download the episode code](https://github.com/pointfreeco/episode-code-samples/tree/main/0016-dependency-injection) and copy it into a new iOS project called "Repos". The app should display the repos navigation controller as the window's root view controller.
 
 1. Add a framework target to the project called "ReposKit" and embed it in the Repos app. Move all of our application code (aside from the app delegate) to ReposKit. Make sure that the source files are members of the framework target, not the app target. Repos should `import ReposKit` into the app delegate in order to access and instantiate the `ReposViewController`. Build the application to make sure everything still works (you will need to make some types and functions `public`).
 

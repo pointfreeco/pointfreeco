@@ -14,7 +14,7 @@ import WebKit
 final class InvoicesTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testInvoices() {

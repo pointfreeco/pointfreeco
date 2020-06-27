@@ -41,7 +41,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
-    .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
+    .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("main")),
     .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
     .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
