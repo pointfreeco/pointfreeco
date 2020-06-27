@@ -284,7 +284,7 @@ It's the Point-Free website running on your local machine!
   ),
   Episode.TranscriptBlock(
     content: """
-The open source build brings in [all the episodes that are currently free](https://github.com/pointfreeco/pointfreeco/tree/master/Sources/PointFree/PublicEpisodes). We have a private repo for the subscriber-only episodes, but all the public ones are just sitting right here so you can browse around, click on one, see the entire episode and its transcript. You can even go to the blog and read a blog post. You can go to the subscribe screen and see all of the subscription options. We can't log in, but that's because we have a GitHub application that we use for our authentication. Now, if you wanted to, you could go create your own GitHub app and plug it in, but we're not going to get into that here.
+The open source build brings in [all the episodes that are currently free](https://github.com/pointfreeco/pointfreeco/tree/main/Sources/PointFree/PublicEpisodes). We have a private repo for the subscriber-only episodes, but all the public ones are just sitting right here so you can browse around, click on one, see the entire episode and its transcript. You can even go to the blog and read a blog post. You can go to the subscribe screen and see all of the subscription options. We can't log in, but that's because we have a GitHub application that we use for our authentication. Now, if you wanted to, you could go create your own GitHub app and plug it in, but we're not going to get into that here.
 """,
     timestamp: (5*60 + 18),
     type: .paragraph
@@ -1230,9 +1230,7 @@ If we run `git status`, we'll see what changed.
   Episode.TranscriptBlock(
     content: """
 $ git status
-On branch master
-Your branch is up to date with 'origin/master'.
-
+...
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
   (use "git checkout -- <file>..." to discard changes in working directory)

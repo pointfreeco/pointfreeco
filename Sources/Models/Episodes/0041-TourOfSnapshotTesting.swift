@@ -472,7 +472,7 @@ This is going to be our new string of reference for testing, so let's put the te
   ),
   Episode.TranscriptBlock(
     content: """
-record = true
+SnapshotTesting.record = true
 """,
     timestamp: nil,
     type: .code(lang: .swift)

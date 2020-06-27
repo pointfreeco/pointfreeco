@@ -19,7 +19,7 @@ import XCTest
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testRedeemEpisodeCredit_HappyPath() {
@@ -147,7 +147,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 class EpisodePageTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testEpisodePage() {

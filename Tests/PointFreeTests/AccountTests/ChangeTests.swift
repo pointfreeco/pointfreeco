@@ -15,7 +15,7 @@ import XCTest
 final class ChangeTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testChangeRedirect() {

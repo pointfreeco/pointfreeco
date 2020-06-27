@@ -15,7 +15,7 @@ import XCTest
 class PricingLandingIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testLanding_LoggedIn_InactiveSubscriber() {
@@ -46,7 +46,7 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
 class PricingLandingTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() {

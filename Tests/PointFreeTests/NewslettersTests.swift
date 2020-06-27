@@ -17,7 +17,7 @@ import HttpPipelineTestSupport
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+//    SnapshotTesting.record = true
   }
 
   func testExpressUnsubscribe() {
