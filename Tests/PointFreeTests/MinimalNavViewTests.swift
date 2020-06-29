@@ -17,7 +17,7 @@ import XCTest
 class MinimalNavViewTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testNav_Html() {

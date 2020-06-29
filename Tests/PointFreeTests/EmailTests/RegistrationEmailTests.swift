@@ -14,7 +14,7 @@ import XCTest
 class RegistrationEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testRegistrationEmail() {

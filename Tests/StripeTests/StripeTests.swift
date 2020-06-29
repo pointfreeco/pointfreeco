@@ -9,7 +9,7 @@ final class StripeTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testDecodingCustomer() throws {
@@ -369,7 +369,7 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
-//    record=true
+//    SnapshotTesting.record=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
       as: .raw,
