@@ -16,7 +16,7 @@ import XCTest
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testIncrementEpisodeCredits() {
@@ -38,7 +38,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 final class WelcomeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testWelcomeEmail1() {

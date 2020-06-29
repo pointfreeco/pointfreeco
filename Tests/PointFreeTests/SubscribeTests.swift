@@ -17,7 +17,7 @@ import XCTest
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testCoupon_Individual() {
@@ -721,7 +721,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testNotLoggedIn_IndividualMonthly() {

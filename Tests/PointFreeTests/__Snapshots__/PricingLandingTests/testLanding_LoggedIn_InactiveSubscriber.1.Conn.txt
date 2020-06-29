@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 201507
+Content-Length: 201505
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -4490,7 +4490,7 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>
