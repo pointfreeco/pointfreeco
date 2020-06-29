@@ -8,7 +8,7 @@ import XCTest
 final class ApiTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testEpisodes() {

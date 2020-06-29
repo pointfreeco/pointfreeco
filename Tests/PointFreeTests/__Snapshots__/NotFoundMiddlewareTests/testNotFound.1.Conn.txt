@@ -1,7 +1,7 @@
 GET http://localhost:8080/404
 
 404 Not Found
-Content-Length: 44474
+Content-Length: 44472
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2080,7 +2080,7 @@ html {
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>

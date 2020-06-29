@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57920
+Content-Length: 57918
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2438,7 +2438,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>

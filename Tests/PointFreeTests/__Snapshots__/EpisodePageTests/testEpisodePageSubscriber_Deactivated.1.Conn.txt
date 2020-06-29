@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 78158
+Content-Length: 78154
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2629,7 +2629,7 @@ that timestamp jumps the video to that spot.</p>
                    class="align-middle"
                    width="20"
                    height="20">
-              <a href="https://github.com/pointfreeco/episode-code-samples/tree/master/ep2-proof-in-functions"
+              <a href="https://github.com/pointfreeco/episode-code-samples/tree/main/ep2-proof-in-functions"
                  class="pf-link-purple
                         m-ml1
                         align-middle">
@@ -2833,7 +2833,7 @@ that timestamp jumps the video to that spot.</p>
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>
