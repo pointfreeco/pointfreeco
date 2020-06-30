@@ -57,4 +57,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0044,
   post0045_OpenSourcingCombinePublishers,
   post0046_AnnouncingComposableCoreMotion,
+  post0047_ComposableAlerts,
 ]
