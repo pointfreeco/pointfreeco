@@ -15,7 +15,7 @@ import XCTest
 class PaymentInfoTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testRender() {

@@ -17,7 +17,7 @@ import XCTest
 final class CancelTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testCancel() {

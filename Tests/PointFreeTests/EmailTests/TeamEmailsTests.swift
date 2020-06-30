@@ -12,7 +12,7 @@ import WebKit
 class TeamEmailsTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testYouHaveBeenRemovedEmailView() {

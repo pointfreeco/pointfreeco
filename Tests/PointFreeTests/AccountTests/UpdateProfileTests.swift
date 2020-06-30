@@ -15,7 +15,7 @@ import XCTest
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testUpdateNameAndEmail() {
@@ -104,7 +104,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 class UpdateProfileTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testUpdateExtraInvoiceInfo() {

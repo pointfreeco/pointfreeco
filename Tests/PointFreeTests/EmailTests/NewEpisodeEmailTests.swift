@@ -13,7 +13,7 @@ import XCTest
 class NewEpisodeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testNewEpisodeEmail_Subscriber() {

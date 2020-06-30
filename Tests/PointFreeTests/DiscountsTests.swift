@@ -20,7 +20,7 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record=true
+//    SnapshotTesting.record=true
   }
 
   func testDiscounts_LoggedOut() {
