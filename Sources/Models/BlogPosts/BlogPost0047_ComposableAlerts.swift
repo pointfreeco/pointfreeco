@@ -67,7 +67,7 @@ And then, in your view you can use the `.alert(_:dismiss:)` method on `View` in 
 Button("Delete") { viewStore.send(.deleteTapped) }
   .alert(
     viewStore.scope(state: \.alert),
-    dismiss: .cancelTapped
+    dismiss: .alertCancelTapped
   )
 ```
 
