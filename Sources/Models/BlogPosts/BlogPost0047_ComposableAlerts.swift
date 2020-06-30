@@ -18,7 +18,7 @@ For example, suppose you have a delete button that when tapped it will show an a
 You can model the actions of tapping the delete button, confirming the deletion, as well as canceling the deletion, in your domain's action enum:
 
 ```swift
-enum AppAction: Hashable {
+enum AppAction: Equatable {
   case alertCancelTapped
   case alertConfirmTapped
   case deleteButtonTapped
@@ -30,7 +30,7 @@ enum AppAction: Hashable {
 And you can model the state for showing the alert in your domain's state, which can start at `nil` to represent "dismissed":
 
 ```swift
-struct AppState {
+struct AppState: Equatable {
   var alert: AlertState<AppAction>?
 
   // Your other state
