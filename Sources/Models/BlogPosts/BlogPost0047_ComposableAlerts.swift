@@ -92,7 +92,7 @@ store.assert(
     )
   },
   .send(.deleteTapped) {
-    $0.alert = .dismissed
+    $0.alert = nil
     // Also verify that delete logic executed correctly
   }
 )
