@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 121594
+Content-Length: 121592
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2356,7 +2356,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>

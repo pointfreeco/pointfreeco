@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65141
+Content-Length: 65139
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2606,7 +2606,7 @@ per month. Your first invoice will be prorated based on your current billing cyc
           </a>
            to run this site is licensed under the 
           <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE">
+             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
             MIT license
           </a>
         </p>
