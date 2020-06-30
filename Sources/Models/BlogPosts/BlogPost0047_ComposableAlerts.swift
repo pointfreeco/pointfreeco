@@ -45,7 +45,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
       state.alert = .show(
         title: "Delete",
         message: "Are you sure you want to delete this? It cannot be undone.",
-        primaryButton: .default("Confirm", send: .confirmTapped),
+        primaryButton: .default("Confirm", send: .alertConfirmTapped),
         secondaryButton: .cancel()
       )
       return .none
