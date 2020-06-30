@@ -3,65 +3,65 @@ import Foundation
 public let post0047_ComposableAlerts = BlogPost(
   author: .pointfree,
   blurb: """
-Today we are releasing a new version of the Composable Architecture with built-in support for SwiftUI alerts and action sheets.
+Today we are releasing a new version of the Composable Architecture with helpers that make working with SwiftUI alerts and action sheets a breeze.
 """,
   contentBlocks: [
     .init(
       content: #"""
-Today we are releasing a new version of [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) with built-in support for SwiftUI alerts and action sheets.
+Today we are releasing a new version of [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) with helpers that make working with SwiftUI alerts and action sheets a breeze.
 
-Because the Composable Architecture demands that all data flow through the application in a single direction, we cannot leverage SwiftUI's two-way bindings because they can make changes to state without going through a reducer. This means we can't directly use the standard API to display alerts and sheets.
+Because the Composable Architecture demands that all data flow through the application in a single direction, we cannot leverage SwiftUI's two-way bindings directly because they can make changes to state without going through a reducer. This means we can't use the standard API to display alerts and sheets without manually deriving these bindings.
 
-However, the library now comes with two types, `AlertState` and `ActionSheetState`, which can be used in your application's state in order to control the presentation or dismissal of alerts and action sheets.
+However, the library now comes with two new types, `AlertState` and `ActionSheetState`, which can be used in your application to control the presentation, dismissal, and logic of alerts and action sheets.
 
-You can model all of an alert's actions in your domain's action enum:
+You can model all of the actions an alert is responsible for in your domain's action enum:
 
 ```swift
 enum AppAction: Hashable {
-  case cancelTapped
-  case confirmTapped
-  case deleteTapped
+  case alertCancelTapped
+  case alertConfirmTapped
+  case deleteButtonTapped
 
   // Your other actions
 }
 ```
 
-And you can model the state for showing the alert in your domain's state, and it can start off in the `.dismissed` state:
+And you can model the state for showing the alert in your domain's state, which can start at `nil` as "dismissed":
 
 ```swift
 struct AppState {
-  var alert = AlertState<AppAction>.dismissed
+  var alert: AlertState<AppAction>?
 
   // Your other state
 }
 ```
 
-Then, in the reducer you can construct an `AlertState` value to represent the alert you want to show the user:
+Then, in your reducer you can construct an `AlertState` value to represent the alert you want to show the user:
 
 ```swift
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
   switch action
-    case .cancelTapped:
-      state.alert = .dismissed
-      return .none
-
-    case .confirmTapped:
-      state.alert = .dismissed
-      // Do deletion logic...
-
-    case .deleteTapped:
+    case .deleteButtonTapped:
       state.alert = .show(
         title: "Delete",
         message: "Are you sure you want to delete this? It cannot be undone.",
         primaryButton: .default("Confirm", send: .confirmTapped),
         secondaryButton: .cancel()
       )
-    return .none
+      return .none
+
+    case .alertCancelTapped:
+      state.alert = nil
+      return .none
+
+    case .alertConfirmTapped:
+      state.alert = nil
+      // Do deletion logic...
   }
 }
 ```
 
-And then, in your view you can use the `.alert(_:send:dismiss:)` method on `View` in order to present the alert in a way that works best with the Composable Architecture:
+And then, in your view you can use the `.alert(_:dismiss:)` method on `View` in order to present the alert in a way that works best with the Composable Architecture:
 
 ```swift
 Button("Delete") { viewStore.send(.deleteTapped) }
@@ -88,7 +88,7 @@ store.assert(
       title: "Delete",
       message: "Are you sure you want to delete this? It cannot be undone.",
       primaryButton: .default("Confirm", send: .confirmTapped),
-      secondaryButton: .cancel(send: .cancelTapped)
+      secondaryButton: .cancel()
     )
   },
   .send(.deleteTapped) {
@@ -97,8 +97,6 @@ store.assert(
   }
 )
 ```
-
-
 
 ## Clean up your alert and action sheet logic today
 
