@@ -14,7 +14,8 @@ Because the Composable Architecture demands that all data flow through the appli
 
 However, the library now comes with two new types, `AlertState` and `ActionSheetState`, which can be used in your application to control the presentation, dismissal, and logic of alerts and action sheets.
 
-You can model all of the actions an alert is responsible for in your domain's action enum:
+For example, suppose you have a delete button that when tapped it will show an alert asking the user to confirm their deletion.
+You can model the actions of tapping the delete button, confirming the deletion, as well as canceling the deletion, in your domain's action enum:
 
 ```swift
 enum AppAction: Hashable {
@@ -26,7 +27,7 @@ enum AppAction: Hashable {
 }
 ```
 
-And you can model the state for showing the alert in your domain's state, which can start at `nil` as "dismissed":
+And you can model the state for showing the alert in your domain's state, which can start at `nil` to represent "dismissed":
 
 ```swift
 struct AppState {
