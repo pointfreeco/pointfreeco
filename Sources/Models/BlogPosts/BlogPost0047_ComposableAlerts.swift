@@ -87,7 +87,7 @@ store.assert(
     $0.alert = .show(
       title: "Delete",
       message: "Are you sure you want to delete this? It cannot be undone.",
-      primaryButton: .default("Confirm", send: .confirmTapped),
+      primaryButton: .default("Confirm", send: .alertConfirmTapped),
       secondaryButton: .cancel()
     )
   },
