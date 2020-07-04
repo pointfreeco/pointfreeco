@@ -3,8 +3,14 @@
 import Foundation
 import PackageDescription
 
+#if swift(>=5.3)
+let filePath = #filePath
+#else
+let filePath = #file
+#endif
+
 let isOss = !FileManager.default.fileExists(
-  atPath: URL(fileURLWithPath: #file)
+  atPath: URL(fileURLWithPath: filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
     .appendingPathComponent("Models")
