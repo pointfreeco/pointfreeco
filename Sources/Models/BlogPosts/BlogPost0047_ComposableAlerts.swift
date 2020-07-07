@@ -43,7 +43,7 @@ Then, in your reducer you can construct an `AlertState` value to represent the a
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
   switch action
     case .deleteButtonTapped:
-      state.alert = .show(
+      state.alert = AlertState(
         title: "Delete",
         message: "Are you sure you want to delete this? It cannot be undone.",
         primaryButton: .default("Confirm", send: .alertConfirmTapped),
@@ -85,7 +85,7 @@ let store = TestStore(
 
 store.assert(
   .send(.deleteTapped) {
-    $0.alert = .show(
+    $0.alert = AlertState(
       title: "Delete",
       message: "Are you sure you want to delete this? It cannot be undone.",
       primaryButton: .default("Confirm", send: .alertConfirmTapped),
