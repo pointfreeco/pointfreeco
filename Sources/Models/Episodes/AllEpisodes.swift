@@ -108,5 +108,6 @@ extension Episode {
     .ep105_combineSchedulers_controllingTime,
     .ep106_combineSchedulers_erasingTime,
     .ep107_composableSwiftUIBindings_pt1,
+    .ep108_composableSwiftUIBindings_pt2,
   ]
 }
