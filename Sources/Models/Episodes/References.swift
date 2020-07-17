@@ -1,19 +1,6 @@
 import Foundation
 
 extension Episode.Reference {
-
-    public static let theComposableArchitecture = Episode.Reference(
-      author: "Brandon Williams & Stephen Celis",
-      blurb: """
-The Composable Architecture is a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind.
-""",
-      link: "http://github.com/pointfreeco/swift-composable-architecture",
-      publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
-      title: "Composable Architecture"
-    )
-
-
-
   public static let accessControl = Episode.Reference(
     author: "Apple",
     blurb: "This chapter of the Swift Programming Language book explains access control in depth and how it affects module imports.",
@@ -192,11 +179,11 @@ A Haskell article that demonstrates a pattern in the Haskell community, and why 
   )
 
   public static let haskellUnderstandingMonadsState = Episode.Reference(
-      author: "Wikibooks contributors",
-      blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
-      link: "https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State",
-      publishedAt: referenceDateFormatter.date(from: "2019-02-27"),
-      title: "Haskell/Understanding monads/State"
+    author: "Wikibooks contributors",
+    blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
+    link: "https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State",
+    publishedAt: referenceDateFormatter.date(from: "2019-02-27"),
+    title: "Haskell/Understanding monads/State"
   )
 
   public static let howToControlTheWorld = Episode.Reference(
@@ -455,17 +442,17 @@ Apple's eponymous WWDC talk on protocol-oriented programming:
     title: "Protocol-Oriented Programming in Swift"
   )
 
-    public static let pullbackWikipedia = Episode.Reference(
-      author: nil,
-      blurb: #"""
+  public static let pullbackWikipedia = Episode.Reference(
+    author: nil,
+    blurb: #"""
   We use the term _pullback_ for the strange, unintuitive backwards composition that seems to show up often in programming. The term comes from a very precise concept in mathematics. Here is the Wikipedia entry:
 
   > In mathematics, a pullback is either of two different, but related processes: precomposition and fibre-product. Its "dual" is a pushforward.
   """#,
-      link: "https://en.wikipedia.org/wiki/Pullback",
-      publishedAt: nil,
-      title: "Pullback"
-    )
+    link: "https://en.wikipedia.org/wiki/Pullback",
+    publishedAt: nil,
+    title: "Pullback"
+  )
 
   public static let railwayOrientedProgramming = Episode.Reference(
     author: "Scott Wlaschin",
@@ -908,6 +895,16 @@ or mix up these values at compile time by using the tagged wrappers.
     link: "https://www.pointfree.co/blog/posts/6-tagged-seconds-and-milliseconds",
     publishedAt: Date(timeIntervalSince1970: 1531886400),
     title: "Tagged Seconds and Milliseconds"
+  )
+
+  public static let theComposableArchitecture = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+The Composable Architecture is a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind.
+""",
+    link: "http://github.com/pointfreeco/swift-composable-architecture",
+    publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
+    title: "Composable Architecture"
   )
 
   public static let theoremsForFree = Episode.Reference(

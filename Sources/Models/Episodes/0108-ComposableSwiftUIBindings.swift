@@ -13,7 +13,16 @@ Now that we know that SwiftUI state management seems biased towards structs, let
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1594616400),
     references: [
-      // TODO
+      .swiftCasePaths,
+      reference(
+        forCollection: .enumsAndStructs,
+        additionalBlurb: """
+          To learn more about how enums and structs are related to each other, and to understand
+          why we were led to define the concept of "case paths", check out this collection of
+          episodes:
+          """,
+        collectionUrl: "https://www.pointfree.co/collections/enums-and-structs"
+      )
     ],
     sequence: 108,
     subtitle: "Case Paths",
