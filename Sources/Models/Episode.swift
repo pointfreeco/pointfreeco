@@ -255,10 +255,10 @@ public struct Episode: Equatable {
     public var title: String
 
     public init(
-      author: String?,
-      blurb: String?,
+      author: String? = nil,
+      blurb: String? = nil,
       link: String,
-      publishedAt: Date?,
+      publishedAt: Date? = nil,
       title: String
     ) {
       self.author = author
