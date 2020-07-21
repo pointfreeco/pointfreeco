@@ -22,7 +22,8 @@ Now that we know that SwiftUI state management seems biased towards structs, let
           episodes:
           """,
         collectionUrl: "https://www.pointfree.co/collections/enums-and-structs"
-      )
+      ),
+      // TODO: Map, Zip, Flat-Map
     ],
     sequence: 108,
     subtitle: "Case Paths",
