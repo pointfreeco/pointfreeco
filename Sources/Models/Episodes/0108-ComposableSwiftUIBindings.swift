@@ -22,8 +22,14 @@ Enums are one of Swift's most notable, powerful features, and as Swift developer
 """#,
           link: "https://www.pointfree.co/collections/enums-and-structs",
           title: "Collection: Enums and Structs"
-        )
-        // TODO: Map, Zip, Flat-Map
+        ),
+        reference(
+          forEpisode: .ep13_theManyFacesOfMap,
+          additionalBlurb: #"""
+To get a better understanding of the `map` function and how it relates to dynamic member lookup on the Binding type, catch this early episode.
+"""#,
+          episodeUrl: "https://www.pointfree.co/episodes/ep13-the-many-faces-of-map"
+        ),
       ],
       sequence: 108,
       subtitle: "Case Paths",
