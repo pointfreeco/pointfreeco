@@ -24,6 +24,13 @@ Enums are one of Swift's most notable, powerful features, and as Swift developer
           title: "Collection: Enums and Structs"
         ),
         reference(
+          forCollection: .enumsAndStructs,
+          additionalBlurb: """
+To learn more about how enums and structs are related to each other, and to understand why we were led to define the concept of "case paths", check out this collection of episodes:
+""",
+          collectionUrl: "https://www.pointfree.co/collections/enums-and-structs"
+        ),
+        reference(
           forEpisode: .ep13_theManyFacesOfMap,
           additionalBlurb: #"""
 To get a better understanding of the `map` function and how it relates to dynamic member lookup on the Binding type, catch this early episode.
