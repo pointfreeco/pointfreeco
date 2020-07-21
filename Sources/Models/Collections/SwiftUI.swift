@@ -38,7 +38,7 @@ One of the fundamental units of SwiftUI state management is the Binding type, wh
         related: [
           .init(
             blurb: #"""
-The `Binding` type is just one of many examples of Swift and its frameworks providing special treatment to structs while leaving enums behind, but structs are no more important than enums, and are in fact two sides of the same coin, both equally important in their own way. In this collection we explore more of these disparities and attempt to bridge the gaps.
+The `Binding` type is just one of many examples of Swift and its frameworks providing special treatment to structs while leaving enums behind, but structs are no more important than enums. In fact they are two sides of the same coin, both equally important in their own way. In this collection we explore more of these disparities and attempt to bridge the gaps.
 """#,
             content: .collection(.enumsAndStructs)
           ),
