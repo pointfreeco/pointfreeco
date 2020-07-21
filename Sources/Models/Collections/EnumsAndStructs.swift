@@ -54,7 +54,7 @@ Let's apply case paths to a real-world use case: application architecture! We'll
           ],
           title: "Case Paths",
           whereToGoFromHere: #"""
-Next we will explore a real-world use for case paths: SwiftUI and the Binding type. Bindings are the fundamental unit that connects your data model to your UI, but one of its core operators for transformation rely on key paths, thus restricting our domain modeling to structs. We will fix this disparity by beefing the Binding type up with support for case paths.
+Next we will explore a real-world use for case paths: SwiftUI and the `Binding` type. Bindings are the fundamental unit that connects your data model to your UI, but one of its core operators for transformation rely on key paths, thus restricting our domain modeling to structs. We will fix this disparity by beefing up the `Binding` type with support for case paths.
 """#
         ),
         .init(

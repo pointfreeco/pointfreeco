@@ -38,10 +38,16 @@ One of the fundamental units of SwiftUI state management is the Binding type, wh
         related: [
           .init(
             blurb: #"""
-The Binding type is just one of many examples of Swift and its frameworks providing special treatment to structs while leaving enums behind, but structs are no more important than enums, and are in fact two sides of the same coin, both equally important in their own way. In this collection we explore more of these disparities and attempt to bridge the gaps.
+The `Binding` type is just one of many examples of Swift and its frameworks providing special treatment to structs while leaving enums behind, but structs are no more important than enums, and are in fact two sides of the same coin, both equally important in their own way. In this collection we explore more of these disparities and attempt to bridge the gaps.
 """#,
             content: .collection(.enumsAndStructs)
           ),
+          .init(
+            blurb: #"""
+Our search for a transformation operator on `Binding` is nothing new for Point-Free. We are _always_ on the lookout for ways to transform generic types into all new generic types because it unlocks all new capabilities from the type. We explore this concept in-depth in our collection discussing the many ways that `map`, `zip` and `flatMap` appear naturally in the code we write everyday.
+"""#,
+            content: .collection(.mapZipFlatMap)
+          )
         ],
         title: "Composable Bindings",
         whereToGoFromHere: nil
