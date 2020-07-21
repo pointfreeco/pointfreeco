@@ -6,7 +6,7 @@ SwiftUI is Apple's declarative successor to UIKit and AppKit, and provides a won
     sections: [
       .init(
         blurb: #"""
-We take a look at these tools SwiftUI provides to determine which architectural problems Apple has attempted to solve, and which problems Apple leaves us to solve ourselves.
+We take a look at the tools SwiftUI provides to determine what architectural problems Apple attempts to solve, and which problems Apple leaves for us to solve ourselves.
 """#,
         coreLessons: [
           .init(episode: .ep65_swiftuiAndStateManagement_pt1),
@@ -16,14 +16,14 @@ We take a look at these tools SwiftUI provides to determine which architectural 
         related: [
           .init(
             blurb: #"""
-These three episodes serve as the introduction to our much longer series on the Composable Architecture, wherein we systematically aim to solve the problems outlined here.
+These three episodes serve as the introduction to our much longer series on the Composable Architecture, in which we systematically aim to solve the problems we outline here.
 """#,
             content: .collection(.composableArchitecture)
           ),
         ],
         title: "State Management",
         whereToGoFromHere: #"""
-After taking a high-level view of the tools SwiftUI provides for building applications, let's take a low-level view of one of SwiftUI's fundamental units: the Binding type. Bindings are crucial for providing communication between your data model and your views, and even come with some composable, transformable operations! We'll examine this tool with a bit more scrutiny to identify where it falls short and how we can improve it.
+After taking a high-level view of the tools SwiftUI provides for building applications, let's take a low-level view of one of its fundamental units: the Binding type. Bindings are crucial for providing communication between your data model and your views, and even come with some composable, transformable operations! We'll examine this tool with a bit more scrutiny to identify where it falls short and how we can improve it.
 """#
       ),
       .init(
