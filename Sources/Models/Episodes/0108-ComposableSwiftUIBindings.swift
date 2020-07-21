@@ -15,14 +15,6 @@ Now that we know that SwiftUI state management seems biased towards structs, let
       publishedAt: Date(timeIntervalSince1970: 1594616400),
       references: [
         .swiftCasePaths,
-        .init(
-          author: "Brandon Williams & Stephen Celis",
-          blurb: #"""
-Enums are one of Swift's most notable, powerful features, and as Swift developers we love them and are lucky to have them! By contrasting them with their more familiar counterpart, structs, we can learn interesting things about them, unlocking ergonomics and functionality that the Swift language could learn from.
-"""#,
-          link: "https://www.pointfree.co/collections/enums-and-structs",
-          title: "Collection: Enums and Structs"
-        ),
         reference(
           forCollection: .enumsAndStructs,
           additionalBlurb: """
