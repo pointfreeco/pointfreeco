@@ -59,7 +59,7 @@ Next we will explore a real-world use for case paths: SwiftUI and the `Binding` 
         ),
         .init(
           blurb: #"""
-One of the fundamental units of SwiftUI state management is the Binding type, which connects your data model to your UI. It even comes with composable, transformable operations that make it really nice to use...with structs. Enums, unfortunately, are completely left out of the equation, which can lead us to model our domains in less than ideal ways. We will dissect the problem and build the tools that Apple leaves out of the framework.
+One of the fundamental units of SwiftUI state management is the `Binding` type, which connects your data model to your UI. It even comes with composable, transformable operations that make it really nice to use...with structs. Enums, unfortunately, are completely left out of the equation, which can lead us to model our domains in less than ideal ways. We will dissect the problem and build the tools that Apple leaves out of the framework.
 """#,
           coreLessons: [
             .init(episode: .ep107_composableSwiftUIBindings_pt1),
