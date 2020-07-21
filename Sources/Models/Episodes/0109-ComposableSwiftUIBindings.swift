@@ -29,15 +29,14 @@ In this episode we recreated a technique that Apple uses in one of their SwiftUI
         title: "Working with UI Controls"
       ),
       .swiftCasePaths,
-      reference(
-        forCollection: .enumsAndStructs,
-        additionalBlurb: """
-          To learn more about how enums and structs are related to each other, and to understand
-          why we were led to define the concept of "case paths", check out this collection of
-          episodes:
-          """,
-        collectionUrl: "https://www.pointfree.co/collections/enums-and-structs"
-      ),
+      .init(
+        author: "Brandon Williams & Stephen Celis",
+        blurb: #"""
+Enums are one of Swift's most notable, powerful features, and as Swift developers we love them and are lucky to have them! By contrasting them with their more familiar counterpart, structs, we can learn interesting things about them, unlocking ergonomics and functionality that the Swift language could learn from.
+"""#,
+        link: "https://www.pointfree.co/collections/enums-and-structs",
+        title: "Collection: Enums and Structs"
+      )
     ],
     sequence: 109,
     subtitle: "The Point",
