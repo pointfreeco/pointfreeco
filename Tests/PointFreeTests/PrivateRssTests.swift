@@ -152,6 +152,41 @@ class PrivateRssTests: TestCase {
 
   func testFeed_InvalidUserAgent() {
     let user = Models.User.mock
+    var feedRequestEventCreated = false
+
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.createFeedRequestEvent = { _, _, _ in
+      feedRequestEventCreated = true
+      return pure(unit)
+    }
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.episodes = unzurry([
+      .ep0_introduction,
+      .ep1_functions,
+      .ep2_sideEffects,
+      .ep3_uikitStylingWithFunctions,
+      .ep10_aTaleOfTwoFlatMaps,
+      .ep22_aTourOfPointFree,
+    ])
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
+    var req = request(
+      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertTrue(feedRequestEventCreated)
+  }
+
+  func testFeed_ValidUserAgent() {
+    let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.envVars.rssUserAgentWatchlist = ["blob"]
@@ -172,7 +207,7 @@ class PrivateRssTests: TestCase {
       to: .account(.rss(userId: userId, rssSalt: rssSalt)),
       session: .loggedOut
     )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
 
     let conn = connection(from: req)
 
