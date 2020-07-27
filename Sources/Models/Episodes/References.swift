@@ -67,6 +67,16 @@ Daniel gives a wonderful overview of how the idea of "combinators" infiltrates m
     title: "Combinators"
   )
 
+  public static let composableArchitectureDependencyManagement = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+We made dependencies a first class concern of the [Composable Architecture](/collections/composable-architecture) by baking the notion of dependencies directly into the definition of its atomic unit: the reducer.
+"""#,
+    link: "https://www.pointfree.co/collections/composable-architecture/dependency-management",
+    publishedAt: referenceDateFormatter.date(from: "2020-02-17"),
+    title: "Composable Architecture: Dependency Management"
+  )
+
   public static let composableReducers = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
@@ -1023,7 +1033,6 @@ In this episode we explore the duality of structs and enums and show that even t
 """#,
     episodeUrl: "https://www.pointfree.co/episodes/ep51-structs-enums"
   )
-
 }
 
 let referenceDateFormatter = { () -> DateFormatter in

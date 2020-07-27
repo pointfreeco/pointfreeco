@@ -110,5 +110,6 @@ extension Episode {
     .ep107_composableSwiftUIBindings_pt1,
     .ep108_composableSwiftUIBindings_pt2,
     .ep109_composableSwiftUIBindings_pt3,
+    .ep110_designingDependencies_pt1,
   ]
 }
