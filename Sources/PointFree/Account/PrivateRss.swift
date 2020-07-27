@@ -85,7 +85,6 @@ private let requireActiveSubscription: (
 private let accountRssResponse
   : Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription?, User), Data>
   = writeStatus(.ok)
-//  >=> trackFeedRequest(userId: \.1.id)
     >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
