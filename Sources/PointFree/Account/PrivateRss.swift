@@ -12,6 +12,7 @@ import Syndication
 import Tuple
 
 let accountRssMiddleware = decryptUrlAndFetchUser
+  <<< { trackFeedRequest(userId: \.first.id) >=> $0 }
   <<< validateUserAndSaltAndUserAgent
   <<< fetchActiveStripeSubscription
   <| map(lower)
@@ -84,7 +85,7 @@ private let requireActiveSubscription: (
 private let accountRssResponse
   : Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription?, User), Data>
   = writeStatus(.ok)
-    >=> trackFeedRequest
+//  >=> trackFeedRequest(userId: \.1.id)
     >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
@@ -172,16 +173,21 @@ private func validateUserAgent<Z>(
   }
 }
 
-private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, User)>) -> IO<Conn<I, (Stripe.Subscription?, User)>> {
+private func trackFeedRequest<A, I>(
+  userId: @escaping (A) -> User.Id
+)
+-> (Conn<I, A>) -> IO<Conn<I, A>> {
 
-  return Current.database.createFeedRequestEvent(
-    .privateEpisodesFeed,
-    conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-    conn.data.1.id
+  return { conn in
+    Current.database.createFeedRequestEvent(
+      .privateEpisodesFeed,
+      conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+      userId(conn.data)
     )
     .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
     .run
     .map { _ in conn }
+  }
 }
 
 private func fetchStripeSubscriptionForUser<A>(
