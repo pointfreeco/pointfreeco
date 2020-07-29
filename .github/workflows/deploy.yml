@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.4.6
+      - uses: jctaveras/heroku-deploy@v1.0.0
         with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "pointfreeco-stephen"
-          heroku_email: "stephen.celis@gmail.com"
+          api_key: ${{ secrets.HEROKU_API_KEY }}
+          app_name: pointfreeco-stephen
+          dockerfile_path: Dockerfile
+          email: stephen.celis@gmail.com
