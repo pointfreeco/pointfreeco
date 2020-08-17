@@ -113,5 +113,6 @@ extension Episode {
     .ep110_designingDependencies_pt1,
     .ep111_designingDependencies_pt2,
     .ep112_designingDependencies_pt3,
+    .ep113_designingDependencies_pt4,
   ]
 }
