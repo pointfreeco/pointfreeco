@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep113_designingDependencies_pt4 = Episode(
     blurb: """
-Now that we've tackled two dependencies of varying complexity we are ready to handle our more complicated dependency yet: Core Location. We will see what it means to control a dependency that communicates with a delegate and captures a complex state machine with many potential flows.
+Now that we've tackled two dependencies of varying complexity we are ready to handle our most complicated dependency yet: Core Location. We will see what it means to control a dependency that communicates with a delegate and captures a complex state machine with many potential flows.
 """,
     codeSampleDirectory: "0113-designing-dependencies-pt4",
     exercises: _exercises,

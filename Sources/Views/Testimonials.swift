@@ -307,5 +307,14 @@ So many concepts presented at #WWDC19  reminded me of @pointfreeco video series.
       twitterHandle: "iOjCaR"
     ),
 
+    Testimonial(
+      quote: """
+Through videos you constantly introduce ideas and patterns only to later reformulate them into more general ideas. This is awesome and helped me understand a lot of programming concepts. Well done!
+""",
+      subscriber: "Ferran Pujol Camins",
+      tweetUrl: "https://twitter.com/ferranpujolca/status/1240992924701261825",
+      twitterHandle: "ferranpujolca"
+    )
+
   ]
 }
