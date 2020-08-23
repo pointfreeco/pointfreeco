@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep111_designingDependencies_pt2 = Episode(
     blurb: """
-Let's the scrap the protocols for designing our dependencies and just use plain data types. Not only will we gain lots of new benefits that were previously impossible with protocols, but we'll also be able to modularize our application to improve compile times.
+Let's scrap the protocols for designing our dependencies and just use plain data types. Not only will we gain lots of new benefits that were previously impossible with protocols, but we'll also be able to modularize our application to improve compile times.
 """,
     codeSampleDirectory: "0111-designing-dependencies-pt2",
     exercises: _exercises,
