@@ -2,7 +2,7 @@ extension Episode.Collection {
   public static let dependencies = Self(
     section: .init(
       blurb: #"""
-Dependencies can wreak havoc on a codebase. They increase compile times, they are difficult to test, and they put strain on build tools. Did you know that Core Location, Core Motion and Store Kit all do not work in Xcode previews? Any feature touching those frameworks will not benefit from the awesome feedback cycle that previews afford us. This collection properly defines dependencies and shows how to take back control to unleash some amazing benefits.
+Dependencies can wreak havoc on a codebase. They can increase compile times, are difficult to test, and put strain on build tools. Did you know that Core Location, Core Motion, Store Kit, and many other frameworks do not work in Xcode previews? Any feature touching these frameworks will not benefit from the awesome feedback cycle that previews afford us. This collection clearly defines dependencies and shows how to take back control in order to unleash some amazing benefits.
 """#,
       coreLessons: [
         .init(episode: .ep110_designingDependencies_pt1),
