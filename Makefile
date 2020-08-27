@@ -4,6 +4,9 @@ SWIFT := $(if $(shell command -v xcrun 2> /dev/null),xcrun swift,swift)
 
 bootstrap: check-cmark check-postgres .pf-env
 
+fetch-gh-user:
+	curl -H "application/vnd.github.v3+json" https://api.github.com/user/$(USER_ID)
+
 check-cmark:
 	@echo "  ⚠️  Checking on cmark..."
 	@command -v cmark >/dev/null || (echo "$$CMARK_ERROR" && exit 1)
