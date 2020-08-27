@@ -5,7 +5,7 @@ import TaggedMoney
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
-  public var country: Country
+  public var country: Country?
   public var customer: Customer.Id
   public var expMonth: Int
   public var expYear: Int
