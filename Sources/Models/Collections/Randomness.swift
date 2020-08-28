@@ -43,18 +43,14 @@ It's time to make composable randomness _predictable_. We will make the `Gen` ty
         related: [
           .init(
             blurb: #"""
-These supplemental episodes take the machinery we've built so far for a fun spin by building and testing a generator of random art.
-"""#,
-            content: .episodes([
-              .ep49_generativeArt_pt1,
-              .ep50_generativeArt_pt2,
-            ])
-          ),
-          .init(
-            blurb: #"""
 In this section we utilize the "environment" method of dependency injection, which was first covered and motivated in the following episodes.
 """#,
-            content: .episode(.ep16_dependencyInjectionMadeEasy)
+            content: .episodes(
+              [
+                .ep16_dependencyInjectionMadeEasy,
+                .ep18_dependencyInjectionMadeComfortable
+              ]
+            )
           ),
           .init(
             blurb: #"""
@@ -65,9 +61,23 @@ The `flatMap` operation we defined on `Gen` is the third of our functional toolk
         ],
         title: "Predictable Randomness",
         whereToGoFromHere: #"""
-We have more to say about randomness in the future. Till then, the same story has played out in our collections on [parsing](/collections/parsing) and [application architecture](/collections/composable-architecture).
+Now that we've covered the basics of randomness let's have some fun! We'll use the tools we've built in the previous sections to explore how we can create some generative art, and even write tests to that it works the way we expect.
 """#
       ),
+      .init(
+        blurb: #"""
+Now that we've covered the basics of randomness let's have some fun! We'll use the tools we've built in the previous sections to explore how we can create some generative art, and even write tests to that it works the way we expect.
+"""#,
+        coreLessons: [
+          .init(episode: .ep49_generativeArt_pt1),
+          .init(episode: .ep50_generativeArt_pt2),
+        ],
+        related: [],
+        title: "Generative Art",
+        whereToGoFromHere: #"""
+We have more to say about randomness in the future. Till then, the same story has played out in our collections on [parsing](/collections/parsing) and [application architecture](/collections/composable-architecture).
+"""#
+      )
     ],
     title: "Randomness"
   )
