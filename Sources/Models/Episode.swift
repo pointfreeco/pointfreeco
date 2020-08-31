@@ -3,6 +3,7 @@ import Tagged
 import TaggedTime
 
 public struct Episode: Equatable {
+  public var alternateSlug: String?
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
@@ -20,6 +21,7 @@ public struct Episode: Equatable {
   private var _transcriptBlocks: [TranscriptBlock]?
 
   public init(
+    alternateSlug: String? = nil,
     blurb: String,
     codeSampleDirectory: String,
     exercises: [Exercise] = [],
@@ -36,6 +38,7 @@ public struct Episode: Equatable {
     trailerVideo: Video,
     transcriptBlocks: [TranscriptBlock]? = nil
   ) {
+    self.alternateSlug = alternateSlug
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
@@ -83,7 +86,7 @@ public struct Episode: Equatable {
   }
 
   public var slug: String {
-    return "ep\(self.sequence)-\(Models.slug(for: self.fullTitle))"
+    return "ep\(self.sequence)-" + (self.alternateSlug ?? "\(Models.slug(for: self.fullTitle))")
   }
 
   public func isSubscriberOnly(currentDate: Date) -> Bool {
