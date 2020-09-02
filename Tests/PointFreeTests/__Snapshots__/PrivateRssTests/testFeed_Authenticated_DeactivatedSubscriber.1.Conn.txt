@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4221
+Content-Length: 4270
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -48,6 +48,9 @@ X-XSS-Protection: 1; mode=block
     <itunes:author>
       Brandon Williams & Stephen Celis
     </itunes:author>
+    <itunes:block>
+      yes
+    </itunes:block>
     <itunes:subtitle>
       Functional programming concepts explained simply.
     </itunes:subtitle>

@@ -3,7 +3,7 @@ Cookie: pf_session={}
 User-Agent: Blob 1.0 (https://www.blob.com)
 
 200 OK
-Content-Length: 5021
+Content-Length: 5070
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -49,6 +49,9 @@ X-XSS-Protection: 1; mode=block
     <itunes:author>
       Brandon Williams & Stephen Celis
     </itunes:author>
+    <itunes:block>
+      yes
+    </itunes:block>
     <itunes:subtitle>
       Functional programming concepts explained simply.
     </itunes:subtitle>
