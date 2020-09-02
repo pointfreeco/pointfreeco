@@ -45,6 +45,7 @@ public struct RssChannel {
 
   public struct Itunes {
     public var author: String
+    public var block: Block
     public var categories: [Category]
     public var explicit: Bool
     public var keywords: [String]
@@ -56,6 +57,7 @@ public struct RssChannel {
 
     public init(
       author: String,
+      block: Block,
       categories: [Category],
       explicit: Bool,
       keywords: [String],
@@ -65,6 +67,7 @@ public struct RssChannel {
       summary: String,
       type: ChannelType) {
       self.author = author
+      self.block = block
       self.categories = categories
       self.explicit = explicit
       self.keywords = keywords
@@ -73,6 +76,11 @@ public struct RssChannel {
       self.subtitle = subtitle
       self.summary = summary
       self.type = type
+    }
+
+    public enum Block: String {
+      case yes
+      case no
     }
 
     public enum ChannelType: String {
@@ -304,6 +312,7 @@ private func node(category: RssChannel.Itunes.Category) -> Node {
 private func nodes(itunes: RssChannel.Itunes) -> Node {
   return [
     .element("itunes:author", [], .text(itunes.author)),
+    .element("itunes:block", [], .text(itunes.block.rawValue)),
     .element("itunes:subtitle", [], .text(itunes.subtitle)),
     .element("itunes:summary", [], .text(itunes.summary)),
     .element("itunes:explicit", [], .text(yesOrNo(itunes.explicit))),

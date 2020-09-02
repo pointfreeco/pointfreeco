@@ -39,6 +39,7 @@ how these ideas can improve the quality of your code today.
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
+      block: .no,
       categories: [
         .init(name: "Technology", subcategory: "Software How-To"),
         .init(name: "Education", subcategory: "Training"),
