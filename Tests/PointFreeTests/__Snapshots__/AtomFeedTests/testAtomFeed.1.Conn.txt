@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/atom.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7588
+Content-Length: 7636
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -48,6 +48,9 @@ X-XSS-Protection: 1; mode=block
     <itunes:author>
       Brandon Williams & Stephen Celis
     </itunes:author>
+    <itunes:block>
+      no
+    </itunes:block>
     <itunes:subtitle>
       Functional programming concepts explained simply.
     </itunes:subtitle>

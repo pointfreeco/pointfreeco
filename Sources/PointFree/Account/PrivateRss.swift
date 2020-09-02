@@ -239,6 +239,7 @@ with anyone else.
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
+      block: .yes,
       categories: [
         .init(name: "Technology", subcategory: "Software How-To"),
         .init(name: "Education", subcategory: "Training"),
@@ -335,6 +336,7 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
+      block: .yes,
       categories: [
         .init(name: "Technology", subcategory: "Software How-To"),
         .init(name: "Education", subcategory: "Training"),

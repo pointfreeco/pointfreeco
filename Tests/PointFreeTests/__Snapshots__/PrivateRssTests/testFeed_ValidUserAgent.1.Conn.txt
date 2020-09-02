@@ -3,7 +3,7 @@ Cookie: pf_session={}
 User-Agent: Safari 1.0
 
 200 OK
-Content-Length: 13492
+Content-Length: 13541
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -57,6 +57,9 @@ with anyone else.
     <itunes:author>
       Brandon Williams & Stephen Celis
     </itunes:author>
+    <itunes:block>
+      yes
+    </itunes:block>
     <itunes:subtitle>
       Functional programming concepts explained simply.
     </itunes:subtitle>
