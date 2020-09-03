@@ -56,15 +56,6 @@ SwiftUI has introduced the concept of “████ed views”, which gives yo
         title: "Data Essentials in SwiftUI"
       ),
       .init(
-        author: "Curt Clifton, Luca Bernadi, and Raj Ramamurthy",
-        blurb: #"""
-          This WWDC 2020 session covers the various APIs SwiftUI provides to drive your views with your data models using bindings, `@State`, `@ObservedObject`, and the newly-introduced `@StateObject`.
-          """#,
-        link: "https://developer.apple.com/videos/play/wwdc2020/10040/",
-        publishedAt: referenceDateFormatter.date(from: "2020-06-27"),
-        title: "Data Essentials in SwiftUI"
-      ),
-      .init(
         author: nil,
         blurb: #"""
           Apple's guidance for managing a SwiftUI application's data model using bindings, `@State`, `@ObservedObject`, and the newly-introduced `@StateObject`.
