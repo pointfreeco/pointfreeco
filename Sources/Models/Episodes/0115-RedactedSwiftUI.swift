@@ -90,7 +90,6 @@ SwiftUI has introduced the concept of “████ed views”, which gives yo
       bytesLength: 49_832_966,
       vimeoId: 453129382,
       vimeoSecret: "3764f3dc3994fd29895a4812e5e45244d6cb1f99" 
-      //
     ),
     transcriptBlocks: _transcriptBlocks
   )
