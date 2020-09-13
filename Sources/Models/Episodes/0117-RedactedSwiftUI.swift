@@ -4,7 +4,7 @@ extension Episode {
   public static let ep117_redactions_pt3 = Episode(
     alternateSlug: "redacted-swiftui-the-point-part-1",
     blurb: """
-We've seen how powerful SwiftUI's new redacted view modifier can be to instantly redact a view, and we've seen how the Composable Architecture can make it just as simple to redact your view's logic. But it gets even better. To demonstrate we will build an onboarding flow for a more complex application.
+Not only can we easily redact the logic from a view using the Composable Architecture, but we can also insert new logic into our views without making any changes to the core logic of the view. To demonstrate this we will build an onboarding flow for a more complex application.
 """,
     codeSampleDirectory: "0117-redacted-swiftui-pt3",
     exercises: _exercises,
