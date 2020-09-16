@@ -47,7 +47,7 @@ Not only can we easily redact the logic from a view using the Composable Archite
 private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
-The `unredacted` helper is super cool, but it might be nicer to define a more general helper that be used in more situations by transforming the current view. Define an `applying` helper that would allow us to replace our `unredacted` code above:
+The `unredacted` helper is super cool, but it might be nicer to define a more general view modifier that can transform the current view in a trailing closure. Define an `applying` helper that would allow us to replace our `unredacted` code above:
 
 ```swift
 //.unredacted(if: self.onboardingStep == .filters)
