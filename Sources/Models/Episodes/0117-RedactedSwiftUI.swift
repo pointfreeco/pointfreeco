@@ -50,13 +50,18 @@ private let _exercises: [Episode.Exercise] = [
 The `unredacted` helper is super cool, but it might be nicer to define a more general helper that be used in more situations by transforming the current view. Define an `applying` helper that would allow us to replace our `unredacted` code above:
 
 ```swift
-//.unredacted(if: self.step == .filters)
+//.unredacted(if: self.onboardingStep == .filters)
 .applying {
-  self.step == .filters ? $0.unredacted() : $0
+  if self.onboardingStep == .filters {
+    $0.unredacted()
+  } else{
+    $0
+  }
 }
 ```
 """#,
     solution: #"""
+```swift
 extension View {
   func applying<V: View>(
     @ViewBuilder _ builder: @escaping (Self) -> V
@@ -64,6 +69,7 @@ extension View {
     builder(self)
   }
 }
+```
 """#
   ),
   Episode.Exercise(
