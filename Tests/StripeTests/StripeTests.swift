@@ -459,6 +459,16 @@ final class StripeTests: XCTestCase {
       as: .raw,
       named: "update-subscription"
     )
+    assertSnapshot(
+      matching: Stripe.updateSubscription(.discounted, .monthly, 1)!.rawValue,
+      as: .raw,
+      named: "update-subscription-discount-preserved"
+    )
+    assertSnapshot(
+      matching: Stripe.updateSubscription(.discounted, .monthly, 2)!.rawValue,
+      as: .raw,
+      named: "update-subscription-discount-removed"
+    )
   }
 }
 
