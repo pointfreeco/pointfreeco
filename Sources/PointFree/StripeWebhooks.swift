@@ -23,7 +23,7 @@ let stripeWebhookMiddleware
 private let filterInvalidInvoices
   : MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>>
   = filter(
-    { $0.data.object.either({ $0.number != nil }, const(true)) },
+    { $0.data.object.either({ $0.number != nil && $0.subscription != nil }, const(true)) },
     or: writeStatus(.ok) >=> respond(text: "OK")
 )
 
