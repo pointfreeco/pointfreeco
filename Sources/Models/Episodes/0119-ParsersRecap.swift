@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
 It's time to revisit one of our favorite topics: parsing! We want to discuss lots of new parsing topics, such as generalized parsing, performance, reversible parsing and more, but before all of that we will start with a recap of what we have covered previously, and make a few improvements along the way.
 """,
-    codeSampleDirectory: "0119-parsers-recap-pt-1",
+    codeSampleDirectory: "0119-parsers-recap-pt1",
     exercises: _exercises,
     fullVideo: nil,
     id: 119,
