@@ -121,5 +121,6 @@ extension Episode {
     .ep118_redactions_pt4,
     .ep119_parsersRecap,
     .ep120_parsersRecap,
+    .ep121_parsersRecap,
   ]
 }
