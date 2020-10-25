@@ -122,5 +122,6 @@ extension Episode {
     .ep119_parsersRecap,
     .ep120_parsersRecap,
     .ep121_parsersRecap,
+    .ep122_parsersRecap,
   ]
 }
