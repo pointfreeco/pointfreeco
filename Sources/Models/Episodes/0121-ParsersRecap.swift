@@ -13,11 +13,15 @@ Now that we've refamiliarized ourselves with parsing, let's parse something even
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1603083600),
     references: [
-      reference(
-        forCollection: .parsing,
-        additionalBlurb: "New to parsing? Start our collection from the beginning!",
-        collectionUrl: "https://www.pointfree.co/collections/parsing"
-      ),
+      .combinatorsDanielSteinberg,
+      .parserCombinatorsInSwift,
+      .regexpParser,
+      .regexesVsCombinatorialParsing,
+      .learningParserCombinatorsWithRust,
+      .sparse,
+      .parsec,
+      .parseDontValidate,
+      .ledgeMacAppParsingTechniques,
     ],
     sequence: 121,
     subtitle: "Part 1",

@@ -13,11 +13,15 @@ We round out our parsing recap by reintroducing that functional trio of operator
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1602478800),
     references: [
-      reference(
-        forCollection: .parsing,
-        additionalBlurb: "New to parsing? Start our collection from the beginning!",
-        collectionUrl: "https://www.pointfree.co/collections/parsing"
-      ),
+      .combinatorsDanielSteinberg,
+      .parserCombinatorsInSwift,
+      .regexpParser,
+      .regexesVsCombinatorialParsing,
+      .learningParserCombinatorsWithRust,
+      .sparse,
+      .parsec,
+      .parseDontValidate,
+      .ledgeMacAppParsingTechniques,
     ],
     sequence: 120,
     subtitle: "Part 2",

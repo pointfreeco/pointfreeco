@@ -14,11 +14,15 @@ It's time to revisit one of our favorite topics: parsing! We want to discuss lot
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1601874000),
     references: [
-      reference(
-        forCollection: .parsing,
-        additionalBlurb: "New to parsing? Start our collection from the beginning!",
-        collectionUrl: "https://www.pointfree.co/collections/parsing"
-      ),
+      .combinatorsDanielSteinberg,
+      .parserCombinatorsInSwift,
+      .regexpParser,
+      .regexesVsCombinatorialParsing,
+      .learningParserCombinatorsWithRust,
+      .sparse,
+      .parsec,
+      .parseDontValidate,
+      .ledgeMacAppParsingTechniques,
     ],
     sequence: 119,
     subtitle: "Part 1",

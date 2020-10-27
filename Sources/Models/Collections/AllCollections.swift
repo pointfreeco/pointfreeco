@@ -2,9 +2,9 @@ extension Episode.Collection {
   public static let all: [Self] = [
     .composableArchitecture,
     .swiftUI,
-    .combine,
     .dependencies,
     .parsing,
+    .combine,
     .protocolWitnesses,
     .mapZipFlatMap,
     .algebraicDataTypes,

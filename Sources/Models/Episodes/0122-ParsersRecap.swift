@@ -13,11 +13,15 @@ We finish up our XCTest log parser by parsing out the data associated with a tes
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1603688400),
     references: [
-      reference(
-        forCollection: .parsing,
-        additionalBlurb: "New to parsing? Start our collection from the beginning!",
-        collectionUrl: "https://www.pointfree.co/collections/parsing"
-      ),
+      .combinatorsDanielSteinberg,
+      .parserCombinatorsInSwift,
+      .regexpParser,
+      .regexesVsCombinatorialParsing,
+      .learningParserCombinatorsWithRust,
+      .sparse,
+      .parsec,
+      .parseDontValidate,
+      .ledgeMacAppParsingTechniques,
     ],
     sequence: 122,
     subtitle: "Part 2",

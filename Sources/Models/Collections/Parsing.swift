@@ -52,7 +52,6 @@ It's time to explore "parser combinators": functions that enhance and combine pa
             .init(episode: .ep64_parserCombinators_pt3),
           ],
           related: [
-            // TODO: bring back when we figure out recursive references
             .init(
               blurb: #"""
 Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
@@ -65,9 +64,35 @@ Parsing is just one of many problems functional programming solves by defining a
           ],
           title: "Parser Combinators",
           whereToGoFromHere: #"""
-The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), where we define a core type to express a certain domain and then explore all of the kinds of composition that type supports.
+There was more than a year break from when we first covered parsers to when we picked up the topic again, and so we dedicated a few episodes to recapping everything we accomlished last time while also making a few ergonomic improvements along the way.
 """#
         ),
+        .init(
+          blurb: #"""
+There was more than a year break from when we first covered parsers to when we picked up the topic again, and so we dedicated a few episodes to recapping everything we accomlished last time while also making a few ergonomic improvements along the way. We also used our parser knowledge to build a CLI tool from scratch that can process and pretty print the logs output from `xcodebuild` and `swift test`.
+"""#,
+          coreLessons: [
+            .init(episode: .ep119_parsersRecap),
+            .init(episode: .ep120_parsersRecap),
+            .init(episode: .ep121_parsersRecap),
+            .init(episode: .ep122_parsersRecap),
+          ],
+          related: [
+            .init(
+              blurb: #"""
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
+"""#,
+              content: .collections([
+                .randomness,
+                .composableArchitecture,
+              ])
+            ),
+          ],
+          title: "Parser Recap",
+          whereToGoFromHere: #"""
+The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), where we define a core type to express a certain domain and then explore all of the kinds of composition that type supports.
+"""#
+        )
       ],
       title: "Parsing"
     )
