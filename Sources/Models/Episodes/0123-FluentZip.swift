@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep123_fluentlyZippingParsers = Episode(
     blurb: """
-The zip function shows up on many types: from Swift arrays and Combine publishers, to optionals, results, and even parsers! But zip on parsers introduces a strange problem. Let's explore why and how to fix it.
+The zip function shows up on many types: from Swift arrays and Combine publishers, to optionals, results, and even parsers! But zip on parsers is a little unlike zip on all of those other types. Let's explore why and how to fix it.
 """,
     codeSampleDirectory: "0123-fluently-zipping-parsers",
     exercises: _exercises,
