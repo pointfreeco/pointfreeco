@@ -46,7 +46,7 @@ Define `map`, `zip` and `flatMap` on the `Parser` type. Start by defining what t
 Create a parser `end: Parser<Void>` that simply succeeds if the input string is empty, and fails otherwise. This parser is useful to indicate that you do not intend to parse anymore.
 """),
   .init(problem: """
-Implement a function that takes a predicate `(Character) -> Bool` as an argument, and returns a parser `Parser<Substring>` that consumes from the front of the input string until the predicate is no longer satisfied. It would have the signature `func pred: ((A) -> Bool) -> Parser<Substring>`.
+Implement a function that takes a predicate `(Character) -> Bool` as an argument, and returns a parser `Parser<Substring>` that consumes from the front of the input string until the predicate is no longer satisfied. It would have the signature `func pred: ((Character) -> Bool) -> Parser<Substring>`.
 """),
   .init(problem: """
 Implement a function that transforms any parser into one that does not consume its input at all. It would have the signature `func nonConsuming: (Parser<A>) -> Parser<A>`.
