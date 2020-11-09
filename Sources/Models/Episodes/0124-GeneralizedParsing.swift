@@ -8,7 +8,7 @@ The parser type we built so far is highly tuned to work on strings, but there ar
     codeSampleDirectory: "0124-generalized-parsing-pt1",
     exercises: _exercises,
     id: 124,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/990930631.jpg",
     length: 33*60 + 14,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1604901600),
@@ -52,8 +52,8 @@ where
   Episode.Exercise(
     problem: #"""
 Generalize `prefix(upTo:)` and `prefix(through:)` to not just work on substrings, but any `Collection`.
-    """#,
-solution: #"""
+"""#,
+    solution: #"""
 These are a bit trickier because there is no `range(of:)` operation on `Collection`. We can recover this behavior with a combination of `starts(with:)` and `removeFirst()` to advance the input's start index for each check:
 
 ```swift
