@@ -8,7 +8,7 @@ Now that we have generalized the parser type it's time to parse things that aren
     codeSampleDirectory: "0125-generalized-parsing-pt2",
     exercises: _exercises,
     id: 125,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/995512913.jpg",
     length: 53*60 + 52,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1605506400),
@@ -19,9 +19,9 @@ Now that we have generalized the parser type it's time to parse things that aren
     subtitle: "Part 2",
     title: "Generalized Parsing",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "" // TODO
+      bytesLength: 019143341,
+      vimeoId: 479635358,
+      vimeoSecret: "6f68465db09402928afbce1afcbea14d5dba39e9"
     )
   )
 }
