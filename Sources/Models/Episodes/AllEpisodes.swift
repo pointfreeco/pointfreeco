@@ -126,5 +126,6 @@ extension Episode {
     .ep123_fluentlyZippingParsers,
     .ep124_generalizedParsing,
     .ep125_generalizedParsing,
+    .ep126_generalizedParsing,
   ]
 }
