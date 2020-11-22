@@ -3,12 +3,12 @@ import Foundation
 extension Episode {
   public static let ep126_generalizedParsing = Episode(
     blurb: """
-Generalizing the parser type has unlocked some interesting things, like the ability to parse arrays and dictionaries, and even serve as a URL router, but it also introduces some additional complexity. Was it worth the cost? Do the benefits of generalizing stop here?
+Generalizing the parser type has allowed us to parse more types of inputs, but that is only scratching the surface. It also unlocks many new things that were previously impossible to see, including the ability to parse a stream of inputs and stream its output, making our parsers much more performant.
 """,
     codeSampleDirectory: "0126-generalized-parsing-pt3",
     exercises: _exercises,
     id: 126,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1000228065.jpg",
     length: 36*60 + 29,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1606111200),
@@ -18,9 +18,9 @@ Generalizing the parser type has unlocked some interesting things, like the abil
     subtitle: "Part 3",
     title: "Generalized Parsing",
     trailerVideo: .init(
-      bytesLength: 0,
-      vimeoId: 0,
-      vimeoSecret: "TODO"
+      bytesLength: 59_716_757,
+      vimeoId: 482406601,
+      vimeoSecret: "38032fe906bc015a6bc5209d86a5b2c1811f1de9"
     )
   )
 }
