@@ -1,7 +1,7 @@
-FROM swift:5.2.2
+FROM swift:5.2.3
 
-RUN apt-get update
-RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
+RUN apt-get --fix-missing update
+RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python
 
 WORKDIR /build
 
