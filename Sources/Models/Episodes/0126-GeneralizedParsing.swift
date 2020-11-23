@@ -57,7 +57,8 @@ extension Parser {
 }
 ```
 """#
-  ),  Episode.Exercise(
+  ),
+  Episode.Exercise(
     problem: #"""
 Swift strings have a lower-level representation called `UnicodeScalarView` that can be more performant to work with. Generalize `Parser.int` to parse `Substring.UnicodeScalarView`:
 
