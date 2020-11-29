@@ -19,6 +19,6 @@ We’re happy to announce a rare Point-Free sale this Cyber Monday by offering 3
   coverImage: nil,
   hidden: true,
   id: 48,
-  publishedAt: Date(timeIntervalSince1970: 1606716000),
+  publishedAt: Date(timeIntervalSince1970: 1606690440),
   title: "Cyber Monday Sale: 30% Off Point-Free"
 )

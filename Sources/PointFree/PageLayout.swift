@@ -198,7 +198,7 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 func announcementBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    Current.date() < Date(timeIntervalSince1970: 1606824000),
+    (post0048_CyberMondaySale.publishedAt...Date(timeIntervalSince1970: 1606824000)).contains(Current.date()),
     Current.envVars.appEnv != .testing
   else { return [] }
 
