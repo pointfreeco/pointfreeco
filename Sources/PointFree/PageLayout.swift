@@ -152,6 +152,7 @@ func simplePageLayout<A>(
           ghosterBanner(layoutData),
           pastDueBanner(layoutData),
           (layoutData.flash.map(flashView) ?? []),
+          announcementBanner(layoutData),
           navView(layoutData),
           contentView(layoutData.data),
           layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser, year: year)
@@ -190,6 +191,38 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
           )
         )
       )
+    )
+  )
+}
+
+func announcementBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
+  guard
+    case .nonSubscriber = data.currentSubscriberState,
+    Current.date() < Date(timeIntervalSince1970: 1606824000),
+    Current.envVars.appEnv != .testing
+  else { return [] }
+
+  let announcementClass = Class.type.align.center
+    | Class.padding([.mobile: [.topBottom: 3]])
+    | Class.pf.colors.bg.purple
+    | Class.pf.colors.fg.gray850
+    | Class.pf.colors.link.white
+
+  return .gridRow(
+    attributes: [.class([announcementClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.white
+              | Class.pf.type.underlineLink
+          ]),
+          .href(url(to: .blog(.show(slug: post0048_CyberMondaySale.slug))))
+        ],
+        .strong("Cyber Monday Sale")
+      ),
+      ": save 30% when you subscribe!"
     )
   )
 }
