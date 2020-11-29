@@ -234,13 +234,13 @@ func updateSubscription(
     return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
       [
         "cancel_at_period_end": "false",
-        "coupon": "",
+        "coupon": quantity > 1 ? "" : nil,
         "items[0][id]": item.id.rawValue,
         "items[0][plan]": plan.rawValue,
         "items[0][quantity]": String(quantity),
         "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
-      ]
+      ].compactMapValues { $0 }
       ))
 }
 
