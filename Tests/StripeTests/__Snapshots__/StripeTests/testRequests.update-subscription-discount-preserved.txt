@@ -1,0 +1,4 @@
+POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer
+Stripe-Version: 2019-12-03
+
+cancel_at_period_end=false&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
