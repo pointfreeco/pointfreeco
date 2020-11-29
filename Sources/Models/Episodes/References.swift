@@ -735,6 +735,14 @@ many other code bases.
     title: "Structure and Interpretation of Swift Programs"
   )
 
+  public static let swiftBenchmark = Self(
+    author: "Google",
+    blurb: "A Swift library for benchmarking code snippets, similar to google/benchmark.",
+    link: "http://github.com/google/swift-benchmark",
+    publishedAt: referenceDateFormatter.date(from: "2020-03-13"),
+    title: "swift-benchmark"
+  )
+
   public static let swiftCasePaths = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """

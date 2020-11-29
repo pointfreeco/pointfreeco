@@ -3,25 +3,25 @@ import Foundation
 extension Episode {
   public static let ep127_parsingPerformance = Episode(
     blurb: """
-Let’s take a quick deep dive into the topic of Swift strings. Swift represents strings in many ways, each with its own behavior and performance characteristics. We will benchmark them in order to better understand how we can improve the performance of the parsers we write.
+We want to explore the performance of composable parsers, but to do so we must first take a deep dive into the Swift string API. There are multiple abstractions of strings in Swift, each with its own benefits and performance characteristics. We will benchmark them in order to get a scientific basis for comparison, and will describe how to properly write a benchmark.
 """,
     codeSampleDirectory: "0127-parsing-performance-pt1",
     exercises: _exercises,
     id: 127,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1004853903.jpg",
     length: 35*60 + 18,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1606716000),
     references: [
-      // TODO
+      .swiftBenchmark
     ],
     sequence: 127,
-    subtitle: "Part 1", // TODO: or something specific, like "String Representations"?
+    subtitle: "Strings",
     title: "Parsing and Performance",
     trailerVideo: .init(
-      bytesLength: 0,
-      vimeoId: 0,
-      vimeoSecret: ""
+      bytesLength: 59207692,
+      vimeoId: 485209021,
+      vimeoSecret: "5e4fb1ff00a978976ecdf2873ae3b59d454c68d4"
     )
   )
 }

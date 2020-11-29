@@ -54,7 +54,7 @@ It's time to explore "parser combinators": functions that enhance and combine pa
           related: [
             .init(
               blurb: #"""
-Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even app architecture!
 """#,
               content: .collections([
                 .randomness,
@@ -80,7 +80,7 @@ There was more than a year break from when we first covered parsers to when we p
           related: [
             .init(
               blurb: #"""
-Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even architecture!
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even app architecture!
 """#,
               content: .collections([
                 .randomness,
@@ -89,6 +89,32 @@ Parsing is just one of many problems functional programming solves by defining a
             ),
           ],
           title: "Parser Recap",
+          whereToGoFromHere: #"""
+So far, the parser library we have been building is needlessly restricted to parsing only strings. There are lots of things that we'd like to parse, such as URL requests for application routing. By generalizing the `Parser` type we will gain the ability to parse many types of inputs, and we will uncover many unexpected benefits, including the ability to make our parsers much more performant than they currently are.
+"""#
+        ),
+
+        .init(
+          blurb: #"""
+So far, the parser library we have been building is needlessly restricted to parsing only strings. There are lots of things that we'd like to parse, such as URL requests for application routing. By generalizing the `Parser` type we will gain the ability to parse many types of inputs, and we will uncover many unexpected benefits, including the ability to make our parsers much more performant than they currently are.
+"""#,
+          coreLessons: [
+            .init(episode: .ep124_generalizedParsing),
+            .init(episode: .ep125_generalizedParsing),
+            .init(episode: .ep126_generalizedParsing),
+          ],
+          related: [
+            .init(
+              blurb: #"""
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even app architecture!
+"""#,
+              content: .collections([
+                .randomness,
+                .composableArchitecture,
+              ])
+            ),
+          ],
+          title: "Generalization",
           whereToGoFromHere: #"""
 The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), where we define a core type to express a certain domain and then explore all of the kinds of composition that type supports.
 """#
