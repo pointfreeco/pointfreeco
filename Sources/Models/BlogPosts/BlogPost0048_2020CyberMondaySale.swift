@@ -31,7 +31,7 @@ In addition to these topics, we covered:
     )
   ],
   coverImage: nil,
-  hidden: false,
+  hidden: true,
   id: 48,
   publishedAt: Date(timeIntervalSince1970: 1606690440),
   title: "Cyber Monday Sale: 30% Off Point-Free"
