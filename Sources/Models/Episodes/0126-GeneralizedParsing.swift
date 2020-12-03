@@ -72,7 +72,7 @@ extension Parser where Input == Substring.UnicodeScalarView, Output == Int {
 let string = "123 Hello"
 var input = string[...].unicodeScalars
 precondition(Parser.int.run(&input) == 123)
-precondition(Substring(unicodeScalars) == " Hello")
+precondition(Substring(input) == " Hello")
 ```
 
 How do the performance characteristics compare with `Substring`?
@@ -93,9 +93,9 @@ extension Parser where Input == Substring.UTF8View, Output == Int {
 }
 
 let string = "123 Hello"
-var input = string[...].unicodeScalars
+var input = string[...].utf8
 precondition(Parser.int.run(&input) == 123)
-precondition(Substring(unicodeScalars) == " Hello")
+precondition(Substring(input) == " Hello")
 ```
 
 How do the performance characteristics compare with `Substring` and `Substring.UnicodeScalarView`?
