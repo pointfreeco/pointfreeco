@@ -128,5 +128,6 @@ extension Episode {
     .ep125_generalizedParsing,
     .ep126_generalizedParsing,
     .ep127_parsingPerformance,
+    .ep128_parsingPerformance,
   ]
 }
