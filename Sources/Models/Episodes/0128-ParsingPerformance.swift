@@ -76,7 +76,7 @@ string.utf8.withContiguousStorageIfAvailable { (ptr: UnsafeBufferPointer<UInt8>)
 }
 ```
 
-After writing this parser, benchmark them against each interface.
+After writing this parser, benchmark it against each interface.
 """#,
     solution: #"""
 Starting from the previous exercise, the only thing that needs to change is the extension, which needs to work on a _slice_ of a buffer pointer. Everything else is the same:
@@ -139,6 +139,8 @@ Performance-wise, these methods are even faster than `ArraySlice<UInt8>` and do 
 The `int` parser on `UTF8View`, `[UInt8]` and `UnsafeBufferPointer<UInt8>` can be unified in a single implementation that is constrained against the `Collection` protocol. Comment out the other parsers and use this single, more generalized parser, instead. How does this affect performance?
 """#,
     solution: #"""
+The body of this parser is the same as the last two. We just need to update the extension with more general constraints and use a computed static property instead of a `let`:
+
 ```swift
 extension Parser
 where
