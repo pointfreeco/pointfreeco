@@ -8,7 +8,7 @@ The performance gains we have made with the parser type have already been super 
     codeSampleDirectory: "0129-parsing-performance-pt3",
     exercises: _exercises,
     id: 129,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1014667982.jpg",
     length: 39*60 + 19,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1607925600),
@@ -16,12 +16,12 @@ The performance gains we have made with the parser type have already been super 
       .swiftBenchmark
     ],
     sequence: 129,
-    subtitle: "TODO",
+    subtitle: "Protocols",
     title: "Parsing and Performance",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "TODO"
+      bytesLength: 36711102,
+      vimeoId: 490481881,
+      vimeoSecret: "1af97b4fdc46c110511b98a6d6a1a8a566afbc1d"
     )
   )
 }
