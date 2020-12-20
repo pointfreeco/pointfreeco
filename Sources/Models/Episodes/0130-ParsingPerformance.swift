@@ -13,7 +13,20 @@ It is well accepted that hand-rolled, imperative parsers are vastly more perform
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1608530400),
     references: [
-      .swiftBenchmark
+      .init(
+        author: "Chris Eidhof & Florian Kugler",
+        blurb: """
+          This [Swift Talk](https://talk.objc.io) episode was the inspiration for two of the CSV parsers we built in this episode, and formed the basis of how we could compare combinator-style parsing with imperative-style parsing.
+
+          > We show a parsing technique that we use for many parsing tasks in our day-to-day work.
+          """,
+        link: "https://talk.objc.io/episodes/S01E170-parsing-with-mutating-methods",
+        publishedAt: referenceDateFormatter.date(from: "2019-09-20"),
+        title: "Parsing with Mutating Methods"
+      ),
+      .swiftBenchmark,
+      .utf8(),
+      .stringsInSwift4(),
     ],
     sequence: 130,
     subtitle: "The Point",

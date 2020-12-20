@@ -55,6 +55,18 @@ Combine is Apple's framework for reactive programming.
     title: "Combine"
   )
 
+  public static func combineTypes(blurb: String? = nil) -> Self {
+    Self(
+      author: "Thomas Visser",
+      blurb: """
+      A detailed article on the technique of "operator fusion" that Combine employs.
+      """,
+      link: "https://www.thomasvisser.me/2019/07/04/combine-types/",
+      publishedAt: referenceDateFormatter.date(from: "2019-07-04"),
+      title: "Why Combine has so many Publisher types"
+    )
+  }
+
   public static let combinatorsDanielSteinberg = Episode.Reference(
     author: "Daniel Steinberg",
     blurb: """
@@ -163,7 +175,7 @@ This short article explains how everything can be seen to be a function, even va
   public static let fusionPrimer = Self(
     author: "Jasdev Singh",
     blurb: """
-A more detailed article on the technique of "operator fusion" that Combine employs.
+A detailed article on the technique of "operator fusion" that Combine employs.
 """,
     link: "https://jasdev.me/fusion-primer",
     publishedAt: referenceDateFormatter.date(from: "2020-04-01"),
@@ -732,6 +744,18 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
     title: "Some news about contramap"
   )
 
+  public static func stringsInSwift4(blurb: String? = nil) -> Self {
+    Self(
+      author: "Ole Begemann",
+      blurb: blurb ?? """
+      An excerpt from the [Advanced Swift](https://www.objc.io/books/advanced-swift/) that provides a deep discussion of the low-level representations of Swift strings. Although it pre-dates the transition of strings to [UTF-8](https://swift.org/blog/utf8-string/) in Swift 5 it is still a factually correct accounting of how to work with code units in strings.
+      """,
+      link: "https://oleb.net/blog/2017/11/swift-4-strings/",
+      publishedAt: referenceDateFormatter.date(from: "2017-11-27"),
+      title: "Strings in Swift 4"
+    )
+  }
+
   public static let structureAndInterpretationOfSwiftPrograms = Episode.Reference(
     author: "Colin Barrett",
     blurb: """
@@ -762,6 +786,16 @@ many other code bases.
     publishedAt: nil,
     title: "CasePaths"
   )
+
+  public static func swiftsCollectionTypes(blurb: String? = nil) -> Self {
+    Self(
+      author: "Harshil Shah",
+      blurb: blurb,
+      link: "https://harshil.net/blog/swift-sequence-collection-array",
+      publishedAt: referenceDateFormatter.date(from: "2020-08-05"),
+      title: "Swiftʼs Collection Types"
+    )
+  }
 
   public static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
@@ -1051,6 +1085,18 @@ In this episode we explore the duality of structs and enums and show that even t
 """#,
     episodeUrl: "https://www.pointfree.co/episodes/ep51-structs-enums"
   )
+
+  public static func utf8(blurb: String? = nil) -> Self {
+    Self(
+      author: "Michael Ilseman",
+      blurb: blurb ?? """
+      Swift 5 made a fundamental change to the String API, making the preferred encoding UTF-8 instead of UTF-16. This brings many usability and performance improves to Swift strings.
+      """,
+      link: "https://swift.org/blog/utf8-string/",
+      publishedAt: referenceDateFormatter.date(from: "2019-03-20"),
+      title: "UTF-8"
+    )
+  }
 }
 
 let referenceDateFormatter = { () -> DateFormatter in

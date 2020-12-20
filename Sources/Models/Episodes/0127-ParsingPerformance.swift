@@ -13,7 +13,21 @@ We want to explore the performance of composable parsers, but to do so we must f
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1606716000),
     references: [
-      .swiftBenchmark
+      .swiftBenchmark,
+      .utf8(),
+      .stringsInSwift4(),
+      .swiftsCollectionTypes(blurb: """
+        In this episode we explored different representations of strings and their subsequences (i.e. `Substring`, `UnicodeScalarView`, and `UTF8View`), but more generally there are collections and slices. This article gives a nice accounting of the zoo of types in Swift's collections API.
+        """),
+      .init(
+        author: "Stephen Celis",
+        blurb: """
+        While researching the string APIs for this episode we stumbled upon a massive inefficiency in how Swift implements `removeFirst` on certain collections. This PR fixes the problem and turns the method from an `O(n)` operation (where `n` is the length of the array) to an `O(k)` operation (where `k` is the number of elements being removed).
+        """,
+        link: "https://github.com/apple/swift/pull/32451",
+        publishedAt: referenceDateFormatter.date(from: "2020-07-28"),
+        title: "Improve performance of Collection.removeFirst(_:) where Self == SubSequence"
+      )
     ],
     sequence: 127,
     subtitle: "Strings",
