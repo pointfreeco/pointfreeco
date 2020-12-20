@@ -13,7 +13,8 @@ The performance gains we have made with the parser type have already been super 
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1607925600),
     references: [
-      .swiftBenchmark
+      .fusionPrimer,
+      .swiftBenchmark,
     ],
     sequence: 129,
     subtitle: "Protocols",

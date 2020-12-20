@@ -116,8 +116,33 @@ Parsing is just one of many problems functional programming solves by defining a
           ],
           title: "Generalization",
           whereToGoFromHere: #"""
-The parsing journey isn't over yet! We'll have more to come in future episodes. Till then, the same story has played out in our collections on [randomness](/collections/randomness) and [application architecture](/collections/composable-architecture), where we define a core type to express a certain domain and then explore all of the kinds of composition that type supports.
+We have built a powerful parser library with a focus on composability and generality, but there's one important facet of parsing missing: performance. We will discover how to unlock a new level of performance from our parsers, making them competitive with more ad-hoc styles of parsing.
 """#
+        ),
+
+        .init(
+          blurb: #"""
+Performance is particularly important for parsing because you will often need to parse megabytes, or potentially gigabytes, of data. We show that although our parser library has taken some steps towards efficiency, there is still a lot of room for improvement. We will also compare the combinator style of parsing to other more popular styles, and see that combinators can be nearly as performant as more ad-hoc styles.
+"""#,
+          coreLessons: [
+            .init(episode: .ep127_parsingPerformance),
+            .init(episode: .ep128_parsingPerformance),
+            .init(episode: .ep129_parsingPerformance),
+            .init(episode: .ep130_parsingPerformance),
+          ],
+          related: [
+            .init(
+              blurb: #"""
+Parsing is just one of many problems functional programming solves by defining a core, composable, transformable unit. We apply these exact same techniques to randomness and even app architecture!
+"""#,
+              content: .collections([
+                .randomness,
+                .composableArchitecture,
+              ])
+            ),
+          ],
+          title: "Performance",
+          whereToGoFromHere: nil
         )
       ],
       title: "Parsing"

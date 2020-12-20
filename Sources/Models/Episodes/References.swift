@@ -160,6 +160,16 @@ This short article explains how everything can be seen to be a function, even va
     title: "Everything’s a Function."
   )
 
+  public static let fusionPrimer = Self(
+    author: "Jasdev Singh",
+    blurb: """
+A more detailed article on the technique of "operator fusion" that Combine employs.
+""",
+    link: "https://jasdev.me/fusion-primer",
+    publishedAt: referenceDateFormatter.date(from: "2020-04-01"),
+    title: "An operator fusion primer"
+  )
+
   public static let goshDarnIfCaseLetSyntax = Episode.Reference(
     author: "Zoë Smith",
     blurb: "This site is a cheat sheet for `if case let` syntax in Swift, which can be seriously complicated.",
