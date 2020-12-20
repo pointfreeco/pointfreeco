@@ -288,7 +288,7 @@ This allows you to parse as much as possible on the more performant, low-level `
 This library comes with a benchmark executable that not only demonstrates the performance of the library, but also provides a wide variety of parsing examples:
 
 * [URL router](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Routing.swift)
-* [Xcode test lhttps://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/ogs](Sources/swift-parsing-benchmark/)
+* [Xcode test logs](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/ogs](Sources/swift-parsing-benchmark/)
 * [Simplfied CSV](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/CSV)
 * [Hex color](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Color.swift)
 * [ISO8601 date](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Date.swift)
