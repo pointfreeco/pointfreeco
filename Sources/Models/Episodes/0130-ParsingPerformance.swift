@@ -8,7 +8,7 @@ It is well accepted that hand-rolled, imperative parsers are vastly more perform
     codeSampleDirectory: "0130-parsing-performance-pt3",
     exercises: _exercises,
     id: 130,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1019899482.jpg",
     length: 58*60 + 46,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1608530400),
@@ -32,9 +32,9 @@ It is well accepted that hand-rolled, imperative parsers are vastly more perform
     subtitle: "The Point",
     title: "Parsing and Performance",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "TODO"
+      bytesLength: 64504653,
+      vimeoId: 492807428,
+      vimeoSecret: "56158dafe0996029229c7722923089aba104a227"
     )
   )
 }
