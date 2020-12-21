@@ -145,7 +145,7 @@ input // => ""
 
 Now this parser can process an entire document of users, and the code is simpler and more straightforward than the version that uses `.split` and `.compactMap`.
 
-Even better, it's more performant. We've written [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/ReadmeExample.swift) for these two styles of parsing, and the `.split`-style of parsing is more than twice as slow:
+Even better, it's more performant. We've written [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/ReadmeExample.swift) for these two styles of parsing, and the `.split`-style of parsing is more than twice as slow:
 
 ```
 name                             time        std        iterations
