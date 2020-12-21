@@ -351,6 +351,6 @@ Head over to the [Parsing](https://github.com/pointfreeco/swift-parsing) reposit
   ],
   coverImage: nil,
   id: 49,
-  publishedAt: Date(timeIntervalSince1970: 1608591240),
+  publishedAt: Date(timeIntervalSince1970: 1608530400),
   title: "Open Sourcing Parsing"
 )
