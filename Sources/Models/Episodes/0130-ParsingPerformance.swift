@@ -43,25 +43,6 @@ private let _exercises: [Episode.Exercise] = [
   .init(
     problem: #"""
 Fix the unrolled loop parser, `loopParseCSV`, to properly trim leading and trailing double quotes from quoted fields. Update the benchmark's precondition to check this, as well.
-"""#,
-    solution: #"""
-The simplest way we can update our precondition to check to see if leading and trailing quotation marks were trimmed is to further ensure that all fields satisfy that they don't start with a leading or trailing quotation mark:
-
-```swift
-precondition(
-  output.allSatisfy {
-    $0.count == 5
-      && $0.last?.last != .init(ascii: "\r")
-      && $0.allSatisfy {
-        $0.first != .init(ascii: "\"") && $0.last != .init(ascii: "\"")
-      }
-  }
-)
-```
-
-While such a precondition could still fail on a valid CSV with leading or trailing escaped quotes, our data set does not have any fields in such a state. Our benchmarks are only as strong as our precondition, so ideally we would make a very precise precondition that can assert that the parser worked exactly as we expected it to.
-
-If we run this benchmark it will now fail, as we expected it to. To resolve the problem, we can introduce some more mutable state to track if we were in a quoted field.
 """#
   ),
   .init(
