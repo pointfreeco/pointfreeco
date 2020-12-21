@@ -8,7 +8,7 @@ Today we are open sourcing Parsing, a library for turning nebulous data into wel
   contentBlocks: [
     .init(
       content: #"""
-We are exicted to announce the 0.1.0 release of [Parsing](https://github.com/pointfreeco/swift-parsing), a library for turning nebulous data into well-structured data. It was built from the content of [21 episodes](/collections/parsing) (10 hours) where we show how to build a parsing library from scratch, with a focus on composition, performance, and generality:
+We are excited to announce the 0.1.0 release of [Parsing](https://github.com/pointfreeco/swift-parsing), a library for turning nebulous data into well-structured data. It was built from the content of [21 episodes](/collections/parsing) (10 hours) where we show how to build a parsing library from scratch, with a focus on composition, performance, and generality:
 
 * **Composition**: Ability to break large, complex parsing problems down into smaller, simpler ones. And the ability to take small, simple parsers and easily combine them into larger, more complex ones.
 
@@ -18,7 +18,7 @@ We are exicted to announce the 0.1.0 release of [Parsing](https://github.com/poi
 
 ## Motivation
 
-Parsing is a surprisingly ubiquitous problem in programming. We can define parsing as trying to take a more nebulous blob of data and transform it into something more well-structured. The Swift standard library comes with a number of parsers that we reach for every day. For example, there are initializers on `Int`, `Double`, and even `Bool` that attempt to parse numbers and booleans from strings:
+Parsing is a surprisingly ubiquitous problem in programming. We can define parsing as trying to take a more nebulous blob of data and transform it into something more well-structured. The Swift standard library comes with a number of parsers that we reach for every day. For example, there are initializers on `Int`, `Double`, and even `Bool`, that attempt to parse numbers and booleans from strings:
 
 ```swift
 Int("42")         // 42
@@ -40,13 +40,13 @@ try PropertyListDecoder().decode(Settings.self, from: data)
 
 <!-- The Foundation framework comes with a number of parsers as well, including its family of formatters, like `DateFormatter`, which not only format more well-structured data _into_ strings, but can parse this well-structured data _from_ strings as well -->
 
-While parsers are everywhere in Swift, Swift has no holistic story _for_ parsing. Instead, we typically parse data in an ad hoc fashion using a number of unrelated initializers, methods, and more. And this typically leads to less maintainable, less reusable code.
+While parsers are everywhere in Swift, Swift has no holistic story _for_ parsing. Instead, we typically parse data in an ad hoc fashion using a number of unrelated initializers, methods, and other means. And this typically leads to less maintainable, less reusable code.
 
-This library aims to write such a story for parsing in Swift. It introduces a single unit of parsing that can be combined in interesting ways to form large, complex parsers.
+This library aims to write such a story for parsing in Swift. It introduces a single unit of parsing that can be combined in interesting ways to form large, complex parsers that can tackle the programming problems you need to solve in a maintainable way.
 
 ## Getting started
 
-Suppose you have a string that holds some user data that you want to parser into an array of `User`s:
+Suppose you have a string that holds some user data that you want to parse into an array of `User`s:
 
 ```swift
 var input = """
@@ -78,12 +78,12 @@ let users = input
     return User(id: id, name: String(fields[1]), isAdmin: isAdmin)
   }
 ```
-
+                                                          
 Not only is this code a little messy, but it is also inefficient since we are allocating arrays for the `.split` and then just immediately throwing away those values.
 
 It would be more straightforward and efficient to instead describe how to consume bits from the beginning of the input and convert that into users. This is what this parser library excels at 😄.
 
-We can start by parsing an integer off the front of the string, and then parsing a comma that we discard using the `.skip` operator:
+We can start by descring what it means to parse a single row, first by parsing an integer off the front of the string, and then parsing a comma that we discard using the `.skip` operator:
 
 ```swift
 let user = Int.parser()
@@ -136,10 +136,10 @@ user.parse(&input) // => User(id: 1, name: "Blob", isAdmin: true)
 input // => "\n2,Blob Jr.,false\n3,Blob Sr.,true"
 ```
 
-To parse multiple users from the input we can use the `ZeroOrMore` parser:
+To parse multiple users from the input we can use the `Many` parser:
 
 ```swift
-let users = ZeroOrMore(user, separatedBy: StartsWith("\n"))
+let users = Many(user, separatedBy: StartsWith("\n"))
 
 user.parse(&input) // => [User(id: 1, name: "Blob", isAdmin: true), ...]
 input // => ""
