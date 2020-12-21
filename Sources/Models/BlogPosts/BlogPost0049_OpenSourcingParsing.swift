@@ -1,7 +1,7 @@
 import Foundation
 
 public let post0049_OpenSourcingParsing = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
 Today we are open sourcing Parsing, a library for turning nebulous data into well-structured data, with a focus on composition, performance, and generality.
 """,
@@ -10,11 +10,11 @@ Today we are open sourcing Parsing, a library for turning nebulous data into wel
       content: #"""
 We are excited to announce the 0.1.0 release of [Parsing](https://github.com/pointfreeco/swift-parsing), a library for turning nebulous data into well-structured data. It was built from the content of [21 episodes](/collections/parsing) (10 hours) where we show how to build a parsing library from scratch, with a focus on composition, performance, and generality:
 
-* **Composition**: Ability to break large, complex parsing problems down into smaller, simpler ones. And the ability to take small, simple parsers and easily combine them into larger, more complex ones.
+* **Composition**: The ability to break large, complex parsing problems down into smaller, simpler ones. And the ability to take small, simple parsers and easily combine them into larger, more complex ones.
 
 * **Performance**: Parsers that have been composed of many smaller parts should perform as well as highly-tuned, hand-written parsers.
 
-* **Generality**: Ability to parse _any_ kind of input into _any_ kind of output. This allows you to choose which abstraction levels you want to work on based on how much performance you need or how much correctness you want guaranteed. For example, you can write a highly tuned parser on collections of UTF-8 code units, and it will automatically plug into parsers of strings, arrays, unsafe buffer pointers and more.
+* **Generality**: The ability to parse _any_ kind of input into _any_ kind of output. This allows you to choose which abstraction levels you want to work with based on how much performance you need or how much correctness you want guaranteed. For example, you can write a highly tuned parser on collections of UTF-8 code units, and it will automatically plug into parsers of strings, arrays, unsafe buffer pointers and more.
 
 ## Motivation
 
@@ -37,8 +37,6 @@ And there are types like `JSONDecoder` and `PropertyListDecoder` that attempt to
 try JSONDecoder().decode(User.self, from: data)
 try PropertyListDecoder().decode(Settings.self, from: data)
 ```
-
-<!-- The Foundation framework comes with a number of parsers as well, including its family of formatters, like `DateFormatter`, which not only format more well-structured data _into_ strings, but can parse this well-structured data _from_ strings as well -->
 
 While parsers are everywhere in Swift, Swift has no holistic story _for_ parsing. Instead, we typically parse data in an ad hoc fashion using a number of unrelated initializers, methods, and other means. And this typically leads to less maintainable, less reusable code.
 
@@ -83,7 +81,7 @@ Not only is this code a little messy, but it is also inefficient since we are al
 
 It would be more straightforward and efficient to instead describe how to consume bits from the beginning of the input and convert that into users. This is what this parser library excels at 😄.
 
-We can start by descring what it means to parse a single row, first by parsing an integer off the front of the string, and then parsing a comma that we discard using the `.skip` operator:
+We can start by describing what it means to parse a single row, first by parsing an integer off the front of the string, and then parsing a comma that we discard using the `.skip` operator:
 
 ```swift
 let user = Int.parser()
@@ -196,18 +194,18 @@ README Example.Adhoc              8029.000 ns ±  44.44 %     163719
 README Example.Scanner           19786.000 ns ±  35.26 %      62125
 ```
 
-That's the basics of parsing a simple string format, but there's a lot more operators and tricks to learn in order to performantly parse larger inputs. View the [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark) for examples of real life parsing scenarios.
+That's the basics of parsing a simple string format, but there's a lot more operators and tricks to learn in order to performantly parse larger inputs. View the [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark) for examples of real life parsing scenarios.
 
 ## Design
 
 ### Protocol
 
-The design of the library is largely inspired by the Swift standard library and Apple’s Combine framework. A parser is represented as a protocol that many types conform to, and then parser transformations (also known as “combinators”) are methods that return concrete types conforming to the parser protocol.
+The design of the library is largely inspired by the Swift standard library and Apple’s Combine framework. A parser is represented as a protocol that many types conform to, and then parser transformations (also known as "combinators") are methods that return concrete types conforming to the parser protocol.
 
-For example, to parse all the characters from the beginning of a substring until you encounter a comma you can use the `PrefixWhile` parser:
+For example, to parse all the characters from the beginning of a substring until you encounter a comma you can use the `Prefix` parser:
 
 ```swift
-let parser = PrefixWhile<Substring> { $0 != "," }
+let parser = Prefix<Substring> { $0 != "," }
 
 var input = "Hello,World"[...]
 parser.parse(&input) // => "Hello"
@@ -217,13 +215,13 @@ input // => ",Hello"
 The type of this parser is:
 
 ```swift
-PrefixWhile<Substring>
+Prefix<Substring>
 ```
 
 We can `.map` on this parser in order to transform its output, which in this case is the string "Hello":
 
 ```swift
-let parser = PrefixWhile<Substring> { $0 != "," }
+let parser = Prefix<Substring> { $0 != "," }
   .map { $0 + "!!!" }
 
 var input = "Hello,World"[...]
@@ -234,7 +232,7 @@ input // => ",Hello"
 The type of this parser is now:
 
 ```swift
-Parsers.Map<PrefixWhile<Substring>, Substring>
+Parsers.Map<Prefix<Substring>, Substring>
 ```
 
 Notice how the type of the parser encodes the operations that we performed. This adds a bit of complexity when using these types, but comes with some performance benefits because Swift can usually optimize the creation of those nested types.
@@ -243,7 +241,7 @@ Notice how the type of the parser encodes the operations that we performed. This
 
 The library makes it easy to choose which abstraction level you want to work on. Both low-level and high-level have their pros and cons.
 
-Parsing low-level inputs, such as UTF-8 code units, has better performance, but at the cost of potentially losing correctness. The most canonical example of this is trying to parse the character "é", which can be represented in code units as `[233]` or `[101, 769]`. If you don't remember to always parse both representations you may have a bug where you accidentally fail your parser when it encounters a code unit sequence you don't support.
+Parsing low-level inputs, such as UTF-8 code units, has better performance, but at the cost of potentially losing correctness. A canonical example of this is trying to parse the character "é", which can be represented in code units as `[233]` or `[101, 769]`. If you don't remember to always parse both representations you may have a bug where you accidentally fail your parser when it encounters a code unit sequence you don't support.
 
 On the other hand, parsing high-level inputs, such as `String`, can guarantee correctness, but at the cost of performance. For example, `String` handles the complexities of extended grapheme clusters and UTF-8 normalization for you, but traversing strings is slower since its elements are variable width.
 
@@ -287,14 +285,14 @@ This allows you to parse as much as possible on the more performant, low-level `
 
 This library comes with a benchmark executable that not only demonstrates the performance of the library, but also provides a wide variety of parsing examples:
 
-* [URL router](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Routing.swift)
-* [Xcode test logs](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/XcodeLogs)
-* [Simplfied CSV](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/CSV)
-* [Hex color](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Color.swift)
-* [ISO8601 date](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Date.swift)
-* [HTTP request](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/HTTP.swift)
-* [Simplified JSON](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/JSON.swift)
-* [Arithmetic grammar](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark/Arithmetic.swift)
+* [URL router](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/Routing.swift)
+* [Xcode test logs](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/XcodeLogs)
+* [Simplfied CSV](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/CSV)
+* [Hex color](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/Color.swift)
+* [ISO8601 date](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/Date.swift)
+* [HTTP request](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/HTTP.swift)
+* [Simplified JSON](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/JSON.swift)
+* [Arithmetic grammar](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark/Arithmetic.swift)
 * and more
 
 These are the times we currently get when running the benchmarks:
@@ -346,7 +344,7 @@ Xcode Logs.Parser                              6980962.000 ns ±   7.61 %       
 
 # Try it today
 
-Head over to the [Parsing](https://github.com/pointfreeco/swift-parsing) repository to try the library out today. For some inspiration of things you might like to write parsers for check out the [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/1a025f57e091ee7702dbcfd944ad0723b62a37ab/Sources/swift-parsing-benchmark) in the project.
+Head over to the [Parsing](https://github.com/pointfreeco/swift-parsing) repository to try the library out today. For some inspiration of things you might like to write parsers for check out the [benchmarks](https://github.com/pointfreeco/swift-parsing/blob/main/Sources/swift-parsing-benchmark) in the project.
 """#,
       type: .paragraph
     )
