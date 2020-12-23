@@ -6,7 +6,7 @@ public let post0050_EOY2020 = BlogPost(
 
 ---
 
-Random number generators, parsers, SwiftUI, composable architecture and more! Join us for a review of everything we accomplished in 2020!
+Composable architecture, parsers, SwiftUI, and more! Join us for a review of everything we accomplished in 2020!
 """,
   contentBlocks: [
     .init(
