@@ -13,7 +13,7 @@ The `Scheduler` protocol of Combine is a powerful abstraction that unifies many 
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1591592400),
     references: [
-      // TODO
+      .combineSchedulers
     ],
     sequence: 105,
     subtitle: "Controlling Time",

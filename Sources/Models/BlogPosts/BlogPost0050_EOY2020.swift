@@ -13,7 +13,7 @@ Random number generators, parsers, SwiftUI, composable architecture and more! Jo
       content: #"""
 It’s the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we produced for 2020, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [30% off](todo) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off](todo) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
 
 # Highlights
 
@@ -23,11 +23,11 @@ At a high-level, this year we saw:
 * **50k** unique users.
 * Open sourced **4** new libraries: ([swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture), [swift-case-paths](https://github.com/pointfreeco/swift-case-paths), [combine-schedulers](https://github.com/pointfreeco/combine-schedulers), [swift-parsers](https://github.com/pointfreeco/swift-parsers).
 
-But these high-level stats don't even begin to scratch the surface of what we covered in 2020.
+But these high-level stats don't scratch the surface of what we covered in 2020:
 
 ## The Composable Architecture
 
-In May we finally concluded the core series of episodes (17 hours of video!) that introduce a holistic approach to application architecture, known as [The Composable Architecture](/collections/composable-architecture). We highlighted 5 core problems any architecture must solve, and showed how to solve them: state management, composability, modularity, side effects, and testing.
+In May we finally concluded the core [series](/collections/composable-architecture) of episodes (17 hours of video!) that introduce a holistic approach to application architecture, known as [The Composable Architecture](https://www.github.com/pointfreeco/swift-composable-architecture). We highlighted 5 core problems any architecture must solve, and showed how to solve them: state management, composability, modularity, side effects, and testing.
 
 To celebrate the end of the core series of episodes we [open sourced](https://github.com/pointfreeco/swift-composable-architecture) a library for making it easy to adopt the ideas of the Composable Architecture in your application. In only 8 months the library has over 2,700 stars, merged more than 200 pull requests, and believe it or not, there's still more to come in 2021 😀.
 
@@ -39,7 +39,15 @@ If you've ever reached for a protocol to control a dependency, then this is the 
 
 ## Parsing
 
+We picked up [parsing](todo) again this year after having first covered it more than a year ago. This time we focused our attention on two main things. First, we [generalized](todo) the parser library so that it can parse _any_ kind of input into _any_ kind of output. This allows to use the same code to parse many different things, including strings, binary data, URL requests and more. Then we turned our attention to [performance](todo). We showed that parser combinators can be extremely performant, nearly as performant as hand-written, ad-hoc parsers.
+
+And all of this culminated into the release of 0.1.0 of [Parsing](todo), a parsing library with a focus on composability, generality and performance.
+
+<!-- todo: finish -->
+
 ## Combine Schedulers
+
+Apple's Combine framework is incredibly powerful, and there are lots of great resources out there for learning the core concepts behind the framework. However, a topic that doesn't get a lot of attention is schedulers. We devoted an entire [series](/collections/combine/schedulers) of episodes to understanding schedulers in depth, and then open sourced a [library](https://www.github.com/pointfreeco/combine-schedulers) for making better use of schedulers in Combine.
 
 ## Case Paths
 
@@ -51,9 +59,7 @@ We ended the year by announcing a brand new project: [isowords](https://www.isow
 
 # 🎉 2021 🎉
 
-It was an incredible year, and thanks to all of our subscribers for supporting us and helping us create this content. We have a lot of great things planned for 2021: we have a few more things to discuss about the Composable Architecture, we have a few more advanced parser topics we want to cover, as well as some completely new topics, and an exciting new project to announce!
-
-To celebrate the end of the year we are also offering 30% off the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
+We're thankful to all of our subscribers for supporting us and helping us create this content. To celebrate the end of the year we are also offering [25% off](todo) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
 
 See you in 2021!
 """#,

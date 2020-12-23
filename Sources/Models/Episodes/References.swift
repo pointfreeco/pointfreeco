@@ -55,6 +55,16 @@ Combine is Apple's framework for reactive programming.
     title: "Combine"
   )
 
+  public static let combineSchedulers = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+    An open source library that provides schedulers for making Combine more testable and more versatile.
+    """,
+    link: "http://github.com/pointfreeco/combine-schedulers",
+    publishedAt: referenceDateFormatter.date(from: "2020-06-14"),
+    title: "combine-schedulers"
+  )
+
   public static func combineTypes(blurb: String? = nil) -> Self {
     Self(
       author: "Thomas Visser",
