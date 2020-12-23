@@ -18,7 +18,7 @@ At a high-level, this year we saw:
 
 * **44** episodes released for a total of **26** hours of video.
 * **50k** unique users.
-* Open sourced **4** new libraries: ([swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture), [swift-case-paths](https://github.com/pointfreeco/swift-case-paths), [combine-schedulers](https://github.com/pointfreeco/combine-schedulers), [swift-parsers](https://github.com/pointfreeco/swift-parsers).
+* Open sourced **4** new libraries: ([swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture), [swift-case-paths](https://github.com/pointfreeco/swift-case-paths), [combine-schedulers](https://github.com/pointfreeco/combine-schedulers), [swift-parsing](https://github.com/pointfreeco/swift-parsing).
 
 But these high-level stats don't scratch the surface of what we covered in 2020:
 
