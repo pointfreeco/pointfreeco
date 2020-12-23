@@ -61,4 +61,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0048_CyberMondaySale,
   post0049_OpenSourcingParsing,
   post0050_EOY2020,
+  post0051_2020EOYSale,
 ]
