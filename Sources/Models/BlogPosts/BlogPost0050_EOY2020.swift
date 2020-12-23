@@ -40,8 +40,6 @@ We picked up [parsing](/collections/parsing) again this year after having first 
 
 And all of this culminated into the release of 0.1.0 of [Parsing](https://github.com/pointfreeco/swift-parsing), a parsing library with a focus on composability, generality and performance.
 
-And all of this culminated into the release of 0.1.0 of [Parsing](https://www.github.com/pointfreeco/swift-parsing), a parsing library with a focus on composability, generality and performance.
-
 ## Combine Schedulers
 
 Apple's Combine framework is incredibly powerful, and there are lots of great resources out there for learning the core concepts behind the framework. However, a topic that doesn't get a lot of attention is schedulers. We devoted an entire [series](/collections/combine/schedulers) of episodes to understanding schedulers in depth, and then open sourced a [library](https://www.github.com/pointfreeco/combine-schedulers) for making better use of schedulers in Combine.
