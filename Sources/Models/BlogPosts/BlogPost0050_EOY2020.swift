@@ -3,7 +3,7 @@ import Foundation
 public let post0050_EOY2020 = BlogPost(
   author: .pointfree,
   blurb: """
-The Composable Architecture, dependencies, parsers, Combine schedulers and more! Join us for a review of everything we accomplished in 2020!
+The Composable Architecture, dependency management, parsers, Combine schedulers and more! Join us for a review of everything we accomplished in 2020!
 """,
   contentBlocks: [
     .init(
