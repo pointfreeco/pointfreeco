@@ -63,6 +63,6 @@ See you in 2021!
   ],
   coverImage: nil,
   id: 50,
-  publishedAt: Date(timeIntervalSince1970: 1609135200),
+  publishedAt: Date(timeIntervalSince1970: 1608703200),
   title: "2020 Year-in-review"
 )
