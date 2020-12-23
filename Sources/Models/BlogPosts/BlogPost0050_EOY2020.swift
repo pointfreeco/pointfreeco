@@ -6,14 +6,14 @@ public let post0050_EOY2020 = BlogPost(
 
 ---
 
-Composable architecture, parsers, SwiftUI, and more! Join us for a review of everything we accomplished in 2020!
+Composable architecture, SwiftUI, parsers, and more! Join us for a review of everything we accomplished in 2020!
 """,
   contentBlocks: [
     .init(
       content: #"""
 It’s the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we produced for 2020, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [25% off](todo) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off](/discounts/2020-is-over) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
 
 # Highlights
 
