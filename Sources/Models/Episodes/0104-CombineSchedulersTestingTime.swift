@@ -13,7 +13,7 @@ Combine is a powerful framework and is the de facto way to power SwiftUI applica
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1591246800),
     references: [
-      // TODO
+      .combineSchedulers
     ],
     sequence: 104,
     subtitle: "Testing Time",

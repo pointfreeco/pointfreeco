@@ -13,7 +13,7 @@ We refactor our application's code so that we can run it in production with a li
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1592197200),
     references: [
-      // TODO
+      .combineSchedulers,
     ],
     sequence: 106,
     subtitle: "Erasing Time",
