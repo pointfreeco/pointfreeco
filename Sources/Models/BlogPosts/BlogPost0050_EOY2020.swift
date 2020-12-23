@@ -1,12 +1,9 @@
 import Foundation
 
 public let post0050_EOY2020 = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
-
----
-
-Random number generators, parsers, SwiftUI, composable architecture and more! Join us for a review of everything we accomplished in 2020!
+The Composable Architecture, dependencies, parsers, Combine schedulers and more! Join us for a review of everything we accomplished in 2020!
 """,
   contentBlocks: [
     .init(
@@ -39,11 +36,9 @@ If you've ever reached for a protocol to control a dependency, then this is the 
 
 ## Parsing
 
-We picked up [parsing](todo) again this year after having first covered it more than a year ago. This time we focused our attention on two main things. First, we [generalized](todo) the parser library so that it can parse _any_ kind of input into _any_ kind of output. This allows to use the same code to parse many different things, including strings, binary data, URL requests and more. Then we turned our attention to [performance](todo). We showed that parser combinators can be extremely performant, nearly as performant as hand-written, ad-hoc parsers.
+We picked up [parsing](/collections/parsing) again this year after having first covered it more than a year ago. This time we focused our attention on two main things. First, we [generalized](/collections/parsing/generalization) the parser library so that it can parse _any_ kind of input into _any_ kind of output. This allows to use the same code to parse many different things, including strings, binary data, URL requests and more. Then we turned our attention to [performance](/collections/parsing/performance). We showed that parser combinators can be extremely performant, nearly as performant as hand-written, ad-hoc parsers.
 
-And all of this culminated into the release of 0.1.0 of [Parsing](todo), a parsing library with a focus on composability, generality and performance.
-
-<!-- todo: finish -->
+And all of this culminated into the release of 0.1.0 of [Parsing](https://www.github.com/pointfreeco/swift-parsing), a parsing library with a focus on composability, generality and performance.
 
 ## Combine Schedulers
 
@@ -55,7 +50,7 @@ Continuing [a long tradition](/collections/enums-and-structs) of asking "if stru
 
 # New project: isowords
 
-We ended the year by announcing a brand new project: [isowords](https://www.isowords.xyz). It's a game built in Swift (even the backend is Swift!), and it makes use of nearly every concept discussed on Point-Free, such as [the Composable Architecture](/collections/composable-architecture), [dependencies](/collections/dependencies), [parsers](/collections/parsing), [random number generators](/collections/randomness), [algebraic data types](/collections/algebraic-data-types), and more. We will be releasing the game early next year, and we'll have a lot more to say about how it was built soon.
+We ended the year by announcing a brand new project: [isowords](https://www.isowords.xyz). It's a game built in Swift (even the backend is Swift!), and it makes use of nearly every concept discussed on Point-Free, such as [the Composable Architecture](/collections/composable-architecture), [dependencies](/collections/dependencies), [parsers](/collections/parsing), [random number generators](/collections/randomness), [algebraic data types](/collections/algebraic-data-types), and more. We will be releasing the game early next year, and we'll have a lot more to say about how it was built soon (we also have a few beta spots open, [contact us](mailto:support@pointfree.co) if you're interested!).
 
 # 🎉 2021 🎉
 
