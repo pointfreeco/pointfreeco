@@ -198,7 +198,7 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 func announcementBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0048_CyberMondaySale.publishedAt...Date(timeIntervalSince1970: 1606824000)).contains(Current.date()),
+    (post0051_2020EOYSale.publishedAt...Date(timeIntervalSince1970: 1609563600)).contains(Current.date()),
     Current.envVars.appEnv != .testing
   else { return [] }
 
@@ -218,11 +218,11 @@ func announcementBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(url(to: .blog(.show(slug: post0048_CyberMondaySale.slug))))
+          .href(url(to: .blog(.show(slug: post0051_2020EOYSale.slug))))
         ],
-        .strong("Cyber Monday Sale")
+        .strong("End-Of-Year Sale")
       ),
-      ": save 30% when you subscribe!"
+      ": save 25% when you subscribe!"
     )
   )
 }
