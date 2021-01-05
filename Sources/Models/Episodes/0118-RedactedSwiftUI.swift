@@ -34,8 +34,7 @@ We finish building a rich onboarding experience for our application by selective
       ),
     ],
     sequence: 118,
-    subtitle: "Part 2",
-    title: "The Point of Redacted SwiftUI",
+    title: "The Point of Redacted SwiftUI: Part 2",
     trailerVideo: .init(
       bytesLength: 28968407,
       vimeoId: 459992980,

@@ -34,8 +34,7 @@ Not only can we easily redact the logic from a view using the Composable Archite
       ),
     ],
     sequence: 117,
-    subtitle: "Part 1",
-    title: "The Point of Redacted SwiftUI",
+    title: "The Point of Redacted SwiftUI: Part 1",
     trailerVideo: .init(
       bytesLength: 54174532,
       vimeoId: 457561951,
