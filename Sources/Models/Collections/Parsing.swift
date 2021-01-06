@@ -90,6 +90,28 @@ Parsing is just one of many problems functional programming solves by defining a
           ],
           title: "Parser Recap",
           whereToGoFromHere: #"""
+The zip function shows up on many types: from Swift arrays and Combine publishers, to optionals, results, and even parsers! But zip on parsers is a little unlike zip on all of those other types, and because of this it can make building parsers a little more unwieldy. Let’s explore why and how to fix it.
+"""#
+        ),
+
+        .init(
+          blurb: #"""
+The zip function shows up on many types: from Swift arrays and Combine publishers, to optionals, results, and even parsers! But zip on parsers is a little unlike zip on all of those other types, and because of this it can make building parsers a little more unwieldy. Let’s explore why and how to fix it.
+"""#,
+          coreLessons: [
+            .init(episode: .ep123_fluentlyZippingParsers),
+          ],
+          related: [
+            .init(
+              blurb: #"""
+"""#,
+              content: .collections([
+                .mapZipFlatMap,
+              ])
+            ),
+          ],
+          title: "Fluently Zipping Parsers",
+          whereToGoFromHere: #"""
 So far, the parser library we have been building is needlessly restricted to parsing only strings. There are lots of things that we'd like to parse, such as URL requests for application routing. By generalizing the `Parser` type we will gain the ability to parse many types of inputs, and we will uncover many unexpected benefits, including the ability to make our parsers much more performant than they currently are.
 """#
         ),
