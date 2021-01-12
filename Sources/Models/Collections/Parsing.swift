@@ -94,6 +94,39 @@ So far, the parser library we have been building is needlessly restricted to par
 """#
         ),
 
+
+
+
+
+
+
+
+
+        .init(
+          blurb: #"""
+TODO
+"""#,
+          coreLessons: [
+            .init(episode: .ep123_fluentlyZippingParsers),
+          ],
+          related: [],
+          title: "Fluent Parsing",
+          whereToGoFromHere: #"""
+"""#
+        ),
+
+
+
+
+
+
+
+
+
+
+
+
+
         .init(
           blurb: #"""
 So far, the parser library we have been building is needlessly restricted to parsing only strings. There are lots of things that we'd like to parse, such as URL requests for application routing. By generalizing the `Parser` type we will gain the ability to parse many types of inputs, and we will uncover many unexpected benefits, including the ability to make our parsers much more performant than they currently are.
