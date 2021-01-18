@@ -8,7 +8,7 @@ For simple forms, vanilla SwiftUI does a really good job: you can quickly build 
     codeSampleDirectory: "0131-concise-forms-pt1",
     exercises: _exercises,
     id: 131,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1037800235.jpg",
     length: 35*60 + 37,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1610949600),
