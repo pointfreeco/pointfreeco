@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep131_conciseForms = Episode(
     blurb: """
-For simple forms, vanilla SwiftUI does a really good job: you can quickly build a form with many components in minimal code and boilerplate. But as a form gets more complex, SwiftUI stops being so helpful. Let's explore the problems that emerge and how to work around them.
+For simple forms, vanilla SwiftUI does a really good job: you can quickly build a form with many components in minimal code and boilerplate. But as a form becomes more complex, SwiftUI stops being so helpful. Let's explore the problems that emerge and how we can work around them.
 """,
     codeSampleDirectory: "0131-concise-forms-pt1",
     exercises: _exercises,
