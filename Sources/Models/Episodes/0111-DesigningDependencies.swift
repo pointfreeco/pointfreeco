@@ -15,8 +15,8 @@ Let's scrap the protocols for designing our dependencies and just use plain data
     references: [
       .protocolOrientedProgrammingWwdc,
       reference(
-        forCollection: .protocolWitnesses, additionalBlurb: #"""
-"""#,
+        forCollection: .protocolWitnesses,
+        additionalBlurb: "",
         collectionUrl: "https://www.pointfree.co/collections/protocol-witnesses"
       )
     ],
