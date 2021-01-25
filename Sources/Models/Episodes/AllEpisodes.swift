@@ -132,5 +132,6 @@ extension Episode {
     .ep129_parsingPerformance,
     .ep130_parsingPerformance,
     .ep131_conciseForms,
+    .ep132_conciseForms,
   ]
 }
