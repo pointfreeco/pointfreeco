@@ -254,7 +254,7 @@ private func validateActiveStripeSubscription(
   -> Either<Error, Stripe.Subscription> {
 
     return errorOrSubscription.flatMap { stripeSubscription in
-      stripeSubscription.status != .active ? .left(unit) : .right(stripeSubscription)
+      !stripeSubscription.status.isActive ? .left(unit) : .right(stripeSubscription)
     }
 }
 

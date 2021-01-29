@@ -530,6 +530,15 @@ public struct Subscription: Codable, Equatable {
     case pastDue = "past_due"
     case trialing
     case unpaid
+
+    public var isActive: Bool {
+      switch self {
+      case .active, .trialing:
+        return true
+      case .canceled, .pastDue, .unpaid:
+        return false
+      }
+    }
   }
 
   private enum CodingKeys: String, CodingKey {
