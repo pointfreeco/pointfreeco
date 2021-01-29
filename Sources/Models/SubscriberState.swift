@@ -50,7 +50,7 @@ public enum SubscriberState {
   }
 
   public var isActive: Bool {
-    return self.deactivated != .some(true) && [.active, .trialing].contains(self.status)
+    return self.deactivated != .some(true) && self.status?.isActive == .some(true)
   }
 
   public var isPastDue: Bool {
@@ -81,11 +81,9 @@ public enum SubscriberState {
 
   public var isActiveSubscriber: Bool {
     switch self {
-    case .teammate(status: .active, _, false),
-         .teammate(status: .trialing, _, false),
-         .owner(hasSeat: true, status: .active, _, false),
-         .owner(hasSeat: true, status: .trialing, _, false):
-      return true
+    case let .teammate(status: status, _, false),
+         let .owner(hasSeat: true, status: status, _, false):
+      return status.isActive
     default:
       return false
     }
