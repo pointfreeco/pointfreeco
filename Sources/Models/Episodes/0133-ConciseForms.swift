@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep133_conciseForms = Episode(
     blurb: """
-TODO
+The Composable Architecture makes it easy to layer complexity onto a form, but it just can't match the brevity of vanilla SwiftUI…or can it!? We will overcome a language limitation with key paths and type erasure to finally say "bye!" to boilerplate.
 """,
     codeSampleDirectory: "0133-concise-forms-pt3",
     exercises: _exercises,
@@ -83,7 +83,7 @@ struct FormAction<Root>: Equatable {
 }
 ```
 
-This let's us update the view store binding helper, as well:
+This lets us update the view store binding helper, as well:
 
 ```swift
 extension ViewStore {
