@@ -8,7 +8,7 @@ Today we are releasing first-party support for concisely handling form data in t
   contentBlocks: [
     .init(
       content: #"""
-      Today we are releasing first-party support for concisely handling form data in the [Composable Architecture](https://www.github.com/pointfreeco/swift-composable-architecture). This allows you to minimize the boilerplate caused by needing to have a unique action for every UI control. Instead, all UI bindings can be consolidated into a single `form` action.
+      Today we are releasing first-party support for concisely handling form data in the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). This allows you to minimize the boilerplate caused by needing to have a unique action for every UI control. Instead, all UI bindings can be consolidated into a single `form` action.
 
       ## Composable Forms
 
