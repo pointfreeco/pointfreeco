@@ -20,6 +20,13 @@ We took a deep dive into type erasers when we explored Combine's `Scheduler` pro
 """,
         episodeUrl: "https://www.pointfree.co/episodes/ep106-combine-schedulers-erasing-time"
       ),
+      .init(
+        author: "Point-Free",
+        blurb: "A word game by us, written in the Composable Architecture.",
+        link: "https://www.isowords.xyz",
+        publishedAt: nil,
+        title: "isowords"
+      ),
       // TODO: Type erasure?
       // TODO: Existential types?
     ],
