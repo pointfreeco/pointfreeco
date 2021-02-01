@@ -3,19 +3,21 @@ import Foundation
 extension Episode {
   public static let ep133_conciseForms = Episode(
     blurb: """
-The Composable Architecture makes it easy to layer complexity onto a form, but it just can't match the brevity of vanilla SwiftUI…or can it!? We will overcome a language limitation with key paths and type erasure to finally say "bye!" to boilerplate.
+The Composable Architecture makes it easy to layer complexity onto a form, but it just can't match the brevity of vanilla SwiftUI…or can it!? We will overcome a Swift language limitation using key paths and type erasure to finally say "bye!" to boilerplate.
 """,
     codeSampleDirectory: "0133-concise-forms-pt3",
     exercises: _exercises,
     id: 133,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1049138364.jpg",
     length: 58*60 + 55,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1612159200),
     references: [
       reference(
         forEpisode: .ep106_combineSchedulers_erasingTime,
-        additionalBlurb: "",
+        additionalBlurb: """
+We took a deep dive into type erasers when we explored Combine's `Scheduler` protocol, and showed that type erasure prevented generics from infecting every little type in our code.
+""",
         episodeUrl: "https://www.pointfree.co/episodes/ep106-combine-schedulers-erasing-time"
       ),
       // TODO: Type erasure?
