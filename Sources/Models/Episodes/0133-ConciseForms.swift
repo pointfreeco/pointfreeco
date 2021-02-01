@@ -49,7 +49,7 @@ struct AnyEquatable: Equatable {
 
   init<Value>(_ value: Value) where Value: Equatable {
     self.value = value
-    self.isEqualTo = { $0 as? Value == value }
+    self.valueIsEqualTo = { $0 as? Value == value }
   }
 
   static func == (lhs: Self, rhs: Self) -> Bool {
