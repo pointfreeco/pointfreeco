@@ -7,7 +7,7 @@ Today we are releasing first-party support for concisely handling form data in t
 """,
   contentBlocks: [
     .init(
-      content: """
+      content: #"""
       Today we are releasing first-party support for concisely handling form data in the [Composable Architecture](https://www.github.com/pointfreeco/swift-composable-architecture). This allows you to minimize the boilerplate caused by needing to have a unique action for every UI control. Instead, all UI bindings can be consolidated into a single `form` action.
 
       ## Composable Forms
@@ -142,7 +142,7 @@ Today we are releasing first-party support for concisely handling form data in t
       ## Say "bye" to boilerplate today!
 
       We've just released version [version 0.12.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.12.0) of the Composable Architecture, and so you can start using this new feature immediately. [Let us know](https://twitter.com/pointfreeco) what you think!
-      """,
+      """#,
       type: .paragraph
     )
   ],
