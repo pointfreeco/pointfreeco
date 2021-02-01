@@ -197,7 +197,23 @@ We have built up quite a few features for the Composable Architecture over the p
         ],
         title: "Adaptation",
         whereToGoFromHere: """
-We have now built up the core of a library that could be dropped into your application _today_. Only thing left to do is open source it...
+The Composable Architecture is already quite powerful, but we haven't spent much time on ergonomics. This is an important topic because it helps reduce the friction people will have when trying to adopt the library.
+"""
+      ),
+
+      .init(
+        blurb: #"""
+The Composable Architecture built so far is composable, modular, testable and more, but there's a few small improvements that can be made so that it's ready for prime time. We will focus on a few key areas of ergonomics that make working with the library as seamless as possible.
+"""#,
+        coreLessons: [
+          .init(episode: .ep98_ergonomicStateManagement_pt1),
+          .init(episode: .ep99_ergonomicStateManagement_pt2),
+        ],
+        related: [
+        ],
+        title: "Ergonomics",
+        whereToGoFromHere: """
+We have now built up the core of a library that could be dropped into your application _today_. Only thing left to do is [open source](https://github.com/pointfreeco/swift-composable-architecture) it...
 """
       ),
 
