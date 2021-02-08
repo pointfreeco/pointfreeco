@@ -37,7 +37,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
             subscriberState: subscriberState
           ),
           description: episode.blurb,
-          extraStyles: markdownBlockStyles,
+          extraStyles: markdownBlockStyles <> ((.id("episode-header-blurb") % (a % color(Colors.gray850)))),
           image: episode.image,
           style: .base(.minimal(.black)),
           title: "Episode #\(episode.sequence): \(episode.fullTitle)",

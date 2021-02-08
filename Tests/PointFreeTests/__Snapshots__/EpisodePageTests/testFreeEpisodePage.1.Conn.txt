@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 85328
+Content-Length: 85418
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1792,6 +1792,11 @@ html {
 }
 
 
+#episode-header-blurb a {
+  color : #d8d8d8;
+}
+
+
     </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">
@@ -2008,7 +2013,8 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                       fg-black
                       normal
                       h5
-                      lh-4">
+                      lh-4"
+               id="episode-header-blurb">
             <div class="md-ctn">
               <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.</p>
