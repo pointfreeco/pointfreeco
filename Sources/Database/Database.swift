@@ -516,7 +516,7 @@ private struct _Client {
         envelope.gitHubUser.id.rawValue,
         envelope.accessToken.accessToken,
         envelope.gitHubUser.name,
-        envelope.gitHubUser.createdAt.distance(to: now()) < 60*60*24*7 ? 0 : 1
+        now().timeIntervalSince(envelope.gitHubUser.createdAt) < 60*60*24*7 ? 0 : 1
       ]
       )
       .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
