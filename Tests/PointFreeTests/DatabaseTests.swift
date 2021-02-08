@@ -13,14 +13,14 @@ import XCTest
 
 final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() throws {
-    let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
+    let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock }).run.perform().unwrap()
     let userB = try Current.database.fetchUserById(userA!.id).run.perform().unwrap()
     XCTAssertEqual(userA?.id, userB?.id)
     XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
   }
 
   func testFetchEnterpriseAccount() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock }).run.perform().right!!
     let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
 
     let createdAccount = Current.database.createEnterpriseAccount(
@@ -44,7 +44,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsNotTakingSeat() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -63,7 +63,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsTakingSeat() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -82,7 +82,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testUpdateEpisodeProgress() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -149,7 +149,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -169,7 +169,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   func testFetchEpisodeProgress_NoProgress() throws {
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
       .run
       .perform()
       .right!!

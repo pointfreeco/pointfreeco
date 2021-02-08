@@ -16,11 +16,15 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRegister() {
+    let now = Date.mock
+
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
     gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+    gitHubUserEnvelope.gitHubUser.createdAt = now.advanced(by: -60*60*24*365)
     gitHubUserEnvelope.gitHubUser.id = 1234567890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
+    Current.date = { now }
     Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
     Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
@@ -41,6 +45,38 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
     XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
     XCTAssertEqual(1, registeredUser.episodeCreditCount)
+  }
+
+  func testRegisterRecentAccount() {
+    let now = Date.mock
+
+    var gitHubUserEnvelope = GitHubUserEnvelope.mock
+    gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+    gitHubUserEnvelope.gitHubUser.createdAt = now.advanced(by: -5*60)
+    gitHubUserEnvelope.gitHubUser.id = 1234567890
+    gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
+
+    Current.date = { now }
+    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
+    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
+
+    let result = connection(
+      from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: result, as: .conn)
+
+    let registeredUser = Current.database
+      .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
+    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
+    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
+    XCTAssertEqual(0, registeredUser.episodeCreditCount)
   }
 
   func testAuth() {

@@ -21,7 +21,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testExpressUnsubscribe() {
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -61,7 +61,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply() {
     #if !os(Linux)
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -110,7 +110,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     #if !os(Linux)
     Current.renderHtml = { debugRender($0) }
 
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -157,7 +157,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply_UnknownNewsletter() {
     #if !os(Linux)
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!

@@ -1,4 +1,5 @@
 import EmailAddress
+import Foundation
 import Tagged
 
 public struct AccessToken: Codable {
@@ -37,10 +38,12 @@ public struct OAuthError: Codable {
 }
 
 public struct GitHubUser: Codable {
+  public var createdAt: Date
   public var id: Id
   public var name: String?
 
-  public init(id: Id, name: String?) {
+  public init(createdAt: Date, id: Id, name: String?) {
+    self.createdAt = createdAt
     self.id = id
     self.name = name
   }
@@ -56,6 +59,12 @@ public struct GitHubUser: Codable {
   }
 
   public typealias Id = Tagged<GitHubUser, Int>
+
+  private enum CodingKeys: String, CodingKey {
+    case createdAt = "created_at"
+    case id
+    case name
+  }
 }
 
 public struct GitHubUserEnvelope: Codable {

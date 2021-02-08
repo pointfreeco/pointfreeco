@@ -23,7 +23,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
     let users: [User] = [1, 2, 3].map {
       var env = GitHubUserEnvelope.mock
       env.gitHubUser.id = .init(rawValue: $0)
-      return Current.database.registerUser(env, .init(rawValue: "\($0)@pointfree.co"))
+      return Current.database.registerUser(env, .init(rawValue: "\($0)@pointfree.co"), { .mock })
         .run.perform().right!!
     }
 

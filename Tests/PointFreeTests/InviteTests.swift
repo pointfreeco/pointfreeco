@@ -22,7 +22,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testResendInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -39,7 +39,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRevokeInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -65,13 +65,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testRevokeInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -97,13 +97,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_HappyPath() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -142,13 +142,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterIsNotSubscriber() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -175,13 +175,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -214,13 +214,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -253,7 +253,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAddTeammate() {
     Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
 
-    let currentUser = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let currentUser = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -295,13 +295,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testResendInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
       .run
       .perform()
       .right!!

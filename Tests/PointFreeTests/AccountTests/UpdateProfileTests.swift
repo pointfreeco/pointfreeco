@@ -19,7 +19,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testUpdateNameAndEmail() {
-    var user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    var user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -60,7 +60,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testUpdateEmailSettings() {
-    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!

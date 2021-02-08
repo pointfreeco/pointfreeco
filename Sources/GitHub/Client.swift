@@ -90,11 +90,15 @@ private func runGitHub<A>(_ logger: Logger?) -> (DecodableRequest<A>) -> EitherI
   }
 }
 
-private let gitHubJsonEncoder: JSONEncoder = { () in
+private let gitHubJsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
+  encoder.dateEncodingStrategy = .iso8601
   encoder.outputFormatting = [.sortedKeys]
   return encoder
 }()
 
-private let gitHubJsonDecoder = JSONDecoder()
-//  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
+private let gitHubJsonDecoder: JSONDecoder = {
+  let decoder = JSONDecoder()
+  decoder.dateDecodingStrategy = .iso8601
+  return decoder
+}()
