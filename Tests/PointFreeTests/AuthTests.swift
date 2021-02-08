@@ -20,7 +20,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
     gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now.advanced(by: -60*60*24*365)
+    gitHubUserEnvelope.gitHubUser.createdAt = now - 60*60*24*365)
     gitHubUserEnvelope.gitHubUser.id = 1234567890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
@@ -52,7 +52,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
     gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now.advanced(by: -5*60)
+    gitHubUserEnvelope.gitHubUser.createdAt = now - 5*60)
     gitHubUserEnvelope.gitHubUser.id = 1234567890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
