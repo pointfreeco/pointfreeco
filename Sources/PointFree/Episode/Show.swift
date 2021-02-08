@@ -37,7 +37,7 @@ let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState
             subscriberState: subscriberState
           ),
           description: episode.blurb,
-          extraStyles: markdownBlockStyles,
+          extraStyles: extraEpisodePageStyles,
           image: episode.image,
           style: .base(.minimal(.black)),
           title: "Episode #\(episode.sequence): \(episode.fullTitle)",
@@ -312,3 +312,7 @@ private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
       param.left == .some($0.slug) || param.right == .some($0.id)
     })
 }
+
+private let extraEpisodePageStyles =
+  markdownBlockStyles <>
+  .id("episode-header-blurb") % (a % color(Colors.gray850))

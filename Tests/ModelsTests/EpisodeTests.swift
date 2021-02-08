@@ -2,7 +2,6 @@ import XCTest
 @testable import Models
 
 final class EpisodeTests: XCTestCase {
-
   func testSlug() {
     var episode = Episode.mock
     episode.id = 42

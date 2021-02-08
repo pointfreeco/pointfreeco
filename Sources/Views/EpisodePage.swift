@@ -1205,6 +1205,7 @@ private func episodeHeader(
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
             ]),
+            .id("episode-header-blurb")
           ],
           .markdownBlock(episode.blurb)
         )
