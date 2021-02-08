@@ -188,42 +188,42 @@ Let’s start by running the full application in the simulator and giving a quic
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - Tapping on the toggle prompts us for notification permissions and it eagerly turns the toggle on.
+- Tapping on the toggle prompts us for notification permissions and it eagerly turns the toggle on.
 """#,
       timestamp: (5*60 + 6),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - If we deny permissions then the toggle switches back off.
+- If we deny permissions then the toggle switches back off.
 """#,
       timestamp: (5*60 + 19),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - Tapping the toggle again shows us a prompt to turn on notifications in iOS settings, and provides a button to do so
+- Tapping the toggle again shows us a prompt to turn on notifications in iOS settings, and provides a button to do so
 """#,
       timestamp: (5*60 + 26),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - Tapping that button takes us to iOS settings, so we can turn on notifications
+- Tapping that button takes us to iOS settings, so we can turn on notifications
 """#,
       timestamp: (5*60 + 30),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - And then going back to the app our notifications have been automatically enabled for us.
+- And then going back to the app our notifications have been automatically enabled for us.
 """#,
       timestamp: (5*60 + 35),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: #"""
-    - So that’s already a pretty complex flow in this form. The other screens are a little simpler.
+- So that’s already a pretty complex flow in this form. The other screens are a little simpler.
 """#,
       timestamp: (5*60 + 41),
       type: .paragraph
@@ -1278,6 +1278,27 @@ That concludes this episode and our series of episodes on concise forms. We hope
 """#,
       timestamp: (27*60 + 18),
       type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: #"""
+And we've really demonstrated this by looking at an actual, real-world application that we're building: a game built in the Composable Architecture, and it massively cleaned up its settings reducer, which had been getting to be a beast.
+"""#,
+      timestamp: (27*60 + 37),
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: #"""
+Luckily for our viewers, they too can now take advantage of this because we've released a new version of [swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture) that bring all of these form helpers to the core library and they can instantly start taking advantage of these APIs.
+"""#,
+      timestamp: (27*60 + 53),
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: #"""
+We released this feature the week before this episode aired and made a few changes after hearing back from you! We have generalized the "form" naming to apply more generally to bindings. This means `FormAction` is now `BindingAction`, and the `form` higher-order reducer is now a `binding` higher-order reducer, as well. Thanks to the community for this feedback!
+"""#,
+      timestamp: nil,
+      type: .correction
     ),
     Episode.TranscriptBlock(
       content: #"""
