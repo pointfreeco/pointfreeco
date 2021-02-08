@@ -22,9 +22,10 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let currentUser = Current.database.registerUser(
       .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
-        gitHubUser: .init(id: 1, name: "Blob")
+        gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 1, name: "Blob")
       ),
-      "blob@pointfree.co"
+      "blob@pointfree.co",
+      { .mock }
     )
       .run.perform().right!!
 
@@ -34,9 +35,10 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let owner = Current.database.registerUser(
       .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
-        gitHubUser: .init(id: 2, name: "Owner")
+        gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 2, name: "Owner")
       ),
-      "owner@pointfree.co"
+      "owner@pointfree.co",
+      { .mock }
     )
     .run.perform().right!!
 

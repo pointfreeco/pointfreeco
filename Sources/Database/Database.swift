@@ -41,13 +41,13 @@ public struct Client {
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var registerUser: (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
-  public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var upsertUser: (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
@@ -80,13 +80,13 @@ public struct Client {
     insertTeamInvite: @escaping (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>,
     migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
+    registerUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
-    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createEnterpriseAccount = createEnterpriseAccount
@@ -180,13 +180,13 @@ extension Client {
       insertTeamInvite: client.insertTeamInvite(email:inviterUserId:),
       migrate: client.migrate,
       redeemEpisodeCredit: client.redeemEpisodeCredit(episodeSequence:userId:),
-      registerUser: client.registerUser(withGitHubEnvelope:email:),
+      registerUser: client.registerUser(withGitHubEnvelope:email:now:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
       sawUser: client.sawUser(id:),
       updateEpisodeProgress: client.updateEpisodeProgress(episodeSequence:percent:userId:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:rssSalt:),
-      upsertUser: client.upsertUser(withGitHubEnvelope:email:)
+      upsertUser: client.upsertUser(withGitHubEnvelope:email:now:)
     )
   }
 }
@@ -446,10 +446,11 @@ private struct _Client {
   // TODO: This should return a non-optional user
   func registerUser(
     withGitHubEnvelope envelope: GitHubUserEnvelope,
-    email: EmailAddress
+    email: EmailAddress,
+    now: () -> Date
     ) -> EitherIO<Error, Models.User?> {
 
-    return upsertUser(withGitHubEnvelope: envelope, email: email)
+    return upsertUser(withGitHubEnvelope: envelope, email: email, now: now)
       .flatMap { optionalUser in
         guard let user = optionalUser else { return pure(optionalUser) }
 
@@ -498,13 +499,15 @@ private struct _Client {
   // TODO: This should return a non-optional user
   func upsertUser(
     withGitHubEnvelope envelope: GitHubUserEnvelope,
-    email: EmailAddress
+    email: EmailAddress,
+    now: () -> Date
     ) -> EitherIO<Error, Models.User?> {
 
     return self.execute(
       """
-    INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
-    VALUES ($1, $2, $3, $4, 1)
+    INSERT INTO "users"
+    ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
+    VALUES ($1, $2, $3, $4, $5)
     ON CONFLICT ("github_user_id") DO UPDATE
     SET "github_access_token" = $3, "name" = $4
     """,
@@ -512,7 +515,8 @@ private struct _Client {
         email.rawValue,
         envelope.gitHubUser.id.rawValue,
         envelope.accessToken.accessToken,
-        envelope.gitHubUser.name
+        envelope.gitHubUser.name,
+        now().timeIntervalSince(envelope.gitHubUser.createdAt) < 60*60*24*7 ? 0 : 1
       ]
       )
       .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }

@@ -24,7 +24,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
 
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -55,7 +55,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.teamYearly(quantity: 4)
     subscribeData.coupon = "deadbeef"
 
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -80,7 +80,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -121,7 +121,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Yearly() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -162,7 +162,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Team() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -207,7 +207,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Team_OwnerIsNotTakingSeat() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -262,7 +262,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   func testHappyPath_Referral_Monthly() {
     let referrer = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -273,7 +273,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     let referred = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -341,7 +341,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   func testHappyPath_Referral_Yearly() {
     let referrer = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -353,7 +353,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     let referred = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -414,7 +414,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_RegionalDiscount() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -468,7 +468,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testUnhappyPath_RegionalDiscount() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -515,7 +515,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   func testRegionalDiscountWithReferral_Monthly() {
     let referrer = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -526,7 +526,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     let referred = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -602,7 +602,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   func testRegionalDiscountWithReferral_Yearly() {
     let referrer = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -613,7 +613,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     let referred = Current.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co")
+      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -688,7 +688,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testSubscribingWithRegionalDiscountAndCoupon() {
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!
@@ -742,7 +742,7 @@ final class SubscribeTests: TestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
 
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .run
       .perform()
       .right!!

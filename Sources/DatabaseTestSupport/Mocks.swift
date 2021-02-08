@@ -38,12 +38,12 @@ extension Client {
     insertTeamInvite: { _, _ in pure(.mock) },
     migrate: unzurry(pure(unit)),
     redeemEpisodeCredit: { _, _ in pure(unit) },
-    registerUser: { _, _ in pure(.some(.mock)) },
+    registerUser: { _, _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     sawUser: const(pure(unit)),
     updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _, _ in pure(unit) },
-    upsertUser: { _, _ in pure(.some(.mock)) }
+    upsertUser: { _, _, _ in pure(.some(.mock)) }
   )
 }
