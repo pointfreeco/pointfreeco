@@ -175,14 +175,17 @@ func undo<Value, Action>(
       var currentValue = undoState.value
       reducer(&currentValue, action)
       undoState.history.append(currentValue)
+      undoState.undone = []
       if undoState.history.count > limit {
         undoState.history.removeFirst()
       }
     case .undo:
       guard undoState.canUndo else { return }
+      undoState.undone.append(undoState.value)
       undoState.value = undoState.history.removeLast()
     case .redo:
       guard undoState.canRedo else { return }
+      undoState.history.append(undoState.value)
       undoState.value = undoState.undone.removeFirst()
     }
   }
