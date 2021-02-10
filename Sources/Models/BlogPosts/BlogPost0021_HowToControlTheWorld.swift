@@ -15,7 +15,7 @@ APIs that interact with the outside world are unpredictable and make it difficul
 
 > We've covered this topic on Point-Free [two](/episodes/ep16-dependency-injection-made-easy) [times](/episodes/ep18-dependency-injection-made-comfortable) in the past and Stephen recently [talked about it](https://vimeo.com/291588126) at [NSSpain](https://2018.nsspain.com):
 
-<iframe src="https://player.vimeo.com/video/291588126"
+<iframe src="https://player.vimeo.com/video/291588126?pip=1"
         width="100%"
         height="360"
         frameborder="0"

@@ -371,7 +371,7 @@ public struct Episode: Equatable {
       "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=175&download=1"
     }
     public var streamingSource: String {
-      "https://player.vimeo.com/video/\(self.vimeoId)"
+      "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
     }
 
     public init(
