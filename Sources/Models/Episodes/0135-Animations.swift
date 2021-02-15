@@ -3,12 +3,12 @@ import Foundation
 extension Episode {
   public static let ep135_animations = Episode(
     blurb: """
-One of the most impressive features of SwiftUI is its animation system. Let's explore its various flavors of animation to prepare us for how animation works with the Composable Architecture.
+One of the most impressive features of SwiftUI is its animation system. Let's explore the various flavors of animation, such as implicit versus explicit and synchronous versus asynchronous, to help prepare us for how animation works with the Composable Architecture.
 """,
     codeSampleDirectory: "0135-swiftui-animation-pt1",
     exercises: _exercises,
     id: 135,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1060835876.jpg",
     length: 39*60 + 13,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1613368800),
