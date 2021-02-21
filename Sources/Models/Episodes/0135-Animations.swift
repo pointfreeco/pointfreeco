@@ -27,5 +27,16 @@ One of the most impressive features of SwiftUI is its animation system. Let's ex
 }
 
 private let _exercises: [Episode.Exercise] = [
-  // TODO
+  .init(
+    problem: #"""
+    Our little app currently has some funny functionality: if we tap "cycle colors" and then tap "reset" before the color cycling is complete, any remaining colors will still animate. Let's fix this by upgrading the "reset" button logic to cancel any upcoming color cycle animations.
+    """#,
+    solution: nil
+  ),
+  .init(
+    problem: #"""
+    Rather than rely on `@State`, refactor our animation view to use a view model that conforms to `ObservableObject`.
+    """#,
+    solution: nil
+  ),
 ]

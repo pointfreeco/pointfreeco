@@ -136,5 +136,6 @@ extension Episode {
     .ep133_conciseForms,
     .ep134_conciseForms,
     .ep135_animations,
+    .ep136_animations,
   ]
 }
