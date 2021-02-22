@@ -3,12 +3,12 @@ import Foundation
 extension Episode {
   public static let ep136_animations = Episode(
     blurb: """
-Nearly everything we've done so far with animations works just fine with the Composable Architecture, but there are a few rough edges that need to be smoothed out. In the process of smoothing out those edges we will come across a really amazing application of transforming schedulers.
+The Composable Architecture mostly "just works" with SwiftUI animations out of the box, except for one key situation: animations driven by asynchronous effects. To fix this we are led to a really surprising transformation of Combine schedulers.
 """,
     codeSampleDirectory: "0136-swiftui-animation-pt2",
     exercises: _exercises,
     id: 136,
-    image: "https://i.vimeocdn.com/video/TODO.jpg",
+    image: "https://i.vimeocdn.com/video/1066642678.jpg",
     length: 44*60 + 38,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1613973600),
