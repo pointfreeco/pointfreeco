@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep136_animations = Episode(
+    alternateSlug: "swiftui-animation-the-basics",
     blurb: """
 The Composable Architecture mostly "just works" with SwiftUI animations out of the box, except for one key situation: animations driven by asynchronous effects. To fix this we are led to a really surprising transformation of Combine schedulers.
 """,
@@ -22,7 +23,7 @@ The Composable Architecture mostly "just works" with SwiftUI animations out of t
       ),
     ],
     sequence: 136,
-    subtitle: "The Basics",
+    subtitle: "Composable Architecture",
     title: "SwiftUI Animation",
     trailerVideo: .init(
       bytesLength: 60558782,
