@@ -21,6 +21,7 @@ public struct EnvVars: Codable {
   public var appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
   public var baseUrl = URL(string: "http://localhost:8080")!
   public var basicAuth = BasicAuth()
+  public var emergencyMode = false
   public var gitHub = GitHub()
   public var mailgun = Mailgun()
   public var port = 8080
@@ -33,6 +34,7 @@ public struct EnvVars: Codable {
     case appEnv = "APP_ENV"
     case appSecret = "APP_SECRET"
     case baseUrl = "BASE_URL"
+    case emergencyMode = "EMERGENCY_MODE"
     case port = "PORT"
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
@@ -106,6 +108,7 @@ extension EnvVars {
     self.appSecret = try container.decode(AppSecret.self, forKey: .appSecret)
     self.baseUrl = try container.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
+    self.emergencyMode = try container.decodeIfPresent(String.self, forKey: .emergencyMode) == "1"
     self.gitHub = try .init(from: decoder)
     self.mailgun = try .init(from: decoder)
     self.port = Int(try container.decode(String.self, forKey: .port))!
@@ -123,6 +126,7 @@ extension EnvVars {
     try container.encode(self.appEnv, forKey: .appEnv)
     try container.encode(self.appSecret, forKey: .appSecret)
     try container.encode(self.baseUrl, forKey: .baseUrl)
+    try container.encode("\(self.emergencyMode)", forKey: .emergencyMode)
     try self.basicAuth.encode(to: encoder)
     try self.gitHub.encode(to: encoder)
     try self.mailgun.encode(to: encoder)

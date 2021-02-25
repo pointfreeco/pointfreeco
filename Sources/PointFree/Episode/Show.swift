@@ -67,6 +67,7 @@ private func episodePageData(
   return EpisodePageData(
     context: context,
     date: Current.date,
+    emergencyMode: Current.envVars.emergencyMode,
     episode: episode,
     episodeProgress: episodeProgress,
     permission: permission,

@@ -12,6 +12,7 @@ import Styleguide
 public struct EpisodePageData {
   var context: Context
   var date: () -> Date
+  var emergencyMode: Bool
   var episode: Episode
   var episodeProgress: Int?
   var permission: EpisodePermission
@@ -26,6 +27,7 @@ public struct EpisodePageData {
   public init(
     context: Context,
     date: @escaping () -> Date,
+    emergencyMode: Bool,
     episode: Episode,
     episodeProgress: Int?,
     permission: EpisodePermission,
@@ -34,6 +36,7 @@ public struct EpisodePageData {
   ) {
     self.context = context
     self.date = date
+    self.emergencyMode = emergencyMode
     self.episode = episode
     self.episodeProgress = episodeProgress
     self.permission = permission
@@ -95,7 +98,8 @@ public func episodePageView(
       ?? [],
     episodeHeader(
       episode: data.episode,
-      date: data.date
+      date: data.date,
+      emergencyMode: data.emergencyMode
     ),
     video(
       forEpisode: data.episode,
@@ -1148,7 +1152,8 @@ private func video(
 
 private func episodeHeader(
   episode: Episode,
-  date: () -> Date
+  date: () -> Date,
+  emergencyMode: Bool
   ) -> Node {
   .div(
     attributes: [
@@ -1195,7 +1200,7 @@ private func episodeHeader(
           .text("""
             Episode #\(episode.sequence) • \
             \(newEpisodeDateFormatter.string(from: episode.publishedAt)) \
-            • \(episode.isSubscriberOnly(currentDate: date()) ? "Subscriber-Only" : "Free Episode")
+            • \(episode.isSubscriberOnly(currentDate: date(), emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
             """)
         ),
         .div(

@@ -153,6 +153,7 @@ func simplePageLayout<A>(
           pastDueBanner(layoutData),
           (layoutData.flash.map(flashView) ?? []),
           announcementBanner(layoutData),
+          emergencyModeBanner(layoutData),
           navView(layoutData),
           contentView(layoutData.data),
           layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser, year: year)
@@ -191,6 +192,35 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
           )
         )
       )
+    )
+  )
+}
+
+func emergencyModeBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
+  guard Current.envVars.emergencyMode
+  else { return [] }
+
+  let announcementClass = Class.type.align.center
+    | Class.padding([.mobile: [.topBottom: 3]])
+    | Class.pf.colors.bg.yellow
+    | Class.pf.colors.fg.black
+    | Class.pf.colors.link.white
+
+  return .gridRow(
+    attributes: [.class([announcementClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.black
+              | Class.pf.type.underlineLink
+          ]),
+          .href("mailto:support@pointfree.co")
+        ],
+        .strong("Temporary service disruption")
+      ),
+      ": We’re operating with reduced features and will be back soon!"
     )
   )
 }

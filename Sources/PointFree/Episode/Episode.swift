@@ -3,7 +3,7 @@ import PointFreeRouter
 
 extension Episode {
   public var subscriberOnly: Bool {
-    return self.isSubscriberOnly(currentDate: Current.date())
+    return self.isSubscriberOnly(currentDate: Current.date(), emergencyMode: Current.envVars.emergencyMode)
   }
 }
 

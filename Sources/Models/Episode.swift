@@ -89,7 +89,9 @@ public struct Episode: Equatable {
     return "ep\(self.sequence)-" + (self.alternateSlug ?? "\(Models.slug(for: self.fullTitle))")
   }
 
-  public func isSubscriberOnly(currentDate: Date) -> Bool {
+  public func isSubscriberOnly(currentDate: Date, emergencyMode: Bool) -> Bool {
+    guard !emergencyMode else { return false }
+
     switch self.permission {
     case .free:
       return false
