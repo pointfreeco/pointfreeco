@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep137_animations = Episode(
     blurb: """
-TODO
+Combine schedulers give us a natural way of animating the result of asynchronous effects in the Composable Architecture, but that doesn't mean we can't go deeper. We will use animated schedulers in a vanilla SwiftUI app to see what problems they solve.
 """,
     codeSampleDirectory: "0137-swiftui-animation-pt3",
     exercises: _exercises,
