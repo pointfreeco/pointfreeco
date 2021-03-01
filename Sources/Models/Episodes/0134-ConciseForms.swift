@@ -18,13 +18,7 @@ We've shown how to dramatically streamline forms in the Composable Architecture,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1612764000),
     references: [
-      .init(
-        author: "Point-Free",
-        blurb: "A word game by us, written in the Composable Architecture.",
-        link: "https://www.isowords.xyz",
-        publishedAt: nil,
-        title: "isowords"
-      ),
+      .isowords
     ],
     sequence: 134,
     subtitle: "The Point",

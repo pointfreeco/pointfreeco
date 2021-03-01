@@ -65,6 +65,16 @@ Combine is Apple's framework for reactive programming.
     title: "combine-schedulers"
   )
 
+  public static let combineSchedulersSection = reference(
+    forSection: .combineSchedulers,
+    additionalBlurb: """
+      We previously did a deep-dive into all things Combine schedulers. We showed what they \
+      are used for, how to use them in generic contexts, and how to write tests that make the \
+      passage of time controllable and determinstic.
+      """,
+    sectionUrl: "https://www.pointfree.co/collections/combine/schedulers"
+  )
+
   public static func combineTypes(blurb: String? = nil) -> Self {
     Self(
       author: "Thomas Visser",
@@ -282,6 +292,14 @@ was a cause of confusion for those new to functional terms.
     link: "https://github.com/apple/swift-evolution/blob/master/proposals/0187-introduce-filtermap.md",
     publishedAt: Date(timeIntervalSince1970: 1509681600),
     title: "Introduce Sequence.compactMap(_:)"
+  )
+
+  public static let isowords = Self(
+    author: "Point-Free",
+    blurb: "A word game by us, written in the Composable Architecture.",
+    link: "https://www.isowords.xyz",
+    publishedAt: nil,
+    title: "isowords"
   )
 
   public static let lazyEvaluation = Episode.Reference(
