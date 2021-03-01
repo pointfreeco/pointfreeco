@@ -6,7 +6,7 @@ extension Episode.Collection {
     sections: [
       .init(
         blurb: """
-          Forms and settings screens in applications display lots of editable data at once, but due to how the Composable Architecture is designed this can lead to some boilerplate. We should how to fix this deficiency and make the Composable Architecture has concise as vanilla SwiftUI applications.
+          Forms and settings screens in applications display lots of editable data at once, but due to how the Composable Architecture is designed this can lead to some boilerplate. We show how to fix this deficiency and make the Composable Architecture as concise as vanilla SwiftUI applications.
           """,
         coreLessons: [
           .init(episode: .ep131_conciseForms),
