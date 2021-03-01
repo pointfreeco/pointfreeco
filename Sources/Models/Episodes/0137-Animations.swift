@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep137_animations = Episode(
     blurb: """
-Animating asynchronous effects with Combine schedulers is not only important for the Composable Architecture. It can be incredibly useful for any SwiftUI application. We will explore this with a fresh SwiftUI project to se what problems they solve and how they can allow us to better embrace SwiftUI's APIs.
+Animating asynchronous effects with Combine schedulers is not only important for the Composable Architecture. It can be incredibly useful for any SwiftUI application. We will explore this with a fresh SwiftUI project to see what problems they solve and how they can allow us to better embrace SwiftUI's APIs.
 """,
     codeSampleDirectory: "0137-swiftui-animation-pt3",
     exercises: _exercises,
