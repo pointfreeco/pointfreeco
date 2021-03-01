@@ -14,13 +14,9 @@ The Composable Architecture mostly "just works" with SwiftUI animations out of t
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1613973600),
     references: [
-      .init(
-        author: "Point-Free",
-        blurb: "A word game by us, written in the Composable Architecture.",
-        link: "https://www.isowords.xyz",
-        publishedAt: nil,
-        title: "isowords"
-      ),
+      .isowords,
+      .combineSchedulersSection,
+      .combineSchedulers,
     ],
     sequence: 136,
     subtitle: "Composable Architecture",

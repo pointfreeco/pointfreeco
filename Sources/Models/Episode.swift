@@ -442,3 +442,21 @@ func reference(
     title: "Collection: \(collection.title)"
   )
 }
+
+func reference(
+  forSection section: Episode.Collection.Section,
+  additionalBlurb: String,
+  sectionUrl: String
+) -> Episode.Reference {
+  return Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+\(additionalBlurb)
+
+> \(section.blurb)
+""",
+    link: sectionUrl,
+    publishedAt: section.coreLessons.first?.episode.publishedAt,
+    title: "Collection: \(section.title)"
+  )
+}

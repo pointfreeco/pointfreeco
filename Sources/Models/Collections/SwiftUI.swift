@@ -75,6 +75,8 @@ For more on the Composable Architecture, be sure to check out the entire collect
         title: "Redactions",
         whereToGoFromHere: nil
       ),
+
+      .swiftUIAnimations(title: "Animations")
     ],
     title: "SwiftUI"
   )
