@@ -3,23 +3,19 @@ import Foundation
 extension Episode {
   public static let ep137_animations = Episode(
     blurb: """
-Combine schedulers give us a natural way of animating the result of asynchronous effects in the Composable Architecture, but that doesn't mean we can't go deeper. We will use animated schedulers in a vanilla SwiftUI app to see what problems they solve.
+Animating asynchronous effects with Combine schedulers is not only important for the Composable Architecture. It can be incredibly useful for any SwiftUI application. We will explore this with a fresh SwiftUI project to se what problems they solve and how they can allow us to better embrace SwiftUI's APIs.
 """,
     codeSampleDirectory: "0137-swiftui-animation-pt3",
     exercises: _exercises,
     id: 137,
-    image: "https://i.vimeocdn.com/video/TODO.jpg",
+    image: "https://i.vimeocdn.com/video/1072702783.jpg",
     length: 44*60 + 10,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1614578400),
     references: [
-      .init(
-        author: "Point-Free",
-        blurb: "A word game by us, written in the Composable Architecture.",
-        link: "https://www.isowords.xyz",
-        publishedAt: nil,
-        title: "isowords"
-      ),
+      .isowords,
+      .combineSchedulersSection,
+      .combineSchedulers,
     ],
     sequence: 137,
     subtitle: "The Point",

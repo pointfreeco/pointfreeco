@@ -30,29 +30,33 @@ We developed our own custom reactive type from first principles to model effects
 At its core, Combine defines 3 main concepts: publishers, subscribers and schedulers. We covered the first two topics in the introduction, and next we cover the topic of schedulers in depth and from first principles.
 """#
       ),
-      .init(
-        blurb: #"""
-There's a lot of great material in the community covering almost every aspect of the Combine framework, but sadly Combine's `Scheduler` protocol hasn't gotten much attention. It's a pretty mysterious protocol, and Apple does not provide much documentation about it, but it is incredibly powerful and can allow one to test how time flows through complex publishers.
-"""#,
-        coreLessons: [
-          .init(episode: .ep104_combineSchedulers_testingTime),
-          .init(episode: .ep105_combineSchedulers_controllingTime),
-          .init(episode: .ep106_combineSchedulers_erasingTime),
-        ],
-        related: [
-          .init(
-            blurb: #"""
-In the last part of our four-part tour of the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) we demonstrate how to use the `TestScheduler` developed in this section to test a complex effect in a precise way.
-"""#,
-            content: .episodes([
-              .ep103_ATourOfTheComposableArchitecture_pt4
-            ])
-          )
-        ],
-        title: "Schedulers",
-        whereToGoFromHere: nil
-      ),
+      .combineSchedulers,
     ],
     title: "Combine"
+  )
+}
+
+extension Episode.Collection.Section {
+  public static let combineSchedulers = Self(
+    blurb: #"""
+There's a lot of great material in the community covering almost every aspect of the Combine framework, but sadly Combine's `Scheduler` protocol hasn't gotten much attention. It's a pretty mysterious protocol, and Apple does not provide much documentation about it, but it is incredibly powerful and can allow one to test how time flows through complex publishers.
+"""#,
+    coreLessons: [
+      .init(episode: .ep104_combineSchedulers_testingTime),
+      .init(episode: .ep105_combineSchedulers_controllingTime),
+      .init(episode: .ep106_combineSchedulers_erasingTime),
+    ],
+    related: [
+      .init(
+        blurb: #"""
+In the last part of our four-part tour of the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) we demonstrate how to use the `TestScheduler` developed in this section to test a complex effect in a precise way.
+"""#,
+        content: .episodes([
+          .ep103_ATourOfTheComposableArchitecture_pt4
+        ])
+      )
+    ],
+    title: "Schedulers",
+    whereToGoFromHere: nil
   )
 }
