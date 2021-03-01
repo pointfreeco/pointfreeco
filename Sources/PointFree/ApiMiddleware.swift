@@ -27,7 +27,7 @@ extension Api {
       self.length = episode.length
       self.publishedAt = episode.publishedAt
       self.sequence = episode.sequence
-      self.subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate)
+      self.subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate, emergencyMode: Current.envVars.emergencyMode)
       self.title = episode.fullTitle
     }
   }
@@ -48,7 +48,7 @@ extension Api {
     var video: Episode.Video
 
     init(episode: Episode, currentDate: Date) {
-      let subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate)
+      let subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate, emergencyMode: Current.envVars.emergencyMode)
 
       self.blurb = episode.blurb
       self.codeSampleDirectory = episode.codeSampleDirectory

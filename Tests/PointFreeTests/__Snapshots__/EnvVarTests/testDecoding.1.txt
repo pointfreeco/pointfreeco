@@ -1,4 +1,4 @@
-▿ 16 elements
+▿ 17 elements
   ▿ (2 elements)
     - key: "APP_ENV"
     - value: "development"
@@ -17,6 +17,9 @@
   ▿ (2 elements)
     - key: "DATABASE_URL"
     - value: "postgres://hello:world@localhost:5432/pointfreeco"
+  ▿ (2 elements)
+    - key: "EMERGENCY_MODE"
+    - value: "false"
   ▿ (2 elements)
     - key: "GITHUB_CLIENT_ID"
     - value: "deadbeef-client-id"

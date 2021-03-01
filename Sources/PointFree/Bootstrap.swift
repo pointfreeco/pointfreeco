@@ -59,10 +59,12 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     ?? Current.envVars
 
   Current.envVars = envVars
-  Current.database = .init(
-    databaseUrl: Current.envVars.postgres.databaseUrl,
-    logger: Current.logger
-  )
+  Current.database = envVars.emergencyMode
+    ? .noop
+    : .init(
+      databaseUrl: Current.envVars.postgres.databaseUrl,
+      logger: Current.logger
+    )
   Current.gitHub = .init(
     clientId: Current.envVars.gitHub.clientId,
     clientSecret: Current.envVars.gitHub.clientSecret,

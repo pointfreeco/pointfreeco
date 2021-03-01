@@ -15,29 +15,29 @@ final class EpisodeTests: XCTestCase {
     var episode = Episode.mock
 
     episode.permission = .free
-    XCTAssertEqual(false, episode.isSubscriberOnly(currentDate: Date()))
+    XCTAssertEqual(false, episode.isSubscriberOnly(currentDate: Date(), emergencyMode: false))
 
     episode.permission = .subscriberOnly
-    XCTAssertEqual(true, episode.isSubscriberOnly(currentDate: Date()))
+    XCTAssertEqual(true, episode.isSubscriberOnly(currentDate: Date(), emergencyMode: false))
 
     let start = Date(timeIntervalSince1970: 123456789)
     let end = start.addingTimeInterval(60*60*24*7)
     episode.permission = .freeDuring(start..<end)
     XCTAssertEqual(
       true,
-      episode.isSubscriberOnly(currentDate: start.addingTimeInterval(-60))
+      episode.isSubscriberOnly(currentDate: start.addingTimeInterval(-60), emergencyMode: false)
     )
     XCTAssertEqual(
       false,
-      episode.isSubscriberOnly(currentDate: start.addingTimeInterval(60))
+      episode.isSubscriberOnly(currentDate: start.addingTimeInterval(60), emergencyMode: false)
     )
     XCTAssertEqual(
       false,
-      episode.isSubscriberOnly(currentDate: end.addingTimeInterval(-60))
+      episode.isSubscriberOnly(currentDate: end.addingTimeInterval(-60), emergencyMode: false)
     )
     XCTAssertEqual(
       true,
-      episode.isSubscriberOnly(currentDate: end.addingTimeInterval(60))
+      episode.isSubscriberOnly(currentDate: end.addingTimeInterval(60), emergencyMode: false)
     )
   }
 

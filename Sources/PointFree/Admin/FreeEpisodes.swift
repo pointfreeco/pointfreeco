@@ -12,7 +12,13 @@ import Views
 
 let indexFreeEpisodeEmailMiddleware: M<Tuple1<User>>
   = writeStatus(.ok)
-    >=> respond({ _ in freeEpisodeView(episodes: Current.episodes(), today: Current.date()) })
+  >=> respond({ _ in
+    freeEpisodeView(
+      episodes: Current.episodes(),
+      today: Current.date(),
+      emergencyMode: Current.envVars.emergencyMode
+    )
+  })
 
 let sendFreeEpisodeEmailMiddleware: Middleware<
   StatusLineOpen,

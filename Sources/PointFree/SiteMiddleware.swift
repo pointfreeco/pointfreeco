@@ -119,6 +119,12 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> expressUnsubscribeReplyMiddleware
 
     case .feed(.atom), .feed(.episodes):
+      guard !Current.envVars.emergencyMode
+      else {
+        return conn.map(const(unit))
+          |> writeStatus(.internalServerError)
+          >=> respond(json: "{}")
+      }
       return conn.map(const(unit))
         |> episodesRssMiddleware
 
