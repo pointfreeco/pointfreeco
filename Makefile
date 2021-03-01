@@ -129,12 +129,12 @@ deploy-local:
 	@heroku container:release web -a pointfreeco-local
 
 deploy-production:
-# 	@git fetch origin
-# 	@test "$$(git status --porcelain)" = "" \
-# 		|| (echo "  🛑 Can't deploy while the working tree is dirty" && exit 1)
-# 	@test "$$(git rev-parse @)" = "$$(git rev-parse origin/main)" \
-# 		&& test "$$(git rev-parse --abbrev-ref HEAD)" = "main" \
-# 		|| (echo "  🛑 Must deploy from an up-to-date origin/main" && exit 1)
+	@git fetch origin
+	@test "$$(git status --porcelain)" = "" \
+		|| (echo "  🛑 Can't deploy while the working tree is dirty" && exit 1)
+	@test "$$(git rev-parse @)" = "$$(git rev-parse origin/main)" \
+		&& test "$$(git rev-parse --abbrev-ref HEAD)" = "main" \
+		|| (echo "  🛑 Must deploy from an up-to-date origin/main" && exit 1)
 	@heroku container:login
 	@heroku container:push web -a pointfreeco
 	@heroku container:release web -a pointfreeco
