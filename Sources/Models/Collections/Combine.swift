@@ -54,7 +54,16 @@ In the last part of our four-part tour of the [Composable Architecture](https://
         content: .episodes([
           .ep103_ATourOfTheComposableArchitecture_pt4
         ])
-      )
+      ),
+      .init(
+        blurb: #"""
+Combine schedulers turn out to be the perfect tool for animating asynchronous effects. In these episodes we introduce an "animated" scheduler that solves a real problem in the Composable Architecture _and_ improves the ergonomics of scheduling animations in vanilla SwiftUI.
+"""#,
+        content: .episodes([
+          .ep136_animations,
+          .ep137_animations,
+        ])
+      ),
     ],
     title: "Schedulers",
     whereToGoFromHere: nil
