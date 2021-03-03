@@ -37,26 +37,34 @@ At its core, Combine defines 3 main concepts: publishers, subscribers and schedu
 }
 
 extension Episode.Collection.Section {
-  public static let combineSchedulers = Self(
-    blurb: #"""
+  public static var combineSchedulers: Self {
+    Self(
+      blurb: #"""
 There's a lot of great material in the community covering almost every aspect of the Combine framework, but sadly Combine's `Scheduler` protocol hasn't gotten much attention. It's a pretty mysterious protocol, and Apple does not provide much documentation about it, but it is incredibly powerful and can allow one to test how time flows through complex publishers.
 """#,
-    coreLessons: [
-      .init(episode: .ep104_combineSchedulers_testingTime),
-      .init(episode: .ep105_combineSchedulers_controllingTime),
-      .init(episode: .ep106_combineSchedulers_erasingTime),
-    ],
-    related: [
-      .init(
-        blurb: #"""
+      coreLessons: [
+        .init(episode: .ep104_combineSchedulers_testingTime),
+        .init(episode: .ep105_combineSchedulers_controllingTime),
+        .init(episode: .ep106_combineSchedulers_erasingTime),
+      ],
+      related: [
+        .init(
+          blurb: #"""
 In the last part of our four-part tour of the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) we demonstrate how to use the `TestScheduler` developed in this section to test a complex effect in a precise way.
 """#,
-        content: .episodes([
-          .ep103_ATourOfTheComposableArchitecture_pt4
-        ])
-      )
-    ],
-    title: "Schedulers",
-    whereToGoFromHere: nil
-  )
+          content: .episodes([
+            .ep103_ATourOfTheComposableArchitecture_pt4
+          ])
+        ),
+        .init(
+          blurb: #"""
+Combine schedulers turn out to be the perfect tool for animating asynchronous effects. In this series of episodes we introduce an "animated" scheduler that solves a real problem in the Composable Architecture _and_ improves the ergonomics of scheduling animations in vanilla SwiftUI.
+"""#,
+          content: .section(.swiftUI, index: 3)
+        ),
+      ],
+      title: "Schedulers",
+      whereToGoFromHere: nil
+    )
+  }
 }
