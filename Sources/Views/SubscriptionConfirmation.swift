@@ -874,7 +874,7 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : (monthlyPrice * 12 - \#(referralDiscount))
+      : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"

@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 58623
+Content-Length: 58642
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2303,7 +2303,7 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : (monthlyPrice * 12 - 18)
+      : (monthlyPrice * 12 - 18 * regionalDiscount)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
