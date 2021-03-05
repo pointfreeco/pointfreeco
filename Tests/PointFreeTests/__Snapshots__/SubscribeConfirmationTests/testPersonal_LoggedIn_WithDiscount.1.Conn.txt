@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/dead-beef
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 58481
+Content-Length: 58500
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2397,7 +2397,7 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : (monthlyPrice * 12 - 0)
+      : (monthlyPrice * 12 - 0 * regionalDiscount)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"

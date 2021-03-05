@@ -15,7 +15,7 @@ import XCTest
 class SubscriptionConfirmationTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testPersonal_LoggedIn() {

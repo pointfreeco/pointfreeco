@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 58502
+Content-Length: 58521
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2398,7 +2398,7 @@ function updateSeats() {
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
-      : (monthlyPrice * 12 - 0)
+      : (monthlyPrice * 12 - 0 * regionalDiscount)
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
