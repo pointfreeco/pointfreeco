@@ -14,7 +14,7 @@ Composable Architecture 0.16.0 comes with significant improvements to its testin
 
     .init(
       content: #"""
-Today we've shipped a brand new version of the Composable Architecture with improvements to its test helpers.
+Today we've shipped a [brand new version](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.16.0) of [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) with improvements to its test helpers.
 
 One of the primary focuses of the Composable Architecture is testability, which is why it ships with a tool that makes it easy (and dare we say fun?) to write comprehensive tests for applications written in the Composable Architecture.
 
