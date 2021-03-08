@@ -75,9 +75,9 @@ Up until today, however, this error has rendered at the beginning of the asserti
     ),
     .init(
       content: #"""
-And every unfinished effect would aggregate here.
+Every unfinished effect would aggregate here. As helpful as this information was, it did not always make it clear where the effects came from and how exactly to track them back to their origin.
 
-Today we are excited to release an improved test store, which instead renders these failures in line from the originating action:
+Today we are excited to release an improved test store that addresses this problem. It will now render any effect failures in line with the originating action:
 """#,
       type: .paragraph
     ),
