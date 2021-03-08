@@ -16,7 +16,7 @@ Composable Architecture 0.16.0 comes with significant improvements to its testin
       content: #"""
 Today we've shipped a brand new version of the Composable Architecture with improvements to its test helpers.
 
-One of the primary focuses of the Composable Architecture is testability, which is why it ships with a tool that makes it easy (and dare we say fun?) to write tests for applications written in the Composable Architecture.
+One of the primary focuses of the Composable Architecture is testability, which is why it ships with a tool that makes it easy (and dare we say fun?) to write comprehensive tests for applications written in the Composable Architecture.
 
 The primary means for testing in the Composable Architecture is via the `TestStore` class. You can create a test store for your feature and write a test via the `assert` method, which is fed a step-by-step list of user actions to be sent to the store, and expected mutations to state and effects received back into the system!
 
