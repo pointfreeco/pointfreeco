@@ -65,16 +65,31 @@ But this test will fail with an error!
 These failures can be extremely helpful in tracking down bugs in complex effects and ensure that we remember to test the entire lifecycle of a feature.
 
 Up until today, however, this error has rendered at the beginning of the assertion:
-
-![before](https://user-images.githubusercontent.com/658/110347127-4de1da80-7ffe-11eb-846e-5bd9e4c16beb.png)
-
+"""#,
+      type: .paragraph
+    ),
+    .init(
+      content: "Before:",
+      timestamp: nil,
+      type: .image(src: "https://user-images.githubusercontent.com/658/110347127-4de1da80-7ffe-11eb-846e-5bd9e4c16beb.png")
+    ),
+    .init(
+      content: #"""
 And every unfinished effect would aggregate here.
 
 Today we are excited to release an improved test store, which instead renders these failures in line from the originating action:
+"""#,
+      type: .paragraph
+    ),
+    .init(
+      content: "After:",
+      timestamp: nil,
+      type: .image(src: "https://user-images.githubusercontent.com/658/110347138-51756180-7ffe-11eb-9dbd-b6f8915a475f.png")
+    ),
+    .init(
+      content: #"""
 
-![after](https://user-images.githubusercontent.com/658/110347138-51756180-7ffe-11eb-9dbd-b6f8915a475f.png)
-
-🥳 Much better!
+🥳 Much better! This gives us much more fine-grained information at a glance and it is _very_ clear which action triggered a long-living effect.
 
 We hope this improvement will make it easier to track down test failures so that you can spend more time on the things that matter.
 
@@ -83,7 +98,7 @@ We hope this improvement will make it easier to track down test failures so that
 You can grab [version 0.16.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.16.0) of the Composable Architecture today and take advantage of these debugging improvements immediately. [Let us know](https://twitter.com/pointfreeco) what you think!
 """#,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0053-tca-ergonomics/poster.png",
   id: 53,
