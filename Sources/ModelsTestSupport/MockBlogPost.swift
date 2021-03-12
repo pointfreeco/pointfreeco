@@ -47,7 +47,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
         type: .paragraph
       ),
       ],
-    coverImage: "",
+    coverImage: nil,
     id: 0,
     publishedAt: .init(timeIntervalSince1970: 1_523_872_623),
     title: "Mock Blog Post"
