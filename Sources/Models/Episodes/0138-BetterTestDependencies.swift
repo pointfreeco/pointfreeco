@@ -13,7 +13,10 @@ We talk about dependencies a lot on Point-Free, but we've never done a deep dive
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1615784400),
     references: [
-      // TODO: dependencies
+      .designingDependencies,
+      .tourOfTCA,
+      .composableArchitectureDependencyManagement,
+      .theComposableArchitecture,      
     ],
     sequence: 138,
     subtitle: "Exhaustivity",

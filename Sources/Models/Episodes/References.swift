@@ -152,6 +152,18 @@ Combine is quite a large framework to get a handle of! When noting that its `Fut
     title: "Deferred Publishers: Tweet Tip"
   )
 
+  public static let designingDependencies = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+We develop the idea of dependencies from the ground up in this collection of episodes:
+
+> Let’s take a moment to properly define what a dependency is and understand why they add so much complexity to our code. We will begin building a moderately complex application with three dependencies, and see how it complicates development, and what we can do about it.
+"""#,
+    link: "https://www.pointfree.co/collections/dependencies",
+    publishedAt: referenceDateFormatter.date(from: "2020-07-27"),
+    title: "Designing Dependencies"
+  )
+
   public static let elmCommandsAndSubscriptions = Episode.Reference(
     author: nil,
     blurb: #"""
@@ -985,6 +997,16 @@ or mix up these values at compile time by using the tagged wrappers.
     link: "https://www.pointfree.co/blog/posts/6-tagged-seconds-and-milliseconds",
     publishedAt: Date(timeIntervalSince1970: 1531886400),
     title: "Tagged Seconds and Milliseconds"
+  )
+
+  public static let tourOfTCA = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+When we open sourced the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) we released a 4-part series of episodes to show how to build a moderately complex application from scratch with it. We covered state management, complex effects, testing and more.
+""",
+    link: "https://www.pointfree.co/collections/composable-architecture/a-tour-of-the-composable-architecture",
+    publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
+    title: "A Tour of the Composable Architecture"
   )
 
   public static let theComposableArchitecture = Episode.Reference(
