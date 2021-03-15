@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep138_betterTestDependencies = Episode(
     blurb: """
-It is possible to write tests in such a way that they precisely describe which dependencies they use and which are not necessary. We explore this by strengthening an existing test suite to be more exhaustive in which dependencies are provided, and show some incredible benefits when doing this.
+We talk about dependencies a lot on Point-Free, but we've never done a deep dive on how to tune them for testing. It's time to do just that, by first showing how a test can exhaustively describe its dependencies, which comes with some incredible benefits.
 """,
     codeSampleDirectory: "0138-better-test-dependencies-pt1",
     exercises: _exercises,
