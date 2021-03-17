@@ -55,7 +55,7 @@ component of the tuple.
 Functions in Swift are also "non-nominal" types, which means you cannot extend them to conform to protocols.
 However, again, protocol witnesses have no such problem! Demonstrate this by implementing the function
 `pointwise: (Combining<B>) -> Combining<(A) -> B>`. This allows you to construct
-a combining witness for a function given a combining witnesss for the type you are mapping into. There
+a combining witness for a function given a combining witness for the type you are mapping into. There
 is _exactly_ one way to implement this function.
 """),
 
