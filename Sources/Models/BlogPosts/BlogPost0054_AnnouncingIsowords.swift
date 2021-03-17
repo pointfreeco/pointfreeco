@@ -10,7 +10,7 @@ We are excited to release isowords to the App Store, a new word search game for 
       content: """
 Today we are excited to release **isowords** to the [App Store](https://www.isowords.xyz/download), a new word search game for your phone. Download today!
 
-[![Download isowords on the App Store](https://d1iqsrac68iyd8.cloudfront.net/posts/0054-announcing-isowords/app-store-badge.png)](https://www.isowords.xyz/download)
+[![Download isowords on the App Store](https://d1iqsrac68iyd8.cloudfront.net/posts/0054-announcing-isowords/app-store-badge.png)](https://www.isowords.xyz/app-store)
 
 ---
 """,
@@ -53,9 +53,9 @@ Using iOS 14's new App Clip functionality you can play a sample game without dow
 
 ## Download today!
 
-You can [download](https://www.isowords.xyz/download) isowords today! Be sure to invite friends so that you can play the turn-based multiplayer game mode 🤝.
+You can [download](https://www.isowords.xyz/app-store) isowords today! Be sure to invite friends so that you can play the turn-based multiplayer game mode 🤝.
 
-[![Download isowords on the App Store](https://d1iqsrac68iyd8.cloudfront.net/posts/0054-announcing-isowords/app-store-badge.png)](https://www.isowords.xyz/download)
+[![Download isowords on the App Store](https://d1iqsrac68iyd8.cloudfront.net/posts/0054-announcing-isowords/app-store-badge.png)](https://www.isowords.xyz/app-store)
 """,
       type: .paragraph
     )
