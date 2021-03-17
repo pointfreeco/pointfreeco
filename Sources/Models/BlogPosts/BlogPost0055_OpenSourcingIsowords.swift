@@ -77,6 +77,6 @@ Also, be sure to [download](https://www.isowords.xyz/app-store) isowords and sha
   ],
   coverImage: nil,
   id: 55,
-  publishedAt: Date(timeIntervalSince1970: 1616000400),
+  publishedAt: Date(timeIntervalSince1970: 1615996800),
   title: "Open Sourcing isowords"
 )
