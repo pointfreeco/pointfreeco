@@ -8,9 +8,9 @@ We're open sourcing a library that makes it easier to be more exhaustive in writ
   contentBlocks: [
   .init(
     content: """
-This week on Point-Free we showed how write tests that exhaustively describe which dependencies are necessary to exercise a feature, and we did so in an ergnomic way. If a dependency is unexpectedly used in a test case then it fails the test suite and even points to the exact step of the assertion that caused the dependency to be invoked. This makes it possible to be instantly notified when a part of your feature starts accessing dependencies that you don't expect, and it was awesome to see.
+This week on Point-Free we showed how to write tests that exhaustively describe which dependencies are needed to exercise a feature, and we did so in an ergnomic way. If a dependency is unexpectedly used in a test case then it fails the test suite and even points to the exact step of the assertion that caused the dependency to be invoked. This makes it possible to be instantly notified when a part of your feature starts accessing dependencies that you don't expect, and it was awesome to see.
 
-However, the ability to leverage this awesome capability hinges on being able to creating "failing" versions of dependencies, that is, instances of the dependency that simply invoke `XCTFail` under the hood rather than doing their actual work. And unfortunately, the moment you import `XCTest` into a non-test target your application will fail to build with inscrutable errors. This lead us to develop a library that dynamically loads `XCTFail` so that it can be used in any context, not just test targets.
+However, the ability to leverage this awesome capability hinges on being able to creating "failing" versions of dependencies, that is, instances of the dependency that simply invoke `XCTFail` under the hood rather than doing their actual work. And unfortunately, the moment you import `XCTest` into a non-test target your application will fail to build with inscrutable errors. This led us to develop a library that dynamically loads `XCTFail` so that it can be used in any context, not just test targets.
 
 So, without further ado, we are open sourcing [`XCTDynamicOverlay`](https://github.com/pointfreeco/xctest-dynamic-overlay) today, along with updates to both the Composable Architecture and Combine Schedulers to take advantage of this new library.
 
@@ -25,7 +25,7 @@ Currently there are only two options for writing test support code:
 
 Neither of these options is ideal. In the first case you cannot share your test support, and the second case will lead you to a proliferation of modules. For each feature you potentially need 3 modules: `MyFeature`, `MyFeatureTests` and `MyFeatureTestSupport`. SPM makes managing this quite easy, but it's still a burden.
 
-It would be far better if we could ship the test support code right along side or actual library or application code. Afterall, they are intimately related. You can even fence off the test support code in `#if DEBUG ... #endif` if you are worried about leaking test code into production.
+It would be far better if we could ship the test support code right along side or actual library or application code. After all, they are intimately related. You can even fence off the test support code in `#if DEBUG ... #endif` if you are worried about leaking test code into production.
 
 However, as soon as you add `import XCTest` to a source file in your application or a library it loads, the target becomes unbuildable:
 
@@ -155,7 +155,7 @@ The `Effect` type now vends a `.failing` static constructor. It's an effect that
 
 ### `TestStore`
 
-The `TestStore` has a new way of making assertions. Currently one makes assertions by calling the `.assert` method on `TestStore` and feeding it a sequence of steps that simulataneously describe a user action _and_ how the state should have changed after that action:
+The `TestStore` has a new way of making assertions. Currently one makes assertions by calling the `.assert` method on `TestStore` and feeding it a sequence of steps that simultaneously describe a user action _and_ how the state should have changed after that action:
 
 ```swift
 store.assert(
@@ -198,7 +198,7 @@ This change is 100% backwards compatible with the current `.assert(...)` method,
 
 ## Combine Schedulers 0.4.0
 
-And finally (😅) we are leveraging our new `XCTestDynamicOverlay` library in [Combine Schedulers](https://github.com/pointfreeco/combine-schedulers) to provide a `FailingScheduler` type, which is a scheduler that immediately invokes `XCTFail` whenever it is asked to schedule work. This is great for testing code that requires a scheduler to be provided but for which you do not expect any asychrony to actually take place. Just stick in a `.failing` instance for your scheduler and you can be sure there is no shenanigans happening internally:
+And finally (😅) we are leveraging our new `XCTestDynamicOverlay` library in [Combine Schedulers](https://github.com/pointfreeco/combine-schedulers) to provide a `FailingScheduler` type, which is a scheduler that immediately invokes `XCTFail` whenever it is asked to schedule work. This is great for testing code that requires a scheduler to be provided but for which you do not expect any asynchrony to actually take place. Just stick in a `.failing` instance for your scheduler and you can be sure there is no shenanigans happening internally:
 
 ```swift
 func testCountUpAndDown() {
@@ -206,8 +206,8 @@ func testCountUpAndDown() {
     initialState: EffectsBasicsState(),
     reducer: effectsBasicsReducer,
     environment: EffectsBasicsEnvironment(
-      mainQueue: .failing()
-      numberFact: { _ in .failing() }
+      mainQueue: .failing,
+      numberFact: { _ in .failing }
     )
   )
 
@@ -222,11 +222,11 @@ func testCountUpAndDown() {
 }
 ```
 
-If this test passes it means definitively that there was no asynchrony involved and the `numberFact` effect was not executed. This greatly strengthens what this test is capturing with very little additional work.
+If this test passes it means definitively that there was no asynchrony involved and that the `numberFact` effect was not executed. This greatly strengthens what this test is capturing with very little additional work.
 
 ## Try it out today!
 
-Be sure to check out [`XCTestDynamicOverlay`](https://github.com/pointfreeco/xctest-dynamic-overlay) today, and update your dependencies on Composable Architecture and/or Combine Schedulers. We think these tools will greatly strengthen your tests and their ergonomics.
+Be sure to check out [`XCTestDynamicOverlay`](https://github.com/pointfreeco/xctest-dynamic-overlay) today, and update your dependencies on the Composable Architecture and/or Combine Schedulers. We think these tools will greatly strengthen your tests and their ergonomics.
 """,
     type: .paragraph
   )
