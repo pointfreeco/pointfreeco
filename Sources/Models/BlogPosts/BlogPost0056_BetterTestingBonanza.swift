@@ -1,14 +1,14 @@
 import Foundation
 
 public let post0056_BetterTestingBonanza = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
 We're open sourcing a library that makes it easier to be more exhaustive in writing tests.
 """,
   contentBlocks: [
   .init(
     content: """
-This week on Point-Free we showed how write tests that exhaustively describe which dependencies are necessary to exercise a feature, and we did so in an ergnomic way. If a dependency is unexpectedly used in a test case then it fails the test suite and even points to the exact step of the assertion that caused the dependency to be invoked. This makes it possible to be instantly notified when a part of your feature starts accessing dependencies that you don't expect, and it was awesome to see.
+This week on Point-Free we [showed](/episodes/ep139-better-test-dependencies-failability) how write tests that exhaustively describe which dependencies are necessary to exercise a feature, and we did so in an ergnomic way. If a dependency is unexpectedly used in a test case then it fails the test suite and even points to the exact step of the assertion that caused the dependency to be invoked. This makes it possible to be instantly notified when a part of your feature starts accessing dependencies that you don't expect, and it was awesome to see.
 
 However, the ability to leverage this awesome capability hinges on being able to creating "failing" versions of dependencies, that is, instances of the dependency that simply invoke `XCTFail` under the hood rather than doing their actual work. And unfortunately, the moment you import `XCTest` into a non-test target your application will fail to build with inscrutable errors. This lead us to develop a library that dynamically loads `XCTFail` so that it can be used in any context, not just test targets.
 
