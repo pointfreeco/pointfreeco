@@ -211,14 +211,12 @@ func testCountUpAndDown() {
     )
   )
 
-  store.assert(
-    .send(.incrementButtonTapped) {
-      $0.count = 1
-    },
-    .send(.decrementButtonTapped) {
-      $0.count = 0
-    }
-  )
+  store.send(.incrementButtonTapped) {
+    $0.count = 1
+  }
+  store.send(.decrementButtonTapped) {
+    $0.count = 0
+  }
 }
 ```
 
