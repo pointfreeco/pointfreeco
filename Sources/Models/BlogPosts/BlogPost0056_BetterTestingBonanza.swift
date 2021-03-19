@@ -12,7 +12,7 @@ This week on Point-Free we showed how write tests that exhaustively describe whi
 
 However, the ability to leverage this awesome capability hinges on being able to creating "failing" versions of dependencies, that is, instances of the dependency that simply invoke `XCTFail` under the hood rather than doing their actual work. And unfortunately, the moment you import `XCTest` into a non-test target your application will fail to build with inscrutable errors. This lead us to develop a library that dynamically loads `XCTFail` so that it can be used in any context, not just test targets.
 
-So, without further ado, we are open sourcing `XCTDynamicOverlay` today, along with updates to both the Composable Architecture and Combine Schedulers to take advantage of this new library.
+So, without further ado, we are open sourcing [`XCTDynamicOverlay`](https://github.com/pointfreeco/xctest-dynamic-overlay) today, along with updates to both the Composable Architecture and Combine Schedulers to take advantage of this new library.
 
 ## `XCTestDynamicOverlay`
 
@@ -226,7 +226,7 @@ If this test passes it means definitively that there was no asynchrony involved 
 
 ## Try it out today!
 
-
+Be sure to check out [`XCTestDynamicOverlay`](https://github.com/pointfreeco/xctest-dynamic-overlay) today, and update your dependencies on Composable Architecture and/or Combine Schedulers. We think these tools will greatly strengthen your tests and their ergonomics.
 """,
     type: .paragraph
   )
