@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep139_betterTestDependencies = Episode(
     blurb: """
-Exhaustively describing dependencies in your tests makes them stronger _and_ easier to understand. We improve the ergonomics of this technique by ditching the `fatalError`s in unimplemented dependencies, using `XCTFail`, and we open source a library along the way.
+Exhaustively describing dependencies in your tests makes them stronger _and_ easier to understand. We improve the ergonomics of this technique by ditching the `fatalError` in unimplemented dependencies, using `XCTFail`, and we open source a library along the way.
 """,
     codeSampleDirectory: "0139-better-test-dependencies-pt2",
     exercises: _exercises,
