@@ -207,7 +207,7 @@ func testCountUpAndDown() {
     reducer: effectsBasicsReducer,
     environment: EffectsBasicsEnvironment(
       mainQueue: .failing,
-      numberFact: { _ in .failing }
+      numberFact: { _ in .failing("numberFact") }
     )
   )
 
