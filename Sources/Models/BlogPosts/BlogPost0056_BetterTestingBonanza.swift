@@ -231,6 +231,6 @@ Be sure to check out [`XCTestDynamicOverlay`](https://github.com/pointfreeco/xct
   ],
   coverImage: nil,
   id: 56,
-  publishedAt: .distantFuture, // .init(timeIntervalSince1970: 1616389200),
+  publishedAt: .init(timeIntervalSince1970: 1616389200),
   title: "Better Testing Bonanza"
 )
