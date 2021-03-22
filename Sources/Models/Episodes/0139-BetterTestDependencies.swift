@@ -55,7 +55,8 @@ where
 {
   public static var failing: AnySchedulerOf<Self> {
     .failing(
-      now: .init(Date())
+      minimumTolerance: { .zero },
+      now: { .init(Date()) }
     )
   }
 }
@@ -67,7 +68,8 @@ where
 {
   public static var failing: AnySchedulerOf<Self> {
     .failing(
-      now: .init(Date())
+      minimumTolerance: { .zero },
+      now: { .init(Date()) }
     )
   }
 }
