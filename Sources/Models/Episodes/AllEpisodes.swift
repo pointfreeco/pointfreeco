@@ -140,5 +140,6 @@ extension Episode {
     .ep137_animations,
     .ep138_betterTestDependencies,
     .ep139_betterTestDependencies,
+    .ep140_betterTestDependencies,
   ]
 }
