@@ -1067,6 +1067,7 @@ public struct DiscountCountry {
     DiscountCountry(countryCode: "GS", name: "South Georgia"),
     DiscountCountry(countryCode: "SD", name: "Sudan"),
     DiscountCountry(countryCode: "SR", name: "Suriname"),
+    DiscountCountry(countryCode: "LK", name: "Sri Lanka"),
     DiscountCountry(countryCode: "SZ", name: "Swaziland"),
     DiscountCountry(countryCode: "TZ", name: "Tanzania"),
     DiscountCountry(countryCode: "TG", name: "Togo"),
