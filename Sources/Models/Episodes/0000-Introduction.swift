@@ -42,7 +42,7 @@ Point-Free is a video series covering functional programming and Swift. We've be
 programming for quite some time now, and we've seen a lot of benefits. So, we've wanted to share with
 more people, and what better way than a video series that we can bring to our community.
 
-Functional programming leads to a lot of intersting ways to reuse code and make code more testable. But,
+Functional programming leads to a lot of interesting ways to reuse code and make code more testable. But,
 we didn't even know about many of these ideas for most of our careers. However, by diving deeper and
 deeper things started to slowly make more sense it became clear that this was a serious tool for
 wiping away complexity that every programming should have at their disposal.
