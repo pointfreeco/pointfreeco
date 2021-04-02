@@ -141,5 +141,6 @@ extension Episode {
     .ep138_betterTestDependencies,
     .ep139_betterTestDependencies,
     .ep140_betterTestDependencies,
+    .ep141_betterTestDependencies,
   ]
 }
