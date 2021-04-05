@@ -2,20 +2,19 @@
 
 > ##### Announcements
 
-<p>This is an announcement for NON-subscribers.</p>
+<p>This is an announcement for subscribers.</p>
 
 
 
 ### #2: Proof in Functions
 
- <http://localhost:8080/episodes/ep2-proof-in-functions><p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
+ <http://localhost:8080/episodes/ep2-proof-in-functions><p>Crafting better test dependencies for our code bases come with additional benefits outside of testing. We show how SwiftUI previews can be strengthened from better dependencies, and we show how we employ these techniques in our newly released game, <a href="https://www.isowords.xyz">isowords</a>.</p>
 
  <http://localhost:8080/episodes/ep2-proof-in-functions>
 
-This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!
+This episode is 23 minutes long.
 
-Subscribe to Point-Free! <http://localhost:8080/pricing>Watch preview <http://localhost:8080/episodes/ep2-proof-in-functions>
+Watch now! <http://localhost:8080/episodes/ep2-proof-in-functions>
 
 Your hosts,
 
