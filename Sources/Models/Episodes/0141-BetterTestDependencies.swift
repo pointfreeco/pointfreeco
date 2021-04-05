@@ -13,6 +13,8 @@ Crafting better test dependencies for our code bases come with additional benefi
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1617598800),
     references: [
+      .isowords,
+      .isowordsGitHub,
       reference(
         forSection: .combineSchedulers,
         additionalBlurb: "",

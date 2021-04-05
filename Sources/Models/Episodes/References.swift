@@ -314,13 +314,21 @@ was a cause of confusion for those new to functional terms.
     title: "isowords"
   )
 
+  public static let isowordsGitHub = Self(
+    author: "Point-Free",
+    blurb: "Open source game built in SwiftUI and the Composable Architecture.",
+    link: "https://github.com/pointfreeco/isowords",
+    publishedAt: referenceDateFormatter.date(from: "2021-04-17"),
+    title: "isowords on GitHub"
+  )
+
   public static let lazyEvaluation = Episode.Reference(
     author: nil,
     blurb: """
 Laziness is often touted as an important attribute of functional programming (for example, in John Hughes' seminal paper, _Why Functional Programming Matters_) and is a primary feature of the Haskell programming language.
 """,
     link: "https://en.wikipedia.org/wiki/Lazy_evaluation",
-    publishedAt: nil,
+    publishedAt: referenceDateFormatter.date(from: "2021-04-17"),
     title: "Lazy Evaluation"
   )
 
