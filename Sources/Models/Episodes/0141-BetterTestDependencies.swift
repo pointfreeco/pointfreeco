@@ -3,12 +3,12 @@ import Foundation
 extension Episode {
   public static let ep141_betterTestDependencies = Episode(
     blurb: """
-So "what's the point" of better test dependencies!? We will see that improving our test dependencies introduces benefits to our code bases outside of testing, including a real-world code base, isowords.
+Crafting better test dependencies for our code bases come with additional benefits outside of testing. We show how SwiftUI previews can be strengthened from better dependencies, and we show how we employ these techniques in our newly released game, [isowords](https://www.isowords.xyz).
 """,
     codeSampleDirectory: "0141-better-test-dependencies-pt4",
     exercises: _exercises,
     id: 141,
-    image: "https://i.vimeocdn.com/video/TODO.jpg",
+    image: "https://i.vimeocdn.com/video/1103296509.jpg",
     length: 52*60 + 28,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1617598800),
