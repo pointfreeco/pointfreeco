@@ -10,7 +10,7 @@ In past episodes we took a peek behind the curtains of our recently released iOS
     id: 142,
     image: "https://i.vimeocdn.com/video/1114889004.jpg?mw=1100&mh=619&q=70",
     length: 37*60 + 18,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1618808400),
     references: [
       .isowords,
