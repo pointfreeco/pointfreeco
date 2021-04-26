@@ -48,8 +48,8 @@ var package = Package(
       name: "Ccmark",
       pkgConfig: "libcmark",
       providers: [
+        .apt(["cmark"]),
         .brew(["cmark"]),
-        .apt(["cmark"])
       ]
     ),
 
