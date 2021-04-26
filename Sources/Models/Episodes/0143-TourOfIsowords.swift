@@ -10,7 +10,7 @@ Let's dive deeper into the [isowords](https://www.isowords.xyz) code base. We'll
     id: 143,
     image: "https://i.vimeocdn.com/video/1114888815.jpg",
     length: 57*60 + 1,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1619413200),
     references: [
       .isowords,
