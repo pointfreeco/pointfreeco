@@ -11,7 +11,7 @@ Let's dive deeper into the [isowords](https://www.isowords.xyz) code base. We'll
     image: "https://i.vimeocdn.com/video/1114888815.jpg",
     length: 57*60 + 1,
     permission: .subscriberOnly,
-    publishedAt: .init(timeIntervalSince1970: 1618808400),
+    publishedAt: .init(timeIntervalSince1970: 1619413200),
     references: [
       .isowords,
       .isowordsGitHub,
