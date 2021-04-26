@@ -231,7 +231,7 @@ private func collectionHeaderRow(
   collection: Episode.Collection,
   section: Episode.Collection.Section
 ) -> Node {
-  .gridRow(
+  Node.gridRow(
     attributes: [
       .class([
         Class.padding([.mobile: [.leftRight: 2]]),
@@ -240,7 +240,7 @@ private func collectionHeaderRow(
       ]),
       .style(padding(topBottom: .rem(1.5)))
     ],
-    .gridColumn(
+    Node.gridColumn(
       sizes: [.mobile: 12],
       .h6(
         attributes: [

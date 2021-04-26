@@ -1,0 +1,5 @@
+module Ccmark [system] {
+    header "shim.h"
+    link "cmark"
+    export *
+}

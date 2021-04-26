@@ -336,7 +336,7 @@ private func sectionNavigation(
     )
   }
 
-  return .div(
+  return Node.div(
     attributes: [
       .class([
         Class.border.top,
@@ -346,7 +346,7 @@ private func sectionNavigation(
           <> borderColor(top: .other("#e8e8e8"))
       ),
     ],
-    .gridRow(
+    Node.gridRow(
       attributes: [
         .class([
           Class.flex.items.center,

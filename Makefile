@@ -109,16 +109,15 @@ uninstall-colortheme:
 
 test-oss: db
 	@$(SWIFT) test \
-		--enable-pubgrub-resolver \
 		--enable-test-discovery \
 		-Xswiftc -D -Xswiftc OSS
 
 test-linux:
-	docker-compose build && docker-compose run \
-		--entrypoint "swift test --enable-pubgrub-resolver --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
+	docker compose build && docker-compose run \
+		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
 
 linux-start:
-	docker-compose up --build
+	docker compose up --build
 
 env-local:
 	heroku config --json -a pointfreeco-local > .pf-env

@@ -548,9 +548,9 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
     enterpriseShareLink = []
   }
 
-  return .gridRow(
+  return Node.gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 4]])])],
-    .gridColumn(
+    Node.gridColumn(
       sizes: [.mobile: 12],
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Subscription overview"),
@@ -1100,16 +1100,16 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
   guard let card = subscription.customer.right?.sources.data.first?.left
     else { return subscriptionInvoiceBillingInfoView }
 
-  return .gridRow(
+  return Node.gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
     .gridColumn(
       sizes: [.mobile: 3],
       .div(.p("Payment"))
     ),
-    .gridColumn(
+    Node.gridColumn(
       sizes: [.desktop: 9],
-      .gridRow(
-        .gridColumn(
+      Node.gridRow(
+        Node.gridColumn(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
