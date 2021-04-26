@@ -113,7 +113,7 @@ test-oss: db
 		-Xswiftc -D -Xswiftc OSS
 
 test-linux:
-	docker compose build && docker-compose run \
+	docker-compose build && docker-compose run \
 		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
 
 linux-start:
