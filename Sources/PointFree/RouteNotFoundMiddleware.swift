@@ -6,6 +6,7 @@ import HttpPipeline
 import PointFreeRouter
 import Prelude
 import Tuple
+import Views
 
 func routeNotFoundMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
