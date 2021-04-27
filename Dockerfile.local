@@ -1,4 +1,4 @@
-FROM swift:5.2.3
+FROM swift:5.3
 
 RUN apt-get --fix-missing update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python
@@ -17,6 +17,6 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build --build-tests --enable-pubgrub-resolver --enable-test-discovery --jobs 1 -Xswiftc -D -Xswiftc OSS
+RUN swift build --build-tests --enable-test-discovery --jobs 1 -Xswiftc -D -Xswiftc OSS
 
 CMD .build/debug/Server

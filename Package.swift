@@ -1,53 +1,40 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 
 import Foundation
 import PackageDescription
 
-#if swift(>=5.3)
-let filePath = #filePath
-#else
-let filePath = #file
-#endif
-
-let isOss = !FileManager.default.fileExists(
-  atPath: URL(fileURLWithPath: filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("Models")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent(".git")
-    .path
-)
-
-extension SwiftSetting {
-  static let warnLongExpressionTypeChecking = unsafeFlags(
-    [
-      "-Xfrontend", "-warn-long-expression-type-checking=200",
-      "-Xfrontend", "-warn-long-function-bodies=200",
-    ],
-    .when(configuration: .debug)
-  )
-}
-
-extension Array where Element == SwiftSetting {
-  static let pointFreeSettings: Array = isOss
-    ? [.define("OSS"), .warnLongExpressionTypeChecking]
-    : [.warnLongExpressionTypeChecking]
-}
-
-let package = Package(
+var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v10_15),
+    .macOS(.v11),
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .library(name: "Database", targets: ["Database"]),
+    .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
+    .library(name: "EmailAddress", targets: ["EmailAddress"]),
+    .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
+    .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
+    .library(name: "GitHub", targets: ["GitHub"]),
+    .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
+    .library(name: "Mailgun", targets: ["Mailgun"]),
+    .library(name: "Models", targets: ["Models"]),
+    .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
+    .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
+    .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
+    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
+    .library(name: "Stripe", targets: ["Stripe"]),
+    .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
+    .library(name: "Styleguide", targets: ["Styleguide"]),
+    .library(name: "Syndication", targets: ["Syndication"]),
+    .library(name: "Views", targets: ["Views"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
-    .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("main")),
     .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
     .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
@@ -56,6 +43,15 @@ let package = Package(
     .package(name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [
+
+    .systemLibrary(
+      name: "Ccmark",
+      pkgConfig: "libcmark",
+      providers: [
+        .apt(["cmark"]),
+        .brew(["cmark"]),
+      ]
+    ),
 
     .target(
       name: "Database",
@@ -70,8 +66,7 @@ let package = Package(
         .product(name: "PostgreSQL", package: "PostgreSQL"),
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "Tagged", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -84,24 +79,21 @@ let package = Package(
         .product(name: "Either", package: "Prelude"),
         .product(name: "PostgreSQL", package: "PostgreSQL"),
         .product(name: "Prelude", package: "Prelude"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
       name: "DecodableRequest",
       dependencies: [
         .product(name: "Tagged", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
       name: "EmailAddress",
       dependencies: [
         .product(name: "Tagged", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -110,8 +102,7 @@ let package = Package(
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "Web"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -120,8 +111,7 @@ let package = Package(
         .product(name: "Css", package: "Web"),
         .product(name: "Html", package: "Html"),
         .product(name: "Prelude", package: "Prelude")
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -132,7 +122,9 @@ let package = Package(
         .product(name: "Html", package: "Html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "__Snapshots__",
+      ]
     ),
 
     .target(
@@ -144,8 +136,7 @@ let package = Package(
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Tagged", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -154,8 +145,7 @@ let package = Package(
         "GitHub",
         .product(name: "Either", package: "Prelude"),
         .product(name: "Prelude", package: "Prelude"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -165,7 +155,9 @@ let package = Package(
         "GitHubTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "__Snapshots__",
+      ]
     ),
 
     .target(
@@ -179,8 +171,7 @@ let package = Package(
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "Web"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -192,7 +183,9 @@ let package = Package(
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedTime", package: "Tagged"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "Transcripts/README.md",
+      ]
     ),
 
     .target(
@@ -205,8 +198,7 @@ let package = Package(
         "Stripe",
         "StripeTestSupport",
         .product(name: "Prelude", package: "Prelude"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -214,8 +206,7 @@ let package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -249,8 +240,7 @@ let package = Package(
         .product(name: "TaggedTime", package: "Tagged"),
         .product(name: "Tuple", package: "Prelude"),
         .product(name: "UrlFormEncoding", package: "Web"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -263,7 +253,11 @@ let package = Package(
         .product(name: "HtmlSnapshotTesting", package: "Html"),
         .product(name: "HttpPipelineTestSupport", package: "Web"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "__Snapshots__",
+        "AccountTests/__Snapshots__",
+        "EmailTests/__Snapshots__",
+      ]
     ),
 
     .target(
@@ -271,13 +265,13 @@ let package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
+        "PointFreePrelude",
         .product(name: "ApplicativeRouter", package: "Web"),
         .product(name: "HttpPipeline", package: "Web"),
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "UrlFormEncoding", package: "Web"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -287,8 +281,7 @@ let package = Package(
         "PointFreeRouter",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
         .product(name: "UrlFormEncoding", package: "Web")
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -301,8 +294,7 @@ let package = Package(
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "Tuple", package: "Prelude"),
         .product(name: "UrlFormEncoding", package: "Web"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -323,24 +315,21 @@ let package = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
       name: "Runner",
       dependencies: [
         "PointFree",
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
       name: "Server",
       dependencies: [
         "PointFree",
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -353,8 +342,7 @@ let package = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedMoney", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
@@ -365,8 +353,7 @@ let package = Package(
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "Prelude"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -376,7 +363,9 @@ let package = Package(
         "StripeTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "__Snapshots__",
+      ]
     ),
 
     .target(
@@ -387,8 +376,7 @@ let package = Package(
         .product(name: "Html", package: "Html"),
         .product(name: "HtmlCssSupport", package: "Web"),
         .product(name: "Prelude", package: "Prelude"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .testTarget(
@@ -399,7 +387,9 @@ let package = Package(
         .product(name: "HtmlSnapshotTesting", package: "Html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
-      swiftSettings: .pointFreeSettings
+      exclude: [
+        "__Snapshots__",
+      ]
     ),
 
     .target(
@@ -407,13 +397,13 @@ let package = Package(
       dependencies: [
         "Models",
         .product(name: "Html", package: "Html")
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
 
     .target(
       name: "Views",
       dependencies: [
+        "Ccmark",
         "EmailAddress",
         "FunctionalCss",
         "PointFreeRouter",
@@ -423,8 +413,40 @@ let package = Package(
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedTime", package: "Tagged"),
-      ],
-      swiftSettings: .pointFreeSettings
+      ]
     ),
+
   ]
 )
+
+let isOss = !FileManager.default.fileExists(
+  atPath: URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources")
+    .appendingPathComponent("Models")
+    .appendingPathComponent("Transcripts")
+    .appendingPathComponent(".git")
+    .path
+)
+
+extension SwiftSetting {
+  static let warnLongExpressionTypeChecking = unsafeFlags(
+    [
+      "-Xfrontend", "-warn-long-expression-type-checking=200",
+      "-Xfrontend", "-warn-long-function-bodies=200",
+    ],
+    .when(configuration: .debug)
+  )
+}
+
+extension Array where Element == SwiftSetting {
+  static let pointFreeSettings: Array = isOss
+    ? [.define("OSS"), .warnLongExpressionTypeChecking]
+    : [.warnLongExpressionTypeChecking]
+}
+
+for index in package.targets.indices {
+  if package.targets[index].type != .system {
+    package.targets[index].swiftSettings = .pointFreeSettings
+  }
+}

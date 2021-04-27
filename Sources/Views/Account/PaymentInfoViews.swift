@@ -31,9 +31,9 @@ private let titleRowView = Node.gridRow(
 )
 
 private func currentPaymentInfoRowView(card: Stripe.Card) -> Node {
-  return .gridRow(
+  return Node.gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
-    .gridColumn(
+    Node.gridColumn(
       sizes: [.mobile: 12],
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Current Payment Info"),
