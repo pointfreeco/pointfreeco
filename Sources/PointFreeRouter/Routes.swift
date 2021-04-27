@@ -32,6 +32,7 @@ public enum Route: Equatable {
   case invite(Invite)
   case login(redirect: String?)
   case logout
+  case newHome
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
@@ -258,6 +259,9 @@ let routers: [Router<Route>] = [
 
   .case(.logout)
     <¢> get %> "logout" <% end,
+
+  .case(.newHome)
+    <¢> get %> "home" <% end,
 
   .case(.pricingLanding)
     <¢> get %> "pricing" <% end,

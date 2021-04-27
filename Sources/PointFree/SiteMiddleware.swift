@@ -168,6 +168,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> logoutResponse
 
+    case .newHome:
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> newHomeMiddleware
+
     case .pricingLanding:
       return conn.map(const(
         user

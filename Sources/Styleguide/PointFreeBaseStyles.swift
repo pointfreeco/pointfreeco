@@ -11,6 +11,7 @@ public enum Colors {
   public static let gray400 = Color.other("#666666")
   public static let gray500 = Color.other("#808080")
   public static let gray650 = Color.other("#a8a8a8")
+  public static let gray700 = Color.other("#c4c4c4")
   public static let gray800 = Color.other("#ccc")
   public static let gray850 = Color.other("#d8d8d8")
   public static let gray900 = Color.other("#f6f6f6")
@@ -54,6 +55,7 @@ extension Class {
         public static let gray400 = CssSelector.class("fg-gray400")
         public static let gray500 = CssSelector.class("fg-gray500")
         public static let gray650 = CssSelector.class("fg-gray650")
+        public static let gray700 = CssSelector.class("fg-gray700")
         public static let gray850 = CssSelector.class("fg-gray850")
         public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
@@ -384,6 +386,7 @@ private let colorStyles: Stylesheet = concat([
   Class.pf.colors.fg.gray400 % color(Colors.gray400),
   Class.pf.colors.fg.gray500 % color(Colors.gray500),
   Class.pf.colors.fg.gray650 % color(Colors.gray650),
+  Class.pf.colors.fg.gray700 % color(Colors.gray700),
   Class.pf.colors.fg.gray850 % color(Colors.gray850),
   Class.pf.colors.fg.green % color(Colors.green),
   Class.pf.colors.fg.purple % color(Colors.purple),

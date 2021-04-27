@@ -433,7 +433,7 @@ private func pricingPlanCta(
   }
 }
 
-private let whatToExpect = Node.div(
+let whatToExpect = Node.div(
   attributes: [.style(backgroundColor(.other("#fafafa")))],
   .gridRow(
     attributes: [
@@ -455,7 +455,7 @@ private let whatToExpect = Node.div(
           .id("what-to-expect"),
           .class([Class.pf.type.responsiveTitle2])
         ],
-        "What to expect"
+        "What you can expect"
       )
     ),
     .gridColumn(
