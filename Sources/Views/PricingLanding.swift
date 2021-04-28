@@ -691,20 +691,20 @@ private let featuredTeams = Node.gridRow(
   .gridColumn(
     sizes: [.mobile: 6, .desktop: 2],
     attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
-    [.img(base64: nytLogoSvg, type: .image(.svg), alt: "New York Times")]
+    [.img(base64: nytLogoSvg(fill: "#7D7D7D"), type: .image(.svg), alt: "New York Times")]
   ),
   .gridColumn(
     sizes: [.mobile: 6, .desktop: 2],
     attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
-    [.img(base64: spotifyLogoSvg, type: .image(.svg), alt: "Spotify")]
+    [.img(base64: spotifyLogoSvg(fill: "#7D7D7D"), type: .image(.svg), alt: "Spotify")]
   ),
   .gridColumn(
     sizes: [.mobile: 6, .desktop: 2],
-    [.img(base64: venmoLogoSvg, type: .image(.svg), alt: "Venmo")]
+    [.img(base64: venmoLogoSvg(fill: "#7D7D7D"), type: .image(.svg), alt: "Venmo")]
   ),
   .gridColumn(
     sizes: [.mobile: 6, .desktop: 2],
-    [.img(base64: atlassianLogoSvg, type: .image(.svg), alt: "Atlassian")]
+    [.img(base64: atlassianLogoSvg(fill: "#7D7D7D"), type: .image(.svg), alt: "Atlassian")]
   )
 )
 

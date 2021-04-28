@@ -7,9 +7,13 @@ import Tuple
 import Views
 
 let newHomeMiddleware: M<Tuple3<User?, SubscriberState, Route?>> =
-  writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
+  basicAuth(
+    user: Current.envVars.basicAuth.username,
+    password: Current.envVars.basicAuth.password
+  )
+  <| map(lower)
+    >>> writeStatus(.ok)
+    >=> respond(
       view: newHomeView(currentDate:currentUser:subscriberState:episodes:date:emergencyMode:),
       layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
