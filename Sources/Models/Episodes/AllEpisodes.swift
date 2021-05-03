@@ -144,5 +144,6 @@ extension Episode {
     .ep141_betterTestDependencies,
     .ep142_tourOfIsowords,
     .ep143_tourOfIsowords,
+    .ep144_tourOfIsowords,
   ]
 }
