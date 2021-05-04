@@ -40,6 +40,31 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
+  func testSendInvite_UnhappyPath_NoSeats() {
+    let inviterUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+      .run
+      .perform()
+      .right!!
+
+    let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
+    _ = Current.database.createSubscription(sub, inviterUser.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    Current.stripe.fetchSubscription = const(pure(sub))
+
+    _ = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
+      .run
+      .perform()
+      .right!
+
+    let sendInvite = request(to: .invite(.send("blobber2@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id))
+    let conn = connection(from: sendInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
   func testResendInvite_HappyPath() {
     let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
       .run
