@@ -313,6 +313,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
+
+    stripeSubscription.quantity += 3
+    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+
     let conn = connection(
       from: request(
         to: .invite(.addTeammate(teammateEmailAddress)),
