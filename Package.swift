@@ -31,6 +31,7 @@ var package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Views", targets: ["Views"]),
+    .library(name: "WebPreview", targets: ["WebPreview"])
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
@@ -408,12 +409,17 @@ var package = Package(
         "FunctionalCss",
         "PointFreeRouter",
         "Styleguide",
+        "WebPreview",
         .product(name: "Css", package: "Web"),
         .product(name: "Html", package: "Html"),
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedTime", package: "Tagged"),
       ]
+    ),
+
+    .target(
+      name: "WebPreview"
     ),
 
   ]
