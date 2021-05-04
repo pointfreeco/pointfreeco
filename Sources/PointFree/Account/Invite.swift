@@ -88,22 +88,6 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
         .fetchUserById(teamInvite.inviterUserId)
         .mapExcept(requireSome)
 
-      let sendInviterEmailOfAcceptance = parallel(
-        inviter
-          .run
-          .flatMap { errorOrInviter in
-            errorOrInviter.right.map { inviter in
-              sendEmail(
-                to: [inviter.email],
-                subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
-                )
-                .run
-                .map(const(unit))
-              }
-              ?? pure(unit)
-      })
-
       // VERIFY: user is subscribed
       let subscription = inviter
         .flatMap(^\.id >>> Current.database.fetchSubscriptionByOwnerId)
@@ -117,18 +101,36 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
           }
       }
 
-      let deleteInvite = parallel(
-        subscription
-          .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
-          .run
-      )
-
-      // fire-and-forget email of acceptance and deletion of invite
-      zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
-
       return subscription
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
+        .flatMap { _ in
+          let sendInviterEmailOfAcceptance = parallel(
+            inviter
+              .run
+              .flatMap { errorOrInviter in
+                errorOrInviter.right.map { inviter in
+                  sendEmail(
+                    to: [inviter.email],
+                    subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
+                    content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
+                    )
+                    .run
+                    .map(const(unit))
+                  }
+                  ?? pure(unit)
+          })
+
+          let deleteInvite = parallel(
+            subscription
+              .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
+              .run
+          )
+
+          // fire-and-forget email of acceptance and deletion of invite
+          zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+
+          return conn |> redirect(to: path(to: .account(.index)))
+        }
 }
 
 let addTeammateViaInviteMiddleware
@@ -163,12 +165,41 @@ let sendInviteMiddleware =
 
       let (email, inviter) = lower(conn.data)
 
-      return Current.database.insertTeamInvite(email, inviter.id)
+      let seatsTaken = zip2(
+        Current.database.fetchTeamInvites(inviter.id).run.parallel
+          .map { $0.right?.count ?? 0 },
+        Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).run.parallel
+          .map { $0.right?.count ?? 0 }
+      )
+      .map(+)
+
+      let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
+        .mapExcept(requireSome)
+        .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+        .run
+        .parallel
+
+      let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
+        run: zip2(
+          subscription,
+          seatsTaken
+        )
+        .map { subscription, seatsTaken in subscription.map { ($0, seatsTaken) } }
+        .sequential
+      )
+      .flatMap { $0.status.isActive && $0.quantity > $1 ? pure(()) : throwE(unit) }
+
+      return subscriptionHasAvailableSeats
+        .flatMap { Current.database.insertTeamInvite(email, inviter.id) }
         .run
         .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
           case .left:
-            return conn |> redirect(to: .account(.index))
+            return conn |> redirect(
+              to: .account(.index), headersMiddleware: flash(.error, """
+              Couldn't invite \(email.rawValue)
+              """)
+            )
 
           case let .right(invite):
             parallel(sendInviteEmail(invite: invite, inviter: inviter).run)

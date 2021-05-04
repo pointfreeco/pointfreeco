@@ -41,11 +41,11 @@ private func fetchAccountData<I>(
   let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
     .mapExcept(requireSome)
 
-  let owner = ownerSubscription
+  let subscription = userSubscription <|> ownerSubscription
+
+  let owner = subscription
     .flatMap(Current.database.fetchUserById <<< ^\.userId)
     .mapExcept(requireSome)
-
-  let subscription = userSubscription <|> ownerSubscription
 
   let stripeSubscription = subscription
     .map(^\.stripeSubscriptionId)

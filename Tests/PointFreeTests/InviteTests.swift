@@ -18,7 +18,26 @@ import XCTest
 class InviteIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
+  }
+
+  func testSendInvite_HappyPath() {
+    let inviterUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+      .run
+      .perform()
+      .right!!
+
+    _ = Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
+      .run
+      .perform()
+      .right!!
+
+    Current.stripe.fetchSubscription = const(pure(.teamYearly))
+
+    let sendInvite = request(to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id))
+    let conn = connection(from: sendInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testResendInvite_HappyPath() {
