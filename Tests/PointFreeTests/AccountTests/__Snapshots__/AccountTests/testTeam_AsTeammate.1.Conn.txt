@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 50113
+Content-Length: 50126
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2014,9 +2014,9 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                 </h2>
                 <p>
                   You are currently on a team subscription. Contact 
-                  <a href="mailto:"
+                  <a href="mailto:hello@pointfree.co"
                      class="pf-link-purple">
-                    the owner
+                    Blob
                   </a>
                    for more information.
                 </p>
