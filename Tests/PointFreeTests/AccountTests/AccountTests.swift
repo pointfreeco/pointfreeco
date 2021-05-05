@@ -205,6 +205,29 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  func testTeam_AsTeammate_previousSubscription() {
+    Current = .teamYearlyTeammate
+    Current.database.fetchSubscriptionByOwnerId = const(
+      pure(update(.canceled) { $0.userId = User.teammate.id })
+    )
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1300))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testAccount_WithExtraInvoiceInfo() {
     var customer = Stripe.Customer.mock
     customer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
