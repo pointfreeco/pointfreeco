@@ -35,7 +35,7 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) 
 }
 
 public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<HeadersOpen, HeadersOpen, A, A> {
-  return writeSessionCookieMiddleware { $0.flash = Flash(priority: priority, message: message) }
+  return writeSessionCookieMiddleware { $0.flash = Flash(priority, message) }
 }
 
 extension URLRequest {
@@ -161,17 +161,6 @@ extension Session {
     self.flash = flash
     self.user = userId.map(Session.User.standard)
   }
-}
-
-public struct Flash: Codable, Equatable {
-  public enum Priority: String, Codable {
-    case error
-    case notice
-    case warning
-  }
-
-  public let priority: Priority
-  public let message: String
 }
 
 private let pointFreeUserSessionCookieName = "pf_session"

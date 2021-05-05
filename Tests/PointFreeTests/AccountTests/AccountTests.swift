@@ -256,7 +256,7 @@ final class AccountTests: TestCase {
 
   func testAccountWithFlashNotice() {
     var session = Session.loggedIn
-    session.flash = Flash(priority: .notice, message: "You’ve subscribed!")
+    session.flash = Flash(.notice, "You’ve subscribed!")
 
     let conn = connection(
       from: request(to: .account(.index), session: session))
@@ -278,7 +278,7 @@ final class AccountTests: TestCase {
 
   func testAccountWithFlashWarning() {
     var session = Session.loggedIn
-    session.flash = Flash(priority: .warning, message: "Your subscription is past-due!")
+    session.flash = Flash(.warning, "Your subscription is past-due!")
 
     let conn = connection(from: request(to: .account(.index), session: session))
 
@@ -299,7 +299,7 @@ final class AccountTests: TestCase {
 
   func testAccountWithFlashError() {
     var session = Session.loggedIn
-    session.flash = Flash(priority: .error, message: "An error has occurred!")
+    session.flash = Flash(.error, "An error has occurred!")
 
     let conn = connection(from: request(to: .account(.index), session: session))
 

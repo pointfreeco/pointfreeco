@@ -3,8 +3,8 @@ import HtmlSnapshotTesting
 @testable import HttpPipeline
 import Prelude
 import SnapshotTesting
-@testable import PointFree
 import PointFreeTestSupport
+@testable import Views
 import XCTest
 
 class MetaLayoutTests: TestCase {
