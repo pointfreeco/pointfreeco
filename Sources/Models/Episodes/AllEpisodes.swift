@@ -145,5 +145,6 @@ extension Episode {
     .ep142_tourOfIsowords,
     .ep143_tourOfIsowords,
     .ep144_tourOfIsowords,
+    .ep145_tourOfIsowords,
   ]
 }
