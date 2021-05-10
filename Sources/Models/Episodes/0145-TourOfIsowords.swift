@@ -9,7 +9,7 @@ We wrap up our tour of [isowords](https://www.isowords.xyz) by showing off two p
     exercises: _exercises,
     id: 145,
     image: "https://i.vimeocdn.com/video/1127151635.jpg?mw=1100&mh=619&q=70",
-    length: 32*60 + 25,
+    length: 53*60 + 54,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1620622800),
     references: [
