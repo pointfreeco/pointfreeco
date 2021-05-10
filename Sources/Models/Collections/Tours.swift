@@ -6,7 +6,7 @@ We've open sourced a lot of software on Point-Free, and every once in awhile we 
     sections: [
       .init(
         blurb: #"""
-isowords is our new word game for iOS, built in SwiftUI and the Composable Architecture. We open sourced the entire code base (including the server, which is also written in Swift!), and in this multipart tour we show how we've applied many concepts from Point-Free episodes to build a large, complex application.
+isowords is our new word game for iOS, built in SwiftUI and the Composable Architecture. We open sourced the entire code base (including the server, which is also written in Swift!), and in this multi-part tour we show how we've applied many concepts from Point-Free episodes to build a large, complex application.
 """#,
         coreLessons: [
           .init(episode: .ep142_tourOfIsowords),
@@ -21,7 +21,7 @@ isowords is our new word game for iOS, built in SwiftUI and the Composable Archi
       ),
       .init(
         blurb: #"""
-We open sourced the Composable Architecture after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise ever subtle aspect of the application.
+We open sourced the Composable Architecture after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
 """#,
         coreLessons: [
           .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
@@ -36,7 +36,7 @@ We open sourced the Composable Architecture after many, _many_ months of develop
       ),
       .init(
         blurb: #"""
-Our snapshot testing library is one of the most popular ways of adding screenshot testing to a code base. But the capabilities of the library go far beyond screenshots. You can snapshot any kind of data type into any kind of format. We take a tour of this libary by adding a snapshot test suite to an existing project.
+Our snapshot testing library is one of the most popular ways of adding screenshot testing to a code base, but the capabilities of the library go far beyond screenshots: you can snapshot _any_ kind of data type into _any_ format. We take a tour of this library by adding a snapshot test suite to a project.
 """#,
         coreLessons: [
           .init(episode: .ep41_aTourOfSnapshotTesting),
@@ -48,7 +48,7 @@ Our snapshot testing library is one of the most popular ways of adding screensho
       ),
       .init(
         blurb: #"""
-The entire code base of www.pointfree.co has been open source since the very first day we launched. In this tour we demonstrate how we use a wide variety of techniques that we discuss in episodes, such as playgrounds, dependency design, testing and more.
+The entire code base of pointfree.co has been open source since the very first day we launched. In this tour we demonstrate how a wide variety of techniques that we discuss in episodes, such as playgrounds, dependency design, testing and more, are employed in this very site.
 """#,
         coreLessons: [
           .init(episode: .ep22_aTourOfPointFree),
