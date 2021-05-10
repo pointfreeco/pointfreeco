@@ -6,6 +6,7 @@ extension Episode.Collection {
     .dependencies,
     .parsing,
     .combine,
+    .tours,
     .protocolWitnesses,
     .mapZipFlatMap,
     .algebraicDataTypes,
