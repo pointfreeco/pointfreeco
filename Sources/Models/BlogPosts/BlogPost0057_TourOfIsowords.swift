@@ -32,6 +32,6 @@ We hope these episodes provide a small taste of some ideas in application develo
   ],
   coverImage: nil,
   id: 57,
-  publishedAt: .init(timeIntervalSince1970: 1620968400),
+  publishedAt: .init(timeIntervalSince1970: 1620795600),
   title: "A Tour of isowords"
 )
