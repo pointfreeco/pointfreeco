@@ -1057,6 +1057,7 @@ public struct DiscountCountry {
     DiscountCountry(countryCode: "PY", name: "Paraguay"),
     DiscountCountry(countryCode: "PE", name: "Peru"),
     DiscountCountry(countryCode: "PH", name: "Philippines"),
+    DiscountCountry(countryCode: "PS", name: "Palestine"),
     DiscountCountry(countryCode: "RW", name: "Rwanda"),
     DiscountCountry(countryCode: "SN", name: "Senegal"),
     DiscountCountry(countryCode: "RS", name: "Serbia"),
