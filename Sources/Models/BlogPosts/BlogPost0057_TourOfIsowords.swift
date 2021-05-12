@@ -3,7 +3,7 @@ import Foundation
 public let post0057_tourOfIsowords = BlogPost(
   author: .pointfree,
   blurb: """
-Four free videos exploring a real world Swift code base, including iOS client and Swift server.
+This past month we released four completely free videos dedicated to diving into the real-world Swift code base of an iOS game we recently launched and open sourced: isowords.
 """,
   contentBlocks: [
     Episode.TranscriptBlock(
