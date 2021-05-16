@@ -146,5 +146,6 @@ extension Episode {
     .ep143_tourOfIsowords,
     .ep144_tourOfIsowords,
     .ep145_tourOfIsowords,
+    .ep146_derivedBehavior,
   ]
 }
