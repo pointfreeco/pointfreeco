@@ -12,7 +12,7 @@ The ability to break down applications into small domains that are understandabl
     image: "https://i.vimeocdn.com/video/1139060977.jpg",
     length: 42*60 + 8,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1620622800),
+    publishedAt: Date(timeIntervalSince1970: 1621227600),
     references: [
       // TODO
     ],
