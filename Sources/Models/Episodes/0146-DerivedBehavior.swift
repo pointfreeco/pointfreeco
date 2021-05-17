@@ -3,13 +3,13 @@ import Foundation
 extension Episode {
   public static let ep146_derivedBehavior = Episode(
     blurb: """
-The ability to break down your application into smaller domains that are more understandable on their own in isolation is a universal problem in building applications, and yet there is no default story for doing so in SwiftUI. We explore our best solution to the problem so far before showing how the Composable Architecture bakes its own solution directly into the library.
+The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and a possible solution in vanilla SwiftUI before turning our attention to the Composable Architecture.
 """,
     codeSampleDirectory: "0146-derived-behavior-pt1",
     exercises: _exercises,
     fullVideo: nil,
     id: 146,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1139060977.jpg",
     length: 42*60 + 8,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1620622800),
