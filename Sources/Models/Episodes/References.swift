@@ -142,6 +142,16 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
+  public static let dataEssentialsInSwiftUI = Self(
+    author: "Apple",
+    blurb: """
+      In this WWDC session from 2020 Apple engineers describe how to best wield `@ObservedObject`s and `@StateObject`s. Starting at around 12:30 in the video they hint at the possibility of breaking up large observable objects into smaller "projections", but stop short of showing code on how to accomplish this and never released the [source code](https://developer.apple.com/forums/tags/wwdc20-10040) of the demo project unfortunately. Hopefully WWDC 2021 will bring some solutions 🤞.
+      """,
+    link: "https://developer.apple.com/videos/play/wwdc2020/10040/",
+    publishedAt: referenceDateFormatter.date(from: "2020-06-22"),
+    title: "Data Essentials in SwiftUI"
+  )
+
   public static let deferredPublishers = Episode.Reference(
     author: "@_lksz_",
     blurb: #"""
@@ -384,6 +394,31 @@ As of WWDC 2019, Apple no longer recommends that we "start with a protocol" when
     link: "https://developer.apple.com/videos/play/wwdc2019/415/?time=778",
     publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
     title: "Modern Swift API Design"
+  )
+
+
+  //
+  //
+  //
+
+  public static let childStores = Self(
+    author: "Daniel Peter",
+    blurb: "",
+    link: "https://twitter.com/Oh_Its_Daniel/status/1277187721304342529",
+    publishedAt: referenceDateFormatter.date(from: "2020-06-28"),
+    title: "Child stores"
+  )
+
+
+
+  public static let nestedObservableObjectsInSwiftUI = Self(
+    author: "Joseph Heck",
+    blurb: """
+      This is one of the few articles in the community that addresses how to derive child behavior from a parent. This article focuses on how to notify the parent when child state changes, but extra work must be done if one wants to share state between child and parent.
+      """,
+    link: "https://rhonabwy.com/2021/02/13/nested-observable-objects-in-swiftui/",
+    publishedAt: referenceDateFormatter.date(from: "2021-02-13"),
+    title: "Nested Observable Objects in SwiftUI"
   )
 
   public static let nioRenameThenToFlatMap = Episode.Reference(
@@ -790,6 +825,14 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
     link: "https://www.pointfree.co/blog/posts/22-some-news-about-contramap",
     publishedAt: Date(timeIntervalSince1970: 1540785600),
     title: "Some news about contramap"
+  )
+
+  public static let stateObjectAndObservableObjectInSwiftUI = Self(
+    author: "Matt Moriarity",
+    blurb: "",
+    link: "https://www.mattmoriarity.com/2020-07-03-stateobject-and-observableobject-in-swiftui/",
+    publishedAt: referenceDateFormatter.date(from: "2020-07-03"),
+    title: "@StateObject and @ObservedObject in SwiftUI"
   )
 
   public static func stringsInSwift4(blurb: String? = nil) -> Self {

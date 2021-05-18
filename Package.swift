@@ -37,6 +37,8 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
+    .package(
+      name: "Overture", url: "https://github.com/pointfreeco/swift-overture.git", .exact("0.5.0")),
     .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
@@ -181,6 +183,7 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
+        .product(name: "Overture", package: "Overture"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedTime", package: "Tagged"),
       ],
