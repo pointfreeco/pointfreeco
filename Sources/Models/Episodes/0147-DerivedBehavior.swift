@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
 Let's rebuild last week's moderately complex SwiftUI app in the Composable Architecture to explore its built-in solution for breaking larger domains down into smaller ones using the `scope` operator. We'll then explore a few examples of `scope` in the wild.
 """,
-    codeSampleDirectory: "0146-derived-behavior-pt2",
+    codeSampleDirectory: "0147-derived-behavior-pt2",
     exercises: _exercises,
     id: 147,
     image: "https://i.vimeocdn.com/video/1139060780.jpg",
