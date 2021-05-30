@@ -3,12 +3,12 @@ import Foundation
 extension Episode {
   public static let ep148_derivedBehavior = Episode(
     blurb: """
-The Composable Architecture come with several tools that aid in breaking large domains down into smaller ones, not just `pullback` and `scope`. This week we will see how it can take a small domain and embed it many times in a larger list.
+The Composable Architecture comes with several tools that aid in breaking large domains down into smaller ones, not just `pullback` and `scope`. This week we will see how it can take a small domain and embed it many times in a collection domain.
 """,
     codeSampleDirectory: "0148-derived-behavior-pt3",
     exercises: _exercises,
     id: 148,
-    image: "https://i.vimeocdn.com/video/TODO.jpg",
+    image: "https://i.vimeocdn.com/video/1151159019.jpg",
     length: 43*60 + 7,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1622437200),
