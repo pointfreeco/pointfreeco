@@ -3,7 +3,7 @@ import Foundation
 public let post0058_WWDCSale = BlogPost(
   author: .pointfree,
   blurb: """
-TODO
+The year's biggest Apple event is here, and to celebrate we are offering a 25% discount off the first year for first-time subscribers.
 """,
   contentBlocks: [
     .init(
