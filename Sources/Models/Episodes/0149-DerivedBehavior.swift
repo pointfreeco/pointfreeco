@@ -17,7 +17,7 @@ We will explore two more domain transformations in the Composable Architecture. 
         author: "Luke Redpath",
         blurb: #"""
 Earlier this year, one of our viewers, Luke Redpath, started a Composable Architecture GitHub discussion around the creation of a `SwitchStore`-like view that inspired the design introduced in this episode.
-"""#",
+"""#,
         link: "https://github.com/pointfreeco/swift-composable-architecture/discussions/388",
         publishedAt: referenceDateFormatter.date(from: "2021-02-18"),
         title: "GitHub Discussion: CaseLetStore (for example)"
@@ -38,7 +38,7 @@ private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
 Enhance the `SwitchStore` with a `Default` view that can be tacked to the end of its content block and is evaluated if none of the given `CaseLet` cases match.
-"""#",
+"""#,
     solution: nil
   )
 ]
