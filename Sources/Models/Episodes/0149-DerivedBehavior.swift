@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep149_derivedBehavior = Episode(
     blurb: """
-We will explore two more domain transformations in the Composable Architecture. One comes with the library: the ability to embed a smaller domain, optionally, in a larger domain. Another we will will build from scratch: the ability to embed smaller domains in the cases of an enum!
+We will explore two more domain transformations in the Composable Architecture. One comes with the library: the ability to embed a smaller domain, optionally, in a larger domain. Another we will build from scratch: the ability to embed smaller domains in the cases of an enum!
 """,
     codeSampleDirectory: "0149-derived-behavior-pt4",
     exercises: _exercises,
