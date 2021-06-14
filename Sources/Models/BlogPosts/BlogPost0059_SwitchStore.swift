@@ -98,7 +98,7 @@ Upgrade to the latest version of [swift-composable-architecture](https://github.
       type: .paragraph
     )
   ],
-  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0059-switchstore/poster.png",
+  coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0059-switchstore/poster.png",
   id: 59,
   publishedAt: Date(timeIntervalSince1970: 1623646800),
   title: "Announcing SwitchStore for the Composable Architecture"
