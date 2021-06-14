@@ -8,7 +8,7 @@ We will explore two more domain transformations in the Composable Architecture. 
     codeSampleDirectory: "0149-derived-behavior-pt4",
     exercises: _exercises,
     id: 149,
-    image: "https://i.vimeocdn.com/video/1161677295.jpg", // TODO?
+    image: "https://i.vimeocdn.com/video/1163092790",
     length: 81*60 + 4,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1623646800),
@@ -16,7 +16,7 @@ We will explore two more domain transformations in the Composable Architecture. 
       Episode.Reference(
         author: "Luke Redpath",
         blurb: #"""
-Earlier this year, one of our viewers, Luke Redpath, started a Composable Architecture GitHub discussion around the creation of a `SwitchStore`-like view that inspired the design introduced in this episode.
+Earlier this year, one of our viewers, [Luke Redpath](http://twitter.com/lukeredpath/status/1403333865108873217), started a Composable Architecture GitHub discussion around the creation of a `SwitchStore`-like view that inspired the design introduced in this episode.
 """#,
         link: "https://github.com/pointfreeco/swift-composable-architecture/discussions/388",
         publishedAt: referenceDateFormatter.date(from: "2021-02-18"),
