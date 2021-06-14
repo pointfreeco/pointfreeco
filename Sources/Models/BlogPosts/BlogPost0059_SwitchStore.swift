@@ -93,7 +93,7 @@ By taking advantage of Swift's powerful metadata embedded in every Swift program
 
 ## Try it today
 
-Upgrade to the latest version of [swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0) to immediately gain access to these tools today, and enhance your applications with the expressiveness of enum state. We've already made use of `SwitchStore` to [refactor](https://github.com/pointfreeco/swift-composable-architecture/pull/595#pullrequestreview-683036095) the Tic-Tac-Toe demo to improve its domain modeling by using proper enums instead of two optionals 🥳.
+Upgrade to the latest version of [swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0) to immediately gain access to these tools today, and enhance your applications with the expressiveness of enum state. We've already made use of `SwitchStore` to [refactor](https://github.com/pointfreeco/swift-composable-architecture/pull/595) the Tic-Tac-Toe demo to improve its domain modeling by using proper enums instead of two optionals 🥳.
 """,
       type: .paragraph
     )
