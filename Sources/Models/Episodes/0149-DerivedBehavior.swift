@@ -22,6 +22,15 @@ Earlier this year, one of our viewers, [Luke Redpath](http://twitter.com/lukered
         publishedAt: referenceDateFormatter.date(from: "2021-02-18"),
         title: "GitHub Discussion: CaseLetStore (for example)"
       ),
+      .init(
+        author: "Brandon Williams and Stephen Celis",
+        blurb: """
+          After publishing this episode we released 0.19.0 of the Composable Architecture, bringing `SwitchStore` and `CaseLet` views to all users of the library.
+          """,
+        link: "https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0",
+        publishedAt: referenceDateFormatter.date(from: "2021-06-14"),
+        title: "Composable Architecture Release 0.19.0"
+      )
     ],
     sequence: 149,
     subtitle: "Optionals and Enums",
