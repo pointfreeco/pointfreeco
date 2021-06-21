@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep150_derivedBehavior = Episode(
     blurb: """
-TODO
+We typically rewrite vanilla SwiftUI applications into Composable Architecture applications, but this week we do the opposite! We will explore "deriving behavior" by taking an existing TCA app and rewriting it using only the SwiftUI tools Apple gives us.
 """,
     codeSampleDirectory: "0150-derived-behavior-pt5",
     exercises: _exercises,
