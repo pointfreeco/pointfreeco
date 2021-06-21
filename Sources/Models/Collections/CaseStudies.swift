@@ -32,7 +32,34 @@ extension Episode.Collection {
         whereToGoFromHere: nil
       ),
 
-      .swiftUIAnimations()
+      .swiftUIAnimations(),
+
+      Episode.Collection.Section(
+        blurb: #"""
+The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and solutions, in both vanilla SwiftUI and the Composable Architecture.
+"""#,
+        coreLessons: [
+          .init(episode: .ep146_derivedBehavior),
+          .init(episode: .ep147_derivedBehavior),
+          .init(episode: .ep148_derivedBehavior),
+          .init(episode: .ep149_derivedBehavior),
+          .init(episode: .ep150_derivedBehavior),
+        ],
+        related: [
+          .init(
+            blurb: """
+              For more on the Composable Architecture, be sure to check out the entire collection \
+              where we break down the problems of application architecture to build a solution \
+              from first principles.
+              """,
+            content: .collections([
+              .composableArchitecture
+            ])
+          )
+        ],
+        title: "Derived Behavior",
+        whereToGoFromHere: nil
+      ),
     ],
     title: "Case Studies"
   )
