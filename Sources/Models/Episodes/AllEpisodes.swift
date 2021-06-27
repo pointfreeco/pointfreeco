@@ -151,5 +151,6 @@ extension Episode {
     .ep148_derivedBehavior,
     .ep149_derivedBehavior,
     .ep150_derivedBehavior,
+    .ep151_scopePerformance,
   ]
 }
