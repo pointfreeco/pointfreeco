@@ -36,27 +36,7 @@ In this episode we compare structs and enums in a more abstract way: using algeb
 We've now seen how we can take a feature of structs, properties in particular, explore the equivalent API on enums, and find benefits, like more ergonomic data access. It's time to take things to the next level by taking another, related feature of structs, key paths, and make a case for the enum equivalent.
 """#
         ),
-        .init(
-          blurb: #"""
-Key paths are an incredibly powerful feature of the Swift language: they are compiler-generated bundles of getter-setter pairs and are automatically made available for every struct property. So what happens when we theorize an equivalent feature for every enum case?
-"""#,
-          coreLessons: [
-            .init(episode: .ep87_theCaseForCasePaths_pt1),
-            .init(episode: .ep88_theCaseForCasePaths_pt2),
-            .init(episode: .ep89_theCaseForCasePaths_pt3),
-          ],
-          related: [
-            .init(
-              blurb: #"""
-Let's apply case paths to a real-world use case: application architecture! We'll use case paths to refactor one of the most important operations of our [composable architecture](/collections/composable-architecture).
-"""#,
-              content: .episode(.ep90_composingArchitectureWithCasePaths))
-          ],
-          title: "Case Paths",
-          whereToGoFromHere: #"""
-Next we will explore a real-world use for case paths: SwiftUI and the `Binding` type. Bindings are the fundamental unit that connects your data model to your UI, but one of its core operators for transformation rely on key paths, thus restricting our domain modeling to structs. We will fix this disparity by beefing up the `Binding` type with support for case paths.
-"""#
-        ),
+        .casePaths,
         .init(
           blurb: #"""
 One of the fundamental units of SwiftUI state management is the `Binding` type, which connects your data model to your UI. It even comes with composable, transformable operations that make it really nice to use...with structs. Enums, unfortunately, are completely left out of the equation, which can lead us to model our domains in less than ideal ways. We will dissect the problem and build the tools that Apple leaves out of the framework.
@@ -76,4 +56,28 @@ One of the fundamental units of SwiftUI state management is the `Binding` type, 
       title: "Enums and Structs"
     )
   }
+}
+
+extension Episode.Collection.Section {
+  static let casePaths = Self(
+    blurb: #"""
+Key paths are an incredibly powerful feature of the Swift language: they are compiler-generated bundles of getter-setter pairs and are automatically made available for every struct property. So what happens when we theorize an equivalent feature for every enum case?
+"""#,
+    coreLessons: [
+      .init(episode: .ep87_theCaseForCasePaths_pt1),
+      .init(episode: .ep88_theCaseForCasePaths_pt2),
+      .init(episode: .ep89_theCaseForCasePaths_pt3),
+    ],
+    related: [
+      .init(
+        blurb: #"""
+Let's apply case paths to a real-world use case: application architecture! We'll use case paths to refactor one of the most important operations of our [composable architecture](/collections/composable-architecture).
+"""#,
+        content: .episode(.ep90_composingArchitectureWithCasePaths))
+    ],
+    title: "Case Paths",
+    whereToGoFromHere: #"""
+Next we will explore a real-world use for case paths: SwiftUI and the `Binding` type. Bindings are the fundamental unit that connects your data model to your UI, but one of its core operators for transformation rely on key paths, thus restricting our domain modeling to structs. We will fix this disparity by beefing up the `Binding` type with support for case paths.
+"""#
+  )
 }
