@@ -8,7 +8,7 @@ This week we improve the performance of another part of the Composable Architect
     codeSampleDirectory: "0152-case-path-performance",
     exercises: _exercises,
     id: 152,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1181160605",
     length: 31*60 + 18,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1625461200),
@@ -17,7 +17,7 @@ This week we improve the performance of another part of the Composable Architect
         forSection: .casePaths,
         additionalBlurb: #"""
 The series of episodes in which Case Paths were first theorized and introduced.
-"""#",
+"""#,
         sectionUrl: "https://www.pointfree.co/collections/enums-and-structs/case-paths"
       ),
       .init(
@@ -40,12 +40,12 @@ A complete reflection library for Swift.
       ),
     ],
     sequence: 152,
-    subtitle: "Case Path Reflection",
+    subtitle: "Case Paths",
     title: "Composable Architecture Performance",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "" // TODO
+      bytesLength: 39_003_300,
+      vimeoId: 571082849,
+      vimeoSecret: "82d10ada78766823ba7db0df44545d68e8cd1151"
     )
   )
 }
