@@ -21,6 +21,14 @@ The series of episodes in which Case Paths were first theorized and introduced.
         sectionUrl: "https://www.pointfree.co/collections/enums-and-structs/case-paths"
       ),
       .init(
+        author: "Mike Ash", blurb: #"""
+A post on the official Swift Blog explaining how Swift's reflection APIs work, including calls to functions that live on the runtime metadata, like the enum tag code we use in this week's episode.
+"""#,
+        link: "",
+        publishedAt: referenceDateFormatter.date(from: "2018-09-26"),
+        title: "How Mirror Works"
+      ),
+      .init(
         author: "Jordan Rose",
         blurb: #"""
 A series of posts on the Swift runtime.
