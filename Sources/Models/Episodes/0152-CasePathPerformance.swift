@@ -24,7 +24,7 @@ The series of episodes in which Case Paths were first theorized and introduced.
         author: "Mike Ash", blurb: #"""
 A post on the official Swift Blog explaining how Swift's reflection APIs work, including calls to functions that live on the runtime metadata, like the enum tag code we use in this week's episode.
 """#,
-        link: "",
+        link: "https://swift.org/blog/how-mirror-works/",
         publishedAt: referenceDateFormatter.date(from: "2018-09-26"),
         title: "How Mirror Works"
       ),
