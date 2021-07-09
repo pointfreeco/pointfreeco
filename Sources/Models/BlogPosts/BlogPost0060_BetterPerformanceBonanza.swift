@@ -119,19 +119,19 @@ The larger application can then integrate this domain into a collection of todos
 
 ```swift
 struct AppState {
-  // 1️⃣ Hold onto a collect of todo states
+  // 1️⃣ Hold onto a collection of todo states.
   var todos: [TodoState] = []
 }
 
 enum AppAction {
-  // 2️⃣ An action that can be sent to a todo at a particular index.
+  // 2️⃣ Define an action that can be sent to a todo at a particular index.
   case todo(index: Int, action: TodoAction)
 }
 
 struct AppEnvironment { ... }
 
-// 3️⃣ We can use `forEach` to transform a reducer on a todo into a reducer
-// on a collection of todos, so long as we can provide the correct transformations.
+// 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
+//    so long as we can provide the correct transformations.
 let appReducer = todoReducer.forEach(
   state: \.todos,
   action: /AppAction.todo(index:action:),
@@ -155,28 +155,29 @@ And so the Composable Architecture offered a solution to these problems with its
 With a few changes to our Todos domain, we can leverage this type:
 
 ```diff
-  struct AppState {
-    // 1️⃣ Hold onto a collect of todo states
--   var todos: [TodoState] = []
-+   var todos: IdentifiedArrayOf<TodoState> = []
-  }
+ struct AppState {
+   // 1️⃣ Hold onto a collection of todo states.
+-  var todos: [TodoState] = []
++  var todos: IdentifiedArrayOf<TodoState> = []
+ }
 
-  enum AppAction {
-    // 2️⃣ An action that can be sent to a todo at a particular index.
--   case todo(index: Int, action: TodoAction)
-+   case todo(id: TodoState.ID, action: TodoAction)
-  }
+ enum AppAction {
+-  // 2️⃣ Define an action that can be sent to a todo at a particular index.
+-  case todo(index: Int, action: TodoAction)
++  // 2️⃣ Define an action that can be sent to a todo with a particular id.
++  case todo(id: TodoState.ID, action: TodoAction)
+ }
 
-  struct AppEnvironment { ... }
+ struct AppEnvironment { ... }
 
-  // 3️⃣ We can use `forEach` to transform a reducer on a todo into a reducer
-  // on a collection of todos, so long as we can provide the correct transformations.
-  let appReducer = todoReducer.forEach(
-    state: \.todos,
--   action: /AppAction.todo(index:action:),
-+   action: /AppAction.todo(id:action:),
-    environment: { ... }
-  )
+ // 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
+ //    so long as we can provide the correct transformations.
+ let appReducer = todoReducer.forEach(
+   state: \.todos,
+-  action: /AppAction.todo(index:action:),
++  action: /AppAction.todo(id:action:),
+   environment: { ... }
+ )
 ```
 
 While `IdentifiedArray` solved a real problem on day one, it wasn't without [its issues](https://github.com/pointfreeco/swift-composable-architecture/search?q=identifiedarray&type=issues), and outside the efficiency of reading and modifying elements, it was completely unoptimized.
@@ -185,9 +186,9 @@ Well, this week we've turned our attention to these issues by extracting `Identi
 
 ![IdentifiedArray benchmarks from swift-collections-benchmark](TODO)
 
-In order to avoid some of the pitfalls from earlier releases, we took inspiration from Swift Collections by only partially conforming `IdentifiedArray` to some of the more problematic collection protocols.
+In order to avoid some of the pitfalls from earlier releases, we took inspiration from Swift Collections by only partially conforming `IdentifiedArray` to some of the more problematic collection protocols. While this is a breaking change, it should prevent invariants and bugs, and we hope the changes will not affect most users. If you encounter any issues with the upgrade, or have any questions, please [start a GitHub discussion](https://github.com/pointfreeco/swift-identified-collections/discussions/new).
 
-The latest release of the Composable Architecture already depends on it, so upgrade today and take it for a spin.
+The [latest release](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0) of the Composable Architecture already uses IdentifiedCollections, so upgrade today to take it for a spin.
 
 ## Try them out today!
 
