@@ -83,7 +83,7 @@ List(Array(self.viewModel.todos.enumerated()), id: \.element.id) { index, todo i
 
 This compiles, but we've just moved the performance problem to the view: every time this body is evaluated there's the possibility a whole new array is being allocated.
 
-But even when it is possible to pass an enumerated collection directly to these views, identifying an element of mutable state by an index introduces a number of other problems.
+But even if it were possible to pass an enumerated collection directly to these views, identifying an element of mutable state by an index introduces a number of other problems.
 
 While it's true that we can greatly simplify and improve the performance of any view model methods that mutate an element through its index subscript:
 
