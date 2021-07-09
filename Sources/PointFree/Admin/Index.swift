@@ -10,8 +10,8 @@ import Tuple
 import Views
 
 public let adminEmails: [EmailAddress] = [
-  "mbw234@gmail.com",
-  "stephen.celis@gmail.com"
+  "brandon@pointfree.co",
+  "stephen@pointfree.co"
 ]
 
 func requireAdmin<A>(
