@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0060_BetterPerformanceBonanza = BlogPost(
+public let post0061_BetterPerformanceBonanza = BlogPost(
   author: .pointfree,
   blurb: """
 The past 3 weeks we've shipped 3 library releases focused on improving the performance of your Composable Architecture applications, and more!
@@ -92,103 +92,11 @@ That's over 50x faster than the original! 🤯
 
 You can already see these improvements in [CasePaths 0.4.0](https://github.com/pointfreeco/swift-case-paths/releases/0.4.0), released late last week.
 
-## Identified Arrays 0.1.0
+## Identified Collections 0.1.0
 
-Finally, this week we are releasing a _brand new library_ for a feature that shipped with the Composable Architecture on day one. When we [first open sourced](/blog/posts/41-composable-architecture-the-library) the library, it came with tools that assisted in breaking down larger features that work on collections of state into smaller features that work on individual elements of state. We even dedicated an [episode](/collections/case-studies/derived-behavior/ep148-derived-behavior-collections) to this topic recently.
+Finally, on Monday [we open sourced a _brand new library_](/blog/60-open-sourcing-identified-collections) called [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). This library hosts `IdentifiedArray`, a feature that shipped with [the initial release](/blog/posts/41-composable-architecture-the-library) of the Composable Architecture.
 
-For example, you may have a Todos app that has been broken down so that a particular todo has its own domain and logic:
-
-```swift
-struct TodoState: Identifiable {
-  var description = ""
-  let id: UUID
-  var isComplete = false
-}
-
-enum TodoAction {
-  case descriptionChanged(String)
-  case tappedCheckBox
-}
-
-struct TodoEnvironment { ... }
-
-let todoReducer = Reducer<TodoState, TodoAction, TodoEnvironment> { ... }
-```
-
-The larger application can then integrate this domain into a collection of todos by holding them in state, introducing an action to communicate todo actions to particular elements, and using the `Reducer.forEach` operation to glue it all together:
-
-```swift
-struct AppState {
-  // 1️⃣ Hold onto a collection of todo states.
-  var todos: [TodoState] = []
-}
-
-enum AppAction {
-  // 2️⃣ Define an action that can be sent to a todo at a particular index.
-  case todo(index: Int, action: TodoAction)
-}
-
-struct AppEnvironment { ... }
-
-// 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
-//    so long as we can provide the correct transformations.
-let appReducer = todoReducer.forEach(
-  state: \.todos,
-  action: /AppAction.todo(index:action:),
-  environment: { ... }
-)
-```
-
-Unfortunately, arrays are not a great structure for solving this problem: while index offsets are an efficient means of executing a child domain's logic, they are not stable identifiers. A parent domain can move or remove elements from an array, which means an in-flight effect could deliver its action to the wrong element, or worse, crash the application!
-
-One could avoid these issues by searching for an element with a particular id instead of subscripting into a particular offset:
-
-```swift
-let index = todos.firstIndex(where: { $0.id == id })
-todoReducer.run(&todos[index], todoAction, todoEnvironment)
-```
-
-But this is much less efficient operation, as we may have to traverse the entire array to locate a particular element.
-
-And so the Composable Architecture offered a solution to these problems with its very own data structure, called [`IdentifiedArray`](https://github.com/pointfreeco/swift-composable-architecture/blob/d2240d0e76c1a758dbadbf737ceefc888b2e807c/Sources/ComposableArchitecture/SwiftUI/IdentifiedArray.swift). It evokes SwiftUI's collection-friendly APIs, like `ForEach`, by bundling up a sequence of identifiable elements. Unlike the standard `Array`, identified arrays can efficiently read and modify elements with a particular identifier, which can be performance-critical when managing large collections of elements in state.
-
-With a few changes to our Todos domain, we can leverage this type:
-
-```diff
- struct AppState {
-   // 1️⃣ Hold onto a collection of todo states.
--  var todos: [TodoState] = []
-+  var todos: IdentifiedArrayOf<TodoState> = []
- }
-
- enum AppAction {
--  // 2️⃣ Define an action that can be sent to a todo at a particular index.
--  case todo(index: Int, action: TodoAction)
-+  // 2️⃣ Define an action that can be sent to a todo with a particular id.
-+  case todo(id: TodoState.ID, action: TodoAction)
- }
-
- struct AppEnvironment { ... }
-
- // 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
- //    so long as we can provide the correct transformations.
- let appReducer = todoReducer.forEach(
-   state: \.todos,
--  action: /AppAction.todo(index:action:),
-+  action: /AppAction.todo(id:action:),
-   environment: { ... }
- )
-```
-
-While `IdentifiedArray` solved a real problem on day one, it wasn't without [its issues](https://github.com/pointfreeco/swift-composable-architecture/search?q=identifiedarray&type=issues), and outside the efficiency of reading and modifying elements, it was completely unoptimized.
-
-Well, this week we've turned our attention to these issues by extracting `IdentifiedArray` to its own library: [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). `IdentifiedArray` has been completely rewritten as a safer, more performant wrapper around the `OrderedDictionary` type from Apple's [Swift Collections](https://github.com/apple/swift-collections). It even has similar performance characteristics.
-
-![IdentifiedArray benchmarks from swift-collections-benchmark](TODO)
-
-In order to avoid some of the pitfalls from earlier releases, we took inspiration from Swift Collections by only partially conforming `IdentifiedArray` to some of the more problematic collection protocols. While this is a breaking change, it should prevent invariants and bugs, and we hope the changes will not affect most users. If you encounter any issues with the upgrade, or have any questions, please [start a GitHub discussion](https://github.com/pointfreeco/swift-identified-collections/discussions/new).
-
-The [latest release](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0) of the Composable Architecture already uses IdentifiedCollections, so upgrade today to take it for a spin.
+This data structure has now been extracted to its own package and rewritten to be more performant and correct. Check out [the announcement](/blog/60-open-sourcing-identified-collections) for more details!
 
 ## Try them out today!
 
@@ -198,7 +106,7 @@ If you're building a Composable Architecture application, upgrade to [version 0.
   )
   ],
   coverImage: nil,
-  id: 60,
-  publishedAt: Date(timeIntervalSince1970: 1626066000),
+  id: 61,
+  publishedAt: Date(timeIntervalSince1970: 1626238800),
   title: "Better Performance Bonanza"
 )
