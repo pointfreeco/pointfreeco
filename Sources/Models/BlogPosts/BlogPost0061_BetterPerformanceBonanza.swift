@@ -94,9 +94,9 @@ You can already see these improvements in [CasePaths 0.4.0](https://github.com/p
 
 ## Identified Collections 0.1.0
 
-Finally, on Monday [we open sourced a _brand new library_](/blog/60-open-sourcing-identified-collections) called [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). This library hosts `IdentifiedArray`, a feature that shipped with [the initial release](/blog/posts/41-composable-architecture-the-library) of the Composable Architecture.
+Finally, on Monday [we open sourced a _brand new library_](/blog/posts/60-open-sourcing-identified-collections) called [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). This library hosts `IdentifiedArray`, a feature that shipped with [the initial release](/blog/posts/41-composable-architecture-the-library) of the Composable Architecture.
 
-This data structure has now been extracted to its own package and rewritten to be more performant and correct. Check out [the announcement](/blog/60-open-sourcing-identified-collections) for more details!
+This data structure has now been extracted to its own package and rewritten to be more performant and correct. Check out [the announcement](/blog/posts/60-open-sourcing-identified-collections) for more details!
 
 ## Try them out today!
 
