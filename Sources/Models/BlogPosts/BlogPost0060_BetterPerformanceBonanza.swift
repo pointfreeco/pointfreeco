@@ -3,7 +3,7 @@ import Foundation
 public let post0060_BetterPerformanceBonanza = BlogPost(
   author: .pointfree,
   blurb: """
-The past 3 weeks we've shipped 3 library releases focussed on improving the performance of your Composable Architecture applications, and more!
+The past 3 weeks we've shipped 3 library releases focused on improving the performance of your Composable Architecture applications, and more!
 """,
   contentBlocks: [
   .init(
@@ -12,15 +12,15 @@ This past month we spent time improving the performance of several of our more p
 
 ## Composable Architecture 0.21.0
 
-First, we released a new version of [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), our library for building applications in a consistent and understandable way, with composition, testing, and ergonomics in mind. It included [a number of performance improvements](https://github.com/pointfreeco/swift-composable-architecture/releases/0.20.0) in the architecture's runtime. We reduced the amount of work performed by the store and view store by pushing [a few small changes](https://github.com/pointfreeco/swift-composable-architecture/pull/616). We covered these changes in [a dedicated episode](https://www.pointfree.co/episodes/ep151-composable-architecture-performance-view-stores-and-scoping) that both identified the problem and worked through the solution.
+First, we released a [new version](https://github.com/pointfreeco/swift-composable-architecture/releases/0.20.0) of the Composable Architecture, our library for building applications in a consistent and understandable way, with composition, testing, and ergonomics in mind. It includes a number of performance improvements in the architecture's runtime, which were covered in a [dedicated episode](/episodes/ep151-composable-architecture-performance-view-stores-and-scoping). In particular we [reduced](https://github.com/pointfreeco/swift-composable-architecture/pull/616) the number of times scoping transformations and equality operators are invoked. This helps massively [reduce](https://github.com/pointfreeco/swift-composable-architecture/pull/616/files#diff-7ab38c8d80571066ebf95b63685ffdafaa82c427dee15c78672d5576ebe802f6L197-R199) the work performed for well-modularized applications.
 
-While we made some great strides in this release, we did note that there was still more room for improvement, and a member of the community quickly came in to close the gap! Just a day later, [Pat Brown](https://github.com/iampatbrown) submitted [a pull request](https://github.com/pointfreeco/swift-composable-architecture/pull/624) that completely eliminated extra work being done in the view store. 😃
+While we made some great strides in this release, we did note that there was still more room for improvement, and a member of the community quickly came in to close the gap! Just a day later, [Pat Brown](https://github.com/iampatbrown) submitted [a pull request](https://github.com/pointfreeco/swift-composable-architecture/pull/624) that fully minimized the number of equality checks performed in the view store. 😃
 
 These changes have since been merged and today will be available in [a new version](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0).
 
 ## Case Paths 0.4.0
 
-Next, we released a new version of [Case Paths](https://github.com/pointfreeco/swift-case-paths), our library that brings the power and ergonomics of key paths to enums. While key paths let you write code that abstracts over the field of a struct, case paths let you write code that abstracts over a particular case of an enum. Case paths are quite useful in their own right, but they also play an integral part in modularizing applications, especially those written in the Composable Architecture, which comes with many compositional operations that take key paths and case paths.
+Next, we released a new version of [Case Paths](https://github.com/pointfreeco/swift-case-paths), our library that brings the power and ergonomics of key paths to enums. While key paths let you write code that abstracts over a field of a struct, case paths let you write code that abstracts over a particular case of an enum. Case paths are quite useful in their own right, but they also play an integral part in modularizing applications, especially those written in the Composable Architecture, which comes with many compositional operations that take key paths and case paths.
 
 While a key path consists of a getter and setter, a case path consists of a pair of functions that can attempt to extract a value from, or embed a value in, a particular enum. For example, given an enum with a couple cases:
 
@@ -49,7 +49,7 @@ This is, unfortunately, a lot of boilerplate to write and maintain for what shou
 \String.count
 ```
 
-And this is why we [used reflection and a custom operator](https://www.pointfree.co/episodes/ep89-case-paths-for-free) to make case paths just as ergonomic and concise:
+And this is why we [used reflection and a custom operator](/episodes/ep89-case-paths-for-free) to make case paths just as ergonomic and concise:
 
 ```swift
 /AppState.loggedIn
@@ -64,7 +64,7 @@ Manual       41.000 ns ± 243.49 %     1000000
 Reflection 8169.000 ns ±  55.03 %      106802
 ```
 
-So we focused on closing the gap by [utilizing the Swift runtime](https://github.com/pointfreeco/swift-case-paths/pull/35) metadata, a change that shipped in [a new version](https://github.com/pointfreeco/swift-case-paths/releases/0.3.0). We covered these improvements in [last week's episode](https://www.pointfree.co/episodes/ep152-composable-architecture-performance-case-paths).
+So we focused on closing the gap by [utilizing the Swift runtime](https://github.com/pointfreeco/swift-case-paths/pull/35) metadata, a change that shipped in [a new version](https://github.com/pointfreeco/swift-case-paths/releases/0.3.0). We covered these improvements in [last week's episode](/episodes/ep152-composable-architecture-performance-case-paths).
 
 With these changes, the happy path of extracting a value was over twice as fast as it was previously, while the path for failure was almost as fast as manual failure.
 
@@ -94,7 +94,7 @@ You can already see these improvements in [CasePaths 0.4.0](https://github.com/p
 
 ## Identified Arrays 0.1.0
 
-Finally, this week we are releasing a _brand new library_ for a feature that shipped with the Composable Architecture on day one. When we [first open sourced](/blog/posts/41-composable-architecture-the-library) the library, it came with tools that assisted in breaking down larger features that work on collections of state into smaller features that work on individual elements of state.
+Finally, this week we are releasing a _brand new library_ for a feature that shipped with the Composable Architecture on day one. When we [first open sourced](/blog/posts/41-composable-architecture-the-library) the library, it came with tools that assisted in breaking down larger features that work on collections of state into smaller features that work on individual elements of state. We even dedicated an [episode](/collections/case-studies/derived-behavior/ep148-derived-behavior-collections) to this topic recently.
 
 For example, you may have a Todos app that has been broken down so that a particular todo has its own domain and logic:
 
@@ -119,18 +119,19 @@ The larger application can then integrate this domain into a collection of todos
 
 ```swift
 struct AppState {
+  // 1️⃣ Hold onto a collect of todo states
   var todos: [TodoState] = []
 }
 
 enum AppAction {
-  // An action that can be sent to a todo at a particular offset.
+  // 2️⃣ An action that can be sent to a todo at a particular index.
   case todo(index: Int, action: TodoAction)
 }
 
 struct AppEnvironment { ... }
 
-// We can use `forEach` to transform a reducer on a todo into a reducer on a array of
-// todos, so long as we can provide the correct transformations.
+// 3️⃣ We can use `forEach` to transform a reducer on a todo into a reducer
+// on a collection of todos, so long as we can provide the correct transformations.
 let appReducer = todoReducer.forEach(
   state: \.todos,
   action: /AppAction.todo(index:action:),
@@ -153,25 +154,29 @@ And so the Composable Architecture offered a solution to these problems with its
 
 With a few changes to our Todos domain, we can leverage this type:
 
-```swift
-struct AppState {
-  var todos: IdentifiedArrayOf<TodoState> = []
-}
+```diff
+  struct AppState {
+    // 1️⃣ Hold onto a collect of todo states
+-   var todos: [TodoState] = []
++   var todos: IdentifiedArrayOf<TodoState> = []
+  }
 
-enum AppAction {
-  // An action that can be sent to a todo with a particular id.
-  case todo(id: TodoState.ID, action: TodoAction)
-}
+  enum AppAction {
+    // 2️⃣ An action that can be sent to a todo at a particular index.
+-   case todo(index: Int, action: TodoAction)
++   case todo(id: TodoState.ID, action: TodoAction)
+  }
 
-struct AppEnvironment { ... }
+  struct AppEnvironment { ... }
 
-// The `forEach` operation works just as well for identified arrays, but the action
-// identifies an element by its id, not offset.
-let appReducer = todoReducer.forEach(
-  state: \.todos,
-  action: /AppAction.todo(id:action:),
-  environment: { ... }
-)
+  // 3️⃣ We can use `forEach` to transform a reducer on a todo into a reducer
+  // on a collection of todos, so long as we can provide the correct transformations.
+  let appReducer = todoReducer.forEach(
+    state: \.todos,
+-   action: /AppAction.todo(index:action:),
++   action: /AppAction.todo(id:action:),
+    environment: { ... }
+  )
 ```
 
 While `IdentifiedArray` solved a real problem on day one, it wasn't without [its issues](https://github.com/pointfreeco/swift-composable-architecture/search?q=identifiedarray&type=issues), and outside the efficiency of reading and modifying elements, it was completely unoptimized.
