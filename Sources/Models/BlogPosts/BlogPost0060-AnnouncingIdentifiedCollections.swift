@@ -46,8 +46,8 @@ enum AppAction {
 
 struct AppEnvironment { ... }
 
-// 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
-//    so long as we can provide the correct transformations.
+// 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a
+// collection of todos, so long as we can provide the correct transformations.
 let appReducer = todoReducer.forEach(
   state: \.todos,
   action: /AppAction.todo(index:action:),
@@ -86,8 +86,8 @@ With a few changes to our Todos domain, we can leverage this type:
 
  struct AppEnvironment { ... }
 
- // 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a collection of todos,
- //    so long as we can provide the correct transformations.
+ // 3️⃣ Use `forEach` to transform a reducer on a todo into a reducer on a
+ // collection of todos, so long as we can provide the correct transformations.
  let appReducer = todoReducer.forEach(
    state: \.todos,
 -  action: /AppAction.todo(index:action:),
@@ -98,13 +98,13 @@ With a few changes to our Todos domain, we can leverage this type:
 
 And now we can avoid all of the issues around indices and performance associated with standard arrays.
 
-While `IdentifiedArray` solved a real problem on day one, it wasn't without [its issues](https://github.com/pointfreeco/swift-composable-architecture/search?q=identifiedarray&type=issues), and beyond the step it took to efficiently read and modify elements by their identifiers, it was completely unoptimized.
+While `IdentifiedArray` solved a real problem on day one, it wasn't without [its issues](https://github.com/pointfreeco/swift-composable-architecture/search?q=identifiedarray&type=issues). Its original implementation made it easy to break the semantics of the type (e.g. having exactly at most one element for each id), and it was mostly unoptimized causing it to have quite bad performance characteristics for certain collection operations.
 
 Well, we've turned our attention to these issues by extracting `IdentifiedArray` to its own library: [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). In it, `IdentifiedArray` has been completely rewritten as a safer, more performant wrapper around the `OrderedDictionary` type from Apple's [Swift Collections](https://github.com/apple/swift-collections). It even has similar performance characteristics.
 
 ![IdentifiedArray benchmarks from swift-collections-benchmark](TODO)
 
-In order to avoid some of the pitfalls from the previous version of `IdentifiedArray` that shipped with the Composable Architecture, we [took inspiration](https://github.com/apple/swift-collections/blob/3426dba9ee5c9f8e4981b0fc9d39a818d36eec28/Documentation/OrderedDictionary.md#sequence-and-collection-operations) from Swift Collections by only partially conforming `IdentifiedArray` to some of collection protocols that are more problematic in producing invariants. While this is a breaking change, it should help prevent a whole slough of bugs, and we hope these changes will not affect most users. If you encounter any issues with the upgrade, or have any questions, please [start a GitHub discussion](https://github.com/pointfreeco/swift-identified-collections/discussions/new).
+In order to avoid some of the pitfalls from the previous version of `IdentifiedArray` that shipped with the Composable Architecture, we [took inspiration](https://github.com/apple/swift-collections/blob/3426dba9ee5c9f8e4981b0fc9d39a818d36eec28/Documentation/OrderedDictionary.md#sequence-and-collection-operations) from Swift Collections by only partially conforming `IdentifiedArray` to some of collection protocols that are more problematic in producing invariants. While this is a breaking change, it should help prevent a whole slew of bugs, and we hope these changes will not affect most users. If you encounter any issues with the upgrade, or have any questions, please [start a GitHub discussion](https://github.com/pointfreeco/swift-identified-collections/discussions/new).
 
 ## Try it today
 
