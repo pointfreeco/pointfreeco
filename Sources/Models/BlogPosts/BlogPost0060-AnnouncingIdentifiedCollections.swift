@@ -65,7 +65,7 @@ class TodosViewModel: ObservableObject {
 
 This code is simple enough, but it can require a full traversal of the array to do its job.
 
-Perhaps it would be more performant to communicate the index back to the view model instead, and then we could mutate the todo directly via its index subscript. But this makes the view more complicated:
+Perhaps it would be more performant for a row to communicate its index back to the view model instead, and then it could mutate the todo directly via its index subscript. But this makes the view more complicated:
 
 ```swift
 List(self.viewModel.todos.enumerated(), id: \.element.id) { index, todo in
