@@ -76,7 +76,7 @@ List(self.viewModel.todos.enumerated(), id: \.element.id) { index, todo in
 This isn't so bad, but at the moment it doesn't even compile. An [evolution proposal](https://github.com/apple/swift-evolution/blob/main/proposals/0312-indexed-and-enumerated-zip-collections.md) may change that soon, but in the meantime `List` and `ForEach` must be passed a `RandomAccessCollection`, which is perhaps most achieved done by constructing another array:
 
 ```swift
-List(Array(self.viewModel.todos.enumerated()), id: \.element.id) {
+List(Array(self.viewModel.todos.enumerated()), id: \.element.id) { index, todo in
   ...
 }
 ```
