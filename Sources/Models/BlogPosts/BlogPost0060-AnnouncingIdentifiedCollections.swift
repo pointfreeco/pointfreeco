@@ -102,7 +102,7 @@ Any asynchronous work that we add to this endpoint must take great care in _not_
 ```swift
 class TodosViewModel: ObservableObject {
   ...
-  func todoCheckboxToggled(at index: Int) {
+  func todoCheckboxToggled(at index: Int) async {
     self.todos[index].isComplete.toggle()
 
     do {
@@ -120,7 +120,7 @@ Whenever you need to access a particular todo after performing some asynchronous
 ```swift
 class TodosViewModel: ObservableObject {
   ...
-  func todoCheckboxToggled(at index: Int) {
+  func todoCheckboxToggled(at index: Int) async {
     self.todos[index].isComplete.toggle()
 
     // 1️⃣ Get a reference to the todo's id before kicking off the async work
@@ -163,7 +163,7 @@ And then you can mutate an element directly via its id-based subscript, no trave
 ```swift
 class TodosViewModel: ObservableObject {
   ...
-  func todoCheckboxToggled(at id: Todo.ID) {
+  func todoCheckboxToggled(at id: Todo.ID) async {
     self.todos[id: id]?.isComplete.toggle()
 
     do {
