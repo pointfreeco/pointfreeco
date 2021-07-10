@@ -12,7 +12,7 @@ We are excited to announce the 0.1.0 release of [Identified Collections](https:/
 
 ## Motivation
 
-When modeling a collection of elements in your application's state, it is easy to reach for a standard `Array`. However, as your application becomes more complex, this approach can break down in many ways.
+When modeling a collection of elements in your application's state, it is easy to reach for a standard `Array`. However, as your application becomes more complex, this approach can break down in many ways, including accidentally making mutations to the wrong elements or even crashing. 😬
 
 For example, if you were building a "Todos" application in SwiftUI, you might model an individual todo in an identifiable value type:
 
@@ -24,7 +24,7 @@ struct Todo: Identifiable {
 }
 ```
 
-And you would hold an array of these todos as a published field in your app's state:
+And you would hold an array of these todos as a published field in your app's view model:
 
 ```swift
 class TodosViewModel: ObservableObject {
@@ -48,7 +48,7 @@ struct TodosView: View {
 
 If your deployment target is set to the latest version of SwiftUI, you may be tempted to pass along a binding to the list so that each row is given mutable access to its todo. This will work for simple cases, but as soon as you introduce side effects, like API clients or analytics, or want to write unit tests, you must push this logic into a view model, instead. And that means each row must be able to communicate its actions back to the view model.
 
-You could do so by introducing some endpoints:
+You could do so by introducing some endpoints on the view model, like when a row's completed toggle is changed:
 
 ```swift
 class TodosViewModel: ObservableObject {
@@ -58,7 +58,7 @@ class TodosViewModel: ObservableObject {
     else { return }
 
     self.todos[index].isComplete.toggle()
-    // TODO: sync with API
+    // TODO: Update todo on backend using an API client
   }
 }
 ```
@@ -92,7 +92,7 @@ class TodosViewModel: ObservableObject {
   ...
   func todoCheckboxToggled(at index: Int) {
     self.todos[index].isComplete.toggle()
-    // TODO: sync with API
+    // TODO: Update todo on backend using an API client
   }
 }
 ```
@@ -105,11 +105,11 @@ class TodosViewModel: ObservableObject {
   func todoCheckboxToggled(at index: Int) {
     self.todos[index].isComplete.toggle()
 
-    self.apiClient.updateTodo(self.todos[index]) { updatedTodo, error in
-      guard let updatedTodo = updatedTodo else { ... }
-
-      // Could update the wrong todo, or crash!
-      self.todos[index] = updatedTodo // ❌
+    do {
+      // ❌ Could update the wrong todo, or crash!
+      self.todos[index] = try await self.apiClient.updateTodo(self.todos[index])
+    } catch {
+      // Handle error
     }
   }
 }
@@ -126,15 +126,18 @@ class TodosViewModel: ObservableObject {
     // 1️⃣ Get a reference to the todo's id before kicking off the async work
     let id = self.todos[index].id
 
-    self.apiClient.updateTodo(self.todos[index]) { updatedTodo, error in
-      guard
-        let updatedTodo = updatedTodo,
-        // 2️⃣ Find the updated index of the todo
-        let updatedIndex = self.todos.firstIndex(where: { $0.id == id })
+    do {
+      // 2️⃣ Update the todo on the backend
+      let updatedTodo = try await self.apiClient.updateTodo(self.todos[index])
+
+      // 3️⃣ Find the updated index of the todo after the async work is done
+      guard let updatedIndex = self.todos.firstIndex(where: { $0.id == id })
       else { ... }
 
-      // 3️⃣ Update the correct todo
+      // 4️⃣ Update the correct todo
       self.todos[updatedIndex] = updatedTodo
+    } catch {
+      // Handle error
     }
   }
 }
@@ -163,11 +166,14 @@ class TodosViewModel: ObservableObject {
   func todoCheckboxToggled(at id: Todo.ID) {
     self.todos[id: id]?.isComplete.toggle()
 
-    self.apiClient.updateTodo(self.todos[index]) { updatedTodo, error in
-      guard let updatedTodo = updatedTodo else { ... }
-
-      self.todos[id: id] = updatedTodo // ✅
+    do {
+      // 1️⃣ Update todo on backend and mutate it in the todos identified array.
+      self.todos[id: id] = try await self.apiClient.updateTodo(self.todos[index])
+    } catch {
+      // Handle error
     }
+
+    // No step 2️⃣ 😆
   }
 }
 ```
@@ -186,7 +192,7 @@ Identified arrays are designed to integrate with SwiftUI applications, as well a
 
 `IdentifiedArray` is a lightweight wrapper around the [`OrderedDictionary`](https://github.com/apple/swift-collections/blob/main/Documentation/OrderedDictionary.md) type from Apple's [Swift Collections](https://github.com/apple/swift-collections). It shares many of the same performance characteristics and design considerations, but is better adapted to solving the problem of holding onto a collection of _identifiable_ elements in your application's state.
 
-`IdentifiedArray` does not expose any of the details of `OrderedDictionary` that may lead to invariants. For example an `OrderedDictionary<ID, Identifiable>` may freely hold a value whose identifier does not match its key.
+`IdentifiedArray` does not expose any of the details of `OrderedDictionary` that may lead to breaking invariants. For example an `OrderedDictionary<ID, Identifiable>` may freely hold a value whose identifier does not match its key or mulitple values could have the same id, and `IdentifiedArray` does not allow for these situations.
 
 And unlike [`OrderedSet`](https://github.com/apple/swift-collections/blob/main/Documentation/OrderedSet.md), `IdentifiedArray` does not require that its `Element` type conforms to `Hashable` protocol, which may be difficult or impossible to do, and introduces questions around the quality of hashing, etc.
 
