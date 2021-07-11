@@ -70,4 +70,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0057_tourOfIsowords,
   post0058_WWDCSale,
   post0059_SwitchStore,
+  post0060_OpenSourcingIdentifiedCollections,
+  post0061_BetterPerformanceBonanza,
 ]
