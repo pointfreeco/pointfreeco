@@ -222,7 +222,7 @@ Head over to the [Identified Collections](https://github.com/pointfreeco/swift-i
       type: .paragraph
     )
   ],
-  coverImage: nil,
+  coverImage: "https://github.com/pointfreeco/swift-identified-collections/raw/main/.github/benchmark.png",
   id: 60,
   publishedAt: Date(timeIntervalSince1970: 1626066000),
   title: "Open Sourcing Identified Collections"
