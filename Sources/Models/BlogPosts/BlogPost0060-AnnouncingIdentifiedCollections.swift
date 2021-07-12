@@ -131,8 +131,7 @@ class TodosViewModel: ObservableObject {
       let updatedTodo = try await self.apiClient.updateTodo(self.todos[index])
 
       // 3️⃣ Find the updated index of the todo after the async work is done
-      guard let updatedIndex = self.todos.firstIndex(where: { $0.id == id })
-      else { ... }
+      let updatedIndex = self.todos.firstIndex(where: { $0.id == id })!
 
       // 4️⃣ Update the correct todo
       self.todos[updatedIndex] = updatedTodo
@@ -168,7 +167,7 @@ class TodosViewModel: ObservableObject {
 
     do {
       // 1️⃣ Update todo on backend and mutate it in the todos identified array.
-      self.todos[id: id] = try await self.apiClient.updateTodo(self.todos[index])
+      self.todos[id: id] = try await self.apiClient.updateTodo(self.todos[id: index]!)
     } catch {
       // Handle error
     }
