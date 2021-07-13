@@ -3,12 +3,12 @@ import Foundation
 public let post0061_BetterPerformanceBonanza = BlogPost(
   author: .pointfree,
   blurb: """
-The past 3 weeks we've shipped 3 library releases focused on improving the performance of your Composable Architecture applications, and more!
+The past 3 weeks we've shipped updates to 3 of our libraries, focused on improving the performance of your Composable Architecture applications, and more!
 """,
   contentBlocks: [
   .init(
     content: #"""
-This past month we spent time improving the performance of several of our more popular libraries that are used in building applications in the Composable Architecture. Let's recap those changes, explore some improvements that came in from the community, and celebrate the release of a branch new library.
+This past month we spent time improving the performance of several of our more popular libraries that are used in building applications in the Composable Architecture. Let's recap those changes, explore some improvements that came in from the community, and celebrate the release of a brand new library.
 
 ## Composable Architecture 0.21.0
 
