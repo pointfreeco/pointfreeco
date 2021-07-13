@@ -16,7 +16,7 @@ First, we released a [new version](https://github.com/pointfreeco/swift-composab
 
 While we made some great strides in this release, we did note that there was still more room for improvement, and a member of the community quickly came in to close the gap! Just a day later, [Pat Brown](https://github.com/iampatbrown) submitted [a pull request](https://github.com/pointfreeco/swift-composable-architecture/pull/624) that fully minimized the number of equality checks performed in the view store. 😃
 
-These changes have since been merged and today will be available in [a new version](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0).
+These changes have since been merged and are already available in [a new version](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0).
 
 ## Case Paths 0.5.0
 
