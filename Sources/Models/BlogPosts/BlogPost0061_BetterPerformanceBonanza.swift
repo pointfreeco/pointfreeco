@@ -18,7 +18,7 @@ While we made some great strides in this release, we did note that there was sti
 
 These changes have since been merged and today will be available in [a new version](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0).
 
-## Case Paths 0.4.0
+## Case Paths 0.5.0
 
 Next, we released a new version of [Case Paths](https://github.com/pointfreeco/swift-case-paths), our library that brings the power and ergonomics of key paths to enums. While key paths let you write code that abstracts over a field of a struct, case paths let you write code that abstracts over a particular case of an enum. Case paths are quite useful in their own right, but they also play an integral part in modularizing applications, especially those written in the Composable Architecture, which comes with many compositional operations that take key paths and case paths.
 
@@ -77,7 +77,7 @@ Manual: Failure       36.000 ns ± 608.33 %    1000000
 Reflection: Failure   80.000 ns ± 588.42 %    1000000
 ```
 
-But it gets even better! Again, shortly after release, a member of the community stepped in to make case path reflection almost as fast as the manual alternative. [Rob Mayoff](https://twitter.com/rmayoff) dove deeper into the Swift runtime and surfaced with [a pull request](https://github.com/pointfreeco/swift-case-paths/pull/36) that leverages runtime functionality that can extract a value from an enum case without any of the reflection overhead:
+But it gets even better! Again, shortly after release, a member of the community stepped in to make case path reflection almost as fast as the manual alternative. [Rob Mayoff](https://twitter.com/rmayoff) dove deeper into the Swift runtime and surfaced with two pull requests ([#36](https://github.com/pointfreeco/swift-case-paths/pull/36), [#37](https://github.com/pointfreeco/swift-case-paths/pull/37)) that leverage runtime functionality that can extract a value from an enum case without _any_ of the reflection overhead:
 
 ```
 name               time       std        iterations
@@ -90,17 +90,17 @@ Failure.Reflection  82.000 ns ± 135.63 %    1000000
 
 That's over 50x faster than the original! 🤯
 
-You can already see these improvements in [CasePaths 0.4.0](https://github.com/pointfreeco/swift-case-paths/releases/0.4.0), released late last week.
+You can already see these improvements in [CasePaths 0.5.0](https://github.com/pointfreeco/swift-case-paths/releases/0.5.0), released yesterday.
 
 ## Identified Collections 0.1.0
 
-Finally, on Monday [we open sourced a _brand new library_](/blog/posts/60-open-sourcing-identified-collections) called [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). This library hosts `IdentifiedArray`, a feature that shipped with [the initial release](/blog/posts/41-composable-architecture-the-library) of the Composable Architecture.
+Finally, on Monday [we open sourced a _brand new library_](/blog/posts/60-open-sourcing-identified-collections) called [IdentifiedCollections](https://github.com/pointfreeco/swift-identified-collections). This library hosts `IdentifiedArray`, a type that shipped with [the initial release](/blog/posts/41-composable-architecture-the-library) of the Composable Architecture.
 
 This data structure has now been extracted to its own package and rewritten to be more performant and correct. Check out [the announcement](/blog/posts/60-open-sourcing-identified-collections) for more details!
 
 ## Try them out today!
 
-If you're building a Composable Architecture application, upgrade to [version 0.21.0](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0) today to see all of these improvements. Or even if you don't use the Composable Architecture, you may find [CasePaths 0.4.0](https://github.com/pointfreeco/swift-case-paths/releases/0.4.0) and [IdentifiedCollections 0.1.0](https://github.com/pointfreeco/swift-identified-collections/releases/0.1.0) useful on their own.
+If you're building a Composable Architecture application, upgrade to [version 0.21.0](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0) today to see all of these improvements. Or even if you don't use the Composable Architecture, you may find [CasePaths 0.5.0](https://github.com/pointfreeco/swift-case-paths/releases/0.5.0) and [IdentifiedCollections 0.1.0](https://github.com/pointfreeco/swift-identified-collections/releases/0.1.0) useful on their own.
 """#,
     type: .paragraph
   )
