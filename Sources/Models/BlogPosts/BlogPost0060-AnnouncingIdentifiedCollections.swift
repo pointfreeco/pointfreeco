@@ -204,9 +204,20 @@ var numbers = IdentifiedArray(id: \Int.self)
 ## Performance
 
 `IdentifiedArray` is designed to match the performance characteristics of `OrderedDictionary`. It has been benchmarked with [Swift Collections Benchmark](https://github.com/apple/swift-collections-benchmark):
-
-![](https://github.com/pointfreeco/swift-identified-collections/raw/main/.github/benchmark.png)
-
+"""#,
+      type: .paragraph
+    ),
+    .init(
+      content: #"""
+Benchmarking `IdentifiedArray`.
+"""#,
+      type: .image(
+        src: "https://github.com/pointfreeco/swift-identified-collections/raw/main/.github/benchmark.png",
+        sizing: .fullWidth
+      )
+    ),
+    .init(
+      content: #"""
 ## `IdentifiedArray` and the Composable Architecture
 
 This data structure may sound familiar because it first shipped with the initial release of the Composable Architecture. When we [open sourced](/blog/posts/41-composable-architecture-the-library) the library over 15 months ago, it came with tools that assisted in breaking down larger features that work on collections of state into smaller features that work on individual elements of state, and this included `IdentifiedArray`. We even dedicated an [episode](/collections/case-studies/derived-behavior/ep148-derived-behavior-collections) to this topic recently.
@@ -220,7 +231,7 @@ The `IdentifiedArray` that comes with [Identified Collections](https://github.co
 Head over to the [Identified Collections](https://github.com/pointfreeco/swift-identified-collections) repository to try the library out today. If you're building an application in the Composable Architecture, the [latest release](https://github.com/pointfreeco/swift-composable-architecture/releases/0.21.0) already uses Identified Collections, so upgrade today and take it for a spin.
 """#,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: "https://github.com/pointfreeco/swift-identified-collections/raw/main/.github/benchmark.png",
   id: 60,
