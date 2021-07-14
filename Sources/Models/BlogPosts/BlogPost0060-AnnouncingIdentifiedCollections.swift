@@ -167,7 +167,7 @@ class TodosViewModel: ObservableObject {
 
     do {
       // 1️⃣ Update todo on backend and mutate it in the todos identified array.
-      self.todos[id: id] = try await self.apiClient.updateTodo(self.todos[id: index]!)
+      self.todos[id: id] = try await self.apiClient.updateTodo(self.todos[id: id]!)
     } catch {
       // Handle error
     }
