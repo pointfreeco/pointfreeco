@@ -153,5 +153,6 @@ extension Episode {
     .ep150_derivedBehavior,
     .ep151_scopePerformance,
     .ep152_casePathPerformance,
+    .ep153_asyncRefreshableSwiftUI,
   ]
 }
