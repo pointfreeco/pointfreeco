@@ -36,13 +36,13 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
-    .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
+    .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("f016529")),
     .package(
       name: "Overture", url: "https://github.com/pointfreeco/swift-overture.git", .exact("0.5.0")),
     .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
-    .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("148acf4")),
+    .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("2e23f76")),
     .package(name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [

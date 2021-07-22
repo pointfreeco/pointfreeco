@@ -178,7 +178,7 @@ extension Html.Application {
 
 public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
-    conn
+    return conn
       |> respond(
         body: Current.renderXml(view(conn.data)),
         contentType: contentType
