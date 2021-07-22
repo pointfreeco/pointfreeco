@@ -43,7 +43,7 @@ extension Environment {
     gitHub: .some(.mock),
     logger: .mock,
     mailgun: .mock,
-    renderHtml: Html.render,
+    renderHtml: { Html.render($0) },
     renderXml: Html._xmlRender,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
