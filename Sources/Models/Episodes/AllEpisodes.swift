@@ -154,5 +154,6 @@ extension Episode {
     .ep151_scopePerformance,
     .ep152_casePathPerformance,
     .ep153_asyncRefreshableSwiftUI,
+    .ep154_asyncRefreshableTCA,
   ]
 }
