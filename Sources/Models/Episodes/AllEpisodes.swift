@@ -156,5 +156,6 @@ extension Episode {
     .ep153_asyncRefreshableSwiftUI,
     .ep154_asyncRefreshableTCA,
     .ep155_focusState,
+    .ep156_searchable,
   ]
 }
