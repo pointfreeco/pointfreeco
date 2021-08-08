@@ -1038,6 +1038,18 @@ In the first ever [try! Swift](http://tryswift.co) conference, Yasuhiro Inami gi
     title: "Parser Combinators in Swift"
   )
 
+  public static let pullToRefreshInSwiftUIWithRefreshable = Self(
+    author: "Sarun Wongpatcharapakorn",
+    blurb: """
+      A comprehensive look at the `.refreshable` view modifier in SwiftUI, including some topics we did not cover in this episode such as the new `.refresh` environment variable that allows you to add refreshable functionality to any view, not just lists.
+
+      > SwiftUI got a native way to add UIRefreshControl in iOS 15. Let's find out how to add it in the list view and even your custom view.
+      """,
+    link: "https://sarunw.com/posts/pull-to-refresh-in-swiftui/",
+    publishedAt: referenceDateFormatter.date(from: "2021-06-09"),
+    title: "Pull to refresh in SwiftUI with refreshable"
+  )
+
   public static let taggedSecondsAndMilliseconds = Episode.Reference(
     author: "Brandon Williams",
     blurb: """

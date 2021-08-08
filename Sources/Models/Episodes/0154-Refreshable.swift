@@ -22,6 +22,7 @@ A WWDC session covering what's new in SwiftUI this year, including the `refresha
         publishedAt: referenceDateFormatter.date(from: "2021-06-08"),
         title: "What's new in SwiftUI"
       ),
+      .pullToRefreshInSwiftUIWithRefreshable,
       Episode.Reference(
         author: nil,
         blurb: #"""

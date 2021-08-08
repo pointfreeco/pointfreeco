@@ -8,7 +8,7 @@ Let's develop a new application from scratch to explore SwiftUI's new `.searchab
     codeSampleDirectory: "0156-searchable-pt1",
     exercises: _exercises,
     id: 156,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1209772277",
     length: 41*60 + 11,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1628485200),
@@ -22,6 +22,17 @@ A WWDC session exploring the `.searchable` view modifier.
         publishedAt: referenceDateFormatter.date(from: "2021-06-09"),
         title: "Craft search experiences in SwiftUI"
       ),
+      .init(
+        author: "Sarun Wongpatcharapakorn",
+        blurb: """
+          A comprehensive article explaining the full `.searchable` API, including some things we did not cover in this episode, such as the `.dismissSearch` environment value and search completions.
+
+          > SwiftUI finally got native search support in iOS 15. We can add search functionality to any navigation view with the new searchable modifier. Let's explore its capability and limitation.
+          """,
+        link: "https://sarunw.com/posts/searchable-in-swiftui/",
+        publishedAt: referenceDateFormatter.date(from: "2021-07-07"),
+        title: "Searchable modifier in SwiftUI"
+      ),
       Episode.Reference(
         author: nil,
         blurb: #"""
@@ -29,7 +40,7 @@ Documentation for the `.searchable` view modifier.
 """#,
         link: "https://developer.apple.com/documentation/swiftui/view/searchable(_:text:placement:suggestions:)-7g7oo",
         publishedAt: nil,
-        title: "`FocusState`"
+        title: "`searchable(_:text:placement:suggestions:)`"
       ),
     ],
     sequence: 156,
