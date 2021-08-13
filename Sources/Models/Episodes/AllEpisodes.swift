@@ -157,5 +157,6 @@ extension Episode {
     .ep154_asyncRefreshableTCA,
     .ep155_focusState,
     .ep156_searchable,
+    .ep157_searchable,
   ]
 }
