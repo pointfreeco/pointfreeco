@@ -76,7 +76,7 @@ WWDC introduced another search-related API that we didn't have time to explore, 
 ```
 
 Use this API to introduce the ability for a user to fire off a search by submitting the current query string to the local search endpoint from the previous exercise.
-"""#",
+"""#,
     solution: nil
   ),
   .init(
