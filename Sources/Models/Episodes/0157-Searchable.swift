@@ -8,7 +8,7 @@ We finish our search-based application by adding and controlling another MapKit 
     codeSampleDirectory: "0157-searchable-pt2",
     exercises: _exercises,
     id: 157,
-    image: "TODO",
+    image: "https://i.vimeocdn.com/video/1215179301",
     length: 57*60 + 40,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1629090000),
