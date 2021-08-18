@@ -4,6 +4,7 @@ extension Episode.Collection {
     .caseStudies,
     .swiftUI,
     .dependencies,
+    .wwdc,
     .parsing,
     .combine,
     .tours,
