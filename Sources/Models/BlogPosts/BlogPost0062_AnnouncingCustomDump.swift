@@ -288,14 +288,17 @@ XCTAssertNoDifference failed: …
 
 ## Case Studies
 
+The Custom Dump library was first conceived as a tool for our other library, the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). That library ships with a debugging helper on reducers that prints the diff of state changes everytime an action is sent into the system, as well as an assertion helper that helps you write comprehensive tests on your features, giving you a nicely formatted failure message when an assertion fails.
 
+When we decided to extract that functionality into its own library, [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), we knew we wanted to make a lot of improvements. The output of the debug and assertion helpers, while helpful, is very verbose. If your feature's state is large, then every single field and sub-field is printed, even if nothing changed.
 
+We have greatly improved the ergonomics of dumping and diffing in the Custom Dump library, which now the Composable Architecture leverages, and below we have just a few examples of how the ergnomics of the debug and assertion helpers has improved.
 
 ### Tic-Tac-Toe
 
 The [Tic-Tac-Toe](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/TicTacToe) example application shows how to build a multi-screen, modularized application with the Composable Architecture.
 
-Before:
+The state of the application holds a puzzle board, which consists of a two dimension array of X's and O's, representing the players' moves. Previously, the full two dimensional array would be dumped when using the reducer debug helper, even if only a single element was changed. For example, when a cell was tapped:
 
 ```diff
 received action:
@@ -339,7 +342,7 @@ received action:
   )
 ```
 
-After:
+With the improvements that Custom Dump brings a lot of that state is now collapsed so that we can focus on just the small piece of state that did change:
 
 ```diff
 received action:
@@ -375,15 +378,11 @@ received action:
   )
 ```
 
-
-
-
-
 ### Todos
 
-The [Todos](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/Todos) demo shows how to build a classic application using the Composable Architecture.
+The [Todos](https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/Todos) demo shows how to build a classic application using the Composable Architecture. The state of the todos application can potentially hold many, many todos, and so previously when using the debug helper the entire collection would be dumped to the console.
 
-Before:
+For example, if we had 4 todos in our list and we checked one of them off, the diff output would be the following 40 lines, which barely fits on the screen at once:
 
 ```diff
 received action:
@@ -430,7 +429,7 @@ received action:
   )
 ```
 
-After:
+But now, with the new Custom Dump library, extra work is done to collapse elements of collections that do not change, leading to much shorter, more concise outputs and diffs. Checking off the same todo results in only 18 lines of diff, making it very clear exactly what changed:
 
 ```diff
 received action:
@@ -456,8 +455,9 @@ received action:
 
 ### isowords
 
+[isowords](https://www.isowords.xyz) is a word game built in SwiftUI and the Composable Architecture, which we [open sourced](https://github.com/pointfreeco/isowords) earlier this year. It is a large application, consisting of many screens and the game domain is quite complex, making use of a 3-dimensional array of values to represent a cube of letters.
 
-Before:
+Printing the state for every action sent in this application massively bloated our logs. Each action resulted in nearly 2,000 lines being printed to the console, even if just a tiny bit of state changed. The diff is so massive that we have hidden a sample of it below:
 
 <details>
   <summary>Click to see diff!</summary>
@@ -2251,8 +2251,7 @@ received action:
 
 </details>
 
-
-After:
+With the new improvements from [Custom Dump](https://github.com/pointfreeco/swift-custom-dump) this diff is now only 40 lines!
 
 ```diff
 received action:
@@ -2299,10 +2298,11 @@ received action:
   )
 ```
 
-https://gist.github.com/stephencelis/4620c5c7227a10a6b3fc165f1568c9ed
-
+This makes it much easier to see exactly what changed when an action is sent.
 
 ## Try it today
+
+We've already started to get a lot of use out of [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), but we think there is so much more than can be done. Give it a spin today to develop new and interesting debugging and testing tools for your team and others today!
 """#,
       type: .paragraph
     ),
