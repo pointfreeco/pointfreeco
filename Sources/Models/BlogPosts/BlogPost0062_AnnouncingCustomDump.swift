@@ -2304,7 +2304,7 @@ This makes it much easier to see exactly what changed when an action is sent.
 
 ## Try it today
 
-We've already started to get a lot of use out of [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), but we think there is so much more than can be done. Give it a spin today to develop new and interesting debugging and testing tools for your team and others today!
+We've already started to get a lot of use out of [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), but we think there is so much more than can be done. Give it a spin today to develop new, creative debugging and testing tools for your team and others today!
 """#,
       type: .paragraph
     ),
