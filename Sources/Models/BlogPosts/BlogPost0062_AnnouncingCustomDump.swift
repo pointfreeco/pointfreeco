@@ -288,11 +288,11 @@ XCTAssertNoDifference failed: …
 
 ## Case Studies
 
-The Custom Dump library was first conceived as a tool for our other library, the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). That library ships with a debugging helper on reducers that prints the diff of state changes everytime an action is sent into the system, as well as an assertion helper that helps you write comprehensive tests on your features, giving you a nicely formatted failure message when an assertion fails.
+The Custom Dump library was first conceived as a tool for our other library, the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). That library ships with a debugging helper on reducers that prints the diff of state changes every time an action is sent into the system, as well as an assertion helper that helps you write comprehensive tests on your features, giving you a nicely formatted failure message when an assertion fails.
 
 When we decided to extract that functionality into its own library, [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), we knew we wanted to make a lot of improvements. The output of the debug and assertion helpers, while helpful, is very verbose. If your feature's state is large, then every single field and sub-field is printed, even if nothing changed.
 
-We have greatly improved the ergonomics of dumping and diffing in the Custom Dump library, which now the Composable Architecture leverages, and below we have just a few examples of how the ergnomics of the debug and assertion helpers has improved.
+We have greatly improved the ergonomics of dumping and diffing in the Custom Dump library, which now the Composable Architecture leverages, and below we have just a few examples of how the ergonomics of the debug and assertion helpers has improved.
 
 ### Tic-Tac-Toe
 
