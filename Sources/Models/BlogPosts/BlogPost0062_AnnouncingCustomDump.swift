@@ -12,9 +12,9 @@ The ability to dump data structures into nicely formatted, human readable string
 
 That's why we are excited to announce the open sourcing of [Custom Dump](https://github.com/pointfreeco/swift-custom-dump), a collection of tools for debugging, diffing, and testing your application's data structures. It comes with three tools:
 
-* `customDump`: dump any data type into a nicely formatted string.
-* `diff`: visually represent the difference between two values.
-* `XCTAssertNoDifference`: an alternative to `XCTAssertEqual` with better failure messages.
+* [`customDump`](#customDump): dump any data type into a nicely formatted string.
+* [`diff`](#diff): visually represent the difference between two values.
+* [`XCTAssertNoDifference`](#XCTAssertNoDifference): an alternative to `XCTAssertEqual` with better failure messages.
 
 ## Motivation
 
@@ -105,6 +105,8 @@ dump(UNNotificationSetting.disabled)
 
 So, while the `dump` function can be handy, it is often too crude of a tool to use. This is the motivation for the `customDump` function.
 
+<div id="customDump"></div>
+
 ## `customDump`
 
 The `customDump` function emulates the behavior of `dump`, but provides a more refined output of nested structures, optimizing for readability. For example, structs are dumped in a format that more closely mimics the struct syntax in Swift, and arrays are dumped with the indices of each element:
@@ -166,6 +168,8 @@ customDump([1: Result<User, Error>.success(user)])
   )
 ]
 ```
+
+<div id="diff"></div>
 
 ## `diff`
 
@@ -251,6 +255,8 @@ For a real world use case we modified Apple's [Landmarks](https://developer.appl
 </details>
 
 <br>
+
+<div id="XCTAssertNoDifference"></div>
 
 ## `XCTAssertNoDifference`
 
