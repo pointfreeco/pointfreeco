@@ -231,9 +231,6 @@ print(diff(users, other)!)
 
 For a real world use case we modified Apple's [Landmarks](https://developer.apple.com/tutorials/swiftui/working-with-ui-controls) tutorial application to print the before and after state when favoriting a landmark:
 
-<details>
-  <summary>Click to see diff!</summary>
-
 ```diff
   [
     [0]: Landmark(
@@ -252,9 +249,6 @@ For a real world use case we modified Apple's [Landmarks](https://developer.appl
     … (11 unchanged)
   ]
 ```
-</details>
-
-<br>
 
 <div id="XCTAssertNoDifference"></div>
 
@@ -2256,6 +2250,8 @@ received action:
 ```
 
 </details>
+
+<br>
 
 With the new improvements from [Custom Dump](https://github.com/pointfreeco/swift-custom-dump) this diff is now only 40 lines!
 
