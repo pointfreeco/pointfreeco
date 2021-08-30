@@ -8,12 +8,21 @@ Previously we explored how SwiftUI makes building forms a snap, and we contraste
     codeSampleDirectory: "0158-safer-conciser-forms-pt1",
     exercises: _exercises,
     id: 158,
-    image: "https://i.vimeocdn.com/video/1223745684",
+    image: "https://i.vimeocdn.com/video/1228086408",
     length: 29*60 + 28,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1630299600),
     references: [
-      // TODO
+      reference(
+        forSection: .conciseForms,
+        additionalBlurb: "",
+        sectionUrl: "https://www.pointfree.co/collections/case-studies/concise-forms"
+      ),
+      reference(
+        forCollection: .composableArchitecture,
+        additionalBlurb: "",
+        collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
+      ),
     ],
     sequence: 158,
     subtitle: "Part 1",

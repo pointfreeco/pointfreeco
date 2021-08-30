@@ -5,33 +5,7 @@ extension Episode.Collection {
       """,
     sections: [
       .swiftUIRedactions(),
-
-      .init(
-        blurb: """
-          Forms and settings screens in applications display lots of editable data at once, but due to how the Composable Architecture is designed this can lead to some boilerplate. We show how to fix this deficiency and make the Composable Architecture as concise as vanilla SwiftUI applications.
-          """,
-        coreLessons: [
-          .init(episode: .ep131_conciseForms),
-          .init(episode: .ep132_conciseForms),
-          .init(episode: .ep133_conciseForms),
-          .init(episode: .ep134_conciseForms),
-        ],
-        related: [
-          .init(
-            blurb: """
-              For more on the Composable Architecture, be sure to check out the entire collection \
-              where we break down the problems of application architecture to build a solution \
-              from first principles.
-              """,
-            content: .collections([
-              .composableArchitecture
-            ])
-          )
-        ],
-        title: "Concise Forms",
-        whereToGoFromHere: nil
-      ),
-
+      .conciseForms,
       .swiftUIAnimations(),
 
       Episode.Collection.Section(
@@ -66,6 +40,32 @@ The ability to break down applications into small domains that are understandabl
 }
 
 extension Episode.Collection.Section {
+  public static let conciseForms = Self(
+    blurb: """
+      Forms and settings screens in applications display lots of editable data at once, but due to how the Composable Architecture is designed this can lead to some boilerplate. We show how to fix this deficiency and make the Composable Architecture as concise as vanilla SwiftUI applications.
+      """,
+    coreLessons: [
+      .init(episode: .ep131_conciseForms),
+      .init(episode: .ep132_conciseForms),
+      .init(episode: .ep133_conciseForms),
+      .init(episode: .ep134_conciseForms),
+    ],
+    related: [
+      .init(
+        blurb: """
+          For more on the Composable Architecture, be sure to check out the entire collection \
+          where we break down the problems of application architecture to build a solution \
+          from first principles.
+          """,
+        content: .collections([
+          .composableArchitecture
+        ])
+      )
+    ],
+    title: "Concise Forms",
+    whereToGoFromHere: nil
+  )
+
   public static func swiftUIRedactions(title: String = "SwiftUI Redactions") -> Self {
     Self(
       blurb: #"""
