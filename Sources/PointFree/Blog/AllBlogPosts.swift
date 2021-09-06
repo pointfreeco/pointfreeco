@@ -73,4 +73,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0060_OpenSourcingIdentifiedCollections,
   post0061_BetterPerformanceBonanza,
   post0062_AnnouncingCustomDump,
+  post0063_SaferConciserForms,
 ]
