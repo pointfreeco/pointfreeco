@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep159_saferConciserForms = Episode(
     blurb: #"""
-We just made the Composable Architecture's concise binding helpers safer, but can we make even more concise? We'll take a suggestion that came from the community and employ even more Swift tricks, like dynamic member lookup, to get things even conciser than vanilla SwiftUI.
+We just made the Composable Architecture's concise binding helpers safer, but can we make them even more concise? We'll start with a suggestion that came from the community and employ even more Swift tricks, like dynamic member lookup, to get things even conciser than vanilla SwiftUI.
 """#,
     codeSampleDirectory: "0159-safer-conciser-forms-pt2",
     exercises: _exercises,
