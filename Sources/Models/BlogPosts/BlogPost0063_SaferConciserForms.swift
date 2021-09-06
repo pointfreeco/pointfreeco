@@ -7,7 +7,7 @@ Today we are improving the Composable Architecture's first-party support for Swi
 """,
   contentBlocks: [
   .init(
-    content: """
+    content: #"""
 Early this year, we did a [series of episodes](/collections/case-studies/concise-forms) on "concise forms." We showed how SwiftUI comes with some amazing tools for handling state through the use of two-way bindings that can be derived from property wrappers like `@State` and `@ObservedObject`. For simple forms it almost feels like magic.
 
 We then compared this to [the Composable Architecture](/collections/composable-architecture), which adopts a "unidirectional" data flow, wherein the only way to mutate state is by sending actions to a runtime store, which holds all of the app's business logic and is responsible for mutating the state inside. From its very first release the Composable Architecture shipped with tools that integrate deeply with SwiftUI applications, including ways of deriving two-way bindings for various SwiftUI controls, by describing a field in state and an action that can mutate it.
@@ -268,7 +268,7 @@ That's over 3x shorter than what we had before!
 ## Say "hi" to safety, and "bye" to even more boilerplate today!
 
 We've just released [version 0.26.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.26.0) of the Composable Architecture, and so you can start simplifying your existing code today. Let us know what you think [on Twitter](https://twitter.com/pointfreeco), or [start a discussion on GitHub](https://github.com/pointfreeco/swift-composable-architecture/discussions/new).
-""",
+"""#,
     type: .paragraph
   )
   ],
