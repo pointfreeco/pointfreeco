@@ -85,7 +85,7 @@ Today we are releasing first-party support for concisely handling form data in t
       }
       ```
 
-      And then, we can simplify the settings reducer by tackling on the `form` method, which handle these field mutations for us:
+      And then, we can simplify the settings reducer by tacking on the `form` method, which handle these field mutations for us:
 
       ```swift
       let settingsReducer = Reducer<
