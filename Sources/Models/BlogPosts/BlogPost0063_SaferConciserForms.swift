@@ -160,7 +160,7 @@ let settingsReducer = Reducer<
     return .none
   }
 }
-.binding(action: /SettingsAction.form)
+.binding(action: /SettingsAction.binding)
 ```
 
 And finally, we used a view store helper that simplified the work of deriving a binding by specifying the a path and binding action:
