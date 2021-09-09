@@ -228,7 +228,7 @@ The protocol has a single requirement, which is a static `binding` method that c
 
 With this protocol defined, we can simplify the reducer because we no longer have to specify the `binding` case explicitly:
 
-```
+```swift
 let settingsReducer = Reducer<
   SettingsState, SettingsAction, SettingsEnvironment
 > { state, action, environment in

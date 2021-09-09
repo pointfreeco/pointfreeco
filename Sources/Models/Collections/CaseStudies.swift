@@ -49,6 +49,8 @@ extension Episode.Collection.Section {
       .init(episode: .ep132_conciseForms),
       .init(episode: .ep133_conciseForms),
       .init(episode: .ep134_conciseForms),
+      .init(episode: .ep158_saferConciserForms),
+      .init(episode: .ep159_saferConciserForms),
     ],
     related: [
       .init(

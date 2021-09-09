@@ -14,11 +14,6 @@ Previously we explored how SwiftUI makes building forms a snap, and we contraste
     publishedAt: Date(timeIntervalSince1970: 1630299600),
     references: [
       reference(
-        forSection: .conciseForms,
-        additionalBlurb: "",
-        sectionUrl: "https://www.pointfree.co/collections/case-studies/concise-forms"
-      ),
-      reference(
         forCollection: .composableArchitecture,
         additionalBlurb: "",
         collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
