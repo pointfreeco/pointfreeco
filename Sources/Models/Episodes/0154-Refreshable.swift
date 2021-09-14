@@ -10,7 +10,7 @@ The Composable Architecture does not yet support any of the fancy new concurrenc
     id: 154,
     image: "https://i.vimeocdn.com/video/1198344872",
     length: 34*60 + 52,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1627275600),
     references: [
       Episode.Reference(

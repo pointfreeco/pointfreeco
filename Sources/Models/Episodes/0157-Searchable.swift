@@ -10,7 +10,7 @@ We finish our search-based application by adding and controlling another MapKit 
     id: 157,
     image: "https://i.vimeocdn.com/video/1215179301",
     length: 57*60 + 40,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1629090000),
     references: [
       Episode.Reference(
