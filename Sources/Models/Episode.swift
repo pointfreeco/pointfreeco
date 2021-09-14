@@ -370,7 +370,7 @@ public struct Episode: Equatable {
     public var vimeoSecret: String
 
     public var downloadUrl: String {
-      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=175&download=1"
+      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=174&download=1"
     }
     public var streamingSource: String {
       "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
