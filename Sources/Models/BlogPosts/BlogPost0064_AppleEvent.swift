@@ -3,12 +3,12 @@ import Foundation
 public let post0064_AppleEvent = BlogPost(
   author: .pointfree,
   blurb: """
-We're celebrating the release of Xcode 13 by making all of our WWDC 2021 videos free! Explore SwiftUI's new `.refreshable` and `@FocusState` APIs, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a maps application from scratch using the new `.searchable` API.
+We're celebrating the release of Xcode 13 by making all of our WWDC 2021 videos free! Explore SwiftUI's new `.refreshable` and `@FocusState` APIs, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a map-powered application from scratch using the new `.searchable` API.
 """,
   contentBlocks: [
   .init(
     content: #"""
-We're celebrating the release of Xcode 13 by making all of our [WWDC 2021](/collections/wwdc) videos free! Explore SwiftUI's new `.refreshable` and `@FocusState` features, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a maps application from scratch using the new `.searchable` API:
+We're celebrating the release of Xcode 13 by making all of our [WWDC 2021](/collections/wwdc) videos free! Explore SwiftUI's new `.refreshable` and `@FocusState` features, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a map-powered application from scratch using the new `.searchable` API:
 
 * [Async Refreshable: SwiftUI](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)
 * [Async Refreshable: Composable Architecture](/collections/wwdc/wwdc-2021/ep154-async-refreshable-composable-architecture)
@@ -18,7 +18,7 @@ We're celebrating the release of Xcode 13 by making all of our [WWDC 2021](/coll
 
 ## .refreshable
 
-iOS 15's new `.refreshable` API is a great example of how the conciseness of SwiftUI's declerative syntax and Swift's new concurrency tools can pack a huge punch in a small package. We [begin]((/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)) by exploring how the API works in a vanilla SwiftUI application, including how to cancel in-flight asynchronous work.
+iOS 15's new `.refreshable` API is a great example of how the conciseness of SwiftUI's declarative syntax and Swift's new concurrency tools can pack a huge punch in a small package. We [begin]((/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)) by exploring how the API works in a vanilla SwiftUI application, including how to cancel in-flight asynchronous work.
 
 [Then](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui) we show how the API works in the Composable Architecture. At first it's not clear how to use `.refreshable` with the Composable Architecture because the library does not have support for any of Swift's new concurrency tools (yet!). Luckily the library is extensible enough that we can add support for `.refreshable` without a single change to the internals of the library.
 
