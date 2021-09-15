@@ -69,5 +69,5 @@ Jump start your explorations into some of iOS 15's most exciting new APIs by wat
   coverImage: nil,
   id: 64,
   publishedAt: Date(timeIntervalSince1970: 1631682000),
-  title: "Apple Event"
+  title: "Point Freebies: Swift Concurrency and More"
 )
