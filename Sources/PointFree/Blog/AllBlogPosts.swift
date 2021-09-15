@@ -74,4 +74,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0061_BetterPerformanceBonanza,
   post0062_AnnouncingCustomDump,
   post0063_SaferConciserForms,
+  post0064_AppleEvent,
 ]

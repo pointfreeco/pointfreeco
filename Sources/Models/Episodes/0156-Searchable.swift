@@ -10,7 +10,7 @@ Let's develop a new application from scratch to explore SwiftUI's new `.searchab
     id: 156,
     image: "https://i.vimeocdn.com/video/1209772277",
     length: 41*60 + 11,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1628485200),
     references: [
       Episode.Reference(

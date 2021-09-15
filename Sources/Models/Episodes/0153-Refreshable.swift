@@ -10,7 +10,7 @@ Let's take a look at the new refreshable API in SwiftUI. We will explore how to 
     id: 153,
     image: "https://i.vimeocdn.com/video/1192638572",
     length: 33*60 + 10,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1626670800),
     references: [
       Episode.Reference(

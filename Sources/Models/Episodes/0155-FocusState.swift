@@ -10,7 +10,7 @@ Let's explore another API just announced at WWDC: `@FocusState`. We'll take a si
     id: 155,
     image: "https://i.vimeocdn.com/video/1198344767",
     length: 39*60 + 36,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1627880400),
     references: [
       Episode.Reference(
