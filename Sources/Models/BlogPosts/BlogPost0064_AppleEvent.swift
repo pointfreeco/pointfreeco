@@ -3,7 +3,7 @@ import Foundation
 public let post0064_AppleEvent = BlogPost(
   author: .pointfree,
   blurb: """
-We're celebrating the release of Xcode 13 by making all of our WWDC 2021 videos free! Explore SwiftUI's new `.refreshable` and `@FocusState` APIs, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a map-powered application from scratch using the new `.searchable` API.
+We're celebrating the release of Xcode 13 by making all of our WWDC 2021 videos free! Explore SwiftUI's new refreshable and FocusState APIs, both in the context of vanilla SwiftUI and the Composable Architecture, and learn how to build a map-powered application from scratch using the new searchable API.
 """,
   contentBlocks: [
   .init(
