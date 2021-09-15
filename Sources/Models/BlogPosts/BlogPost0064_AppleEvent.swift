@@ -20,7 +20,7 @@ We're celebrating the release of Xcode 13 by making all of our [WWDC 2021](/coll
 
 iOS 15's new `.refreshable` API is a great example of how the conciseness of SwiftUI's declarative syntax and Swift's new concurrency tools can pack a huge punch in a small package. We [begin]((/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)) by exploring how the API works in a vanilla SwiftUI application, including how to cancel in-flight asynchronous work.
 
-[Then](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui) we show how the API works in the Composable Architecture. At first it's not clear how to use `.refreshable` with the Composable Architecture because the library does not have support for any of Swift's new concurrency tools (yet!). Luckily the library is extensible enough that we can add support for `.refreshable` without a single change to the internals of the library.
+[Then](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui) we show how the API works in the Composable Architecture. At first it's not clear how to use `.refreshable` with the Composable Architecture because the library did not immediately have support for any of Swift's new concurrency tools. Luckily the library is extensible enough that we were able to add support for `.refreshable` without a single change to the internals of the library.
 
 Watch [part 1](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui) and [part 2](/collections/wwdc/wwdc-2021/ep154-async-refreshable-composable-architecture) to learn more.
 
@@ -54,7 +54,7 @@ Watch [part 1](/collections/wwdc/wwdc-2021/ep156-searchable-swiftui-part-1) and 
 
 ## Check it out today
 
-Jump start your explorations into some of iOS 15's most exciting new APIs by watching our deep dives!
+Jump-start your explorations into some of iOS 15's most exciting new APIs by watching our deep dives!
 
 * [Async Refreshable: SwiftUI](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)
 * [Async Refreshable: Composable Architecture](/collections/wwdc/wwdc-2021/ep154-async-refreshable-composable-architecture)
