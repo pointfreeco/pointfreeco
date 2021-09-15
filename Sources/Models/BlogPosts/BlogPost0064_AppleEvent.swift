@@ -15,7 +15,20 @@ We're celebrating the release of Xcode 13 by making all of our [WWDC 2021](/coll
 * [SwiftUI Focus State](/collections/wwdc/wwdc-2021/ep155-swiftui-focus-state)
 * [Searchable SwiftUI: Part 1](/collections/wwdc/wwdc-2021/ep156-searchable-swiftui-part-1)
 * [Searchable SwiftUI: Part 2](/collections/wwdc/wwdc-2021/ep157-searchable-swiftui-part-2)
-
+---
+"""#,
+      type: .paragraph
+    ),
+    .init(
+      content: "",
+      type: .image(
+        src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0064-apple-event/maps.jpg",
+        sizing: .fullWidth
+      )
+    ),
+    .init(
+      content: #"""
+---
 ## .refreshable
 
 iOS 15's new `.refreshable` API is a great example of how the conciseness of SwiftUI's declarative syntax and Swift's new concurrency tools can pack a huge punch in a small package. We [begin]((/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui)) by exploring how the API works in a vanilla SwiftUI application, including how to cancel in-flight asynchronous work.
@@ -66,7 +79,7 @@ Jump-start your explorations into some of iOS 15's most exciting new APIs by wat
     type: .paragraph
   )
   ],
-  coverImage: nil,
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0064-apple-event/maps.jpg",
   id: 64,
   publishedAt: Date(timeIntervalSince1970: 1631682000),
   title: "Point Freebies: Swift Concurrency and More"
