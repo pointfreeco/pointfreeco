@@ -26,13 +26,13 @@ Watch [part 1](/collections/wwdc/wwdc-2021/ep153-async-refreshable-swiftui) and 
 
 ## @FocusState
 
-iOS 15 introduced a declarative API for changing and observing focus in SwiftUI applications. By introducing some `@FocusState` to your view and making use of a simple view modifier you can instantly control the focus of UI controls on screen.
+iOS 15 introduced a declarative API for changing and observing focus in SwiftUI applications. By adding some `@FocusState` to your view and making use of a simple view modifier you can instantly control the focus of UI controls on screen.
 
 However, as soon as you need complex logic to control the focus of your feature, the simplicity starts to break down. Ideally we could model focus state in observable objects, so that we update focus after asynchronous work and write tests, but sadly that is not possible:
 
 ```swift
 class LoginViewModel: ObservableObject {
-  @FocusState var field: Field 🛑
+  @FocusState var field: Field // 🛑 Does not work outside of View
 
   enum Field { case email, password }
 }
@@ -40,7 +40,7 @@ class LoginViewModel: ObservableObject {
 
 So, in the [episode](/collections/wwdc/wwdc-2021/ep155-swiftui-focus-state) we develop techniques that allow us to model focus state in our view models and synchronize that state with the focus state held in views. This allows us to craft nuanced logic to guide how focus changes and we can even write tests.
 
-We also discover that the techniques developed for making vanilla SwiftUI focus state more understandable and testable fit in perfectly with the Composable Architecture too. We can model focus state in our domain's state struct, and then use our new [binding helpers](/blog/posts/63-the-composable-architecture-%EF%B8%8F-swiftui-bindings) to replay changes back and forth between the store and view.
+We also discover that the techniques developed for making vanilla SwiftUI focus state more understandable and testable fit in perfectly with the Composable Architecture. We can model focus state in our domain's state struct, and then use our new [binding helpers](/blog/posts/63-the-composable-architecture-%EF%B8%8F-swiftui-bindings) to replay changes back and forth between the store and view.
 
 Watch the [episode](/collections/wwdc/wwdc-2021/ep155-swiftui-focus-state) to learn more.
 
