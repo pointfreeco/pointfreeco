@@ -160,5 +160,6 @@ extension Episode {
     .ep157_searchable,
     .ep158_saferConciserForms,
     .ep159_saferConciserForms,
+    .ep160_navigationTabsAndAlerts,
   ]
 }
