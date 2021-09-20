@@ -6,8 +6,14 @@ public let post0063_SaferConciserForms = BlogPost(
 Today we are improving the Composable Architecture's first-party support for SwiftUI bindings with a safer, even conciser syntax.
 """,
   contentBlocks: [
-  .init(
-    content: #"""
+    .init(
+      content: #"""
+Due to a problem involving nested bindable state, we have since had to make things slightly less concise by trading dynamic member lookup for a more explicit method: _e.g._ `viewStore.$field` is now `viewStore.binding(\.$field)`. For more information on the change see [this release](https://github.com/pointfreeco/swift-composable-architecture/releases/0.28.0) and [this pull request](https://github.com/pointfreeco/swift-composable-architecture/pull/810).
+"""#,
+      type: .correction
+    ),
+    .init(
+      content: #"""
 Early this year, we did a [series of episodes](/collections/case-studies/concise-forms) on "concise forms." We showed how SwiftUI comes with some amazing tools for handling state through the use of two-way bindings that can be derived from property wrappers like `@State` and `@ObservedObject`. For simple forms it almost feels like magic.
 
 We then compared this to [the Composable Architecture](/collections/composable-architecture), which adopts a "unidirectional" data flow, wherein the only way to mutate state is by sending actions to a runtime store, which holds all of the app's business logic and is responsible for mutating the state inside. From its very first release the Composable Architecture shipped with tools that integrate deeply with SwiftUI applications, including ways of deriving two-way bindings for various SwiftUI controls, by describing a field in state and an action that can mutate it.
@@ -269,8 +275,8 @@ That's over 3x shorter than what we had before!
 
 We've just released [version 0.26.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.26.0) of the Composable Architecture, and so you can start simplifying your existing code today. Let us know what you think [on Twitter](https://twitter.com/pointfreeco), or [start a discussion on GitHub](https://github.com/pointfreeco/swift-composable-architecture/discussions/new).
 """#,
-    type: .paragraph
-  )
+      type: .paragraph
+    )
   ],
   coverImage: nil,
   id: 63,
