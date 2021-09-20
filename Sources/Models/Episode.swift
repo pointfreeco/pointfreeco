@@ -364,13 +364,12 @@ public struct Episode: Equatable {
   }
   
   public struct Video: Codable, Equatable {
-    // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
     public var vimeoId: Int
     public var vimeoSecret: String
 
-    public var downloadUrl: String {
-      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=174&download=1"
+    public func downloadUrl(_ quality: Quality) -> String {
+      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=\(quality.rawValue)&download=1"
     }
     public var streamingSource: String {
       "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
@@ -384,6 +383,13 @@ public struct Episode: Equatable {
       self.bytesLength = bytesLength
       self.vimeoId = vimeoId
       self.vimeoSecret = vimeoSecret
+    }
+
+    public enum Quality: Int {
+      case hd1080 = 175
+      case hd720 = 174
+      case sd540 = 165
+      case sd360 = 164
     }
   }
 }
