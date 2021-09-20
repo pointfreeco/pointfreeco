@@ -20,7 +20,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testFetchEnterpriseAccount() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock }).run.perform().right!!
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }).run.perform().right!!
     let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
 
     let createdAccount = Current.database.createEnterpriseAccount(
@@ -44,7 +44,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsNotTakingSeat() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -63,7 +63,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsTakingSeat() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -82,7 +82,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testUpdateEpisodeProgress() {
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -94,15 +94,14 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(
       Current.database.execute(
-        #"""
+        """
         SELECT *
         FROM "episode_progresses"
-        WHERE "user_id" = $1
-        AND "percent" = $2
-        """#,
-        [user.id.rawValue.uuidString, 20]
+        WHERE "user_id" = \(bind: user.id)
+        AND "percent" = 20
+        """
       )
-        .run.perform().right!.wrapped.array!.count,
+      .run.perform().right!.count,
       1
     )
 
@@ -113,15 +112,14 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(
       Current.database.execute(
-        #"""
+        """
         SELECT *
         FROM "episode_progresses"
-        WHERE "user_id" = $1
-        AND "percent" = $2
-        """#,
-        [user.id.rawValue.uuidString, 20]
+        WHERE "user_id" = \(bind: user.id)
+        AND "percent" = 20
+        """
       )
-        .run.perform().right!.wrapped.array!.count,
+        .run.perform().right!.count,
       1
     )
 
@@ -132,15 +130,14 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     XCTAssertEqual(
       Current.database.execute(
-        #"""
+        """
         SELECT *
         FROM "episode_progresses"
-        WHERE "user_id" = $1
-        AND "percent" = $2
-        """#,
-        [user.id.rawValue.uuidString, 30]
+        WHERE "user_id" = \(bind: user.id)
+        AND "percent" = 30
+        """
       )
-        .run.perform().right!.wrapped.array!.count,
+        .run.perform().right!.count,
       1
     )
   }
@@ -149,7 +146,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -169,7 +166,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   func testFetchEpisodeProgress_NoProgress() throws {
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(.mock, "blob@pointfree.co", { .mock })
+    let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
