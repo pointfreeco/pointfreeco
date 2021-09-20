@@ -8,7 +8,7 @@ In past episodes we took a peek behind the curtains of our recently released iOS
     codeSampleDirectory: "0142-tour-of-isowords-pt1",
     exercises: _exercises,
     id: 142,
-    image: "https://i.vimeocdn.com/video/1114889004.jpg?mw=1100&mh=619&q=70",
+    image: "https://i.vimeocdn.com/video/1114888916-4d6b67205fa264ff95a3e7edb745dc65ccdefa25c1fb0c39749e8258eba52ce9-d?mw=1900&mh=1069&q=70",
     length: 37*60 + 18,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1618808400),

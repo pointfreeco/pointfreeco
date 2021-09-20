@@ -8,7 +8,7 @@ A major source of complexity in our applications is asynchrony. It is a side eff
     codeSampleDirectory: "0140-better-test-dependencies-pt3",
     exercises: _exercises,
     id: 140,
-    image: "https://i.vimeocdn.com/video/1097164145.jpg",
+    image: "https://i.vimeocdn.com/video/1097164049-9fb830524eb9b3b6ce45ba103d9ac0b9de910e056d75cc05be94ff8b103db974-d?mw=1900&mh=1069&q=70",
     length: 40*60 + 40,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1616994000),

@@ -8,7 +8,7 @@ Let's rebuild last week's moderately complex SwiftUI app in the Composable Archi
     codeSampleDirectory: "0147-derived-behavior-pt2",
     exercises: _exercises,
     id: 147,
-    image: "https://i.vimeocdn.com/video/1139060780.jpg",
+    image: "https://i.vimeocdn.com/video/1139060646-e467b23f864ff65ea8e11a469db8cc26769589e8c251c879794677385d495e63-d?mw=1900&mh=1069&q=70",
     length: 45*60 + 17,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1621832400),

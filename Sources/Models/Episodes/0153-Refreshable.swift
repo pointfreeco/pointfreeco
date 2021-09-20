@@ -8,7 +8,7 @@ Let's take a look at the new refreshable API in SwiftUI. We will explore how to 
     codeSampleDirectory: "0153-refreshable-pt1",
     exercises: _exercises,
     id: 153,
-    image: "https://i.vimeocdn.com/video/1192638572",
+    image: "https://i.vimeocdn.com/video/1192638484-e01580490bc523e343f06cca01dc49ac2deaba5252cf88f989927e881a17642f-d?mw=1900&mh=1069&q=70",
     length: 33*60 + 10,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1626670800),

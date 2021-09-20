@@ -8,7 +8,7 @@ It's time to take a look at the other half of the [isowords](https://www.isoword
     codeSampleDirectory: "0144-tour-of-isowords-pt3",
     exercises: _exercises,
     id: 144,
-    image: "https://i.vimeocdn.com/video/1127151808.jpg?mw=1100&mh=619&q=70",
+    image: "https://i.vimeocdn.com/video/1127151718-8c6a3030089c7ab90052de125b62dba6a7856117ffea427a48fd051bc41bc784-d?mw=1900&mh=1069&q=70",
     length: 32*60 + 25,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1620018000),
