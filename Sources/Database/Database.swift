@@ -6,7 +6,6 @@ import Logging
 import Models
 import PointFreePrelude
 import Prelude
-import PostgreSQL
 import PostgresKit
 import Stripe
 import Tagged

@@ -3,7 +3,6 @@ import Either
 import Models
 import ModelsTestSupport
 import PointFreePrelude
-import PostgreSQL
 import Prelude
 
 extension Client {
