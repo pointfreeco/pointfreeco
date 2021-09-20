@@ -9,8 +9,8 @@ Join us for a tour of the code base that powers this very site and see what func
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 325_311_571,
-      downloadUrl: "https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&profile_id=174",
-      streamingSource: "https://player.vimeo.com/video/355115759"
+      vimeoId: 355115759,
+      vimeoSecret: "0f54ad38cc5fd26db2c19cf457d4b427c90e55ca"
     ),
     id: 22,
     image: "https://i.vimeocdn.com/video/807848603.jpg",
@@ -22,8 +22,8 @@ Join us for a tour of the code base that powers this very site and see what func
     title: "A Tour of Point-Free",
     trailerVideo: .init(
       bytesLength: 27_774_800,
-      downloadUrl: "https://player.vimeo.com/external/355115419.hd.mp4?s=8ba4a82f0c043e6dda797a609a9a53f4ab44b057&profile_id=174&download=1",
-      streamingSource: "https://player.vimeo.com/video/355115419"
+      vimeoId: 355115419,
+      vimeoSecret: "8ba4a82f0c043e6dda797a609a9a53f4ab44b057"
     ),
     transcriptBlocks: _transcriptBlocks
   )

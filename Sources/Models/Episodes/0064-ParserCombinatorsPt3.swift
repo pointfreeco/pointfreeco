@@ -27,8 +27,8 @@ Now that we've looked at how to parse multiple values given a single parser, let
     title: "Parser Combinators: Part 3",
     trailerVideo: .init(
       bytesLength: 15830908,
-      downloadUrl: "https://player.vimeo.com/external/348470834.hd.mp4?s=185ff244ef456500852a219970c1a82c73df09d2&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348470834"
+      vimeoId: 348470834,
+      vimeoSecret: "185ff244ef456500852a219970c1a82c73df09d2"
     )
   )
 }

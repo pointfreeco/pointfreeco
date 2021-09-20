@@ -21,8 +21,8 @@ no boilerplate.
     title: "Getters and Key Paths",
     trailerVideo: .init(
       bytesLength: 14_431_137,
-      downloadUrl: "https://player.vimeo.com/external/355113874.hd.mp4?s=0f4e4bfd5f69424f79e6afe2c00cc43c26e1a345&profile_id=174&download=1",
-      streamingSource: "https://player.vimeo.com/video/355113874"
+      vimeoId: 355113874,
+      vimeoSecret: "0f4e4bfd5f69424f79e6afe2c00cc43c26e1a345"
     )
   )
 }

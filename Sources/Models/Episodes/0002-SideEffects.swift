@@ -9,8 +9,8 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
     exercises: [],
     fullVideo: .init(
       bytesLength: 238376744,
-      downloadUrl: "https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&profile_id=174&download=1",
-      streamingSource: "https://player.vimeo.com/video/355115445"
+      vimeoId: 355115445,
+      vimeoSecret: "fa740bb2d49fa51b3cd6c44de1837a093f763f22"
     ),
     id: 2,
     image: "https://i.vimeocdn.com/video/807678088.jpg",
@@ -21,8 +21,8 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
     title: "Side Effects",
     trailerVideo: .init(
       bytesLength: 24127308,
-      downloadUrl: "https://player.vimeo.com/external/354214906.hd.mp4?s=b61f1f35996367def8924fd056ea19c23c328283&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354214906"
+      vimeoId: 354214906,
+      vimeoSecret: "b61f1f35996367def8924fd056ea19c23c328283"
     ),
     transcriptBlocks: _transcriptBlocks
   )

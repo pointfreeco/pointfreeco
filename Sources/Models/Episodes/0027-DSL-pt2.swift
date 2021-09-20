@@ -16,8 +16,8 @@ We finish our introduction to DSLs by adding two new features to our toy example
     title: "Domain‑Specific Languages: Part 2",
     trailerVideo: .init(
       bytesLength: 74226609,
-      downloadUrl: "https://player.vimeo.com/external/351175691.hd.mp4?s=d1ff711dd2d478575c5086396b19c05817ac1489&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351175691"
+      vimeoId: 351175691,
+      vimeoSecret: "d1ff711dd2d478575c5086396b19c05817ac1489"
     )
   )
 }

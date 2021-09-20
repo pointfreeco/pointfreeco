@@ -16,8 +16,8 @@ This week we compare our `Decodable` solution to building random structures with
     title: "Decodable Randomness: Part 2",
     trailerVideo: .init(
       bytesLength: 39431469,
-      downloadUrl: "https://player.vimeo.com/external/351175100.hd.mp4?s=67404341e5b8c4b83894c37e28ba69b2989dfd94&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351175100"
+      vimeoId: 351175100,
+      vimeoSecret: "67404341e5b8c4b83894c37e28ba69b2989dfd94"
     )
   )
 }

@@ -378,18 +378,6 @@ public struct Episode: Equatable {
 
     public init(
       bytesLength: Int,
-      downloadUrl: String,
-      streamingSource: String
-    ) {
-      self.bytesLength = bytesLength
-      self.vimeoId = Int(streamingSource.split(separator: "/").last!)!
-      self.vimeoSecret = String(
-        downloadUrl.components(separatedBy: ".hd.mp4?s=")[1].split(separator: "&")[0]
-      )
-    }
-
-    public init(
-      bytesLength: Int,
       vimeoId: Int,
       vimeoSecret: String
     ) {

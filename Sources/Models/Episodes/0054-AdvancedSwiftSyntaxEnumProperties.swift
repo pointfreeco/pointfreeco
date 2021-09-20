@@ -16,8 +16,8 @@ This week we'll put the finishing touches on our enum property code generation t
     title: "Advanced Swift Syntax Enum Properties",
     trailerVideo: .init(
       bytesLength: 45281185,
-      downloadUrl: "https://player.vimeo.com/external/348478674.hd.mp4?s=bf1106c5109fe019b4c4e197bdedf43541830c59&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348478674"
+      vimeoId: 348478674,
+      vimeoSecret: "bf1106c5109fe019b4c4e197bdedf43541830c59"
     )
   )
 }

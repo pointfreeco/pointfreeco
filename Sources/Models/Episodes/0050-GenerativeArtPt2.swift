@@ -9,8 +9,8 @@ Let's put some finishing touches to our random artwork generator, incorporate it
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 290467801,
-      downloadUrl: "https://player.vimeo.com/external/348480337.hd.mp4?s=8ccbc79a092f485b89ab5bee225ca2d6f324742f&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348480337"
+      vimeoId: 348480337,
+      vimeoSecret: "8ccbc79a092f485b89ab5bee225ca2d6f324742f"
     ),
     id: 50,
     image: "https://i.vimeocdn.com/video/801299326.jpg",
@@ -33,8 +33,8 @@ The artwork used as inspiration in this episode comes from the album cover from 
     title: "Generative Art: Part 2",
     trailerVideo: .init(
       bytesLength: 29107528,
-      downloadUrl: "https://player.vimeo.com/external/348480265.hd.mp4?s=29454a8e7f80c9b26a1cb191662b9d5f8dc16483&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348480265"
+      vimeoId: 348480265,
+      vimeoSecret: "29454a8e7f80c9b26a1cb191662b9d5f8dc16483"
     ),
     transcriptBlocks: _transcriptBlocks
   )

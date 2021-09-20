@@ -10,8 +10,8 @@ Now that we have made randomness both composable _and_ testable, let's have a li
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 334663601,
-      downloadUrl: "https://player.vimeo.com/external/349952492.hd.mp4?s=e693d19bbb328377d8d845a7074769763cf16d9f&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952492"
+      vimeoId: 349952492,
+      vimeoSecret: "e693d19bbb328377d8d845a7074769763cf16d9f"
     ),
     id: 49,
     image: "https://i.vimeocdn.com/video/801299534.jpg",
@@ -43,8 +43,8 @@ We used "bump functions" in this episode to construct functions that are zero ev
     title: "Generative Art: Part 1",
     trailerVideo: .init(
       bytesLength: 56799598,
-      downloadUrl: "https://player.vimeo.com/external/349952489.hd.mp4?s=698f147ce21fc61179c8476f5c29e1de15e76f47&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952489"
+      vimeoId: 349952489,
+      vimeoSecret: "698f147ce21fc61179c8476f5c29e1de15e76f47"
     ),
     transcriptBlocks: _transcriptBlocks
   )

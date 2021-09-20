@@ -30,8 +30,8 @@ We first discussed the idea of equivalence between functions of the form `(A) ->
     title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 59339942,
-      downloadUrl: "https://player.vimeo.com/external/351832614.hd.mp4?s=58db5a30394acaedeba4843d76dca1d211fe7040&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351832614"
+      vimeoId: 351832614,
+      vimeoSecret: "58db5a30394acaedeba4843d76dca1d211fe7040"
     )
   )
 }

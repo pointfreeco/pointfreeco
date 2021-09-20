@@ -27,8 +27,8 @@ Even though `map`, `flatMap` and `zip` pack a punch, there are still many parsin
     title: "Parser Combinators: Part 1",
     trailerVideo: .init(
       bytesLength: 48363466,
-      downloadUrl: "https://player.vimeo.com/external/348470906.hd.mp4?s=5e78d99da66e48e17b5bc98e61fc8c43caa69b0a&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348470906"
+      vimeoId: 348470906,
+      vimeoSecret: "5e78d99da66e48e17b5bc98e61fc8c43caa69b0a"
     )
   )
 }

@@ -10,8 +10,8 @@ and see how it can help us create type-safe data structures that can catch runti
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 194777227,
-      downloadUrl: "https://player.vimeo.com/external/355115428.hd.mp4?s=03abd49a24efede55881a7cb120e5c6b498a5ad6&profile_id=174&download=1",
-      streamingSource: "https://player.vimeo.com/video/355115428"
+      vimeoId: 355115428,
+      vimeoSecret: "03abd49a24efede55881a7cb120e5c6b498a5ad6"
     ),
     id: 4,
     image: "https://i.vimeocdn.com/video/807849108.jpg",
@@ -25,8 +25,8 @@ and see how it can help us create type-safe data structures that can catch runti
     title: "Algebraic Data Types",
     trailerVideo: .init(
       bytesLength: 37267895,
-      downloadUrl: "https://player.vimeo.com/external/354215001.hd.mp4?s=6ac370d37126a11c69c2c69bc0ab05f9cb47c47b&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354215001"
+      vimeoId: 354215001,
+      vimeoSecret: "6ac370d37126a11c69c2c69bc0ab05f9cb47c47b"
     ),
     transcriptBlocks: _transcriptBlocks
   )

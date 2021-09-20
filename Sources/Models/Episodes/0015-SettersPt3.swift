@@ -23,8 +23,8 @@ semantics to make setters a viable tool to bring into your code base _today_.
     title: "Setters: Ergonomics & Performance",
     trailerVideo: .init(
       bytesLength: 26952059,
-      downloadUrl: "https://player.vimeo.com/external/352798200.hd.mp4?s=ab557585434b2c4f38960aaac70d50d8b0cb1ee5&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/352798200"
+      vimeoId: 352798200,
+      vimeoSecret: "ab557585434b2c4f38960aaac70d50d8b0cb1ee5"
     )
   )
 }

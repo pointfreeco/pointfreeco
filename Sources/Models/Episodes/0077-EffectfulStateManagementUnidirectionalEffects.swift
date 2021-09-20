@@ -28,8 +28,8 @@ We've modeled side effects in our architecture, but it's not quite right yet: a 
     title: "Effectful State Management",
     trailerVideo: .init(
       bytesLength: 43_134_899,
-      downloadUrl: "https://player.vimeo.com/external/367748928.hd.mp4?s=ec488585bf79c278cafb9f79ff18615415a5bf3d&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/367748928"
+      vimeoId: 367748928,
+      vimeoSecret: "ec488585bf79c278cafb9f79ff18615415a5bf3d"
     )
   )
 }

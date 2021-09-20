@@ -30,8 +30,8 @@ We complete our dictionary for translating Swift protocol concepts into concrete
     title: "Advanced Protocol Witnesses: Part 2",
     trailerVideo: .init(
       bytesLength: 89450273,
-      downloadUrl: "https://player.vimeo.com/external/351174875.hd.mp4?s=feca184c7248b4bcaa955a06d06d43fa1b920b20&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351174875"
+      vimeoId: 351174875,
+      vimeoSecret: "feca184c7248b4bcaa955a06d06d43fa1b920b20"
     )
   )
 }

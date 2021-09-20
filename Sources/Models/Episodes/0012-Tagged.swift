@@ -17,8 +17,8 @@ We typically model our data with very general types, like strings and ints, but 
     title: "Tagged",
     trailerVideo: .init(
       bytesLength: 33936050,
-      downloadUrl: "https://player.vimeo.com/external/354214920.hd.mp4?s=4b448ee6516faaf254a070f8116f7dc54a7096db&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354214920"
+      vimeoId: 354214920,
+      vimeoSecret: "4b448ee6516faaf254a070f8116f7dc54a7096db"
     )
   )
 }

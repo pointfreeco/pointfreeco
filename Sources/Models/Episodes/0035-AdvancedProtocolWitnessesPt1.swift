@@ -29,8 +29,8 @@ Now that we know it's possible to replace protocols with concrete datatypes, and
     title: "Advanced Protocol Witnesses: Part 1",
     trailerVideo: .init(
       bytesLength: 52259096,
-      downloadUrl: "https://player.vimeo.com/external/349952464.hd.mp4?s=0e73de9d13e8618aefe4fa5420e3ddb79a714eff&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952464"
+      vimeoId: 349952464,
+      vimeoSecret: "0e73de9d13e8618aefe4fa5420e3ddb79a714eff"
     )
   )
 }

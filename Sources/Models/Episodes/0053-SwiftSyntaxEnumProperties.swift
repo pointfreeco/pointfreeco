@@ -17,8 +17,8 @@ We've seen how "enum properties" help close the gap between the ergonomics of ac
     title: "Swift Syntax Enum Properties",
     trailerVideo: .init(
       bytesLength: 66870583,
-      downloadUrl: "https://player.vimeo.com/external/349952503.hd.mp4?s=1364b188a9f89b22382897f30db8f4898a1a503f&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952503"
+      vimeoId: 349952503,
+      vimeoSecret: "1364b188a9f89b22382897f30db8f4898a1a503f"
     )
   )
 }

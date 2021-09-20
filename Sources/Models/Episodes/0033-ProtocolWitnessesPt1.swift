@@ -25,8 +25,8 @@ Protocols are a great tool for abstraction, but aren't the only one. This week w
     title: "Protocol Witnesses: Part 1",
     trailerVideo: .init(
       bytesLength: 58613270,
-      downloadUrl: "https://player.vimeo.com/external/349952461.hd.mp4?s=6e0c2e80479f74bce12d5df0b105fd9de2bf0eea&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952461"
+      vimeoId: 349952461,
+      vimeoSecret: "6e0c2e80479f74bce12d5df0b105fd9de2bf0eea"
     )
   )
 }

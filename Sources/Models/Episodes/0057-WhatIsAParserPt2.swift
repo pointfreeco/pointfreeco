@@ -23,8 +23,8 @@ Now that we've looked at a bunch of parsers that are at our disposal, let's ask 
     title: "What Is a Parser?: Part 2",
     trailerVideo: .init(
       bytesLength: 38834749,
-      downloadUrl: "https://player.vimeo.com/external/349952510.hd.mp4?s=a03aabe9a920865798eaac585985f8f9370fe159&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952510"
+      vimeoId: 349952510,
+      vimeoSecret: "a03aabe9a920865798eaac585985f8f9370fe159"
     )
   )
 }

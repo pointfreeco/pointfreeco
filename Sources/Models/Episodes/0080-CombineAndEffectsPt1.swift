@@ -9,8 +9,8 @@ Let's explore the Combine framework and its correspondence with the Effect type.
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 269920178,
-      downloadUrl: "https://player.vimeo.com/external/371024746.hd.mp4?s=4599ea8b7854131c6c089f748f9b553bc783860b&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/371024746"
+      vimeoId: 371024746,
+      vimeoSecret: "4599ea8b7854131c6c089f748f9b553bc783860b"
     ),
     id: 80,
     image: "https://i.vimeocdn.com/video/829976257.jpg",
@@ -31,8 +31,8 @@ Let's explore the Combine framework and its correspondence with the Effect type.
     title: "The Combine Framework and Effects: Part 1",
     trailerVideo: .init(
       bytesLength: 58885115,
-      downloadUrl: "https://player.vimeo.com/external/371024665.hd.mp4?s=d094cbf784855ceb5442662bc2b1697304f5b3e6&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/371024665"
+      vimeoId: 371024665,
+      vimeoSecret: "d094cbf784855ceb5442662bc2b1697304f5b3e6"
     ),
     transcriptBlocks: _transcriptBlocks
   )

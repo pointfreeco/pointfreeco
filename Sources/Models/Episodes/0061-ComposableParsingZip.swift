@@ -26,8 +26,8 @@ While `flatMap` allowed us to take our parser type to the next level, it introdu
     title: "Composable Parsing",
     trailerVideo: .init(
       bytesLength: 43072387,
-      downloadUrl: "https://player.vimeo.com/external/349951712.hd.mp4?s=62e38e7af330a0310751b8a16c2fc13d1c902cc3&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349951712"
+      vimeoId: 349951712,
+      vimeoSecret: "62e38e7af330a0310751b8a16c2fc13d1c902cc3"
     )
   )
 }
