@@ -191,6 +191,7 @@ public struct Client {
         LANGUAGE PLPGSQL;
         """
       )
+      .run.perform().unwrap()
       _ = try database.run(
         """
         CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
