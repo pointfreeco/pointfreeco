@@ -8,7 +8,7 @@ Animating asynchronous effects with Combine schedulers is not only important for
     codeSampleDirectory: "0137-swiftui-animation-pt3",
     exercises: _exercises,
     id: 137,
-    image: "https://i.vimeocdn.com/video/1072702783.jpg",
+    image: "https://i.vimeocdn.com/video/1072702783-97df478d675931da4ac8d7c210dcb1a5a35af8268906be176b19e26707875e13-d?mw=2200&mh=1238&q=70",
     length: 44*60 + 10,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1614578400),

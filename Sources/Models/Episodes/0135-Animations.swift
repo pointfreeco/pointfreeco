@@ -8,7 +8,7 @@ One of the most impressive features of SwiftUI is its animation system. Let's ex
     codeSampleDirectory: "0135-swiftui-animation-pt1",
     exercises: _exercises,
     id: 135,
-    image: "https://i.vimeocdn.com/video/1060835876.jpg",
+    image: "https://i.vimeocdn.com/video/1060835876-af1c13450d0bd01dc2342695dd3198ecabfcdb895555c42e03e8bc0ea1729d44-d?mw=2200&mh=1238&q=70",
     length: 39*60 + 13,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1613368800),

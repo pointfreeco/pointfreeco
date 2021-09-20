@@ -8,7 +8,7 @@ Building forms in the Composable Architecture seem to have the opposite strength
     codeSampleDirectory: "0132-concise-forms-pt2",
     exercises: _exercises,
     id: 132,
-    image: "https://i.vimeocdn.com/video/1043547082.jpg",
+    image: "https://i.vimeocdn.com/video/1043547082-c78a11f59d37c2f18ad516106f78fa0a9ce2105a6a1324e04a71670a3dae7511-d?mw=2200&mh=1238&q=70",
     length: 61*60 + 29,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1611554400),

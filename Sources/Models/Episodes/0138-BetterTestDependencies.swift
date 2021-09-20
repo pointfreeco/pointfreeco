@@ -8,7 +8,7 @@ We talk about dependencies a lot on Point-Free, but we've never done a deep dive
     codeSampleDirectory: "0138-better-test-dependencies-pt1",
     exercises: _exercises,
     id: 138,
-    image: "https://i.vimeocdn.com/video/1084484166.jpg",
+    image: "https://i.vimeocdn.com/video/1084484166-b5067bd87562055eef4260459b184665e86f38e9496d7a57d2560d303e6cc919-d?mw=2200&mh=1238&q=70",
     length: 41*60 + 55,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1615784400),

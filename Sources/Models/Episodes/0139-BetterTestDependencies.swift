@@ -8,7 +8,7 @@ Exhaustively describing dependencies in your tests makes them stronger _and_ eas
     codeSampleDirectory: "0139-better-test-dependencies-pt2",
     exercises: _exercises,
     id: 139,
-    image: "https://i.vimeocdn.com/video/1090934455.jpg",
+    image: "https://i.vimeocdn.com/video/1090934455-19dc9e15edf972debafc325d8838ba847416246c32597c2a338b48e5b11478b9-d?mw=2200&mh=1238&q=70",
     length: 36*60 + 22,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1616389200),
