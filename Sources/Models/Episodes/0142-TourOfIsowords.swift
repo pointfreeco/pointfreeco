@@ -86,6 +86,15 @@ Well, first things first. Let’s get everyone set up with the isowords code bas
     ),
     Episode.TranscriptBlock(
       content: #"""
+The isowords code base has changed [recently](https://github.com/pointfreeco/isowords/pull/122), and there's no longer an Xcode workspace at the root directory. Instead, open the Xcode project at `App/isowords.xcodeproj`.
+
+To make sure you are following the newest directions for setting up the project, please see the [README](https://github.com/pointfreeco/isowords#readme) for the project.
+"""#,
+      timestamp: nil,
+      type: .correction
+    ),
+    Episode.TranscriptBlock(
+      content: #"""
 $ git clone https://github.com/pointfreeco/isowords
 $ cd isowords
 $ open isowords.xcworkspace
