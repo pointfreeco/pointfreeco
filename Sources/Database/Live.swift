@@ -714,6 +714,33 @@ extension Client {
         )
         .run()
       },
+      updateEmailSettings: { settings, userId in
+        guard let settings = settings else { return pure(unit) }
+
+        let deleteEmailSettings = pool.sqlDatabase.raw(
+          """
+          DELETE FROM "email_settings"
+          WHERE "user_id" = \(bind: userId)
+          """
+        )
+          .run()
+
+        let updateEmailSettings = sequence(
+          settings.map { type in
+            pool.sqlDatabase.raw(
+              """
+              INSERT INTO "email_settings" ("newsletter", "user_id")
+              VALUES (\(bind: type), \(bind: userId))
+              """
+            )
+              .run()
+          }
+        )
+          .map(const(unit))
+
+        return sequence([deleteEmailSettings, updateEmailSettings])
+          .map(const(unit))
+      },
       updateEpisodeProgress: { episodeSequence, percent, userId in
         pool.sqlDatabase.raw(
           """
@@ -736,7 +763,7 @@ extension Client {
         )
         .first(decoding: Models.Subscription.self)
       },
-      updateUser: { userId, name, email, emailSettings, episodeCreditCount, rssSalt in
+      updateUser: { userId, name, email, episodeCreditCount, rssSalt in
         pool.sqlDatabase.raw(
           """
           UPDATE "users"

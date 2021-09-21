@@ -43,9 +43,10 @@ public struct Client {
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var updateEmailSettings: ([EmailSetting.Newsletter]?, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
-  public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
+  public var updateUser: (Models.User.Id, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
 
   public init(
@@ -81,11 +82,12 @@ public struct Client {
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
-    updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
+    updateUser: @escaping (Models.User.Id, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
-    ) {
+  ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createEnterpriseAccount = createEnterpriseAccount
     self.createEnterpriseEmail = createEnterpriseEmail
@@ -118,6 +120,7 @@ public struct Client {
     self.redeemEpisodeCredit = redeemEpisodeCredit
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
     self.sawUser = sawUser
+    self.updateEmailSettings = updateEmailSettings
     self.updateEpisodeProgress = updateEpisodeProgress
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
@@ -134,41 +137,21 @@ public struct Client {
       .flatMap { optionalUser in
         guard let user = optionalUser else { return pure(optionalUser) }
 
-        return self.updateEmailSettings(settings: EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
+        return self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
           .map(const(optionalUser))
       }
   }
 
-  public func updateEmailSettings(
-    settings: [EmailSetting.Newsletter]?,
-    forUserId userId: Models.User.Id
-  )
-  -> EitherIO<Error, Prelude.Unit> {
-
-    guard let settings = settings else { return pure(unit) }
-
-    let deleteEmailSettings = self.execute(
-      """
-      DELETE FROM "email_settings"
-      WHERE "user_id" = \(bind: userId)
-      """
-    )
-    .map(const(unit))
-
-    let updateEmailSettings = sequence(
-      settings.map { type in
-        self.execute(
-          """
-          INSERT INTO "email_settings" ("newsletter", "user_id")
-          VALUES (\(bind: type), \(bind: userId))
-          """
-        )
-      }
-    )
-    .map(const(unit))
-
-    return sequence([deleteEmailSettings, updateEmailSettings])
-      .map(const(unit))
+  public func updateUser(
+    id: Models.User.Id,
+    name: String? = nil,
+    email: EmailAddress? = nil,
+    emailSettings: [EmailSetting.Newsletter]? = nil,
+    episodeCreditCount: Int? = nil,
+    rssSalt: Models.User.RssSalt? = nil
+  ) -> EitherIO<Error, Prelude.Unit> {
+    self.updateUser(id, name, email, episodeCreditCount, rssSalt)
+      .flatMap(const(self.updateEmailSettings(emailSettings, id)))
   }
 
   #if DEBUG

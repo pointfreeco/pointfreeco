@@ -159,16 +159,18 @@ private func validateUserAgent<Z>(
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
       else { return middleware(conn) }
 
-    return Current.database.updateUser(user.id, nil, nil, nil, nil, User.RssSalt(rawValue: Current.uuid()))
+    return Current.database.updateUser(
+      id: user.id, rssSalt: User.RssSalt(rawValue: Current.uuid())
+    )
       .run
       .flatMap { _ in
         conn
-          |> invalidatedFeedMiddleware(errorMessage: """
+        |> invalidatedFeedMiddleware(errorMessage: """
             ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
             retrieve your most up-to-date private podcast URL by visiting your account page at \
             \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
             """)
-    }
+      }
   }
 }
 
