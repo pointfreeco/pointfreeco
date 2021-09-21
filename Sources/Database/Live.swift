@@ -26,7 +26,7 @@ extension Client {
           INSERT INTO "enterprise_accounts"
           ("company_name", "domain", "subscription_id")
           VALUES
-          (\(bind: companyName), \(bind: domain), \(bind: subscriptionId)
+          (\(bind: companyName), \(bind: domain), \(bind: subscriptionId))
           RETURNING *
           """
         )

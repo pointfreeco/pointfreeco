@@ -19,18 +19,18 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
   }
 
-  func testFetchEnterpriseAccount() {
+  func testFetchEnterpriseAccount() throws {
     let user = Current.database.registerUser(withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }).run.perform().right!!
     let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform().right!!
 
-    let createdAccount = Current.database.createEnterpriseAccount(
+    let createdAccount = try Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
       )
       .run
       .perform()
-      .right!!
+      .unwrap()!
 
     let fetchedAccount = Current.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
       .run

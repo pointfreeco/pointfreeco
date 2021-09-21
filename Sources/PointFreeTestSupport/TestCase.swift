@@ -16,10 +16,11 @@ open class LiveDatabaseTestCase: TestCase {
   override open func setUp() {
     super.setUp()
 
+    precondition(Current.envVars.postgres.databaseUrl.contains("localhost"))
     self.pool = EventLoopGroupConnectionPool(
       source: PostgresConnectionSource(
         configuration: PostgresConfiguration(
-          url: "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+          url: Current.envVars.postgres.databaseUrl
         )!
       ),
       on: self.eventLoopGroup
