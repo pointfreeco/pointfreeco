@@ -790,7 +790,7 @@ extension Client {
           )
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4
-          RETURNING * -- TODO: Does this work?
+          RETURNING *
           """
         )
         .first(decoding: Models.User.self)
