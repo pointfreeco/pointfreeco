@@ -1,5 +1,6 @@
 import Ccmark
 import Css
+import Foundation
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -21,8 +22,10 @@ extension Node {
 }
 
 public func unsafeMark(from markdown: String, options: Int32 = 0) -> String {
-  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, CMARK_OPT_SMART | options)
-    else { return markdown }
+  guard let cString = cmark_markdown_to_html(
+    markdown, markdown.utf8.count, CMARK_OPT_SMART | options
+  )
+  else { return markdown }
   defer { free(cString) }
   return String(cString: cString)
 }

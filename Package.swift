@@ -322,14 +322,14 @@ var package = Package(
       ]
     ),
 
-    .target(
+    .executableTarget(
       name: "Runner",
       dependencies: [
         "PointFree",
       ]
     ),
 
-    .target(
+    .executableTarget(
       name: "Server",
       dependencies: [
         "PointFree",
