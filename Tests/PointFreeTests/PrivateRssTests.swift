@@ -14,7 +14,7 @@ import XCTest
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
-    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {
