@@ -19,8 +19,8 @@ alternatives to unlock these benefits.
     title: "Composition without Operators",
     trailerVideo: .init(
       bytesLength: 21548139,
-      downloadUrl: "https://player.vimeo.com/external/354214923.hd.mp4?s=a56ebb0868f225c916e4559b06bbaa7af2aca20f&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354214923"
+      vimeoId: 354214923,
+      vimeoSecret: "a56ebb0868f225c916e4559b06bbaa7af2aca20f"
     )
   )
 }

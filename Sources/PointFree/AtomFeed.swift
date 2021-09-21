@@ -74,6 +74,7 @@ private func items() -> [RssItem] {
   return Current
     .episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
+    .prefix(4)
     .map { item(episode: $0) }
 }
 
@@ -130,7 +131,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
     return .init(
       length: video.bytesLength,
       type: "video/mp4",
-      url: video.downloadUrl
+      url: video.downloadUrl(.sd540)
     )
   }
 
@@ -140,7 +141,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
       length: video.bytesLength,
       medium: "video",
       type: "video/mp4",
-      url: video.downloadUrl
+      url: video.downloadUrl(.sd540)
     )
   }
 

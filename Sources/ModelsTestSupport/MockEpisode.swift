@@ -39,8 +39,8 @@ private let subscriberOnlyEpisode = Episode(
   exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.hd.mp4?s=deadbeef&id=1",
-    streamingSource: "https://www.vimeo.com/pointfreeco/1234567890"
+    vimeoId: 1234567890,
+    vimeoSecret: "deadbeef"
   ),
   id: 2,
   image: "",
@@ -51,8 +51,8 @@ private let subscriberOnlyEpisode = Episode(
   title: "Proof in Functions",
   trailerVideo: .init(
     bytesLength: 5_000_000,
-    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.hd.mp4?s=deadbeef&id=1",
-    streamingSource: "https://www.vimeo.com/pointfreeco/123456"
+    vimeoId: 123456,
+    vimeoSecret: "deadbeef"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(

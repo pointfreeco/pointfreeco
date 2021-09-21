@@ -9,8 +9,8 @@ We bring tools from previous episodes down to earth and apply them to an everyda
     exercises: [],
     fullVideo: .init(
       bytesLength: 324873341,
-      downloadUrl: "https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348652413"
+      vimeoId: 348652413,
+      vimeoSecret: "9389dd8f4ac9a1207dbb2184477ecf4a18c83c98"
     ),
     id: 3,
     image: "https://i.vimeocdn.com/video/807678140.jpg",
@@ -21,8 +21,8 @@ We bring tools from previous episodes down to earth and apply them to an everyda
     title: "UIKit Styling with Functions",
     trailerVideo: .init(
       bytesLength: 37767144,
-      downloadUrl: "https://player.vimeo.com/external/354215006.hd.mp4?s=b21ff531c35d0ab9c3147bd57d49a1aab0be3afc&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354215006"
+      vimeoId: 354215006,
+      vimeoSecret: "b21ff531c35d0ab9c3147bd57d49a1aab0be3afc"
     ),
     transcriptBlocks: _transcriptBlocks
   )

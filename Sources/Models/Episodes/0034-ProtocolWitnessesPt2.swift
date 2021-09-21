@@ -26,8 +26,8 @@ Last time we covered some basics with protocols, and demonstrated one of their b
     title: "Protocol Witnesses: Part 2",
     trailerVideo: .init(
       bytesLength: 49840092,
-      downloadUrl: "https://player.vimeo.com/external/351174975.hd.mp4?s=f63c5dd430c15b0ef865ee2cea7627cbe9db778b&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351174975"
+      vimeoId: 351174975,
+      vimeoSecret: "f63c5dd430c15b0ef865ee2cea7627cbe9db778b"
     )
   )
 }

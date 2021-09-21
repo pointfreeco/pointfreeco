@@ -40,8 +40,8 @@ While we love the "environment" approach to dependency injection, which we intro
     title: "Dependency Injection Made Composable",
     trailerVideo: .init(
       bytesLength: 57_635_470,
-      downloadUrl: "https://player.vimeo.com/external/391879146.hd.mp4?s=684f56c2b7031948253f28f3f85cbd3ea597dc7d&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/391879146"
+      vimeoId: 391879146,
+      vimeoSecret: "684f56c2b7031948253f28f3f85cbd3ea597dc7d"
     )
   )
 }

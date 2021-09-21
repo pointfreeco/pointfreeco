@@ -10,8 +10,8 @@ Take a moment to hear from the hosts about what to expect from this new series.
     exercises: [],
     fullVideo: .init(
       bytesLength: 90533615,
-      downloadUrl: "https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354215017"
+      vimeoId: 354215017,
+      vimeoSecret: "5ec513cdfcccb5bab74356a156dea1dabdd48a16"
     ),
     id: 0,
     image: "https://i.vimeocdn.com/video/807678036.jpg",
@@ -23,8 +23,8 @@ Take a moment to hear from the hosts about what to expect from this new series.
     // NB: Same as full video
     trailerVideo: .init(
       bytesLength: 90533615,
-      downloadUrl: "https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354215017"
+      vimeoId: 354215017,
+      vimeoSecret: "5ec513cdfcccb5bab74356a156dea1dabdd48a16"
     ),
     transcriptBlocks: _transcriptBlocks
   )

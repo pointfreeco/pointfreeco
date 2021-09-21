@@ -28,8 +28,8 @@ We previously refactored a library using protocols to make it more flexible and 
     title: "Witness-Oriented Library Design",
     trailerVideo: .init(
       bytesLength: 102105644,
-      downloadUrl: "https://player.vimeo.com/external/349952469.hd.mp4?s=9886af414316acc1f0b3fc67cfaf26f6e7b6a4af&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952469"
+      vimeoId: 349952469,
+      vimeoSecret: "9886af414316acc1f0b3fc67cfaf26f6e7b6a4af"
     )
   )
 }

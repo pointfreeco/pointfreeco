@@ -26,8 +26,8 @@ Up until Swift 4.1 there was an additional `flatMap` on sequences that we did no
     title: "The Many Faces of Flat‑Map: Part 3",
     trailerVideo: .init(
       bytesLength: 92871178,
-      downloadUrl: "https://player.vimeo.com/external/348490355.hd.mp4?s=62c04224d1cd547ad100dc99346abb3a19ecf4a1&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348490355"
+      vimeoId: 348490355,
+      vimeoSecret: "62c04224d1cd547ad100dc99346abb3a19ecf4a1"
     )
   )
 }

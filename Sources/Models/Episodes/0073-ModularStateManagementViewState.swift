@@ -26,8 +26,8 @@ While we've seen that each reducer we've written is super modular, and we were e
     title: "Modular State Management",
     trailerVideo: .init(
       bytesLength: 22600192,
-      downloadUrl: "https://player.vimeo.com/external/361282678.hd.mp4?s=d8e331e9071cb35f62c1da2c8b32f952c4393498&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/361282678"
+      vimeoId: 361282678,
+      vimeoSecret: "d8e331e9071cb35f62c1da2c8b32f952c4393498"
     )
   )
 }

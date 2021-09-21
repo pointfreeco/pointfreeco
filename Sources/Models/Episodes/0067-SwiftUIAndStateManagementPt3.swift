@@ -9,8 +9,8 @@ With our moderately complex SwiftUI application complete we can finally ask ours
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 353885387,
-      downloadUrl: "https://player.vimeo.com/external/349951722.hd.mp4?s=31d3216df94cb67613bf2e34b4d229ed90bc5875&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349951722"
+      vimeoId: 349951722,
+      vimeoSecret: "31d3216df94cb67613bf2e34b4d229ed90bc5875"
     ),
     id: 67,
     image: "https://i.vimeocdn.com/video/801296903.jpg",
@@ -25,8 +25,8 @@ With our moderately complex SwiftUI application complete we can finally ask ours
     title: "SwiftUI and State Management: Part 3",
     trailerVideo: .init(
       bytesLength: 24833339,
-      downloadUrl: "https://player.vimeo.com/external/349951622.hd.mp4?s=0db48a857039fc8d9da71cac13c8c1d48be96345&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349951622"
+      vimeoId: 349951622,
+      vimeoSecret: "0db48a857039fc8d9da71cac13c8c1d48be96345"
     ),
     transcriptBlocks: _transcriptBlocks
   )

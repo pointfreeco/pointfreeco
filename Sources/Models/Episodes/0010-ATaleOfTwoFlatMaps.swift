@@ -11,8 +11,8 @@ operation to other structures and derive new, useful code!
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 164582242,
-      downloadUrl: "https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354238926"
+      vimeoId: 354238926,
+      vimeoSecret: "06ad254d78324f55f328a55deacaece07bc09de1"
     ),
     id: 10,
     image: "https://i.vimeocdn.com/video/807678771.jpg",
@@ -24,8 +24,8 @@ operation to other structures and derive new, useful code!
     title: "A Tale of Two Flat‑Maps",
     trailerVideo: .init(
       bytesLength: 25231039,
-      downloadUrl: "https://player.vimeo.com/external/354214922.hd.mp4?s=6f5b0a253609ca99df375ff0526ab26cd2e30ba3&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354214922"
+      vimeoId: 354214922,
+      vimeoSecret: "6f5b0a253609ca99df375ff0526ab26cd2e30ba3"
     ),
     transcriptBlocks: _transcriptBlocks
   )

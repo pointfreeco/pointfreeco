@@ -33,8 +33,8 @@ An episode dedicated to property access on structs and how key paths can further
     title: "Enum Properties",
     trailerVideo: .init(
       bytesLength: 38869888,
-      downloadUrl: "https://player.vimeo.com/external/348478815.hd.mp4?s=d57fd6dd852dc6b56ba0da04bba1170d768a98dc&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348478815"
+      vimeoId: 348478815,
+      vimeoSecret: "d57fd6dd852dc6b56ba0da04bba1170d768a98dc"
     )
   )
 }

@@ -9,8 +9,8 @@ In this week's free holiday episode we show what it looks like to snapshot test 
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 367021495,
-      downloadUrl: "https://player.vimeo.com/external/379179506.hd.mp4?s=d4f3ec00986d6cddd05464f3774d683a2a2e6827&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/379179506"
+      vimeoId: 379179506,
+      vimeoSecret: "d4f3ec00986d6cddd05464f3774d683a2a2e6827"
     ),
     id: 86,
     image: "https://i.vimeocdn.com/video/839241671.jpg",
@@ -29,8 +29,8 @@ In this week's free holiday episode we show what it looks like to snapshot test 
     title: "SwiftUI Snapshot Testing",
     trailerVideo: .init(
       bytesLength: 14178936,
-      downloadUrl: "https://player.vimeo.com/external/379179491.hd.mp4?s=952c3ee543e8362264a50b109045c30c3ea1fea3&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/379179491"
+      vimeoId: 379179491,
+      vimeoSecret: "952c3ee543e8362264a50b109045c30c3ea1fea3"
     ),
     transcriptBlocks: _transcriptBlocks
   )
