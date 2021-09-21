@@ -369,7 +369,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 class InviteTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testShowInvite_LoggedOut() {
