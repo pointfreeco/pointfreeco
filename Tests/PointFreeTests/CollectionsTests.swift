@@ -16,7 +16,7 @@ import XCTest
 class CollectionsTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testCollectionIndex() {
