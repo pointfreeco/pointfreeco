@@ -13,7 +13,7 @@ class StyleguideTests: XCTestCase {
   override func setUp() {
     super.setUp()
     diffTool = "ksdiff"
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testStyleguide() {

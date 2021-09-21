@@ -38,7 +38,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 final class WelcomeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
   }
 
   func testWelcomeEmail1() {
