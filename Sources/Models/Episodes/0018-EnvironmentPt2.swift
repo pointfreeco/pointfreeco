@@ -7,7 +7,7 @@ Let's have some fun with the "environment" form of dependency injection we previ
 """,
     codeSampleDirectory: "0018-environment-pt2",
     id: 18,
-    image: "https://i.vimeocdn.com/video/804928206.jpg",
+    image: "https://i.vimeocdn.com/video/804928206-388ca90056c94838d668141af5c1e458fa1de9d287343dd569592d80057fb41f-d",
     length: 28*60 + 36,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_528_106_223),

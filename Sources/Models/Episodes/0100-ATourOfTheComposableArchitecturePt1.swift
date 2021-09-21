@@ -13,7 +13,7 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
       vimeoSecret: "2859c821cb22e295fb771d60b979b4f9039e8bab"
     ),
     id: 100,
-    image: "https://i.vimeocdn.com/video/887735650.jpg",
+    image: "https://i.vimeocdn.com/video/887735650-98c5b216a8ee4258418ace3e677115c6ae4dae1b02759dab815d2cc16b4d63d4-d",
     length: 32*60 + 56,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1588568400),

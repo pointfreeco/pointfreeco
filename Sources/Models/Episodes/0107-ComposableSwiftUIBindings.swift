@@ -8,7 +8,7 @@ Bindings are one of the core units of SwiftUI data flow and allow disparate part
     codeSampleDirectory: "0107-composable-bindings-pt1",
     exercises: _exercises,
     id: 107,
-    image: "https://i.vimeocdn.com/video/917725581.jpg",
+    image: "https://i.vimeocdn.com/video/917725581-163ab8891c706e9272705cba204d7a5617b727e9d0ed74193ba6b709e9ad7442-d",
     length: 31*60 + 57,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1594011600),

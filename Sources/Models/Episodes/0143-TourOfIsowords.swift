@@ -8,7 +8,7 @@ Let's dive deeper into the [isowords](https://www.isowords.xyz) code base. We'll
     codeSampleDirectory: "0143-tour-of-isowords-pt2",
     exercises: _exercises,
     id: 143,
-    image: "https://i.vimeocdn.com/video/1114888719-69b9a1bca6defaa8f390d973c7737bf98a902eb3c5e2b1881219f8330565e637-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1114888719-69b9a1bca6defaa8f390d973c7737bf98a902eb3c5e2b1881219f8330565e637-d",
     length: 57*60 + 1,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1619413200),

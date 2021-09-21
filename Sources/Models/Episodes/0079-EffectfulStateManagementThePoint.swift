@@ -8,7 +8,7 @@ We've got the basic story of side effects in our architecture, but the story is 
     codeSampleDirectory: "0079-effectful-state-management-wtp",
     exercises: _exercises,
     id: 79,
-    image: "https://i.vimeocdn.com/video/827840387.jpg",
+    image: "https://i.vimeocdn.com/video/827840387-caadcf6c4ce991c4dc8c852a0de9548883e27c223a2bdb2f2a69f8561805b021-d",
     length: 28*60 + 36,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1572847200),

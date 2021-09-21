@@ -8,7 +8,7 @@ We've now seen that it's possible to define "case paths": the enum equivalent of
     codeSampleDirectory: "0088-the-case-for-case-paths-pt2",
     exercises: _exercises,
     id: 88,
-    image: "https://i.vimeocdn.com/video/850265068.jpg",
+    image: "https://i.vimeocdn.com/video/850265068-cf541c10038e64de52714c886d461b83e254d3914287c8b36d29e543b7c9e070-d",
     length: 24*60 + 55,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1580104800),

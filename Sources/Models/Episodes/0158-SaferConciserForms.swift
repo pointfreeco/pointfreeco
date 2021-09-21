@@ -8,7 +8,7 @@ Previously we explored how SwiftUI makes building forms a snap, and we contraste
     codeSampleDirectory: "0158-safer-conciser-forms-pt1",
     exercises: _exercises,
     id: 158,
-    image: "https://i.vimeocdn.com/video/1228086408-31d0533b99b8684363242a747f9854f551eb8fffa43fe0a3af596eea501576e1-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1228086408-31d0533b99b8684363242a747f9854f551eb8fffa43fe0a3af596eea501576e1-d",
     length: 29*60 + 28,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1630299600),

@@ -7,7 +7,7 @@ Let's set out to make the untestable testable. This week we make composable rand
 """,
     codeSampleDirectory: "0047-predictable-randomness-pt1",
     id: 47,
-    image: "https://i.vimeocdn.com/video/801299773.jpg",
+    image: "https://i.vimeocdn.com/video/801299773-7f6c3cae8b1c907a3a6af85f97151edf09eb3f5141a8ff3fb1435c71f4bf6504-d",
     length: 32*60 + 05,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1550473200),

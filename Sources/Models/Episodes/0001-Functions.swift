@@ -13,7 +13,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
       vimeoSecret: "b448ad4d2af97f1bf3223363bd4ad34aecbb188f"
     ),
     id: 1,
-    image: "https://i.vimeocdn.com/video/803401029.jpg",
+    image: "https://i.vimeocdn.com/video/803401029-21588051db73f161202955cb8355ddb06bb41fb9ad0b9fc472d7836042acb37f-d",
     length: 1219,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_517_206_269),

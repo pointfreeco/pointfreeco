@@ -8,7 +8,7 @@ We not only want our architecture to be testable, but we want it to be super eas
     codeSampleDirectory: "0084-testable-state-management-ergonomics",
     exercises: _exercises,
     id: 84,
-    image: "https://i.vimeocdn.com/video/837834964.jpg",
+    image: "https://i.vimeocdn.com/video/837834964-674f1687901df06e83baad6482edecf4463d375c3416297e60261456f7c93967-d",
     length: 42*60 + 35,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1575871200),

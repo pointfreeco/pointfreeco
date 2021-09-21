@@ -8,7 +8,7 @@ Perhaps the most popular approach to code reuse and extensibility in Swift is to
     codeSampleDirectory: "0037-protocol-oriented-library-design-pt1",
     exercises: _exercises,
     id: 37,
-    image: "https://i.vimeocdn.com/video/801301580.jpg",
+    image: "https://i.vimeocdn.com/video/801301580-042c94e2a62cef1a5c426b806edae2a4dd6dd719263e3cc099cfae19481da6b2-d",
     length: 22*60 + 59,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1542013200),

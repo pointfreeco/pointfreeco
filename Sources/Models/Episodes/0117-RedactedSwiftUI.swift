@@ -9,7 +9,7 @@ Not only can we easily redact the logic from a view using the Composable Archite
     codeSampleDirectory: "0117-redacted-swiftui-pt3",
     exercises: _exercises,
     id: 117,
-    image: "https://i.vimeocdn.com/video/956844707.jpg",
+    image: "https://i.vimeocdn.com/video/956844643-d417978d467c21155ec9273d98ef659d968591871f1ed5318420f2006661211e-d",
     length: 29*60 + 43,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1600059600),

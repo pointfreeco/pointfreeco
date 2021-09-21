@@ -7,7 +7,7 @@ Protocols are a great tool for abstraction, but aren't the only one. This week w
 """,
     codeSampleDirectory: "0033-protocol-witnesses-pt1",
     id: 33,
-    image: "https://i.vimeocdn.com/video/801301947.jpg",
+    image: "https://i.vimeocdn.com/video/801301947-033a422f3f421ce122d8a0b1c968a526975777a9b73c8e783580ddd8121150f5-d",
     length: 18*60 + 12,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1539582522),

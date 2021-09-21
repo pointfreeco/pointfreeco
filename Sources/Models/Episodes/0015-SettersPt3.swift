@@ -10,7 +10,7 @@ semantics to make setters a viable tool to bring into your code base _today_.
     codeSampleDirectory: "0015-setters-pt-3",
     exercises: _exercises,
     id: 15,
-    image: "https://i.vimeocdn.com/video/804927717.jpg",
+    image: "https://i.vimeocdn.com/video/804927717-c1fc394f36f2ba045db9be64d5ba460fe3c16f787a97db4c4f5c8f049d530911-d",
     length: 34*60 + 19,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_525_082_223 + 604_800*2),

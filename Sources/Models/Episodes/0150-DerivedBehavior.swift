@@ -8,7 +8,7 @@ We typically rewrite vanilla SwiftUI applications into Composable Architecture a
     codeSampleDirectory: "0150-derived-behavior-pt5",
     exercises: _exercises,
     id: 150,
-    image: "https://i.vimeocdn.com/video/1169191757-91ee7de1dbb71e2ae366df5927a6e5b09bebf57bfa9f9f6f0378f58a8f61ac1d-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1169191757-91ee7de1dbb71e2ae366df5927a6e5b09bebf57bfa9f9f6f0378f58a8f61ac1d-d",
     length: 60*60 + 10,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1624251600),

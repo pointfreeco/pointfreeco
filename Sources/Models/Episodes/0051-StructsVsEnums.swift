@@ -8,7 +8,7 @@ Name a more iconic duo... We'll wait. Structs and enums go together like peanut 
     codeSampleDirectory: "0051-structs-🤝-enums",
     exercises: _exercises,
     id: 51,
-    image: "https://i.vimeocdn.com/video/801299196.jpg",
+    image: "https://i.vimeocdn.com/video/801299196-3d7437ddd78c2b2cb535d14c5107efc03924a20eedcca00be7c81568d27f3179-d",
     length: 30*60 + 50,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1553493600),

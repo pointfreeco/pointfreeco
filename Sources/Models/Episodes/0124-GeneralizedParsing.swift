@@ -8,7 +8,7 @@ The parser type we built so far is highly tuned to work on strings, but there ar
     codeSampleDirectory: "0124-generalized-parsing-pt1",
     exercises: _exercises,
     id: 124,
-    image: "https://i.vimeocdn.com/video/990930631.jpg",
+    image: "https://i.vimeocdn.com/video/990930606-27651bb6760f43a1f841f4b9f2bc97f4c12e7623fd88e09c055c921d4a87fc8d-d",
     length: 33*60 + 14,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1604901600),

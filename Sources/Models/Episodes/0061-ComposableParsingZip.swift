@@ -8,7 +8,7 @@ While `flatMap` allowed us to take our parser type to the next level, it introdu
     codeSampleDirectory: "0061-composable-parsing-zip",
     exercises: _exercises,
     id: 61,
-    image: "https://i.vimeocdn.com/video/801297709.jpg",
+    image: "https://i.vimeocdn.com/video/801297709-a1c8dacfefbebd2a8f1528d5c07d75f51ece8156524e158db45122e25684f196-d",
     length: 27 * 60 + 22,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1560146400),

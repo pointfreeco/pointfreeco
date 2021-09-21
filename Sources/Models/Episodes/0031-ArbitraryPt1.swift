@@ -8,7 +8,7 @@ This week we dive deeper into randomness and composition by looking to a seeming
     codeSampleDirectory: "0031-arbitrary-pt1",
     exercises: _exercises,
     id: 31,
-    image: "https://i.vimeocdn.com/video/802690082.jpg",
+    image: "https://i.vimeocdn.com/video/802690082-b096ddb597d331cc5e92e1d9290221158e324f2a79df9fa3db3167d71b27b171-d",
     length: 21*60 + 07,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1537768623),

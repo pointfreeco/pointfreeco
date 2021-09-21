@@ -8,7 +8,7 @@ The zip function shows up on many types: from Swift arrays and Combine publisher
     codeSampleDirectory: "0123-fluently-zipping-parsers",
     exercises: _exercises,
     id: 123,
-    image: "https://i.vimeocdn.com/video/986514412.jpg",
+    image: "https://i.vimeocdn.com/video/986514412-5c3db4b8806d158e98ea297941299d2abc7dee409c1aeb6b1f35c32436e0177f-d",
     length: 51*60 + 23,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1604296800),

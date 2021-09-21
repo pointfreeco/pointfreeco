@@ -8,7 +8,7 @@ Side effects are by far the hardest thing to test in an application. They speak 
     codeSampleDirectory: "0083-testable-state-management-effects",
     exercises: _exercises,
     id: 83,
-    image: "https://i.vimeocdn.com/video/831975769.jpg",
+    image: "https://i.vimeocdn.com/video/831976885-9b8d1b471de0b4f215fcbc51ca947c4cb83459ae28d9e1d86e5ae8e317a56d5e-d",
     length: 50*60 + 15,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1575266400),

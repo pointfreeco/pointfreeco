@@ -14,7 +14,7 @@ and see how it can help us create type-safe data structures that can catch runti
       vimeoSecret: "03abd49a24efede55881a7cb120e5c6b498a5ad6"
     ),
     id: 4,
-    image: "https://i.vimeocdn.com/video/807849108.jpg",
+    image: "https://i.vimeocdn.com/video/807678196-6eb7d12733c58c4f063db8eff5c350476b8e83e938d22f9457d4ca69f8a724bd-d",
     length: 2_172,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1519045951),

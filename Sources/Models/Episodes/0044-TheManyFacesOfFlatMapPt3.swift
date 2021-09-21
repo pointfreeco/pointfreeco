@@ -7,7 +7,7 @@ We are now ready to answer the all-important question: what's the point? We will
 """,
     codeSampleDirectory: "0044-the-many-faces-of-flatmap-pt3",
     id: 44,
-    image: "https://i.vimeocdn.com/video/801300524.jpg",
+    image: "https://i.vimeocdn.com/video/801300524-b947c9d409aa0091564ffbf115deb63ee67a6726cd40c9bf74c4a0b5fd776d98-d",
     length: 36*60 + 52,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1548054000),

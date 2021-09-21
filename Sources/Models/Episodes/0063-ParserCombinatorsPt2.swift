@@ -8,7 +8,7 @@ Let's solve another common parsing problem using parser combinators! It's common
     codeSampleDirectory: "0063-parser-combinators-pt2",
     exercises: _exercises,
     id: 63,
-    image: "https://i.vimeocdn.com/video/801297305.jpg",
+    image: "https://i.vimeocdn.com/video/801297305-956241b8ce0c4a4a1d225c3c696eac8056d62732b1c8a74c2b03a609350e6d6a-d",
     length: 17*60 + 59,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1561960800),

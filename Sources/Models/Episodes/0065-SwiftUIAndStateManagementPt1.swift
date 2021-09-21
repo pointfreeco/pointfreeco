@@ -13,7 +13,7 @@ Let's begin exploring application architecture by understanding what are the com
       vimeoSecret: "2e2fde11175184a755a146b9df7377c47d2b85d7"
     ),
     id: 65,
-    image: "https://i.vimeocdn.com/video/801297149.jpg",
+    image: "https://i.vimeocdn.com/video/801297149-1dc66a0ed67270baf405799d67b3321dded6d0fb96aed902540b40ad6b1d94e9-d",
     length: 26*60 + 45,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1563170400),

@@ -8,7 +8,7 @@ The `zip` function comes with the Swift standard library, but its utility goes f
     codeSampleDirectory: "0023-zip-pt1",
     exercises: _exercises,
     id: 23,
-    image: "https://i.vimeocdn.com/video/803400861.jpg",
+    image: "https://i.vimeocdn.com/video/803400861-4f7f439f581006bbb89ecb357ce0546b93780387e0b75445a5db310f5097732f-d",
     length: 28*60 + 53,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1531735023 + 604_800),

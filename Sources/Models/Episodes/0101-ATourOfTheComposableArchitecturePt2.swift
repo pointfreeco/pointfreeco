@@ -13,7 +13,7 @@ Continuing the tour of our recently open-sourced library, the Composable Archite
       vimeoSecret: "90a2c480d005b6d7ed4287232b5d53ac071fa5f8"
     ),
     id: 101,
-    image: "https://i.vimeocdn.com/video/890370805.jpg",
+    image: "https://i.vimeocdn.com/video/890437046-d8b959916e9588d56d68ea19e29167955fd785c462cf92d90b4d2967ec70e4e2-d",
     length: 28*60 + 21,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1589173200),

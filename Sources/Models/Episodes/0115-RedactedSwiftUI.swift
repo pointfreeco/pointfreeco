@@ -14,7 +14,7 @@ SwiftUI has introduced the concept of “████ed views”, which gives yo
       vimeoSecret: "d9bf77945e86596dccd429e4afdee2b07e898e4f"
     ),
     id: 115,
-    image: "https://i.vimeocdn.com/video/949225344.jpg",
+    image: "https://i.vimeocdn.com/video/949227696-cd540c7eb7582cc8a434c08bdfa8204c980a7ec083bf812961356da701cadfef-d",
     length: 25*60 + 49,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1598850000),

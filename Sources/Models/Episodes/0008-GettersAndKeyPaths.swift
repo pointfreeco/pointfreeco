@@ -10,7 +10,7 @@ no boilerplate.
     codeSampleDirectory: "0008-getters-and-key-paths",
     exercises: _exercises,
     id: 8,
-    image: "https://i.vimeocdn.com/video/807678567.jpg",
+    image: "https://i.vimeocdn.com/video/807849524-ed7169c22e79d53c3f36879acb62b5b0ba7230d956b382947fb8602e3b4bf4c4-d",
     length: 1711,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_521_453_423),
