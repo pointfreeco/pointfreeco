@@ -8,7 +8,7 @@ Last time we covered some basics with protocols, and demonstrated one of their b
     codeSampleDirectory: "0034-protocol-witnesses-pt2",
     exercises: _exercises,
     id: 34,
-    image: "https://i.vimeocdn.com/video/802688980.jpg",
+    image: "https://i.vimeocdn.com/video/802688980-9ddbad674e379fdc50726f42bd3b3701995923b0eacffc8de74b6a3957f0afc1-d",
     length: 22*60 + 41,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1540187322),

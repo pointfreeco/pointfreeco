@@ -8,7 +8,7 @@ We interact with domain-specific languages on a daily basis, but what does it ta
     codeSampleDirectory: "0026-edsls-pt1",
     exercises: _exercises,
     id: 26,
-    image: "https://i.vimeocdn.com/video/801302705.jpg",
+    image: "https://i.vimeocdn.com/video/801302705-19c177302bbe2675b6bf486566644b783eb75bd2e479b39cad9847254e029071-d",
     length: 24*60 + 19,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1534744623),

@@ -8,7 +8,7 @@ While we've seen that each reducer we've written is super modular, and we were e
     codeSampleDirectory: "0073-modular-state-management-view-state",
     exercises: _exercises,
     id: 73,
-    image: "https://i.vimeocdn.com/video/816196940.jpg",
+    image: "https://i.vimeocdn.com/video/816196940-2f6752fd51858b0a19bce229ac9646d4dab09a13b60634b2b5cd645b261d616a-d",
     length: 28*60 + 16,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1569218400),

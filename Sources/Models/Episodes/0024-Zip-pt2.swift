@@ -8,7 +8,7 @@ In part two of our series on `zip` we will show that many types support a `zip`-
     codeSampleDirectory: "0024-zip-pt2",
     exercises: _exercises,
     id: 24,
-    image: "https://i.vimeocdn.com/video/802690757.jpg",
+    image: "https://i.vimeocdn.com/video/802690757-af353037178b6a1dcd914422f60595c023f1763afb0577b72c9e0bd2e602c7e0-d",
     length: 36*60 + 01,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_532_930_223),

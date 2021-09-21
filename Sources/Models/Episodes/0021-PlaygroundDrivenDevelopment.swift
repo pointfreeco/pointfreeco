@@ -7,7 +7,7 @@ We use Swift playgrounds on this series as a tool to dive deep into functional p
 """,
     codeSampleDirectory: "0021-playground-driven-development",
     id: 21,
-    image: "https://i.vimeocdn.com/video/804928551.jpg",
+    image: "https://i.vimeocdn.com/video/804928551-2bd7d5a8ea7b347790f755705b0eedf4ae23ad3ddb8bdc3a7818e0bb41dafb1e-d",
     length: 24*60 + 50,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_531_130_223),

@@ -14,7 +14,7 @@ It's time to start proving that our business logic works the way we expect. We a
 
     ),
     id: 102,
-    image: "https://i.vimeocdn.com/video/890370745.jpg",
+    image: "https://i.vimeocdn.com/video/890437028-06963dc647493b70d085d81934329065a3397f0a895c7ee276df8bab996a279e-d",
     length: 32*60 + 28,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1589778001),

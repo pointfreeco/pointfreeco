@@ -8,7 +8,7 @@ The `map` function on parsers is powerful, but there are still a lot of things i
     codeSampleDirectory: "0060-composable-parsing-flat-map",
     exercises: _exercises,
     id: 60,
-    image: "https://i.vimeocdn.com/video/799156431.jpg",
+    image: "https://i.vimeocdn.com/video/799156364-dbe9cd93377bf3a3969a4dc2182c4bbd86e4627a4f588541f3ebc24a3726bdbb-d",
     length: 14 * 60 + 0,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1559541600),

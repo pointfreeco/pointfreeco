@@ -8,7 +8,7 @@ Let's develop a new application from scratch to explore SwiftUI's new `.searchab
     codeSampleDirectory: "0156-searchable-pt1",
     exercises: _exercises,
     id: 156,
-    image: "https://i.vimeocdn.com/video/1209772218-001e3281faa06e374f72ca9f6ddbde61e981d0d4067a74df96936936a0da7886-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1209772218-001e3281faa06e374f72ca9f6ddbde61e981d0d4067a74df96936936a0da7886-d",
     length: 41*60 + 11,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1628485200),

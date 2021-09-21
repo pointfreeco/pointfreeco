@@ -8,7 +8,7 @@ The Composable Architecture does not yet support any of the fancy new concurrenc
     codeSampleDirectory: "0154-refreshable-pt2",
     exercises: _exercises,
     id: 154,
-    image: "https://i.vimeocdn.com/video/1198344826-243b025fa91dcc87c0f3f111b0aa273b8f5d91258f511f8e8858fff6a73e45a6-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1198344826-243b025fa91dcc87c0f3f111b0aa273b8f5d91258f511f8e8858fff6a73e45a6-d",
     length: 34*60 + 52,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1627275600),

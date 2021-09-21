@@ -8,7 +8,7 @@ Turns out, reducers that work on local actions can be _pulled back_ to work on g
     codeSampleDirectory: "0070-composable-state-management-action-pullbacks",
     exercises: _exercises,
     id: 70,
-    image: "https://i.vimeocdn.com/video/806923746.jpg",
+    image: "https://i.vimeocdn.com/video/806926200-127f24900d7f9312e815ea0462a5127b304cae08635e8785c10bcf82bd919b52-d",
     length: 28*60 + 16,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1566194400),

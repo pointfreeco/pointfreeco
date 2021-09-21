@@ -8,7 +8,7 @@ Crafting better test dependencies for our code bases come with additional benefi
     codeSampleDirectory: "0141-better-test-dependencies-pt4",
     exercises: _exercises,
     id: 141,
-    image: "https://i.vimeocdn.com/video/1103296244-34b2e3a0517235fc54adcc5511a98129a05a91ad1329b26e9920bd542adf64b3-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1103296244-34b2e3a0517235fc54adcc5511a98129a05a91ad1329b26e9920bd542adf64b3-d",
     length: 52*60 + 28,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1617598800),

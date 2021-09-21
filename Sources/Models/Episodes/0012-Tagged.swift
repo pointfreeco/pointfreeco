@@ -8,7 +8,7 @@ We typically model our data with very general types, like strings and ints, but 
     codeSampleDirectory: "0012-tagged",
     exercises: _exercises,
     id: 12,
-    image: "https://i.vimeocdn.com/video/807679080.jpg",
+    image: "https://i.vimeocdn.com/video/807679080-aa99bcc142161812be6ee0f3ccf458d8a7ec0446c46eb52776fab54a8f501cdb-d",
     length: 26*60 + 49,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_523_872_623),

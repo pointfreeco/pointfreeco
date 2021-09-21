@@ -8,7 +8,7 @@ Generalizing the parser type has allowed us to parse more types of inputs, but t
     codeSampleDirectory: "0126-generalized-parsing-pt3",
     exercises: _exercises,
     id: 126,
-    image: "https://i.vimeocdn.com/video/1000228065.jpg",
+    image: "https://i.vimeocdn.com/video/1000228065-454966c50646661dcacd7bf0e9b97848f0464b2c543d867f5da95087d8acb04a-d",
     length: 36*60 + 29,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1606111200),

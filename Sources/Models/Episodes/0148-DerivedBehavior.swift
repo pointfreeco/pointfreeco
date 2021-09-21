@@ -8,7 +8,7 @@ The Composable Architecture comes with several tools that aid in breaking large 
     codeSampleDirectory: "0148-derived-behavior-pt3",
     exercises: _exercises,
     id: 148,
-    image: "https://i.vimeocdn.com/video/1151159019-8ba222142072e8b0e34abe84dcca7cc8b6794166d13e1d2eeb7a1f88bd04f34c-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1151159019-8ba222142072e8b0e34abe84dcca7cc8b6794166d13e1d2eeb7a1f88bd04f34c-d",
     length: 43*60 + 7,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1622437200),

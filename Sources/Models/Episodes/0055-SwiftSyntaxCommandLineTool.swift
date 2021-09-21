@@ -13,7 +13,7 @@ Today we finally extract our enum property code generator to a Swift Package Man
       vimeoSecret: "945bc730c1ec23bd83435ee52953d0ee3478d516"
     ),
     id: 55,
-    image: "https://i.vimeocdn.com/video/801298340.jpg",
+    image: "https://i.vimeocdn.com/video/801298340-d3ea789973cac98d36fe73655711230b36e04c91ea08955f653cb9aee0f80e5a-d",
     length: 35*60 + 16,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1555912800),

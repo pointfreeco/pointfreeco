@@ -13,7 +13,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
       vimeoSecret: "fa740bb2d49fa51b3cd6c44de1837a093f763f22"
     ),
     id: 2,
-    image: "https://i.vimeocdn.com/video/807678088.jpg",
+    image: "https://i.vimeocdn.com/video/807678088-f37d3be7710e6079885f1d064870b580cfdd2cecb3d80adb59903a68479b3c78-d",
     length: 2676,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_517_811_069),

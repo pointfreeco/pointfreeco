@@ -8,7 +8,7 @@ Let's take a moment to properly define what a dependency is and understand why t
     codeSampleDirectory: "0110-designing-dependencies-pt1",
     exercises: _exercises,
     id: 110,
-    image: "https://i.vimeocdn.com/video/930420428.jpg",
+    image: "https://i.vimeocdn.com/video/930420478-3dd08a948f8cc91da845ea47f173a3d587072a7173d5312ca6453f18f816c89f-d",
     length: 34*60 + 41,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1595826000),

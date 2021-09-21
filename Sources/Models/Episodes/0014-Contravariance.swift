@@ -8,7 +8,7 @@ Let's explore a type of composition that defies our intuitions. It appears to go
     codeSampleDirectory: "0014-contravariance",
     exercises: _exercises,
     id: 14,
-    image: "https://i.vimeocdn.com/video/807679247.jpg",
+    image: "https://i.vimeocdn.com/video/807679247-0114d994fff2f8793b2e3f43e3ec8aa9c2305ba08bd0cebaf6a35a9a8594d28d-d",
     length: 38*60 + 39,
     permission: .freeDuring(Date(timeIntervalSince1970: 1_528_797_423) ..< Date(timeIntervalSince1970: 1_529_920_623)),
     publishedAt: Date(timeIntervalSince1970: 1_525_082_223),

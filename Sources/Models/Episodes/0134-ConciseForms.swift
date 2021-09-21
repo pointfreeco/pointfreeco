@@ -13,7 +13,7 @@ We've shown how to dramatically streamline forms in the Composable Architecture,
       vimeoSecret: "21c734f3164457cd91c2b68db18d2b5defd46418"
     ),
     id: 134,
-    image: "https://i.vimeocdn.com/video/1054952591-da12d589f19fc9c4d505bdef5af548d4c5c157c1e571eb5d320f29ce8a5526c9-d?mw=2200&mh=1238&q=70",
+    image: "https://i.vimeocdn.com/video/1054952591-da12d589f19fc9c4d505bdef5af548d4c5c157c1e571eb5d320f29ce8a5526c9-d",
     length: 28*60 + 14,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1612764000),

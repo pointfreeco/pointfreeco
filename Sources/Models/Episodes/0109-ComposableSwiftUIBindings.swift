@@ -8,7 +8,7 @@ It's time to ask: "what's the point?" If composing bindings is so important, the
     codeSampleDirectory: "0109-composable-bindings-pt3", // TODO
     exercises: _exercises,
     id: 109,
-    image: "https://i.vimeocdn.com/video/926790762.jpg",
+    image: "https://i.vimeocdn.com/video/926790762-a3988b35c5bb426f6610000fbec8d7dd1005ea57d71541f778502334c609f757-d",
     length: 39*60 + 33,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1595221200),

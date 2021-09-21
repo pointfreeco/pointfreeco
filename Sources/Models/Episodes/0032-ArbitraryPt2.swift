@@ -8,7 +8,7 @@ This week we compare our `Decodable` solution to building random structures with
     codeSampleDirectory: "0032-arbitrary-pt2",
     exercises: _exercises,
     id: 32,
-    image: "https://i.vimeocdn.com/video/802688834.jpg",
+    image: "https://i.vimeocdn.com/video/802688834-00a3d2e930f78800040fd3da8d21924bd1415d869e172c35f8ea8c4c72130e93-d",
     length: 26*60 + 25,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1538373423),

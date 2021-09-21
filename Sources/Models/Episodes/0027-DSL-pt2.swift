@@ -8,7 +8,7 @@ We finish our introduction to DSLs by adding two new features to our toy example
     codeSampleDirectory: "0027-edsls-pt2",
     exercises: _exercises,
     id: 27,
-    image: "https://i.vimeocdn.com/video/802690547.jpg",
+    image: "https://i.vimeocdn.com/video/802690547-9591e5fe502cc54126437d13b0a6fe40cdabc3fad1ee8d4926b6370a032c1c1d-d",
     length: 20*60 + 17,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1535349423),

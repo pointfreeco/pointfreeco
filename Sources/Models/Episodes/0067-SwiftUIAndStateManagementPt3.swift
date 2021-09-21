@@ -13,7 +13,7 @@ With our moderately complex SwiftUI application complete we can finally ask ours
       vimeoSecret: "31d3216df94cb67613bf2e34b4d229ed90bc5875"
     ),
     id: 67,
-    image: "https://i.vimeocdn.com/video/801296903.jpg",
+    image: "https://i.vimeocdn.com/video/801296903-165d2110e45b2f135ee3747d2ec2a0e1d55c0bb2d99b095377b4599c6d1df15d-d",
     length: 27 * 60 + 2,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1564380000),

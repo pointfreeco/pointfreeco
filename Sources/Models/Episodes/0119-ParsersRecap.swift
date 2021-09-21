@@ -9,7 +9,7 @@ It's time to revisit one of our favorite topics: parsing! We want to discuss lot
     exercises: _exercises,
     fullVideo: nil,
     id: 119,
-    image: "https://i.vimeocdn.com/video/962585526.jpg",
+    image: "https://i.vimeocdn.com/video/962585526-05aa369198e2687dad7478f26993f3cecee4d1eb7e3dfc01c6e7e520725409ff-d",
     length: 25*60 + 47,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1601874000),

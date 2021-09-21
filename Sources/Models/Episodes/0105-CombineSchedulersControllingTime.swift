@@ -8,7 +8,7 @@ The `Scheduler` protocol of Combine is a powerful abstraction that unifies many 
     codeSampleDirectory: "0105-combine-schedulers-pt2",
     exercises: _exercises,
     id: 105,
-    image: "https://i.vimeocdn.com/video/905440786.jpg",
+    image: "https://i.vimeocdn.com/video/905440734-218705626d4b5f33d755947322c745df6ae6bb73e171e1d6be3ef49ac57f2c89-d",
     length: 66*60 + 28,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1591592400),

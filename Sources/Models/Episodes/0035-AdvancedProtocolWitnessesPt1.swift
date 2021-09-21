@@ -8,7 +8,7 @@ Now that we know it's possible to replace protocols with concrete datatypes, and
     codeSampleDirectory: "0035-advanced-protocol-witnesses-pt1",
     exercises: _exercises,
     id: 35,
-    image: "https://i.vimeocdn.com/video/801301639.jpg",
+    image: "https://i.vimeocdn.com/video/801301639-fff9750cafc05961e58363c8285909b449cfaa611c21a4c564c9e490d9f82038-d",
     length: 35*60 + 18,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1_540_803_600),

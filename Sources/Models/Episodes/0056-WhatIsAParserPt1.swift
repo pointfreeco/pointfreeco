@@ -7,7 +7,7 @@ Parsing is a difficult, but surprisingly ubiquitous programming problem, and fun
 """,
     codeSampleDirectory: "0056-what-is-a-parser-pt1",
     id: 56,
-    image: "https://i.vimeocdn.com/video/799120275.jpg",
+    image: "https://i.vimeocdn.com/video/799120275-4f811dd970a2e4cfc3b9c2aceb2f50fdb76fa49fc9444c5889b13d9096693b74-d",
     length: 16*60 + 44,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1557122400),

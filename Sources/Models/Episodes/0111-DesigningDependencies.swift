@@ -8,7 +8,7 @@ Let's scrap the protocols for designing our dependencies and just use plain data
     codeSampleDirectory: "0111-designing-dependencies-pt2",
     exercises: _exercises,
     id: 111,
-    image: "https://i.vimeocdn.com/video/930420393.jpg",
+    image: "https://i.vimeocdn.com/video/930420393-84e07e110ac13d38fd4fbb571ec17d74a19019b548496538d1d05a4123da5a79-d",
     length: 34*60 + 4,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1596430800),

@@ -8,7 +8,7 @@ This week we improve the performance of another part of the Composable Architect
     codeSampleDirectory: "0152-case-path-performance",
     exercises: _exercises,
     id: 152,
-    image: "https://i.vimeocdn.com/video/1181160362-3e036b0890b203726313434c54018f557486557be939af1d1c26aba3fddae54e-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1181160362-3e036b0890b203726313434c54018f557486557be939af1d1c26aba3fddae54e-d",
     length: 31*60 + 18,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1625461200),

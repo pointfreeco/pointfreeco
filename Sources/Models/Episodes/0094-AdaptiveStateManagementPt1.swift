@@ -8,7 +8,7 @@ It's time to put the finishing touches to our architecture so that we can use it
     codeSampleDirectory: "0094-adaptive-state-management-pt1",
     exercises: _exercises,
     id: 94,
-    image: "https://i.vimeocdn.com/video/865220919.jpg",
+    image: "https://i.vimeocdn.com/video/865220919-6e6c1c3d7721b084f1edc4bb46deca959980768ed19ad21fd7e9abaadc8ee683-d",
     length: 21*60 + 20,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1584334800),

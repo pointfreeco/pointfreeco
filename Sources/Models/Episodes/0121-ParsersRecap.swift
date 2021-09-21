@@ -8,7 +8,7 @@ Now that we've refamiliarized ourselves with parsing, let's parse something even
     codeSampleDirectory: "0121-parsers-recap-pt3",
     exercises: _exercises,
     id: 121,
-    image: "https://i.vimeocdn.com/video/977642862.jpg",
+    image: "https://i.vimeocdn.com/video/977642862-f8a65f3527fcc67c1f173c031799c61aa1728a3c02ac1a4c36a8ff948abef341-d",
     length: 31*60 + 3,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1603083600),

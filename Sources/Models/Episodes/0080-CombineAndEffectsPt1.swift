@@ -13,7 +13,7 @@ Let's explore the Combine framework and its correspondence with the Effect type.
       vimeoSecret: "4599ea8b7854131c6c089f748f9b553bc783860b"
     ),
     id: 80,
-    image: "https://i.vimeocdn.com/video/829976257.jpg",
+    image: "https://i.vimeocdn.com/video/829976257-ad08d54133b4c0bd0dfdabf50bd9cf24da01f66cf8f4a3fb2373c7a8bdb13b8b-d",
     length: 25*60 + 10,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1573452000),

@@ -8,7 +8,7 @@ Now that we've looked at a bunch of parsers that are at our disposal, let's ask 
     codeSampleDirectory: "0057-what-is-a-parser-pt2",
     exercises: _exercises,
     id: 57,
-    image: "https://i.vimeocdn.com/video/801298234.jpg",
+    image: "https://i.vimeocdn.com/video/801298234-f6928809adb7c5a4add668bdcdf27277e91f7944195b946ba87ea6243176f1db-d",
     length: 20 * 60 + 36,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1557727200),

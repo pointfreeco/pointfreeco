@@ -8,7 +8,7 @@ Let's explore another API just announced at WWDC: `@FocusState`. We'll take a si
     codeSampleDirectory: "0155-focus-state",
     exercises: _exercises,
     id: 155,
-    image: "https://i.vimeocdn.com/video/1198344671-c188084702fa5e0fba620ddd46fe4798e3fe0a5e0f7d7e2d07e3126a1a2c4c16-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1198344671-c188084702fa5e0fba620ddd46fe4798e3fe0a5e0f7d7e2d07e3126a1a2c4c16-d",
     length: 39*60 + 36,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1627880400),

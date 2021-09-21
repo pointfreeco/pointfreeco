@@ -8,7 +8,7 @@ We continue our explorations into algebra and the Swift type system. We show tha
     codeSampleDirectory: "0009-algebraic-data-types-pt-2",
     exercises: _exercises,
     id: 9,
-    image: "https://i.vimeocdn.com/video/807678680.jpg",
+    image: "https://i.vimeocdn.com/video/807678680-9005179dc5ebdec416bdfb3d72ddd0859f9406f1472fef4a9b662339fb976ad0-d",
     length: 38*60 + 21,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_522_058_223),

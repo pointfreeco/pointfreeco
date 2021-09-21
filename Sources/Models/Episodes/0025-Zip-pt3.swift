@@ -13,7 +13,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
       vimeoSecret: "1d1d877d1bb0e623b2f4d9efe362d96bc5aded7d"
     ),
     id: 25,
-    image: "https://i.vimeocdn.com/video/802690688.jpg",
+    image: "https://i.vimeocdn.com/video/802690688-43b62b7e848c1375e2eee2685e19c4b51c2d776552bccfc5bdc6d5f5a4f45194-d",
     length: 24*60 + 21,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),

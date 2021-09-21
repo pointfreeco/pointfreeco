@@ -8,7 +8,7 @@ The performance gains we have made with the parser type have already been super 
     codeSampleDirectory: "0129-parsing-performance-pt3",
     exercises: _exercises,
     id: 129,
-    image: "https://i.vimeocdn.com/video/1014667982.jpg",
+    image: "https://i.vimeocdn.com/video/1014667930-c21c1ef473148a8801703d7fe2432547d2807779b4a208492fe958e8c138e4ca-d",
     length: 39*60 + 19,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1607925600),

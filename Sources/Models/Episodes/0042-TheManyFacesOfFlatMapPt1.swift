@@ -8,7 +8,7 @@ Previously we've discussed the `map` and `zip` operations in detail, and today w
     codeSampleDirectory: "0042-the-many-faces-of-flatmap-pt1",
     exercises: _exercises,
     id: 42,
-    image: "https://i.vimeocdn.com/video/801300837.jpg",
+    image: "https://i.vimeocdn.com/video/801300837-f9abb4bd8a87e928e20bc2e99a732fbf1c4f30ce1626ded9b6f759f412a0828e-d",
     length: 25 * 60 + 9,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1546844400),

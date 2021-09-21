@@ -8,7 +8,7 @@ We complete our dictionary for translating Swift protocol concepts into concrete
     codeSampleDirectory: "0036-advanced-protocol-witnesses-pt2",
     exercises: _exercises,
     id: 36,
-    image: "https://i.vimeocdn.com/video/802688572.jpg",
+    image: "https://i.vimeocdn.com/video/802688572-054f4b9b10d0eaa7b6e8151be18a91410573430f3e013051919fe05823842be1-d",
     length: 37 * 60 + 41,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1541408400),

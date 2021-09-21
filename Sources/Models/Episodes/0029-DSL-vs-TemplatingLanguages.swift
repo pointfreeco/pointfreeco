@@ -16,7 +16,7 @@ previously hidden.
       vimeoSecret: "70b609ec1d7733bcf560508e0b02606a2f3948d2"
     ),
     id: 29,
-    image: "https://i.vimeocdn.com/video/803400556.jpg",
+    image: "https://i.vimeocdn.com/video/803400556-36644fcdedec2688d446d79937eeda3473afef3e510907b62edb08be76a8da29-d",
     length: 33*60 + 17,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1536559023),

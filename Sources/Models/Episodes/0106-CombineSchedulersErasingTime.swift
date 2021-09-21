@@ -8,7 +8,7 @@ We refactor our application's code so that we can run it in production with a li
     codeSampleDirectory: "0106-combine-schedulers-pt3",
     exercises: _exercises,
     id: 106,
-    image: "https://i.vimeocdn.com/video/908552755.jpg",
+    image: "https://i.vimeocdn.com/video/908552755-fbf447cc1972cdb60612d97744a916ff9f763f6449d113bf2d13d66b9335b492-d",
     length: 37*60 + 0, 
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1592197200),

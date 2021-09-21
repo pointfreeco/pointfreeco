@@ -8,7 +8,7 @@ We want to explore the performance of composable parsers, but to do so we must f
     codeSampleDirectory: "0127-parsing-performance-pt1",
     exercises: _exercises,
     id: 127,
-    image: "https://i.vimeocdn.com/video/1004853903.jpg",
+    image: "https://i.vimeocdn.com/video/1004853832-4be800ab942699353191023e4680d529840a3d36dc0c7570d12fff86ce130de5-d",
     length: 35*60 + 18,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1606716000),

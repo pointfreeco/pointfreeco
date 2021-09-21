@@ -8,7 +8,7 @@ We will explore two more domain transformations in the Composable Architecture. 
     codeSampleDirectory: "0149-derived-behavior-pt4",
     exercises: _exercises,
     id: 149,
-    image: "https://i.vimeocdn.com/video/1163092715-aa3d4dcfbbcb0cfc3d9a5c77dde6b165129d158ff2ceeb388555a33651791dad-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1163092715-aa3d4dcfbbcb0cfc3d9a5c77dde6b165129d158ff2ceeb388555a33651791dad-d",
     length: 81*60 + 4,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1623646800),

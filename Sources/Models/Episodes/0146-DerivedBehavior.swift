@@ -10,7 +10,7 @@ The ability to break down applications into small domains that are understandabl
     exercises: _exercises,
     fullVideo: nil,
     id: 146,
-    image: "https://i.vimeocdn.com/video/1139060875-87728c2e439250c39581ce6a3d7e537375ff436e3449506c16c89581d00b69d6-d?mw=1900&mh=1069&q=70",
+    image: "https://i.vimeocdn.com/video/1139060875-87728c2e439250c39581ce6a3d7e537375ff436e3449506c16c89581d00b69d6-d",
     length: 42*60 + 8,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1621227600),

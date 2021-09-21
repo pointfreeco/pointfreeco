@@ -8,7 +8,7 @@ We now have a precise, efficient definition for parsing, but we haven't even scr
     codeSampleDirectory: "0059-composable-parsing-map",
     exercises: _exercises,
     id: 59,
-    image: "https://i.vimeocdn.com/video/801298075.jpg",
+    image: "https://i.vimeocdn.com/video/801298075-483a6588c0ecd49b4d1d890945745a451f6ee4f058b6dca9ab55676ceb0d138a-d",
     length: 23*60 + 12,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1558936800),
