@@ -36,6 +36,7 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
+    .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
     .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("f016529")),
     .package(
       name: "Overture", url: "https://github.com/pointfreeco/swift-overture.git", .exact("0.5.0")),
@@ -43,7 +44,6 @@ var package = Package(
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
     .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("2e23f76")),
-    .package(name: "PostgreSQL", url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [
 
@@ -66,7 +66,7 @@ var package = Package(
         "Stripe",
         .product(name: "Either", package: "Prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "PostgreSQL", package: "PostgreSQL"),
+        .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Prelude", package: "Prelude"),
         .product(name: "Tagged", package: "Tagged"),
       ]
@@ -80,7 +80,7 @@ var package = Package(
         "ModelsTestSupport",
         "PointFreePrelude",
         .product(name: "Either", package: "Prelude"),
-        .product(name: "PostgreSQL", package: "PostgreSQL"),
+        .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Prelude", package: "Prelude"),
       ]
     ),
@@ -238,7 +238,7 @@ var package = Package(
         .product(name: "HtmlPlainTextPrint", package: "Web"),
         .product(name: "HttpPipeline", package: "Web"),
         .product(name: "HttpPipelineHtmlSupport", package: "Web"),
-        .product(name: "PostgreSQL", package: "PostgreSQL"),
+        .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Tagged", package: "Tagged"),
         .product(name: "TaggedMoney", package: "Tagged"),
         .product(name: "TaggedTime", package: "Tagged"),

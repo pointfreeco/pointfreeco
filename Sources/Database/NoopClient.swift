@@ -12,7 +12,7 @@ extension Client {
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
     deleteEnterpriseEmail: { _ in throwE(NoopError()) },
     deleteTeamInvite: { _ in throwE(NoopError()) },
-    execute: { _, _ in throwE(NoopError()) },
+    execute: { _ in throwE(NoopError()) },
     fetchAdmins: { throwE(NoopError()) },
     fetchEmailSettingsForUserId: { _ in throwE(NoopError()) },
     fetchEnterpriseAccountForDomain: { _ in throwE(NoopError()) },
@@ -35,12 +35,12 @@ extension Client {
     insertTeamInvite: { _, _ in throwE(NoopError()) },
     migrate: { pure(unit) },
     redeemEpisodeCredit: { _, _ in throwE(NoopError()) },
-    registerUser: { _, _, _ in throwE(NoopError()) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in throwE(NoopError()) },
     sawUser: { _ in throwE(NoopError()) },
+    updateEmailSettings: { _, _ in throwE(NoopError()) },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
     updateStripeSubscription: { _ in throwE(NoopError()) },
-    updateUser: { _, _, _, _, _, _ in throwE(NoopError()) },
+    updateUser: { _, _, _, _, _ in throwE(NoopError()) },
     upsertUser: { _, _, _ in throwE(NoopError()) }
   )
 }

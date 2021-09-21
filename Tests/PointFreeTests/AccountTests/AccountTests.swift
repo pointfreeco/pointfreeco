@@ -20,12 +20,12 @@ import XCTest
 final class AccountIntegrationTests: LiveDatabaseTestCase {
   func testLeaveTeam() {
     let currentUser = Current.database.registerUser(
-      .init(
+      withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
         gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 1, name: "Blob")
       ),
-      "blob@pointfree.co",
-      { .mock }
+      email: "blob@pointfree.co",
+      now: { .mock }
     )
       .run.perform().right!!
 
@@ -33,12 +33,12 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       .run.perform().right!!
 
     let owner = Current.database.registerUser(
-      .init(
+      withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
         gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 2, name: "Owner")
       ),
-      "owner@pointfree.co",
-      { .mock }
+      email: "owner@pointfree.co",
+      now: { .mock }
     )
     .run.perform().right!!
 
@@ -74,7 +74,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testAccount() {

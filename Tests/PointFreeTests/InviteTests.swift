@@ -22,7 +22,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testSendInvite_HappyPath() {
-    let inviterUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -41,7 +41,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testSendInvite_UnhappyPath_NoSeats() {
-    let inviterUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -66,7 +66,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testResendInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -83,7 +83,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRevokeInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(.mock, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -109,13 +109,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testRevokeInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -141,13 +141,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_HappyPath() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -186,13 +186,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterIsNotSubscriber() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -219,13 +219,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -258,13 +258,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -343,13 +343,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testResendInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(env, "hello@pointfree.co", { .mock })
+    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co", { .mock })
+    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
       .run
       .perform()
       .right!!
@@ -369,7 +369,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 class InviteTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testShowInvite_LoggedOut() {

@@ -29,9 +29,9 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     Current.episodes = unzurry([episode])
 
     let user = Current.database
-      .registerUser(.mock, "hello@pointfree.co", { .mock })
+      .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
+    _ = Current.database.updateUser(id: user.id, episodeCreditCount: 1).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -118,9 +118,9 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     Current.episodes = unzurry([episode])
 
     let user = Current.database
-      .registerUser(.mock, "hello@pointfree.co", { .mock })
+      .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
+    _ = Current.database.updateUser(id: user.id, episodeCreditCount: 1).run.perform()
     _ = Current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)

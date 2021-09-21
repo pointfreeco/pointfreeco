@@ -12,7 +12,7 @@ import HttpPipeline
 class AtomFeedTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testAtomFeed() {

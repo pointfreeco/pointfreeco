@@ -3,47 +3,30 @@ import Models
 import NIO
 @testable import PointFree
 import PointFreeRouter
+import PostgresKit
 import Prelude
 import SnapshotTesting
 import XCTest
 
 open class LiveDatabaseTestCase: TestCase {
+  var database: Database.Client!
+  var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
+  let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+
   override open func setUp() {
     super.setUp()
 
-    Current.database = .liveTest
-
-    _ = try! Current.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
-      .flatMap(const(Current.database.execute("CREATE SCHEMA public", [])))
-      .flatMap(const(Current.database.execute("GRANT ALL ON SCHEMA public TO pointfreeco", [])))
-      .flatMap(const(Current.database.execute("GRANT ALL ON SCHEMA public TO public", [])))
-      .flatMap(const(Current.database.migrate()))
-      .flatMap(const(Current.database.execute("CREATE SEQUENCE test_uuids", [])))
-      .flatMap(const(Current.database.execute("CREATE SEQUENCE test_shortids", [])))
-      .flatMap(const(Current.database.execute(
-        """
-          CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
-          BEGIN
-            RETURN ('00000000-0000-0000-0000-'||LPAD(nextval('test_uuids')::text, 12, '0'))::uuid;
-          END; $$
-          LANGUAGE PLPGSQL;
-          """,
-        []
-      )))
-      .flatMap(const(Current.database.execute(
-        """
-          CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
-          RETURNS text AS $$
-          BEGIN
-            RETURN table_name||'-'||column_name||nextval('test_shortids')::text;
-          END; $$
-          LANGUAGE PLPGSQL;
-          """,
-        []
-      )))
-      .run
-      .perform()
-      .unwrap()
+    precondition(!Current.envVars.postgres.databaseUrl.contains("amazonaws.com"))
+    self.pool = EventLoopGroupConnectionPool(
+      source: PostgresConnectionSource(
+        configuration: PostgresConfiguration(
+          url: Current.envVars.postgres.databaseUrl
+        )!
+      ),
+      on: self.eventLoopGroup
+    )
+    Current.database = .live(pool: self.pool)
+    try! Current.database.resetForTesting(pool: pool)
   }
 }
 

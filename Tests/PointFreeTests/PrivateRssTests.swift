@@ -14,7 +14,7 @@ import XCTest
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {
@@ -218,7 +218,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.database.updateUser = { _, _, _, _, _, _ in
+    Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)
     }

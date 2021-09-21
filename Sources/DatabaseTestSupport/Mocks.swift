@@ -3,7 +3,6 @@ import Either
 import Models
 import ModelsTestSupport
 import PointFreePrelude
-import PostgreSQL
 import Prelude
 
 extension Client {
@@ -15,7 +14,7 @@ extension Client {
     createSubscription: { _, _, _, _ in pure(.mock) },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
-    execute: { _, _ in throwE(unit) },
+    execute: { _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEnterpriseAccountForDomain: const(pure(.mock)),
@@ -38,12 +37,12 @@ extension Client {
     insertTeamInvite: { _, _ in pure(.mock) },
     migrate: unzurry(pure(unit)),
     redeemEpisodeCredit: { _, _ in pure(unit) },
-    registerUser: { _, _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     sawUser: const(pure(unit)),
+    updateEmailSettings: { _, _ in pure(unit) },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
-    updateUser: { _, _, _, _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _, _ in pure(.some(.mock)) }
   )
 }

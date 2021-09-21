@@ -11,7 +11,7 @@ import WebKit
 
 class AboutTests: TestCase {
   func testAbout() {
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

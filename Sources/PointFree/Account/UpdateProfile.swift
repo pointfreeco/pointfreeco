@@ -82,7 +82,7 @@ private func updateProfileMiddlewareHandler(
     .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
     ?? pure(unit)
 
-  return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil, nil)
+  return Current.database.updateUser(id: user.id, name: data.name, emailSettings: emailSettings)
     .flatMap(const(updateCustomerExtraInvoiceInfo))
     .run
     .flatMap(
@@ -156,7 +156,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
     )
     .run({ _ in })
 
-  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil, nil)
+  return Current.database.updateUser(id: userId, email: newEmailAddress)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }

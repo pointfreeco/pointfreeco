@@ -14,7 +14,7 @@ import XCTest
 class HomeTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
 
     var e1 = Episode.ep10_aTaleOfTwoFlatMaps
     e1.permission = .subscriberOnly

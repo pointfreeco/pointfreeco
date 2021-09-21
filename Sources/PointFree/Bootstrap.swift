@@ -4,35 +4,31 @@ import Foundation
 import GitHub
 import Mailgun
 import Models
+import NIO
 import PointFreePrelude
 import PointFreeRouter
+import PostgresKit
 import Prelude
 
-public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
+public func bootstrap(eventLoopGroup: EventLoopGroup) -> EitherIO<Error, Prelude.Unit> {
+  Backtrace.install()
+
   return EitherIO.debug(prefix: "⚠️ Bootstrapping PointFree...")
-    .flatMap(const(installBacktrace))
-    .flatMap(const(loadEnvironment))
+    .flatMap(const(loadEnvironment(eventLoopGroup: eventLoopGroup)))
     .flatMap(const(connectToPostgres))
     .flatMap(const(.debug(prefix: "✅ PointFree Bootstrapped!")))
 }
 
-private let installBacktrace =
-  EitherIO.debug(prefix: "  ⚠️ Installing Backtrace...")
-    .flatMap(const(EitherIO<Error, Prelude.Unit>(run: IO {
-      Backtrace.install()
-      return .right(unit)
-    })))
-    .flatMap(const(.debug(prefix: "  ✅ Backtrace installed!")))
-
 private let stepDivider = EitherIO.debug(prefix: "  -----------------------------")
 
-private let loadEnvironment =
+private func loadEnvironment(eventLoopGroup: EventLoopGroup) -> EitherIO<Error, Prelude.Unit> {
   EitherIO.debug(prefix: "  ⚠️ Loading environment...")
-    .flatMap(loadEnvVars)
+    .flatMap(const(loadEnvVars(eventLoopGroup: eventLoopGroup)))
     .flatMap(loadEpisodes)
     .flatMap(const(.debug(prefix: "  ✅ Loaded!")))
+}
 
-private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
+private func loadEnvVars(eventLoopGroup: EventLoopGroup) -> EitherIO<Error, Prelude.Unit> {
   let envFilePath = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .deletingLastPathComponent()
@@ -61,9 +57,19 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
   Current.envVars = envVars
   Current.database = envVars.emergencyMode
     ? .noop
-    : .init(
-      databaseUrl: Current.envVars.postgres.databaseUrl,
-      logger: Current.logger
+    : .live(
+      pool: .init(
+        source: PostgresConnectionSource(
+          configuration: update(PostgresConfiguration(url: Current.envVars.postgres.databaseUrl)!) {
+            if Current.envVars.postgres.databaseUrl.contains("amazonaws.com") {
+              $0.tlsConfiguration = update(.clientDefault) {
+                $0.certificateVerification = .none
+              }
+            }
+          }
+        ),
+        on: eventLoopGroup
+      )
     )
   Current.gitHub = .init(
     clientId: Current.envVars.gitHub.clientId,
