@@ -11,10 +11,10 @@ Take a moment to hear from the hosts about what to expect from this new series.
     fullVideo: .init(
       bytesLength: 90533615,
       vimeoId: 354215017,
-      vimeoSecret: "https://i.vimeocdn.com/video/807678036-38665fc37a5e26eaa5f6b6b1caafc56aed3f5a28e74f80a697bc18ee50d2a50f-d"
+      vimeoSecret: "5ec513cdfcccb5bab74356a156dea1dabdd48a16"
     ),
     id: 0,
-    image: "https://i.vimeocdn.com/video/807678036.jpg",
+    image: "https://i.vimeocdn.com/video/807678036-38665fc37a5e26eaa5f6b6b1caafc56aed3f5a28e74f80a697bc18ee50d2a50f-d",
     length: 179,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
