@@ -55,7 +55,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
-    case let .collections(.episode(collectionSlug, sectionSlug, episodeParam)):
+    case let .collections(.episode(collectionSlug, _, episodeParam)):
       return conn.map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
         |> episodeResponse
 
