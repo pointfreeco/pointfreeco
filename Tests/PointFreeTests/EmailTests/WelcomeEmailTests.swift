@@ -19,7 +19,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 //    SnapshotTesting.record=true
   }
 
-  func testIncrementEpisodeCredits() {
+  func testIncrementEpisodeCredits() throws {
     let users: [User] = [1, 2, 3].map {
       var env = GitHubUserEnvelope.mock
       env.gitHubUser.id = .init(rawValue: $0)
@@ -27,7 +27,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
         .run.perform().right!!
     }
 
-    _ = Current.database.incrementEpisodeCredits(users.map(^\.id)).run.perform().right!
+    _ = try Current.database.incrementEpisodeCredits(users.map(^\.id)).run.perform().unwrap()
 
     let updatedUsers = users.map { Current.database.fetchUserById($0.id).run.perform().right!! }
 

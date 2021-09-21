@@ -323,11 +323,14 @@ extension Client {
         .all(decoding: Models.User.self)
       },
       incrementEpisodeCredits: { userIds in
-        pool.sqlDatabase.raw(
+        let ids: SQLQueryString = """
+          \(raw: userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ", "))
+          """
+        return pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "episode_credit_count" = "episode_credit_count" + 1
-          WHERE "id" IN \(bind: userIds) -- FIXME: Does this work?
+          WHERE "id" IN (\(ids))
           RETURNING *
           """
         )
