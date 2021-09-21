@@ -21,8 +21,8 @@ The snapshot testing library we have been designing over the past few weeks has 
     title: "Async Functional Refactoring",
     trailerVideo: .init(
       bytesLength: 71878337,
-      downloadUrl: "https://player.vimeo.com/external/348583967.hd.mp4?s=f1547174ac322cf2b1ecd0480dd1d17b38656e54&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348583967"
+      vimeoId: 348583967,
+      vimeoSecret: "f1547174ac322cf2b1ecd0480dd1d17b38656e54"
     )
   )
 }

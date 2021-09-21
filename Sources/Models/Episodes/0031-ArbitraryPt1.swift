@@ -16,8 +16,8 @@ This week we dive deeper into randomness and composition by looking to a seeming
     title: "Decodable Randomness: Part 1",
     trailerVideo: .init(
       bytesLength: 69153231,
-      downloadUrl: "https://player.vimeo.com/external/351175122.hd.mp4?s=9b46fc81f136e60ea84331179186488ef3722132&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351175122"
+      vimeoId: 351175122,
+      vimeoSecret: "9b46fc81f136e60ea84331179186488ef3722132"
     )
   )
 }

@@ -27,8 +27,8 @@ Let's solve another common parsing problem using parser combinators! It's common
     title: "Parser Combinators: Part 2",
     trailerVideo: .init(
       bytesLength: 38047077,
-      downloadUrl: "https://player.vimeo.com/external/349951714.hd.mp4?s=36959b38a26352c1e8599c061b98d10d679ca044&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349951714"
+      vimeoId: 349951714,
+      vimeoSecret: "36959b38a26352c1e8599c061b98d10d679ca044"
     )
   )
 }

@@ -9,8 +9,8 @@ Now that we've explored the Combine framework and identified its correspondence 
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 405330619,
-      downloadUrl: "https://player.vimeo.com/external/371023664.hd.mp4?s=baaf70ec4a937e28e0a8d5d06af582e801986fad&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/371023664"
+      vimeoId: 371023664,
+      vimeoSecret: "baaf70ec4a937e28e0a8d5d06af582e801986fad"
     ),
     id: 81,
     image: "https://i.vimeocdn.com/video/830940645.jpg",
@@ -28,8 +28,8 @@ Now that we've explored the Combine framework and identified its correspondence 
     title: "The Combine Framework and Effects: Part 2",
     trailerVideo: .init(
       bytesLength: 34771162,
-      downloadUrl: "https://player.vimeo.com/external/371019239.hd.mp4?s=0f4516b366d8a74d9080bf7fe8168048d7261b41&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/371019239"
+      vimeoId: 371019239,
+      vimeoSecret: "0f4516b366d8a74d9080bf7fe8168048d7261b41"
     ),
     transcriptBlocks: _transcriptBlocks
   )

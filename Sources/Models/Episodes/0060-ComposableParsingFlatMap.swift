@@ -26,8 +26,8 @@ The `map` function on parsers is powerful, but there are still a lot of things i
     title: "Composable Parsing",
     trailerVideo: .init(
       bytesLength: 18429291,
-      downloadUrl: "https://player.vimeo.com/external/348472169.hd.mp4?s=ac9385054499981ac66564121817ad6ba9b9e218&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348472169"
+      vimeoId: 348472169,
+      vimeoSecret: "ac9385054499981ac66564121817ad6ba9b9e218"
     )
   )
 }

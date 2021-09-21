@@ -17,8 +17,8 @@ In part two of our series on `zip` we will show that many types support a `zip`-
     title: "The Many Faces of Zip: Part 2",
     trailerVideo: .init(
       bytesLength: 66405830,
-      downloadUrl: "https://player.vimeo.com/external/351175698.hd.mp4?s=c1659cb3bfa6de1e320dfe3f3ffb3b5a5945fc6c&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/351175698"
+      vimeoId: 351175698,
+      vimeoSecret: "c1659cb3bfa6de1e320dfe3f3ffb3b5a5945fc6c"
     )
   )
 }

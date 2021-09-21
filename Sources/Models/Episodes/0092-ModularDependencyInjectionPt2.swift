@@ -39,8 +39,8 @@ Now that we've baked the "environment" of dependencies directly into the Composa
     title: "Dependency Injection Made Modular",
     trailerVideo: .init(
       bytesLength: 20_716_503,
-      downloadUrl: "https://player.vimeo.com/external/393344940.hd.mp4?s=d2527e30f8a8d2e49c3186afbda972a7a075c86b&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/393344940"
+      vimeoId: 393344940,
+      vimeoSecret: "d2527e30f8a8d2e49c3186afbda972a7a075c86b"
     )
   )
 }

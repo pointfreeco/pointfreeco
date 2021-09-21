@@ -22,8 +22,8 @@ with little work and no third party library.
     title: "Dependency Injection Made Easy",
     trailerVideo: .init(
       bytesLength: 30335465,
-      downloadUrl: "https://player.vimeo.com/external/352747419.hd.mp4?s=0580507d35ddda1226333ab6f7c62f56e27550f6&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/352747419"
+      vimeoId: 352747419,
+      vimeoSecret: "0580507d35ddda1226333ab6f7c62f56e27550f6"
     )
   )
 }

@@ -70,8 +70,8 @@ A Swift community Twitter thread about anonymous sum types.
     title: "Structs 🤝 Enums",
     trailerVideo: .init(
       bytesLength: 51666137,
-      downloadUrl: "https://player.vimeo.com/external/349952494.hd.mp4?s=4edb86b631067c4e36fdbd12c5a2ea4f53b896a5&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349952494"
+      vimeoId: 349952494,
+      vimeoSecret: "4edb86b631067c4e36fdbd12c5a2ea4f53b896a5"
     )
   )
 }

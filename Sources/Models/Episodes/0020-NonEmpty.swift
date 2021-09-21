@@ -17,8 +17,8 @@ We often deal with collections that we know can never be empty, yet we use array
     title: "NonEmpty",
     trailerVideo: .init(
       bytesLength: 44028902,
-      downloadUrl: "https://player.vimeo.com/external/352312199.hd.mp4?s=7ac2966a42f34242bc11e4b915981f20edae50a0&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/352312199"
+      vimeoId: 352312199,
+      vimeoSecret: "7ac2966a42f34242bc11e4b915981f20edae50a0"
     )
   )
 }

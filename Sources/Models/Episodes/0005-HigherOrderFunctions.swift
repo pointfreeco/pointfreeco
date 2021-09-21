@@ -21,8 +21,8 @@ unlock even more composability in our everyday code.
     title: "Higher-Order Functions",
     trailerVideo: .init(
       bytesLength: 37233625,
-      downloadUrl: "https://player.vimeo.com/external/354215008.hd.mp4?s=3ff409ff76faf52295d3fd6e0b3fc50153e94d00&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354215008"
+      vimeoId: 354215008,
+      vimeoSecret: "3ff409ff76faf52295d3fd6e0b3fc50153e94d00"
     )
   )
 }

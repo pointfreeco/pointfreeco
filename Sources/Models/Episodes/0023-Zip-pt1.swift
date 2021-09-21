@@ -16,8 +16,8 @@ The `zip` function comes with the Swift standard library, but its utility goes f
     title: "The Many Faces of Zip: Part 1",
     trailerVideo: .init(
       bytesLength: 41301707,
-      downloadUrl: "https://player.vimeo.com/external/349879580.hd.mp4?s=94ff8588118990d5fff26c2266e760dcbfec7174&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/349879580"
+      vimeoId: 349879580,
+      vimeoSecret: "94ff8588118990d5fff26c2266e760dcbfec7174"
     )
   )
 }

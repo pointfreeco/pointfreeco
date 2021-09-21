@@ -288,7 +288,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
     enclosure: .init(
       length: episode.fullVideo.bytesLength,
       type: "video/mp4",
-      url: episode.fullVideo.downloadUrl
+      url: episode.fullVideo.downloadUrl(.hd720)
     ),
     guid: url(to: .episode(.show(.left(episode.slug)))),
     itunes: RssItem.Itunes(
@@ -309,7 +309,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
         length: episode.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: episode.fullVideo.downloadUrl
+        url: episode.fullVideo.downloadUrl(.hd720)
       ),
       title: episode.fullTitle
     ),
@@ -374,7 +374,7 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
     enclosure: .init(
       length: Episode.ep0_introduction.fullVideo.bytesLength,
       type: "video/mp4",
-      url: Episode.ep0_introduction.fullVideo.downloadUrl
+      url: Episode.ep0_introduction.fullVideo.downloadUrl(.sd540)
     ),
     guid: String(Current.date().timeIntervalSince1970),
     itunes: RssItem.Itunes(
@@ -395,7 +395,7 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
         length: Episode.ep0_introduction.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: Episode.ep0_introduction.fullVideo.downloadUrl
+        url: Episode.ep0_introduction.fullVideo.downloadUrl(.sd540)
       ),
       title: "Invalid Feed URL"
     ),

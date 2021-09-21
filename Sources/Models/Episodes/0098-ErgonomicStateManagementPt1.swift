@@ -21,8 +21,8 @@ The Composable Architecture is robust and solves all of the problems we set out 
     title: "Ergonomic State Management: Part 1",
     trailerVideo: .init(
       bytesLength: 43_493_260, 
-      downloadUrl: "https://player.vimeo.com/external/407009519.hd.mp4?s=e40eed7d59217cb481988ec844c810b10c24db24&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/407009519"
+      vimeoId: 407009519,
+      vimeoSecret: "e40eed7d59217cb481988ec844c810b10c24db24"
     )
   )
 }

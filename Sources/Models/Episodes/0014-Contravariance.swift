@@ -17,8 +17,8 @@ Let's explore a type of composition that defies our intuitions. It appears to go
     title: "Contravariance",
     trailerVideo: .init(
       bytesLength: 54446212,
-      downloadUrl: "https://player.vimeo.com/external/354214967.hd.mp4?s=b8931e84a658cebfc4dff3f143a5afea659651fb&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/354214967"
+      vimeoId: 354214967,
+      vimeoSecret: "b8931e84a658cebfc4dff3f143a5afea659651fb"
     )
   )
 }

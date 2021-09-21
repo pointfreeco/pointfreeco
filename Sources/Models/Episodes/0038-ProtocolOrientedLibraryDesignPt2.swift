@@ -22,8 +22,8 @@ With our library fully generalized using protocols, we show off the flexibility 
     title: "Protocol-Oriented Library Design: Part 2",
     trailerVideo: .init(
       bytesLength: 109172787,
-      downloadUrl: "https://player.vimeo.com/external/348604549.hd.mp4?s=a4d331c15bd2ae3186d31b246e566a21c2fbd296&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/348604549"
+      vimeoId: 348604549,
+      vimeoSecret: "a4d331c15bd2ae3186d31b246e566a21c2fbd296"
     )
   )
 }

@@ -15,8 +15,8 @@ We revisit an old topic: styling UIKit components. Using some of the machinery w
     title: "Styling with Overture",
     trailerVideo: .init(
       bytesLength: 46632907,
-      downloadUrl: "https://player.vimeo.com/external/352312223.hd.mp4?s=5882065525815f1675fbd41a7d015ef958e2945c&profile_id=175&download=1",
-      streamingSource: "https://player.vimeo.com/video/352312223"
+      vimeoId: 352312223,
+      vimeoSecret: "5882065525815f1675fbd41a7d015ef958e2945c"
     )
   )
 }
