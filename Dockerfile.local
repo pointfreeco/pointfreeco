@@ -1,4 +1,4 @@
-FROM swiftlang/swift:nightly-5.5
+FROM swift:5.5
 
 RUN apt-get --fix-missing update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python
