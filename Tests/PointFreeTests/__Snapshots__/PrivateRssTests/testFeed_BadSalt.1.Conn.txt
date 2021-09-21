@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 5070
+Content-Length: 5133
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -124,7 +124,7 @@ X-XSS-Protection: 1; mode=block
         00:00:00
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678036.jpg
+        https://i.vimeocdn.com/video/807678036-38665fc37a5e26eaa5f6b6b1caafc56aed3f5a28e74f80a697bc18ee50d2a50f-d
       </itunes:image>
       <itunes:season>
         1
