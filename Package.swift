@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 
 import Foundation
 import PackageDescription
@@ -322,14 +322,14 @@ var package = Package(
       ]
     ),
 
-    .target(
+    .executableTarget(
       name: "Runner",
       dependencies: [
         "PointFree",
       ]
     ),
 
-    .target(
+    .executableTarget(
       name: "Server",
       dependencies: [
         "PointFree",
