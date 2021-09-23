@@ -13,7 +13,6 @@ Let's put some finishing touches to our random artwork generator, incorporate it
       vimeoSecret: "8ccbc79a092f485b89ab5bee225ca2d6f324742f"
     ),
     id: 50,
-    image: "https://i.vimeocdn.com/video/801299326-266395e739aa8192f1c096fa95ea8044a5e5196f43a93844b4ad7ba2f9980da3-d",
     length: 27*60 + 22,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1552284000),

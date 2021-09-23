@@ -8,7 +8,6 @@ Combine is a powerful framework and is the de facto way to power SwiftUI applica
     codeSampleDirectory: "0104-combine-schedulers-pt1",
     exercises: _exercises,
     id: 104,
-    image: "https://i.vimeocdn.com/video/903758140-82aaacfdf0cb9b49816060cec80bbe224d1b14600195a2620743e49e6c7f1904-d",
     length: 49*60 + 37,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1591246800),

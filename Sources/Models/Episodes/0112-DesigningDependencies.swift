@@ -8,7 +8,6 @@ It's straightforward to design the dependency for interacting with an API client
     codeSampleDirectory: "0112-designing-dependencies-pt3",
     exercises: _exercises,
     id: 112,
-    image: "https://i.vimeocdn.com/video/937809225-371eea60f0cc86fed121b105339b888761199c659b287954bebe104d7e8afa87-d",
     length: 46*60 + 30,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1597035600),

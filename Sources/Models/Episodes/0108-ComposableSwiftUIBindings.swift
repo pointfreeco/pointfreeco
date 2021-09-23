@@ -9,8 +9,7 @@ Now that we know that SwiftUI state management seems biased towards structs, let
       codeSampleDirectory: "0108-composable-bindings-pt2", 
       exercises: _exercises,
       id: 108,
-      image: "https://i.vimeocdn.com/video/923311026-b2a110505b7ed614cf9b599bdee1fa2b554080b7400b7df0ad6673afea3dd682-d",
-      length: 45*60 + 40,
+        length: 45*60 + 40,
       permission: .subscriberOnly,
       publishedAt: Date(timeIntervalSince1970: 1594616400),
       references: [

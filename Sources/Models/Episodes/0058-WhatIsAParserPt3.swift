@@ -8,7 +8,6 @@ It's time to ask the all important question: what's the point? We now have a pro
     codeSampleDirectory: "0058-what-is-a-parser-pt3",
     exercises: _exercises,
     id: 58,
-    image: "https://i.vimeocdn.com/video/799156021-99b11e9a282ae6d87c57af7979f12cd2baf473e590f69b8cd2bd992fa1c30021-d",
     length: 20*60 + 0,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1558332000),

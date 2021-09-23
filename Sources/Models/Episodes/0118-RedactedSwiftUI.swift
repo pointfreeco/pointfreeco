@@ -9,7 +9,6 @@ We finish building a rich onboarding experience for our application by selective
     codeSampleDirectory: "0118-redacted-swiftui-pt4",
     exercises: _exercises,
     id: 118,
-    image: "https://i.vimeocdn.com/video/960980179-07e73e9fe44b32f3c95eefc4f9a0243274ca5bbfe71e08741d728174ae49b77d-d",
     length: 26*60 + 21,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1600664400),

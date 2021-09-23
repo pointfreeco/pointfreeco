@@ -8,7 +8,6 @@ So, what's the point of forgoing the protocols and designing dependencies with s
     codeSampleDirectory: "0114-designing-dependencies-pt5",
     exercises: _exercises,
     id: 114,
-    image: "https://i.vimeocdn.com/video/945461889-27ebf832d532a4cbd64359e026135d7cd0c7e61d200c3f09792ad0fb21b66e20-d",
     length: 50*60 + 47,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1598245200),

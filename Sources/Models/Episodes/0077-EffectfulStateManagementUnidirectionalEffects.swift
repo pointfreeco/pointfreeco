@@ -8,7 +8,6 @@ We've modeled side effects in our architecture, but it's not quite right yet: a 
     codeSampleDirectory: "0077-effectful-state-management-unidirectional-effects",
     exercises: _exercises,
     id: 77,
-    image: "https://i.vimeocdn.com/video/824231505-ea5d8baa7e45b962408a48fd5f873884232a5bf33b64886e9fb345b149446aed-d",
     length: 25*60 + 24,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1571637600),

@@ -13,7 +13,6 @@ Our snapshot testing library is now officially open source! In order to show jus
       vimeoSecret: "22357478e55b228d9ea0a50c1719e71fae7cb29e"
     ),
     id: 41,
-    image: "https://i.vimeocdn.com/video/801301043-e6d6b9032b401b666fc456b88baf0739b3ed80a8b57888150c2a0ad0f9da6273-d",
     length: 29*60+16,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1545116400),

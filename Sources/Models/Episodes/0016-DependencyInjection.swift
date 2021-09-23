@@ -10,7 +10,6 @@ with little work and no third party library.
     codeSampleDirectory: "0016-dependency-injection",
     exercises: _exercises,
     id: 16,
-    image: "https://i.vimeocdn.com/video/804927879-97ee0bd9099d105488975a5fcda0361ec06eb43d8133307adb21ffe085fe68d5-d",
     length: 35*60 + 14,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_526_896_623),

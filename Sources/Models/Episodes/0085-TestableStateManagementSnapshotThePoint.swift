@@ -13,7 +13,6 @@ We've made testing in our architecture a joy! We can test deep aspects of our ap
       vimeoSecret: "c9456690590d5fb0ba42a8aec86af5101c0b1213"
     ),
     id: 85,
-    image: "https://i.vimeocdn.com/video/837834979-b13e174be120dc6cef6b8d04c10ab5197ad52a4b3822f87535b1cf596a7add42-d",
     length: 33*60 + 35,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1576476000),

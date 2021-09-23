@@ -3,7 +3,7 @@ Cookie: pf_session={}
 User-Agent: Safari 1.0
 
 200 OK
-Content-Length: 13793
+Content-Length: 13337
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -141,7 +141,6 @@ with anyone else.
         00:39:21
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807849190-3f1cea1a0521ec948aab688a3bc41a49fe441870954d6ae3641658f050a0e3f4-d
       </itunes:image>
       <itunes:season>
         1
@@ -206,7 +205,6 @@ with anyone else.
         00:25:04
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678771-3d581bea0361d3ff1d44bc2b78271b7e74c8050b667eb1ac84684dc51fca2ad7-d
       </itunes:image>
       <itunes:season>
         1
@@ -271,7 +269,6 @@ with anyone else.
         00:27:14
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678140-88a90e8bf9ed99716515c921400ab6727fed3f41176b3693ff599cf0b5280929-d
       </itunes:image>
       <itunes:season>
         1
@@ -336,7 +333,6 @@ with anyone else.
         00:44:36
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678088-f37d3be7710e6079885f1d064870b580cfdd2cecb3d80adb59903a68479b3c78-d
       </itunes:image>
       <itunes:season>
         1

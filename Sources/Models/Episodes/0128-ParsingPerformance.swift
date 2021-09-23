@@ -8,7 +8,6 @@ We convert some of our substring parsers to work on lower levels of String abstr
     codeSampleDirectory: "0128-parsing-performance-pt2",
     exercises: _exercises,
     id: 128,
-    image: "https://i.vimeocdn.com/video/1009785792-9d20402c50ff889ad94393076d7902214ca9643b34275f7a4180aca3bf5b1311-d",
     length: 50*60 + 54,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1607320800),

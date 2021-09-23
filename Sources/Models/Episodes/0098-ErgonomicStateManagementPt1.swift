@@ -9,7 +9,6 @@ The Composable Architecture is robust and solves all of the problems we set out 
     exercises: _exercises,
     fullVideo: nil,
     id: 98,
-    image: "https://i.vimeocdn.com/video/877567536-73b5a1ad615fbf609b7900aa0a9614285ec09276232ce241011ccb6057fc66c5-d",
     length: 27*60 + 45,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1586754000),

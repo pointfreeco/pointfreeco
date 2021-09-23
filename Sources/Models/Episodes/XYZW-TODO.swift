@@ -9,7 +9,6 @@ TODO
     exercises: _exercises,
     fullVideo: nil, // Only for free episodes!
     id: 0, // TODO
-    image: "TODO",
     length: 0*60 + 0, // TODO
     permission: .subscriberOnly,
     publishedAt: .distantFuture, // TODO

@@ -11,9 +11,19 @@ import SnapshotTesting
 import Stripe
 import XCTest
 
+private let episodes: [Episode] = [
+  .ep0_introduction,
+  .ep1_functions,
+  .ep2_sideEffects,
+  .ep3_uikitStylingWithFunctions,
+  .ep10_aTaleOfTwoFlatMaps,
+  .ep22_aTourOfPointFree,
+].map { update($0) { $0.image = "" } }
+
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
+    Current.episodes = { episodes }
 //    SnapshotTesting.isRecording = true
   }
 
@@ -21,14 +31,6 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.episodes = unzurry([
-      .ep0_introduction,
-      .ep1_functions,
-      .ep2_sideEffects,
-      .ep3_uikitStylingWithFunctions,
-      .ep10_aTaleOfTwoFlatMaps,
-      .ep22_aTourOfPointFree,
-    ])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -48,14 +50,6 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.episodes = unzurry([
-      .ep0_introduction,
-      .ep1_functions,
-      .ep2_sideEffects,
-      .ep3_uikitStylingWithFunctions,
-      .ep10_aTaleOfTwoFlatMaps,
-      .ep22_aTourOfPointFree,
-    ])
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -160,14 +154,6 @@ class PrivateRssTests: TestCase {
       return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.episodes = unzurry([
-      .ep0_introduction,
-      .ep1_functions,
-      .ep2_sideEffects,
-      .ep3_uikitStylingWithFunctions,
-      .ep10_aTaleOfTwoFlatMaps,
-      .ep22_aTourOfPointFree,
-    ])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -190,14 +176,6 @@ class PrivateRssTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.episodes = unzurry([
-      .ep0_introduction,
-      .ep1_functions,
-      .ep2_sideEffects,
-      .ep3_uikitStylingWithFunctions,
-      .ep10_aTaleOfTwoFlatMaps,
-      .ep22_aTourOfPointFree,
-    ])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!

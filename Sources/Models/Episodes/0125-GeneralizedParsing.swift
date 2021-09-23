@@ -8,7 +8,6 @@ Now that we have generalized the parser type it's time to parse things that aren
     codeSampleDirectory: "0125-generalized-parsing-pt2",
     exercises: _exercises,
     id: 125,
-    image: "https://i.vimeocdn.com/video/995514908-76259a25133023c4e04b9a3fab36150eb56df034ac6956608c221bafb526f36b-d",
     length: 53*60 + 52,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1605506400),

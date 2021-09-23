@@ -7,7 +7,6 @@ Now that we know that `flatMap` is important for flattening nested arrays and op
 """,
     codeSampleDirectory: "0043-the-many-faces-of-flatmap-pt2",
     id: 43,
-    image: "https://i.vimeocdn.com/video/801300768-c01a2bfcd6bad9d46244a5395e61ee0921e141b5e04f0a2e8c0d9b48929f3e60-d",
     length: 27 * 60 + 19,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1547622000),

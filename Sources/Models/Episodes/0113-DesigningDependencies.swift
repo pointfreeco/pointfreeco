@@ -8,7 +8,6 @@ Now that we've tackled two dependencies of varying complexity we are ready to ha
     codeSampleDirectory: "0113-designing-dependencies-pt4",
     exercises: _exercises,
     id: 113,
-    image: "https://i.vimeocdn.com/video/941523768-e66818d700b053db84a50f3445fd09ba7c15316ad7263fe06a84ab94546419f4-d",
     length: 50*60 + 58,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1597640400),

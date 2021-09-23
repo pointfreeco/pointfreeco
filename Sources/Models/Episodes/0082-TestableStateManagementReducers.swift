@@ -8,7 +8,6 @@ It's time to see how our architecture handles the fifth and final problem we ide
     codeSampleDirectory: "0082-testable-state-management-reducers",
     exercises: _exercises,
     id: 82,
-    image: "https://i.vimeocdn.com/video/831975803-d6baa7a469839424e947d88fd809500aa9b3cda79eb06ce11a878a1c9b03f2fd-d",
     length: 35*60 + 56,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1574661600),

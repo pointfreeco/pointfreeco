@@ -8,7 +8,6 @@ The programs we write can be reduced to transforming data from one form into ano
     codeSampleDirectory: "0006-functional-setters",
     exercises: _exercises,
     id: 6,
-    image: "https://i.vimeocdn.com/video/807849626-011537fbf185ddabe74d9f233b013aa735bef267482ca5ebe5344a0d23b0e7ba-d",
     length: 1238,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_520_247_423),

@@ -8,7 +8,6 @@ Finishing our 3-part answer to the all-important question "what's the point?", w
     codeSampleDirectory: "0046-the-many-faces-of-flatmap-pt5",
     exercises: _exercises,
     id: 46,
-    image: "https://i.vimeocdn.com/video/801300060-1507ad742a9028848e37b721f6a979afebc5767e3c47f11a861c99be4fef6a03-d",
     length: 32*60+40,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1549263600),

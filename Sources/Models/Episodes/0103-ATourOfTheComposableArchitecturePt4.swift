@@ -13,7 +13,6 @@ We conclude our tour of the Composable Architecture by demonstrating how to test
       vimeoSecret: "39b3f8865f3d3b26f3aaf2a4b2b1d20c7bca874c"
     ),
     id: 103,
-    image: "https://i.vimeocdn.com/video/890437006-d3c4ea8de2540923fde40b5c3fef03bd45aa2c4ff4472c6ba0d14a0a282309f7-d",
     length: 32*60 + 39,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1590382800),

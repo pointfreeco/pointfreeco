@@ -27,7 +27,7 @@ public struct Episode: Equatable {
     exercises: [Exercise] = [],
     fullVideo: Video? = nil,
     id: Id,
-    image: String,
+    image: String? = nil,
     length: Seconds<Int>,
     permission: Permission,
     publishedAt: Date,
@@ -44,7 +44,9 @@ public struct Episode: Equatable {
     self.exercises = exercises
     self._fullVideo = fullVideo
     self.id = id
-    self.image = image
+    self.image = image ?? .init(
+      format: "https://d1hf1soyumxcgv.cloudfront.net/episodes/%04d.jpeg", sequence.rawValue
+    )
     self.length = length
     self.permission = permission
     self.publishedAt = publishedAt

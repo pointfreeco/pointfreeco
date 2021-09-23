@@ -8,7 +8,6 @@ Although case paths are powerful and a natural extension of key paths, they are 
     codeSampleDirectory: "0089-the-case-for-case-paths-pt3",
     exercises: _exercises,
     id: 89,
-    image: "https://i.vimeocdn.com/video/850265054-d1baaf1d1b5f9157e1fb85938ebdca3706e42154fd918ec703c40f7c5c3d9ed5-d",
     length: 35*60 + 7,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1580709600),

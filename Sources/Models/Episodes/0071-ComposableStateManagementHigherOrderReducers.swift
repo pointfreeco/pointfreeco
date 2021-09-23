@@ -8,7 +8,6 @@ We will explore a form of reducer composition that will take our applications to
     codeSampleDirectory: "0071-composable-state-management-hor",
     exercises: _exercises,
     id: 71,
-    image: "https://i.vimeocdn.com/video/808240582-cb80fb0ed3b044c5dde0b077167db4025656bf650518b1d8665df494f34d323a-d",
     length: 32*60 + 38,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1566799200),

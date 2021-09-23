@@ -8,7 +8,6 @@ Randomness is a topic that may not seem so functional, but it gives us a wonderf
     codeSampleDirectory: "0030-composable-randomness",
     exercises: _exercises,
     id: 30,
-    image: "https://i.vimeocdn.com/video/802688724-ac5727b135c3e2407fe8d040afb7fb48fa3105e9db5fda512522632b06e39991-d",
     length: 40*60 + 30,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1537163823),

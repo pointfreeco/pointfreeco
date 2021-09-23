@@ -8,7 +8,6 @@ Swift makes it easy for us to access the data inside a struct via dot-syntax and
     codeSampleDirectory: "0052-enum-properties",
     exercises: _exercises,
     id: 52,
-    image: "https://i.vimeocdn.com/video/801298760-4f713fa39a591f63f7f5935a3d27da210b7ed5b1c93f4da669ba85701ebd66a8-d",
     length: 24*60 + 38,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1554098400),

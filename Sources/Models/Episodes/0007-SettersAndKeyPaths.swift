@@ -8,7 +8,6 @@ This week we explore how functional setters can be used with the types we build 
     codeSampleDirectory: "0007-setters-and-key-paths",
     exercises: _exercises,
     id: 7,
-    image: "https://i.vimeocdn.com/video/807678530-ea684634462e808496b385dacfaa5ddb87c2fc9c8c74aeed21d6bfa540cc91db-d",
     length: 1872,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_520_848_623),

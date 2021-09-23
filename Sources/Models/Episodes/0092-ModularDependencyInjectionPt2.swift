@@ -8,7 +8,6 @@ Now that we've baked the "environment" of dependencies directly into the Composa
     codeSampleDirectory: "0092-modular-dependency-injection-pt2",
     exercises: _exercises,
     id: 92,
-    image: "https://i.vimeocdn.com/video/858808009-76c226f83c6644f0ef081f31b1703d8d5bd875d3ba2a1d85b0a7fe0a8afe3c90-d",
     length: 34*60 + 23,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1582524000),

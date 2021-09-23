@@ -8,7 +8,6 @@ Now that we've looked at how to parse multiple values given a single parser, let
     codeSampleDirectory: "0064-parser-combinators-pt3",
     exercises: _exercises,
     id: 64,
-    image: "https://i.vimeocdn.com/video/799115426-c668c3ac7d9c70e58e169da889dccebe54648d8f5f8f0f04f04ddccd102c3c0b-d",
     length: 19*60 + 47,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1562565600),

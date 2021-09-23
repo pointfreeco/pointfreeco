@@ -8,7 +8,6 @@ It's time to finish our architecture's story for side effects. We've described s
     codeSampleDirectory: "0078-effectful-state-management-async-effects",
     exercises: _exercises,
     id: 78,
-    image: "https://i.vimeocdn.com/video/825832534-6bc13024c00d5caa615c3d5725565b24aa4e3fa72a2d2ad4fbd1f27eb0e2d0d0-d",
     length: 35 * 60 + 48,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1572242400),

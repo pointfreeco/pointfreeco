@@ -8,7 +8,6 @@ We just made the Composable Architecture's concise binding helpers safer, but ca
     codeSampleDirectory: "0159-safer-conciser-forms-pt2",
     exercises: _exercises,
     id: 159,
-    image: "https://i.vimeocdn.com/video/1240466951-9e14d26a0692f1f7db902f35189cedc766f51e53c5a668a4bf53491c7e4fc92d-d",
     length: 28*60 + 1,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1630904400),

@@ -8,7 +8,6 @@ Did you know the Composable Architecture's `scope` operation and `ViewStore` are
     codeSampleDirectory: "0151-tca-performance",
     exercises: _exercises,
     id: 151,
-    image: "https://i.vimeocdn.com/video/1171637581-d81ca8e6d23c0724cddd5db63c43a11947f2f2923b5c69f85aaa326aa9024537-d",
     length: 45*60 + 16,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1624856400),

@@ -7,7 +7,6 @@ We revisit an old topic: styling UIKit components. Using some of the machinery w
 """,
     codeSampleDirectory: "0017-styling-pt2",
     id: 17,
-    image: "https://i.vimeocdn.com/video/804928073-487459abbf64cb7ab8b85e17ed33a0507e5d789ba4c2719772c7ddf8ba2fada0-d",
     length: 29*60 + 20,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_527_501_423),

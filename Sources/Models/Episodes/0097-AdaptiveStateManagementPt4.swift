@@ -8,7 +8,6 @@ We've now shown that the Composable Architecture is also quite adaptive, allowin
     codeSampleDirectory: "0097-adaptive-state-management-pt4",
     exercises: _exercises,
     id: 97,
-    image: "https://i.vimeocdn.com/video/874348817-baf3c70d40fa2da2a190eb9b979d042615bcef88ce1615b6a5c2760c236aa1ca-d",
     length: 27 * 60 + 26,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1586149200),

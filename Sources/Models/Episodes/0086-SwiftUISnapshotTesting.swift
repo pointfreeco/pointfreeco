@@ -13,7 +13,6 @@ In this week's free holiday episode we show what it looks like to snapshot test 
       vimeoSecret: "d4f3ec00986d6cddd05464f3774d683a2a2e6827"
     ),
     id: 86,
-    image: "https://i.vimeocdn.com/video/839241671-747079dfb7026343804536e67c6b8f588c6ec6ad246357c2bf248cd4760e7736-d",
     length: 34*60 + 13,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1577080800),

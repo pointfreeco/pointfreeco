@@ -15,7 +15,6 @@ operation to other structures and derive new, useful code!
       vimeoSecret: "06ad254d78324f55f328a55deacaece07bc09de1"
     ),
     id: 10,
-    image: "https://i.vimeocdn.com/video/807678771-3d581bea0361d3ff1d44bc2b78271b7e74c8050b667eb1ac84684dc51fca2ad7-d",
     length: 25*60+4,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_522_144_623),

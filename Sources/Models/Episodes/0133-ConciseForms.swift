@@ -8,7 +8,6 @@ The Composable Architecture makes it easy to layer complexity onto a form, but i
     codeSampleDirectory: "0133-concise-forms-pt3",
     exercises: _exercises,
     id: 133,
-    image: "https://i.vimeocdn.com/video/1049138364-f855cdde6d5c217e5b577cb0048cb6ea99ddb4e2b9932ce383a77df3fe223680-d",
     length: 58*60 + 55,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1612159200),
