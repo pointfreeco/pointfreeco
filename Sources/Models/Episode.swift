@@ -45,7 +45,7 @@ public struct Episode: Equatable {
     self._fullVideo = fullVideo
     self.id = id
     self.image = image ?? .init(
-      format: "https://d1hf1soyumxcgv.cloudfront.net/episodes/%04d.jpeg", sequence.rawValue
+      format: "https://d3rccdn33rt8ze.cloudfront.net/episodes/%04d.jpeg", sequence.rawValue
     )
     self.length = length
     self.permission = permission
