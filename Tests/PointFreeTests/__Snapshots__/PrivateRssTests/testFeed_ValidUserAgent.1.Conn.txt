@@ -3,7 +3,7 @@ Cookie: pf_session={}
 User-Agent: Safari 1.0
 
 200 OK
-Content-Length: 13337
+Content-Length: 13511
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -141,6 +141,7 @@ with anyone else.
         00:39:21
       </itunes:duration>
       <itunes:image>
+        http://localhost:8080/images/22.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -205,6 +206,7 @@ with anyone else.
         00:25:04
       </itunes:duration>
       <itunes:image>
+        http://localhost:8080/images/10.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -269,6 +271,7 @@ with anyone else.
         00:27:14
       </itunes:duration>
       <itunes:image>
+        http://localhost:8080/images/3.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -333,6 +336,7 @@ with anyone else.
         00:44:36
       </itunes:duration>
       <itunes:image>
+        http://localhost:8080/images/2.jpg
       </itunes:image>
       <itunes:season>
         1

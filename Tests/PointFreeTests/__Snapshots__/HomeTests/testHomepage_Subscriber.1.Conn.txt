@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 64404
+Content-Length: 64553
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2026,7 +2026,7 @@ html {
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
           <a href="/episodes/ep10-a-tale-of-two-flat-maps">
-            <img src
+            <img src="http://localhost:8080/images/10.jpg"
                  alt
                  class="w-100p
                         h-100p"
@@ -2110,7 +2110,7 @@ html {
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
           <a href="/episodes/ep2-side-effects">
-            <img src
+            <img src="http://localhost:8080/images/2.jpg"
                  alt
                  class="w-100p
                         h-100p"
@@ -2194,7 +2194,7 @@ html {
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
           <a href="/episodes/ep1-functions">
-            <img src
+            <img src="http://localhost:8080/images/1.jpg"
                  alt
                  class="w-100p
                         h-100p"
@@ -2278,7 +2278,7 @@ html {
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
           <a href="/episodes/ep0-we-launched">
-            <img src
+            <img src="http://localhost:8080/images/0.jpg"
                  alt
                  class="w-100p
                         h-100p"

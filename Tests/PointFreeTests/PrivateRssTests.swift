@@ -18,7 +18,7 @@ private let episodes: [Episode] = [
   .ep3_uikitStylingWithFunctions,
   .ep10_aTaleOfTwoFlatMaps,
   .ep22_aTourOfPointFree,
-].map { update($0) { $0.image = "" } }
+].map { update($0) { $0.image = "http://localhost:8080/images/\($0.sequence).jpg" } }
 
 class PrivateRssTests: TestCase {
   override func setUp() {

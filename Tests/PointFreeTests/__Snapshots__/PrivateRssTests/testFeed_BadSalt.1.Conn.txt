@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 5019
+Content-Length: 5062
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -124,6 +124,7 @@ X-XSS-Protection: 1; mode=block
         00:00:00
       </itunes:duration>
       <itunes:image>
+        http://localhost:8080/images/0.jpg
       </itunes:image>
       <itunes:season>
         1
