@@ -10,7 +10,6 @@ alternatives to unlock these benefits.
     codeSampleDirectory: "0011-composition-without-operators",
     exercises: _exercises,
     id: 11,
-    image: "https://i.vimeocdn.com/video/807678863-503d1cf2d017a38d1c6413913b75cae61fa57b82f5a0d24d796335a8ad7cf4ff-d",
     length: 21*60 + 5,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_523_267_823),

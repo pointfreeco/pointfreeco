@@ -9,7 +9,6 @@ The Composable Architecture mostly "just works" with SwiftUI animations out of t
     codeSampleDirectory: "0136-swiftui-animation-pt2",
     exercises: _exercises,
     id: 136,
-    image: "https://i.vimeocdn.com/video/1066642776-12f5cfb8abdbc0166d6da1caac420759b86100721a57d0a540955440683286e6-d",
     length: 44*60 + 38,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1613973600),

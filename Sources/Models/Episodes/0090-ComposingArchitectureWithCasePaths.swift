@@ -8,7 +8,6 @@ Let's explore a real world application of "case paths," which provide key path-l
     codeSampleDirectory: "0090-composing-architecture-with-case-paths",
     exercises: _exercises,
     id: 90,
-    image: "https://i.vimeocdn.com/video/853209211-8826ac9a5d02647f739b9868105342135a3299631a32928040216f0da0a41fcb-d",
     length: 22*60 + 24,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1581314400),

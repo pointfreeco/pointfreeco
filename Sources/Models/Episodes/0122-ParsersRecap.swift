@@ -8,7 +8,6 @@ We finish up our XCTest log parser by parsing out the data associated with a tes
     codeSampleDirectory: "0122-parsers-recap-pt4",
     exercises: _exercises,
     id: 122,
-    image: "https://i.vimeocdn.com/video/981984539-496853e0a909df9713558c1f9a6c6e4f90760e7daf95bfffc89c1bb4f9b5352e-d",
     length: 28*60 + 18,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1603688400),

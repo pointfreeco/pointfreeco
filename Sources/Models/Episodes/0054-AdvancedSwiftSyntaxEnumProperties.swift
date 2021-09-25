@@ -7,7 +7,6 @@ This week we'll put the finishing touches on our enum property code generation t
 """,
     codeSampleDirectory: "0054-advanced-swift-syntax-enum-properties",
     id: 54,
-    image: "https://i.vimeocdn.com/video/799156617-1e2c9d3bb054da0c7069ec93689e4837a9609980070adc33f1680c580ca8a664-d",
     length: 31*60 + 20,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1555308000),

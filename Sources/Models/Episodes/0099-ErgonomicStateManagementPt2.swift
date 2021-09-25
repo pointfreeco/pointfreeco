@@ -9,7 +9,6 @@ We've made creating and enhancing reducers more ergonomic, but we still haven't 
     exercises: _exercises,
     fullVideo: nil,
     id: 99,
-    image: "https://i.vimeocdn.com/video/880871976-8865445aabf24152e4545de238120b4f1daf239e2d9bd145c9f314d226947bea-d",
     length: 24*60 + 3,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1587358800),

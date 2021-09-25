@@ -8,7 +8,6 @@ The snapshot testing library we have been designing over the past few weeks has 
     codeSampleDirectory: "0040-async-functional-refactoring",
     exercises: _exercises,
     id: 40,
-    image: "https://i.vimeocdn.com/video/801301102-ca51e181cf70d6d05c834f5540df3bc9ecf5dfda01aec842f6d0f8e1f2418d9a-d",
     length: 34 * 60 + 8,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1545030000),

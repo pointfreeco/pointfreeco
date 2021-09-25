@@ -8,7 +8,6 @@ Now that we understand some of the fundamental problems that we will encounter w
     codeSampleDirectory: "0068-composable-state-management-reducers",
     exercises: _exercises,
     id: 68,
-    image: "https://i.vimeocdn.com/video/803546602-a3f77290778c873f509a1eef35f9e8e43ffba4d96c9105a58cfe1ed3dbbf11f8-d",
     length: 41*60 + 42,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1564984800),

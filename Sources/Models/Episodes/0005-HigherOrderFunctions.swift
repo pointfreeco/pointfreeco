@@ -10,7 +10,6 @@ unlock even more composability in our everyday code.
     codeSampleDirectory: "0005-higher-order-functions",
     exercises: _exercises,
     id: 5,
-    image: "https://i.vimeocdn.com/video/807678237-5ae0d4862e567dc762477bd5442648def9c03aa300d8344fa42b230beed92a6f-d",
     length: 1350,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_519_653_423),

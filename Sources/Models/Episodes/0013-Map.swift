@@ -8,7 +8,6 @@ Why does the `map` function appear in every programming language supporting "fun
     codeSampleDirectory: "0013-the-many-faces-of-map",
     exercises: _exercises,
     id: 13,
-    image: "https://i.vimeocdn.com/video/807679165-7bec5242abb401ce8b36862822b9c72e40201908b8faa4dd2a30e9505f1940f5-d",
     length: 31*60 + 48,
     permission: .freeDuring(Date(timeIntervalSince1970: 1_524_477_423)..<Date(timeIntervalSince1970: 1559541600)),
     publishedAt: Date(timeIntervalSince1970: 1_524_477_423),

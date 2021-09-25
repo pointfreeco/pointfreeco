@@ -9,7 +9,6 @@ We've seen how cool redacted SwiftUI views are, but we've also seen some of thei
     codeSampleDirectory: "0116-redacted-swiftui-pt2",
     exercises: _exercises,
     id: 116,
-    image: "https://i.vimeocdn.com/video/952246161-0dfe953ea075aa8d3fc3b86ef9c1c6d7bcdd92f6e2425cd41ea0bc71676ac541-d",
     length: 20*60 + 32,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1599454800),

@@ -8,7 +8,6 @@ We round out our parsing recap by reintroducing that functional trio of operator
     codeSampleDirectory: "0120-parsers-recap-pt2",
     exercises: _exercises,
     id: 120,
-    image: "https://i.vimeocdn.com/video/962585475-cd521255c69cd50cf86a9e591e0d9022486ab2dec225343625af947e8cdb7f1e-d",
     length: 38*60 + 39,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1602478800),

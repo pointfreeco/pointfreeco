@@ -13,7 +13,6 @@ Join us for a tour of the code base that powers this very site and see what func
       vimeoSecret: "0f54ad38cc5fd26db2c19cf457d4b427c90e55ca"
     ),
     id: 22,
-    image: "https://i.vimeocdn.com/video/807849190-3f1cea1a0521ec948aab688a3bc41a49fe441870954d6ae3641658f050a0e3f4-d",
     length: 39*60 + 21,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1531735023),

@@ -8,7 +8,6 @@ We've seen how "enum properties" help close the gap between the ergonomics of ac
     codeSampleDirectory: "0053-swift-syntax-enum-properties",
     exercises: _exercises,
     id: 53,
-    image: "https://i.vimeocdn.com/video/801298447-ffdb9de4bc2337cad2c74752c3f59c58adacc7b7904505f964714acc4c2e9888-d",
     length: 23*60 + 49,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1554703200),

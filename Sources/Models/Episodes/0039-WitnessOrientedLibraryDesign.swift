@@ -8,7 +8,6 @@ We previously refactored a library using protocols to make it more flexible and 
     codeSampleDirectory: "0039-witness-oriented-library-design",
     exercises: _exercises,
     id: 39,
-    image: "https://i.vimeocdn.com/video/801301315-f294c2ca55da254eb23f1111e64851aac3c012f7c05e971eb3866128862b376d-d",
     length: 39 * 60 + 1,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1543208400),

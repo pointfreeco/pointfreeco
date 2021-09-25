@@ -8,7 +8,6 @@ Even though `map`, `flatMap` and `zip` pack a punch, there are still many parsin
     codeSampleDirectory: "0062-parser-combinators-pt1",
     exercises: _exercises,
     id: 62,
-    image: "https://i.vimeocdn.com/video/799122174-c1d6d7ed6312a87871c00ce1eca69b233cdc2dd0e79745b7ab3dff99b6337522-d",
     length: 19*60 + 14,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1561356000),

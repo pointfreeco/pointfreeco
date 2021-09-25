@@ -8,7 +8,6 @@ We often deal with collections that we know can never be empty, yet we use array
     codeSampleDirectory: "0020-nonempty",
     exercises: _exercises,
     id: 20,
-    image: "https://i.vimeocdn.com/video/804928456-940360e79d07956755deef94bf72f7c881a833ad419d46f4c3511b5351dbd8da-d",
     length: 49*60 + 2,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_529_920_623),

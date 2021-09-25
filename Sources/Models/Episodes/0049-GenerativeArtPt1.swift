@@ -14,7 +14,6 @@ Now that we have made randomness both composable _and_ testable, let's have a li
       vimeoSecret: "e693d19bbb328377d8d845a7074769763cf16d9f"
     ),
     id: 49,
-    image: "https://i.vimeocdn.com/video/801299534-9b3d44b3873eb624796ce601ea1464abe08d0c3a36280d4c6245e9ae3f8d99b8-d",
     length: 32*60 + 06,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1551682800),

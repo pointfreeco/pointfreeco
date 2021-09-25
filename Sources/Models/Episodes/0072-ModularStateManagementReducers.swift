@@ -8,7 +8,6 @@ In exploring four forms of composition on reducer functions, we made the claim t
     codeSampleDirectory: "0072-modular-state-management-reducers",
     exercises: _exercises,
     id: 72,
-    image: "https://i.vimeocdn.com/video/812127486-a6f21627ddd38d59cab4b832446fba4f0a5cedaae2e30340cdf67107ad521c15-d",
     length: 26*60 + 24,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1568008800),

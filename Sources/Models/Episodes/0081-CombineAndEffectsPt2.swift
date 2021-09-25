@@ -13,7 +13,6 @@ Now that we've explored the Combine framework and identified its correspondence 
       vimeoSecret: "baaf70ec4a937e28e0a8d5d06af582e801986fad"
     ),
     id: 81,
-    image: "https://i.vimeocdn.com/video/830940645-d5cef766097a7159ce617657beb761d9c96e2cb0dada99314d8a6793d453d2ac-d",
     length: 38*60 + 46,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1574056800),

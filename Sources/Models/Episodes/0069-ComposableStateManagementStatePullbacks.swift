@@ -8,7 +8,6 @@ So far we have pulled a lot of our application's logic into a reducer, but that 
     codeSampleDirectory: "0069-composable-state-management-state-pullbacks",
     exercises: _exercises,
     id: 69,
-    image: "https://i.vimeocdn.com/video/805103677-c5d1f40e708f686a710f7693fe0f54078d087ffbb782829b15c74cec71f965b3-d",
     length: 25*60 + 42,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1565589600),

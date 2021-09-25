@@ -9,7 +9,6 @@ This week we finally make our untestable Gen type testable. We'll compare severa
     codeSampleDirectory: "0048-predictable-randomness-pt2",
     exercises: _exercises,
     id: 48,
-    image: "https://i.vimeocdn.com/video/801299668-49a55f0c29a974b51af66724b95145b08575b111a890e29c8a3fa5903998247d-d",
     length: 37*60 + 02,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1551078000),

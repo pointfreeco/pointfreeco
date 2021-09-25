@@ -13,7 +13,6 @@ This week we finish up our moderately complex SwiftUI application by adding more
       vimeoSecret: "d5927c00bec77533335c9f8525c5f24900a9715b"
     ),
     id: 66,
-    image: "https://i.vimeocdn.com/video/799121279-08201be4df49a8df0c8a66b2febf3fd16574cf528690c94e3385a121b844b6ee-d",
     length: 24*60 + 26,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1563775200),

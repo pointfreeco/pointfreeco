@@ -8,7 +8,6 @@ We wrap up our tour of [isowords](https://www.isowords.xyz) by showing off two p
     codeSampleDirectory: "0145-tour-of-isowords-pt4",
     exercises: _exercises,
     id: 145,
-    image: "https://i.vimeocdn.com/video/1127151555-69917231a1926e009f296880e0b2e6c59a9cd2b215fe9f44f70d2b99ff709384-d",
     length: 53*60 + 54,
     permission: .free,
     publishedAt: .init(timeIntervalSince1970: 1620622800),

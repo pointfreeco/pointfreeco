@@ -8,7 +8,6 @@ With our library fully generalized using protocols, we show off the flexibility 
     codeSampleDirectory: "0038-protocol-oriented-library-design-pt2",
     exercises: _exercises,
     id: 38,
-    image: "https://i.vimeocdn.com/video/807849396-ceb4463b222b6afb75cb51da7060d9e2cd9fc45ad9ca3d538ffd0a2c67e2796b-d",
     length: 22*60+22,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1542607200),

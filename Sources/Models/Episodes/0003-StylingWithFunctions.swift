@@ -13,7 +13,6 @@ We bring tools from previous episodes down to earth and apply them to an everyda
       vimeoSecret: "9389dd8f4ac9a1207dbb2184477ecf4a18c83c98"
     ),
     id: 3,
-    image: "https://i.vimeocdn.com/video/807678140-88a90e8bf9ed99716515c921400ab6727fed3f41176b3693ff599cf0b5280929-d",
     length: 1_634,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1518441151),

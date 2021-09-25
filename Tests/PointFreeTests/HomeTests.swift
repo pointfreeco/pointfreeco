@@ -26,7 +26,7 @@ class HomeTests: TestCase {
 
     Current.episodes = unzurry(
       [e1, e2, e3, e4]
-        .map { var e = $0; e.image = ""; return e }
+        .map { var e = $0; e.image = "http://localhost:8080/images/\(e.sequence).jpg"; return e }
     )
   }
 

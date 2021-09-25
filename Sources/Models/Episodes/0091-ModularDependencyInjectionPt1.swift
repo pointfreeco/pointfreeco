@@ -8,7 +8,6 @@ While we love the "environment" approach to dependency injection, which we intro
     codeSampleDirectory: "0091-modular-dependency-injection-pt1",
     exercises: _exercises,
     id: 91,
-    image: "https://i.vimeocdn.com/video/856742196-b7f43c787c1649aaf9de728b4368213a226f6c2e314b6572affc8c06e5c0ecce-d",
     length: 32*60 + 48,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1581919200),

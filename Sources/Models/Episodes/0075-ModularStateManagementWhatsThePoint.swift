@@ -8,7 +8,6 @@ We’ve now fully modularized our app by extracting its reducers and views into 
     codeSampleDirectory: "0075-modular-state-management-wtp",
     exercises: _exercises,
     id: 75,
-    image: "https://i.vimeocdn.com/video/820093754-45b8349d82843b37fe4a86a24b7aae42528faab53665221f078c74817e6cb26e-d",
     length: 19*60 + 59,
     permission: .subscriberOnly,
     publishedAt: .init(timeIntervalSince1970: 1570428000),

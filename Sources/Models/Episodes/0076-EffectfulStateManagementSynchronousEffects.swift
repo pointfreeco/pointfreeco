@@ -8,7 +8,6 @@ Side effects are one of the biggest sources of complexity in any application. It
     codeSampleDirectory: "0076-effectful-state-management-synchronous-effects",
     exercises: _exercises,
     id: 76,
-    image: "https://i.vimeocdn.com/video/822059615-8704e3ad7023dcb29f6c24867d46f271b26ad033f4361084443d38c3dcf8e353-d",
     length: 25*60 + 24,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1571032800),

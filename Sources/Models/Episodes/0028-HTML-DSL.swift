@@ -8,7 +8,6 @@ This week we apply domain-specific languages to a very real-world problem: repre
     codeSampleDirectory: "0028-html-dsl",
     exercises: _exercises,
     id: 28,
-    image: "https://i.vimeocdn.com/video/801301977-6ade865cbf4f50b4b33531f21b7f241e2fb1287f6dd4cf43ad19c2c5cc370eeb-d",
     length: 23*60 + 6,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1535954223),

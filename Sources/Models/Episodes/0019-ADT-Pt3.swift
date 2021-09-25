@@ -8,7 +8,6 @@ Our third installment of algebraic data types explores how generics and recursiv
     codeSampleDirectory: "0019-algebraic-data-types-pt3",
     exercises: _exercises,
     id: 19,
-    image: "https://i.vimeocdn.com/video/804928343-a64261f3e8fe0c20ae300a762ff7240356e3a7b41cde86f7dfefc09eff80fcc6-d",
     length: 47*60 + 01,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_528_711_023),

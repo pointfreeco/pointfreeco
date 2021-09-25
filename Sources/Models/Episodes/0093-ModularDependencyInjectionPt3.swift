@@ -8,7 +8,6 @@ It's time to prove that baking an "environment" of dependencies directly into th
     codeSampleDirectory: "0093-modular-dependency-injection-pt3",
     exercises: _exercises,
     id: 93,
-    image: "https://i.vimeocdn.com/video/860845595-36d20d92a9782f038f54dcad6f5e468dfc742afeeee4edf10757b04ce3106249-d",
     length: 44*60 + 54,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1583128800),

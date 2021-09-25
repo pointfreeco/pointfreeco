@@ -8,7 +8,6 @@ You've heard of key paths, but…case paths!? Today we introduce the concept of 
     codeSampleDirectory: "0087-the-case-for-case-paths-pt1",
     exercises: _exercises,
     id: 87,
-    image: "https://i.vimeocdn.com/video/848203050-d3c3af3a238e6b01a263352b9db533b86c86b730cc6f7baa582289006ab79c27-d",
     length: 28*60 + 58,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1579500000),

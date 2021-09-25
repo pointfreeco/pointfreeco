@@ -8,7 +8,6 @@ It is well accepted that hand-rolled, imperative parsers are vastly more perform
     codeSampleDirectory: "0130-parsing-performance-pt3",
     exercises: _exercises,
     id: 130,
-    image: "https://i.vimeocdn.com/video/1019899482-1a160d00dcafbe9853b78269741d858350cfa09bc74743d75e65528a30f02352-d",
     length: 58*60 + 46,
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1608530400),
