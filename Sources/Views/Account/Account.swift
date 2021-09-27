@@ -671,7 +671,7 @@ private func subscriptionPlanRows(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            .p(.text(status(for: subscription)))
+            .p(status(for: subscription)))
           )
         ),
         .gridColumn(
@@ -764,7 +764,7 @@ private func discountDescription(for discount: Stripe.Discount) -> String {
 }
 
 private func cancelAction(for subscription: Stripe.Subscription) -> Node {
-  return .form(
+  .form(
     attributes: [
       .action(path(to: .account(.subscription(.cancel)))),
       .method(.post),
