@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep161_navigationTabsAndAlerts = Episode(
     blurb: """
-TODO
+We continue our journey exploring navigation with an examination of alerts and action sheets. We'll compare their original APIs in SwiftUI to the ones that replace them in the SDK that just shipped, and do a domain modeling exercise to recover what was lost.
 """,
     codeSampleDirectory: "0161-navigation-pt2",
     exercises: _exercises,
@@ -23,9 +23,9 @@ TODO
     subtitle: "Tabs & Alerts, Part 2",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "" // TODO
+      bytesLength: 37014026,
+      vimeoId: 613195746,
+      vimeoSecret: "002b1ec9a0fbe122b2e64bfaf1dfdb651d9dc2a6"
     )
   )
 }
