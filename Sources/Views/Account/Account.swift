@@ -671,7 +671,7 @@ private func subscriptionPlanRows(
           sizes: [.mobile: 12, .desktop: 6],
           .div(
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            .p(status(for: subscription)))
+            .p(.text(status(for: subscription)))
           )
         ),
         .gridColumn(

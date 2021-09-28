@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65139
+Content-Length: 67076
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1707,6 +1707,91 @@ html {
     </style>
     <style>
       
+
+.md-ctn hr {
+  margin-top       : 2rem;
+  margin-right     : 30%;
+  margin-bottom    : 2rem;
+  margin-left      : 30%;
+  border-top-style : solid;
+  border-top-width : 1px;
+  background-color : #ffffff;
+  border-top-color : #ddd;
+  height           : 0px;
+}
+
+.md-ctn a {
+  text-decoration : underline;
+}
+
+.md-ctn a:link {
+  color : #291a40;
+}
+
+.md-ctn a:visited {
+  color : #291a40;
+}
+
+.md-ctn a:hover {
+  color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
+}
+
+.md-ctn blockquote {
+  font-style : italic;
+}
+
+.md-ctn p {
+  word-wrap : break-word;
+}
+
+.md-ctn p:not(:last-child) {
+  margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top                : 0.5rem;
+  padding-bottom             : 0.5rem;
+  padding-right              : 1rem;
+  padding-left               : 1rem;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  display                    : block;
+  overflow-x                 : auto;
+  margin-bottom              : 1.5rem;
+}
+
+.md-ctn code {
+  font-family                : monospace;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
+  border-top-left-radius     : 3px;
+  border-top-right-radius    : 3px;
+  border-bottom-right-radius : 3px;
+  border-bottom-left-radius  : 3px;
+  border-top-style           : solid;
+  border-right-style         : solid;
+  border-bottom-style        : solid;
+  border-left-style          : solid;
+  border-top-width           : 1px;
+  border-right-width         : 1px;
+  border-bottom-width        : 1px;
+  border-left-width          : 1px;
+  padding-top                : 1px;
+  padding-bottom             : 1px;
+  padding-right              : 5px;
+  padding-left               : 5px;
+}
+
 
     </style>
     <meta name="viewport"
