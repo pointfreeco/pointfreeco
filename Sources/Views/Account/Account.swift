@@ -764,7 +764,7 @@ private func discountDescription(for discount: Stripe.Discount) -> String {
 }
 
 private func cancelAction(for subscription: Stripe.Subscription) -> Node {
-  return .form(
+  .form(
     attributes: [
       .action(path(to: .account(.subscription(.cancel)))),
       .method(.post),

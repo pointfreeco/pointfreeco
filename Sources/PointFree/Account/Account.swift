@@ -20,6 +20,7 @@ let accountResponse
           currentSubscriberState: accountData.subscriberState,
           currentUser: accountData.currentUser,
           data: (accountData, Current.episodes(), Current.date(), Current.envVars.appSecret),
+          extraStyles: markdownBlockStyles,
           title: "Account"
         )
     }
