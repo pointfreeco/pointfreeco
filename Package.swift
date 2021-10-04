@@ -38,6 +38,7 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-html", from: "0.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
@@ -207,6 +208,7 @@ var package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
+        .product(name: "Overture", package: "swift-overture"),
       ]
     ),
 
@@ -235,6 +237,7 @@ var package = Package(
         .product(name: "HtmlPlainTextPrint", package: "swift-web"),
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
+        .product(name: "Overture", package: "swift-overture"),
         .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
@@ -280,6 +283,7 @@ var package = Package(
       dependencies: [
         "Models",
         "PointFreeRouter",
+        .product(name: "Overture", package: "swift-overture"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
         .product(name: "UrlFormEncoding", package: "swift-web")
       ]
