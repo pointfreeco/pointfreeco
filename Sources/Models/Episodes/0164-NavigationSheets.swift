@@ -20,7 +20,7 @@ Now that we've built up the tools needed to bind application state to navigation
       ),
     ],
     sequence: 164,
-    subtitle: "Sheets and Popovers, Part 3",
+    subtitle: "Sheets & Popovers, Part 3",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 40885266,

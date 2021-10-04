@@ -34,7 +34,7 @@ It's time to look at a more advanced kind of navigation: modals. We will impleme
       ),
     ],
     sequence: 162,
-    subtitle: "Sheets and Popovers, Part 1",
+    subtitle: "Sheets & Popovers, Part 1",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 52804666,

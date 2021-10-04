@@ -20,7 +20,7 @@ SwiftUI comes with a lot of great tools for working with struct-based state, but
       ),
     ],
     sequence: 163,
-    subtitle: "Sheets and Popovers, Part 2",
+    subtitle: "Sheets & Popovers, Part 2",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 36419368,
