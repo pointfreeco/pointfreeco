@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep162_navigationSheets = Episode(
     blurb: """
-It's time to look at a more advanced kind of navigation: modals. This includes sheets, popovers, and even full screen covers. We will implement a new feature that will be driven by a sheet and can be deep-linked into.
+It's time to look at a more advanced kind of navigation: modals. We will implement a new feature that will be driven by a sheet and can be deep-linked into. Along the way we'll introduce a helper to solve a domain modeling problem involving enum state.
 """,
     codeSampleDirectory: "0162-navigation-pt3",
     exercises: _exercises,
