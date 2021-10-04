@@ -37,13 +37,11 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
-    .package(name: "Html", url: "https://github.com/pointfreeco/swift-html.git", .revision("f016529")),
-    .package(
-      name: "Overture", url: "https://github.com/pointfreeco/swift-overture.git", .exact("0.5.0")),
-    .package(name: "Prelude", url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
+    .package(url: "https://github.com/pointfreeco/swift-html", from: "0.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
-    .package(name: "Tagged", url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
-    .package(name: "Web", url: "https://github.com/pointfreeco/swift-web.git", .revision("2e23f76")),
+    .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("deprecate-blue-cryptor")),
   ],
   targets: [
 
@@ -64,11 +62,11 @@ var package = Package(
         "Models",
         "PointFreePrelude",
         "Stripe",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "PostgresKit", package: "postgres-kit"),
-        .product(name: "Prelude", package: "Prelude"),
-        .product(name: "Tagged", package: "Tagged"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
@@ -79,41 +77,41 @@ var package = Package(
         "Models",
         "ModelsTestSupport",
         "PointFreePrelude",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "PostgresKit", package: "postgres-kit"),
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
     .target(
       name: "DecodableRequest",
       dependencies: [
-        .product(name: "Tagged", package: "Tagged"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
     .target(
       name: "EmailAddress",
       dependencies: [
-        .product(name: "Tagged", package: "Tagged"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
     .target(
       name: "FoundationPrelude",
       dependencies: [
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "UrlFormEncoding", package: "Web"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
     .target(
       name: "FunctionalCss",
       dependencies: [
-        .product(name: "Css", package: "Web"),
-        .product(name: "Html", package: "Html"),
-        .product(name: "Prelude", package: "Prelude")
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "Prelude", package: "swift-prelude")
       ]
     ),
 
@@ -121,8 +119,8 @@ var package = Package(
       name: "FunctionalCssTests",
       dependencies: [
         "FunctionalCss",
-        .product(name: "CssTestSupport", package: "Web"),
-        .product(name: "Html", package: "Html"),
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
@@ -136,9 +134,9 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Tagged", package: "Tagged"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
@@ -146,8 +144,8 @@ var package = Package(
       name: "GitHubTestSupport",
       dependencies: [
         "GitHub",
-        .product(name: "Either", package: "Prelude"),
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -170,10 +168,10 @@ var package = Package(
         "EmailAddress",
         "FoundationPrelude",
         "Models",
-        .product(name: "HttpPipeline", package: "Web"),
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "UrlFormEncoding", package: "Web"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -183,9 +181,8 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
-        .product(name: "Overture", package: "Overture"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "TaggedTime", package: "Tagged"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
       ],
       exclude: [
         "Transcripts/README.md",
@@ -201,7 +198,7 @@ var package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -227,23 +224,23 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
-        .product(name: "ApplicativeRouter", package: "Web"),
-        .product(name: "ApplicativeRouterHttpPipelineSupport", package: "Web"),
+        .product(name: "ApplicativeRouter", package: "swift-web"),
+        .product(name: "ApplicativeRouterHttpPipelineSupport", package: "swift-web"),
         .product(name: "Backtrace", package: "swift-backtrace"),
-        .product(name: "Css", package: "Web"),
-        .product(name: "CssReset", package: "Web"),
-        .product(name: "Either", package: "Prelude"),
-        .product(name: "Html", package: "Html"),
-        .product(name: "HtmlCssSupport", package: "Web"),
-        .product(name: "HtmlPlainTextPrint", package: "Web"),
-        .product(name: "HttpPipeline", package: "Web"),
-        .product(name: "HttpPipelineHtmlSupport", package: "Web"),
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "CssReset", package: "swift-web"),
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "HtmlCssSupport", package: "swift-web"),
+        .product(name: "HtmlPlainTextPrint", package: "swift-web"),
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
         .product(name: "PostgresKit", package: "postgres-kit"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "TaggedMoney", package: "Tagged"),
-        .product(name: "TaggedTime", package: "Tagged"),
-        .product(name: "Tuple", package: "Prelude"),
-        .product(name: "UrlFormEncoding", package: "Web"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
+        .product(name: "Tuple", package: "swift-prelude"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -253,9 +250,9 @@ var package = Package(
         "EmailAddress",
         "PointFree",
         "PointFreeTestSupport",
-        .product(name: "CssTestSupport", package: "Web"),
-        .product(name: "HtmlSnapshotTesting", package: "Html"),
-        .product(name: "HttpPipelineTestSupport", package: "Web"),
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "HtmlSnapshotTesting", package: "swift-html"),
+        .product(name: "HttpPipelineTestSupport", package: "swift-web"),
       ],
       exclude: [
         "__Snapshots__",
@@ -270,11 +267,11 @@ var package = Package(
         "EmailAddress",
         "Models",
         "PointFreePrelude",
-        .product(name: "ApplicativeRouter", package: "Web"),
-        .product(name: "HttpPipeline", package: "Web"),
-        .product(name: "Prelude", package: "Prelude"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "UrlFormEncoding", package: "Web"),
+        .product(name: "ApplicativeRouter", package: "swift-web"),
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -284,7 +281,7 @@ var package = Package(
         "Models",
         "PointFreeRouter",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
-        .product(name: "UrlFormEncoding", package: "Web")
+        .product(name: "UrlFormEncoding", package: "swift-web")
       ]
     ),
 
@@ -292,12 +289,12 @@ var package = Package(
       name: "PointFreePrelude",
       dependencies: [
         "FoundationPrelude",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "Prelude"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "Tuple", package: "Prelude"),
-        .product(name: "UrlFormEncoding", package: "Web"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tuple", package: "swift-prelude"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -314,10 +311,10 @@ var package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "Either", package: "Prelude"),
-        .product(name: "HttpPipelineTestSupport", package: "Web"),
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "HttpPipelineTestSupport", package: "swift-web"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ]
     ),
@@ -342,10 +339,10 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "TaggedMoney", package: "Tagged"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
       ]
     ),
 
@@ -354,9 +351,9 @@ var package = Package(
       dependencies: [
         "PointFreePrelude",
         "Stripe",
-        .product(name: "Either", package: "Prelude"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -376,10 +373,10 @@ var package = Package(
       name: "Styleguide",
       dependencies: [
         "FunctionalCss",
-        .product(name: "Css", package: "Web"),
-        .product(name: "Html", package: "Html"),
-        .product(name: "HtmlCssSupport", package: "Web"),
-        .product(name: "Prelude", package: "Prelude"),
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "HtmlCssSupport", package: "swift-web"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -387,8 +384,8 @@ var package = Package(
       name: "StyleguideTests",
       dependencies: [
         "Styleguide",
-        .product(name: "CssTestSupport", package: "Web"),
-        .product(name: "HtmlSnapshotTesting", package: "Html"),
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "HtmlSnapshotTesting", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
@@ -400,7 +397,7 @@ var package = Package(
       name: "Syndication",
       dependencies: [
         "Models",
-        .product(name: "Html", package: "Html")
+        .product(name: "Html", package: "swift-html")
       ]
     ),
 
@@ -413,11 +410,11 @@ var package = Package(
         "PointFreeRouter",
         "Styleguide",
         "WebPreview",
-        .product(name: "Css", package: "Web"),
-        .product(name: "Html", package: "Html"),
-        .product(name: "Prelude", package: "Prelude"),
-        .product(name: "Tagged", package: "Tagged"),
-        .product(name: "TaggedTime", package: "Tagged"),
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
       ]
     ),
 
