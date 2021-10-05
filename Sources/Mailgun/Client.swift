@@ -69,8 +69,9 @@ public struct Client {
 
     guard let payload = encrypted(
       text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
-      secret: self.appSecret.rawValue
-      ) else { return nil }
+      secret: self.appSecret.rawValue,
+      nonce: [0x30, 0x9D, 0xF8, 0xA2, 0x72, 0xA7, 0x4D, 0x37, 0xB9, 0x02, 0xDF, 0x4F]
+    ) else { return nil }
 
     return .init(rawValue: "unsub-\(payload)@pointfree.co")
   }

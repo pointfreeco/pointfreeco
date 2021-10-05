@@ -164,8 +164,9 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
     let payload = encrypted(
       text: "\(user.id.rawValue.uuidString)--unknown",
-      secret: Current.envVars.appSecret.rawValue
-      )!
+      secret: Current.envVars.appSecret.rawValue,
+      nonce: [0x30, 0x9D, 0xF8, 0xA2, 0x72, 0xA7, 0x4D, 0x37, 0xB9, 0x02, 0xDF, 0x4F]
+    )!
     let unsubEmail = EmailAddress(rawValue: "unsub-\(payload)@pointfree.co")
 
     let unsubscribe = request(
