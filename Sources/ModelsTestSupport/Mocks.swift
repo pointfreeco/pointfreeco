@@ -75,7 +75,7 @@ extension Models.User {
     name: "Blob",
     referralCode: "deadbeef",
     referrerId: nil,
-    rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
+    rssSalt: .init(rawValue: .left(UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!)),
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 

@@ -11,20 +11,13 @@ import Stripe
 import Syndication
 import Tuple
 
-let accountRssMiddleware = decryptUrlAndFetchUser
+let accountRssMiddleware = fetchUserByRssSalt
+  <<< requireUser
   <<< { trackFeedRequest(userId: \.first.id) >=> $0 }
-  <<< validateUserAndSaltAndUserAgent
+  <<< validateUserAgent
   <<< fetchActiveStripeSubscription
   <| map(lower)
   >>> accountRssResponse
-
-private let decryptUrlAndFetchUser
-  : MT<Tuple2<Encrypted<String>, Encrypted<String>>, Tuple2<User, User.RssSalt>>
-  = decryptUrl <<< { fetchUser >=> $0 } <<< requireUser
-
-private let validateUserAndSaltAndUserAgent
-  : MT<Tuple2<User, User.RssSalt>, Tuple1<User>>
-  = validateUserAndSalt <<< validateUserAgent
 
 private let fetchActiveStripeSubscription
   : MT<Tuple1<User>, Tuple2<Stripe.Subscription?, User>>
@@ -33,27 +26,15 @@ private let fetchActiveStripeSubscription
     <<< requireActiveSubscription
     <<< fetchStripeSubscriptionForUser
 
-private let decryptUrl: (
-  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data> =
-  filterMap(
-    decryptUserIdAndRssSalt,
-    or: invalidatedFeedMiddleware(errorMessage: """
-      ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
-      retrieve your most up-to-date private podcast URL by visiting your account page at \
-      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
-      """)
-)
-
-private func requireUser<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, Z>, Data> {
+private func requireUser(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> {
   return middleware
     |> filterMap(
       require1 >>> pure,
       or: invalidatedFeedMiddleware(errorMessage: """
-        ‼️ The user for this RSS feed could not be found, so we have disabled this feed. You can retrieve \
-        your most up-to-date private podcast URL by visiting your account page at \
+        ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+        retrieve your most up-to-date private podcast URL by visiting your account page at \
         \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
         """)
   )
@@ -97,22 +78,15 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
   }
 }
 
-private func decryptUserIdAndRssSalt<Z>(
-  data: T3<Encrypted<String>, Encrypted<String>, Z>
-  ) -> IO<T3<User.Id, User.RssSalt, Z>?> {
-
-  return IO {
-    let encryptedUserId = get1(data)
-    let encryptedRssSalt = get2(data)
-    guard
-      let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
-        .flatMap(UUID.init(uuidString:))
-        .map(User.Id.init),
-      let rssSalt = encryptedRssSalt.decrypt(with: Current.envVars.appSecret)
-        .flatMap(UUID.init(uuidString:))
-        .map(User.RssSalt.init)
-      else { return nil }
-    return userId .*. rssSalt .*. rest(data)
+private func fetchUserByRssSalt(
+  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data>)
+  )
+-> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User.RssSalt>, Data> {
+  return { conn in
+    Current.database.fetchUserByRssSalt(get1(conn.data))
+      .run
+      .map { conn.map(const($0.right.flatMap(id) .*. unit)) }
+      .flatMap(middleware)
   }
 }
 
@@ -130,24 +104,6 @@ private func validateActiveSubscriber<Z>(
   }
 }
 
-private func validateUserAndSalt<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<User, User.RssSalt, Z>, Data> {
-
-    return { conn in
-      guard get1(conn.data).rssSalt == get2(conn.data) else {
-        return conn
-          |> invalidatedFeedMiddleware(errorMessage: """
-            ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
-            retrieve your most up-to-date private podcast URL by visiting your account page at \
-            \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
-            """)
-      }
-      return conn.map(const(get1(conn.data) .*. rest(conn.data)))
-        |> middleware
-    }
-}
-
 private func validateUserAgent<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
@@ -160,7 +116,7 @@ private func validateUserAgent<Z>(
       else { return middleware(conn) }
 
     return Current.database.updateUser(
-      id: user.id, rssSalt: User.RssSalt(rawValue: Current.uuid())
+      id: user.id, rssSalt: User.RssSalt(rawValue: .left(Current.uuid()))
     )
       .run
       .flatMap { _ in

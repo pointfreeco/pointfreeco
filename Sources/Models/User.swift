@@ -1,3 +1,4 @@
+import Either
 import EmailAddress
 import Foundation
 import GitHub
@@ -45,7 +46,7 @@ public struct User: Decodable, Equatable {
 
   public typealias Id = Tagged<User, UUID>
   public typealias ReferralCode = Tagged<(User, referralCode: ()), String>
-  public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
+  public typealias RssSalt = Tagged<(User, rssSalt: ()), Either<UUID, String>>
 
   public enum CodingKeys: String, CodingKey {
     case email

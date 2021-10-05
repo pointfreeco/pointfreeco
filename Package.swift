@@ -182,6 +182,7 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
+        .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
       ],
@@ -208,7 +209,6 @@ var package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
-        .product(name: "Overture", package: "swift-overture"),
       ]
     ),
 

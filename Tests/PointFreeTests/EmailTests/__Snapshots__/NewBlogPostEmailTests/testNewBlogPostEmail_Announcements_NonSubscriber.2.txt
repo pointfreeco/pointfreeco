@@ -29,7 +29,7 @@ Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or o
 Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
 
 You are receiving this email because you expressed interest in being notified about new posts on our
-blog, Point-Free Pointers. If you no longer wish to receive emails like this, you can unsubscribe here <http://localhost:8080/newsletters/express-unsubscribe?payload=f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b4738d82b4e060d069541557960935392ce01b587b47fb1a2c52034f619e65373dbeaec2d58a4cb9b116fa664c0bc900184>.
+blog, Point-Free Pointers. If you no longer wish to receive emails like this, you can unsubscribe here <http://localhost:8080/newsletters/express-unsubscribe?payload=735e484dc73bec092e1cf8e8148df8ef74dad93f91fdacbba26795ed40ecdfd55bd3fa9d6d80c21c83e92dfa08b65840e90c9ed8ddc16d473de8ce41feb0395e1d5236783f5b9b4ef1aa790a9bb979765c4f65ffd6603ef40881bd80796f79b3128f>.
 
 
 

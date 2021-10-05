@@ -35,6 +35,7 @@ public struct Client {
   public var fetchUserByGitHub: (GitHubUser.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
+  public var fetchUserByRssSalt: (Models.User.RssSalt) -> EitherIO<Error, Models.User?>
   public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
@@ -74,6 +75,7 @@ public struct Client {
     fetchUserByGitHub: @escaping (GitHubUser.Id) -> EitherIO<Error, Models.User?>,
     fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
     fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
+    fetchUserByRssSalt: @escaping (Models.User.RssSalt) -> EitherIO<Error, Models.User?>,
     fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
     fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
     incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
@@ -112,6 +114,7 @@ public struct Client {
     self.fetchUserByGitHub = fetchUserByGitHub
     self.fetchUserById = fetchUserById
     self.fetchUserByReferralCode = fetchUserByReferralCode
+    self.fetchUserByRssSalt = fetchUserByRssSalt
     self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
     self.fetchUsersToWelcome = fetchUsersToWelcome
     self.incrementEpisodeCredits = incrementEpisodeCredits
