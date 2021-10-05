@@ -46,11 +46,7 @@ extension EventLoopGroupConnectionPool where Source == PostgresConnectionSource 
   }
 }
 
-private let logger: Logger = {
-  var logger = Logger(label: "Postgres")
-  logger.logLevel = .trace
-  return logger
-}()
+private let logger = Logger(label: "Postgres")
 
 extension Either where L: Error {
   init(result: Result<R, L>) {
