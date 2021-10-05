@@ -1,4 +1,4 @@
-GET http://localhost:8080/account/rss/deadbeef/cafebeef
+GET http://localhost:8080/account/rss/deadbeef
 Cookie: pf_session={}
 
 200 OK

@@ -1,4 +1,4 @@
-GET http://localhost:8080/account/rss/deadbeef/cafebeef
+GET http://localhost:8080/account/rss/deadbeef
 Cookie: pf_session={}
 User-Agent: Blob 1.0 (https://www.blob.com)
 

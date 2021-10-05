@@ -29,6 +29,175 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Monthly() {
     var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_Subscriber_Yearly() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_NonSubscriber() {
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(throwE(unit))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_InActiveSubscriber() {
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef"
+
+    var subscription = Models.Subscription.mock
+    subscription.stripeSubscriptionStatus = .pastDue
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_DeactivatedSubscriber() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
+    var subscription = Models.Subscription.mock
+    subscription.deactivated = true
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_BadSalt() {
+    Current.database.fetchUserByRssSalt = const(pure(.none))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_InvalidUserAgent() {
+    let user = Models.User.mock
+    var feedRequestEventCreated = false
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.createFeedRequestEvent = { _, _, _ in
+      feedRequestEventCreated = true
+      return pure(unit)
+    }
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    var req = request(
+      to: .account(.rss(salt: "deadbeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertTrue(feedRequestEventCreated)
+  }
+
+  func testFeed_ValidUserAgent() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    var req = request(
+      to: .account(.rss(salt: "deadbeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_BadSalt_InvalidUserAgent() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.updateUser = { _, _, _, _, _ in
+      XCTFail("The user should not be updated.")
+      return pure(unit)
+    }
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+
+    var req = request(
+      to: .account(.rss(salt: "deadbeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_Subscriber_Monthly() {
+    var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
@@ -44,7 +213,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_Subscriber_Yearly() {
+  func testLegacy_Feed_Authenticated_Subscriber_Yearly() {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -61,7 +230,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_NonSubscriber() {
+  func testLegacy_Feed_Authenticated_NonSubscriber() {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -78,7 +247,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_InActiveSubscriber() {
+  func testLegacy_Feed_Authenticated_InActiveSubscriber() {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -98,7 +267,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_DeactivatedSubscriber() {
+  func testLegacy_Feed_Authenticated_DeactivatedSubscriber() {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -118,7 +287,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_BadSalt() {
+  func testLegacy_Feed_BadSalt() {
     Current.database.fetchUserByRssSalt = const(pure(.none))
 
     let conn = connection(
@@ -131,7 +300,7 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_InvalidUserAgent() {
+  func testLegacy_Feed_InvalidUserAgent() {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
@@ -155,7 +324,7 @@ class PrivateRssTests: TestCase {
     XCTAssertTrue(feedRequestEventCreated)
   }
 
-  func testFeed_ValidUserAgent() {
+  func testLegacy_Feed_ValidUserAgent() {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -174,11 +343,11 @@ class PrivateRssTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_BadSalt_InvalidUserAgent() {
+  func testLegacy_Feed_BadSalt_InvalidUserAgent() {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.none))
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)
