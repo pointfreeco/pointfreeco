@@ -116,7 +116,9 @@ private func validateUserAgent<Z>(
       else { return middleware(conn) }
 
     return Current.database.updateUser(
-      id: user.id, rssSalt: User.RssSalt(rawValue: .left(Current.uuid()))
+      id: user.id, rssSalt: User.RssSalt(
+        rawValue: Current.uuid().uuidString.lowercased()
+      )
     )
       .run
       .flatMap { _ in

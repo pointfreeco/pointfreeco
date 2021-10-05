@@ -44,7 +44,7 @@ func accountMiddleware(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, U
 
     case let .rssLegacy(secret1, secret2):
       return conn
-        .map(const(User.RssSalt(rawValue: .right("\(secret1):\(secret2)")) .*. unit))
+        .map(const(User.RssSalt(rawValue: "\(secret1)/\(secret2)") .*. unit))
         |> accountRssMiddleware
 
     case .subscription(.cancel):

@@ -42,7 +42,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("deprecate-blue-cryptor")),
+    .package(url: "https://github.com/pointfreeco/swift-web", .revision("8cbec70")),
   ],
   targets: [
 

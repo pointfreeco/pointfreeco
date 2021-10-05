@@ -65,7 +65,7 @@ private let accountRouters: [Router<Account>] = [
 
   .case(Account.rss)
     <¢> (get <|> head) %> "rss"
-    %> pathParam(.tagged(.either(.uuid, .id)))
+    %> pathParam(.tagged)
     <% end,
 
   .case(Account.rssLegacy)
