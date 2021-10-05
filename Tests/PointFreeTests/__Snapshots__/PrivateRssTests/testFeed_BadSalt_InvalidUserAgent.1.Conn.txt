@@ -1,4 +1,4 @@
-GET http://localhost:8080/account/rss/b34b00dcf6a8367abc9a3b6c147464a1e26b05c41f3d45ec46483d8a635c11fffe29353c7d5bc9e7dd6c569c72b5c092cfd49cf1e6e676911d0e21c5a027cf31/8cfdb4e92d24481fd0308c670255d06fbfb4b458abfb7811963d11ca66ced4a366109f3cf1a4e0fa7488b7b27a86dfd14d9edda7c5e3eb182c88ca6970d3d7a3
+GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
 User-Agent: Blob 1.0 (https://www.blob.com)
 

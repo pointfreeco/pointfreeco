@@ -1,4 +1,4 @@
-GET http://localhost:8080/account/rss/410d9b5cab946ed0009890af4f5d7c9dde54c1e895d307a086e29e3da01f372016aa5c5507eab535a36fb1a1761a5ed45077c4360695cd01d4ebe28118aba0a5/efec0232cdd2245ece4413083c6fc76f348ae9cc826ed3ea316e756235b9824faf3c8ae00f4304a2b666c8525e43cc133e0df1ad22a370ac7e2ad48110312b80
+GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
 
 200 OK
