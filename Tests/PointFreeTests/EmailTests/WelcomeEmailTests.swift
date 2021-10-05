@@ -37,11 +37,13 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail1() {
-    #if os(Linux)
     let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
 
+    #if os(Linux)
     assertSnapshot(matching: emailNodes, as: .html)
+    #endif
 
+    #if os(Mac)
     if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
@@ -52,11 +54,13 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail2() {
-    #if os(Linux)
     let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
 
+    #if os(Linux)
     assertSnapshot(matching: emailNodes, as: .html)
+    #endif
 
+    #if os(Mac)
     if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
