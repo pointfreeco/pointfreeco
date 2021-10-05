@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 72183
+Content-Length: 71962
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2100,8 +2100,8 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                 <ul>
                   <li>
                     <a class="underline-link"
-                       href="http://localhost:8080/account/rss/92593e15b42bc7f603ca2f085ba5d5c4086d00353c956b9f59fe2cbb562791d8b0fe017c5778318b8462dfd445a5b1eb6498d7e441ce54d0e060d006aedbe201/46e5eba35ebc571b97ff54fe0096ac78272d7a1184c1bf45015de342fdef17e3d62febc3cc787ee3b2b20b25086292ae83634fdfcab13998652cf35390912742">
-                      http://localhost:8080/account/rss/92593e...
+                       href="http://localhost:8080/account/rss/00000000-5A17-0000-0000-000000000000">
+                      http://localhost:8080/account/rss/000000...
                     </a>
                   </li>
                 </ul>

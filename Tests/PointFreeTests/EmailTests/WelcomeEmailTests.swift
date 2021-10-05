@@ -14,11 +14,6 @@ import WebKit
 import XCTest
 
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-//    SnapshotTesting.record=true
-  }
-
   func testIncrementEpisodeCredits() throws {
     let users: [User] = [1, 2, 3].map {
       var env = GitHubUserEnvelope.mock
