@@ -694,7 +694,7 @@ extension Client {
           database.run(
             """
             ALTER TABLE "users"
-            ALTER COLUMN "rss_salt" TYPE character varying
+            ALTER COLUMN "rss_salt" TYPE citext
             """
           ),
           database.run(
