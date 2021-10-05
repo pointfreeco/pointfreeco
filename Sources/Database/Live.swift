@@ -286,7 +286,7 @@ extension Client {
           """
           SELECT *
           FROM "users"
-          WHERE lower("rss_salt") = lower(\(bind: salt))
+          WHERE "rss_salt" = \(bind: salt)
           LIMIT 1
           """
         )
@@ -696,7 +696,13 @@ extension Client {
             ALTER TABLE "users"
             ALTER COLUMN "rss_salt" TYPE character varying
             """
-          )
+          ),
+          database.run(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_users_on_rss_salt"
+            ON "users" ("rss_salt")
+            """
+          ),
         ])
         .map(const(unit))
 
