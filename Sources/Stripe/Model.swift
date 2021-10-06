@@ -145,6 +145,10 @@ public struct Source: Codable, Equatable {
   }
 }
 
+public enum Currency: String, Codable {
+  case usd
+}
+
 public struct Customer: Codable, Equatable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
@@ -346,10 +350,6 @@ public struct Plan: Codable, Equatable {
   }
 
   public typealias Id = Tagged<Plan, String>
-
-  public enum Currency: String, Codable {
-    case usd
-  }
 
   public enum Interval: String, Codable {
     case month

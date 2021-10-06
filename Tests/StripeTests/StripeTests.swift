@@ -239,7 +239,7 @@ final class StripeTests: XCTestCase {
           "livemode": false,
           "metadata": {
           },
-          "nickname": null,
+          "nickname": "Point-Free Monthly",
           "product": "prod_GVRtIVoEidgAjD",
           "tiers": null,
           "tiers_mode": null,
@@ -280,7 +280,7 @@ final class StripeTests: XCTestCase {
     "livemode": false,
     "metadata": {
     },
-    "nickname": null,
+    "nickname": "Point-Free Monthly",
     "product": "prod_GVRtIVoEidgAjD",
     "tiers": null,
     "tiers_mode": null,
