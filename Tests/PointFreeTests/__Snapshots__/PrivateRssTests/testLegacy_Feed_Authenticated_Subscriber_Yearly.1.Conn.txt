@@ -1,9 +1,8 @@
-GET http://localhost:8080/account/rss/deadbeef
+GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
-User-Agent: Safari 1.0
 
 200 OK
-Content-Length: 13511
+Content-Length: 15886
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -360,6 +359,71 @@ with anyone else.
                      medium="video">
         <media:title>
           Side Effects
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Functions
+      </title>
+      <pubDate>
+        Mon, 29 Jan 2018 06:11:09 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep1-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep1-functions
+      </guid>
+      <description>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </itunes:subtitle>
+      <itunes:summary>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:20:19
+      </itunes:duration>
+      <itunes:image>
+        http://localhost:8080/images/1.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        1
+      </itunes:episode>
+      <itunes:title>
+        Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&amp;profile_id=174&amp;download=1"
+                 length="197667168"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&amp;profile_id=174&amp;download=1"
+                     length="197667168"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Functions
         </media:title>
       </media:content>
     </item>

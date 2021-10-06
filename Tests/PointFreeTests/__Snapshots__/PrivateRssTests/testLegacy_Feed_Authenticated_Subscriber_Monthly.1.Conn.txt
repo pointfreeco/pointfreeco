@@ -1,6 +1,5 @@
-GET http://localhost:8080/account/rss/deadbeef
+GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
-User-Agent: Safari 1.0
 
 200 OK
 Content-Length: 13511

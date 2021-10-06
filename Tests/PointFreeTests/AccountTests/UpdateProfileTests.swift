@@ -15,7 +15,7 @@ import XCTest
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
   }
 
   func testUpdateNameAndEmail() {

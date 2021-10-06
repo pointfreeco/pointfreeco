@@ -28,17 +28,15 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {
-    let user = Models.User.mock
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -47,17 +45,15 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_Subscriber_Yearly() {
-    let user = Models.User.mock
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -66,17 +62,15 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_NonSubscriber() {
-    let user = Models.User.nonSubscriber
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.fetchSubscriptionById = const(throwE(unit))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -85,19 +79,18 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_InActiveSubscriber() {
-    let user = Models.User.nonSubscriber
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef"
+
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.fetchSubscriptionById = const(pure(subscription))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -106,19 +99,18 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_DeactivatedSubscriber() {
-    let user = Models.User.mock
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
+
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.fetchSubscriptionById = const(pure(subscription))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -127,16 +119,11 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_BadSalt() {
-    let user = Models.User.mock
-
-    Current.database.fetchUserById = const(pure(.some(user)))
-
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+    Current.database.fetchUserByRssSalt = const(pure(.none))
 
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+        to: .account(.rss(salt: "deadbeef")),
         session: .loggedOut
       )
     )
@@ -148,7 +135,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.createFeedRequestEvent = { _, _, _ in
       feedRequestEventCreated = true
       return pure(unit)
@@ -156,11 +143,8 @@ class PrivateRssTests: TestCase {
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
-
     var req = request(
-      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      to: .account(.rss(salt: "deadbeef")),
       session: .loggedOut
     )
     req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
@@ -172,17 +156,15 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_ValidUserAgent() {
-    let user = Models.User.mock
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
-
     var req = request(
-      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      to: .account(.rss(salt: "deadbeef")),
       session: .loggedOut
     )
     req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
@@ -193,20 +175,187 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_BadSalt_InvalidUserAgent() {
-    let user = Models.User.mock
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = const(pure(.none))
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
 
-    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+    var req = request(
+      to: .account(.rss(salt: "deadbeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_Subscriber_Monthly() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef/cafebeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_Subscriber_Yearly() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef/cafebeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_NonSubscriber() {
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef/cafebeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(throwE(unit))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_InActiveSubscriber() {
+    var user = Models.User.nonSubscriber
+    user.rssSalt = "deadbeef/cafebeef"
+
+    var subscription = Models.Subscription.mock
+    subscription.stripeSubscriptionStatus = .pastDue
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_Authenticated_DeactivatedSubscriber() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef/cafebeef"
+
+    var subscription = Models.Subscription.mock
+    subscription.deactivated = true
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_BadSalt() {
+    Current.database.fetchUserByRssSalt = const(pure(.none))
+
+    let conn = connection(
+      from: request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_InvalidUserAgent() {
+    let user = Models.User.mock
+    var feedRequestEventCreated = false
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.createFeedRequestEvent = { _, _, _ in
+      feedRequestEventCreated = true
+      return pure(unit)
+    }
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     var req = request(
-      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertTrue(feedRequestEventCreated)
+  }
+
+  func testLegacy_Feed_ValidUserAgent() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef/cafebeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+    var req = request(
+      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLegacy_Feed_BadSalt_InvalidUserAgent() {
+    var user = Models.User.mock
+    user.rssSalt = "deadbeef/cafebeef"
+
+    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.updateUser = { _, _, _, _, _ in
+      XCTFail("The user should not be updated.")
+      return pure(unit)
+    }
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+
+    var req = request(
+      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
       session: .loggedOut
     )
     req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"

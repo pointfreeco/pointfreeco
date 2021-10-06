@@ -14,12 +14,12 @@ let accountResponse
     <| fetchAccountData
     >=> writeStatus(.ok)
     >=> respond(
-      view: Views.accountView(accountData:allEpisodes:currentDate:appSecret:),
+      view: Views.accountView(accountData:allEpisodes:currentDate:),
       layoutData: { accountData in
         SimplePageLayoutData(
           currentSubscriberState: accountData.subscriberState,
           currentUser: accountData.currentUser,
-          data: (accountData, Current.episodes(), Current.date(), Current.envVars.appSecret),
+          data: (accountData, Current.episodes(), Current.date()),
           extraStyles: markdownBlockStyles,
           title: "Account"
         )

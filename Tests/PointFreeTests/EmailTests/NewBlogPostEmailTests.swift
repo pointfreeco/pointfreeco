@@ -20,7 +20,7 @@ import XCTest
 class NewBlogPostEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
   }
 
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() {

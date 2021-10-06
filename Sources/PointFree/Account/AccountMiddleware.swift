@@ -38,8 +38,13 @@ func accountMiddleware(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, U
       return conn.map(const(user .*. token .*. unit))
         |> updatePaymentInfoMiddleware
 
-    case let .rss(encryptedUserId, encryptedRssSalt):
-      return conn.map(const(encryptedUserId .*. encryptedRssSalt .*. unit))
+    case let .rss(salt):
+      return conn.map(const(salt .*. unit))
+        |> accountRssMiddleware
+
+    case let .rssLegacy(secret1, secret2):
+      return conn
+        .map(const(User.RssSalt(rawValue: "\(secret1)/\(secret2)") .*. unit))
         |> accountRssMiddleware
 
     case .subscription(.cancel):

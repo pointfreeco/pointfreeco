@@ -8,7 +8,11 @@ import Tagged
 extension Tagged where Tag == EncryptedTag, RawValue == String {
   public init?(_ text: String, with secret: AppSecret) {
     guard
-      let string = encrypted(text: text, secret: secret.rawValue)
+      let string = encrypted(
+        text: text,
+        secret: secret.rawValue,
+        nonce: [0x30, 0x9D, 0xF8, 0xA2, 0x72, 0xA7, 0x4D, 0x37, 0xB9, 0x02, 0xDF, 0x4F]
+      )
       else { return nil }
     self.init(rawValue: string)
   }

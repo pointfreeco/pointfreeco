@@ -12,13 +12,12 @@ import TaggedMoney
 public func accountView(
   accountData: AccountData,
   allEpisodes: [Episode],
-  currentDate: Date,
-  appSecret: AppSecret
+  currentDate: Date
 ) -> Node {
   let content: Node = [
     titleRowView,
     profileRowView(accountData),
-    privateRssFeed(accountData: accountData, appSecret: appSecret),
+    privateRssFeed(accountData: accountData),
     referAFriend(accountData: accountData),
     subscriptionOverview(accountData: accountData, currentDate: currentDate),
     creditsView(accountData: accountData, allEpisodes: allEpisodes),
@@ -251,31 +250,21 @@ private func subscriptionOverview(accountData: AccountData, currentDate: Date) -
   }
 }
 
-private func privateRssFeed(
-  accountData: AccountData,
-  appSecret: AppSecret
-) -> Node {
+private func privateRssFeed(accountData: AccountData) -> Node {
   guard accountData.subscriberState.isActiveSubscriber else { return [] }
   let user = accountData.currentUser
-  let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: appSecret)
-  let encryptedRssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: appSecret)
-  let rssUrl = zip(encryptedUserId, encryptedRssSalt)
-    .map { url(to: .account(.rss(userId: $0, rssSalt: $1))) }
-  let rssLink: Node = rssUrl
-    .map { rssUrl in
-      [
-        .ul(
-          .li(
-            .a(
-              attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
-              .text(String(rssUrl.prefix(40)) + "...")
-            )
-          )
-        ),
-        rssTerms(stripeSubscription: accountData.stripeSubscription)
-      ]
-    }
-    ?? []
+  let rssUrl = url(to: .account(.rss(salt: user.rssSalt)))
+  let rssLink: Node = [
+    .ul(
+      .li(
+        .a(
+          attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
+          .text(String(rssUrl.prefix(40)) + "...")
+        )
+      )
+    ),
+    rssTerms(stripeSubscription: accountData.stripeSubscription)
+  ]
 
   return .gridRow(
     .gridColumn(

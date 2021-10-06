@@ -281,6 +281,17 @@ extension Client {
         )
         .first(decoding: Models.User.self)
       },
+      fetchUserByRssSalt: { salt in
+        pool.sqlDatabase.raw(
+          """
+          SELECT *
+          FROM "users"
+          WHERE "rss_salt" = \(bind: salt)
+          LIMIT 1
+          """
+        )
+        .first(decoding: Models.User.self)
+      },
       fetchUsersSubscribedToNewsletter: { newsletter, nonsubscriberOrSubscriber in
         let condition: SQLQueryString
         switch nonsubscriberOrSubscriber {
@@ -678,6 +689,18 @@ extension Client {
             ALTER TABLE "subscriptions"
             ADD COLUMN IF NOT EXISTS
             "deactivated" boolean NOT NULL DEFAULT FALSE
+            """
+          ),
+          database.run(
+            """
+            ALTER TABLE "users"
+            ALTER COLUMN "rss_salt" TYPE citext
+            """
+          ),
+          database.run(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_users_on_rss_salt"
+            ON "users" ("rss_salt")
             """
           ),
         ])

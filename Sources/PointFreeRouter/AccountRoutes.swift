@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import Foundation
 import Models
 import PointFreePrelude
 import Prelude
@@ -9,7 +10,8 @@ public enum Account: Equatable {
   case index
   case invoices(Invoices)
   case paymentInfo(PaymentInfo)
-  case rss(userId: Encrypted<String>, rssSalt: Encrypted<String>)
+  case rss(salt: User.RssSalt)
+  case rssLegacy(secret1: String, secret2: String)
   case subscription(Subscription)
   case update(ProfileData?)
 
@@ -64,7 +66,12 @@ private let accountRouters: [Router<Account>] = [
   .case(Account.rss)
     <¢> (get <|> head) %> "rss"
     %> pathParam(.tagged)
-    <%> pathParam(.tagged)
+    <% end,
+
+  .case(Account.rssLegacy)
+    <¢> (get <|> head) %> "rss"
+    %> pathParam(.id)
+    <%> pathParam(.id)
     <% end,
 
   .case(.subscription(.cancel))
