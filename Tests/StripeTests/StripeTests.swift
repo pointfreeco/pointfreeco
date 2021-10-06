@@ -347,6 +347,17 @@ final class StripeTests: XCTestCase {
       named: "cancel-subscription"
     )
     assertSnapshot(
+      matching: Stripe.createCoupon(
+        duration: .once,
+        maxRedemptions: 1,
+        name: "3 Months of Point-Free",
+        rate: .amountOff(54_00)
+      )
+        .rawValue,
+      as: .raw,
+      named: "create-coupon"
+    )
+    assertSnapshot(
       matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil, balance: nil).rawValue,
       as: .raw,
       named: "create-customer"

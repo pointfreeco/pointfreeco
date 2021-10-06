@@ -13,6 +13,7 @@ import UrlFormEncoding
 
 public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
+  public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
   public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
@@ -32,6 +33,7 @@ public struct Client {
 
   public init(
     cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
+    createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
     createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
@@ -50,6 +52,7 @@ public struct Client {
     js: String
   ) {
     self.cancelSubscription = cancelSubscription
+    self.createCoupon = createCoupon
     self.createCustomer = createCustomer
     self.createSubscription = createSubscription
     self.fetchCoupon = fetchCoupon
@@ -78,6 +81,11 @@ extension Client {
     self.init(
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0))
+      },
+      createCoupon: {
+        runStripe(secretKey, logger)(
+          Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
+        )
       },
       createCustomer: {
         runStripe(secretKey, logger)(
@@ -120,6 +128,46 @@ func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
     "subscriptions/" + id.rawValue + "?expand[]=customer",
     .post(["cancel_at_period_end": "true"])
   )
+}
+
+func createCoupon(
+  duration: Coupon.Duration?,
+  maxRedemptions: Int?,
+  name: String?,
+  rate: Coupon.Rate
+)
+-> DecodableRequest<Coupon> {
+
+  var params: [String: Any] = [:]
+
+  switch duration {
+  case .once:
+    params["duration"] = "once"
+  case .forever:
+    params["duration"] = "forever"
+  case let .repeating(months):
+    params["duration"] = "repeating"
+    params["duration_in_months"] = months
+  case .none:
+    break
+  }
+
+  if let maxRedemptions = maxRedemptions {
+    params["max_redemptions"] = maxRedemptions
+  }
+
+  if let name = name {
+    params["name"] = name
+  }
+
+  switch rate {
+  case let .amountOff(cents):
+    params["amount_off"] = cents
+  case let .percentOff(percent):
+    params["percent_off"] = percent
+  }
+
+  return stripeRequest("coupons", .post(params))
 }
 
 func createCustomer(
