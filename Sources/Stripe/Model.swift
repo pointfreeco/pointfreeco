@@ -151,7 +151,7 @@ public struct Customer: Codable, Equatable {
   public var defaultSource: Card.Id?
   public var id: Id
   public var metadata: [String: String]
-  public var sources: ListEnvelope<Either<Card, Source>>
+  public var sources: ListEnvelope<Either<Card, Source>>?
 
   public init(
     balance: Cents<Int>,
@@ -159,7 +159,7 @@ public struct Customer: Codable, Equatable {
     defaultSource: Card.Id?,
     id: Id,
     metadata: [String: String],
-    sources: ListEnvelope<Either<Card, Source>>
+    sources: ListEnvelope<Either<Card, Source>>?
   ) {
     self.balance = balance
     self.businessVatId = businessVatId
@@ -328,7 +328,6 @@ public struct Plan: Codable, Equatable {
   public var interval: Interval
   public var metadata: [String: String]
   public var nickname: String
-  public var tiers: [Tier]?
 
   public init(
     created: Date,
@@ -336,8 +335,7 @@ public struct Plan: Codable, Equatable {
     id: Id,
     interval: Interval,
     metadata: [String: String],
-    nickname: String,
-    tiers: [Tier]?
+    nickname: String
   ) {
     self.created = created
     self.currency = currency
@@ -345,13 +343,6 @@ public struct Plan: Codable, Equatable {
     self.interval = interval
     self.metadata = metadata
     self.nickname = nickname
-    self.tiers = tiers
-  }
-
-  public func amount(for quantity: Int) -> Cents<Int> {
-    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
-    ?? -1
-    return amount.map { $0 * quantity }
   }
 
   public typealias Id = Tagged<Plan, String>
@@ -363,16 +354,6 @@ public struct Plan: Codable, Equatable {
   public enum Interval: String, Codable {
     case month
     case year
-  }
-
-  public struct Tier: Codable, Equatable {
-    public var unitAmount: Cents<Int>
-    public var upTo: Int?
-
-    public init(unitAmount: Cents<Int>, upTo: Int?) {
-      self.unitAmount = unitAmount
-      self.upTo = upTo
-    }
   }
 }
 

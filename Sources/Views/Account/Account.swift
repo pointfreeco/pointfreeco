@@ -1086,7 +1086,7 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> Node {
-  guard let card = subscription.customer.right?.sources.data.first?.left
+  guard let card = subscription.customer.right?.sources?.data.first?.left
     else { return subscriptionInvoiceBillingInfoView }
 
   return Node.gridRow(

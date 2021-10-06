@@ -190,7 +190,7 @@ func fetchPlan(id: Plan.Id) -> DecodableRequest<Plan> {
 }
 
 func fetchSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
+  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.sources")
 }
 
 func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> {
@@ -269,7 +269,7 @@ public let jsonEncoder: JSONEncoder = {
 
 func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
   var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
-  request.setHeader(name: "Stripe-Version", value: "2019-12-03")
+  request.setHeader(name: "Stripe-Version", value: "2020-08-27")
   request.attach(method: method)
 
   return DecodableRequest(rawValue: request)
