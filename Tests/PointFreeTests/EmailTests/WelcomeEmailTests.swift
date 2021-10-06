@@ -37,6 +37,7 @@ final class WelcomeEmailTests: TestCase {
   }
   
   func testWelcomeEmail1() {
+    #if !os(Linux)
     if self.isScreenshotTestingAvailable {
       let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
       
@@ -47,9 +48,11 @@ final class WelcomeEmailTests: TestCase {
       
       assertSnapshot(matching: webView, as: .image)
     }
+    #endif
   }
   
   func testWelcomeEmail2() {
+    #if !os(Linux)
     if self.isScreenshotTestingAvailable {
       let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
       
@@ -60,9 +63,11 @@ final class WelcomeEmailTests: TestCase {
       
       assertSnapshot(matching: webView, as: .image)
     }
+    #endif
   }
   
   func testWelcomeEmail3() {
+    #if !os(Linux)
     if self.isScreenshotTestingAvailable {
       let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
       
@@ -73,6 +78,7 @@ final class WelcomeEmailTests: TestCase {
       
       assertSnapshot(matching: webView, as: .image)
     }
+    #endif
   }
   
   func testEpisodeEmails() {
