@@ -1,2 +1,2 @@
 GET https://api.stripe.com/v1/invoices/in_test?expand%5B%5D=charge
-Stripe-Version: 2019-12-03
+Stripe-Version: 2020-08-27

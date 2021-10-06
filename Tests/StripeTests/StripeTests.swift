@@ -340,7 +340,7 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
-    //    SnapshotTesting.record=true
+        SnapshotTesting.isRecording=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
       as: .raw,
