@@ -327,14 +327,8 @@ public struct Plan: Codable, Equatable {
   public var id: Id
   public var interval: Interval
   public var metadata: [String: String]
-  private var name: String? // FIXME: remove
-  private var _nickname: String? // FIXME: remove
+  public var nickname: String
   public var tiers: [Tier]?
-
-  public var nickname: String {
-    get { return self._nickname ?? self.name ?? "" }
-    set { self._nickname = newValue; self.name = newValue }
-  }
 
   public init(
     created: Date,
@@ -379,17 +373,6 @@ public struct Plan: Codable, Equatable {
       self.unitAmount = unitAmount
       self.upTo = upTo
     }
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case created
-    case currency
-    case id
-    case interval
-    case metadata
-    case name
-    case _nickname = "nickname" // FIXME: remove
-    case tiers
   }
 }
 
