@@ -96,6 +96,7 @@ private func coreLessons(
         ),
         .fragment(
           section.coreLessons.map { coreLesson(collection: collection, section: section, lesson: $0) }
+          + (section.isFinished ? [] : [moreComingSoon])
         )
       )
     )
@@ -436,7 +437,50 @@ private func contentRow(
             <> key("font-variant-numeric", "tabular-nums")
         ),
       ],
-      .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
+      length > 0
+      ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
+      : []
     )
   )
 }
+
+private let moreComingSoon = Node.gridColumn(
+  sizes: [.mobile: 12],
+  attributes: [
+    .style(margin(top: .px(4))),
+  ],
+  .div(
+    attributes: [
+      .class([
+        Class.border.left,
+        Class.flex.items.center,
+        Class.grid.row,
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+        Class.pf.colors.border.gray800,
+        Class.pf.colors.bg.white,
+      ]),
+      .style(
+        borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> margin(top: .px(4))
+          <> flex(wrap: .nowrap)
+      ),
+    ],
+    .img(
+      base64: hourGlassSvgBase64(fill: "666"),
+      type: .image(.svg),
+      alt: "",
+      attributes: [.class([Class.padding([.mobile: [.right: 1]])])]
+    ),
+    .div(
+      attributes: [
+        .style(flex(grow: 1)),
+        .class([
+          Class.pf.colors.fg.gray400,
+          Class.type.italic
+        ])
+      ],
+      .text("Currently in progress. More coming soon!")
+    )
+  )
+)

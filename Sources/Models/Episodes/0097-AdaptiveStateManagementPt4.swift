@@ -15,8 +15,8 @@ We've now shown that the Composable Architecture is also quite adaptive, allowin
       // TODO
     ],
     sequence: 97,
-    subtitle: nil,
-    title: "Adaptive State Management: The Point",
+    subtitle: "The Point",
+    title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 62_095_501,
       vimeoId: 404459141,

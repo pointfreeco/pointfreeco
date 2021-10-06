@@ -15,8 +15,8 @@ When we fixed a performance problem in the Composable Architecture it gave us an
       // TODO
     ],
     sequence: 96,
-    subtitle: nil,
-    title: "Adaptive State Management: Actions",
+    subtitle: "Actions",
+    title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 34672144,
       vimeoId: 401892473,

@@ -154,6 +154,7 @@ public struct Episode: Equatable {
     public struct Section: Equatable {
       public var blurb: String
       public var coreLessons: [Lesson]
+      public var isFinished: Bool
       public var related: [Related]
       public var title: String
       public var whereToGoFromHere: String?
@@ -161,12 +162,14 @@ public struct Episode: Equatable {
       public init(
         blurb: String,
         coreLessons: [Lesson],
+        isFinished: Bool = true,
         related: [Related],
         title: String,
         whereToGoFromHere: String?
       ) {
         self.blurb = blurb
         self.coreLessons = coreLessons
+        self.isFinished = isFinished
         self.related = related
         self.title = title
         self.whereToGoFromHere = whereToGoFromHere
