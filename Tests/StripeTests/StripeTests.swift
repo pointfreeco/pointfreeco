@@ -369,6 +369,21 @@ final class StripeTests: XCTestCase {
     )
     assertSnapshot(
       matching: Stripe
+        .createPaymentIntent(
+          .init(
+            amount: 54_00,
+            currency: .usd,
+            description: "3 Months of Point-Free",
+            receiptEmail: "generous.blob@pointfree.co",
+            statementDescriptorSuffix: "3 Months Gift"
+          )
+        )
+        .rawValue,
+      as: .raw,
+      named: "create-payment-intent"
+    )
+    assertSnapshot(
+      matching: Stripe
         .createSubscription(customer: "cus_test", plan: .yearly, quantity: 2, coupon: nil)
         .rawValue,
       as: .raw,

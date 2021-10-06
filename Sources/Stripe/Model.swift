@@ -325,6 +325,41 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
   }
 }
 
+public struct PaymentIntent: Codable, Equatable {
+  public var amount: Cents<Int>
+  public var clientSecret: ClientSecret
+  public var currency: Currency
+  public var id: Id
+  public var status: Status
+
+  public init(
+    amount: Cents<Int>,
+    clientSecret: ClientSecret,
+    currency: Currency,
+    id: Id,
+    status: Status
+  ) {
+    self.amount = amount
+    self.clientSecret = clientSecret
+    self.currency = currency
+    self.id = id
+    self.status = status
+  }
+
+  public typealias ClientSecret = Tagged<(Self, secret: ()), String>
+  public typealias Id = Tagged<Self, String>
+
+  public enum Status: String, Codable, Equatable {
+    case requiresPaymentMethod = "requires_payment_method"
+    case requiresConfirmation = "requires_confirmation"
+    case requiresAction = "requires_action"
+    case processing
+    case requiresCapture = "requires_capture"
+    case canceled
+    case succeeded
+  }
+}
+
 public struct Plan: Codable, Equatable {
   public var created: Date
   public var currency: Currency

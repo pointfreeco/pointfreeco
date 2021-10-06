@@ -15,6 +15,7 @@ public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
   public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
   public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+  public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
@@ -35,6 +36,7 @@ public struct Client {
     cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
     createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
+    createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
@@ -54,6 +56,7 @@ public struct Client {
     self.cancelSubscription = cancelSubscription
     self.createCoupon = createCoupon
     self.createCustomer = createCustomer
+    self.createPaymentIntent = createPaymentIntent
     self.createSubscription = createSubscription
     self.fetchCoupon = fetchCoupon
     self.fetchCustomer = fetchCustomer
@@ -69,6 +72,14 @@ public struct Client {
     self.updateCustomerExtraInvoiceInfo = updateCustomerExtraInvoiceInfo
     self.updateSubscription = updateSubscription
     self.js = js
+  }
+
+  public struct CreatePaymentIntentRequest {
+    public var amount: Cents<Int>
+    public var currency: Currency
+    public var description: String?
+    public var receiptEmail: String?
+    public var statementDescriptorSuffix: String?
   }
 }
 
@@ -90,6 +101,11 @@ extension Client {
       createCustomer: {
         runStripe(secretKey, logger)(
           Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
+        )
+      },
+      createPaymentIntent: {
+        runStripe(secretKey, logger)(
+          Stripe.createPaymentIntent($0)
         )
       },
       createSubscription: {
@@ -192,6 +208,18 @@ func createCustomer(
         .compactMapValues { $0 }
     )
   )
+}
+
+func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
+-> DecodableRequest<PaymentIntent> {
+
+  stripeRequest("payment_intents", .post([
+    "amount": request.amount.rawValue,
+    "currency": request.currency,
+    "description": request.description as Any?,
+    "receipt_email": request.receiptEmail,
+    "statement_descriptor_suffix": request.statementDescriptorSuffix,
+  ].compactMapValues { $0 }))
 }
 
 func createSubscription(

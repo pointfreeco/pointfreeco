@@ -9,6 +9,7 @@ extension Client {
     cancelSubscription: const(pure(.canceling)),
     createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
+    createPaymentIntent: { _ in pure(.requiresConfirmation) },
     createSubscription: { _, _, _, _ in pure(.mock) },
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
@@ -37,6 +38,24 @@ extension Card {
     id: "card_test",
     last4: "4242",
     object: Object.card
+  )
+}
+
+extension PaymentIntent {
+  public static let requiresConfirmation = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .requiresConfirmation
+  )
+
+  public static let succeeded = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .succeeded
   )
 }
 
