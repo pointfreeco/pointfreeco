@@ -22,7 +22,7 @@ public struct Card: Codable, Equatable {
     id: Id,
     last4: String,
     object: Object
-    ) {
+  ) {
     self.brand = brand
     self.country = country
     self.customer = customer
@@ -53,17 +53,6 @@ public struct Card: Codable, Equatable {
     case debit
     case prepaid
     case unknown
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case brand
-    case country
-    case customer
-    case expMonth = "exp_month"
-    case expYear = "exp_year"
-    case id
-    case last4
-    case object
   }
 }
 
@@ -171,7 +160,7 @@ public struct Customer: Codable, Equatable {
     id: Id,
     metadata: [String: String],
     sources: ListEnvelope<Either<Card, Source>>
-    ) {
+  ) {
     self.balance = balance
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource
@@ -182,15 +171,6 @@ public struct Customer: Codable, Equatable {
 
   public typealias Id = Tagged<(Customer, id: ()), String>
   public typealias Vat = Tagged<(Customer, vat: ()), String>
-
-  private enum CodingKeys: String, CodingKey {
-    case balance
-    case businessVatId = "business_vat_id"
-    case defaultSource = "default_source"
-    case id
-    case metadata
-    case sources
-  }
 
   public var extraInvoiceInfo: String? {
     return self.metadata[#function]
@@ -282,7 +262,7 @@ public struct Invoice: Codable, Equatable {
     subscription: Subscription.Id?,
     subtotal: Cents<Int>,
     total: Cents<Int>
-    ) {
+  ) {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
     self.charge = charge
@@ -302,24 +282,6 @@ public struct Invoice: Codable, Equatable {
 
   public typealias Id = Tagged<(Invoice, id: ()), String>
   public typealias Number = Tagged<(Invoice, number: ()), String>
-
-  private enum CodingKeys: String, CodingKey {
-    case amountDue = "amount_remaining"
-    case amountPaid = "amount_paid"
-    case charge
-    case created
-    case customer
-    case discount
-    case id
-    case invoicePdf = "invoice_pdf"
-    case lines
-    case number
-    case periodStart = "period_start"
-    case periodEnd = "period_end"
-    case subscription
-    case subtotal
-    case total
-  }
 }
 
 public struct LineItem: Codable, Equatable {
@@ -337,7 +299,7 @@ public struct LineItem: Codable, Equatable {
     plan: Plan?,
     quantity: Int,
     subscription: Subscription.Id?
-    ) {
+  ) {
     self.amount = amount
     self.description = description
     self.id = id
@@ -356,11 +318,6 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
   public init(data: [A], hasMore: Bool) {
     self.data = data
     self.hasMore = hasMore
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case data
-    case hasMore = "has_more"
   }
 }
 
@@ -387,7 +344,7 @@ public struct Plan: Codable, Equatable {
     metadata: [String: String],
     nickname: String,
     tiers: [Tier]?
-    ) {
+  ) {
     self.created = created
     self.currency = currency
     self.id = id
@@ -399,7 +356,7 @@ public struct Plan: Codable, Equatable {
 
   public func amount(for quantity: Int) -> Cents<Int> {
     let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
-      ?? -1
+    ?? -1
     return amount.map { $0 * quantity }
   }
 
@@ -421,11 +378,6 @@ public struct Plan: Codable, Equatable {
     public init(unitAmount: Cents<Int>, upTo: Int?) {
       self.unitAmount = unitAmount
       self.upTo = upTo
-    }
-
-    private enum CodingKeys: String, CodingKey {
-      case unitAmount = "unit_amount"
-      case upTo = "up_to"
     }
   }
 
@@ -472,7 +424,7 @@ public struct Subscription: Codable, Equatable {
     quantity: Int,
     startDate: Date,
     status: Status
-    ) {
+  ) {
     self.canceledAt = canceledAt
     self.cancelAtPeriodEnd = cancelAtPeriodEnd
     self.created = created
@@ -514,7 +466,7 @@ public struct Subscription: Codable, Equatable {
       id: Id,
       plan: Plan,
       quantity: Int
-      ) {
+    ) {
       self.created = created
       self.id = id
       self.plan = plan
@@ -539,23 +491,6 @@ public struct Subscription: Codable, Equatable {
         return false
       }
     }
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case canceledAt = "canceled_at"
-    case cancelAtPeriodEnd = "cancel_at_period_end"
-    case customer
-    case created
-    case currentPeriodEnd = "current_period_end"
-    case currentPeriodStart = "current_period_start"
-    case discount
-    case endedAt = "ended_at"
-    case id
-    case items
-    case plan
-    case quantity
-    case startDate = "start_date"
-    case status
   }
 }
 
@@ -600,8 +535,8 @@ extension Coupon.Rate: Codable {
   }
 
   private enum CodingKeys: String, CodingKey {
-    case amountOff = "amount_off"
-    case percentOff = "percent_off"
+    case amountOff
+    case percentOff
   }
 }
 
@@ -641,7 +576,7 @@ extension Coupon.Duration: Codable {
 
   private enum CodingKeys: String, CodingKey {
     case duration
-    case durationInMonths = "duration_in_months"
+    case durationInMonths
   }
 }
 

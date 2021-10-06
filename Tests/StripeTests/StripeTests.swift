@@ -9,7 +9,7 @@ final class StripeTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+    //    SnapshotTesting.record=true
   }
 
   func testDecodingCustomer() throws {
@@ -60,13 +60,17 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
+    do {
+      let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
-    XCTAssertEqual(nil, customer.businessVatId)
-    XCTAssertEqual(nil, customer.defaultSource)
-    XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
-    XCTAssertEqual([:], customer.metadata)
-    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
+      XCTAssertEqual(nil, customer.businessVatId)
+      XCTAssertEqual(nil, customer.defaultSource)
+      XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
+      XCTAssertEqual([:], customer.metadata)
+      XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
+    } catch {
+      XCTFail(error.localizedDescription)
+    }
   }
 
   func testDecodingCustomer_Metadata() throws {
@@ -157,7 +161,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
+    let plan = try Stripe.jsonDecoder.decode(Plan.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("Individual Monthly", plan.nickname)
   }
@@ -189,7 +193,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
+    let plan = try Stripe.jsonDecoder.decode(Plan.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("Individual Monthly", plan.nickname)
   }
@@ -327,7 +331,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let subscription = try JSONDecoder().decode(Subscription.self, from: Data(jsonString.utf8))
+    let subscription = try Stripe.jsonDecoder.decode(Subscription.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("15-percent", subscription.discount?.coupon.id)
   }
@@ -369,7 +373,7 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
-//    SnapshotTesting.record=true
+    //    SnapshotTesting.record=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
       as: .raw,
