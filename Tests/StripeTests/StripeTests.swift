@@ -9,7 +9,7 @@ final class StripeTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+    //    SnapshotTesting.record=true
   }
 
   func testDecodingCustomer() throws {
@@ -60,13 +60,17 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
+    do {
+      let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
-    XCTAssertEqual(nil, customer.businessVatId)
-    XCTAssertEqual(nil, customer.defaultSource)
-    XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
-    XCTAssertEqual([:], customer.metadata)
-    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
+      XCTAssertEqual(nil, customer.businessVatId)
+      XCTAssertEqual(nil, customer.defaultSource)
+      XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
+      XCTAssertEqual([:], customer.metadata)
+      XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
+    } catch {
+      XCTFail(error.localizedDescription)
+    }
   }
 
   func testDecodingCustomer_Metadata() throws {
@@ -129,39 +133,6 @@ final class StripeTests: XCTestCase {
     XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
 
-  func testDecodingPlan_WithoutNickname() throws {
-    let jsonString = """
-{
-  "id": "individual-monthly",
-  "object": "plan",
-  "active": true,
-  "aggregate_usage": null,
-  "amount": 1700,
-  "billing_scheme": "per_unit",
-  "created": 1513818719,
-  "currency": "usd",
-  "interval": "month",
-  "interval_count": 1,
-  "livemode": false,
-  "metadata": {
-  },
-  "name": "Individual Monthly",
-  "nickname": null,
-  "product": "prod_BzH9x8QMPSEtMQ",
-  "statement_descriptor": null,
-  "tiers": null,
-  "tiers_mode": null,
-  "transform_usage": null,
-  "trial_period_days": null,
-  "usage_type": "licensed"
-}
-"""
-
-    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
-
-    XCTAssertEqual("Individual Monthly", plan.nickname)
-  }
-
   func testDecodingPlan_WithNickname() throws {
     let jsonString = """
 {
@@ -189,7 +160,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
+    let plan = try Stripe.jsonDecoder.decode(Plan.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("Individual Monthly", plan.nickname)
   }
@@ -268,7 +239,7 @@ final class StripeTests: XCTestCase {
           "livemode": false,
           "metadata": {
           },
-          "nickname": null,
+          "nickname": "Point-Free Monthly",
           "product": "prod_GVRtIVoEidgAjD",
           "tiers": null,
           "tiers_mode": null,
@@ -309,7 +280,7 @@ final class StripeTests: XCTestCase {
     "livemode": false,
     "metadata": {
     },
-    "nickname": null,
+    "nickname": "Point-Free Monthly",
     "product": "prod_GVRtIVoEidgAjD",
     "tiers": null,
     "tiers_mode": null,
@@ -327,7 +298,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let subscription = try JSONDecoder().decode(Subscription.self, from: Data(jsonString.utf8))
+    let subscription = try Stripe.jsonDecoder.decode(Subscription.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("15-percent", subscription.discount?.coupon.id)
   }
@@ -369,11 +340,22 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
-//    SnapshotTesting.record=true
+//        SnapshotTesting.isRecording=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
       as: .raw,
       named: "cancel-subscription"
+    )
+    assertSnapshot(
+      matching: Stripe.createCoupon(
+        duration: .once,
+        maxRedemptions: 1,
+        name: "3 Months of Point-Free",
+        rate: .amountOff(54_00)
+      )
+        .rawValue,
+      as: .raw,
+      named: "create-coupon"
     )
     assertSnapshot(
       matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil, balance: nil).rawValue,
@@ -384,6 +366,21 @@ final class StripeTests: XCTestCase {
       matching: Stripe.createCustomer(token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1", balance: -18_00).rawValue,
       as: .raw,
       named: "create-customer-vat"
+    )
+    assertSnapshot(
+      matching: Stripe
+        .createPaymentIntent(
+          .init(
+            amount: 54_00,
+            currency: .usd,
+            description: "3 Months of Point-Free",
+            receiptEmail: "generous.blob@pointfree.co",
+            statementDescriptorSuffix: "3 Months Gift"
+          )
+        )
+        .rawValue,
+      as: .raw,
+      named: "create-payment-intent"
     )
     assertSnapshot(
       matching: Stripe

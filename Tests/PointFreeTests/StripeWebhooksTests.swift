@@ -16,7 +16,7 @@ import XCTest
 final class StripeWebhooksTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+//    SnapshotTesting.isRecording = true
   }
 
   func testDecoding() throws {
@@ -307,7 +307,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=123e75f349e0698a7eb0287d5c1beafa6f109654498c400f271a36bfb4f6cc66",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -321,7 +321,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=123e75f349e0698a7eb0287d5c1beafa6f109654498c400f271a36bfb4f6cc66",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -357,7 +357,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=6157cea464c5032f6e11fb99c4a964c1e7e66bf811776c6b36dd6ecfc024d4eb",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=c2ed25f2feb58213ce60099e2a0e2be3b78e06a5d05c582c83084b739571349d",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -382,7 +382,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=1baca5a65d607ec4cd74349d681a112a0dea069a350a82d9bd087bebbc3a12fe",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=29a84de76bc01997e8456be0e39a809e9e207a7768efae7de482f72b21c9dfa8",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -404,7 +404,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=f9240c1450ce2603dfc0c2650adc94aeaefa17c123bb3c15b820df4637aeff13",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=fc1d0cfd072a6c126ab8fa52bc8ad956c3337b45a07ce404e028a6dd1c921b5a",
       forHTTPHeaderField: "Stripe-Signature"
     )
 

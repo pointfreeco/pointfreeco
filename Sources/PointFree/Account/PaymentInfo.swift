@@ -36,7 +36,7 @@ private let requirePaymentInfo
   Tuple3<Card, User, SubscriberState>
   >
   = filterMap(
-    over1(^\.customer.right?.sources.data.first?.left) >>> require1 >>> pure,
+    over1(^\.customer.right?.sources?.data.first?.left) >>> require1 >>> pure,
     or: redirect(
       to: .account(.index),
       headersMiddleware: flash(

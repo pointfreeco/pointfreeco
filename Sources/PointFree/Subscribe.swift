@@ -49,7 +49,7 @@ private func subscribe(
     subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
   )
     .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
-      let country = customer.sources.data.first?.left?.country
+      let country = customer.sources?.data.first?.left?.country
 
       guard country != nil || !subscribeData.useRegionalDiscount else {
         return throwE(

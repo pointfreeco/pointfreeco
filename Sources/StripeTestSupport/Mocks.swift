@@ -7,7 +7,9 @@ import Stripe
 extension Client {
   public static let mock = Client(
     cancelSubscription: const(pure(.canceling)),
+    createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
+    createPaymentIntent: { _ in pure(.requiresConfirmation) },
     createSubscription: { _, _, _, _ in pure(.mock) },
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
@@ -36,6 +38,24 @@ extension Card {
     id: "card_test",
     last4: "4242",
     object: Object.card
+  )
+}
+
+extension PaymentIntent {
+  public static let requiresConfirmation = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .requiresConfirmation
+  )
+
+  public static let succeeded = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .succeeded
   )
 }
 
@@ -142,30 +162,23 @@ extension Plan {
     id: .monthly,
     interval: .month,
     metadata: [:],
-    nickname: "Individual Monthly",
-    tiers: [
-      Tier(unitAmount: 16_00, upTo: 1),
-      Tier(unitAmount: 18_00, upTo: nil)
-    ]
+    nickname: "Individual Monthly"
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = update(mock) {
-    $0.tiers = [update(.mock) { $0.unitAmount = 170_00 }]
     $0.id = .yearly
     $0.interval = .year
     $0.nickname = "Individual Yearly"
   }
 
   public static let teamMonthly = update(individualMonthly) {
-    $0.tiers = [update(.mock) { $0.unitAmount = 16_00 }]
     $0.id = .monthly
     $0.nickname = "Team Monthly"
   }
 
   public static let teamYearly = update(individualYearly) {
-    $0.tiers = [update(.mock) { $0.unitAmount = 160_00 }]
     $0.id = .yearly
     $0.nickname = "Team Yearly"
   }
@@ -248,10 +261,6 @@ extension Subscription.Item {
     plan: .mock,
     quantity: 1
   )
-}
-
-extension Plan.Tier {
-  public static let mock = Plan.Tier(unitAmount: 17_00, upTo: nil)
 }
 
 fileprivate extension Date {

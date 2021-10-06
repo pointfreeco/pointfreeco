@@ -13,7 +13,9 @@ import UrlFormEncoding
 
 public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
+  public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
   public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+  public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
@@ -32,7 +34,9 @@ public struct Client {
 
   public init(
     cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
+    createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
     createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
+    createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
@@ -48,9 +52,11 @@ public struct Client {
     updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
     updateSubscription: @escaping (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>,
     js: String
-    ) {
+  ) {
     self.cancelSubscription = cancelSubscription
+    self.createCoupon = createCoupon
     self.createCustomer = createCustomer
+    self.createPaymentIntent = createPaymentIntent
     self.createSubscription = createSubscription
     self.fetchCoupon = fetchCoupon
     self.fetchCustomer = fetchCustomer
@@ -67,6 +73,14 @@ public struct Client {
     self.updateSubscription = updateSubscription
     self.js = js
   }
+
+  public struct CreatePaymentIntentRequest {
+    public var amount: Cents<Int>
+    public var currency: Currency
+    public var description: String?
+    public var receiptEmail: String?
+    public var statementDescriptorSuffix: String?
+  }
 }
 
 extension Client {
@@ -78,17 +92,27 @@ extension Client {
     self.init(
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0))
-    },
+      },
+      createCoupon: {
+        runStripe(secretKey, logger)(
+          Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
+        )
+      },
       createCustomer: {
         runStripe(secretKey, logger)(
           Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
-    },
+      },
+      createPaymentIntent: {
+        runStripe(secretKey, logger)(
+          Stripe.createPaymentIntent($0)
+        )
+      },
       createSubscription: {
         runStripe(secretKey, logger)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
-    },
+      },
       fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
       fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
       fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
@@ -104,21 +128,62 @@ extension Client {
         runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
         )
-    },
+      },
       updateSubscription: {
         runStripe(secretKey, logger)(
           Stripe.updateSubscription($0, $1, $2)
         )
-    },
+      },
       js: "https://js.stripe.com/v3/"
     )
   }
 }
 
 func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
-    "cancel_at_period_end": "true"
-  ]))
+  stripeRequest(
+    "subscriptions/" + id.rawValue + "?expand[]=customer",
+    .post(["cancel_at_period_end": "true"])
+  )
+}
+
+func createCoupon(
+  duration: Coupon.Duration?,
+  maxRedemptions: Int?,
+  name: String?,
+  rate: Coupon.Rate
+)
+-> DecodableRequest<Coupon> {
+
+  var params: [String: Any] = [:]
+
+  switch duration {
+  case .once:
+    params["duration"] = "once"
+  case .forever:
+    params["duration"] = "forever"
+  case let .repeating(months):
+    params["duration"] = "repeating"
+    params["duration_in_months"] = months
+  case .none:
+    break
+  }
+
+  if let maxRedemptions = maxRedemptions {
+    params["max_redemptions"] = maxRedemptions
+  }
+
+  if let name = name {
+    params["name"] = name
+  }
+
+  switch rate {
+  case let .amountOff(cents):
+    params["amount_off"] = cents
+  case let .percentOff(percent):
+    params["percent_off"] = percent
+  }
+
+  return stripeRequest("coupons", .post(params))
 }
 
 func createCustomer(
@@ -127,18 +192,34 @@ func createCustomer(
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
   balance: Cents<Int>?
-  )
-  -> DecodableRequest<Customer> {
+)
+-> DecodableRequest<Customer> {
 
-    return stripeRequest("customers", .post([
-      "balance": balance?.map(String.init).rawValue,
-      "business_vat_id": vatNumber?.rawValue,
-      "description": description,
-      "email": email?.rawValue,
-      "source": token.rawValue,
+  stripeRequest(
+    "customers",
+    .post(
+      [
+        "balance": balance?.map(String.init).rawValue,
+        "business_vat_id": vatNumber?.rawValue,
+        "description": description,
+        "email": email?.rawValue,
+        "source": token.rawValue,
       ]
-      .compactMapValues { $0 }
-      ))
+        .compactMapValues { $0 }
+    )
+  )
+}
+
+func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
+-> DecodableRequest<PaymentIntent> {
+
+  stripeRequest("payment_intents", .post([
+    "amount": request.amount.rawValue,
+    "currency": request.currency,
+    "description": request.description as Any?,
+    "receipt_email": request.receiptEmail,
+    "statement_descriptor_suffix": request.statementDescriptorSuffix,
+  ].compactMapValues { $0 }))
 }
 
 func createSubscription(
@@ -146,92 +227,94 @@ func createSubscription(
   plan: Plan.Id,
   quantity: Int,
   coupon: Coupon.Id?
-  )
-  -> DecodableRequest<Subscription> {
+)
+-> DecodableRequest<Subscription> {
 
-    var params: [String: Any] = [:]
-    params["customer"] = customer.rawValue
-    params["items[0][plan]"] = plan.rawValue
-    params["items[0][quantity]"] = String(quantity)
-    params["coupon"] = coupon?.rawValue
+  var params: [String: Any] = [:]
+  params["customer"] = customer.rawValue
+  params["items[0][plan]"] = plan.rawValue
+  params["items[0][quantity]"] = String(quantity)
+  params["coupon"] = coupon?.rawValue
 
-    return stripeRequest("subscriptions?expand[]=customer", .post(params))
+  return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
-  return stripeRequest(
+  stripeRequest(
     "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
   )
 }
 
 func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
-  return stripeRequest("customers/" + id.rawValue)
+  stripeRequest("customers/" + id.rawValue)
 }
 
 func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
-  return stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
+  stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
 func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
-  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
+  stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
-  return stripeRequest("plans")
+  stripeRequest("plans")
 }
 
 func fetchPlan(id: Plan.Id) -> DecodableRequest<Plan> {
-  return stripeRequest("plans/" + id.rawValue)
+  stripeRequest("plans/" + id.rawValue)
 }
 
 func fetchSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
+  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.sources")
 }
 
 func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> {
-  return stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
+  stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
 }
 
 func invoiceCustomer(_ customer: Customer.Id)
-  -> DecodableRequest<Invoice> {
+-> DecodableRequest<Invoice> {
 
-    return stripeRequest("invoices", .post([
-      "customer": customer.rawValue,
-      ]))
+  stripeRequest("invoices", .post([
+    "customer": customer.rawValue,
+  ]))
 }
 
 func updateCustomer(id: Customer.Id, token: Token.Id)
-  -> DecodableRequest<Customer> {
+-> DecodableRequest<Customer> {
 
-    return stripeRequest("customers/" + id.rawValue, .post([
-      "source": token.rawValue,
-      ]))
+  stripeRequest("customers/" + id.rawValue, .post([
+    "source": token.rawValue,
+  ]))
 }
 
 func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
 
-  return stripeRequest("customers/" + id.rawValue, .post([
+  stripeRequest("customers/" + id.rawValue, .post([
     "balance": balance.rawValue,
-    ]))
+  ]))
 }
 
 func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
 
-  return stripeRequest("customers/" + id.rawValue, .post([
+  stripeRequest("customers/" + id.rawValue, .post([
     "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
-    ]))
+  ]))
 }
 
 func updateSubscription(
   _ currentSubscription: Subscription,
   _ plan: Plan.Id,
   _ quantity: Int
-  )
-  -> DecodableRequest<Subscription>? {
+)
+-> DecodableRequest<Subscription>? {
 
-    guard let item = currentSubscription.items.data.first else { return nil }
+  guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
+  return stripeRequest(
+    "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer",
+    .post(
       [
         "cancel_at_period_end": "false",
         "coupon": quantity > 1 ? "" : nil,
@@ -240,27 +323,29 @@ func updateSubscription(
         "items[0][quantity]": String(quantity),
         "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
-      ].compactMapValues { $0 }
-      ))
+      ]
+        .compactMapValues { $0 }
+    )
+  )
 }
 
 public let jsonDecoder: JSONDecoder = {
   let decoder = JSONDecoder()
   decoder.dateDecodingStrategy = .secondsSince1970
+  decoder.keyDecodingStrategy = .convertFromSnakeCase
   return decoder
 }()
-//  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
 
 public let jsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .secondsSince1970
+  encoder.keyEncodingStrategy = .convertToSnakeCase
   return encoder
 }()
-//  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
 func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
   var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
-  request.setHeader(name: "Stripe-Version", value: "2019-12-03")
+  request.setHeader(name: "Stripe-Version", value: "2020-08-27")
   request.attach(method: method)
 
   return DecodableRequest(rawValue: request)
@@ -270,7 +355,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
   return { stripeRequest in
     guard
       var stripeRequest = stripeRequest?.rawValue
-      else { return throwE(StripeError(message: "Stripe request is nil.")) }
+    else { return throwE(StripeError(message: "Stripe request is nil.")) }
 
     stripeRequest.attachBasicAuth(username: secretKey.rawValue)
 
@@ -279,16 +364,16 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
         dataTask(with: $0, logger: logger)
           .map { data, _ in data }
           .flatMap { data in
-            .wrap {
+            EitherIO.wrap {
               do {
                 return try jsonDecoder.decode(A.self, from: data)
               } catch {
                 throw (try? jsonDecoder.decode(StripeErrorEnvelope.self, from: data))
-                  ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
+                ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
               }
             }
-        }
-    }
+          }
+      }
 
     return task
   }
