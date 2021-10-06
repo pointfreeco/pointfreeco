@@ -173,7 +173,7 @@ public struct Customer: Codable, Equatable {
   public typealias Vat = Tagged<(Customer, vat: ()), String>
 
   public var extraInvoiceInfo: String? {
-    return self.metadata[#function]
+    return self.metadata["extraInvoiceInfo"]
   }
 }
 
