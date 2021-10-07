@@ -35,7 +35,7 @@ After taking a high-level view of the tools SwiftUI provides for building applic
 
       .init(
         blurb: #"""
-TODO: Navigation is a really, really complex topic, and it’s going to take us many episodes go deep into it. We will begin our journey by coming up with a precise definition of what “navigation” is, and by exploring a couple simpler forms of navigation.
+Navigation is a really, really complex topic, and it’s going to take us many episodes go deep into it. We will show at its heart, navigation is really a domain modeling problem, which means we need to discover tools that allow us to transform one domain into another. Once this is accomplished we will see that many seemingly disparate forms of navigation can be unified in a really amazing way.
 """#,
         coreLessons: [
           .init(episode: .ep160_navigationTabsAndAlerts),
