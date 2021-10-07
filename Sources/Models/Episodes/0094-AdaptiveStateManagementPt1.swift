@@ -23,7 +23,8 @@ Apple documentation around identifying memory-use inefficiencies though various 
       ),
     ],
     sequence: 94,
-    title: "Adaptive State Management: Performance",
+    subtitle: "Performance",
+    title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 68_660_487,
       vimeoId: 397834898,

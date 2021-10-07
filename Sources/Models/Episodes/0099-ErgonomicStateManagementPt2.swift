@@ -16,8 +16,8 @@ We've made creating and enhancing reducers more ergonomic, but we still haven't 
       // TODO
     ],
     sequence: 99,
-    subtitle: nil,
-    title: "Ergonomic State Management: Part 2",
+    subtitle: "Part 2",
+    title: "Ergonomic State Management",
     trailerVideo: .init(
       bytesLength: 20290250,
       vimeoId: 409489458,

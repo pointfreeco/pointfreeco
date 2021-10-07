@@ -32,6 +32,29 @@ After taking a high-level view of the tools SwiftUI provides for building applic
       .swiftUIRedactions(title: "Redactions"),
 
       .swiftUIAnimations(title: "Animations"),
+
+      .init(
+        blurb: #"""
+Navigation is a really, really complex topic, and it’s going to take us many episodes go deep into it. We will show at its heart, navigation is really a domain modeling problem, which means we need to discover tools that allow us to transform one domain into another. Once this is accomplished we will see that many seemingly disparate forms of navigation can be unified in a really amazing way.
+"""#,
+        coreLessons: [
+          .init(episode: .ep160_navigationTabsAndAlerts),
+          .init(episode: .ep161_navigationTabsAndAlerts),
+          .init(episode: .ep162_navigationSheets),
+          .init(episode: .ep163_navigationSheets),
+        ],
+        isFinished: false,
+        related: [
+          .init(
+            blurb: #"""
+A central theme of our series of episodes on SwiftUI navigation is "derived behavior." This is what one needs to do to peel off a small bit of behavior from a parent domain to hand down to a child domain. SwiftUI gives us some tools to accomplish this, but we can go further.
+"""#,
+            content: .section(.caseStudies, index: 3)
+          ),
+        ],
+        title: "Navigation",
+        whereToGoFromHere: nil
+      ),
     ],
     title: "SwiftUI"
   )
