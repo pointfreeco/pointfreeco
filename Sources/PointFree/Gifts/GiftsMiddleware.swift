@@ -20,6 +20,6 @@ public func giftsMiddleware(
   case let .plan(plan):
     return conn
     |> writeStatus(.ok)
-    >=> respond(html: "Plan> \(plan.rawValue)")
+    >=> respond(html: "Plan: \(plan.rawValue)")
   }
 }
