@@ -12,6 +12,16 @@ SwiftUI comes with a lot of great tools for working with struct-based state, but
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1633928400),
     references: [
+      .init(
+        author: "Brandon Williams and Stephen Celis",
+        blurb: """
+          We uncovered a crash in SwiftUI's Binding initializer that can fail, and filed a feedback
+          with Apple. We suggest other duplicate our feedback so that this bug is fixed as soon
+          as possible.
+          """,
+        link: "https://gist.github.com/stephencelis/3a232a1b718bab0ae1127ebd5fcf6f97",
+        title: "Crash in Binding's failable initializer"
+      ),
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""
