@@ -27,17 +27,11 @@ public let giftsIndexMiddleware: Middleware<
       currentUser: currentUser,
       data: episodeStats,
       description: """
-          TODO: Gift a subscription to a friend!
-          """,
-      //        extraHead: <#T##ChildOf<Tag.Head>#>,
+        Give the gift of Point-Free! Purchase a 3, 6 or 12 month subscription for a friend or loved one.
+        """,
       extraStyles: extraGiftLandingStyles <> testimonialStyle,
-      //        image: <#T##String?#>,
-      //        isGhosting: <#T##Bool#>,
-      //        openGraphType: <#T##OpenGraphType#>,
       style: .base(.some(.minimal(.black))),
       title: "🎁 Gift Subscription"
-      //        twitterCard: <#T##TwitterCard#>,
-      //        usePrismJs: <#T##Bool#>
     )
   }
 )
