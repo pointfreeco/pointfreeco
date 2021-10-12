@@ -342,9 +342,14 @@ final class StripeTests: XCTestCase {
   func testRequests() {
 //        SnapshotTesting.isRecording=true
     assertSnapshot(
-      matching: Stripe.cancelSubscription(id: "sub_test").rawValue,
+      matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
       as: .raw,
       named: "cancel-subscription"
+    )
+    assertSnapshot(
+      matching: Stripe.cancelSubscription(id: "sub_test", immediately: true).rawValue,
+      as: .raw,
+      named: "cancel-subscription-immediately"
     )
     assertSnapshot(
       matching: Stripe.createCoupon(

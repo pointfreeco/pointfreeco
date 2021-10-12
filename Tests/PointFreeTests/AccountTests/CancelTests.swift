@@ -21,9 +21,35 @@ final class CancelTests: TestCase {
   }
 
   func testCancel() {
+    var immediately: Bool?
+    let cancelSubscription = Current.stripe.cancelSubscription
+    Current.stripe.cancelSubscription = {
+      immediately = $1
+      return cancelSubscription($0, $1)
+    }
+
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    XCTAssertEqual(false, immediately)
+  }
+
+  func testCancelPastDue() {
+    Current.stripe.fetchSubscription = const(pure(update(.mock) { $0.status = .pastDue }))
+
+    var immediately: Bool?
+    let cancelSubscription = Current.stripe.cancelSubscription
+    Current.stripe.cancelSubscription = {
+      immediately = $1
+      return cancelSubscription($0, $1)
+    }
+
+    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    XCTAssertEqual(true, immediately)
   }
 
   func testCancelLoggedOut() {
@@ -57,7 +83,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() {
-    Current.stripe.cancelSubscription = const(throwE(unit))
+    Current.stripe.cancelSubscription = { _, _ in throwE(unit) }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 

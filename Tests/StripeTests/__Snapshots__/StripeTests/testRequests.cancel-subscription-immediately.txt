@@ -1,0 +1,3 @@
+DELETE https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer
+Stripe-Version: 2020-08-27
+
