@@ -19,13 +19,6 @@ It's time to look at a more advanced kind of navigation: modals. We will impleme
         sectionUrl: "https://www.pointfree.co/collections/case-studies/derived-behavior"
       ),
       Episode.Reference(
-        author: "Holly Borla & Filip Sakel",
-        blurb: "The proposal that added property wrapper support to function and closure parameters, unlocking the ability to make binding transformations even more powerful.",
-        link: "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
-        publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
-        title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
-      ),
-      Episode.Reference(
         author: "Matt Ricketson, Luca Bernardi & Raj Ramamurthy",
         blurb: "An in-depth explaining on view identity, lifetime, and more, and crucial to understanding how `@State` works.",
         link: "https://developer.apple.com/videos/play/wwdc2021/10022/",

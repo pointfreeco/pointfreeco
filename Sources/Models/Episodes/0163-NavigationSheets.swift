@@ -22,6 +22,13 @@ SwiftUI comes with a lot of great tools for working with struct-based state, but
         link: "https://gist.github.com/stephencelis/3a232a1b718bab0ae1127ebd5fcf6f97",
         title: "Crash in Binding's failable initializer"
       ),
+      Episode.Reference(
+        author: "Holly Borla & Filip Sakel",
+        blurb: "The proposal that added property wrapper support to function and closure parameters, unlocking the ability to make binding transformations even more powerful.",
+        link: "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
+        publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
+        title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
+      ),
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""
