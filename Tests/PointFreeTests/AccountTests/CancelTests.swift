@@ -26,6 +26,14 @@ final class CancelTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
+  func testCancelPastDue() {
+    Current.stripe.fetchSubscription = const(pure(update(.mock) { $0.status = .pastDue }))
+
+    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
   func testCancelLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
 
@@ -57,7 +65,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() {
-    Current.stripe.cancelSubscription = const(throwE(unit))
+    Current.stripe.cancelSubscription = { _, _ in throwE(unit) }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 

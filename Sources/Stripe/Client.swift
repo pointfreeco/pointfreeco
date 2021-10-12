@@ -12,7 +12,7 @@ import TaggedMoney
 import UrlFormEncoding
 
 public struct Client {
-  public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
+  public var cancelSubscription: (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
   public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
   public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
@@ -33,7 +33,7 @@ public struct Client {
   public var js: String
 
   public init(
-    cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
+    cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
     createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
@@ -91,7 +91,7 @@ extension Client {
   public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
       cancelSubscription: {
-        runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0))
+        runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
       },
       createCoupon: {
         runStripe(secretKey, logger)(
@@ -139,11 +139,18 @@ extension Client {
   }
 }
 
-func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  stripeRequest(
-    "subscriptions/" + id.rawValue + "?expand[]=customer",
-    .post(["cancel_at_period_end": "true"])
-  )
+func cancelSubscription(id: Subscription.Id, immediately: Bool) -> DecodableRequest<Subscription> {
+  if immediately {
+    return stripeRequest(
+      "subscriptions/" + id.rawValue + "?expand[]=customer",
+      .delete([:])
+    )
+  } else {
+    return stripeRequest(
+      "subscriptions/" + id.rawValue + "?expand[]=customer",
+      .post(["cancel_at_period_end": "true"])
+    )
+  }
 }
 
 func createCoupon(

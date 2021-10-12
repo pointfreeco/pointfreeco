@@ -53,7 +53,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user) = conn.data
-    return Current.stripe.cancelSubscription(subscription.id)
+    return Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
       .run
       .flatMap(
         either(
