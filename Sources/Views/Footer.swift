@@ -81,6 +81,11 @@ private func contentColumnView(currentUser: User?) -> Node {
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(path(to: .pricingLanding))], "Pricing")
       ),
+      Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
+        ? .li(
+          .a(attributes: [.class([footerLinkClass]), .href(path(to: .gifts(.index)))], "Gifts")
+        )
+        : [],
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(path(to: .home))], "Videos")
       ),
@@ -89,9 +94,6 @@ private func contentColumnView(currentUser: User?) -> Node {
       ),
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(path(to: .blog(.index)))], "Blog")
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .href(path(to: .about))], "About Us")
       )
     )
   )
@@ -101,6 +103,9 @@ private let moreColumnView = Node.div(
   .h5(attributes: [.class([columnTitleClass])], "More"),
   .ol(
     attributes: [.class([Class.type.list.reset])],
+    .li(
+      .a(attributes: [.class([footerLinkClass]), .href(path(to: .about))], "About Us")
+    ),
     .li(
       .a(attributes: [.class([footerLinkClass]), .href(twitterUrl(to: .pointfreeco))], "Twitter")
     ),

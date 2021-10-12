@@ -19,7 +19,7 @@ public struct Environment {
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
-  public var features = [Feature].allFeatures
+  public var features = Feature.allFeatures
   public var gitHub: GitHub.Client!
   public var logger = Logger(label: "co.pointfree")
   public var mailgun: Mailgun.Client!

@@ -104,6 +104,8 @@ private func loggedInNavItemsView(
     ),
     subscriberState.isNonSubscriber
       ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
+      : Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
+      ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
       : [],
     .li(attributes: [.class([navListItemClass])], accountLinkView(style: style))
   )
@@ -115,6 +117,9 @@ private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: R
     .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], blogLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
+    Feature.allFeatures.hasAccess(to: .gifts, for: nil)
+      ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
+      : [],
     .li(attributes: [.class([navListItemClass])], logInLinkView(style: style, currentRoute: currentRoute))
   )
 }
@@ -134,6 +139,10 @@ private func blogLinkView(style: NavStyle.MinimalStyle) -> Node {
 
 private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
   return .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClass(for: style)])], "Pricing")
+}
+
+private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {
+  return .a(attributes: [.href(path(to: .gifts(.index))), .class([navLinkClass(for: style)])], "Gifts")
 }
 
 private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
