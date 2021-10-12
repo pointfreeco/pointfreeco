@@ -160,6 +160,10 @@ private func headerLinks(
       ? .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClasses])], "Pricing")
       : [],
 
+    Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
+      ? .a(attributes: [.href(path(to: .gifts(.index))), .class([navLinkClasses])], "Gifts")
+      : [],
+
     currentUser == nil
       ? .gitHubLink(
         text: "Login",
