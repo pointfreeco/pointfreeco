@@ -4,10 +4,13 @@ public struct Feature: Equatable {
   public var isAdminEnabled: Bool
   public var isEnabled: Bool
   public var name: String
+
+  public static let gifts = Self(isAdminEnabled: true, isEnabled: false, name: "Gifts")
 }
 
 extension Array where Element == Feature {
   static let allFeatures: Array = [
+    .gifts
   ]
 
   func hasAccess(to feature: Feature, for user: User?) -> Bool {

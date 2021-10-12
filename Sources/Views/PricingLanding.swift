@@ -46,7 +46,7 @@ public func pricingLanding(
       subscriberState: subscriberState
     ),
     whatToExpect,
-    faq,
+    faq(faqs: .allFaqs),
     whatPeopleAreSaying,
     featuredTeams,
     footer(allEpisodeCount: stats.allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
@@ -433,7 +433,7 @@ private func pricingPlanCta(
   }
 }
 
-private let whatToExpect = Node.div(
+let whatToExpect = Node.div(
   attributes: [.style(backgroundColor(.other("#fafafa")))],
   .gridRow(
     attributes: [
@@ -527,58 +527,7 @@ private func whatToExpectColumn(item: WhatToExpectItem) -> Node {
   )
 }
 
-private let faq = Node.gridRow(
-  attributes: [
-    .class([
-      Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
-      ]),
-    .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
-  ],
-  .gridColumn(
-    sizes: [.mobile: 12, .desktop: 8],
-    attributes: [.style(margin(leftRight: .auto))],
-    .div(
-      .h3(
-        attributes: [
-          .id("faq"),
-          .class([
-            Class.pf.type.responsiveTitle2,
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
-            ]),
-        ],
-        "FAQ"
-      ),
-      .fragment(faqItems)
-    )
-  )
-)
-
-private let faqItems: [Node] = Faq.allFaqs.flatMap { faq in
-  [
-    .p(
-      attributes: [
-        .class([
-          Class.type.bold,
-          Class.pf.colors.fg.black
-          ])
-      ],
-      .text(faq.question)
-    ),
-    .markdownBlock(
-      attributes: [
-        .class([
-          Class.pf.colors.fg.gray400,
-          Class.padding([.mobile: [.bottom: 2]]),
-          ])
-      ],
-      faq.answer,
-      options: CMARK_OPT_UNSAFE
-    )
-  ]
-}
-
-private let whatPeopleAreSaying = Node.gridRow(
+let whatPeopleAreSaying = Node.gridRow(
   attributes: [
     .class([Class.grid.between(.desktop)])
   ],
@@ -664,7 +613,7 @@ private let testimonialItems: [Node] = Testimonial.all.map { testimonial in
   )
 }
 
-private let featuredTeams = Node.gridRow(
+let featuredTeams = Node.gridRow(
   attributes: [
     .class([
       Class.pf.colors.bg.gray900,
@@ -857,11 +806,8 @@ struct PricingPlan {
   )
 }
 
-private struct Faq {
-  let question: String
-  let answer: String
-
-  static let allFaqs = [
+extension Array where Element == Faq {
+  fileprivate static let allFaqs = [
     Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
@@ -944,15 +890,7 @@ public let extraSubscriptionLandingStyles =
     <> markdownBlockStyles
     <> pricingPlanFeatureStyle
     <> planItem % width(.pct(100))
-    <> testimonialContainer % (
-      height(.px(380))
-        <> key("-webkit-overflow-scrolling", "touch")
-    )
-    <> testimonialItem % (
-      flex(grow: 0, shrink: 0, basis: .auto)
-        <> width(.px(260))
-        <> height(.px(380))
-)
+    <> testimonialStyle
 
 private let desktopBorderStyles: Stylesheet = concat([
   darkRightBorder % key("border-right", "1px solid #333"),
@@ -963,16 +901,29 @@ private let desktopBorderStyles: Stylesheet = concat([
 private let extraSubscriptionLandingDesktopStyles: Stylesheet =
   desktopBorderStyles
     <> planItem % width(.pct(25))
-    <> testimonialContainer % height(.px(400))
-    <> testimonialItem % width(.px(340))
-    <> testimonialItem % height(.px(380))
 
 private let darkRightBorder = CssSelector.class("dark-right-border-d")
 private let lightRightBorder = CssSelector.class("light-right-border-d")
 private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
 private let planItem = CssSelector.class("plan-item")
+
 private let testimonialContainer = CssSelector.class("testimonial-container")
 private let testimonialItem = CssSelector.class("testimonial-item")
+public let testimonialStyle: Stylesheet =
+Breakpoint.desktop.query(only: screen) {
+  testimonialContainer % height(.px(400))
+  <> testimonialItem % width(.px(340))
+  <> testimonialItem % height(.px(380))
+}
+<> testimonialContainer % (
+  height(.px(380))
+  <> key("-webkit-overflow-scrolling", "touch")
+)
+<> testimonialItem % (
+  flex(grow: 0, shrink: 0, basis: .auto)
+  <> width(.px(260))
+  <> height(.px(380))
+)
 
 let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
 let pricingPlanFeatureStyle: Stylesheet =

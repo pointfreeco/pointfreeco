@@ -128,6 +128,16 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> episodesRssMiddleware
 
+    case let .gifts(giftsRoute):
+      return conn.map(const(user .*. route .*. subscriberState .*. giftsRoute .*. unit))
+      |> (
+        basicAuth(
+          user: Current.envVars.basicAuth.username,
+          password: Current.envVars.basicAuth.password
+        )
+        <| giftsMiddleware
+      )
+
     case let .gitHubCallback(code, redirect):
       return conn.map(const(user .*. code .*. redirect .*. unit))
         |> gitHubCallbackResponse

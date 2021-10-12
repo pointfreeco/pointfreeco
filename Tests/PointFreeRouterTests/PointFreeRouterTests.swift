@@ -103,9 +103,7 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
   }
 
   func testTeamJoin() {
-    var request = URLRequest(
-      url: URL(string: "http://localhost:8080/team/deadbeef/join")!
-    )
+    var request = URLRequest(url: .init(string: "http://localhost:8080/team/deadbeef/join")!)
     request.httpMethod = "POST"
 
     let route = Route.team(.join("deadbeef"))
@@ -119,5 +117,23 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
       pointFreeRouter.request(for: route),
       request
     )
+  }
+
+  func testGiftsIndex() {
+    let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
+
+    let route = Route.gifts(.index)
+
+    XCTAssertEqual(pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+  }
+
+  func testGiftsPlan() {
+    let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
+
+    let route = Route.gifts(.plan(.threeMonths))
+
+    XCTAssertEqual(pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(pointFreeRouter.request(for: route), request)
   }
 }
