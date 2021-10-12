@@ -2319,16 +2319,6 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                 Blog
               </a>
             </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
           </ol>
         </div>
       </div>
@@ -2346,6 +2336,16 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
             More
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/about">
+                About Us
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black
