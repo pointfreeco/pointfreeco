@@ -8,6 +8,7 @@ let stripePaymentIntentsWebhookMiddleware
   : (Conn<StatusLineOpen, Event<PaymentIntent>>) -> IO<Conn<ResponseEnded, Data>>
   = validateStripeSignature
     <<< validateEvent
+    <<< fetchGift
     <| handlePaymentIntent
 
 private func validateEvent(
@@ -41,20 +42,20 @@ private func fetchGift(
     let paymentIntent = conn.data
     return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
       .run
-      .map { errorOrGift in
+      .flatMap { errorOrGift in
         switch errorOrGift {
         case .left:
           return conn |> writeStatus(.ok) >=> respond(text: "OK")
 
         case let .right(gift):
-          return conn.map(const(gift)) |> middleware
+          return conn.map(const((paymentIntent, gift))) |> middleware
         }
       }
   }
 }
 
 private func handlePaymentIntent(
-  conn: Conn<StatusLineOpen, Gift>
+  conn: Conn<StatusLineOpen, (PaymentIntent, Gift)>
 ) -> IO<Conn<ResponseEnded, Data>> {
   let (paymentIntent, gift) = conn.data
 
@@ -78,6 +79,7 @@ private func handlePaymentIntent(
         )
 
       case let .right(gift):
+        // TODO: Send email
         return conn |> writeStatus(.ok) >=> respond(text: "OK")
       }
     }

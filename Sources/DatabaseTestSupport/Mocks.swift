@@ -25,6 +25,7 @@ extension Client {
     fetchEpisodeProgress: { _, _ in pure(nil) },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchGift: { _ in pure(.mock) },
+    fetchGiftByStripePaymentIntentId: { _ in pure(.mock) },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
     fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
@@ -44,6 +45,7 @@ extension Client {
     sawUser: const(pure(unit)),
     updateEmailSettings: { _, _ in pure(unit) },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
+    updateGift: { _, _ in pure(.mock) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _, _ in pure(.some(.mock)) }
