@@ -305,7 +305,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testValidHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
       forHTTPHeaderField: "Stripe-Signature"
@@ -319,7 +319,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testStaleHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
       forHTTPHeaderField: "Stripe-Signature"
@@ -333,7 +333,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testInvalidHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=deadbeef",
       forHTTPHeaderField: "Stripe-Signature"
@@ -355,7 +355,7 @@ final class StripeWebhooksTests: TestCase {
       type: .invoicePaymentFailed
     )
 
-    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=c2ed25f2feb58213ce60099e2a0e2be3b78e06a5d05c582c83084b739571349d",
       forHTTPHeaderField: "Stripe-Signature"
@@ -380,7 +380,7 @@ final class StripeWebhooksTests: TestCase {
       type: .invoicePaymentFailed
     )
 
-    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=29a84de76bc01997e8456be0e39a809e9e207a7768efae7de482f72b21c9dfa8",
       forHTTPHeaderField: "Stripe-Signature"
@@ -402,7 +402,7 @@ final class StripeWebhooksTests: TestCase {
       type: .invoicePaymentFailed
     )
 
-    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=fc1d0cfd072a6c126ab8fa52bc8ad956c3337b45a07ce404e028a6dd1c921b5a",
       forHTTPHeaderField: "Stripe-Signature"

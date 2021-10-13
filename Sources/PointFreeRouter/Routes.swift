@@ -106,8 +106,9 @@ public enum Route: Equatable {
     case stripe(_Stripe)
 
     public enum _Stripe: Equatable {
-      case knownEvent(Event<Either<Invoice, Stripe.Subscription>>)
-      case unknownEvent(Event<Prelude.Unit>)
+      case paymentIntents(Event<PaymentIntent>)
+      case subscriptions(Event<Either<Invoice, Stripe.Subscription>>)
+      case unknown(Event<Prelude.Unit>)
       case fatal
     }
   }
@@ -307,7 +308,16 @@ let routers: [Router<Route>] = [
   .case(Route.useEpisodeCredit)
     <¢> post %> "episodes" %> pathParam(.tagged(.int)) <% "credit" <% end,
 
-  .case { .webhooks(.stripe(.knownEvent($0))) }
+  .case { .webhooks(.stripe(.paymentIntents($0))) }
+    <¢> post %> "webhooks" %> "stripe"
+    %> jsonBody(
+      Stripe.Event<PaymentIntent>.self,
+      encoder: Stripe.jsonEncoder,
+      decoder: Stripe.jsonDecoder
+    )
+    <% end,
+
+  .case { .webhooks(.stripe(.subscriptions($0))) }
     <¢> post %> "webhooks" %> "stripe"
     %> jsonBody(
       Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
@@ -316,7 +326,7 @@ let routers: [Router<Route>] = [
     )
     <% end,
 
-  .case { .webhooks(.stripe(.unknownEvent($0))) }
+  .case { .webhooks(.stripe(.unknown($0))) }
     <¢> post %> "webhooks" %> "stripe"
     %> jsonBody(
       Stripe.Event<Prelude.Unit>.self,
