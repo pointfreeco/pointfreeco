@@ -18,10 +18,6 @@ public func giftsMiddleware(
     |> giftCreateMiddleware
     >=> respondJson
 
-  case .createForm:
-    return conn
-    |> redirect(to: .gifts(.index))
-
   case .index:
     return conn.map(const(user .*. route .*. subscriberState .*. unit))
     |> giftsIndexMiddleware

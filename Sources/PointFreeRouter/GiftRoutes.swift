@@ -3,7 +3,6 @@ import TaggedMoney
 
 public enum Gifts: Equatable {
   case create(GiftFormData)
-  case createForm
   case index
   case plan(Plan)
 

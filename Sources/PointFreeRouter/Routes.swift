@@ -221,9 +221,6 @@ let routers: [Router<Route>] = [
     %> jsonBody(GiftFormData.self)
     <% end,
 
-  .case(.gifts(.createForm))
-    <¢> post %> "gifts" <% end,
-
   .case(.gifts(.index))
     <¢> get %> "gifts" <% end,
 

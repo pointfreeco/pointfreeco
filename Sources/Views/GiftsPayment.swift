@@ -49,7 +49,7 @@ private func formView(
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   .form(
-    attributes: [.action(path(to: .gifts(.createForm))), .method(.post)],
+    attributes: [.action(path(to: .gifts(.create(.empty)))), .method(.post)],
     [
       .gridRow(
         .gridColumn(

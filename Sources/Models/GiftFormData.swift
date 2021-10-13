@@ -2,13 +2,15 @@ import EmailAddress
 import Foundation
 
 public struct GiftFormData: Codable, Equatable {
-  public let deliverAt: Date?
-  public let fromEmail: EmailAddress
-  public let fromName: String
-  public let message: String
-  public let monthsFree: Int
-  public let toEmail: EmailAddress
-  public let toName: String
+  public var deliverAt: Date?
+  public var fromEmail: EmailAddress = ""
+  public var fromName = ""
+  public var message = ""
+  public var monthsFree = 0
+  public var toEmail: EmailAddress = ""
+  public var toName = ""
+
+  public static let empty = Self()
 
   public enum CodingKeys: String, CodingKey {
     case deliverAt
