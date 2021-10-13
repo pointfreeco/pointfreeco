@@ -1,6 +1,7 @@
 import Css
 import FunctionalCss
 import Html
+import HtmlCssSupport
 import Models
 import Stripe
 import PointFreeRouter
@@ -18,7 +19,11 @@ public func giftsPayment(
         attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         [
           titleView(plan: plan),
-          formView(currentUser: currentUser, stripePublishableKey: stripePublishableKey)
+          formView(
+            plan: plan,
+            currentUser: currentUser,
+            stripePublishableKey: stripePublishableKey
+          )
         ]
       )
     )
@@ -39,52 +44,76 @@ private func titleView(plan: Gifts.Plan) -> Node {
 }
 
 private func formView(
+  plan: Gifts.Plan,
   currentUser: User?,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   .form(
     attributes: [.action(path(to: .gifts(.create))), .method(.post)],
     [
-      .label(attributes: [.class([labelClass])], "Your name"),
-      .input(
-        attributes: [
-          .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.fromName.stringValue),
-          .type(.text),
-          .value(currentUser?.displayName ?? ""),
-          .required(true),
-        ]
-      ),
-
-      .label(attributes: [.class([labelClass])], "Your email"),
-      .input(
-        attributes: [
-          .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.fromEmail.stringValue),
-          .type(.email),
-          .value(currentUser?.email.rawValue ?? ""),
-          .required(true),
-        ]
-      ),
-
-      .label(attributes: [.class([labelClass])], "Recipient's name"),
-      .input(
-        attributes: [
-          .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.toName.stringValue),
-          .type(.text),
-          .required(true),
-        ]
-      ),
-
-      .label(attributes: [.class([labelClass])], "Recipient's email"),
-      .input(
-        attributes: [
-          .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.toEmail.stringValue),
-          .type(.email),
-          .required(true),
-        ]
+      .gridRow(
+        .gridColumn(
+          sizes: [.mobile: 12, .desktop: 6],
+          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+          .div(
+            .label(attributes: [.class([labelClass])], "Your name"),
+            .input(
+              attributes: [
+                .class([blockInputClass]),
+                .name(GiftFormData.CodingKeys.fromName.stringValue),
+                .type(.text),
+                .value(currentUser?.displayName ?? ""),
+                .required(true),
+              ]
+            )
+          )
+        ),
+        .gridColumn(
+          sizes: [.mobile: 12, .desktop: 6],
+          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+          .div(
+            .label(attributes: [.class([labelClass])], "Your email"),
+            .input(
+              attributes: [
+                .class([blockInputClass]),
+                .name(GiftFormData.CodingKeys.fromEmail.stringValue),
+                .type(.email),
+                .value(currentUser?.email.rawValue ?? ""),
+                .required(true),
+              ]
+            )
+          )
+        ),
+        .gridColumn(
+          sizes: [.mobile: 12, .desktop: 6],
+          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+          .div(
+            .label(attributes: [.class([labelClass])], "Recipient's name"),
+            .input(
+              attributes: [
+                .class([blockInputClass]),
+                .name(GiftFormData.CodingKeys.toName.stringValue),
+                .type(.text),
+                .required(true),
+              ]
+            )
+          )
+        ),
+        .gridColumn(
+          sizes: [.mobile: 12, .desktop: 6],
+          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+          .div(
+            .label(attributes: [.class([labelClass])], "Recipient's email"),
+            .input(
+              attributes: [
+                .class([blockInputClass]),
+                .name(GiftFormData.CodingKeys.toEmail.stringValue),
+                .type(.email),
+                .required(true),
+              ]
+            )
+          )
+        )
       ),
 
       .label(attributes: [.class([labelClass])], "Delivery Date"),
@@ -102,8 +131,11 @@ private func formView(
         attributes: [
           .class([textAreaClass]),
           .name(GiftFormData.CodingKeys.message.stringValue),
-          .rows(5)
-        ]
+          .rows(5),
+        ],
+        """
+        Hope you enjoy \(plan.monthCount) months of Point-Free!
+        """
       ),
 
       .label(attributes: [.class([labelClass])], "Payment"),
@@ -125,7 +157,7 @@ private func formView(
             Class.pf.components.button(color: .black),
             Class.margin([.mobile: [.top: 3]])
           ]),
-          .value("Purchase")
+          .value("Purchase"),
         ]
       )
     ]
