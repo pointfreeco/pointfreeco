@@ -3,18 +3,18 @@ import Foundation
 
 public struct GiftFormData: Codable, Equatable {
   public let deliverAt: Date?
+  public let fromEmail: EmailAddress
+  public let fromName: String
   public let message: String
-  public let recipientEmail: EmailAddress
-  public let recipientName: String
-  public let senderEmail: EmailAddress
-  public let senderName: String
+  public let toEmail: EmailAddress
+  public let toName: String
 
   public enum CodingKeys: String, CodingKey {
     case deliverAt
+    case fromEmail
+    case fromName
     case message
-    case recipientEmail
-    case recipientName
-    case senderEmail
-    case senderName
+    case toEmail
+    case toName
   }
 }

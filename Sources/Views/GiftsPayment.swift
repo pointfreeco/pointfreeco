@@ -49,7 +49,7 @@ private func formView(
       .input(
         attributes: [
           .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.senderName.stringValue),
+          .name(GiftFormData.CodingKeys.fromName.stringValue),
           .type(.text),
           .value(currentUser?.displayName ?? ""),
           .required(true),
@@ -61,7 +61,7 @@ private func formView(
       .input(
         attributes: [
           .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.senderEmail.stringValue),
+          .name(GiftFormData.CodingKeys.fromEmail.stringValue),
           .type(.email),
           .value(currentUser?.email.rawValue ?? ""),
           .required(true),
@@ -73,7 +73,7 @@ private func formView(
       .input(
         attributes: [
           .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.recipientName.stringValue),
+          .name(GiftFormData.CodingKeys.toName.stringValue),
           .type(.text),
           .required(true),
         ]
@@ -83,7 +83,7 @@ private func formView(
       .input(
         attributes: [
           .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.recipientEmail.stringValue),
+          .name(GiftFormData.CodingKeys.toEmail.stringValue),
           .type(.email),
           .required(true),
         ]
