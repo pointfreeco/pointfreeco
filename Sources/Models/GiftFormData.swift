@@ -6,6 +6,7 @@ public struct GiftFormData: Codable, Equatable {
   public let fromEmail: EmailAddress
   public let fromName: String
   public let message: String
+  public let monthsFree: Int
   public let toEmail: EmailAddress
   public let toName: String
 
@@ -14,6 +15,7 @@ public struct GiftFormData: Codable, Equatable {
     case fromEmail
     case fromName
     case message
+    case monthsFree
     case toEmail
     case toName
   }

@@ -216,7 +216,12 @@ let routers: [Router<Route>] = [
   .case(.feed(.episodes))
     <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
 
-  .case(.gifts(.create))
+  .case { .gifts(.create($0)) }
+    <¢> post %> "gifts"
+    %> jsonBody(GiftFormData.self)
+    <% end,
+
+  .case(.gifts(.createForm))
     <¢> post %> "gifts" <% end,
 
   .case(.gifts(.index))
