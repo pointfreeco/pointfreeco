@@ -44,7 +44,7 @@ extension GiftFormData: Codable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.deliverAt.map(dateFormatter.string(from:)), forKey: .deliverAt)
+    try container.encodeIfPresent(self.deliverAt.map(dateFormatter.string(from:)), forKey: .deliverAt)
     try container.encode(self.fromEmail, forKey: .fromEmail)
     try container.encode(self.fromName, forKey: .fromName)
     try container.encode(self.message, forKey: .message)
