@@ -101,7 +101,7 @@ extension Gift.Plan {
         .init(name: "Download all episode playgrounds"),
       ]
     case .year:
-      return [
+      return [ 
         .init(isHighlighted: true, name: "22% off the 3 and 6 month gift options"),
         .init(name: "Full access for 1 year"),
         .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
@@ -250,7 +250,7 @@ Nope. A gift subscription is a one-time payment and you will not be charged agai
     Faq(
       question: "When am I charged and when does the gift subscription start?",
       answer: """
-You are charged immediately, but the subscription does not start until the giftee accepts your gift.
+You are charged immediately, but the subscription does not start until the recipient accepts your gift.
 """),
     Faq(
       question: "Can gift subscriptions be combined with student discounts, referrals, regional discounts, etc.?",

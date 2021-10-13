@@ -104,7 +104,8 @@ private func loggedInNavItemsView(
     ),
     subscriberState.isNonSubscriber
       ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
-      : Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
+      : [],
+    Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
       ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
       : [],
     .li(attributes: [.class([navListItemClass])], accountLinkView(style: style))

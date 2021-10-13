@@ -134,7 +134,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         basicAuth(
           user: Current.envVars.basicAuth.username,
           password: Current.envVars.basicAuth.password,
-          protect: { _ in Current.features.hasAccess(to: .gifts, for: user) }
+          protect: { _ in !Current.features.hasAccess(to: .gifts, for: user) }
         )
         <| giftsMiddleware
       )
