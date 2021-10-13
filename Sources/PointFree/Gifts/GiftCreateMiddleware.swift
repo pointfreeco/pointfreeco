@@ -37,6 +37,22 @@ func giftCreateMiddleware(
       statementDescriptorSuffix: "Gift Subscription"
     )
   )
+    .flatMap { paymentIntent in
+      Current.database.createGift(
+        .init(
+          deliverAt: giftFormData.deliverAt,
+          fromEmail: giftFormData.fromEmail,
+          fromName: giftFormData.fromName,
+          message: giftFormData.message,
+          monthsFree: giftFormData.monthsFree,
+          stripeCouponId: nil,
+          stripePaymentIntentId: paymentIntent.id,
+          toEmail: giftFormData.toEmail,
+          toName: giftFormData.toName
+        )
+      )
+        .map { _ in paymentIntent }
+    }
     .run
     .flatMap { errorOrPaymentIntent in
       switch errorOrPaymentIntent {
