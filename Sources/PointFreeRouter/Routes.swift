@@ -216,6 +216,9 @@ let routers: [Router<Route>] = [
   .case(.feed(.episodes))
     <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
 
+  .case(.gifts(.create))
+    <¢> post %> "gifts" <% end,
+
   .case(.gifts(.index))
     <¢> get %> "gifts" <% end,
 
