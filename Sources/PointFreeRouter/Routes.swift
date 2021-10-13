@@ -218,7 +218,7 @@ let routers: [Router<Route>] = [
 
   .case { .gifts(.create($0)) }
     <¢> post %> "gifts"
-    %> jsonBody(GiftFormData.self)
+    %> jsonBody(GiftFormData.self, encoder: jsonEncoder, decoder: jsonDecoder)
     <% end,
 
   .case(.gifts(.index))
@@ -414,3 +414,18 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     return parts.joined(separator: "&")
 }
 )
+
+private let jsonDecoder: JSONDecoder = {
+  let decoder = JSONDecoder()
+  decoder.dateDecodingStrategy = .secondsSince1970
+  decoder.keyDecodingStrategy = .convertFromSnakeCase
+  return decoder
+}()
+
+private let jsonEncoder: JSONEncoder = {
+  let encoder = JSONEncoder()
+  encoder.dateEncodingStrategy = .secondsSince1970
+  encoder.keyEncodingStrategy = .convertToSnakeCase
+  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+  return encoder
+}()
