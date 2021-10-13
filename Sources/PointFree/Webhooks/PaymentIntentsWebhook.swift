@@ -33,10 +33,30 @@ private func validateEvent(
   }
 }
 
+private func fetchGift(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (PaymentIntent, Gift), Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, PaymentIntent, Data> {
+
+  return { conn in
+    let paymentIntent = conn.data
+    return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+      .run
+      .map { errorOrGift in
+        switch errorOrGift {
+        case .left:
+          return conn |> writeStatus(.ok) >=> respond(text: "OK")
+
+        case let .right(gift):
+          return conn.map(const(gift)) |> middleware
+        }
+      }
+  }
+}
+
 private func handlePaymentIntent(
-  conn: Conn<StatusLineOpen, PaymentIntent>
+  conn: Conn<StatusLineOpen, Gift>
 ) -> IO<Conn<ResponseEnded, Data>> {
-  let paymentIntent = conn.data
+  let (paymentIntent, gift) = conn.data
 
   return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     .flatMap { gift in
@@ -52,11 +72,13 @@ private func handlePaymentIntent(
     .flatMap {
       switch $0 {
       case let .left(error):
-        // Return 200
-        fatalError()
+        return conn |> stripeHookFailure(
+          subject: "[PointFree Error] Stripe Hook Failed!",
+          body: "Unable to create coupon for gift \(gift.id): \(error)"
+        )
 
       case let .right(gift):
-        fatalError()
+        return conn |> writeStatus(.ok) >=> respond(text: "OK")
       }
     }
 }
