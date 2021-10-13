@@ -339,6 +339,68 @@ final class StripeTests: XCTestCase {
     XCTAssertEqual(.repeating(months: 12), discount.coupon.duration)
   }
 
+  func testDecodingPaymentIntentJson() throws {
+    let jsonString = """
+{
+  "id": "pi_3JkDUdD0Nyli3dRg1caHB2LB",
+  "object": "payment_intent",
+  "last_payment_error": null,
+  "livemode": false,
+  "next_action": null,
+  "status": "requires_payment_method",
+  "amount": 16800,
+  "amount_capturable": 0,
+  "amount_received": 0,
+  "application": null,
+  "application_fee_amount": null,
+  "canceled_at": null,
+  "cancellation_reason": null,
+  "capture_method": "automatic",
+  "charges": {
+    "object": "list",
+    "data": [
+    ],
+    "has_more": false,
+    "total_count": 0,
+    "url": "/v1/charges?payment_intent=pi_3JkDUdD0Nyli3dRg1caHB2LB"
+  },
+  "client_secret": "pi_3JkDUdD0Nyli3dRg1caHB2LB_secret_K4ufo7OpzkIiy0tN5U5z7FOMg",
+  "confirmation_method": "automatic",
+  "created": 1634154723,
+  "currency": "usd",
+  "customer": null,
+  "description": "Gift subscription: 12 months",
+  "invoice": null,
+  "metadata": {
+  },
+  "on_behalf_of": null,
+  "payment_method": null,
+  "payment_method_options": {
+    "card": {
+      "installments": null,
+      "network": null,
+      "request_three_d_secure": "automatic"
+    }
+  },
+  "payment_method_types": [
+    "card"
+  ],
+  "receipt_email": "stephen.celis@gmail.com",
+  "review": null,
+  "setup_future_usage": null,
+  "shipping": null,
+  "source": null,
+  "statement_descriptor": null,
+  "statement_descriptor_suffix": "Gift Subscription",
+  "transfer_data": null,
+  "transfer_group": null
+}
+"""
+
+    let paymentIntent = try Stripe.jsonDecoder.decode(PaymentIntent.self, from: Data(jsonString.utf8))
+
+  }
+
   func testRequests() {
 //    SnapshotTesting.isRecording=true
     assertSnapshot(

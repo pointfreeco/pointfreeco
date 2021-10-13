@@ -56,7 +56,7 @@ class GiftTests: TestCase {
       "from_email" : "blob@pointfree.co",
       "from_name" : "Blob",
       "message" : "HBD!",
-      "months_free" : 3,
+      "months_free" : "3",
       "to_email" : "blob.jr@pointfree.co",
       "to_name" : "Blob Jr."
     }
@@ -127,7 +127,7 @@ class GiftTests: TestCase {
       "from_email" : "blob@pointfree.co",
       "from_name" : "Blob",
       "message" : "HBD!",
-      "months_free" : 3,
+      "months_free" : "3",
       "to_email" : "blob.jr@pointfree.co",
       "to_name" : "Blob Jr."
     }
@@ -183,7 +183,7 @@ class GiftTests: TestCase {
       "from_email" : "blob@pointfree.co",
       "from_name" : "Blob",
       "message" : "HBD!",
-      "months_free" : 1,
+      "months_free" : "1",
       "to_email" : "blob.jr@pointfree.co",
       "to_name" : "Blob Jr."
     }
