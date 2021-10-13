@@ -70,25 +70,21 @@ public func giftsPayment(
             event.preventDefault()
             if (submitted) { return }
             submitted = true
+            var json = {}
+            var formData = new FormData(form)
+            formData.forEach(function(value, name) {
+              json[name] = value
+            })
             setFormEnabled(false, function() { return true })
             var httpRequest = new XMLHttpRequest()
             httpRequest.open("POST", "\(path(to: .gifts(.create(.empty))))")
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
-            var json = {
-              deliverAt: form.deliverAt.value,
-              fromEmail: form.fromEmail.value,
-              fromName: form.fromName.value,
-              message: form.message.value,
-              monthsFree: +form.monthsFree.value,
-              toEmail: form.toEmail.value,
-              toName: form.toName.value
-            }
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
                 setFormEnabled(true, function(el) { return true })
                 var response = JSON.parse(httpRequest.responseText)
                   if (response.clientSecret) {
-                  stripe.createCardPayment(response.clientSecret, {
+                  stripe.confirmCardPayment(response.clientSecret, {
                     payment_method: {
                       card: card,
                       billing_details: {
@@ -101,7 +97,6 @@ public func giftsPayment(
                     if (result.error) {
                       displayError.textContent = result.error.message
                     } else if (result.paymentIntent.status === "succeeded") {
-                      console.log("Woo!")
                       // TODO: Submit form to show flash message
                     }
                   });
