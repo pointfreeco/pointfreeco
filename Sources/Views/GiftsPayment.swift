@@ -70,21 +70,21 @@ public func giftsPayment(
             event.preventDefault()
             if (submitted) { return }
             submitted = true
-            setFormEnabled(false, function() { return true })
-            var httpRequest = new XMLHttpRequest()
-            httpRequest.open("POST", "\(path(to: .gifts(.create)))")
-            httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
-            var formData = new FormData(form)
             var json = {}
+            var formData = new FormData(form)
             formData.forEach(function(value, name) {
               json[name] = value
             })
+            setFormEnabled(false, function() { return true })
+            var httpRequest = new XMLHttpRequest()
+            httpRequest.open("POST", "\(path(to: .gifts(.create(.empty))))")
+            httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
                 setFormEnabled(true, function(el) { return true })
                 var response = JSON.parse(httpRequest.responseText)
                   if (response.clientSecret) {
-                  stripe.createCardPayment(response.clientSecret, {
+                  stripe.confirmCardPayment(response.clientSecret, {
                     payment_method: {
                       card: card,
                       billing_details: {
@@ -100,7 +100,7 @@ public func giftsPayment(
                       // TODO: Submit form to show flash message
                     }
                   });
-                } else if response.errorMessage) {
+                } else if (response.errorMessage) {
                   displayError.textContent = response.errorMessage
                 } else {
                   displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
@@ -135,7 +135,7 @@ private func formView(
 ) -> Node {
   .form(
     attributes: [
-      .action(path(to: .gifts(.create))),
+      .action(path(to: .gifts(.create(.empty)))),
       .id("gift-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),
@@ -257,6 +257,14 @@ private func formView(
           Class.margin([.mobile: [.top: 3]])
         ]),
         .value("Purchase"),
+      ]
+    ),
+
+    .input(
+      attributes: [
+        .type(.hidden),
+        .name(GiftFormData.CodingKeys.monthsFree.stringValue),
+        .value("\(plan.monthCount)")
       ]
     )
   )

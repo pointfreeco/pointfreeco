@@ -13,10 +13,10 @@ public func giftsMiddleware(
   let (user, route, subscriberState, gift) = lower(conn.data)
 
   switch gift {
-  case .create:
-    return conn
-    |> writeStatus(.ok)
-    >=> respond(html: "TODO")
+  case let .create(formData):
+    return conn.map(const(formData))
+    |> giftCreateMiddleware
+    >=> respondJson
 
   case .index:
     return conn.map(const(user .*. route .*. subscriberState .*. unit))

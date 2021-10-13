@@ -10,7 +10,7 @@ public struct Gift: Decodable {
   public var id: Id
   public var message: String
   public var monthsFree: Int
-  public var stripeCouponId: Coupon.Id
+  public var stripeCouponId: Coupon.Id?
   public var stripePaymentIntentId: PaymentIntent.Id
   public var toEmail: EmailAddress
   public var toName: String
@@ -22,7 +22,7 @@ public struct Gift: Decodable {
     id: Id,
     message: String,
     monthsFree: Int,
-    stripeCouponId: Coupon.Id,
+    stripeCouponId: Coupon.Id?,
     stripePaymentIntentId: PaymentIntent.Id,
     toEmail: EmailAddress,
     toName: String

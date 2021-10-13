@@ -65,7 +65,7 @@ extension Client {
             "from_email",
             "from_name",
             "message",
-            "months_free"
+            "months_free",
             "stripe_coupon_id",
             "stripe_payment_intent_id",
             "to_email",
@@ -765,7 +765,7 @@ extension Client {
               "from_name" character varying NOT NULL,
               "message" character varying NOT NULL,
               "months_free" integer NOT NULL,
-              "stripe_coupon_id" character varying NOT NULL,
+              "stripe_coupon_id" character varying,
               "stripe_payment_intent_id" character varying NOT NULL,
               "to_email" citext NOT NULL,
               "to_name" character varying NOT NULL,
@@ -847,7 +847,7 @@ extension Client {
           INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
           VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId))
           ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
-          SET "percent" = GREATEST(episode_progresses.percent, \(bind: percent))
+          SET "percent" = \(bind: percent)
           """
         )
         .run()
