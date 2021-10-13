@@ -72,13 +72,17 @@ public func giftsPayment(
             submitted = true
             setFormEnabled(false, function() { return true })
             var httpRequest = new XMLHttpRequest()
-            httpRequest.open("POST", "\(path(to: .gifts(.create)))")
+            httpRequest.open("POST", "\(path(to: .gifts(.create(.empty))))")
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
-            var formData = new FormData(form)
-            var json = {}
-            formData.forEach(function(value, name) {
-              json[name] = value
-            })
+            var json = {
+              deliverAt: form.deliverAt.value,
+              fromEmail: form.fromEmail.value,
+              fromName: form.fromName.value,
+              message: form.message.value,
+              monthsFree: +form.monthsFree.value,
+              toEmail: form.toEmail.value,
+              toName: form.toName.value
+            }
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
                 setFormEnabled(true, function(el) { return true })
@@ -97,10 +101,11 @@ public func giftsPayment(
                     if (result.error) {
                       displayError.textContent = result.error.message
                     } else if (result.paymentIntent.status === "succeeded") {
+                      console.log("Woo!")
                       // TODO: Submit form to show flash message
                     }
                   });
-                } else if response.errorMessage) {
+                } else if (response.errorMessage) {
                   displayError.textContent = response.errorMessage
                 } else {
                   displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
@@ -135,7 +140,7 @@ private func formView(
 ) -> Node {
   .form(
     attributes: [
-      .action(path(to: .gifts(.create))),
+      .action(path(to: .gifts(.create(.empty)))),
       .id("gift-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),
@@ -257,6 +262,14 @@ private func formView(
           Class.margin([.mobile: [.top: 3]])
         ]),
         .value("Purchase"),
+      ]
+    ),
+
+    .input(
+      attributes: [
+        .type(.hidden),
+        .name(GiftFormData.CodingKeys.monthsFree.stringValue),
+        .value("\(plan.monthCount)")
       ]
     )
   )

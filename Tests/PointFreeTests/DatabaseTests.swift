@@ -116,7 +116,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
         SELECT *
         FROM "episode_progresses"
         WHERE "user_id" = \(bind: user.id)
-        AND "percent" = 20
+        AND "percent" = 10
         """
       )
         .run.perform().right!.count,
