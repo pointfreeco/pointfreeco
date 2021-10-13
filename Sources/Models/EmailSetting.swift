@@ -7,11 +7,6 @@ public struct EmailSetting: Codable, Equatable {
     self.userId = userId
   }
 
-  public enum CodingKeys: String, CodingKey {
-    case newsletter
-    case userId = "user_id"
-  }
-
   public enum Newsletter: String, RawRepresentable, Codable, Equatable {
     case announcements
     case newBlogPost

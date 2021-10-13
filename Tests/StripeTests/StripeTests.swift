@@ -340,7 +340,7 @@ final class StripeTests: XCTestCase {
   }
 
   func testRequests() {
-//        SnapshotTesting.isRecording=true
+//    SnapshotTesting.isRecording=true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
       as: .raw,
@@ -379,6 +379,15 @@ final class StripeTests: XCTestCase {
             amount: 54_00,
             currency: .usd,
             description: "3 Months of Point-Free",
+            metadata: [
+              "deliverAt": "1234567890",
+              "fromEmail": "blob.sr@pointfree.co",
+              "fromName": "Blob Sr.",
+              "message": "Happy birthday!",
+              "monthsFree": "3",
+              "toEmail": "blob.jr@pointfree.co",
+              "toName": "Blob Jr."
+            ],
             receiptEmail: "generous.blob@pointfree.co",
             statementDescriptorSuffix: "3 Months Gift"
           )

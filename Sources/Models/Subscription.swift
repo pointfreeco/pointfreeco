@@ -28,13 +28,4 @@ public struct Subscription: Decodable {
 
   public typealias Id = Tagged<Subscription, UUID>
   public typealias TeamInviteCode = Tagged<(Subscription, teamInviteCode: ()), String>
-
-  private enum CodingKeys: String, CodingKey {
-    case deactivated
-    case id
-    case stripeSubscriptionId = "stripe_subscription_id"
-    case stripeSubscriptionStatus = "stripe_subscription_status"
-    case userId = "user_id"
-    case teamInviteCode = "team_invite_code"
-  }
 }
