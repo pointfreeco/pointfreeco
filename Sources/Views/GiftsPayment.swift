@@ -53,7 +53,6 @@ private func formView(
           .type(.text),
           .value(currentUser?.displayName ?? ""),
           .required(true),
-          .hidden(currentUser != nil),
         ]
       ),
 
@@ -65,7 +64,6 @@ private func formView(
           .type(.email),
           .value(currentUser?.email.rawValue ?? ""),
           .required(true),
-          .hidden(currentUser != nil),
         ]
       ),
 
