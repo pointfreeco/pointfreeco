@@ -24,7 +24,13 @@ extension PostgresDatabase {
 
 extension SQLRawBuilder {
   func first<D>(decoding: D.Type) -> EitherIO<Error, D?> where D: Decodable {
-    .init(self.first(decoding: D.self))
+    .init(
+      self.first().flatMapThrowing {
+        try $0.map {
+          try $0.decode(model: D.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
+      }
+    )
   }
 
   func first() -> EitherIO<Error, SQLRow?> {
@@ -32,7 +38,13 @@ extension SQLRawBuilder {
   }
 
   func all<D>(decoding: D.Type) -> EitherIO<Error, [D]> where D: Decodable {
-    .init(self.all(decoding: D.self))
+    .init(
+      self.all().flatMapThrowing {
+        try $0.map {
+          try $0.decode(model: D.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
+      }
+    )
   }
 
   func run() -> EitherIO<Error, Prelude.Unit> {

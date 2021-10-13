@@ -740,7 +740,7 @@ private func payment(
       .script(attributes: [.src(stripeJs)]),
       .script(safe: """
 window.addEventListener("load", function() {
-    var apiKey = document.getElementById("card-element").dataset.stripeKey
+  var apiKey = document.getElementById("card-element").dataset.stripeKey
   var stripe = Stripe(apiKey)
   var elements = stripe.elements()
   var style = {
@@ -765,7 +765,7 @@ window.addEventListener("load", function() {
       if (elementsMatching(formElement)) {
         formElement.disabled = !isEnabled
         if (formElement.tagName == "BUTTON") {
-            formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+          formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
         }
       }
     }
@@ -778,7 +778,7 @@ window.addEventListener("load", function() {
         displayError.textContent = result.error.message
         setFormEnabled(true, function(el) { return true })
       } else {
-          setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
         form.token.value = result.token.id
         form.submit()
       }

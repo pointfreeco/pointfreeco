@@ -57,6 +57,37 @@ extension Client {
         )
         .run()
       },
+      createGift: { request in
+        pool.sqlDatabase.raw(
+          """
+          INSERT INTO "gifts" (
+            "deliver_at",
+            "from_email",
+            "from_name",
+            "message",
+            "months_free"
+            "stripe_coupon_id",
+            "stripe_payment_intent_id",
+            "to_email",
+            "to_name"
+          )
+          VALUES (
+            \(bind: request.deliverAt),
+            \(bind: request.fromEmail),
+            \(bind: request.fromName),
+            \(bind: request.message),
+            \(bind: request.monthsFree),
+            \(bind: request.stripeCouponId),
+            \(bind: request.stripePaymentIntentId),
+            \(bind: request.toEmail),
+            \(bind: request.toName)
+          )
+          RETURNING *
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
+      },
       createSubscription: { stripeSubscription, userId,  isOwnerTakingSeat, referrerId in
         pool.sqlDatabase.raw(
           """
@@ -192,13 +223,23 @@ extension Client {
         )
         .all(decoding: Models.User.self)
       },
+      fetchGift: { id in
+        pool.sqlDatabase.raw(
+          """
+          SELECT *
+          FROM "gifts"
+          WHERE "id" = \(bind: id)
+          LIMIT 1
+          """
+        )
+        .first(decoding: Gift.self)
+      },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"
           WHERE "id" = \(bind: id)
-          ORDER BY "created_at" DESC
           LIMIT 1
           """
         )
@@ -701,6 +742,24 @@ extension Client {
             """
             CREATE UNIQUE INDEX IF NOT EXISTS "index_users_on_rss_salt"
             ON "users" ("rss_salt")
+            """
+          ),
+          database.run(
+            """
+            CREATE TABLE IF NOT EXISTS "gifts" (
+              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+              "deliver_at" timestamp without time zone,
+              "from_email" citext NOT NULL,
+              "from_name" character varying NOT NULL,
+              "message" character varying NOT NULL,
+              "months_free" integer NOT NULL,
+              "stripe_coupon_id" character varying NOT NULL,
+              "stripe_payment_intent_id" character varying NOT NULL,
+              "to_email" citext NOT NULL,
+              "to_name" character varying NOT NULL,
+              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+              "updated_at" timestamp without time zone
+            )
             """
           ),
         ])

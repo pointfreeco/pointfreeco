@@ -13,7 +13,7 @@ public struct TeamInvite: Decodable, Equatable {
     email: EmailAddress,
     id: Id,
     inviterUserId: User.Id
-    ) {
+  ) {
     self.createdAt = createdAt
     self.email = email
     self.id = id
@@ -21,11 +21,4 @@ public struct TeamInvite: Decodable, Equatable {
   }
 
   public typealias Id = Tagged<TeamInvite, UUID>
-
-  private enum CodingKeys: String, CodingKey {
-    case createdAt = "created_at"
-    case email
-    case id
-    case inviterUserId = "inviter_user_id"
-  }
 }
