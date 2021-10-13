@@ -21,7 +21,7 @@ public enum Route: Equatable {
   case blog(Blog)
   case collections(Collections)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
-  case gifts(Gift)
+  case gifts(Gifts)
   case endGhosting
   case enterprise(Enterprise)
   case episode(EpisodeRoute)

@@ -65,7 +65,7 @@ private func options(episodeStats: EpisodeStats) -> Node {
   ]
 }
 
-extension Gift.Plan {
+extension Gifts.Plan {
   var title: String {
     switch self {
     case .threeMonths:
@@ -114,7 +114,7 @@ extension Gift.Plan {
 }
 
 func giftOption(
-  plan: Gift.Plan,
+  plan: Gifts.Plan,
   episodeStats: EpisodeStats
 ) -> ChildOf<Tag.Ul> {
 

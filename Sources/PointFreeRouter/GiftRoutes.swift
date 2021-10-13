@@ -1,4 +1,4 @@
-public enum Gift: Equatable {
+public enum Gifts: Equatable {
   case index
   case plan(Plan)
 

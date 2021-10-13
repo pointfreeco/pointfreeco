@@ -7,7 +7,7 @@ import Prelude
 import Tuple
 
 public func giftsMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple4<User?, Route, SubscriberState, Gift>>
+  _ conn: Conn<StatusLineOpen, Tuple4<User?, Route, SubscriberState, Gifts>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (user, route, subscriberState, gift) = lower(conn.data)
