@@ -9,25 +9,110 @@ import PointFreeRouter
 public func giftsPayment(
   plan: Gifts.Plan,
   currentUser: User?,
+  stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
-  .gridRow(
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 8],
-      attributes: [.style(margin(leftRight: .auto))],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        [
-          titleView(plan: plan),
-          formView(
-            plan: plan,
-            currentUser: currentUser,
-            stripePublishableKey: stripePublishableKey
-          )
-        ]
+  [
+    .gridRow(
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 8],
+        attributes: [.style(margin(leftRight: .auto))],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          [
+            titleView(plan: plan),
+            formView(
+              plan: plan,
+              currentUser: currentUser,
+              stripePublishableKey: stripePublishableKey
+            )
+          ]
+        )
       )
+    ),
+    .script(attributes: [.src(stripeJs)]),
+    .script(
+      unsafe: """
+        window.addEventListener("load", function() {
+          var apiKey = document.getElementById("card-element").dataset.stripeKey
+          var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
+          var elements = stripe.elements()
+          var style = {
+            base: {
+              fontSize: "16px",
+            }
+          }
+          var card = elements.create("card", { style: style })
+          card.mount("#card-element")
+          var displayError = document.getElementById("card-errors")
+          card.addEventListener("change", function(event) {
+            if (event.error) {
+              displayError.textContent = event.error.message
+            } else {
+              displayError.textContent = ""
+            }
+          });
+          var form = document.getElementById("gift-form")
+          function setFormEnabled(isEnabled, elementsMatching) {
+            for (var idx = 0; idx < form.length; idx++) {
+              var formElement = form[idx]
+              if (elementsMatching(formElement)) {
+                formElement.disabled = !isEnabled
+                if (formElement.tagName == "BUTTON") {
+                  formElement.textContent = isEnabled ? "Purchase" : "Purchasing…"
+                }
+              }
+            }
+          }
+          var submitted = false
+          form.addEventListener("submit", function(event) {
+            displayError.textContent = ""
+            event.preventDefault()
+            if (submitted) { return }
+            submitted = true
+            setFormEnabled(false, function() { return true })
+            var httpRequest = new XMLHttpRequest()
+            httpRequest.open("POST", "\(path(to: .gifts(.create)))")
+            httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
+            var formData = new FormData(form)
+            var json = {}
+            formData.forEach(function(value, name) {
+              json[name] = value
+            })
+            httpRequest.onreadystatechange = function() {
+              if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                setFormEnabled(true, function(el) { return true })
+                var response = JSON.parse(httpRequest.responseText)
+                  if (response.clientSecret) {
+                  stripe.createCardPayment(response.clientSecret, {
+                    payment_method: {
+                      card: card,
+                      billing_details: {
+                        name: form.\(GiftFormData.CodingKeys.fromName.stringValue).value
+                      }
+                    }
+                  })
+                  .then(function(result) {
+                    setFormEnabled(true, function(el) { return true })
+                    if (result.error) {
+                      displayError.textContent = result.error.message
+                    } else if (result.paymentIntent.status === "succeeded") {
+                      // TODO: Submit form to show flash message
+                    }
+                  });
+                } else if response.errorMessage) {
+                  displayError.textContent = response.errorMessage
+                } else {
+                  displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+                }
+              }
+            }
+            httpRequest.send(JSON.stringify(json))
+          })
+        })
+        """
     )
-  )
+  ]
 }
 
 private func titleView(plan: Gifts.Plan) -> Node {
@@ -49,118 +134,131 @@ private func formView(
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   .form(
-    attributes: [.action(path(to: .gifts(.create))), .method(.post)],
-    [
-      .gridRow(
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
-          .div(
-            .label(attributes: [.class([labelClass])], "Your name"),
-            .input(
-              attributes: [
-                .class([blockInputClass]),
-                .name(GiftFormData.CodingKeys.fromName.stringValue),
-                .type(.text),
-                .value(currentUser?.displayName ?? ""),
-                .required(true),
-              ]
-            )
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
-          .div(
-            .label(attributes: [.class([labelClass])], "Your email"),
-            .input(
-              attributes: [
-                .class([blockInputClass]),
-                .name(GiftFormData.CodingKeys.fromEmail.stringValue),
-                .type(.email),
-                .value(currentUser?.email.rawValue ?? ""),
-                .required(true),
-              ]
-            )
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
-          .div(
-            .label(attributes: [.class([labelClass])], "Recipient's name"),
-            .input(
-              attributes: [
-                .class([blockInputClass]),
-                .name(GiftFormData.CodingKeys.toName.stringValue),
-                .type(.text),
-                .required(true),
-              ]
-            )
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
-          .div(
-            .label(attributes: [.class([labelClass])], "Recipient's email"),
-            .input(
-              attributes: [
-                .class([blockInputClass]),
-                .name(GiftFormData.CodingKeys.toEmail.stringValue),
-                .type(.email),
-                .required(true),
-              ]
-            )
-          )
-        )
-      ),
-
-      .label(attributes: [.class([labelClass])], "Delivery Date"),
-      .input(
-        attributes: [
-          .class([blockInputClass]),
-          .name(GiftFormData.CodingKeys.deliverAt.stringValue),
-          .type(.date),
-          .required(false),
-        ]
-      ),
-
-      .label(attributes: [.class([labelClass])], "Message"),
-      .textarea(
-        attributes: [
-          .class([textAreaClass]),
-          .name(GiftFormData.CodingKeys.message.stringValue),
-          .rows(5),
-        ],
-        """
-        Hope you enjoy \(plan.monthCount) months of Point-Free!
-        """
-      ),
-
-      .label(attributes: [.class([labelClass])], "Payment"),
-      .div(
-        attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+    attributes: [
+      .action(path(to: .gifts(.create))),
+      .id("gift-form"),
+      .method(.post),
+      .onsubmit(unsafe: "event.preventDefault()"),
+    ],
+    .gridRow(
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
         .div(
-          attributes: [
-            .class([Class.size.width100pct]),
-            .data("stripe-key", stripePublishableKey.rawValue),
-            .id("card-element"),
-          ]
+          .label(attributes: [.class([labelClass])], "Your name"),
+          .input(
+            attributes: [
+              .class([blockInputClass]),
+              .name(GiftFormData.CodingKeys.fromName.stringValue),
+              .type(.text),
+              .value(currentUser?.displayName ?? ""),
+              .required(true),
+            ]
+          )
         )
       ),
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+        .div(
+          .label(attributes: [.class([labelClass])], "Your email"),
+          .input(
+            attributes: [
+              .class([blockInputClass]),
+              .name(GiftFormData.CodingKeys.fromEmail.stringValue),
+              .type(.email),
+              .value(currentUser?.email.rawValue ?? ""),
+              .required(true),
+            ]
+          )
+        )
+      ),
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+        .div(
+          .label(attributes: [.class([labelClass])], "Recipient's name"),
+          .input(
+            attributes: [
+              .class([blockInputClass]),
+              .name(GiftFormData.CodingKeys.toName.stringValue),
+              .type(.text),
+              .required(true),
+            ]
+          )
+        )
+      ),
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        attributes: [.class([Class.padding([.desktop: [.right: 2]])])],
+        .div(
+          .label(attributes: [.class([labelClass])], "Recipient's email"),
+          .input(
+            attributes: [
+              .class([blockInputClass]),
+              .name(GiftFormData.CodingKeys.toEmail.stringValue),
+              .type(.email),
+              .required(true),
+            ]
+          )
+        )
+      )
+    ),
 
-      .input(
+    .label(attributes: [.class([labelClass])], "Delivery Date"),
+    .input(
+      attributes: [
+        .class([blockInputClass]),
+        .name(GiftFormData.CodingKeys.deliverAt.stringValue),
+        .type(.date),
+        .required(false),
+      ]
+    ),
+
+    .label(attributes: [.class([labelClass])], "Message"),
+    .textarea(
+      attributes: [
+        .class([textAreaClass]),
+        .name(GiftFormData.CodingKeys.message.stringValue),
+        .rows(5),
+      ],
+      """
+      Hope you enjoy \(plan.monthCount) months of Point-Free!
+      """
+    ),
+
+    .label(attributes: [.class([labelClass])], "Payment"),
+    .div(
+      attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+      .div(
         attributes: [
-          .type(.submit),
-          .class([
-            Class.pf.components.button(color: .black),
-            Class.margin([.mobile: [.top: 3]])
-          ]),
-          .value("Purchase"),
+          .class([Class.size.width100pct]),
+          .data("stripe-key", stripePublishableKey.rawValue),
+          .id("card-element"),
         ]
       )
-    ]
+    ),
+
+    .div(
+      attributes: [
+        .class([
+          Class.pf.colors.fg.red,
+          Class.pf.type.body.small,
+        ]),
+        .id("card-errors"),
+      ]
+    ),
+
+    .input(
+      attributes: [
+        .type(.submit),
+        .class([
+          Class.pf.components.button(color: .black),
+          Class.margin([.mobile: [.top: 3]])
+        ]),
+        .value("Purchase"),
+      ]
+    )
   )
 }
 
