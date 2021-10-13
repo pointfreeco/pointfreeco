@@ -49,7 +49,7 @@ private func formView(
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   .form(
-    attributes: [.action(path(to: .gifts(.create))), .method(.post)],
+    attributes: [.action(path(to: .gifts(.create(.empty)))), .method(.post)],
     [
       .gridRow(
         .gridColumn(
@@ -148,6 +148,14 @@ private func formView(
             .id("card-element"),
           ]
         )
+      ),
+
+      .input(
+        attributes: [
+          .type(.hidden),
+          .name(GiftFormData.CodingKeys.monthsFree.stringValue),
+          .value("\(plan.monthCount)")
+        ]
       ),
 
       .input(

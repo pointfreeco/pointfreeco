@@ -163,7 +163,7 @@ public struct Client {
       .flatMap(const(self.updateEmailSettings(emailSettings, id)))
   }
 
-  public struct CreateGiftRequest {
+  public struct CreateGiftRequest: Equatable {
     public var deliverAt: Date?
     public var fromEmail: EmailAddress
     public var fromName: String
