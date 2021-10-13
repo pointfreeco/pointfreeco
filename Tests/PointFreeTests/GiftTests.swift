@@ -1,4 +1,6 @@
 import ApplicativeRouter
+import CustomDump
+import Database
 import Either
 import HttpPipeline
 @testable import Models
@@ -19,6 +21,12 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate() {
+    var createGiftRequest: Database.Client.CreateGiftRequest!
+    Current.database.createGift = { request in
+      createGiftRequest = request
+      return pure(.mock)
+    }
+
     let conn = connection(
       from: request(
         to: .gifts(
@@ -44,7 +52,14 @@ class GiftTests: TestCase {
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
     
-    {"monthsFree":3,"message":"HBD!","toName":"Blob Jr.","fromEmail":"blob@pointfree.co","toEmail":"blob.jr@pointfree.co","fromName":"Blob"}
+    {
+      "from_email" : "blob@pointfree.co",
+      "from_name" : "Blob",
+      "message" : "HBD!",
+      "months_free" : 3,
+      "to_email" : "blob.jr@pointfree.co",
+      "to_name" : "Blob Jr."
+    }
     
     200 OK
     Content-Length: 44
@@ -60,6 +75,21 @@ class GiftTests: TestCase {
       "clientSecret" : "pi_test_secret_test"
     }
     """)
+
+    XCTAssertNoDifference(
+      createGiftRequest,
+        .init(
+          deliverAt: nil,
+          fromEmail: "blob@pointfree.co",
+          fromName: "Blob",
+          message: "HBD!",
+          monthsFree: 3,
+          stripeCouponId: nil,
+          stripePaymentIntentId: "pi_test",
+          toEmail: "blob.jr@pointfree.co",
+          toName: "Blob Jr."
+        )
+    )
   }
 
   func testGiftCreate_StripeFailure() {
@@ -93,7 +123,14 @@ class GiftTests: TestCase {
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
     
-    {"monthsFree":3,"message":"HBD!","toName":"Blob Jr.","fromEmail":"blob@pointfree.co","toEmail":"blob.jr@pointfree.co","fromName":"Blob"}
+    {
+      "from_email" : "blob@pointfree.co",
+      "from_name" : "Blob",
+      "message" : "HBD!",
+      "months_free" : 3,
+      "to_email" : "blob.jr@pointfree.co",
+      "to_name" : "Blob Jr."
+    }
     
     400 Bad Request
     Content-Length: 65
@@ -142,7 +179,14 @@ class GiftTests: TestCase {
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
     
-    {"monthsFree":1,"message":"HBD!","toName":"Blob Jr.","fromEmail":"blob@pointfree.co","toEmail":"blob.jr@pointfree.co","fromName":"Blob"}
+    {
+      "from_email" : "blob@pointfree.co",
+      "from_name" : "Blob",
+      "message" : "HBD!",
+      "months_free" : 1,
+      "to_email" : "blob.jr@pointfree.co",
+      "to_name" : "Blob Jr."
+    }
     
     400 Bad Request
     Content-Length: 45
