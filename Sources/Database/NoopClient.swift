@@ -23,6 +23,7 @@ extension Client {
     fetchEpisodeProgress: { _, _ in throwE(NoopError()) },
     fetchFreeEpisodeUsers: { throwE(NoopError()) },
     fetchGift: { _ in throwE(NoopError()) },
+    fetchGiftByStripePaymentIntentId: { _ in throwE(NoopError()) },
     fetchSubscriptionById: { _ in throwE(NoopError()) },
     fetchSubscriptionByOwnerId: { _ in throwE(NoopError()) },
     fetchSubscriptionTeammatesByOwnerId: { _ in throwE(NoopError()) },
@@ -42,6 +43,7 @@ extension Client {
     sawUser: { _ in throwE(NoopError()) },
     updateEmailSettings: { _, _ in throwE(NoopError()) },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
+    updateGift: { _, _ in throwE(NoopError()) },
     updateStripeSubscription: { _ in throwE(NoopError()) },
     updateUser: { _, _, _, _, _ in throwE(NoopError()) },
     upsertUser: { _, _, _ in throwE(NoopError()) }

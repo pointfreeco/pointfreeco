@@ -234,6 +234,18 @@ extension Client {
         )
         .first(decoding: Gift.self)
       },
+      fetchGiftByStripePaymentIntentId: { paymentIntentId in
+        pool.sqlDatabase.raw(
+          """
+          SELECT *
+          FROM "gifts"
+          WHERE "stripe_payment_intent_id" = \(bind: paymentIntentId)
+          LIMIT 1
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
+      },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(
           """
@@ -762,6 +774,12 @@ extension Client {
             )
             """
           ),
+          database.run(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_payment_intent_id"
+            ON "gifts" ("stripe_payment_intent_id")
+            """
+          ),
         ])
         .map(const(unit))
 
@@ -833,6 +851,18 @@ extension Client {
           """
         )
         .run()
+      },
+      updateGift: { id, coupon in
+        pool.sqlDatabase.raw(
+          """
+          UPDATE "gifts"
+          SET "stripe_coupon_id" = \(bind: coupon)
+          WHERE "id" = \(bind: id)
+          RETURNING *
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
       },
       updateStripeSubscription: { stripeSubscription in
         pool.sqlDatabase.raw(

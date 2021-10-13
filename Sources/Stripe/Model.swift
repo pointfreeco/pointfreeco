@@ -230,6 +230,8 @@ public struct Event<T: Codable & Equatable>: Equatable, Codable {
     case customerSubscriptionDeleted = "customer.subscription.deleted"
     case invoicePaymentFailed = "invoice.payment_failed"
     case invoicePaymentSucceeded = "invoice.payment_succeeded"
+    case paymentIntentPaymentFailed = "payment_intent.payment_failed"
+    case paymentIntentSucceeded = "payment_intent.succeeded"
   }
 }
 

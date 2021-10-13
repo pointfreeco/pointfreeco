@@ -229,11 +229,15 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
-    case let .webhooks(.stripe(.knownEvent(event))):
+    case let .webhooks(.stripe(.paymentIntents(event))):
       return conn.map(const(event))
-        |> stripeWebhookMiddleware
+        |> stripePaymentIntentsWebhookMiddleware
 
-    case let .webhooks(.stripe(.unknownEvent(event))):
+    case let .webhooks(.stripe(.subscriptions(event))):
+      return conn.map(const(event))
+        |> stripeSubscriptionsWebhookMiddleware
+
+    case let .webhooks(.stripe(.unknown(event))):
       Current.logger.log(.error, "Received invalid webhook \(event.type)")
       return conn
         |> writeStatus(.internalServerError)
