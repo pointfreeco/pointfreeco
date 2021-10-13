@@ -169,7 +169,7 @@ public struct Client {
     public var fromName: String
     public var message: String
     public var monthsFree: Int
-    public var stripeCouponId: Coupon.Id
+    public var stripeCouponId: Coupon.Id?
     public var stripePaymentIntentId: PaymentIntent.Id
     public var toEmail: EmailAddress
     public var toName: String
@@ -180,7 +180,7 @@ public struct Client {
       fromName: String,
       message: String,
       monthsFree: Int,
-      stripeCouponId: Coupon.Id,
+      stripeCouponId: Coupon.Id?,
       stripePaymentIntentId: PaymentIntent.Id,
       toEmail: EmailAddress,
       toName: String

@@ -1,4 +1,4 @@
 POST https://api.stripe.com/v1/payment_intents
 Stripe-Version: 2020-08-27
 
-amount=5400&currency=usd&description=3%20Months%20of%20Point-Free&metadata[deliverAt]=1234567890&metadata[fromEmail]=blob.sr%40pointfree.co&metadata[fromName]=Blob%20Sr.&metadata[message]=Happy%20birthday%21&metadata[monthsFree]=3&metadata[toEmail]=blob.jr%40pointfree.co&metadata[toName]=Blob%20Jr.&receipt_email=generous.blob%40pointfree.co&statement_descriptor_suffix=3%20Months%20Gift
+amount=5400&currency=usd&description=3%20Months%20of%20Point-Free&receipt_email=generous.blob%40pointfree.co&statement_descriptor_suffix=3%20Months%20Gift

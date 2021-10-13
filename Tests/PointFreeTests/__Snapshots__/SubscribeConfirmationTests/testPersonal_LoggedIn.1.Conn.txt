@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57587
+Content-Length: 57581
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2253,7 +2253,7 @@ available</p>
           </script>
           <script>
             window.addEventListener("load", function() {
-    var apiKey = document.getElementById("card-element").dataset.stripeKey
+  var apiKey = document.getElementById("card-element").dataset.stripeKey
   var stripe = Stripe(apiKey)
   var elements = stripe.elements()
   var style = {
@@ -2278,7 +2278,7 @@ available</p>
       if (elementsMatching(formElement)) {
         formElement.disabled = !isEnabled
         if (formElement.tagName == "BUTTON") {
-            formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+          formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
         }
       }
     }
@@ -2291,7 +2291,7 @@ available</p>
         displayError.textContent = result.error.message
         setFormEnabled(true, function(el) { return true })
       } else {
-          setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
         form.token.value = result.token.id
         form.submit()
       }

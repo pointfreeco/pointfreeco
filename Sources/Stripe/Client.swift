@@ -78,7 +78,6 @@ public struct Client {
     public var amount: Cents<Int>
     public var currency: Currency
     public var description: String?
-    public var metadata: [String: String]
     public var receiptEmail: String?
     public var statementDescriptorSuffix: String?
 
@@ -86,14 +85,12 @@ public struct Client {
       amount: Cents<Int>,
       currency: Currency,
       description: String?,
-      metadata: [String: String],
       receiptEmail: String?,
       statementDescriptorSuffix: String?
     ) {
       self.amount = amount
       self.currency = currency
       self.description = description
-      self.metadata = metadata
       self.receiptEmail = receiptEmail
       self.statementDescriptorSuffix = statementDescriptorSuffix
     }
@@ -241,7 +238,6 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
     "amount": request.amount.rawValue,
     "currency": request.currency,
     "description": request.description as Any?,
-    "metadata": request.metadata,
     "receipt_email": request.receiptEmail,
     "statement_descriptor_suffix": request.statementDescriptorSuffix,
   ].compactMapValues { $0 }))
