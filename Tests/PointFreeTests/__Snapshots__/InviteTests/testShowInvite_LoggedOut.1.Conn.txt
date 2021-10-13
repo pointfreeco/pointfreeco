@@ -2023,16 +2023,6 @@ the videos, transcripts, and code samples on this site.
                 Blog
               </a>
             </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
           </ol>
         </div>
       </div>
@@ -2050,6 +2040,16 @@ the videos, transcripts, and code samples on this site.
             More
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/about">
+                About Us
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

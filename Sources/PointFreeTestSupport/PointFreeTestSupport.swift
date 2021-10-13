@@ -39,7 +39,7 @@ extension Environment {
     date: unzurry(.mock),
     envVars: .mock,
     episodes: unzurry(.mock),
-    features: .allFeatures,
+    features: Feature.allFeatures,
     gitHub: .some(.mock),
     logger: .mock,
     mailgun: .mock,

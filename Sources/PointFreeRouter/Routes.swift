@@ -21,6 +21,7 @@ public enum Route: Equatable {
   case blog(Blog)
   case collections(Collections)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
+  case gifts(Gifts)
   case endGhosting
   case enterprise(Enterprise)
   case episode(EpisodeRoute)
@@ -196,12 +197,6 @@ let routers: [Router<Route>] = [
   .case { .episode(.show($0)) }
     <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
 
-  .case(.feed(.atom))
-    <¢> get %> "feed" %> "atom.xml" <% end,
-
-  .case(.feed(.episodes))
-    <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
-
   parenthesize(.case { .enterprise(.acceptInvite($0, email: $1, userId: $2)) })
     <¢> get %> "enterprise" %> pathParam(.tagged) <%> "accept"
     %> queryParam("email", .tagged)
@@ -214,6 +209,18 @@ let routers: [Router<Route>] = [
   .case { .enterprise(.requestInvite($0, $1)) }
     <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "request"
     %> formBody(EnterpriseRequestFormData.self, decoder: formDecoder) <% end,
+
+  .case(.feed(.atom))
+    <¢> get %> "feed" %> "atom.xml" <% end,
+
+  .case(.feed(.episodes))
+    <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
+
+  .case(.gifts(.index))
+    <¢> get %> "gifts" <% end,
+
+  .case { .gifts(.plan($0)) }
+  <¢> get %> "gifts" %> pathParam(.rawRepresentable) <% end,
 
   .case(Route.expressUnsubscribe)
     <¢> get %> "newsletters" %> "express-unsubscribe"

@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57329
+Content-Length: 57376
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1833,6 +1833,9 @@ html {
   width : 25%;
 }
 
+}
+@media only screen and (min-width: 832px) {
+
 .testimonial-container {
   height : 400px;
 }
@@ -2508,16 +2511,6 @@ window.addEventListener("load", function() {
                 Blog
               </a>
             </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
           </ol>
         </div>
       </div>
@@ -2535,6 +2528,16 @@ window.addEventListener("load", function() {
             More
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/about">
+                About Us
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

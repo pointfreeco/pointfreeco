@@ -2221,16 +2221,6 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                 Blog
               </a>
             </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
           </ol>
         </div>
       </div>
@@ -2248,6 +2238,16 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             More
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/about">
+                About Us
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

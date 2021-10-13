@@ -2275,16 +2275,6 @@ functional convert and believer after years of objects.
                 Blog
               </a>
             </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
           </ol>
         </div>
       </div>
@@ -2302,6 +2292,16 @@ functional convert and believer after years of objects.
             More
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/about">
+                About Us
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black
