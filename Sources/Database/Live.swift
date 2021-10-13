@@ -829,7 +829,7 @@ extension Client {
           INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
           VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId))
           ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
-          SET "percent" = GREATEST(episode_progresses.percent, \(bind: percent))
+          SET "percent" = \(bind: percent)
           """
         )
         .run()
