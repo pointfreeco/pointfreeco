@@ -80,6 +80,20 @@ public struct Client {
     public var description: String?
     public var receiptEmail: String?
     public var statementDescriptorSuffix: String?
+
+    public init(
+      amount: Cents<Int>,
+      currency: Currency,
+      description: String?,
+      receiptEmail: String?,
+      statementDescriptorSuffix: String?
+    ) {
+      self.amount = amount
+      self.currency = currency
+      self.description = description
+      self.receiptEmail = receiptEmail
+      self.statementDescriptorSuffix = statementDescriptorSuffix
+    }
   }
 }
 

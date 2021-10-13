@@ -15,6 +15,7 @@ public struct Client {
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createGift: (CreateGiftRequest) -> EitherIO<Error, Gift>
   public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
@@ -27,6 +28,7 @@ public struct Client {
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchEpisodeProgress: (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
+  public var fetchGift: (Gift.Id) -> EitherIO<Error, Gift?>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
   public var fetchSubscriptionByOwnerId: (Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.Id) -> EitherIO<Error, [Models.User]>
@@ -55,6 +57,7 @@ public struct Client {
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    createGift: @escaping (CreateGiftRequest) -> EitherIO<Error, Gift>,
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
@@ -67,6 +70,7 @@ public struct Client {
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
     fetchEpisodeProgress: @escaping (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
+    fetchGift: @escaping (Gift.Id) -> EitherIO<Error, Gift?>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
     fetchSubscriptionByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, [Models.User]>,
@@ -94,6 +98,7 @@ public struct Client {
     self.createEnterpriseAccount = createEnterpriseAccount
     self.createEnterpriseEmail = createEnterpriseEmail
     self.createFeedRequestEvent = createFeedRequestEvent
+    self.createGift = createGift
     self.createSubscription = createSubscription
     self.deleteEnterpriseEmail = deleteEnterpriseEmail
     self.deleteTeamInvite = deleteTeamInvite
@@ -106,6 +111,7 @@ public struct Client {
     self.fetchEpisodeCredits = fetchEpisodeCredits
     self.fetchEpisodeProgress = fetchEpisodeProgress
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
+    self.fetchGift = fetchGift
     self.fetchSubscriptionById = fetchSubscriptionById
     self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
     self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId
@@ -155,6 +161,40 @@ public struct Client {
   ) -> EitherIO<Error, Prelude.Unit> {
     self.updateUser(id, name, email, episodeCreditCount, rssSalt)
       .flatMap(const(self.updateEmailSettings(emailSettings, id)))
+  }
+
+  public struct CreateGiftRequest {
+    public var deliverAt: Date?
+    public var fromEmail: EmailAddress
+    public var fromName: String
+    public var message: String
+    public var monthsFree: Int
+    public var stripeCouponId: Coupon.Id?
+    public var stripePaymentIntentId: PaymentIntent.Id
+    public var toEmail: EmailAddress
+    public var toName: String
+
+    public init(
+      deliverAt: Date?,
+      fromEmail: EmailAddress,
+      fromName: String,
+      message: String,
+      monthsFree: Int,
+      stripeCouponId: Coupon.Id?,
+      stripePaymentIntentId: PaymentIntent.Id,
+      toEmail: EmailAddress,
+      toName: String
+    ) {
+      self.fromEmail = fromEmail
+      self.fromName = fromName
+      self.deliverAt = deliverAt
+      self.message = message
+      self.monthsFree = monthsFree
+      self.stripeCouponId = stripeCouponId
+      self.stripePaymentIntentId = stripePaymentIntentId
+      self.toEmail = toEmail
+      self.toName = toName
+    }
   }
 
   #if DEBUG

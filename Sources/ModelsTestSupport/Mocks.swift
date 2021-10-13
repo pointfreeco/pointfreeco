@@ -36,6 +36,21 @@ extension EpisodeCredit {
   )
 }
 
+extension Gift {
+  public static let mock = Self(
+    deliverAt: nil,
+    fromEmail: "blob.sr@pointfree.co",
+    fromName: "Blob Sr.",
+    id: .init(rawValue: .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!),
+    message: "Happy birthday, junior!",
+    monthsFree: 3,
+    stripeCouponId: "61f75",
+    stripePaymentIntentId: "pi_test",
+    toEmail: "blob.jr@pointfree.co",
+    toName: "Blob Jr."
+  )
+}
+
 extension Models.Subscription {
   public static let mock = Subscription(
     deactivated: false,
