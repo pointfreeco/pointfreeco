@@ -792,6 +792,12 @@ extension Client {
             ON "gifts" ("stripe_payment_intent_id")
             """
           ),
+          database.run(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_coupon_id"
+            ON "gifts" ("stripe_coupon_id")
+            """
+          ),
         ])
         .map(const(unit))
 
