@@ -322,6 +322,50 @@ class GiftTests: TestCase {
     """)
   }
 
+  func testGiftRedeem_Invalid_Redeemed() {
+    SnapshotTesting.isRecording=true
+    Current = .failing
+
+    let user = User.nonSubscriber
+
+    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchUserById = { _ in pure(user) }
+    Current.database.sawUser = { _ in pure(unit) }
+    Current.date = { .mock }
+    Current.stripe.fetchCoupon = { _ in
+      pure(update(.mock) {
+        $0.rate = .amountOff(54_00)
+        $0.valid = false
+      })
+    }
+
+    let conn = connection(
+      from: request(
+        to: .gifts(.redeem("deadbeef")),
+        session: .loggedIn(as: user),
+        basicAuth: true
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    GET http://localhost:8080/gifts/deadbeef
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+    
+    302 Found
+    Location: /gifts
+    Referrer-Policy: strict-origin-when-cross-origin
+    Set-Cookie: pf_session={"flash":{"message":"This gift was already redeemed","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
   func testGiftRedeem_Invalid_Teammate() {
     Current = .failing
 
@@ -362,5 +406,4 @@ class GiftTests: TestCase {
     X-XSS-Protection: 1; mode=block
     """)
   }
-
 }

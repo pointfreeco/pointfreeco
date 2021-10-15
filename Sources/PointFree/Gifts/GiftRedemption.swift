@@ -143,7 +143,8 @@ private func fetchAndValidateCouponAndGift<A>(
           guard coupon.valid
           else {
             return conn |> redirect(
-              to: .gifts(.index), headersMiddleware: flash(.error, "This gift was already redeemed")
+              to: .gifts(.index),
+              headersMiddleware: flash(.error, "This gift was already redeemed.")
             )
           }
 
