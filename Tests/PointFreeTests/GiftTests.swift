@@ -323,7 +323,6 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_Redeemed() {
-    SnapshotTesting.isRecording=true
     Current = .failing
 
     let user = User.nonSubscriber
