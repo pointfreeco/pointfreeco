@@ -258,6 +258,16 @@ extension Client {
         .first(decoding: Gift.self)
         .mapExcept(requireSome)
       },
+      fetchGiftsToDeliver: {
+        pool.sqlDatabase.raw(
+          """
+          SELECT * FROM "gifts"
+          WHERE "stripe_coupon_id" IS NOT NULL
+          AND "deliver_at" BETWEEN CURRENT_DATE - INTERVAL 1 DAY AND CURRENT_DATE
+          """
+        )
+        .all(decoding: Gift.self)
+      },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(
           """

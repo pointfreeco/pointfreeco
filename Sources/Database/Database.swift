@@ -31,6 +31,7 @@ public struct Client {
   public var fetchGift: (Gift.Id) -> EitherIO<Error, Gift?>
   public var fetchGiftByStripeCouponId: (Coupon.Id) -> EitherIO<Error, Gift>
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.Id) -> EitherIO<Error, Gift>
+  public var fetchGiftsToDeliver: () -> EitherIO<Error, [Gift]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
   public var fetchSubscriptionByOwnerId: (Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.Id) -> EitherIO<Error, [Models.User]>
@@ -76,6 +77,7 @@ public struct Client {
     fetchGift: @escaping (Gift.Id) -> EitherIO<Error, Gift?>,
     fetchGiftByStripeCouponId: @escaping (Coupon.Id) -> EitherIO<Error, Gift>,
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.Id) -> EitherIO<Error, Gift>,
+    fetchGiftsToDeliver: @escaping () -> EitherIO<Error, [Gift]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
     fetchSubscriptionByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, [Models.User]>,
@@ -120,6 +122,7 @@ public struct Client {
     self.fetchGift = fetchGift
     self.fetchGiftByStripeCouponId = fetchGiftByStripeCouponId
     self.fetchGiftByStripePaymentIntentId = fetchGiftByStripePaymentIntentId
+    self.fetchGiftsToDeliver = fetchGiftsToDeliver
     self.fetchSubscriptionById = fetchSubscriptionById
     self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
     self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId

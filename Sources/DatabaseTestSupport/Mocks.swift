@@ -27,6 +27,7 @@ extension Client {
     fetchGift: { _ in pure(.mock) },
     fetchGiftByStripeCouponId: { _ in pure(.mock) },
     fetchGiftByStripePaymentIntentId: { _ in pure(.mock) },
+    fetchGiftsToDeliver: { pure([update(.mock) { $0.deliverAt = .init(timeIntervalSince1970: 1234567890) }]) },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
     fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
