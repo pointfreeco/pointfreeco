@@ -25,6 +25,7 @@ extension Client {
     fetchEpisodeProgress: { _, _ in pure(nil) },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchGift: { _ in pure(.mock) },
+    fetchGiftByStripeCouponId: { _ in pure(.mock) },
     fetchGiftByStripePaymentIntentId: { _ in pure(.mock) },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
     fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },

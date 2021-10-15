@@ -16,11 +16,11 @@ open class LiveDatabaseTestCase: TestCase {
   override open func setUp() {
     super.setUp()
 
-    precondition(!Current.envVars.postgres.databaseUrl.contains("amazonaws.com"))
+    precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
     self.pool = EventLoopGroupConnectionPool(
       source: PostgresConnectionSource(
         configuration: PostgresConfiguration(
-          url: Current.envVars.postgres.databaseUrl
+          url: Current.envVars.postgres.databaseUrl.rawValue
         )!
       ),
       on: self.eventLoopGroup

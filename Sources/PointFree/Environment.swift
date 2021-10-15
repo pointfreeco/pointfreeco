@@ -18,7 +18,7 @@ public struct Environment {
   public var database: Database.Client!
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
-  public var episodes = { [Episode]() }
+  public var episodes: () -> [Episode]
   public var features = Feature.allFeatures
   public var gitHub: GitHub.Client!
   public var logger = Logger(label: "co.pointfree")
@@ -27,4 +27,40 @@ public struct Environment {
   public var renderXml: (Node) -> String = Html._xmlRender
   public var stripe: Stripe.Client!
   public var uuid: () -> UUID = UUID.init
+
+  public init(
+    assets: Assets = Assets(),
+    blogPosts: @escaping () -> [BlogPost] = allBlogPosts,
+    cookieTransform: CookieTransform = .encrypted,
+    collections: [Episode.Collection] = Episode.Collection.all,
+    database: Database.Client? = nil,
+    date: @escaping () -> Date = Date.init,
+    envVars: EnvVars = EnvVars(),
+    episodes: @escaping () -> [Episode] = { [Episode]() },
+    features: [Feature] = Feature.allFeatures,
+    gitHub: GitHub.Client? = nil,
+    logger: Logger = Logger(label: "co.pointfree"),
+    mailgun: Mailgun.Client? = nil,
+    renderHtml: @escaping (Node) -> String = { Html.render($0) },
+    renderXml: @escaping (Node) -> String = Html._xmlRender,
+    stripe: Stripe.Client? = nil,
+    uuid: @escaping () -> UUID = UUID.init
+  ) {
+    self.assets = assets
+    self.blogPosts = blogPosts
+    self.cookieTransform = cookieTransform
+    self.collections = collections
+    self.database = database
+    self.date = date
+    self.envVars = envVars
+    self.episodes = episodes
+    self.features = features
+    self.gitHub = gitHub
+    self.logger = logger
+    self.mailgun = mailgun
+    self.renderHtml = renderHtml
+    self.renderXml = renderXml
+    self.stripe = stripe
+    self.uuid = uuid
+  }
 }

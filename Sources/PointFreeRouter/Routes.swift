@@ -217,16 +217,8 @@ let routers: [Router<Route>] = [
   .case(.feed(.episodes))
     <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
 
-  .case { .gifts(.create($0)) }
-    <¢> post %> "gifts"
-    %> jsonBody(GiftFormData.self, encoder: jsonEncoder, decoder: jsonDecoder)
-    <% end,
-
-  .case(.gifts(.index))
-    <¢> get %> "gifts" <% end,
-
-  .case { .gifts(.plan($0)) }
-  <¢> get %> "gifts" %> pathParam(.rawRepresentable) <% end,
+  .case(Route.gifts)
+    <¢> "gifts" %> giftsRouter,
 
   .case(Route.expressUnsubscribe)
     <¢> get %> "newsletters" %> "express-unsubscribe"
@@ -425,14 +417,14 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
 }
 )
 
-private let jsonDecoder: JSONDecoder = {
+let routeJsonDecoder: JSONDecoder = {
   let decoder = JSONDecoder()
   decoder.dateDecodingStrategy = .secondsSince1970
   decoder.keyDecodingStrategy = .convertFromSnakeCase
   return decoder
 }()
 
-private let jsonEncoder: JSONEncoder = {
+let routeJsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .secondsSince1970
   encoder.keyEncodingStrategy = .convertToSnakeCase

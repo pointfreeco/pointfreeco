@@ -203,4 +203,164 @@ class GiftTests: TestCase {
     }
     """)
   }
+
+  func testGiftRedeem_NonSubscriber() {
+    Current = .failing
+
+    let user = User.nonSubscriber
+
+    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchUserById = { _ in pure(user) }
+    Current.database.sawUser = { _ in pure(unit) }
+    Current.date = { .mock }
+    Current.stripe.createCustomer = { _, _, _, _, credit in
+      XCTAssertEqual(54_00, credit)
+      return pure(update(.mock) {
+        $0.defaultSource = nil
+        $0.sources = .mock([])
+      })
+    }
+    Current.stripe.createSubscription = { _, _, _, _ in
+      pure(.individualMonthly)
+    }
+    Current.stripe.deleteCoupon = { _ in pure(unit) }
+    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+
+    let conn = connection(
+      from: request(
+        to: .gifts(.redeem("deadbeef")),
+        session: .loggedIn(as: user),
+        basicAuth: true
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    GET http://localhost:8080/gifts/deadbeef
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+    
+    302 Found
+    Location: /account
+    Referrer-Policy: strict-origin-when-cross-origin
+    Set-Cookie: pf_session={"flash":{"message":"You now have access to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
+  func testGiftRedeem_Subscriber() {
+    Current = .failing
+
+    let user = User.owner
+
+    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
+    Current.database.fetchUserById = { _ in pure(user) }
+    Current.database.sawUser = { _ in pure(unit) }
+    Current.date = { .mock }
+    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
+    Current.stripe.updateCustomerBalance = { _, credit in
+      XCTAssertEqual(54_00, credit)
+      return pure(update(.mock))
+    }
+
+    let conn = connection(
+      from: request(
+        to: .gifts(.redeem("deadbeef")),
+        session: .loggedIn(as: user),
+        basicAuth: true
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    GET http://localhost:8080/gifts/deadbeef
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+    
+    302 Found
+    Location: /account
+    Referrer-Policy: strict-origin-when-cross-origin
+    Set-Cookie: pf_session={"flash":{"message":"The gift has been applied to your account as credit.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
+  func testGiftRedeem_Invalid_LoggedOut() {
+    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+
+    let conn = connection(
+      from: request(to: .gifts(.redeem("deadbeef")), session: .loggedOut, basicAuth: true)
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    GET http://localhost:8080/gifts/deadbeef
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={}
+
+    302 Found
+    Location: /login?redirect=http://localhost:8080/gifts/deadbeef
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
+  func testGiftRedeem_Invalid_Teammate() {
+    Current = .failing
+
+    let user = User.teammate
+
+    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchUserById = { _ in pure(user) }
+    Current.database.sawUser = { _ in pure(unit) }
+    Current.date = { .mock }
+    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
+
+    let conn = connection(
+      from: request(
+        to: .gifts(.redeem("deadbeef")),
+        session: .loggedIn(as: user),
+        basicAuth: true
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    GET http://localhost:8080/gifts/deadbeef
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
+    
+    302 Found
+    Location: /gifts/coupon-deadbeef
+    Referrer-Policy: strict-origin-when-cross-origin
+    Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team subscription.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
 }

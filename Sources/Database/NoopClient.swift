@@ -23,6 +23,7 @@ extension Client {
     fetchEpisodeProgress: { _, _ in throwE(NoopError()) },
     fetchFreeEpisodeUsers: { throwE(NoopError()) },
     fetchGift: { _ in throwE(NoopError()) },
+    fetchGiftByStripeCouponId: { _ in throwE(NoopError()) },
     fetchGiftByStripePaymentIntentId: { _ in throwE(NoopError()) },
     fetchSubscriptionById: { _ in throwE(NoopError()) },
     fetchSubscriptionByOwnerId: { _ in throwE(NoopError()) },

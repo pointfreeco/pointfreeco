@@ -11,6 +11,7 @@ extension Client {
     createCustomer: { _, _, _, _, _ in pure(.mock) },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
     createSubscription: { _, _, _, _ in pure(.mock) },
+    deleteCoupon: const(pure(unit)),
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),

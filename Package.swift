@@ -44,6 +44,7 @@ var package = Package(
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-web", .revision("8cbec70")),
+    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
   targets: [
 
@@ -69,6 +70,7 @@ var package = Package(
         .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -136,9 +138,11 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "PointFreePrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -170,10 +174,12 @@ var package = Package(
         "EmailAddress",
         "FoundationPrelude",
         "Models",
+        "PointFreePrelude",
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -245,6 +251,7 @@ var package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -301,6 +308,7 @@ var package = Package(
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -345,17 +353,18 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "PointFreePrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
     .target(
       name: "StripeTestSupport",
       dependencies: [
-        "PointFreePrelude",
         "Stripe",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),

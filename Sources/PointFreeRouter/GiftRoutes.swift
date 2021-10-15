@@ -1,10 +1,15 @@
+import ApplicativeRouter
 import Models
+import Prelude
+import Stripe
 import TaggedMoney
 
 public enum Gifts: Equatable {
   case create(GiftFormData)
   case index
   case plan(Plan)
+  case redeem(Coupon.Id)
+  case redeemLanding(Coupon.Id)
 
   public enum Plan: String {
     case threeMonths
@@ -43,3 +48,23 @@ public enum Gifts: Equatable {
     }
   }
 }
+
+let giftsRouter = giftsRouters.reduce(.empty, <|>)
+
+private let giftsRouters: [Router<Gifts>] = [
+  .case(Gifts.create)
+    <¢> post
+    %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,
+
+  .case(.index)
+    <¢> get <% end,
+
+  .case(Gifts.plan)
+    <¢> get %> pathParam(.rawRepresentable) <% end,
+
+  .case(Gifts.redeem)
+    <¢> get %> pathParam(.tagged) <% end,
+
+  .case(Gifts.redeemLanding)
+    <¢> post %> pathParam(.tagged) <% end,
+]

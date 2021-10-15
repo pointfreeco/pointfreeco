@@ -1,6 +1,6 @@
 import Models
 
-func allBlogPosts() -> [BlogPost] {
+public func allBlogPosts() -> [BlogPost] {
   let now = Current.date()
   return _allBlogPosts
     .filter {

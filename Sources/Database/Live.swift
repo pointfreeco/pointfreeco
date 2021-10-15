@@ -234,6 +234,18 @@ extension Client {
         )
         .first(decoding: Gift.self)
       },
+      fetchGiftByStripeCouponId: { couponId in
+        pool.sqlDatabase.raw(
+          """
+          SELECT *
+          FROM "gifts"
+          WHERE "coupon_id" = \(bind: couponId)
+          LIMIT 1
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
+      },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
         pool.sqlDatabase.raw(
           """
