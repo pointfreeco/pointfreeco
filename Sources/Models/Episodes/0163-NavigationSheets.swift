@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep163_navigationSheets = Episode(
     blurb: """
-SwiftUI comes with a lot of great tools for working with struct-based state, but sadly lacks a lot of tools for working with optionals and enums, which are perfect for modeling navigation. We will bridge the gap by defining helpers that allow us to effortlessly add deep-linking to our applications.
+This week we’ll explore how to drive a sheet with optional state and how to facilitate communication between the sheet and the view presenting it. In the process we will discover a wonderful binding transformation for working with optionals.
 """,
     codeSampleDirectory: "0163-navigation-pt4",
     exercises: _exercises,
