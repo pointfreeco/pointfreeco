@@ -431,4 +431,134 @@ final class StripeWebhooksTests: TestCase {
     }
     #endif
   }
+
+  func testPaymentIntent_Gift() {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.mock) }
+    var couponId: Coupon.Id?
+    Current.database.updateGift = { _, id in
+      couponId = id
+      return pure(.mock)
+    }
+    var couponRate: Coupon.Rate?
+    Current.stripe.createCoupon = { duration, maxRedemptions, name, rate in
+      couponRate = rate
+      return pure(update(.mock) { $0.id = "gift" })
+    }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0f93c278930acdea91801ace76ccd7f6a63fd9184197792bf6629963fd3d25f8",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=0f93c278930acdea91801ace76ccd7f6a63fd9184197792bf6629963fd3d25f8
+    
+    {"id":"evt_test","data":{"object":{"amount":5400,"currency":"usd","id":"pi_test","status":"requires_confirmation","client_secret":"pi_test_secret_test"}},"type":"payment_intent.succeeded"}
+    
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    
+    OK
+    """)
+
+    XCTAssertEqual(couponId, "gift")
+    XCTAssertEqual(couponRate, .amountOff(54_00))
+  }
+
+  func testPaymentIntent_NoGift() {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0f93c278930acdea91801ace76ccd7f6a63fd9184197792bf6629963fd3d25f8",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=0f93c278930acdea91801ace76ccd7f6a63fd9184197792bf6629963fd3d25f8
+    
+    {"id":"evt_test","data":{"object":{"amount":5400,"currency":"usd","id":"pi_test","status":"requires_confirmation","client_secret":"pi_test_secret_test"}},"type":"payment_intent.succeeded"}
+    
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    
+    OK
+    """)
+  }
+
+  func testFailedPaymentIntent() {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentPaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=ab13cbd71b9dded4bfacdce3de754f18c5f34ccda2589d8214578fba1640a194",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=ab13cbd71b9dded4bfacdce3de754f18c5f34ccda2589d8214578fba1640a194
+
+    {"id":"evt_test","data":{"object":{"amount":5400,"currency":"usd","id":"pi_test","status":"requires_confirmation","client_secret":"pi_test_secret_test"}},"type":"payment_intent.payment_failed"}
+
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+
+    OK
+    """)
+  }
 }

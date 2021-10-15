@@ -9,6 +9,7 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import TaggedMoney
 #if !os(Linux)
 import WebKit
 #endif
@@ -214,8 +215,9 @@ class GiftTests: TestCase {
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
-    Current.stripe.createCustomer = { _, _, _, _, credit in
-      XCTAssertEqual(54_00, credit)
+    var credit: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, amount in
+      credit = amount
       return pure(update(.mock) {
         $0.defaultSource = nil
         $0.sources = .mock([])
@@ -251,6 +253,8 @@ class GiftTests: TestCase {
     X-Permitted-Cross-Domain-Policies: none
     X-XSS-Protection: 1; mode=block
     """)
+
+    XCTAssertEqual(credit, 54_00)
   }
 
   func testGiftRedeem_Subscriber() {
@@ -267,8 +271,9 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
     Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
-    Current.stripe.updateCustomerBalance = { _, credit in
-      XCTAssertEqual(54_00, credit)
+    var credit: Cents<Int>?
+    Current.stripe.updateCustomerBalance = { _, amount in
+      credit = amount
       return pure(update(.mock))
     }
 
@@ -296,6 +301,8 @@ class GiftTests: TestCase {
     X-Permitted-Cross-Domain-Policies: none
     X-XSS-Protection: 1; mode=block
     """)
+
+    XCTAssertEqual(credit, 54_00)
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
