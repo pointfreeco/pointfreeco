@@ -29,12 +29,13 @@ extension Node {
     text: String,
     type: GitHubLinkType,
     href: String?,
-    size: Class.pf.components.Size = .regular
+    size: Class.pf.components.Size = .regular,
+    extraClasses: CssSelector = .star
   ) -> Node {
     return .a(
       attributes: [
         .href(href ?? ""),
-        .class([type.buttonClass(size: size)])
+        .class([type.buttonClass(size: size), extraClasses])
       ],
       .img(
         base64: gitHubSvgBase64(fill: type.iconFillColor),

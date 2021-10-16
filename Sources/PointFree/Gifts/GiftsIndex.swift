@@ -27,11 +27,11 @@ public let giftsIndexMiddleware: Middleware<
       currentUser: currentUser,
       data: episodeStats,
       description: """
-        Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend or loved one.
+        Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend, colleague or loved one.
         """,
       extraStyles: extraGiftLandingStyles <> testimonialStyle,
       style: .base(.some(.minimal(.black))),
-      title: "🎁 Gift Subscription"
+      title: "🎁 Point-Free Gift Subscription"
     )
   }
 )

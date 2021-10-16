@@ -760,7 +760,8 @@ struct PricingPlan {
 
   static func personal(
     allEpisodeCount: EpisodeStats.AllEpisodeCount,
-    episodeHourCount: EpisodeStats.EpisodeHourCount
+    episodeHourCount: EpisodeStats.EpisodeHourCount,
+    showDiscountOptions: Bool = true
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
@@ -770,12 +771,15 @@ struct PricingPlan {
         "Over \(episodeHourCount.rawValue) hours of video",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
-        """
-        [Regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
-        and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
-        available
-        """
-      ],
+      ] + (
+        showDiscountOptions
+        ? ["""
+            [Regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
+            and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+            available
+            """]
+        : []
+      ),
       title: "Personal"
     )
   }

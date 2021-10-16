@@ -8,11 +8,30 @@ import Prelude
 import Stripe
 import TaggedMoney
 import Tuple
+import Views
 
 let giftRedemptionLandingMiddleware
 : Middleware<StatusLineOpen, ResponseEnded, Tuple5<Coupon.Id, User?, Models.Subscription?, SubscriberState, Route>, Data>
 = fetchAndValidateCouponAndGift
-<| hole()
+<| writeStatus(.ok)
+>=> map(lower)
+>>> respond(
+  view: giftRedeemLanding(coupon:gift:subscriberState:episodeStats:),
+  layoutData: { coupon, gift, amount, user, subscription, subscriberState, route in
+    SimplePageLayoutData(
+      currentRoute: route,
+      currentSubscriberState: subscriberState,
+      currentUser: user,
+      data: (coupon, gift, subscriberState, stats(forEpisodes: Current.episodes())),
+      description: """
+        TODOO
+        """,
+      extraStyles: extraGiftLandingStyles <> testimonialStyle,
+      style: .base(.some(.minimal(.black))),
+      title: "Redeem your Point-Free gift"
+    )
+  }
+)
 
 let giftRedemptionMiddleware
 : Middleware<StatusLineOpen, ResponseEnded, Tuple4<Coupon.Id, User?, Models.Subscription?, SubscriberState>, Data>

@@ -229,7 +229,16 @@ private func formView(
 
     .label(attributes: [.class([labelClass])], "Payment"),
     .div(
-      attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+      attributes: [
+        .class([
+          Class.flex.flex,
+          Class.grid.middle(.mobile),
+          Class.border.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]]),
+          Class.margin([.mobile: [.top: 1]]),
+        ]),
+      ],
       .div(
         attributes: [
           .class([Class.size.width100pct]),
