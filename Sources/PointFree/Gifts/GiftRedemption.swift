@@ -23,9 +23,6 @@ let giftRedemptionLandingMiddleware
       currentSubscriberState: subscriberState,
       currentUser: user,
       data: (coupon, gift, subscriberState, stats(forEpisodes: Current.episodes())),
-      description: """
-        TODOO
-        """,
       extraStyles: extraGiftLandingStyles <> testimonialStyle,
       style: .base(.some(.minimal(.black))),
       title: "Redeem your Point-Free gift"
