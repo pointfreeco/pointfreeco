@@ -287,7 +287,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    GET http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/deadbeef
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
@@ -356,14 +356,14 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    GET http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/deadbeef
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
     302 Found
     Location: /gifts
     Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"This gift was already redeemed","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+    Set-Cookie: pf_session={"flash":{"message":"This gift was already redeemed.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen
     X-Frame-Options: SAMEORIGIN
