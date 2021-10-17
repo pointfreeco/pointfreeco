@@ -30,12 +30,12 @@ extension Node {
     type: GitHubLinkType,
     href: String?,
     size: Class.pf.components.Size = .regular,
-    extraClasses: CssSelector = .star
+    extraClasses: CssSelector? = nil
   ) -> Node {
     return .a(
       attributes: [
         .href(href ?? ""),
-        .class([type.buttonClass(size: size), extraClasses])
+        .class([type.buttonClass(size: size)] + (extraClasses.map { [$0] } ?? []))
       ],
       .img(
         base64: gitHubSvgBase64(fill: type.iconFillColor),

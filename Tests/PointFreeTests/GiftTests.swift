@@ -240,7 +240,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    GET http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/deadbeef
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
@@ -321,7 +321,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    GET http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/deadbeef
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
 
@@ -404,7 +404,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    GET http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/deadbeef
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
     
