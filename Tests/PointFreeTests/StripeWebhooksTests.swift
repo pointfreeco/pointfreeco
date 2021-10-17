@@ -533,7 +533,6 @@ final class StripeWebhooksTests: TestCase {
     Current = .failing
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
-    var didSendEmail = false
 
     let event = Event(
       data: .init(object: PaymentIntent.requiresConfirmation),
