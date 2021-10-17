@@ -534,10 +534,6 @@ final class StripeWebhooksTests: TestCase {
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
     var didSendEmail = false
-    Current.mailgun.sendEmail = { _ in
-      didSendEmail = true
-      return pure(.init(id: "", message: ""))
-    }
 
     let event = Event(
       data: .init(object: PaymentIntent.requiresConfirmation),
@@ -571,7 +567,5 @@ final class StripeWebhooksTests: TestCase {
 
     OK
     """)
-
-    XCTAssertEqual(didSendEmail, true)
   }
 }
