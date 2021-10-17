@@ -373,6 +373,7 @@ public let jsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .secondsSince1970
   encoder.keyEncodingStrategy = .convertToSnakeCase
+  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
   return encoder
 }()
 
