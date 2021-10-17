@@ -135,7 +135,7 @@ func giftOption(
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
         giftOptionSelector,
-        ])
+      ])
     ],
     .div(
       attributes: [
@@ -151,15 +151,46 @@ func giftOption(
         attributes: [.class([Class.pf.type.responsiveTitle4])],
         .text(plan.title)
       ),
-      .h3(
+      .gridRow(
         attributes: [
           .class([
-            Class.pf.colors.fg.black,
-            Class.typeScale([.mobile: .r2, .desktop: .r2]),
-            Class.type.light
-            ])
+            Class.grid.start(.mobile),
+            Class.grid.middle(.mobile)
+          ]),
         ],
-        .text("$\(cost)")
+        .gridColumn(
+          sizes: [:],
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle4,
+              Class.padding([.mobile: [.right: 2]])
+            ]),
+            .style(flex(grow: 0, shrink: nil, basis: nil))
+          ],
+            .h3(
+              attributes: [
+                .class([
+                  Class.pf.colors.fg.black,
+                  Class.typeScale([.mobile: .r2, .desktop: .r2]),
+                  Class.type.light
+                ])
+              ],
+              .text("$\(cost)")
+            )
+        ),
+        .gridColumn(
+          sizes: [:],
+          .p(
+            attributes: [
+              .class([
+                Class.pf.type.body.small,
+                Class.typeScale([.mobile: .r0_875, .desktop: .r0_75]),
+                Class.type.lineHeight(1)
+              ])
+            ],
+            "One-time payment"
+          )
+        )
       ),
       .ul(
         attributes: [
@@ -263,7 +294,7 @@ extension Faq {
   static let existingSubscriberRedeemGift = Self(
     question: "Can I accept a gift if I already have a Point-Free subscription?",
     answer: """
-Yes! If you receive a gift and are currently a subscriber we will apply the credit to your account and the amount will be removed from future invoices.
+Yes! If you receive a gift and are currently a subscriber we will apply the credit to your account and the amount will be applied to future invoices.
 """)
 
   static let combinedWithStudentDiscountsEtc = Self(
