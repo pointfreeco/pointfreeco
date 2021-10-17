@@ -12,6 +12,7 @@ public func giftRedeemLanding(
   coupon: Coupon,
   gift: Gift,
   subscriberState: SubscriberState,
+  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> Node {
   [
@@ -20,6 +21,7 @@ public func giftRedeemLanding(
       gift: gift,
       coupon: coupon,
       subscriberState: subscriberState,
+      currentUser: currentUser,
       episodeStats: episodeStats
     ),
     whatToExpect,
@@ -33,6 +35,7 @@ private func mainContent(
   gift: Gift,
   coupon: Coupon,
   subscriberState: SubscriberState,
+  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> Node {
   [
@@ -78,6 +81,7 @@ private func mainContent(
         gift: gift,
         coupon: coupon,
         subscriberState: subscriberState,
+        currentUser: currentUser,
         episodeStats: episodeStats
       )
     ),
@@ -88,6 +92,7 @@ func giftOption(
   gift: Gift,
   coupon: Coupon,
   subscriberState: SubscriberState,
+  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> ChildOf<Tag.Ul> {
 
@@ -158,7 +163,7 @@ func giftOption(
       existingSubscriberNotice(subscriberState: subscriberState),
       loginOrRedeem(
         coupon: coupon,
-        subscriberState: subscriberState
+        currentUser: currentUser
       )
     )
   )
@@ -187,9 +192,9 @@ private func existingSubscriberNotice(
 
 private func loginOrRedeem(
   coupon: Coupon,
-  subscriberState: SubscriberState
+  currentUser: User?
 ) -> Node {
-  if subscriberState.isActive {
+  if currentUser == nil {
     return .gitHubLink(
       text: "Log in to redeem",
       type: .black,

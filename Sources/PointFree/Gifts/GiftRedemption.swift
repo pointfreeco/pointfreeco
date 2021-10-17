@@ -16,13 +16,13 @@ let giftRedemptionLandingMiddleware
 <| writeStatus(.ok)
 >=> map(lower)
 >>> respond(
-  view: giftRedeemLanding(coupon:gift:subscriberState:episodeStats:),
+  view: giftRedeemLanding(coupon:gift:subscriberState:currentUser:episodeStats:),
   layoutData: { coupon, gift, amount, user, subscription, subscriberState, route in
     SimplePageLayoutData(
       currentRoute: route,
       currentSubscriberState: subscriberState,
       currentUser: user,
-      data: (coupon, gift, subscriberState, stats(forEpisodes: Current.episodes())),
+      data: (coupon, gift, subscriberState, user, stats(forEpisodes: Current.episodes())),
       extraStyles: extraGiftLandingStyles <> testimonialStyle,
       style: .base(.some(.minimal(.black))),
       title: "Redeem your Point-Free gift"
