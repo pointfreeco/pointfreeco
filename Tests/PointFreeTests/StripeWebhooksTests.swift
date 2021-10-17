@@ -446,6 +446,11 @@ final class StripeWebhooksTests: TestCase {
       couponRate = rate
       return pure(update(.mock) { $0.id = "gift" })
     }
+    var didSendEmail = false
+    Current.mailgun.sendEmail = { _ in
+      didSendEmail = true
+      return pure(.init(id: "", message: ""))
+    }
 
     let event = Event(
       data: .init(object: PaymentIntent.requiresConfirmation),
@@ -482,6 +487,7 @@ final class StripeWebhooksTests: TestCase {
 
     XCTAssertEqual(couponId, "gift")
     XCTAssertEqual(couponRate, .amountOff(54_00))
+    XCTAssertEqual(didSendEmail, true)
   }
 
   func testPaymentIntent_NoGift() {
