@@ -155,24 +155,34 @@ func giftOption(
             }
         )
       ),
-      .div(
-        attributes: [
-          .class([
-            Class.margin([.mobile: [.top: 2], .desktop: [.top: 2]]),
-            Class.padding([.mobile: [.all: 2]])
-          ]),
-          .style(
-            key("background", "#ffd")
-          )
-        ],
-        "Since you are already a subscriber, the gift amount will be applied to your future invoices."
-      ),
+      existingSubscriberNotice(subscriberState: subscriberState),
       loginOrRedeem(
         coupon: coupon,
         subscriberState: subscriberState
       )
     )
   )
+}
+
+private func existingSubscriberNotice(
+  subscriberState: SubscriberState
+) -> Node {
+  if subscriberState.isActive {
+    return .div(
+      attributes: [
+        .class([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 2]]),
+          Class.padding([.mobile: [.all: 2]])
+        ]),
+        .style(
+          key("background", "#ffd")
+        )
+      ],
+      "Since you are already a subscriber, the gift amount will be applied to your future invoices."
+    )
+  } else {
+    return []
+  }
 }
 
 private func loginOrRedeem(
