@@ -9,6 +9,7 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import Stripe
 import TaggedMoney
 #if !os(Linux)
 import WebKit
@@ -261,6 +262,7 @@ class GiftTests: TestCase {
     Current = .failing
 
     let user = User.owner
+    var deletedCouponId: Coupon.Id?
 
     Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
@@ -269,6 +271,10 @@ class GiftTests: TestCase {
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
+    Current.stripe.deleteCoupon = { id in
+      deletedCouponId = id
+      return pure(unit)
+    }
     Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
     Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
     var credit: Cents<Int>?
@@ -303,6 +309,7 @@ class GiftTests: TestCase {
     """)
 
     XCTAssertEqual(credit, 54_00)
+    XCTAssertEqual(deletedCouponId, Coupon.mock.id)
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
