@@ -1,4 +1,7 @@
 import Either
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
