@@ -66,7 +66,6 @@ extension Client {
             "from_name",
             "message",
             "months_free",
-            "stripe_coupon_id",
             "stripe_payment_intent_id",
             "to_email",
             "to_name"
@@ -77,7 +76,6 @@ extension Client {
             \(bind: request.fromName),
             \(bind: request.message),
             \(bind: request.monthsFree),
-            \(bind: request.stripeCouponId),
             \(bind: request.stripePaymentIntentId),
             \(bind: request.toEmail),
             \(bind: request.toName)
@@ -235,18 +233,6 @@ extension Client {
         .first(decoding: Gift.self)
         .mapExcept(requireSome)
       },
-      fetchGiftByStripeCouponId: { couponId in
-        pool.sqlDatabase.raw(
-          """
-          SELECT *
-          FROM "gifts"
-          WHERE "stripe_coupon_id" = \(bind: couponId)
-          LIMIT 1
-          """
-        )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
-      },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
         pool.sqlDatabase.raw(
           """
@@ -263,7 +249,7 @@ extension Client {
         pool.sqlDatabase.raw(
           """
           SELECT * FROM "gifts"
-          WHERE "stripe_coupon_id" IS NOT NULL
+          WHERE "stripe_subscription_id" IS NULL
           AND "deliver_at" BETWEEN CURRENT_DATE - INTERVAL 1 DAY AND CURRENT_DATE
           """
         )
@@ -887,11 +873,11 @@ extension Client {
         )
         .run()
       },
-      updateGift: { id, coupon in
+      updateGift: { id, stripeSubscriptionId in
         pool.sqlDatabase.raw(
           """
           UPDATE "gifts"
-          SET "stripe_coupon_id" = \(bind: coupon)
+          SET "stripe_subscription_id" = \(bind: stripeSubscriptionId)
           WHERE "id" = \(bind: id)
           RETURNING *
           """

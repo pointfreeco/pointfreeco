@@ -20,7 +20,6 @@ extension Client {
     fetchEpisodeProgress: { _, _ in .failing("Database.Client.fetchEpisodeProgress") },
     fetchFreeEpisodeUsers: { .failing("Database.Client.fetchFreeEpisodeUsers") },
     fetchGift: { _ in .failing("Database.Client.fetchGift") },
-    fetchGiftByStripeCouponId: { _ in .failing("Database.Client.fetchGiftByStripeCouponId") },
     fetchGiftByStripePaymentIntentId: { _ in .failing("Database.Client.fetchGiftByStripePaymentIntentId") },
     fetchGiftsToDeliver: { .failing("Database.Client.fetchGiftsToDeliver") },
     fetchSubscriptionById: { _ in .failing("Database.Client.fetchSubscriptionById") },

@@ -25,7 +25,6 @@ extension Client {
     fetchEpisodeProgress: { _, _ in pure(nil) },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchGift: { _ in pure(.unfulfilled) },
-    fetchGiftByStripeCouponId: { _ in pure(.unfulfilled) },
     fetchGiftByStripePaymentIntentId: { _ in pure(.unfulfilled) },
     fetchGiftsToDeliver: { pure([update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1234567890) }]) },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },

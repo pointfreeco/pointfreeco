@@ -86,7 +86,6 @@ class GiftTests: TestCase {
           fromName: "Blob",
           message: "HBD!",
           monthsFree: 3,
-          stripeCouponId: nil,
           stripePaymentIntentId: "pi_test",
           toEmail: "blob.jr@pointfree.co",
           toName: "Blob Jr."

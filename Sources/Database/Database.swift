@@ -29,7 +29,6 @@ public struct Client {
   public var fetchEpisodeProgress: (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchGift: (Gift.Id) -> EitherIO<Error, Gift>
-  public var fetchGiftByStripeCouponId: (Coupon.Id) -> EitherIO<Error, Gift>
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.Id) -> EitherIO<Error, Gift>
   public var fetchGiftsToDeliver: () -> EitherIO<Error, [Gift]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
@@ -75,7 +74,6 @@ public struct Client {
     fetchEpisodeProgress: @escaping (User.Id, Episode.Sequence) -> EitherIO<Error, Int?>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchGift: @escaping (Gift.Id) -> EitherIO<Error, Gift>,
-    fetchGiftByStripeCouponId: @escaping (Coupon.Id) -> EitherIO<Error, Gift>,
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.Id) -> EitherIO<Error, Gift>,
     fetchGiftsToDeliver: @escaping () -> EitherIO<Error, [Gift]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -120,7 +118,6 @@ public struct Client {
     self.fetchEpisodeProgress = fetchEpisodeProgress
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchGift = fetchGift
-    self.fetchGiftByStripeCouponId = fetchGiftByStripeCouponId
     self.fetchGiftByStripePaymentIntentId = fetchGiftByStripePaymentIntentId
     self.fetchGiftsToDeliver = fetchGiftsToDeliver
     self.fetchSubscriptionById = fetchSubscriptionById
@@ -181,7 +178,6 @@ public struct Client {
     public var fromName: String
     public var message: String
     public var monthsFree: Int
-    public var stripeCouponId: Coupon.Id?
     public var stripePaymentIntentId: PaymentIntent.Id
     public var toEmail: EmailAddress
     public var toName: String
@@ -192,7 +188,6 @@ public struct Client {
       fromName: String,
       message: String,
       monthsFree: Int,
-      stripeCouponId: Coupon.Id?,
       stripePaymentIntentId: PaymentIntent.Id,
       toEmail: EmailAddress,
       toName: String
@@ -202,7 +197,6 @@ public struct Client {
       self.deliverAt = deliverAt
       self.message = message
       self.monthsFree = monthsFree
-      self.stripeCouponId = stripeCouponId
       self.stripePaymentIntentId = stripePaymentIntentId
       self.toEmail = toEmail
       self.toName = toName

@@ -45,7 +45,6 @@ func giftCreateMiddleware(
           fromName: giftFormData.fromName,
           message: giftFormData.message,
           monthsFree: giftFormData.monthsFree,
-          stripeCouponId: nil,
           stripePaymentIntentId: paymentIntent.id,
           toEmail: giftFormData.toEmail,
           toName: giftFormData.toName
