@@ -212,8 +212,12 @@ class GiftTests: TestCase {
 
     var credit: Cents<Int>?
     var stripeSubscriptionId: Stripe.Subscription.Id?
+    var userId: User.Id?
 
-    Current.database.createSubscription = { _, _, _, _ in pure(.mock) }
+    Current.database.createSubscription = { _, id, _, _ in
+      userId = id
+      return pure(.mock)
+    }
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
@@ -262,6 +266,7 @@ class GiftTests: TestCase {
 
     XCTAssertEqual(credit, -54_00)
     XCTAssertNotNil(stripeSubscriptionId)
+    XCTAssertNotNil(userId)
   }
 
   func testGiftRedeem_Subscriber() {
