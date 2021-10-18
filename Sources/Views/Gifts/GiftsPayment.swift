@@ -97,7 +97,8 @@ public func giftsPayment(
                     if (result.error) {
                       displayError.textContent = result.error.message
                     } else if (result.paymentIntent.status === "succeeded") {
-                      // TODO: Submit form to show flash message
+                      form.\(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue).value = result.paymentIntent.id
+                      form.submit()
                     }
                   });
                 } else if (response.errorMessage) {
@@ -135,7 +136,7 @@ private func formView(
 ) -> Node {
   .form(
     attributes: [
-      .action(path(to: .gifts(.create(.empty)))),
+      .action(path(to: .gifts(.confirmation(.empty)))),
       .id("gift-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),
@@ -319,6 +320,13 @@ private func formView(
         .type(.hidden),
         .name(GiftFormData.CodingKeys.monthsFree.stringValue),
         .value("\(plan.monthCount)")
+      ]
+    ),
+
+    .input(
+      attributes: [
+        .type(.hidden),
+        .name(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue)
       ]
     )
   )

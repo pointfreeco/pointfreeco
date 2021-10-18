@@ -65,3 +65,21 @@ func giftCreateMiddleware(
       }
     }
 }
+
+func giftConfirmationMiddleware(
+  conn: Conn<StatusLineOpen, GiftFormData>
+) -> IO<Conn<ResponseEnded, Data>> {
+  let formData = conn.data
+  let message: String
+  if let deliverAt = formData.deliverAt {
+    message = """
+      Your gift will be delivered to \(formData.toEmail.rawValue) on \
+      \(dateFormatter.string(from: deliverAt))."
+      """
+  } else {
+    message = """
+      Your gift has been delivered to \(formData.toEmail.rawValue).
+      """
+  }
+  return conn |> redirect(to: .gifts(.index), headersMiddleware: flash(.notice, message))
+}
