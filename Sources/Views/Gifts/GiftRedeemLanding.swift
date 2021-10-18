@@ -9,7 +9,6 @@ import Styleguide
 import Prelude
 
 public func giftRedeemLanding(
-  coupon: Coupon,
   gift: Gift,
   subscriberState: SubscriberState,
   currentUser: User?,
@@ -19,7 +18,6 @@ public func giftRedeemLanding(
     landingHero(title: "Explore the wonderful world of&nbsp;functional programming in Swift."),
     mainContent(
       gift: gift,
-      coupon: coupon,
       subscriberState: subscriberState,
       currentUser: currentUser,
       episodeStats: episodeStats
@@ -33,7 +31,6 @@ public func giftRedeemLanding(
 
 private func mainContent(
   gift: Gift,
-  coupon: Coupon,
   subscriberState: SubscriberState,
   currentUser: User?,
   episodeStats: EpisodeStats
@@ -79,7 +76,6 @@ private func mainContent(
       ],
       giftOption(
         gift: gift,
-        coupon: coupon,
         subscriberState: subscriberState,
         currentUser: currentUser,
         episodeStats: episodeStats
@@ -90,7 +86,6 @@ private func mainContent(
 
 func giftOption(
   gift: Gift,
-  coupon: Coupon,
   subscriberState: SubscriberState,
   currentUser: User?,
   episodeStats: EpisodeStats
@@ -162,7 +157,7 @@ func giftOption(
       ),
       existingSubscriberNotice(subscriberState: subscriberState),
       loginOrRedeem(
-        coupon: coupon,
+        gift: gift,
         currentUser: currentUser
       )
     )
@@ -191,14 +186,14 @@ private func existingSubscriberNotice(
 }
 
 private func loginOrRedeem(
-  coupon: Coupon,
+  gift: Gift,
   currentUser: User?
 ) -> Node {
   if currentUser == nil {
     return .gitHubLink(
       text: "Log in to redeem",
       type: .black,
-      href: path(to: .login(redirect: path(to: .gifts(.redeemLanding(coupon.id))))),
+      href: path(to: .login(redirect: path(to: .gifts(.redeemLanding(gift.id))))),
       size: .regular,
       extraClasses:
         Class.display.block
@@ -209,7 +204,7 @@ private func loginOrRedeem(
     return .form(
       attributes: [
         .method(.post),
-        .action(path(to: .gifts(.redeem(coupon.id))))
+        .action(path(to: .gifts(.redeem(gift.id))))
       ],
       .input(
         attributes: [

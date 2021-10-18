@@ -493,6 +493,11 @@ final class StripeTests: XCTestCase {
       named: "fetch-invoices"
     )
     assertSnapshot(
+      matching: Stripe.fetchPaymentIntent(id: "pi_test").rawValue,
+      as: .raw,
+      named: "fetch-payment-intent"
+    )
+    assertSnapshot(
       matching: Stripe.fetchPlans().rawValue,
       as: .raw,
       named: "fetch-plans"

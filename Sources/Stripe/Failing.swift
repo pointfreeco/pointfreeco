@@ -13,6 +13,7 @@ extension Client {
     fetchCustomer: { _ in .failing("Stripe.Client.fetchCustomer") },
     fetchInvoice: { _ in .failing("Stripe.Client.fetchInvoice") },
     fetchInvoices: { _ in .failing("Stripe.Client.fetchInvoices") },
+    fetchPaymentIntent: { _ in .failing("Stripe.Client.fetchPaymentIntent") },
     fetchPlans: { .failing("Stripe.Client.fetchPlans") },
     fetchPlan: { _ in .failing("Stripe.Client.fetchPlan") },
     fetchSubscription: { _ in .failing("Stripe.Client.fetchSubscription") },

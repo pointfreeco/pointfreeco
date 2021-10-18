@@ -8,8 +8,8 @@ public enum Gifts: Equatable {
   case create(GiftFormData)
   case index
   case plan(Plan)
-  case redeem(Coupon.Id)
-  case redeemLanding(Coupon.Id)
+  case redeem(Gift.Id)
+  case redeemLanding(Gift.Id)
 
   public enum Plan: String {
     case threeMonths
@@ -63,8 +63,8 @@ private let giftsRouters: [Router<Gifts>] = [
     <¢> get %> pathParam(.rawRepresentable) <% end,
 
   .case(Gifts.redeem)
-    <¢> post %> pathParam(.tagged) <% end,
+    <¢> post %> pathParam(.tagged(.uuid)) <% end,
 
   .case(Gifts.redeemLanding)
-    <¢> get %> pathParam(.tagged) <% end,
+    <¢> get %> pathParam(.tagged(.uuid)) <% end,
 ]
