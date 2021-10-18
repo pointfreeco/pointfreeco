@@ -129,7 +129,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> episodesRssMiddleware
 
     case let .gifts(giftsRoute):
-      return conn.map(const(user .*. route .*. subscriberState .*. giftsRoute .*. unit))
+      return conn.map(const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit))
       |> (
         basicAuth(
           user: Current.envVars.basicAuth.username,

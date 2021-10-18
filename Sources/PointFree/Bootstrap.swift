@@ -60,8 +60,10 @@ private func loadEnvVars(eventLoopGroup: EventLoopGroup) -> EitherIO<Error, Prel
     : .live(
       pool: .init(
         source: PostgresConnectionSource(
-          configuration: update(PostgresConfiguration(url: Current.envVars.postgres.databaseUrl)!) {
-            if Current.envVars.postgres.databaseUrl.contains("amazonaws.com") {
+          configuration: update(
+            PostgresConfiguration(url: Current.envVars.postgres.databaseUrl.rawValue)!
+          ) {
+            if Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
               $0.tlsConfiguration = update(.clientDefault) {
                 $0.certificateVerification = .none
               }

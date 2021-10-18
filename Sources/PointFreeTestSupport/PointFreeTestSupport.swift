@@ -28,6 +28,7 @@ import StripeTestSupport
 #if os(macOS)
 import WebKit
 #endif
+import XCTestDynamicOverlay
 
 extension Environment {
   public static let mock = Environment(
@@ -47,6 +48,37 @@ extension Environment {
     renderXml: Html._xmlRender,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
+  )
+
+  public static let failing = Self(
+    assets: .mock,
+    blogPosts: {
+      XCTFail("Current.blogPosts not implemented")
+      return []
+    },
+    cookieTransform: .plaintext,
+    collections: [.mock],
+    database: .failing,
+    date: {
+      XCTFail("Current.date not implemented")
+      return Date()
+    },
+    envVars: .mock,
+    episodes: {
+      XCTFail("Current.episodes not implemented")
+      return []
+    },
+    features: Feature.allFeatures,
+    gitHub: .failing,
+    logger: .mock,
+    mailgun: .failing,
+    renderHtml: { Html.render($0) },
+    renderXml: Html._xmlRender,
+    stripe: .failing,
+    uuid: {
+      XCTFail("Current.uuid not implemented")
+      return UUID()
+    }
   )
 
   public static let teamYearly = update(mock) {

@@ -397,8 +397,7 @@ final class StripeTests: XCTestCase {
 }
 """
 
-    let paymentIntent = try Stripe.jsonDecoder.decode(PaymentIntent.self, from: Data(jsonString.utf8))
-
+    _ = try Stripe.jsonDecoder.decode(PaymentIntent.self, from: Data(jsonString.utf8))
   }
 
   func testRequests() {
@@ -462,6 +461,11 @@ final class StripeTests: XCTestCase {
         .rawValue,
       as: .raw,
       named: "create-subscription-coupon"
+    )
+    assertSnapshot(
+      matching: Stripe.deleteCoupon(id: "deadbeef").rawValue,
+      as: .raw,
+      named: "delete-coupon"
     )
     assertSnapshot(
       matching: Stripe.fetchCoupon(id: "15-percent").rawValue,

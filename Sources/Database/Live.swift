@@ -234,6 +234,18 @@ extension Client {
         )
         .first(decoding: Gift.self)
       },
+      fetchGiftByStripeCouponId: { couponId in
+        pool.sqlDatabase.raw(
+          """
+          SELECT *
+          FROM "gifts"
+          WHERE "coupon_id" = \(bind: couponId)
+          LIMIT 1
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
+      },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
         pool.sqlDatabase.raw(
           """
@@ -245,6 +257,16 @@ extension Client {
         )
         .first(decoding: Gift.self)
         .mapExcept(requireSome)
+      },
+      fetchGiftsToDeliver: {
+        pool.sqlDatabase.raw(
+          """
+          SELECT * FROM "gifts"
+          WHERE "stripe_coupon_id" IS NOT NULL
+          AND "deliver_at" BETWEEN CURRENT_DATE - INTERVAL 1 DAY AND CURRENT_DATE
+          """
+        )
+        .all(decoding: Gift.self)
       },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(
@@ -778,6 +800,12 @@ extension Client {
             """
             CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_payment_intent_id"
             ON "gifts" ("stripe_payment_intent_id")
+            """
+          ),
+          database.run(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_coupon_id"
+            ON "gifts" ("stripe_coupon_id")
             """
           ),
         ])

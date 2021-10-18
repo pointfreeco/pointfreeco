@@ -17,18 +17,46 @@ public typealias StripePublishableKey = Stripe.Client.PublishableKey
 public typealias StripeSecretKey = Stripe.Client.SecretKey
 
 public struct EnvVars: Codable {
-  public var appEnv = AppEnv.development
-  public var appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
-  public var baseUrl = URL(string: "http://localhost:8080")!
-  public var basicAuth = BasicAuth()
-  public var emergencyMode = false
-  public var gitHub = GitHub()
-  public var mailgun = Mailgun()
-  public var port = 8080
-  public var postgres = Postgres()
-  public var regionalDiscountCouponId: Coupon.Id = "regional-discount"
-  public var rssUserAgentWatchlist: [String] = []
-  public var stripe = Stripe()
+  public var appEnv: AppEnv
+  public var appSecret: AppSecret
+  public var baseUrl: URL
+  public var basicAuth: BasicAuth
+  public var emergencyMode: Bool
+  public var gitHub: GitHub
+  public var mailgun: Mailgun
+  public var port: Int
+  public var postgres: Postgres
+  public var regionalDiscountCouponId: Coupon.Id
+  public var rssUserAgentWatchlist: [String]
+  public var stripe: Stripe
+
+  public init(
+    appEnv: AppEnv = .development,
+    appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef",
+    baseUrl: URL = URL(string: "http://localhost:8080")!,
+    basicAuth: BasicAuth = BasicAuth(),
+    emergencyMode: Bool = false,
+    gitHub: GitHub = GitHub(),
+    mailgun: Mailgun = Mailgun(),
+    port: Int = 8080,
+    postgres: Postgres = Postgres(),
+    regionalDiscountCouponId: Coupon.Id = "regional-discount",
+    rssUserAgentWatchlist: [String] = [],
+    stripe: Stripe = Stripe()
+  ) {
+    self.appEnv = appEnv
+    self.appSecret = appSecret
+    self.baseUrl = baseUrl
+    self.basicAuth = basicAuth
+    self.emergencyMode = emergencyMode
+    self.gitHub = gitHub
+    self.mailgun = mailgun
+    self.port = port
+    self.postgres = postgres
+    self.regionalDiscountCouponId = regionalDiscountCouponId
+    self.rssUserAgentWatchlist = rssUserAgentWatchlist
+    self.stripe = stripe
+  }
 
   private enum CodingKeys: String, CodingKey {
     case appEnv = "APP_ENV"
@@ -48,8 +76,16 @@ public struct EnvVars: Codable {
   }
 
   public struct BasicAuth: Codable {
-    public var username = "hello"
-    public var password = "world"
+    public var username: String
+    public var password: String
+
+    public init(
+      username: String = "hello",
+      password: String = "world"
+    ) {
+      self.username = username
+      self.password = password
+    }
 
     private enum CodingKeys: String, CodingKey {
       case username = "BASIC_AUTH_USERNAME"
@@ -58,8 +94,16 @@ public struct EnvVars: Codable {
   }
 
   public struct GitHub: Codable {
-    public var clientId: GitHubClientId = "deadbeef-client-id"
-    public var clientSecret: GitHubClientSecret = "deadbeef-client-secret"
+    public var clientId: GitHubClientId
+    public var clientSecret: GitHubClientSecret
+
+    public init(
+      clientId: GitHubClientId = "deadbeef-client-id",
+      clientSecret: GitHubClientSecret = "deadbeef-client-secret"
+    ) {
+      self.clientId = clientId
+      self.clientSecret = clientSecret
+    }
 
     private enum CodingKeys: String, CodingKey {
       case clientId = "GITHUB_CLIENT_ID"
@@ -68,8 +112,16 @@ public struct EnvVars: Codable {
   }
 
   public struct Mailgun: Codable {
-    public var apiKey: MailgunApiKey = "key-deadbeefdeadbeefdeadbeefdeadbeef"
-    public var domain: MailgunDomain = "mg.domain.com"
+    public var apiKey: MailgunApiKey
+    public var domain: MailgunDomain
+
+    public init(
+      apiKey: MailgunApiKey = "key-deadbeefdeadbeefdeadbeefdeadbeef",
+      domain: MailgunDomain = "mg.domain.com"
+    ) {
+      self.apiKey = apiKey
+      self.domain = domain
+    }
 
     private enum CodingKeys: String, CodingKey {
       case apiKey = "MAILGUN_PRIVATE_API_KEY"
@@ -80,7 +132,13 @@ public struct EnvVars: Codable {
   public struct Postgres: Codable {
     public typealias DatabaseUrl = Tagged<Postgres, String>
 
-    public var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_development"
+    public var databaseUrl: DatabaseUrl
+
+    public init(
+      databaseUrl: DatabaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_development"
+    ) {
+      self.databaseUrl = databaseUrl
+    }
 
     private enum CodingKeys: String, CodingKey {
       case databaseUrl = "DATABASE_URL"
@@ -91,6 +149,16 @@ public struct EnvVars: Codable {
     public var endpointSecret: StripeEndpointSecret = "whsec_test"
     public var publishableKey: StripePublishableKey = "pk_test"
     public var secretKey: StripeSecretKey = "sk_test"
+
+    public init(
+      endpointSecret: StripeEndpointSecret = "whsec_test",
+      publishableKey: StripePublishableKey = "pk_test",
+      secretKey: StripeSecretKey = "sk_test"
+    ) {
+      self.endpointSecret = endpointSecret
+      self.publishableKey = publishableKey
+      self.secretKey = secretKey
+    }
 
     private enum CodingKeys: String, CodingKey {
       case endpointSecret = "STRIPE_ENDPOINT_SECRET"

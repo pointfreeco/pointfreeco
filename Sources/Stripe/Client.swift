@@ -7,6 +7,7 @@ import FoundationNetworking
 #endif
 import FoundationPrelude
 import Logging
+import Prelude
 import Tagged
 import TaggedMoney
 import UrlFormEncoding
@@ -14,9 +15,10 @@ import UrlFormEncoding
 public struct Client {
   public var cancelSubscription: (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
   public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
-  public var createCustomer: (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+  public var createCustomer: (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
+  public var deleteCoupon: (Coupon.Id) -> EitherIO<Error, Prelude.Unit>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Error, Invoice>
@@ -35,9 +37,10 @@ public struct Client {
   public init(
     cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
-    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
+    createCustomer: @escaping (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
+    deleteCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Prelude.Unit>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
     fetchInvoice: @escaping (Invoice.Id) -> EitherIO<Error, Invoice>,
@@ -58,6 +61,7 @@ public struct Client {
     self.createCustomer = createCustomer
     self.createPaymentIntent = createPaymentIntent
     self.createSubscription = createSubscription
+    self.deleteCoupon = deleteCoupon
     self.fetchCoupon = fetchCoupon
     self.fetchCustomer = fetchCustomer
     self.fetchInvoice = fetchInvoice
@@ -127,6 +131,7 @@ extension Client {
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
       },
+      deleteCoupon: { runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)) },
       fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
       fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
       fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
@@ -208,7 +213,7 @@ func createCoupon(
 }
 
 func createCustomer(
-  token: Token.Id,
+  token: Token.Id?,
   description: String?,
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
@@ -224,7 +229,7 @@ func createCustomer(
         "business_vat_id": vatNumber?.rawValue,
         "description": description,
         "email": email?.rawValue,
-        "source": token.rawValue,
+        "source": token?.rawValue,
       ]
         .compactMapValues { $0 }
     )
@@ -258,6 +263,13 @@ func createSubscription(
   params["coupon"] = coupon?.rawValue
 
   return stripeRequest("subscriptions?expand[]=customer", .post(params))
+}
+
+func deleteCoupon(id: Coupon.Id) -> DecodableRequest<Prelude.Unit> {
+  stripeRequest(
+    "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""),
+    .delete([:])
+  )
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
@@ -361,6 +373,7 @@ public let jsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .secondsSince1970
   encoder.keyEncodingStrategy = .convertToSnakeCase
+  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
   return encoder
 }()
 

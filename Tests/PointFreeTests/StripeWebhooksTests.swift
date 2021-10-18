@@ -1,4 +1,7 @@
 import Either
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
@@ -303,12 +306,11 @@ final class StripeWebhooksTests: TestCase {
 """#.utf8))
   }
 
-  func testValidHook() {
+  func testValidHook() throws {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-    hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
-      forHTTPHeaderField: "Stripe-Signature"
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(Event.invoice), as: UTF8.self)
     )
 
     let conn = connection(from: hook)
@@ -317,12 +319,12 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testStaleHook() {
+  func testStaleHook() throws {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-    hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=a3cd5f0626de9b0a1aa72ae8e7dd4392023aeed8b1a390ce4cb7b7b29b32e814",
-      forHTTPHeaderField: "Stripe-Signature"
+    try hook.addStripeSignature(
+      timestamp: Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970),
+      payload: .init(decoding: Stripe.jsonEncoder.encode(Event.invoice), as: UTF8.self)
     )
 
     let conn = connection(from: hook)
@@ -331,13 +333,10 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testInvalidHook() {
+  func testInvalidHook() throws {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-    hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=deadbeef",
-      forHTTPHeaderField: "Stripe-Signature"
-    )
+    try hook.addStripeSignature(payload: "deadbeef")
 
     let conn = connection(from: hook)
 
@@ -345,7 +344,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testNoInvoiceSubscriptionId() {
+  func testNoInvoiceSubscriptionId() throws {
     #if !os(Linux)
     var invoice = Invoice.mock(charge: .left("ch_test"))
     invoice.subscription = nil
@@ -356,9 +355,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-    hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=c2ed25f2feb58213ce60099e2a0e2be3b78e06a5d05c582c83084b739571349d",
-      forHTTPHeaderField: "Stripe-Signature"
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
     )
 
     let conn = connection(from: hook)
@@ -367,7 +365,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() {
+  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() throws {
     #if !os(Linux)
     var invoice = Invoice.mock(charge: .left("ch_test"))
     invoice.subscription = nil
@@ -381,9 +379,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-    hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=29a84de76bc01997e8456be0e39a809e9e207a7768efae7de482f72b21c9dfa8",
-      forHTTPHeaderField: "Stripe-Signature"
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
     )
 
     let conn = connection(from: hook)
@@ -392,7 +389,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testNoInvoiceNumber() {
+  func testNoInvoiceNumber() throws {
     #if !os(Linux)
     var invoice = Invoice.mock(charge: .left("ch_test"))
     invoice.number = nil
@@ -403,9 +400,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-    hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=fc1d0cfd072a6c126ab8fa52bc8ad956c3337b45a07ce404e028a6dd1c921b5a",
-      forHTTPHeaderField: "Stripe-Signature"
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
     )
 
     let conn = connection(from: hook)
@@ -430,5 +426,188 @@ final class StripeWebhooksTests: TestCase {
       assertSnapshot(matching: webView, as: .image)
     }
     #endif
+  }
+
+  func testPaymentIntent_Gift() throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.mock) }
+    var couponId: Coupon.Id?
+    Current.database.updateGift = { _, id in
+      couponId = id
+      return pure(.mock)
+    }
+    var couponRate: Coupon.Rate?
+    Current.stripe.createCoupon = { duration, maxRedemptions, name, rate in
+      couponRate = rate
+      return pure(update(.mock) { $0.id = "gift" })
+    }
+    var didSendEmail = false
+    Current.mailgun.sendEmail = { _ in
+      didSendEmail = true
+      return pure(.init(id: "", message: ""))
+    }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=928ccd8ad4e78dd85de3dd9bd61f25551d2730a8743bd42a116c1b945c69c2e5
+    
+    {
+      "data" : {
+        "object" : {
+          "amount" : 5400,
+          "client_secret" : "pi_test_secret_test",
+          "currency" : "usd",
+          "id" : "pi_test",
+          "status" : "requires_confirmation"
+        }
+      },
+      "id" : "evt_test",
+      "type" : "payment_intent.succeeded"
+    }
+    
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    
+    OK
+    """)
+
+    XCTAssertEqual(couponId, "gift")
+    XCTAssertEqual(couponRate, .amountOff(54_00))
+    XCTAssertEqual(didSendEmail, true)
+  }
+
+  func testPaymentIntent_NoGift() throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=928ccd8ad4e78dd85de3dd9bd61f25551d2730a8743bd42a116c1b945c69c2e5
+    
+    {
+      "data" : {
+        "object" : {
+          "amount" : 5400,
+          "client_secret" : "pi_test_secret_test",
+          "currency" : "usd",
+          "id" : "pi_test",
+          "status" : "requires_confirmation"
+        }
+      },
+      "id" : "evt_test",
+      "type" : "payment_intent.succeeded"
+    }
+    
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    
+    OK
+    """)
+  }
+
+  func testFailedPaymentIntent() throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentPaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
+
+    let conn = connection(from: hook)
+    _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
+    POST http://localhost:8080/webhooks/stripe
+    Cookie: pf_session={}
+    Stripe-Signature: t=1517356800,v1=0abe38e2637c25a8e99ea0cb9028534c41e240a3ca48fe7347ba23dd31f805a4
+    
+    {
+      "data" : {
+        "object" : {
+          "amount" : 5400,
+          "client_secret" : "pi_test_secret_test",
+          "currency" : "usd",
+          "id" : "pi_test",
+          "status" : "requires_confirmation"
+        }
+      },
+      "id" : "evt_test",
+      "type" : "payment_intent.payment_failed"
+    }
+    
+    200 OK
+    Content-Length: 2
+    Content-Type: text/plain
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    
+    OK
+    """)
+  }
+}
+
+extension URLRequest {
+  mutating func addStripeSignature(
+    timestamp: Int = Int(Current.date().timeIntervalSince1970),
+    payload: String
+  ) throws {
+    let signature = try XCTUnwrap(generateStripeSignature(timestamp: timestamp, payload: payload))
+
+    self.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=\(signature)",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
   }
 }

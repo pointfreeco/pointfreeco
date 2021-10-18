@@ -64,10 +64,20 @@ func stripeHookFailure<A>(
   }
 }
 
+public func generateStripeSignature(
+  timestamp: Int,
+  payload: String
+) -> String? {
+  hexDigest(
+    value: "\(timestamp).\(payload)",
+    asciiSecret: Current.envVars.stripe.endpointSecret.rawValue
+  )
+}
+
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
-    let secret = Current.envVars.stripe.endpointSecret
-    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret.rawValue) else { return false }
+    guard let digest = generateStripeSignature(timestamp: Int(timestamp), payload: payload)
+    else { return false }
 
     let constantTimeSignature =
     signature.count == digest.count

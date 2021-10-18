@@ -79,7 +79,12 @@ private func handlePaymentIntent(
         )
 
       case let .right(gift):
-        // TODO: Send email
+        if gift.deliverAt == nil {
+          sendGiftEmail(for: gift)
+            .run
+            .parallel
+            .run { _ in }
+        }
         return conn |> writeStatus(.ok) >=> respond(text: "OK")
       }
     }
