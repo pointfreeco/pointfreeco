@@ -239,7 +239,7 @@ extension Client {
           """
           SELECT *
           FROM "gifts"
-          WHERE "coupon_id" = \(bind: couponId)
+          WHERE "stripe_coupon_id" = \(bind: couponId)
           LIMIT 1
           """
         )

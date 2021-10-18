@@ -136,4 +136,23 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
   }
+
+  func testGiftsRedeemLanding() {
+    let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/deadbeef")!)
+
+    let route = Route.gifts(.redeemLanding("deadbeef"))
+
+    XCTAssertEqual(pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+  }
+
+  func testGiftsRedeem() {
+    var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/deadbeef")!)
+    request.httpMethod = "POST"
+
+    let route = Route.gifts(.redeem("deadbeef"))
+
+    XCTAssertEqual(pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+  }
 }

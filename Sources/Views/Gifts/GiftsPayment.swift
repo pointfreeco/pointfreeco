@@ -229,7 +229,16 @@ private func formView(
 
     .label(attributes: [.class([labelClass])], "Payment"),
     .div(
-      attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+      attributes: [
+        .class([
+          Class.flex.flex,
+          Class.grid.middle(.mobile),
+          Class.border.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]]),
+          Class.margin([.mobile: [.top: 1]]),
+        ]),
+      ],
       .div(
         attributes: [
           .class([Class.size.width100pct]),
@@ -249,15 +258,60 @@ private func formView(
       ]
     ),
 
-    .input(
+    .gridRow(
       attributes: [
-        .type(.submit),
         .class([
-          Class.pf.components.button(color: .black),
+          Class.grid.middle(.mobile),
           Class.margin([.mobile: [.top: 3]])
-        ]),
-        .value("Purchase"),
-      ]
+        ])
+      ],
+      .gridColumn(
+        sizes: [:],
+        attributes: [.class([Class.grid.start(.mobile)])],
+        .div(
+          attributes: [
+            .class([
+              Class.flex.flex,
+              Class.flex.align.center,
+              Class.grid.middle(.mobile),
+            ])
+          ],
+          .h3(
+            attributes: [
+              .class([
+                Class.pf.type.responsiveTitle2,
+                Class.type.normal,
+                Class.margin([.mobile: [.topBottom: 0]])
+              ])
+            ],
+            .text("$\(Int(plan.amount.map(Double.init).dollars.rawValue))")
+          ),
+          .span(
+            attributes: [
+              .class([
+                Class.pf.type.body.small,
+                Class.pf.colors.fg.gray400,
+                Class.margin([.mobile: [.left: 1]]),
+                Class.padding([.mobile: [.bottom: 1]])
+              ])
+            ],
+            "Total"
+          )
+        )
+      ),
+      .gridColumn(
+        sizes: [:],
+        attributes: [.class([Class.grid.end(.mobile)])],
+        .input(
+          attributes: [
+            .type(.submit),
+            .class([
+              Class.pf.components.button(color: .black)
+            ]),
+            .value("Purchase"),
+          ]
+        )
+      )
     ),
 
     .input(

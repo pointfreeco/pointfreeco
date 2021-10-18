@@ -63,8 +63,8 @@ private let giftsRouters: [Router<Gifts>] = [
     <¢> get %> pathParam(.rawRepresentable) <% end,
 
   .case(Gifts.redeem)
-    <¢> get %> pathParam(.tagged) <% end,
+    <¢> post %> pathParam(.tagged) <% end,
 
   .case(Gifts.redeemLanding)
-    <¢> post %> pathParam(.tagged) <% end,
+    <¢> get %> pathParam(.tagged) <% end,
 ]

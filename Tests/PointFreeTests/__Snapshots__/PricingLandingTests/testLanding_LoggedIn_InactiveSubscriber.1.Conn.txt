@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 204217
+Content-Length: 204553
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2745,6 +2745,16 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
                       m-pb2
                       md-ctn">
             <p>Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer <a href="/subscribe/personal?useRegionalDiscount=true">regional</a> discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, <a href="/subscribe/personal?useRegionalDiscount=true">see here</a>.</p>
+
+          </div>
+          <p class="bold
+                    fg-black">
+            Can I give a subscription as a gift?
+          </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>You can! Check out our dedicated <a href="/gifts">gifts</a> page for more information.</p>
 
           </div>
         </div>

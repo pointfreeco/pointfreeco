@@ -244,10 +244,11 @@ private func header(
   ]
 }
 
-private func planFeatures(
+func planFeatures(
   currentUser: User?,
   episodeStats: EpisodeStats,
-  lane: Pricing.Lane
+  lane: Pricing.Lane,
+  showDiscountOptions: Bool = true
 ) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
@@ -266,7 +267,8 @@ private func planFeatures(
       .fragment(
         PricingPlan.personal(
           allEpisodeCount: episodeStats.allEpisodeCount,
-          episodeHourCount: episodeStats.episodeHourCount
+          episodeHourCount: episodeStats.episodeHourCount,
+          showDiscountOptions: showDiscountOptions
         )
           .features
           .map { feature in
