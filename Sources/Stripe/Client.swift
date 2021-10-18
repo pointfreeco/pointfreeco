@@ -222,7 +222,7 @@ func createCustomer(
 -> DecodableRequest<Customer> {
 
   stripeRequest(
-    "customers",
+    "customers?expand[]=sources",
     .post(
       [
         "balance": balance?.map(String.init).rawValue,
