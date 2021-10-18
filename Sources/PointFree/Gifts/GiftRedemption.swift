@@ -107,8 +107,11 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
       .flatMap { customer in
         Current.stripe.createSubscription(customer.id, plan, 1, nil)
           .flatMap { stripeSubscription in
-            Current.database.updateGift(gift.id, stripeSubscription.id)
-              .map(const(customer))
+            Current.database.createSubscription(stripeSubscription, user.id, true, nil)
+              .flatMap { _ in
+                Current.database.updateGift(gift.id, stripeSubscription.id)
+                .map(const(customer))
+              }
           }
       }
       .run
