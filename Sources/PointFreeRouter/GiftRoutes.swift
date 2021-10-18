@@ -5,6 +5,7 @@ import Stripe
 import TaggedMoney
 
 public enum Gifts: Equatable {
+  case confirmation(GiftFormData)
   case create(GiftFormData)
   case index
   case plan(Plan)
@@ -52,6 +53,10 @@ public enum Gifts: Equatable {
 let giftsRouter = giftsRouters.reduce(.empty, <|>)
 
 private let giftsRouters: [Router<Gifts>] = [
+  .case(Gifts.confirmation)
+    <¢> post
+    %> formBody(GiftFormData.self, decoder: formDecoder) <% end,
+
   .case(Gifts.create)
     <¢> post
     %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,

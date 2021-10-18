@@ -1,7 +1,9 @@
+import CustomDump
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import SnapshotTesting
 import UrlFormEncoding
@@ -153,6 +155,26 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
     let route = Route.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+  }
+
+  func testGiftsConfirmation() {
+    var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
+    request.httpMethod = "POST"
+    request.httpBody = Data("""
+      fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
+      """.utf8)
+
+    let route = Route.gifts(.confirmation(update(.empty) {
+      $0.fromEmail = "blob@pointfree.co"
+      $0.fromName = "Blob"
+      $0.message = "HBD!"
+      $0.monthsFree = 3
+      $0.toEmail = "blob.jr@pointfree.co"
+      $0.toName = "Blob Jr."
+    }))
+
+    XCTAssertNoDifference(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
   }
 }

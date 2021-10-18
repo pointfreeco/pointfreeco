@@ -292,6 +292,7 @@ var package = Package(
       dependencies: [
         "Models",
         "PointFreeRouter",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
         .product(name: "UrlFormEncoding", package: "swift-web")

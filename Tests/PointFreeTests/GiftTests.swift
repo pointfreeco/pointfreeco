@@ -93,6 +93,50 @@ class GiftTests: TestCase {
     )
   }
 
+  func testGiftConfirmation() {
+    Current = .failing
+
+    Current.date = { .init(timeIntervalSince1970: 1234567890) }
+
+    let conn = connection(
+      from: request(
+        to: .gifts(
+          .confirmation(
+            .init(
+              deliverAt: nil,
+              fromEmail: "blob@pointfree.co",
+              fromName: "Blob",
+              message: "HBD!",
+              monthsFree: 3,
+              toEmail: "blob.jr@pointfree.co",
+              toName: "Blob Jr."
+            )
+          )
+        ),
+        basicAuth: true
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
+    POST http://localhost:8080/gifts
+    Authorization: Basic aGVsbG86d29ybGQ=
+    Cookie: pf_session={}
+    
+    fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
+    
+    302 Found
+    Location: /gifts
+    Referrer-Policy: strict-origin-when-cross-origin
+    Set-Cookie: pf_session={"flash":{"message":"Your gift has been delivered to blob.jr@pointfree.co.","priority":"notice"}}; Expires=Mon, 11 Feb 2019 23:31:30 GMT; Path=/
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Permitted-Cross-Domain-Policies: none
+    X-XSS-Protection: 1; mode=block
+    """)
+  }
+
   func testGiftCreate_StripeFailure() {
     Current.stripe.createPaymentIntent = { _ in
       struct Error: Swift.Error {}
