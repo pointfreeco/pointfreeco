@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep164_navigationSheets = Episode(
     blurb: """
-Now that we've built up the tools needed to bind application state to navigation, let's exercise them. We'll quickly add one more feature to our application, and we'll even write unit tests that assert against navigation and deep-linking.
+Now that we've built up the tools needed to bind application state to navigation, let's exercise them. We'll quickly add *two* more features to our application, beef up our navigation tools, and even write unit tests that assert against navigation and deep-linking.
 """,
     codeSampleDirectory: "0164-navigation-pt5",
     exercises: _exercises,
