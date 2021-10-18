@@ -11,8 +11,7 @@ import Views
 let paymentInfoResponse =
   requireUserAndStripeSubscription
     <| writeStatus(.ok)
-    >=> map(over1(^\.customer.right?.sources?.data.first?.left))
-    >>> map(lower)
+    >=> map(over1(^\.customer.right?.sources?.data.first?.left) >>> lower)
     >>> respond(
       view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
       layoutData: { card, currentUser, subscriberState in
