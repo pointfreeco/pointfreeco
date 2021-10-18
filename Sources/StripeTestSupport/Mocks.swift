@@ -16,6 +16,7 @@ extension Client {
     fetchCustomer: const(pure(.mock)),
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
+    fetchPaymentIntent: const(pure(.succeeded)),
     fetchPlans: { pure(.mock([.mock])) },
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),

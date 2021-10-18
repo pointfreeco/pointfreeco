@@ -26,7 +26,7 @@ class GiftTests: TestCase {
     var createGiftRequest: Database.Client.CreateGiftRequest!
     Current.database.createGift = { request in
       createGiftRequest = request
-      return pure(.mock)
+      return pure(.unfulfilled)
     }
 
     let conn = connection(
@@ -211,12 +211,18 @@ class GiftTests: TestCase {
 
     let user = User.nonSubscriber
 
-    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    var credit: Cents<Int>?
+    var stripeSubscriptionId: Stripe.Subscription.Id?
+
+    Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
+    Current.database.updateGift = { _, id in
+      stripeSubscriptionId = id
+      return pure(.fulfilled)
+    }
     Current.date = { .mock }
-    var credit: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, amount in
       credit = amount
       return pure(update(.mock) {
@@ -227,12 +233,11 @@ class GiftTests: TestCase {
     Current.stripe.createSubscription = { _, _, _, _ in
       pure(.individualMonthly)
     }
-    Current.stripe.deleteCoupon = { _ in pure(unit) }
-    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem("deadbeef")),
+        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -240,7 +245,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
@@ -255,29 +260,31 @@ class GiftTests: TestCase {
     X-XSS-Protection: 1; mode=block
     """)
 
-    XCTAssertEqual(credit, 54_00)
+    XCTAssertEqual(credit, -54_00)
+    XCTAssertNotNil(stripeSubscriptionId)
   }
 
   func testGiftRedeem_Subscriber() {
     Current = .failing
 
     let user = User.owner
-    var deletedCouponId: Coupon.Id?
 
-    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    var credit: Cents<Int>?
+    var stripeSubscriptionId: Stripe.Subscription.Id?
+
+    Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
-    Current.date = { .mock }
-    Current.stripe.deleteCoupon = { id in
-      deletedCouponId = id
-      return pure(unit)
+    Current.database.updateGift = { _, id in
+      stripeSubscriptionId = id
+      return pure(.fulfilled)
     }
-    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.date = { .mock }
+    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
     Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
-    var credit: Cents<Int>?
     Current.stripe.updateCustomerBalance = { _, amount in
       credit = amount
       return pure(update(.mock))
@@ -285,7 +292,7 @@ class GiftTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem("deadbeef")),
+        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -293,7 +300,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
@@ -308,25 +315,25 @@ class GiftTests: TestCase {
     X-XSS-Protection: 1; mode=block
     """)
 
-    XCTAssertEqual(credit, 54_00)
-    XCTAssertEqual(deletedCouponId, Coupon.mock.id)
+    XCTAssertEqual(credit, -54_00)
+    XCTAssertNotNil(stripeSubscriptionId)
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
     Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
 
     let conn = connection(
-      from: request(to: .gifts(.redeem("deadbeef")), session: .loggedOut, basicAuth: true)
+      from: request(to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))), session: .loggedOut, basicAuth: true)
     )
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
 
     302 Found
-    Location: /login?redirect=http://localhost:8080/gifts/deadbeef
+    Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Referrer-Policy: strict-origin-when-cross-origin
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen
@@ -341,21 +348,16 @@ class GiftTests: TestCase {
 
     let user = User.nonSubscriber
 
-    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchGift = { _ in pure(.fulfilled) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
-    Current.stripe.fetchCoupon = { _ in
-      pure(update(.mock) {
-        $0.rate = .amountOff(54_00)
-        $0.valid = false
-      })
-    }
+    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem("deadbeef")),
+        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -363,7 +365,7 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
     
@@ -384,19 +386,19 @@ class GiftTests: TestCase {
 
     let user = User.teammate
 
-    Current.database.fetchGiftByStripeCouponId = { _ in pure(.mock) }
+    Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
-    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
     Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem("deadbeef")),
+        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -404,12 +406,12 @@ class GiftTests: TestCase {
     let result = conn |> siteMiddleware
 
     _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/deadbeef
+    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
     
     302 Found
-    Location: /gifts/coupon-deadbeef
+    Location: /gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Referrer-Policy: strict-origin-when-cross-origin
     Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team subscription.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
     X-Content-Type-Options: nosniff

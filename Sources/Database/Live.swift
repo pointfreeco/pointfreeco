@@ -233,6 +233,7 @@ extension Client {
           """
         )
         .first(decoding: Gift.self)
+        .mapExcept(requireSome)
       },
       fetchGiftByStripeCouponId: { couponId in
         pool.sqlDatabase.raw(
@@ -787,8 +788,8 @@ extension Client {
               "from_name" character varying NOT NULL,
               "message" character varying NOT NULL,
               "months_free" integer NOT NULL,
-              "stripe_coupon_id" character varying,
-              "stripe_payment_intent_id" character varying NOT NULL,
+              "stripe_coupon_id" character varying NOT NULL,
+              "stripe_subscription_id" character varying,
               "to_email" citext NOT NULL,
               "to_name" character varying NOT NULL,
               "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
@@ -804,8 +805,14 @@ extension Client {
           ),
           database.run(
             """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_coupon_id"
-            ON "gifts" ("stripe_coupon_id")
+            ALTER TABLE "gifts"
+            ADD COLUMN IF NOT EXISTS "stripe_subscription_id" character varying
+            """
+          ),
+          database.run(
+            """
+            ALTER TABLE "gifts"
+            DROP COLUMN IF EXISTS "stripe_coupon_id"
             """
           ),
         ])

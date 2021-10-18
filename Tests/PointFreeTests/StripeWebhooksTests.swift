@@ -431,17 +431,7 @@ final class StripeWebhooksTests: TestCase {
   func testPaymentIntent_Gift() throws {
     Current = .failing
     Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.mock) }
-    var couponId: Coupon.Id?
-    Current.database.updateGift = { _, id in
-      couponId = id
-      return pure(.mock)
-    }
-    var couponRate: Coupon.Rate?
-    Current.stripe.createCoupon = { duration, maxRedemptions, name, rate in
-      couponRate = rate
-      return pure(update(.mock) { $0.id = "gift" })
-    }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
     var didSendEmail = false
     Current.mailgun.sendEmail = { _ in
       didSendEmail = true
@@ -449,7 +439,7 @@ final class StripeWebhooksTests: TestCase {
     }
 
     let event = Event(
-      data: .init(object: PaymentIntent.requiresConfirmation),
+      data: .init(object: PaymentIntent.succeeded),
       id: "evt_test",
       type: .paymentIntentSucceeded
     )
@@ -463,7 +453,7 @@ final class StripeWebhooksTests: TestCase {
     _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
     POST http://localhost:8080/webhooks/stripe
     Cookie: pf_session={}
-    Stripe-Signature: t=1517356800,v1=928ccd8ad4e78dd85de3dd9bd61f25551d2730a8743bd42a116c1b945c69c2e5
+    Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
     
     {
       "data" : {
@@ -472,7 +462,7 @@ final class StripeWebhooksTests: TestCase {
           "client_secret" : "pi_test_secret_test",
           "currency" : "usd",
           "id" : "pi_test",
-          "status" : "requires_confirmation"
+          "status" : "succeeded"
         }
       },
       "id" : "evt_test",
@@ -492,8 +482,6 @@ final class StripeWebhooksTests: TestCase {
     OK
     """)
 
-    XCTAssertEqual(couponId, "gift")
-    XCTAssertEqual(couponRate, .amountOff(54_00))
     XCTAssertEqual(didSendEmail, true)
   }
 
@@ -503,7 +491,7 @@ final class StripeWebhooksTests: TestCase {
     Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
 
     let event = Event(
-      data: .init(object: PaymentIntent.requiresConfirmation),
+      data: .init(object: PaymentIntent.succeeded),
       id: "evt_test",
       type: .paymentIntentSucceeded
     )
@@ -517,7 +505,7 @@ final class StripeWebhooksTests: TestCase {
     _assertInlineSnapshot(matching: conn |> siteMiddleware, as: .ioConn, with: """
     POST http://localhost:8080/webhooks/stripe
     Cookie: pf_session={}
-    Stripe-Signature: t=1517356800,v1=928ccd8ad4e78dd85de3dd9bd61f25551d2730a8743bd42a116c1b945c69c2e5
+    Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
     
     {
       "data" : {
@@ -526,7 +514,7 @@ final class StripeWebhooksTests: TestCase {
           "client_secret" : "pi_test_secret_test",
           "currency" : "usd",
           "id" : "pi_test",
-          "status" : "requires_confirmation"
+          "status" : "succeeded"
         }
       },
       "id" : "evt_test",

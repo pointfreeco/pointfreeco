@@ -26,12 +26,12 @@ public func giftsMiddleware(
     return conn.map(const(plan .*. user .*. route .*. subscriberState .*. unit))
     |> giftPaymentMiddleware
 
-  case let .redeem(couponId):
-    return conn.map(const(couponId .*. user .*. subscription .*. subscriberState .*. unit))
+  case let .redeem(giftId):
+    return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. unit))
     |> giftRedemptionMiddleware
 
-  case let .redeemLanding(couponId):
-    return conn.map(const(couponId .*. user .*. subscription .*. subscriberState .*. route .*. unit))
+  case let .redeemLanding(giftId):
+    return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. route .*. unit))
     |> giftRedemptionLandingMiddleware
   }
 }

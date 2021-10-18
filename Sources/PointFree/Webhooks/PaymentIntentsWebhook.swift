@@ -1,3 +1,4 @@
+import Either
 import Foundation
 import HttpPipeline
 import Models
@@ -61,13 +62,9 @@ private func handlePaymentIntent(
 
   return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     .flatMap { gift in
-      Current.stripe.createCoupon(
-        .once,
-        1,
-        "\(gift.monthsFree) months free",
-        .amountOff(paymentIntent.amount)
-      )
-      .flatMap { coupon in Current.database.updateGift(gift.id, coupon.id) }
+      gift.deliverAt == nil
+      ? sendGiftEmail(for: gift).map(const(unit))
+      : pure(unit)
     }
     .run
     .flatMap {
@@ -78,13 +75,7 @@ private func handlePaymentIntent(
           body: "Unable to create coupon for gift \(gift.id): \(error)"
         )
 
-      case let .right(gift):
-        if gift.deliverAt == nil {
-          sendGiftEmail(for: gift)
-            .run
-            .parallel
-            .run { _ in }
-        }
+      case .right:
         return conn |> writeStatus(.ok) >=> respond(text: "OK")
       }
     }

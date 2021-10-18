@@ -13,31 +13,26 @@ import Stripe
 import Views
 
 func sendGiftEmail(for gift: Gift) -> EitherIO<Error, SendEmailResponse> {
-  guard let couponId = gift.stripeCouponId
-  else {
-    struct GiftError: Error { let gift: Gift }
-    return throwE(GiftError(gift: gift))
-  }
-  return sendEmail(
+  sendEmail(
     to: ["\(gift.toName) <\(gift.toEmail)>"],
     subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-    content: inj2(giftEmail((gift, couponId)))
+    content: inj2(giftEmail(gift))
   )
     .catch(notifyAdmins(subject: "Gift delivery failed"))
 }
 
-private let giftEmail = simpleEmailLayout(giftEmailBody(gift:couponId:)) <<< { gift, couponId in
+private let giftEmail = simpleEmailLayout(giftEmailBody(gift:)) <<< { gift in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
     title: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
     preheader: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
     template: .default,
-    data: (gift, couponId)
+    data: gift
   )
 }
 
-private func giftEmailBody(gift: Gift, couponId: Coupon.Id) -> Node {
+private func giftEmailBody(gift: Gift) -> Node {
   let quotedMessage = gift.message
     .split(separator: "\n", omittingEmptySubsequences: false)
     .map { "> \($0)" }
@@ -49,7 +44,7 @@ private func giftEmailBody(gift: Gift, couponId: Coupon.Id) -> Node {
 
       \(quotedMessage)
 
-      [Redeem Your Gift](\(url(to: .gifts(Gifts.redeemLanding(couponId))))
+      [Redeem Your Gift](\(url(to: .gifts(Gifts.redeemLanding(gift.id))))
       """
     )
   ]
