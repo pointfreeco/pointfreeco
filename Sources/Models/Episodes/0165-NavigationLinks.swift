@@ -23,9 +23,9 @@ It's time to explore the most complex form of navigation in SwiftUI: links! We'l
     subtitle: "Links, Part 1",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
-      bytesLength: 0,
-      vimeoId: 0,
-      vimeoSecret: "TODO"
+      bytesLength: 83182826,
+      vimeoId: 638459060,
+      vimeoSecret: "0647d4878b3f4b8182fc2e705dea6109624d78b4"
     )
   )
 }
