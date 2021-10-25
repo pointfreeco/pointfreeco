@@ -101,10 +101,13 @@ public func giftsPayment(
                       form.submit()
                     }
                   });
-                } else if (response.errorMessage) {
-                  displayError.textContent = response.errorMessage
                 } else {
-                  displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+                  setFormEnabled(true, function(el) { return true })
+                  if (response.errorMessage) {
+                    displayError.textContent = response.errorMessage
+                  } else {
+                    displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+                  }
                 }
               }
             }
