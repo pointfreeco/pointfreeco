@@ -470,4 +470,46 @@ class GiftTests: TestCase {
     X-XSS-Protection: 1; mode=block
     """)
   }
+
+  func testGiftLanding() {
+    Current = .failing
+    Current.date = { .mock }
+    Current.episodes = { [] }
+
+    let conn = connection(from: request(to: .gifts(.index)))
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: siteMiddleware(conn),
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testGiftRedeemLanding() {
+    Current = .failing
+    Current.date = { .mock }
+    Current.episodes = { [] }
+    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+
+    let conn = connection(from: request(to: .gifts(.redeemLanding(.init(rawValue: .mock)))))
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: siteMiddleware(conn),
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
+        ]
+      )
+    }
+    #endif
+  }
 }
