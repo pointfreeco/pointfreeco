@@ -794,31 +794,41 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       let amount = discount(subscription.quantity == 1 ? 168_00 : 144_00)
         .map { $0 * subscription.quantity }
       let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
-      return .form(
-        attributes: [
-          .action(path(to: .account(.subscription(.change(.update(nil)))))),
-          .method(.post),
-          .onsubmit(unsafe: """
+      if subscription.customer.right?.sources?.data.isEmpty == false {
+        return .form(
+          attributes: [
+            .action(path(to: .account(.subscription(.change(.update(nil)))))),
+            .method(.post),
+            .onsubmit(unsafe: """
 if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }
 """),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("yearly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(subscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Upgrade to yearly billing"
+          ],
+          .input(attributes: [
+            .name("billing"),
+            .type(.hidden),
+            .value("yearly"),
+          ]),
+          .input(attributes: [
+            .name("quantity"),
+            .type(.hidden),
+            .value(subscription.quantity),
+          ]),
+          .button(
+            attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
+            "Upgrade to yearly billing"
+          )
         )
-      )
+      } else {
+        return .a(
+          attributes: [
+            .class([Class.pf.components.button(color: .purple, size: .small)]),
+            .href(path(to: .account(.paymentInfo(.show))))
+          ],
+          "Add payment info to upgrade"
+        )
+      }
     case .year:
       let discount = subscription.discount?.coupon.discount ?? { $0 }
       let amount = discount(subscription.quantity == 1 ? 18_00 : 16_00)

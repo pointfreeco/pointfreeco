@@ -36,7 +36,7 @@ class PaymentInfoTests: TestCase {
     #endif
   }
 
-  func testInvoiceBilling() {
+  func testNoBillingInfo() {
     var customer = Stripe.Customer.mock
     customer.sources = .mock([.right(.mock)])
     var subscription = Stripe.Subscription.teamYearly

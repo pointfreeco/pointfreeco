@@ -10,9 +10,8 @@ import Views
 
 let paymentInfoResponse =
   requireUserAndStripeSubscription
-    <<< requirePaymentInfo
     <| writeStatus(.ok)
-    >=> map(lower)
+    >=> map(over1(^\.customer.right?.sources?.data.first?.left) >>> lower)
     >>> respond(
       view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
       layoutData: { card, currentUser, subscriberState in
@@ -29,22 +28,6 @@ private let requireUserAndStripeSubscription
   : MT<Tuple2<User?, SubscriberState>, Tuple3<Stripe.Subscription, User, SubscriberState>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
-
-private let requirePaymentInfo
-  : MT<
-  Tuple3<Stripe.Subscription, User, SubscriberState>,
-  Tuple3<Card, User, SubscriberState>
-  >
-  = filterMap(
-    over1(^\.customer.right?.sources?.data.first?.left) >>> require1 >>> pure,
-    or: redirect(
-      to: .account(.index),
-      headersMiddleware: flash(
-        .error,
-        "You have invoice billing. Contact us <support@pointfree.co> to make changes to your payment info."
-      )
-    )
-)
 
 private let genericPaymentInfoError = """
 We couldn’t update your payment info at this time. Please try again later or contact
