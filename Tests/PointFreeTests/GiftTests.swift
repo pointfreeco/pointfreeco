@@ -489,6 +489,8 @@ class GiftTests: TestCase {
       )
     }
     #endif
+
+    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
   }
 
   func testGiftRedeemLanding() {
@@ -511,5 +513,7 @@ class GiftTests: TestCase {
       )
     }
     #endif
+
+    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
   }
 }
