@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 71228
+Content-Length: 72316
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1899,6 +1899,13 @@ html {
               </li>
               <li class="m-pl2
                          inline">
+                <a href="/gifts"
+                   class="pf-link-black">
+                  Gifts
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/account"
                    class="pf-link-black">
                   Account
@@ -2516,26 +2523,40 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                 col-d-9">
                       <div class="row">
                         <div class="col-m
-                                    col-d-7
+                                    col-d-6
                                     col-m-12">
                           <div class="m-pl1
                                       m-pr1">
                             <p>
-                              You are enrolled in invoice billing. If you have any questions, please 
-                              <a class="underline-link"
-                                 href="mailto:support@pointfree.co">
-                                contact us
-                              </a>
-                              .
+                              No payment info
                             </p>
                           </div>
                         </div>
                         <div class="col-m
-                                    col-d-5
+                                    col-d-6
                                     col-m-12">
                           <div class="m-pl1
                                       m-pr1
                                       end-d">
+                            <p>
+                              <a class="medium
+                                        cursor-pointer
+                                        nowrap
+                                        btn-normal
+                                        border-none
+                                        text-decoration-none
+                                        pf-link-white
+                                        fg-white
+                                        bg-purple
+                                        h6
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1"
+                                 href="/account/payment-info">
+                                Add payment info
+                              </a>
+                            </p>
                             <p>
                               <a class="medium
                                         cursor-pointer
@@ -2656,6 +2677,16 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

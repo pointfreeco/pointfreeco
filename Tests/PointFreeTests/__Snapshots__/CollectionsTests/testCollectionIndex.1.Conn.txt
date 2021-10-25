@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 57301
+Content-Length: 57776
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1840,6 +1840,13 @@ html {
               </li>
               <li class="m-pl2
                          inline">
+                <a href="/gifts"
+                   class="pf-link-gray650">
+                  Gifts
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/login?redirect=http://localhost:8080/collections"
                    class="medium
                           cursor-pointer
@@ -2306,6 +2313,16 @@ background: linear-gradient(135deg, #79f2b0 0%, #4cccff 100%)">
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

@@ -1096,8 +1096,18 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> Node {
-  guard let card = subscription.customer.right?.sources?.data.first?.left
-    else { return subscriptionInvoiceBillingInfoView }
+  let card = subscription.customer.right?.sources?.data.first?.left
+  let paymentInfo: Node
+  if let card = card {
+    paymentInfo = [
+      .p(.text(card.brand.rawValue + " ending in " + String(card.last4))),
+      .p(.text("Expires " + String(card.expMonth) + "/" + String(card.expYear)))
+    ]
+  } else {
+    paymentInfo = [
+      .p("No payment info")
+    ]
+  }
 
   return Node.gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -1112,8 +1122,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
           sizes: [.mobile: 12, .desktop: 6],
           .div(
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            .p(.text(card.brand.rawValue + " ending in " + String(card.last4))),
-            .p(.text("Expires " + String(card.expMonth) + "/" + String(card.expYear)))
+            paymentInfo
           )
         ),
         .gridColumn(
@@ -1126,7 +1135,9 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
                   .class([Class.pf.components.button(color: .purple, size: .small)]),
                   .href(path(to: .account(.paymentInfo(.show)))),
                 ],
-                "Update payment method"
+                card == nil
+                  ? "Add payment info"
+                  : "Update payment info"
               )
             ),
             .p(
@@ -1144,51 +1155,6 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
     )
   )
 }
-
-private let subscriptionInvoiceBillingInfoView = Node.gridRow(
-  attributes: [.class([subscriptionInfoRowClass])],
-  .gridColumn(
-    sizes: [.mobile: 3],
-    .div(.p("Payment"))
-  ),
-  .gridColumn(
-    sizes: [.desktop: 9],
-    .gridRow(
-      .gridColumn(
-        sizes: [.mobile: 12, .desktop: 7],
-        .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-          .p(
-            "You are enrolled in invoice billing. If you have any questions, please ",
-            .a(
-              attributes: [
-                .class([Class.pf.type.underlineLink]),
-                .href("mailto:support@pointfree.co")
-              ],
-              "contact us"
-            ),
-            "."
-          )
-        )
-      ),
-      .gridColumn(
-        sizes: [.mobile: 12, .desktop: 5],
-        .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
-          .p(
-            .a(
-              attributes: [
-                .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
-                .href(path(to: .account(.invoices(.index)))),
-              ],
-              "Payment history"
-            )
-          )
-        )
-      )
-    )
-  )
-)
 
 public func format(cents: Cents<Int>) -> String {
   let dollars = NSNumber(value: Double(cents.rawValue) / 100)

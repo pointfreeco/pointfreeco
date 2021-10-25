@@ -24,6 +24,11 @@ _ = EitherIO.debug(prefix: "📧 Sending welcome emails...")
   .run
   .perform()
 
+_ = EitherIO.debug(prefix: "📧 Delivering gifts...")
+  .flatMap(const(deliverGifts()))
+  .run
+  .perform()
+
 //_ = validateEnterpriseEmails()
 //  .run
 //  .perform()

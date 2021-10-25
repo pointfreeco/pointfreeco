@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices/in_test
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 34500
+Content-Length: 34498
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1857,7 +1857,7 @@ html {
                             col-d-6
                             col-m-12">
                   <div>
-                    Payment method
+                    Payment info
                   </div>
                 </div>
                 <div class="m-pb1

@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57722
+Content-Length: 58193
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1889,6 +1889,13 @@ html {
                         m-mr2">
                 Blog
               </a>
+              <a href="/gifts"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Gifts
+              </a>
               <a href="/account"
                  class="medium
                         pf-link-black">
@@ -2189,6 +2196,16 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

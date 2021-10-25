@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 67755
+Content-Length: 68226
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1896,6 +1896,13 @@ html {
                         m-mr2">
                 Pricing
               </a>
+              <a href="/gifts"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Gifts
+              </a>
               <a href="/login?redirect=http://localhost:8080"
                  class="medium
                         cursor-pointer
@@ -2422,6 +2429,16 @@ html {
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>
