@@ -980,6 +980,44 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
 
+  guard subscription.customer.right?.sources?.data.first?.left != nil
+  else {
+    return .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Add teammate"))
+      ),
+      .gridColumn(
+        sizes: [.desktop: 9],
+        Node.gridRow(
+          Node.gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+              .p("Payment info required to add seats")
+            )
+          ),
+          .gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])],
+              .p(
+                .a(
+                  attributes: [
+                    .class([Class.pf.components.button(color: .purple, size: .small)]),
+                    .href(path(to: .account(.paymentInfo(.show)))),
+                  ],
+                  "Add payment info"
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  }
+
   let amount = subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
   let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
 
