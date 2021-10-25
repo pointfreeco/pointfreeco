@@ -28,6 +28,13 @@ func giftCreateMiddleware(
     |> writeStatus(.badRequest)
   }
 
+  let deliverAt = giftFormData.deliverAt
+    .flatMap {
+      Current.calendar.startOfDay(for: $0) <= Current.calendar.startOfDay(for: Current.date())
+      ? nil
+      : $0
+    }
+
   return Current.stripe.createPaymentIntent(
     .init(
       amount: plan.amount,
@@ -40,7 +47,7 @@ func giftCreateMiddleware(
     .flatMap { paymentIntent in
       Current.database.createGift(
         .init(
-          deliverAt: giftFormData.deliverAt,
+          deliverAt: deliverAt,
           fromEmail: giftFormData.fromEmail,
           fromName: giftFormData.fromName,
           message: giftFormData.message,

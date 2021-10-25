@@ -39,6 +39,7 @@ extension EpisodeCredit {
 extension Gift {
   public static let unfulfilled = Self(
     deliverAt: nil,
+    delivered: false,
     fromEmail: "blob.sr@pointfree.co",
     fromName: "Blob Sr.",
     id: .init(rawValue: .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!),
@@ -50,7 +51,10 @@ extension Gift {
     toName: "Blob Jr."
   )
 
-  public static let fulfilled = update(unfulfilled) { $0.stripeSubscriptionId = "sub_test" }
+  public static let fulfilled = update(unfulfilled) {
+    $0.delivered = true
+    $0.stripeSubscriptionId = "sub_test"
+  }
 }
 
 extension Models.Subscription {

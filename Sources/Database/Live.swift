@@ -129,6 +129,17 @@ extension Client {
         )
         .run()
       },
+      deliverGift: { id in
+        pool.sqlDatabase.raw(
+          """
+          UPDATE "gifts"
+          SET "delivered" = TRUE
+          WHERE "id" = \(bind: id)
+          """
+        )
+          .first(decoding: Gift.self)
+          .mapExcept(requireSome)
+      },
       execute: { sql in
         .init(pool.sqlDatabase.raw(sql).all())
       },
@@ -250,7 +261,8 @@ extension Client {
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
-          AND "deliver_at" BETWEEN CURRENT_DATE - INTERVAL 1 DAY AND CURRENT_DATE
+          AND NOT "delivered"
+          AND "deliver_at" < CURRENT_DATE
           """
         )
         .all(decoding: Gift.self)
@@ -799,6 +811,13 @@ extension Client {
             """
             ALTER TABLE "gifts"
             DROP COLUMN IF EXISTS "stripe_coupon_id"
+            """
+          ),
+          database.run(
+            """
+            ALTER TABLE "gifts"
+            ADD COLUMN IF NOT EXISTS
+            "delivered" boolean NOT NULL DEFAULT FALSE
             """
           ),
         ])

@@ -13,6 +13,7 @@ public var Current = Environment()
 public struct Environment {
   public var assets = Assets()
   public var blogPosts = allBlogPosts
+  public var calendar = Calendar.autoupdatingCurrent
   public var cookieTransform = CookieTransform.encrypted
   public var collections = Episode.Collection.all
   public var database: Database.Client!
@@ -31,6 +32,7 @@ public struct Environment {
   public init(
     assets: Assets = Assets(),
     blogPosts: @escaping () -> [BlogPost] = allBlogPosts,
+    calendar: Calendar = .autoupdatingCurrent,
     cookieTransform: CookieTransform = .encrypted,
     collections: [Episode.Collection] = Episode.Collection.all,
     database: Database.Client? = nil,
@@ -48,6 +50,7 @@ public struct Environment {
   ) {
     self.assets = assets
     self.blogPosts = blogPosts
+    self.calendar = calendar
     self.cookieTransform = cookieTransform
     self.collections = collections
     self.database = database

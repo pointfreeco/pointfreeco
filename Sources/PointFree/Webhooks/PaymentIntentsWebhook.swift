@@ -63,7 +63,9 @@ private func handlePaymentIntent(
   return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     .flatMap { gift in
       gift.deliverAt == nil
-      ? sendGiftEmail(for: gift).map(const(unit))
+      ? sendGiftEmail(for: gift)
+        .flatMap(const(Current.database.deliverGift(gift.id)))
+        .map(const(unit))
       : pure(unit)
     }
     .run
@@ -72,7 +74,7 @@ private func handlePaymentIntent(
       case let .left(error):
         return conn |> stripeHookFailure(
           subject: "[PointFree Error] Stripe Hook Failed!",
-          body: "Unable to create coupon for gift \(gift.id): \(error)"
+          body: "Failed to deliver gift \(gift.id): \(error)"
         )
 
       case .right:

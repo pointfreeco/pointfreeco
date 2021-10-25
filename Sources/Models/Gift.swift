@@ -5,6 +5,7 @@ import Tagged
 
 public struct Gift: Decodable {
   public var deliverAt: Date?
+  public var delivered: Bool
   public var fromEmail: EmailAddress
   public var fromName: String
   public var id: Id
@@ -17,6 +18,7 @@ public struct Gift: Decodable {
 
   public init(
     deliverAt: Date?,
+    delivered: Bool,
     fromEmail: EmailAddress,
     fromName: String,
     id: Id,
@@ -27,9 +29,10 @@ public struct Gift: Decodable {
     toEmail: EmailAddress,
     toName: String
   ) {
+    self.deliverAt = deliverAt
+    self.delivered = delivered
     self.fromEmail = fromEmail
     self.fromName = fromName
-    self.deliverAt = deliverAt
     self.id = id
     self.message = message
     self.monthsFree = monthsFree
