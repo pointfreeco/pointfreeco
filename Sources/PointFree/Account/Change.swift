@@ -34,7 +34,7 @@ private let validateActiveSubscriptionAndSeating
     <<< requireValidSeating
 
 func changeSubscription(
-  error: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
+  error: @escaping (Error) -> Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
   success: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
 ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -47,7 +47,7 @@ func changeSubscription(
         .run
         .flatMap(
           either(
-            const(error(conn.map(const(unit)))),
+            { conn.map(const(unit)) |> error($0) },
             const(success(conn.map(const(unit))))
           )
       )
@@ -72,20 +72,21 @@ func requireActiveSubscription<A>(
       <| middleware
 }
 
-func subscriptionModificationErrorMiddleware<A>(
-  _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+func subscriptionModificationErrorMiddleware<A>(_ error: Error)
+-> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
-  return conn |> redirect(
-    to: .account(.index),
-    headersMiddleware: flash(
-      .error,
-      """
-      We couldn’t modify your subscription at this time. Please try again or contact
-      <support@pointfree.co>.
-      """
+  return { conn in
+    conn |> redirect(
+      to: .account(.index),
+      headersMiddleware: flash(
+        .error,
+        """
+        We couldn’t modify your subscription at this time. Please try again or contact
+        <support@pointfree.co>.
+        """
+      )
     )
-  )
+  }
 }
 
 private func requireValidSeating(

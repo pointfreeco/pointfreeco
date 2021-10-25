@@ -5,7 +5,7 @@ import PointFreeRouter
 import Stripe
 import Styleguide
 
-public func paymentInfoView(card: Stripe.Card, publishableKey: String, stripeJsSrc: String) -> Node {
+public func paymentInfoView(card: Stripe.Card?, publishableKey: String, stripeJsSrc: String) -> Node {
   return .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
@@ -13,7 +13,7 @@ public func paymentInfoView(card: Stripe.Card, publishableKey: String, stripeJsS
       .div(
         attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         titleRowView,
-        currentPaymentInfoRowView(card: card),
+        card.map(currentPaymentInfoRowView(card:)) ?? [],
         updatePaymentInfoRowView(publishableKey: publishableKey, stripeJsSrc: stripeJsSrc)
       )
     )
