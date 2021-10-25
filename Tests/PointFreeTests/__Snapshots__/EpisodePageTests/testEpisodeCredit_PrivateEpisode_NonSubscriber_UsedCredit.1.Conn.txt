@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 88010
+Content-Length: 88485
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1962,6 +1962,13 @@ Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.lang
               </li>
               <li class="m-pl2
                          inline">
+                <a href="/gifts"
+                   class="pf-link-gray650">
+                  Gifts
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/account"
                    class="pf-link-gray650">
                   Account
@@ -3036,6 +3043,16 @@ Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.lang
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

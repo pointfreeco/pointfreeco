@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57370
+Content-Length: 57845
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1961,6 +1961,13 @@ html {
               </li>
               <li class="m-pl2
                          inline">
+                <a href="/gifts"
+                   class="pf-link-gray650">
+                  Gifts
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/account"
                    class="pf-link-gray650">
                   Account
@@ -2479,6 +2486,16 @@ window.addEventListener("load", function() {
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

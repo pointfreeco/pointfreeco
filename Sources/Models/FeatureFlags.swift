@@ -3,7 +3,7 @@ public struct Feature: Equatable {
   public var isEnabled: Bool
   public var name: String
 
-  public static let gifts = Self(isAdminEnabled: true, isEnabled: false, name: "Gifts")
+  public static let gifts = Self(isAdminEnabled: true, isEnabled: true, name: "Gifts")
   
   public static let allFeatures: [Self] = [
     .gifts

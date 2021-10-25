@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67290
+Content-Length: 67761
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1899,6 +1899,13 @@ html {
               </li>
               <li class="m-pl2
                          inline">
+                <a href="/gifts"
+                   class="pf-link-black">
+                  Gifts
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a href="/account"
                    class="pf-link-black">
                   Account
@@ -2448,7 +2455,7 @@ per month. Your first invoice will be prorated based on your current billing cyc
                                         m-pt1
                                         m-pb1"
                                  href="/account/payment-info">
-                                Update payment method
+                                Update payment info
                               </a>
                             </p>
                             <p>
@@ -2571,6 +2578,16 @@ per month. Your first invoice will be prorated based on your current billing cyc
                         lh-4"
                  href="/pricing">
                 Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/gifts">
+                Gifts
               </a>
             </li>
             <li>

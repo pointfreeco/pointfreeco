@@ -177,7 +177,7 @@ public func invoiceView(
         invoice.charge?.right?.source.left.map {
           SectionData(
             leftColumnCount: 6,
-            leftColumnName: "Payment method",
+            leftColumnName: "Payment info",
             rightColumnCount: 6,
             rightColumnContent: .text($0.brand.rawValue + " ⋯ \($0.last4)")
           )
