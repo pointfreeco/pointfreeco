@@ -8,11 +8,12 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
   Current.database.fetchGiftsToDeliver()
     .flatMap { gifts in
       sequence(
-        gifts.map(
-          sendGiftEmail(for:)
-          >>> delay(.milliseconds(200))
-          >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-        )
+        gifts.map { gift in
+          sendGiftEmail(for: gift)
+            |> delay(.milliseconds(200))
+            |> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+            |> flatMap(const(Current.database.deliverGift(gift.id)))
+        }
       )
     }
     .flatMap {

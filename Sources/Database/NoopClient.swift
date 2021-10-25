@@ -13,6 +13,7 @@ extension Client {
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
     deleteEnterpriseEmail: { _ in throwE(NoopError()) },
     deleteTeamInvite: { _ in throwE(NoopError()) },
+    deliverGift: { _ in throwE(NoopError()) },
     execute: { _ in throwE(NoopError()) },
     fetchAdmins: { throwE(NoopError()) },
     fetchEmailSettingsForUserId: { _ in throwE(NoopError()) },

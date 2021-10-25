@@ -81,7 +81,6 @@ public func giftsPayment(
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
-                setFormEnabled(true, function(el) { return true })
                 var response = JSON.parse(httpRequest.responseText)
                   if (response.clientSecret) {
                   stripe.confirmCardPayment(response.clientSecret, {
@@ -93,18 +92,22 @@ public func giftsPayment(
                     }
                   })
                   .then(function(result) {
-                    setFormEnabled(true, function(el) { return true })
                     if (result.error) {
+                      setFormEnabled(true, function(el) { return true })
                       displayError.textContent = result.error.message
                     } else if (result.paymentIntent.status === "succeeded") {
+                      setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
                       form.\(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue).value = result.paymentIntent.id
                       form.submit()
                     }
                   });
-                } else if (response.errorMessage) {
-                  displayError.textContent = response.errorMessage
                 } else {
-                  displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+                  setFormEnabled(true, function(el) { return true })
+                  if (response.errorMessage) {
+                    displayError.textContent = response.errorMessage
+                  } else {
+                    displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+                  }
                 }
               }
             }
@@ -303,14 +306,13 @@ private func formView(
       .gridColumn(
         sizes: [:],
         attributes: [.class([Class.grid.end(.mobile)])],
-        .input(
+        .button(
           attributes: [
-            .type(.submit),
             .class([
-              Class.pf.components.button(color: .black)
-            ]),
-            .value("Purchase"),
-          ]
+              Class.pf.components.button(color: .black),
+            ])
+          ],
+          "Purchase"
         )
       )
     ),

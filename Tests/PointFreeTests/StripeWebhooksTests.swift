@@ -432,6 +432,11 @@ final class StripeWebhooksTests: TestCase {
     Current = .failing
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
+    var delivered = false
+    Current.database.deliverGift = { _ in
+      delivered = true
+      return pure(.unfulfilled)
+    }
     var didSendEmail = false
     Current.mailgun.sendEmail = { _ in
       didSendEmail = true
@@ -482,6 +487,7 @@ final class StripeWebhooksTests: TestCase {
     OK
     """)
 
+    XCTAssertEqual(delivered, true)
     XCTAssertEqual(didSendEmail, true)
   }
 

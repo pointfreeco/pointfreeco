@@ -10,6 +10,7 @@ extension Client {
     createSubscription: { _, _, _, _ in .failing("Database.Client.createSubscription") },
     deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },
     deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
+    deliverGift: { _ in .failing("Database.Client.deliverGift") },
     execute: { _ in .failing("Database.Client.execute") },
     fetchAdmins: { .failing("Database.Client.fetchAdmins") },
     fetchEmailSettingsForUserId: { _ in .failing("Database.Client.fetchEmailSettingsForUserId") },
