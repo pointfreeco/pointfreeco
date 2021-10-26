@@ -13,7 +13,6 @@ extension Client {
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
     deleteEnterpriseEmail: { _ in throwE(NoopError()) },
     deleteTeamInvite: { _ in throwE(NoopError()) },
-    deliverGift: { _ in throwE(NoopError()) },
     execute: { _ in throwE(NoopError()) },
     fetchAdmins: { throwE(NoopError()) },
     fetchEmailSettingsForUserId: { _ in throwE(NoopError()) },
@@ -46,6 +45,7 @@ extension Client {
     updateEmailSettings: { _, _ in throwE(NoopError()) },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
     updateGift: { _, _ in throwE(NoopError()) },
+    updateGiftStatus: { _, _, _ in throwE(NoopError()) },
     updateStripeSubscription: { _ in throwE(NoopError()) },
     updateUser: { _, _, _, _, _ in throwE(NoopError()) },
     upsertUser: { _, _, _ in throwE(NoopError()) }

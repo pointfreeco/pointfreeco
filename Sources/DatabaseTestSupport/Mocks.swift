@@ -15,7 +15,6 @@ extension Client {
     createSubscription: { _, _, _, _ in pure(.mock) },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
-    deliverGift: { _ in pure(.unfulfilled) },
     execute: { _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
@@ -48,6 +47,7 @@ extension Client {
     updateEmailSettings: { _, _ in pure(unit) },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateGift: { _, _ in pure(.fulfilled) },
+    updateGiftStatus: { _, _, _ in pure(.fulfilled) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _, _ in pure(.some(.mock)) }

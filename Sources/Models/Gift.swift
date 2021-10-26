@@ -12,6 +12,7 @@ public struct Gift: Decodable {
   public var message: String
   public var monthsFree: Int
   public var stripePaymentIntentId: PaymentIntent.Id
+  public var stripePaymentIntentStatus: PaymentIntent.Status
   public var stripeSubscriptionId: Stripe.Subscription.Id?
   public var toEmail: EmailAddress
   public var toName: String
@@ -25,6 +26,7 @@ public struct Gift: Decodable {
     message: String,
     monthsFree: Int,
     stripePaymentIntentId: PaymentIntent.Id,
+    stripePaymentIntentStatus: PaymentIntent.Status,
     stripeSubscriptionId: Stripe.Subscription.Id?,
     toEmail: EmailAddress,
     toName: String
@@ -37,6 +39,7 @@ public struct Gift: Decodable {
     self.message = message
     self.monthsFree = monthsFree
     self.stripePaymentIntentId = stripePaymentIntentId
+    self.stripePaymentIntentStatus = stripePaymentIntentStatus
     self.stripeSubscriptionId = stripeSubscriptionId
     self.toEmail = toEmail
     self.toName = toName

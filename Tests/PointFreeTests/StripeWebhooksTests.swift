@@ -433,8 +433,8 @@ final class StripeWebhooksTests: TestCase {
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
     var delivered = false
-    Current.database.deliverGift = { _ in
-      delivered = true
+    Current.database.updateGiftStatus = {
+      delivered = $2
       return pure(.unfulfilled)
     }
     var didSendEmail = false

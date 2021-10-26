@@ -10,7 +10,6 @@ extension Client {
     createSubscription: { _, _, _, _ in .failing("Database.Client.createSubscription") },
     deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },
     deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
-    deliverGift: { _ in .failing("Database.Client.deliverGift") },
     execute: { _ in .failing("Database.Client.execute") },
     fetchAdmins: { .failing("Database.Client.fetchAdmins") },
     fetchEmailSettingsForUserId: { _ in .failing("Database.Client.fetchEmailSettingsForUserId") },
@@ -43,6 +42,7 @@ extension Client {
     updateEmailSettings: { _, _ in .failing("Database.Client.updateEmailSettings") },
     updateEpisodeProgress: { _, _, _ in .failing("Database.Client.updateEpisodeProgress") },
     updateGift: { _, _ in .failing("Database.Client.updateGift") },
+    updateGiftStatus: { _, _, _ in .failing("Database.Client.updateGiftStatus") },
     updateStripeSubscription: { _ in .failing("Database.Client.updateStripeSubscription") },
     updateUser: { _, _, _, _, _ in .failing("Database.Client.updateUser") },
     upsertUser: { _, _, _ in .failing("Database.Client.upsertUser") }

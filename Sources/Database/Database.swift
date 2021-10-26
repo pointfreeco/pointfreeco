@@ -19,7 +19,6 @@ public struct Client {
   public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  public var deliverGift: (Gift.Id) -> EitherIO<Error, Gift>
   public var execute: (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
@@ -52,6 +51,7 @@ public struct Client {
   public var updateEmailSettings: ([EmailSetting.Newsletter]?, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateGift: (Gift.Id, Stripe.Subscription.Id) -> EitherIO<Error, Gift>
+  public var updateGiftStatus: (Gift.Id, Stripe.PaymentIntent.Status, _ delivered: Bool) -> EitherIO<Error, Gift>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
@@ -65,7 +65,6 @@ public struct Client {
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool, Models.User.Id?) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
-    deliverGift: @escaping (Gift.Id) -> EitherIO<Error, Gift>,
     execute: @escaping (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
@@ -98,6 +97,7 @@ public struct Client {
     updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateGift: @escaping (Gift.Id, Stripe.Subscription.Id) -> EitherIO<Error, Gift>,
+    updateGiftStatus: @escaping (Gift.Id, Stripe.PaymentIntent.Status, _ delivered: Bool) -> EitherIO<Error, Gift>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
@@ -110,7 +110,6 @@ public struct Client {
     self.createSubscription = createSubscription
     self.deleteEnterpriseEmail = deleteEnterpriseEmail
     self.deleteTeamInvite = deleteTeamInvite
-    self.deliverGift = deliverGift
     self.execute = execute
     self.fetchAdmins = fetchAdmins
     self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
@@ -143,6 +142,7 @@ public struct Client {
     self.updateEmailSettings = updateEmailSettings
     self.updateEpisodeProgress = updateEpisodeProgress
     self.updateGift = updateGift
+    self.updateGiftStatus = updateGiftStatus
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
     self.upsertUser = upsertUser

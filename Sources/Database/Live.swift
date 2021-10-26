@@ -129,17 +129,6 @@ extension Client {
         )
         .run()
       },
-      deliverGift: { id in
-        pool.sqlDatabase.raw(
-          """
-          UPDATE "gifts"
-          SET "delivered" = TRUE
-          WHERE "id" = \(bind: id)
-          """
-        )
-          .first(decoding: Gift.self)
-          .mapExcept(requireSome)
-      },
       execute: { sql in
         .init(pool.sqlDatabase.raw(sql).all())
       },
@@ -261,6 +250,7 @@ extension Client {
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
+          AND "stripe_payment_intent_status" IS \(bind: PaymentIntent.Status.succeeded)
           AND NOT "delivered"
           AND (
             "deliver_at" <= CURRENT_DATE
@@ -823,6 +813,13 @@ extension Client {
             "delivered" boolean NOT NULL DEFAULT FALSE
             """
           ),
+          database.run(
+            """
+            ALTER TABLE "gifts"
+            ADD COLUMN IF NOT EXISTS
+            "stripe_payment_intent_status" character varying NOT NULL DEFAULT 'requires_payment_method'
+            """
+          ),
         ])
         .map(const(unit))
 
@@ -900,6 +897,18 @@ extension Client {
           """
           UPDATE "gifts"
           SET "stripe_subscription_id" = \(bind: stripeSubscriptionId)
+          WHERE "id" = \(bind: id)
+          RETURNING *
+          """
+        )
+        .first(decoding: Gift.self)
+        .mapExcept(requireSome)
+      },
+      updateGiftStatus: { id, status, delivered in
+        pool.sqlDatabase.raw(
+          """
+          UPDATE "gifts"
+          SET "stripe_payment_intent_status" = \(bind: status), "delivered" = \(bind: delivered)
           WHERE "id" = \(bind: id)
           RETURNING *
           """
