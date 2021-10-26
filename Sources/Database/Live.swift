@@ -817,7 +817,7 @@ extension Client {
             """
             ALTER TABLE "gifts"
             ADD COLUMN IF NOT EXISTS
-            "stripe_payment_intent_status" character varying NOT NULL DEFAULT 'requires_payment_method'
+            "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(raw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
             """
           ),
         ])
