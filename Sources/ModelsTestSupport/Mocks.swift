@@ -46,6 +46,7 @@ extension Gift {
     message: "Happy birthday, junior!",
     monthsFree: 3,
     stripePaymentIntentId: "pi_test",
+    stripePaymentIntentStatus: .requiresPaymentMethod,
     stripeSubscriptionId: nil,
     toEmail: "blob.jr@pointfree.co",
     toName: "Blob Jr."
@@ -53,6 +54,7 @@ extension Gift {
 
   public static let fulfilled = update(unfulfilled) {
     $0.delivered = true
+    $0.stripePaymentIntentStatus = .succeeded
     $0.stripeSubscriptionId = "sub_test"
   }
 }

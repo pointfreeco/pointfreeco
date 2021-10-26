@@ -9,10 +9,12 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
     .flatMap { gifts in
       sequence(
         gifts.map { gift in
-          sendGiftEmail(for: gift)
-            |> delay(.milliseconds(200))
-            |> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-            |> flatMap(const(Current.database.deliverGift(gift.id)))
+          gift.stripePaymentIntentStatus == .succeeded
+            ? sendGiftEmail(for: gift)
+              |> delay(.milliseconds(200))
+              |> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+              |> flatMap(const(Current.database.updateGiftStatus(gift.id, .succeeded, true)))
+            : pure(gift)
         }
       )
     }

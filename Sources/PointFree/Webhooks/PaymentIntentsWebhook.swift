@@ -60,13 +60,15 @@ private func handlePaymentIntent(
 ) -> IO<Conn<ResponseEnded, Data>> {
   let (paymentIntent, gift) = conn.data
 
+  guard paymentIntent.status == .succeeded
+  else { return conn |> writeStatus(.ok) >=> respond(text: "OK") }
+
   return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     .flatMap { gift in
       gift.deliverAt == nil
       ? sendGiftEmail(for: gift)
-        .flatMap(const(Current.database.deliverGift(gift.id)))
-        .map(const(unit))
-      : pure(unit)
+        .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
+      : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
     }
     .run
     .flatMap {
