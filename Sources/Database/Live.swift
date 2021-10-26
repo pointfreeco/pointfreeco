@@ -262,7 +262,10 @@ extension Client {
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
           AND NOT "delivered"
-          AND "deliver_at" < CURRENT_DATE
+          AND (
+            "deliver_at" <= CURRENT_DATE
+              OR "deliver_at" IS NULL
+          )
           """
         )
         .all(decoding: Gift.self)
