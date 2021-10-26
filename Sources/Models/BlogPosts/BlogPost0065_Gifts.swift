@@ -8,7 +8,7 @@ Today we are excited to announce that you can now gift a Point-Free subscription
   contentBlocks: [
   .init(
     content: #"""
-Today we are excited to announce that you can now [gift a Point-Free subscription](/gifts) to your friends, colleagues, and loved ones. It’s the perfect gift for those wanting to dive deeper into real world topics of Swift development, including [SwiftUI](/collections/swift-ui), [The Composable Architecture](/collections/composable-architecture), [dependencies](/collections/dependencies), [parsing](/collections/parsing), and much, much, [much](/collections) more!
+Today we are excited to announce that you can now [gift a Point-Free subscription](/gifts) to your friends, colleagues, and loved ones. It’s the perfect gift for those wanting to dive deeper into real world topics of Swift development, including [SwiftUI](/collections/swiftui), [The Composable Architecture](/collections/composable-architecture), [dependencies](/collections/dependencies), [parsing](/collections/parsing), and much, much, [much](/collections) more!
 
 ### How do gifts work?
 
