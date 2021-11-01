@@ -28,7 +28,7 @@ Unfortunately not at this time. Gift subscriptions are charged at the full price
 Nope. No credit card is required, and when the gift time is almost up we will send you an email to see if you want to continue your subscription.
 
 **I have another question not covered here.**
-No problem, [email us](support@pointfree.co) any questions and we will get back to you right away.
+No problem, [email us](mailto:support@pointfree.co) any questions and we will get back to you right away.
 
 ## Give the gift of Point-Free today
 
