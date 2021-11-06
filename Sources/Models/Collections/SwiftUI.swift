@@ -45,6 +45,7 @@ Navigation is a really, really complex topic, and it’s going to take us many e
           .init(episode: .ep164_navigationSheets),
           .init(episode: .ep165_navigationLinks),
           .init(episode: .ep166_navigationLinks),
+          .init(episode: .ep167_navigationLinks),
         ],
         isFinished: false,
         related: [

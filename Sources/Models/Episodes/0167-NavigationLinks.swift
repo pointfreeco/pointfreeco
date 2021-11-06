@@ -36,7 +36,7 @@ private let _exercises: [Episode.Exercise] = [
 In this episode we were able to swap out our custom `sheet(unwrap:)` and `popover(unwrap:)` helpers for the simpler `sheet(item:)` and `popover(item:)` modifiers that come with SwiftUI when moving from a binding to an observed object.
 
 However, we were unable to swap out our custom `NavigationLink.init(unwrap:)` helper, because no such equivalent API exists in vanilla SwiftUI. Why is that, and can you define a `NavigationLink.init(item:)` helper that does just that?
-"""#",
+"""#,
     solution: #"""
 It is possible, and we can even leverage our helper to define it simply:
 
@@ -59,5 +59,5 @@ extension NavigationLink {
   }
 }
 ```
-"""#")
+"""#)
 ]
