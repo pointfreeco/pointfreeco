@@ -14,32 +14,78 @@ This repo contains the full source code for the [Point-Free](http://www.pointfre
 
 ## Getting Started
 
+### Background Information
+
 Interested in a [video tour of the code base](https://www.pointfree.co/episodes/ep22-a-tour-of-point-free)?
 
 <a href="https://www.pointfree.co/episodes/ep22-a-tour-of-point-free">
   <img alt="video poster image" src="https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg" width="480">
 </a>
 
-The repo contains an extensive test suite and some playgrounds to explore. To get things running:
+Please note that the version shown there and the version to be found here diverges in some aspects. For instance, there is no Xcode project generated anymore.
 
-* Open up a terminal window and grab the code:
-  ``` sh
-  git clone https://github.com/pointfreeco/pointfreeco.git
-  cd pointfreeco
-  ```
+The repo contains an extensive test suite and some playgrounds to explore. 
 
-* Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
-  ``` sh
-  brew install cmark # or your preferred installation method
-  ```
+### Setup Environment
 
-* Make sure [Postgres](https://www.postgresql.org) is installed _and running_. It's our database of choice. You can install it with Homebrew:
-  ``` sh
-  brew install postgres # or your preferred installation method
-  brew services start postgresql # or your preferred launch method
-  make db
-  ```
-  (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
+You'll need some tools that you can install from the terminal using homebrew (or your preferred installation tool):
+
+``` sh
+$ brew install cmark
+$ brew install postgres
+$ brew services start postgresql
+```
+
+### Get Repo
+
+After preparation of the environment, grab the repo and change to its root folder:
+
+``` sh
+$ git clone https://github.com/pointfreeco/pointfreeco.git
+$ cd pointfreeco
+```
+
+### Prepare Database
+
+Now prepare the Postgres database and the Xcode environment using the app's Makefile:
+
+``` sh
+$ make db 
+
+    createuser --superuser pointfreeco || true
+    createdb --owner pointfreeco pointfreeco_development || true
+    createdb --owner pointfreeco pointfreeco_test || true
+    
+$ make 
+
+    ⚠️  Checking on cmark...
+    ✅ cmark is installed!
+    ⚠️  Checking on PostgreSQL...
+    ✅ PostgreSQL is up and running!
+    ⚠️  Preparing local configuration...
+    ✅ .pf-env file copied!
+```
+
+(If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
+
+### Open Xcode
+
+Now, you can open the main package in Xcode:
+
+``` sh
+xed .
+```
+
+Xcode will start to resolve the package dependencies, this will take some time.
+
+There is a playground "PointFree" (with several sub-playgrounds). You have to perform a small change in order to avoid a problem where the "HttpPipeline" cannot be found:
+
+* Select the playground.
+* Under "Identity and Type/Playground Settings" set the checkmark for "Build Active Scheme"
+
+Now the playgrounds can accessed without errors.
+
+### Next Steps
 
 With the project open in Xcode, you can:
 
