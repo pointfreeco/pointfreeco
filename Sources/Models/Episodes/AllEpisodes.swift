@@ -168,5 +168,6 @@ extension Episode {
     .ep165_navigationLinks,
     .ep166_navigationLinks,
     .ep167_navigationLinks,
+    .ep168_navigationThePoint,
   ]
 }
