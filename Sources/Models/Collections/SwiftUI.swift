@@ -46,8 +46,8 @@ Navigation is a really, really complex topic, and it’s going to take us many e
           .init(episode: .ep165_navigationLinks),
           .init(episode: .ep166_navigationLinks),
           .init(episode: .ep167_navigationLinks),
+          .init(episode: .ep168_navigationThePoint),
         ],
-        isFinished: false,
         related: [
           .init(
             blurb: #"""
