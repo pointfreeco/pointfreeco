@@ -8,7 +8,7 @@ Today we are open sourcing SwiftUI Navigation, a collection of tools for making 
   contentBlocks: [
     .init(
       content: #"""
-Over the past [9 weeks](/collections/swiftui/navigation) we have built up the concepts of SwiftUI navigation from the ground up. When we started the series we didn't think it would take us 6 hours of video to accomplish this, but along the way we discovered many tools for making working with SwiftUI navigation simpler, more ergnonomic and more precise.
+Over the past [9 weeks](/collections/swiftui/navigation) we have built up the concepts of SwiftUI navigation from the ground up. When we started the series we didn't think it would take us 6 hours of video to accomplish this, but along the way we discovered many tools for making working with SwiftUI navigation simpler, more ergonomic and more precise.
 
 We believe the tools we uncovered are highly applicable to everyone working with SwiftUI, and so today we are excited to release them in a new open source library.
 
@@ -264,7 +264,7 @@ Both of these more powerful initializers are just conveniences. If the user of `
 
 ## Try it today
 
-We've already started to get a lot of use out of [SwiftUI Navigation](https://github.com/pointfreeco/swiftui-navigation), but we think there is so much more than can be done. Give it a spin today and start modeling your domains more precisely with enums while still making use of everything SwiftUI has to offer.
+We've already started to get a lot of use out of [SwiftUI Navigation](https://swiftpackageindex.com/pointfreeco/swiftui-navigation), but we think there is so much more than can be done. Give it a spin today and start modeling your domains more precisely with enums while still making use of everything SwiftUI has to offer.
 """#,
       type: .paragraph
     ),
