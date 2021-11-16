@@ -262,19 +262,9 @@ extension BottomSheet {
 
 Both of these more powerful initializers are just conveniences. If the user of `BottomSheet` does not want to worry about concise domain modeling they are free to continue using the `isActive` boolean binding. But the day they need the more powerful APIs they will be available.
 
-## Learn More
-
-SwiftUI Navigation's tools were motivated and designed over the course of many episodes on [Point-Free](https://www.pointfree.co), a video series exploring functional programming and the Swift language, hosted by [Brandon Williams](https://twitter.com/mbrandonw) and [Stephen Celis](https://twitter.com/stephencelis).
-
-You can watch all of the episodes [here](https://www.pointfree.co/collections/swiftui/navigation).
-
-<a href="https://www.pointfree.co/collections/swiftui/navigation">
-  <img alt="video poster image" src="https://d3rccdn33rt8ze.cloudfront.net/episodes/0161.jpeg" width="600">
-</a>
-
 ## Try it today
 
-We've already started to get a lot of use out of [SwiftUI Navigation](https://github.com/pointfreeco/swiftui-navigation), but we think there is so much more than can be done. Give it a spin today to develop new, creative debugging and testing tools for your team and others today!
+We've already started to get a lot of use out of [SwiftUI Navigation](https://github.com/pointfreeco/swiftui-navigation), but we think there is so much more than can be done. Give it a spin today and start modeling your domains more precisely with enums while still making use of everything SwiftUI has to offer.
 """#,
       type: .paragraph
     ),
