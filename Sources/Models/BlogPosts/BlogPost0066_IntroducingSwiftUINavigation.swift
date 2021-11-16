@@ -3,14 +3,14 @@ import Foundation
 public let post0066_AnnouncingSwiftUINavigation = BlogPost(
   author: .pointfree,
   blurb: """
-Today we are open sourcing SwiftUI Navigation, a collection of tools for modeling SwiftUI navigation in more precise, deep-linkable ways.
+Today we are open sourcing SwiftUI Navigation, a collection of tools for making SwiftUI navigation simpler, more ergonomic and more precise.
 """,
   contentBlocks: [
     .init(
       content: #"""
-<--
-TODO
--->
+Over the past [9 weeks](/collections/swiftui/navigation) we have built up the concepts of SwiftUI navigation from the ground up. When we started the series we didn't think it would take us 6 hours of video to accomplish this, but along the way we discovered many tools for making working with SwiftUI navigation simpler, more ergnonomic and more precise.
+
+We believe the tools we uncovered are highly applicable to everyone working with SwiftUI, and so today we are excited to release them in a new open source library.
 
 ## Motivation
 
@@ -281,6 +281,6 @@ We've already started to get a lot of use out of [SwiftUI Navigation](https://gi
   ],
   coverImage: nil,
   id: 66,
-  publishedAt: .distantFuture,
+  publishedAt: Date(timeIntervalSince1970: 1637042400),
   title: "Open Sourcing SwiftUI Navigation"
 )
