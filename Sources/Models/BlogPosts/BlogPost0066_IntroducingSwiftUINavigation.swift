@@ -10,7 +10,7 @@ Today we are open sourcing SwiftUI Navigation, a collection of tools for making 
       content: #"""
 Over the past [9 weeks](/collections/swiftui/navigation) we have built up the concepts of SwiftUI navigation from the ground up. When we started the series we didn't think it would take us 6 hours of video to accomplish this, but along the way we discovered many tools for making working with SwiftUI navigation simpler, more ergonomic and more precise.
 
-We believe the tools we uncovered are highly applicable to everyone working with SwiftUI, and so today we are excited to release them in a new open source library.
+We believe the tools we uncovered are highly applicable to everyone working with SwiftUI, and so today we are excited to release them in [a new open source library](https://swiftpackageindex.com/pointfreeco/swiftui-navigation).
 
 ## Motivation
 
