@@ -122,7 +122,7 @@ private func validateUserAgent<Z>(
     )
       .flatMap { _ in
         sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
-          .bimap({ $0 as Error }, { $0 })
+          .withExcept { $0 as Error }
       }
       .run
       .flatMap { _ in
