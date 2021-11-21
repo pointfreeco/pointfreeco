@@ -10,7 +10,6 @@ import Prelude
 import Stripe
 import Syndication
 import Tuple
-import Mailgun
 
 let accountRssMiddleware = fetchUserByRssSalt
   <<< requireUser
@@ -115,8 +114,6 @@ private func validateUserAgent<Z>(
       let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
       else { return middleware(conn) }
-
-    // slack,twitter,facebook,iframely,itms,whatsapp,telegram
 
     return Current.database.updateUser(
       id: user.id, rssSalt: User.RssSalt(
