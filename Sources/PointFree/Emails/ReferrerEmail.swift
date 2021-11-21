@@ -12,7 +12,7 @@ let referralEmailView = simpleEmailLayout(referralEmailBody) <<< {
     newsletter: nil,
     title: "You just got one month free!",
     preheader: "",
-    template: .default,
+    template: .default(),
     data: $0
   )
 }

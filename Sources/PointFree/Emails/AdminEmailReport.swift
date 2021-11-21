@@ -17,7 +17,7 @@ public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAtt
       newsletter: nil,
       title: "\(type) email finished sending!",
       preheader: "\(data.totalAttempted) attempted emails, \(data.erroredUsers.count) errors",
-      template: .default,
+      template: .default(),
       data: (type, data.erroredUsers, data.totalAttempted)
     )
   } >>> simpleEmailLayout(adminEmailReportContent)
