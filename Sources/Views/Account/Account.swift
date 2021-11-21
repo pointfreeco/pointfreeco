@@ -1043,6 +1043,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
               .name("email"),
               .placeholder("blob@example.com"),
               .type(.email),
+              .required(true),
             ]
           ),
           .input(
