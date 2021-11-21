@@ -7,7 +7,7 @@ import Styleguide
 
 enum EmailLayoutTemplate {
   case blog
-  case `default`(includeHeaderImage: Bool = false)
+  case `default`(includeHeaderImage: Bool = true)
 
   var headerImgSrc: String? {
     switch self {
