@@ -12,28 +12,15 @@ It's time to look at a more advanced kind of navigation: modals. We will impleme
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1633323600),
     references: [
+      .swiftUINav,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""
 """#,
         sectionUrl: "https://www.pointfree.co/collections/case-studies/derived-behavior"
       ),
-      Episode.Reference(
-        author: "Matt Ricketson, Luca Bernardi & Raj Ramamurthy",
-        blurb: "An in-depth explaining on view identity, lifetime, and more, and crucial to understanding how `@State` works.",
-        link: "https://developer.apple.com/videos/play/wwdc2021/10022/",
-        publishedAt: referenceDateFormatter.date(from: "2021-06-09")!,
-        title: "WWDC 2021: Demystifying SwiftUI"
-      ),
-      .init(
-        author: "Matt Moriarity",
-        blurb: """
-          An in-depth article exploring the internals of `@ObservedObject` and `@StateObject` in order to understand how they are created and torn down.
-          """,
-        link: "https://www.mattmoriarity.com/2020-07-03-stateobject-and-observableobject-in-swiftui/",
-        publishedAt: referenceDateFormatter.date(from: "2020-07-03")!,
-        title: "@StateObject and @ObservedObject in SwiftUI"
-      )
+      .demystifyingSwiftUI,
+      .stateObjectAndObservableObjectInSwiftUI,
     ],
     sequence: 162,
     subtitle: "Sheets & Popovers, Part 1",

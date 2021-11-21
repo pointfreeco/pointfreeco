@@ -12,6 +12,7 @@ Navigation is a really, really complex topic, and it's going to take us many epi
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1632114000),
     references: [
+      .swiftUINav,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

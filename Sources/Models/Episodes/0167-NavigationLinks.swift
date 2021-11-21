@@ -12,6 +12,8 @@ Over the past weeks we have come up with some seriously powerful tools for Swift
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1636351200),
     references: [
+      .swiftUINav,
+      .demystifyingSwiftUI,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

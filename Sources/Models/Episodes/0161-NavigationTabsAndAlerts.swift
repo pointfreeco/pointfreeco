@@ -12,6 +12,7 @@ We continue our journey exploring navigation with an examination of alerts and a
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1632718800),
     references: [
+      .swiftUINav,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

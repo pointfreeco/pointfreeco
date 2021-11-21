@@ -12,6 +12,8 @@ We've claimed that the way we handle navigation in SwiftUI unlocks the ability t
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1636956000),
     references: [
+      .swiftUINav,
+      .swiftParsing,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

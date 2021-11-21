@@ -162,6 +162,14 @@ Combine is quite a large framework to get a handle of! When noting that its `Fut
     title: "Deferred Publishers: Tweet Tip"
   )
 
+  public static let demystifyingSwiftUI = Self(
+    author: "Matt Ricketson, Luca Bernardi & Raj Ramamurthy",
+    blurb: "An in-depth explaining on view identity, lifetime, and more, and crucial to understanding how `@State` works.",
+    link: "https://developer.apple.com/videos/play/wwdc2021/10022/",
+    publishedAt: referenceDateFormatter.date(from: "2021-06-09")!,
+    title: "WWDC 2021: Demystifying SwiftUI"
+  )
+
   public static let designingDependencies = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: #"""
@@ -757,6 +765,14 @@ A proposal has been accepted in the Swift evolution process that would allow key
     title: "SE-0249 - Key Path Expressions as Functions"
   )
 
+  public static let se_0293 = Episode.Reference(
+    author: "Holly Borla & Filip Sakel",
+    blurb: "The proposal that added property wrapper support to function and closure parameters, unlocking the ability to make binding transformations even more powerful.",
+    link: "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
+    publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
+    title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
+  )
+
   public static let semanticEditorCombinators = Episode.Reference(
     author: "Conal Elliott",
     blurb: """
@@ -829,7 +845,9 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
 
   public static let stateObjectAndObservableObjectInSwiftUI = Self(
     author: "Matt Moriarity",
-    blurb: "",
+    blurb: """
+      An in-depth article exploring the internals of `@ObservedObject` and `@StateObject` in order to understand how they are created and torn down.
+      """,
     link: "https://www.mattmoriarity.com/2020-07-03-stateobject-and-observableobject-in-swiftui/",
     publishedAt: referenceDateFormatter.date(from: "2020-07-03"),
     title: "@StateObject and @ObservedObject in SwiftUI"
@@ -910,6 +928,16 @@ bring operators into your codebase.
     title: "Swift Overture"
   )
 
+  public static let swiftParsing = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A library for turning nebulous data into well-structured data, with a focus on composition, performance, and generality.
+""",
+    link: "https://github.com/pointfreeco/swift-parsing",
+    publishedAt: referenceDateFormatter.date(from: "2021-12-21"),
+    title: "Swift Parsing"
+  )
+
   public static let swiftPitchStringConsumption = Episode.Reference(
     author: "Michael Ilseman et al.",
     blurb: """
@@ -971,6 +999,16 @@ An early example of Redux in SwiftUI. Like ReSwift, it uses "middleware" to hand
     link: "https://github.com/Dimillian/SwiftUIFlux",
     publishedAt: nil,
     title: "SwiftUIFlux"
+  )
+
+  public static let swiftUINav = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+After [9 episodes](/collections/swiftui/navigation) exploring SwiftUI navigation from the ground up, we open sourced a library with all new tools for making SwiftUI navigation simpler, more ergonomic and more precise.
+"""#,
+    link: "https://github.com/pointfreeco/swiftui-navigation",
+    publishedAt: referenceDateFormatter.date(from: "2021-11-16"),
+    title: "SwiftUI Navigation"
   )
 
   public static let swiftTagged = Episode.Reference(
