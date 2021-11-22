@@ -43,6 +43,6 @@ We have plenty of exciting topics planned for 2022, including all new episodes o
   ],
   coverImage: nil,
   id: 67,
-  publishedAt: .distantFuture, // TODO
+  publishedAt: Date(timeIntervalSince1970: 1638165600),
   title: "Cyber Monday Sale: 25% Off Point-Free"
 )
