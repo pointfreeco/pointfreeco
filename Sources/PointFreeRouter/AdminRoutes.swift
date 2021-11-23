@@ -1,5 +1,7 @@
 import ApplicativeRouter
+import Foundation
 import Models
+import Parsing
 import Prelude
 
 public enum Admin: Equatable {
@@ -84,3 +86,102 @@ private let adminRouters: [Router<Admin>] = [
   .case(.newEpisodeEmail(.show))
     <¢> get %> "new-episode-email" <% end,
 ]
+
+private let _adminRouter = OneOf {
+  Routing(/Admin.index) {
+    Method.get
+  }
+
+  Routing(/Admin.episodeCredits) {
+    Path("episode-credits")
+
+    OneOf {
+      Routing(/Admin.EpisodeCredit.show) {
+        Method.get
+      }
+
+//      Routing(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
+//        Method.post
+//        Body {
+//          FormField("user_id", UUID.parser().pipe { User.Id.parser() })
+//          FormField("episode_sequence", Int.parser().pipe { Episode.Sequence.parser() })
+//        }
+//      }
+    }
+  }
+
+  Routing(/Admin.freeEpisodeEmail) {
+    Path("free-episode-email")
+
+    OneOf {
+      Routing(/Admin.FreeEpisodeEmail.index) {
+        Method.get
+      }
+
+      Routing(/Admin.FreeEpisodeEmail.send) {
+        Method.get
+        Path(Int.parser().pipe { Episode.Id.parser() })
+        Path("send")
+      }
+    }
+  }
+
+  Routing(/Admin.ghost) {
+    Path("ghost")
+
+    Routing(/Admin.Ghost.index) {
+      Method.get
+    }
+
+//    Routing(/Admin.Ghost.start) {
+//      Method.post
+//      Path("start")
+//      Body {
+//        FormField("user_id", UUID.parser().pipe { User.Id.parser() })
+//      }
+//    }
+  }
+
+  Routing(/Admin.newBlogPostEmail) {
+    Path("new-blog-post-email")
+
+    OneOf {
+      Routing(/Admin.NewBlogPostEmail.index) {
+        Method.get
+      }
+
+//      Routing(/Admin.NewBlogPostEmail.send) {
+//        Path(Int.parser().pipe { BlogPost.Id.parser() })
+//        Path("send")
+//        Body {
+//          FormData(NewBlogPostFormData.self, decoder: formDecoder)
+//        }
+//        isTest
+//      }
+    }
+  }
+
+  Routing(/Admin.newEpisodeEmail) {
+    Path("new-episode-email")
+
+    OneOf {
+      Routing(/Admin.NewEpisodeEmail.show) {
+        Method.get
+      }
+
+//      Routing(/Admin.NewEpisodeEmail.send) {
+//        Path(Int.parser().pipe { Episode.Id.parser() })
+//        Path("send")
+//        Body {
+//          Optionally {
+//            FormField("subscriber_announcement", String.parser())
+//          }
+//          Optionally {
+//            FormField("nonsubscriber_announcement", String.parser())
+//          }
+//        }
+//        isTest
+//      }
+    }
+  }
+}

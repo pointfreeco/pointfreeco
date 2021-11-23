@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import Parsing
 import Prelude
 import Models
 
@@ -19,3 +20,18 @@ private let apiRouters: [Router<Route.Api>] = [
   .case(Route.Api.episode)
     <¢> "episodes" %> pathParam(.tagged(.int)) <% end
 ]
+
+private let _apiRouter = Parse {
+  Path("episodes")
+
+  OneOf {
+    Routing(/Route.Api.episodes) {
+      Method.get
+    }
+    
+    Routing(/Route.Api.episode) {
+      Method.get
+      Path(Int.parser().pipe { Episode.Id.parser() })
+    }
+  }
+}
