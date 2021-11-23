@@ -1,21 +1,18 @@
-▿ 4 elements
-  ▿ EmailSetting
-    - newsletter: Newsletter.announcements
-    ▿ userId: 00000000-0000-0000-0000-000000000001
-      ▿ rawValue: 00000000-0000-0000-0000-000000000001
-        - uuid: "00000000-0000-0000-0000-000000000001"
-  ▿ EmailSetting
-    - newsletter: Newsletter.newBlogPost
-    ▿ userId: 00000000-0000-0000-0000-000000000001
-      ▿ rawValue: 00000000-0000-0000-0000-000000000001
-        - uuid: "00000000-0000-0000-0000-000000000001"
-  ▿ EmailSetting
-    - newsletter: Newsletter.newEpisode
-    ▿ userId: 00000000-0000-0000-0000-000000000001
-      ▿ rawValue: 00000000-0000-0000-0000-000000000001
-        - uuid: "00000000-0000-0000-0000-000000000001"
-  ▿ EmailSetting
-    - newsletter: Newsletter.welcomeEmails
-    ▿ userId: 00000000-0000-0000-0000-000000000001
-      ▿ rawValue: 00000000-0000-0000-0000-000000000001
-        - uuid: "00000000-0000-0000-0000-000000000001"
+[
+  [0]: EmailSetting(
+    newsletter: EmailSetting.Newsletter.announcements,
+    userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
+  ),
+  [1]: EmailSetting(
+    newsletter: EmailSetting.Newsletter.newBlogPost,
+    userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
+  ),
+  [2]: EmailSetting(
+    newsletter: EmailSetting.Newsletter.newEpisode,
+    userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
+  ),
+  [3]: EmailSetting(
+    newsletter: EmailSetting.Newsletter.welcomeEmails,
+    userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
+  )
+]
