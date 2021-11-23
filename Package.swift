@@ -326,6 +326,7 @@ var package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "HttpPipelineTestSupport", package: "swift-web"),
         .product(name: "Logging", package: "swift-log"),

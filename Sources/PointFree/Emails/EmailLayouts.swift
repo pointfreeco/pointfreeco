@@ -7,14 +7,16 @@ import Styleguide
 
 enum EmailLayoutTemplate {
   case blog
-  case `default`
+  case `default`(includeHeaderImage: Bool = true)
 
-  var headerImgSrc: String {
+  var headerImgSrc: String? {
     switch self {
     case .blog:
       return Current.assets.pointersEmailHeaderImgSrc
-    case .default:
+    case .default(includeHeaderImage: true):
       return Current.assets.emailHeaderImgSrc
+    case .default(includeHeaderImage: false):
+      return nil
     }
   }
 }
@@ -34,6 +36,8 @@ struct SimpleEmailLayoutData<A> {
 
 let emailStylesheet = styleguide
   <> a % key("border-bottom", "1px solid black")
+  <> p % lineHeight(1.5)
+  <> p % padding(bottom: .rem(0.75))
 
 func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayoutData<A>) -> Node {
   return { layoutData -> Node in
@@ -55,15 +59,18 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
           ),
           .emailTable(
             attributes: [.height(.pct(100)), .style(bodyTableStyles)],
-            .tr(
-              .td(
-                .img(
-                  src: layoutData.template.headerImgSrc,
-                  alt: "",
-                  attributes: [.style(maxWidth(.pct(100)))]
+            layoutData.template.headerImgSrc.map {
+              .tr(
+                .td(
+                  .img(
+                    src: $0,
+                    alt: "",
+                    attributes: [.style(maxWidth(.pct(100)))]
+                  )
                 )
               )
-            ),
+            }
+            ?? [],
             .tr(
               .td(
                 attributes: [.align(.center), .valign(.top)],

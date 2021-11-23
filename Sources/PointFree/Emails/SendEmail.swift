@@ -19,6 +19,8 @@ let expressUnsubscribeIso: PartialIso<String, (User.Id, EmailSetting.Newsletter)
 public func prepareEmail(
   from: EmailAddress = supportEmail,
   to: [EmailAddress],
+  cc: [EmailAddress]? = nil,
+  bcc: [EmailAddress]? = nil,
   subject: String,
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
@@ -59,8 +61,8 @@ public func prepareEmail(
     return Email(
       from: from,
       to: to,
-      cc: nil,
-      bcc: nil,
+      cc: cc,
+      bcc: bcc,
       subject: Current.envVars.appEnv == .production
         ? subject
         : "[\(Current.envVars.appEnv)] " + subject,
@@ -82,6 +84,8 @@ public func send(email: Email) -> EitherIO<Error, SendEmailResponse> {
 public func sendEmail(
   from: EmailAddress = supportEmail,
   to: [EmailAddress],
+  cc: [EmailAddress]? = nil,
+  bcc: [EmailAddress]? = nil,
   subject: String,
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
@@ -93,6 +97,8 @@ public func sendEmail(
       prepareEmail(
         from: from,
         to: to,
+        cc: cc,
+        bcc: bcc,
         subject: subject,
         unsubscribeData: unsubscribeData,
         content: content,

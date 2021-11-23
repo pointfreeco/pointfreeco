@@ -1,52 +1,70 @@
-▿ 17 elements
-  ▿ (2 elements)
-    - key: "APP_ENV"
-    - value: "development"
-  ▿ (2 elements)
-    - key: "APP_SECRET"
-    - value: "deadbeefdeadbeefdeadbeefdeadbeef"
-  ▿ (2 elements)
-    - key: "BASE_URL"
-    - value: "http://localhost:8080"
-  ▿ (2 elements)
-    - key: "BASIC_AUTH_PASSWORD"
-    - value: "world"
-  ▿ (2 elements)
-    - key: "BASIC_AUTH_USERNAME"
-    - value: "hello"
-  ▿ (2 elements)
-    - key: "DATABASE_URL"
-    - value: "postgres://hello:world@localhost:5432/pointfreeco"
-  ▿ (2 elements)
-    - key: "EMERGENCY_MODE"
-    - value: "false"
-  ▿ (2 elements)
-    - key: "GITHUB_CLIENT_ID"
-    - value: "deadbeef-client-id"
-  ▿ (2 elements)
-    - key: "GITHUB_CLIENT_SECRET"
-    - value: "deadbeef-client-secret"
-  ▿ (2 elements)
-    - key: "MAILGUN_DOMAIN"
-    - value: "mg.domain.com"
-  ▿ (2 elements)
-    - key: "MAILGUN_PRIVATE_API_KEY"
-    - value: "deadbeef-mg-api-key"
-  ▿ (2 elements)
-    - key: "PORT"
-    - value: "8080"
-  ▿ (2 elements)
-    - key: "REGIONAL_DISCOUNT_COUPON_ID"
-    - value: "regional-discount"
-  ▿ (2 elements)
-    - key: "RSS_USER_AGENT_WATCHLIST"
-    - value: "blob,gob"
-  ▿ (2 elements)
-    - key: "STRIPE_ENDPOINT_SECRET"
-    - value: "whsec_test"
-  ▿ (2 elements)
-    - key: "STRIPE_PUBLISHABLE_KEY"
-    - value: "pk_test"
-  ▿ (2 elements)
-    - key: "STRIPE_SECRET_KEY"
-    - value: "sk_test"
+[
+  [0]: (
+    key: "APP_ENV",
+    value: "development"
+  ),
+  [1]: (
+    key: "APP_SECRET",
+    value: "deadbeefdeadbeefdeadbeefdeadbeef"
+  ),
+  [2]: (
+    key: "BASE_URL",
+    value: "http://localhost:8080"
+  ),
+  [3]: (
+    key: "BASIC_AUTH_PASSWORD",
+    value: "world"
+  ),
+  [4]: (
+    key: "BASIC_AUTH_USERNAME",
+    value: "hello"
+  ),
+  [5]: (
+    key: "DATABASE_URL",
+    value: "postgres://hello:world@localhost:5432/pointfreeco"
+  ),
+  [6]: (
+    key: "EMERGENCY_MODE",
+    value: "false"
+  ),
+  [7]: (
+    key: "GITHUB_CLIENT_ID",
+    value: "deadbeef-client-id"
+  ),
+  [8]: (
+    key: "GITHUB_CLIENT_SECRET",
+    value: "deadbeef-client-secret"
+  ),
+  [9]: (
+    key: "MAILGUN_DOMAIN",
+    value: "mg.domain.com"
+  ),
+  [10]: (
+    key: "MAILGUN_PRIVATE_API_KEY",
+    value: "deadbeef-mg-api-key"
+  ),
+  [11]: (
+    key: "PORT",
+    value: "8080"
+  ),
+  [12]: (
+    key: "REGIONAL_DISCOUNT_COUPON_ID",
+    value: "regional-discount"
+  ),
+  [13]: (
+    key: "RSS_USER_AGENT_WATCHLIST",
+    value: "blob,gob"
+  ),
+  [14]: (
+    key: "STRIPE_ENDPOINT_SECRET",
+    value: "whsec_test"
+  ),
+  [15]: (
+    key: "STRIPE_PUBLISHABLE_KEY",
+    value: "pk_test"
+  ),
+  [16]: (
+    key: "STRIPE_SECRET_KEY",
+    value: "sk_test"
+  )
+]

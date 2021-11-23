@@ -40,7 +40,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -54,7 +54,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_after_unsubscribe"
     )
   }
@@ -86,7 +86,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -100,7 +100,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_after_unsubscribe"
     )
     #endif
@@ -135,7 +135,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -149,7 +149,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_after_unsubscribe"
     )
     #endif
@@ -187,7 +187,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -201,7 +201,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_after_unsubscribe"
     )
     #endif

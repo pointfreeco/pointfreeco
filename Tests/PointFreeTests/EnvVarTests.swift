@@ -4,6 +4,11 @@ import SnapshotTesting
 import XCTest
 
 class EnvVarTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    SnapshotTesting.isRecording=true
+  }
+
   func testDecoding() throws {
     let json = [
       "APP_ENV": "development",
@@ -30,6 +35,6 @@ class EnvVarTests: TestCase {
     let roundTrip = try JSONSerialization.jsonObject(with: try JSONEncoder().encode(envVars), options: [])
       as! [String: String]
 
-    assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }), as: .dump)
+    assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }), as: .customDump)
   }
 }

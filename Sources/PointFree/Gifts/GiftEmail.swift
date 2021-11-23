@@ -27,7 +27,7 @@ private let giftEmail = simpleEmailLayout(giftEmailBody(gift:)) <<< { gift in
     newsletter: nil,
     title: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
     preheader: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-    template: .default,
+    template: .default(),
     data: gift
   )
 }

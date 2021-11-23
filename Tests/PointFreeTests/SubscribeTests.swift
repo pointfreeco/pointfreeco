@@ -17,7 +17,7 @@ import XCTest
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
   }
 
   func testCoupon_Individual() {
@@ -47,7 +47,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
   }
 
@@ -114,7 +114,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -155,7 +155,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -196,7 +196,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
     let invites = Current.database.fetchTeamInvites(user.id)
@@ -243,7 +243,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
     let invites = Current.database.fetchTeamInvites(user.id)
@@ -460,7 +460,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matching: subscription, as: .dump)
+    assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
     XCTAssertNil(balance)

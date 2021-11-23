@@ -1,0 +1,23 @@
+### Private RSS Feed
+
+<p>Hi there,</p>
+<p>We detected that your private RSS feed URL was shared on Slack. To protect your account, your RSS feed has been deactivated and a new URL has been generated for you, which is available on your <a href="https://www.pointfree.co/account">account</a> page.</p>
+<p>Please note that the RSS feed URL we provide to you is private to only you and should not be shared externally. If you would like to share Point-Free with friends or colleagues, please consider purchasing a <a href="https://www.pointfree.co/pricing">team</a> subscription by adding them to your <a href="https://www.pointfree.co/account">account</a>, or send them a <a href="https://www.pointfree.co/gifts">gift subscription</a>.</p>
+
+
+
+
+
+Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
+
+Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+
+
