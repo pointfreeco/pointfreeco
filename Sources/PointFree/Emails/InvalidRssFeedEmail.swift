@@ -14,12 +14,12 @@ func sendInvalidRssFeedEmail(user: User, userAgent: String) -> EitherIO<Error, S
   )
 }
 
-private let invalidRssFeedEmail = simpleEmailLayout(invalidRssFeedEmailBody(user:userAgent:)) <<< { user, userAgent in
+let invalidRssFeedEmail = simpleEmailLayout(invalidRssFeedEmailBody(user:userAgent:)) <<< { user, userAgent in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
     title: "Private RSS Feed",
-    preheader: "We detected that you have shared your private RSS feed URL.",
+    preheader: "We detected that your private RSS feed URL was shared.",
     template: .default(includeHeaderImage: false),
     data: (user, userAgent)
   )
@@ -39,9 +39,9 @@ private func invalidRssFeedEmailBody(user: User, userAgent: String) -> Node {
           .markdownBlock("""
             Hi there,
 
-            We detected that you shared your private RSS feed URL\(shareQualifier(userAgent: userAgent)). As such, your RSS feed has been deactivated, and a new URL has been generated for you, available on your [account](https://www.pointfree.co/account) page.
+            We detected that your private RSS feed URL was shared\(shareQualifier(userAgent: userAgent)). To protect your account, your RSS feed has been deactivated and a new URL has been generated for you, which is available on your [account](https://www.pointfree.co/account) page.
 
-            Please note that the RSS feed URL we provide to you is private to only you and should not be shared externally. If you would like to share Point-Free with friends or colleagues, then please consider purchasing a [team](https://pointfree.co/pricing) subscription by adding them to your [account](https://www.pointfree.co/account).
+            Please note that the RSS feed URL we provide to you is private to only you and should not be shared externally. If you would like to share Point-Free with friends or colleagues, please consider purchasing a [team](https://www.pointfree.co/pricing) subscription by adding them to your [account](https://www.pointfree.co/account), or send them a [gift subscription](https://www.pointfree.co/gifts).
             """)
         )
       )
