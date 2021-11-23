@@ -16,6 +16,9 @@ open class LiveDatabaseTestCase: TestCase {
   override open func setUp() {
     super.setUp()
 
+    diffTool = "ksdiff"
+//    isRecording = true
+
     precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
     self.pool = EventLoopGroupConnectionPool(
       source: PostgresConnectionSource(

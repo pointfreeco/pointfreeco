@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65631
+Content-Length: 65673
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2325,7 +2325,8 @@ Point-Free!</p>
                                         w-100p"
                                  name="email"
                                  placeholder="blob@example.com"
-                                 type="email">
+                                 type="email"
+                                 required>
                           <input type="submit"
                                  class="medium
                                         cursor-pointer
