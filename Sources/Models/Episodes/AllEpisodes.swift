@@ -169,5 +169,6 @@ extension Episode {
     .ep166_navigationLinks,
     .ep167_navigationLinks,
     .ep168_navigationThePoint,
+    .ep169_uikitNavigation,
   ]
 }

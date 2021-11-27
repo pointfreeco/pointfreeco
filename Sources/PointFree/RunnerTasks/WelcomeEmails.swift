@@ -88,7 +88,7 @@ func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> Node) ->
       newsletter: .welcomeEmails,
       title: subject,
       preheader: "",
-      template: .default,
+      template: .default(),
       data: user
     )
   }

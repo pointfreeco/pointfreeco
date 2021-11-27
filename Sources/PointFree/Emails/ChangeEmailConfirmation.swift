@@ -14,7 +14,7 @@ let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
     newsletter: nil,
     title: "Email change confirmation",
     preheader: "We received a request to change your email on Point-Free.",
-    template: .default,
+    template: .default(),
     data: (user, newEmailAddress, payload)
   )
 }
@@ -67,7 +67,7 @@ let emailChangedEmailView = simpleEmailLayout(emailChangedEmailBody) <<< { user,
     newsletter: nil,
     title: "Your email has been changed",
     preheader: "",
-    template: .default,
+    template: .default(),
     data: newEmailAddress
   )
 }

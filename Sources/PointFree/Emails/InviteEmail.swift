@@ -13,13 +13,13 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView) <<< { invit
     newsletter: nil,
     title: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
     preheader: "Your colleague \(inviter.displayName) has invited you to join their team account on Point-Free.",
-    template: .default,
+    template: .default(),
     data: (inviter, invite)
   )
 }
 
 private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node {
-  return .emailTable(
+  .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(
       .td(
@@ -60,7 +60,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView) <
     newsletter: nil,
     title: "\(invitee.displayName) has accepted your invitation!",
     preheader: "",
-    template: .default,
+    template: .default(),
     data: (inviter, invitee)
   )
 }

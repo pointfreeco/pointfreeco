@@ -250,7 +250,7 @@ extension Client {
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
-          AND "stripe_payment_intent_status" IS \(bind: PaymentIntent.Status.succeeded)
+          AND "stripe_payment_intent_status" = \(bind: PaymentIntent.Status.succeeded)
           AND NOT "delivered"
           AND (
             "deliver_at" <= CURRENT_DATE

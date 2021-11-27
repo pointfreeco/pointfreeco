@@ -221,7 +221,7 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView) <<< { owner, subscr
     Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
     \(dateFormatter.string(from: subscription.currentPeriodEnd)).
     """,
-    template: .default,
+    template: .default(),
     data: (owner, subscription)
   )
 }
@@ -270,7 +270,7 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView) <<< { owner
     newsletter: nil,
     title: "Your subscription has been reactivated",
     preheader: "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
-    template: .default,
+    template: .default(),
     data: (owner, subscription)
   )
 }
