@@ -131,7 +131,7 @@ func announcementBanner<A>(
 ) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0067_CyberMondaySale.publishedAt...Date(timeIntervalSince1970: 1638266400))
+    (post0067_CyberMondaySale.publishedAt...Date(timeIntervalSince1970: 1638338400))
       .contains(date())
   else { return [] }
 
