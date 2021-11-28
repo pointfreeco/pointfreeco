@@ -8,7 +8,7 @@ For the next 24 hours, we're offering personal Point-Free subscriptions for 25% 
   contentBlocks: [
     .init(
       content: """
-We do this only a few times a year: we're having a [rare Point-Free sale](/discounts/cyber-monday-2021) this Cyber Monday by offering 30% off the first year of your subscription!
+We do this only a few times a year: we're having a [rare, one-day Point-Free sale](/discounts/cyber-monday-2021) this Cyber Monday by offering 30% off the first year of your subscription!
 
 Once subscribed you'll get instant access to all 169 episodes (96 hours of video and growing!) of Point-Free content, including popular collections that were created or expanded this past year:
 
@@ -22,7 +22,7 @@ Dependencies can wreak havoc on a codebase, and that's why it's important to und
 
 ### [Tour of isowords](https://www.pointfree.co/collections/tours/isowords)
 
-We spend a lot of time talking about software best practices, but we also practice what we preach. To demonstrate this we open sourced an entire application (a game no less!) to show how to build a large in SwiftUI, using the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), with a full test suite, in a modern and modular Xcode project style, and more.
+We spend a lot of time talking about software best practices, but we also practice what we preach. To demonstrate this we open sourced an entire application (a game no less!) to show how to build a large project in SwiftUI, using the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), with a full test suite, in a modern and modular Xcode project style, and more.
 
 ### [WWDC 2021](/collections/wwdc)
 
@@ -34,9 +34,9 @@ Animation is one of the most impressive features of SwiftUI, but the APIs can be
 
 ## Subscribe today!
 
-We have plenty of exciting topics planned for 2022, including all new episodes on parsing (improving ergonomics, "reversible" parsing, and _more_, with applications to iOS routing), navigation in the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), deep explorations into Swift concurrency, and more!
+We have plenty of exciting topics planned for 2022, including all new episodes on parsing (improving ergonomics, "reversible" parsing, applications to iOS routing, and _more_), navigation in the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), deep explorations into Swift concurrency, and more!
 
-[Click here](/discounts/cyber-monday-2021) to redeem the coupon code now. The offer will only remain valid through November 29, 2021.
+[Click here](/discounts/cyber-monday-2021) to redeem the coupon code now. The offer is valid for only one day, so you better hurry!
 """,
       type: .paragraph
     )
