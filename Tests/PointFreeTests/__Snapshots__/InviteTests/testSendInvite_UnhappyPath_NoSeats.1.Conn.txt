@@ -1,7 +1,7 @@
 POST http://localhost:8080/invites
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-email=blobber2@pointfree.co
+email=blobber2%40pointfree.co
 
 302 Found
 Location: /account

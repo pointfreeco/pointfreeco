@@ -48,12 +48,12 @@ public func payload<A, B>(
     })
 }
 
-let isTest: Router<Bool?> =
-  formField("live", .string).map(isPresent >>> negate >>> Optional.iso.some)
-    <|> formField("test", .string).map(isPresent >>> Optional.iso.some)
-
-let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
-let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
+//let isTest: Router<Bool?> =
+//  formField("live", .string).map(isPresent >>> negate >>> Optional.iso.some)
+//    <|> formField("test", .string).map(isPresent >>> Optional.iso.some)
+//
+//let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
+//let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
 
 let formDecoder: UrlFormDecoder = {
   let decoder = UrlFormDecoder()

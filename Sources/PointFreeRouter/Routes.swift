@@ -133,8 +133,8 @@ private let blogRouter = OneOf {
     Path {
       "posts"
       OneOf {
-        Int.parser().pipe { BlogPost.Id.parser() }.pipe(/Either<String, BlogPost.Id>.right)
         String.parser().pipe(/Either<String, BlogPost.Id>.left)
+        Int.parser().pipe { BlogPost.Id.parser() }.pipe(/Either<String, BlogPost.Id>.right)
       }
     }
   }
@@ -165,8 +165,8 @@ private let collectionsRouter = OneOf {
         String.parser().pipe { Episode.Collection.Slug.parser() }
         String.parser().pipe { Episode.Collection.Section.Slug.parser() }
         OneOf {
-          Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
           String.parser().pipe(/Either<String, Episode.Id>.left)
+          Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
         }
       }
     }
@@ -182,8 +182,8 @@ private let episodeRouter = OneOf {
     Method.get
     Path {
       OneOf {
-        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
         String.parser().pipe(/Either<String, Episode.Id>.left)
+        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
       }
     }
   }
@@ -192,8 +192,8 @@ private let episodeRouter = OneOf {
     Method.post
     Path {
       OneOf {
-        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
         String.parser().pipe(/Either<String, Episode.Id>.left)
+        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
       }
       "progress"
     }
@@ -294,7 +294,9 @@ private let inviteRouter = OneOf {
     Method.post
     Body {
       FormData {
-        Field("email", String.parser().pipe { EmailAddress.parser() })
+        Optionally {
+          Field("email", String.parser().pipe { EmailAddress.parser() })
+        }
       }
     }
   }
@@ -342,6 +344,7 @@ private let teamRouter = OneOf {
       "team"
       "members"
       UUID.parser().pipe { User.Id.parser() }
+      "remove"
     }
   }
 }
@@ -455,6 +458,27 @@ let router = OneOf {
       giftsRouter
     }
 
+    Routing(/Route.discounts) {
+      Method.get
+      Path {
+        "discounts"
+        String.parser().pipe { Stripe.Coupon.Id.parser() }
+      }
+      Query {
+        Optionally {
+          Field("billing", String.parser().pipe { Pricing.Billing.parser() })
+        }
+      }
+    }
+
+    Routing(/Route.endGhosting) {
+      Method.post
+      Path {
+        "ghosting"
+        "end"
+      }
+    }
+
     Routing(/Route.expressUnsubscribe) {
       Method.get
       Path {
@@ -494,7 +518,9 @@ let router = OneOf {
       Path { "invites" }
       inviteRouter
     }
+  }
 
+  OneOf {
     Routing(/Route.login) {
       Method.get
       Path { "login" }
@@ -509,9 +535,7 @@ let router = OneOf {
       Method.get
       Path { "logout" }
     }
-  }
 
-  OneOf {
     Routing(/Route.pricingLanding) {
       Method.get
       Path { "pricing" }
@@ -525,45 +549,47 @@ let router = OneOf {
     Routing(/Route.subscribe) {
       Method.post
       Path { "subscribe" }
-      Body {
-        FormData {
-          Optionally {
-            Field("coupon", String.parser().pipe { Coupon.Id.parser() })
+      Optionally {
+        Body {
+          FormData {
+            Optionally {
+              Field("coupon", String.parser().pipe { Coupon.Id.parser() })
+            }
+            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, Bool.parser(), default: false)
+            Parse {
+              Field("pricing[billing]", String.parser().pipe { Pricing.Billing.parser() })
+              Field("pricing[quantity]", Int.parser())
+            }
+            .pipe { UnsafeBitCast(Pricing.init(billing:quantity:)) }
+            Optionally {
+              Field(
+                SubscribeData.CodingKeys.referralCode.rawValue,
+                String.parser().pipe { User.ReferralCode.parser() }
+              )
+            }
+            Many {
+              Field("teammate", String.parser().pipe { EmailAddress.parser() })
+            }
+            Parse {
+              Field("token", String.parser().pipe { Token.Id.parser() })
+              Field(
+                SubscribeData.CodingKeys.useRegionalDiscount.rawValue, Bool.parser(), default: false
+              )
+            }
           }
-          Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, Bool.parser(), default: false)
-          Parse {
-            Field("pricing[billing]", String.parser().pipe { Pricing.Billing.parser() })
-            Field("pricing[quantity]", Int.parser())
-          }
-          .pipe { UnsafeBitCast(Pricing.init(billing:quantity:)) }
-          Optionally {
-            Field(
-              SubscribeData.CodingKeys.referralCode.rawValue,
-              String.parser().pipe { User.ReferralCode.parser() }
-            )
-          }
-          Many {
-            Field("teammate", String.parser().pipe { EmailAddress.parser() })
-          }
-          Parse {
-            Field("token", String.parser().pipe { Token.Id.parser() })
-            Field(
-              SubscribeData.CodingKeys.useRegionalDiscount.rawValue, Bool.parser(), default: false
-            )
-          }
-        }
-        .pipe(
-          Conversion(
-            apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
-            unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
-          )
-        )
-        .pipe {
-          UnsafeBitCast(
-            SubscribeData.init(
-              coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
+          .pipe(
+            Conversion(
+              apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
+              unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
             )
           )
+          .pipe {
+            UnsafeBitCast(
+              SubscribeData.init(
+                coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
+              )
+            )
+          }
         }
       }
     }

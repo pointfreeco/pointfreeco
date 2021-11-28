@@ -118,9 +118,7 @@ let adminRouter = OneOf {
           Body {
             FormCoded(NewBlogPostFormData.self, decoder: formDecoder)
             FormData {
-              Optionally {
-                Field("test", Bool.parser())
-              }
+              isTest
             }
           }
         }
@@ -156,9 +154,7 @@ let adminRouter = OneOf {
               Optionally {
                 Field("nonsubscriber_announcement", String.parser())
               }
-              Optionally {
-                Field("test", Bool.parser())
-              }
+              isTest
             }
           }
         }
@@ -171,6 +167,18 @@ let adminRouter = OneOf {
       }
     }
   }
+}
+
+let isTest = Optionally {
+  Field(
+    "test",
+    String.parser().pipe(
+      PartialConversion(
+        apply: { _ in true },
+        unapply: { $0 ? "" : nil }
+      )
+    )
+  )
 }
 
 /*

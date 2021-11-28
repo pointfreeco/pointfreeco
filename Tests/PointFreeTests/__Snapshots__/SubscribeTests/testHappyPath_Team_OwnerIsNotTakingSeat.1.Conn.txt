@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-isOwnerTakingSeat=false&pricing[billing]=yearly&pricing[quantity]=5&teammates[0]=blob1@pointfree.co&teammates[1]=blob2@pointfree.co&teammates[2]=blob3@pointfree.co&teammates[3]=blob4@pointfree.co&teammates[4]=blob5@pointfree.co&token=stripe-deadbeef
+pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=5&teammate=blob1%40pointfree.co&teammate=blob2%40pointfree.co&teammate=blob3%40pointfree.co&teammate=blob4%40pointfree.co&teammate=blob5%40pointfree.co&token=stripe-deadbeef
 
 302 Found
 Location: /account
