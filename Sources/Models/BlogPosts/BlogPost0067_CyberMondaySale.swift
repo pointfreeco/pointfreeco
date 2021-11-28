@@ -3,7 +3,7 @@ import Foundation
 public let post0067_CyberMondaySale = BlogPost(
   author: .pointfree,
   blurb: """
-For the next 24 hours, we're offering personal Point-Free subscriptions for 25% off the first year!
+For the next 24 hours, we're offering personal Point-Free subscriptions for 30% off the first year!
 """,
   contentBlocks: [
     .init(
