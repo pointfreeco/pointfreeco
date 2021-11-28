@@ -115,6 +115,15 @@ public enum Route: Equatable {
   }
 }
 
+private let blogSlugOrId = OneOf {
+  String.parser(of: Substring.self)
+    .pipe(/Either<String, BlogPost.Id>.left)
+
+  Int.parser(of: Substring.self)
+    .pipe { BlogPost.Id.parser() }
+    .pipe(/Either<String, BlogPost.Id>.right)
+}
+
 private let blogRouter = OneOf {
   Routing(/Route.Blog.index) {
     Method.get
@@ -132,10 +141,7 @@ private let blogRouter = OneOf {
     Method.get
     Path {
       "posts"
-      OneOf {
-        String.parser().pipe(/Either<String, BlogPost.Id>.left)
-        Int.parser().pipe { BlogPost.Id.parser() }.pipe(/Either<String, BlogPost.Id>.right)
-      }
+      blogSlugOrId
     }
   }
 }
@@ -173,6 +179,15 @@ private let collectionsRouter = OneOf {
   }
 }
 
+private let episodeSlugOrId = OneOf {
+  String.parser(of: Substring.self)
+    .pipe(/Either<String, Episode.Id>.left)
+
+  Int.parser(of: Substring.self)
+    .pipe { Episode.Id.parser() }
+    .pipe(/Either<String, Episode.Id>.right)
+}
+
 private let episodeRouter = OneOf {
   Routing(/Route.EpisodeRoute.index) {
     Method.get
@@ -180,21 +195,13 @@ private let episodeRouter = OneOf {
 
   Routing(/Route.EpisodeRoute.show) {
     Method.get
-    Path {
-      OneOf {
-        String.parser().pipe(/Either<String, Episode.Id>.left)
-        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
-      }
-    }
+    Path { episodeSlugOrId }
   }
 
   Routing(/Route.EpisodeRoute.progress) {
     Method.post
     Path {
-      OneOf {
-        String.parser().pipe(/Either<String, Episode.Id>.left)
-        Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
-      }
+      episodeSlugOrId
       "progress"
     }
     Query {

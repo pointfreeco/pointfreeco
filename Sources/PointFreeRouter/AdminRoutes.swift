@@ -169,7 +169,7 @@ let adminRouter = OneOf {
   }
 }
 
-let isTest = Optionally {
+private let isTest = Optionally {
   Field(
     "test",
     String.parser().pipe(
