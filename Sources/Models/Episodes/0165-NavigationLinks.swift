@@ -12,6 +12,8 @@ It's time to explore the most complex form of navigation in SwiftUI: links! We'l
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1635138000),
     references: [
+      .swiftUINav,
+      .demystifyingSwiftUI,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

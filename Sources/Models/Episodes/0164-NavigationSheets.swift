@@ -12,6 +12,8 @@ Now that we've built up the tools needed to bind application state to navigation
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1634533200),
     references: [
+      .swiftUINav,
+      .demystifyingSwiftUI,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

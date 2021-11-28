@@ -1,11 +1,8 @@
-▿ Subscription
-  - deactivated: false
-  ▿ id: 00000000-0000-0000-0000-000000000003
-    - rawValue: 00000000-0000-0000-0000-000000000003
-  ▿ stripeSubscriptionId: sub_test
-    - rawValue: "sub_test"
-  - stripeSubscriptionStatus: Status.active
-  ▿ teamInviteCode: subscriptions-team_invite_code2
-    - rawValue: "subscriptions-team_invite_code2"
-  ▿ userId: 00000000-0000-0000-0000-000000000001
-    - rawValue: 00000000-0000-0000-0000-000000000001
+Subscription(
+  deactivated: false,
+  id: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000003)),
+  stripeSubscriptionId: Tagged(rawValue: "sub_test"),
+  stripeSubscriptionStatus: Subscription.Status.active,
+  teamInviteCode: Tagged(rawValue: "subscriptions-team_invite_code2"),
+  userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
+)

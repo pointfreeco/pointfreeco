@@ -27,7 +27,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(
       matching: user,
-      as: .dump,
+      as: .customDump,
       named: "user_before_update"
     )
 
@@ -50,7 +50,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(
       matching: user,
-      as: .dump,
+      as: .customDump,
       named: "user_after_update"
     )
 
@@ -71,7 +71,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(
       matching: emailSettings,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_before_update"
     )
 
@@ -91,7 +91,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
         .run
         .perform()
         .right!,
-      as: .dump,
+      as: .customDump,
       named: "email_settings_after_update"
     )
 

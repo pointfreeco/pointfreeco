@@ -273,7 +273,7 @@ let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
       newsletter: nil,
       title: "You’re invited to join the \(account.companyName) team on Point-Free",
       preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
-      template: .default,
+      template: .default(),
       data: (account, encryptedEmail, encryptedUserId)
     )
 }

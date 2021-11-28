@@ -19,7 +19,7 @@ public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
       newsletter: .newEpisode,
       title: "New Point-Free Episode: \(episode.fullTitle)",
       preheader: episode.blurb,
-      template: .default,
+      template: .default(),
       data: (
         episode,
         user.subscriptionId != nil

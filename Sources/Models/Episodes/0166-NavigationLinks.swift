@@ -12,6 +12,8 @@ Let's explore "tag" and "selection"-based navigation links in SwiftUI. What are 
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1635742800),
     references: [
+      .swiftUINav,
+      .demystifyingSwiftUI,
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""

@@ -120,6 +120,10 @@ private func validateUserAgent<Z>(
         rawValue: Current.uuid().uuidString.lowercased()
       )
     )
+      .flatMap { _ in
+        sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
+          .withExcept { $0 as Error }
+      }
       .run
       .flatMap { _ in
         conn
