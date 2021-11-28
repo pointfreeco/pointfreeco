@@ -20,7 +20,7 @@ What does all the work we've done with navigation in SwiftUI have to say about U
     ],
     sequence: 169,
     subtitle: "Part 1",
-    title: "Navigation in UIKit",
+    title: "UIKit Navigation",
     trailerVideo: .init(
       bytesLength: 62879609,
       vimeoId: 650444458,

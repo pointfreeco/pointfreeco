@@ -24,6 +24,7 @@ We hope you’ll [join us](/discounts/wwdc-2021) for all of the great material w
     )
   ],
   coverImage: nil,
+  hidden: true,
   id: 58,
   publishedAt: Date(timeIntervalSince1970: 1623042000),
   title: "WWDC Sale"

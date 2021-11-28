@@ -77,4 +77,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0064_AppleEvent,
   post0065_PointFreeGifts,
   post0066_AnnouncingSwiftUINavigation,
+  post0067_CyberMondaySale,
 ]
