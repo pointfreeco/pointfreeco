@@ -123,7 +123,6 @@ private let blogRouter = OneOf {
   Routing(/Route.Blog.feed) {
     Method.get
     Path {
-      "blog"
       "feed"
       "atom.xml"
     }
@@ -245,18 +244,12 @@ private let enterpriseRouter = OneOf {
 private let feedRouter = OneOf {
   Routing(/Route.Feed.atom) {
     Method.get
-    Path {
-      "feed"
-      "atom.xml"
-    }
+    Path { "atom.xml" }
   }
 
   Routing(/Route.Feed.episodes) {
     Method.get
-    Path {
-      "feed"
-      "episodes.xml"
-    }
+    Path { "episodes.xml" }
   }
 }
 
@@ -402,6 +395,11 @@ let router = OneOf {
       Method.get
     }
 
+    Routing(/Route.about) {
+      Method.get
+      Path { "about" }
+    }
+
     Routing(/Route.account) {
       Path { "account" }
       accountRouter
@@ -439,14 +437,14 @@ let router = OneOf {
       Path { "episodes" }
       episodeRouter
     }
+  }
 
+  OneOf {
     Routing(/Route.enterprise) {
       Path { "enterprise" }
       enterpriseRouter
     }
-  }
 
-  OneOf {
     Routing(/Route.feed) {
       Path { "feed" }
       feedRouter
@@ -511,14 +509,14 @@ let router = OneOf {
       Method.get
       Path { "logout" }
     }
+  }
 
+  OneOf {
     Routing(/Route.pricingLanding) {
       Method.get
       Path { "pricing" }
     }
-  }
 
-  OneOf {
     Routing(/Route.privacy) {
       Method.get
       Path { "privacy" }
