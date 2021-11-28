@@ -480,7 +480,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         .type(.email),
         .placeholder("blob@pointfree.co"),
         .class([Class.size.width100pct]),
-        .name("teammates[]"),
+        .name("teammate"),
         .style(
           borderWidth(all: 0)
             <> key("outline", "none")
@@ -857,7 +857,7 @@ function updateSeats() {
   var teamMembers = document.getElementById("team-members")
   var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+    teamMemberInputs[idx].name = "teammate"
   }
   var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers

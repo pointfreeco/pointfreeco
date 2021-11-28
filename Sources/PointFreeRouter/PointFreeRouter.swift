@@ -1,37 +1,41 @@
 import ApplicativeRouter
 import Foundation
+import Parsing
+import URLRouting
+
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+  import FoundationNetworking
 #endif
 
 public struct PointFreeRouter {
   public let baseUrl: URL
-  public let router: Router<Route>
 
   public init(baseUrl: URL = URL(string: "http://localhost:8080")!) {
     self.baseUrl = baseUrl
-    self.router = routers.reduce(.empty, <|>)
-  }
-
-  public init(baseUrl: URL = URL(string: "http://localhost:8080")!, router: Router<Route>) {
-    self.baseUrl = baseUrl
-    self.router = router
   }
 
   public func path(to route: Route) -> String {
-    return self.router.absoluteString(for: route) ?? "/"
+    router.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString ?? "/"
   }
 
   public func url(to route: Route) -> String {
-    return self.router.url(for: route, base: self.baseUrl)?.absoluteString ?? ""
+    self.request(for: route)?.url?.absoluteString ?? ""
   }
 
   public func request(for route: Route) -> URLRequest? {
-    return self.router.request(for: route, base: self.baseUrl)
+    guard
+      var request = router.print(route).flatMap(URLRequest.init(data:)),
+      let path = request.url?.absoluteString,
+      let url = URL(string: self.baseUrl.absoluteString + path)
+    else { return nil }
+    request.url = url
+    return request
   }
 
   public func match(request: URLRequest) -> Route? {
-    return self.router.match(request: request)
+    guard var data = URLRequestData(request: request)
+    else { return nil }
+    return router.parse(&data)
   }
 }
 

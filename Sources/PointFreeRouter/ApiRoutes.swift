@@ -10,18 +10,7 @@ extension Route {
   }
 }
 
-let apiRouter
-  = apiRouters.reduce(.empty, <|>)
-
-private let apiRouters: [Router<Route.Api>] = [
-  .case(.episodes)
-    <¢> "episodes" <% end,
-
-  .case(Route.Api.episode)
-    <¢> "episodes" %> pathParam(.tagged(.int)) <% end
-]
-
-private let _apiRouter = Parse {
+let apiRouter = Parse {
   Path { "episodes" }
 
   OneOf {
@@ -35,3 +24,16 @@ private let _apiRouter = Parse {
     }
   }
 }
+
+/*
+ let apiRouter
+   = apiRouters.reduce(.empty, <|>)
+
+ private let apiRouters: [Router<Route.Api>] = [
+   .case(.episodes)
+     <¢> "episodes" <% end,
+
+   .case(Route.Api.episode)
+     <¢> "episodes" %> pathParam(.tagged(.int)) <% end
+ ]
+ */

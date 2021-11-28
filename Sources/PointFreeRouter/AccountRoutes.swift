@@ -38,62 +38,7 @@ public enum Account: Equatable {
   }
 }
 
-let accountRouter
-  = accountRouters.reduce(.empty, <|>)
-
-private let accountRouters: [Router<Account>] = [
-  .case(Account.confirmEmailChange)
-    <¢> get %> "confirm-email-change"
-    %> queryParam("payload", .tagged)
-    <% end,
-
-  .case(.index)
-    <¢> get <% end,
-
-  .case(.invoices(.index))
-    <¢> get %> "invoices" <% end,
-
-  .case { .invoices(.show($0)) }
-    <¢> get %> "invoices" %> pathParam(.tagged(.string)) <% end,
-
-  .case(.paymentInfo(.show))
-    <¢> get %> "payment-info" <% end,
-
-  .case { .paymentInfo(.update($0)) }
-    <¢> post %> "payment-info"
-    %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
-    <% end,
-
-  .case(Account.rss)
-    <¢> (get <|> head) %> "rss"
-    %> pathParam(.tagged)
-    <% end,
-
-  .case(Account.rssLegacy)
-    <¢> (get <|> head) %> "rss"
-    %> pathParam(.id)
-    <%> pathParam(.id)
-    <% end,
-
-  .case(.subscription(.cancel))
-    <¢> post %> "subscription" %> "cancel" <% end,
-
-  .case(.subscription(.change(.show)))
-    <¢> get %> "subscription" %> "change" <% end,
-
-  .case { .subscription(.change(.update($0))) }
-    <¢> post %> "subscription" %> "change"
-    %> formBody(Pricing?.self, decoder: formDecoder)
-    <% end,
-
-  .case(.subscription(.reactivate))
-    <¢> post %> "subscription" %> "reactivate" <% end,
-
-  .case(Account.update)
-    <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
-]
-
-private let _accountRouter = OneOf {
+let accountRouter = OneOf {
   Routing(/Account.index) {
     Method.get
   }
@@ -203,3 +148,60 @@ private let _accountRouter = OneOf {
     }
   }
 }
+
+/*
+ let accountRouter
+   = accountRouters.reduce(.empty, <|>)
+
+ private let accountRouters: [Router<Account>] = [
+   .case(Account.confirmEmailChange)
+     <¢> get %> "confirm-email-change"
+     %> queryParam("payload", .tagged)
+     <% end,
+
+   .case(.index)
+     <¢> get <% end,
+
+   .case(.invoices(.index))
+     <¢> get %> "invoices" <% end,
+
+   .case { .invoices(.show($0)) }
+     <¢> get %> "invoices" %> pathParam(.tagged(.string)) <% end,
+
+   .case(.paymentInfo(.show))
+     <¢> get %> "payment-info" <% end,
+
+   .case { .paymentInfo(.update($0)) }
+     <¢> post %> "payment-info"
+     %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
+     <% end,
+
+   .case(Account.rss)
+     <¢> (get <|> head) %> "rss"
+     %> pathParam(.tagged)
+     <% end,
+
+   .case(Account.rssLegacy)
+     <¢> (get <|> head) %> "rss"
+     %> pathParam(.id)
+     <%> pathParam(.id)
+     <% end,
+
+   .case(.subscription(.cancel))
+     <¢> post %> "subscription" %> "cancel" <% end,
+
+   .case(.subscription(.change(.show)))
+     <¢> get %> "subscription" %> "change" <% end,
+
+   .case { .subscription(.change(.update($0))) }
+     <¢> post %> "subscription" %> "change"
+     %> formBody(Pricing?.self, decoder: formDecoder)
+     <% end,
+
+   .case(.subscription(.reactivate))
+     <¢> post %> "subscription" %> "reactivate" <% end,
+
+   .case(Account.update)
+     <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
+ ]
+ */

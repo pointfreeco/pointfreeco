@@ -15,10 +15,26 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger(logger: { Current.logger.log(.info, "\($0)") }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
-    <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)
+    <<< router(notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
+
+private func router<A>(
+  notFound: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data> = notFound(respond(text: "Not Found"))
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, Route, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      return { conn in
+
+        pointFreeRouter.match(request: conn.request)
+          .map(const >>> conn.map >>> middleware)
+          ?? notFound(conn)
+      }
+    }
+}
 
 private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {

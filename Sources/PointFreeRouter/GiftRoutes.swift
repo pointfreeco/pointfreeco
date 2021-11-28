@@ -52,31 +52,7 @@ public enum Gifts: Equatable {
   }
 }
 
-let giftsRouter = giftsRouters.reduce(.empty, <|>)
-
-private let giftsRouters: [Router<Gifts>] = [
-  .case(Gifts.confirmation)
-    <¢> post
-    %> formBody(GiftFormData.self, decoder: formDecoder) <% end,
-
-  .case(Gifts.create)
-    <¢> post
-    %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,
-
-  .case(.index)
-    <¢> get <% end,
-
-  .case(Gifts.plan)
-    <¢> get %> pathParam(.rawRepresentable) <% end,
-
-  .case(Gifts.redeem)
-    <¢> post %> pathParam(.tagged(.uuid)) <% end,
-
-  .case(Gifts.redeemLanding)
-    <¢> get %> pathParam(.tagged(.uuid)) <% end,
-]
-
-let _giftsRouter = OneOf {
+let giftsRouter = OneOf {
   Routing(/Gifts.index) {
     Method.get
   }
@@ -110,3 +86,44 @@ let _giftsRouter = OneOf {
     Path { UUID.parser().pipe { Gift.Id.parser() } }
   }
 }
+
+/*
+ let giftsRouter = giftsRouters.reduce(.empty, <|>)
+
+ private let giftsRouters: [Router<Gifts>] = [
+   .case(Gifts.confirmation)
+     <¢> post
+     %> formBody(GiftFormData.self, decoder: formDecoder) <% end,
+
+   .case(Gifts.create)
+     <¢> post
+     %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,
+
+   .case(.index)
+     <¢> get <% end,
+
+   .case(Gifts.plan)
+     <¢> get %> pathParam(.rawRepresentable) <% end,
+
+   .case(Gifts.redeem)
+     <¢> post %> pathParam(.tagged(.uuid)) <% end,
+
+   .case(Gifts.redeemLanding)
+     <¢> get %> pathParam(.tagged(.uuid)) <% end,
+ ]
+ */
+
+let routeJsonDecoder: JSONDecoder = {
+  let decoder = JSONDecoder()
+  decoder.dateDecodingStrategy = .secondsSince1970
+  decoder.keyDecodingStrategy = .convertFromSnakeCase
+  return decoder
+}()
+
+let routeJsonEncoder: JSONEncoder = {
+  let encoder = JSONEncoder()
+  encoder.dateEncodingStrategy = .secondsSince1970
+  encoder.keyEncodingStrategy = .convertToSnakeCase
+  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+  return encoder
+}()

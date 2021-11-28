@@ -9,25 +9,29 @@ public enum TwitterRoute: String {
   case stephencelis
 }
 
-public let twitterRouter: Router<TwitterRoute> = [
-  .case(.mbrandonw)
-    <¢> get %> "mbrandonw" <% end,
-
-  .case(.pointfreeco)
-    <¢> get %> "pointfreeco" <% end,
-
-  .case(.stephencelis)
-    <¢> get %> "stephencelis" <% end,
-  ]
-  .reduce(.empty, <|>)
-
-private let _twitterRouter = Parse {
+private let twitterRouter = Parse {
   Method.get
   Path { String.parser().pipe { TwitterRoute.parser() } }
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {
-  return twitterRouter.url(for: route, base: twitterBaseUrl)?.absoluteString ?? ""
+  guard let path = twitterRouter.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
+  else { return "" }
+  return twitterBaseUrl.absoluteString + path
 }
 
 private let twitterBaseUrl = URL(string: "https://www.twitter.com")!
+
+/*
+ public let twitterRouter: Router<TwitterRoute> = [
+   .case(.mbrandonw)
+     <¢> get %> "mbrandonw" <% end,
+
+   .case(.pointfreeco)
+     <¢> get %> "pointfreeco" <% end,
+
+   .case(.stephencelis)
+     <¢> get %> "stephencelis" <% end,
+   ]
+   .reduce(.empty, <|>)
+ */

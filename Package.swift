@@ -282,6 +282,7 @@ var package = Package(
         "PointFreePrelude",
         .product(name: "ApplicativeRouter", package: "swift-web"),
         .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Parsing", package: "swift-parsing"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
