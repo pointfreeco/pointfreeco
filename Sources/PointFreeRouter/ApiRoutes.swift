@@ -1,7 +1,7 @@
 import ApplicativeRouter
-import Parsing
 import Prelude
 import Models
+import URLRouting
 
 extension Route {
   public enum Api: Equatable {
@@ -22,7 +22,7 @@ private let apiRouters: [Router<Route.Api>] = [
 ]
 
 private let _apiRouter = Parse {
-  Path("episodes")
+  Path { "episodes" }
 
   OneOf {
     Routing(/Route.Api.episodes) {
@@ -31,7 +31,7 @@ private let _apiRouter = Parse {
     
     Routing(/Route.Api.episode) {
       Method.get
-      Path(Int.parser().pipe { Episode.Id.parser() })
+      Path { Int.parser().pipe { Episode.Id.parser() } }
     }
   }
 }

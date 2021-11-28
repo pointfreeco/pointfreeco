@@ -1,8 +1,8 @@
 import ApplicativeRouter
 import Foundation
 import Models
-import Parsing
 import Prelude
+import URLRouting
 
 public enum Admin: Equatable {
   case episodeCredits(EpisodeCredit)
@@ -93,25 +93,27 @@ private let _adminRouter = OneOf {
   }
 
   Routing(/Admin.episodeCredits) {
-    Path("episode-credits")
+    Path { "episode-credits" }
 
     OneOf {
       Routing(/Admin.EpisodeCredit.show) {
         Method.get
       }
 
-//      Routing(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
-//        Method.post
-//        Body {
-//          FormField("user_id", UUID.parser().pipe { User.Id.parser() })
-//          FormField("episode_sequence", Int.parser().pipe { Episode.Sequence.parser() })
-//        }
-//      }
+      Routing(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
+        Method.post
+        Body {
+          FormData {
+            Field("user_id", UUID.parser().pipe { User.Id.parser() })
+            Field("episode_sequence", Int.parser().pipe { Episode.Sequence.parser() })
+          }
+        }
+      }
     }
   }
 
   Routing(/Admin.freeEpisodeEmail) {
-    Path("free-episode-email")
+    Path { "free-episode-email" }
 
     OneOf {
       Routing(/Admin.FreeEpisodeEmail.index) {
@@ -120,68 +122,102 @@ private let _adminRouter = OneOf {
 
       Routing(/Admin.FreeEpisodeEmail.send) {
         Method.get
-        Path(Int.parser().pipe { Episode.Id.parser() })
-        Path("send")
+        Path {
+          Int.parser().pipe { Episode.Id.parser() }
+          "send"
+        }
       }
     }
   }
 
   Routing(/Admin.ghost) {
-    Path("ghost")
+    Path { "ghost" }
 
-    Routing(/Admin.Ghost.index) {
-      Method.get
+    OneOf {
+      Routing(/Admin.Ghost.index) {
+        Method.get
+      }
+
+      Routing(/Admin.Ghost.start) {
+        Method.post
+        Path { "start" }
+        Body {
+          FormData {
+            Field("user_id", UUID.parser().pipe { User.Id.parser() })
+          }
+        }
+      }
     }
-
-//    Routing(/Admin.Ghost.start) {
-//      Method.post
-//      Path("start")
-//      Body {
-//        FormField("user_id", UUID.parser().pipe { User.Id.parser() })
-//      }
-//    }
   }
 
   Routing(/Admin.newBlogPostEmail) {
-    Path("new-blog-post-email")
+    Path { "new-blog-post-email" }
 
     OneOf {
       Routing(/Admin.NewBlogPostEmail.index) {
         Method.get
       }
 
-//      Routing(/Admin.NewBlogPostEmail.send) {
-//        Path(Int.parser().pipe { BlogPost.Id.parser() })
-//        Path("send")
-//        Body {
-//          FormData(NewBlogPostFormData.self, decoder: formDecoder)
-//        }
-//        isTest
-//      }
+      Routing(/Admin.NewBlogPostEmail.send) {
+        Parse {
+          Path {
+            Int.parser().pipe { BlogPost.Id.parser() }
+            "send"
+          }
+          Body {
+            FormCoded(NewBlogPostFormData.self, decoder: formDecoder)
+            FormData {
+              Optionally {
+                Field("test", Bool.parser())
+              }
+            }
+          }
+        }
+        .pipe(
+          Conversion(
+            apply: { ($0, $1.0, $1.1) },
+            unapply: { ($0, ($1, $2)) }
+          )
+        )
+      }
     }
   }
 
   Routing(/Admin.newEpisodeEmail) {
-    Path("new-episode-email")
+    Path { "new-episode-email" }
 
     OneOf {
       Routing(/Admin.NewEpisodeEmail.show) {
         Method.get
       }
 
-//      Routing(/Admin.NewEpisodeEmail.send) {
-//        Path(Int.parser().pipe { Episode.Id.parser() })
-//        Path("send")
-//        Body {
-//          Optionally {
-//            FormField("subscriber_announcement", String.parser())
-//          }
-//          Optionally {
-//            FormField("nonsubscriber_announcement", String.parser())
-//          }
-//        }
-//        isTest
-//      }
+      Routing(/Admin.NewEpisodeEmail.send) {
+        Parse {
+          Path {
+            Int.parser().pipe { Episode.Id.parser() }
+            "send"
+          }
+          Body {
+            FormData {
+              Optionally {
+                Field("subscriber_announcement", String.parser())
+              }
+              Optionally {
+                Field("nonsubscriber_announcement", String.parser())
+              }
+              Optionally {
+                Field("test", Bool.parser())
+              }
+            }
+          }
+        }
+        .pipe(
+          Conversion(
+            apply: { ($0, $1.0, $1.1, $1.2) },
+            unapply: { ($0, ($1, $2, $3)) }
+          )
+        )
+      }
     }
   }
 }

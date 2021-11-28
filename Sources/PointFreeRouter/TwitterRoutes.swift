@@ -1,7 +1,7 @@
 import ApplicativeRouter
 import Foundation
-import Parsing
 import Prelude
+import URLRouting
 
 public enum TwitterRoute: String {
   case mbrandonw
@@ -23,7 +23,7 @@ public let twitterRouter: Router<TwitterRoute> = [
 
 private let _twitterRouter = Parse {
   Method.get
-  Path(String.parser().pipe { TwitterRoute.parser() })
+  Path { String.parser().pipe { TwitterRoute.parser() } }
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {

@@ -4,6 +4,7 @@ import Models
 import PointFreePrelude
 import Prelude
 import Stripe
+import URLRouting
 
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
@@ -91,3 +92,114 @@ private let accountRouters: [Router<Account>] = [
   .case(Account.update)
     <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
 ]
+
+private let _accountRouter = OneOf {
+  Routing(/Account.index) {
+    Method.get
+  }
+
+  Routing(/Account.confirmEmailChange) {
+    Method.get
+    Path { "confirm-email-change" }
+    Query {
+      Field("payload", String.parser().pipe { Encrypted<String>.parser() })
+    }
+  }
+
+  Routing(/Account.invoices) {
+    Path { "invoices" }
+
+    OneOf {
+      Routing(/Account.Invoices.index) {
+        Method.get
+      }
+
+      Routing(/Account.Invoices.show) {
+        Method.get
+        Path {
+          String.parser().pipe { Stripe.Invoice.Id.parser() }
+        }
+      }
+    }
+  }
+
+  Routing(/Account.paymentInfo) {
+    Path { "payment-info" }
+
+    OneOf {
+      Routing(/Account.PaymentInfo.show) {
+        Method.get
+      }
+
+      Routing(/Account.PaymentInfo.update) {
+        Method.post
+        Body {
+          FormData {
+            Optionally {
+              Field("token", String.parser().pipe { Stripe.Token.Id.parser() })
+            }
+          }
+        }
+      }
+    }
+  }
+
+  Parse {
+    Path { "rss" }
+
+    OneOf {
+      Routing(/Account.rss) {
+        Method.get
+        Path { String.parser().pipe { User.RssSalt.parser() } }
+      }
+
+      Routing(/Account.rssLegacy) {
+        Method.get
+        Path {
+          String.parser()
+          String.parser()
+        }
+      }
+    }
+  }
+
+  Routing(/Account.subscription) {
+    Path { "subscription" }
+
+    OneOf {
+      Routing(/Account.Subscription.cancel) {
+        Method.post
+        Path { "cancel" }
+      }
+
+      Routing(/Account.Subscription.change) {
+        Path { "change" }
+
+        OneOf {
+          Routing(/Account.Subscription.Change.show) {
+            Method.get
+          }
+
+          Routing(/Account.Subscription.Change.update) {
+            Method.post
+            Body {
+              FormCoded(Pricing?.self, decoder: formDecoder)
+            }
+          }
+        }
+      }
+
+      Routing(/Account.Subscription.reactivate) {
+        Method.post
+        Path { "reactivate" }
+      }
+    }
+  }
+
+  Routing(/Account.update) {
+    Method.post
+    Body {
+      FormCoded(ProfileData?.self, decoder: formDecoder)
+    }
+  }
+}

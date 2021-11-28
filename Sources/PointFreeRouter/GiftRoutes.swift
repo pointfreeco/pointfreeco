@@ -1,10 +1,10 @@
 import ApplicativeRouter
 import Foundation
 import Models
-import Parsing
 import Prelude
 import Stripe
 import TaggedMoney
+import URLRouting
 
 public enum Gifts: Equatable {
   case confirmation(GiftFormData)
@@ -81,32 +81,32 @@ let _giftsRouter = OneOf {
     Method.get
   }
 
-//  Routing(/Gifts.confirmation) {
-//    Method.post
-//    Body {
-//      FormData(GiftFormData.self, decoder: formDecoder)
-//    }
-//  }
+  Routing(/Gifts.confirmation) {
+    Method.post
+    Body {
+      FormCoded(GiftFormData.self, decoder: formDecoder)
+    }
+  }
 
-//  Routing(/Gifts.create) {
-//    Method.post
-//    Body {
-//      JSON(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder)
-//    }
-//  }
+  Routing(/Gifts.create) {
+    Method.post
+    Body {
+      JSON(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder)
+    }
+  }
 
   Routing(/Gifts.plan) {
     Method.get
-    Path(String.parser().pipe { Gifts.Plan.parser() })
+    Path { String.parser().pipe { Gifts.Plan.parser() } }
   }
 
   Routing(/Gifts.redeemLanding) {
     Method.get
-    Path(UUID.parser().pipe { Gift.Id.parser() })
+    Path { UUID.parser().pipe { Gift.Id.parser() } }
   }
 
   Routing(/Gifts.redeem) {
     Method.post
-    Path(UUID.parser().pipe { Gift.Id.parser() })
+    Path { UUID.parser().pipe { Gift.Id.parser() } }
   }
 }
