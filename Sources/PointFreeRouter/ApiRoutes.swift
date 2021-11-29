@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import Parsing
 import Prelude
 import Models
 import URLRouting

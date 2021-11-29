@@ -1,6 +1,7 @@
 import ApplicativeRouter
 import Foundation
 import Models
+import Parsing
 import Prelude
 import Stripe
 import TaggedMoney

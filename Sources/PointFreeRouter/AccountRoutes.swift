@@ -2,6 +2,7 @@ import ApplicativeRouter
 import Foundation
 import Models
 import PointFreePrelude
+import Parsing
 import Prelude
 import Stripe
 import URLRouting
