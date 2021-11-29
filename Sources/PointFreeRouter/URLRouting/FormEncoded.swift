@@ -25,6 +25,6 @@ public struct FormCoded<Value>: Parser where Value: Decodable {
 extension FormCoded: Printer where Value: Encodable {
   @inlinable
   public func print(_ output: Value) -> ArraySlice<UInt8>? {
-    return ArraySlice(urlFormEncode(value: output).utf8)
+    ArraySlice(urlFormEncode(value: output).utf8)
   }
 }

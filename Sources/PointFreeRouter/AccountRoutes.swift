@@ -79,9 +79,9 @@ let accountRouter = OneOf {
 
       Routing(/Account.PaymentInfo.update) {
         Method.post
-        Body {
-          FormData {
-            Optionally {
+        Optionally {
+          Body {
+            FormData {
               Field("token", String.parser().pipe { Stripe.Token.Id.parser() })
             }
           }

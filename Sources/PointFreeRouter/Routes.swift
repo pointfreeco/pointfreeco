@@ -146,6 +146,15 @@ private let blogRouter = OneOf {
   }
 }
 
+private let episodeSlugOrId = OneOf {
+  String.parser(of: Substring.self)
+    .pipe(/Either<String, Episode.Id>.left)
+
+  Int.parser(of: Substring.self)
+    .pipe { Episode.Id.parser() }
+    .pipe(/Either<String, Episode.Id>.right)
+}
+
 private let collectionsRouter = OneOf {
   Routing(/Route.Collections.index) {
     Method.get
@@ -170,22 +179,10 @@ private let collectionsRouter = OneOf {
       Path {
         String.parser().pipe { Episode.Collection.Slug.parser() }
         String.parser().pipe { Episode.Collection.Section.Slug.parser() }
-        OneOf {
-          String.parser().pipe(/Either<String, Episode.Id>.left)
-          Int.parser().pipe { Episode.Id.parser() }.pipe(/Either<String, Episode.Id>.right)
-        }
+        episodeSlugOrId
       }
     }
   }
-}
-
-private let episodeSlugOrId = OneOf {
-  String.parser(of: Substring.self)
-    .pipe(/Either<String, Episode.Id>.left)
-
-  Int.parser(of: Substring.self)
-    .pipe { Episode.Id.parser() }
-    .pipe(/Either<String, Episode.Id>.right)
 }
 
 private let episodeRouter = OneOf {
