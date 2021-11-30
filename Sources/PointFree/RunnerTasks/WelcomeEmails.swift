@@ -138,7 +138,7 @@ func welcomeEmail1Content(user: User) -> Node {
         subscriber-only episode, completely for free! Just visit [our site](\(url(to: .home))), go to an
         episode, and click the "\(useCreditCTA)" button!
 
-        Here are some of our most popular collections of episodes
+        Here are some of our most popular collections of episodes:
 
         * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
         * [SwiftUI](https://www.pointfree.co/collections/swiftui)
