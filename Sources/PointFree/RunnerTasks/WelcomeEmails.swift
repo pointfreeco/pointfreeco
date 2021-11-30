@@ -141,9 +141,24 @@ func welcomeEmail1Content(user: User) -> Node {
         Here are some of our most popular collections of episodes:
 
         * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
+        
+          Learn how to build an architecture from the ground up, with a focus on ergnomics, composition,
+        testing, and more.
+        
         * [SwiftUI](https://www.pointfree.co/collections/swiftui)
+        
+          We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings, animation
+        and navigation.
+        
         * [Dependencies](https://www.pointfree.co/collections/dependencies)
+        
+          Dependencies can wreak havoc on a codebase. We take the time to properly define what a dependency is,
+        why they are so complex, and how we can take control of them rather than letting them control us.
+        
         * [Parsing](https://www.pointfree.co/collections/parsing)
+        
+          Parsing is the process of turning nebulous input data into well-structured output data. It's a
+        surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
         """
         )
       : []
