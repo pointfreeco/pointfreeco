@@ -138,17 +138,12 @@ func welcomeEmail1Content(user: User) -> Node {
         subscriber-only episode, completely for free! Just visit [our site](\(url(to: .home))), go to an
         episode, and click the "\(useCreditCTA)" button!
 
-        Here are some of the top episodes that viewers have chosen to use their credits on:
+        Here are some of our most popular collections of episodes
 
-        * [Dependency Injection Made Easy](https://www.pointfree.co/episodes/ep16-dependency-injection-made-easy)
-        * [Algebraic Data Type: Part 1](https://www.pointfree.co/episodes/ep4-algebraic-data-types)
-        * [Tagged](https://www.pointfree.co/episodes/ep12-tagged)
-        * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
-        * [Protocol Witnesses: Part 1](https://www.pointfree.co/episodes/ep33-protocol-witnesses-part-1)
-        * [Witness-Oriented Library Design](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design)
-        * [What Is a Parser?: Part 1](https://www.pointfree.co/episodes/ep56-what-is-a-parser-part-1)
-        * [SwiftUI and State Management: Part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1)
-        * [Composable State Management: Reducers](https://www.pointfree.co/episodes/ep68-composable-state-management-reducers)
+        * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
+        * [SwiftUI](https://www.pointfree.co/collections/swiftui)
+        * [Dependencies](https://www.pointfree.co/collections/dependencies)
+        * [Parsing](https://www.pointfree.co/collections/parsing)
         """
         )
       : []
@@ -249,29 +244,30 @@ func welcomeEmail3Content(user: User) -> Node {
     ,
     .markdownBlock(
       """
-      Please use it to check out _any_ subscriber-only episode, completely free! Just visit [our site](\(url(to: .home))), go to
-      an episode, and click the "\(useCreditCTA)" button.
+      Please use it to check out _any_ subscriber-only episode, completely free! Just visit
+      [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
 
       If you're having trouble deciding on an episode, here are a few of our favorites:
 
-      * [The Many Faces of Map](https://www.pointfree.co/episodes/ep13-the-many-faces-of-map)
+      * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
 
-        We take a tour of the `map` function and figure out just what makes it so special!
+        Learn how to build an architecture from the ground up, with a focus on ergnomics, composition,
+      testing, and more.
 
-      * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
+      * [SwiftUI](https://www.pointfree.co/collections/swiftui)
 
-        A fun, mind-bendy episode that explores what it means to the take that `map` function and flip it
-      around!
+        We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings, animation
+      and navigation.
 
-      * [Tagged](https://www.pointfree.co/episodes/ep12-tagged)
+      * [Dependencies](https://www.pointfree.co/collections/dependencies)
 
-        This one's a bit more down-to-earth! We talk about type-safety and how Swift's type system gives us
-      yet another powerful tool to prevent bugs _at compile time!_
+        Dependencies can wreak havoc on a codebase. We take the time to properly define what a dependency is,
+      why they are so complex, and how we can take control of them rather than letting them control us.
 
-      * [Setters: Part 1](https://www.pointfree.co/episodes/ep6-functional-setters)
+      * [Parsing](https://www.pointfree.co/collections/parsing)
 
-        Setters are functions that make you rethink function composition in some pretty powerful ways! This is
-      the first of a multi-part series that goes _deep!_
+        Parsing is the process of turning nebulous input data into well-structured output data. It's a
+      surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
 
       We hope you'll find it interesting enough to consider
       [getting a subscription](\(url(to: .pricingLanding))) for yourself or your team!
