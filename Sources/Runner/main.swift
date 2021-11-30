@@ -19,8 +19,13 @@ _ = try! PointFree
   .perform()
   .unwrap()
 
-_ = EitherIO.debug(prefix: "📧 Sending welcome emails...")
-  .flatMap(const(sendWelcomeEmails()))
+_ = EitherIO.debug(prefix: "📧 Sending new user welcome emails...")
+  .flatMap(const(sendNewUserWelcomeEmails()))
+  .run
+  .perform()
+
+_ = EitherIO.debug(prefix: "📧 Sending new subscriber welcome emails...")
+  .flatMap(const(sendNewSubscriberWelcomeEmails()))
   .run
   .perform()
 

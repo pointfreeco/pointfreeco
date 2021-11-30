@@ -82,7 +82,7 @@ final class WelcomeEmailTests: TestCase {
   }
   
   func testEpisodeEmails() {
-    _ = sendWelcomeEmails()
+    _ = sendNewUserWelcomeEmails()
       .run
       .perform()
       .right!

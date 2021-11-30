@@ -11,7 +11,7 @@ import Prelude
 import Styleguide
 import Views
 
-public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
+public func sendNewUserWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let zippedEmails = zip3(
     Current.database.fetchUsersToWelcome(1)
       .map(map(welcomeEmail1))
@@ -27,7 +27,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let flattenedEmails = zippedEmails.map { $0 <> $1 <> $2 }
 
   let emails = EitherIO(run: flattenedEmails.sequential)
-    .debug { "📧: Sending \($0.count) welcome emails..." }
+    .debug { "📧: Sending \($0.count) new user welcome emails..." }
 
   let delayedSend = send(email:)
     >>> delay(.milliseconds(200))
@@ -73,7 +73,7 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
 
 // TODO: team callouts
 
-private func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> Node) -> Email {
+func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> Node) -> Email {
   return prepareEmail(
     to: [user.email],
     subject: subject,

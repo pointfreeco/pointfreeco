@@ -260,6 +260,24 @@ extension Client {
         )
         .all(decoding: Gift.self)
       },
+      fetchNewSubscribersToWelcome: {
+        pool.sqlDatabase.raw(
+          """
+          SELECT
+            "users".*
+          FROM
+            "email_settings"
+          LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+          LEFT JOIN "subscriptions" on "users"."id" = "subscriptions"."user_id"
+          WHERE
+            "email_settings"."newsletter" = \(bind: EmailSetting.Newsletter.welcomeEmails)
+            AND "subscriptions"."stripe_subscription_status" = \(bind: Stripe.Subscription.Status.active)
+            AND "subscriptions"."created_at"
+              BETWEEN CURRENT_DATE - INTERVAL '8 DAYS' AND CURRENT_DATE - INTERVAL '7 DAYS'
+          """
+        )
+          .all(decoding: Models.User.self)
+      },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(
           """

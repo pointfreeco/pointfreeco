@@ -22,6 +22,7 @@ extension Client {
     fetchGift: { _ in .failing("Database.Client.fetchGift") },
     fetchGiftByStripePaymentIntentId: { _ in .failing("Database.Client.fetchGiftByStripePaymentIntentId") },
     fetchGiftsToDeliver: { .failing("Database.Client.fetchGiftsToDeliver") },
+    fetchNewSubscribersToWelcome: { .failing("Database.Client.fetchNewSubscribersToWelcome") },
     fetchSubscriptionById: { _ in .failing("Database.Client.fetchSubscriptionById") },
     fetchSubscriptionByOwnerId: { _ in .failing("Database.Client.fetchSubscriptionByOwnerId") },
     fetchSubscriptionTeammatesByOwnerId: { _ in .failing("Database.Client.fetchSubscriptionTeammatesByOwnerId") },
