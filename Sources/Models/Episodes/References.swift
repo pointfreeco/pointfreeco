@@ -733,11 +733,11 @@ RxSwift is a popular library for reactive programming based on "Reactive Extensi
   )
 
   public static let scrapYourTypeClasses = Episode.Reference(
-    author: "Gabriel Gonzalez",
+    author: "Gabriella Gonzalez",
     blurb: """
 Haskell's notion of protocols are called "type classes," and the designers of Swift have often stated
 that Swift's protocols took a lot of inspiration from Haskell. This means that Haskellers run into a lot
-of the same problems we do when writing abstractions with type classes. In this article Gabriel Gonzalez
+of the same problems we do when writing abstractions with type classes. In this article Gabriella Gonzalez
 lays down the case for scrapping type classes and just using simple datatypes.
 """,
     link: "http://www.haskellforall.com/2012/05/scrap-your-type-classes.html",
