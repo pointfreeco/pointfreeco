@@ -74,17 +74,17 @@ let giftsRouter = OneOf {
 
   Routing(/Gifts.plan) {
     Method.get
-    Path { String.parser().pipe { Gifts.Plan.parser() } }
+    Path { Gifts.Plan.parser() }
   }
 
   Routing(/Gifts.redeemLanding) {
     Method.get
-    Path { UUID.parser().pipe { Gift.Id.parser() } }
+    Path { Gift.Id.parser() }
   }
 
   Routing(/Gifts.redeem) {
     Method.post
-    Path { UUID.parser().pipe { Gift.Id.parser() } }
+    Path { Gift.Id.parser() }
   }
 }
 

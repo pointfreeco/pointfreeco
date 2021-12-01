@@ -116,12 +116,9 @@ public enum Route: Equatable {
 }
 
 private let blogSlugOrId = OneOf {
-  String.parser(of: Substring.self)
-    .pipe(/Either<String, BlogPost.Id>.left)
+  String.parser(of: Substring.self).pipe(/Either<String, BlogPost.Id>.left)
 
-  Int.parser(of: Substring.self)
-    .pipe { BlogPost.Id.parser() }
-    .pipe(/Either<String, BlogPost.Id>.right)
+  BlogPost.Id.parser().pipe(/Either<String, BlogPost.Id>.right)
 }
 
 private let blogRouter = OneOf {
@@ -147,12 +144,9 @@ private let blogRouter = OneOf {
 }
 
 private let episodeSlugOrId = OneOf {
-  String.parser(of: Substring.self)
-    .pipe(/Either<String, Episode.Id>.left)
+  String.parser(of: Substring.self).pipe(/Either<String, Episode.Id>.left)
 
-  Int.parser(of: Substring.self)
-    .pipe { Episode.Id.parser() }
-    .pipe(/Either<String, Episode.Id>.right)
+  Episode.Id.parser().pipe(/Either<String, Episode.Id>.right)
 }
 
 private let collectionsRouter = OneOf {
@@ -163,22 +157,22 @@ private let collectionsRouter = OneOf {
   OneOf {
     Routing(/Route.Collections.show) {
       Method.get
-      Path { String.parser().pipe { Episode.Collection.Slug.parser() } }
+      Path { Episode.Collection.Slug.parser() }
     }
 
     Routing(/Route.Collections.section) {
       Method.get
       Path {
-        String.parser().pipe { Episode.Collection.Slug.parser() }
-        String.parser().pipe { Episode.Collection.Section.Slug.parser() }
+        Episode.Collection.Slug.parser()
+        Episode.Collection.Section.Slug.parser()
       }
     }
 
     Routing(/Route.Collections.episode) {
       Method.get
       Path {
-        String.parser().pipe { Episode.Collection.Slug.parser() }
-        String.parser().pipe { Episode.Collection.Section.Slug.parser() }
+        Episode.Collection.Slug.parser()
+        Episode.Collection.Section.Slug.parser()
         episodeSlugOrId
       }
     }
@@ -210,13 +204,13 @@ private let episodeRouter = OneOf {
 private let enterpriseRouter = OneOf {
   Routing(/Route.Enterprise.landing) {
     Method.get
-    Path { String.parser().pipe { EnterpriseAccount.Domain.parser() } }
+    Path { EnterpriseAccount.Domain.parser() }
   }
 
   Routing(/Route.Enterprise.requestInvite) {
     Method.post
     Path {
-      String.parser().pipe { EnterpriseAccount.Domain.parser() }
+      EnterpriseAccount.Domain.parser()
       "request"
     }
     Body {
@@ -228,12 +222,12 @@ private let enterpriseRouter = OneOf {
     Parse {
       Method.get
       Path {
-        String.parser().pipe { EnterpriseAccount.Domain.parser() }
+        EnterpriseAccount.Domain.parser()
         "accept"
       }
       Query {
-        Field("email", String.parser().pipe { Encrypted<String>.parser() })
-        Field("user_id", String.parser().pipe { Encrypted<String>.parser() })
+        Field("email", Encrypted.parser())
+        Field("user_id", Encrypted.parser())
       }
     }
     .pipe(
@@ -261,7 +255,7 @@ private let inviteRouter = OneOf {
   Routing(/Route.Invite.accept) {
     Method.post
     Path {
-      UUID.parser().pipe { TeamInvite.Id.parser() }
+      TeamInvite.Id.parser()
       "accept"
     }
   }
@@ -272,7 +266,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", String.parser().pipe { EmailAddress.parser() })
+          Field("email", EmailAddress.parser())
         }
       }
     }
@@ -281,7 +275,7 @@ private let inviteRouter = OneOf {
   Routing(/Route.Invite.resend) {
     Method.post
     Path {
-      UUID.parser().pipe { TeamInvite.Id.parser() }
+      TeamInvite.Id.parser()
       "resend"
     }
   }
@@ -289,7 +283,7 @@ private let inviteRouter = OneOf {
   Routing(/Route.Invite.revoke) {
     Method.post
     Path {
-      UUID.parser().pipe { TeamInvite.Id.parser() }
+      TeamInvite.Id.parser()
       "revoke"
     }
   }
@@ -299,7 +293,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", String.parser().pipe { EmailAddress.parser() })
+          Field("email", EmailAddress.parser())
         }
       }
     }
@@ -307,9 +301,7 @@ private let inviteRouter = OneOf {
 
   Routing(/Route.Invite.show) {
     Method.get
-    Path {
-      UUID.parser().pipe { TeamInvite.Id.parser() }
-    }
+    Path { TeamInvite.Id.parser() }
   }
 }
 
@@ -318,7 +310,7 @@ private let teamRouter = OneOf {
     Method.post
     Path {
       "team"
-      String.parser().pipe { Subscription.TeamInviteCode.parser() }
+      Subscription.TeamInviteCode.parser()
       "join"
     }
   }
@@ -327,7 +319,7 @@ private let teamRouter = OneOf {
     Method.get
     Path {
       "team"
-      String.parser().pipe { Subscription.TeamInviteCode.parser() }
+      Subscription.TeamInviteCode.parser()
       "join"
     }
   }
@@ -347,7 +339,7 @@ private let teamRouter = OneOf {
       "account"
       "team"
       "members"
-      UUID.parser().pipe { User.Id.parser() }
+      User.Id.parser()
       "remove"
     }
   }
@@ -466,11 +458,11 @@ let router = OneOf {
       Method.get
       Path {
         "discounts"
-        String.parser().pipe { Stripe.Coupon.Id.parser() }
+        Stripe.Coupon.Id.parser()
       }
       Query {
         Optionally {
-          Field("billing", String.parser().pipe { Pricing.Billing.parser() })
+          Field("billing", Pricing.Billing.parser())
         }
       }
     }
@@ -490,7 +482,7 @@ let router = OneOf {
         "express-unsubscribe"
       }
       Query {
-        Field("payload", String.parser().pipe { Encrypted<String>.parser() })
+        Field("payload", Encrypted.parser())
       }
     }
 
@@ -557,25 +549,25 @@ let router = OneOf {
         Body {
           FormData {
             Optionally {
-              Field("coupon", String.parser().pipe { Coupon.Id.parser() })
+              Field("coupon", Coupon.Id.parser())
             }
             Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, Bool.parser(), default: false)
             Parse {
-              Field("pricing[billing]", String.parser().pipe { Pricing.Billing.parser() })
+              Field("pricing[billing]", Pricing.Billing.parser())
               Field("pricing[quantity]", Int.parser())
             }
             .pipe { UnsafeBitCast(Pricing.init(billing:quantity:)) }
             Optionally {
               Field(
                 SubscribeData.CodingKeys.referralCode.rawValue,
-                String.parser().pipe { User.ReferralCode.parser() }
+                User.ReferralCode.parser()
               )
             }
             Many {
-              Field("teammate", String.parser().pipe { EmailAddress.parser() })
+              Field("teammate", EmailAddress.parser())
             }
             Parse {
-              Field("token", String.parser().pipe { Token.Id.parser() })
+              Field("token", Token.Id.parser())
               Field(
                 SubscribeData.CodingKeys.useRegionalDiscount.rawValue, Bool.parser(), default: false
               )
@@ -603,11 +595,11 @@ let router = OneOf {
       Parse {
         Path {
           "subscribe"
-          String.parser().pipe { Pricing.Lane.parser() }
+          Pricing.Lane.parser()
         }
         Query {
           Optionally {
-            Field("billing", String.parser().pipe { Pricing.Billing.parser() })
+            Field("billing", Pricing.Billing.parser())
           }
           Optionally {
             Field("isOwnerTakingSeat", Bool.parser())
@@ -616,16 +608,14 @@ let router = OneOf {
             Field(
               "teammates",
               Many {
-                Prefix { $0 != "," }
-                  .pipe { String.parser() }
-                  .pipe { EmailAddress.parser() }
+                Prefix { $0 != "," }.pipe { EmailAddress.parser() }
               } separatedBy: {
                 ","
               }
             )
           }
           Optionally {
-            Field("ref", String.parser().pipe { User.ReferralCode.parser() })
+            Field("ref", User.ReferralCode.parser())
           }
           Optionally {
             Field("useRegionalDiscount", Bool.parser())
@@ -646,7 +636,7 @@ let router = OneOf {
       Method.post
       Path {
         "episodes"
-        Int.parser().pipe { Episode.Id.parser() }
+        Episode.Id.parser()
         "credit"
       }
     }

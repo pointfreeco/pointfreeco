@@ -21,7 +21,7 @@ let apiRouter = Parse {
     
     Routing(/Route.Api.episode) {
       Method.get
-      Path { Int.parser().pipe { Episode.Id.parser() } }
+      Path { Episode.Id.parser() }
     }
   }
 }

@@ -16,7 +16,7 @@ public enum TwitterRoute: String {
 
 private let twitterRouter = Parse {
   Method.get
-  Path { String.parser().pipe { TwitterRoute.parser() } }
+  Path { TwitterRoute.parser() }
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {

@@ -56,8 +56,8 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id", UUID.parser().pipe { User.Id.parser() })
-            Field("episode_sequence", Int.parser().pipe { Episode.Sequence.parser() })
+            Field("user_id", User.Id.parser())
+            Field("episode_sequence", Episode.Sequence.parser())
           }
         }
       }
@@ -75,7 +75,7 @@ let adminRouter = OneOf {
       Routing(/Admin.FreeEpisodeEmail.send) {
         Method.get
         Path {
-          Int.parser().pipe { Episode.Id.parser() }
+          Episode.Id.parser()
           "send"
         }
       }
@@ -95,7 +95,7 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id", UUID.parser().pipe { User.Id.parser() })
+            Field("user_id", User.Id.parser())
           }
         }
       }
@@ -113,7 +113,7 @@ let adminRouter = OneOf {
       Routing(/Admin.NewBlogPostEmail.send) {
         Parse {
           Path {
-            Int.parser().pipe { BlogPost.Id.parser() }
+            BlogPost.Id.parser()
             "send"
           }
           Body {
@@ -144,7 +144,7 @@ let adminRouter = OneOf {
       Routing(/Admin.NewEpisodeEmail.send) {
         Parse {
           Path {
-            Int.parser().pipe { Episode.Id.parser() }
+            Episode.Id.parser()
             "send"
           }
           Body {

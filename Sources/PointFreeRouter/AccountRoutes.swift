@@ -48,7 +48,7 @@ let accountRouter = OneOf {
     Method.get
     Path { "confirm-email-change" }
     Query {
-      Field("payload", String.parser().pipe { Encrypted<String>.parser() })
+      Field("payload", Encrypted.parser())
     }
   }
 
@@ -62,9 +62,7 @@ let accountRouter = OneOf {
 
       Routing(/Account.Invoices.show) {
         Method.get
-        Path {
-          String.parser().pipe { Stripe.Invoice.Id.parser() }
-        }
+        Path { Stripe.Invoice.Id.parser() }
       }
     }
   }
@@ -82,7 +80,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", String.parser().pipe { Stripe.Token.Id.parser() })
+              Field("token", Stripe.Token.Id.parser())
             }
           }
         }
@@ -96,7 +94,7 @@ let accountRouter = OneOf {
     OneOf {
       Routing(/Account.rss) {
         Method.get
-        Path { String.parser().pipe { User.RssSalt.parser() } }
+        Path { User.RssSalt.parser() }
       }
 
       Routing(/Account.rssLegacy) {

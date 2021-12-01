@@ -40,7 +40,7 @@ private let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", String.parser().pipe { GitHub.Client.Id.parser() })
+      Field("client_id", GitHub.Client.Id.parser())
       Optionally {
         Field("redirect_uri", String.parser())
       }
@@ -78,7 +78,7 @@ private let gitHubRouter = OneOf {
 
       Routing(/GitHubRoute.repo) {
         Method.get
-        Path { String.parser().pipe { GitHubRoute.Repo.parser() } }
+        Path { GitHubRoute.Repo.parser() }
       }
     }
   }
