@@ -4,6 +4,10 @@ import Parsing
 import Prelude
 import URLRouting
 
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 public enum TwitterRoute: String {
   case mbrandonw
   case pointfreeco

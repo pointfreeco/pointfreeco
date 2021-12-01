@@ -5,6 +5,10 @@ import Parsing
 import Prelude
 import URLRouting
 
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
