@@ -42,6 +42,7 @@ We have plenty of exciting topics planned for 2022, including all new episodes o
     )
   ],
   coverImage: nil,
+  hidden: true,
   id: 67,
   publishedAt: Date(timeIntervalSince1970: 1638136800),
   title: "Cyber Monday Sale: 30% Off Point-Free"

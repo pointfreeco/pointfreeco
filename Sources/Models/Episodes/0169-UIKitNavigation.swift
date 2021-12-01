@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
 What does all the work we've done with navigation in SwiftUI have to say about UIKit? Turns out a lot! Without making a single change to the view models we can rewrite the entire view layer in UIKit, and the application will work exactly as it did before, deep-linking and all!
 """,
-    codeSampleDirectory: "0169-uikit-navigation",
+    codeSampleDirectory: "0169-uikit-navigation-pt1",
     exercises: _exercises,
     id: 169,
     length: 45*60 + 46,
