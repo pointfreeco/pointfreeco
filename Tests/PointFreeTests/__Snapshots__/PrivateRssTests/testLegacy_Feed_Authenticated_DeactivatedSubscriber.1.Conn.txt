@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4262
+Content-Length: 4265
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,7 +23,7 @@ X-XSS-Protection: 1; mode=block
       Point-Free
     </title>
     <link>
-      http://localhost:8080
+      http://localhost:8080/
     </link>
     <language>
       en-US
@@ -36,7 +36,7 @@ X-XSS-Protection: 1; mode=block
     </copyright>
     <image>
       <url>
-        http://localhost:8080
+        http://localhost:8080/
       </url>
       <title>
         Point-Free
@@ -94,7 +94,7 @@ X-XSS-Protection: 1; mode=block
         Mon, 01 Jan 4001 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080
+        http://localhost:8080/
       </link>
       <guid>
         1517356800.0

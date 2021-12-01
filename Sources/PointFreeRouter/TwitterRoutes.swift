@@ -18,7 +18,7 @@ private let twitterRouter = Parse {
 public func twitterUrl(to route: TwitterRoute) -> String {
   guard let path = twitterRouter.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
   else { return "" }
-  return twitterBaseUrl.absoluteString + path
+  return "\(twitterBaseUrl.absoluteString)/\(path)"
 }
 
 private let twitterBaseUrl = URL(string: "https://www.twitter.com")!

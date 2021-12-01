@@ -83,7 +83,7 @@ private let gitHubRouter = OneOf {
 public func gitHubUrl(to route: GitHubRoute) -> String {
   guard let path = gitHubRouter.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
   else { return "" }
-  return gitHubBaseUrl.absoluteString + path
+  return "\(gitHubBaseUrl.absoluteString)/\(path)"
 }
 
 private let gitHubBaseUrl = URL(string: "https://github.com")!

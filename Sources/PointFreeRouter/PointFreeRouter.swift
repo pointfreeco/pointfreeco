@@ -20,7 +20,7 @@ public struct PointFreeRouter {
       assertionFailure("Failed to print \(route)")
       return ""
     }
-    return path
+    return "/\(path)"
   }
 
   public func url(to route: Route) -> String {
@@ -31,7 +31,7 @@ public struct PointFreeRouter {
     guard
       var request = router.print(route).flatMap(URLRequest.init(data:)),
       let path = request.url?.absoluteString,
-      let url = URL(string: self.baseUrl.absoluteString + (path == "/" ? "" : path))
+      let url = URL(string: "\(self.baseUrl.absoluteString)/\(path)")
     else {
       assertionFailure("Failed to print \(route)")
       return nil
