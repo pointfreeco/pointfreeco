@@ -20,7 +20,7 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class SiteMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+//    SnapshotTesting.isRecording=true
   }
 
   func testWithoutWWW() {
