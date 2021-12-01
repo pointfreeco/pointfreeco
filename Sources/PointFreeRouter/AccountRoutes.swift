@@ -7,6 +7,19 @@ import Prelude
 import Stripe
 import URLRouting
 
+// Stripe.Token.Id.parser(rawValue: String.parser())
+extension RawRepresentable {
+  static func parser<P>(
+    rawValue: P
+  ) -> Parsers.Pipe<P, Parsers.RawRepresentableParser<Self>>
+  where
+    P: Parser,
+    P.Output == RawValue
+  {
+    rawValue.pipe { Parsers.RawRepresentableParser<Self>.init() }
+  }
+}
+
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
@@ -62,7 +75,7 @@ let accountRouter = OneOf {
 
       Routing(/Account.Invoices.show) {
         Method.get
-        Path { Stripe.Invoice.Id.parser() }
+        Path { Invoice.Id.parser() }
       }
     }
   }
@@ -80,7 +93,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", Stripe.Token.Id.parser())
+              Field("token", Token.Id.parser(rawValue: String.parser()))
             }
           }
         }
