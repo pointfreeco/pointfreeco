@@ -155,7 +155,32 @@ private func profileRowView(_ data: AccountData) -> Node {
 
   let showExtraInvoiceInfo = data.isSubscriptionOwner && !data.subscriberState.isEnterpriseSubscriber
   let extraInvoiceInfoFields: Node = !showExtraInvoiceInfo ? [] : [
-    .label(attributes: [.class([labelClass])], "Extra Invoice Info"),
+    .label(
+      attributes: [
+        .class([labelClass])
+      ],
+      "Extra Invoice Info",
+      .p(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.gray400,
+            Class.pf.type.body.small,
+            Class.padding([.mobile: [.left: 2]]),
+          ])
+        ],
+        "This information will appear on ",
+        .a(
+          attributes: [
+            .class([
+              Class.pf.type.underlineLink,
+            ]),
+            .href(path(to: .account(.invoices(.index))))
+          ],
+          "all past invoices"
+        ),
+        "."
+      )
+    ),
     .textarea(
       attributes: [
         .placeholder("Company name, billing address, VAT number, ..."),
@@ -163,7 +188,7 @@ private func profileRowView(_ data: AccountData) -> Node {
         .name(ProfileData.CodingKeys.extraInvoiceInfo.stringValue),
       ],
       data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
-    )
+    ),
   ]
 
   let submit = Node.input(
