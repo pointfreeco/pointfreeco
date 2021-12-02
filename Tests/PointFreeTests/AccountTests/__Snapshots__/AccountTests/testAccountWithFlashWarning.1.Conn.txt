@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67938
+Content-Length: 67959
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2025,19 +2025,19 @@ html {
                                 block
                                 m-mb1">
                     Extra Invoice Info
-                    <p class="fg-gray400
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              m-pl2">
+                    <span class="fg-gray400
+                                 fg-black
+                                 normal
+                                 h6
+                                 lh-4
+                                 m-pl2">
                       This information will appear on 
                       <a class="underline-link"
                          href="/account/invoices">
                         all past invoices
                       </a>
                       .
-                    </p>
+                    </span>
                   </label>
                   <textarea placeholder="Company name, billing address, VAT number, ..."
                             class="font-family-inherit

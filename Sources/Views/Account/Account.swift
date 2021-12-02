@@ -160,7 +160,7 @@ private func profileRowView(_ data: AccountData) -> Node {
         .class([labelClass])
       ],
       "Extra Invoice Info",
-      .p(
+      .span(
         attributes: [
           .class([
             Class.pf.colors.fg.gray400,
