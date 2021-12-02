@@ -159,27 +159,26 @@ private func profileRowView(_ data: AccountData) -> Node {
       attributes: [
         .class([labelClass])
       ],
-      "Extra Invoice Info",
-      .span(
+      "Extra Invoice Info"
+    ),
+    .p(
+      attributes: [
+        .class([
+          Class.pf.colors.fg.gray400,
+          Class.pf.type.body.small,
+        ])
+      ],
+      "This information will appear on ",
+      .a(
         attributes: [
           .class([
-            Class.pf.colors.fg.gray400,
-            Class.pf.type.body.small,
-            Class.padding([.mobile: [.left: 2]]),
-          ])
+            Class.pf.type.underlineLink,
+          ]),
+          .href(path(to: .account(.invoices(.index))))
         ],
-        "This information will appear on ",
-        .a(
-          attributes: [
-            .class([
-              Class.pf.type.underlineLink,
-            ]),
-            .href(path(to: .account(.invoices(.index))))
-          ],
-          "all past invoices"
-        ),
-        "."
-      )
+        "all past invoices"
+      ),
+      "."
     ),
     .textarea(
       attributes: [

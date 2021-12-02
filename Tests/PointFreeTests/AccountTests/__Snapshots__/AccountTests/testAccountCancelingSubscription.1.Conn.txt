@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60685
+Content-Length: 60604
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2010,20 +2010,19 @@ html {
                                 block
                                 m-mb1">
                     Extra Invoice Info
-                    <span class="fg-gray400
-                                 fg-black
-                                 normal
-                                 h6
-                                 lh-4
-                                 m-pl2">
-                      This information will appear on 
-                      <a class="underline-link"
-                         href="/account/invoices">
-                        all past invoices
-                      </a>
-                      .
-                    </span>
                   </label>
+                  <p class="fg-gray400
+                            fg-black
+                            normal
+                            h6
+                            lh-4">
+                    This information will appear on 
+                    <a class="underline-link"
+                       href="/account/invoices">
+                      all past invoices
+                    </a>
+                    .
+                  </p>
                   <textarea placeholder="Company name, billing address, VAT number, ..."
                             class="font-family-inherit
                                    fg-black
