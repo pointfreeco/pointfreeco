@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep170_uikitNavigation = Episode(
     blurb: """
-TODO
+We finish rewriting a SwiftUI application's view layer in UIKit. We will show that not only does navigation and deep linking work just as well as it did before, but we will gain the ability to effortlessly switch between view paradigms.
 """,
     codeSampleDirectory: "0170-uikit-navigation-pt2",
     exercises: _exercises,
