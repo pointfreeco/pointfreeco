@@ -354,6 +354,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       Body {
         JSON(
           Stripe.Event<PaymentIntent>.self,
+          from: ArraySlice<UInt8>.self,
           decoder: Stripe.jsonDecoder,
           encoder: Stripe.jsonEncoder
         )
@@ -365,6 +366,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       Body {
         JSON(
           Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+          from: ArraySlice<UInt8>.self,
           decoder: Stripe.jsonDecoder,
           encoder: Stripe.jsonEncoder
         )
@@ -376,6 +378,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       Body {
         JSON(
           Stripe.Event<Prelude.Unit>.self,
+          from: ArraySlice<UInt8>.self,
           decoder: Stripe.jsonDecoder,
           encoder: Stripe.jsonEncoder
         )

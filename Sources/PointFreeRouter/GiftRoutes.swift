@@ -68,7 +68,12 @@ let giftsRouter = OneOf {
   Routing(/Gifts.create) {
     Method.post
     Body {
-      JSON(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder)
+      JSON(
+        GiftFormData.self,
+        from: ArraySlice<UInt8>.self,
+        decoder: routeJsonDecoder,
+        encoder: routeJsonEncoder
+      )
     }
   }
 
