@@ -70,7 +70,6 @@ let giftsRouter = OneOf {
     Body {
       JSON(
         GiftFormData.self,
-        from: ArraySlice<UInt8>.self,
         decoder: routeJsonDecoder,
         encoder: routeJsonEncoder
       )
@@ -79,45 +78,19 @@ let giftsRouter = OneOf {
 
   Routing(/Gifts.plan) {
     Method.get
-    Path { Gifts.Plan.parser() }
+    Path { Gifts.Plan.parser(rawValue: String.parser()) }
   }
 
   Routing(/Gifts.redeemLanding) {
     Method.get
-    Path { Gift.Id.parser() }
+    Path { Gift.Id.parser(rawValue: UUID.parser()) }
   }
 
   Routing(/Gifts.redeem) {
     Method.post
-    Path { Gift.Id.parser() }
+    Path { Gift.Id.parser(rawValue: UUID.parser()) }
   }
 }
-
-/*
- let giftsRouter = giftsRouters.reduce(.empty, <|>)
-
- private let giftsRouters: [Router<Gifts>] = [
-   .case(Gifts.confirmation)
-     <¢> post
-     %> formBody(GiftFormData.self, decoder: formDecoder) <% end,
-
-   .case(Gifts.create)
-     <¢> post
-     %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,
-
-   .case(.index)
-     <¢> get <% end,
-
-   .case(Gifts.plan)
-     <¢> get %> pathParam(.rawRepresentable) <% end,
-
-   .case(Gifts.redeem)
-     <¢> post %> pathParam(.tagged(.uuid)) <% end,
-
-   .case(Gifts.redeemLanding)
-     <¢> get %> pathParam(.tagged(.uuid)) <% end,
- ]
- */
 
 let routeJsonDecoder: JSONDecoder = {
   let decoder = JSONDecoder()

@@ -56,8 +56,8 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id", User.Id.parser())
-            Field("episode_sequence", Episode.Sequence.parser())
+            Field("user_id", User.Id.parser(rawValue: UUID.parser()))
+            Field("episode_sequence", Episode.Sequence.parser(rawValue: Int.parser()))
           }
         }
       }
@@ -75,7 +75,7 @@ let adminRouter = OneOf {
       Routing(/Admin.FreeEpisodeEmail.send) {
         Method.get
         Path {
-          Episode.Id.parser()
+          Episode.Id.parser(rawValue: Int.parser())
           "send"
         }
       }
@@ -95,7 +95,7 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id", User.Id.parser())
+            Field("user_id", User.Id.parser(rawValue: UUID.parser()))
           }
         }
       }
@@ -113,7 +113,7 @@ let adminRouter = OneOf {
       Routing(/Admin.NewBlogPostEmail.send) {
         Parse {
           Path {
-            BlogPost.Id.parser()
+            BlogPost.Id.parser(rawValue: Int.parser())
             "send"
           }
           Body {
@@ -144,7 +144,7 @@ let adminRouter = OneOf {
       Routing(/Admin.NewEpisodeEmail.send) {
         Parse {
           Path {
-            Episode.Id.parser()
+            Episode.Id.parser(rawValue: Int.parser())
             "send"
           }
           Body {
@@ -181,54 +181,3 @@ private let isTest = Optionally {
     )
   )
 }
-
-/*
- public let adminRouter = adminRouters.reduce(.empty, <|>)
-
- private let adminRouters: [Router<Admin>] = [
-   .case { .episodeCredits(.add(userId: $0, episodeSequence: $1)) }
-     <¢> post %> "episode-credits" %> "add"
-     %> formField("user_id", Optional.iso.some >>> opt(.tagged(.uuid)))
-     <%> formField("episode_sequence", Optional.iso.some >>> opt(.tagged(.int)))
-     <% end,
-
-   .case(.episodeCredits(.show))
-     <¢> get %> "episode-credits" %> end,
-
-   .case(.index)
-     <¢> get <% end,
-
-   .case { .freeEpisodeEmail(.send($0)) }
-     <¢> post %> "free-episode-email" %> pathParam(.tagged(.int)) <% "send" <% end,
-
-   .case(.freeEpisodeEmail(.index))
-     <¢> get %> "free-episode-email" <% end,
-
-   .case(.ghost(.index))
-     <¢> get %> "ghost" <% end,
-
-   .case { .ghost(.start($0)) }
-     <¢> post %> "ghost" %> "start"
-     %> formField("user_id", .tagged(.uuid)).map(Optional.iso.some)
-     <% end,
-
-   .case(.newBlogPostEmail(.index))
-     <¢> get %> "new-blog-post-email" <% end,
-
-   parenthesize(.case { .newBlogPostEmail(.send($0, formData: $1, isTest: $2)) })
-     <¢> post %> "new-blog-post-email" %> pathParam(.tagged(.int)) <%> "send"
-     %> formBody(NewBlogPostFormData?.self, decoder: formDecoder)
-     <%> isTest
-     <% end,
-
-   .case(Admin.newEpisodeEmail) <<< parenthesize(.case(Admin.NewEpisodeEmail.send))
-     <¢> post %> "new-episode-email" %> pathParam(.tagged(.int)) <%> "send"
-     %> formField("subscriber_announcement", .string).map(Optional.iso.some)
-     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
-     <%> isTest
-     <% end,
-
-   .case(.newEpisodeEmail(.show))
-     <¢> get %> "new-episode-email" <% end,
- ]
- */

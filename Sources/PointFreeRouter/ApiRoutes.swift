@@ -21,20 +21,7 @@ let apiRouter = Parse {
     
     Routing(/Route.Api.episode) {
       Method.get
-      Path { Episode.Id.parser() }
+      Path { Episode.Id.parser(rawValue: Int.parser()) }
     }
   }
 }
-
-/*
- let apiRouter
-   = apiRouters.reduce(.empty, <|>)
-
- private let apiRouters: [Router<Route.Api>] = [
-   .case(.episodes)
-     <¢> "episodes" <% end,
-
-   .case(Route.Api.episode)
-     <¢> "episodes" %> pathParam(.tagged(.int)) <% end
- ]
- */

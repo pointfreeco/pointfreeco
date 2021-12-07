@@ -40,7 +40,7 @@ private let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", GitHub.Client.Id.parser())
+      Field("client_id", GitHub.Client.Id.parser(rawValue: String.parser()))
       Optionally {
         Field("redirect_uri", String.parser())
       }
@@ -78,7 +78,7 @@ private let gitHubRouter = OneOf {
 
       Routing(/GitHubRoute.repo) {
         Method.get
-        Path { GitHubRoute.Repo.parser() }
+        Path { GitHubRoute.Repo.parser(rawValue: String.parser()) }
       }
     }
   }
@@ -91,33 +91,3 @@ public func gitHubUrl(to route: GitHubRoute) -> String {
 }
 
 private let gitHubBaseUrl = URL(string: "https://github.com")!
-
-/*
- public let gitHubRouter
-  = gitHubRouters.reduce(.empty, <|>)
-
- private let gitHubRouters: [Router<GitHubRoute>] = [
-
-   parenthesize(.case(GitHubRoute.authorize))
-     <¢> get %> "login" %> "oauth" %> "authorize"
-     %> queryParam("client_id", .tagged(.string))
-     <%> queryParam("redirect_uri", opt(.string))
-     <%> queryParam("scope", .string)
-     <% end,
-
-   .case(GitHubRoute.episodeCodeSample)
-     <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "main"
-     %> pathParam(.string)
-     <% end,
-
-   .case(.license)
-     <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "main" %> "LICENSE" %> end,
-
-   .case(.organization)
-     <¢> get <% "pointfreeco" <% end,
-
-   .case(GitHubRoute.repo)
-     <¢> get %> "pointfreeco" %> pathParam(.rawRepresentable) <% end,
-
- ]
- */

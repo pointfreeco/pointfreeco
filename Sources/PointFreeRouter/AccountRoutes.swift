@@ -7,19 +7,6 @@ import Prelude
 import Stripe
 import URLRouting
 
-// Stripe.Token.Id.parser(rawValue: String.parser())
-extension RawRepresentable {
-  static func parser<P>(
-    rawValue: P
-  ) -> Parsers.Pipe<P, Parsers.RawRepresentableParser<Self>>
-  where
-    P: Parser,
-    P.Output == RawValue
-  {
-    rawValue.pipe { Parsers.RawRepresentableParser<Self>.init() }
-  }
-}
-
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
@@ -61,7 +48,7 @@ let accountRouter = OneOf {
     Method.get
     Path { "confirm-email-change" }
     Query {
-      Field("payload", Encrypted.parser())
+      Field("payload", Encrypted.parser(rawValue: String.parser()))
     }
   }
 
@@ -75,7 +62,7 @@ let accountRouter = OneOf {
 
       Routing(/Account.Invoices.show) {
         Method.get
-        Path { Invoice.Id.parser() }
+        Path { Invoice.Id.parser(rawValue: String.parser()) }
       }
     }
   }
@@ -107,7 +94,7 @@ let accountRouter = OneOf {
     OneOf {
       Routing(/Account.rss) {
         Method.get
-        Path { User.RssSalt.parser() }
+        Path { User.RssSalt.parser(rawValue: String.parser()) }
       }
 
       Routing(/Account.rssLegacy) {
@@ -160,60 +147,3 @@ let accountRouter = OneOf {
     }
   }
 }
-
-/*
- let accountRouter
-   = accountRouters.reduce(.empty, <|>)
-
- private let accountRouters: [Router<Account>] = [
-   .case(Account.confirmEmailChange)
-     <¢> get %> "confirm-email-change"
-     %> queryParam("payload", .tagged)
-     <% end,
-
-   .case(.index)
-     <¢> get <% end,
-
-   .case(.invoices(.index))
-     <¢> get %> "invoices" <% end,
-
-   .case { .invoices(.show($0)) }
-     <¢> get %> "invoices" %> pathParam(.tagged(.string)) <% end,
-
-   .case(.paymentInfo(.show))
-     <¢> get %> "payment-info" <% end,
-
-   .case { .paymentInfo(.update($0)) }
-     <¢> post %> "payment-info"
-     %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
-     <% end,
-
-   .case(Account.rss)
-     <¢> (get <|> head) %> "rss"
-     %> pathParam(.tagged)
-     <% end,
-
-   .case(Account.rssLegacy)
-     <¢> (get <|> head) %> "rss"
-     %> pathParam(.id)
-     <%> pathParam(.id)
-     <% end,
-
-   .case(.subscription(.cancel))
-     <¢> post %> "subscription" %> "cancel" <% end,
-
-   .case(.subscription(.change(.show)))
-     <¢> get %> "subscription" %> "change" <% end,
-
-   .case { .subscription(.change(.update($0))) }
-     <¢> post %> "subscription" %> "change"
-     %> formBody(Pricing?.self, decoder: formDecoder)
-     <% end,
-
-   .case(.subscription(.reactivate))
-     <¢> post %> "subscription" %> "reactivate" <% end,
-
-   .case(Account.update)
-     <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
- ]
- */

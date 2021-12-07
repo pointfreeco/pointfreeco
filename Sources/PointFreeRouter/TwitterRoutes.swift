@@ -16,7 +16,7 @@ public enum TwitterRoute: String {
 
 private let twitterRouter = Parse {
   Method.get
-  Path { TwitterRoute.parser() }
+  Path { TwitterRoute.parser(rawValue: String.parser()) }
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {
@@ -26,17 +26,3 @@ public func twitterUrl(to route: TwitterRoute) -> String {
 }
 
 private let twitterBaseUrl = URL(string: "https://www.twitter.com")!
-
-/*
- public let twitterRouter: Router<TwitterRoute> = [
-   .case(.mbrandonw)
-     <¢> get %> "mbrandonw" <% end,
-
-   .case(.pointfreeco)
-     <¢> get %> "pointfreeco" <% end,
-
-   .case(.stephencelis)
-     <¢> get %> "stephencelis" <% end,
-   ]
-   .reduce(.empty, <|>)
- */
