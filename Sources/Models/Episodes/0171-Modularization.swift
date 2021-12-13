@@ -12,11 +12,40 @@ We've talked about modularity a lot in the past, but we've never devoted full ep
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1639375200),
     references: [
+      .init(
+        author: nil,
+        blurb: """
+        XcodeGen is a developer tool that automates the process of creating an Xcode project. This helps prevent merge conflicts and makes it easier to maintain a large project.
+        """,
+        link: "https://github.com/yonaskolb/XcodeGen",
+        publishedAt: nil,
+        title: "XcodeGen"
+      ),
+      .init(
+        author: nil,
+        blurb: """
+        Tuist is a collection of dev tools that make it easier for you to maintain an Xcode project with many app targets and frameworks.
+        """,
+        link: "https://github.com/tuist",
+        publishedAt: nil,
+        title: "Tuist"
+      ),
+      .init(
+        author: nil,
+        blurb: """
+        A classic tool in the iOS development community that helps manage dependencies, but can also be used to split your existing codebase into separate frameworks.
+        """,
+        link: "https://cocoapods.org",
+        publishedAt: nil,
+        title: "Cocoapods"
+      ),
       reference(
         forSection: .isowords,
         additionalBlurb: "We previously discussed modularity and modern Xcode projects in our tour of [isowords](https://github.com/pointfreeco/isowords).",
         sectionUrl: "https://www.pointfree.co/collections/tours/isowords"
-      )
+      ),
+      .isowordsGitHub,
+      .isowords,
     ],
     sequence: 171,
     subtitle: "Part 1",
