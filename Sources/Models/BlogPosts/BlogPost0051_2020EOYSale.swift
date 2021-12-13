@@ -32,7 +32,7 @@ In addition to these topics, we covered:
     )
   ],
   coverImage: nil,
-  hidden: false,
+  hidden: true,
   id: 51,
   publishedAt: Date(timeIntervalSince1970: 1608703200),
   title: "End-of-year sale: 25% off Point-Free"

@@ -78,4 +78,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0065_PointFreeGifts,
   post0066_AnnouncingSwiftUINavigation,
   post0067_CyberMondaySale,
+  post0068_YIR2021,
 ]
