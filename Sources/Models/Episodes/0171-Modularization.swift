@@ -13,6 +13,28 @@ We've talked about modularity a lot in the past, but we've never devoted full ep
     publishedAt: Date(timeIntervalSince1970: 1639375200),
     references: [
       .init(
+        author: "Gio Lodi",
+        blurb: """
+        An article from [Increment magazine](https://increment.com) about modularizing a code base into small feature applications:
+
+        > How an emerging architecture pattern inspired by microservices can invigorate feature development and amplify developer velocity.
+        """,
+        link: "https://increment.com/mobile/microapps-architecture/",
+        publishedAt: referenceDateFormatter.date(from: "2021-08-01"),
+        title: "Meet the microapps architecture"
+      ),
+      .init(
+        author: "Bartosz Polaczyk",
+        blurb: """
+        Once you modularize your code base you can begin uncovering new ways to speed up build times. This tool from Spotify allows you to cache and share build artifacts so that you can minimize the number of times you must build your project from scratch:
+
+        > At Spotify, we constantly work on creating the best developer experience possible for our iOS engineers. Improving build times is one of the most common requests for infrastructure teams and, as such, we constantly seek to improve our infrastructure toolchain. We are excited to be open sourcing XCRemoteCache, the library we created to mitigate long local builds.
+        """,
+        link: "https://engineering.atspotify.com/2021/11/16/introducing-xcremotecache-the-ios-remote-caching-tool-that-cut-our-clean-build-times-by-70/",
+        publishedAt: referenceDateFormatter.date(from: "2021-11-16"),
+        title: "Introducing XCRemoteCache: The iOS Remote Caching Tool that Cut Our Clean Build Times by 70%"
+      ),
+      .init(
         author: nil,
         blurb: """
         XcodeGen is a developer tool that automates the process of creating an Xcode project. This helps prevent merge conflicts and makes it easier to maintain a large project.
