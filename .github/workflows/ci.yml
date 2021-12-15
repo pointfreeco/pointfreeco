@@ -20,6 +20,25 @@ jobs:
       run: make test-oss
       env:
         CI: 1
+    - name: Notify Slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.16.0
+      with:
+        payload: >
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "pointfree.co has been deployed"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
   ubuntu:
     name: Ubuntu
