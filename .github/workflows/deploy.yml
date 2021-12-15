@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Check out submodules
+        uses: actions/checkout@v2
         with:
-          submodules: true
+          repository: pointfreeco/episode-transcripts
+          token: ${{ secrets.GH_PAT }}
+          path: Sources/Models/Transcripts
       - uses: akhileshns/heroku-deploy@v3.4.6
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
