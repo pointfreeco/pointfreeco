@@ -172,5 +172,6 @@ extension Episode {
     .ep169_uikitNavigation,
     .ep170_uikitNavigation,
     .ep171_modularization,
+    .ep172_modularization,
   ]
 }
