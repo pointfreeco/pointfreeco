@@ -60,6 +60,6 @@ Add a "Routing.swift" file to the "ItemFeature" target, and extract item-specifi
   .init(
     problem: #"""
 Create an "InventoryPreviewApp" that allows you to run the full inventory feature in a dedicated, sandboxed application. Make it capable of deep linking through a custom URL scheme.
-"""#,
+"""#
   ),
 ]
