@@ -14,8 +14,8 @@ TODO
 2021 was our biggest year yet:
 
 * **42** episodes released for a total of **29** hours of video.
-* **72k** unique users visited the site.
-* **121k** video views for a total of **4 years and 59 days** watching time.
+* **72k** unique vistors to the site.
+* **121k** video views, **4 years and 59 days** watching time, over **42 terabytes** of video streamed.
 * Open sourced **5** new [projects](#open-source).
 
 But these high-level stats don’t scratch the surface of what we covered in 2021:
