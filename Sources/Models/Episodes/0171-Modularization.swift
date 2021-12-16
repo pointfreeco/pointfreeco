@@ -24,6 +24,15 @@ We've talked about modularity a lot in the past, but we've never devoted full ep
         title: "Meet the microapps architecture"
       ),
       .init(
+        author: "Alejandro Martinez",
+        blurb: """
+        A detailed post touching code base structure, modularity, UI, architecture and more.
+        """,
+        link: "https://alejandromp.com/blog/ios-app-architecture-in-2022/",
+        publishedAt: referenceDateFormatter.date(from: "2021-12-15"),
+        title: "iOS App Architecture in 2022"
+      ),
+      .init(
         author: "Bartosz Polaczyk",
         blurb: """
         Once you modularize your code base you can begin uncovering new ways to speed up build times. This tool from Spotify allows you to cache and share build artifacts so that you can minimize the number of times you must build your project from scratch:
