@@ -62,3 +62,21 @@ The entire code base of pointfree.co has been open source since the very first d
     title: "Tours"
   )
 }
+
+extension Episode.Collection.Section {
+  static let isowords = Self(
+    blurb: #"""
+isowords is our new word game for iOS, built in SwiftUI and the Composable Architecture. We open sourced the entire code base (including the server, which is also written in Swift!), and in this multi-part tour we show how we've applied many concepts from Point-Free episodes to build a large, complex application.
+"""#,
+    coreLessons: [
+      .init(episode: .ep142_tourOfIsowords),
+      .init(episode: .ep143_tourOfIsowords),
+      .init(episode: .ep144_tourOfIsowords),
+      .init(episode: .ep145_tourOfIsowords),
+    ],
+    related: [
+    ],
+    title: "isowords",
+    whereToGoFromHere: nil
+  )
+}
