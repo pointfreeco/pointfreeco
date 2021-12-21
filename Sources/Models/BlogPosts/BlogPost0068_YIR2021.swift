@@ -3,7 +3,7 @@ import Foundation
 public let post0068_YIR2021 = BlogPost(
   author: .pointfree,
   blurb: """
-TODO
+Point-Free year in review: 42 episodes, 72k visitors, 5 new open source projects, and more!
 """,
   contentBlocks: [
     .init(
