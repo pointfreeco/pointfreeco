@@ -19,7 +19,7 @@ We are also offering [25% off](/discounts/2021-eoy) the first year for first-tim
 * **42** episodes released for a total of **29** hours of video.
 * **72k** unique vistors to the site.
 * Over **124k** video views, **4 years and 100 days** watching time, and over **42 terabytes** of video streamed.
-* Open sourced **5** new [projects](#open-source).
+* **5** new projects [open sourced](#open-source).
 
 But these high-level stats don’t scratch the surface of what we covered in 2021:
 
@@ -35,17 +35,17 @@ We also used the application built in the series to explore two additional topic
 
 ## Open Source
 
-Since launching Point-Free in 2018 we have open sourced over 20 projects, and this year alone we released 5 new projects (3 of which were extracted from our [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) library):
+Since launching Point-Free in 2018 we have open sourced over [20 projects](https://github.com/pointfreeco), and this year alone we released 5 new projects (3 of which were extracted from our [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) library):
 
 ### [isowords](https://github.com/pointfreeco/isowords)
 
-In May of this year we released a word game for iOS called [isowords](https://www.isowords.xyz). Alongside the release we also open sourced the entire code base. Both the client and server code are written in Swift, and the client code shows how to build a large, modularized application in SwiftUI and the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture).
+In May of this year we released a word game for iOS called [isowords](https://www.isowords.xyz). Alongside the release we also open sourced the entire code base. Both the client and server code are written in Swift, and the client code shows how to build a large, modularized application in SwiftUI and the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). We also released a [4-part series](/collections/tours/isowords) of episodes showing off some of the cooler aspects of the code base.
 
 ### [xctest-dynamic-overlay](https://github.com/pointfreeco/xctest-dynamic-overlay)
 
 It is very common to write test support code for libraries and applications, but due to how Xcode works one cannot do this easily. If you import `XCTest` in a file, then that file cannot be compiled to run on a simulator or device. This forces you to extract test helper code into its own target/module, even though ideally the code should live right next to your library code.
 
-The `xctest-dynamic-overlay` library makes it possible to use the `XCTFail` assertion function from `XCTest` in library and application code. It will dynamically find the `XCTFail` implementation in tests, and act as a no-op outside of tests.
+The `xctest-dynamic-overlay` library makes it possible to use the `XCTFail` assertion function from the `XCTest` framework in library and application code. It will dynamically find the `XCTFail` implementation in tests, and act as a no-op outside of tests.
 
 ### [swift-identified-collections](https://github.com/pointfreeco/swift-identified-collections)
 
