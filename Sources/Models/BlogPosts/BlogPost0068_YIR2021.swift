@@ -18,14 +18,14 @@ We are also offering [25% off](/discounts/2021-eoy) the first year for first-tim
 
 * **42** episodes released for a total of **29** hours of video.
 * **72k** unique vistors to the site.
-* **124k** video views, **4 years and 100 days** watching time, and over **42 terabytes** of video streamed.
+* Over **124k** video views, **4 years and 100 days** watching time, and over **42 terabytes** of video streamed.
 * Open sourced **5** new [projects](#open-source).
 
 But these high-level stats don’t scratch the surface of what we covered in 2021:
 
 ## SwiftUI Navigation
 
-By far, the most ambitious series of episodes we tackled in 2021 was [SwiftUI navigation](/collections/swiftui/navigation). Over the course of 9 episodes we gave a precise definition of what navigation means in an application, explored SwiftUI's navigation tools (tabs, alerts, modal sheets and links), and then showed how to build new navigation tools that allow us to model our domains more concisely and correctly.
+By far, the most ambitious series of episodes we tackled in 2021 was [SwiftUI Navigation](/collections/swiftui/navigation). Over the course of 9 episodes we gave a precise definition of what navigation means in an application, explored SwiftUI's navigation tools (including tabs, alerts, modal sheets, and links), and then showed how to build new navigation tools that allow us to model our domains more concisely and correctly.
 
 After completing that series we [open sourced](/blog/posts/66-open-sourcing-swiftui-navigation) a [library](https://github.com/pointfreeco/swiftui-navigation) with all the tools discussed in the series. This makes it easy to model navigation in your application using optionals and enums, and makes it straightforward to drive deep-linking with your domain's state.
 
@@ -33,13 +33,13 @@ We also used the application built in the series to explore two additional topic
 
 <div id="open-source"></div>
 
-## Open source
+## Open Source
 
-Since launching Point-Free in 2018 we have open sourced over 20 projects, and this year alone we released 5 new projects (3 of which were extracted from our [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) libray):
+Since launching Point-Free in 2018 we have open sourced over 20 projects, and this year alone we released 5 new projects (3 of which were extracted from our [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) library):
 
 ### [isowords](https://github.com/pointfreeco/isowords)
 
-In May of this year we released a word game for iOS called [isowords](https://www.isowords.xyz). Alongside the release we also open sourced the entire code base. Both the client and server code were written in Swift, and the client code shows how to build a large, modularized application in SwiftUI and the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture).
+In May of this year we released a word game for iOS called [isowords](https://www.isowords.xyz). Alongside the release we also open sourced the entire code base. Both the client and server code are written in Swift, and the client code shows how to build a large, modularized application in SwiftUI and the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture).
 
 ### [xctest-dynamic-overlay](https://github.com/pointfreeco/xctest-dynamic-overlay)
 
@@ -55,19 +55,19 @@ Identified collections are designed to solve all of these problems by providing 
 
 ### [swift-custom-dump](https://github.com/pointfreeco/swift-custom-dump)
 
-Swift comes with a wonderful tool for dumping the contents of any value to a string, and it's called `dump`. It prints all the fields and sub-fields of a value into a tree-like description. However, the output is less than ideal. Dictionaries are printed in non-deterministic order, values are printed with superfluous extra type information, and some types don't print any useful information at all.
+Swift comes with a wonderful tool for debug-printing the contents of any value to a string, and it's called `dump`. It prints all the fields and sub-fields of a value into a tree-like description. However, the output is less than ideal: dictionaries are printed in non-deterministic order, values are printed with superfluous extra type information, and some types don't print any useful information at all.
 
-The [swift-custom-dump](https://github.com/pointfreeco/swift-custom-dump) library ships with a function that emulates the behavior of dump, but provides a more refined output of nested structures, optimizing for readability. Further, it uses the more refined output to provide two additional tools. One for outputing a nicely formatted diff between two values of the same type, and another that acts as a drop-in replacement for `XCTAssertEqual` with a much better error message when a test fails.
+The [swift-custom-dump](https://github.com/pointfreeco/swift-custom-dump) library ships with a function that emulates the behavior of dump, but provides a more refined output of nested structures, optimizing for readability. Further, it uses the more refined output to provide two additional tools. One for outputting a nicely formatted diff between two values of the same type, and another that acts as a drop-in replacement for `XCTAssertEqual` with a much better error message when a test fails.
 
 ### [swiftui-navigation](https://github.com/pointfreeco/swiftui-navigation)
 
-A collection of tools for making SwiftUI navigation simpler, more ergonomic and more precise. The library allows you to model your application's navigation as optionals and enums, and then provides the tools for driving alerts, modal sheets and navigation links from state.
+A collection of tools for making SwiftUI navigation simpler, more ergonomic and more precise. The library allows you to model your application's navigation as optionals and enums, and then provides the tools for driving alerts, modal sheets, and navigation links from state.
 
 # 🎉 2022 🎉
 
-We're thankful to all of our subscribers for supporting us and helping us create this content. We could not do it without you.
+We're thankful to all of our subscribers for supporting us and helping us create this content and these libraries. We could not do it without you.
 
-Next year we have even more planned, including a deep dive into Swift's new concurrency tools, improvements to the Composable Architecture to play better with concurrency and SwiftUI navigation, as well as all new parsing episodes (result builders, reversible parsing, routing) and more!
+Next year we have even more planned, including a deep dive into Swift's new concurrency tools, improvements to the Composable Architecture to play better with concurrency and SwiftUI navigation, as well as all new parsing episodes (including result builders, reversible parsing, routing) and more!
 
 To celebrate the end of the year we are also offering [25% off](/discounts/2021-eoy) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
 
