@@ -27,6 +27,6 @@ We’re happy to announce [an end-of-year sale](/discounts/2021-eoy) by offering
   coverImage: nil,
   hidden: false,
   id: 69,
-  publishedAt: Date(timeIntervalSince1970: 1640210400),
+  publishedAt: Date(timeIntervalSince1970: 1640239200),
   title: "End-of-year sale: 25% off Point-Free"
 )
