@@ -131,7 +131,7 @@ func announcementBanner<A>(
 ) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0067_CyberMondaySale.publishedAt...Date(timeIntervalSince1970: 1638338400))
+    (post0069_2021EOYSale.publishedAt...Date(timeIntervalSince1970: 1641160800))
       .contains(date())
   else { return [] }
 
@@ -151,11 +151,11 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(url(to: .blog(.show(slug: post0067_CyberMondaySale.slug))))
+          .href(url(to: .blog(.show(slug: post0069_2021EOYSale.slug))))
         ],
-        .strong("Cyber Monday Sale")
+        .strong("End-of-year sale")
       ),
-      ": save 30% when you subscribe!"
+      ": save 25% when you subscribe!"
     )
   )
 }
