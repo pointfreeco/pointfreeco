@@ -78,6 +78,6 @@ See you in 2022!
   ],
   coverImage: nil,
   id: 68,
-  publishedAt: Date(timeIntervalSince1970: 1640239201),
+  publishedAt: Date(timeIntervalSince1970: 1640152800),
   title: "2021 Year-in-review"
 )
