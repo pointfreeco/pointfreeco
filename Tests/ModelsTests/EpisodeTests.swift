@@ -1,7 +1,8 @@
 import XCTest
 @testable import Models
+import PointFreeTestSupport
 
-final class EpisodeTests: XCTestCase {
+final class EpisodeTests: TestCase {
   func testSlug() {
     var episode = Episode.mock
     episode.id = 42

@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 119808
+Content-Length: 119728
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2125,8 +2125,7 @@ Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.lang
                    style="padding-bottom:56.25%">
                 <video class="h-100p
                               w-100p
-                              absolute
-                              bg-gray650"
+                              absolute"
                        controls
                        playslinline
                        poster
@@ -2176,8 +2175,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                  rel="noopener noreferrer">
                 <img src
                      alt
-                     class="w-100p
-                            bg-gray650">
+                     class="w-100p">
               </a>
               <div>
                 <div class="md-ctn">

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 83711
+Content-Length: 83673
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2051,8 +2051,7 @@ Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.lang
                style="padding-bottom:56.25%">
             <iframe class="h-100p
                            w-100p
-                           absolute
-                           bg-gray650"
+                           absolute"
                     src="https://player.vimeo.com/video/1234567890?pip=1#t=276s"
                     frameborder="0"
                     allow="autoplay; fullscreen"

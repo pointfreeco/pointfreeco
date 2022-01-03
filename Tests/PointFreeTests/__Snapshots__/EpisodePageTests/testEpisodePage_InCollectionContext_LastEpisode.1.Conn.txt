@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 97692
+Content-Length: 97654
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2104,8 +2104,7 @@ Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.lang
                style="padding-bottom:56.25%">
             <iframe class="h-100p
                            w-100p
-                           absolute
-                           bg-gray650"
+                           absolute"
                     src="https://player.vimeo.com/video/1234567890?pip=1"
                     frameborder="0"
                     allow="autoplay; fullscreen"
