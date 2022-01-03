@@ -80,4 +80,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0067_CyberMondaySale,
   post0068_YIR2021,
   post0069_2021EOYSale,
+  post0070_UnobtrusiveRuntimeWarnings,
 ]
