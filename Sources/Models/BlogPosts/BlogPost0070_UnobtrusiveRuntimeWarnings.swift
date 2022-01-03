@@ -288,7 +288,7 @@ However, we hope we have convinced you that having access to these kinds of warn
 
 We have just released version [0.32.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.32.0) of the Composable Architecture that replaces all breakpoint warnings with new, unobtrusive warnings. We’ve been using it for the past few weeks while developing new features for isowords, and it’s a game changer in terms of developer productivity. We now have instant insight into moments we accidentally break invariants that the library expects us to uphold without disrupting what we are currently working on.
 
-Update your projects to the new Composable Architecture release to give it a spin today, and [let us know what you think!](link to GH discussion of release or twitter?)
+Update your projects to the new Composable Architecture release to give it a spin today, and [let us know what you think!](https://github.com/pointfreeco/swift-composable-architecture/discussions/944)
 """#,
       type: .paragraph
     )
