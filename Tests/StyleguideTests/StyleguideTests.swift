@@ -2,6 +2,7 @@ import Css
 import CssTestSupport
 import HtmlSnapshotTesting
 import Html
+import PointFreeTestSupport
 import SnapshotTesting
 import Styleguide
 #if !os(Linux)
@@ -9,7 +10,7 @@ import WebKit
 #endif
 import XCTest
 
-class StyleguideTests: XCTestCase {
+class StyleguideTests: TestCase {
   override func setUp() {
     super.setUp()
     diffTool = "ksdiff"

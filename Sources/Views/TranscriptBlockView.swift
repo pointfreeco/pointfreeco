@@ -52,7 +52,7 @@ public func transcriptBlockView(
         .target(.blank),
         .rel(.init(rawValue: "noopener noreferrer")),
       ],
-      .img(src: src, alt: "", attributes: [.class(imageClasses)])
+      .img(src: src, alt: block.content, attributes: [.class(imageClasses)])
     )
 
   case .paragraph:
@@ -141,7 +141,6 @@ let innerVideoContainerClass: CssSelector =
   Class.size.height100pct
     | Class.size.width100pct
     | Class.position.absolute
-    | Class.pf.colors.bg.gray650
 
 let outerImageContainerClass: CssSelector =
   Class.size.width100pct
@@ -149,4 +148,3 @@ let outerImageContainerClass: CssSelector =
 
 let innerImageContainerClass: CssSelector =
   Class.size.width100pct
-    | Class.pf.colors.bg.gray650

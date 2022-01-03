@@ -1,11 +1,12 @@
 import Either
 import Prelude
+import PointFreeTestSupport
 import SnapshotTesting
 @testable import Stripe
 import StripeTestSupport
 import XCTest
 
-final class StripeTests: XCTestCase {
+final class StripeTests: TestCase {
 
   override func setUp() {
     super.setUp()

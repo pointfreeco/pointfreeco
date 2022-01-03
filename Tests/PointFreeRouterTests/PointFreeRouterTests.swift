@@ -5,11 +5,12 @@ import FoundationNetworking
 import Models
 import PointFreePrelude
 import PointFreeRouter
+import PointFreeTestSupport
 import SnapshotTesting
 import UrlFormEncoding
 import XCTest
 
-class PointFreeRouterTests: XCTestCase {
+class PointFreeRouterTests: TestCase {
   func testUpdateProfile() {
     let profileData = ProfileData(
       email: "blobby@blob.co",
