@@ -8,7 +8,7 @@ TODO
   contentBlocks: [
     .init(
       content: "",
-      type: .image(src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0070-runtime-warnings/poster.png", sizing: .fullWidth)
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0070-runtime-warnings/poster.png", sizing: .fullWidth)
     ),
     .init(
       content: #"""
@@ -16,9 +16,17 @@ Runtime warnings in libraries are a great way to notify your users that somethin
 
 ## Current state of runtime warnings
 
-Since the very early days of the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture), we have performed certain checks inside the library to make sure that its APIs are being used properly. This first [started](https://github.com/pointfreeco/swift-composable-architecture/pull/157/files#diff-a1c96e882538e90ca6c6ab801541c93934582dd86a282f57a006b03b96d0621dR169) with raising an assertion failure when we detected an action was sent to an optional reducer while state was `nil`. We did this because sending such an action is considered an application logic error and could hide subtle bugs in your application since the actions are being silently ignored. The assertion message provides a detailed explanation of why it was triggered, as well as how one might potentially fix it.
-
-Although it is nice to be notified of these problems early on and in a visible manner, it’s also quite disruptive. Because assertion failures crash the application you have no choice but to restart, which means you lose your current working context. Further, there are a lot more of these types of application logic errors we’d like to catch in the library, but that means we will be creating a minefield of assertion failures that our users can trip over. That creates an unhappy experience when using the library.
+Since the very early days of the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture), we have performed certain checks inside the library to make sure that its APIs are being used properly. This first [started](https://github.com/pointfreeco/swift-composable-architecture/pull/157/files#diff-a1c96e882538e90ca6c6ab801541c93934582dd86a282f57a006b03b96d0621dR169) with raising an assertion failure when we detected an action was sent to an optional reducer while state was `nil`. We did this because sending such an action is considered an application logic error and could hide subtle bugs in your application since the actions are being silently ignored. The assertion message provides a detailed explanation of why it was triggered, as well as how one might potentially fix it:
+"""#,
+      type: .paragraph
+    ),
+    .init(
+      content: "",
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0070-runtime-warnings/fatal-error.png", sizing: .fullWidth)
+    ),
+    .init(
+      content: #"""
+Although it is nice to be notified of these problems early and in a visible manner, it’s also quite disruptive. Because assertion failures crash the application you have no choice but to restart, which means you lose your current working context. Further, there are a lot more of these types of application logic errors we’d like to catch in the library, but that means we will be creating a minefield of assertion failures that our users can trip over. That creates an unhappy experience when using the library.
 
 So, we looked for less obtrusive ways to surface these messages. One option is to simply print the messages to the console, but it is very easy for that to get lost amongst everything else being printed to the console. Perhaps a happy medium between terminating the application with an assertion failure and printing to the console would be to temporarily stop the application with a breakpoint.
 
@@ -65,11 +73,11 @@ However, raising `SIGTRAP` like this when the debugger is not attached will cras
 
 This style of runtime warnings is much better than assertion failures. It only temporarily stops the application, allowing the user to see why we are warning them and then they simply click the continue button (⌃+⌘+Y) or type “c” into the prompt to resume execution.
 
-In fact, this new experience for runtime warnings was so much better we started sprinkle in more of them to catch even more application logic errors. This includes when actions are sent to `.forEach` reducers for ids that no longer exist in the collection (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/Reducer.swift#L767-L793)), as well as when `SwitchStore`s are used in a non-exhaustive manner (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/SwiftUI/SwitchStore.swift#L1177-L1183)), and most recently in order to perform certain thread checks in the `Store` and `ViewStore` (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/Store.swift#L418-L472)).
+In fact, this new experience for runtime warnings was so much better we started sprinkle in more of them to catch even more application logic errors. This includes when actions are sent to `.forEach` reducers for ids that no longer exist in the collection (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/Reducer.swift#L767-L793)), as well as when `SwitchStore`s are used in a non-exhaustive manner (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/SwiftUI/SwitchStore.swift#L1177-L1183)), and most recently in order to perform certain thread checks in the `Store` and `ViewStore` (see [here](https://github.com/pointfreeco/swift-composable-architecture/blob/1a2b293ca609b69dedd6aad4336a640ecf66e801/Sources/ComposableArchitecture/Store.swift#L457-L472)).
 
 ## A better way
 
-While using breakpoints provided a much better user experience than assertion failures, we still felt there was room for improvement. The fact that breakpoints were being triggered was not expected by our users and so caused confusion. Many thought that the application was still crashing, and that the only way to resume was to restart the application. Even worse, the stack trace at the moment of breakpoint doesn’t point exactly to where the `SIGTRAP` is raised, but rather there are a few un-symbolicated frames in front of your frame, which can be very confusing. And on top of all of that, getting caught on a breakpoint can still be quite disruptive to your workflow.
+While using breakpoints provided a much better user experience than assertion failures, we still felt there was room for improvement. The fact that breakpoints were being triggered was not expected by our users and caused confusion. Many thought that the application was still crashing, and that the only way to resume was to restart the application. Even worse, the stack trace at the moment of breakpoint doesn’t point exactly to where the `SIGTRAP` is raised, but rather there are a few un-symbolicated frames in front of your frame, which can be very confusing. And on top of all of that, getting caught on a breakpoint can still be quite disruptive to your workflow.
 
 Xcode actually provides some really great, unobtrusive runtime warnings for certain things, such as when you mutate an `ObservedObject` being used in a SwiftUI view on a background thread:
 """#,
@@ -94,11 +102,12 @@ We came across an old Stack Overflow [post](https://stackoverflow.com/questions/
 So, we reached out to Saagar to see if there were other options. It turns out that the warnings can be generated by writing to a specific `OSLog` in a very specific manner. There is an overload of `os_log` that allows you to specify the type of log (e.g. default, info, debug, error, fault), an `OSLog` and then the string you want to log:
 
 ```swift
+
 os_log(
-  os.OSLogType,
-  log: os.OSLog,
-  StaticString,
-  CVarArg
+  <#os.OSLogType#>,
+  <#log: os.OSLog#>,
+  <#StaticString#>,
+  <#CVarArg#>
 )
 ```
 
@@ -107,7 +116,7 @@ Some of these arguments are easier to fill in than others. For example, the type
 ```swift
 os_log(
   .fault,
-  log: os.OSLog,
+  log: <#os.OSLog#>,
   "We encountered a runtime warning"
 )
 ```
@@ -127,14 +136,14 @@ os_log(
 
 This subsystem seems to be what Xcode watches in order to know when to show the runtime purple warnings in the editor. However, if we simply run an application with this logging performed immediately we will see that no purple warnings pop up.
 
-It turns out that it is not enough to simply log to the subsystem. Historically it seems that these purple warnings could only be initiated from private, magic functions in LLDB, such as the thread sanitizer, undefined behavior sanitizer, and a few others. However, when SwiftUI launched Apple privileged that framework with the ability to also create these warnings, and so if we can make it seem as if the `os_log` is happening from within SwiftUI we may trick Xcode into showing the purple warning.
+It turns out that it is not enough to simply log to the subsystem. Historically it seems that these purple warnings could only be initiated from private, magic functions in LLDB, such as the thread sanitizer, undefined behavior sanitizer, and a few others. However, when SwiftUI launched, Apple privileged that framework with the ability to also create these warnings, and so if we can make it seem as if the `os_log` is happening from within SwiftUI we may trick Xcode into showing the purple warning.
 
 To do this one must provide a `dso` argument to `os_log`, which sadly has very little documentation:
 
 ```swift
 os_log(
   .fault,
-  dso: UnsafeRawPointer,
+  dso: <#UnsafeRawPointer#>,
   log: OSLog(
     subsystem: "com.apple.runtime-issues",
     category: "ComposableArchitecture"
@@ -277,14 +286,14 @@ However, we hope we have convinced you that having access to these kinds of warn
 
 ## Try it out today
 
-We have just released version [0.X.Y](todo) of the Composable Architecture that replaces all breakpoint warnings with new, unobtrusive warnings. We’ve been using it for the past few weeks while developing new features for isowords, and it’s a game changer in terms of developer productivity. We now have instant insight into moments we accidentally break invariants that the library expects us to uphold without disrupting what we are currently working on.
+We have just released version [0.32.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.32.0) of the Composable Architecture that replaces all breakpoint warnings with new, unobtrusive warnings. We’ve been using it for the past few weeks while developing new features for isowords, and it’s a game changer in terms of developer productivity. We now have instant insight into moments we accidentally break invariants that the library expects us to uphold without disrupting what we are currently working on.
 
 Update your projects to the new Composable Architecture release to give it a spin today, and [let us know what you think!](link to GH discussion of release or twitter?)
 """#,
       type: .paragraph
     )
   ],
-  coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0070-runtime-warnings/poster.png",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0070-runtime-warnings/poster.png",
   id: 70,
   publishedAt: .init(timeIntervalSince1970: 1640152800),
   title: "Unobtrusive runtime warnings for libraries"
