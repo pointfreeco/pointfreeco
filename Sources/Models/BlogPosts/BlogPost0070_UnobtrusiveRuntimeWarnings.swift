@@ -77,7 +77,7 @@ In fact, this new experience for runtime warnings was so much better we started 
 
 ## A better way
 
-While using breakpoints provided a much better user experience than assertion failures, we still felt there was room for improvement. The fact that breakpoints were being triggered was not expected by our users and caused confusion. Many thought that the application was still crashing, and that the only way to resume was to restart the application. Even worse, the stack trace at the moment of breakpoint doesn’t point exactly to where the `SIGTRAP` is raised, but rather there are a few un-symbolicated frames in front of your frame, which can be very confusing. And on top of all of that, getting caught on a breakpoint can still be quite disruptive to your workflow.
+While using breakpoints provided a much better user experience than assertion failures, we still felt there was room for improvement. The fact that breakpoints were being triggered was not expected by our users and caused confusion. Many thought that their application was crashing, and that the only way to resume was to restart the application. Even worse, the stack trace at the moment of breakpoint doesn’t point exactly to where the `SIGTRAP` is raised, but rather there are a few un-symbolicated frames in front of your frame, which can be very confusing. And on top of all of that, getting caught on a breakpoint can still be quite disruptive to your workflow.
 
 Xcode actually provides some really great, unobtrusive runtime warnings for certain things, such as when you mutate an `ObservedObject` being used in a SwiftUI view on a background thread:
 """#,
