@@ -295,6 +295,6 @@ Update your projects to the new Composable Architecture release to give it a spi
   ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0070-runtime-warnings/poster.png",
   id: 70,
-  publishedAt: .init(timeIntervalSince1970: 1640152800),
+  publishedAt: .init(timeIntervalSince1970: 1641189600),
   title: "Unobtrusive runtime warnings for libraries"
 )
