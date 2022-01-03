@@ -87,7 +87,7 @@ Xcode actually provides some really great, unobtrusive runtime warnings for cert
       content: #"""
 Screenshot of purple runtime warning in Xcode that says: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
 """#,
-      type: .image(src: "https://paper-attachments.dropbox.com/s_A2E9EA2B332FF7712557FE861C9F35D4D8C40CF95E3A1DD91AF421450B7DDC09_1633378400741_image.png", sizing: .fullWidth)
+      type: .image(src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0070-runtime-warnings/purple-warning.png", sizing: .fullWidth)
     ),
     .init(
       content: #"""
@@ -272,7 +272,7 @@ And if we execute this code in an application running in the simulator we will s
     ),
     .init(
       content: "Screenshot of Xcode showing a purple runtime warning with stack trace.",
-      type: .image(src: "https://paper-attachments.dropbox.com/s_A2E9EA2B332FF7712557FE861C9F35D4D8C40CF95E3A1DD91AF421450B7DDC09_1633453511430_Screen+Shot+2021-10-05+at+1.05.02+PM.png", sizing: .fullWidth)
+      type: .image(src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0070-runtime-warnings/success.png", sizing: .fullWidth)
     ),
     .init(
       content: #"""
