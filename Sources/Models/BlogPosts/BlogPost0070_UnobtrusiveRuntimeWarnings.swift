@@ -49,19 +49,16 @@ However, raising `SIGTRAP` like this when the debugger is not attached will cras
     var info: kinfo_proc = kinfo_proc()
     var info_size = MemoryLayout<kinfo_proc>.size
 
-    let isDebuggerAttached = name.withUnsafeMutableBytes {
-      $0.bindMemory(to: Int32.self).baseAddress
-      .map {
-        sysctl($0, 4, &info, &info_size, nil, 0) != -1 && info.kp_proc.p_flag & P_TRACED != 0
-      }
-      ?? false
-    }
+    let isDebuggerAttached =
+      sysctl(&name, 4, &info, &info_size, nil, 0) != -1 && info.kp_proc.p_flag & P_TRACED != 0
 
     if isDebuggerAttached {
       fputs(
         """
         \(message())
+
         Caught debug breakpoint. Type "continue" ("c") to resume execution.
+
         """,
         stderr
       )
