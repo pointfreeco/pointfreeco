@@ -54,18 +54,18 @@ public enum Gifts: Equatable {
 }
 
 let giftsRouter = OneOf {
-  Routing(/Gifts.index) {
+  Route(/Gifts.index) {
     Method.get
   }
 
-  Routing(/Gifts.confirmation) {
+  Route(/Gifts.confirmation) {
     Method.post
     Body {
       FormCoded(GiftFormData.self, decoder: formDecoder)
     }
   }
 
-  Routing(/Gifts.create) {
+  Route(/Gifts.create) {
     Method.post
     Body {
       JSON(
@@ -76,17 +76,17 @@ let giftsRouter = OneOf {
     }
   }
 
-  Routing(/Gifts.plan) {
+  Route(/Gifts.plan) {
     Method.get
     Path { Gifts.Plan.parser(rawValue: String.parser()) }
   }
 
-  Routing(/Gifts.redeemLanding) {
+  Route(/Gifts.redeemLanding) {
     Method.get
     Path { Gift.Id.parser(rawValue: UUID.parser()) }
   }
 
-  Routing(/Gifts.redeem) {
+  Route(/Gifts.redeem) {
     Method.post
     Path { Gift.Id.parser(rawValue: UUID.parser()) }
   }

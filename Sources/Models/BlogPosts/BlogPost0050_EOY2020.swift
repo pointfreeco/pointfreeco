@@ -54,7 +54,7 @@ We ended the year by announcing a brand new project: [isowords](https://www.isow
 
 # 🎉 2021 🎉
 
-We're thankful to all of our subscribers for supporting us and helping us create this content. To celebrate the end of the year we are also offering [25% off](todo) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
+We're thankful to all of our subscribers for supporting us and helping us create this content. To celebrate the end of the year we are also offering [25% off](/discounts/2020-is-over) the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
 
 See you in 2021!
 """#,

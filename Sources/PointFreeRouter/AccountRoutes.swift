@@ -40,11 +40,11 @@ public enum Account: Equatable {
 }
 
 let accountRouter = OneOf {
-  Routing(/Account.index) {
+  Route(/Account.index) {
     Method.get
   }
 
-  Routing(/Account.confirmEmailChange) {
+  Route(/Account.confirmEmailChange) {
     Method.get
     Path { "confirm-email-change" }
     Query {
@@ -52,30 +52,30 @@ let accountRouter = OneOf {
     }
   }
 
-  Routing(/Account.invoices) {
+  Route(/Account.invoices) {
     Path { "invoices" }
 
     OneOf {
-      Routing(/Account.Invoices.index) {
+      Route(/Account.Invoices.index) {
         Method.get
       }
 
-      Routing(/Account.Invoices.show) {
+      Route(/Account.Invoices.show) {
         Method.get
         Path { Invoice.Id.parser(rawValue: String.parser()) }
       }
     }
   }
 
-  Routing(/Account.paymentInfo) {
+  Route(/Account.paymentInfo) {
     Path { "payment-info" }
 
     OneOf {
-      Routing(/Account.PaymentInfo.show) {
+      Route(/Account.PaymentInfo.show) {
         Method.get
       }
 
-      Routing(/Account.PaymentInfo.update) {
+      Route(/Account.PaymentInfo.update) {
         Method.post
         Optionally {
           Body {
@@ -92,12 +92,12 @@ let accountRouter = OneOf {
     Path { "rss" }
 
     OneOf {
-      Routing(/Account.rss) {
+      Route(/Account.rss) {
         Method.get
         Path { User.RssSalt.parser(rawValue: String.parser()) }
       }
 
-      Routing(/Account.rssLegacy) {
+      Route(/Account.rssLegacy) {
         Method.get
         Path {
           String.parser()
@@ -107,24 +107,24 @@ let accountRouter = OneOf {
     }
   }
 
-  Routing(/Account.subscription) {
+  Route(/Account.subscription) {
     Path { "subscription" }
 
     OneOf {
-      Routing(/Account.Subscription.cancel) {
+      Route(/Account.Subscription.cancel) {
         Method.post
         Path { "cancel" }
       }
 
-      Routing(/Account.Subscription.change) {
+      Route(/Account.Subscription.change) {
         Path { "change" }
 
         OneOf {
-          Routing(/Account.Subscription.Change.show) {
+          Route(/Account.Subscription.Change.show) {
             Method.get
           }
 
-          Routing(/Account.Subscription.Change.update) {
+          Route(/Account.Subscription.Change.update) {
             Method.post
             Body {
               FormCoded(Pricing?.self, decoder: formDecoder)
@@ -133,14 +133,14 @@ let accountRouter = OneOf {
         }
       }
 
-      Routing(/Account.Subscription.reactivate) {
+      Route(/Account.Subscription.reactivate) {
         Method.post
         Path { "reactivate" }
       }
     }
   }
 
-  Routing(/Account.update) {
+  Route(/Account.update) {
     Method.post
     Body {
       FormCoded(ProfileData?.self, decoder: formDecoder)

@@ -13,7 +13,7 @@ import URLRouting
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
-public enum Route: Equatable {
+public enum AppRoute: Equatable {
   case about
   case account(Account)
   case admin(Admin)
@@ -122,11 +122,11 @@ private let blogSlugOrId = OneOf {
 }
 
 private let blogRouter = OneOf {
-  Routing(/Route.Blog.index) {
+  Route(/AppRoute.Blog.index) {
     Method.get
   }
 
-  Routing(/Route.Blog.feed) {
+  Route(/AppRoute.Blog.feed) {
     Method.get
     Path {
       "feed"
@@ -134,7 +134,7 @@ private let blogRouter = OneOf {
     }
   }
 
-  Routing(/Route.Blog.show) {
+  Route(/AppRoute.Blog.show) {
     Method.get
     Path {
       "posts"
@@ -150,17 +150,17 @@ private let episodeSlugOrId = OneOf {
 }
 
 private let collectionsRouter = OneOf {
-  Routing(/Route.Collections.index) {
+  Route(/AppRoute.Collections.index) {
     Method.get
   }
 
   OneOf {
-    Routing(/Route.Collections.show) {
+    Route(/AppRoute.Collections.show) {
       Method.get
       Path { Episode.Collection.Slug.parser(rawValue: String.parser()) }
     }
 
-    Routing(/Route.Collections.section) {
+    Route(/AppRoute.Collections.section) {
       Method.get
       Path {
         Episode.Collection.Slug.parser(rawValue: String.parser())
@@ -168,7 +168,7 @@ private let collectionsRouter = OneOf {
       }
     }
 
-    Routing(/Route.Collections.episode) {
+    Route(/AppRoute.Collections.episode) {
       Method.get
       Path {
         Episode.Collection.Slug.parser(rawValue: String.parser())
@@ -180,16 +180,16 @@ private let collectionsRouter = OneOf {
 }
 
 private let episodeRouter = OneOf {
-  Routing(/Route.EpisodeRoute.index) {
+  Route(/AppRoute.EpisodeRoute.index) {
     Method.get
   }
 
-  Routing(/Route.EpisodeRoute.show) {
+  Route(/AppRoute.EpisodeRoute.show) {
     Method.get
     Path { episodeSlugOrId }
   }
 
-  Routing(/Route.EpisodeRoute.progress) {
+  Route(/AppRoute.EpisodeRoute.progress) {
     Method.post
     Path {
       episodeSlugOrId
@@ -202,12 +202,12 @@ private let episodeRouter = OneOf {
 }
 
 private let enterpriseRouter = OneOf {
-  Routing(/Route.Enterprise.landing) {
+  Route(/AppRoute.Enterprise.landing) {
     Method.get
     Path { EnterpriseAccount.Domain.parser(rawValue: String.parser()) }
   }
 
-  Routing(/Route.Enterprise.requestInvite) {
+  Route(/AppRoute.Enterprise.requestInvite) {
     Method.post
     Path {
       EnterpriseAccount.Domain.parser(rawValue: String.parser())
@@ -218,7 +218,7 @@ private let enterpriseRouter = OneOf {
     }
   }
 
-  Routing(/Route.Enterprise.acceptInvite) {
+  Route(/AppRoute.Enterprise.acceptInvite) {
     Parse {
       Method.get
       Path {
@@ -240,19 +240,19 @@ private let enterpriseRouter = OneOf {
 }
 
 private let feedRouter = OneOf {
-  Routing(/Route.Feed.atom) {
+  Route(/AppRoute.Feed.atom) {
     Method.get
     Path { "atom.xml" }
   }
 
-  Routing(/Route.Feed.episodes) {
+  Route(/AppRoute.Feed.episodes) {
     Method.get
     Path { "episodes.xml" }
   }
 }
 
 private let inviteRouter = OneOf {
-  Routing(/Route.Invite.accept) {
+  Route(/AppRoute.Invite.accept) {
     Method.post
     Path {
       TeamInvite.Id.parser(rawValue: UUID.parser())
@@ -260,7 +260,7 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Routing(/Route.Invite.addTeammate) {
+  Route(/AppRoute.Invite.addTeammate) {
     Method.post
     Path { "add" }
     Body {
@@ -272,7 +272,7 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Routing(/Route.Invite.resend) {
+  Route(/AppRoute.Invite.resend) {
     Method.post
     Path {
       TeamInvite.Id.parser(rawValue: UUID.parser())
@@ -280,7 +280,7 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Routing(/Route.Invite.revoke) {
+  Route(/AppRoute.Invite.revoke) {
     Method.post
     Path {
       TeamInvite.Id.parser(rawValue: UUID.parser())
@@ -288,7 +288,7 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Routing(/Route.Invite.send) {
+  Route(/AppRoute.Invite.send) {
     Method.post
     Body {
       FormData {
@@ -299,14 +299,14 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Routing(/Route.Invite.show) {
+  Route(/AppRoute.Invite.show) {
     Method.get
     Path { TeamInvite.Id.parser(rawValue: UUID.parser()) }
   }
 }
 
 private let teamRouter = OneOf {
-  Routing(/Route.Team.join) {
+  Route(/AppRoute.Team.join) {
     Method.post
     Path {
       "team"
@@ -315,7 +315,7 @@ private let teamRouter = OneOf {
     }
   }
 
-  Routing(/Route.Team.joinLanding) {
+  Route(/AppRoute.Team.joinLanding) {
     Method.get
     Path {
       "team"
@@ -324,7 +324,7 @@ private let teamRouter = OneOf {
     }
   }
 
-  Routing(/Route.Team.leave) {
+  Route(/AppRoute.Team.leave) {
     Method.post
     Path {
       "account"
@@ -333,7 +333,7 @@ private let teamRouter = OneOf {
     }
   }
 
-  Routing(/Route.Team.remove) {
+  Route(/AppRoute.Team.remove) {
     Method.post
     Path {
       "account"
@@ -345,11 +345,11 @@ private let teamRouter = OneOf {
   }
 }
 
-private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
+private let webhooksRouter = Route(/AppRoute.Webhooks.stripe) {
   Path { "stripe" }
 
   OneOf {
-    Routing(/Route.Webhooks._Stripe.paymentIntents) {
+    Route(/AppRoute.Webhooks._Stripe.paymentIntents) {
       Method.post
       Body {
         JSON(
@@ -361,7 +361,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       }
     }
 
-    Routing(/Route.Webhooks._Stripe.subscriptions) {
+    Route(/AppRoute.Webhooks._Stripe.subscriptions) {
       Method.post
       Body {
         JSON(
@@ -373,7 +373,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       }
     }
 
-    Routing(/Route.Webhooks._Stripe.unknown) {
+    Route(/AppRoute.Webhooks._Stripe.unknown) {
       Method.post
       Body {
         JSON(
@@ -385,7 +385,7 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
       }
     }
 
-    Routing(/Route.Webhooks._Stripe.fatal) {
+    Route(/AppRoute.Webhooks._Stripe.fatal) {
       Method.post
     }
   }
@@ -393,31 +393,31 @@ private let webhooksRouter = Routing(/Route.Webhooks.stripe) {
 
 let router = OneOf {
   OneOf {
-    Routing(/Route.home) {
+    Route(/AppRoute.home) {
       Method.get
     }
 
-    Routing(/Route.about) {
+    Route(/AppRoute.about) {
       Method.get
       Path { "about" }
     }
 
-    Routing(/Route.account) {
+    Route(/AppRoute.account) {
       Path { "account" }
       accountRouter
     }
 
-    Routing(/Route.admin) {
+    Route(/AppRoute.admin) {
       Path { "admin" }
       adminRouter
     }
 
-    Routing(/Route.api) {
+    Route(/AppRoute.api) {
       Path { "api" }
       apiRouter
     }
 
-    Routing(/Route.appleDeveloperMerchantIdDomainAssociation) {
+    Route(/AppRoute.appleDeveloperMerchantIdDomainAssociation) {
       Method.get
       Path {
         ".well-known"
@@ -425,39 +425,39 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.blog) {
+    Route(/AppRoute.blog) {
       Path { "blog" }
       blogRouter
     }
 
-    Routing(/Route.collections) {
+    Route(/AppRoute.collections) {
       Path { "collections" }
       collectionsRouter
     }
 
-    Routing(/Route.episode) {
+    Route(/AppRoute.episode) {
       Path { "episodes" }
       episodeRouter
     }
   }
 
   OneOf {
-    Routing(/Route.enterprise) {
+    Route(/AppRoute.enterprise) {
       Path { "enterprise" }
       enterpriseRouter
     }
 
-    Routing(/Route.feed) {
+    Route(/AppRoute.feed) {
       Path { "feed" }
       feedRouter
     }
 
-    Routing(/Route.gifts) {
+    Route(/AppRoute.gifts) {
       Path { "gifts" }
       giftsRouter
     }
 
-    Routing(/Route.discounts) {
+    Route(/AppRoute.discounts) {
       Method.get
       Path {
         "discounts"
@@ -470,7 +470,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.endGhosting) {
+    Route(/AppRoute.endGhosting) {
       Method.post
       Path {
         "ghosting"
@@ -478,7 +478,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.expressUnsubscribe) {
+    Route(/AppRoute.expressUnsubscribe) {
       Method.get
       Path {
         "newsletters"
@@ -489,7 +489,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.expressUnsubscribeReply) {
+    Route(/AppRoute.expressUnsubscribeReply) {
       Method.post
       Path {
         "newsletters"
@@ -500,7 +500,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.gitHubCallback) {
+    Route(/AppRoute.gitHubCallback) {
       Method.get
       Path { "github-auth" }
       Query {
@@ -513,14 +513,14 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.invite) {
+    Route(/AppRoute.invite) {
       Path { "invites" }
       inviteRouter
     }
   }
 
   OneOf {
-    Routing(/Route.login) {
+    Route(/AppRoute.login) {
       Method.get
       Path { "login" }
       Query {
@@ -530,22 +530,22 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.logout) {
+    Route(/AppRoute.logout) {
       Method.get
       Path { "logout" }
     }
 
-    Routing(/Route.pricingLanding) {
+    Route(/AppRoute.pricingLanding) {
       Method.get
       Path { "pricing" }
     }
 
-    Routing(/Route.privacy) {
+    Route(/AppRoute.privacy) {
       Method.get
       Path { "privacy" }
     }
 
-    Routing(/Route.subscribe) {
+    Route(/AppRoute.subscribe) {
       Method.post
       Path { "subscribe" }
       Optionally {
@@ -593,7 +593,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.subscribeConfirmation) {
+    Route(/AppRoute.subscribeConfirmation) {
       Method.get
       Parse {
         Path {
@@ -633,9 +633,9 @@ let router = OneOf {
       )
     }
 
-    Routing(/Route.team) { teamRouter }
+    Route(/AppRoute.team) { teamRouter }
 
-    Routing(/Route.useEpisodeCredit) {
+    Route(/AppRoute.useEpisodeCredit) {
       Method.post
       Path {
         "episodes"
@@ -644,7 +644,7 @@ let router = OneOf {
       }
     }
 
-    Routing(/Route.webhooks) {
+    Route(/AppRoute.webhooks) {
       Path { "webhooks" }
       webhooksRouter
     }

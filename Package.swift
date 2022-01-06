@@ -124,6 +124,7 @@ var package = Package(
       name: "FunctionalCssTests",
       dependencies: [
         "FunctionalCss",
+        "PointFreeTestSupport",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
@@ -161,6 +162,7 @@ var package = Package(
       dependencies: [
         "GitHub",
         "GitHubTestSupport",
+        "PointFreeTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
@@ -217,6 +219,7 @@ var package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
+        "PointFreeTestSupport",
       ]
     ),
 
@@ -295,6 +298,7 @@ var package = Package(
       dependencies: [
         "Models",
         "PointFreeRouter",
+        "PointFreeTestSupport",
         .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
@@ -380,6 +384,7 @@ var package = Package(
     .testTarget(
       name: "StripeTests",
       dependencies: [
+        "PointFreeTestSupport",
         "Stripe",
         "StripeTestSupport",
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
@@ -403,6 +408,7 @@ var package = Package(
     .testTarget(
       name: "StyleguideTests",
       dependencies: [
+        "PointFreeTestSupport",
         "Styleguide",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),

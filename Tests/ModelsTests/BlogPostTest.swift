@@ -1,8 +1,9 @@
 import XCTest
 import Models
 import ModelsTestSupport
+import PointFreeTestSupport
 
-final class BlogPostTests: XCTestCase {
+final class BlogPostTests: TestCase {
 
   func testSlug() {
     var post = BlogPost.mock

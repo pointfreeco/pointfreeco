@@ -40,19 +40,19 @@ public enum Admin: Equatable {
 }
 
 let adminRouter = OneOf {
-  Routing(/Admin.index) {
+  Route(/Admin.index) {
     Method.get
   }
 
-  Routing(/Admin.episodeCredits) {
+  Route(/Admin.episodeCredits) {
     Path { "episode-credits" }
 
     OneOf {
-      Routing(/Admin.EpisodeCredit.show) {
+      Route(/Admin.EpisodeCredit.show) {
         Method.get
       }
 
-      Routing(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
+      Route(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
         Method.post
         Body {
           FormData {
@@ -64,15 +64,15 @@ let adminRouter = OneOf {
     }
   }
 
-  Routing(/Admin.freeEpisodeEmail) {
+  Route(/Admin.freeEpisodeEmail) {
     Path { "free-episode-email" }
 
     OneOf {
-      Routing(/Admin.FreeEpisodeEmail.index) {
+      Route(/Admin.FreeEpisodeEmail.index) {
         Method.get
       }
 
-      Routing(/Admin.FreeEpisodeEmail.send) {
+      Route(/Admin.FreeEpisodeEmail.send) {
         Method.get
         Path {
           Episode.Id.parser(rawValue: Int.parser())
@@ -82,15 +82,15 @@ let adminRouter = OneOf {
     }
   }
 
-  Routing(/Admin.ghost) {
+  Route(/Admin.ghost) {
     Path { "ghost" }
 
     OneOf {
-      Routing(/Admin.Ghost.index) {
+      Route(/Admin.Ghost.index) {
         Method.get
       }
 
-      Routing(/Admin.Ghost.start) {
+      Route(/Admin.Ghost.start) {
         Method.post
         Path { "start" }
         Body {
@@ -102,15 +102,15 @@ let adminRouter = OneOf {
     }
   }
 
-  Routing(/Admin.newBlogPostEmail) {
+  Route(/Admin.newBlogPostEmail) {
     Path { "new-blog-post-email" }
 
     OneOf {
-      Routing(/Admin.NewBlogPostEmail.index) {
+      Route(/Admin.NewBlogPostEmail.index) {
         Method.get
       }
 
-      Routing(/Admin.NewBlogPostEmail.send) {
+      Route(/Admin.NewBlogPostEmail.send) {
         Parse {
           Path {
             BlogPost.Id.parser(rawValue: Int.parser())
@@ -133,15 +133,15 @@ let adminRouter = OneOf {
     }
   }
 
-  Routing(/Admin.newEpisodeEmail) {
+  Route(/Admin.newEpisodeEmail) {
     Path { "new-episode-email" }
 
     OneOf {
-      Routing(/Admin.NewEpisodeEmail.show) {
+      Route(/Admin.NewEpisodeEmail.show) {
         Method.get
       }
 
-      Routing(/Admin.NewEpisodeEmail.send) {
+      Route(/Admin.NewEpisodeEmail.send) {
         Parse {
           Path {
             Episode.Id.parser(rawValue: Int.parser())

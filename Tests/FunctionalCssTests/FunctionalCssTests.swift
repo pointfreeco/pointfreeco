@@ -1,10 +1,11 @@
 import Css
 import CssTestSupport
 import FunctionalCss
+import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
 
-class FunctionalCssTests: XCTestCase {
+class FunctionalCssTests: TestCase {
   override func setUp() {
     super.setUp()
 //    SnapshotTesting.record = true

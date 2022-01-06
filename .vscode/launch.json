@@ -1,0 +1,51 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Runner",
+            "program": "${workspaceFolder}/.build/debug/Runner",
+            "args": [],
+            "cwd": "${workspaceFolder:pointfreeco}",
+            "preLaunchTask": "swift: Build Debug Runner"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release Runner",
+            "program": "${workspaceFolder}/.build/release/Runner",
+            "args": [],
+            "cwd": "${workspaceFolder:pointfreeco}",
+            "preLaunchTask": "swift: Build Release Runner"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Server",
+            "program": "${workspaceFolder}/.build/debug/Server",
+            "args": [],
+            "cwd": "${workspaceFolder:pointfreeco}",
+            "preLaunchTask": "swift: Build Debug Server"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release Server",
+            "program": "${workspaceFolder}/.build/release/Server",
+            "args": [],
+            "cwd": "${workspaceFolder:pointfreeco}",
+            "preLaunchTask": "swift: Build Release Server"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Test PointFree",
+            "program": "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+            "args": [
+                ".build/debug/PointFreePackageTests.xctest"
+            ],
+            "cwd": "${workspaceFolder:pointfreeco}",
+            "preLaunchTask": "swift: Build All"
+        }
+    ]
+}

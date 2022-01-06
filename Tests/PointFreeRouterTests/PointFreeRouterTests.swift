@@ -2,15 +2,16 @@ import CustomDump
 import Models
 import PointFreePrelude
 import PointFreeRouter
+import PointFreeTestSupport
 import SnapshotTesting
 import UrlFormEncoding
 import XCTest
 
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+  import FoundationNetworking
 #endif
 
-class PointFreeRouterTests: XCTestCase {
+class PointFreeRouterTests: TestCase {
   func testUpdateProfile() {
     let profileData = ProfileData(
       email: "blobby@blob.co",

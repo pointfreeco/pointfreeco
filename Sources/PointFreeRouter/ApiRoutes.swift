@@ -4,7 +4,7 @@ import Prelude
 import Models
 import URLRouting
 
-extension Route {
+extension AppRoute {
   public enum Api: Equatable {
     case episodes
     case episode(Episode.Id)
@@ -15,12 +15,9 @@ let apiRouter = Parse {
   Path { "episodes" }
 
   OneOf {
-    Routing(/Route.Api.episodes) {
-      Method.get
-    }
+    Route(/AppRoute.Api.episodes)
     
-    Routing(/Route.Api.episode) {
-      Method.get
+    Route(/AppRoute.Api.episode) {
       Path { Episode.Id.parser(rawValue: Int.parser()) }
     }
   }
