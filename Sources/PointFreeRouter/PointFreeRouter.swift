@@ -14,7 +14,7 @@ public struct PointFreeRouter {
     self.baseUrl = baseUrl
   }
 
-  public func path(to route: Route) -> String {
+  public func path(to route: AppRoute) -> String {
     guard let path = router.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
     else {
       assertionFailure("Failed to print \(route)")
@@ -23,11 +23,11 @@ public struct PointFreeRouter {
     return "/\(path)"
   }
 
-  public func url(to route: Route) -> String {
+  public func url(to route: AppRoute) -> String {
     self.request(for: route)?.url?.absoluteString ?? ""
   }
 
-  public func request(for route: Route) -> URLRequest? {
+  public func request(for route: AppRoute) -> URLRequest? {
     guard
       var request = router.print(route).flatMap(URLRequest.init(data:)),
       let path = request.url?.absoluteString,
@@ -40,7 +40,7 @@ public struct PointFreeRouter {
     return request
   }
 
-  public func match(request: URLRequest) -> Route? {
+  public func match(request: URLRequest) -> AppRoute? {
     guard var data = URLRequestData(request: request)
     else { return nil }
     return router.parse(&data)
@@ -49,10 +49,10 @@ public struct PointFreeRouter {
 
 public var pointFreeRouter = PointFreeRouter()
 
-public func path(to route: Route) -> String {
+public func path(to route: AppRoute) -> String {
   return pointFreeRouter.path(to: route)
 }
 
-public func url(to route: Route) -> String {
+public func url(to route: AppRoute) -> String {
   return pointFreeRouter.url(to: route)
 }

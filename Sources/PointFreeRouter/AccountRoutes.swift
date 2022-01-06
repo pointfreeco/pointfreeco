@@ -40,12 +40,9 @@ public enum Account: Equatable {
 }
 
 let accountRouter = OneOf {
-  Route(/Account.index) {
-    Method.get
-  }
+  Route(/Account.index)
 
   Route(/Account.confirmEmailChange) {
-    Method.get
     Path { "confirm-email-change" }
     Query {
       Field("payload", Encrypted.parser(rawValue: String.parser()))
@@ -56,12 +53,9 @@ let accountRouter = OneOf {
     Path { "invoices" }
 
     OneOf {
-      Route(/Account.Invoices.index) {
-        Method.get
-      }
+      Route(/Account.Invoices.index)
 
       Route(/Account.Invoices.show) {
-        Method.get
         Path { Invoice.Id.parser(rawValue: String.parser()) }
       }
     }
@@ -71,9 +65,7 @@ let accountRouter = OneOf {
     Path { "payment-info" }
 
     OneOf {
-      Route(/Account.PaymentInfo.show) {
-        Method.get
-      }
+      Route(/Account.PaymentInfo.show)
 
       Route(/Account.PaymentInfo.update) {
         Method.post
@@ -93,12 +85,10 @@ let accountRouter = OneOf {
 
     OneOf {
       Route(/Account.rss) {
-        Method.get
         Path { User.RssSalt.parser(rawValue: String.parser()) }
       }
 
       Route(/Account.rssLegacy) {
-        Method.get
         Path {
           String.parser()
           String.parser()
@@ -120,9 +110,7 @@ let accountRouter = OneOf {
         Path { "change" }
 
         OneOf {
-          Route(/Account.Subscription.Change.show) {
-            Method.get
-          }
+          Route(/Account.Subscription.Change.show)
 
           Route(/Account.Subscription.Change.update) {
             Method.post

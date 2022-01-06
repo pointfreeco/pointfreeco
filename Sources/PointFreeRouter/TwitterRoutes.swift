@@ -14,9 +14,8 @@ public enum TwitterRoute: String {
   case stephencelis
 }
 
-private let twitterRouter = Parse {
-  Method.get
-  Path { TwitterRoute.parser(rawValue: String.parser()) }
+private let twitterRouter = Path {
+  TwitterRoute.parser(rawValue: String.parser())
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {

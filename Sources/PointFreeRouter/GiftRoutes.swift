@@ -54,9 +54,7 @@ public enum Gifts: Equatable {
 }
 
 let giftsRouter = OneOf {
-  Route(/Gifts.index) {
-    Method.get
-  }
+  Route(/Gifts.index)
 
   Route(/Gifts.confirmation) {
     Method.post
@@ -77,12 +75,10 @@ let giftsRouter = OneOf {
   }
 
   Route(/Gifts.plan) {
-    Method.get
     Path { Gifts.Plan.parser(rawValue: String.parser()) }
   }
 
   Route(/Gifts.redeemLanding) {
-    Method.get
     Path { Gift.Id.parser(rawValue: UUID.parser()) }
   }
 

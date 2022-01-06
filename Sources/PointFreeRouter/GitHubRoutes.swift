@@ -33,7 +33,6 @@ public enum GitHubRoute {
 
 private let gitHubRouter = OneOf {
   Route(/GitHubRoute.authorize) {
-    Method.get
     Path {
       "login"
       "oauth"
@@ -52,12 +51,9 @@ private let gitHubRouter = OneOf {
     Path { "pointfreeco" }
 
     OneOf {
-      Route(/GitHubRoute.organization) {
-        Method.get
-      }
+      Route(/GitHubRoute.organization)
 
       Route(/GitHubRoute.episodeCodeSample) {
-        Method.get
         Path {
           "episode-code-samples"
           "tree"
@@ -67,7 +63,6 @@ private let gitHubRouter = OneOf {
       }
 
       Route(/GitHubRoute.license) {
-        Method.get
         Path {
           "pointfreeco"
           "blob"
@@ -77,7 +72,6 @@ private let gitHubRouter = OneOf {
       }
 
       Route(/GitHubRoute.repo) {
-        Method.get
         Path { GitHubRoute.Repo.parser(rawValue: String.parser()) }
       }
     }

@@ -393,12 +393,9 @@ private let webhooksRouter = Route(/AppRoute.Webhooks.stripe) {
 
 let router = OneOf {
   OneOf {
-    Route(/AppRoute.home) {
-      Method.get
-    }
+    Route(/AppRoute.home)
 
     Route(/AppRoute.about) {
-      Method.get
       Path { "about" }
     }
 
@@ -418,7 +415,6 @@ let router = OneOf {
     }
 
     Route(/AppRoute.appleDeveloperMerchantIdDomainAssociation) {
-      Method.get
       Path {
         ".well-known"
         "apple-developer-merchantid-domain-association"
@@ -458,7 +454,6 @@ let router = OneOf {
     }
 
     Route(/AppRoute.discounts) {
-      Method.get
       Path {
         "discounts"
         Stripe.Coupon.Id.parser(rawValue: String.parser())
@@ -479,7 +474,6 @@ let router = OneOf {
     }
 
     Route(/AppRoute.expressUnsubscribe) {
-      Method.get
       Path {
         "newsletters"
         "express-unsubscribe"
@@ -501,7 +495,6 @@ let router = OneOf {
     }
 
     Route(/AppRoute.gitHubCallback) {
-      Method.get
       Path { "github-auth" }
       Query {
         Optionally {
@@ -521,7 +514,6 @@ let router = OneOf {
 
   OneOf {
     Route(/AppRoute.login) {
-      Method.get
       Path { "login" }
       Query {
         Optionally {
@@ -531,17 +523,14 @@ let router = OneOf {
     }
 
     Route(/AppRoute.logout) {
-      Method.get
       Path { "logout" }
     }
 
     Route(/AppRoute.pricingLanding) {
-      Method.get
       Path { "pricing" }
     }
 
     Route(/AppRoute.privacy) {
-      Method.get
       Path { "privacy" }
     }
 
@@ -594,7 +583,6 @@ let router = OneOf {
     }
 
     Route(/AppRoute.subscribeConfirmation) {
-      Method.get
       Parse {
         Path {
           "subscribe"

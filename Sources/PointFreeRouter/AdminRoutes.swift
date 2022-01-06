@@ -40,17 +40,13 @@ public enum Admin: Equatable {
 }
 
 let adminRouter = OneOf {
-  Route(/Admin.index) {
-    Method.get
-  }
+  Route(/Admin.index)
 
   Route(/Admin.episodeCredits) {
     Path { "episode-credits" }
 
     OneOf {
-      Route(/Admin.EpisodeCredit.show) {
-        Method.get
-      }
+      Route(/Admin.EpisodeCredit.show)
 
       Route(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
         Method.post
@@ -68,12 +64,9 @@ let adminRouter = OneOf {
     Path { "free-episode-email" }
 
     OneOf {
-      Route(/Admin.FreeEpisodeEmail.index) {
-        Method.get
-      }
+      Route(/Admin.FreeEpisodeEmail.index)
 
       Route(/Admin.FreeEpisodeEmail.send) {
-        Method.get
         Path {
           Episode.Id.parser(rawValue: Int.parser())
           "send"
@@ -86,9 +79,7 @@ let adminRouter = OneOf {
     Path { "ghost" }
 
     OneOf {
-      Route(/Admin.Ghost.index) {
-        Method.get
-      }
+      Route(/Admin.Ghost.index)
 
       Route(/Admin.Ghost.start) {
         Method.post
@@ -106,9 +97,7 @@ let adminRouter = OneOf {
     Path { "new-blog-post-email" }
 
     OneOf {
-      Route(/Admin.NewBlogPostEmail.index) {
-        Method.get
-      }
+      Route(/Admin.NewBlogPostEmail.index)
 
       Route(/Admin.NewBlogPostEmail.send) {
         Parse {
@@ -137,9 +126,7 @@ let adminRouter = OneOf {
     Path { "new-episode-email" }
 
     OneOf {
-      Route(/Admin.NewEpisodeEmail.show) {
-        Method.get
-      }
+      Route(/Admin.NewEpisodeEmail.show)
 
       Route(/Admin.NewEpisodeEmail.send) {
         Parse {
