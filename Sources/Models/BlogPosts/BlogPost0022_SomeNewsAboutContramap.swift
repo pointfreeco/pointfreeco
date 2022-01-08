@@ -236,7 +236,7 @@ import Overture
 struct User { let id: Int, name: String }
 
 let int = Equating<Int> { $0 == $1 }
-let user = int.contramap(get(\\User.id))
+let user = int.pullback(get(\\User.id))
 """,
       timestamp: nil,
       type: .code(lang: .swift)
