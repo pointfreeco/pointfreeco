@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep173_parserBuilders = Episode(
     blurb: """
-Let’s revisit a favorite topic: parsing! After a short recap, we will theorize and motivate the addition of result builder syntax to our parsing library.
+Let’s revisit a favorite topic: parsing! After a short recap, we will theorize and motivate the addition of result builder syntax to our parsing library, which will help unlock a new level of ergonomics and API design.
 """,
     codeSampleDirectory: "0173-parser-builders-pt1",
     exercises: _exercises,
