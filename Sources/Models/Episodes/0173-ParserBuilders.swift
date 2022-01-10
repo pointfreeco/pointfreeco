@@ -12,7 +12,21 @@ Let’s revisit a favorite topic: parsing! After a short recap, we will theorize
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1641794400),
     references: [
+      reference(
+        forCollection: .parsing,
+        additionalBlurb: "",
+        collectionUrl: "https://www.pointfree.co/collections/parsing"
+      ),
       .swiftParsing,
+      .init(
+        author: "Alex Alonso, Nate Cook, Michael Ilseman, Kyle Macomber, Becca Royal-Gordon, Tim Vermeulen, and Richard Wei",
+        blurb: #"""
+The Swift core team's proposal and experimental repository for declarative string processing, which includes result builder syntax for creating regular expressions, and inspired us to explore result builders for parsing.
+"""#,
+        link: "https://github.com/apple/swift-experimental-string-processing",
+        publishedAt: referenceDateFormatter.date(from: "2021-09-29"),
+        title: "Declarative String Processing"
+      ),
       .manyFacesOfMap,
     ],
     sequence: 173,
