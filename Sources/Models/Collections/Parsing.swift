@@ -164,8 +164,24 @@ Parsing is just one of many problems functional programming solves by defining a
             ),
           ],
           title: "Performance",
+          whereToGoFromHere: #"""
+We can further improve the ergonomics of parsing with a relatively new feature of Swift: result builders.
+"""#
+        ),
+
+        .init(
+          blurb: #"""
+Result builders are a powerful feature of Swift that enable DSLs like SwiftUI using familiar syntax. We will explore what result builders have to say about parsing by getting an understanding of how they work before implementing a result builder layer over our parsing library.
+"""#,
+          coreLessons: [
+            .init(episode: .ep173_parserBuilders),
+          ],
+          isFinished: false,
+          related: [],
+          title: "Builders",
           whereToGoFromHere: nil
-        )
+        ),
+
       ],
       title: "Parsing"
     )
