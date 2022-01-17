@@ -38,7 +38,11 @@ The Swift core team's proposal and experimental repository for declarative strin
     trailerVideo: .init(
       bytesLength: 76162127,
       vimeoId: 663713620,
-      vimeoSecret: "b13b0a43d23a8a73e7f34d814c51f5b10e7f4ed7"
+      vimeoStyle: .new(
+        filename: "0174-trailer.m4v",
+        signature720: "29bee845bfd7f3c91672d61c296f1847b28005aefa748edd0fdcc787180c161f",
+        signature540: "2497b85a2ddba0edc781d71cea5f82cf0dddf46058e6764da3e3225cd2128fc0",
+      )
     )
   )
 }
