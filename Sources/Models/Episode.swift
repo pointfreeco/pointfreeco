@@ -383,7 +383,7 @@ public struct Episode: Equatable {
         return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/540p/\(filename)%20%28540p%29.mp4?loc=external&signature=\(signature)"
       }
     }
-
+    
     public var streamingSource: String {
       "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
     }
