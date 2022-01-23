@@ -175,6 +175,7 @@ Result builders are a powerful feature of Swift that enable DSLs like SwiftUI us
 """#,
           coreLessons: [
             .init(episode: .ep173_parserBuilders),
+            .init(episode: .ep174_parserBuilders),
           ],
           isFinished: false,
           related: [],
