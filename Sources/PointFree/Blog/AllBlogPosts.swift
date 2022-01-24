@@ -81,4 +81,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0068_YIR2021,
   post0069_2021EOYSale,
   post0070_UnobtrusiveRuntimeWarnings,
+  post0071_ParserBuilders,
 ]
