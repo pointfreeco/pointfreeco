@@ -178,7 +178,6 @@ Result builders are a powerful feature of Swift that enable DSLs like SwiftUI us
             .init(episode: .ep174_parserBuilders),
             .init(episode: .ep175_parserBuilders),
           ],
-          isFinished: false,
           related: [],
           title: "Builders",
           whereToGoFromHere: nil
