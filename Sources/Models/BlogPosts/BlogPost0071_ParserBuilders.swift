@@ -273,8 +273,8 @@ We think this release of [swift-parsing](https://github.com/pointfreeco/swift-pa
       type: .paragraph
     )
   ],
-  coverImage: nil, // TODO
-  id: 71, // TODO
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0071-parser-builders/poster.png",
+  id: 71,
   publishedAt: Date(timeIntervalSince1970: 1643004000),
   title: "Introducing Parser Builders"
 )
