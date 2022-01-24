@@ -210,7 +210,7 @@ let router = OneOf {
 }
 ```
 
-Nopw all routes are on the same indentation level, and it is easier to focus on each route.
+Now all routes are on the same indentation level, and it is easier to focus on each route.
 
 But, there is still repeated noise since every single parser must specify `Method("GET")` and something called `PathEnd()`. The `Method` parser simply verifies that the incoming request has the correct HTTP method so that you don’t try something silly like fetching data when actually data is being posted to the server.
 
