@@ -8,7 +8,7 @@ Today we are releasing 0.5.0 of our swift-parsing library, which leverages resul
   contentBlocks: [
     .init(
       content: #"""
-We are excited to release [0.5.0](https://github.com/pointfreeco/swift-parsing/releases/tag/0.5.0) of [swift-parsing](https://github.com/pointfreeco/swift-parsing), our library for turning nebulous data into well-structured data, with a focus on composition, performance, and generality. This release brings a new level of ergonomics to the library by using Swift’s `@resultBuilder` machinery, allowing you to express complex parsers with a minimal amount of syntactic noise.
+We are excited to release [0.5.0](https://github.com/pointfreeco/swift-parsing/releases/tag/0.5.0) of [swift-parsing](https://swiftpackageindex.com/pointfreeco/swift-parsing), our library for turning nebulous data into well-structured data, with a focus on composition, performance, and generality. This release brings a new level of ergonomics to the library by using Swift’s `@resultBuilder` machinery, allowing you to express complex parsers with a minimal amount of syntactic noise.
 
 ## Parsing before today
 
