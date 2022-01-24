@@ -1,9 +1,9 @@
 import Foundation
 
 public let post0071_ParserBuilders = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
-TODO
+Today we are releasing 0.5.0 of our swift-parsing library, which leverages result builders for creating complex parsers with a minimal amount of syntactic noise. Learn how in this week's blog post, and give the library a spin today!
 """,
   contentBlocks: [
     .init(
