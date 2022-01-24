@@ -212,7 +212,7 @@ let router = OneOf {
 
 Nopw all routes are on the same indentation level, and it is easier to focus on each route.
 
-But, there is still repeated noise since every single parser must specify `Method(``"``GET``"``)` and something called `PathEnd()`. The `Method` parser simply verifies that the incoming request has the correct HTTP method so that you don’t try something silly like fetching data when actually data is being posted to the server.
+But, there is still repeated noise since every single parser must specify `Method("GET")` and something called `PathEnd()`. The `Method` parser simply verifies that the incoming request has the correct HTTP method so that you don’t try something silly like fetching data when actually data is being posted to the server.
 
 The `PathEnd` is also important, but subtler. It verifies that there is no more left to parse from the path of the URL. Without this parser an incoming request such as:
 
@@ -229,7 +229,7 @@ Parse {
 }
 ```
 
-Even though clearly the incoming request is trying to access a deeper piece of content, the comments for a particular episode.
+Even though clearly the incoming request is trying to access a deeper piece of content: the comments for a particular episode.
 
 It is possible to cook up a domain-specific parser, just for routing URL requests, that bakes in the path end logic, and even defaults to a `GET` method if no method is specified. Using such a custom parser we can massively clean up the router:
 
@@ -265,10 +265,9 @@ let router = OneOf {
 
 30 lines of router code has become 22 lines and everything is much easier to read.
 
-Try it today
+## Try it today
 
 We think this release of [swift-parsing](https://github.com/pointfreeco/swift-parsing) will make constructing parsers easier than ever, and hope you consider it for your parsing needs!
-
 """#,
       timestamp: nil,
       type: .paragraph
