@@ -15,11 +15,11 @@ We are excited to release [0.5.0](https://github.com/pointfreeco/swift-parsing/r
 Up to today, the parsing library leveraged a method-chaining, fluent style of parsing by using `.take` and `.skip` operators for running one parser after another and choosing whether you want to keep a parser’s output or discard it. For example, suppose we wanted to parse a string of data representing users:
 
 ```swift
-let input = """
+var input = """
   1,Blob,true
   2,Blob Jr.,false
   3,Blob Sr.,true
-  """
+  """[...]
 ```
 
 And we wanted to parse that data into a more structured Swift data type, such as an array of user structs:
