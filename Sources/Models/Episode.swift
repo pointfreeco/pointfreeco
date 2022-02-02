@@ -367,15 +367,23 @@ public struct Episode: Equatable {
       }
     }
   }
-  
+
   public struct Video: Codable, Equatable {
     public var bytesLength: Int
     public var vimeoId: Int
-    public var vimeoSecret: String
+    public var vimeoStyle: Style
 
     public func downloadUrl(_ quality: Quality) -> String {
-      "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(self.vimeoSecret)&profile_id=\(quality.rawValue)&download=1"
+      switch (self.vimeoStyle, quality) {
+      case let (.old(secret), _):
+        return "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(secret)&profile_id=\(quality.rawValue)&download=1"
+      case let (.new(filename, signature, _), .hd720):
+        return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/720p/\(filename)%20%28720p%29.mp4?loc=external&signature=\(signature)"
+      case let (.new(filename, _, signature), .sd540):
+        return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/540p/\(filename)%20%28540p%29.mp4?loc=external&signature=\(signature)"
+      }
     }
+    
     public var streamingSource: String {
       "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
     }
@@ -387,14 +395,27 @@ public struct Episode: Equatable {
     ) {
       self.bytesLength = bytesLength
       self.vimeoId = vimeoId
-      self.vimeoSecret = vimeoSecret
+      self.vimeoStyle = .old(secret: vimeoSecret)
+    }
+
+    public init(
+      bytesLength: Int,
+      vimeoId: Int,
+      vimeoStyle: Style
+    ) {
+      self.bytesLength = bytesLength
+      self.vimeoId = vimeoId
+      self.vimeoStyle = vimeoStyle
+    }
+
+    public enum Style: Codable, Equatable {
+      case old(secret: String)
+      case new(filename: String, signature720: String, signature540: String)
     }
 
     public enum Quality: Int {
-      case hd1080 = 175
       case hd720 = 174
       case sd540 = 165
-      case sd360 = 164
     }
   }
 }
