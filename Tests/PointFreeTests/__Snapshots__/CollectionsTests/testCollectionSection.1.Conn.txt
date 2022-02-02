@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62607
+Content-Length: 62645
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -384,6 +384,10 @@ a:link.btn-normal {
   -moz-transform    : scaleX(-1);
   -o-transform      : scaleX(-1);
   -ms-transform     : scaleX(-1);
+}
+
+.token.atrule {
+  color : #d73a49;
 }
 
 .token.builtin {
