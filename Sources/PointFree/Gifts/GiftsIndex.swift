@@ -11,7 +11,7 @@ import Views
 public let giftsIndexMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple3<User?, Route, SubscriberState>,
+  Tuple3<User?, AppRoute, SubscriberState>,
   Data
 >
 = writeStatus(.ok)

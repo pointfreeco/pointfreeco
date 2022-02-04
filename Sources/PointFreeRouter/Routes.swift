@@ -123,12 +123,9 @@ private let blogSlugOrId = OneOf {
 }
 
 private let blogRouter = OneOf {
-  Route(/AppRoute.Blog.index) {
-    Method.get
-  }
+  Route(/AppRoute.Blog.index)
 
   Route(/AppRoute.Blog.feed) {
-    Method.get
     Path {
       "feed"
       "atom.xml"
@@ -136,7 +133,6 @@ private let blogRouter = OneOf {
   }
 
   Route(/AppRoute.Blog.show) {
-    Method.get
     Path {
       "posts"
       blogSlugOrId
@@ -152,18 +148,14 @@ private let episodeSlugOrId = OneOf {
 }
 
 private let collectionsRouter = OneOf {
-  Route(/AppRoute.Collections.index) {
-    Method.get
-  }
+  Route(/AppRoute.Collections.index)
 
   OneOf {
     Route(/AppRoute.Collections.show) {
-      Method.get
       Path { Parse(.string.rawValue(of: Episode.Collection.Slug.self)) }
     }
 
     Route(/AppRoute.Collections.section) {
-      Method.get
       Path {
         Parse(.string.rawValue(of: Episode.Collection.Slug.self))
         Parse(.string.rawValue(of: Episode.Collection.Section.Slug.self))
@@ -171,7 +163,6 @@ private let collectionsRouter = OneOf {
     }
 
     Route(/AppRoute.Collections.episode) {
-      Method.get
       Path {
         Parse(.string.rawValue(of: Episode.Collection.Slug.self))
         Parse(.string.rawValue(of: Episode.Collection.Section.Slug.self))
@@ -182,12 +173,9 @@ private let collectionsRouter = OneOf {
 }
 
 private let episodeRouter = OneOf {
-  Route(/AppRoute.EpisodeRoute.index) {
-    Method.get
-  }
+  Route(/AppRoute.EpisodeRoute.index)
 
   Route(/AppRoute.EpisodeRoute.show) {
-    Method.get
     Path { episodeSlugOrId }
   }
 
@@ -205,7 +193,6 @@ private let episodeRouter = OneOf {
 
 private let enterpriseRouter = OneOf {
   Route(/AppRoute.Enterprise.landing) {
-    Method.get
     Path { Parse(.string.rawValue(of: EnterpriseAccount.Domain.self)) }
   }
 
@@ -222,7 +209,6 @@ private let enterpriseRouter = OneOf {
 
   Route(/AppRoute.Enterprise.acceptInvite) {
     Parse {
-      Method.get
       Path {
         Parse(.string.rawValue(of: EnterpriseAccount.Domain.self))
         "accept"
@@ -243,12 +229,10 @@ private let enterpriseRouter = OneOf {
 
 private let feedRouter = OneOf {
   Route(/AppRoute.Feed.atom) {
-    Method.get
     Path { "atom.xml" }
   }
 
   Route(/AppRoute.Feed.episodes) {
-    Method.get
     Path { "episodes.xml" }
   }
 }
@@ -302,7 +286,6 @@ private let inviteRouter = OneOf {
   }
 
   Route(/AppRoute.Invite.show) {
-    Method.get
     Path { UUID.parser().map(.rawValue(of: TeamInvite.Id.self)) }
   }
 }
@@ -318,7 +301,6 @@ private let teamRouter = OneOf {
   }
 
   Route(/AppRoute.Team.joinLanding) {
-    Method.get
     Path {
       "team"
       Parse(.string.rawValue(of: Subscription.TeamInviteCode.self))

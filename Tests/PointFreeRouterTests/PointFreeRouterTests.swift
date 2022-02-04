@@ -19,7 +19,7 @@ class PointFreeRouterTests: TestCase {
       emailSettings: [:],
       name: "Blobby McBlob"
     )
-    let route = Route.account(.update(profileData))
+    let route = AppRoute.account(.update(profileData))
 
     guard let request = pointFreeRouter.request(for: route) else {
       XCTFail("")
@@ -41,7 +41,7 @@ class PointFreeRouterTests: TestCase {
       token: "deadbeef",
       useRegionalDiscount: true
     )
-    let route = Route.subscribe(subscribeData)
+    let route = AppRoute.subscribe(subscribeData)
     let request = pointFreeRouter.request(for: route)!
 
     _assertInlineSnapshot(matching: request, as: .raw, with: """
@@ -56,14 +56,14 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testEpisodeShowRoute() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 
-    let route = Route.episode(.show(.left("ep10-hello-world")))
+    let route = AppRoute.episode(.show(.left("ep10-hello-world")))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),
       route
     )
 
-    XCTAssertEqual(
+    XCTAssertNoDifference(
       pointFreeRouter.request(for: route),
       request
     )
@@ -75,7 +75,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     )
     request.httpMethod = "POST"
 
-    let route = Route.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
+    let route = AppRoute.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),
@@ -93,7 +93,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
       url: URL(string: "http://localhost:8080/team/deadbeef/join")!
     )
 
-    let route = Route.team(.joinLanding("deadbeef"))
+    let route = AppRoute.team(.joinLanding("deadbeef"))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),
@@ -110,7 +110,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     var request = URLRequest(url: .init(string: "http://localhost:8080/team/deadbeef/join")!)
     request.httpMethod = "POST"
 
-    let route = Route.team(.join("deadbeef"))
+    let route = AppRoute.team(.join("deadbeef"))
 
     XCTAssertEqual(
       pointFreeRouter.match(request: request),
@@ -126,7 +126,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testGiftsIndex() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
 
-    let route = Route.gifts(.index)
+    let route = AppRoute.gifts(.index)
 
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
@@ -135,7 +135,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testGiftsPlan() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
 
-    let route = Route.gifts(.plan(.threeMonths))
+    let route = AppRoute.gifts(.plan(.threeMonths))
 
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
@@ -144,7 +144,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testGiftsRedeemLanding() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
 
-    let route = Route.gifts(.redeemLanding(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = AppRoute.gifts(.redeemLanding(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
@@ -154,7 +154,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
     request.httpMethod = "POST"
 
-    let route = Route.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = AppRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
     XCTAssertEqual(pointFreeRouter.match(request: request), route)
     XCTAssertEqual(pointFreeRouter.request(for: route), request)
@@ -167,7 +167,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
       fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
       """.utf8)
 
-    let route = Route.gifts(.confirmation(update(.empty) {
+    let route = AppRoute.gifts(.confirmation(update(.empty) {
       $0.fromEmail = "blob@pointfree.co"
       $0.fromName = "Blob"
       $0.message = "HBD!"

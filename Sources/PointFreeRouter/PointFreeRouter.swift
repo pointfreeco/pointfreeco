@@ -28,22 +28,33 @@ public struct PointFreeRouter {
   }
 
   public func request(for route: AppRoute) -> URLRequest? {
-    guard
-      var request = (try? router.print(route)).flatMap(URLRequest.init(data:)),
-      let path = request.url?.absoluteString,
-      let url = URL(string: "\(self.baseUrl.absoluteString)/\(path)")
-    else {
-      assertionFailure("Failed to print \(route)")
+    do {
+      let data = try router.print(route)
+      guard
+        var request = URLRequest(data: data),
+        let path = request.url?.absoluteString,
+        let url = URL(string: "\(self.baseUrl.absoluteString)/\(path)")
+      else {
+        assertionFailure("failed to print \(route)")
+        return nil
+      }
+      request.url = url
+      return request
+    } catch {
+      assertionFailure("failed to print \(route): \(error)")
       return nil
     }
-    request.url = url
-    return request
   }
 
   public func match(request: URLRequest) -> AppRoute? {
     guard var data = URLRequestData(request: request)
     else { return nil }
-    return try? router.parse(&data)
+    do {
+      return try router.parse(&data)
+    } catch {
+      assertionFailure("failed to match route for request: \(request)")
+      return nil
+    }
   }
 }
 

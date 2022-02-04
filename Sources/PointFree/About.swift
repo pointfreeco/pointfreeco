@@ -7,7 +7,7 @@ import Prelude
 import Tuple
 import Views
 
-let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
+let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, AppRoute?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(

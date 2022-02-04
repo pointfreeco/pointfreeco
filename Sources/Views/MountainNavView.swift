@@ -14,7 +14,7 @@ public func mountainNavView(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: AppRoute?
 ) -> Node {
 
   return [
@@ -80,7 +80,7 @@ private func menuAndLogoHeaderView(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: AppRoute?
 ) -> Node {
   return .gridRow(
     attributes: [
@@ -143,7 +143,7 @@ private func headerLinks(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: AppRoute?
 ) -> Node {
   return [
     .a(

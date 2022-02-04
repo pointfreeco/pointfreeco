@@ -408,7 +408,7 @@ private func pricingPlanCta(
             : path(
               to: plan.lane
                 .map {
-                  let route = Route.subscribeConfirmation(
+                  let route = AppRoute.subscribeConfirmation(
                     lane: $0,
                     billing: nil,
                     isOwnerTakingSeat: nil,

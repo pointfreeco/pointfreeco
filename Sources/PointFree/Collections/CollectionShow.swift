@@ -7,7 +7,7 @@ import Tuple
 import Views
 
 let collectionMiddleware
-  : M<Tuple4<User?, SubscriberState, Route, Episode.Collection.Slug>>
+  : M<Tuple4<User?, SubscriberState, AppRoute, Episode.Collection.Slug>>
   = fetchCollectionMiddleware
     <| map(lower)
     >>> { conn in
@@ -38,8 +38,8 @@ let collectionMiddleware
 
 private let fetchCollectionMiddleware
   : MT<
-  Tuple4<User?, SubscriberState, Route, Episode.Collection.Slug>,
-  Tuple4<User?, SubscriberState, Route, Episode.Collection>
+  Tuple4<User?, SubscriberState, AppRoute, Episode.Collection.Slug>,
+  Tuple4<User?, SubscriberState, AppRoute, Episode.Collection>
   >
   = filterMap(
     over4(fetchCollection >>> pure) >>> sequence4 >>> map(require4),

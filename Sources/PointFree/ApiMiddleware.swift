@@ -70,7 +70,7 @@ extension Api {
 }
 
 func apiMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<User?, Route.Api>>
+  _ conn: Conn<StatusLineOpen, Tuple2<User?, AppRoute.Api>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (_ /* user */, route) = lower(conn.data)

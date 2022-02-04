@@ -23,7 +23,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func router<A>(
   notFound: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data> = notFound(respond(text: "Not Found"))
   )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, Route, Data>)
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, AppRoute, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { middleware in
@@ -36,7 +36,7 @@ private func router<A>(
     }
 }
 
-private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, AppRoute>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
@@ -267,7 +267,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 }
 
 public func redirect<A>(
-  with route: @escaping (A) -> Route,
+  with route: @escaping (A) -> AppRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
   )
   ->
@@ -281,7 +281,7 @@ public func redirect<A>(
 }
 
 public func redirect<A>(
-  to route: Route,
+  to route: AppRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
   )
   ->

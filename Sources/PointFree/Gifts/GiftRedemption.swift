@@ -11,7 +11,7 @@ import Tuple
 import Views
 
 let giftRedemptionLandingMiddleware
-: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, Route>, Data>
+: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, AppRoute>, Data>
 = fetchAndValidateGiftAndDiscount
 <| writeStatus(.ok)
 >=> map(lower)

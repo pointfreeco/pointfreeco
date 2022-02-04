@@ -17,7 +17,7 @@ public struct SimplePageLayoutData<A> {
     }
   }
 
-  public var currentRoute: Route?
+  public var currentRoute: AppRoute?
   public var currentSubscriberState: SubscriberState
   public var currentUser: User?
   public var data: A
@@ -34,7 +34,7 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    currentRoute: Route? = nil,
+    currentRoute: AppRoute? = nil,
     currentSubscriberState: SubscriberState = .nonSubscriber,
     currentUser: User?,
     data: A,

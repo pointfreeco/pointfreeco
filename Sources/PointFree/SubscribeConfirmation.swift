@@ -11,7 +11,7 @@ import Tuple
 import Views
 
 public let subscribeConfirmation
-  : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
+  : M<Tuple6<User?, AppRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
   = validateReferralCode
     <| writeStatus(.ok)
     >=> map(lower)
@@ -43,8 +43,8 @@ public let subscribeConfirmation
 )
 
 private func validateReferralCode(
-  middleware: @escaping M<Tuple7<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
-) -> M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
+  middleware: @escaping M<Tuple7<User?, AppRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
+) -> M<Tuple6<User?, AppRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
   return { conn in
     let (currentUser, currentRoute, subscriberState, lane, subscribeData, coupon) = lower(conn.data)
     guard
@@ -151,8 +151,8 @@ public let discountSubscribeConfirmation
 
 private let fetchAndValidateCoupon
   : MT<
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
+  Tuple6<User?, AppRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
+  Tuple6<User?, AppRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
