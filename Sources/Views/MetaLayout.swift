@@ -79,17 +79,17 @@ public struct Metadata<A> {
     ?? []
 
     let twitterCard: Node = self.twitterCard
-      .map { ChildOf.meta(property: "twitter:card", content: $0.rawValue).rawValue }
+      .map { ChildOf.meta(name: "twitter:card", content: $0.rawValue).rawValue }
     ?? []
 
     let twitterSite: Node = self.twitterSite
-      .map { ChildOf.meta(property: "twitter:site", content: $0).rawValue }
+      .map { ChildOf.meta(name: "twitter:site", content: $0).rawValue }
     ?? []
 
     let url: Node = self.url.map {
       [
         ChildOf.meta(property: "og:url", content: $0).rawValue,
-        ChildOf.meta(property: "twitter:url", content: $0).rawValue,
+        ChildOf.meta(name: "twitter:url", content: $0).rawValue,
       ]
     } ?? []
 

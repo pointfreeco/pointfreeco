@@ -39,6 +39,29 @@ public enum Admin: Equatable {
   }
 }
 
+extension Parser where Self: Printer {
+  func assert() -> AnyParserPrinter<Input, Output> {
+    AnyParserPrinter<Input, Output>(
+      parse: {
+        do {
+          return try self.parse(&$0)
+        } catch {
+          assertionFailure("\(self): \(error)")
+          throw error
+        }
+      },
+      print: {
+        do {
+          try self.print($0, to: &$1)
+        } catch {
+          assertionFailure("\(self): \(error)")
+          throw error
+        }
+      }
+    )
+  }
+}
+
 let adminRouter = OneOf {
   Route(/Admin.index)
 
@@ -100,6 +123,7 @@ let adminRouter = OneOf {
       Route(/Admin.NewBlogPostEmail.index)
 
       Route(/Admin.NewBlogPostEmail.send) {
+        Method.post
         Parse {
           Path {
             Int.parser().map(.rawValue(of: BlogPost.Id.self))

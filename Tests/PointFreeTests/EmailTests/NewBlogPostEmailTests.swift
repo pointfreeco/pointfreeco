@@ -102,9 +102,6 @@ class NewBlogPostEmailTests: TestCase {
       url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!
     )
     req.httpMethod = "POST"
-    req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
-    XCTAssertNil(pointFreeRouter.match(request: req))
-
     let formData = urlFormEncode(
       value: [
         "nonsubscriber_announcement": "",

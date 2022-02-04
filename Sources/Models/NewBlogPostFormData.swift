@@ -8,7 +8,8 @@ public struct NewBlogPostFormData: Codable, Equatable {
     nonsubscriberAnnouncement: String,
     nonsubscriberDeliver: Bool?,
     subscriberAnnouncement: String,
-    subscriberDeliver: Bool?) {
+    subscriberDeliver: Bool?
+  ) {
     self.nonsubscriberAnnouncement = nonsubscriberAnnouncement
     self.nonsubscriberDeliver = nonsubscriberDeliver
     self.subscriberAnnouncement = subscriberAnnouncement
