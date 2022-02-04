@@ -8,7 +8,7 @@ import Prelude
 import Stripe
 import Tagged
 import UrlFormEncoding
-import URLRouting
+import _URLRouting
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
@@ -116,9 +116,10 @@ public enum AppRoute: Equatable {
 }
 
 private let blogSlugOrId = OneOf {
-  String.parser(of: Substring.self).pipe(/Either<String, BlogPost.Id>.left)
+  Convert(.string.map(/Either<String, BlogPost.Id>.left))
 
-  BlogPost.Id.parser(rawValue: Int.parser()).pipe(/Either<String, BlogPost.Id>.right)
+  Int.parser(of: Substring.self) // FIXME
+    .map(.rawRepresentable(as: BlogPost.Id.self).map(/Either<String, BlogPost.Id>.right))
 }
 
 private let blogRouter = OneOf {
@@ -144,9 +145,10 @@ private let blogRouter = OneOf {
 }
 
 private let episodeSlugOrId = OneOf {
-  String.parser(of: Substring.self).pipe(/Either<String, Episode.Id>.left)
+  Convert(.string.map(/Either<String, Episode.Id>.left))
 
-  Episode.Id.parser(rawValue: Int.parser()).pipe(/Either<String, Episode.Id>.right)
+  Int.parser(of: Substring.self) // FIXME
+    .map(.rawRepresentable(as: Episode.Id.self).map(/Either<String, Episode.Id>.right))
 }
 
 private let collectionsRouter = OneOf {
@@ -157,22 +159,22 @@ private let collectionsRouter = OneOf {
   OneOf {
     Route(/AppRoute.Collections.show) {
       Method.get
-      Path { Episode.Collection.Slug.parser(rawValue: String.parser()) }
+      Path { Convert(.string.rawRepresentable(as: Episode.Collection.Slug.self)) }
     }
 
     Route(/AppRoute.Collections.section) {
       Method.get
       Path {
-        Episode.Collection.Slug.parser(rawValue: String.parser())
-        Episode.Collection.Section.Slug.parser(rawValue: String.parser())
+        Convert(.string.rawRepresentable(as: Episode.Collection.Slug.self))
+        Convert(.string.rawRepresentable(as: Episode.Collection.Section.Slug.self))
       }
     }
 
     Route(/AppRoute.Collections.episode) {
       Method.get
       Path {
-        Episode.Collection.Slug.parser(rawValue: String.parser())
-        Episode.Collection.Section.Slug.parser(rawValue: String.parser())
+        Convert(.string.rawRepresentable(as: Episode.Collection.Slug.self))
+        Convert(.string.rawRepresentable(as: Episode.Collection.Section.Slug.self))
         episodeSlugOrId
       }
     }
@@ -204,13 +206,13 @@ private let episodeRouter = OneOf {
 private let enterpriseRouter = OneOf {
   Route(/AppRoute.Enterprise.landing) {
     Method.get
-    Path { EnterpriseAccount.Domain.parser(rawValue: String.parser()) }
+    Path { Convert(.string.rawRepresentable(as: EnterpriseAccount.Domain.self)) }
   }
 
   Route(/AppRoute.Enterprise.requestInvite) {
     Method.post
     Path {
-      EnterpriseAccount.Domain.parser(rawValue: String.parser())
+      Convert(.string.rawRepresentable(as: EnterpriseAccount.Domain.self))
       "request"
     }
     Body {
@@ -222,16 +224,16 @@ private let enterpriseRouter = OneOf {
     Parse {
       Method.get
       Path {
-        EnterpriseAccount.Domain.parser(rawValue: String.parser())
+        Convert(.string.rawRepresentable(as: EnterpriseAccount.Domain.self))
         "accept"
       }
       Query {
-        Field("email", Encrypted.parser(rawValue: String.parser()))
-        Field("user_id", Encrypted.parser(rawValue: String.parser()))
+        Field("email", Convert(.string.rawRepresentable(as: Encrypted.self)))
+        Field("user_id", Convert(.string.rawRepresentable(as: Encrypted.self)))
       }
     }
-    .pipe(
-      Conversion(
+    .map(
+      AnyConversion(
         apply: { ($0, $1.0, $1.1) },
         unapply: { ($0, ($1, $2)) }
       )
@@ -255,7 +257,7 @@ private let inviteRouter = OneOf {
   Route(/AppRoute.Invite.accept) {
     Method.post
     Path {
-      TeamInvite.Id.parser(rawValue: UUID.parser())
+      UUID.parser().map(.rawRepresentable(as: TeamInvite.Id.self))
       "accept"
     }
   }
@@ -266,7 +268,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", EmailAddress.parser(rawValue: String.parser()))
+          Field("email", Convert(.string.rawRepresentable(as: EmailAddress.self)))
         }
       }
     }
@@ -275,7 +277,7 @@ private let inviteRouter = OneOf {
   Route(/AppRoute.Invite.resend) {
     Method.post
     Path {
-      TeamInvite.Id.parser(rawValue: UUID.parser())
+      UUID.parser().map(.rawRepresentable(as: TeamInvite.Id.self))
       "resend"
     }
   }
@@ -283,7 +285,7 @@ private let inviteRouter = OneOf {
   Route(/AppRoute.Invite.revoke) {
     Method.post
     Path {
-      TeamInvite.Id.parser(rawValue: UUID.parser())
+      UUID.parser().map(.rawRepresentable(as: TeamInvite.Id.self))
       "revoke"
     }
   }
@@ -293,7 +295,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", EmailAddress.parser(rawValue: String.parser()))
+          Field("email", Convert(.string.rawRepresentable(as: EmailAddress.self)))
         }
       }
     }
@@ -301,7 +303,7 @@ private let inviteRouter = OneOf {
 
   Route(/AppRoute.Invite.show) {
     Method.get
-    Path { TeamInvite.Id.parser(rawValue: UUID.parser()) }
+    Path { UUID.parser().map(.rawRepresentable(as: TeamInvite.Id.self)) }
   }
 }
 
@@ -310,7 +312,7 @@ private let teamRouter = OneOf {
     Method.post
     Path {
       "team"
-      Subscription.TeamInviteCode.parser(rawValue: String.parser())
+      Convert(.string.rawRepresentable(as: Subscription.TeamInviteCode.self))
       "join"
     }
   }
@@ -319,7 +321,7 @@ private let teamRouter = OneOf {
     Method.get
     Path {
       "team"
-      Subscription.TeamInviteCode.parser(rawValue: String.parser())
+      Convert(.string.rawRepresentable(as: Subscription.TeamInviteCode.self))
       "join"
     }
   }
@@ -339,7 +341,7 @@ private let teamRouter = OneOf {
       "account"
       "team"
       "members"
-      User.Id.parser(rawValue: UUID.parser())
+      UUID.parser().map(.rawRepresentable(as: User.Id.self))
       "remove"
     }
   }
@@ -352,11 +354,12 @@ private let webhooksRouter = Route(/AppRoute.Webhooks.stripe) {
     Route(/AppRoute.Webhooks._Stripe.paymentIntents) {
       Method.post
       Body {
-        JSON(
-          Stripe.Event<PaymentIntent>.self,
-          from: ArraySlice<UInt8>.self,
-          decoder: Stripe.jsonDecoder,
-          encoder: Stripe.jsonEncoder
+        Convert(
+          .data.json(
+            Stripe.Event<PaymentIntent>.self,
+            decoder: Stripe.jsonDecoder,
+            encoder: Stripe.jsonEncoder
+          )
         )
       }
     }
@@ -364,11 +367,12 @@ private let webhooksRouter = Route(/AppRoute.Webhooks.stripe) {
     Route(/AppRoute.Webhooks._Stripe.subscriptions) {
       Method.post
       Body {
-        JSON(
-          Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-          from: ArraySlice<UInt8>.self,
-          decoder: Stripe.jsonDecoder,
-          encoder: Stripe.jsonEncoder
+        Convert(
+          .data.json(
+            Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+            decoder: Stripe.jsonDecoder,
+            encoder: Stripe.jsonEncoder
+          )
         )
       }
     }
@@ -376,11 +380,12 @@ private let webhooksRouter = Route(/AppRoute.Webhooks.stripe) {
     Route(/AppRoute.Webhooks._Stripe.unknown) {
       Method.post
       Body {
-        JSON(
-          Stripe.Event<Prelude.Unit>.self,
-          from: ArraySlice<UInt8>.self,
-          decoder: Stripe.jsonDecoder,
-          encoder: Stripe.jsonEncoder
+        Convert(
+          .data.json(
+            Stripe.Event<Prelude.Unit>.self,
+            decoder: Stripe.jsonDecoder,
+            encoder: Stripe.jsonEncoder
+          )
         )
       }
     }
@@ -456,11 +461,11 @@ let router = OneOf {
     Route(/AppRoute.discounts) {
       Path {
         "discounts"
-        Stripe.Coupon.Id.parser(rawValue: String.parser())
+        Convert(.string.rawRepresentable(as: Stripe.Coupon.Id.self))
       }
       Query {
         Optionally {
-          Field("billing", Pricing.Billing.parser(rawValue: String.parser()))
+          Field("billing", Convert(.string.rawRepresentable(as: Pricing.Billing.self)))
         }
       }
     }
@@ -479,7 +484,7 @@ let router = OneOf {
         "express-unsubscribe"
       }
       Query {
-        Field("payload", Encrypted.parser(rawValue: String.parser()))
+        Field("payload", Convert(.string.rawRepresentable(as: Encrypted.self)))
       }
     }
 
@@ -498,10 +503,10 @@ let router = OneOf {
       Path { "github-auth" }
       Query {
         Optionally {
-          Field("code", String.parser())
+          Field("code", Convert(.string))
         }
         Optionally {
-          Field("redirect", String.parser())
+          Field("redirect", Convert(.string))
         }
       }
     }
@@ -517,7 +522,7 @@ let router = OneOf {
       Path { "login" }
       Query {
         Optionally {
-          Field("redirect", String.parser())
+          Field("redirect", Convert(.string))
         }
       }
     }
@@ -541,43 +546,43 @@ let router = OneOf {
         Body {
           FormData {
             Optionally {
-              Field("coupon", Coupon.Id.parser(rawValue: String.parser()))
+              Field("coupon", Convert(.string.rawRepresentable(as: Coupon.Id.self)))
             }
             Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, Bool.parser(), default: false)
             Parse {
-              Field("pricing[billing]", Pricing.Billing.parser(rawValue: String.parser()))
+              Field("pricing[billing]", Convert(.string.rawRepresentable(as: Pricing.Billing.self)))
               Field("pricing[quantity]", Int.parser())
             }
-            .pipe { UnsafeBitCast(Pricing.init(billing:quantity:)) }
+            .map(.destructure(Pricing.init(billing:quantity:)))
             Optionally {
               Field(
                 SubscribeData.CodingKeys.referralCode.rawValue,
-                User.ReferralCode.parser(rawValue: String.parser())
+                Convert(.string.rawRepresentable(as: User.ReferralCode.self))
               )
             }
             Many {
-              Field("teammate", EmailAddress.parser(rawValue: String.parser()))
+              Field("teammate", Convert(.string.rawRepresentable(as: EmailAddress.self)))
             }
             Parse {
-              Field("token", Token.Id.parser(rawValue: String.parser()))
+              Field("token", Convert(.string.rawRepresentable(as: Token.Id.self)))
               Field(
                 SubscribeData.CodingKeys.useRegionalDiscount.rawValue, Bool.parser(), default: false
               )
             }
           }
-          .pipe(
-            Conversion(
+          .map(
+            AnyConversion(
               apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
               unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
             )
           )
-          .pipe {
-            UnsafeBitCast(
+          .map(
+            .destructure(
               SubscribeData.init(
                 coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
               )
             )
-          }
+          )
         }
       }
     }
@@ -586,11 +591,11 @@ let router = OneOf {
       Parse {
         Path {
           "subscribe"
-          Pricing.Lane.parser(rawValue: String.parser())
+          Convert(.string.rawRepresentable(as: Pricing.Lane.self))
         }
         Query {
           Optionally {
-            Field("billing", Pricing.Billing.parser(rawValue: String.parser()))
+            Field("billing", Convert(.string.rawRepresentable(as: Pricing.Billing.self)))
           }
           Optionally {
             Field("isOwnerTakingSeat", Bool.parser())
@@ -599,22 +604,22 @@ let router = OneOf {
             Field(
               "teammates",
               Many {
-                Prefix { $0 != "," }.pipe { EmailAddress.parser(rawValue: String.parser()) }
-              } separatedBy: {
+                Prefix { $0 != "," }.map(.string.rawRepresentable(as: EmailAddress.self))
+              } separator: {
                 ","
               }
             )
           }
           Optionally {
-            Field("ref", User.ReferralCode.parser(rawValue: String.parser()))
+            Field("ref", Convert(.string.rawRepresentable(as: User.ReferralCode.self)))
           }
           Optionally {
             Field("useRegionalDiscount", Bool.parser())
           }
         }
       }
-      .pipe(
-        Conversion(
+      .map(
+        AnyConversion(
           apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
           unapply: { ($0, ($1, $2, $3, $4, $5)) }
         )
@@ -627,7 +632,7 @@ let router = OneOf {
       Method.post
       Path {
         "episodes"
-        Episode.Id.parser(rawValue: Int.parser())
+        Int.parser().map(.rawRepresentable(as: Episode.Id.self))
         "credit"
       }
     }

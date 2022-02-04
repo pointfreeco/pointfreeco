@@ -3,7 +3,7 @@ import Foundation
 import GitHub
 import Parsing
 import Prelude
-import URLRouting
+import _URLRouting
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
@@ -39,11 +39,11 @@ private let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", GitHub.Client.Id.parser(rawValue: String.parser()))
+      Field("client_id", Convert(.string.rawRepresentable(as: GitHub.Client.Id.self)))
       Optionally {
-        Field("redirect_uri", String.parser())
+        Field("redirect_uri", Convert(.string))
       }
-      Field("scope", String.parser())
+      Field("scope", Convert(.string))
     }
   }
 
@@ -58,7 +58,7 @@ private let gitHubRouter = OneOf {
           "episode-code-samples"
           "tree"
           "main"
-          String.parser()
+          Convert(.string)
         }
       }
 
@@ -72,14 +72,15 @@ private let gitHubRouter = OneOf {
       }
 
       Route(/GitHubRoute.repo) {
-        Path { GitHubRoute.Repo.parser(rawValue: String.parser()) }
+        Path { Convert(.string.rawRepresentable(as: GitHubRoute.Repo.self)) }
       }
     }
   }
 }
 
 public func gitHubUrl(to route: GitHubRoute) -> String {
-  guard let path = gitHubRouter.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
+  guard
+    let path = (try? gitHubRouter.print(route)).flatMap(URLRequest.init(data:))?.url?.absoluteString
   else { return "" }
   return "\(gitHubBaseUrl.absoluteString)/\(path)"
 }

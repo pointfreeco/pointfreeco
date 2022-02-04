@@ -3,7 +3,7 @@ import Foundation
 import Models
 import Parsing
 import Prelude
-import URLRouting
+import _URLRouting
 
 public enum Admin: Equatable {
   case episodeCredits(EpisodeCredit)
@@ -52,8 +52,8 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id", User.Id.parser(rawValue: UUID.parser()))
-            Field("episode_sequence", Episode.Sequence.parser(rawValue: Int.parser()))
+            Field("user_id", UUID.parser().map(.rawRepresentable(as: User.Id.self)))
+            Field("episode_sequence", Int.parser().map(.rawRepresentable(as: Episode.Sequence.self)))
           }
         }
       }
@@ -68,7 +68,7 @@ let adminRouter = OneOf {
 
       Route(/Admin.FreeEpisodeEmail.send) {
         Path {
-          Episode.Id.parser(rawValue: Int.parser())
+          Int.parser().map(.rawRepresentable(as: Episode.Id.self))
           "send"
         }
       }
@@ -86,7 +86,7 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id", User.Id.parser(rawValue: UUID.parser()))
+            Field("user_id", UUID.parser().map(.rawRepresentable(as: User.Id.self)))
           }
         }
       }
@@ -102,7 +102,7 @@ let adminRouter = OneOf {
       Route(/Admin.NewBlogPostEmail.send) {
         Parse {
           Path {
-            BlogPost.Id.parser(rawValue: Int.parser())
+            Int.parser().map(.rawRepresentable(as: BlogPost.Id.self))
             "send"
           }
           Body {
@@ -112,8 +112,8 @@ let adminRouter = OneOf {
             }
           }
         }
-        .pipe(
-          Conversion(
+        .map(
+          AnyConversion(
             apply: { ($0, $1.0, $1.1) },
             unapply: { ($0, ($1, $2)) }
           )
@@ -131,23 +131,23 @@ let adminRouter = OneOf {
       Route(/Admin.NewEpisodeEmail.send) {
         Parse {
           Path {
-            Episode.Id.parser(rawValue: Int.parser())
+            Int.parser().map(.rawRepresentable(as: Episode.Id.self))
             "send"
           }
           Body {
             FormData {
               Optionally {
-                Field("subscriber_announcement", String.parser())
+                Field("subscriber_announcement", Convert(.string))
               }
               Optionally {
-                Field("nonsubscriber_announcement", String.parser())
+                Field("nonsubscriber_announcement", Convert(.string))
               }
               isTest
             }
           }
         }
-        .pipe(
-          Conversion(
+        .map(
+          AnyConversion(
             apply: { ($0, $1.0, $1.1, $1.2) },
             unapply: { ($0, ($1, $2, $3)) }
           )
@@ -160,8 +160,8 @@ let adminRouter = OneOf {
 private let isTest = Optionally {
   Field(
     "test",
-    String.parser().pipe(
-      PartialConversion(
+    Rest().map(
+      AnyConversion(
         apply: { _ in true },
         unapply: { $0 ? "" : nil }
       )

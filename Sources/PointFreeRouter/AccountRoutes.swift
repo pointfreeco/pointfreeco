@@ -5,7 +5,7 @@ import PointFreePrelude
 import Parsing
 import Prelude
 import Stripe
-import URLRouting
+import _URLRouting
 
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
@@ -45,7 +45,7 @@ let accountRouter = OneOf {
   Route(/Account.confirmEmailChange) {
     Path { "confirm-email-change" }
     Query {
-      Field("payload", Encrypted.parser(rawValue: String.parser()))
+      Field("payload", Convert(.string.rawRepresentable(as: Encrypted.self)))
     }
   }
 
@@ -56,7 +56,7 @@ let accountRouter = OneOf {
       Route(/Account.Invoices.index)
 
       Route(/Account.Invoices.show) {
-        Path { Invoice.Id.parser(rawValue: String.parser()) }
+        Path { Convert(.string.rawRepresentable(as: Invoice.Id.self)) }
       }
     }
   }
@@ -72,7 +72,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", Token.Id.parser(rawValue: String.parser()))
+              Field("token", Convert(.string.rawRepresentable(as: Token.Id.self)))
             }
           }
         }
@@ -85,13 +85,13 @@ let accountRouter = OneOf {
 
     OneOf {
       Route(/Account.rss) {
-        Path { User.RssSalt.parser(rawValue: String.parser()) }
+        Path { Convert(.string.rawRepresentable(as: User.RssSalt.self)) }
       }
 
       Route(/Account.rssLegacy) {
         Path {
-          String.parser()
-          String.parser()
+          Convert(.string)
+          Convert(.string)
         }
       }
     }

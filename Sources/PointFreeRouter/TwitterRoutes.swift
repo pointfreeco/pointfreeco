@@ -2,7 +2,7 @@ import ApplicativeRouter
 import Foundation
 import Parsing
 import Prelude
-import URLRouting
+import _URLRouting
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
@@ -15,11 +15,13 @@ public enum TwitterRoute: String {
 }
 
 private let twitterRouter = Path {
-  TwitterRoute.parser(rawValue: String.parser())
+  Convert(.string.rawRepresentable(as: TwitterRoute.self))
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {
-  guard let path = twitterRouter.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
+  guard
+    let path = (try? twitterRouter.print(route))
+      .flatMap(URLRequest.init(data:))?.url?.absoluteString
   else { return "" }
   return "\(twitterBaseUrl.absoluteString)/\(path)"
 }

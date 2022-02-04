@@ -1,7 +1,7 @@
 import ApplicativeRouter
 import Foundation
 import Parsing
-import URLRouting
+import _URLRouting
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
@@ -15,7 +15,7 @@ public struct PointFreeRouter {
   }
 
   public func path(to route: AppRoute) -> String {
-    guard let path = router.print(route).flatMap(URLRequest.init(data:))?.url?.absoluteString
+    guard let path = (try? router.print(route)).flatMap(URLRequest.init(data:))?.url?.absoluteString
     else {
       assertionFailure("Failed to print \(route)")
       return ""
@@ -29,7 +29,7 @@ public struct PointFreeRouter {
 
   public func request(for route: AppRoute) -> URLRequest? {
     guard
-      var request = router.print(route).flatMap(URLRequest.init(data:)),
+      var request = (try? router.print(route)).flatMap(URLRequest.init(data:)),
       let path = request.url?.absoluteString,
       let url = URL(string: "\(self.baseUrl.absoluteString)/\(path)")
     else {
@@ -43,7 +43,7 @@ public struct PointFreeRouter {
   public func match(request: URLRequest) -> AppRoute? {
     guard var data = URLRequestData(request: request)
     else { return nil }
-    return router.parse(&data)
+    return try? router.parse(&data)
   }
 }
 
