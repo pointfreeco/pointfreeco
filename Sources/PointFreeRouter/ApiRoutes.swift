@@ -18,7 +18,7 @@ let apiRouter = Parse {
     Route(/AppRoute.Api.episodes)
 
     Route(/AppRoute.Api.episode) {
-      Path { Int.parser().map(.rawRepresentable(as: Episode.Id.self)) }
+      Path { Int.parser().map(.rawValue(of: Episode.Id.self)) }
     }
   }
 }

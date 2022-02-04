@@ -45,7 +45,7 @@ let accountRouter = OneOf {
   Route(/Account.confirmEmailChange) {
     Path { "confirm-email-change" }
     Query {
-      Field("payload", Convert(.string.rawRepresentable(as: Encrypted.self)))
+      Field("payload", Parse(.string.rawValue(of: Encrypted.self)))
     }
   }
 
@@ -56,7 +56,7 @@ let accountRouter = OneOf {
       Route(/Account.Invoices.index)
 
       Route(/Account.Invoices.show) {
-        Path { Convert(.string.rawRepresentable(as: Invoice.Id.self)) }
+        Path { Parse(.string.rawValue(of: Invoice.Id.self)) }
       }
     }
   }
@@ -72,7 +72,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", Convert(.string.rawRepresentable(as: Token.Id.self)))
+              Field("token", Parse(.string.rawValue(of: Token.Id.self)))
             }
           }
         }
@@ -85,13 +85,13 @@ let accountRouter = OneOf {
 
     OneOf {
       Route(/Account.rss) {
-        Path { Convert(.string.rawRepresentable(as: User.RssSalt.self)) }
+        Path { Parse(.string.rawValue(of: User.RssSalt.self)) }
       }
 
       Route(/Account.rssLegacy) {
         Path {
-          Convert(.string)
-          Convert(.string)
+          Parse(.string)
+          Parse(.string)
         }
       }
     }

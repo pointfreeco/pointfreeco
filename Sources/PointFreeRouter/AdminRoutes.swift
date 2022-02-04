@@ -52,8 +52,8 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id", UUID.parser().map(.rawRepresentable(as: User.Id.self)))
-            Field("episode_sequence", Int.parser().map(.rawRepresentable(as: Episode.Sequence.self)))
+            Field("user_id", UUID.parser().map(.rawValue(of: User.Id.self)))
+            Field("episode_sequence", Int.parser().map(.rawValue(of: Episode.Sequence.self)))
           }
         }
       }
@@ -68,7 +68,7 @@ let adminRouter = OneOf {
 
       Route(/Admin.FreeEpisodeEmail.send) {
         Path {
-          Int.parser().map(.rawRepresentable(as: Episode.Id.self))
+          Int.parser().map(.rawValue(of: Episode.Id.self))
           "send"
         }
       }
@@ -86,7 +86,7 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id", UUID.parser().map(.rawRepresentable(as: User.Id.self)))
+            Field("user_id", UUID.parser().map(.rawValue(of: User.Id.self)))
           }
         }
       }
@@ -102,7 +102,7 @@ let adminRouter = OneOf {
       Route(/Admin.NewBlogPostEmail.send) {
         Parse {
           Path {
-            Int.parser().map(.rawRepresentable(as: BlogPost.Id.self))
+            Int.parser().map(.rawValue(of: BlogPost.Id.self))
             "send"
           }
           Body {
@@ -131,16 +131,16 @@ let adminRouter = OneOf {
       Route(/Admin.NewEpisodeEmail.send) {
         Parse {
           Path {
-            Int.parser().map(.rawRepresentable(as: Episode.Id.self))
+            Int.parser().map(.rawValue(of: Episode.Id.self))
             "send"
           }
           Body {
             FormData {
               Optionally {
-                Field("subscriber_announcement", Convert(.string))
+                Field("subscriber_announcement", Parse(.string))
               }
               Optionally {
-                Field("nonsubscriber_announcement", Convert(.string))
+                Field("nonsubscriber_announcement", Parse(.string))
               }
               isTest
             }

@@ -15,7 +15,7 @@ public enum TwitterRoute: String {
 }
 
 private let twitterRouter = Path {
-  Convert(.string.rawRepresentable(as: TwitterRoute.self))
+  Parse(.string.rawValue(of: TwitterRoute.self))
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {

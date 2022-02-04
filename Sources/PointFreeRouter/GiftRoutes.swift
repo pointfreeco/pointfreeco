@@ -66,7 +66,7 @@ let giftsRouter = OneOf {
   Route(/Gifts.create) {
     Method.post
     Body {
-      Convert(
+      Parse(
         .data.json(
           GiftFormData.self,
           decoder: routeJsonDecoder,
@@ -77,16 +77,16 @@ let giftsRouter = OneOf {
   }
 
   Route(/Gifts.plan) {
-    Path { Convert(.string.rawRepresentable(as: Gifts.Plan.self)) }
+    Path { Parse(.string.rawValue(of: Gifts.Plan.self)) }
   }
 
   Route(/Gifts.redeemLanding) {
-    Path { UUID.parser().map(.rawRepresentable(as: Gift.Id.self)) }
+    Path { UUID.parser().map(.rawValue(of: Gift.Id.self)) }
   }
 
   Route(/Gifts.redeem) {
     Method.post
-    Path { UUID.parser().map(.rawRepresentable(as: Gift.Id.self)) }
+    Path { UUID.parser().map(.rawValue(of: Gift.Id.self)) }
   }
 }
 

@@ -39,11 +39,11 @@ private let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", Convert(.string.rawRepresentable(as: GitHub.Client.Id.self)))
+      Field("client_id", Parse(.string.rawValue(of: GitHub.Client.Id.self)))
       Optionally {
-        Field("redirect_uri", Convert(.string))
+        Field("redirect_uri", Parse(.string))
       }
-      Field("scope", Convert(.string))
+      Field("scope", Parse(.string))
     }
   }
 
@@ -58,7 +58,7 @@ private let gitHubRouter = OneOf {
           "episode-code-samples"
           "tree"
           "main"
-          Convert(.string)
+          Parse(.string)
         }
       }
 
@@ -72,7 +72,7 @@ private let gitHubRouter = OneOf {
       }
 
       Route(/GitHubRoute.repo) {
-        Path { Convert(.string.rawRepresentable(as: GitHubRoute.Repo.self)) }
+        Path { Parse(.string.rawValue(of: GitHubRoute.Repo.self)) }
       }
     }
   }
