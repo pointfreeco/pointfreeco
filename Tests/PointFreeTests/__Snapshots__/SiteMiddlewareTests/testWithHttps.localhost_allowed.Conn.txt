@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 200 OK
-Content-Length: 61395
+Content-Length: 61433
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -382,6 +382,10 @@ a:link.btn-normal {
   -moz-transform    : scaleX(-1);
   -o-transform      : scaleX(-1);
   -ms-transform     : scaleX(-1);
+}
+
+.token.atrule {
+  color : #d73a49;
 }
 
 .token.builtin {
