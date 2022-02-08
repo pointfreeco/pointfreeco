@@ -77,16 +77,16 @@ let giftsRouter = OneOf {
   }
 
   Route(/Gifts.plan) {
-    Path { Parse(.string.rawValue(of: Gifts.Plan.self)) }
+    Path { Parse(.string.representing(Gifts.Plan.self)) }
   }
 
   Route(/Gifts.redeemLanding) {
-    Path { UUID.parser().map(.rawValue(of: Gift.Id.self)) }
+    Path { UUID.parser().map(.representing(Gift.Id.self)) }
   }
 
   Route(/Gifts.redeem) {
     Method.post
-    Path { UUID.parser().map(.rawValue(of: Gift.Id.self)) }
+    Path { UUID.parser().map(.representing(Gift.Id.self)) }
   }
 }
 
