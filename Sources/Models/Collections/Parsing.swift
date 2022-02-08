@@ -180,6 +180,22 @@ Result builders are a powerful feature of Swift that enable DSLs like SwiftUI us
           ],
           related: [],
           title: "Builders",
+          whereToGoFromHere: #"""
+Parsers currently use optionality to model failure. This makes parser definitions more awkward than they should be, and completely obscures where and why parsing failed. We can look to throwing functions for a solution to both these problems.
+"""#
+        ),
+
+
+        .init(
+          blurb: #"""
+Optionality is a convenient way to model failure, but can only take us so far. We will scrutinize how we model errors in our parsing library and the problems that have come out of it, and we will address these problems by changing the fundamental shape of the parser type. In doing so, we will be in a good position to layer context onto failures, and make it easy to see exactly where and why a parser failed.
+"""#,
+          coreLessons: [
+            .init(episode: .ep176_parserErrors),
+            .init(episode: .ep177_parserErrors),
+          ],
+          related: [],
+          title: "Errors",
           whereToGoFromHere: nil
         ),
 

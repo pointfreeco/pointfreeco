@@ -12,7 +12,13 @@ Let's explore the topic of error handling. We will scrutinize how we model error
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1643608800),
     references: [
-      // TODO
+      .init(
+        author: "Federico Zanetello",
+        blurb: "A journey into Swift overloading thanks to this private attribute.",
+        link: "https://www.fivestars.blog/articles/disfavoredOverload/",
+        publishedAt: referenceDateFormatter.date(from: "2020-11-10"),
+        title: "What is @_disfavoredOverload in Swift?"
+      )
     ],
     sequence: 176,
     subtitle: "from Nil to Throws",
