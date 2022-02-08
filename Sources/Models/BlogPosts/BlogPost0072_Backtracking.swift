@@ -63,7 +63,7 @@ And regardless of whether you implement custom parsers or not, it can be a good 
  }
  ```
 
- However, parsing slash-separated integers is not going to be performant because it will first run the entire 1️⃣ parser until it fails, then backtrack to the beginning, and run the 2️⃣ parser. In particular, the first integer will get parsed twice, unnecessarily repeating that work. On the other hand, we can factor out the common work of the parser and localize the backtracking `OneOf` work to make a much more performant parser:
+ However, parsing slash-separated integers is not going to be performant because it will first run the entire 1️⃣ parser until it fails, then backtrack to the beginning, and run the 2️⃣ parser. In particular, the first integer will get parsed twice, unnecessarily repeating that work. On the other hand, we can factor out the common work of the parser and localize the backtracking `OneOf` work:
 
  ```swift
  Parse {
@@ -72,6 +72,8 @@ And regardless of whether you implement custom parsers or not, it can be a good 
    Int.parser()
  }
  ```
+
+This is a much more performant parser.
 
 # Try it today
 
