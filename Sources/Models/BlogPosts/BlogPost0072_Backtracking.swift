@@ -11,7 +11,7 @@ Today we are releasing [0.6.0][0_6_0] of our [swift-parsing](https://github.com/
 
 ## What is backtracking?
 
-Backtracking in parsing is the process of restoring the input to its original state if it fails. From the first release of [swift-parsing](https://github.com/pointfreeco/swift-parsing) we made each parser responsible for backtracking its input if it fails. For example, the `Many` parser keeps [track][many-capture] of the original input so that if something goes wrong it can [restore][many-restore] the input to its original state.
+Backtracking in parsing is the process of restoring the input to its original state when it fails. From the first release of [swift-parsing](https://github.com/pointfreeco/swift-parsing) we made each parser responsible for backtracking its input upon failure. For example, the `Many` parser keeps [track][many-capture] of the original input so that if something goes wrong we can [restore][many-restore] the input to its original state.
 
 A more complex example is the [`.flatMap`][flatmap-source-file] operator. This operator allows you to run one parser after another such that the second parser can use the output of the first to customize its logic. In order to implement this parser with backtracking we need to check if something fails after each step of the sequence so that we can restore the original input:
 
@@ -34,7 +34,7 @@ public func parse(_ input: inout Upstream.Input) -> NewParser.Output? {
 
 ## Why remove backtracking?
 
-Making parsers responsible for backtracking seems reasonable, but in practice was fraught. At best, if done correctly, it meant that your parsers was litered with additional logic not releated to parsing so that you could properly restore the input to its original state. For example, removing backtracking from the `.flatMap` parser above greatly simplifies the parser's logic:
+Making parsers responsible for backtracking seems reasonable, but in practice was fraught. At best, if done correctly, it meant that your parser was littered with additional logic not related to parsing in order to properly restore the input to its original state. For example, removing backtracking from the `.flatMap` parser above greatly simplifies the parser's logic:
 
 ```swift
 public func parse(_ input: inout Upstream.Input) -> NewParser.Output? {
@@ -42,9 +42,9 @@ public func parse(_ input: inout Upstream.Input) -> NewParser.Output? {
 }
 ```
 
-And at worst, backtracking in each parser could could be done incorrectly, or not at all, which could lead to subtle bugs where some parsers backtrack and some do not.
+And at worst, backtracking in each parser could could be done incorrectly, or not at all, which would lead to subtle bugs where some parsers backtrack and some do not.
 
-So, this is why we decided to remove the requirement that parsers individually implement backtracking logic. Backtracking is still useful, but if you need backtracking you can use a dedicated parser for it: [`OneOf`][oneof-source-file]. It's a parser that tries multiple parsers on the same input, if one fails it backtracks the input to its original state, and if one succeeds then that output is returned and no other parsers are tried.
+So, this is why we decided to remove the requirement that parsers individually implement backtracking logic. Backtracking is still useful, but if you need backtracking you can use a dedicated parser for it: [`OneOf`][oneof-source-file]. It's a parser that tries multiple parsers on the same input. If one fails, it backtracks the input to its original state, and if one succeeds, then that output is returned and no other parsers are tried.
 
 This coalesces all backtracking responsibilities into a single parser, which allows you, the library user, to decide when and where you want backtracking.
 
@@ -56,22 +56,24 @@ If you implement custom parsers, meaning you create new types that conform to th
 
 And regardless of whether you implement custom parsers or not, it can be a good idea to be mindful of how backtracking affects the performance of your parsers. If used naively, backtracking can lead to less performant parsing code. For example, if we wanted to parse two integers from a string that were separated by either a dash "-" or slash "/", then we could write this as:
 
- ```swift
- OneOf {
-   Parser { Int.parser(); "-"; Int.parser() } // 1️⃣
-   Parser { Int.parser(); "/"; Int.parser() } // 2️⃣
- }
- ```
+```swift
+OneOf {
+  Parser { Int.parser(); "-"; Int.parser() } // 1️⃣
+  Parser { Int.parser(); "/"; Int.parser() } // 2️⃣
+}
+```
 
- However, parsing slash-separated integers is not going to be performant because it will first run the entire 1️⃣ parser until it fails, then backtrack to the beginning, and run the 2️⃣ parser. In particular, the first integer will get parsed twice, unnecessarily repeating that work. On the other hand, we can factor out the common work of the parser and localize the backtracking `OneOf` work:
+However, parsing slash-separated integers is not going to be performant because it will first run the entire 1️⃣ parser until it fails, then backtrack to the beginning, and run the 2️⃣ parser. In particular, the first integer will get parsed twice, unnecessarily repeating that work.
 
- ```swift
- Parse {
-   Int.parser()
-   OneOf { "-"; "/" }
-   Int.parser()
- }
- ```
+On the other hand, we can factor out the common work of the parser and localize the backtracking `OneOf` work:
+
+```swift
+Parse {
+  Int.parser()
+  OneOf { "-"; "/" }
+  Int.parser()
+}
+```
 
 This is a much more performant parser.
 
