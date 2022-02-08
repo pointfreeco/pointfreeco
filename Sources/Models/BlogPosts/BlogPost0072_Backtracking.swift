@@ -77,7 +77,7 @@ And regardless of whether you implement custom parsers or not, it can be a good 
 
 Update your projects to use [0.6.0][0_6_0] of swift-parsing today, and [let us know][swift-parsing-discussions] if you encountered any strange behavior that you did not expect.
 
-[0_6_0]: https://github.com/pointfreeco/swift-parsing/releases/tag/0.5.0
+[0_6_0]: https://github.com/pointfreeco/swift-parsing/releases/tag/0.6.0
 [many-capture]: https://github.com/pointfreeco/swift-parsing/blob/56215fb35c87da4f7b7aff1820d8ef5732465eb4/Sources/Parsing/Parsers/Many.swift#L79
 [many-restore]: https://github.com/pointfreeco/swift-parsing/blob/56215fb35c87da4f7b7aff1820d8ef5732465eb4/Sources/Parsing/Parsers/Many.swift#L121-L124
 [flatmap-source-file]: https://github.com/pointfreeco/swift-parsing/blob/main/Sources/Parsing/Parsers/FlatMap.swift
