@@ -7,7 +7,7 @@ public let post0072_Backtracking = BlogPost(
   contentBlocks: [
     .init(
       content: """
-Today we are releasing [0.6.0][0_6_0] of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that changes its backtracking behavior. Most users of the library will not notice a different, though some of your parsers may run slightly faster. If you are interested in why we made this decision, then read on!
+Today we are releasing [0.6.0][0_6_0] of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that changes its backtracking behavior. Most users of the library will not notice a difference, though some of your parsers may start to run slightly faster. If you are interested in why we made this decision, then read on!
 
 ## What is backtracking?
 
