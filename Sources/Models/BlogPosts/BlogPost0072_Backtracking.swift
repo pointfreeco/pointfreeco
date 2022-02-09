@@ -94,6 +94,6 @@ Update your projects to use [0.6.0][0_6_0] of swift-parsing today, and [let us k
   ],
   coverImage: nil,
   id: 72,
-  publishedAt: Date(timeIntervalSince1970: 1644213600 + 86400),
+  publishedAt: Date(timeIntervalSince1970: 1644386400),
   title: "Backtracking Parsers"
 )
