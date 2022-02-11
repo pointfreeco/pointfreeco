@@ -103,6 +103,8 @@ Int.parser().replaceError(with: 0).parse("!!!")  // 0
 
 ## `@rethrows`
 
+In this release swift-parsing has adopted an experimental compiler feature: rethrowing protocols.
+
 ## Start using it today!
 
 
