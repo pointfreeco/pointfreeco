@@ -41,7 +41,7 @@ let input = """
 """
 ```
 
-We can do so with a few, seemingly simple parsers:
+We can do so with a few seemingly-simple parsers:
 
 ```swift
 let user = Parser(User.init) {
@@ -79,7 +79,7 @@ let input = """
 
 That typo causes parsing to fail, but we have no information of what went wrong since the parser just returns `nil`. This can be really frustrating for large inputs where it can be difficult to find where the error is, especially when the error is literally the last character of the input.
 
-By making the `parse` method of the `Parser` protocol throwing we can contextualize the error message in a much better way. For example, calling the throwing parse method on the above malformed input:
+By making the `parse` method of the `Parser` protocol throwing we can contextualize the error message in a much better way. For example, calling the throwing `parse` method on the above malformed input:
 
 ```swift
 let output = try users.parse(input)
@@ -112,7 +112,7 @@ This can be incredibly handy for tracking down logical problems in your parsers 
 
 Unfortunately changing the `Parser` protocol's requirement to be throwing is a breaking change, and we're not sure there is a way to maintain backwards compatibility. But fortunately there are a few small things you can do to bring your code up-to-date.
 
-By far the common use of parsers that will need to be migrated is when calling the `parse` method. To recapture that behavior you only need to `try?` the parsing:
+By far the most common use of parsers that will need to be migrated is when calling the `parse` method. To recapture that behavior you only need to `try?` the parsing:
 
 ```diff
 - let output = myParser.parse(&input)
@@ -177,14 +177,14 @@ public struct Rest: Parser {
 Rest().parse("Hello!")  // "Hello!"
 ```
 
-This means you can use the new `.replaceError(with:)` parser operator throughout your parsers to get a compile-time guarantee that parsing can't fail.
+This means you can even use the new `.replaceError(with:)` parser operator throughout your parsers to get compile-time guarantees that parsing can't fail.
 
 ```swift
 // No need to `try`!
 Int.parser().replaceError(with: 0).parse("!!!")  // 0
 ```
 
-All of the parsers and operators that ship with the library throw a concrete error whose type is not currently made public. It may be publicized in a future release, but for now we want more flexibility for changes to the type without breaking backwards compatability.
+All of the parsers and operators that ship with the library throw a concrete error whose type is not currently made public. It may be publicized in a future release, but for now we want more flexibility for changing the type without breaking backwards compatibility.
 
 However, you can still throw your own custom error messages and it will be reformatted and contextualized. For example, suppose we wanted a parser that only parsed the digits 0-9 from the beginning of a string and transformed it into an integer. This is subtly different from `Int.parser()` which allows for negative numbers.
 
