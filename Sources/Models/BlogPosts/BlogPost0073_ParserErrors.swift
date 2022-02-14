@@ -314,7 +314,7 @@ protocol IteratorProtocol {
 
 And then conformances could choose to be throwing, non-throwing and re-throwing depending on the situation. But, as we saw with `Parsers.Map` above, that is just not possible in today's Swift.
 
-This problem is exactly what Swift's theoretical [`@rethrows`][rethrows-tweet] feature aims to solve. By marking our `Parser` protocol definition as `@rethrows`:
+This problem is exactly what Swift's experimental [`@rethrows`][rethrows-tweet] feature aims to solve. By marking our `Parser` protocol definition as `@rethrows`:
 
 ```swift
 @rethrows public protocol Parser {
