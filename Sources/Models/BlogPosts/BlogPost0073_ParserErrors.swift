@@ -8,7 +8,7 @@ TODO
   contentBlocks: [
     .init(
       content: #"""
-We are excited to release [0.7.0](https://github.com/pointfreeco/swift-parsing/releases/0.7.0) of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that brings delightful and informative error messaging to parser failures. This is a huge change to the library, and unfortunately is a breaking change.
+We are excited to release [0.7.0][0_7_0] of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that brings delightful and informative error messaging to parser failures. This is a huge change to the library, and unfortunately is a breaking change.
 
 ## What's different?
 
@@ -243,62 +243,111 @@ error: DigitsError(message: "0-9")
 
 ## `@rethrows`
 
-In this release, swift-parsing has adopted an experimental compiler feature: [rethrowing protocols][rethrowing-protocol-conformances].
+In this release, swift-parsing has adopted an experimental compiler feature known as [rethrowing protocols][rethrowing-protocol-conformances] (Swift forums [post][rethrowing-protocol-conformances-forums]).
 
-As is well-known, non-throwing functions can satisfy throwing protocol requirements. This can be incredibly powerful, allowing protocol conformances to more correctly describe their behavior.
-
-However, rethrowing functions _cannot_ satisfy throwing protocol requirements.
-
-
-
-
-
-
-
----
-
-So, while the following two conformances of a hypothetical protocol with throwing requirement compile just fine:
+As is well-known, non-throwing functions can satisfy throwing protocol requirements. This can be incredibly powerful, allowing protocol conformances to more correctly describe their behavior. However, rethrowing functions _cannot_ satisfy throwing protocol requirements. Take for instance the conformance of `Parsers.Map` to the `Parser` protocol:
 
 ```swift
-protocol Foo {
-  func bar() throws
-}
+struct Map<Upstream: Parser, NewOutput>: Parser {
+  let upstream: Upstream
+  let transform: (Upstream.Output) -> NewOutput
 
-struct ConcreteFoo1: Foo {
-  func bar() throws {
-    // ✅
-  }
-}
-struct ConcreteFoo2: Foo {
-  func bar() {
-    // ✅
+  func parse(_ input: inout Upstream.Input) throws -> NewOutput {
+    self.transform(try self.upstream.parse(&input))
   }
 }
 ```
 
-This other conformance does not because it uses a rethrowing function:
+The `parse` method above is marked as `throws` even though it technically does not itself throw any errors. It only throws when `upstream` throws, and so if `upstream` does not throw then we would love if `Parsers.Map` could be inferred to not throw. That is exactly what `rethrows` allows us to do, but if we use it here:
 
 ```swift
-struct ConcreteFoo3: Foo {
-  func bar() rethrows {
-    // ❌
-  }
+func parse(_ input: inout Upstream.Input) rethrows -> NewOutput {
+  ...
 }
 ```
 
 > ❌ 'rethrows' function must take a throwing function argument
 
-This is something that the Swift core team wants to remedy, and a [proposal][rethrowing-protocol-conformances] has been made to allow rethrowing functions to satisfying throwing protocol requirements. You can give the feature a spin by marking your protocol as `@rethrows`:
+We get an error that tells us we cannot use `rethrows` in this way. This means if you `.map` on a parser that does not fail you will necessarily get back a parser that fails, even though the compiler should statically know it's impossible to fail.
+
+For example, the `Whitespace` parser does not fail, and if we wanted to `.map` on it to count how much whitespace we would unnecessarily turn it into a failing parser:
 
 ```swift
-@rethrows protocol Foo {
-  func bar() throws
+let whitespaceCount = Whitespace().map(\.count)
+try whitespaceCount.parse("   Hello".utf8) // 3
+//^ must use try even though parser cannot fail
+```
+
+This is a problem even in the Swift standard library. For example, the `IteratorProtocol` is designed like so:
+
+```swift
+protocol IteratorProtocol {
+  associatedtype Element
+
+  mutating func next() -> Element?
 }
 ```
 
+This represents a stream of elements that can be pulled by invoking `next()`, and once the stream is empty it can return `nil` to signify completion.
 
-, and even some of the new Swift concurrency
+However, this means that pulling elements from a stream is never allowed to signify failure by throwing an error. This is not very realistic as many streams can fail. Even something as simple as reading lines from stdin can fail, and right now we would have to throw away any failures and just return `nil`:
 
+```swift
+struct ReadLineIterator: IteratorProtocol {
+  mutating func next() -> String? {
+    try? readline()
+  }
+}
+```
+
+The `IteratorProtocol` was designed in this way because the compiler lacked rethrowing protocol conformances, just as we saw above with `Parsers.Map`. Ideally we could define `IteratorProtocol` with a throwing `next()` method like this:
+
+```swift
+protocol IteratorProtocol {
+  associatedtype Element
+
+  mutating func next() throws -> Element?
+}
+```
+
+And then conformances could choose to be throwing, non-throwing and re-throwing depending on the situation. But, as we saw with `Parsers.Map` above, that is just not possible in today's Swift.
+
+This problem is exactly what Swift's theoretical [`@rethrows`][rethrows-tweet] feature aims to solve. By marking our `Parser` protocol definition as `@rethrows`:
+
+```swift
+@rethrows public protocol Parser {
+  associatedtype Input
+  associatedtype Output
+
+  func parse(_ input: inout Input) throws -> Output
+}
+```
+
+We instantly get the ability for conformances of `Parser` to rethrow their errors rather than being throwing themselves:
+
+```diff
+ struct Map<Upstream: Parser, NewOutput>: Parser {
+   let upstream: Upstream
+   let transform: (Upstream.Output) -> NewOutput
+
+-  func parse(_ input: inout Upstream.Input) throws -> NewOutput {
++  func parse(_ input: inout Upstream.Input) rethrows -> NewOutput {
+     self.transform(try self.upstream.parse(&input))
+   }
+ }
+```
+
+And now mapping on a whitespace parser produces a new producer that is known by Swift to not fail:
+
+```swift
+let whitespaceCount = Whitespace().map(\.count)
+whitespaceCount.parse("   Hello".utf8) // 3
+// no need to try since Swift knows the parser cannot fail
+```
+
+This allows parsers to prove more about what it does and does not do to the compiler, and can make parsers (and other protocols) give strong guarantees.
+
+Although the `@rethrows` attribute is completely experimental and still has not passed the muster of Swift evolution, it is currently being used in Swift's new concurrency APIs, where `AsyncIteratorProtocol` and `AsyncSequence` have been designed so not to suffer the same shortcomings of `IteratorProtocol` and `Sequence`:
 
 ```swift
 @rethrows public protocol AsyncIteratorProtocol {
@@ -310,12 +359,14 @@ This is something that the Swift core team wants to remedy, and a [proposal][ret
 }
 ```
 
-
 ## Start using it today!
 
-
+Version [0.7.0][0_7_0] is available today, so once you are ready to migrate your parsers to throwing be sure to let us know how it is working out for you!
 
 [rethrowing-protocol-conformances]: https://github.com/DougGregor/swift-evolution/blob/rethrows-protocol-conformances/proposals/NNNN-rethrows-protocol-conformances.md
+[rethrowing-protocol-conformances-forums]: https://forums.swift.org/t/pitch-rethrowing-protocol-conformances/42373
+[rethrows-tweet]: https://twitter.com/slava_pestov/status/1480618687677743109
+[0_7_0]: (https://github.com/pointfreeco/swift-parsing/releases/0.7.0)
 """#,
       timestamp: nil,
       type: .paragraph
