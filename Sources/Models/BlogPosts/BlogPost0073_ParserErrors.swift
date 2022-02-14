@@ -226,7 +226,7 @@ And we introduce an incorrect value into the input:
 ```diff
  let input = """
  1,Blob,true
- -2,Blob Jr.,false
+-2,Blob Jr.,false
 +-2,Blob Jr.,false
  3,Blob Sr.,true
  """
@@ -277,7 +277,7 @@ For example, the `Whitespace` parser does not fail, and if we wanted to `.map` o
 ```swift
 let whitespaceCount = Whitespace().map(\.count)
 try whitespaceCount.parse("   Hello".utf8) // 3
-//^ must use try even though parser cannot fail
+// Must use `try`, even though the parser cannot fail 😫
 ```
 
 This is a problem even in the Swift standard library. For example, the `IteratorProtocol` is designed like so:
@@ -344,7 +344,7 @@ And now mapping on a whitespace parser produces a new producer that is known by 
 ```swift
 let whitespaceCount = Whitespace().map(\.count)
 whitespaceCount.parse("   Hello".utf8) // 3
-// no need to try since Swift knows the parser cannot fail
+// No need to `try` since Swift knows the parser cannot fail! 😄
 ```
 
 This allows parsers to prove more about what it does and does not do to the compiler, and can make parsers (and other protocols) give strong guarantees.
