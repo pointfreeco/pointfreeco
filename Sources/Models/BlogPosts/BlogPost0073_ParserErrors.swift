@@ -245,7 +245,7 @@ error: DigitsError(message: "0-9")
 
 ## `@rethrows`
 
-In this release, swift-parsing has adopted an experimental compiler feature known as [rethrowing protocols][rethrowing-protocol-conformances] (Swift forums [post][rethrowing-protocol-conformances-forums]).
+In this release, swift-parsing has adopted an experimental compiler feature known as [rethrowing protocol conformances][rethrowing-protocol-conformances] (Swift forums [post][rethrowing-protocol-conformances-forums]).
 
 As is well-known, non-throwing functions can satisfy throwing protocol requirements. This can be incredibly powerful, allowing protocol conformances to more correctly describe their behavior. However, rethrowing functions _cannot_ satisfy throwing protocol requirements. Take for instance the conformance of `Parsers.Map` to the `Parser` protocol:
 
