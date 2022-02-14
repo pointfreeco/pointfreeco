@@ -8,7 +8,7 @@ TODO
   contentBlocks: [
     .init(
       content: #"""
-We are excited to release [0.7.0][0_7_0] of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that brings delightful and informative error messaging to parser failures. This is a huge change to the library, and unfortunately is a breaking change.
+We are excited to release [0.7.0][0_7_0] of our [swift-parsing](https://github.com/pointfreeco/swift-parsing) library that brings delightful and informative error messaging to parser failures. This is a huge change to the library, and unfortunately is a breaking change, but continue reading to see how to migrate existing parsers and learn a new [trick](#rethrows) using an experimental Swift compiler feature.
 
 ## What's different?
 
@@ -226,7 +226,7 @@ And we introduce an incorrect value into the input:
 ```diff
  let input = """
  1,Blob,true
--2,Blob Jr.,false
+ -2,Blob Jr.,false
 +-2,Blob Jr.,false
  3,Blob Sr.,true
  """
@@ -240,6 +240,8 @@ error: DigitsError(message: "0-9")
 2 | -2,Blob Sr,false
   | ^
 ```
+
+<div id="rethrows"></div>
 
 ## `@rethrows`
 
