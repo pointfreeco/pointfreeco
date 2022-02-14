@@ -3,7 +3,7 @@ import Foundation
 public let post0073_ParserErrors = BlogPost(
   author: .pointfree,
   blurb: """
-TODO
+A new release of swift-parsing that brings delightful and informative error messaging to parser failures.
 """,
   contentBlocks: [
     .init(
