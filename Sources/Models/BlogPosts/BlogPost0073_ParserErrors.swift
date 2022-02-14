@@ -368,7 +368,7 @@ Version [0.7.0][0_7_0] is available today, so once you are ready to migrate your
 [rethrowing-protocol-conformances]: https://github.com/DougGregor/swift-evolution/blob/rethrows-protocol-conformances/proposals/NNNN-rethrows-protocol-conformances.md
 [rethrowing-protocol-conformances-forums]: https://forums.swift.org/t/pitch-rethrowing-protocol-conformances/42373
 [rethrows-tweet]: https://twitter.com/slava_pestov/status/1480618687677743109
-[0_7_0]: (https://github.com/pointfreeco/swift-parsing/releases/0.7.0)
+[0_7_0]: https://github.com/pointfreeco/swift-parsing/releases/0.7.0
 """#,
       timestamp: nil,
       type: .paragraph
