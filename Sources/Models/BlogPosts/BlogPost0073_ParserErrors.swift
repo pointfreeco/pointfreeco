@@ -270,9 +270,9 @@ func parse(_ input: inout Upstream.Input) rethrows -> NewOutput {
 
 > ❌ 'rethrows' function must take a throwing function argument
 
-We get an error that tells us we cannot use `rethrows` in this way. This means if you `.map` on a parser that does not fail you will necessarily get back a parser that fails, even though the compiler should statically know it's impossible to fail.
+We get an error that tells us we cannot use `rethrows` in this way. This means if you `.map` on a parser that does not fail you will get back a parser that fails, even though the compiler should statically know it's impossible to fail.
 
-For example, the `Whitespace` parser does not fail, and if we wanted to `.map` on it to count how much whitespace we would unnecessarily turn it into a failing parser:
+For example, the `Whitespace` parser does not fail, and if we wanted to `.map` on it to count how much whitespace an input begins with we would unnecessarily turn it into a failing parser:
 
 ```swift
 let whitespaceCount = Whitespace().map(\.count)
