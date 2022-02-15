@@ -349,7 +349,7 @@ whitespaceCount.parse("   Hello".utf8) // 3
 
 This allows parsers to prove more about what it does and does not do to the compiler, and can make parsers (and other protocols) give strong guarantees.
 
-Although the `@rethrows` attribute is completely experimental and still has not passed the muster of Swift evolution, it is currently being used in Swift's new concurrency APIs, where `AsyncIteratorProtocol` and `AsyncSequence` have been designed so not to suffer the same shortcomings of `IteratorProtocol` and `Sequence`:
+Although the `@rethrows` attribute is completely experimental and still has not passed the muster of Swift evolution, it is currently being used in Swift's new concurrency APIs, where `AsyncIteratorProtocol` and `AsyncSequence` have been designed so as not to suffer the same shortcomings of `IteratorProtocol` and `Sequence`:
 
 ```swift
 @rethrows public protocol AsyncIteratorProtocol {
