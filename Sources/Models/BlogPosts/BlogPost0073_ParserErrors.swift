@@ -224,12 +224,12 @@ If we swap out the `Int.parser` for a `Digits` parser in `user`:
 And we introduce an incorrect value into the input:
 
 ```diff
- let input = """
- 1,Blob,true
--2,Blob Jr.,false
-+-2,Blob Jr.,false
- 3,Blob Sr.,true
- """
+  let input = """
+  1,Blob,true
+- 2,Blob Jr.,false
++ -2,Blob Jr.,false
+  3,Blob Sr.,true
+  """
 ```
 
 Then when running the parser we get a nice error message that shows exactly what went wrong:
