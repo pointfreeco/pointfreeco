@@ -44,7 +44,7 @@ let input = """
 We can do so with a few seemingly-simple parsers:
 
 ```swift
-let user = Parser(User.init) {
+let user = Parse(User.init) {
   Int.parser()
   ","
   Prefix { $0 != "," }.map(String.init)
