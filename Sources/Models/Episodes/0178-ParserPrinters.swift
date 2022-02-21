@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep178_parserPrinters = Episode(
     blurb: """
-Building a parser can be complicated: there are many subtleties and edge cases to get right. Often there is a parallel "printing" story, where we need to turn that data back into the format from which it came. This code may be simpler, but it is fraught to do so in an ad hoc way.
+We've spent many episodes discussing parsing, which turns nebulous blobs of data into well-structured data, but sometimes we need the "inverse" process to turn well-structured data back into nebulous data. This is called "printing" and can be useful for serialization, URL routing and more. This week we begin a journey to build a composable framework for parser-printers.
 """,
     codeSampleDirectory: "0178-parser-printers-pt1",
     exercises: _exercises,
