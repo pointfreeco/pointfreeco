@@ -358,10 +358,11 @@ public struct Episode: Equatable {
 
         public static let diff = CodeLang(identifier: "diff")
         public static let html = CodeLang(identifier: "html")
+        public static let javaScript = CodeLang(identifier: "javascript")
         public static let json = CodeLang(identifier: "json")
         public static let plainText = CodeLang(identifier: "txt")
         public static let ruby = CodeLang(identifier: "ruby")
-        public static let shell = CodeLang(identifier: "sh")
+        public static let shell = CodeLang(identifier: "bash")
         public static let sql = CodeLang(identifier: "sql")
         public static let swift = CodeLang(identifier: "swift")
       }

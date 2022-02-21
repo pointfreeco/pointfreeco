@@ -178,5 +178,6 @@ extension Episode {
     .ep175_parserBuilders,
     .ep176_parserErrors,
     .ep177_parserErrors,
+    .ep178_parserPrinters,
   ]
 }
