@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep178_parserPrinters = Episode(
     blurb: """
-We've spent many episodes discussing parsing, which turns nebulous blobs of data into well-structured data, but sometimes we need the "inverse" process to turn well-structured data back into nebulous data. This is called "printing" and can be useful for serialization, URL routing and more. This week we begin a journey to build a composable framework for parser-printers.
+We've spent many episodes discussing parsing, which turns nebulous blobs of data into well-structured data, but sometimes we need the "inverse" process to turn well-structured data back into nebulous data. This is called "printing" and can be useful for serialization, URL routing and more. This week we begin a journey to build a unified, composable framework for parsers and printers.
 """,
     codeSampleDirectory: "0178-parser-printers-pt1",
     exercises: _exercises,
