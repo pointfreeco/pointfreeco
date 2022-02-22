@@ -196,6 +196,21 @@ Optionality is a convenient way to model failure, but can only take us so far. W
           ],
           related: [],
           title: "Errors",
+          whereToGoFromHere: #"""
+By this point we have taken a deep dive into many different topics of parsing, from ergnomics and generalization, to performance and error messaging. But there's a closely related concept that is also very important to discuss, and that's "printing". It can be thought of as the inverse of parsing in that it transforms well-structured data back into nebulous data. Incredibly, parsing and printing can be unified into a single, composable unit.
+"""#
+        ),
+
+        .init(
+          blurb: #"""
+We've spent many episodes discussing parsing, which turns nebulous blobs of data into well-structured data, but sometimes we need the "inverse" process to turn well-structured data back into nebulous data. This is called "printing" and can be useful for serialization, URL routing and more.
+"""#,
+          coreLessons: [
+            .init(episode: .ep178_parserPrinters),
+          ],
+          isFinished: false,
+          related: [],
+          title: "Invertible Parsing",
           whereToGoFromHere: nil
         ),
 
