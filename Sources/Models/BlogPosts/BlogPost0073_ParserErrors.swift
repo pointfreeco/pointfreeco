@@ -235,7 +235,7 @@ And we introduce an incorrect value into the input:
 Then when running the parser we get a nice error message that shows exactly what went wrong:
 
 ```
-error: DigitsError(message: "0-9")
+error: DigitsError(message: "Expected a prefix of digits 0-9")
  --> input:2:1
 2 | -2,Blob Sr,false
   | ^
