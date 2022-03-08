@@ -208,7 +208,6 @@ We've spent many episodes discussing parsing, which turns nebulous blobs of data
           coreLessons: [
             .init(episode: .ep178_parserPrinters),
             .init(episode: .ep179_parserPrinters),
-            .init(episode: .ep180_parserPrinters),
           ],
           isFinished: false,
           related: [],
