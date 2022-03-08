@@ -21,7 +21,7 @@ We will chip away at more and more parser printer conformances, some of which wi
     trailerVideo: .init(
       bytesLength: 8457721,
       vimeoId: 680667355,
-      vimeoStyle: .new(
+      vimeoStyle: .vimeo(
         filename: "0180-trailer.m4v",
         signature720: "aac341354a7c0da971c468da012a0bf689a712e90049ad4389ac954470f4b0ca",
         signature540: "f256e4847c10f5295d948dbd96a74d62e3f31bb10d1571321f5bbdd75bb22ec3"

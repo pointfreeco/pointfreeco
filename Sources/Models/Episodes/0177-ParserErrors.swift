@@ -20,7 +20,7 @@ Let's make errors a pleasure to encounter! We will make them easy to read, add m
     trailerVideo: .init(
       bytesLength: 10492149,
       vimeoId: 671512858,
-      vimeoStyle: .new(
+      vimeoStyle: .vimeo(
         filename: "0177-trailer.m4v",
         signature720: "ff15c0eb584a603aa3c911b5a18339da5f483da65e2d0b70ee7cdd7e06dbffb9",
         signature540: "371e7d54205ac19edbba0134369c2db400b2ab8c714878ea3fae88d052fc65c2"

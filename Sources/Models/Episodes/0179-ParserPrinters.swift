@@ -21,7 +21,7 @@ Now that we've framed the problem of printing, let's begin to tackle it. We will
     trailerVideo: .init(
       bytesLength: 15029946,
       vimeoId: 680666420,
-      vimeoStyle: .new(
+      vimeoStyle: .vimeo(
         filename: "0179-trailer.m4v",
         signature720: "284e47394d6484184954cee3f56b3635d3760245633d4bd28a30635d0458b5b9",
         signature540: "47c5682fa82bcbcca2b38c792632004979101b9364f188f7566db1c194d05c28"

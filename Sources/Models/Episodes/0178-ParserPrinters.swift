@@ -21,7 +21,7 @@ We've spent many episodes discussing parsing, which turns nebulous blobs of data
     trailerVideo: .init(
       bytesLength: 58943224,
       vimeoId: 677916872,
-      vimeoStyle: .new(
+      vimeoStyle: .vimeo(
         filename: "0178-trailer.m4v",
         signature720: "52adbe64746e7a619e4b9640fc1b2b23087073e6077fb0f7a515ba8a34bf8398",
         signature540: "46dc2b711348754c2f3f632c4a08e7be81b69afb0b7b4e5e3cc5c5adbf2fff8b"

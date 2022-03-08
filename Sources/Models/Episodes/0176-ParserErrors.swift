@@ -26,7 +26,7 @@ Let's explore the topic of error handling. We will scrutinize how we model error
     trailerVideo: .init(
       bytesLength: 15127018,
       vimeoId: 671265224,
-      vimeoStyle: .new(
+      vimeoStyle: .vimeo(
         filename: "0176-trailer.m4v",
         signature720: "96485a0352a0ef3e723d1fa4dd7e9524e108296f1af18df804be1472cee1a15a",
         signature540: "aef43ea41ee59017a26ac8e4b7c66c26370a1face43a17bec4618fb6ee9a821d"

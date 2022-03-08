@@ -372,15 +372,17 @@ public struct Episode: Equatable {
   public struct Video: Codable, Equatable {
     public var bytesLength: Int
     public var vimeoId: Int
-    public var vimeoStyle: Style
+    public var downloadUrl: Style
 
     public func downloadUrl(_ quality: Quality) -> String {
-      switch (self.vimeoStyle, quality) {
-      case let (.old(secret), _):
+      switch (self.downloadUrl, quality) {
+      case let (.legacyVimeo(secret), _):
         return "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(secret)&profile_id=\(quality.rawValue)&download=1"
-      case let (.new(filename, signature, _), .hd720):
+      case let (.url(url), _):
+        return url
+      case let (.vimeo(filename, signature, _), .hd720):
         return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/720p/\(filename)%20%28720p%29.mp4?loc=external&signature=\(signature)"
-      case let (.new(filename, _, signature), .sd540):
+      case let (.vimeo(filename, _, signature), .sd540):
         return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/540p/\(filename)%20%28540p%29.mp4?loc=external&signature=\(signature)"
       }
     }
@@ -392,11 +394,21 @@ public struct Episode: Equatable {
     public init(
       bytesLength: Int,
       vimeoId: Int,
+      downloadUrl: String
+    ) {
+      self.bytesLength = bytesLength
+      self.vimeoId = vimeoId
+      self.downloadUrl = .url(downloadUrl)
+    }
+
+    public init(
+      bytesLength: Int,
+      vimeoId: Int,
       vimeoSecret: String
     ) {
       self.bytesLength = bytesLength
       self.vimeoId = vimeoId
-      self.vimeoStyle = .old(secret: vimeoSecret)
+      self.downloadUrl = .legacyVimeo(secret: vimeoSecret)
     }
 
     public init(
@@ -406,12 +418,13 @@ public struct Episode: Equatable {
     ) {
       self.bytesLength = bytesLength
       self.vimeoId = vimeoId
-      self.vimeoStyle = vimeoStyle
+      self.downloadUrl = vimeoStyle
     }
 
     public enum Style: Codable, Equatable {
-      case old(secret: String)
-      case new(filename: String, signature720: String, signature540: String)
+      case legacyVimeo(secret: String)
+      case url(String)
+      case vimeo(filename: String, signature720: String, signature540: String)
     }
 
     public enum Quality: Int {
