@@ -2,7 +2,7 @@ GET http://localhost:8080/api/episodes/1
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 8208
+Content-Length: 8217
 Content-Type: application/json
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -210,11 +210,11 @@ X-XSS-Protection: 1; mode=block
   ],
   "video" : {
     "bytesLength" : 500000000,
-    "vimeoId" : 1234567890,
-    "vimeoStyle" : {
-      "old" : {
+    "downloadUrl" : {
+      "legacyVimeo" : {
         "secret" : "deadbeef"
       }
-    }
+    },
+    "vimeoId" : 1234567890
   }
 }
