@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Update Heroku CLI
+        run: heroku update
       - name: Check out submodules
         uses: actions/checkout@v2
         with:
