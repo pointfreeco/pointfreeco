@@ -15,8 +15,8 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build -j 2 --configuration release --product Server -Xswiftc -g \
-  && swift build -j 2 --configuration release --product Runner -Xswiftc -g
+RUN swift build -j 1 --configuration release --product Server -Xswiftc -g \
+  && swift build -j 1 --configuration release --product Runner -Xswiftc -g
 
 FROM swift:5.5.2-slim
 
