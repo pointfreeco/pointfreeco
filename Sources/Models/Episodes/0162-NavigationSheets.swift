@@ -27,8 +27,12 @@ It's time to look at a more advanced kind of navigation: modals. We will impleme
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 52804666,
-      vimeoId: 617405822,
-      vimeoSecret: "c7053b4d4f6232ff3d302928a1f6e4310259e0af"
+      downloadUrls: .s3(
+        hd1080: "0162-trailer-1080p-6a6fc223dc5b4362a28c9cb48c9805ee",
+        hd720: "0162-trailer-720p-4b7f08f098404c83a4ceb33d26546887",
+        sd540: "0162-trailer-540p-611e8147471f4857ae8388a997a5ccf0"
+      ),
+      vimeoId: 617405822
     )
   )
 }

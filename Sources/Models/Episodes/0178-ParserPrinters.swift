@@ -20,12 +20,12 @@ We've spent many episodes discussing parsing, which turns nebulous blobs of data
     title: "Invertible Parsing",
     trailerVideo: .init(
       bytesLength: 58943224,
-      vimeoId: 677916872,
-      vimeoStyle: .vimeo(
-        filename: "0178-trailer.m4v",
-        signature720: "52adbe64746e7a619e4b9640fc1b2b23087073e6077fb0f7a515ba8a34bf8398",
-        signature540: "46dc2b711348754c2f3f632c4a08e7be81b69afb0b7b4e5e3cc5c5adbf2fff8b"
-      )
+      downloadUrls: .s3(
+        hd1080: "0178-trailer-1080p-724aa10874364865becf0fc1a2a3c69b",
+        hd720: "0178-trailer-720p-908d57e7961d401dbe7f0c46773008d7",
+        sd540: "0178-trailer-540p-d5b940e83af34d2dab7336b06a7301e8"
+      ),
+      vimeoId: 677916872
     )
   )
 }

@@ -48,8 +48,12 @@ An early exploration of how an enum's associated values can be extracted using r
     title: "Case Paths for Free",
     trailerVideo: .init(
       bytesLength: 46590660,
-      vimeoId: 387150414,
-      vimeoSecret: "74737075ffad18263e23694682be5d6ac894ba25"
+      downloadUrls: .s3(
+        hd1080: "0089-trailer-1080p-3eb4c0b11af44f9db03eec9b2ce78585",
+        hd720: "0089-trailer-720p-1b3ce4adbb464aa68f8bbebc86195977",
+        sd540: "0089-trailer-540p-5b5dc642156f4b80839fb3924a840667"
+      ),
+      vimeoId: 387150414
     )
   )
 }

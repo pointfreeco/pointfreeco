@@ -22,8 +22,12 @@ We will explore a form of reducer composition that will take our applications to
     title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 54187542,
-      vimeoId: 355452269,
-      vimeoSecret: "56afb7b0c522691a881fd757ead9eff17c34ac49"
+      downloadUrls: .s3(
+        hd1080: "0071-trailer-1080p-ef27c97771784049920fd94f8dd68218",
+        hd720: "0071-trailer-720p-4083757624174c93bd55e5eb43483e8a",
+        sd540: "0071-trailer-540p-e8ba6eb20cf1426499fab1a220c240a3"
+      ),
+      vimeoId: 355452269
     )
   )
 }

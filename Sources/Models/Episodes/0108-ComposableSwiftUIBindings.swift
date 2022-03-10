@@ -37,8 +37,12 @@ To get a better understanding of the `map` function and how it relates to dynami
       title: "Composable SwiftUI Bindings",
       trailerVideo: .init(
         bytesLength: 56_107_510,
-        vimeoId: 437678216,
-        vimeoSecret: "797a2a088ff3eaaf643dbd69d4482b09213ca9fe"
+        downloadUrls: .s3(
+          hd1080: "0108-trailer-1080p-12b070787974481d869e4f5f7cac329c",
+          hd720: "0108-trailer-720p-2acf3c0d82a646848ef2a4770f22f8a5",
+          sd540: "0108-trailer-540p-42057ddf71f142d0a17542a58de8d06b"
+        ),
+        vimeoId: 437678216
       )
     )
   }

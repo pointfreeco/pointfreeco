@@ -10,8 +10,12 @@ Take a moment to hear from the hosts about what to expect from this new series.
     exercises: [],
     fullVideo: .init(
       bytesLength: 90533615,
-      vimeoId: 354215017,
-      vimeoSecret: "5ec513cdfcccb5bab74356a156dea1dabdd48a16"
+      downloadUrls: .s3(
+        hd1080: "0000-1080p-cccfbb7934ff42a8964d0e0393b72cf1",
+        hd720: "0000-720p-0b46e32932784805a1b6b699413fe281",
+        sd540: "0000-540p-c542d5fad5164174aeb83a97555d50ea"
+      ),
+      vimeoId: 354215017
     ),
     id: 0,
     length: 179,
@@ -22,8 +26,12 @@ Take a moment to hear from the hosts about what to expect from this new series.
     // NB: Same as full video
     trailerVideo: .init(
       bytesLength: 90533615,
-      vimeoId: 354215017,
-      vimeoSecret: "5ec513cdfcccb5bab74356a156dea1dabdd48a16"
+      downloadUrls: .s3(
+        hd1080: "0000-1080p-cccfbb7934ff42a8964d0e0393b72cf1",
+        hd720: "0000-720p-0b46e32932784805a1b6b699413fe281",
+        sd540: "0000-540p-c542d5fad5164174aeb83a97555d50ea"
+      ),
+      vimeoId: 354215017
     ),
     transcriptBlocks: _transcriptBlocks
   )

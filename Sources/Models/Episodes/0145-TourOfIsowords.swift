@@ -26,8 +26,12 @@ We wrap up our tour of [isowords](https://www.isowords.xyz) by showing off two p
     title: "A Tour of isowords",
     trailerVideo: .init(
       bytesLength: 40625547,
-      vimeoId: 542946808,
-      vimeoSecret: "35cf692ff5a3b4f6802489258c922191f8df2033"
+      downloadUrls: .s3(
+        hd1080: "0145-trailer-1080p-cf004995a5b04563a0ccbae0713a472f",
+        hd720: "0145-trailer-720p-da31af47334a4a1595c62e5d541cbc8e",
+        sd540: "0145-trailer-540p-02a3f8d270584369884da76d13804009"
+      ),
+      vimeoId: 542946808
     )
   )
 }

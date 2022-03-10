@@ -39,8 +39,12 @@ private let subscriberOnlyEpisode = Episode(
   exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
-    vimeoId: 1234567890,
-    vimeoSecret: "deadbeef"
+    downloadUrls: .s3(
+      hd1080: "TODO",
+      hd720: "TODO",
+      sd540: "TODO"
+    ),
+    vimeoId: 1234567890
   ),
   id: 2,
   image: "",
@@ -51,8 +55,12 @@ private let subscriberOnlyEpisode = Episode(
   title: "Proof in Functions",
   trailerVideo: .init(
     bytesLength: 5_000_000,
-    vimeoId: 123456,
-    vimeoSecret: "deadbeef"
+    downloadUrls: .s3(
+      hd1080: "TODO",
+      hd720: "TODO",
+      sd540: "TODO"
+    ),
+    vimeoId: 123456
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(

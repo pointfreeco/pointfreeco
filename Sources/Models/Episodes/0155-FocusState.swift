@@ -36,8 +36,12 @@ Documentation for the `@FocusState` property wrapper.
     title: "SwiftUI Focus State",
     trailerVideo: .init(
       bytesLength: 28971455,
-      vimeoId: 577546109,
-      vimeoSecret: "62d0ccf002efb825d8603c7e17648ea317d41989"
+      downloadUrls: .s3(
+        hd1080: "0155-trailer-1080p-5d5bef777f2b4e48a51d6fab283e3133",
+        hd720: "0155-trailer-720p-b384bd7c06b848a49016c39374f9f74c",
+        sd540: "0155-trailer-540p-72e1a13833fd4cf79f25ef7fbff52375"
+      ),
+      vimeoId: 577546109
     )
   )
 }
@@ -88,8 +92,12 @@ But now this is looking quite verbose, and perhaps it isn't pulling its weight.
 extension Episode.Video {
   public static let ep155_focusState = Self(
     bytesLength: 374673376,
-    vimeoId: 577546117,
-    vimeoSecret: "ab0bc6c8bf5201ad95a9c7aded1364d43c3ab641"
+    downloadUrls: .s3(
+      hd1080: "0155-1080p-f59aa7a0f057408f9c8e6e48c53b47cf",
+      hd720: "0155-720p-e6c96b1b54c34c5ab01ff81373f0ac11",
+      sd540: "0155-540p-da0ac6e419354837b907b1c5af4b4456"
+    ),
+    vimeoId: 577546117
   )
 }
 

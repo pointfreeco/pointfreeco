@@ -47,8 +47,12 @@ Documentation for the `.searchable` view modifier.
     title: "Searchable SwiftUI",
     trailerVideo: .init(
       bytesLength: 31309457,
-      vimeoId: 582736899,
-      vimeoSecret: "01acec942ad2b2e4287a6dff558b694bd1138588"
+      downloadUrls: .s3(
+        hd1080: "0156-trailer-1080p-836a72236461459ebf40f5b17bb3fef5",
+        hd720: "0156-trailer-720p-373e109ac9324227b64e362d6c1a8159",
+        sd540: "0156-trailer-540p-c8a285e9b8ab4c1f80ae2209074dfa21"
+      ),
+      vimeoId: 582736899
     )
   )
 }
@@ -60,8 +64,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep156_searchable = Self(
     bytesLength: 335953333,
-    vimeoId: 582736915,
-    vimeoSecret: "14dca06ebf9c6d13fc6567b78c164dde8df79e31"
+    downloadUrls: .s3(
+      hd1080: "0156-1080p-1c2b6ae09e1447d6afc08e5e37e4d66b",
+      hd720: "0156-720p-64a722c881eb4630b347e1d92a5559ad",
+      sd540: "0156-540p-4fa66c888ec64c41aca8d47657d7f0f2"
+    ),
+    vimeoId: 582736915
   )
 }
 

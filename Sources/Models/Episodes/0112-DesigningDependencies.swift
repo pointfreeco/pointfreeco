@@ -24,8 +24,12 @@ It's straightforward to design the dependency for interacting with an API client
     title: "Designing Dependencies",
     trailerVideo: .init(
       bytesLength: 75932312,
-      vimeoId: 446338843,
-      vimeoSecret: "c9975312c2cd9562771f039aa9fd70dbc3711fc2"
+      downloadUrls: .s3(
+        hd1080: "0112-trailer-1080p-e1d040683d2b4e7b9d3404402b926b28",
+        hd720: "0112-trailer-720p-1e2147394c134368996b3754a4978414",
+        sd540: "0112-trailer-540p-3a620a3d08df4b1aa83d37bcef94dfcd"
+      ),
+      vimeoId: 446338843
     )
   )
 }

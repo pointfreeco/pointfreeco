@@ -27,8 +27,12 @@ We finish up our XCTest log parser by parsing out the data associated with a tes
     title: "Parsing Xcode Logs",
     trailerVideo: .init(
       bytesLength: 18137087,
-      vimeoId: 470758672,
-      vimeoSecret: "9dfacb340ffdba1d62c2b140b3da0a1c76b5a596"
+      downloadUrls: .s3(
+        hd1080: "0122-trailer-1080p-50d38d3a1ecb4c71a17dc7e1c3d2f96e",
+        hd720: "0122-trailer-720p-2ae4987c500e449c981699b5d17c452d",
+        sd540: "0122-trailer-540p-0faa6376e6d94cd8af5a2f592051ecd1"
+      ),
+      vimeoId: 470758672
     )
   )
 }

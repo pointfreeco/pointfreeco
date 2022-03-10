@@ -9,8 +9,12 @@ Let's begin exploring application architecture by understanding what are the com
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 241590052,
-      vimeoId: 349951720,
-      vimeoSecret: "2e2fde11175184a755a146b9df7377c47d2b85d7"
+      downloadUrls: .s3(
+        hd1080: "0065-1080p-f3c051ce03c14705881519027c69cc32",
+        hd720: "0065-720p-1d677009feda4c14ab162d9feb9ec00d",
+        sd540: "0065-540p-efff989defa340ec90f3a32f41be1677"
+      ),
+      vimeoId: 349951720
     ),
     id: 65,
     length: 26*60 + 45,
@@ -24,8 +28,12 @@ Let's begin exploring application architecture by understanding what are the com
     title: "SwiftUI and State Management: Part 1",
     trailerVideo: .init(
       bytesLength: 46867087,
-      vimeoId: 349951716,
-      vimeoSecret: "12b2cd19e65c55b2beb83491f89e0ca4ffa0d7e2"
+      downloadUrls: .s3(
+        hd1080: "0065-trailer-1080p-7b0275d7a6af4e97bbd4eae20dfb3c4f",
+        hd720: "0065-trailer-720p-0cb3b92341b247dfb8d8f62eecbeff86",
+        sd540: "0065-trailer-540p-cb8a041ff4984ed08d0840abe2f16d1c"
+      ),
+      vimeoId: 349951716
     ),
     transcriptBlocks: _transcriptBlocks
   )

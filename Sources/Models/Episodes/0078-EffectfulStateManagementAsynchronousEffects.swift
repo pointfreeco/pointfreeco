@@ -27,8 +27,12 @@ It's time to finish our architecture's story for side effects. We've described s
     title: "Effectful State Management",
     trailerVideo: .init(
       bytesLength: 43_957_479,
-      vimeoId: 369002675,
-      vimeoSecret: "d8c4923585f70c6ade66bc2f6fa7422cfccaebbe"
+      downloadUrls: .s3(
+        hd1080: "0078-trailer-1080p-4a750a521cc848dbb672404843da044f",
+        hd720: "0078-trailer-720p-f2e9e14a61f742388d07f924951c6570",
+        sd540: "0078-trailer-540p-2700cb3501794fb19f3f767dfc59f0e7"
+      ),
+      vimeoId: 369002675
     )
   )
 }

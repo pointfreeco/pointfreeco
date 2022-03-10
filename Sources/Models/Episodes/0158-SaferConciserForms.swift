@@ -23,8 +23,12 @@ Previously we explored how SwiftUI makes building forms a snap, and we contraste
     title: "Safer, Conciser Forms",
     trailerVideo: .init(
       bytesLength: 67284270,
-      vimeoId: 592110963,
-      vimeoSecret: "c8bde3dc086ad2fe9139106b21977c9c34b1777c"
+      downloadUrls: .s3(
+        hd1080: "0158-trailer-1080p-1e9a4f7e0a7c4994ba82c69d0e512b46",
+        hd720: "0158-trailer-720p-6da9d20f226141c5bd23f0eecff1f524",
+        sd540: "0158-trailer-540p-a53ab21377c64519a11d1e6f7468c2cf"
+      ),
+      vimeoId: 592110963
     )
   )
 }

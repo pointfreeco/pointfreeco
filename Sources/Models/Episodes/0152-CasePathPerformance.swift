@@ -51,8 +51,12 @@ A complete reflection library for Swift.
     title: "Composable Architecture Performance",
     trailerVideo: .init(
       bytesLength: 39_003_300,
-      vimeoId: 571082849,
-      vimeoSecret: "82d10ada78766823ba7db0df44545d68e8cd1151"
+      downloadUrls: .s3(
+        hd1080: "0152-trailer-1080p-9e275b75116749159bbbd9b881d5673d",
+        hd720: "0152-trailer-720p-7fabf95afbe4452e8adcc3771eacc391",
+        sd540: "0152-trailer-540p-88d07ebad06d423f902d3ba3355d80a3"
+      ),
+      vimeoId: 571082849
     )
   )
 }

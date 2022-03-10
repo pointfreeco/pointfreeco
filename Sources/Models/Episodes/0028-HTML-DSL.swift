@@ -16,8 +16,12 @@ This week we apply domain-specific languages to a very real-world problem: repre
     title: "An HTML DSL",
     trailerVideo: .init(
       bytesLength: 41859651,
-      vimeoId: 348635621,
-      vimeoSecret: "8a0859f2ced9584d8f70946e21b8bd2dc1c2fe06"
+      downloadUrls: .s3(
+        hd1080: "0028-trailer-1080p-b62698a388774533bc06133a6198c6a2",
+        hd720: "0028-trailer-720p-34eb3f37b5fc4ecc94aa88b90ef9b332",
+        sd540: "0028-trailer-540p-96fd4b8dbbe941fca0f284beecdc3757"
+      ),
+      vimeoId: 348635621
     )
   )
 }

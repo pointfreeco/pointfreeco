@@ -19,8 +19,12 @@ We refactor our application's code so that we can run it in production with a li
     title: "Combine Schedulers",
     trailerVideo: .init(
       bytesLength: 31_410_846, 
-      vimeoId: 428639897,
-      vimeoSecret: "366eb6312c6244e00822ddab1dc8e5ae7b676e60"
+      downloadUrls: .s3(
+        hd1080: "0106-trailer-1080p-e4a38adda471420ea65e9cb90291de99",
+        hd720: "0106-trailer-720p-db342a6687d54d2a9c3e8b3d5dfb1b46",
+        sd540: "0106-trailer-540p-1a4b331d8bab49558f25e62b93cea978"
+      ),
+      vimeoId: 428639897
     )
   )
 }

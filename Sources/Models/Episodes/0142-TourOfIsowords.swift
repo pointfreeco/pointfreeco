@@ -26,8 +26,12 @@ In past episodes we took a peek behind the curtains of our recently released iOS
     title: "A Tour of isowords",
     trailerVideo: .init(
       bytesLength: 33101299,
-      vimeoId: 537523006,
-      vimeoSecret: "e3fa21aea9227b89b563189109a851e6f6de8415"
+      downloadUrls: .s3(
+        hd1080: "0142-trailer-1080p-46448901609e41f6a12e3889cd6e73ed",
+        hd720: "0142-trailer-720p-ee260c7810714d14bcda26483109b593",
+        sd540: "0142-trailer-540p-578901e8d87241adb89c383a192a77ce"
+      ),
+      vimeoId: 537523006
     )
   )
 }
@@ -38,8 +42,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep142_tourOfIsowords = Self(
     bytesLength: 347814830,
-    vimeoId: 537523068,
-    vimeoSecret: "e50da2ee11ac6275eaf7bc0b17047c5e307cfe88"
+    downloadUrls: .s3(
+      hd1080: "0142-trailer-1080p-46448901609e41f6a12e3889cd6e73ed",
+      hd720: "0142-trailer-720p-ee260c7810714d14bcda26483109b593",
+      sd540: "0142-trailer-540p-578901e8d87241adb89c383a192a77ce"
+    ),
+    vimeoId: 537523068
   )
 }
 

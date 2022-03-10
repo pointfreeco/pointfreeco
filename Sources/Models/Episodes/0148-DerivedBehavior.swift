@@ -19,8 +19,12 @@ The Composable Architecture comes with several tools that aid in breaking large 
     title: "Derived Behavior",
     trailerVideo: .init(
       bytesLength: 45849562,
-      vimeoId: 556172803,
-      vimeoSecret: "320096fe912594e4647f55ff0dcd8a80b3b97125"
+      downloadUrls: .s3(
+        hd1080: "0148-trailer-1080p-681beaf7782a4f83a723df56ca93743e",
+        hd720: "0148-trailer-720p-831e53eaf1ed4611ab252154d44e7346",
+        sd540: "0148-trailer-540p-000d2d0aa2b8488db2fe5f4d7b2ae0ca"
+      ),
+      vimeoId: 556172803
     )
   )
 }

@@ -26,8 +26,12 @@ Let's dive deeper into the [isowords](https://www.isowords.xyz) code base. We'll
     title: "A Tour of isowords",
     trailerVideo: .init(
       bytesLength: 75022146,
-      vimeoId: 538473438,
-      vimeoSecret: "eb1165ac1b8d25a2f6119dfeabe1f1e71a0a5c32"
+      downloadUrls: .s3(
+        hd1080: "0143-trailer-1080p-6291679ac8c3483fb0c4721bee70a305",
+        hd720: "0143-trailer-720p-ec8c4971b8474292bd3e4ed6e193f360",
+        sd540: "0143-trailer-540p-db30504eeba148a5b78d757504b89be5"
+      ),
+      vimeoId: 538473438
     )
   )
 }
@@ -38,8 +42,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep143_tourOfIsowords = Self(
     bytesLength: 669144331,
-    vimeoId: 538473576,
-    vimeoSecret: "fcfe258cfbe9ac83f0a49e7f1caf1ecc4b364de3"
+    downloadUrls: .s3(
+      hd1080: "0143-trailer-1080p-6291679ac8c3483fb0c4721bee70a305",
+      hd720: "0143-trailer-720p-ec8c4971b8474292bd3e4ed6e193f360",
+      sd540: "0143-trailer-540p-db30504eeba148a5b78d757504b89be5"
+    ),
+    vimeoId: 538473576
   )
 }
 

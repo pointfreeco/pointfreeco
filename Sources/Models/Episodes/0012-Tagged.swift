@@ -16,8 +16,12 @@ We typically model our data with very general types, like strings and ints, but 
     title: "Tagged",
     trailerVideo: .init(
       bytesLength: 33936050,
-      vimeoId: 354214920,
-      vimeoSecret: "4b448ee6516faaf254a070f8116f7dc54a7096db"
+      downloadUrls: .s3(
+        hd1080: "0012-trailer-1080p-3b59140727284fa68b9744fa1ff381b6",
+        hd720: "0012-trailer-720p-3fa0c6402bb144b885444fd00349b084",
+        sd540: "0012-trailer-540p-274dcc1122b745679f4323ac39c1f1eb"
+      ),
+      vimeoId: 354214920
     )
   )
 }

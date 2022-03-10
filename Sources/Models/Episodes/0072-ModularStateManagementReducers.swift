@@ -30,8 +30,12 @@ In exploring four forms of composition on reducer functions, we made the claim t
     title: "Modular State Management",
     trailerVideo: .init(
       bytesLength: 64250490,
-      vimeoId: 358487507,
-      vimeoSecret: "1e3cf7aeaf03e5ca9672c14845186412d3ff7ca2"
+      downloadUrls: .s3(
+        hd1080: "0072-trailer-1080p-ed9333b95bc3441fa86777aa5a186ba9",
+        hd720: "0072-trailer-720p-2403fac5e743466ca8097a53fb114d6a",
+        sd540: "0072-trailer-540p-08887d2b2ea94ddb9eb6d3e856990ff8"
+      ),
+      vimeoId: 358487507
     )
   )
 }

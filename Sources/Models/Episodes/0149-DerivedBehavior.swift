@@ -36,8 +36,12 @@ Earlier this year, one of our viewers, [Luke Redpath](http://twitter.com/lukered
     title: "Derived Behavior",
     trailerVideo: .init(
       bytesLength: 42478068,
-      vimeoId: 561807126,
-      vimeoSecret: "ed81e012c69f3fb4b513158e17890904ec219663"
+      downloadUrls: .s3(
+        hd1080: "0149-trailer-1080p-21620c7ecb704fa990d8b8856c8aaef0",
+        hd720: "0149-trailer-720p-e9f08cc848e542a3a988152677ba114b",
+        sd540: "0149-trailer-540p-c98dee5f8b3245e48cbe4f4bf444520a"
+      ),
+      vimeoId: 561807126
     )
   )
 }

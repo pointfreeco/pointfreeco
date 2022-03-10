@@ -32,8 +32,12 @@ It is well accepted that hand-rolled, imperative parsers are vastly more perform
     title: "Parsing and Performance",
     trailerVideo: .init(
       bytesLength: 64504653,
-      vimeoId: 492807428,
-      vimeoSecret: "56158dafe0996029229c7722923089aba104a227"
+      downloadUrls: .s3(
+        hd1080: "0130-trailer-1080p-f952d430eaff4095a83fac1bfcffef87",
+        hd720: "0130-trailer-720p-76730843c6b145b48252c7edff0c0c7c",
+        sd540: "0130-trailer-540p-388bab40b2fd452b91d59d68de52f524"
+      ),
+      vimeoId: 492807428
     )
   )
 }

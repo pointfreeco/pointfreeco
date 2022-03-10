@@ -32,8 +32,12 @@ We open sourced a [library](https://github.com/pointfreeco/xctest-dynamic-overla
     title: "Better Test Dependencies",
     trailerVideo: .init(
       bytesLength: 44_982_339,
-      vimeoId: 526410765,
-      vimeoSecret: "60569efed14ec96746fabbf6ca5462d897fdb811"
+      downloadUrls: .s3(
+        hd1080: "0139-trailer-1080p-d869ec8a01094b229d5e82292f91a681",
+        hd720: "0139-trailer-720p-cb65378a262f42a997251614bfc06250",
+        sd540: "0139-trailer-540p-dff40530ee45462aa99c1ba44cb1a524"
+      ),
+      vimeoId: 526410765
     )
   )
 }

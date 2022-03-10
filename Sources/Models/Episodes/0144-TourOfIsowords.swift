@@ -26,8 +26,12 @@ It's time to take a look at the other half of the [isowords](https://www.isoword
     title: "A Tour of isowords",
     trailerVideo: .init(
       bytesLength: 75040556,
-      vimeoId: 542626322,
-      vimeoSecret: "506f5b6e4d97c5c2121d13ff78484bb699e83b36"
+      downloadUrls: .s3(
+        hd1080: "0144-trailer-1080p-ae83079618d84e4baf5cbbeb0a2df306",
+        hd720: "0144-trailer-720p-e9241f26e1734e96ac64e68406449a8a",
+        sd540: "0144-trailer-540p-1f06a22a4a814b3b9ad5bae55f3f069d"
+      ),
+      vimeoId: 542626322
     )
   )
 }
@@ -38,8 +42,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep144_tourOfIsowords = Self(
     bytesLength: 363938131,
-    vimeoId: 542626967,
-    vimeoSecret: "6aa7ff8cf7a4396d7209fc11e054985f45dfe88b"
+    downloadUrls: .s3(
+      hd1080: "0144-trailer-1080p-ae83079618d84e4baf5cbbeb0a2df306",
+      hd720: "0144-trailer-720p-e9241f26e1734e96ac64e68406449a8a",
+      sd540: "0144-trailer-540p-1f06a22a4a814b3b9ad5bae55f3f069d"
+    ),
+    vimeoId: 542626967
   )
 }
 

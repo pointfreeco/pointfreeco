@@ -19,8 +19,12 @@ There's a potential performance problem lurking in the Composable Architecture, 
     title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 42191494,
-      vimeoId: 399723100,
-      vimeoSecret: "e4fe717ad3522f4cd45899582c69bc98dac29670"
+      downloadUrls: .s3(
+        hd1080: "0095-trailer-1080p-eb6c859692234de584a80838c56060d9",
+        hd720: "0095-trailer-720p-64de6a8390684f699bac3c884268b475",
+        sd540: "0095-trailer-540p-e2c9a1982523463bac4540d60b4a96d3"
+      ),
+      vimeoId: 399723100
     )
   )
 }

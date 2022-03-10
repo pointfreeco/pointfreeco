@@ -25,8 +25,12 @@ We now have a precise, efficient definition for parsing, but we haven't even scr
     title: "Composable Parsing",
     trailerVideo: .init(
       bytesLength: 54937265,
-      vimeoId: 349952515,
-      vimeoSecret: "18f323dc2d8a15ae347893efc991c55108c27e2d"
+      downloadUrls: .s3(
+        hd1080: "0059-trailer-1080p-d584e506c76643ae8721ac7457f0a4a6",
+        hd720: "0059-trailer-720p-cdec69e2fcef4b888adf1eec0e1682e7",
+        sd540: "0059-trailer-540p-6e615ca60a4047d2bdb63eeff21be29c"
+      ),
+      vimeoId: 349952515
     )
   )
 }

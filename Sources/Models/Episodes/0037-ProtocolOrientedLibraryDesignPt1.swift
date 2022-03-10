@@ -22,8 +22,12 @@ Perhaps the most popular approach to code reuse and extensibility in Swift is to
     title: "Protocol-Oriented Library Design: Part 1",
     trailerVideo: .init(
       bytesLength: 135099501,
-      vimeoId: 349952467,
-      vimeoSecret: "4a98d131f07dff93440785c32b0a63bd89ff60ec"
+      downloadUrls: .s3(
+        hd1080: "0037-trailer-1080p-3938c8537b404c069721b637f7f9ee64",
+        hd720: "0037-trailer-720p-5aac01f8a0cb4e728326f1359846b380",
+        sd540: "0037-trailer-540p-149c6ff75a0a49cfa5d93eaf2211e31b"
+      ),
+      vimeoId: 349952467
     )
   )
 }

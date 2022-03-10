@@ -9,8 +9,12 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 402161784,
-      vimeoId: 414016119,
-      vimeoSecret: "2859c821cb22e295fb771d60b979b4f9039e8bab"
+      downloadUrls: .s3(
+        hd1080: "0100-1080p-9f9760f74ed241c5bed4d2c7a98aa659",
+        hd720: "0100-720p-7a16243734704834a71b3eb4ed6e8a5c",
+        sd540: "0100-540p-5892dbe7aac34472bd5a836d140be4f2"
+      ),
+      vimeoId: 414016119
     ),
     id: 100,
     length: 32*60 + 56,
@@ -26,8 +30,12 @@ It's our 100th episode 🎉! To celebrate, we are finally releasing the Composab
     title: "A Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 402161784,
-      vimeoId: 414015638,
-      vimeoSecret: "0adee8e9d00f457d1afbcb1189d391e88ca76f4f"
+      downloadUrls: .s3(
+        hd1080: "0100-trailer-1080p-8fc9079664e4421984ff5cb70a45bc53",
+        hd720: "0100-trailer-720p-862114bb4a56443cab85ff3eb1e038f7",
+        sd540: "0100-trailer-540p-2eae6f8c217f4b2f876b0b02e8ee4dcb"
+      ),
+      vimeoId: 414015638
     ),
     transcriptBlocks: _transcriptBlocks
   )

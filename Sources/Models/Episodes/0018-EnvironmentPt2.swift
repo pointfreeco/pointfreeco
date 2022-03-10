@@ -18,8 +18,12 @@ Let's have some fun with the "environment" form of dependency injection we previ
     title: "Dependency Injection Made Comfortable",
     trailerVideo: .init(
       bytesLength: 70448269,
-      vimeoId: 352312276,
-      vimeoSecret: "c8e59caf31653beebbbce1572bfccc768bae5816"
+      downloadUrls: .s3(
+        hd1080: "0018-trailer-1080p-3b1f2faa02fb492a869beca84160c8ec",
+        hd720: "0018-trailer-720p-3444c13bd3984b7da39b07c8c817f0bf",
+        sd540: "0018-trailer-540p-4e6ce025ae764339b9d75b71f0a03920"
+      ),
+      vimeoId: 352312276
     )
   )
 }

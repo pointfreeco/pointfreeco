@@ -9,8 +9,12 @@ The third, and final, part of our introductory series to `zip` finally answers t
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 501551082,
-      vimeoId: 351397230,
-      vimeoSecret: "1d1d877d1bb0e623b2f4d9efe362d96bc5aded7d"
+      downloadUrls: .s3(
+        hd1080: "0025-1080p-0c3662f1b2a24327b506998491fcf9b2",
+        hd720: "0025-720p-273cf96a66e64a50bf2de80281cb4b4a",
+        sd540: "0025-540p-f44d76562ee74d05b1d88555295ff8c7"
+      ),
+      vimeoId: 351397230
     ),
     id: 25,
     length: 24*60 + 21,
@@ -21,8 +25,12 @@ The third, and final, part of our introductory series to `zip` finally answers t
     title: "The Many Faces of Zip: Part 3",
     trailerVideo: .init(
       bytesLength: 79605908,
-      vimeoId: 351175721,
-      vimeoSecret: "0eb3a8708cb5810b33420c87d5f5ebc224aeefb6"
+      downloadUrls: .s3(
+        hd1080: "0025-trailer-1080p-5ba9c219f88943f8b50372f58262e04c",
+        hd720: "0025-trailer-720p-a8e7ddc2769a4cb5b3eb577cdbc92c78",
+        sd540: "0025-trailer-540p-ba75dc231bdb4103b34c0db39f90579e"
+      ),
+      vimeoId: 351175721
     ),
     transcriptBlocks: _transcriptBlocks
   )

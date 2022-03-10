@@ -42,8 +42,12 @@ Enums are one of Swift's most notable, powerful features, and as Swift developer
     title: "Composable SwiftUI Bindings",
     trailerVideo: .init(
       bytesLength: 45668759,
-      vimeoId: 438391332,
-      vimeoSecret: "12081956c7ae4c5b00d11d5028fb4f44c027d664"
+      downloadUrls: .s3(
+        hd1080: "0109-trailer-1080p-3fc4db38369040279f7f43f8792d8bbf",
+        hd720: "0109-trailer-720p-ecb31cad0bf145ec971f0ef2b07ecea3",
+        sd540: "0109-trailer-540p-ecb92dfd7e334a108554ea7ec80be06b"
+      ),
+      vimeoId: 438391332
     )
   )
 }

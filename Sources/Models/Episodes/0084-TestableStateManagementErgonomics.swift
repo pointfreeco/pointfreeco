@@ -22,8 +22,12 @@ We not only want our architecture to be testable, but we want it to be super eas
     title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 39298144,
-      vimeoId: 378096709,
-      vimeoSecret: "bd1f389fcc025df919d5b35550c1a1fa23673581"
+      downloadUrls: .s3(
+        hd1080: "0084-trailer-1080p-f547803a6cb74d3f9faa2cc59cf4f180",
+        hd720: "0084-trailer-720p-9a7bb142e01c4068a110363cb435db00",
+        sd540: "0084-trailer-540p-5ef93c463fbc412d94f020155c787be4"
+      ),
+      vimeoId: 378096709
     )
   )
 }

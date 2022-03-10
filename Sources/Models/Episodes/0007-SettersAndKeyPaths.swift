@@ -16,8 +16,12 @@ This week we explore how functional setters can be used with the types we build 
     title: "Setters and Key Paths",
     trailerVideo: .init(
       bytesLength: 35648849,
-      vimeoId: 354214982,
-      vimeoSecret: "25be2e7fffe8e212dd78b0cba8493f90f2e0989a"
+      downloadUrls: .s3(
+        hd1080: "0007-trailer-1080p-a408453170df4d7e9a1961c53c6654bc",
+        hd720: "0007-trailer-720p-c80af4f620d646398b8abae3eae8354a",
+        sd540: "0007-trailer-540p-41f9fea5494941aba6bd8cad01f13e40"
+      ),
+      vimeoId: 354214982
     )
   )
 }

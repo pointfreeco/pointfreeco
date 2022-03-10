@@ -19,12 +19,12 @@ Let's make errors a pleasure to encounter! We will make them easy to read, add m
     title: "Parser Errors",
     trailerVideo: .init(
       bytesLength: 10492149,
-      vimeoId: 671512858,
-      vimeoStyle: .vimeo(
-        filename: "0177-trailer.m4v",
-        signature720: "ff15c0eb584a603aa3c911b5a18339da5f483da65e2d0b70ee7cdd7e06dbffb9",
-        signature540: "371e7d54205ac19edbba0134369c2db400b2ab8c714878ea3fae88d052fc65c2"
-      )
+      downloadUrls: .s3(
+        hd1080: "0177-trailer-1080p-7ebecc2a993840d1857d6810b196d04e",
+        hd720: "0177-trailer-720p-ce12d613e6cf47fe9d36f4ef56d9d791",
+        sd540: "0177-trailer-540p-b166e6b30e38482e9d6d338de67bba74"
+      ),
+      vimeoId: 671512858
     )
   )
 }

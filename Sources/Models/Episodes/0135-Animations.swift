@@ -19,8 +19,12 @@ One of the most impressive features of SwiftUI is its animation system. Let's ex
     title: "SwiftUI Animation",
     trailerVideo: .init(
       bytesLength: 41008156,
-      vimeoId: 511011576,
-      vimeoSecret: "30b11860020f5fd9689f65af618220236b802772"
+      downloadUrls: .s3(
+        hd1080: "0135-trailer-1080p-281b73b60a7543e98c9deb69f6a99a2a",
+        hd720: "0135-trailer-720p-8c83ca52487147e2a3e70f2b87a097cd",
+        sd540: "0135-trailer-540p-b5f0d0e03aff438abb0a0a1ec9e16482"
+      ),
+      vimeoId: 511011576
     )
   )
 }

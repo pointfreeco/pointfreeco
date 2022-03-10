@@ -19,8 +19,12 @@ For simple forms, vanilla SwiftUI does a really good job: you can quickly build 
     title: "Concise Forms",
     trailerVideo: .init(
       bytesLength: 344925246,
-      vimeoId: 500732628,
-      vimeoSecret: "a53d125850e94e41059683ffa3bc0d15c068a499"
+      downloadUrls: .s3(
+        hd1080: "0131-trailer-1080p-e23eabc2fe14414ba4b49d2e4e04c438",
+        hd720: "0131-trailer-720p-78c7f0f55c0d46e8954387302c6b665a",
+        sd540: "0131-trailer-540p-6138d8cbe9a54327a418ac8bb2f0fe5f"
+      ),
+      vimeoId: 500732628
     )
   )
 }

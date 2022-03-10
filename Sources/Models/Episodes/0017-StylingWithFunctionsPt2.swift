@@ -14,8 +14,12 @@ We revisit an old topic: styling UIKit components. Using some of the machinery w
     title: "Styling with Overture",
     trailerVideo: .init(
       bytesLength: 46632907,
-      vimeoId: 352312223,
-      vimeoSecret: "5882065525815f1675fbd41a7d015ef958e2945c"
+      downloadUrls: .s3(
+        hd1080: "0017-trailer-1080p-6b6df28e21734a5889b4cfc59e2633ea",
+        hd720: "0017-trailer-720p-7a28d6211f0b4f2cb4ab2c47b83eba76",
+        sd540: "0017-trailer-540p-f628012e6ce44ca2a0c88b55dfe0c74b"
+      ),
+      vimeoId: 352312223
     )
   )
 }

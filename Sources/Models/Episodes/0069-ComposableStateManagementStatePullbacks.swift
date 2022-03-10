@@ -25,8 +25,12 @@ So far we have pulled a lot of our application's logic into a reducer, but that 
     title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 25_380_000,
-      vimeoId: 353049110,
-      vimeoSecret: "01f74c914424d5005780a54fb755092be8473a89"
+      downloadUrls: .s3(
+        hd1080: "0069-trailer-1080p-98f771682f69491a88ce66285d659978",
+        hd720: "0069-trailer-720p-c40d98386166470e8c5f9326bc06a9fc",
+        sd540: "0069-trailer-540p-bde97cb12bd8438c8cfd6c206729cbfc"
+      ),
+      vimeoId: 353049110
     )
   )
 }

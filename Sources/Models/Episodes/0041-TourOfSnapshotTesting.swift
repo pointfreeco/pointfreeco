@@ -9,8 +9,12 @@ Our snapshot testing library is now officially open source! In order to show jus
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 450728966,
-      vimeoId: 349952472,
-      vimeoSecret: "22357478e55b228d9ea0a50c1719e71fae7cb29e"
+      downloadUrls: .s3(
+        hd1080: "0041-1080p-fce154934e1a4a52abed19c697cd138a",
+        hd720: "0041-720p-6dbcd6ae60bc44f99ac58abdea52a1c7",
+        sd540: "0041-540p-6d5fb715c217488790614f791120336d"
+      ),
+      vimeoId: 349952472
     ),
     id: 41,
     length: 29*60+16,
@@ -27,8 +31,12 @@ Our snapshot testing library is now officially open source! In order to show jus
     title: "A Tour of Snapshot Testing",
     trailerVideo: .init(
       bytesLength: 103111511,
-      vimeoId: 349952474,
-      vimeoSecret: "7e0f0940da37c67093fcc57c336957d8640b4ee3"
+      downloadUrls: .s3(
+        hd1080: "0041-trailer-1080p-f729eb5cbf2f4ea08dbd794cf8c6475a",
+        hd720: "0041-trailer-720p-ad7376d627f74d169cfc92c1c3bb6b54",
+        sd540: "0041-trailer-540p-b32da555109f4eaba21e2a26c99f8cd5"
+      ),
+      vimeoId: 349952474
     ),
     transcriptBlocks: _transcriptBlocks
   )

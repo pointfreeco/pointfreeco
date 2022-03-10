@@ -22,8 +22,12 @@ Let's explore a real world application of "case paths," which provide key path-l
     title: "Composing Architecture with Case Paths",
     trailerVideo: .init(
       bytesLength: 58829798,
-      vimeoId: 389513997,
-      vimeoSecret: "4a190ce5bb5574dc98361bfa06f28fb3862004f7"
+      downloadUrls: .s3(
+        hd1080: "0090-trailer-1080p-78892b775f3b43e7b68f5e1cc8139884",
+        hd720: "0090-trailer-720p-6ae06243040f4ca19f55dde6e3ed57fa",
+        sd540: "0090-trailer-540p-6c01c5b32e8d4aa9b61ff4ecc2d4dcd1"
+      ),
+      vimeoId: 389513997
     )
   )
 }
