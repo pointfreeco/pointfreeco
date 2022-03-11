@@ -16,8 +16,12 @@ The programs we write can be reduced to transforming data from one form into ano
     title: "Functional Setters",
     trailerVideo: .init(
       bytesLength: 12_368_658,
-      vimeoId: 355113870,
-      vimeoSecret: "c7fc090d9ad675b0d22b220e0fd8c462648c1d23"
+      downloadUrls: .s3(
+        hd1080: "0006-trailer-1080p-8cb7cb46d87e461b914b7990f7afd429",
+        hd720: "0006-trailer-720p-7b81d0e3c1ee4e93a6ebdde38271fbfa",
+        sd540: "0006-trailer-540p-9d17268fb9d845ea80f45cd881693362"
+      ),
+      vimeoId: 355113870
     )
   )
 }

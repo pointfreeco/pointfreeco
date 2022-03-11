@@ -26,8 +26,12 @@ Let's solve another common parsing problem using parser combinators! It's common
     title: "Parser Combinators: Part 2",
     trailerVideo: .init(
       bytesLength: 38047077,
-      vimeoId: 349951714,
-      vimeoSecret: "36959b38a26352c1e8599c061b98d10d679ca044"
+      downloadUrls: .s3(
+        hd1080: "0063-trailer-1080p-6260fc0315984bdcaca6ffba2c4d152f",
+        hd720: "0063-trailer-720p-19b07f200e674647bb98fb083ec57475",
+        sd540: "0063-trailer-540p-c940b6745fc0479697e2732f13e54f96"
+      ),
+      vimeoId: 349951714
     )
   )
 }

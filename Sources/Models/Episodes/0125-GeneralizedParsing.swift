@@ -19,8 +19,12 @@ Now that we have generalized the parser type it's time to parse things that aren
     title: "Generalized Parsing",
     trailerVideo: .init(
       bytesLength: 019143341,
-      vimeoId: 479635358,
-      vimeoSecret: "6f68465db09402928afbce1afcbea14d5dba39e9"
+      downloadUrls: .s3(
+        hd1080: "0125-trailer-1080p-84c9c05047dd4e26b53319b89f9ef499",
+        hd720: "0125-trailer-720p-d4d9e4b8368f49f6ac0b044eb3dfce09",
+        sd540: "0125-trailer-540p-a5ef502425ef48c086d2d4b023617f79"
+      ),
+      vimeoId: 479635358
     )
   )
 }

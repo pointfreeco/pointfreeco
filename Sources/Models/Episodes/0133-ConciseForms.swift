@@ -28,8 +28,12 @@ We took a deep dive into type erasers when we explored Combine's `Scheduler` pro
     title: "Concise Forms",
     trailerVideo: .init(
       bytesLength: 73474769,
-      vimeoId: 505234170,
-      vimeoSecret: "f2e622af6d91593ef960ab1801c54d4cf35e12cf"
+      downloadUrls: .s3(
+        hd1080: "0133-trailer-1080p-87bb96830f4d4bb4977d04ca124c4a27",
+        hd720: "0133-trailer-720p-6f99b9fa40434002b2ac2062751997ce",
+        sd540: "0133-trailer-540p-7ff55c711fcd4b078a52e7d6cd96eb8d"
+      ),
+      vimeoId: 505234170
     )
   )
 }

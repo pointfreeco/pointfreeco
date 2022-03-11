@@ -23,8 +23,12 @@ Building forms in the Composable Architecture seem to have the opposite strength
     title: "Concise Forms",
     trailerVideo: .init(
       bytesLength: 65_488_407,
-      vimeoId: 504277240,
-      vimeoSecret: "11860484cfc5d26fc71d491f8f96b23737ce7b42"
+      downloadUrls: .s3(
+        hd1080: "0132-trailer-1080p-d2f8cbe2be2341cfb735351c4a372792",
+        hd720: "0132-trailer-720p-03d032c9023d4a919b718ccb95d7f157",
+        sd540: "0132-trailer-540p-76f6a90c00f044f4972402da34a43f9e"
+      ),
+      vimeoId: 504277240
     )
   )
 }

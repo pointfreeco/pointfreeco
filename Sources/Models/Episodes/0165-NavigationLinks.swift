@@ -26,8 +26,12 @@ It's time to explore the most complex form of navigation in SwiftUI: links! We'l
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 83182826,
-      vimeoId: 638459060,
-      vimeoSecret: "0647d4878b3f4b8182fc2e705dea6109624d78b4"
+      downloadUrls: .s3(
+        hd1080: "0165-trailer-1080p-e566441380244c78bf5d5afa4322e558",
+        hd720: "0165-trailer-720p-a4911c0e2a034d95bcf2e4166d676e49",
+        sd540: "0165-trailer-540p-6429d160562c4e71972426b7f56df0be"
+      ),
+      vimeoId: 638459060
     )
   )
 }

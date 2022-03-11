@@ -26,8 +26,12 @@ We've claimed that the way we handle navigation in SwiftUI unlocks the ability t
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 120965531,
-      vimeoId: 645272445,
-      vimeoSecret: "0d790875c1966bac0fd4dfa92b3aa28ecf441178"
+      downloadUrls: .s3(
+        hd1080: "0168-trailer-1080p-853b157347684363a0daa8b35e54e8d1",
+        hd720: "0168-trailer-720p-768a69863a394644a7a31b0652c70907",
+        sd540: "0168-trailer-540p-e76778cee7e94909bd0ced813fe4ac33"
+      ),
+      vimeoId: 645272445
     )
   )
 }

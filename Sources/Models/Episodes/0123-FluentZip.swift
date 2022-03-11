@@ -18,8 +18,12 @@ The zip function shows up on many types: from Swift arrays and Combine publisher
     title: "Fluently Zipping Parsers",
     trailerVideo: .init(
       bytesLength: 62177062,
-      vimeoId: 474508515,
-      vimeoSecret: "c4654e70af055ce6217aaff862877df2cb1c65ec"
+      downloadUrls: .s3(
+        hd1080: "0123-trailer-1080p-28030023e5f6456782ebe0c1dff9d1d6",
+        hd720: "0123-trailer-720p-c65396f9f838479196f6cc27a6827350",
+        sd540: "0123-trailer-540p-9d5f312ac29f4326b6fd1e90ed0ffaa7"
+      ),
+      vimeoId: 474508515
     )
   )
 }

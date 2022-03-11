@@ -37,8 +37,12 @@ We've seen how cool redacted SwiftUI views are, but we've also seen some of thei
     title: "Redacted SwiftUI",
     trailerVideo: .init(
       bytesLength: 52_765_930,
-      vimeoId: 454928021,
-      vimeoSecret: "6265936d587d05bcad3bbb5838ddf148a4a0fa06"
+      downloadUrls: .s3(
+        hd1080: "0116-trailer-1080p-e63e379df6e342048ad43bd49cbb72e6",
+        hd720: "0116-trailer-720p-184d42fa3fe74d15aab6d4356e2028d8",
+        sd540: "0116-trailer-540p-ea3ca3af36e644a6b9f91ff182969d9c"
+      ),
+      vimeoId: 454928021
     )
   )
 }

@@ -24,8 +24,12 @@ It's time to ask the all important question: what's the point? We now have a pro
     title: "What Is a Parser?: Part 3",
     trailerVideo: .init(
       bytesLength: 23586284,
-      vimeoId: 348472576,
-      vimeoSecret: "e2f45a4c58972c03ffe9b5dde361426105d0d773"
+      downloadUrls: .s3(
+        hd1080: "0058-trailer-1080p-945ae67ff8ba4a57a7f82b6f1c08b489",
+        hd720: "0058-trailer-720p-3c28aded19e84d4a88d855fb6d026217",
+        sd540: "0058-trailer-540p-97b62b397cc74826b53b60939ad737b2"
+      ),
+      vimeoId: 348472576
     )
   )
 }

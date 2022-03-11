@@ -15,8 +15,12 @@ We interact with domain-specific languages on a daily basis, but what does it ta
     title: "Domain‑Specific Languages: Part 1",
     trailerVideo: .init(
       bytesLength: 27200230,
-      vimeoId: 348628453,
-      vimeoSecret: "27ba1e0796d802020fe141ab3102fce35052d43a"
+      downloadUrls: .s3(
+        hd1080: "0026-trailer-1080p-07e2786d64c948e5ab70ee073f774cc6",
+        hd720: "0026-trailer-720p-dde5c33a1d3f42aeb59146cb1ce53ec1",
+        sd540: "0026-trailer-540p-18eb242ab03b4148a40e9fe99d10259c"
+      ),
+      vimeoId: 348628453
     )
   )
 }

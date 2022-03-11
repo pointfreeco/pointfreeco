@@ -15,8 +15,12 @@ We continue our explorations into algebra and the Swift type system. We show tha
     title: "Algebraic Data Types: Exponents",
     trailerVideo: .init(
       bytesLength: 31060549,
-      vimeoId: 354215009,
-      vimeoSecret: "4f54cb0f33bc6531813335f9f4136c463ea22e10"
+      downloadUrls: .s3(
+        hd1080: "0009-trailer-1080p-6dbaa3dfe46c432e92931360e69a6c7c",
+        hd720: "0009-trailer-720p-40181abf976643639b0403128302d173",
+        sd540: "0009-trailer-540p-a2a085b6c8034b41b56b0d6873f4b54f"
+      ),
+      vimeoId: 354215009
     )
   )
 }

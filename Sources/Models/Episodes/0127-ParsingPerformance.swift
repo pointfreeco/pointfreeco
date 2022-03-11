@@ -33,8 +33,12 @@ We want to explore the performance of composable parsers, but to do so we must f
     title: "Parsing and Performance",
     trailerVideo: .init(
       bytesLength: 59207692,
-      vimeoId: 485209021,
-      vimeoSecret: "5e4fb1ff00a978976ecdf2873ae3b59d454c68d4"
+      downloadUrls: .s3(
+        hd1080: "0127-trailer-1080p-3317996a46184e828d2061c68e39d534",
+        hd720: "0127-trailer-720p-f743367d6f024e2d934ca5bebf6e98f1",
+        sd540: "0127-trailer-540p-d7c2d9e9cf9c46feab2c94dc460a44cf"
+      ),
+      vimeoId: 485209021
     )
   )
 }

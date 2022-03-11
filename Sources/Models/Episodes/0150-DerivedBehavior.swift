@@ -19,8 +19,12 @@ We typically rewrite vanilla SwiftUI applications into Composable Architecture a
     title: "Derived Behavior",
     trailerVideo: .init(
       bytesLength: 75_654_725,
-      vimeoId: 565590780,
-      vimeoSecret: "5543b71bdc2172575246bac7d3a1a803b946fb6f"
+      downloadUrls: .s3(
+        hd1080: "0150-trailer-1080p-b8fc56fd11a742daaddc622dbceb1aec",
+        hd720: "0150-trailer-720p-ea5178e5616d4001bc8af167869c26c2",
+        sd540: "0150-trailer-540p-1c8dcdd3cc924e83aa71b6e38e4eb76e"
+      ),
+      vimeoId: 565590780
     )
   )
 }

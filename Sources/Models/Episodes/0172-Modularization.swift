@@ -45,8 +45,12 @@ We finish modularizing our application by extracting its deep linking logic acro
     title: "Modularization",
     trailerVideo: .init(
       bytesLength: 80794646,
-      vimeoId: 656319844,
-      vimeoSecret: "bed378c006aa9968b657b333e466807037961f17"
+      downloadUrls: .s3(
+        hd1080: "0172-trailer-1080p-0a14af0c02ff41e38b61bcca5176ccc7",
+        hd720: "0172-trailer-720p-66df92f1a732455994304fb418f83bb8",
+        sd540: "0172-trailer-540p-1e41d12e436b4e919bed7160b40013f0"
+      ),
+      vimeoId: 656319844
     )
   )
 }

@@ -21,8 +21,12 @@ This week we finally make our untestable Gen type testable. We'll compare severa
     title: "Predictable Randomness: Part 2",
     trailerVideo: .init(
       bytesLength: 43611137,
-      vimeoId: 348484907,
-      vimeoSecret: "f3bd0056d3cbb264d365523fb4f0621455445b57"
+      downloadUrls: .s3(
+        hd1080: "0048-trailer-1080p-dc095f9327e24705a5d109016112aa49",
+        hd720: "0048-trailer-720p-5021841ba5104303bab43e08ad44632e",
+        sd540: "0048-trailer-540p-775b1a7aa6534631b10bbb6c3126ebb2"
+      ),
+      vimeoId: 348484907
     )
   )
 }

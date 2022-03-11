@@ -15,8 +15,12 @@ This week we'll put the finishing touches on our enum property code generation t
     title: "Advanced Swift Syntax Enum Properties",
     trailerVideo: .init(
       bytesLength: 45281185,
-      vimeoId: 348478674,
-      vimeoSecret: "bf1106c5109fe019b4c4e197bdedf43541830c59"
+      downloadUrls: .s3(
+        hd1080: "0054-trailer-1080p-5d4724dc7c504a8682626674f36862dc",
+        hd720: "0054-trailer-720p-27542caab22c4fcbbe062a89b666ed63",
+        sd540: "0054-trailer-540p-04bb2ce777cd438e959ca68fff97f831"
+      ),
+      vimeoId: 348478674
     )
   )
 }

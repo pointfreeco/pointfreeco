@@ -372,16 +372,12 @@ public struct Episode: Equatable {
   public struct Video: Codable, Equatable {
     public var bytesLength: Int
     public var vimeoId: Int
-    public var vimeoStyle: Style
+    public var downloadUrl: DownloadUrls
 
     public func downloadUrl(_ quality: Quality) -> String {
-      switch (self.vimeoStyle, quality) {
-      case let (.old(secret), _):
-        return "https://player.vimeo.com/external/\(self.vimeoId).hd.mp4?s=\(secret)&profile_id=\(quality.rawValue)&download=1"
-      case let (.new(filename, signature, _), .hd720):
-        return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/720p/\(filename)%20%28720p%29.mp4?loc=external&signature=\(signature)"
-      case let (.new(filename, _, signature), .sd540):
-        return "https://player.vimeo.com/progressive_redirect/download/\(self.vimeoId)/rendition/540p/\(filename)%20%28540p%29.mp4?loc=external&signature=\(signature)"
+      switch (self.downloadUrl, quality) {
+      case let (.s3(_, filename, _), .hd720), let (.s3(_, _, filename), .sd540):
+        return "https://pointfreeco-episodes-processed.s3.amazonaws.com/\(filename).mp4"
       }
     }
     
@@ -391,32 +387,21 @@ public struct Episode: Equatable {
 
     public init(
       bytesLength: Int,
-      vimeoId: Int,
-      vimeoSecret: String
+      downloadUrls: DownloadUrls,
+      vimeoId: Int
     ) {
       self.bytesLength = bytesLength
+      self.downloadUrl = downloadUrls
       self.vimeoId = vimeoId
-      self.vimeoStyle = .old(secret: vimeoSecret)
     }
 
-    public init(
-      bytesLength: Int,
-      vimeoId: Int,
-      vimeoStyle: Style
-    ) {
-      self.bytesLength = bytesLength
-      self.vimeoId = vimeoId
-      self.vimeoStyle = vimeoStyle
+    public enum DownloadUrls: Codable, Equatable {
+      case s3(hd1080: String, hd720: String, sd540: String)
     }
 
-    public enum Style: Codable, Equatable {
-      case old(secret: String)
-      case new(filename: String, signature720: String, signature540: String)
-    }
-
-    public enum Quality: Int {
-      case hd720 = 174
-      case sd540 = 165
+    public enum Quality {
+      case hd720
+      case sd540
     }
   }
 }

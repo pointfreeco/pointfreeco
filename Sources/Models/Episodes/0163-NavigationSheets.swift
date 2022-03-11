@@ -37,8 +37,12 @@ This week we’ll explore how to drive a sheet with optional state and how to fa
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 36419368,
-      vimeoId: 617405838,
-      vimeoSecret: "96aec1fadf7db5b90549bf8ea73f5a24d7f2b4b3"
+      downloadUrls: .s3(
+        hd1080: "0163-trailer-1080p-c2a27c13d52544ddbd813ee1c5709320",
+        hd720: "0163-trailer-720p-f0150f11844f43a8900d40ff37f1efbb",
+        sd540: "0163-trailer-540p-d82fc125744f40b2af99bbae5619eb72"
+      ),
+      vimeoId: 617405838
     )
   )
 }

@@ -24,8 +24,12 @@ Let's scrap the protocols for designing our dependencies and just use plain data
     title: "Designing Dependencies",
     trailerVideo: .init(
       bytesLength: 5748685,
-      vimeoId: 441578541,
-      vimeoSecret: "8b460fa5dcbec3ceef85d7a2458f9f9a6d06f7d8"
+      downloadUrls: .s3(
+        hd1080: "0111-trailer-1080p-9d9f4793b47a49a5b37cc29300ebef94",
+        hd720: "0111-trailer-720p-51d317b0f6e84bd3a4c8e18b399fda96",
+        sd540: "0111-trailer-540p-26186efabd5943739a090e8250dca4ff"
+      ),
+      vimeoId: 441578541
     )
   )
 }

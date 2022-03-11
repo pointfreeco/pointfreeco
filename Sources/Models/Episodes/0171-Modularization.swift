@@ -83,8 +83,12 @@ We've talked about modularity a lot in the past, but we've never devoted full ep
     title: "Modularization",
     trailerVideo: .init(
       bytesLength: 276338642,
-      vimeoId: 655905170,
-      vimeoSecret: "0adfcfd50a9a3e7e402fdb7cba599f5c3e0657a7"
+      downloadUrls: .s3(
+        hd1080: "0171-trailer-1080p-d8aff62e3261446cbb12dc177a7edb66",
+        hd720: "0171-trailer-720p-705bb09565ac4baaa7ebf0c855842308",
+        sd540: "0171-trailer-540p-372e87f996cf43c688a512a3298f33c2"
+      ),
+      vimeoId: 655905170
     )
   )
 }
@@ -95,8 +99,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep171_modularization = Self(
     bytesLength: 620286634,
-    vimeoId: 655905307,
-    vimeoSecret: "315be3ab99edc54550375ca854e2d19ea2031218"
+    downloadUrls: .s3(
+      hd1080: "0171-1080p-ac573b187ace476db33ee1122e30e80d",
+      hd720: "0171-720p-0408e3aafa554b70be2b869841dbad5e",
+      sd540: "0171-540p-1b30d4fc60a943139e2e8deebb83d1cd"
+    ),
+    vimeoId: 655905307
   )
 }
 

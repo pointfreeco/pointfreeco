@@ -19,8 +19,12 @@ Let's rebuild last week's moderately complex SwiftUI app in the Composable Archi
     title: "Derived Behavior",
     trailerVideo: .init(
       bytesLength: 75752962,
-      vimeoId: 549286918,
-      vimeoSecret: "edcacfb68b6bc1d592b36d780ffe9314313e991b"
+      downloadUrls: .s3(
+        hd1080: "0147-trailer-1080p-043ead40912440c597750885f5cad11b",
+        hd720: "0147-trailer-720p-dbef0232b90d4c998fc76ae0e5276e88",
+        sd540: "0147-trailer-540p-d195abdbd11c4b6cbc8295a6f8ed8c08"
+      ),
+      vimeoId: 549286918
     )
   )
 }

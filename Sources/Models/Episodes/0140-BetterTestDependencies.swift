@@ -26,8 +26,12 @@ A major source of complexity in our applications is asynchrony. It is a side eff
     title: "Better Test Dependencies",
     trailerVideo: .init(
       bytesLength: 71564364,
-      vimeoId: 529130454,
-      vimeoSecret: "7c4caeca69c2de5825a14b09bc8a869a63bfa0ad"
+      downloadUrls: .s3(
+        hd1080: "0140-trailer-1080p-387d03e98430428e8c7e7a2512eef54f",
+        hd720: "0140-trailer-720p-10213452d34c45b88624772adc2b8784",
+        sd540: "0140-trailer-540p-53b422f5f3a84ac9b85d6745f1378d76"
+      ),
+      vimeoId: 529130454
     )
   )
 }

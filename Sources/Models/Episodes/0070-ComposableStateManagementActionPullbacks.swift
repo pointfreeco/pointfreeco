@@ -47,8 +47,12 @@ Although "enum properties" are powerful, it is a fair amount of boilerplate to m
     title: "Composable State Management",
     trailerVideo: .init(
       bytesLength: 33_400_000,
-      vimeoId: 354416530,
-      vimeoSecret: "8f9bf097472e852bdbcf9cef5b0682250cd564fd"
+      downloadUrls: .s3(
+        hd1080: "0070-trailer-1080p-a46f158c59c64b6b819479b685a3982d",
+        hd720: "0070-trailer-720p-934214411ef246709cfa1d54f5c45887",
+        sd540: "0070-trailer-540p-6c7f4be9e0994df9a687ca6d5b402391"
+      ),
+      vimeoId: 354416530
     )
   )
 }

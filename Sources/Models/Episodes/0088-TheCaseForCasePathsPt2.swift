@@ -31,8 +31,12 @@ In this episode we first define the `^` operator to lift key paths to getter fun
     title: "The Case for Case Paths",
     trailerVideo: .init(
       bytesLength: 18382159,
-      vimeoId: 386554253,
-      vimeoSecret: "1cc1944394c785d14a4c8e974a3ee7e90cfdcbee"
+      downloadUrls: .s3(
+        hd1080: "0088-trailer-1080p-7c8b77d9ae0b4b54837bbac6e084eebb",
+        hd720: "0088-trailer-720p-fb94b0509788446c8c1ae3b3611c5b52",
+        sd540: "0088-trailer-540p-44353abbc00c456699c0cdb531a11717"
+      ),
+      vimeoId: 386554253
     )
   )
 }

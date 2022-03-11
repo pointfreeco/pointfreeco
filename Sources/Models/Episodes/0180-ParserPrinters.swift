@@ -20,12 +20,12 @@ We will chip away at more and more parser printer conformances, some of which wi
     title: "Invertible Parsing",
     trailerVideo: .init(
       bytesLength: 8457721,
-      vimeoId: 680667355,
-      vimeoStyle: .new(
-        filename: "0180-trailer.m4v",
-        signature720: "aac341354a7c0da971c468da012a0bf689a712e90049ad4389ac954470f4b0ca",
-        signature540: "f256e4847c10f5295d948dbd96a74d62e3f31bb10d1571321f5bbdd75bb22ec3"
-      )
+      downloadUrls: .s3(
+        hd1080: "0180-trailer-1080p-477fdcdf2d13495b845b5a43829550ef",
+        hd720: "0180-trailer-720p-7705e40147f14093adf6d01496fd35dc",
+        sd540: "0180-trailer-540p-d215d31a32954cd1ab11d027264739a8"
+      ),
+      vimeoId: 680667355
     )
   )
 }

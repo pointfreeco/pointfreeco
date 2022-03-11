@@ -36,8 +36,12 @@ The Swift Evolution proposal that made it possible for enums to conform to proto
     title: "Safer, Conciser Forms",
     trailerVideo: .init(
       bytesLength: 39848626,
-      vimeoId: 592111084,
-      vimeoSecret: "3ab0c5de7401c965db37eb5039e8e094f26f4a7b"
+      downloadUrls: .s3(
+        hd1080: "0159-trailer-1080p-4d561c106c484a83ad3ef1ceb2c38c4d",
+        hd720: "0159-trailer-720p-83eae9cfe4cf4c899385b27899376f2a",
+        sd540: "0159-trailer-540p-f0d99961e9324c079df532023f1ab345"
+      ),
+      vimeoId: 592111084
     )
   )
 }

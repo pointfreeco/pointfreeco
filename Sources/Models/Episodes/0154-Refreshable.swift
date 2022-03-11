@@ -37,8 +37,12 @@ Documentation for `refreshable`.
     title: "Async Refreshable",
     trailerVideo: .init(
       bytesLength: 26817157,
-      vimeoId: 577131488,
-      vimeoSecret: "681d437aeeb23fe8048e79aa5eee6320d7556c2f"
+      downloadUrls: .s3(
+        hd1080: "0154-trailer-1080p-68708441fb5347fb8fc0c1036979dd96",
+        hd720: "0154-trailer-720p-d676d15911fb43858823a4c07a056e75",
+        sd540: "0154-trailer-540p-a0637329230f4b458426f3eefad052a5"
+      ),
+      vimeoId: 577131488
     )
   )
 }
@@ -212,8 +216,12 @@ extension ViewStore {
 extension Episode.Video {
   public static let ep154_asyncRefreshableTCA = Self(
     bytesLength: 364471160,
-    vimeoId: 577131493,
-    vimeoSecret: "939af99002f6c8f60bfb30b2527e20822949a8b3"
+    downloadUrls: .s3(
+      hd1080: "0154-1080p-34c9a99975df4e1386a052a651642940",
+      hd720: "0154-720p-32f5674cb4214c19a92261cf52896bd3",
+      sd540: "0154-540p-293ce43ba7bc4a8685c36223dbd1a7cc"
+    ),
+    vimeoId: 577131493
   )
 }
 

@@ -16,8 +16,12 @@ Let's explore a type of composition that defies our intuitions. It appears to go
     title: "Contravariance",
     trailerVideo: .init(
       bytesLength: 54446212,
-      vimeoId: 354214967,
-      vimeoSecret: "b8931e84a658cebfc4dff3f143a5afea659651fb"
+      downloadUrls: .s3(
+        hd1080: "0014-trailer-1080p-d3efd96cfd674db2b9b216557fa474ea",
+        hd720: "0014-trailer-720p-f9a510257e1146e6889aa338ddc426d0",
+        sd540: "0014-trailer-540p-0439bb90db7142d0b774caaf8dbc8a80"
+      ),
+      vimeoId: 354214967
     )
   )
 }

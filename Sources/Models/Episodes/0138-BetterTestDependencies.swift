@@ -22,8 +22,12 @@ We talk about dependencies a lot on Point-Free, but we've never done a deep dive
     title: "Better Test Dependencies",
     trailerVideo: .init(
       bytesLength: 43986963,
-      vimeoId: 522615995,
-      vimeoSecret: "f43ad7f9f64d05fe526aa17e0846222d4f5fb136"
+      downloadUrls: .s3(
+        hd1080: "0138-trailer-1080p-19d6b791347148bd8fee9ef00f9575e2",
+        hd720: "0138-trailer-720p-523c2782198f4ecb9c3d47751fe8d978",
+        sd540: "0138-trailer-540p-eea62628359f4384b78a17e4b7292a8e"
+      ),
+      vimeoId: 522615995
     )
   )
 }

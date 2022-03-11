@@ -9,8 +9,12 @@ We've made testing in our architecture a joy! We can test deep aspects of our ap
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 325896989,
-      vimeoId: 378096729,
-      vimeoSecret: "c9456690590d5fb0ba42a8aec86af5101c0b1213"
+      downloadUrls: .s3(
+        hd1080: "0085-1080p-2e529b95f0d24b86a29b334b1c767cd9",
+        hd720: "0085-720p-c5239c62083b4cdfbdaac1120606fb35",
+        sd540: "0085-540p-0b752e9715c6440199b1e2b416583d28"
+      ),
+      vimeoId: 378096729
     ),
     id: 85,
     length: 33*60 + 35,
@@ -26,8 +30,12 @@ We've made testing in our architecture a joy! We can test deep aspects of our ap
     title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 34340125,
-      vimeoId: 378096707,
-      vimeoSecret: "b6487b04dfa5d755df58b3f5226854ad852a1144"
+      downloadUrls: .s3(
+        hd1080: "0085-trailer-1080p-43d74bcc79ec48ad8b05ecbe64dc46ff",
+        hd720: "0085-trailer-720p-245dc5a63de341dd8f1d3ea4f49b394c",
+        sd540: "0085-trailer-540p-325ff8e207ff411ea1709b152d401f92"
+      ),
+      vimeoId: 378096707
     ),
     transcriptBlocks: _transcriptBlocks
   )

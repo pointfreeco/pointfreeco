@@ -32,8 +32,12 @@ The performance gains we have made with the parser type have already been super 
     title: "Parsing and Performance",
     trailerVideo: .init(
       bytesLength: 36711102,
-      vimeoId: 490481881,
-      vimeoSecret: "1af97b4fdc46c110511b98a6d6a1a8a566afbc1d"
+      downloadUrls: .s3(
+        hd1080: "0129-trailer-1080p-db6931b9dda54cebb147891cd1e0f004",
+        hd720: "0129-trailer-720p-a1cc94fb029b455f8ccb5757df904c51",
+        sd540: "0129-trailer-540p-a150037fb63b4c1c83dc340b9d9fcb5a"
+      ),
+      vimeoId: 490481881
     )
   )
 }

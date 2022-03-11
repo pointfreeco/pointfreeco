@@ -9,8 +9,12 @@ Today we finally extract our enum property code generator to a Swift Package Man
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 456133747,
-      vimeoId: 349952509,
-      vimeoSecret: "945bc730c1ec23bd83435ee52953d0ee3478d516"
+      downloadUrls: .s3(
+        hd1080: "0055-1080p-eb83145fe79b4252858bb7a3ffa9bca7",
+        hd720: "0055-720p-e4926b1e3a0e449ab081865a10cb2525",
+        sd540: "0055-540p-1665a04143f4476e90f7e80098846203"
+      ),
+      vimeoId: 349952509
     ),
     id: 55,
     length: 35*60 + 16,
@@ -21,8 +25,12 @@ Today we finally extract our enum property code generator to a Swift Package Man
     title: "Swift Syntax Command Line Tool",
     trailerVideo: .init(
       bytesLength: 35807367,
-      vimeoId: 349952508,
-      vimeoSecret: "a836ebc2e297565c9daaef4e97181ecd90773599"
+      downloadUrls: .s3(
+        hd1080: "0055-trailer-1080p-f52f86f4469948b3abf3f9a387ffa8ae",
+        hd720: "0055-trailer-720p-e6cb236900ed423682c168cacf3be80d",
+        sd540: "0055-trailer-540p-c350721e67a342088fc72cc305411442"
+      ),
+      vimeoId: 349952508
     ),
     transcriptBlocks: _transcriptBlocks
   )

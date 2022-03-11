@@ -43,8 +43,12 @@ In our first episode on side effects we first show that side effects that depend
     title: "Designing Dependencies",
     trailerVideo: .init(
       bytesLength: 147643514,
-      vimeoId: 441577251,
-      vimeoSecret: "6c11a1a4ea0a97093458010944d54c0d49550b66"
+      downloadUrls: .s3(
+        hd1080: "0110-trailer-1080p-f398798ffea149fca9c2d2e22be46d42",
+        hd720: "0110-trailer-720p-c520580aa7ac4baaafda850b9ed2f166",
+        sd540: "0110-trailer-540p-6da29f83ac1f480e94c4c44581ab8770"
+      ),
+      vimeoId: 441577251
     )
   )
 }

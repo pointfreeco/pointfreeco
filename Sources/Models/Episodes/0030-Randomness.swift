@@ -16,8 +16,12 @@ Randomness is a topic that may not seem so functional, but it gives us a wonderf
     title: "Composable Randomness",
     trailerVideo: .init(
       bytesLength: 29177507,
-      vimeoId: 351175150,
-      vimeoSecret: "73403f198bf79c495f09540b3836314cde4417b4"
+      downloadUrls: .s3(
+        hd1080: "0030-trailer-1080p-45565094345644459b0475dae951b50d",
+        hd720: "0030-trailer-720p-139c755fcf4f41ca89ac52120b15d4c0",
+        sd540: "0030-trailer-540p-068ec966d1234c6e813b38a3b96ea2ee"
+      ),
+      vimeoId: 351175150
     )
   )
 }

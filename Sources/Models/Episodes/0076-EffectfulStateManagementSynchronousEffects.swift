@@ -39,8 +39,12 @@ One of the easiest ways to control side effects is through the use of "dependenc
     title: "Effectful State Management",
     trailerVideo: .init(
       bytesLength: 35772530,
-      vimeoId: 365501991,
-      vimeoSecret: "7ac3b690e2fe618eee428b80e31a06fb8499445e"
+      downloadUrls: .s3(
+        hd1080: "0076-trailer-1080p-7d6546836cf042888966d6686fa3dfc8",
+        hd720: "0076-trailer-720p-ef690e7bee91460d9d7ffcd77669eb20",
+        sd540: "0076-trailer-540p-ec5ae322309843908881c3fd859ed53a"
+      ),
+      vimeoId: 365501991
     )
   )
 }

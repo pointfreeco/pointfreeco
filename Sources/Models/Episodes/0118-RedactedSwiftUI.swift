@@ -36,8 +36,12 @@ We finish building a rich onboarding experience for our application by selective
     title: "The Point of Redacted SwiftUI: Part 2",
     trailerVideo: .init(
       bytesLength: 28968407,
-      vimeoId: 459992980,
-      vimeoSecret: "7229383776e713dc3c423bb0521290bb955d0955"
+      downloadUrls: .s3(
+        hd1080: "0118-trailer-1080p-0d05ae64e6d04986a11f01bcc872e044",
+        hd720: "0118-trailer-720p-161f2a8fc8c1425395c6344b7f22b36f",
+        sd540: "0118-trailer-540p-ee64f23601914fb0904849f9726fb5c5"
+      ),
+      vimeoId: 459992980
     )
   )
 }

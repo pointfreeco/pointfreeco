@@ -19,8 +19,12 @@ So, what's the point of forgoing the protocols and designing dependencies with s
     title: "Designing Dependencies",
     trailerVideo: .init(
       bytesLength: 65252462,
-      vimeoId: 450835485,
-      vimeoSecret: "a7da4563bf1e7e2766112a7a57756c878685a3df"
+      downloadUrls: .s3(
+        hd1080: "0114-trailer-1080p-54189f9b6fe748ed9d5b9992dbfc859e",
+        hd720: "0114-trailer-720p-c9830ebde2eb4504bec3ae047bb7bf70",
+        sd540: "0114-trailer-540p-4651621988d642a6918def424a802dec"
+      ),
+      vimeoId: 450835485
     )
   )
 }

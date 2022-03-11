@@ -25,8 +25,12 @@ Navigation is a really, really complex topic, and it's going to take us many epi
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 126764402,
-      vimeoId: 609414235,
-      vimeoSecret: "922d9996b68f5f1760f19c886b8abf9f85dfd035"
+      downloadUrls: .s3(
+        hd1080: "0160-trailer-1080p-97fe1f1d9898425e95704fed43c29b65",
+        hd720: "0160-trailer-720p-20b2d610d35f47b0953161e6474844c2",
+        sd540: "0160-trailer-540p-7caffa15bca14f7f895d4e653b53806d"
+      ),
+      vimeoId: 609414235
     )
   )
 }

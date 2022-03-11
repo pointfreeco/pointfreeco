@@ -20,12 +20,12 @@ Now that we've framed the problem of printing, let's begin to tackle it. We will
     title: "Invertible Parsing",
     trailerVideo: .init(
       bytesLength: 15029946,
-      vimeoId: 680666420,
-      vimeoStyle: .new(
-        filename: "0179-trailer.m4v",
-        signature720: "284e47394d6484184954cee3f56b3635d3760245633d4bd28a30635d0458b5b9",
-        signature540: "47c5682fa82bcbcca2b38c792632004979101b9364f188f7566db1c194d05c28"
-      )
+      downloadUrls: .s3(
+        hd1080: "0179-trailer-1080p-1d34b6eeef6b4df4a081ff30d851c7a2",
+        hd720: "0179-trailer-720p-60bf8c647281492a93565ad633fd7611",
+        sd540: "0179-trailer-540p-f8c5f9b4ab7b4631a988c515b8e97d04"
+      ),
+      vimeoId: 680666420
     )
   )
 }

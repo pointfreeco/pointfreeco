@@ -38,8 +38,12 @@ It's time to prove that baking an "environment" of dependencies directly into th
     title: "Modular Dependency Injection: The Point",
     trailerVideo: .init(
       bytesLength: 875210,
-      vimeoId: 394821197,
-      vimeoSecret: "9bdad93f5261ced6f8aa4c7d0b71f911fd56f28b"
+      downloadUrls: .s3(
+        hd1080: "0093-trailer-1080p-5c53df149e5744cb996f4876630c0a62",
+        hd720: "0093-trailer-720p-b7cada0d63fc456eac3d1a16ee95900e",
+        sd540: "0093-trailer-540p-6535897551294953898c93aa65008db8"
+      ),
+      vimeoId: 394821197
     )
   )
 }

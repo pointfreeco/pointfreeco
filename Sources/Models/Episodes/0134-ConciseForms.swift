@@ -9,8 +9,12 @@ We've shown how to dramatically streamline forms in the Composable Architecture,
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 373699419,
-      vimeoId: 508418783,
-      vimeoSecret: "21c734f3164457cd91c2b68db18d2b5defd46418"
+      downloadUrls: .s3(
+        hd1080: "0134-1080p-0166386c8bcd47a1bfe5624a4f28ab96",
+        hd720: "0134-720p-9f5f9c354f0f40d9b82f4ef28f16ffd4",
+        sd540: "0134-540p-dbcb2476a0af492ea46305204d3fe8d1"
+      ),
+      vimeoId: 508418783
     ),
     id: 134,
     length: 28*60 + 14,
@@ -24,8 +28,12 @@ We've shown how to dramatically streamline forms in the Composable Architecture,
     title: "Concise Forms",
     trailerVideo: .init(
       bytesLength: 59604438,
-      vimeoId: 508418621,
-      vimeoSecret: "c5db454d026563010c387a771b9fe16a55cef7e8"
+      downloadUrls: .s3(
+        hd1080: "0134-trailer-1080p-2e57ba5fa7e84426a6ecd48b38f8c695",
+        hd720: "0134-trailer-720p-2e48d4e086624af7b455aafbb8940912",
+        sd540: "0134-trailer-540p-7538814ba1e74b0c8d88bbf957f8fd85"
+      ),
+      vimeoId: 508418621
     ),
     transcriptBlocks: .ep134_conciseForms
   )

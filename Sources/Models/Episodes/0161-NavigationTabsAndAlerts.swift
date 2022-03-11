@@ -25,8 +25,12 @@ We continue our journey exploring navigation with an examination of alerts and a
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 37014026,
-      vimeoId: 613195746,
-      vimeoSecret: "002b1ec9a0fbe122b2e64bfaf1dfdb651d9dc2a6"
+      downloadUrls: .s3(
+        hd1080: "0161-trailer-1080p-722f9b51816747df89f644e19c9c26ac",
+        hd720: "0161-trailer-720p-c8f45fae0edf4f0587f84d5cbf3b11ae",
+        sd540: "0161-trailer-540p-dad35695503441e99cfbb5d846877e46"
+      ),
+      vimeoId: 613195746
     )
   )
 }

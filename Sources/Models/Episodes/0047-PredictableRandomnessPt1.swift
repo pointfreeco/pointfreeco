@@ -34,8 +34,12 @@ We first introduced the `Environment` concept for controlling dependencies in th
     title: "Predictable Randomness: Part 1",
     trailerVideo: .init(
       bytesLength: 46323465,
-      vimeoId: 349952487,
-      vimeoSecret: "64c5c41c6d641feb92e4656302439248a9d1df58"
+      downloadUrls: .s3(
+        hd1080: "0047-trailer-1080p-a72a05447a24416487e93b2dbdd75392",
+        hd720: "0047-trailer-720p-ef1f5e8e1456421da8cdd75586172aa2",
+        sd540: "0047-trailer-540p-2c1ec8bb0f9d4f20a2c3cec40d128888"
+      ),
+      vimeoId: 349952487
     )
   )
 }
