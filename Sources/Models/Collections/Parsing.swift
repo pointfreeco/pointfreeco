@@ -209,6 +209,7 @@ We've spent many episodes discussing parsing, which turns nebulous blobs of data
             .init(episode: .ep178_parserPrinters),
             .init(episode: .ep179_parserPrinters),
             .init(episode: .ep180_parserPrinters),
+            .init(episode: .ep181_parserPrinters),
           ],
           isFinished: false,
           related: [],
