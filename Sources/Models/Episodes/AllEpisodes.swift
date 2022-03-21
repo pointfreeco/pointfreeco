@@ -182,5 +182,6 @@ extension Episode {
     .ep179_parserPrinters,
     .ep180_parserPrinters,
     .ep181_parserPrinters,
+    .ep182_parserPrinters,
   ]
 }
