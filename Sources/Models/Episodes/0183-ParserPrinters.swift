@@ -12,6 +12,15 @@ We've had to really stretch our brains to consider what it means to reverse the 
     permission: .subscriberOnly,
     publishedAt:  Date(timeIntervalSince1970: 1648443600),
     references: [
+      .init(
+        author: nil,
+        blurb: """
+          Point-Free community member David Peterson [brought](https://github.com/pointfreeco/swift-parsing/discussions/144) it to our attention that it would be better if printers flipped the order in which they are run.
+          """,
+        link: "https://twitter.com/david_peterson",
+        publishedAt: nil,
+        title: "David Peterson"
+      ),
       .invertibleSyntaxDescriptions,
       .unifiedParsingAndPrintingWithPrisms,
     ],
