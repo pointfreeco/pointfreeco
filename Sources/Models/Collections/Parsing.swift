@@ -212,8 +212,8 @@ We've spent many episodes discussing parsing, which turns nebulous blobs of data
             .init(episode: .ep181_parserPrinters),
             .init(episode: .ep182_parserPrinters),
             .init(episode: .ep183_parserPrinters),
+            .init(episode: .ep184_parserPrinters),
           ],
-          isFinished: false,
           related: [],
           title: "Invertible Parsing",
           whereToGoFromHere: nil
