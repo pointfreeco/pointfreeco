@@ -21,7 +21,7 @@ We conclude our series on invertible parsing by converting a more complex parser
     trailerVideo: .init(
       bytesLength: 48_000_000,
       downloadUrls: .s3(
-        hd1080: "0184-trailer-540p-499b9cab4d6a470690d0982c0bfa59af",
+        hd1080: "0184-trailer-1080p-f6bb711379bc4c2793cdf0844bbbd555",
         hd720: "0184-trailer-720p-03a3cc20db2f407db018e05ca0a84d07",
         sd540: "0184-trailer-540p-499b9cab4d6a470690d0982c0bfa59af"
       ),
