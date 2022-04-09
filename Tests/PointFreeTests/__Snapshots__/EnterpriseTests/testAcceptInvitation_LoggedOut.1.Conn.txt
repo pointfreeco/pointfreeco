@@ -2,7 +2,7 @@ GET http://localhost:8080/enterprise/blob.biz/accept?email=baddata&user_id=badda
 Cookie: pf_session={}
 
 302 Found
-Location: /login?redirect=http://localhost:8080/enterprise/blob.biz/accept?email%3Dbaddata%26user_id%3Dbaddata
+Location: /login
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen

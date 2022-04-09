@@ -18,8 +18,12 @@ Generalizing the parser type has allowed us to parse more types of inputs, but t
     title: "Generalized Parsing",
     trailerVideo: .init(
       bytesLength: 59_716_757,
-      vimeoId: 482406601,
-      vimeoSecret: "38032fe906bc015a6bc5209d86a5b2c1811f1de9"
+      downloadUrls: .s3(
+        hd1080: "0126-trailer-1080p-9ebfe06299c849f290074a59d9bac7eb",
+        hd720: "0126-trailer-720p-05598752c0c545bb8ef3faf5dfe22564",
+        sd540: "0126-trailer-540p-de5c071701c440fa8687a37c19ea1e6e"
+      ),
+      vimeoId: 482406601
     )
   )
 }

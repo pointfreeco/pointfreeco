@@ -20,8 +20,12 @@ The snapshot testing library we have been designing over the past few weeks has 
     title: "Async Functional Refactoring",
     trailerVideo: .init(
       bytesLength: 71878337,
-      vimeoId: 348583967,
-      vimeoSecret: "f1547174ac322cf2b1ecd0480dd1d17b38656e54"
+      downloadUrls: .s3(
+        hd1080: "0040-trailer-1080p-226f6ba7d2834dff89cff2e7344f99f1",
+        hd720: "0040-trailer-720p-28348870e4824f9c8c71aabbf8d41f62",
+        sd540: "0040-trailer-540p-cdada1876a084721b48692e8c53f0c5f"
+      ),
+      vimeoId: 348583967
     )
   )
 }

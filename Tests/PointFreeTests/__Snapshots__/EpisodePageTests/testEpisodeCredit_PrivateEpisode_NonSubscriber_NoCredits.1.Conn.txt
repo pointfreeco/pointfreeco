@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 73754
+Content-Length: 72095
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -383,6 +383,10 @@ a:link.btn-normal {
   -moz-transform    : scaleX(-1);
   -o-transform      : scaleX(-1);
   -ms-transform     : scaleX(-1);
+}
+
+.token.atrule {
+  color : #d73a49;
 }
 
 .token.builtin {
@@ -1819,41 +1823,21 @@ html {
   color: #b31d28;
 }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js">
     </script>
-    <script>
-      Prism.languages.swift = Prism.languages.extend('clike', {
-  'string': {
-    pattern: /("|')(?:\\(?:\((?:[^()]|\([^)]+\))+\)|\r\n|[^(])|(?!\1)[^\\\r\n])*\1/,
-    greedy: true,
-    inside: {
-      'interpolation': {
-        pattern: /\\\((?:[^()]|\([^)]+\))+\)/,
-        inside: {
-          delimiter: {
-            pattern: /^\\\(|\)$/,
-            alias: 'variable'
-          }
-          // See rest below
-        }
-      }
-    }
-  },
-  'keyword': /\b(?:actor|as|associativity|async|await|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|if|import|in|infix|init|inout|internal|is|lazy|left|let|mutating|new|none|nonisolated|nonmutating|operator|optional|override|postfix|precedence|prefix|private|protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|some|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\b/,
-  'number': /\b(?:[\d_]+(?:\.[\de_]+)?|0x[a-f0-9_]+(?:\.[a-f0-9p_]+)?|0b[01_]+|0o[0-7_]+)\b/i,
-  'constant': /\b(?:nil|[A-Z_]{2,}|k[A-Z][A-Za-z_]+)\b/,
-  'atrule': /@\b(?:IB(?:Outlet|Designable|Action|Inspectable)|class_protocol|exported|noreturn|NS(?:Copying|Managed)|objc|UIApplicationMain|auto_closure)\b/,
-  'builtin': /\b(?:[A-Z]\S+|abs|advance|alignof(?:Value)?|assert|contains|count(?:Elements)?|debugPrint(?:ln)?|distance|drop(?:First|Last)|dump|enumerate|equal|filter|find|first|getVaList|indices|isEmpty|join|last|lexicographicalCompare|map|max(?:Element)?|min(?:Element)?|numericCast|overlaps|partition|print(?:ln)?|reduce|reflect|reverse|sizeof(?:Value)?|sort(?:ed)?|split|startsWith|stride(?:of(?:Value)?)?|suffix|swap|toDebugString|toString|transcode|underestimateCount|unsafeBitCast|with(?:ExtendedLifetime|Unsafe(?:MutablePointers?|Pointers?)|VaList))\b/
-});
-Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.languages.swift;
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-swift.min.js">
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-clike.min.js">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-clike.min.js">
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-css.min.js">
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-diff.min.js">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-diff.min.js">
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markup.min.js">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-html.min.js">
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-javascript.min.js">
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-ruby.min.js">
     </script>
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -2642,13 +2626,13 @@ that timestamp jumps the video to that spot.</p>
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com/mbrandonw"
+            <a href="https://www.twitter.com//mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com/stephencelis"
+            <a href="https://www.twitter.com//stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -2754,7 +2738,7 @@ that timestamp jumps the video to that spot.</p>
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com/pointfreeco">
+                 href="https://www.twitter.com//pointfreeco">
                 Twitter
               </a>
             </li>

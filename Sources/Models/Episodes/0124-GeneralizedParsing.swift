@@ -18,8 +18,12 @@ The parser type we built so far is highly tuned to work on strings, but there ar
     title: "Generalized Parsing",
     trailerVideo: .init(
       bytesLength: 37998071,
-      vimeoId: 475526775,
-      vimeoSecret: "79f201cd070935dbca602d778c2082d2598310b4"
+      downloadUrls: .s3(
+        hd1080: "0124-trailer-1080p-0e27539234aa4ff4b2159778f486be4d",
+        hd720: "0124-trailer-720p-b62c4e65711b42fe9ae3f0185ee93943",
+        sd540: "0124-trailer-540p-a8e889af34a14d75a7e3b8dc59375fa8"
+      ),
+      vimeoId: 475526775
     )
   )
 }

@@ -23,8 +23,12 @@ We finish porting our SwiftUI application to UIKit by introducing a collection v
     title: "UIKit Navigation",
     trailerVideo: .init(
       bytesLength: 19176941,
-      vimeoId: 651611406,
-      vimeoSecret: "4b357963be48195ccfb8191be8df9b5d0e31a02a"
+      downloadUrls: .s3(
+        hd1080: "0170-trailer-1080p-84419b4f612a4efd80d36496da031130",
+        hd720: "0170-trailer-720p-1c958842a31a46e493ec154ba258bd19",
+        sd540: "0170-trailer-540p-cdaf709b1aeb4b99bb55f8b524cbd482"
+      ),
+      vimeoId: 651611406
     )
   )
 }

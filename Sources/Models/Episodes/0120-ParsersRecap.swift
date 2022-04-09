@@ -27,8 +27,12 @@ We round out our parsing recap by reintroducing that functional trio of operator
     title: "Parser Combinators Recap",
     trailerVideo: .init(
       bytesLength: 31096976,
-      vimeoId: 460940618,
-      vimeoSecret: "52d7769fcfcdb6c79b627a19a134d769ea6d7480"
+      downloadUrls: .s3(
+        hd1080: "0120-trailer-1080p-dd5a87fafddc4789b9693d9eea34a9f8",
+        hd720: "0120-trailer-720p-6d3fa137d19e43d69f7b18e9e0983d82",
+        sd540: "0120-trailer-540p-cd12657056c24567827ed5a429f864be"
+      ),
+      vimeoId: 460940618
     )
   )
 }

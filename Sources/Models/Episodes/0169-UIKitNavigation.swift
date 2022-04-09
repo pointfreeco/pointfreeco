@@ -23,8 +23,12 @@ What does all the work we've done with navigation in SwiftUI have to say about U
     title: "UIKit Navigation",
     trailerVideo: .init(
       bytesLength: 62879609,
-      vimeoId: 650444458,
-      vimeoSecret: "edb900f80899019b59b49f046bcd66a3a8dd48bd"
+      downloadUrls: .s3(
+        hd1080: "0169-trailer-1080p-6b5cd5d7617f45f98e00c9f17d22d5e1",
+        hd720: "0169-trailer-720p-14f4e6f94e5f4b6a8a5a8f3b5895420e",
+        sd540: "0169-trailer-540p-77d9d84718f94550a918a866b09c9f69"
+      ),
+      vimeoId: 650444458
     )
   )
 }

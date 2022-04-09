@@ -24,8 +24,12 @@ It's time to fully modularize our app! Our views can still send any app action, 
     title: "Modular State Management",
     trailerVideo: .init(
       bytesLength: 42018767,
-      vimeoId: 363166004,
-      vimeoSecret: "894c29594098d752879eb133df1d965fbad399f7"
+      downloadUrls: .s3(
+        hd1080: "0074-trailer-1080p-b6e3d99525074d81bfda4c6312a3d29d",
+        hd720: "0074-trailer-720p-7e954f48b9b948b0a4351d9c1661a470",
+        sd540: "0074-trailer-540p-ef9f5c31be324b32a2882d84b246da59"
+      ),
+      vimeoId: 363166004
     )
   )
 }

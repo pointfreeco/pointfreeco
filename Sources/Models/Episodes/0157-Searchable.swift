@@ -47,8 +47,12 @@ Documentation for the `.searchable` view modifier.
     title: "Searchable SwiftUI",
     trailerVideo: .init(
       bytesLength: 31768150,
-      vimeoId: 585305341,
-      vimeoSecret: "a0a25b17711ab641cc59d873f0c0c935ae0cc690"
+      downloadUrls: .s3(
+        hd1080: "0157-trailer-1080p-a289eb51065b46f6b78bc6037c5effc3",
+        hd720: "0157-trailer-720p-dd0fe41cde30487aa863b732ca668b07",
+        sd540: "0157-trailer-540p-85ded24a704549c6bc1f4813d1fd8742"
+      ),
+      vimeoId: 585305341
     )
   )
 }
@@ -93,8 +97,12 @@ Let's clean up the `LocalSearchClient` dependency. There are a few things we can
 extension Episode.Video {
   public static let ep157_searchable = Self(
     bytesLength: 488685581,
-    vimeoId: 585305356,
-    vimeoSecret: "e56fc165ccf24732ce59ff1cb84e2aec208e53d1"
+    downloadUrls: .s3(
+      hd1080: "0157-1080p-b623f91dffa24fc1b5edcbc36b35b507",
+      hd720: "0157-720p-8cb81a8b39074cbc8b50ff84cf6f5379",
+      sd540: "0157-540p-f08c1316a1ee4c7888d4f24c1df3c690"
+    ),
+    vimeoId: 585305356
   )
 }
 

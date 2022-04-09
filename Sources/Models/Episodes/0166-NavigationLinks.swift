@@ -26,8 +26,12 @@ Let's explore "tag" and "selection"-based navigation links in SwiftUI. What are 
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 27828052,
-      vimeoId: 640691264,
-      vimeoSecret: "9d30e831ceb3bb334a8385ef874fd48dde8bc8d5"
+      downloadUrls: .s3(
+        hd1080: "0166-trailer-1080p-1885ec6298794c61b13aaa5a651303b9",
+        hd720: "0166-trailer-720p-6bb5b8842c9e4a3a9f6a3efe47055d51",
+        sd540: "0166-trailer-540p-6bb5488328cd4b7bb339bc300be4de62"
+      ),
+      vimeoId: 640691264
     )
   )
 }

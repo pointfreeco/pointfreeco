@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import CasePaths
 import Foundation
 import Models
 import PointFreePrelude
@@ -45,7 +46,7 @@ let accountRouter = OneOf {
   Route(/Account.confirmEmailChange) {
     Path { "confirm-email-change" }
     Query {
-      Field("payload", Parse(.string.representing(Encrypted.self)))
+      Field("payload", .string.representing(Encrypted.self))
     }
   }
 
@@ -72,7 +73,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", Parse(.string.representing(Token.Id.self)))
+              Field("token", .string.representing(Token.Id.self))
             }
           }
         }

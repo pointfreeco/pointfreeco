@@ -19,8 +19,12 @@ Did you know the Composable Architecture's `scope` operation and `ViewStore` are
     title: "Composable Architecture Performance",
     trailerVideo: .init(
       bytesLength: 49636137,
-      vimeoId: 566667291,
-      vimeoSecret: "b05b2eab961e2384d10c335ddda51c55dd8857c6"
+      downloadUrls: .s3(
+        hd1080: "0151-trailer-1080p-eaf47f7d03094611b10025a0c3c5d7a1",
+        hd720: "0151-trailer-720p-02982793d02a4cd7b9189fd48d1764f8",
+        sd540: "0151-trailer-540p-957194c6f05349dcb84d710c27233020"
+      ),
+      vimeoId: 566667291
     )
   )
 }

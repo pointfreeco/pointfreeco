@@ -1,4 +1,4 @@
-import ApplicativeRouter
+import CasePaths
 import Either
 import EmailAddress
 import Foundation
@@ -186,7 +186,7 @@ private let episodeRouter = OneOf {
       "progress"
     }
     Query {
-      Field("percent", Int.parser())
+      Field("percent") { Int.parser() }
     }
   }
 }
@@ -208,22 +208,21 @@ private let enterpriseRouter = OneOf {
   }
 
   Route(/AppRoute.Enterprise.acceptInvite) {
-    Parse {
+    Parse(
+      .convert(
+        apply: { ($0, $1.0, $1.1) },
+        unapply: { ($0, ($1, $2)) }
+      )
+    ) {
       Path {
         Parse(.string.representing(EnterpriseAccount.Domain.self))
         "accept"
       }
       Query {
-        Field("email", Parse(.string.representing(Encrypted.self)))
-        Field("user_id", Parse(.string.representing(Encrypted.self)))
+        Field("email", .string.representing(Encrypted.self))
+        Field("user_id", .string.representing(Encrypted.self))
       }
     }
-    .map(
-      AnyConversion(
-        apply: { ($0, $1.0, $1.1) },
-        unapply: { ($0, ($1, $2)) }
-      )
-    )
   }
 }
 
@@ -252,7 +251,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", Parse(.string.representing(EmailAddress.self)))
+          Field("email", .string.representing(EmailAddress.self))
         }
       }
     }
@@ -279,7 +278,7 @@ private let inviteRouter = OneOf {
     Body {
       FormData {
         Optionally {
-          Field("email", Parse(.string.representing(EmailAddress.self)))
+          Field("email", .string.representing(EmailAddress.self))
         }
       }
     }
@@ -447,7 +446,7 @@ let router = OneOf {
       }
       Query {
         Optionally {
-          Field("billing", Parse(.string.representing(Pricing.Billing.self)))
+          Field("billing") { Pricing.Billing.parser() }
         }
       }
     }
@@ -466,7 +465,7 @@ let router = OneOf {
         "express-unsubscribe"
       }
       Query {
-        Field("payload", Parse(.string.representing(Encrypted.self)))
+        Field("payload", .string.representing(Encrypted.self))
       }
     }
 
@@ -485,10 +484,10 @@ let router = OneOf {
       Path { "github-auth" }
       Query {
         Optionally {
-          Field("code", Parse(.string))
+          Field("code", .string)
         }
         Optionally {
-          Field("redirect", Parse(.string))
+          Field("redirect", .string)
         }
       }
     }
@@ -504,7 +503,7 @@ let router = OneOf {
       Path { "login" }
       Query {
         Optionally {
-          Field("redirect", Parse(.string))
+          Field("redirect", .string)
         }
       }
     }
@@ -528,86 +527,83 @@ let router = OneOf {
         Body {
           FormData {
             Optionally {
-              Field("coupon", Parse(.string.representing(Coupon.Id.self)))
+              Field("coupon", .string.representing(Coupon.Id.self))
             }
-            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, Bool.parser())
-              .replaceError(with: false)
-            Parse {
-              Field("pricing[billing]", Parse(.string.representing(Pricing.Billing.self)))
-              Field("pricing[quantity]", Int.parser())
+            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
+              Bool.parser()
             }
-            .map(.struct(Pricing.init(billing:quantity:)))
+            Parse(.memberwise(Pricing.init(billing:quantity:))) {
+              Field("pricing[billing]") { Pricing.Billing.parser() }
+              Field("pricing[quantity]") { Int.parser() }
+            }
             Optionally {
               Field(
                 SubscribeData.CodingKeys.referralCode.rawValue,
-                Parse(.string.representing(User.ReferralCode.self))
+                .string.representing(User.ReferralCode.self)
               )
             }
             Many {
-              Field("teammate", Parse(.string.representing(EmailAddress.self)))
+              Field("teammate", .string.representing(EmailAddress.self))
             }
             Parse {
-              Field("token", Parse(.string.representing(Token.Id.self)))
-              Field(
-                SubscribeData.CodingKeys.useRegionalDiscount.rawValue, Bool.parser()
-              )
-              .replaceError(with: false)
+              Field("token", .string.representing(Token.Id.self))
+              Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
+                Bool.parser()
+              }
             }
           }
-          .map(
-            AnyConversion(
-              apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
-              unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
-            )
+        }
+        .map(
+          .convert(
+            apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
+            unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
           )
           .map(
-            .struct(
+            .memberwise(
               SubscribeData.init(
                 coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
               )
             )
           )
-        }
+        )
       }
     }
 
     Route(/AppRoute.subscribeConfirmation) {
-      Parse {
+      Parse(
+        .convert(
+          apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
+          unapply: { ($0, ($1, $2, $3, $4, $5)) }
+        )
+      ) {
         Path {
           "subscribe"
-          Parse(.string.representing(Pricing.Lane.self))
+          Pricing.Lane.parser()
         }
         Query {
           Optionally {
-            Field("billing", Parse(.string.representing(Pricing.Billing.self)))
+            Field("billing") { Pricing.Billing.parser() }
           }
           Optionally {
-            Field("isOwnerTakingSeat", Bool.parser())
+            Field("isOwnerTakingSeat") { Bool.parser() }
           }
           Optionally {
-            Field(
-              "teammates",
+            Field("teammates") {
               Many {
                 Prefix { $0 != "," }.map(.string.representing(EmailAddress.self))
               } separator: {
                 ","
               }
-            )
+            }
           }
           Optionally {
-            Field("ref", Parse(.string.representing(User.ReferralCode.self)))
+            Field("ref", .string.representing(User.ReferralCode.self))
           }
           Optionally {
-            Field("useRegionalDiscount", Bool.parser())
+            Field("useRegionalDiscount") { Bool.parser() }
           }
         }
       }
-      .map(
-        AnyConversion(
-          apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
-          unapply: { ($0, ($1, $2, $3, $4, $5)) }
-        )
-      )
     }
 
     Route(/AppRoute.team) { teamRouter }

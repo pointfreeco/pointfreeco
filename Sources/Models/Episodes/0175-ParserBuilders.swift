@@ -38,12 +38,12 @@ The Swift core team's proposal and experimental repository for declarative strin
     title: "Parser Builders",
     trailerVideo: .init(
       bytesLength: 46184179,
-      vimeoId: 664409607,
-      vimeoStyle: .new(
-        filename: "0175-trailer.m4v",
-        signature720: "dd41216603062a89bf9e550d2f5ac1bd75c9ab219642d8761a77c95e2a01f130",
-        signature540: "fe9a37aebd9a8651fdbae877d045747bed10fd7e7d2228e2de492a14cdf08780"
-      )
+      downloadUrls: .s3(
+        hd1080: "0175-trailer-1080p-39962b046db34537ad19e69ea5be491c",
+        hd720: "0175-trailer-720p-f18ca54674fb439497a61face7628336",
+        sd540: "0175-trailer-540p-d17078648e664e898e796ea6f25e299e"
+      ),
+      vimeoId: 664409607
     )
   )
 }

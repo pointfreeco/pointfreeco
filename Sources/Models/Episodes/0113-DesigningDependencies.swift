@@ -27,10 +27,13 @@ A design pattern of object-oriented programming that flips the more traditional 
     title: "Designing Dependencies",
     trailerVideo: .init(
       bytesLength: 39905374,
-      vimeoId: 448362098,
-      vimeoSecret: "ebb9a3b273bfa765b58bda750d84b479fdc7a90c"
+      downloadUrls: .s3(
+        hd1080: "0113-trailer-1080p-d10087a55bad4aea882ea81a6afa2bc0",
+        hd720: "0113-trailer-720p-9d0cf52baca74e52bf74e655838383e4",
+        sd540: "0113-trailer-540p-ad9b49fe7cd74b5bb89dc534a97cce9b"
+      ),
+      vimeoId: 448362098
     )
-    //https://player.vimeo.com/external/448362098.hd.mp4?s=ebb9a3b273bfa765b58bda750d84b479fdc7a90c&profile_id=175&download=1
   )
 }
 

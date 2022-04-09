@@ -12,8 +12,12 @@ previously hidden.
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 476109800,
-      vimeoId: 351397245,
-      vimeoSecret: "70b609ec1d7733bcf560508e0b02606a2f3948d2"
+      downloadUrls: .s3(
+        hd1080: "0029-1080p-fe9bbd82f00d455db867ce9e7b179dfa",
+        hd720: "0029-720p-b02cb4cd722a4fe5bba1db2b94c88fac",
+        sd540: "0029-540p-cb45617a087f4d56b07d72f15d0dee1f"
+      ),
+      vimeoId: 351397245
     ),
     id: 29,
     length: 33*60 + 17,
@@ -24,8 +28,12 @@ previously hidden.
     title: "DSLs vs. Templating Languages",
     trailerVideo: .init(
       bytesLength: 47720856,
-      vimeoId: 351396562,
-      vimeoSecret: "ab321eebc13700128d0b9659b45dc8f8fc9fe3f2"
+      downloadUrls: .s3(
+        hd1080: "0029-trailer-1080p-80ecf6f5a4aa447097817210814b9442",
+        hd720: "0029-trailer-720p-0d397593d6c34a51b5a887cf27f6109e",
+        sd540: "0029-trailer-540p-7c192a32291045c2ac05321fe1de3947"
+      ),
+      vimeoId: 351396562
     ),
     transcriptBlocks: _transcriptBlocks
   )

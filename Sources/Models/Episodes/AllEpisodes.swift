@@ -177,5 +177,14 @@ extension Episode {
     .ep174_parserBuilders,
     .ep175_parserBuilders,
     .ep176_parserErrors,
+    .ep177_parserErrors,
+    .ep178_parserPrinters,
+    .ep179_parserPrinters,
+    .ep180_parserPrinters,
+    .ep181_parserPrinters,
+    .ep182_parserPrinters,
+    .ep183_parserPrinters,
+    .ep184_parserPrinters,
+    .ep185_tourOfParserPrinters,
   ]
 }

@@ -31,8 +31,12 @@ This week's episode took "playground-driven development" to the next level by sh
     title: "Modular State Management",
     trailerVideo: .init(
       bytesLength: 54413353,
-      vimeoId: 363166208,
-      vimeoSecret: "47bf7363dd306a34c18c77b02a25cca90de6b02c"
+      downloadUrls: .s3(
+        hd1080: "0075-trailer-1080p-b375bd1d10314db1936f5a8eaa9956a7",
+        hd720: "0075-trailer-720p-0059836d1c184249b523a5ce058aa628",
+        sd540: "0075-trailer-540p-474eae184bf6499fa2c0492f255d4a75"
+      ),
+      vimeoId: 363166208
     )
   )
 }

@@ -9,8 +9,12 @@ Our first episode is all about functions! We talk a bit about what makes functio
     exercises: [],
     fullVideo: .init(
       bytesLength: 197667168,
-      vimeoId: 348650932,
-      vimeoSecret: "b448ad4d2af97f1bf3223363bd4ad34aecbb188f"
+      downloadUrls: .s3(
+        hd1080: "0001-1080p-2b31da6a785b4cbaa816e18a8cd23aa3",
+        hd720: "0001-720p-b4472975549c4a0b9a3e0d1eba144ec5",
+        sd540: "0001-540p-7632868f031e41d885b7aaad3eb8e92d"
+      ),
+      vimeoId: 348650932
     ),
     id: 1,
     length: 1219,
@@ -21,8 +25,12 @@ Our first episode is all about functions! We talk a bit about what makes functio
     // NB: Same as full video
     trailerVideo: .init(
       bytesLength: 197667168,
-      vimeoId: 348650932,
-      vimeoSecret: "b448ad4d2af97f1bf3223363bd4ad34aecbb188f"
+      downloadUrls: .s3(
+        hd1080: "0001-1080p-2b31da6a785b4cbaa816e18a8cd23aa3",
+        hd720: "0001-720p-b4472975549c4a0b9a3e0d1eba144ec5",
+        sd540: "0001-540p-7632868f031e41d885b7aaad3eb8e92d"
+      ),
+      vimeoId: 348650932
     ),
     transcriptBlocks: _transcriptBlocks
   )

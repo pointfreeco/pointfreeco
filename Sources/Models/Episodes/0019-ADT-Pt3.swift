@@ -15,8 +15,12 @@ Our third installment of algebraic data types explores how generics and recursiv
     title: "Algebraic Data Types: Generics and Recursion",
     trailerVideo: .init(
       bytesLength: 55979211,
-      vimeoId: 352312239,
-      vimeoSecret: "3c68cf8f0561551f3c9e7af1ed49ca834df5195e"
+      downloadUrls: .s3(
+        hd1080: "0019-trailer-1080p-ccbfdf0aa82348f4847b0b26ff566123",
+        hd720: "0019-trailer-720p-2e2e7852eeab4291b54820843f27bc02",
+        sd540: "0019-trailer-540p-228fc14424e74c508922ae0395f80ca8"
+      ),
+      vimeoId: 352312239
     )
   )
 }

@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import Foundation
 import Either
 import Html

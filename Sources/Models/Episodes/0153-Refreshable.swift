@@ -39,8 +39,12 @@ Documentation for `refreshable`.
     title: "Async Refreshable",
     trailerVideo: .init(
       bytesLength: 65947881,
-      vimeoId: 575950723,
-      vimeoSecret: "77d04b5f177876cc363905294b8cdc26a4f9fb1d"
+      downloadUrls: .s3(
+        hd1080: "0153-trailer-1080p-394711ada66c4a85a70ea163df006daf",
+        hd720: "0153-trailer-720p-98ced3efd3264897a471df054325908b",
+        sd540: "0153-trailer-540p-947266c77d554d5f803d5b60c2f89e87"
+      ),
+      vimeoId: 575950723
     )
   )
 }
@@ -52,8 +56,12 @@ private let _exercises: [Episode.Exercise] = [
 extension Episode.Video {
   public static let ep153_asyncRefreshableSwiftUI = Self(
     bytesLength: 315386887,
-    vimeoId: 575950740,
-    vimeoSecret: "e9cefbb0755b7f5e587f02eb9924456da4219987"
+    downloadUrls: .s3(
+      hd1080: "0153-1080p-613f15e46b3646faa41f998990646e3b",
+      hd720: "0153-720p-46fc507c0b8e40749d67c8f7dd238d9f",
+      sd540: "0153-540p-49657509798e49c6b9f9084351ac9a5c"
+    ),
+    vimeoId: 575950740
   )
 }
 

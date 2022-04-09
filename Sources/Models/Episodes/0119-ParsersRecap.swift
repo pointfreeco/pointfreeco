@@ -28,8 +28,12 @@ It's time to revisit one of our favorite topics: parsing! We want to discuss lot
     title: "Parser Combinators Recap",
     trailerVideo: .init(
       bytesLength: 63483444,
-      vimeoId: 460940404,
-      vimeoSecret: "22c52944f0b5f55b5a2432f447eaf8c3733c8e08"
+      downloadUrls: .s3(
+        hd1080: "0119-trailer-1080p-2d56b11f471f4e14aa50b9be645764cd",
+        hd720: "0119-trailer-720p-f30672b2a5794cbcb4df78019673451a",
+        sd540: "0119-trailer-540p-e8e547821932495d8893df7a2e9d19b3"
+      ),
+      vimeoId: 460940404
     )
   )
 }

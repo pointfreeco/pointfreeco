@@ -26,8 +26,12 @@ Over the past weeks we have come up with some seriously powerful tools for Swift
     title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 256138756,
-      vimeoId: 642998519,
-      vimeoSecret: "acdd7f87def882f67ba8c9bab92bb8a7461253c0"
+      downloadUrls: .s3(
+        hd1080: "0167-trailer-1080p-f20fdd5867de4c489602dacdeec0d823",
+        hd720: "0167-trailer-720p-eafc45d2169b4f80ba90a68fac50c0f3",
+        sd540: "0167-trailer-540p-510787fe7ab54ce8aab6975d2648de4b"
+      ),
+      vimeoId: 642998519
     )
   )
 }

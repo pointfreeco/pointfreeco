@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 swift:5.5 as build
+FROM swift:5.5.2 as build
 
 RUN apt-get --fix-missing update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python
@@ -15,10 +15,10 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build --configuration release --enable-test-discovery --product Server -Xswiftc -g \
-  && swift build --configuration release --enable-test-discovery --product Runner -Xswiftc -g
+RUN swift build -j 1 --configuration release --product Server -Xswiftc -g \
+  && swift build -j 1 --configuration release --product Runner -Xswiftc -g
 
-FROM --platform=linux/amd64 swift:5.5-slim
+FROM swift:5.5.2-slim
 
 RUN apt-get update
 RUN apt-get install -y libpq-dev libssl-dev libz-dev openssl

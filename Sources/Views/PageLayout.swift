@@ -250,8 +250,19 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
   )
 ])
 
-private let prismJsHead: ChildOf<Tag.Head> = .fragment([
-  .style(safe: """
+private var prismJsHead: ChildOf<Tag.Head> {
+  let plugins: ChildOf<Tag.Head> = .fragment(
+    ["swift", "clike", "css", "diff", "html", "javascript", "ruby"]
+      .map {
+        .script(
+          attributes: [
+            .src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-\($0).min.js"),
+          ]
+        )
+      }
+    )
+  return .fragment([
+    .style(safe: """
 .language-diff .token.inserted {
   background-color: #f0fff4;
   color: #22863a;
@@ -262,39 +273,10 @@ private let prismJsHead: ChildOf<Tag.Head> = .fragment([
   color: #b31d28;
 }
 """),
-  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js")]),
-//  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-swift.min.js")]),
-  .script(safe: #"""
-Prism.languages.swift = Prism.languages.extend('clike', {
-  'string': {
-    pattern: /("|')(?:\\(?:\((?:[^()]|\([^)]+\))+\)|\r\n|[^(])|(?!\1)[^\\\r\n])*\1/,
-    greedy: true,
-    inside: {
-      'interpolation': {
-        pattern: /\\\((?:[^()]|\([^)]+\))+\)/,
-        inside: {
-          delimiter: {
-            pattern: /^\\\(|\)$/,
-            alias: 'variable'
-          }
-          // See rest below
-        }
-      }
-    }
-  },
-  'keyword': /\b(?:actor|as|associativity|async|await|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|if|import|in|infix|init|inout|internal|is|lazy|left|let|mutating|new|none|nonisolated|nonmutating|operator|optional|override|postfix|precedence|prefix|private|protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|some|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\b/,
-  'number': /\b(?:[\d_]+(?:\.[\de_]+)?|0x[a-f0-9_]+(?:\.[a-f0-9p_]+)?|0b[01_]+|0o[0-7_]+)\b/i,
-  'constant': /\b(?:nil|[A-Z_]{2,}|k[A-Z][A-Za-z_]+)\b/,
-  'atrule': /@\b(?:IB(?:Outlet|Designable|Action|Inspectable)|class_protocol|exported|noreturn|NS(?:Copying|Managed)|objc|UIApplicationMain|auto_closure)\b/,
-  'builtin': /\b(?:[A-Z]\S+|abs|advance|alignof(?:Value)?|assert|contains|count(?:Elements)?|debugPrint(?:ln)?|distance|drop(?:First|Last)|dump|enumerate|equal|filter|find|first|getVaList|indices|isEmpty|join|last|lexicographicalCompare|map|max(?:Element)?|min(?:Element)?|numericCast|overlaps|partition|print(?:ln)?|reduce|reflect|reverse|sizeof(?:Value)?|sort(?:ed)?|split|startsWith|stride(?:of(?:Value)?)?|suffix|swap|toDebugString|toString|transcode|underestimateCount|unsafeBitCast|with(?:ExtendedLifetime|Unsafe(?:MutablePointers?|Pointers?)|VaList))\b/
-});
-Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.languages.swift;
-"""#),
-  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-clike.min.js")]),
-  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js")]),
-  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-diff.min.js")]),
-  .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markup.min.js")]),
-])
+    .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js")]),
+    plugins,
+  ])
+}
 
 func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard data.isGhosting else { return [] }

@@ -21,8 +21,12 @@ It's time to see how our architecture handles the fifth and final problem we ide
     title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 55954991,
-      vimeoId: 373001794,
-      vimeoSecret: "d86bf515e2c83d4f62e6eabfae46909e1bec0431"
+      downloadUrls: .s3(
+        hd1080: "0082-trailer-1080p-6b91b78938d4484a849e10b19114da9b",
+        hd720: "0082-trailer-720p-3c4c857a9e3344c08af5aa42d3af2e0f",
+        sd540: "0082-trailer-540p-cfcc2a58b40c4fccae1f323311e3fbbc"
+      ),
+      vimeoId: 373001794
     )
   )
 }

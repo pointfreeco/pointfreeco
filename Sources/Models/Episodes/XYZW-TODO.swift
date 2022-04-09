@@ -20,8 +20,12 @@ TODO
     title: "TODO",
     trailerVideo: .init(
       bytesLength: 0, // TODO
-      vimeoId: 0, // TODO
-      vimeoSecret: "" // TODO
+      downloadUrls: .s3(
+        hd1080: "TODO",
+        hd720: "TODO",
+        sd540: "TODO"
+      ),
+      vimeoId: 0 // TODO
     )
   )
 }

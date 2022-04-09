@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import CustomDump
 import Database
 import Either
@@ -380,9 +379,9 @@ class GiftTests: TestCase {
     POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
-
+    
     302 Found
-    Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+    Location: /login
     Referrer-Policy: strict-origin-when-cross-origin
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen

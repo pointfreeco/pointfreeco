@@ -37,8 +37,12 @@ Our second episode on the `Environment` introduces some patterns around building
     title: "Testable State Management",
     trailerVideo: .init(
       bytesLength: 59383233,
-      vimeoId: 373753492,
-      vimeoSecret: "29f6a1816d8a8f35f7c2d70a1cacc5d8423ef9c8"
+      downloadUrls: .s3(
+        hd1080: "0083-trailer-1080p-9b17da4f908c4e14ab39e6632bf35c54",
+        hd720: "0083-trailer-720p-f030403141d34d0595d10e6e4b9d2c29",
+        sd540: "0083-trailer-540p-54ba4ac8a740421ab0b54f09f4c52b9b"
+      ),
+      vimeoId: 373753492
     )
   )
 }

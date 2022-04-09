@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import Foundation
 import Parsing
 import _URLRouting
@@ -15,12 +14,7 @@ public struct PointFreeRouter {
   }
 
   public func path(to route: AppRoute) -> String {
-    guard let path = (try? router.print(route)).flatMap(URLRequest.init(data:))?.url?.absoluteString
-    else {
-      print("error: failed to print \(route)")
-      return ""
-    }
-    return "/\(path)"
+    self.request(for: route)?.url?.path ?? ""
   }
 
   public func url(to route: AppRoute) -> String {
@@ -29,16 +23,16 @@ public struct PointFreeRouter {
 
   public func request(for route: AppRoute) -> URLRequest? {
     do {
-      let data = try router.print(route)
       guard
-        var request = URLRequest(data: data),
-        let path = request.url?.absoluteString,
-        let url = URL(string: "\(self.baseUrl.absoluteString)/\(path)")
+        let request = URLRequest(
+          data: try router
+            .baseURL(self.baseUrl.absoluteString)
+            .print(route)
+        )
       else {
         print("error: failed to print \(route)")
         return nil
       }
-      request.url = url
       return request
     } catch {
       print("error: failed to print \(route): \(error)")
@@ -48,7 +42,10 @@ public struct PointFreeRouter {
 
   public func match(request: URLRequest) -> AppRoute? {
     guard var data = URLRequestData(request: request)
-    else { return nil }
+    else {
+      print("error: failed to convert request data \(request)")
+      return nil
+    }
     do {
       return try router.parse(&data)
     } catch {

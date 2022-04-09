@@ -19,8 +19,12 @@ Combine is a powerful framework and is the de facto way to power SwiftUI applica
     title: "Combine Schedulers",
     trailerVideo: .init(
       bytesLength: 60_243_999,
-      vimeoId: 425874948,
-      vimeoSecret: "5c4965bc5e6a62890641051e26384fdf85c370b2"
+      downloadUrls: .s3(
+        hd1080: "0104-trailer-1080p-a9fb8cbf9e194c4db0edf4a694b7ec7f",
+        hd720: "0104-trailer-720p-391ffeb5d0ff4e0bbf9beb13faa71d26",
+        sd540: "0104-trailer-540p-331eea43afeb4b178b0e79befb260b8c"
+      ),
+      vimeoId: 425874948
     )
   )
 }

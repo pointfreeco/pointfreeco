@@ -10,8 +10,12 @@ SwiftUI has introduced the concept of “████ed views”, which gives yo
     exercises: _exercises,
     fullVideo: .init(
       bytesLength: 327899376,
-      vimeoId: 452176076,
-      vimeoSecret: "d9bf77945e86596dccd429e4afdee2b07e898e4f"
+      downloadUrls: .s3(
+        hd1080: "0115-1080p-254ec06aae444762a2cc7f62871c5a3a",
+        hd720: "0115-720p-1a21dc3f54df446b93c2e272657c33be",
+        sd540: "0115-540p-779d1b589f1f48c980b99ef16e6a77d6"
+      ),
+      vimeoId: 452176076
     ),
     id: 115,
     length: 25*60 + 49,
@@ -87,8 +91,12 @@ SwiftUI has introduced the concept of “████ed views”, which gives yo
     title: "█████ed SwiftUI",
     trailerVideo: .init(
       bytesLength: 49_832_966,
-      vimeoId: 453129382,
-      vimeoSecret: "3764f3dc3994fd29895a4812e5e45244d6cb1f99" 
+      downloadUrls: .s3(
+        hd1080: "0115-trailer-1080p-927e645377704ec6854b8677fa2da743",
+        hd720: "0115-trailer-720p-c974fe4220364471944d499bcf0d05f9",
+        sd540: "0115-trailer-540p-ab6ab95586cc4332a3a1b8b2ccb20d0e"
+      ),
+      vimeoId: 453129382 
     ),
     transcriptBlocks: _transcriptBlocks
   )

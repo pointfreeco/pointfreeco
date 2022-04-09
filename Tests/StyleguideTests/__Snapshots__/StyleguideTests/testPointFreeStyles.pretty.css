@@ -361,6 +361,10 @@ a:link.btn-normal {
   -ms-transform     : scaleX(-1);
 }
 
+.token.atrule {
+  color : #d73a49;
+}
+
 .token.builtin {
   color : #6f42c1;
 }

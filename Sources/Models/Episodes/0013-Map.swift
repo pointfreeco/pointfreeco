@@ -16,8 +16,12 @@ Why does the `map` function appear in every programming language supporting "fun
     title: "The Many Faces of Map",
     trailerVideo: .init(
       bytesLength: 57789611,
-      vimeoId: 354214965,
-      vimeoSecret: "9e2cb40eadea330d69402a6e9844293fb6a4e47f"
+      downloadUrls: .s3(
+        hd1080: "0013-trailer-1080p-7f465869facc4c01bdb4909fbe333335",
+        hd720: "0013-trailer-720p-09f2e963c3a246aa870e897cbe3c50cd",
+        sd540: "0013-trailer-540p-247d675ed6534dd597452e554872ac90"
+      ),
+      vimeoId: 354214965
     )
   )
 }

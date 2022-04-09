@@ -1,4 +1,4 @@
-import ApplicativeRouter
+import CasePaths
 import Foundation
 import GitHub
 import Parsing
@@ -16,7 +16,7 @@ public enum GitHubRoute {
   case organization
   case repo(Repo)
 
-  public enum Repo: String, RawRepresentable {
+  public enum Repo: String, CaseIterable {
     case html = "swift-html"
     case htmlKitura = "swift-html-kitura"
     case htmlVapor = "swift-html-vapor"
@@ -39,11 +39,11 @@ private let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", Parse(.string.representing(GitHub.Client.Id.self)))
+      Field("client_id", .string.representing(GitHub.Client.Id.self))
       Optionally {
-        Field("redirect_uri", Parse(.string))
+        Field("redirect_uri", .string)
       }
-      Field("scope", Parse(.string))
+      Field("scope", .string)
     }
   }
 
@@ -72,17 +72,19 @@ private let gitHubRouter = OneOf {
       }
 
       Route(/GitHubRoute.repo) {
-        Path { Parse(.string.representing(GitHubRoute.Repo.self)) }
+        Path { GitHubRoute.Repo.parser() }
       }
     }
   }
 }
 
 public func gitHubUrl(to route: GitHubRoute) -> String {
-  guard
-    let path = (try? gitHubRouter.print(route)).flatMap(URLRequest.init(data:))?.url?.absoluteString
-  else { return "" }
-  return "\(gitHubBaseUrl.absoluteString)/\(path)"
+  (
+    try? gitHubRouter
+      .baseURL("https://github.com")
+      .print(route)
+  )
+  .flatMap(URLRequest.init(data:))
+  .flatMap { $0.url?.absoluteString }
+  ?? ""
 }
-
-private let gitHubBaseUrl = URL(string: "https://github.com")!

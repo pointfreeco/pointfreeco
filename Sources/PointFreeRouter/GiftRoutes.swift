@@ -1,4 +1,4 @@
-import ApplicativeRouter
+import CasePaths
 import Foundation
 import Models
 import Parsing
@@ -15,7 +15,7 @@ public enum Gifts: Equatable {
   case redeem(Gift.Id)
   case redeemLanding(Gift.Id)
 
-  public enum Plan: String {
+  public enum Plan: String, CaseIterable {
     case threeMonths
     case sixMonths
     case year
@@ -65,19 +65,17 @@ let giftsRouter = OneOf {
 
   Route(/Gifts.create) {
     Method.post
-    Body {
-      Parse(
-        .data.json(
-          GiftFormData.self,
-          decoder: routeJsonDecoder,
-          encoder: routeJsonEncoder
-        )
+    Body(
+      .data.json(
+        GiftFormData.self,
+        decoder: routeJsonDecoder,
+        encoder: routeJsonEncoder
       )
-    }
+    )
   }
 
   Route(/Gifts.plan) {
-    Path { Parse(.string.representing(Gifts.Plan.self)) }
+    Path { Gifts.Plan.parser() }
   }
 
   Route(/Gifts.redeemLanding) {

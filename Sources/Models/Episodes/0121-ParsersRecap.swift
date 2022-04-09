@@ -27,8 +27,12 @@ Now that we've refamiliarized ourselves with parsing, let's parse something even
     title: "Parsing Xcode Logs",
     trailerVideo: .init(
       bytesLength: 45637085,
-      vimeoId: 469007590,
-      vimeoSecret: "24368748b39963495cd921caaa5f7983ae99865a"
+      downloadUrls: .s3(
+        hd1080: "0121-trailer-1080p-c5d4c8aea261405dae3109cfc0bd0b80",
+        hd720: "0121-trailer-720p-3245fc303c4346f4b505e133f1caf303",
+        sd540: "0121-trailer-540p-2001ca2054d64f8da4d6d559c072146d"
+      ),
+      vimeoId: 469007590
     )
   )
 }

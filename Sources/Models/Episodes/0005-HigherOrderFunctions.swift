@@ -20,8 +20,12 @@ unlock even more composability in our everyday code.
     title: "Higher-Order Functions",
     trailerVideo: .init(
       bytesLength: 37233625,
-      vimeoId: 354215008,
-      vimeoSecret: "3ff409ff76faf52295d3fd6e0b3fc50153e94d00"
+      downloadUrls: .s3(
+        hd1080: "0005-trailer-1080p-08b9b49c4abe49a190f3ba16a8b92208",
+        hd720: "0005-trailer-720p-59ef26534ee34aa4ba4a027db9cbc54b",
+        sd540: "0005-trailer-540p-a7d82d9abf1b44cfa2aad16683195415"
+      ),
+      vimeoId: 354215008
     )
   )
 }

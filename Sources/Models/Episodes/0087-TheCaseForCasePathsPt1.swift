@@ -23,8 +23,12 @@ You've heard of key paths, but…case paths!? Today we introduce the concept of 
     title: "The Case for Case Paths",
     trailerVideo: .init(
       bytesLength: 48_631_704,
-      vimeoId: 385885943,
-      vimeoSecret: "420b92a57d842c272f3f3bce38621a58b66b11c7"
+      downloadUrls: .s3(
+        hd1080: "0087-trailer-1080p-850e38122de74a7aa40c76998327ad97",
+        hd720: "0087-trailer-720p-06b775c2a9d84cd18ec36aea7cf063a3",
+        sd540: "0087-trailer-540p-902ef30779cc4a0b82088c022cedbd81"
+      ),
+      vimeoId: 385885943
     )
   )
 }

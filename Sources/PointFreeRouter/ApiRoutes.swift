@@ -1,4 +1,4 @@
-import ApplicativeRouter
+import CasePaths
 import Parsing
 import Prelude
 import Models

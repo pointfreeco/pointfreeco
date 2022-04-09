@@ -19,8 +19,12 @@ We've now shown that the Composable Architecture is also quite adaptive, allowin
     title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 62_095_501,
-      vimeoId: 404459141,
-      vimeoSecret: "aa1de98dd9c23fa6298bf077c8b551b50f57cafd"
+      downloadUrls: .s3(
+        hd1080: "0097-trailer-1080p-a3e8ff65fd064e81bc45bfc86b442205",
+        hd720: "0097-trailer-720p-cac08eef09e94ccca7bad5d9898f5c21",
+        sd540: "0097-trailer-540p-114f24d881c0434d881494d8d54a61e8"
+      ),
+      vimeoId: 404459141
     )
   )
 }

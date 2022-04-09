@@ -180,6 +180,42 @@ Result builders are a powerful feature of Swift that enable DSLs like SwiftUI us
           ],
           related: [],
           title: "Builders",
+          whereToGoFromHere: #"""
+Parsers currently use optionality to model failure. This makes parser definitions more awkward than they should be, and completely obscures where and why parsing failed. We can look to throwing functions for a solution to both these problems.
+"""#
+        ),
+
+
+        .init(
+          blurb: #"""
+Optionality is a convenient way to model failure, but can only take us so far. We will scrutinize how we model errors in our parsing library and the problems that have come out of it, and we will address these problems by changing the fundamental shape of the parser type. In doing so, we will be in a good position to layer context onto failures, and make it easy to see exactly where and why a parser failed.
+"""#,
+          coreLessons: [
+            .init(episode: .ep176_parserErrors),
+            .init(episode: .ep177_parserErrors),
+          ],
+          related: [],
+          title: "Errors",
+          whereToGoFromHere: #"""
+By this point we have taken a deep dive into many different topics of parsing, from ergnomics and generalization, to performance and error messaging. But there's a closely related concept that is also very important to discuss, and that's "printing". It can be thought of as the inverse of parsing in that it transforms well-structured data back into nebulous data. Incredibly, parsing and printing can be unified into a single, composable unit.
+"""#
+        ),
+
+        .init(
+          blurb: #"""
+We've spent many episodes discussing parsing, which turns nebulous blobs of data into well-structured data, but sometimes we need the "inverse" process to turn well-structured data back into nebulous data. This is called "printing" and can be useful for serialization, URL routing and more.
+"""#,
+          coreLessons: [
+            .init(episode: .ep178_parserPrinters),
+            .init(episode: .ep179_parserPrinters),
+            .init(episode: .ep180_parserPrinters),
+            .init(episode: .ep181_parserPrinters),
+            .init(episode: .ep182_parserPrinters),
+            .init(episode: .ep183_parserPrinters),
+            .init(episode: .ep184_parserPrinters),
+          ],
+          related: [],
+          title: "Invertible Parsing",
           whereToGoFromHere: nil
         ),
 

@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 5065
+Content-Length: 5015
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -138,11 +138,11 @@ X-XSS-Protection: 1; mode=block
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=165&amp;download=1"
+      <enclosure url="https://pointfreeco-episodes-processed.s3.amazonaws.com/0000-540p-c542d5fad5164174aeb83a97555d50ea.mp4"
                  length="90533615"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=165&amp;download=1"
+      <media:content url="https://pointfreeco-episodes-processed.s3.amazonaws.com/0000-540p-c542d5fad5164174aeb83a97555d50ea.mp4"
                      length="90533615"
                      type="video/mp4"
                      medium="video">

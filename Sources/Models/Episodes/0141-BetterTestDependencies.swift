@@ -28,8 +28,12 @@ Crafting better test dependencies for our code bases come with additional benefi
     title: "Better Test Dependencies",
     trailerVideo: .init(
       bytesLength: 72548671,
-      vimeoId: 531770630,
-      vimeoSecret: "2cafc1cddda7d72617abe415f04f81718302fad8"
+      downloadUrls: .s3(
+        hd1080: "0141-trailer-1080p-668e872674144c3f9364ab3c4fec4e2e",
+        hd720: "0141-trailer-720p-12e83ed8918448c29b929f488afe1076",
+        sd540: "0141-trailer-540p-d8d9724db7c146cab6d30bc97436eaaf"
+      ),
+      vimeoId: 531770630
     )
   )
 }

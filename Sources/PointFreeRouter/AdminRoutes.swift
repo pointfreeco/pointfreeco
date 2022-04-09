@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import CasePaths
 import Foundation
 import Models
 import Parsing
@@ -39,29 +40,6 @@ public enum Admin: Equatable {
   }
 }
 
-extension Parser where Self: Printer {
-  func assert() -> AnyParserPrinter<Input, Output> {
-    AnyParserPrinter<Input, Output>(
-      parse: {
-        do {
-          return try self.parse(&$0)
-        } catch {
-          assertionFailure("\(self): \(error)")
-          throw error
-        }
-      },
-      print: {
-        do {
-          try self.print($0, to: &$1)
-        } catch {
-          assertionFailure("\(self): \(error)")
-          throw error
-        }
-      }
-    )
-  }
-}
-
 let adminRouter = OneOf {
   Route(/Admin.index)
 
@@ -75,8 +53,8 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id", UUID.parser().map(.representing(User.Id.self)))
-            Field("episode_sequence", Int.parser().map(.representing(Episode.Sequence.self)))
+            Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            Field("episode_sequence") { Int.parser().map(.representing(Episode.Sequence.self)) }
           }
         }
       }
@@ -109,7 +87,7 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id", UUID.parser().map(.representing(User.Id.self)))
+            Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
           }
         }
       }
@@ -124,7 +102,12 @@ let adminRouter = OneOf {
 
       Route(/Admin.NewBlogPostEmail.send) {
         Method.post
-        Parse {
+        Parse(
+          .convert(
+            apply: { ($0, $1.0, $1.1) },
+            unapply: { ($0, ($1, $2)) }
+          )
+        ) {
           Path {
             Int.parser().map(.representing(BlogPost.Id.self))
             "send"
@@ -136,12 +119,6 @@ let adminRouter = OneOf {
             }
           }
         }
-        .map(
-          AnyConversion(
-            apply: { ($0, $1.0, $1.1) },
-            unapply: { ($0, ($1, $2)) }
-          )
-        )
       }
     }
   }
@@ -153,7 +130,12 @@ let adminRouter = OneOf {
       Route(/Admin.NewEpisodeEmail.show)
 
       Route(/Admin.NewEpisodeEmail.send) {
-        Parse {
+        Parse(
+          .convert(
+            apply: { ($0, $1.0, $1.1, $1.2) },
+            unapply: { ($0, ($1, $2, $3)) }
+          )
+        ) {
           Path {
             Int.parser().map(.representing(Episode.Id.self))
             "send"
@@ -161,21 +143,15 @@ let adminRouter = OneOf {
           Body {
             FormData {
               Optionally {
-                Field("subscriber_announcement", Parse(.string))
+                Field("subscriber_announcement", .string)
               }
               Optionally {
-                Field("nonsubscriber_announcement", Parse(.string))
+                Field("nonsubscriber_announcement", .string)
               }
               isTest
             }
           }
         }
-        .map(
-          AnyConversion(
-            apply: { ($0, $1.0, $1.1, $1.2) },
-            unapply: { ($0, ($1, $2, $3)) }
-          )
-        )
       }
     }
   }
@@ -184,8 +160,8 @@ let adminRouter = OneOf {
 private let isTest = Optionally {
   Field(
     "test",
-    Rest().map(
-      AnyConversion(
+    .string.map(
+      .convert(
         apply: { _ in true },
         unapply: { $0 ? "" : nil }
       )

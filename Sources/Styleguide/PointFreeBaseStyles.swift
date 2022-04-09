@@ -429,6 +429,7 @@ private let inlineCodeStyles =
 private let token = CssSelector.class("token")
 
 private let prismJsTheme: Stylesheet = concat([
+  (token & CssSelector.class("atrule")) % color(.other("#d73a49")),
   (token & CssSelector.class("builtin")) % color(.other("#6f42c1")),
   (token & CssSelector.class("comment")) % color(.other("#6a737d")),
   (token & CssSelector.class("function")) % color(.other("#005cc5")),

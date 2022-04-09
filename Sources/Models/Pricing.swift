@@ -13,12 +13,12 @@ public struct Pricing: Equatable {
 
   public static let validTeamQuantities = 2..<100
 
-  public enum Billing: String, Codable {
+  public enum Billing: String, CaseIterable, Codable {
     case monthly
     case yearly
   }
 
-  public enum Lane: String, Codable {
+  public enum Lane: String, CaseIterable, Codable {
     case personal
     case team
   }

@@ -32,8 +32,12 @@ The ability to break down applications into small domains that are understandabl
     title: "Derived Behavior",
     trailerVideo: .init(
       bytesLength: 72969840,
-      vimeoId: 549279750,
-      vimeoSecret: "e8793d4ed437a6335b2cf1b0f0df605b0e57792d"
+      downloadUrls: .s3(
+        hd1080: "0146-trailer-1080p-b9ab3990934d4c39965d2a2e36b67343",
+        hd720: "0146-trailer-720p-a469cfa620c04678b9231d5ebec78779",
+        sd540: "0146-trailer-540p-5d258308ac7d47c1b79435a0bdc107c0"
+      ),
+      vimeoId: 549279750
     )
   )
 }

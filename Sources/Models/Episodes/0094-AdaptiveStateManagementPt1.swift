@@ -27,8 +27,12 @@ Apple documentation around identifying memory-use inefficiencies though various 
     title: "Adaptive State Management",
     trailerVideo: .init(
       bytesLength: 68_660_487,
-      vimeoId: 397834898,
-      vimeoSecret: "0e5703c2d33db6ef1d7cf72d1850ff8e45ea747e"
+      downloadUrls: .s3(
+        hd1080: "0094-trailer-1080p-5a9fd5b56f004b8d845a884c8731de1d",
+        hd720: "0094-trailer-720p-bde6aa5d2a954c57b3f4f3b7a065fbba",
+        sd540: "0094-trailer-540p-e348f86c799b473ba7864f42d03d840f"
+      ),
+      vimeoId: 397834898
     )
   )
 }

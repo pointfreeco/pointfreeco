@@ -30,8 +30,12 @@ We convert some of our substring parsers to work on lower levels of String abstr
     title: "Parsing and Performance",
     trailerVideo: .init(
       bytesLength: 31403006,
-      vimeoId: 487918802,
-      vimeoSecret: "46019bcbf8ba95052906340229b072e83df95a1d"
+      downloadUrls: .s3(
+        hd1080: "0128-trailer-1080p-86ea6b92edcd4eeab8c58a6bb6c3c62d",
+        hd720: "0128-trailer-720p-d32f751594674f6f96536eacdd56420c",
+        sd540: "0128-trailer-540p-4b2cefac90a345fe827e19181dcb4c09"
+      ),
+      vimeoId: 487918802
     )
   )
 }

@@ -20,8 +20,12 @@ Parsing is a difficult, but surprisingly ubiquitous programming problem, and fun
     title: "What Is a Parser?: Part 1",
     trailerVideo: .init(
       bytesLength: 58500760,
-      vimeoId: 348473323,
-      vimeoSecret: "7272e46eac1e8dc3f15bf4206c10cd5b589c09d3"
+      downloadUrls: .s3(
+        hd1080: "0056-trailer-1080p-38aeb24dca8c4e748282b3b7f0adc333",
+        hd720: "0056-trailer-720p-aabe104d673148378749e1af3b5bf0b0",
+        sd540: "0056-trailer-540p-e9b28a24e5114f17b991a5ca77d6b81f"
+      ),
+      vimeoId: 348473323
     )
   )
 }
