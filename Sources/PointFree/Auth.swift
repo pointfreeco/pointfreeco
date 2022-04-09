@@ -39,8 +39,7 @@ let logoutResponse: M<Prelude.Unit> =
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  return conn
-    |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
+  conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)

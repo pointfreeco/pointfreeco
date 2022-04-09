@@ -4,7 +4,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 isOwnerTakingSeat=true&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=1&token=stripe-deadbeef&useRegionalDiscount=true
 
 302 Found
-Location: /subscribe/personal
+Location: /subscribe/personal?billing=monthly&isOwnerTakingSeat=true&teammates=&useRegionalDiscount=true
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"The issuing country of your credit card is not on the list of countries that\nqualify for a regional discount. Please use a different credit card, or subscribe\nwithout the discount.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff

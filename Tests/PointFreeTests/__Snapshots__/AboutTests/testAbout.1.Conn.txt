@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56798
+Content-Length: 56830
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1861,7 +1861,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/login"
+                <a href="/login?redirect=http://localhost:8080/about"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2137,7 +2137,7 @@ language rivaling almost every other language out there.
                 Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
 better our craft as engineers.
               </p>
-              <a href="https://www.twitter.com//mbrandonw"
+              <a href="https://www.twitter.com/mbrandonw"
                  class="pf-link-white
                         m-pt2">
                 Twitter
@@ -2169,7 +2169,7 @@ better our craft as engineers.
                 Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a
 functional convert and believer after years of objects.
               </p>
-              <a href="https://www.twitter.com//stephencelis"
+              <a href="https://www.twitter.com/stephencelis"
                  class="pf-link-white
                         m-pt2">
                 Twitter
@@ -2217,13 +2217,13 @@ functional convert and believer after years of objects.
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com//mbrandonw"
+            <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com//stephencelis"
+            <a href="https://www.twitter.com/stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -2329,7 +2329,7 @@ functional convert and believer after years of objects.
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com//pointfreeco">
+                 href="https://www.twitter.com/pointfreeco">
                 Twitter
               </a>
             </li>

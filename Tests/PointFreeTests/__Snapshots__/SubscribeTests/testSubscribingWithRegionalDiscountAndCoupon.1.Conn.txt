@@ -4,7 +4,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 coupon=deadbeef&isOwnerTakingSeat=true&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=1&token=stripe-deadbeef&useRegionalDiscount=true
 
 302 Found
-Location: /discounts/deadbeef
+Location: /discounts/deadbeef?billing=monthly
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"Coupons cannot be used with regional discounts.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff

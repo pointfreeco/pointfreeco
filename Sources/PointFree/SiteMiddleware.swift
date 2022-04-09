@@ -283,10 +283,8 @@ public func redirect<A>(
 public func redirect<A>(
   to route: AppRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
-  )
-  ->
-  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-    return redirect(to: path(to: route), headersMiddleware: headersMiddleware)
+) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+  redirect(to: path(to: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

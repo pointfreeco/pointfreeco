@@ -2,7 +2,7 @@ GET http://localhost:8080/github-auth?code=deadbeef&redirect=http://localhost:80
 Cookie: pf_session={}
 
 302 Found
-Location: /login
+Location: /login?redirect=http://localhost:8080/episodes/42
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen

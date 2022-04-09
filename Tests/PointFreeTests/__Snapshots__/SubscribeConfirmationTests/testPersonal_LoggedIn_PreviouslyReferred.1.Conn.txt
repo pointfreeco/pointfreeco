@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 302 Found
-Location: /subscribe/personal
+Location: /subscribe/personal?billing=yearly&isOwnerTakingSeat=true&teammates=&useRegionalDiscount=false
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"Referrals are only valid for first-time subscribers.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff

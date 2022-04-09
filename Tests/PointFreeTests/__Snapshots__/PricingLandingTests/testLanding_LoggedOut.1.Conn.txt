@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 211033
+Content-Length: 211413
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1982,7 +1982,7 @@ personal, team and enterprise subscriptions.">
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/login"
+                <a href="/login?redirect=http://localhost:8080/pricing"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2056,7 +2056,7 @@ personal, team and enterprise subscriptions.">
                       m-pb2">
               Start with a free episode
             </p>
-            <a href="/login"
+            <a href="/login?redirect=http://localhost:8080/pricing"
                class="medium
                       cursor-pointer
                       nowrap
@@ -2217,7 +2217,7 @@ personal, team and enterprise subscriptions.">
               </div>
             </li>
           </ul>
-          <a href="/login"
+          <a href="/login?redirect=http://localhost:8080/pricing"
              class="d-mt3
                     m-mt2
                     block
@@ -2331,14 +2331,14 @@ personal, team and enterprise subscriptions.">
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p><a href="/subscribe/personal">Regional</a>
+                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
 and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
 available</p>
 
               </div>
             </li>
           </ul>
-          <a href="/login"
+          <a href="/login?redirect=http://localhost:8080/subscribe/personal?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2451,7 +2451,7 @@ available</p>
               </div>
             </li>
           </ul>
-          <a href="/login"
+          <a href="/login?redirect=http://localhost:8080/subscribe/team?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2828,7 +2828,7 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
           <div class="fg-gray400
                       m-pb2
                       md-ctn">
-            <p>Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer <a href="/subscribe/personal">regional</a> discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, <a href="/subscribe/personal">see here</a>.</p>
+            <p>Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer <a href="/subscribe/personal?useRegionalDiscount=true">regional</a> discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, <a href="/subscribe/personal?useRegionalDiscount=true">see here</a>.</p>
 
           </div>
           <p class="bold
@@ -4421,7 +4421,7 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
                 m-pb3">
         Includes a free episode of your choice, plus weekly<br>updates from our newsletter.
       </p>
-      <a href="/login"
+      <a href="/login?redirect=http://localhost:8080/pricing"
          class="medium
                 cursor-pointer
                 nowrap
@@ -4477,13 +4477,13 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com//mbrandonw"
+            <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com//stephencelis"
+            <a href="https://www.twitter.com/stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -4589,7 +4589,7 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com//pointfreeco">
+                 href="https://www.twitter.com/pointfreeco">
                 Twitter
               </a>
             </li>

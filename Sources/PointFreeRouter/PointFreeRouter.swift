@@ -14,7 +14,18 @@ public struct PointFreeRouter {
   }
 
   public func path(to route: AppRoute) -> String {
-    self.request(for: route)?.url?.path ?? ""
+    do {
+      guard
+        let url = URLRequest(data: try router.print(route))?.url?.absoluteString
+      else {
+        print("error: failed to print \(route)")
+        return ""
+      }
+      return url
+    } catch {
+      print("error: failed to print \(route): \(error)")
+      return ""
+    }
   }
 
   public func url(to route: AppRoute) -> String {

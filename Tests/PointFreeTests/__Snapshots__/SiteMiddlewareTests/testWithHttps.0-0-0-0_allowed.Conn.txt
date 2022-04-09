@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 61407
+Content-Length: 61436
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1906,7 +1906,7 @@ html {
                         m-mr2">
                 Gifts
               </a>
-              <a href="/login"
+              <a href="/login?redirect=http://localhost:8080/"
                  class="medium
                         cursor-pointer
                         nowrap
@@ -2228,13 +2228,13 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com//mbrandonw"
+            <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com//stephencelis"
+            <a href="https://www.twitter.com/stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -2340,7 +2340,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com//pointfreeco">
+                 href="https://www.twitter.com/pointfreeco">
                 Twitter
               </a>
             </li>

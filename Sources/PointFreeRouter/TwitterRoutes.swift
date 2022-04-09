@@ -19,11 +19,11 @@ private let twitterRouter = Path {
 }
 
 public func twitterUrl(to route: TwitterRoute) -> String {
-  guard
-    let path = (try? twitterRouter.print(route))
-      .flatMap(URLRequest.init(data:))?.url?.absoluteString
-  else { return "" }
-  return "\(twitterBaseUrl.absoluteString)/\(path)"
+  (
+    try? twitterRouter
+      .baseURL("https://www.twitter.com")
+      .print(route)
+  )
+  .flatMap(URLRequest.init(data:))?.url?.absoluteString
+  ?? ""
 }
-
-private let twitterBaseUrl = URL(string: "https://www.twitter.com")!

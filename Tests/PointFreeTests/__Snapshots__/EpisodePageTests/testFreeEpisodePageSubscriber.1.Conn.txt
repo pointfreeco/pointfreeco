@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 71827
+Content-Length: 71824
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2686,13 +2686,13 @@ working how we expect:</p>
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com//mbrandonw"
+            <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com//stephencelis"
+            <a href="https://www.twitter.com/stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -2798,7 +2798,7 @@ working how we expect:</p>
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com//pointfreeco">
+                 href="https://www.twitter.com/pointfreeco">
                 Twitter
               </a>
             </li>

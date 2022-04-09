@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 59034
+Content-Length: 59056
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2079,7 +2079,7 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p><a href="/subscribe/personal">Regional</a>
+                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
 and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
 available</p>
 
@@ -2493,13 +2493,13 @@ window.addEventListener("load", function() {
                     lh-4
                     fg-white">
             A video series on functional programming and the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com//mbrandonw"
+            <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
               Brandon&nbsp;Williams
             </a>
              and 
-            <a href="https://www.twitter.com//stephencelis"
+            <a href="https://www.twitter.com/stephencelis"
                class="text-decoration-none
                       pf-link-green">
               Stephen&nbsp;Celis
@@ -2605,7 +2605,7 @@ window.addEventListener("load", function() {
                         normal
                         h5
                         lh-4"
-                 href="https://www.twitter.com//pointfreeco">
+                 href="https://www.twitter.com/pointfreeco">
                 Twitter
               </a>
             </li>

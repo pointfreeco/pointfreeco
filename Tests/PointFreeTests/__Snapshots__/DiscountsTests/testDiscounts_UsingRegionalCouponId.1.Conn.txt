@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 302 Found
-Location: /subscribe/personal
+Location: /subscribe/personal?useRegionalDiscount=false
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"That coupon code is invalid or has expired.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff
