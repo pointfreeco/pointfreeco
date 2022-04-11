@@ -84,4 +84,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0071_ParserBuilders,
   post0072_Backtracking,
   post0073_ParserErrors,
+  post0074_ParserPrinters,
 ]
