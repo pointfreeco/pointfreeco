@@ -157,7 +157,7 @@ instructions.print(
 This is only scratching the surface. There is _a lot_ more offered in the library. Check out our [video tour][episode] for more information, and give the [library][swift-parsing] a spin to explore its new capabilities.
 
 [aoc13]: https://adventofcode.com/2021/day/13
-[episode]: TODO
+[episode]: /episodes/ep185-tour-of-parser-printers-introduction
 [swift-parsing]: https://github.com/pointfreeco/swift-parsing
 [0_9_0]: https://github.com/pointfreeco/swift-parsing/releases/0.9.0
 """#,
