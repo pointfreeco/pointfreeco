@@ -9,7 +9,7 @@ Today we celebrate a huge release of swift-parsing, which includes the ability t
     exercises: _exercises,
     id: 185,
     length: 40*60 + 37,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt:  Date(timeIntervalSince1970: 1649653200),
     references: [
       .invertibleSyntaxDescriptions,
