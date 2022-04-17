@@ -13,7 +13,6 @@ Today we celebrate a huge release of [swift-parsing](https://github.com/pointfre
     publishedAt:  Date(timeIntervalSince1970: 1649653200),
     references: [
       .invertibleSyntaxDescriptions,
-      .unifiedParsingAndPrintingWithPrisms,
     ],
     sequence: 185,
     subtitle: "Introduction",
