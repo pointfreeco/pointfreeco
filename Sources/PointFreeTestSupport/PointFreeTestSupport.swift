@@ -178,12 +178,11 @@ extension Snapshotting {
   #endif
 }
 
-public func request(
+private func request(
   with baseRequest: URLRequest,
   session: Session = .loggedOut,
   basicAuth: Bool = false
-  ) -> URLRequest {
-
+) -> URLRequest {
   var request = baseRequest
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
