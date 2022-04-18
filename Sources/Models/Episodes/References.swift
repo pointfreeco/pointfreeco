@@ -1182,7 +1182,7 @@ The artwork used as inspiration in this episode comes from the album cover from 
 
 Another approach to the parsing-printing problem using a construct known as a "prism" (a construct Point-Free viewers and library users may better know as a "case path").
 """,
-    link: "https://yowconference.com/talks/fraser-tweedale/yow-lambda-jam-2016/unified-parsing-and-printing-with-prisms-12532/",
+    link: "https://skillsmatter.com/skillscasts/16594-unified-parsing-and-printing-with-prisms",
     publishedAt: referenceDateFormatter.date(from: "2016-04-29"),
     title: "Unified Parsing and Printing with Prisms"
   )

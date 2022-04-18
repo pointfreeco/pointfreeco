@@ -3,17 +3,16 @@ import Foundation
 extension Episode {
   public static let ep185_tourOfParserPrinters = Episode(
     blurb: """
-Today we celebrate a huge release of swift-parsing, which includes the ability to build invertible parser-printers with ease. We'll demonstrate by using the library to build three different parser-printers, starting with a fun exercise from Advent of Code
+Today we celebrate a huge release of [swift-parsing](https://github.com/pointfreeco/swift-parsing), which includes the ability to build invertible parser-printers with ease. We'll demonstrate by using the library to build three different parser-printers, starting with a fun exercise from Advent of Code
 """,
     codeSampleDirectory: "0185-parser-printers-tour-pt1",
     exercises: _exercises,
     id: 185,
     length: 40*60 + 37,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt:  Date(timeIntervalSince1970: 1649653200),
     references: [
       .invertibleSyntaxDescriptions,
-      .unifiedParsingAndPrintingWithPrisms,
     ],
     sequence: 185,
     subtitle: "Introduction",
