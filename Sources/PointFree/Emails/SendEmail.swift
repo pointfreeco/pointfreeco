@@ -1,10 +1,11 @@
-import ApplicativeRouter
 import Either
 import EmailAddress
+import Foundation
 import Html
 import HtmlPlainTextPrint
 import Mailgun
 import Models
+import Parsing
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -13,8 +14,11 @@ import Styleguide
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
 
-let expressUnsubscribeIso: PartialIso<String, (User.Id, EmailSetting.Newsletter)>
-  = payload(.tagged(.uuid), .rawRepresentable)
+let expressUnsubscribe = ParsePrint {
+  UUID.parser().map(.representing(User.Id.self))
+  "--POINT-FREE-BOUNDARY--"
+  Rest().map(.string.representing(EmailSetting.Newsletter.self))
+}
 
 public func prepareEmail(
   from: EmailAddress = supportEmail,
@@ -40,9 +44,8 @@ public func prepareEmail(
       .map { userId, newsletter in
         guard
           let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
-          let unsubUrl = expressUnsubscribeIso
-            .unapply((userId, newsletter))
-            .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+          let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
+            .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
             .map({ url(to: .expressUnsubscribe(payload: $0)) })
           else {
             Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")

@@ -1,9 +1,9 @@
-import ApplicativeRouter
 import Either
 import EmailAddress
 import Foundation
 import HttpPipeline
 import Models
+import Parsing
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
@@ -109,9 +109,8 @@ func encryptPayload<A>(
       let (user, data) = (get1(conn.data), get2(conn.data))
 
       guard
-        let emailChangePayload = emailChangeIso
-          .unapply((user.id, data.email))
-          .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+        let emailChangePayload = (try? emailChange.print((user.id, data.email)))
+          .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
         else {
           Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
@@ -126,13 +125,17 @@ func encryptPayload<A>(
     }
 }
 
-let emailChangeIso: PartialIso<String, (User.Id, EmailAddress)> = payload(.uuid >>> .tagged, .tagged)
+let emailChange = ParsePrint {
+  UUID.parser().map(.representing(User.Id.self))
+  "--POINT-FREE-BOUNDARY--"
+  Rest().map(.string.representing(EmailAddress.self))
+}
 
 let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> = { conn in
 
   guard
     let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
-    let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
+    let (userId, newEmailAddress) = try? emailChange.parse(decrypted)
     else {
       Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 

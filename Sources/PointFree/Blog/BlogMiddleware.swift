@@ -1,4 +1,3 @@
-import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline

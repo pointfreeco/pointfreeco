@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import Cryptor
 import Css
 import Dispatch
@@ -57,31 +56,6 @@ public func requireSome<A>(
       }
     }
 }
-
-/// Combines two partial iso's into one by concatenating their results into a single string.
-public func payload<A, B>(
-  _ iso1: PartialIso<String, A>,
-  _ iso2: PartialIso<String, B>,
-  separator: String = "--POINT-FREE-BOUNDARY--"
-  )
-  -> PartialIso<String, (A, B)> {
-
-    return PartialIso<String, (A, B)>(
-      apply: { payload in
-        let parts = payload.components(separatedBy: separator)
-        let first = parts.first.flatMap(iso1.apply)
-        let second = parts.last.flatMap(iso2.apply)
-        return tuple <¢> first <*> second
-    },
-      unapply: { first, second in
-        guard
-          let first = iso1.unapply(first),
-          let second = iso2.unapply(second)
-          else { return nil }
-        return "\(first)\(separator)\(second)"
-    })
-}
-
 
 // PreludeFoundation
 

@@ -53,9 +53,8 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
     else { return [] }
 
   guard
-    let unsubUrl = expressUnsubscribeIso
-      .unapply((user.id, newsletter))
-      .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+    let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))
+      .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
       .map({ url(to: .expressUnsubscribe(payload: $0)) })
     else {
       Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
