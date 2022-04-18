@@ -24,7 +24,7 @@ We continue our tour by comparing swift-parsing to Apple's forthcoming Regex DSL
         hd720: "0186-trailer-720p-7eb415de3b5843f69356a60739ae7630",
         sd540: "0186-trailer-540p-4d2e0a43c1d042028e3a3fec5a18d9bf"
       ),
-      vimeoId: 697129966
+      vimeoId: 697188766
     )
   )
 }
