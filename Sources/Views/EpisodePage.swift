@@ -58,7 +58,7 @@ public struct EpisodePageData {
     return section
   }
 
-  public var route: AppRoute {
+  public var route: SiteRoute {
     switch context {
     case let .collection(collection):
       guard

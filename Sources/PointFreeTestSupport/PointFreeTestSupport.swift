@@ -212,7 +212,7 @@ public func request(
   return request
 }
 
-public func request(to route: AppRoute, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
+public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
   return request(
     with: pointFreeRouter.request(for: route)!,
     session: session,

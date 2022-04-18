@@ -39,7 +39,7 @@ public func minimalNavView(
   style: NavStyle.MinimalStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: AppRoute?
+  currentRoute: SiteRoute?
 ) -> Node {
   return .div(
     attributes: [.class([newNavBarClass(for: style)])],
@@ -112,7 +112,7 @@ private func loggedInNavItemsView(
   )
 }
 
-private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: AppRoute?) -> Node {
+private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
     .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
@@ -150,7 +150,7 @@ private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
   return .a(attributes: [.href(path(to: .account(.index))), .class([navLinkClass(for: style)])], "Account")
 }
 
-private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: AppRoute?) -> Node {
+private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
   return .gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),

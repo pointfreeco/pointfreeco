@@ -47,7 +47,7 @@ class MinimalNavViewTests: TestCase {
   }
 }
 
-private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberState, AppRoute?))] = [
+private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberState, SiteRoute?))] = [
   ("dark_logged-out_no-route", (.dark, nil, .nonSubscriber, nil)),
   ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricingLanding)),
   ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
@@ -64,7 +64,7 @@ private func testDocView(
   style: NavStyle.MinimalStyle,
   currentUser: Models.User?,
   subscriberState: SubscriberState,
-  currentRoute: AppRoute?
+  currentRoute: SiteRoute?
   )
 ) -> Node {
   return [

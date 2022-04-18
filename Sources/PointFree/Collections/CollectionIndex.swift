@@ -6,7 +6,7 @@ import Prelude
 import Tuple
 import Views
 
-let collectionsIndexMiddleware: M<Tuple3<User?, SubscriberState, AppRoute?>>
+let collectionsIndexMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>>
   = map(lower)
     >>> writeStatus(.ok)
     >=> respond(

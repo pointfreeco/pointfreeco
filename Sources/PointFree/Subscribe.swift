@@ -218,7 +218,7 @@ private func validateCouponAndRegionalDiscount(
   subscribeData.coupon == nil || !subscribeData.useRegionalDiscount
 }
 
-private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> AppRoute {
+private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> SiteRoute {
   guard let subscribeData = subscribeData else {
     return .subscribeConfirmation(
       lane: .team,

@@ -934,7 +934,7 @@ window.addEventListener("load", function() {
             to: .login(
               redirect: url(
                 to: coupon
-                  .map { AppRoute.discounts(code: $0.id, nil) }
+                  .map { SiteRoute.discounts(code: $0.id, nil) }
                   ?? .subscribeConfirmation(
                     lane: lane,
                     billing: nil,

@@ -13,7 +13,7 @@ public struct PointFreeRouter {
     self.baseUrl = baseUrl
   }
 
-  public func path(to route: AppRoute) -> String {
+  public func path(to route: SiteRoute) -> String {
     do {
       guard
         let url = URLRequest(data: try router.print(route))?.url?.absoluteString
@@ -28,11 +28,11 @@ public struct PointFreeRouter {
     }
   }
 
-  public func url(to route: AppRoute) -> String {
+  public func url(to route: SiteRoute) -> String {
     self.request(for: route)?.url?.absoluteString ?? ""
   }
 
-  public func request(for route: AppRoute) -> URLRequest? {
+  public func request(for route: SiteRoute) -> URLRequest? {
     do {
       guard
         let request = URLRequest(
@@ -51,7 +51,7 @@ public struct PointFreeRouter {
     }
   }
 
-  public func match(request: URLRequest) -> AppRoute? {
+  public func match(request: URLRequest) -> SiteRoute? {
     guard var data = URLRequestData(request: request)
     else {
       print("error: failed to convert request data \(request)")
@@ -68,10 +68,10 @@ public struct PointFreeRouter {
 
 public var pointFreeRouter = PointFreeRouter()
 
-public func path(to route: AppRoute) -> String {
+public func path(to route: SiteRoute) -> String {
   return pointFreeRouter.path(to: route)
 }
 
-public func url(to route: AppRoute) -> String {
+public func url(to route: SiteRoute) -> String {
   return pointFreeRouter.url(to: route)
 }
