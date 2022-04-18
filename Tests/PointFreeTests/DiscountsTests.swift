@@ -11,12 +11,6 @@ import SnapshotTesting
 import Stripe
 import XCTest
 
-private func secureRequest(_ urlString: String) -> URLRequest {
-  var request = URLRequest(url: URL(string: urlString)!)
-  request.allHTTPHeaderFields = ["X-Forwarded-Proto": "https"]
-  return request
-}
-
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -25,7 +19,7 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedOut() {
     assertSnapshot(
-      matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil)))
         |> siteMiddleware,
       as: .ioConn
     )
@@ -33,12 +27,8 @@ class DiscountsTests: TestCase {
     #if !os(Linux)
      if self.isScreenshotTestingAvailable {
        assertSnapshots(
-         matching: connection(
-           from: request(
-             with: secureRequest("http://localhost:8080/discounts/blobfest")
-           )
-           )
-           |> siteMiddleware,
+         matching: connection(from: request(to: .discounts(code: "blobfest", nil)))
+         |> siteMiddleware,
          as: [
            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
@@ -61,10 +51,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
 
@@ -72,12 +60,9 @@ class DiscountsTests: TestCase {
      if self.isScreenshotTestingAvailable {
        assertSnapshots(
          matching: connection(
-           from: request(
-             with: secureRequest("http://localhost:8080/discounts/blobfest"),
-             session: .loggedIn
-           )
-           )
-           |> siteMiddleware,
+          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn)
+         )
+         |> siteMiddleware,
          as: [
            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
@@ -100,10 +85,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -121,10 +104,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -142,10 +123,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -163,10 +142,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -184,10 +161,8 @@ class DiscountsTests: TestCase {
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
-      matching: connection(
-        from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
-        )
-        |> siteMiddleware,
+      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+      |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -196,11 +171,7 @@ class DiscountsTests: TestCase {
     assertSnapshot(
       matching: siteMiddleware(
         connection(
-          from: request(
-            with: secureRequest(
-              "http://localhost:8080/discounts/\(Current.envVars.regionalDiscountCouponId.rawValue)"
-            )
-          )
+          from: request(to: .discounts(code: Current.envVars.regionalDiscountCouponId, nil))
         )
       ),
       as: .ioConn

@@ -1,6 +1,5 @@
 GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-X-Forwarded-Proto: https
 
 200 OK
 Content-Length: 59032

@@ -1,6 +1,5 @@
 GET http://localhost:8080/discounts/regional-discount
 Cookie: pf_session={}
-X-Forwarded-Proto: https
 
 302 Found
 Location: /subscribe/personal?useRegionalDiscount=false
