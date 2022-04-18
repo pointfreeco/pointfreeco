@@ -35,7 +35,7 @@ var package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
-    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
+    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.3.1")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "0.8.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
