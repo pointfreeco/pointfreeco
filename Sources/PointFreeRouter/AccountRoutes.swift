@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import CasePaths
 import Foundation
 import Models
@@ -115,9 +114,7 @@ let accountRouter = OneOf {
 
           Route(/Account.Subscription.Change.update) {
             Method.post
-            Body {
-              FormCoded(Pricing?.self, decoder: formDecoder)
-            }
+            Body(.data.form(Pricing?.self, decoder: formDecoder))
           }
         }
       }
@@ -131,8 +128,6 @@ let accountRouter = OneOf {
 
   Route(/Account.update) {
     Method.post
-    Body {
-      FormCoded(ProfileData?.self, decoder: formDecoder)
-    }
+    Body(.data.form(ProfileData?.self, decoder: formDecoder))
   }
 }

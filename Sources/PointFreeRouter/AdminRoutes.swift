@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import CasePaths
 import Foundation
 import Models
@@ -102,23 +101,12 @@ let adminRouter = OneOf {
 
       Route(/Admin.NewBlogPostEmail.send) {
         Method.post
-        Parse(
-          .convert(
-            apply: { ($0, $1.0, $1.1) },
-            unapply: { ($0, ($1, $2)) }
-          )
-        ) {
-          Path {
-            Int.parser().map(.representing(BlogPost.Id.self))
-            "send"
-          }
-          Body {
-            FormCoded(NewBlogPostFormData.self, decoder: formDecoder)
-            FormData {
-              isTest
-            }
-          }
+        Path {
+          Int.parser().map(.representing(BlogPost.Id.self))
+          "send"
         }
+        Body(.data.form(NewBlogPostFormData.self, decoder: formDecoder))
+        Body { FormData { isTest } }
       }
     }
   }

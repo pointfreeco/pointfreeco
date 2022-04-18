@@ -202,9 +202,7 @@ private let enterpriseRouter = OneOf {
       Parse(.string.representing(EnterpriseAccount.Domain.self))
       "request"
     }
-    Body {
-      FormCoded(EnterpriseRequestFormData.self, decoder: formDecoder)
-    }
+    Body(.data.form(EnterpriseRequestFormData.self, decoder: formDecoder))
   }
 
   Route(/SiteRoute.Enterprise.acceptInvite) {
@@ -475,9 +473,7 @@ let router = OneOf {
         "newsletters"
         "express-unsubscribe-reply"
       }
-      Body {
-        FormCoded(MailgunForwardPayload.self, decoder: formDecoder)
-      }
+      Body(.data.form(MailgunForwardPayload.self, decoder: formDecoder))
     }
 
     Route(/SiteRoute.gitHubCallback) {

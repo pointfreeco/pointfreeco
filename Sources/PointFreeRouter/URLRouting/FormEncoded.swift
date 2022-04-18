@@ -2,9 +2,25 @@ import Foundation
 import Parsing
 import UrlFormEncoding
 
-// FIXME: This should be a conversion.
+extension Conversion {
+  @inlinable
+  public static func form<Value>(
+    _ type: Value.Type,
+    decoder: UrlFormDecoder = .init()
+  ) -> Self where Self == FormCoding<Value> {
+    .init(type, decoder: decoder)
+  }
 
-public struct FormCoded<Value>: Parser where Value: Decodable {
+  @inlinable
+  public func form<Value>(
+    _ type: Value.Type,
+    decoder: UrlFormDecoder = .init()
+  ) -> Conversions.Map<Self, FormCoding<Value>> {
+    self.map(.form(type, decoder: decoder))
+  }
+}
+
+public struct FormCoding<Value: Codable>: Conversion {
   public let decoder: UrlFormDecoder
 
   @inlinable
@@ -16,14 +32,12 @@ public struct FormCoded<Value>: Parser where Value: Decodable {
   }
 
   @inlinable
-  public func parse(_ input: inout ArraySlice<UInt8>) throws -> Value {
-    try decoder.decode(Value.self, from: Data(input))
+  public func apply(_ input: Data) throws -> Value {
+    try decoder.decode(Value.self, from: input)
   }
-}
 
-extension FormCoded: ParserPrinter where Value: Encodable {
   @inlinable
-  public func print(_ output: Value, into input: inout ArraySlice<UInt8>) {
-    input = ArraySlice(urlFormEncode(value: output).utf8)
+  public func unapply(_ output: Value) -> Data {
+    Data(urlFormEncode(value: output).utf8)
   }
 }

@@ -58,9 +58,7 @@ let giftsRouter = OneOf {
 
   Route(/Gifts.confirmation) {
     Method.post
-    Body {
-      FormCoded(GiftFormData.self, decoder: formDecoder)
-    }
+    Body(.data.form(GiftFormData.self, decoder: formDecoder))
   }
 
   Route(/Gifts.create) {
