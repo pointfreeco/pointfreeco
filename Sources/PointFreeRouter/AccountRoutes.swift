@@ -114,7 +114,9 @@ let accountRouter = OneOf {
 
           Route(/Account.Subscription.Change.update) {
             Method.post
-            Body(.data.form(Pricing?.self, decoder: formDecoder))
+            Optionally {
+              Body(.data.form(Pricing.self, decoder: formDecoder))
+            }
           }
         }
       }
@@ -128,6 +130,8 @@ let accountRouter = OneOf {
 
   Route(/Account.update) {
     Method.post
-    Body(.data.form(ProfileData?.self, decoder: formDecoder))
+    Optionally {
+      Body(.data.form(ProfileData.self, decoder: formDecoder))
+    }
   }
 }

@@ -214,7 +214,7 @@ public func request(
 
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
   return request(
-    with: pointFreeRouter.request(for: route)!,
+    with: try! pointFreeRouter.request(for: route),
     session: session,
     basicAuth: basicAuth
   )

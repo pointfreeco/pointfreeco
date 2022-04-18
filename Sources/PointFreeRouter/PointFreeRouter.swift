@@ -6,72 +6,34 @@ import _URLRouting
   import FoundationNetworking
 #endif
 
-public struct PointFreeRouter {
-  public let baseUrl: URL
+public struct PointFreeRouter: ParserPrinter {
+  let _baseURL: String
 
-  public init(baseUrl: URL = URL(string: "http://localhost:8080")!) {
-    self.baseUrl = baseUrl
+  public init(baseURL: URL = URL(string: "http://localhost:8080")!) {
+    self._baseURL = baseURL.absoluteString
   }
 
-  public func path(to route: SiteRoute) -> String {
-    do {
-      guard
-        let url = URLRequest(data: try router.print(route))?.url?.absoluteString
-      else {
-        print("error: failed to print \(route)")
-        return ""
-      }
-      return url
-    } catch {
-      print("error: failed to print \(route): \(error)")
-      return ""
-    }
+  public func parse(_ input: inout URLRequestData) throws -> SiteRoute {
+    try router.parse(&input)
+  }
+
+  public func print(_ output: SiteRoute, into input: inout URLRequestData) throws {
+    try router
+      .baseURL(self._baseURL)
+      .print(output, into: &input)
   }
 
   public func url(to route: SiteRoute) -> String {
-    self.request(for: route)?.url?.absoluteString ?? ""
-  }
-
-  public func request(for route: SiteRoute) -> URLRequest? {
-    do {
-      guard
-        let request = URLRequest(
-          data: try router
-            .baseURL(self.baseUrl.absoluteString)
-            .print(route)
-        )
-      else {
-        print("error: failed to print \(route)")
-        return nil
-      }
-      return request
-    } catch {
-      print("error: failed to print \(route): \(error)")
-      return nil
-    }
-  }
-
-  public func match(request: URLRequest) -> SiteRoute? {
-    guard var data = URLRequestData(request: request)
-    else {
-      print("error: failed to convert request data \(request)")
-      return nil
-    }
-    do {
-      return try router.parse(&data)
-    } catch {
-      print("error: failed to match route for request \(request): \(error)")
-      return nil
-    }
+    self.url(to: route).absoluteString
   }
 }
 
 public var pointFreeRouter = PointFreeRouter()
 
 public func path(to route: SiteRoute) -> String {
-  return pointFreeRouter.path(to: route)
+  pointFreeRouter.path(to: route)
 }
 
 public func url(to route: SiteRoute) -> String {
-  return pointFreeRouter.url(to: route)
+  pointFreeRouter.url(to: route).absoluteString
 }

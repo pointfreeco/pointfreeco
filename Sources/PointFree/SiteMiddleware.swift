@@ -29,7 +29,7 @@ private func router<A>(
     return { middleware in
       return { conn in
 
-        pointFreeRouter.match(request: conn.request)
+        (try? pointFreeRouter.match(request: conn.request))
           .map(const >>> conn.map >>> middleware)
           ?? notFound(conn)
       }

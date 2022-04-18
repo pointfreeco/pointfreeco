@@ -840,13 +840,13 @@ We do! If you know someone that has a Point-Free subscription, ask them to share
     Faq(
       question: "Do you offer country-based discounts?",
       answer: """
-Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
+Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(pointFreeRouter.path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(pointFreeRouter.path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
 """
     ),
     Faq(
       question: "Can I give a subscription as a gift?",
       answer: """
-You can! Check out our dedicated [gifts](\(path(to: .gifts(.index)))) page for more information.
+You can! Check out our dedicated [gifts](\(pointFreeRouter.path(to: .gifts(.index)))) page for more information.
 """
     ),
   ]

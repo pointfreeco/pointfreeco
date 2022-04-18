@@ -101,12 +101,43 @@ let adminRouter = OneOf {
 
       Route(/Admin.NewBlogPostEmail.send) {
         Method.post
-        Path {
-          Int.parser().map(.representing(BlogPost.Id.self))
-          "send"
+
+        Parse(
+          .convert(
+            apply: { ($0, $1.0, $1.1) },
+            unapply: { ($0, ($1, $2)) }
+          )
+        ) {
+          Path {
+            Int.parser().map(.representing(BlogPost.Id.self))
+            "send"
+          }
+          Body {
+            FormData {
+              Parse(.memberwise(NewBlogPostFormData.init)) {
+                Field(
+                  NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
+                  .string,
+                  default: ""
+                )
+                Optionally {
+                  Field(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue) {
+                    Bool.parser()
+                  }
+                }
+                Field(
+                  NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
+                  .string,
+                  default: ""
+                )
+                Optionally {
+                  Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue) { Bool.parser() }
+                }
+              }
+              isTest
+            }
+          }
         }
-        Body(.data.form(NewBlogPostFormData.self, decoder: formDecoder))
-        Body { FormData { isTest } }
       }
     }
   }
