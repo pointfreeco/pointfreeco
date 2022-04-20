@@ -52,7 +52,7 @@ let adminRouter = OneOf {
         Body {
           FormData {
             Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
-            Field("episode_sequence") { Int.parser().map(.representing(Episode.Sequence.self)) }
+            Field("episode_sequence") { Digits().map(.representing(Episode.Sequence.self)) }
           }
         }
       }
@@ -67,14 +67,14 @@ let adminRouter = OneOf {
 
       Route(.case(Admin.FreeEpisodeEmail.send)) {
         Path {
-          Int.parser().map(.representing(Episode.Id.self))
+          Digits().map(.representing(Episode.Id.self))
           "send"
         }
       }
     }
   }
 
-  Route(.case(Admin.ghost) {
+  Route(.case(Admin.ghost)) {
     Path { "ghost" }
 
     OneOf {

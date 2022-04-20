@@ -115,10 +115,10 @@ public enum SiteRoute: Equatable {
 }
 
 private let blogSlugOrId = OneOf {
-  Parse(.string.map(/Either<String, BlogPost.Id>.left))
+  Parse(.string.map(.case(Either<String, BlogPost.Id>.left)))
 
-  Int.parser(of: Substring.self) // FIXME?
-    .map(.representing(BlogPost.Id.self).map(/Either<String, BlogPost.Id>.right))
+  Int.parser(of: Substring.self)
+    .map(.representing(BlogPost.Id.self).map(.case(Either<String, BlogPost.Id>.right)))
 }
 
 private let blogRouter = OneOf {
@@ -185,7 +185,7 @@ private let episodeRouter = OneOf {
       "progress"
     }
     Query {
-      Field("percent") { Int.parser() }
+      Field("percent") { Digits() }
     }
   }
 }
@@ -529,7 +529,7 @@ let router = OneOf {
             }
             Parse(.memberwise(Pricing.init(billing:quantity:))) {
               Field("pricing[billing]") { Pricing.Billing.parser() }
-              Field("pricing[quantity]") { Int.parser() }
+              Field("pricing[quantity]") { Digits() }
             }
             Optionally {
               Field(
@@ -607,7 +607,7 @@ let router = OneOf {
       Method.post
       Path {
         "episodes"
-        Int.parser().map(.representing(Episode.Id.self))
+        Digits().map(.representing(Episode.Id.self))
         "credit"
       }
     }
