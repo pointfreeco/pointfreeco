@@ -1,3 +1,4 @@
+import Backtrace
 import Database
 import Models
 import NIO
@@ -34,6 +35,11 @@ open class LiveDatabaseTestCase: TestCase {
 }
 
 open class TestCase: XCTestCase {
+  open override class func setUp() {
+    super.setUp()
+    Backtrace.install()
+  }
+
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
