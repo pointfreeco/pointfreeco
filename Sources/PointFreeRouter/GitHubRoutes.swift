@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import GitHub
 import Parsing
@@ -32,7 +31,7 @@ public enum GitHubRoute {
 }
 
 private let gitHubRouter = OneOf {
-  Route(/GitHubRoute.authorize) {
+  Route(.case(GitHubRoute.authorize)) {
     Path {
       "login"
       "oauth"
@@ -51,9 +50,9 @@ private let gitHubRouter = OneOf {
     Path { "pointfreeco" }
 
     OneOf {
-      Route(/GitHubRoute.organization)
+      Route(.case(GitHubRoute.organization))
 
-      Route(/GitHubRoute.episodeCodeSample) {
+      Route(.case(GitHubRoute.episodeCodeSample)) {
         Path {
           "episode-code-samples"
           "tree"
@@ -62,7 +61,7 @@ private let gitHubRouter = OneOf {
         }
       }
 
-      Route(/GitHubRoute.license) {
+      Route(.case(GitHubRoute.license)) {
         Path {
           "pointfreeco"
           "blob"
@@ -71,7 +70,7 @@ private let gitHubRouter = OneOf {
         }
       }
 
-      Route(/GitHubRoute.repo) {
+      Route(.case(GitHubRoute.repo)) {
         Path { GitHubRoute.Repo.parser() }
       }
     }

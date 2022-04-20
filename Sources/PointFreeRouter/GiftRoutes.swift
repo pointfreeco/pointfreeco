@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Models
 import Parsing
@@ -54,14 +53,14 @@ public enum Gifts: Equatable {
 }
 
 let giftsRouter = OneOf {
-  Route(/Gifts.index)
+  Route(.case(Gifts.index))
 
-  Route(/Gifts.confirmation) {
+  Route(.case(Gifts.confirmation)) {
     Method.post
     Body(.data.form(GiftFormData.self, decoder: formDecoder))
   }
 
-  Route(/Gifts.create) {
+  Route(.case(Gifts.create)) {
     Method.post
     Body(
       .data.json(
@@ -72,15 +71,15 @@ let giftsRouter = OneOf {
     )
   }
 
-  Route(/Gifts.plan) {
+  Route(.case(Gifts.plan)) {
     Path { Gifts.Plan.parser() }
   }
 
-  Route(/Gifts.redeemLanding) {
+  Route(.case(Gifts.redeemLanding)) {
     Path { UUID.parser().map(.representing(Gift.Id.self)) }
   }
 
-  Route(/Gifts.redeem) {
+  Route(.case(Gifts.redeem)) {
     Method.post
     Path { UUID.parser().map(.representing(Gift.Id.self)) }
   }

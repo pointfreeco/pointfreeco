@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Models
 import PointFreePrelude
@@ -40,34 +39,34 @@ public enum Account: Equatable {
 }
 
 let accountRouter = OneOf {
-  Route(/Account.index)
+  Route(.case(Account.index))
 
-  Route(/Account.confirmEmailChange) {
+  Route(.case(Account.confirmEmailChange)) {
     Path { "confirm-email-change" }
     Query {
       Field("payload", .string.representing(Encrypted.self))
     }
   }
 
-  Route(/Account.invoices) {
+  Route(.case(Account.invoices)) {
     Path { "invoices" }
 
     OneOf {
-      Route(/Account.Invoices.index)
+      Route(.case(Account.Invoices.index))
 
-      Route(/Account.Invoices.show) {
+      Route(.case(Account.Invoices.show)) {
         Path { Parse(.string.representing(Invoice.Id.self)) }
       }
     }
   }
 
-  Route(/Account.paymentInfo) {
+  Route(.case(Account.paymentInfo)) {
     Path { "payment-info" }
 
     OneOf {
-      Route(/Account.PaymentInfo.show)
+      Route(.case(Account.PaymentInfo.show))
 
-      Route(/Account.PaymentInfo.update) {
+      Route(.case(Account.PaymentInfo.update)) {
         Method.post
         Optionally {
           Body {
@@ -84,11 +83,11 @@ let accountRouter = OneOf {
     Path { "rss" }
 
     OneOf {
-      Route(/Account.rss) {
+      Route(.case(Account.rss)) {
         Path { Parse(.string.representing(User.RssSalt.self)) }
       }
 
-      Route(/Account.rssLegacy) {
+      Route(.case(Account.rssLegacy)) {
         Path {
           Parse(.string)
           Parse(.string)
@@ -97,22 +96,22 @@ let accountRouter = OneOf {
     }
   }
 
-  Route(/Account.subscription) {
+  Route(.case(Account.subscription)) {
     Path { "subscription" }
 
     OneOf {
-      Route(/Account.Subscription.cancel) {
+      Route(.case(Account.Subscription.cancel)) {
         Method.post
         Path { "cancel" }
       }
 
-      Route(/Account.Subscription.change) {
+      Route(.case(Account.Subscription.change)) {
         Path { "change" }
 
         OneOf {
-          Route(/Account.Subscription.Change.show)
+          Route(.case(Account.Subscription.Change.show))
 
-          Route(/Account.Subscription.Change.update) {
+          Route(.case(Account.Subscription.Change.update)) {
             Method.post
             Optionally {
               Body(.data.form(Pricing.self, decoder: formDecoder))
@@ -121,14 +120,14 @@ let accountRouter = OneOf {
         }
       }
 
-      Route(/Account.Subscription.reactivate) {
+      Route(.case(Account.Subscription.reactivate)) {
         Method.post
         Path { "reactivate" }
       }
     }
   }
 
-  Route(/Account.update) {
+  Route(.case(Account.update)) {
     Method.post
     Optionally {
       Body(.data.form(ProfileData.self, decoder: formDecoder))

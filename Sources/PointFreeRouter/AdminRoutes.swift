@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Models
 import Parsing
@@ -40,15 +39,15 @@ public enum Admin: Equatable {
 }
 
 let adminRouter = OneOf {
-  Route(/Admin.index)
+  Route(.case(Admin.index))
 
-  Route(/Admin.episodeCredits) {
+  Route(.case(Admin.episodeCredits)) {
     Path { "episode-credits" }
 
     OneOf {
-      Route(/Admin.EpisodeCredit.show)
+      Route(.case(Admin.EpisodeCredit.show))
 
-      Route(/Admin.EpisodeCredit.add(userId:episodeSequence:)) {
+      Route(.case(Admin.EpisodeCredit.add(userId:episodeSequence:))) {
         Method.post
         Body {
           FormData {
@@ -60,13 +59,13 @@ let adminRouter = OneOf {
     }
   }
 
-  Route(/Admin.freeEpisodeEmail) {
+  Route(.case(Admin.freeEpisodeEmail)) {
     Path { "free-episode-email" }
 
     OneOf {
-      Route(/Admin.FreeEpisodeEmail.index)
+      Route(.case(Admin.FreeEpisodeEmail.index))
 
-      Route(/Admin.FreeEpisodeEmail.send) {
+      Route(.case(Admin.FreeEpisodeEmail.send)) {
         Path {
           Int.parser().map(.representing(Episode.Id.self))
           "send"
@@ -75,13 +74,13 @@ let adminRouter = OneOf {
     }
   }
 
-  Route(/Admin.ghost) {
+  Route(.case(Admin.ghost) {
     Path { "ghost" }
 
     OneOf {
-      Route(/Admin.Ghost.index)
+      Route(.case(Admin.Ghost.index))
 
-      Route(/Admin.Ghost.start) {
+      Route(.case(Admin.Ghost.start)) {
         Method.post
         Path { "start" }
         Body {
@@ -93,13 +92,13 @@ let adminRouter = OneOf {
     }
   }
 
-  Route(/Admin.newBlogPostEmail) {
+  Route(.case(Admin.newBlogPostEmail)) {
     Path { "new-blog-post-email" }
 
     OneOf {
-      Route(/Admin.NewBlogPostEmail.index)
+      Route(.case(Admin.NewBlogPostEmail.index))
 
-      Route(/Admin.NewBlogPostEmail.send) {
+      Route(.case(Admin.NewBlogPostEmail.send)) {
         Method.post
 
         Parse(
@@ -109,7 +108,7 @@ let adminRouter = OneOf {
           )
         ) {
           Path {
-            Int.parser().map(.representing(BlogPost.Id.self))
+            Digits().map(.representing(BlogPost.Id.self))
             "send"
           }
           Body {
@@ -142,13 +141,13 @@ let adminRouter = OneOf {
     }
   }
 
-  Route(/Admin.newEpisodeEmail) {
+  Route(.case(Admin.newEpisodeEmail)) {
     Path { "new-episode-email" }
 
     OneOf {
-      Route(/Admin.NewEpisodeEmail.show)
+      Route(.case(Admin.NewEpisodeEmail.show))
 
-      Route(/Admin.NewEpisodeEmail.send) {
+      Route(.case(Admin.NewEpisodeEmail.send)) {
         Parse(
           .convert(
             apply: { ($0, $1.0, $1.1, $1.2) },
@@ -156,7 +155,7 @@ let adminRouter = OneOf {
           )
         ) {
           Path {
-            Int.parser().map(.representing(Episode.Id.self))
+            Digits().map(.representing(Episode.Id.self))
             "send"
           }
           Body {

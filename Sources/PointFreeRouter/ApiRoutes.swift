@@ -1,4 +1,3 @@
-import CasePaths
 import Parsing
 import Prelude
 import Models
@@ -15,10 +14,10 @@ let apiRouter = Parse {
   Path { "episodes" }
 
   OneOf {
-    Route(/SiteRoute.Api.episodes)
+    Route(.case(SiteRoute.Api.episodes))
 
-    Route(/SiteRoute.Api.episode) {
-      Path { Int.parser().map(.representing(Episode.Id.self)) }
+    Route(.case(SiteRoute.Api.episode)) {
+      Path { Digits().map(.representing(Episode.Id.self)) }
     }
   }
 }
