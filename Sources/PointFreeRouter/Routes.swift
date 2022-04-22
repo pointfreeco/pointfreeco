@@ -53,13 +53,8 @@ public enum SiteRoute: Equatable {
     case index
     case show(Either<String, BlogPost.Id>)
 
-    public static func show(slug: String) -> Blog {
-      return .show(.left(slug))
-    }
-
-    public static func show(id: BlogPost.Id) -> Blog {
-      return .show(.right(id))
-    }
+    public static func show(slug: String) -> Blog { .show(.left(slug)) }
+    public static func show(id: BlogPost.Id) -> Blog { .show(.right(id)) }
   }
 
   public enum Collections: Equatable {
@@ -142,7 +137,7 @@ private let blogRouter = OneOf {
 private let episodeSlugOrId = OneOf {
   Parse(.string.map(.case(Either<String, Episode.Id>.left)))
 
-  Int.parser(of: Substring.self) // FIXME?
+  Int.parser(of: Substring.self)
     .map(.representing(Episode.Id.self).map(.case(Either<String, Episode.Id>.right)))
 }
 
