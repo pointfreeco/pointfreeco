@@ -201,7 +201,7 @@ private let enterpriseRouter = OneOf {
       Parse(.string.representing(EnterpriseAccount.Domain.self))
       "request"
     }
-    Body(.data.form(EnterpriseRequestFormData.self, decoder: formDecoder))
+    Body(.form(EnterpriseRequestFormData.self, decoder: formDecoder))
   }
 
   Route(.case(SiteRoute.Enterprise.acceptInvite)) {
@@ -333,7 +333,7 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
       Method.post
       Body {
         Parse(
-          .data.json(
+          .json(
             Stripe.Event<PaymentIntent>.self,
             decoder: Stripe.jsonDecoder,
             encoder: Stripe.jsonEncoder
@@ -346,7 +346,7 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
       Method.post
       Body {
         Parse(
-          .data.json(
+          .json(
             Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
             decoder: Stripe.jsonDecoder,
             encoder: Stripe.jsonEncoder
@@ -359,7 +359,7 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
       Method.post
       Body {
         Parse(
-          .data.json(
+          .json(
             Stripe.Event<Prelude.Unit>.self,
             decoder: Stripe.jsonDecoder,
             encoder: Stripe.jsonEncoder
@@ -472,7 +472,7 @@ let router = OneOf {
         "newsletters"
         "express-unsubscribe-reply"
       }
-      Body(.data.form(MailgunForwardPayload.self, decoder: formDecoder))
+      Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
     }
 
     Route(.case(SiteRoute.gitHubCallback)) {

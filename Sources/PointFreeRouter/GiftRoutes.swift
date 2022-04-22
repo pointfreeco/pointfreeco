@@ -57,13 +57,13 @@ let giftsRouter = OneOf {
 
   Route(.case(Gifts.confirmation)) {
     Method.post
-    Body(.data.form(GiftFormData.self, decoder: formDecoder))
+    Body(.form(GiftFormData.self, decoder: formDecoder))
   }
 
   Route(.case(Gifts.create)) {
     Method.post
     Body(
-      .data.json(
+      .json(
         GiftFormData.self,
         decoder: routeJsonDecoder,
         encoder: routeJsonEncoder

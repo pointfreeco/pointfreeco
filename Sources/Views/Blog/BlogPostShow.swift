@@ -115,7 +115,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
         " check out ",
         .a(
           attributes: [
-            .href(pointFreeRouter.path(to: .home)),
+            .href(pointFreeRouter.path(for: .home)),
             .class([Class.pf.type.underlineLink])
           ],
           "Point-Free"

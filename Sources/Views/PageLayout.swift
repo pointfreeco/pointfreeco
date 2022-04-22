@@ -296,7 +296,7 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .form(
           attributes: [
             .method(.post),
-            .action(pointFreeRouter.path(to: .endGhosting))
+            .action(pointFreeRouter.path(for: .endGhosting))
           ],
           .input(
             attributes: [
