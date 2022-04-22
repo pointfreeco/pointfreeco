@@ -28,7 +28,7 @@ private func router<A>(
     return { middleware in
       return { conn in
 
-        (try? pointFreeRouter.match(request: conn.request))
+        (try? siteRouter.match(request: conn.request))
           .map(const >>> conn.map >>> middleware)
           ?? notFound(conn)
       }
@@ -103,7 +103,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 
     case .episode(.index):
       return conn
-        |> redirect(to: path(to: .home))
+        |> redirect(to: siteRouter.path(for: .home))
 
     case let .episode(.progress(param: param, percent: percent)):
       return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
@@ -273,7 +273,7 @@ public func redirect<A>(
   Middleware<StatusLineOpen, ResponseEnded, A, Data> {
     return { conn in
       conn |> redirect(
-        to: path(to: route(conn.data)),
+        to: siteRouter.path(for: route(conn.data)),
         headersMiddleware: headersMiddleware
       )
     }
@@ -283,7 +283,7 @@ public func redirect<A>(
   to route: SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
 ) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-  redirect(to: path(to: route), headersMiddleware: headersMiddleware)
+  redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

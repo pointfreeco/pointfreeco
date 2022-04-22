@@ -30,7 +30,7 @@ private func newEpisodeEmailRowView(ep: Episode) -> Node {
     .text("Episode #\(ep.sequence): \(ep.fullTitle)"),
     .form(
       attributes: [
-        .action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))),
+        .action(siteRouter.path(for: .admin(.newEpisodeEmail(.send(ep.id))))),
         .method(.post)
       ],
       .textarea(attributes: [.name("subscriber_announcement"), .placeholder("Subscriber announcement")]),

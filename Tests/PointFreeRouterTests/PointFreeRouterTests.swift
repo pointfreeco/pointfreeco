@@ -21,14 +21,14 @@ class PointFreeRouterTests: TestCase {
     )
     let route = SiteRoute.account(.update(profileData))
 
-    guard let request = try? pointFreeRouter.request(for: route) else {
+    guard let request = try? siteRouter.request(for: route) else {
       XCTFail("")
       return
     }
 
     XCTAssertEqual("POST", request.httpMethod)
     XCTAssertEqual("/account", request.url?.path)
-    XCTAssertEqual(route, try pointFreeRouter.match(request: request))
+    XCTAssertEqual(route, try siteRouter.match(request: request))
   }
 
   func testSubscribeRoute() {
@@ -42,7 +42,7 @@ class PointFreeRouterTests: TestCase {
       useRegionalDiscount: true
     )
     let route = SiteRoute.subscribe(subscribeData)
-    let request = try! pointFreeRouter.request(for: route)
+    let request = try! siteRouter.request(for: route)
 
     _assertInlineSnapshot(matching: request, as: .raw, with: """
 POST http://localhost:8080/subscribe
@@ -50,7 +50,7 @@ POST http://localhost:8080/subscribe
 coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&token=deadbeef&useRegionalDiscount=true
 """)
 
-    XCTAssertEqual(try pointFreeRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
   }
 
   func testEpisodeShowRoute() {
@@ -59,12 +59,12 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     let route = SiteRoute.episode(.show(.left("ep10-hello-world")))
 
     XCTAssertEqual(
-      try pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertNoDifference(
-      try pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -78,12 +78,12 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     let route = SiteRoute.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
 
     XCTAssertEqual(
-      try pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      try pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -96,12 +96,12 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     let route = SiteRoute.team(.joinLanding("deadbeef"))
 
     XCTAssertEqual(
-      try pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      try pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -113,12 +113,12 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     let route = SiteRoute.team(.join("deadbeef"))
 
     XCTAssertEqual(
-      try pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      try pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -128,8 +128,8 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
 
     let route = SiteRoute.gifts(.index)
 
-    XCTAssertEqual(try pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(try pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsPlan() {
@@ -137,8 +137,8 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
 
     let route = SiteRoute.gifts(.plan(.threeMonths))
 
-    XCTAssertEqual(try pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(try pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsRedeemLanding() {
@@ -146,8 +146,8 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
 
     let route = SiteRoute.gifts(.redeemLanding(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
-    XCTAssertEqual(try pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(try pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsRedeem() {
@@ -156,8 +156,8 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
 
     let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
-    XCTAssertEqual(try pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(try pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsConfirmation() {
@@ -176,7 +176,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
       $0.toName = "Blob Jr."
     }))
 
-    XCTAssertNoDifference(try pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(try pointFreeRouter.request(for: route), request)
+    XCTAssertNoDifference(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 }

@@ -145,7 +145,7 @@ private func successfullyAcceptedInviteMiddleware<A, Z>(
   
   return conn
     |> redirect(
-      to: pointFreeRouter.path(for: .account(.index)),
+      to: siteRouter.path(for: .account(.index)),
       headersMiddleware: flash(.notice, "You have joined \(account.companyName)'s subscription!")
   )
 }
@@ -156,7 +156,7 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
     return { conn in
       conn
         |> redirect(
-          to: pointFreeRouter.path(for: .enterprise(.landing(get2(conn.data).domain))),
+          to: siteRouter.path(for: .enterprise(.landing(get2(conn.data).domain))),
           headersMiddleware: flash(.error, reason)
       )
     }
@@ -226,7 +226,7 @@ private func sendEnterpriseInvitation<Z>(
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
-          to: pointFreeRouter.path(for: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(.landing(account.domain))),
           headersMiddleware: flash(
             .error,
             "The email you entered does not come from the @\(account.domain) domain."
@@ -249,7 +249,7 @@ private func sendEnterpriseInvitation<Z>(
     } else {
       return conn
         |> redirect(
-          to: pointFreeRouter.path(for: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(.landing(account.domain))),
           headersMiddleware: flash(
             .warning,
             "Something went wrong. Please try again or contact <support@pointfree.co>."
@@ -301,7 +301,7 @@ private func enterpriseInviteEmailBodyView(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
+                .href(siteRouter.url(for: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Click here to accept!"

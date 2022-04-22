@@ -41,7 +41,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
     .h1(
       attributes: [.class([Class.pf.type.responsiveTitle3])],
       .a(
-        attributes: [.href(pointFreeRouter.url(to: .blog(.show(slug: post.slug))))],
+        attributes: [.href(siteRouter.url(for: .blog(.show(slug: post.slug))))],
         .text(post.title)
       )
     ),
@@ -57,7 +57,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
         [
           .twitterShareLink(
             text: post.title,
-            url: pointFreeRouter.url(to: .blog(.show(slug: post.slug))),
+            url: siteRouter.url(for: .blog(.show(slug: post.slug))),
             via: "pointfreeco"
           )
         ]
@@ -115,7 +115,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
         " check out ",
         .a(
           attributes: [
-            .href(pointFreeRouter.path(for: .home)),
+            .href(siteRouter.path(for: .home)),
             .class([Class.pf.type.underlineLink])
           ],
           "Point-Free"

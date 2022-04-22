@@ -28,12 +28,12 @@ public enum Admin: Equatable {
   }
 
   public enum NewBlogPostEmail: Equatable {
-    case send(BlogPost.Id, formData: NewBlogPostFormData?, isTest: Bool?)
+    case send(BlogPost.Id, formData: NewBlogPostFormData? = nil, isTest: Bool? = nil)
     case index
   }
 
   public enum NewEpisodeEmail: Equatable {
-    case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
+    case send(Episode.Id, subscriberAnnouncement: String? = nil, nonSubscriberAnnouncement: String? = nil, isTest: Bool? = nil)
     case show
   }
 }

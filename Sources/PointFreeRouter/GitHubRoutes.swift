@@ -30,7 +30,7 @@ public enum GitHubRoute {
   }
 }
 
-private let gitHubRouter = OneOf {
+public let gitHubRouter = OneOf {
   Route(.case(GitHubRoute.authorize)) {
     Path {
       "login"
@@ -76,14 +76,4 @@ private let gitHubRouter = OneOf {
     }
   }
 }
-
-public func gitHubUrl(to route: GitHubRoute) -> String {
-  (
-    try? gitHubRouter
-      .baseURL("https://github.com")
-      .print(route)
-  )
-  .flatMap(URLRequest.init(data:))
-  .flatMap { $0.url?.absoluteString }
-  ?? ""
-}
+.baseURL("https://github.com")

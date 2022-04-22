@@ -13,9 +13,9 @@ let hostSignOffView: Node = [
     "Your hosts,"
   ),
   .p(
-    .a(attributes: [.href(twitterUrl(to: .mbrandonw))], .raw("Brandon&nbsp;Williams")),
+    .a(attributes: [.href(twitterRouter.url(for: .mbrandonw).absoluteString)], .raw("Brandon&nbsp;Williams")),
     " & ",
-    .a(attributes: [.href(twitterUrl(to: .stephencelis))], .raw("Stephen&nbsp;Celis"))
+    .a(attributes: [.href(twitterRouter.url(for: .stephencelis).absoluteString)], .raw("Stephen&nbsp;Celis"))
   )
 ]
 
@@ -32,7 +32,7 @@ func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node 
             "Contact us via email at ",
             .a(attributes: [.mailto("support@pointfree.co")], "support@pointfree.co"),
             ", or on Twitter ",
-            .a(attributes: [.href(twitterUrl(to: .pointfreeco))], "@pointfreeco"),
+            .a(attributes: [.href(twitterRouter.url(for: .pointfreeco).absoluteString)], "@pointfreeco"),
             "."
           ),
           .p(
@@ -55,7 +55,7 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
   guard
     let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))
       .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
-      .map({ url(to: .expressUnsubscribe(payload: $0)) })
+      .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
     else {
       Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
       return []

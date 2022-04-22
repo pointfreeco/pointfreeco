@@ -63,7 +63,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   let ctaButton: Node = subscriberState.isActive
     ? .a(
       attributes: [
-        .href(path(to: .account(.index))),
+        .href(siteRouter.path(for: .account(.index))),
         .class([Class.pf.components.button(color: .white)])
       ],
       "Manage your account"
@@ -72,7 +72,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: path(to: .login(redirect: url(to: .pricingLanding)))
+      href: siteRouter.loginPath(redirect: .pricingLanding)
   )
 
   return .gridColumn(
@@ -391,7 +391,7 @@ private func pricingPlanCta(
   } else if plan.isFree && currentUser == nil  {
     return .a(
       attributes: [
-        .href(path(to: .login(redirect: url(to: .pricingLanding)))),
+        .href(siteRouter.loginPath(redirect: .pricingLanding)),
         .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses
@@ -403,22 +403,22 @@ private func pricingPlanCta(
     return .a(
       attributes: [
         .href(
-          subscriberState.isActive
-            ? path(to: .account(.index))
-            : path(
-              to: plan.lane
-                .map {
-                  let route = SiteRoute.subscribeConfirmation(
-                    lane: $0,
-                    billing: nil,
-                    isOwnerTakingSeat: nil,
-                    teammates: nil,
-                    referralCode: nil,
-                    useRegionalDiscount: false
-                  )
-                  return currentUser == nil ? .login(redirect: url(to: route)) : route
-                }
-                ?? .home
+          siteRouter.path(
+            for: subscriberState.isActive
+            ? .account(.index)
+            : plan.lane
+              .map {
+                let route = SiteRoute.subscribeConfirmation(
+                  lane: $0,
+                  billing: nil,
+                  isOwnerTakingSeat: nil,
+                  teammates: nil,
+                  referralCode: nil,
+                  useRegionalDiscount: false
+                )
+                return currentUser == nil ? .login(redirect: siteRouter.url(for: route)) : route
+              }
+            ?? .home
           )
         ),
         .class([
@@ -678,22 +678,11 @@ private func footer(
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: path(to: .login(redirect: url(to: .pricingLanding)))
+      href: siteRouter.loginPath(redirect: .pricingLanding)
       )
     : .a(
       attributes: [
-        .href(
-          path(
-            to: .subscribeConfirmation(
-              lane: .personal,
-              billing: nil,
-              isOwnerTakingSeat: nil,
-              teammates: nil,
-              referralCode: nil,
-              useRegionalDiscount: false
-            )
-          )
-        ),
+        .href(siteRouter.path(for: .subscribeConfirmation(lane: .personal))),
         .class([Class.pf.components.button(color: .white)])
       ],
       "Subscribe"
@@ -774,8 +763,8 @@ struct PricingPlan {
       ] + (
         showDiscountOptions
         ? ["""
-            [Regional](\(path(to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
-            and [education](\(path(to: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+            [Regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
+            and [education](\(siteRouter.path(for: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
             available
             """]
         : []
@@ -840,13 +829,13 @@ We do! If you know someone that has a Point-Free subscription, ask them to share
     Faq(
       question: "Do you offer country-based discounts?",
       answer: """
-Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(pointFreeRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(pointFreeRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
+Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
 """
     ),
     Faq(
       question: "Can I give a subscription as a gift?",
       answer: """
-You can! Check out our dedicated [gifts](\(pointFreeRouter.path(for: .gifts(.index)))) page for more information.
+You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts(.index)))) page for more information.
 """
     ),
   ]

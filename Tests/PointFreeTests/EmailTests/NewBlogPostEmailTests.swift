@@ -120,7 +120,7 @@ class NewBlogPostEmailTests: TestCase {
 
     XCTAssertEqual(
       .admin(.newBlogPostEmail(.send(blogPost.id, formData: formDataData, isTest: true))),
-      try pointFreeRouter.match(request: req)
+      try siteRouter.match(request: req)
     )
   }
 

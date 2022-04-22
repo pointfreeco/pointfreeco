@@ -200,7 +200,7 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
     return conn
-      |> redirect(to: .login(redirect: url(to: .pricingLanding)))
+      |> redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {

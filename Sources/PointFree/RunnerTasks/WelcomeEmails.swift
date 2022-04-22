@@ -124,10 +124,10 @@ func welcomeEmail1Content(user: User) -> Node {
       """
       👋 Howdy!
 
-      It's been a week since you signed up for [Point-Free](\(url(to: .home))). We hope you've learned
+      It's been a week since you signed up for [Point-Free](\(siteRouter.url(for: .home))). We hope you've learned
       something new about functional programming, and maybe even introduced it into your codebase!
 
-      We'd love to [have you as a subscriber](\(url(to: .pricingLanding))), so please let us know if
+      We'd love to [have you as a subscriber](\(siteRouter.url(for: .pricingLanding))), so please let us know if
       you have any questions. Just reply to this email!
       """
     ),
@@ -135,7 +135,7 @@ func welcomeEmail1Content(user: User) -> Node {
       ? .markdownBlock(
         """
         In the meantime, it looks like you have a **free episode credit**! You can use this to see *any*
-        subscriber-only episode, completely for free! Just visit [our site](\(url(to: .home))), go to an
+        subscriber-only episode, completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to an
         episode, and click the "\(useCreditCTA)" button!
 
         Here are some of our most popular collections of episodes:
@@ -166,7 +166,7 @@ func welcomeEmail1Content(user: User) -> Node {
     .markdownBlock(
       """
       When you're ready to subscribe for yourself _or_ your team, visit
-      [our subscribe page](\(url(to: .pricingLanding)))!
+      [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
     subscribeButton,
@@ -189,7 +189,7 @@ func welcomeEmail2Content(user: User) -> Node {
     .filter { !$0.subscriberOnly }
     .map {
       """
-      * [\($0.fullTitle)](\(url(to: .episode(.show(.left($0.slug))))))
+      * [\($0.fullTitle)](\(siteRouter.url(for: .episode(.show(.left($0.slug))))))
       """
   }
   .joined(separator: "\n")
@@ -199,7 +199,7 @@ func welcomeEmail2Content(user: User) -> Node {
       """
       👋 Hey there!
 
-      You signed up for a [Point-Free](\(url(to: .home))) account a couple weeks ago but still haven't subscribed!
+      You signed up for a [Point-Free](\(siteRouter.url(for: .home))) account a couple weeks ago but still haven't subscribed!
 
       If you're still on the fence and want to see a little more of what we have to offer, we have a number
       of free episodes for you to check out!
@@ -211,7 +211,7 @@ func welcomeEmail2Content(user: User) -> Node {
       ? .markdownBlock(
         """
         You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
-        completely for free! Just visit [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
+        completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
         )
       : []
@@ -221,7 +221,7 @@ func welcomeEmail2Content(user: User) -> Node {
       If you have any questions, don't hesitate to reply to this email!
 
       When you're ready to subscribe for yourself _or_ your team, visit
-      [our subscribe page](\(url(to: .pricingLanding)))!
+      [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
     subscribeButton,
@@ -260,7 +260,7 @@ func welcomeEmail3Content(user: User) -> Node {
     .markdownBlock(
       """
       Please use it to check out _any_ subscriber-only episode, completely free! Just visit
-      [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
+      [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)" button.
 
       If you're having trouble deciding on an episode, here are a few of our favorites:
 
@@ -285,7 +285,7 @@ func welcomeEmail3Content(user: User) -> Node {
       surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
 
       We hope you'll find it interesting enough to consider
-      [getting a subscription](\(url(to: .pricingLanding))) for yourself or your team!
+      [getting a subscription](\(siteRouter.url(for: .pricingLanding))) for yourself or your team!
       """
     ),
     subscribeButton,
@@ -296,7 +296,7 @@ func welcomeEmail3Content(user: User) -> Node {
 private let subscribeButton = Node.p(
   attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
   .a(
-    attributes: [.href(url(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+    attributes: [.href(siteRouter.url(for: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
     "Subscribe to Point-Free!"
   )
 )

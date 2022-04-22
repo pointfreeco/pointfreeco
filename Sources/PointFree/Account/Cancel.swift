@@ -245,7 +245,7 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
             " subscription has been canceled and will remain active through ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
-            .a(attributes: [.href(url(to: .account(.index)))], "your account page"),
+            .a(attributes: [.href(siteRouter.url(for: .account(.index)))], "your account page"),
             "."
           )
         )

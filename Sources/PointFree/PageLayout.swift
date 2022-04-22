@@ -34,7 +34,7 @@ func respond<A, B>(
           twitterCard: newLayoutData.twitterCard,
           twitterSite: "@pointfreeco",
           type: newLayoutData.openGraphType,
-          url: newLayoutData.currentRoute.map(url(to:))
+          url: newLayoutData.currentRoute.map(siteRouter.url(for:))
         )
         >>> metaLayout(simplePageLayout(view))
         >>> addGoogleAnalytics

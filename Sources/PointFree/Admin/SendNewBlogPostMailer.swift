@@ -30,7 +30,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
     .text("Blog Post: \(post.title)"),
     .form(
       attributes: [
-        .action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))),
+        .action(siteRouter.path(for: .admin(.newBlogPostEmail(.send(post.id))))),
         .method(.post)
       ],
       .input(

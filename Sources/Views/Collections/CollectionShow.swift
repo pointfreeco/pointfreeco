@@ -18,7 +18,7 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
     collectionNavigation(
       left: .a(
         attributes: [
-          .href( path(to: .collections(.index))),
+          .href(siteRouter.path(for: .collections(.index))),
           .class([
             Class.pf.colors.link.gray650
           ])
@@ -117,7 +117,7 @@ private func sectionRow(
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
-            .href(url(to: .collections(.section(collection.slug, section.slug)))),
+            .href(siteRouter.url(for: .collections(.section(collection.slug, section.slug)))),
           ],
           .gridRow(
             attributes: [

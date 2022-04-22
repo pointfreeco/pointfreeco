@@ -33,7 +33,7 @@ how these ideas can improve the quality of your code today.
     copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
     description: description,
     image: .init(
-      link: url(to: .home),
+      link: siteRouter.url(for: .home),
       title: title,
       url: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"
     ),
@@ -65,7 +65,7 @@ how these ideas can improve the quality of your code today.
       type: .episodic
     ),
     language: "en-US",
-    link: url(to: .home),
+    link: siteRouter.url(for: .home),
     title: title
   )
 }
@@ -98,7 +98,7 @@ private func item(episode: Episode) -> RssItem {
       return """
 Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
 this episode, and if you find this interesting you may want to consider a subscription \
-\(url(to: .pricingLanding)).
+\(siteRouter.url(for: .pricingLanding)).
 
 ---
 
@@ -108,7 +108,7 @@ this episode, and if you find this interesting you may want to consider a subscr
       return """
 Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
 that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-subscription \(url(to: .pricingLanding)).
+subscription \(siteRouter.url(for: .pricingLanding)).
 
 ---
 
@@ -117,7 +117,7 @@ subscription \(url(to: .pricingLanding)).
     case .freeDuring, .subscriberOnly:
       return """
 Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
-can access your private podcast feed by visiting \(url(to: .account(.index))).
+can access your private podcast feed by visiting \(siteRouter.url(for: .account(.index))).
 
 ---
 
@@ -162,7 +162,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
       season: 1,
       title: title(episode: episode)
     ),
-    link: url(to: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
     media: .init(
       content: mediaContent(episode: episode),
       title: title(episode: episode)

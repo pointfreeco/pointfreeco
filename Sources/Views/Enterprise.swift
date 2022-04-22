@@ -15,7 +15,7 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
     .gitHubLink(
       text: "Sign in with GitHub",
       type: .white,
-      href: pointFreeRouter.path(for: .login(redirect: pointFreeRouter.url(to: .enterprise(.landing(account.domain)))))
+      href: siteRouter.loginPath(redirect: .enterprise(.landing(account.domain)))
     ),
   ]
 
@@ -36,7 +36,7 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
         attributes: [],
         .form(
           attributes: [
-            .action(pointFreeRouter.path(for: .enterprise(.requestInvite(account.domain, .init(email: ""))))),
+            .action(siteRouter.path(for: .enterprise(.requestInvite(account.domain, .init(email: ""))))),
             .method(.post),
           ],
           .gridRow(

@@ -48,7 +48,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
           const(
             conn
               |> redirect(
-                to: path(to: .account(.index)),
+                to: siteRouter.path(for: .account(.index)),
                 headersMiddleware: flash(
                   .notice,
                   "Invite to \(get1(conn.data).email.rawValue) has been revoked."
@@ -129,7 +129,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
           // fire-and-forget email of acceptance and deletion of invite
           zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
-          return conn |> redirect(to: path(to: .account(.index)))
+          return conn |> redirect(to: siteRouter.path(for: .account(.index)))
         }
 }
 

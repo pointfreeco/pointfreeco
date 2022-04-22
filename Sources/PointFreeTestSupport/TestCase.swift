@@ -46,7 +46,7 @@ open class TestCase: XCTestCase {
 //    SnapshotTesting.isRecording = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-    pointFreeRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
+    siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
   }
 
   override open func tearDown() {

@@ -194,7 +194,7 @@ public func request(to route: SiteRoute, session: Session = .loggedOut, basicAut
     headers["Cookie"] = ["pf_session=\(sessionCookie)"]
   }
 
-  return try! pointFreeRouter
+  return try! siteRouter
     .baseRequestData(URLRequestData(headers: headers))
     .request(for: route)
 }

@@ -71,7 +71,7 @@ private func oldBlogPostView(_ post: BlogPost) -> Node {
       .h1(
         attributes: [.class([Class.pf.type.responsiveTitle5]),],
         .a(
-          attributes: [.href(pointFreeRouter.url(to: .blog(.show(slug: post.slug))))],
+          attributes: [.href(siteRouter.url(for: .blog(.show(slug: post.slug))))],
           .text(post.title)
         )
       ),

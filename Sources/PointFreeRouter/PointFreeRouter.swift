@@ -23,17 +23,13 @@ public struct PointFreeRouter: ParserPrinter {
       .print(output, into: &input)
   }
 
-  public func url(to route: SiteRoute) -> String {
+  public func url(for route: SiteRoute) -> String {
     self.url(for: route).absoluteString
+  }
+
+  public func loginPath(redirect: SiteRoute? = nil) -> String {
+    self.path(for: .login(redirect: redirect.map(self.url(for:))))
   }
 }
 
-public var pointFreeRouter = PointFreeRouter()
-
-public func path(to route: SiteRoute) -> String {
-  pointFreeRouter.path(for: route)
-}
-
-public func url(to route: SiteRoute) -> String {
-  pointFreeRouter.url(for: route).absoluteString
-}
+public var siteRouter = PointFreeRouter()

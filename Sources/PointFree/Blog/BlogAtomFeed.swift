@@ -15,13 +15,13 @@ let blogAtomFeedResponse =
 private func feedView(posts: [BlogPost]) -> Node {
   return atomLayout(
     atomFeed: AtomFeed(
-      atomUrl: url(to: .feed(.atom)),
+      atomUrl: siteRouter.url(for: .feed(.atom)),
       author: AtomAuthor(
         email: "support@pointfree.co",
         name: "Point-Free"
       ),
       entries: posts.map(atomEntry(for:)),
-      siteUrl: url(to: .blog(.index)),
+      siteUrl: siteRouter.url(for: .blog(.index)),
       title: "Point-Free Pointers"
     )
   )
@@ -30,7 +30,7 @@ private func feedView(posts: [BlogPost]) -> Node {
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   return AtomEntry(
     content: blogPostContentView(post),
-    siteUrl: url(to: .blog(.show(slug: post.slug))),
+    siteUrl: siteRouter.url(for: .blog(.show(slug: post.slug))),
     title: post.title,
     updated: post.publishedAt
   )

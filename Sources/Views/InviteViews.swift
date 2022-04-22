@@ -41,7 +41,7 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
            .gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
+            href: siteRouter.loginPath(redirect: .invite(.show(invite.id)))
           )
         )
       )
@@ -66,7 +66,10 @@ private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, i
           """
         ),
         .form(
-          attributes: [.action(path(to: .invite(.accept(teamInvite.id)))), .method(.post)],
+          attributes: [
+            .action(siteRouter.path(for: .invite(.accept(teamInvite.id)))),
+            .method(.post)
+          ],
           .input(
             attributes: [
               .type(.submit),
@@ -96,7 +99,7 @@ public let inviteNotFoundView = Node.gridRow(
       .p(attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
          .a(
           attributes: [
-            .href(path(to: .pricingLanding)),
+            .href(siteRouter.path(for: .pricingLanding)),
             .class([Class.pf.components.button(color: .purple)])
           ],
           "Subscribe"

@@ -45,11 +45,11 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             ],
             .text(freeEpisodeBlurb),
             " Please consider ",
-            .a(attributes: [.href(url(to: .pricingLanding))], "supporting us"),
+            .a(attributes: [.href(siteRouter.url(for: .pricingLanding))], "supporting us"),
             " so that we can keep new episodes coming!"
           ),
           .a(
-            attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
+            attributes: [.href(siteRouter.url(for: .episode(.show(.left(ep.slug)))))],
             .h3(
               attributes: [.class([Class.pf.type.responsiveTitle3])],
               .text("Episode #\(ep.sequence) is now free!")
@@ -62,7 +62,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
           .p(.text(ep.blurb)),
           .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
              .a(
-              attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
+              attributes: [.href(siteRouter.url(for: .episode(.show(.left(ep.slug)))))],
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
@@ -71,7 +71,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .episode(.show(.left(ep.slug))))),
+                .href(siteRouter.url(for: .episode(.show(.left(ep.slug))))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Watch now!"

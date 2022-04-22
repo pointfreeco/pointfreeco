@@ -7,22 +7,13 @@ import _URLRouting
   import FoundationNetworking
 #endif
 
-public enum TwitterRoute: String {
+public enum TwitterRoute: String, CaseIterable {
   case mbrandonw
   case pointfreeco
   case stephencelis
 }
 
-private let twitterRouter = Path {
-  Parse(.string.representing(TwitterRoute.self))
+public let twitterRouter = Path {
+  TwitterRoute.parser()
 }
-
-public func twitterUrl(to route: TwitterRoute) -> String {
-  (
-    try? twitterRouter
-      .baseURL("https://www.twitter.com")
-      .print(route)
-  )
-  .flatMap(URLRequest.init(data:))?.url?.absoluteString
-  ?? ""
-}
+.baseURL("https://www.twitter.com")

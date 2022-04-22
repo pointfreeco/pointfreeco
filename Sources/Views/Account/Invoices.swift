@@ -64,7 +64,7 @@ private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoic
           .a(
             attributes: [
               .class([Class.pf.components.button(color: .purple, size: .small)]),
-              .href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
+              .href(invoice.id.map { siteRouter.path(for: .account(.invoices(.show($0)))) } ?? "#"),
               .target(.blank),
             ],
             "Print"

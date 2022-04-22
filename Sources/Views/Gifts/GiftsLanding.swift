@@ -221,7 +221,7 @@ func giftOption(
       ),
       .a(
         attributes: [
-          .href(path(to: .gifts(.plan(plan)))),
+          .href(siteRouter.path(for: .gifts(.plan(plan)))),
           .class([
             Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
             choosePlanButtonClasses

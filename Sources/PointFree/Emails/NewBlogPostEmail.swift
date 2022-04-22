@@ -42,7 +42,7 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> Node {
         .div(
           attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           .a(
-            attributes: [.href(url(to: .blog(.show(slug: post.slug))))],
+            attributes: [.href(siteRouter.url(for: .blog(.show(slug: post.slug))))],
             .h3(
               attributes: [.class([Class.pf.type.responsiveTitle3])], .text(post.title))
           ),
@@ -52,14 +52,14 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> Node {
             .p(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               .a(
-                attributes: [.href(url(to: .blog(.show(slug: post.slug))))],
+                attributes: [.href(siteRouter.url(for: .blog(.show(slug: post.slug))))],
                 .img(attributes: [.src($0), .alt(""), .style(maxWidth(.pct(100)))])
               )
             )
             } ?? [],
           .a(
             attributes: [
-              .href(url(to: .blog(.show(slug: post.slug)))),
+              .href(siteRouter.url(for: .blog(.show(slug: post.slug)))),
               .class([
                 Class.pf.colors.link.purple,
                 Class.pf.colors.fg.purple,

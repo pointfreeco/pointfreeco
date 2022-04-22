@@ -46,7 +46,7 @@ public func prepareEmail(
           let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
           let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
             .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
-            .map({ url(to: .expressUnsubscribe(payload: $0)) })
+            .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
           else {
             Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
             return []
