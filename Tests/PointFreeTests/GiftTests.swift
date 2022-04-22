@@ -475,7 +475,7 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.episodes = { [] }
 
-    let conn = connection(from: request(to: .gifts(.index)))
+    let conn = connection(from: request(to: .gifts()))
 
     #if !os(Linux)
     if self.isScreenshotTestingAvailable {

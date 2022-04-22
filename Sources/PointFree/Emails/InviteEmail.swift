@@ -83,7 +83,7 @@ private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> Node 
         ),
         .p(
           "To review who is on your team, ",
-          .a(attributes: [.href(siteRouter.url(for: .account(.index)))], "click here"),
+          .a(attributes: [.href(siteRouter.url(for: .account()))], "click here"),
           "."
         )
       )

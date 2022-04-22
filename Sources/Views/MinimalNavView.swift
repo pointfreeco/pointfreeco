@@ -129,13 +129,13 @@ private func collectionsLinkView(style: NavStyle.MinimalStyle) -> Node {
   .a(
     attributes: [
       .class([navLinkClass(for: style)]),
-      .href(siteRouter.path(for: .collections(.index))),
+      .href(siteRouter.path(for: .collections())),
     ], "Collections"
   )
 }
 
 private func blogLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .blog(.index))), .class([navLinkClass(for: style)])], "Blog")
+  return .a(attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClass(for: style)])], "Blog")
 }
 
 private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
@@ -143,11 +143,11 @@ private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
 }
 
 private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .gifts(.index))), .class([navLinkClass(for: style)])], "Gifts")
+  return .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClass(for: style)])], "Gifts")
 }
 
 private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .account(.index))), .class([navLinkClass(for: style)])], "Account")
+  return .a(attributes: [.href(siteRouter.path(for: .account())), .class([navLinkClass(for: style)])], "Account")
 }
 
 private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {

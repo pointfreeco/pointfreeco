@@ -5,12 +5,12 @@ import Prelude
 import _URLRouting
 
 public enum Admin: Equatable {
-  case episodeCredits(EpisodeCredit)
-  case freeEpisodeEmail(FreeEpisodeEmail)
-  case ghost(Ghost)
+  case episodeCredits(EpisodeCredit = .show)
+  case freeEpisodeEmail(FreeEpisodeEmail = .index)
+  case ghost(Ghost = .index)
   case index
-  case newBlogPostEmail(NewBlogPostEmail)
-  case newEpisodeEmail(NewEpisodeEmail)
+  case newBlogPostEmail(NewBlogPostEmail = .index)
+  case newEpisodeEmail(NewEpisodeEmail = .show)
 
   public enum EpisodeCredit: Equatable {
     case add(userId: User.Id?, episodeSequence: Episode.Sequence?)

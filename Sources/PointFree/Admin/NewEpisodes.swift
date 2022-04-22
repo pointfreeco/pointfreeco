@@ -45,7 +45,7 @@ let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, 
   = requireEpisode
     <<< requireIsTest
     <| sendNewEpisodeEmails
-    >=> redirect(to: .admin(.index))
+    >=> redirect(to: .admin())
 
 private let requireEpisode
   : MT<

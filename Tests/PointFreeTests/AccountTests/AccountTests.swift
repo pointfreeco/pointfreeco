@@ -80,7 +80,7 @@ final class AccountTests: TestCase {
   func testAccount() {
     Current = .teamYearly
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -105,7 +105,7 @@ final class AccountTests: TestCase {
     Current = .teamYearly
     Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -135,7 +135,7 @@ final class AccountTests: TestCase {
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
-    let conn = connection(from: request(to: .account(.index), session: session))
+    let conn = connection(from: request(to: .account(), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -168,7 +168,7 @@ final class AccountTests: TestCase {
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
-    let conn = connection(from: request(to: .account(.index), session: session))
+    let conn = connection(from: request(to: .account(), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -188,7 +188,7 @@ final class AccountTests: TestCase {
   func testTeam_AsTeammate() {
     Current = .teamYearlyTeammate
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+    let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -211,7 +211,7 @@ final class AccountTests: TestCase {
       pure(update(.canceled) { $0.userId = User.teammate.id })
     )
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+    let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -237,7 +237,7 @@ final class AccountTests: TestCase {
     Current = .teamYearly
     Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -259,7 +259,7 @@ final class AccountTests: TestCase {
     session.flash = Flash(.notice, "You’ve subscribed!")
 
     let conn = connection(
-      from: request(to: .account(.index), session: session))
+      from: request(to: .account(), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -280,7 +280,7 @@ final class AccountTests: TestCase {
     var session = Session.loggedIn
     session.flash = Flash(.warning, "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: session))
+    let conn = connection(from: request(to: .account(), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -301,7 +301,7 @@ final class AccountTests: TestCase {
     var session = Session.loggedIn
     session.flash = Flash(.error, "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: session))
+    let conn = connection(from: request(to: .account(), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -330,7 +330,7 @@ final class AccountTests: TestCase {
     Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
     Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -350,7 +350,7 @@ final class AccountTests: TestCase {
   func testAccountCancelingSubscription() {
     Current.stripe.fetchSubscription = const(pure(.canceling))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -371,7 +371,7 @@ final class AccountTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(.canceled))
     Current.stripe.fetchSubscription = const(pure(.canceled))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -397,7 +397,7 @@ final class AccountTests: TestCase {
     Current.database.fetchEpisodeCredits = const(pure([]))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -423,7 +423,7 @@ final class AccountTests: TestCase {
     Current.database.fetchEpisodeCredits = const(pure([.mock]))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -446,7 +446,7 @@ final class AccountTests: TestCase {
     Current = .teamYearly
     Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -469,7 +469,7 @@ final class AccountTests: TestCase {
     Current = .individualMonthly
     Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let conn = connection(from: request(to: .account(), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

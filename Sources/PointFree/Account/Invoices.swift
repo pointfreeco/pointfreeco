@@ -52,11 +52,11 @@ private let requireInvoice
   >
   = filterMap(
     over3(fetchInvoice) >>> sequence3 >>> map(require3),
-    or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
+    or: redirect(to: .account(.invoices()), headersMiddleware: flash(.error, invoiceError))
     )
     <<< filter(
       invoiceBelongsToCustomer,
-      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
+      or: redirect(to: .account(.invoices()), headersMiddleware: flash(.error, invoiceError))
 )
 
 private func requireUserAndStripeSubscription<A>(
@@ -85,7 +85,7 @@ private func fetchInvoices<A>(
               |> middleware
           case .left:
             return conn |> redirect(
-              to: .account(.index),
+              to: .account(),
               headersMiddleware: flash(
                 .error,
                 """

@@ -19,7 +19,7 @@ class PaymentInfoTests: TestCase {
   }
 
   func testRender() {
-    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -44,7 +44,7 @@ class PaymentInfoTests: TestCase {
     Current = .teamYearly
     Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }

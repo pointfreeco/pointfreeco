@@ -145,7 +145,7 @@ private func successfullyAcceptedInviteMiddleware<A, Z>(
   
   return conn
     |> redirect(
-      to: siteRouter.path(for: .account(.index)),
+      to: siteRouter.path(for: .account()),
       headersMiddleware: flash(.notice, "You have joined \(account.companyName)'s subscription!")
   )
 }
@@ -171,7 +171,7 @@ private func validateMembership<Z>(
     
     if user?.subscriptionId == account.subscriptionId {
       return conn |> redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(
           .notice,
           "🙌 You're already enrolled in \(account.companyName)'s subscription!"
@@ -339,7 +339,7 @@ private func redirectCurrentSubscribers<Z>(
       $0
         ? conn
           |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(
               .warning,
               """

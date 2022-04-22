@@ -9,12 +9,12 @@ import _URLRouting
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
-  case invoices(Invoices)
-  case paymentInfo(PaymentInfo)
+  case invoices(Invoices = .index)
+  case paymentInfo(PaymentInfo = .show)
   case rss(salt: User.RssSalt)
   case rssLegacy(secret1: String, secret2: String)
   case subscription(Subscription)
-  case update(ProfileData?)
+  case update(ProfileData? = nil)
 
   public enum Invoices: Equatable {
     case index
@@ -23,17 +23,17 @@ public enum Account: Equatable {
 
   public enum PaymentInfo: Equatable {
     case show
-    case update(Stripe.Token.Id?)
+    case update(Stripe.Token.Id? = nil)
   }
 
   public enum Subscription: Equatable {
     case cancel
-    case change(Change)
+    case change(Change = .show)
     case reactivate
 
     public enum Change: Equatable {
       case show
-      case update(Pricing?)
+      case update(Pricing? = nil)
     }
   }
 }

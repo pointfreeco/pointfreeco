@@ -118,7 +118,7 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(siteRouter.url(for: .account(.paymentInfo(.show)))),
+                .href(siteRouter.url(for: .account(.paymentInfo()))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Update payment info"

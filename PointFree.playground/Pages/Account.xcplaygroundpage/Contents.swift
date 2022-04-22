@@ -6,7 +6,7 @@ import WebKit
 
 Current = .mock
 
-let req = request(to: .account(.index), session: .loggedIn)
+let req = request(to: .account(), session: .loggedIn)
 let result = siteMiddleware(connection(from: req)).perform()
 let htmlStr = String(decoding: result.response.body, as: UTF8.self)
 

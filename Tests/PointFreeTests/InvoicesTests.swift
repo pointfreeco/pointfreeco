@@ -18,7 +18,7 @@ final class InvoicesTests: TestCase {
   }
 
   func testInvoices() {
-    let conn = connection(from: request(to: .account(.invoices(.index)), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.invoices()), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

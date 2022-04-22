@@ -14,17 +14,17 @@ public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
 public enum SiteRoute: Equatable {
   case about
-  case account(Account)
-  case admin(Admin)
+  case account(Account = .index)
+  case admin(Admin = .index)
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
-  case blog(Blog)
-  case collections(Collections)
+  case blog(Blog = .index)
+  case collections(Collections = .index)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
-  case gifts(Gifts)
+  case gifts(Gifts = .index)
   case endGhosting
   case enterprise(Enterprise)
-  case episode(EpisodeRoute)
+  case episode(EpisodeRoute = .index)
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -35,7 +35,7 @@ public enum SiteRoute: Equatable {
   case logout
   case pricingLanding
   case privacy
-  case subscribe(SubscribeData?)
+  case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
     lane: Pricing.Lane,
     billing: Pricing.Billing? = nil,

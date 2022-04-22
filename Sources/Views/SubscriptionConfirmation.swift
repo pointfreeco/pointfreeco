@@ -26,7 +26,7 @@ public func subscriptionConfirmation(
 ) -> Node {
   return .form(
     attributes: [
-      .action(siteRouter.path(for: .subscribe(nil))),
+      .action(siteRouter.path(for: .subscribe())),
       .id("subscribe-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),

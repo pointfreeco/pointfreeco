@@ -44,7 +44,7 @@ let updatePaymentInfoMiddleware
         .run
         .flatMap {
           conn |> redirect(
-            to: .account(.paymentInfo(.show)),
+            to: .account(.paymentInfo()),
             headersMiddleware: $0.isLeft
               ? flash(.error, genericPaymentInfoError)
               : flash(.notice, "Your payment information has been updated.")
@@ -58,7 +58,7 @@ private let requireUserAndToken
     <<< filterMap(
       require2 >>> pure,
       or: redirect(
-        to: .account(.paymentInfo(.show)),
+        to: .account(.paymentInfo()),
         headersMiddleware: flash(.error, genericPaymentInfoError)
       )
 )

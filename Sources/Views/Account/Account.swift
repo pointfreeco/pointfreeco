@@ -177,7 +177,7 @@ private func profileRowView(_ data: AccountData) -> Node {
           .class([
             Class.pf.type.underlineLink,
           ]),
-          .href(siteRouter.path(for: .account(.invoices(.index))))
+          .href(siteRouter.path(for: .account(.invoices())))
         ],
         "all past invoices"
       ),
@@ -216,7 +216,7 @@ private func profileRowView(_ data: AccountData) -> Node {
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Profile"),
         .form(
-          attributes: [.action(siteRouter.path(for: .account(.update(nil)))), .method(.post)],
+          attributes: [.action(siteRouter.path(for: .account(.update()))), .method(.post)],
           formContent
         )
       )
@@ -827,7 +827,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       if subscription.customer.right?.sources?.data.isEmpty == false {
         return .form(
           attributes: [
-            .action(siteRouter.path(for: .account(.subscription(.change(.update(nil)))))),
+            .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
             .method(.post),
             .onsubmit(unsafe: """
 if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
@@ -854,7 +854,7 @@ if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?
         return .a(
           attributes: [
             .class([Class.pf.components.button(color: .purple, size: .small)]),
-            .href(siteRouter.path(for: .account(.paymentInfo(.show))))
+            .href(siteRouter.path(for: .account(.paymentInfo())))
           ],
           "Add payment info to upgrade"
         )
@@ -866,7 +866,7 @@ if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?
       let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
       return .form(
         attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update(nil)))))),
+          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
           .method(.post),
           .onsubmit(unsafe: """
 if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
@@ -1036,7 +1036,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
                 .a(
                   attributes: [
                     .class([Class.pf.components.button(color: .purple, size: .small)]),
-                    .href(siteRouter.path(for: .account(.paymentInfo(.show)))),
+                    .href(siteRouter.path(for: .account(.paymentInfo()))),
                   ],
                   "Add payment info"
                 )
@@ -1202,7 +1202,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(siteRouter.path(for: .account(.paymentInfo(.show)))),
+                  .href(siteRouter.path(for: .account(.paymentInfo()))),
                 ],
                 card == nil
                   ? "Add payment info"
@@ -1213,7 +1213,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
-                  .href(siteRouter.path(for: .account(.invoices(.index)))),
+                  .href(siteRouter.path(for: .account(.invoices()))),
                 ],
                 "Payment history"
               )

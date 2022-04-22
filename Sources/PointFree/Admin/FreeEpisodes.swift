@@ -26,9 +26,9 @@ let sendFreeEpisodeEmailMiddleware: Middleware<
   Tuple2<User, Episode.Id>,
   Data
   > =
-  filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
+  filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail())))
     <| sendFreeEpisodeEmails
-    >=> redirect(to: .admin(.index))
+    >=> redirect(to: .admin())
 
 func fetchEpisode(_ id: Episode.Id) -> Episode? {
   return Current.episodes().first(where: { $0.id == id })

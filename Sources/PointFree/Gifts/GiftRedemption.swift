@@ -87,7 +87,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
 
         case .right:
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(
               .notice,
               "The gift has been applied to your account as credit."
@@ -131,7 +131,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
 
         case .right:
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "You now have access to Point-Free!")
           )
         }
@@ -160,7 +160,7 @@ private func fetchAndValidateGiftAndDiscount<A>(
           guard gift.stripeSubscriptionId == nil
           else {
             return conn |> redirect(
-              to: .gifts(.index),
+              to: .gifts(),
               headersMiddleware: flash(.error, "This gift was already redeemed.")
             )
           }

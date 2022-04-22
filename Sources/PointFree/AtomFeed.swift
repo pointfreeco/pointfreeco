@@ -117,7 +117,7 @@ subscription \(siteRouter.url(for: .pricingLanding)).
     case .freeDuring, .subscriberOnly:
       return """
 Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
-can access your private podcast feed by visiting \(siteRouter.url(for: .account(.index))).
+can access your private podcast feed by visiting \(siteRouter.url(for: .account())).
 
 ---
 

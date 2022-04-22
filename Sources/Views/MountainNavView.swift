@@ -147,12 +147,12 @@ private func headerLinks(
 ) -> Node {
   return [
     .a(
-      attributes: [.href(siteRouter.path(for: .collections(.index))), .class([navLinkClasses])],
+      attributes: [.href(siteRouter.path(for: .collections())), .class([navLinkClasses])],
       "Collections"
     ),
 
     .a(
-      attributes: [.href(siteRouter.path(for: .blog(.index))), .class([navLinkClasses])],
+      attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClasses])],
       "Blog"
     ),
 
@@ -161,7 +161,7 @@ private func headerLinks(
       : [],
 
     Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
-      ? .a(attributes: [.href(siteRouter.path(for: .gifts(.index))), .class([navLinkClasses])], "Gifts")
+      ? .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts")
       : [],
 
     currentUser == nil
@@ -172,7 +172,7 @@ private func headerLinks(
         )
       : .a(
         attributes: [
-          .href(siteRouter.path(for: .account(.index))),
+          .href(siteRouter.path(for: .account())),
           .class([Class.type.medium, Class.pf.colors.link.black])
         ],
         "Account"

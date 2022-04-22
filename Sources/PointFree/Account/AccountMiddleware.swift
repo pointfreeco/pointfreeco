@@ -52,7 +52,7 @@ func accountMiddleware(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, U
 
     case .subscription(.change(.show)):
       return conn
-        |> redirect(to: .account(.index))
+        |> redirect(to: .account())
 
     case let .subscription(.change(.update(pricing))):
       return conn.map(const(user .*. pricing .*. unit))

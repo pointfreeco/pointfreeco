@@ -95,17 +95,17 @@ private func contentColumnView(currentUser: User?) -> Node {
       ),
       Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
         ? .li(
-          .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts(.index)))], "Gifts")
+          .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
         )
         : [],
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
       ),
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections(.index)))], "Collections")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))], "Collections")
       ),
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog(.index)))], "Blog")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
       )
     )
   )

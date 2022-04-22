@@ -73,7 +73,6 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil,
           useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
@@ -87,7 +86,6 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil,
           useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
@@ -118,7 +116,6 @@ private func validateReferralCode(
                 billing: subscribeData.billing,
                 isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
                 teammates: subscribeData.teammates,
-                referralCode: nil,
                 useRegionalDiscount: subscribeData.useRegionalDiscount
               ),
               headersMiddleware: flash(.error, "Invalid referral code.")
@@ -159,10 +156,6 @@ private let fetchAndValidateCoupon
     or: redirect(
       to: .subscribeConfirmation(
         lane: .personal,
-        billing: nil,
-        isOwnerTakingSeat: nil,
-        teammates: nil,
-        referralCode: nil,
         useRegionalDiscount: false
       ),
       headersMiddleware: flash(.error, couponError)
@@ -173,10 +166,6 @@ private let fetchAndValidateCoupon
       or: redirect(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
           useRegionalDiscount: false
         ),
         headersMiddleware: flash(.error, couponError)
@@ -228,7 +217,7 @@ func redirectActiveSubscribers<A>(
               const(
                 conn
                   |> redirect(
-                    to: .account(.index),
+                    to: .account(),
                     headersMiddleware: flash(.warning, "You already have an active subscription.")
                 )
               )

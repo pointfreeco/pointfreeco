@@ -63,7 +63,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   let ctaButton: Node = subscriberState.isActive
     ? .a(
       attributes: [
-        .href(siteRouter.path(for: .account(.index))),
+        .href(siteRouter.path(for: .account())),
         .class([Class.pf.components.button(color: .white)])
       ],
       "Manage your account"
@@ -405,15 +405,11 @@ private func pricingPlanCta(
         .href(
           siteRouter.path(
             for: subscriberState.isActive
-            ? .account(.index)
+            ? .account()
             : plan.lane
               .map {
                 let route = SiteRoute.subscribeConfirmation(
                   lane: $0,
-                  billing: nil,
-                  isOwnerTakingSeat: nil,
-                  teammates: nil,
-                  referralCode: nil,
                   useRegionalDiscount: false
                 )
                 return currentUser == nil ? .login(redirect: siteRouter.url(for: route)) : route
@@ -835,7 +831,7 @@ Yes! We understand that paying for a subscription in US dollars can be difficult
     Faq(
       question: "Can I give a subscription as a gift?",
       answer: """
-You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts(.index)))) page for more information.
+You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts()))) page for more information.
 """
     ),
   ]

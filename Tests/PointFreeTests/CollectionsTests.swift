@@ -28,7 +28,7 @@ class CollectionsTests: TestCase {
     ]
 
     let conn = connection(
-      from: request(to: .collections(.index), basicAuth: true)
+      from: request(to: .collections(), basicAuth: true)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

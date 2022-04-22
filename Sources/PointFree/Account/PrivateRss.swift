@@ -34,7 +34,7 @@ private func requireUser(
       or: invalidatedFeedMiddleware(errorMessage: """
         ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
         retrieve your most up-to-date private podcast URL by visiting your account page at \
-        \(siteRouter.url(for: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+        \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
         """)
   )
 }
@@ -58,7 +58,7 @@ private let requireActiveSubscription: (
     or: invalidatedFeedMiddleware(errorMessage: """
       ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no longer \
       active. If you would like reactive this feed you can resubscribe to Point-Free on your account page at \
-      \(siteRouter.url(for: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+      \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
       """)
 )
 
@@ -129,7 +129,7 @@ private func validateUserAgent<Z>(
         |> invalidatedFeedMiddleware(errorMessage: """
             ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
             retrieve your most up-to-date private podcast URL by visiting your account page at \
-            \(siteRouter.url(for: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+            \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
             """)
       }
   }

@@ -40,13 +40,13 @@ let updateProfileMiddleware
 private let requireUserAndProfileData
   : MT<Tuple2<User?, ProfileData?>, Tuple2<User, ProfileData>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
+    <<< filterMap(require2 >>> pure, or: redirect(to: .account()))
 
 private let validateEmail
   : MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileData>>
   = filter(
     get2 >>> ^\.email >>> isValidEmail,
-    or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
+    or: redirect(to: .account(), headersMiddleware: flash(.error, "Please enter a valid email."))
 )
 
 private func updateProfileMiddlewareHandler(
@@ -88,7 +88,7 @@ private func updateProfileMiddlewareHandler(
     .flatMap(
       const(
         conn.map(const(unit))
-          |> redirect(to: siteRouter.path(for: .account(.index)), headersMiddleware: updateFlash)
+          |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
       )
   )
 }
@@ -115,7 +115,7 @@ func encryptPayload<A>(
           Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.error, "An error occurred.")
           )
       }
@@ -140,7 +140,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
       Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 
       return conn |> redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.error, "An error occurred.")
       )
   }
@@ -161,5 +161,5 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
 
   return Current.database.updateUser(id: userId, email: newEmailAddress)
     .run
-    .flatMap(const(conn |> redirect(to: .account(.index))))
+    .flatMap(const(conn |> redirect(to: .account())))
 }

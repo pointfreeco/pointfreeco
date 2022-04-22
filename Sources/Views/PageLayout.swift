@@ -322,7 +322,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .warning,
         """
         Your subscription is past-due! Please
-        [update your payment info](\(siteRouter.path(for: .account(.paymentInfo(.show))))) to ensure access to
+        [update your payment info](\(siteRouter.path(for: .account(.paymentInfo())))) to ensure access to
         Point-Free!
         """
       )

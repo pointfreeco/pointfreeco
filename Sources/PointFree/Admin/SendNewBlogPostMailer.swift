@@ -74,7 +74,7 @@ let sendNewBlogPostEmailMiddleware
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
     <| sendNewBlogPostEmails
-    >=> redirect(to: .admin(.index))
+    >=> redirect(to: .admin())
 
 private let fetchBlogPostForId
   : MT<

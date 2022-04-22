@@ -126,7 +126,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testGiftsIndex() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
 
-    let route = SiteRoute.gifts(.index)
+    let route = SiteRoute.gifts()
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)

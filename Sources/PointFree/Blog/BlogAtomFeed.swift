@@ -21,7 +21,7 @@ private func feedView(posts: [BlogPost]) -> Node {
         name: "Point-Free"
       ),
       entries: posts.map(atomEntry(for:)),
-      siteUrl: siteRouter.url(for: .blog(.index)),
+      siteUrl: siteRouter.url(for: .blog()),
       title: "Point-Free Pointers"
     )
   )

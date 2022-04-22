@@ -103,7 +103,7 @@ private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(siteRouter.url(for: .account(.index))),
+                .href(siteRouter.url(for: .account())),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Account settings"

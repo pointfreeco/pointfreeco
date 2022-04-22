@@ -39,7 +39,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filter(
       validateCurrentUserIsInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericInviteError))
+      or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
     )
     <| { conn in
       Current.database.deleteTeamInvite(get1(conn.data).id)
@@ -48,7 +48,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
           const(
             conn
               |> redirect(
-                to: siteRouter.path(for: .account(.index)),
+                to: siteRouter.path(for: .account()),
                 headersMiddleware: flash(
                   .notice,
                   "Invite to \(get1(conn.data).email.rawValue) has been revoked."
@@ -63,7 +63,7 @@ let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
     <<< requireTeamInvite
     <<< filter(
       validateCurrentUserIsInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericInviteError))
+      or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
     )
     <| { conn in
       let (invite, inviter) = lower(conn.data)
@@ -72,7 +72,7 @@ let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
         .run({ _ in })
       return conn
         |> redirect(
-          to: .account(.index),
+          to: .account(),
           headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
       )
 }
@@ -129,7 +129,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
           // fire-and-forget email of acceptance and deletion of invite
           zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
-          return conn |> redirect(to: siteRouter.path(for: .account(.index)))
+          return conn |> redirect(to: siteRouter.path(for: .account()))
         }
 }
 
@@ -160,7 +160,7 @@ private let requireUserAndValidEmail
 
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+    <<< filterMap(require1 >>> pure, or: redirect(to: .account()))
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, User>>) in
 
       let (email, inviter) = lower(conn.data)
@@ -196,7 +196,7 @@ let sendInviteMiddleware =
           switch errorOrTeamInvite {
           case .left:
             return conn |> redirect(
-              to: .account(.index), headersMiddleware: flash(.error, """
+              to: .account(), headersMiddleware: flash(.error, """
               Couldn't invite \(email.rawValue)
               """)
             )
@@ -207,7 +207,7 @@ let sendInviteMiddleware =
 
             return conn
               |> redirect(
-                to: .account(.index),
+                to: .account(),
                 headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
             )
           }
@@ -220,7 +220,7 @@ func invalidSubscriptionErrorMiddleware<A>(
 
   return conn
     |> redirect(
-      to: .account(.index),
+      to: .account(),
       headersMiddleware: flash(
         .error,
         "Invalid subscription data. Please try again or contact <support@pointfree.co>."
@@ -310,7 +310,7 @@ private func redirectCurrentSubscribers<A, B>(
       $0
         ? conn
           |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(
               .warning,
               """

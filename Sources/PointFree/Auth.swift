@@ -72,7 +72,7 @@ public func requireLoggedOutUser<A>(
       |> (
         get1(conn.data) == nil
           ? middleware
-          : redirect(to: .account(.index), headersMiddleware: flash(.warning, "You’re already logged in."))
+          : redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
     )
   }
 }

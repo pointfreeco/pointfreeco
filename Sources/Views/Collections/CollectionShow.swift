@@ -18,7 +18,7 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
     collectionNavigation(
       left: .a(
         attributes: [
-          .href(siteRouter.path(for: .collections(.index))),
+          .href(siteRouter.path(for: .collections())),
           .class([
             Class.pf.colors.link.gray650
           ])

@@ -155,7 +155,7 @@ private func subscribe(
       const(
         conn
           |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
         )
       )
@@ -225,7 +225,6 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       billing: .yearly,
       isOwnerTakingSeat: true,
       teammates: [""],
-      referralCode: nil,
       useRegionalDiscount: false
     )
   }
