@@ -187,6 +187,6 @@ extension Episode {
     .ep184_parserPrinters,
     .ep185_tourOfParserPrinters,
     .ep186_tourOfParserPrinters,
-//    .ep187_tourOfParserPrinters,
+    .ep187_tourOfParserPrinters,
   ]
 }
