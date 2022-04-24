@@ -12,6 +12,7 @@ Today we celebrate a huge release of [swift-parsing](https://github.com/pointfre
     permission: .free,
     publishedAt:  Date(timeIntervalSince1970: 1649653200),
     references: [
+      .swiftParsing,
       .invertibleSyntaxDescriptions,
     ],
     sequence: 185,

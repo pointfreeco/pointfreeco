@@ -943,7 +943,7 @@ bring operators into your codebase.
   public static let swiftParsing = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-A library for turning nebulous data into well-structured data, with a focus on composition, performance, and generality.
+A library for turning nebulous data into well-structured data, with a focus on composition, performance, generality, and invertibility.
 """,
     link: "https://github.com/pointfreeco/swift-parsing",
     publishedAt: referenceDateFormatter.date(from: "2021-12-21"),
