@@ -2,7 +2,6 @@ import Either
 import EmailAddress
 import Foundation
 import Models
-import PointFreePrelude
 import Prelude
 import Stripe
 import Tagged

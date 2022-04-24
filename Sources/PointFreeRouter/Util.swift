@@ -1,5 +1,3 @@
-import Prelude
-import Tagged
 import UrlFormEncoding
 
 let formDecoder: UrlFormDecoder = {

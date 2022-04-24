@@ -37,7 +37,6 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.3.1")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
-    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "0.8.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", from: "0.4.0"),
     .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
@@ -282,12 +281,10 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
-        "PointFreePrelude",
-        .product(name: "CasePaths", package: "swift-case-paths"),
-        .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Parsing", package: "swift-parsing"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
         .product(name: "_URLRouting", package: "swift-parsing"),
       ]

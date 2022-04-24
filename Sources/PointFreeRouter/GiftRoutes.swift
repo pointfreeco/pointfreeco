@@ -1,7 +1,5 @@
 import Foundation
 import Models
-import Parsing
-import Prelude
 import Stripe
 import TaggedMoney
 import _URLRouting
@@ -85,14 +83,14 @@ let giftsRouter = OneOf {
   }
 }
 
-let routeJsonDecoder: JSONDecoder = {
+private let routeJsonDecoder: JSONDecoder = {
   let decoder = JSONDecoder()
   decoder.dateDecodingStrategy = .secondsSince1970
   decoder.keyDecodingStrategy = .convertFromSnakeCase
   return decoder
 }()
 
-let routeJsonEncoder: JSONEncoder = {
+private let routeJsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .secondsSince1970
   encoder.keyEncodingStrategy = .convertToSnakeCase
