@@ -12,6 +12,7 @@ We continue our tour by comparing swift-parsing to Apple's forthcoming Regex DSL
     permission: .free,
     publishedAt:  Date(timeIntervalSince1970: 1650258000),
     references: [
+      .swiftParsing,
       .invertibleSyntaxDescriptions,
     ],
     sequence: 186,
