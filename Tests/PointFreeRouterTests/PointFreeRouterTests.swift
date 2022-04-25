@@ -93,7 +93,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
       url: URL(string: "http://localhost:8080/team/deadbeef/join")!
     )
 
-    let route = SiteRoute.team(.joinLanding("deadbeef"))
+    let route = SiteRoute.team(.join("deadbeef"))
 
     XCTAssertEqual(
       try siteRouter.match(request: request),
@@ -110,7 +110,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     var request = URLRequest(url: .init(string: "http://localhost:8080/team/deadbeef/join")!)
     request.httpMethod = "POST"
 
-    let route = SiteRoute.team(.join("deadbeef"))
+    let route = SiteRoute.team(.join("deadbeef", .confirm))
 
     XCTAssertEqual(
       try siteRouter.match(request: request),
@@ -144,7 +144,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
   func testGiftsRedeemLanding() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
 
-    let route = SiteRoute.gifts(.redeemLanding(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
@@ -154,7 +154,7 @@ coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref
     var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
     request.httpMethod = "POST"
 
-    let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)

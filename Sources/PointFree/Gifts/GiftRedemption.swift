@@ -45,7 +45,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
     guard subscriberState.isOwner
     else {
       return conn |> redirect(
-        to: .gifts(.redeemLanding(gift.id)),
+        to: .gifts(.redeem(gift.id)),
         headersMiddleware: flash(
           .error,
           "You are already part of an active team subscription."
@@ -75,7 +75,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
         switch errorOrCustomer {
         case .left:
           return conn |> redirect(
-            to: .gifts(.redeemLanding(gift.id)),
+            to: .gifts(.redeem(gift.id)),
             headersMiddleware: flash(
               .error,
               """
@@ -119,7 +119,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
         switch errorOrSubscription {
         case .left:
           return conn |> redirect(
-            to: .gifts(.redeemLanding(gift.id)),
+            to: .gifts(.redeem(gift.id)),
             headersMiddleware: flash(
               .error,
               """

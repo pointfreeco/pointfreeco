@@ -44,7 +44,7 @@ private func giftEmailBody(gift: Gift) -> Node {
 
       \(quotedMessage)
 
-      [Redeem Your Gift](\(siteRouter.url(for: .gifts(.redeemLanding(gift.id)))))
+      [Redeem Your Gift](\(siteRouter.url(for: .gifts(.redeem(gift.id)))))
       """
     )
   ]

@@ -9,8 +9,12 @@ public enum Gifts: Equatable {
   case create(GiftFormData)
   case index
   case plan(Plan)
-  case redeem(Gift.Id)
-  case redeemLanding(Gift.Id)
+  case redeem(Gift.Id, Redeem = .landing)
+
+  public enum Redeem: Equatable {
+    case confirm
+    case landing
+  }
 
   public enum Plan: String, CaseIterable {
     case threeMonths
@@ -67,13 +71,16 @@ let giftsRouter = OneOf {
     Path { Gifts.Plan.parser() }
   }
 
-  Route(.case(Gifts.redeemLanding)) {
-    Path { UUID.parser().map(.representing(Gift.Id.self)) }
-  }
-
   Route(.case(Gifts.redeem)) {
-    Method.post
     Path { UUID.parser().map(.representing(Gift.Id.self)) }
+
+    OneOf {
+      Route(.case(Gifts.Redeem.landing))
+
+      Route(.case(Gifts.Redeem.confirm)) {
+        Method.post
+      }
+    }
   }
 }
 

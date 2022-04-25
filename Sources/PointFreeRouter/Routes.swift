@@ -98,10 +98,14 @@ public enum SiteRoute: Equatable {
   }
 
   public enum Team: Equatable {
-    case join(Models.Subscription.TeamInviteCode)
-    case joinLanding(Models.Subscription.TeamInviteCode)
+    case join(Models.Subscription.TeamInviteCode, Join = .landing)
     case leave
     case remove(User.Id)
+
+    public enum Join: Equatable {
+      case confirm
+      case landing
+    }
   }
 
   public enum Webhooks: Equatable {
@@ -274,39 +278,41 @@ private let inviteRouter = OneOf {
 
 private let teamRouter = OneOf {
   Route(.case(SiteRoute.Team.join)) {
-    Method.post
     Path {
       "team"
       Parse(.string.representing(Subscription.TeamInviteCode.self))
       "join"
     }
-  }
 
-  Route(.case(SiteRoute.Team.joinLanding)) {
-    Path {
-      "team"
-      Parse(.string.representing(Subscription.TeamInviteCode.self))
-      "join"
+    OneOf {
+      Route(.case(SiteRoute.Team.Join.landing))
+
+      Route(.case(SiteRoute.Team.Join.confirm)) {
+        Method.post
+      }
     }
   }
 
-  Route(.case(SiteRoute.Team.leave)) {
-    Method.post
+  Parse {
     Path {
       "account"
       "team"
-      "leave"
     }
-  }
 
-  Route(.case(SiteRoute.Team.remove)) {
-    Method.post
-    Path {
-      "account"
-      "team"
-      "members"
-      UUID.parser().map(.representing(User.Id.self))
-      "remove"
+    OneOf {
+      Route(.case(SiteRoute.Team.leave)) {
+        Method.post
+        Path { "leave" }
+      }
+
+      Route(.case(SiteRoute.Team.remove)) {
+        Method.post
+        Path {
+          "members"
+          UUID.parser().map(.representing(User.Id.self))
+          "remove"
+        }
+      }
     }
   }
 }
