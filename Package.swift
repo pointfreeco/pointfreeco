@@ -435,6 +435,7 @@ var package = Package(
         "WebPreview",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
+        .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
