@@ -317,11 +317,11 @@ private let teamRouter = OneOf {
 }
 
 private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
+  Method.post
   Path { "stripe" }
 
   OneOf {
     Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
-      Method.post
       Body(
         .json(
           Stripe.Event<PaymentIntent>.self,
@@ -332,7 +332,6 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
     }
 
     Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
-      Method.post
       Body(
         .json(
           Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
@@ -343,7 +342,6 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
     }
 
     Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
-      Method.post
       Body(
         .json(
           Stripe.Event<Prelude.Unit>.self,
@@ -352,11 +350,8 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
         )
       )
     }
-
-    Route(.case(SiteRoute.Webhooks._Stripe.fatal)) {
-      Method.post
-    }
   }
+  .replaceError(with: .fatal)
 }
 
 let router = OneOf {
