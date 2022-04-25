@@ -25,7 +25,7 @@ class EnterpriseTests: TestCase {
 
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
 
-    let req = request(to: .enterprise(.landing(account.domain)))
+    let req = request(to: .enterprise(account.domain))
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -47,7 +47,7 @@ class EnterpriseTests: TestCase {
 
     Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
 
-    let req = request(to: .enterprise(.landing(account.domain)))
+    let req = request(to: .enterprise(account.domain))
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
@@ -61,7 +61,7 @@ class EnterpriseTests: TestCase {
 
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
 
-    let req = request(to: .enterprise(.landing(account.domain)), session: .loggedIn(as: user))
+    let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
@@ -70,7 +70,7 @@ class EnterpriseTests: TestCase {
     let account = EnterpriseAccount.mock
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: "baddata", userId: "baddata")),
+      to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: "baddata")),
       session: .loggedOut
     )
     let conn = connection(from: req)
@@ -91,7 +91,7 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: "baddata", userId: encryptedUserId)),
+      to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -112,7 +112,7 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: "baddata")),
+      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: "baddata")),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -134,7 +134,7 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
     
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -155,7 +155,7 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -175,7 +175,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -197,7 +197,7 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)

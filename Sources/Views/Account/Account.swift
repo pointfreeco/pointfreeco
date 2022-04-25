@@ -492,7 +492,7 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     )
   )
 
-  let shareUrl = siteRouter.url(for: .enterprise(.landing(enterpriseAccount.domain)))
+  let shareUrl = siteRouter.url(for: .enterprise(enterpriseAccount.domain))
   let shareRow = Node.gridRow(
     .gridColumn(
       sizes: [.mobile: 3],
@@ -555,7 +555,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
 
   var enterpriseShareLink: Node
   if case let .teammate(_, .some(enterpriseAccount), _) = data.subscriberState {
-    let shareUrl = siteRouter.url(for: .enterprise(.landing(enterpriseAccount.domain)))
+    let shareUrl = siteRouter.url(for: .enterprise(enterpriseAccount.domain))
     enterpriseShareLink = .p(
       "Share Point-Free with your co-workers by sending them this link: ",
       .a(attributes: [.href(shareUrl)], .text(shareUrl))

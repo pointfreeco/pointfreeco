@@ -115,15 +115,15 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. nil .*. unit))
         |> episodeResponse
 
-    case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
+    case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
       return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
         |> enterpriseAcceptInviteMiddleware
 
-    case let .enterprise(.landing(domain)):
+    case let .enterprise(domain, .landing):
       return conn.map(const(user .*. subscriberState .*. domain .*. unit))
         |> enterpriseLandingResponse
 
-    case let .enterprise(.requestInvite(domain, request)):
+    case let .enterprise(domain, .requestInvite(request)):
       return conn.map(const(user .*. domain .*. request .*. unit))
         |> enterpriseRequestMiddleware
 

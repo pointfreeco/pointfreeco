@@ -55,7 +55,7 @@ let enterpriseRequestMiddleware
     <<< sendEnterpriseInvitation
     <| { conn in
       conn |> redirect(
-        to: .enterprise(.landing(get2(conn.data).domain)),
+        to: .enterprise(get2(conn.data).domain),
         headersMiddleware: flash(.notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
       )
 }
@@ -156,7 +156,7 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
     return { conn in
       conn
         |> redirect(
-          to: siteRouter.path(for: .enterprise(.landing(get2(conn.data).domain))),
+          to: siteRouter.path(for: .enterprise(get2(conn.data).domain)),
           headersMiddleware: flash(.error, reason)
       )
     }
@@ -226,7 +226,7 @@ private func sendEnterpriseInvitation<Z>(
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
-          to: siteRouter.path(for: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(account.domain)),
           headersMiddleware: flash(
             .error,
             "The email you entered does not come from the @\(account.domain) domain."
@@ -249,7 +249,7 @@ private func sendEnterpriseInvitation<Z>(
     } else {
       return conn
         |> redirect(
-          to: siteRouter.path(for: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(account.domain)),
           headersMiddleware: flash(
             .warning,
             "Something went wrong. Please try again or contact <support@pointfree.co>."
@@ -301,7 +301,13 @@ private func enterpriseInviteEmailBodyView(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(siteRouter.url(for: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
+                .href(
+                  siteRouter.url(
+                    for: .enterprise(
+                      account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)
+                    )
+                  )
+                ),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Click here to accept!"

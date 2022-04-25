@@ -22,7 +22,7 @@ public enum SiteRoute: Equatable {
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case gifts(Gifts = .index)
   case endGhosting
-  case enterprise(Enterprise)
+  case enterprise(EnterpriseAccount.Domain, Enterprise = .landing)
   case episode(EpisodeRoute = .index)
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
@@ -72,9 +72,9 @@ public enum SiteRoute: Equatable {
   }
 
   public enum Enterprise: Equatable {
-    case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
-    case landing(EnterpriseAccount.Domain)
-    case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
+    case acceptInvite(email: Encrypted<String>, userId: Encrypted<String>)
+    case landing
+    case requestInvite(EnterpriseRequestFormData)
   }
 
   public enum EpisodeRoute: Equatable {
@@ -192,34 +192,19 @@ private let episodeRouter = OneOf {
 }
 
 private let enterpriseRouter = OneOf {
-  Route(.case(SiteRoute.Enterprise.landing)) {
-    Path { Parse(.string.representing(EnterpriseAccount.Domain.self)) }
-  }
+  Route(.case(SiteRoute.Enterprise.landing))
 
   Route(.case(SiteRoute.Enterprise.requestInvite)) {
     Method.post
-    Path {
-      Parse(.string.representing(EnterpriseAccount.Domain.self))
-      "request"
-    }
+    Path { "request" }
     Body(.form(EnterpriseRequestFormData.self, decoder: formDecoder))
   }
 
   Route(.case(SiteRoute.Enterprise.acceptInvite)) {
-    Parse(
-      .convert(
-        apply: { ($0, $1.0, $1.1) },
-        unapply: { ($0, ($1, $2)) }
-      )
-    ) {
-      Path {
-        Parse(.string.representing(EnterpriseAccount.Domain.self))
-        "accept"
-      }
-      Query {
-        Field("email", .string.representing(Encrypted.self))
-        Field("user_id", .string.representing(Encrypted.self))
-      }
+    Path { "accept" }
+    Query {
+      Field("email", .string.representing(Encrypted.self))
+      Field("user_id", .string.representing(Encrypted.self))
     }
   }
 }
@@ -423,7 +408,10 @@ let router = OneOf {
 
   OneOf {
     Route(.case(SiteRoute.enterprise)) {
-      Path { "enterprise" }
+      Path {
+        "enterprise"
+        Parse(.string.representing(EnterpriseAccount.Domain.self))
+      }
       enterpriseRouter
     }
 
