@@ -41,7 +41,7 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
            .gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            href: siteRouter.loginPath(redirect: .invite(.show(invite.id)))
+            href: siteRouter.loginPath(redirect: .invite(.invitation(invite.id)))
           )
         )
       )
@@ -67,7 +67,7 @@ private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, i
         ),
         .form(
           attributes: [
-            .action(siteRouter.path(for: .invite(.accept(teamInvite.id)))),
+            .action(siteRouter.path(for: .invite(.invitation(teamInvite.id, .accept)))),
             .method(.post)
           ],
           .input(

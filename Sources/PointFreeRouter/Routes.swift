@@ -89,12 +89,16 @@ public enum SiteRoute: Equatable {
   }
 
   public enum Invite: Equatable {
-    case accept(TeamInvite.Id)
     case addTeammate(EmailAddress?)
-    case resend(TeamInvite.Id)
-    case revoke(TeamInvite.Id)
+    case invitation(TeamInvite.Id, Invitation = .show)
     case send(EmailAddress?)
-    case show(TeamInvite.Id)
+
+    public enum Invitation: Equatable {
+      case accept
+      case resend
+      case revoke
+      case show
+    }
   }
 
   public enum Team: Equatable {
@@ -224,14 +228,6 @@ private let feedRouter = OneOf {
 }
 
 private let inviteRouter = OneOf {
-  Route(.case(SiteRoute.Invite.accept)) {
-    Method.post
-    Path {
-      UUID.parser().map(.representing(TeamInvite.Id.self))
-      "accept"
-    }
-  }
-
   Route(.case(SiteRoute.Invite.addTeammate)) {
     Method.post
     Path { "add" }
@@ -244,19 +240,26 @@ private let inviteRouter = OneOf {
     }
   }
 
-  Route(.case(SiteRoute.Invite.resend)) {
-    Method.post
-    Path {
-      UUID.parser().map(.representing(TeamInvite.Id.self))
-      "resend"
-    }
-  }
+  Route(.case(SiteRoute.Invite.invitation)) {
+    Path { UUID.parser().map(.representing(TeamInvite.Id.self)) }
 
-  Route(.case(SiteRoute.Invite.revoke)) {
-    Method.post
-    Path {
-      UUID.parser().map(.representing(TeamInvite.Id.self))
-      "revoke"
+    OneOf {
+      Route(.case(SiteRoute.Invite.Invitation.show))
+
+      Route(.case(SiteRoute.Invite.Invitation.accept)) {
+        Method.post
+        Path { "accept" }
+      }
+
+      Route(.case(SiteRoute.Invite.Invitation.resend)) {
+        Method.post
+        Path { "resend" }
+      }
+
+      Route(.case(SiteRoute.Invite.Invitation.revoke)) {
+        Method.post
+        Path { "revoke" }
+      }
     }
   }
 
@@ -269,10 +272,6 @@ private let inviteRouter = OneOf {
         }
       }
     }
-  }
-
-  Route(.case(SiteRoute.Invite.show)) {
-    Path { UUID.parser().map(.representing(TeamInvite.Id.self)) }
   }
 }
 

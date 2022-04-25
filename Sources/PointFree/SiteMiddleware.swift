@@ -164,29 +164,29 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> homeMiddleware
 
-    case let .invite(.accept(inviteId)):
-      return conn.map(const(inviteId .*. user .*. unit))
-        |> acceptInviteMiddleware
-
     case let .invite(.addTeammate(email)):
       return conn.map(const(user .*. email .*. unit))
         |> addTeammateViaInviteMiddleware
 
-    case let .invite(.resend(inviteId)):
+    case let .invite(.invitation(inviteId, .accept)):
+      return conn.map(const(inviteId .*. user .*. unit))
+        |> acceptInviteMiddleware
+
+    case let .invite(.invitation(inviteId, .resend)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> resendInviteMiddleware
 
-    case let .invite(.revoke(inviteId)):
+    case let .invite(.invitation(inviteId, .revoke)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> revokeInviteMiddleware
+
+    case let .invite(.invitation(inviteId, .show)):
+      return conn.map(const(inviteId .*. user .*. unit))
+        |> showInviteMiddleware
 
     case let .invite(.send(email)):
       return conn.map(const(email .*. user .*. unit))
         |> sendInviteMiddleware
-
-    case let .invite(.show(inviteId)):
-      return conn.map(const(inviteId .*. user .*. unit))
-        |> showInviteMiddleware
 
     case let .login(redirect):
       return conn.map(const(user .*. redirect .*. unit))

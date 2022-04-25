@@ -968,7 +968,7 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
       attributes: [.class([Class.grid.end(.desktop)])],
       .form(
         attributes: [
-          .action(siteRouter.path(for: .invite(.resend(invite.id)))),
+          .action(siteRouter.path(for: .invite(.invitation(invite.id, .resend)))),
           .method(.post),
           .class([Class.display.inlineBlock])
         ],
@@ -985,7 +985,7 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 
       .form(
         attributes: [
-          .action(siteRouter.path(for: .invite(.revoke(invite.id)))),
+          .action(siteRouter.path(for: .invite(.invitation(invite.id, .revoke)))),
           .method(.post),
           .class([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])
         ],

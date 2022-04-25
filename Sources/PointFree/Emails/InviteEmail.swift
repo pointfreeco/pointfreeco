@@ -42,7 +42,7 @@ private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node 
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(siteRouter.url(for: .invite(.show(invite.id)))),
+                .href(siteRouter.url(for: .invite(.invitation(invite.id)))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Click here to accept!"
