@@ -378,10 +378,7 @@ let router = OneOf {
     }
 
     Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
-      Path {
-        ".well-known"
-        "apple-developer-merchantid-domain-association"
-      }
+      Path { ".well-known"; "apple-developer-merchantid-domain-association" }
     }
 
     Route(.case(SiteRoute.blog)) {
@@ -398,9 +395,7 @@ let router = OneOf {
       Path { "episodes" }
       episodeRouter
     }
-  }
 
-  OneOf {
     Route(.case(SiteRoute.enterprise)) {
       Path {
         "enterprise"
@@ -408,7 +403,9 @@ let router = OneOf {
       }
       enterpriseRouter
     }
+  }
 
+  OneOf {
     Route(.case(SiteRoute.feed)) {
       Path { "feed" }
       feedRouter
@@ -433,29 +430,26 @@ let router = OneOf {
 
     Route(.case(SiteRoute.endGhosting)) {
       Method.post
-      Path {
-        "ghosting"
-        "end"
-      }
+      Path { "ghosting"; "end" }
     }
 
-    Route(.case(SiteRoute.expressUnsubscribe)) {
-      Path {
-        "newsletters"
-        "express-unsubscribe"
-      }
-      Query {
-        Field("payload", .string.representing(Encrypted.self))
-      }
-    }
+    Parse {
+      Path { "newsletters" }
 
-    Route(.case(SiteRoute.expressUnsubscribeReply)) {
-      Method.post
-      Path {
-        "newsletters"
-        "express-unsubscribe-reply"
+      OneOf {
+        Route(.case(SiteRoute.expressUnsubscribe)) {
+          Path { "express-unsubscribe" }
+          Query {
+            Field("payload", .string.representing(Encrypted.self))
+          }
+        }
+
+        Route(.case(SiteRoute.expressUnsubscribeReply)) {
+          Method.post
+          Path { "express-unsubscribe-reply" }
+          Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
+        }
       }
-      Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
     }
 
     Route(.case(SiteRoute.gitHubCallback)) {
@@ -474,9 +468,7 @@ let router = OneOf {
       Path { "invites" }
       inviteRouter
     }
-  }
 
-  OneOf {
     Route(.case(SiteRoute.login)) {
       Path { "login" }
       Query {
@@ -493,7 +485,9 @@ let router = OneOf {
     Route(.case(SiteRoute.pricingLanding)) {
       Path { "pricing" }
     }
+  }
 
+  OneOf {
     Route(.case(SiteRoute.privacy)) {
       Path { "privacy" }
     }

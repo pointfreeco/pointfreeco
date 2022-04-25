@@ -26,11 +26,7 @@ public enum GitHubRoute {
 
 public let gitHubRouter = OneOf {
   Route(.case(GitHubRoute.authorize)) {
-    Path {
-      "login"
-      "oauth"
-      "authorize"
-    }
+    Path { "login"; "oauth"; "authorize" }
     Query {
       Field("client_id", .string.representing(GitHub.Client.Id.self))
       Optionally {
@@ -56,12 +52,7 @@ public let gitHubRouter = OneOf {
       }
 
       Route(.case(GitHubRoute.license)) {
-        Path {
-          "pointfreeco"
-          "blob"
-          "main"
-          "LICENSE"
-        }
+        Path { "pointfreeco"; "blob"; "main"; "LICENSE" }
       }
 
       Route(.case(GitHubRoute.repo)) {
