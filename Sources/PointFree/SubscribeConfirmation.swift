@@ -17,7 +17,15 @@ public let subscribeConfirmation
     >=> map(lower)
     >>> respond(
       view: Views.subscriptionConfirmation,
-      layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon, referrer in
+      layoutData: { (
+        currentUser: User?,
+        currentRoute: SiteRoute,
+        subscriberState: SubscriberState,
+        lane: Pricing.Lane,
+        subscribeData: SubscribeConfirmationData,
+        coupon: Stripe.Coupon?,
+        referrer: User?
+      ) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,

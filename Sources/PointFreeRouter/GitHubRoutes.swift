@@ -1,10 +1,6 @@
 import GitHub
 import _URLRouting
 
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
-
 public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
@@ -18,6 +14,7 @@ public enum GitHubRoute {
     case htmlVapor = "swift-html-vapor"
     case nonempty = "swift-nonempty"
     case overture = "swift-overture"
+    case parsing = "swift-parsing"
     case pointfreeco
     case prelude = "swift-prelude"
     case snapshotTesting = "swift-snapshot-testing"
