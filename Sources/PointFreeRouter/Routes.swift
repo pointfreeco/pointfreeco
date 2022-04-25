@@ -322,41 +322,35 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
   OneOf {
     Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
       Method.post
-      Body {
-        Parse(
-          .json(
-            Stripe.Event<PaymentIntent>.self,
-            decoder: Stripe.jsonDecoder,
-            encoder: Stripe.jsonEncoder
-          )
+      Body(
+        .json(
+          Stripe.Event<PaymentIntent>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
         )
-      }
+      )
     }
 
     Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
       Method.post
-      Body {
-        Parse(
-          .json(
-            Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-            decoder: Stripe.jsonDecoder,
-            encoder: Stripe.jsonEncoder
-          )
+      Body(
+        .json(
+          Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
         )
-      }
+      )
     }
 
     Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
       Method.post
-      Body {
-        Parse(
-          .json(
-            Stripe.Event<Prelude.Unit>.self,
-            decoder: Stripe.jsonDecoder,
-            encoder: Stripe.jsonEncoder
-          )
+      Body(
+        .json(
+          Stripe.Event<Prelude.Unit>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
         )
-      }
+      )
     }
 
     Route(.case(SiteRoute.Webhooks._Stripe.fatal)) {
