@@ -70,21 +70,23 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
-    case let .collections(.episode(collectionSlug, _, episodeParam)):
-      return conn.map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
-        |> episodeResponse
-
     case .collections(.index):
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> collectionsIndexMiddleware
 
-    case let .collections(.show(slug)):
+    case let .collections(.collection(slug, .show)):
       return conn.map(const(user .*. subscriberState .*. route .*. slug .*. unit))
-        |> collectionMiddleware
+      |> collectionMiddleware
 
-    case let .collections(.section(collectionSlug, sectionSlug)):
-      return conn.map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
-        |> collectionSectionMiddleware
+    case let .collections(.collection(collectionSlug, .section(sectionSlug, .show))):
+      return conn
+        .map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
+      |> collectionSectionMiddleware
+
+    case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
+      return conn
+        .map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
+      |> episodeResponse
 
     case let .discounts(couponId, billing):
       let subscribeData = SubscribeConfirmationData(

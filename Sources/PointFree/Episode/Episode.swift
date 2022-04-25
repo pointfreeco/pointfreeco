@@ -29,7 +29,7 @@ func reference(forCollection collection: Episode.Collection, additionalBlurb: St
 
     > \(collection.blurb)
     """,
-    link: siteRouter.url(for: .collections(.show(collection.slug))),
+    link: siteRouter.url(for: .collections(.collection(collection.slug))),
     publishedAt: collection.sections
       .flatMap { $0.coreLessons.map(\.episode) }
       .first?

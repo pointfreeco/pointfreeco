@@ -35,7 +35,9 @@ public func collectionSection(
         attributes: [
           .href(
             siteRouter.path(
-              for: .collections(collection.sections.count == 1 ? .index : .show(collection.slug))
+              for: .collections(
+                collection.sections.count == 1 ? .index : .collection(collection.slug)
+              )
             )
           ),
           .class([
@@ -122,7 +124,11 @@ private func coreLesson(
       icon: playIconSvgBase64(),
       title: lesson.episode.fullTitle,
       length: lesson.episode.length,
-      url: siteRouter.path(for: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
+      url: siteRouter.path(
+        for: .collections(
+          .collection(collection.slug, .section(section.slug, .episode(.left(lesson.episode.slug))))
+        )
+      )
     )
   )
 }
@@ -195,7 +201,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
         icon: collectionIconSvgBase64,
         title: collection.title,
         length: collection.length,
-        url: siteRouter.path(for: .collections(.show(collection.slug)))
+        url: siteRouter.path(for: .collections(.collection(collection.slug)))
       )
     })
   case let .episodes(episodes):
@@ -216,7 +222,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
       icon: collectionIconSvgBase64,
       title: section.title,
       length: section.length,
-      url: siteRouter.path(for: .collections(.section(collection.slug, section.slug)))
+      url: siteRouter.path(for: .collections(.collection(collection.slug, .section(section.slug))))
     )
   }
 }
@@ -271,7 +277,9 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(siteRouter.url(for: .collections(.section(collection.slug, section.slug)))),
+        .href(
+          siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
+        ),
       ],
       .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
         .class([
@@ -309,7 +317,9 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(siteRouter.url(for: .collections(.section(collection.slug, section.slug)))),
+        .href(
+          siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
+        ),
       ],
       .gridColumn(
         sizes: [:],

@@ -57,10 +57,18 @@ public enum SiteRoute: Equatable {
   }
 
   public enum Collections: Equatable {
-    case episode(Episode.Collection.Slug, Episode.Collection.Section.Slug, Either<String, Episode.Id>)
     case index
-    case show(Episode.Collection.Slug)
-    case section(Episode.Collection.Slug, Episode.Collection.Section.Slug)
+    case collection(Episode.Collection.Slug, Collection = .show)
+
+    public enum Collection: Equatable {
+      case show
+      case section(Episode.Collection.Section.Slug, Section = .show)
+    }
+
+    public enum Section: Equatable {
+      case show
+      case episode(Either<String, Episode.Id>)
+    }
   }
 
   public enum Enterprise: Equatable {
@@ -143,23 +151,22 @@ private let episodeSlugOrId = OneOf {
 private let collectionsRouter = OneOf {
   Route(.case(SiteRoute.Collections.index))
 
-  OneOf {
-    Route(.case(SiteRoute.Collections.show)) {
-      Path { Parse(.string.representing(Episode.Collection.Slug.self)) }
-    }
+  Route(.case(SiteRoute.Collections.collection)) {
+    Path { Parse(.string.representing(Episode.Collection.Slug.self)) }
 
-    Route(.case(SiteRoute.Collections.section)) {
-      Path {
-        Parse(.string.representing(Episode.Collection.Slug.self))
-        Parse(.string.representing(Episode.Collection.Section.Slug.self))
-      }
-    }
+    OneOf {
+      Route(.case(SiteRoute.Collections.Collection.show))
 
-    Route(.case(SiteRoute.Collections.episode)) {
-      Path {
-        Parse(.string.representing(Episode.Collection.Slug.self))
-        Parse(.string.representing(Episode.Collection.Section.Slug.self))
-        episodeSlugOrId
+      Route(.case(SiteRoute.Collections.Collection.section)) {
+        Path { Parse(.string.representing(Episode.Collection.Section.Slug.self)) }
+
+        OneOf {
+          Route(.case(SiteRoute.Collections.Section.show))
+
+          Route(.case(SiteRoute.Collections.Section.episode)) {
+            Path { episodeSlugOrId }
+          }
+        }
       }
     }
   }

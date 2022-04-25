@@ -68,7 +68,9 @@ public struct EpisodePageData {
           })
         })
         else { return .episode(.show(.left(self.episode.slug))) }
-      return .collections(.episode(collection.slug, section.slug, .left(self.episode.slug)))
+      return .collections(
+        .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
+      )
     case .direct:
       return .episode(.show(.left(self.episode.slug)))
     }
@@ -85,7 +87,11 @@ public func episodePageView(
           left: [
             .a(
               attributes: [
-                .href(siteRouter.path(for: .collections(.section(collection.slug, section.slug)))),
+                .href(
+                  siteRouter.path(
+                    for: .collections(.collection(collection.slug, .section(section.slug)))
+                  )
+                ),
                 .class([
                   Class.pf.colors.link.gray650
                 ])
@@ -219,7 +225,11 @@ private func sequentialEpisodes(
               ]),
               .href(
                 siteRouter.url(
-                  for: .collections(.episode(collection.slug, section.slug, .left(episode.slug)))
+                  for: .collections(
+                    .collection(
+                      collection.slug, .section(section.slug, .episode(.left(episode.slug)))
+                    )
+                  )
                 )
               )
             ],
@@ -269,7 +279,11 @@ private func collectionHeaderRow(
               Class.type.medium,
               Class.type.lineHeight(1)
             ]),
-            .href(siteRouter.url(for: .collections(.section(collection.slug, section.slug))))
+            .href(
+              siteRouter.url(
+                for: .collections(.collection(collection.slug, .section(section.slug)))
+              )
+            )
           ],
           .text(
             collection.sections.count == 1
@@ -330,7 +344,11 @@ private func collectionFooterRow(
               Class.type.medium,
               Class.type.lineHeight(1)
             ]),
-            .href(siteRouter.url(for: .collections(.section(collection.slug, nextSection.slug))))
+            .href(
+              siteRouter.url(
+                for: .collections(.collection(collection.slug, .section(nextSection.slug)))
+              )
+            )
           ],
           .text(
             nextSection.title

@@ -48,7 +48,7 @@ class CollectionsTests: TestCase {
 
   func testCollectionShow() {
     let conn = connection(
-      from: request(to: .collections(.show(Current.collections[0].slug)), basicAuth: true)
+      from: request(to: .collections(.collection(Current.collections[0].slug)), basicAuth: true)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -70,9 +70,9 @@ class CollectionsTests: TestCase {
     let conn = connection(
       from: request(
         to: .collections(
-          .section(
+          .collection(
             Current.collections[0].slug,
-            Current.collections[0].sections[1].slug
+            .section(Current.collections[0].sections[1].slug)
           )
         ),
         basicAuth: true

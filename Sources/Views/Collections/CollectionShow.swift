@@ -117,7 +117,11 @@ private func sectionRow(
               Class.pf.type.responsiveTitle4,
               Class.type.light,
             ]),
-            .href(siteRouter.url(for: .collections(.section(collection.slug, section.slug)))),
+            .href(
+              siteRouter.url(
+                for: .collections(.collection(collection.slug, .section(section.slug)))
+              )
+            ),
           ],
           .gridRow(
             attributes: [
