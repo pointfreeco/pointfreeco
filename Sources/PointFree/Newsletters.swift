@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import Either
 import HttpPipeline
 import Foundation
@@ -57,7 +56,7 @@ private func decryptUserAndNewsletter(
   return { conn in
     guard
       let string = conn.data.decrypt(with: Current.envVars.appSecret),
-      let (userId, newsletter) = expressUnsubscribeIso.apply(string)
+      let (userId, newsletter) = try? expressUnsubscribe.parse(string)
       else {
         return conn.map(const(unit))
           |> redirect(

@@ -53,7 +53,7 @@ private func updatePaymentInfoRowView(publishableKey: String, stripeJsSrc: Strin
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Update"),
         .form(
           attributes: [
-            .action(path(to: .account(.paymentInfo(.update(nil))))),
+            .action(siteRouter.path(for: .account(.paymentInfo(.update())))),
             .id(StripeHtml.formId),
             .method(.post)
           ],
@@ -66,7 +66,7 @@ private func updatePaymentInfoRowView(publishableKey: String, stripeJsSrc: Strin
           ),
           .a(
             attributes: [
-              .href(path(to: .account(.index))),
+              .href(siteRouter.path(for: .account())),
               .class([Class.pf.components.button(color: .black, style: .underline)])
             ],
             "Cancel"

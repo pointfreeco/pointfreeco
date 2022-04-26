@@ -42,7 +42,7 @@ private func confirmEmailChangeEmailBody(
           .p(attributes: [.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
              .a(
               attributes: [
-                .href(url(to: .account(.confirmEmailChange(payload: payload)))),
+                .href(siteRouter.url(for: .account(.confirmEmailChange(payload: payload)))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Confirm email change"

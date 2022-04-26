@@ -77,7 +77,7 @@ public func giftsPayment(
             })
             setFormEnabled(false, function() { return true })
             var httpRequest = new XMLHttpRequest()
-            httpRequest.open("POST", "\(path(to: .gifts(.create(.empty))))")
+            httpRequest.open("POST", "\(siteRouter.path(for: .gifts(.create(.empty))))")
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
@@ -139,7 +139,7 @@ private func formView(
 ) -> Node {
   .form(
     attributes: [
-      .action(path(to: .gifts(.confirmation(.empty)))),
+      .action(siteRouter.path(for: .gifts(.confirmation(.empty)))),
       .id("gift-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),

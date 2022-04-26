@@ -76,7 +76,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let resendInvite = request(
+      to: .invite(.invitation(teamInvite.id, .resend)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: resendInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -93,7 +96,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let revokeInvite = request(
+      to: .invite(.invitation(teamInvite.id, .revoke)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: revokeInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -125,7 +131,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let revokeInvite = request(
+      to: .invite(.invitation(teamInvite.id, .revoke)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: revokeInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -161,7 +170,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: acceptInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -202,7 +214,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: acceptInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -241,7 +256,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     Current.stripe.fetchSubscription = const(pure(.canceled))
 
-    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: acceptInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -280,7 +298,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     Current.stripe.fetchSubscription = const(pure(.canceled))
 
-    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: acceptInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -359,7 +380,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let resendInvite = request(
+      to: .invite(.invitation(teamInvite.id, .resend)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
     let conn = connection(from: resendInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -373,7 +397,7 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedOut() {
-    let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
+    let showInvite = request(to: .invite(.invitation(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -402,7 +426,7 @@ class InviteTests: TestCase {
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
     Current.database.fetchSubscriptionById = const(pure(nil))
 
-    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -433,7 +457,7 @@ class InviteTests: TestCase {
 
     Current.stripe.fetchSubscription = const(pure(.mock))
 
-    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

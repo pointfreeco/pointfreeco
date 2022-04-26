@@ -14,7 +14,7 @@ let blogPostShowMiddleware
     >=> map(lower)
     >>> respond(
       view: blogPostShowView,
-      layoutData: { (post: BlogPost, currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
+      layoutData: { (post: BlogPost, currentUser: User?, subscriberState: SubscriberState, currentRoute: SiteRoute?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -34,8 +34,8 @@ let blogPostShowMiddleware
 
 private let fetchBlogPostForParam
   : MT<
-  Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, Route?>,
-  Tuple4<BlogPost, User?, SubscriberState, Route?>
+  Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, SiteRoute?>,
+  Tuple4<BlogPost, User?, SubscriberState, SiteRoute?>
   >
   = filterMap(
     over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),

@@ -1,14 +1,14 @@
-import ApplicativeRouter
+import Foundation
 import Models
-import Prelude
+import _URLRouting
 
 public enum Admin: Equatable {
-  case episodeCredits(EpisodeCredit)
-  case freeEpisodeEmail(FreeEpisodeEmail)
-  case ghost(Ghost)
+  case episodeCredits(EpisodeCredit = .show)
+  case freeEpisodeEmail(FreeEpisodeEmail = .index)
+  case ghost(Ghost = .index)
   case index
-  case newBlogPostEmail(NewBlogPostEmail)
-  case newEpisodeEmail(NewEpisodeEmail)
+  case newBlogPostEmail(NewBlogPostEmail = .index)
+  case newEpisodeEmail(NewEpisodeEmail = .show)
 
   public enum EpisodeCredit: Equatable {
     case add(userId: User.Id?, episodeSequence: Episode.Sequence?)
@@ -26,61 +26,170 @@ public enum Admin: Equatable {
   }
 
   public enum NewBlogPostEmail: Equatable {
-    case send(BlogPost.Id, formData: NewBlogPostFormData?, isTest: Bool?)
+    case send(BlogPost.Id, formData: NewBlogPostFormData? = nil, isTest: Bool = false)
     case index
   }
 
   public enum NewEpisodeEmail: Equatable {
-    case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
+    case send(
+      Episode.Id,
+      subscriberAnnouncement: String = "",
+      nonSubscriberAnnouncement: String = "",
+      isTest: Bool = false
+    )
     case show
   }
 }
 
-public let adminRouter = adminRouters.reduce(.empty, <|>)
+let adminRouter = OneOf {
+  Route(.case(Admin.index))
 
-private let adminRouters: [Router<Admin>] = [
-  .case { .episodeCredits(.add(userId: $0, episodeSequence: $1)) }
-    <¢> post %> "episode-credits" %> "add"
-    %> formField("user_id", Optional.iso.some >>> opt(.tagged(.uuid)))
-    <%> formField("episode_sequence", Optional.iso.some >>> opt(.tagged(.int)))
-    <% end,
+  Route(.case(Admin.episodeCredits)) {
+    Path { "episode-credits" }
 
-  .case(.episodeCredits(.show))
-    <¢> get %> "episode-credits" %> end,
+    OneOf {
+      Route(.case(Admin.EpisodeCredit.show))
 
-  .case(.index)
-    <¢> get <% end,
+      Route(.case(Admin.EpisodeCredit.add(userId:episodeSequence:))) {
+        Method.post
+        Body {
+          FormData {
+            Optionally {
+              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            }
+            Optionally {
+              Field("episode_sequence") { Digits().map(.representing(Episode.Sequence.self)) }
+            }
+          }
+        }
+      }
+    }
+  }
 
-  .case { .freeEpisodeEmail(.send($0)) }
-    <¢> post %> "free-episode-email" %> pathParam(.tagged(.int)) <% "send" <% end,
+  Route(.case(Admin.freeEpisodeEmail)) {
+    Path { "free-episode-email" }
 
-  .case(.freeEpisodeEmail(.index))
-    <¢> get %> "free-episode-email" <% end,
+    OneOf {
+      Route(.case(Admin.FreeEpisodeEmail.index))
 
-  .case(.ghost(.index))
-    <¢> get %> "ghost" <% end,
+      Route(.case(Admin.FreeEpisodeEmail.send)) {
+        Method.post
+        Path {
+          Digits().map(.representing(Episode.Id.self))
+          "send"
+        }
+      }
+    }
+  }
 
-  .case { .ghost(.start($0)) }
-    <¢> post %> "ghost" %> "start"
-    %> formField("user_id", .tagged(.uuid)).map(Optional.iso.some)
-    <% end,
+  Route(.case(Admin.ghost)) {
+    Path { "ghost" }
 
-  .case(.newBlogPostEmail(.index))
-    <¢> get %> "new-blog-post-email" <% end,
+    OneOf {
+      Route(.case(Admin.Ghost.index))
 
-  parenthesize(.case { .newBlogPostEmail(.send($0, formData: $1, isTest: $2)) })
-    <¢> post %> "new-blog-post-email" %> pathParam(.tagged(.int)) <%> "send"
-    %> formBody(NewBlogPostFormData?.self, decoder: formDecoder)
-    <%> isTest
-    <% end,
+      Route(.case(Admin.Ghost.start)) {
+        Method.post
+        Path { "start" }
+        Body {
+          FormData {
+            Optionally {
+              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            }
+          }
+        }
+      }
+    }
+  }
 
-  .case(Admin.newEpisodeEmail) <<< parenthesize(.case(Admin.NewEpisodeEmail.send))
-    <¢> post %> "new-episode-email" %> pathParam(.tagged(.int)) <%> "send"
-    %> formField("subscriber_announcement", .string).map(Optional.iso.some)
-    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
-    <%> isTest
-    <% end,
+  Route(.case(Admin.newBlogPostEmail)) {
+    Path { "new-blog-post-email" }
 
-  .case(.newEpisodeEmail(.show))
-    <¢> get %> "new-episode-email" <% end,
-]
+    OneOf {
+      Route(.case(Admin.NewBlogPostEmail.index))
+
+      Route(.case(Admin.NewBlogPostEmail.send)) {
+        Parse(
+          .convert(
+            apply: { ($0, $1.0, $1.1) },
+            unapply: { ($0, ($1, $2)) }
+          )
+        ) {
+          Method.post
+          Path {
+            Digits().map(.representing(BlogPost.Id.self))
+            "send"
+          }
+          Body {
+            FormData {
+              Optionally {
+                Parse(.memberwise(NewBlogPostFormData.init)) {
+                  Field(
+                    NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
+                    .string,
+                    default: ""
+                  )
+                  Field(
+                    NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue, default: false
+                  ) {
+                    Bool.parser()
+                  }
+                  Field(
+                    NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
+                    .string,
+                    default: ""
+                  )
+                  Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue, default: false) {
+                    Bool.parser()
+                  }
+                }
+              }
+              Field("test", .string.isPresent, default: false)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  Route(.case(Admin.newEpisodeEmail)) {
+    Path { "new-episode-email" }
+
+    OneOf {
+      Route(.case(Admin.NewEpisodeEmail.show))
+
+      Route(.case(Admin.NewEpisodeEmail.send)) {
+        Parse(
+          .convert(
+            apply: { ($0, $1.0, $1.1, $1.2) },
+            unapply: { ($0, ($1, $2, $3)) }
+          )
+        ) {
+          Method.post
+          Path {
+            Digits().map(.representing(Episode.Id.self))
+            "send"
+          }
+          Body {
+            FormData {
+              Field("subscriber_announcement", .string, default: "")
+              Field("nonsubscriber_announcement", .string, default: "")
+              Field("test", .string.isPresent, default: false)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+extension Conversion where Output == String  {
+  var isPresent: Conversions.Map<Self, AnyConversion<String, Bool>> {
+    self.map(
+      .convert(
+        apply: { _ in true },
+        unapply: { $0 ? "" : nil }
+      )
+    )
+  }
+}

@@ -88,7 +88,7 @@ private func loadEnvVars(eventLoopGroup: EventLoopGroup) -> EitherIO<Error, Prel
     logger: Current.logger,
     secretKey: Current.envVars.stripe.secretKey
   )
-  pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
+  siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
 
   return pure(unit)
 }

@@ -11,13 +11,21 @@ import Tuple
 import Views
 
 public let subscribeConfirmation
-  : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
+  : M<Tuple6<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
   = validateReferralCode
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: Views.subscriptionConfirmation,
-      layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon, referrer in
+      layoutData: { (
+        currentUser: User?,
+        currentRoute: SiteRoute,
+        subscriberState: SubscriberState,
+        lane: Pricing.Lane,
+        subscribeData: SubscribeConfirmationData,
+        coupon: Stripe.Coupon?,
+        referrer: User?
+      ) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -43,8 +51,8 @@ public let subscribeConfirmation
 )
 
 private func validateReferralCode(
-  middleware: @escaping M<Tuple7<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
-) -> M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
+  middleware: @escaping M<Tuple7<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
+) -> M<Tuple6<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
   return { conn in
     let (currentUser, currentRoute, subscriberState, lane, subscribeData, coupon) = lower(conn.data)
     guard
@@ -73,7 +81,6 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil,
           useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
@@ -87,7 +94,6 @@ private func validateReferralCode(
           billing: subscribeData.billing,
           isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
           teammates: subscribeData.teammates,
-          referralCode: nil,
           useRegionalDiscount: subscribeData.useRegionalDiscount
         ),
         headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
@@ -118,7 +124,6 @@ private func validateReferralCode(
                 billing: subscribeData.billing,
                 isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
                 teammates: subscribeData.teammates,
-                referralCode: nil,
                 useRegionalDiscount: subscribeData.useRegionalDiscount
               ),
               headersMiddleware: flash(.error, "Invalid referral code.")
@@ -151,18 +156,14 @@ public let discountSubscribeConfirmation
 
 private let fetchAndValidateCoupon
   : MT<
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
+  Tuple6<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
+  Tuple6<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
     or: redirect(
       to: .subscribeConfirmation(
         lane: .personal,
-        billing: nil,
-        isOwnerTakingSeat: nil,
-        teammates: nil,
-        referralCode: nil,
         useRegionalDiscount: false
       ),
       headersMiddleware: flash(.error, couponError)
@@ -173,10 +174,6 @@ private let fetchAndValidateCoupon
       or: redirect(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
           useRegionalDiscount: false
         ),
         headersMiddleware: flash(.error, couponError)
@@ -228,7 +225,7 @@ func redirectActiveSubscribers<A>(
               const(
                 conn
                   |> redirect(
-                    to: .account(.index),
+                    to: .account(),
                     headersMiddleware: flash(.warning, "You already have an active subscription.")
                 )
               )

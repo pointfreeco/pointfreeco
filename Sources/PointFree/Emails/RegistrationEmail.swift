@@ -42,7 +42,7 @@ private func registrationEmailBody(user: GitHubUser) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .pricingLanding)),
+                .href(siteRouter.url(for: .pricingLanding)),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Choose a subscription plan!"

@@ -11,7 +11,7 @@ import Tuple
 import Views
 
 let giftRedemptionLandingMiddleware
-: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, Route>, Data>
+: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data>
 = fetchAndValidateGiftAndDiscount
 <| writeStatus(.ok)
 >=> map(lower)
@@ -45,7 +45,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
     guard subscriberState.isOwner
     else {
       return conn |> redirect(
-        to: .gifts(.redeemLanding(gift.id)),
+        to: .gifts(.redeem(gift.id)),
         headersMiddleware: flash(
           .error,
           "You are already part of an active team subscription."
@@ -75,7 +75,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
         switch errorOrCustomer {
         case .left:
           return conn |> redirect(
-            to: .gifts(.redeemLanding(gift.id)),
+            to: .gifts(.redeem(gift.id)),
             headersMiddleware: flash(
               .error,
               """
@@ -87,7 +87,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
 
         case .right:
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(
               .notice,
               "The gift has been applied to your account as credit."
@@ -119,7 +119,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
         switch errorOrSubscription {
         case .left:
           return conn |> redirect(
-            to: .gifts(.redeemLanding(gift.id)),
+            to: .gifts(.redeem(gift.id)),
             headersMiddleware: flash(
               .error,
               """
@@ -131,7 +131,7 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
 
         case .right:
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "You now have access to Point-Free!")
           )
         }
@@ -160,7 +160,7 @@ private func fetchAndValidateGiftAndDiscount<A>(
           guard gift.stripeSubscriptionId == nil
           else {
             return conn |> redirect(
-              to: .gifts(.index),
+              to: .gifts(),
               headersMiddleware: flash(.error, "This gift was already redeemed.")
             )
           }

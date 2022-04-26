@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-coupon=deadbeef&isOwnerTakingSeat=true&pricing[billing]=yearly&pricing[quantity]=4&token=stripe-deadbeef
+coupon=deadbeef&isOwnerTakingSeat=true&pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=4&token=stripe-deadbeef
 
 302 Found
 Location: /discounts/deadbeef?billing=yearly

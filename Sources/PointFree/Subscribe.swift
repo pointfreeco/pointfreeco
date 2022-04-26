@@ -155,7 +155,7 @@ private func subscribe(
       const(
         conn
           |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
         )
       )
@@ -200,7 +200,7 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
     return conn
-      |> redirect(to: .login(redirect: url(to: .pricingLanding)))
+      |> redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
@@ -218,14 +218,13 @@ private func validateCouponAndRegionalDiscount(
   subscribeData.coupon == nil || !subscribeData.useRegionalDiscount
 }
 
-private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
+private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> SiteRoute {
   guard let subscribeData = subscribeData else {
     return .subscribeConfirmation(
       lane: .team,
       billing: .yearly,
       isOwnerTakingSeat: true,
       teammates: [""],
-      referralCode: nil,
       useRegionalDiscount: false
     )
   }

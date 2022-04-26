@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 61433
+Content-Length: 61436
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1845,9 +1845,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080">
+          content="http://localhost:8080/">
     <meta name="twitter:url"
-          content="http://localhost:8080">
+          content="http://localhost:8080/">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1907,7 +1907,7 @@ html {
                         m-mr2">
                 Gifts
               </a>
-              <a href="/login?redirect=http://localhost:8080"
+              <a href="/login?redirect=http://localhost:8080/"
                  class="medium
                         cursor-pointer
                         nowrap

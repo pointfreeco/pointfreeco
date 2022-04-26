@@ -96,7 +96,7 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
             Class.flex.justify.center,
             Class.flex.align.center
           ]),
-          .href(url(to: .collections(.show(collection.slug)))),
+          .href(siteRouter.url(for: .collections(.collection(collection.slug)))),
           .style(unsafe: """
             background: \(lower);
             background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
@@ -138,7 +138,7 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
           ],
           .a(
             attributes: [
-              .href(url(to: .collections(.show(collection.slug))))
+              .href(siteRouter.url(for: .collections(.collection(collection.slug))))
             ],
             .text(collection.title)
           )

@@ -37,12 +37,18 @@ private func legalView(year: Int) -> Node {
     ),
     ", and the underlying ",
     .a(
-      attributes: [.class([Class.pf.colors.link.gray650]), .href(gitHubUrl(to: .repo(.pointfreeco)))],
+      attributes: [
+        .class([Class.pf.colors.link.gray650]),
+        .href(gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString)
+      ],
       "source code"
     ),
     " to run this site is licensed under the ",
     .a(
-      attributes: [.class([Class.pf.colors.link.gray650]), .href(gitHubUrl(to: .license))],
+      attributes: [
+        .class([Class.pf.colors.link.gray650]),
+        .href(gitHubRouter.url(for: .license).absoluteString)
+      ],
       "MIT license"
     )
   )
@@ -53,7 +59,7 @@ private let pointFreeView = Node.div(
   .h4(
     attributes: [.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])],
     .a(
-      attributes: [.href(path(to: .home)), .class([Class.pf.colors.link.white])],
+      attributes: [.href(siteRouter.path(for: .home)), .class([Class.pf.colors.link.white])],
       "Point-Free"
     )
   ),
@@ -61,12 +67,18 @@ private let pointFreeView = Node.div(
     attributes: [.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])],
     "A video series on functional programming and the Swift programming language. Hosted by ",
     .a(
-      attributes: [.href(twitterUrl(to: .mbrandonw)), .class([Class.type.textDecorationNone, Class.pf.colors.link.green])],
+      attributes: [
+        .href(twitterRouter.url(for: .mbrandonw).absoluteString),
+        .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
+      ],
       .raw("Brandon&nbsp;Williams")
     ),
     " and ",
     .a(
-      attributes: [.href(twitterUrl(to: .stephencelis)), .class([Class.type.textDecorationNone, Class.pf.colors.link.green])],
+      attributes: [
+        .href(twitterRouter.url(for: .stephencelis).absoluteString),
+        .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
+      ],
       .raw("Stephen&nbsp;Celis")
     ),
     "."
@@ -79,21 +91,21 @@ private func contentColumnView(currentUser: User?) -> Node {
     .ol(
       attributes: [.class([Class.type.list.reset])],
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(path(to: .pricingLanding))], "Pricing")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))], "Pricing")
       ),
       Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
         ? .li(
-          .a(attributes: [.class([footerLinkClass]), .href(path(to: .gifts(.index)))], "Gifts")
+          .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
         )
         : [],
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(path(to: .home))], "Videos")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
       ),
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(path(to: .collections(.index)))], "Collections")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))], "Collections")
       ),
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(path(to: .blog(.index)))], "Blog")
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
       )
     )
   )
@@ -104,19 +116,19 @@ private let moreColumnView = Node.div(
   .ol(
     attributes: [.class([Class.type.list.reset])],
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(path(to: .about))], "About Us")
+      .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(twitterUrl(to: .pointfreeco))], "Twitter")
+      .a(attributes: [.class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString)], "Twitter")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(gitHubUrl(to: .organization))], "GitHub")
+      .a(attributes: [.class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString)], "GitHub")
     ),
     .li(
       .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(path(to: .privacy))], "Privacy Policy")
+      .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))], "Privacy Policy")
     )
   )
 )

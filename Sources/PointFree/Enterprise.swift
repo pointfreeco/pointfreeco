@@ -55,7 +55,7 @@ let enterpriseRequestMiddleware
     <<< sendEnterpriseInvitation
     <| { conn in
       conn |> redirect(
-        to: .enterprise(.landing(get2(conn.data).domain)),
+        to: .enterprise(get2(conn.data).domain),
         headersMiddleware: flash(.notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
       )
 }
@@ -145,7 +145,7 @@ private func successfullyAcceptedInviteMiddleware<A, Z>(
   
   return conn
     |> redirect(
-      to: pointFreeRouter.path(to: .account(.index)),
+      to: siteRouter.path(for: .account()),
       headersMiddleware: flash(.notice, "You have joined \(account.companyName)'s subscription!")
   )
 }
@@ -156,7 +156,7 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
     return { conn in
       conn
         |> redirect(
-          to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
+          to: siteRouter.path(for: .enterprise(get2(conn.data).domain)),
           headersMiddleware: flash(.error, reason)
       )
     }
@@ -171,7 +171,7 @@ private func validateMembership<Z>(
     
     if user?.subscriptionId == account.subscriptionId {
       return conn |> redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(
           .notice,
           "🙌 You're already enrolled in \(account.companyName)'s subscription!"
@@ -226,7 +226,7 @@ private func sendEnterpriseInvitation<Z>(
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
-          to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(account.domain)),
           headersMiddleware: flash(
             .error,
             "The email you entered does not come from the @\(account.domain) domain."
@@ -249,7 +249,7 @@ private func sendEnterpriseInvitation<Z>(
     } else {
       return conn
         |> redirect(
-          to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
+          to: siteRouter.path(for: .enterprise(account.domain)),
           headersMiddleware: flash(
             .warning,
             "Something went wrong. Please try again or contact <support@pointfree.co>."
@@ -301,7 +301,13 @@ private func enterpriseInviteEmailBodyView(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
+                .href(
+                  siteRouter.url(
+                    for: .enterprise(
+                      account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)
+                    )
+                  )
+                ),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Click here to accept!"
@@ -313,9 +319,9 @@ private func enterpriseInviteEmailBodyView(
   )
 }
 
-fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {
+fileprivate extension EmailAddress {
   func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
-    return self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
+    self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
   }
 }
 
@@ -339,7 +345,7 @@ private func redirectCurrentSubscribers<Z>(
       $0
         ? conn
           |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(
               .warning,
               """

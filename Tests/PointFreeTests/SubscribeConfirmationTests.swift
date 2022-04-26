@@ -25,14 +25,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -60,14 +53,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .personal,useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -95,14 +81,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: true
-        ),
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true),
         session: .loggedIn
       )
     )
@@ -133,14 +112,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .team,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -173,10 +145,9 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .team,
-          billing: .some(.monthly),
+          billing: .monthly,
           isOwnerTakingSeat: true,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil,
+          teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
           useRegionalDiscount: false
         ),
         session: .loggedIn
@@ -211,10 +182,9 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .team,
-          billing: .some(.monthly),
+          billing: .monthly,
           isOwnerTakingSeat: false,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
-          referralCode: nil,
+          teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
           useRegionalDiscount: false
         ),
         session: .loggedIn
@@ -247,14 +217,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .team,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -320,14 +283,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -343,14 +299,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
         session: .loggedOut
       )
     )
@@ -404,14 +353,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .subscribeConfirmation(
-          lane: .team,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
-          referralCode: nil,
-          useRegionalDiscount: false
-        ),
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
         session: .loggedIn
       )
     )
@@ -443,9 +385,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: false
         ),
@@ -476,9 +415,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: true
         ),
@@ -513,9 +449,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: false
         ),
@@ -536,9 +469,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: false
         ),
@@ -561,9 +491,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .team,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: false
         ),
@@ -589,9 +516,6 @@ class SubscriptionConfirmationTests: TestCase {
       from: request(
         to: .subscribeConfirmation(
           lane: .personal,
-          billing: nil,
-          isOwnerTakingSeat: nil,
-          teammates: nil,
           referralCode: "cafed00d",
           useRegionalDiscount: false
         ),

@@ -1,7 +1,4 @@
 import CustomDump
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -9,6 +6,10 @@ import PointFreeTestSupport
 import SnapshotTesting
 import UrlFormEncoding
 import XCTest
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 class PointFreeRouterTests: TestCase {
   func testUpdateProfile() {
@@ -18,16 +19,16 @@ class PointFreeRouterTests: TestCase {
       emailSettings: [:],
       name: "Blobby McBlob"
     )
-    let route = Route.account(.update(profileData))
+    let route = SiteRoute.account(.update(profileData))
 
-    guard let request = pointFreeRouter.request(for: route) else {
-        XCTFail("")
-        return
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
     }
 
     XCTAssertEqual("POST", request.httpMethod)
     XCTAssertEqual("/account", request.url?.path)
-    XCTAssertEqual(route, pointFreeRouter.match(request: request))
+    XCTAssertEqual(route, try siteRouter.match(request: request))
   }
 
   func testSubscribeRoute() {
@@ -40,30 +41,30 @@ class PointFreeRouterTests: TestCase {
       token: "deadbeef",
       useRegionalDiscount: true
     )
-    let route = Route.subscribe(subscribeData)
-    let request = pointFreeRouter.request(for: route)!
+    let route = SiteRoute.subscribe(subscribeData)
+    let request = try! siteRouter.request(for: route)
 
     _assertInlineSnapshot(matching: request, as: .raw, with: """
 POST http://localhost:8080/subscribe
 
-coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing[quantity]=4&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.com&token=deadbeef&ref=cafed00d&useRegionalDiscount=true
+coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&token=deadbeef&useRegionalDiscount=true
 """)
 
-    XCTAssertEqual(pointFreeRouter.match(request: request)!, route)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
   }
 
   func testEpisodeShowRoute() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 
-    let route = Route.episode(.show(.left("ep10-hello-world")))
+    let route = SiteRoute.episode(.show(.left("ep10-hello-world")))
 
     XCTAssertEqual(
-      pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
-    XCTAssertEqual(
-      pointFreeRouter.request(for: route),
+    XCTAssertNoDifference(
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -74,15 +75,15 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
     )
     request.httpMethod = "POST"
 
-    let route = Route.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
+    let route = SiteRoute.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
 
     XCTAssertEqual(
-      pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -92,15 +93,15 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
       url: URL(string: "http://localhost:8080/team/deadbeef/join")!
     )
 
-    let route = Route.team(.joinLanding("deadbeef"))
+    let route = SiteRoute.team(.join("deadbeef"))
 
     XCTAssertEqual(
-      pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -109,15 +110,15 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
     var request = URLRequest(url: .init(string: "http://localhost:8080/team/deadbeef/join")!)
     request.httpMethod = "POST"
 
-    let route = Route.team(.join("deadbeef"))
+    let route = SiteRoute.team(.join("deadbeef", .confirm))
 
     XCTAssertEqual(
-      pointFreeRouter.match(request: request),
+      try siteRouter.match(request: request),
       route
     )
 
     XCTAssertEqual(
-      pointFreeRouter.request(for: route),
+      try siteRouter.request(for: route),
       request
     )
   }
@@ -125,38 +126,38 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
   func testGiftsIndex() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
 
-    let route = Route.gifts(.index)
+    let route = SiteRoute.gifts()
 
-    XCTAssertEqual(pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsPlan() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
 
-    let route = Route.gifts(.plan(.threeMonths))
+    let route = SiteRoute.gifts(.plan(.threeMonths))
 
-    XCTAssertEqual(pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsRedeemLanding() {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
 
-    let route = Route.gifts(.redeemLanding(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
 
-    XCTAssertEqual(pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsRedeem() {
     var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
     request.httpMethod = "POST"
 
-    let route = Route.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+    let route = SiteRoute.gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm))
 
-    XCTAssertEqual(pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   func testGiftsConfirmation() {
@@ -166,7 +167,7 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
       fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
       """.utf8)
 
-    let route = Route.gifts(.confirmation(update(.empty) {
+    let route = SiteRoute.gifts(.confirmation(update(.empty) {
       $0.fromEmail = "blob@pointfree.co"
       $0.fromName = "Blob"
       $0.message = "HBD!"
@@ -175,7 +176,7 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
       $0.toName = "Blob Jr."
     }))
 
-    XCTAssertNoDifference(pointFreeRouter.match(request: request), route)
-    XCTAssertEqual(pointFreeRouter.request(for: route), request)
+    XCTAssertNoDifference(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 }

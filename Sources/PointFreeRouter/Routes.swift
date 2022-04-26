@@ -1,30 +1,29 @@
-import ApplicativeRouter
 import Either
 import EmailAddress
 import Foundation
 import Models
-import PointFreePrelude
 import Prelude
 import Stripe
 import Tagged
 import UrlFormEncoding
+import _URLRouting
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
-public enum Route: Equatable {
+public enum SiteRoute: Equatable {
   case about
-  case account(Account)
-  case admin(Admin)
+  case account(Account = .index)
+  case admin(Admin = .index)
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
-  case blog(Blog)
-  case collections(Collections)
+  case blog(Blog = .index)
+  case collections(Collections = .index)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
-  case gifts(Gifts)
+  case gifts(Gifts = .index)
   case endGhosting
-  case enterprise(Enterprise)
-  case episode(EpisodeRoute)
+  case enterprise(EnterpriseAccount.Domain, Enterprise = .landing)
+  case episode(EpisodeRoute = .index)
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -35,7 +34,7 @@ public enum Route: Equatable {
   case logout
   case pricingLanding
   case privacy
-  case subscribe(SubscribeData?)
+  case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
     lane: Pricing.Lane,
     billing: Pricing.Billing? = nil,
@@ -53,26 +52,29 @@ public enum Route: Equatable {
     case index
     case show(Either<String, BlogPost.Id>)
 
-    public static func show(slug: String) -> Blog {
-      return .show(.left(slug))
-    }
-
-    public static func show(id: BlogPost.Id) -> Blog {
-      return .show(.right(id))
-    }
+    public static func show(slug: String) -> Blog { .show(.left(slug)) }
+    public static func show(id: BlogPost.Id) -> Blog { .show(.right(id)) }
   }
 
   public enum Collections: Equatable {
-    case episode(Episode.Collection.Slug, Episode.Collection.Section.Slug, Either<String, Episode.Id>)
     case index
-    case show(Episode.Collection.Slug)
-    case section(Episode.Collection.Slug, Episode.Collection.Section.Slug)
+    case collection(Episode.Collection.Slug, Collection = .show)
+
+    public enum Collection: Equatable {
+      case show
+      case section(Episode.Collection.Section.Slug, Section = .show)
+    }
+
+    public enum Section: Equatable {
+      case show
+      case episode(Either<String, Episode.Id>)
+    }
   }
 
   public enum Enterprise: Equatable {
-    case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
-    case landing(EnterpriseAccount.Domain)
-    case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
+    case acceptInvite(email: Encrypted<String>, userId: Encrypted<String>)
+    case landing
+    case requestInvite(EnterpriseRequestFormData)
   }
 
   public enum EpisodeRoute: Equatable {
@@ -87,19 +89,27 @@ public enum Route: Equatable {
   }
 
   public enum Invite: Equatable {
-    case accept(TeamInvite.Id)
     case addTeammate(EmailAddress?)
-    case resend(TeamInvite.Id)
-    case revoke(TeamInvite.Id)
+    case invitation(TeamInvite.Id, Invitation = .show)
     case send(EmailAddress?)
-    case show(TeamInvite.Id)
+
+    public enum Invitation: Equatable {
+      case accept
+      case resend
+      case revoke
+      case show
+    }
   }
 
   public enum Team: Equatable {
-    case join(Models.Subscription.TeamInviteCode)
-    case joinLanding(Models.Subscription.TeamInviteCode)
+    case join(Models.Subscription.TeamInviteCode, Join = .landing)
     case leave
     case remove(User.Id)
+
+    public enum Join: Equatable {
+      case confirm
+      case landing
+    }
   }
 
   public enum Webhooks: Equatable {
@@ -114,320 +124,474 @@ public enum Route: Equatable {
   }
 }
 
-extension PartialIso {
-  public init(case: @escaping (A) -> B) {
-    self.init(apply: `case`) { root in
-      guard
-        let (label, anyValue) = Mirror(reflecting: root).children.first,
-        let value = anyValue as? A
-          ?? Mirror(reflecting: anyValue).children.first?.value as? A,
-        Mirror(reflecting: `case`(value)).children.first?.label == label
-        else { return nil }
-      return value
+private let blogSlugOrId = OneOf {
+  Parse(.string.map(.case(Either<String, BlogPost.Id>.left)))
+
+  Int.parser(of: Substring.self)
+    .map(.representing(BlogPost.Id.self).map(.case(Either<String, BlogPost.Id>.right)))
+}
+
+private let blogRouter = OneOf {
+  Route(.case(SiteRoute.Blog.index))
+
+  Route(.case(SiteRoute.Blog.feed)) {
+    Path {
+      "feed"
+      "atom.xml"
+    }
+  }
+
+  Route(.case(SiteRoute.Blog.show)) {
+    Path {
+      "posts"
+      blogSlugOrId
     }
   }
 }
 
-extension PartialIso where A == String {
-  public static func array<C>(of iso: PartialIso<A, C>) -> PartialIso where B == Array<C> {
-    return PartialIso(
-      apply: { $0.split(separator: ",", omittingEmptySubsequences: false).compactMap { iso.apply(String($0)) } },
-      unapply: { $0.compactMap(iso.unapply).joined(separator: ",") }
-    )
+private let episodeSlugOrId = OneOf {
+  Parse(.string.map(.case(Either<String, Episode.Id>.left)))
+
+  Int.parser(of: Substring.self)
+    .map(.representing(Episode.Id.self).map(.case(Either<String, Episode.Id>.right)))
+}
+
+private let collectionsRouter = OneOf {
+  Route(.case(SiteRoute.Collections.index))
+
+  Route(.case(SiteRoute.Collections.collection)) {
+    Path { Parse(.string.representing(Episode.Collection.Slug.self)) }
+
+    OneOf {
+      Route(.case(SiteRoute.Collections.Collection.show))
+
+      Route(.case(SiteRoute.Collections.Collection.section)) {
+        Path { Parse(.string.representing(Episode.Collection.Section.Slug.self)) }
+
+        OneOf {
+          Route(.case(SiteRoute.Collections.Section.show))
+
+          Route(.case(SiteRoute.Collections.Section.episode)) {
+            Path { episodeSlugOrId }
+          }
+        }
+      }
+    }
   }
 }
 
-let routers: [Router<Route>] = [
-  .case(.about)
-    <¢> get %> "about" <% end,
+private let episodeRouter = OneOf {
+  Route(.case(SiteRoute.EpisodeRoute.index))
 
-  .case(Route.account)
-    <¢> "account" %> accountRouter,
+  Route(.case(SiteRoute.EpisodeRoute.show)) {
+    Path { episodeSlugOrId }
+  }
 
-  .case(Route.admin)
-    <¢> "admin" %> adminRouter,
+  Route(.case(SiteRoute.EpisodeRoute.progress)) {
+    Method.post
+    Path {
+      episodeSlugOrId
+      "progress"
+    }
+    Query {
+      Field("percent") { Digits() }
+    }
+  }
+}
 
-  .case(Route.api)
-    <¢> "api" %> apiRouter,
+private let enterpriseRouter = OneOf {
+  Route(.case(SiteRoute.Enterprise.landing))
 
-  .case(.appleDeveloperMerchantIdDomainAssociation)
-    <¢> get %> ".well-known" %> "apple-developer-merchantid-domain-association",
+  Route(.case(SiteRoute.Enterprise.requestInvite)) {
+    Method.post
+    Path { "request" }
+    Body(.form(EnterpriseRequestFormData.self, decoder: formDecoder))
+  }
 
-  .case(.blog(.feed))
-    <¢> get %> "blog" %> "feed" %> "atom.xml" <% end,
+  Route(.case(SiteRoute.Enterprise.acceptInvite)) {
+    Path { "accept" }
+    Query {
+      Field("email", .string.representing(Encrypted.self))
+      Field("user_id", .string.representing(Encrypted.self))
+    }
+  }
+}
 
-  .case(Route.discounts)
-    <¢> get %> "discounts"
-    %> pathParam(.tagged(.string))
-    <%> queryParam("billing", opt(.rawRepresentable))
-    <% end,
+private let feedRouter = OneOf {
+  Route(.case(SiteRoute.Feed.atom)) {
+    Path { "atom.xml" }
+  }
 
-  .case(.endGhosting)
-    <¢> post %> "ghosting" %> "end" <% end,
+  Route(.case(SiteRoute.Feed.episodes)) {
+    Path { "episodes.xml" }
+  }
+}
 
-  .case(.blog(.index))
-    <¢> get %> "blog" <% end,
+private let inviteRouter = OneOf {
+  Route(.case(SiteRoute.Invite.addTeammate)) {
+    Method.post
+    Path { "add" }
+    Body {
+      FormData {
+        Optionally {
+          Field("email", .string.representing(EmailAddress.self))
+        }
+      }
+    }
+  }
 
-  .case { .blog(.show($0)) }
-    <¢> get %> "blog" %> "posts" %> pathParam(.blogPostIdOrString) <% end,
+  Route(.case(SiteRoute.Invite.invitation)) {
+    Path { UUID.parser().map(.representing(TeamInvite.Id.self)) }
 
-  .case(.collections(.index))
-    <¢> get %> "collections" <% end,
+    OneOf {
+      Route(.case(SiteRoute.Invite.Invitation.show))
 
-  .case { .collections(.show($0)) }
-    <¢> get %> "collections" %> pathParam(.tagged(.string)) <% end,
+      Route(.case(SiteRoute.Invite.Invitation.accept)) {
+        Method.post
+        Path { "accept" }
+      }
 
-  .case { .collections(.section($0, $1)) }
-    <¢> get %> "collections" %> pathParam(.tagged(.string)) <%> pathParam(.tagged(.string)) <% end,
+      Route(.case(SiteRoute.Invite.Invitation.resend)) {
+        Method.post
+        Path { "resend" }
+      }
 
-  parenthesize(.case { .collections(.episode($0, $1, $2)) })
-    <¢> get %> "collections"
-    %> pathParam(.tagged(.string))
-    <%> pathParam(.tagged(.string))
-    <%> pathParam(.episodeIdOrString)
-    <% end,
+      Route(.case(SiteRoute.Invite.Invitation.revoke)) {
+        Method.post
+        Path { "revoke" }
+      }
+    }
+  }
 
-  .case(.episode(.index))
-    <¢> get %> "episodes" <% end,
+  Route(.case(SiteRoute.Invite.send)) {
+    Method.post
+    Body {
+      FormData {
+        Optionally {
+          Field("email", .string.representing(EmailAddress.self))
+        }
+      }
+    }
+  }
+}
 
-  parenthesize(.case { .episode(.progress(param: $0, percent: $1)) })
-    <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"
-    %> queryParam("percent", .int)
-    <% end,
+private let teamRouter = OneOf {
+  Route(.case(SiteRoute.Team.join)) {
+    Path {
+      "team"
+      Parse(.string.representing(Subscription.TeamInviteCode.self))
+      "join"
+    }
 
-  .case { .episode(.show($0)) }
-    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
+    OneOf {
+      Route(.case(SiteRoute.Team.Join.landing))
 
-  parenthesize(.case { .enterprise(.acceptInvite($0, email: $1, userId: $2)) })
-    <¢> get %> "enterprise" %> pathParam(.tagged) <%> "accept"
-    %> queryParam("email", .tagged)
-    <%> queryParam("user_id", .tagged)
-    <% end,
+      Route(.case(SiteRoute.Team.Join.confirm)) {
+        Method.post
+      }
+    }
+  }
 
-  .case { .enterprise(.landing($0)) }
-    <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <% end,
+  Parse {
+    Path {
+      "account"
+      "team"
+    }
 
-  .case { .enterprise(.requestInvite($0, $1)) }
-    <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "request"
-    %> formBody(EnterpriseRequestFormData.self, decoder: formDecoder) <% end,
+    OneOf {
+      Route(.case(SiteRoute.Team.leave)) {
+        Method.post
+        Path { "leave" }
+      }
 
-  .case(.feed(.atom))
-    <¢> get %> "feed" %> "atom.xml" <% end,
+      Route(.case(SiteRoute.Team.remove)) {
+        Method.post
+        Path {
+          "members"
+          UUID.parser().map(.representing(User.Id.self))
+          "remove"
+        }
+      }
+    }
+  }
+}
 
-  .case(.feed(.episodes))
-    <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
+private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
+  Method.post
+  Path { "stripe" }
 
-  .case(Route.gifts)
-    <¢> "gifts" %> giftsRouter,
-
-  .case(Route.expressUnsubscribe)
-    <¢> get %> "newsletters" %> "express-unsubscribe"
-    %> queryParam("payload", .tagged)
-    <% end,
-
-  .case(Route.expressUnsubscribeReply)
-    <¢> post %> "newsletters" %> "express-unsubscribe-reply"
-    %> formBody(MailgunForwardPayload.self, decoder: formDecoder)
-    <% end,
-
-  .case(Route.gitHubCallback)
-    <¢> get %> "github-auth"
-    %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
-    <% end,
-
-  .case(.home)
-    <¢> get <% end,
-
-  .case { .invite(.accept($0)) }
-    <¢> post %> "invites" %> pathParam(.tagged(.uuid)) <% "accept" <% end,
-
-  .case { .invite(.addTeammate($0)) }
-    <¢> post %> "invites" %> "add" %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
-
-  .case { .invite(.resend($0)) }
-    <¢> post %> "invites" %> pathParam(.tagged(.uuid)) <% "resend" <% end,
-
-  .case { .invite(.revoke($0)) }
-    <¢> post %> "invites" %> pathParam(.tagged(.uuid)) <% "revoke" <% end,
-
-  .case { .invite(.send($0)) }
-    // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
-    //       `(String?) -> A` like it is for `queryParam`.
-    <¢> post %> "invites" %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
-
-  .case { .invite(.show($0)) }
-    <¢> get %> "invites" %> pathParam(.tagged(.uuid)) <% end,
-
-  .case(Route.login)
-    <¢> get %> "login" %> queryParam("redirect", opt(.string)) <% end,
-
-  .case(.logout)
-    <¢> get %> "logout" <% end,
-
-  .case(.pricingLanding)
-    <¢> get %> "pricing" <% end,
-
-  .case(.privacy)
-    <¢> get %> "privacy" <% end,
-
-  .case(Route.subscribe)
-    <¢> post %> "subscribe" %> stringBody.map(subscriberDataIso) <% end,
-
-  parenthesize(.case(Route.subscribeConfirmation))
-    <¢> get %> "subscribe"
-    %> pathParam(.rawRepresentable)
-    <%> queryParam("billing", opt(.rawRepresentable))
-    <%> queryParam("isOwnerTakingSeat", opt(.bool))
-    <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
-    <%> queryParam("ref", opt(.tagged(.string)))
-    <%> queryParam("useRegionalDiscount", opt(.bool))
-    <% end,
-
-  .case { .team(.join($0)) }
-    <¢> post %> "team" %> pathParam(.tagged(.string)) <% "join"
-    <% end,
-
-  .case { .team(.joinLanding($0)) }
-    <¢> get %> "team" %> pathParam(.tagged(.string)) <% "join"
-    <% end,
-
-  .case(.team(.leave))
-    <¢> post %> "account" %> "team" %> "leave"
-    <% end,
-
-  .case { .team(.remove($0)) }
-    <¢> post %> "account" %> "team" %> "members" %> pathParam(.tagged(.uuid)) <% "remove"
-    <% end,
-
-  .case(Route.useEpisodeCredit)
-    <¢> post %> "episodes" %> pathParam(.tagged(.int)) <% "credit" <% end,
-
-  .case { .webhooks(.stripe(.paymentIntents($0))) }
-    <¢> post %> "webhooks" %> "stripe"
-    %> jsonBody(
-      Stripe.Event<PaymentIntent>.self,
-      encoder: Stripe.jsonEncoder,
-      decoder: Stripe.jsonDecoder
-    )
-    <% end,
-
-  .case { .webhooks(.stripe(.subscriptions($0))) }
-    <¢> post %> "webhooks" %> "stripe"
-    %> jsonBody(
-      Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-      encoder: Stripe.jsonEncoder,
-      decoder: Stripe.jsonDecoder
-    )
-    <% end,
-
-  .case { .webhooks(.stripe(.unknown($0))) }
-    <¢> post %> "webhooks" %> "stripe"
-    %> jsonBody(
-      Stripe.Event<Prelude.Unit>.self,
-      encoder: Stripe.jsonEncoder,
-      decoder: Stripe.jsonDecoder
-    )
-    <% end,
-
-  .case(.webhooks(.stripe(.fatal)))
-    <¢> post %> "webhooks" %> "stripe" <% end,
-]
-
-extension PartialIso {
-  static func either<Left, Right>(
-    _ l: PartialIso<A, Left>,
-    _ r: PartialIso<A, Right>
-    )
-    -> PartialIso
-    where B == Either<Left, Right> {
-      return PartialIso(
-        apply: { l.apply($0).map(Either.left) ?? r.apply($0).map(Either.right) },
-        unapply: { $0.either(l.unapply, r.unapply) }
+  OneOf {
+    Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
+      Body(
+        .json(
+          Stripe.Event<PaymentIntent>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
+        )
       )
+    }
+
+    Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
+      Body(
+        .json(
+          Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
+        )
+      )
+    }
+
+    Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
+      Body(
+        .json(
+          Stripe.Event<Prelude.Unit>.self,
+          decoder: Stripe.jsonDecoder,
+          encoder: Stripe.jsonEncoder
+        )
+      )
+    }
+  }
+  .replaceError(with: .fatal)
+}
+
+let router = OneOf {
+  OneOf {
+    Route(.case(SiteRoute.home))
+
+    Route(.case(SiteRoute.about)) {
+      Path { "about" }
+    }
+
+    Route(.case(SiteRoute.account)) {
+      Path { "account" }
+      accountRouter
+    }
+
+    Route(.case(SiteRoute.admin)) {
+      Path { "admin" }
+      adminRouter
+    }
+
+    Route(.case(SiteRoute.api)) {
+      Path { "api" }
+      apiRouter
+    }
+
+    Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
+      Path { ".well-known"; "apple-developer-merchantid-domain-association" }
+    }
+
+    Route(.case(SiteRoute.blog)) {
+      Path { "blog" }
+      blogRouter
+    }
+
+    Route(.case(SiteRoute.collections)) {
+      Path { "collections" }
+      collectionsRouter
+    }
+
+    Route(.case(SiteRoute.episode)) {
+      Path { "episodes" }
+      episodeRouter
+    }
+
+    Route(.case(SiteRoute.enterprise)) {
+      Path {
+        "enterprise"
+        Parse(.string.representing(EnterpriseAccount.Domain.self))
+      }
+      enterpriseRouter
+    }
+  }
+
+  OneOf {
+    Route(.case(SiteRoute.feed)) {
+      Path { "feed" }
+      feedRouter
+    }
+
+    Route(.case(SiteRoute.gifts)) {
+      Path { "gifts" }
+      giftsRouter
+    }
+
+    Route(.case(SiteRoute.discounts)) {
+      Path {
+        "discounts"
+        Parse(.string.representing(Stripe.Coupon.Id.self))
+      }
+      Query {
+        Optionally {
+          Field("billing") { Pricing.Billing.parser() }
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.endGhosting)) {
+      Method.post
+      Path { "ghosting"; "end" }
+    }
+
+    Parse {
+      Path { "newsletters" }
+
+      OneOf {
+        Route(.case(SiteRoute.expressUnsubscribe)) {
+          Path { "express-unsubscribe" }
+          Query {
+            Field("payload", .string.representing(Encrypted.self))
+          }
+        }
+
+        Route(.case(SiteRoute.expressUnsubscribeReply)) {
+          Method.post
+          Path { "express-unsubscribe-reply" }
+          Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.gitHubCallback)) {
+      Path { "github-auth" }
+      Query {
+        Optionally {
+          Field("code", .string)
+        }
+        Optionally {
+          Field("redirect", .string)
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.invite)) {
+      Path { "invites" }
+      inviteRouter
+    }
+
+    Route(.case(SiteRoute.login)) {
+      Path { "login" }
+      Query {
+        Optionally {
+          Field("redirect", .string)
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.logout)) {
+      Path { "logout" }
+    }
+
+    Route(.case(SiteRoute.pricingLanding)) {
+      Path { "pricing" }
+    }
+  }
+
+  OneOf {
+    Route(.case(SiteRoute.privacy)) {
+      Path { "privacy" }
+    }
+
+    Route(.case(SiteRoute.subscribe)) {
+      Method.post
+      Path { "subscribe" }
+      Body {
+        Optionally {
+          FormData {
+            Optionally {
+              Field("coupon", .string.representing(Coupon.Id.self))
+            }
+            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
+              Bool.parser()
+            }
+            Parse(.memberwise(Pricing.init(billing:quantity:))) {
+              Field("pricing[billing]") { Pricing.Billing.parser() }
+              Field("pricing[quantity]") { Digits() }
+            }
+            Optionally {
+              Field(
+                SubscribeData.CodingKeys.referralCode.rawValue,
+                .string.representing(User.ReferralCode.self)
+              )
+            }
+            Many {
+              Field("teammate", .string.representing(EmailAddress.self))
+            }
+            Parse {
+              Field("token", .string.representing(Token.Id.self))
+              Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
+                Bool.parser()
+              }
+            }
+          }
+          .map(
+            .convert(
+              apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
+              unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
+            )
+            .map(
+              .memberwise(
+                SubscribeData.init(
+                  coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
+                )
+              )
+            )
+          )
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.subscribeConfirmation)) {
+      Parse(
+        .convert(
+          apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
+          unapply: { ($0, ($1, $2, $3, $4, $5)) }
+        )
+      ) {
+        Path {
+          "subscribe"
+          Pricing.Lane.parser()
+        }
+        Query {
+          Optionally {
+            Field("billing") { Pricing.Billing.parser() }
+          }
+          Optionally {
+            Field("isOwnerTakingSeat") { Bool.parser() }
+          }
+          Optionally {
+            Field("teammates") {
+              Many {
+                Prefix { $0 != "," }.map(.string.representing(EmailAddress.self))
+              } separator: {
+                ","
+              }
+            }
+          }
+          Optionally {
+            Field("ref", .string.representing(User.ReferralCode.self))
+          }
+          Optionally {
+            Field("useRegionalDiscount") { Bool.parser() }
+          }
+        }
+      }
+    }
+
+    Route(.case(SiteRoute.team)) { teamRouter }
+
+    Route(.case(SiteRoute.useEpisodeCredit)) {
+      Method.post
+      Path {
+        "episodes"
+        Digits().map(.representing(Episode.Id.self))
+        "credit"
+      }
+    }
+
+    Route(.case(SiteRoute.webhooks)) {
+      Path { "webhooks" }
+      webhooksRouter
+    }
   }
 }
-
-extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
-  static let blogPostIdOrString = either(.string, .tagged(.int))
-}
-
-extension PartialIso where A == String, B == Either<String, Episode.Id> {
-  static var episodeIdOrString = either(.string, .tagged(.int))
-}
-
-private let subscriberDataIso = PartialIso<String, SubscribeData?>(
-  apply: { str in
-    let keyValues = parse(query: str)
-
-    guard
-      let billing = keyValues.first(where: { k, _ in k == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init),
-      let quantity = keyValues.first(where: { k, _ in k == "pricing[quantity]" })?.1.flatMap(Int.init),
-      let token = keyValues.first(where: { k, _ in k == "token" })?.1.flatMap(Token.Id.init)
-      else {
-        return nil
-    }
-
-    let isOwnerTakingSeat = keyValues
-      .first { k, _ in k == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
-      .flatMap(Bool.init)
-      ?? false
-
-    let rawCouponValue = keyValues.first(where: { k, _ in k == "coupon" })?.1
-    let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
-    let referralCode = keyValues
-      .first(where: { k, _ in k == SubscribeData.CodingKeys.referralCode.rawValue })?.1
-      .filter { !$0.isEmpty }
-      .flatMap(User.ReferralCode.init)
-    let teammates = keyValues.filter({ k, _ in k.prefix(9) == "teammates" })
-      .compactMap { _, v in v }
-      .map(EmailAddress.init(rawValue:))
-
-    let useRegionalDiscount = keyValues
-      .first(where: { k, _ in k == SubscribeData.CodingKeys.useRegionalDiscount.rawValue })?
-      .1 == "true"
-
-    return SubscribeData(
-      coupon: coupon,
-      isOwnerTakingSeat: isOwnerTakingSeat,
-      pricing: Pricing(billing: billing, quantity: quantity),
-      referralCode: referralCode,
-      teammates: teammates,
-      token: token,
-      useRegionalDiscount: useRegionalDiscount
-    )
-},
-  unapply: { data in
-    guard let data = data else { return nil }
-    var parts: [String] = []
-    if let coupon = data.coupon {
-      parts.append("coupon=\(coupon.rawValue)")
-    }
-    parts.append("isOwnerTakingSeat=\(data.isOwnerTakingSeat)")
-    parts.append("pricing[billing]=\(data.pricing.billing.rawValue)")
-    parts.append("pricing[quantity]=\(data.pricing.quantity)")
-    parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))
-    parts.append("token=\(data.token.rawValue)")
-    if let referralCode = data.referralCode?.rawValue {
-      parts.append("\(SubscribeData.CodingKeys.referralCode.rawValue)=\(referralCode)")
-    }
-    if data.useRegionalDiscount {
-      parts.append("\(SubscribeData.CodingKeys.useRegionalDiscount.rawValue)=\(data.useRegionalDiscount)")
-    }
-    return parts.joined(separator: "&")
-}
-)
-
-let routeJsonDecoder: JSONDecoder = {
-  let decoder = JSONDecoder()
-  decoder.dateDecodingStrategy = .secondsSince1970
-  decoder.keyDecodingStrategy = .convertFromSnakeCase
-  return decoder
-}()
-
-let routeJsonEncoder: JSONEncoder = {
-  let encoder = JSONEncoder()
-  encoder.dateEncodingStrategy = .secondsSince1970
-  encoder.keyEncodingStrategy = .convertToSnakeCase
-  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-  return encoder
-}()

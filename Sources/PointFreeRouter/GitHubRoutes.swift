@@ -1,7 +1,5 @@
-import ApplicativeRouter
-import Foundation
 import GitHub
-import Prelude
+import _URLRouting
 
 public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
@@ -10,12 +8,13 @@ public enum GitHubRoute {
   case organization
   case repo(Repo)
 
-  public enum Repo: String, RawRepresentable {
+  public enum Repo: String, CaseIterable {
     case html = "swift-html"
     case htmlKitura = "swift-html-kitura"
     case htmlVapor = "swift-html-vapor"
     case nonempty = "swift-nonempty"
     case overture = "swift-overture"
+    case parsing = "swift-parsing"
     case pointfreeco
     case prelude = "swift-prelude"
     case snapshotTesting = "swift-snapshot-testing"
@@ -25,36 +24,41 @@ public enum GitHubRoute {
   }
 }
 
-public let gitHubRouter
- = gitHubRouters.reduce(.empty, <|>)
+public let gitHubRouter = OneOf {
+  Route(.case(GitHubRoute.authorize)) {
+    Path { "login"; "oauth"; "authorize" }
+    Query {
+      Field("client_id", .string.representing(GitHub.Client.Id.self))
+      Optionally {
+        Field("redirect_uri", .string)
+      }
+      Field("scope", .string)
+    }
+  }
 
-private let gitHubRouters: [Router<GitHubRoute>] = [
+  Parse {
+    Path { "pointfreeco" }
 
-  parenthesize(.case(GitHubRoute.authorize))
-    <¢> get %> "login" %> "oauth" %> "authorize"
-    %> queryParam("client_id", .tagged(.string))
-    <%> queryParam("redirect_uri", opt(.string))
-    <%> queryParam("scope", .string)
-    <% end,
+    OneOf {
+      Route(.case(GitHubRoute.organization))
 
-  .case(GitHubRoute.episodeCodeSample)
-    <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "main"
-    %> pathParam(.string)
-    <% end,
+      Route(.case(GitHubRoute.episodeCodeSample)) {
+        Path {
+          "episode-code-samples"
+          "tree"
+          "main"
+          Parse(.string)
+        }
+      }
 
-  .case(.license)
-    <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "main" %> "LICENSE" %> end,
+      Route(.case(GitHubRoute.license)) {
+        Path { "pointfreeco"; "blob"; "main"; "LICENSE" }
+      }
 
-  .case(.organization)
-    <¢> get <% "pointfreeco" <% end,
-
-  .case(GitHubRoute.repo)
-    <¢> get %> "pointfreeco" %> pathParam(.rawRepresentable) <% end,
-
-]
-
-public func gitHubUrl(to route: GitHubRoute) -> String {
-  return gitHubRouter.url(for: route, base: gitHubBaseUrl)?.absoluteString ?? ""
+      Route(.case(GitHubRoute.repo)) {
+        Path { GitHubRoute.Repo.parser() }
+      }
+    }
+  }
 }
-
-private let gitHubBaseUrl = URL(string: "https://github.com")!
+.baseURL("https://github.com")

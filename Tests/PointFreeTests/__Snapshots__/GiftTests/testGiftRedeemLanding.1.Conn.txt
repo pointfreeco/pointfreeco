@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 193770
+Content-Length: 193791
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2064,7 +2064,7 @@ html {
               </div>
             </li>
           </ul>
-          <a href="/login?redirect=/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7"
+          <a href="/login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7"
              class="medium
                     cursor-pointer
                     nowrap

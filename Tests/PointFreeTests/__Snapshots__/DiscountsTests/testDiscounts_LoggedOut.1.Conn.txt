@@ -1,9 +1,8 @@
 GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={}
-X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 58968
+Content-Length: 58954
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2295,7 +2294,7 @@ function updateSeats() {
   var teamMembers = document.getElementById("team-members")
   var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+    teamMemberInputs[idx].name = "teammate"
   }
   var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers

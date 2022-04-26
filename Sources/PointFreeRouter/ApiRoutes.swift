@@ -1,21 +1,21 @@
-import ApplicativeRouter
-import Prelude
 import Models
+import _URLRouting
 
-extension Route {
+extension SiteRoute {
   public enum Api: Equatable {
     case episodes
     case episode(Episode.Id)
   }
 }
 
-let apiRouter
-  = apiRouters.reduce(.empty, <|>)
+let apiRouter = Parse {
+  Path { "episodes" }
 
-private let apiRouters: [Router<Route.Api>] = [
-  .case(.episodes)
-    <¢> "episodes" <% end,
+  OneOf {
+    Route(.case(SiteRoute.Api.episodes))
 
-  .case(Route.Api.episode)
-    <¢> "episodes" %> pathParam(.tagged(.int)) <% end
-]
+    Route(.case(SiteRoute.Api.episode)) {
+      Path { Digits().map(.representing(Episode.Id.self)) }
+    }
+  }
+}

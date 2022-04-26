@@ -1,27 +1,13 @@
-import ApplicativeRouter
-import Foundation
 import Prelude
+import _URLRouting
 
-public enum TwitterRoute {
+public enum TwitterRoute: String, CaseIterable {
   case mbrandonw
   case pointfreeco
   case stephencelis
 }
 
-public let twitterRouter: Router<TwitterRoute> = [
-  .case(.mbrandonw)
-    <¢> get %> "mbrandonw" <% end,
-
-  .case(.pointfreeco)
-    <¢> get %> "pointfreeco" <% end,
-
-  .case(.stephencelis)
-    <¢> get %> "stephencelis" <% end,
-  ]
-  .reduce(.empty, <|>)
-
-public func twitterUrl(to route: TwitterRoute) -> String {
-  return twitterRouter.url(for: route, base: twitterBaseUrl)?.absoluteString ?? ""
+public let twitterRouter = Path {
+  TwitterRoute.parser()
 }
-
-private let twitterBaseUrl = URL(string: "https://www.twitter.com")!
+.baseURL("https://www.twitter.com")

@@ -1,4 +1,3 @@
-import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
@@ -15,12 +14,36 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger(logger: { Current.logger.log(.info, "\($0)") }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
-    <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)
+    <<< router(notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
+private func router<A>(
+  notFound: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data> = notFound(respond(text: "Not Found"))
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, SiteRoute, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      return { conn in
+        let route: SiteRoute?
+        do {
+          route = try siteRouter.match(request: conn.request)
+        } catch {
+          route = nil
+          #if DEBUG
+          print(error)
+          #endif
+        }
+        return route
+          .map(const >>> conn.map >>> middleware)
+          ?? notFound(conn)
+      }
+    }
+}
+
+private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, SiteRoute>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
@@ -55,21 +78,23 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
-    case let .collections(.episode(collectionSlug, _, episodeParam)):
-      return conn.map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
-        |> episodeResponse
-
     case .collections(.index):
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> collectionsIndexMiddleware
 
-    case let .collections(.show(slug)):
+    case let .collections(.collection(slug, .show)):
       return conn.map(const(user .*. subscriberState .*. route .*. slug .*. unit))
-        |> collectionMiddleware
+      |> collectionMiddleware
 
-    case let .collections(.section(collectionSlug, sectionSlug)):
-      return conn.map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
-        |> collectionSectionMiddleware
+    case let .collections(.collection(collectionSlug, .section(sectionSlug, .show))):
+      return conn
+        .map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
+      |> collectionSectionMiddleware
+
+    case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
+      return conn
+        .map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
+      |> episodeResponse
 
     case let .discounts(couponId, billing):
       let subscribeData = SubscribeConfirmationData(
@@ -88,7 +113,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 
     case .episode(.index):
       return conn
-        |> redirect(to: path(to: .home))
+        |> redirect(to: siteRouter.path(for: .home))
 
     case let .episode(.progress(param: param, percent: percent)):
       return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
@@ -98,15 +123,15 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. nil .*. unit))
         |> episodeResponse
 
-    case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
+    case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
       return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
         |> enterpriseAcceptInviteMiddleware
 
-    case let .enterprise(.landing(domain)):
+    case let .enterprise(domain, .landing):
       return conn.map(const(user .*. subscriberState .*. domain .*. unit))
         |> enterpriseLandingResponse
 
-    case let .enterprise(.requestInvite(domain, request)):
+    case let .enterprise(domain, .requestInvite(request)):
       return conn.map(const(user .*. domain .*. request .*. unit))
         |> enterpriseRequestMiddleware
 
@@ -147,29 +172,29 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> homeMiddleware
 
-    case let .invite(.accept(inviteId)):
-      return conn.map(const(inviteId .*. user .*. unit))
-        |> acceptInviteMiddleware
-
     case let .invite(.addTeammate(email)):
       return conn.map(const(user .*. email .*. unit))
         |> addTeammateViaInviteMiddleware
 
-    case let .invite(.resend(inviteId)):
+    case let .invite(.invitation(inviteId, .accept)):
+      return conn.map(const(inviteId .*. user .*. unit))
+        |> acceptInviteMiddleware
+
+    case let .invite(.invitation(inviteId, .resend)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> resendInviteMiddleware
 
-    case let .invite(.revoke(inviteId)):
+    case let .invite(.invitation(inviteId, .revoke)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> revokeInviteMiddleware
+
+    case let .invite(.invitation(inviteId, .show)):
+      return conn.map(const(inviteId .*. user .*. unit))
+        |> showInviteMiddleware
 
     case let .invite(.send(email)):
       return conn.map(const(email .*. user .*. unit))
         |> sendInviteMiddleware
-
-    case let .invite(.show(inviteId)):
-      return conn.map(const(inviteId .*. user .*. unit))
-        |> showInviteMiddleware
 
     case let .login(redirect):
       return conn.map(const(user .*. redirect .*. unit))
@@ -209,11 +234,11 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
 
-    case let .team(.joinLanding(teamInviteCode)):
+    case let .team(.join(teamInviteCode, .landing)):
       return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
         |> joinTeamLandingMiddleware
 
-    case let .team(.join(teamInviteCode)):
+    case let .team(.join(teamInviteCode, .confirm)):
       return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
         |> joinTeamMiddleware
 
@@ -251,26 +276,24 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 }
 
 public func redirect<A>(
-  with route: @escaping (A) -> Route,
+  with route: @escaping (A) -> SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
   )
   ->
   Middleware<StatusLineOpen, ResponseEnded, A, Data> {
     return { conn in
       conn |> redirect(
-        to: path(to: route(conn.data)),
+        to: siteRouter.path(for: route(conn.data)),
         headersMiddleware: headersMiddleware
       )
     }
 }
 
 public func redirect<A>(
-  to route: Route,
+  to route: SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
-  )
-  ->
-  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-    return redirect(to: path(to: route), headersMiddleware: headersMiddleware)
+) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+  redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

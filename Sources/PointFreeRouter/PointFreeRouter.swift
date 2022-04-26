@@ -1,46 +1,34 @@
-import ApplicativeRouter
 import Foundation
+import _URLRouting
+
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+  import FoundationNetworking
 #endif
 
-public struct PointFreeRouter {
-  public let baseUrl: URL
-  public let router: Router<Route>
+public struct PointFreeRouter: ParserPrinter {
+  let _baseURL: String
 
-  public init(baseUrl: URL = URL(string: "http://localhost:8080")!) {
-    self.baseUrl = baseUrl
-    self.router = routers.reduce(.empty, <|>)
+  public init(baseURL: URL = URL(string: "http://localhost:8080")!) {
+    self._baseURL = baseURL.absoluteString
   }
 
-  public init(baseUrl: URL = URL(string: "http://localhost:8080")!, router: Router<Route>) {
-    self.baseUrl = baseUrl
-    self.router = router
+  public func parse(_ input: inout URLRequestData) throws -> SiteRoute {
+    try router.parse(&input)
   }
 
-  public func path(to route: Route) -> String {
-    return self.router.absoluteString(for: route) ?? "/"
+  public func print(_ output: SiteRoute, into input: inout URLRequestData) throws {
+    try router
+      .baseURL(self._baseURL)
+      .print(output, into: &input)
   }
 
-  public func url(to route: Route) -> String {
-    return self.router.url(for: route, base: self.baseUrl)?.absoluteString ?? ""
+  public func url(for route: SiteRoute) -> String {
+    self.url(for: route).absoluteString
   }
 
-  public func request(for route: Route) -> URLRequest? {
-    return self.router.request(for: route, base: self.baseUrl)
-  }
-
-  public func match(request: URLRequest) -> Route? {
-    return self.router.match(request: request)
+  public func loginPath(redirect: SiteRoute? = nil) -> String {
+    self.path(for: .login(redirect: redirect.map(self.url(for:))))
   }
 }
 
-public var pointFreeRouter = PointFreeRouter()
-
-public func path(to route: Route) -> String {
-  return pointFreeRouter.path(to: route)
-}
-
-public func url(to route: Route) -> String {
-  return pointFreeRouter.url(to: route)
-}
+public var siteRouter = PointFreeRouter()

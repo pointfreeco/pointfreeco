@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67055
+Content-Length: 67029
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2135,7 +2135,7 @@ available</p>
               <input type="email"
                      placeholder="blob@pointfree.co"
                      class="w-100p"
-                     name="teammates[]"
+                     name="teammate"
                      style="border-top-width:0;
                             border-right-width:0;
                             border-bottom-width:0;
@@ -2164,7 +2164,7 @@ available</p>
               <input type="email"
                      placeholder="blob@pointfree.co"
                      class="w-100p"
-                     name="teammates[]"
+                     name="teammate"
                      style="border-top-width:0;
                             border-right-width:0;
                             border-bottom-width:0;
@@ -2199,7 +2199,7 @@ available</p>
                   <input type="email"
                          placeholder="blob@pointfree.co"
                          class="w-100p"
-                         name="teammates[]"
+                         name="teammate"
                          style="border-top-width:0;
                                 border-right-width:0;
                                 border-bottom-width:0;
@@ -2244,7 +2244,7 @@ updateSeats()">
                   <input type="email"
                          placeholder="blob@pointfree.co"
                          class="w-100p"
-                         name="teammates[]"
+                         name="teammate"
                          style="border-top-width:0;
                                 border-right-width:0;
                                 border-bottom-width:0;
@@ -2555,7 +2555,7 @@ function updateSeats() {
   var teamMembers = document.getElementById("team-members")
   var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+    teamMemberInputs[idx].name = "teammate"
   }
   var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers

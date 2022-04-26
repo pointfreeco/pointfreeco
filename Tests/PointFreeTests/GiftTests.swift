@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import CustomDump
 import Database
 import Either
@@ -285,7 +284,12 @@ class GiftTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
+        to: .gifts(
+          .redeem(
+            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!),
+            .confirm
+          )
+        ),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -341,7 +345,11 @@ class GiftTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
+        to: .gifts(
+          .redeem(
+            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+          )
+        ),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -372,7 +380,15 @@ class GiftTests: TestCase {
     Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
 
     let conn = connection(
-      from: request(to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))), session: .loggedOut, basicAuth: true)
+      from: request(
+        to: .gifts(
+          .redeem(
+            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+          )
+        ),
+        session: .loggedOut,
+        basicAuth: true
+      )
     )
     let result = conn |> siteMiddleware
 
@@ -380,7 +396,7 @@ class GiftTests: TestCase {
     POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Authorization: Basic aGVsbG86d29ybGQ=
     Cookie: pf_session={}
-
+    
     302 Found
     Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
     Referrer-Policy: strict-origin-when-cross-origin
@@ -406,7 +422,11 @@ class GiftTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
+        to: .gifts(
+          .redeem(
+            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+          )
+        ),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -447,7 +467,11 @@ class GiftTests: TestCase {
 
     let conn = connection(
       from: request(
-        to: .gifts(.redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))),
+        to: .gifts(
+          .redeem(
+            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+          )
+        ),
         session: .loggedIn(as: user),
         basicAuth: true
       )
@@ -476,7 +500,7 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.episodes = { [] }
 
-    let conn = connection(from: request(to: .gifts(.index)))
+    let conn = connection(from: request(to: .gifts()))
 
     #if !os(Linux)
     if self.isScreenshotTestingAvailable {
@@ -500,7 +524,7 @@ class GiftTests: TestCase {
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
-    let conn = connection(from: request(to: .gifts(.redeemLanding(.init(rawValue: .mock)))))
+    let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
 
     #if !os(Linux)
     if self.isScreenshotTestingAvailable {

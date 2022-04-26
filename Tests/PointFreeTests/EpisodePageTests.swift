@@ -183,10 +183,12 @@ class EpisodePageTests: TestCase {
   func testEpisodePage_InCollectionContext() {
     let episode = request(
       to: .collections(
-        .episode(
+        .collection(
           Current.collections[0].slug,
-          Current.collections[0].sections[0].slug,
-          .left(Current.episodes()[0].slug)
+          .section(
+            Current.collections[0].sections[0].slug,
+            .episode(.left(Current.episodes()[0].slug))
+          )
         )
       ),
       session: .loggedOut
@@ -212,10 +214,12 @@ class EpisodePageTests: TestCase {
   func testEpisodePage_InCollectionContext_LastEpisode() {
     let episode = request(
       to: .collections(
-        .episode(
+        .collection(
           Current.collections[0].slug,
-          Current.collections[0].sections[0].slug,
-          .left(Current.episodes()[1].slug)
+          .section(
+            Current.collections[0].sections[0].slug,
+            .episode(.left(Current.episodes()[1].slug))
+          )
         )
       ),
       session: .loggedOut

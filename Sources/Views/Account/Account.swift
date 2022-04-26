@@ -67,7 +67,10 @@ private func subscribeCallout(_ subscriberState: SubscriberState) -> Node {
   return .p(
     "To get all past and future episodes, ",
     .a(
-      attributes: [.class([Class.pf.colors.link.purple]), .href(path(to: .pricingLanding))],
+      attributes: [
+        .class([Class.pf.colors.link.purple]),
+        .href(siteRouter.path(for: .pricingLanding))
+      ],
       "become"
     ),
     " a subscriber today!"
@@ -110,7 +113,7 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
 private func episodeLinkView(_ episode: Episode) -> Node {
   return .a(
     attributes: [
-      .href(path(to: .episode(.show(.left(episode.slug))))),
+      .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
       .class([Class.pf.colors.link.purple])
     ],
     .text("#\(episode.sequence): \(episode.fullTitle)")
@@ -174,7 +177,7 @@ private func profileRowView(_ data: AccountData) -> Node {
           .class([
             Class.pf.type.underlineLink,
           ]),
-          .href(path(to: .account(.invoices(.index))))
+          .href(siteRouter.path(for: .account(.invoices())))
         ],
         "all past invoices"
       ),
@@ -213,7 +216,7 @@ private func profileRowView(_ data: AccountData) -> Node {
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Profile"),
         .form(
-          attributes: [.action(path(to: .account(.update(nil)))), .method(.post)],
+          attributes: [.action(siteRouter.path(for: .account(.update()))), .method(.post)],
           formContent
         )
       )
@@ -277,7 +280,7 @@ private func subscriptionOverview(accountData: AccountData, currentDate: Date) -
 private func privateRssFeed(accountData: AccountData) -> Node {
   guard accountData.subscriberState.isActiveSubscriber else { return [] }
   let user = accountData.currentUser
-  let rssUrl = url(to: .account(.rss(salt: user.rssSalt)))
+  let rssUrl = siteRouter.url(for: .account(.rss(salt: user.rssSalt)))
   let rssLink: Node = [
     .ul(
       .li(
@@ -364,8 +367,8 @@ private func referAFriend(
     !accountData.subscriberState.isEnterpriseSubscriber
     else { return [] }
 
-  let referralUrl = url(
-    to: .subscribeConfirmation(
+  let referralUrl = siteRouter.url(
+    for: .subscribeConfirmation(
       lane: .personal,
       referralCode: accountData.currentUser.referralCode
     )
@@ -489,7 +492,7 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     )
   )
 
-  let shareUrl = url(to: .enterprise(.landing(enterpriseAccount.domain)))
+  let shareUrl = siteRouter.url(for: .enterprise(enterpriseAccount.domain))
   let shareRow = Node.gridRow(
     .gridColumn(
       sizes: [.mobile: 3],
@@ -552,7 +555,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
 
   var enterpriseShareLink: Node
   if case let .teammate(_, .some(enterpriseAccount), _) = data.subscriberState {
-    let shareUrl = url(to: .enterprise(.landing(enterpriseAccount.domain)))
+    let shareUrl = siteRouter.url(for: .enterprise(enterpriseAccount.domain))
     enterpriseShareLink = .p(
       "Share Point-Free with your co-workers by sending them this link: ",
       .a(attributes: [.href(shareUrl)], .text(shareUrl))
@@ -583,7 +586,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
         enterpriseShareLink,
 
         .form(
-          attributes: [.action(path(to: .team(.leave))), .method(.post)],
+          attributes: [.action(siteRouter.path(for: .team(.leave))), .method(.post)],
           .input(
             attributes: [
               .class([Class.pf.components.button(color: .red, size: .small)]),
@@ -779,7 +782,7 @@ private func discountDescription(for discount: Stripe.Discount) -> String {
 private func cancelAction(for subscription: Stripe.Subscription) -> Node {
   .form(
     attributes: [
-      .action(path(to: .account(.subscription(.cancel)))),
+      .action(siteRouter.path(for: .account(.subscription(.cancel)))),
       .method(.post),
       .onsubmit(unsafe: """
 if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
@@ -797,7 +800,10 @@ if (!confirm("Cancel your subscription? You will lose access to Point-Free at th
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
   if subscription.isCanceling {
     return .form(
-      attributes: [.action(path(to: .account(.subscription(.reactivate)))), .method(.post)],
+      attributes: [
+        .action(siteRouter.path(for: .account(.subscription(.reactivate)))),
+        .method(.post)
+      ],
       .button(
         attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
         "Reactivate"
@@ -807,7 +813,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return .a(
       attributes: [
         .class([Class.pf.components.button(color: .purple, size: .small)]),
-        .href(path(to: .pricingLanding))
+        .href(siteRouter.path(for: .pricingLanding))
       ],
       "Resubscribe"
     )
@@ -821,7 +827,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       if subscription.customer.right?.sources?.data.isEmpty == false {
         return .form(
           attributes: [
-            .action(path(to: .account(.subscription(.change(.update(nil)))))),
+            .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
             .method(.post),
             .onsubmit(unsafe: """
 if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
@@ -848,7 +854,7 @@ if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?
         return .a(
           attributes: [
             .class([Class.pf.components.button(color: .purple, size: .small)]),
-            .href(path(to: .account(.paymentInfo(.show))))
+            .href(siteRouter.path(for: .account(.paymentInfo())))
           ],
           "Add payment info to upgrade"
         )
@@ -860,7 +866,7 @@ if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?
       let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
       return .form(
         attributes: [
-          .action(path(to: .account(.subscription(.change(.update(nil)))))),
+          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
           .method(.post),
           .onsubmit(unsafe: """
 if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
@@ -922,7 +928,7 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
     .gridColumn(
       sizes: [.mobile: 4], attributes: [.class([Class.grid.end(.desktop)])],
       .form(
-        attributes: [.action(path(to: .team(.remove(teammate.id)))), .method(.post)],
+        attributes: [.action(siteRouter.path(for: .team(.remove(teammate.id)))), .method(.post)],
         .p(
           .input(attributes: [.type(.submit), .class([Class.pf.components.button(color: .purple, size: .small)]), .value("Remove")])
         )
@@ -962,7 +968,7 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
       attributes: [.class([Class.grid.end(.desktop)])],
       .form(
         attributes: [
-          .action(path(to: .invite(.resend(invite.id)))),
+          .action(siteRouter.path(for: .invite(.invitation(invite.id, .resend)))),
           .method(.post),
           .class([Class.display.inlineBlock])
         ],
@@ -979,7 +985,7 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 
       .form(
         attributes: [
-          .action(path(to: .invite(.revoke(invite.id)))),
+          .action(siteRouter.path(for: .invite(.invitation(invite.id, .revoke)))),
           .method(.post),
           .class([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])
         ],
@@ -1030,7 +1036,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
                 .a(
                   attributes: [
                     .class([Class.pf.components.button(color: .purple, size: .small)]),
-                    .href(path(to: .account(.paymentInfo(.show)))),
+                    .href(siteRouter.path(for: .account(.paymentInfo()))),
                   ],
                   "Add payment info"
                 )
@@ -1057,7 +1063,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
         attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
         .form(
           attributes: [
-            .action(path(to: .invite(.addTeammate(nil)))),
+            .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
             .method(.post),
             .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
           ],
@@ -1124,7 +1130,7 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
 
         .form(
           attributes: [
-            .action(path(to: .invite(.send(nil)))),
+            .action(siteRouter.path(for: .invite(.send(nil)))),
             .method(.post),
             .class([Class.flex.flex])
           ],
@@ -1196,7 +1202,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(path(to: .account(.paymentInfo(.show)))),
+                  .href(siteRouter.path(for: .account(.paymentInfo()))),
                 ],
                 card == nil
                   ? "Add payment info"
@@ -1207,7 +1213,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
-                  .href(path(to: .account(.invoices(.index)))),
+                  .href(siteRouter.path(for: .account(.invoices()))),
                 ],
                 "Payment history"
               )
@@ -1229,7 +1235,10 @@ private let logoutView = Node.gridRow(
   .gridColumn(
     sizes: [.mobile: 12],
     .a(
-      attributes: [.class([Class.pf.components.button(color: .black)]), .href(path(to: .logout))],
+      attributes: [
+        .class([Class.pf.components.button(color: .black)]),
+        .href(siteRouter.path(for: .logout))
+      ],
       "Logout"
     )
   )

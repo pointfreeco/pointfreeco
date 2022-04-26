@@ -33,7 +33,13 @@ public func collectionSection(
     collectionNavigation(
       left: .a(
         attributes: [
-          .href(path(to: .collections(collection.sections.count == 1 ? .index : .show(collection.slug)))),
+          .href(
+            siteRouter.path(
+              for: .collections(
+                collection.sections.count == 1 ? .index : .collection(collection.slug)
+              )
+            )
+          ),
           .class([
             Class.pf.colors.link.gray650
           ])
@@ -118,7 +124,11 @@ private func coreLesson(
       icon: playIconSvgBase64(),
       title: lesson.episode.fullTitle,
       length: lesson.episode.length,
-      url: path(to: .collections(.episode(collection.slug, section.slug, .left(lesson.episode.slug))))
+      url: siteRouter.path(
+        for: .collections(
+          .collection(collection.slug, .section(section.slug, .episode(.left(lesson.episode.slug))))
+        )
+      )
     )
   )
 }
@@ -191,7 +201,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
         icon: collectionIconSvgBase64,
         title: collection.title,
         length: collection.length,
-        url: path(to: .collections(.show(collection.slug)))
+        url: siteRouter.path(for: .collections(.collection(collection.slug)))
       )
     })
   case let .episodes(episodes):
@@ -201,7 +211,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
         icon: playIconSvgBase64(),
         title: episode.fullTitle,
         length: episode.length,
-        url: path(to: .episode(.show(.left(episode.slug))))
+        url: siteRouter.path(for: .episode(.show(.left(episode.slug))))
       )
     })
   case let .section(collection, index):
@@ -212,7 +222,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
       icon: collectionIconSvgBase64,
       title: section.title,
       length: section.length,
-      url: path(to: .collections(.section(collection.slug, section.slug)))
+      url: siteRouter.path(for: .collections(.collection(collection.slug, .section(section.slug))))
     )
   }
 }
@@ -267,7 +277,9 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collection.slug, section.slug)))),
+        .href(
+          siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
+        ),
       ],
       .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
         .class([
@@ -305,7 +317,9 @@ private func sectionNavigation(
         .class([
           Class.grid.row,
         ]),
-        .href(url(to: .collections(.section(collection.slug, section.slug)))),
+        .href(
+          siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
+        ),
       ],
       .gridColumn(
         sizes: [:],

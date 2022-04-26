@@ -11,7 +11,7 @@ import Views
 public let giftPaymentMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple4<Gifts.Plan, User?, Route, SubscriberState>,
+  Tuple4<Gifts.Plan, User?, SiteRoute, SubscriberState>,
   Data
 >
 = writeStatus(.ok)

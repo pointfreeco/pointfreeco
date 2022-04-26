@@ -7,7 +7,7 @@ import Prelude
 import Tuple
 import Views
 
-let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
+let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, SiteRoute?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(

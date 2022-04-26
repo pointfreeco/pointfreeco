@@ -22,7 +22,7 @@ let cancelMiddleware =
     <<< filter(
       get1 >>> ^\.isRenewing,
       or: redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.error, "Your subscription is already canceled!")
       )
     )
@@ -34,7 +34,7 @@ let reactivateMiddleware =
     <<< filter(
       get1 >>> ^\.isCanceling,
       or: redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.error, "Your subscription can’t be reactivated!")
       )
     )
@@ -59,7 +59,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
         either(
           const(
             conn |> redirect(
-              to: .account(.index),
+              to: .account(),
               headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
             )
           )
@@ -68,7 +68,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
             .run { _ in }
 
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
           )
         }
@@ -85,7 +85,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
         either(
           const(
             conn |> redirect(
-              to: .account(.index),
+              to: .account(),
               headersMiddleware: flash(
                 .error,
                 """
@@ -100,7 +100,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
             .run { _ in }
 
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
           )
         }
@@ -121,7 +121,7 @@ func requireSubscriptionItem<A>(
 
     return filterMap(
       { data in pure(data.first.items.data.first.map { $0 .*. data }) },
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericSubscriptionError))
+      or: redirect(to: .account(), headersMiddleware: flash(.error, genericSubscriptionError))
       )
       <| middleware
 }
@@ -136,7 +136,7 @@ func requireStripeSubscription<A>(
       <<< filterMap(
         require1 >>> pure,
         or: redirect(
-          to: .account(.index),
+          to: .account(),
           headersMiddleware: flash(.error, genericSubscriptionError)
         )
       )
@@ -159,7 +159,7 @@ private func requireSubscriptionAndOwner<A>(
       <<< filter(
         isSubscriptionOwner,
         or: redirect(
-          to: .account(.index),
+          to: .account(),
           headersMiddleware: flash(.error, "Only subscription owners can make subscription changes.")
         )
       )
@@ -245,7 +245,7 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
             " subscription has been canceled and will remain active through ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
-            .a(attributes: [.href(url(to: .account(.index)))], "your account page"),
+            .a(attributes: [.href(siteRouter.url(for: .account()))], "your account page"),
             "."
           )
         )

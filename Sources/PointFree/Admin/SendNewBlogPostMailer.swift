@@ -30,7 +30,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
     .text("Blog Post: \(post.title)"),
     .form(
       attributes: [
-        .action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))),
+        .action(siteRouter.path(for: .admin(.newBlogPostEmail(.send(post.id))))),
         .method(.post)
       ],
       .input(
@@ -74,7 +74,7 @@ let sendNewBlogPostEmailMiddleware
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
     <| sendNewBlogPostEmails
-    >=> redirect(to: .admin(.index))
+    >=> redirect(to: .admin())
 
 private let fetchBlogPostForId
   : MT<
@@ -103,11 +103,11 @@ private func sendNewBlogPostEmails<I>(
 
   let nonsubscriberOrSubscribersOnly: Either<Prelude.Unit, Prelude.Unit>?
   switch (formData.nonsubscriberDeliver, formData.subscriberDeliver) {
-  case (.some(true), .some(true)):
+  case (true, true):
     nonsubscriberOrSubscribersOnly = nil
-  case (.some(true), _):
+  case (true, _):
     nonsubscriberOrSubscribersOnly = .left(unit)
-  case (_, .some(true)):
+  case (_, true):
     nonsubscriberOrSubscribersOnly = .right(unit)
   case (_, _):
     return pure(conn.map(const(unit)))

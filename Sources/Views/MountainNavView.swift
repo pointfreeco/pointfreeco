@@ -14,7 +14,7 @@ public func mountainNavView(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: SiteRoute?
 ) -> Node {
 
   return [
@@ -80,7 +80,7 @@ private func menuAndLogoHeaderView(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: SiteRoute?
 ) -> Node {
   return .gridRow(
     attributes: [
@@ -125,7 +125,7 @@ private func menuAndLogoHeaderView(
         .gridColumn(
           sizes: [:],
           .a(
-            attributes: [.href(path(to: .home))],
+            attributes: [.href(siteRouter.path(for: .home))],
             .img(
               base64: mountainsStyle.heroLogoSvgBase64,
               type: .image(.svg),
@@ -143,36 +143,36 @@ private func headerLinks(
   mountainsStyle: NavStyle.MountainsStyle,
   currentUser: User?,
   subscriberState: SubscriberState,
-  currentRoute: Route?
+  currentRoute: SiteRoute?
 ) -> Node {
   return [
     .a(
-      attributes: [.href(path(to: .collections(.index))), .class([navLinkClasses])],
+      attributes: [.href(siteRouter.path(for: .collections())), .class([navLinkClasses])],
       "Collections"
     ),
 
     .a(
-      attributes: [.href(path(to: .blog(.index))), .class([navLinkClasses])],
+      attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClasses])],
       "Blog"
     ),
 
     subscriberState.isNonSubscriber
-      ? .a(attributes: [.href(path(to: .pricingLanding)), .class([navLinkClasses])], "Pricing")
+      ? .a(attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])], "Pricing")
       : [],
 
     Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
-      ? .a(attributes: [.href(path(to: .gifts(.index))), .class([navLinkClasses])], "Gifts")
+      ? .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts")
       : [],
 
     currentUser == nil
       ? .gitHubLink(
         text: "Login",
         type: .black,
-        href: path(to: .login(redirect: currentRoute.map(url(to:))))
+        href: siteRouter.loginPath(redirect: currentRoute)
         )
       : .a(
         attributes: [
-          .href(path(to: .account(.index))),
+          .href(siteRouter.path(for: .account())),
           .class([Class.type.medium, Class.pf.colors.link.black])
         ],
         "Account"

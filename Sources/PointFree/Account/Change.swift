@@ -17,7 +17,7 @@ let subscriptionChangeMiddleware
     <| changeSubscription(
       error: subscriptionModificationErrorMiddleware,
       success: redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.notice, "We’ve modified your subscription.")
       )
 )
@@ -77,7 +77,7 @@ func subscriptionModificationErrorMiddleware<A>(_ error: Error)
 
   return { conn in
     conn |> redirect(
-      to: .account(.index),
+      to: .account(),
       headersMiddleware: flash(
         .error,
         """
@@ -97,7 +97,7 @@ private func requireValidSeating(
     return filter(
       seatsAvailable,
       or: redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(
           .error,
           "We can’t reduce the number of seats below the number that are active."

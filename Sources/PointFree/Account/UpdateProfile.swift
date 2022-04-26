@@ -1,9 +1,9 @@
-import ApplicativeRouter
 import Either
 import EmailAddress
 import Foundation
 import HttpPipeline
 import Models
+import Parsing
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
@@ -40,13 +40,13 @@ let updateProfileMiddleware
 private let requireUserAndProfileData
   : MT<Tuple2<User?, ProfileData?>, Tuple2<User, ProfileData>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
+    <<< filterMap(require2 >>> pure, or: redirect(to: .account()))
 
 private let validateEmail
   : MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileData>>
   = filter(
     get2 >>> ^\.email >>> isValidEmail,
-    or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
+    or: redirect(to: .account(), headersMiddleware: flash(.error, "Please enter a valid email."))
 )
 
 private func updateProfileMiddlewareHandler(
@@ -88,7 +88,7 @@ private func updateProfileMiddlewareHandler(
     .flatMap(
       const(
         conn.map(const(unit))
-          |> redirect(to: path(to: .account(.index)), headersMiddleware: updateFlash)
+          |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
       )
   )
 }
@@ -109,14 +109,13 @@ func encryptPayload<A>(
       let (user, data) = (get1(conn.data), get2(conn.data))
 
       guard
-        let emailChangePayload = emailChangeIso
-          .unapply((user.id, data.email))
-          .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+        let emailChangePayload = (try? emailChange.print((user.id, data.email)))
+          .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
         else {
           Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
           return conn |> redirect(
-            to: .account(.index),
+            to: .account(),
             headersMiddleware: flash(.error, "An error occurred.")
           )
       }
@@ -126,18 +125,22 @@ func encryptPayload<A>(
     }
 }
 
-let emailChangeIso: PartialIso<String, (User.Id, EmailAddress)> = payload(.uuid >>> .tagged, .tagged)
+let emailChange = ParsePrint {
+  UUID.parser().map(.representing(User.Id.self))
+  "--POINT-FREE-BOUNDARY--"
+  Rest().map(.string.representing(EmailAddress.self))
+}
 
 let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> = { conn in
 
   guard
     let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
-    let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
+    let (userId, newEmailAddress) = try? emailChange.parse(decrypted)
     else {
       Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 
       return conn |> redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.error, "An error occurred.")
       )
   }
@@ -158,5 +161,5 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
 
   return Current.database.updateUser(id: userId, email: newEmailAddress)
     .run
-    .flatMap(const(conn |> redirect(to: .account(.index))))
+    .flatMap(const(conn |> redirect(to: .account())))
 }

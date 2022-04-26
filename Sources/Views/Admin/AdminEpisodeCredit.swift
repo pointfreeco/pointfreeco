@@ -6,7 +6,7 @@ public let showEpisodeCreditsView: Node = [
   .form(
     attributes: [
       .method(.post),
-      .action(pointFreeRouter.path(to: .admin(.episodeCredits(.add(userId: nil, episodeSequence: nil)))))
+      .action(siteRouter.path(for: .admin(.episodeCredits(.add(userId: nil, episodeSequence: nil)))))
     ],
     .label("User id:"),
     .input(attributes: [.type(.text), .name("user_id")]),

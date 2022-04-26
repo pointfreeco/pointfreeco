@@ -1,19 +1,17 @@
-import ApplicativeRouter
 import Foundation
 import Models
-import PointFreePrelude
-import Prelude
 import Stripe
+import _URLRouting
 
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
-  case invoices(Invoices)
-  case paymentInfo(PaymentInfo)
+  case invoices(Invoices = .index)
+  case paymentInfo(PaymentInfo = .show)
   case rss(salt: User.RssSalt)
   case rssLegacy(secret1: String, secret2: String)
   case subscription(Subscription)
-  case update(ProfileData?)
+  case update(ProfileData? = nil)
 
   public enum Invoices: Equatable {
     case index
@@ -22,72 +20,114 @@ public enum Account: Equatable {
 
   public enum PaymentInfo: Equatable {
     case show
-    case update(Stripe.Token.Id?)
+    case update(Stripe.Token.Id? = nil)
   }
 
   public enum Subscription: Equatable {
     case cancel
-    case change(Change)
+    case change(Change = .show)
     case reactivate
 
     public enum Change: Equatable {
       case show
-      case update(Pricing?)
+      case update(Pricing? = nil)
     }
   }
 }
 
-let accountRouter
-  = accountRouters.reduce(.empty, <|>)
+let accountRouter = OneOf {
+  Route(.case(Account.index))
 
-private let accountRouters: [Router<Account>] = [
-  .case(Account.confirmEmailChange)
-    <¢> get %> "confirm-email-change"
-    %> queryParam("payload", .tagged)
-    <% end,
+  Route(.case(Account.confirmEmailChange)) {
+    Path { "confirm-email-change" }
+    Query {
+      Field("payload", .string.representing(Encrypted.self))
+    }
+  }
 
-  .case(.index)
-    <¢> get <% end,
+  Route(.case(Account.invoices)) {
+    Path { "invoices" }
 
-  .case(.invoices(.index))
-    <¢> get %> "invoices" <% end,
+    OneOf {
+      Route(.case(Account.Invoices.index))
 
-  .case { .invoices(.show($0)) }
-    <¢> get %> "invoices" %> pathParam(.tagged(.string)) <% end,
+      Route(.case(Account.Invoices.show)) {
+        Path { Parse(.string.representing(Invoice.Id.self)) }
+      }
+    }
+  }
 
-  .case(.paymentInfo(.show))
-    <¢> get %> "payment-info" <% end,
+  Route(.case(Account.paymentInfo)) {
+    Path { "payment-info" }
 
-  .case { .paymentInfo(.update($0)) }
-    <¢> post %> "payment-info"
-    %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
-    <% end,
+    OneOf {
+      Route(.case(Account.PaymentInfo.show))
 
-  .case(Account.rss)
-    <¢> (get <|> head) %> "rss"
-    %> pathParam(.tagged)
-    <% end,
+      Route(.case(Account.PaymentInfo.update)) {
+        Method.post
+        Optionally {
+          Body {
+            FormData {
+              Field("token", .string.representing(Token.Id.self))
+            }
+          }
+        }
+      }
+    }
+  }
 
-  .case(Account.rssLegacy)
-    <¢> (get <|> head) %> "rss"
-    %> pathParam(.id)
-    <%> pathParam(.id)
-    <% end,
+  Parse {
+    Path { "rss" }
 
-  .case(.subscription(.cancel))
-    <¢> post %> "subscription" %> "cancel" <% end,
+    OneOf {
+      Route(.case(Account.rss)) {
+        Path { Parse(.string.representing(User.RssSalt.self)) }
+      }
 
-  .case(.subscription(.change(.show)))
-    <¢> get %> "subscription" %> "change" <% end,
+      Route(.case(Account.rssLegacy)) {
+        Path {
+          Parse(.string)
+          Parse(.string)
+        }
+      }
+    }
+  }
 
-  .case { .subscription(.change(.update($0))) }
-    <¢> post %> "subscription" %> "change"
-    %> formBody(Pricing?.self, decoder: formDecoder)
-    <% end,
+  Route(.case(Account.subscription)) {
+    Path { "subscription" }
 
-  .case(.subscription(.reactivate))
-    <¢> post %> "subscription" %> "reactivate" <% end,
+    OneOf {
+      Route(.case(Account.Subscription.cancel)) {
+        Method.post
+        Path { "cancel" }
+      }
 
-  .case(Account.update)
-    <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
-]
+      Route(.case(Account.Subscription.change)) {
+        Path { "change" }
+
+        OneOf {
+          Route(.case(Account.Subscription.Change.show))
+
+          Route(.case(Account.Subscription.Change.update)) {
+            Method.post
+            Optionally {
+              Body(.form(Pricing.self, decoder: formDecoder))
+            }
+          }
+        }
+      }
+
+      Route(.case(Account.Subscription.reactivate)) {
+        Method.post
+        Path { "reactivate" }
+      }
+    }
+  }
+
+  Route(.case(Account.update)) {
+    Method.post
+    Optionally {
+      Body(.form(ProfileData.self, decoder: formDecoder))
+    }
+  }
+}

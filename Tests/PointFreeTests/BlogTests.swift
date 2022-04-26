@@ -20,7 +20,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex() {
-    let conn = connection(from: request(to: .blog(.index)))
+    let conn = connection(from: request(to: .blog()))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -54,7 +54,7 @@ class BlogTests: TestCase {
 
     Current.blogPosts = unzurry(posts)
 
-    let conn = connection(from: request(to: .blog(.index)))
+    let conn = connection(from: request(to: .blog()))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

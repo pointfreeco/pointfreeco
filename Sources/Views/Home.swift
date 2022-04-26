@@ -75,7 +75,7 @@ let holidaySpecialContent: Node = .div(
     ],
     .a(
       attributes: [
-        .href(path(to: .discounts(code: "holiday-2019", nil)))
+        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil)))
       ],
       "🎉 Holiday Subscription Special 🎉"
     )
@@ -85,7 +85,7 @@ let holidaySpecialContent: Node = .div(
     "their subscription for the first year! ",
     .a(
       attributes: [
-        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
         .class([Class.pf.type.underlineLink])
       ],
       "Act now"
@@ -99,7 +99,7 @@ let holidaySpecialContent: Node = .div(
     ],
     .a(
       attributes: [
-        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
         .class([Class.pf.components.button(color: .black)])
       ],
       "Subscribe now"
@@ -144,7 +144,7 @@ private func subscriberCalloutView(
             "👋 Hey there! See anything you like? You may be interested in ",
             .a(
               attributes: [
-                .href(path(to: .pricingLanding)),
+                .href(siteRouter.path(for: .pricingLanding)),
                 .class([Class.pf.type.underlineLink])
               ],
               "subscribing"
@@ -175,7 +175,7 @@ private func episodeRowView(episode: Episode, date: () -> Date, emergencyMode: B
             .style(lineHeight(0) <> gradient <> minHeight(.px(300)))
           ],
           .a(
-            attributes: [.href(path(to: .episode(.show(.left(episode.slug)))))],
+            attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
             .img(
               attributes: [
                 .src(episode.image),
@@ -201,7 +201,7 @@ private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergency
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
         attributes: [
-          .href(path(to: .episode(.show(.left(episode.slug))))),
+          .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])
         ],
         .text("Watch episode (\(episode.length.rawValue / 60) min)"),
@@ -227,7 +227,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergenc
         .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])
       ],
       .a(
-        attributes: [.href(path(to: .episode(.show(.left(episode.slug)))))],
+        attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
         .text(episode.fullTitle)
       )
     ),

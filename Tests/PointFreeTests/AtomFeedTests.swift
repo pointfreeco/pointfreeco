@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import SnapshotTesting
 @testable import Models
 import ModelsTestSupport

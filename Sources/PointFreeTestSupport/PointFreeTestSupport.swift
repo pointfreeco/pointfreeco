@@ -29,6 +29,7 @@ import StripeTestSupport
 import WebKit
 #endif
 import XCTestDynamicOverlay
+import _URLRouting
 
 extension Environment {
   public static let mock = Environment(
@@ -178,44 +179,22 @@ extension Snapshotting {
   #endif
 }
 
-public func request(
-  with baseRequest: URLRequest,
-  session: Session = .loggedOut,
-  basicAuth: Bool = false
-  ) -> URLRequest {
-
-  var request = baseRequest
-
-  // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
-  //     if you edit fields on the request.
-  //     See: https://bugs.swift.org/browse/SR-6687
-  let httpBody = request.httpBody
-  request.httpBody = httpBody
-  request.httpMethod = request.httpMethod?.uppercased()
+public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
+  var headers: [String: [String?]] = [:]
 
   if basicAuth {
-    let username = Current.envVars.basicAuth.username
-    let password = Current.envVars.basicAuth.password
-    request.allHTTPHeaderFields = request.allHTTPHeaderFields ?? [:]
-    request.allHTTPHeaderFields?["Authorization"] =
-      "Basic " + Data("\(username):\(password)".utf8).base64EncodedString()
+    let authString = "\(Current.envVars.basicAuth.username):\(Current.envVars.basicAuth.password)"
+    headers["Authorization"] = ["Basic \(Data(authString.utf8).base64EncodedString())"]
   }
 
-  guard
+  if
     let sessionData = try? cookieJsonEncoder.encode(session),
     let sessionCookie = String(data: sessionData, encoding: .utf8)
-    else { return request }
+  {
+    headers["Cookie"] = ["pf_session=\(sessionCookie)"]
+  }
 
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
-
-  return request
-}
-
-public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
-  return request(
-    with: pointFreeRouter.request(for: route)!,
-    session: session,
-    basicAuth: basicAuth
-  )
+  return try! siteRouter
+    .baseRequestData(URLRequestData(headers: headers))
+    .request(for: route)
 }

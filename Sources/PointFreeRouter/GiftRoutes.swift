@@ -1,18 +1,22 @@
-import ApplicativeRouter
+import Foundation
 import Models
-import Prelude
 import Stripe
 import TaggedMoney
+import _URLRouting
 
 public enum Gifts: Equatable {
   case confirmation(GiftFormData)
   case create(GiftFormData)
   case index
   case plan(Plan)
-  case redeem(Gift.Id)
-  case redeemLanding(Gift.Id)
+  case redeem(Gift.Id, Redeem = .landing)
 
-  public enum Plan: String {
+  public enum Redeem: Equatable {
+    case confirm
+    case landing
+  }
+
+  public enum Plan: String, CaseIterable {
     case threeMonths
     case sixMonths
     case year
@@ -50,26 +54,47 @@ public enum Gifts: Equatable {
   }
 }
 
-let giftsRouter = giftsRouters.reduce(.empty, <|>)
+let giftsRouter = OneOf {
+  Route(.case(Gifts.index))
 
-private let giftsRouters: [Router<Gifts>] = [
-  .case(Gifts.confirmation)
-    <¢> post
-    %> formBody(GiftFormData.self, decoder: formDecoder) <% end,
+  Route(.case(Gifts.confirmation)) {
+    Method.post
+    Body(.form(GiftFormData.self, decoder: formDecoder))
+  }
 
-  .case(Gifts.create)
-    <¢> post
-    %> jsonBody(GiftFormData.self, encoder: routeJsonEncoder, decoder: routeJsonDecoder) <% end,
+  Route(.case(Gifts.create)) {
+    Method.post
+    Body(.json(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder))
+  }
 
-  .case(.index)
-    <¢> get <% end,
+  Route(.case(Gifts.plan)) {
+    Path { Gifts.Plan.parser() }
+  }
 
-  .case(Gifts.plan)
-    <¢> get %> pathParam(.rawRepresentable) <% end,
+  Route(.case(Gifts.redeem)) {
+    Path { UUID.parser().map(.representing(Gift.Id.self)) }
 
-  .case(Gifts.redeem)
-    <¢> post %> pathParam(.tagged(.uuid)) <% end,
+    OneOf {
+      Route(.case(Gifts.Redeem.landing))
 
-  .case(Gifts.redeemLanding)
-    <¢> get %> pathParam(.tagged(.uuid)) <% end,
-]
+      Route(.case(Gifts.Redeem.confirm)) {
+        Method.post
+      }
+    }
+  }
+}
+
+private let routeJsonDecoder: JSONDecoder = {
+  let decoder = JSONDecoder()
+  decoder.dateDecodingStrategy = .secondsSince1970
+  decoder.keyDecodingStrategy = .convertFromSnakeCase
+  return decoder
+}()
+
+private let routeJsonEncoder: JSONEncoder = {
+  let encoder = JSONEncoder()
+  encoder.dateEncodingStrategy = .secondsSince1970
+  encoder.keyEncodingStrategy = .convertToSnakeCase
+  encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+  return encoder
+}()

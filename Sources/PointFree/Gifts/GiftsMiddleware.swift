@@ -7,7 +7,7 @@ import Prelude
 import Tuple
 
 public func giftsMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple5<User?, Subscription?, SubscriberState, Route, Gifts>>
+  _ conn: Conn<StatusLineOpen, Tuple5<User?, Subscription?, SubscriberState, SiteRoute, Gifts>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (user, subscription, subscriberState, route, gift) = lower(conn.data)
@@ -30,11 +30,11 @@ public func giftsMiddleware(
     return conn.map(const(plan .*. user .*. route .*. subscriberState .*. unit))
     |> giftPaymentMiddleware
 
-  case let .redeem(giftId):
+  case let .redeem(giftId, .confirm):
     return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. unit))
     |> giftRedemptionMiddleware
 
-  case let .redeemLanding(giftId):
+  case let .redeem(giftId, .landing):
     return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. route .*. unit))
     |> giftRedemptionLandingMiddleware
   }

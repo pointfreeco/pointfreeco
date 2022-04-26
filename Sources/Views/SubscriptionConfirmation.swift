@@ -26,7 +26,7 @@ public func subscriptionConfirmation(
 ) -> Node {
   return .form(
     attributes: [
-      .action(path(to: .subscribe(nil))),
+      .action(siteRouter.path(for: .subscribe())),
       .id("subscribe-form"),
       .method(.post),
       .onsubmit(unsafe: "event.preventDefault()"),
@@ -214,7 +214,7 @@ private func header(
             Class.pf.colors.link.gray650,
             Class.pf.type.underlineLink
           ]),
-          .href(url(to: .pricingLanding))
+          .href(siteRouter.url(for: .pricingLanding))
         ],
         "Change plan"
       )
@@ -480,7 +480,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         .type(.email),
         .placeholder("blob@pointfree.co"),
         .class([Class.size.width100pct]),
-        .name("teammates[]"),
+        .name("teammate"),
         .style(
           borderWidth(all: 0)
             <> key("outline", "none")
@@ -857,7 +857,7 @@ function updateSeats() {
   var teamMembers = document.getElementById("team-members")
   var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+    teamMemberInputs[idx].name = "teammate"
   }
   var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers
@@ -910,42 +910,34 @@ window.addEventListener("load", function() {
       sizes: [:],
       attributes: [.class([Class.grid.end(.mobile)])],
       isLoggedIn
-        ? .button(
-          attributes: [
-            .class([
-              Class.border.none,
-              Class.type.textDecorationNone,
-              Class.cursor.pointer,
-              Class.type.bold,
-              Class.typeScale([.mobile: .r1, .desktop: .r1]),
-              Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
-              Class.type.align.center,
-              Class.pf.colors.bg.black,
-              Class.pf.colors.fg.white,
-              Class.pf.colors.link.white,
-            ])
-          ],
-          "Subscribe"
+      ? .button(
+        attributes: [
+          .class([
+            Class.border.none,
+            Class.type.textDecorationNone,
+            Class.cursor.pointer,
+            Class.type.bold,
+            Class.typeScale([.mobile: .r1, .desktop: .r1]),
+            Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+            Class.type.align.center,
+            Class.pf.colors.bg.black,
+            Class.pf.colors.fg.white,
+            Class.pf.colors.link.white,
+          ])
+        ],
+        "Subscribe"
+      )
+      : .gitHubLink(
+        text: "Log in to Subscribe",
+        type: .black,
+        href: siteRouter.loginPath(
+          redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
+          ?? .subscribeConfirmation(
+            lane: lane,
+            referralCode: referrer?.referralCode,
+            useRegionalDiscount: useRegionalDiscount
           )
-        : .gitHubLink(
-          text: "Log in to Subscribe",
-          type: .black,
-          href: path(
-            to: .login(
-              redirect: url(
-                to: coupon
-                  .map { Route.discounts(code: $0.id, nil) }
-                  ?? .subscribeConfirmation(
-                    lane: lane,
-                    billing: nil,
-                    isOwnerTakingSeat: nil,
-                    teammates: nil,
-                    referralCode: referrer?.referralCode,
-                    useRegionalDiscount: useRegionalDiscount
-                )
-              )
-            )
-          )
+        )
       )
     )
   )

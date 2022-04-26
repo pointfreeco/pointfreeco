@@ -58,7 +58,7 @@ public struct EpisodePageData {
     return section
   }
 
-  public var route: Route {
+  public var route: SiteRoute {
     switch context {
     case let .collection(collection):
       guard
@@ -68,7 +68,9 @@ public struct EpisodePageData {
           })
         })
         else { return .episode(.show(.left(self.episode.slug))) }
-      return .collections(.episode(collection.slug, section.slug, .left(self.episode.slug)))
+      return .collections(
+        .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
+      )
     case .direct:
       return .episode(.show(.left(self.episode.slug)))
     }
@@ -85,7 +87,11 @@ public func episodePageView(
           left: [
             .a(
               attributes: [
-                .href(path(to: .collections(.section(collection.slug, section.slug)))),
+                .href(
+                  siteRouter.path(
+                    for: .collections(.collection(collection.slug, .section(section.slug)))
+                  )
+                ),
                 .class([
                   Class.pf.colors.link.gray650
                 ])
@@ -184,7 +190,7 @@ private func sequentialEpisodes(
           .class([Class.type.align.center])
         ],
         .a(
-          attributes: [.href(url(to: .episode(.show(.left(episode.slug)))))],
+          attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
           .img(
             base64: playIconSvgBase64(),
             type: .image(.svg),
@@ -217,7 +223,15 @@ private func sequentialEpisodes(
                 Class.pf.type.body.regular,
                 Class.type.lineHeight(1)
               ]),
-              .href(url(to: .collections(.episode(collection.slug, section.slug, .left(episode.slug)))))
+              .href(
+                siteRouter.url(
+                  for: .collections(
+                    .collection(
+                      collection.slug, .section(section.slug, .episode(.left(episode.slug)))
+                    )
+                  )
+                )
+              )
             ],
             .text(episode.subtitle ?? episode.title)
           )
@@ -265,7 +279,11 @@ private func collectionHeaderRow(
               Class.type.medium,
               Class.type.lineHeight(1)
             ]),
-            .href(url(to: .collections(.section(collection.slug, section.slug))))
+            .href(
+              siteRouter.url(
+                for: .collections(.collection(collection.slug, .section(section.slug)))
+              )
+            )
           ],
           .text(
             collection.sections.count == 1
@@ -326,7 +344,11 @@ private func collectionFooterRow(
               Class.type.medium,
               Class.type.lineHeight(1)
             ]),
-            .href(url(to: .collections(.section(collection.slug, nextSection.slug))))
+            .href(
+              siteRouter.url(
+                for: .collections(.collection(collection.slug, .section(nextSection.slug)))
+              )
+            )
           ],
           .text(
             nextSection.title
@@ -382,7 +404,7 @@ private func sequentialEpisodeRow(
           .class([Class.type.align.center])
         ],
         .a(
-          attributes: [.href(url(to: .episode(.show(.left(episode.slug)))))],
+          attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
           .img(
             base64: playIconSvgBase64(),
             type: .image(.svg),
@@ -414,7 +436,7 @@ private func sequentialEpisodeRow(
               Class.padding([.mobile: [.all: 0]]),
               Class.margin([.mobile: [.all: 0]]),
             ]),
-            .href(url(to: .episode(.show(.left(episode.slug))))),
+            .href(siteRouter.url(for: .episode(.show(.left(episode.slug))))),
           ],
           .text(episode.fullTitle)
         )
@@ -472,7 +494,7 @@ private func currentEpisodeInfoRow(
     chaptersRow(data: data),
     exercisesRow(episode: data.episode),
     referencesRow(episode: data.episode),
-    downloadRow
+    downloadRow(episode: data.episode)
   )
 }
 
@@ -682,44 +704,49 @@ private func referencesRow(episode: Episode) -> Node {
   )
 }
 
-private let downloadRow = Node.gridRow(
-  attributes: [
-    .class([
-      Class.padding([.mobile: [.top: 1]]),
-      Class.grid.middle(.mobile)
-    ])
-  ],
-  .gridColumn(
-    sizes: [.mobile: 1],
-    attributes: [
-      .class([Class.type.align.center])
-    ],
-    .img(
-      base64: downloadIconSvgBase64,
-      type: .image(.svg),
-      alt: "",
-      attributes: [
-        .class([Class.align.middle]),
-        .style(margin(top: .px(-2)))
-      ]
-    )
-  ),
-  .gridColumn(
-    sizes: [.mobile: 11],
+private func downloadRow(episode: Episode) -> Node {
+  guard episode.codeSampleDirectory != nil
+  else { return [] }
+
+  return .gridRow(
     attributes: [
       .class([
-        Class.pf.type.body.regular,
-        Class.padding([.mobile: [.left: 1]])
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile)
       ])
     ],
-    .a(
+    .gridColumn(
+      sizes: [.mobile: 1],
       attributes: [
-        .href("#downloads")
+        .class([Class.type.align.center])
       ],
-      "Downloads"
+      .img(
+        base64: downloadIconSvgBase64,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-2)))
+        ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 11],
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.left: 1]])
+        ])
+      ],
+      .a(
+        attributes: [
+          .href("#downloads")
+        ],
+        "Downloads"
+      )
     )
   )
-)
+}
 
 private func mainContent(
   data: EpisodePageData,
@@ -917,7 +944,10 @@ private func callout(
 }
 
 private func downloadsView(episode: Episode) -> Node {
-  .div(
+  guard let codeSampleDirectory = episode.codeSampleDirectory
+  else { return [] }
+
+  return .div(
     attributes: [
       .class([
         Class.padding([
@@ -958,10 +988,14 @@ private func downloadsView(episode: Episode) -> Node {
       ),
       .a(
         attributes: [
-          .href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: episode.codeSampleDirectory))),
+          .href(
+            gitHubRouter
+              .url(for: .episodeCodeSample(directory: codeSampleDirectory))
+              .absoluteString
+          ),
           .class([Class.pf.colors.link.purple, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
         ],
-        .text(episode.codeSampleDirectory)
+        .text(codeSampleDirectory)
       )
     )
   )
@@ -978,7 +1012,7 @@ private func creditSubscribeCallout(data: EpisodePageData) -> Node {
         .class([
           Class.pf.components.button(color: .purple),
         ]),
-        .href(path(to: .pricingLanding))
+        .href(siteRouter.path(for: .pricingLanding))
       ],
       "See plans and pricing"
     )
@@ -996,7 +1030,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
         .class([
           Class.pf.components.button(color: .purple),
         ]),
-        .href(path(to: .pricingLanding))
+        .href(siteRouter.path(for: .pricingLanding))
       ],
       "See plans and pricing"
     ),
@@ -1015,7 +1049,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple,
             ]),
-            .href(path(to: .login(redirect: url(to: data.route)))),
+            .href(siteRouter.loginPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1035,7 +1069,7 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
         .class([
           Class.pf.components.button(color: .purple),
         ]),
-        .href(path(to: .pricingLanding))
+        .href(siteRouter.path(for: .pricingLanding))
       ],
       "See plans and pricing"
     ),
@@ -1054,7 +1088,7 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple,
             ]),
-            .href(path(to: .login(redirect: url(to: data.route)))),
+            .href(siteRouter.loginPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1071,7 +1105,7 @@ private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
     .gitHubLink(
       text: "Sign in with GitHub",
       type: .black,
-      href: path(to: .login(redirect: url(to: data.route)))
+      href: siteRouter.loginPath(redirect: data.route)
     )
   )
 }
@@ -1086,7 +1120,7 @@ Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this episode for f
 """,
     .form(
       attributes: [
-        .action(path(to: .useEpisodeCredit(data.episode.id))),
+        .action(siteRouter.path(for: .useEpisodeCredit(data.episode.id))),
         .method(.post),
       ],
       .button(

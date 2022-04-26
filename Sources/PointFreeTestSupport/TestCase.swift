@@ -1,3 +1,4 @@
+import Backtrace
 import Database
 import Models
 import NIO
@@ -34,13 +35,18 @@ open class LiveDatabaseTestCase: TestCase {
 }
 
 open class TestCase: XCTestCase {
+  open override class func setUp() {
+    super.setUp()
+    Backtrace.install()
+  }
+
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
 //    SnapshotTesting.isRecording = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-    pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
+    siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
   }
 
   override open func tearDown() {

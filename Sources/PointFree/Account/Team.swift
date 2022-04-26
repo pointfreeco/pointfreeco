@@ -13,7 +13,7 @@ let leaveTeamMiddleware: M<Tuple2<User?, SubscriberState>>
   = requireOwner
     <<< leaveTeam
     <| redirect(
-      to: .account(.index),
+      to: .account(),
       headersMiddleware: flash(.notice, "You are no longer a part of that team.")
 )
 
@@ -31,7 +31,7 @@ private let requireOwner
     <<< filter(
       get2 >>> ^\.isOwner >>> (!),
       or: redirect(
-        to: .account(.index),
+        to: .account(),
         headersMiddleware: flash(.error, "You are the owner of the subscription, you can’t leave.")
       )
 )
@@ -57,7 +57,7 @@ private func leaveTeam<Z>(
           const(
             conn
               |> redirect(
-                to: .account(.index),
+                to: .account(),
                 headersMiddleware: flash(.error, "Something went wrong. Please try again or contact <support@pointfree.co>.")
             )
           ),
@@ -103,7 +103,7 @@ let removeTeammateMiddleware
       .run
       .map(const(conn.map(const(unit))))
     }
-    >=> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
+    >=> redirect(to: .account(), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
 private let requireTeammate
   : MT<Tuple2<User.Id, User>, Tuple2<User, User>>
@@ -116,7 +116,7 @@ private let requireTeammate
       }
       >>> sequence1
       >>> map(require1),
-    or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Could not find that teammate."))
+    or: redirect(to: .account(), headersMiddleware: flash(.error, "Could not find that teammate."))
 )
 
 private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parallel<Prelude.Unit> {

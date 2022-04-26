@@ -34,13 +34,12 @@ let loginResponse: M<Tuple2<Models.User?, String?>> =
 
 let logoutResponse: M<Prelude.Unit> =
   redirect(
-    to: path(to: .home),
+    to: siteRouter.path(for: .home),
     headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  return conn
-    |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
+  conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
@@ -73,7 +72,7 @@ public func requireLoggedOutUser<A>(
       |> (
         get1(conn.data) == nil
           ? middleware
-          : redirect(to: .account(.index), headersMiddleware: flash(.warning, "You’re already logged in."))
+          : redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
     )
   }
 }
@@ -187,7 +186,7 @@ private func gitHubAuthTokenMiddleware(
           )
         ) { user in
           conn |> HttpPipeline.redirect(
-            to: redirect ?? path(to: .home),
+            to: redirect ?? siteRouter.path(for: .home),
             headersMiddleware: writeSessionCookieMiddleware { $0.user = .standard(user.id) }
           )
         }
@@ -238,11 +237,12 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
-  return gitHubUrl(
-    to: .authorize(
+  gitHubRouter.url(
+    for: .authorize(
       clientId: Current.envVars.gitHub.clientId,
-      redirectUri: url(to: .gitHubCallback(code: nil, redirect: redirect)),
+      redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),
       scope: "user:email"
     )
   )
+  .absoluteString
 }

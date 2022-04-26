@@ -102,9 +102,6 @@ class NewBlogPostEmailTests: TestCase {
       url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!
     )
     req.httpMethod = "POST"
-    req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
-    XCTAssertNil(pointFreeRouter.match(request: req))
-
     let formData = urlFormEncode(
       value: [
         "nonsubscriber_announcement": "",
@@ -118,12 +115,12 @@ class NewBlogPostEmailTests: TestCase {
       nonsubscriberAnnouncement: "",
       nonsubscriberDeliver: true,
       subscriberAnnouncement: "Hello!",
-      subscriberDeliver: nil
+      subscriberDeliver: false
     )
 
     XCTAssertEqual(
       .admin(.newBlogPostEmail(.send(blogPost.id, formData: formDataData, isTest: true))),
-      pointFreeRouter.match(request: req)
+      try siteRouter.match(request: req)
     )
   }
 

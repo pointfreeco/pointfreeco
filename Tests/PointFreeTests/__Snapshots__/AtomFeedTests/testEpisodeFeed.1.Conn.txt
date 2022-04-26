@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7516
+Content-Length: 7518
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,7 +23,7 @@ X-XSS-Protection: 1; mode=block
       Point-Free Videos
     </title>
     <link>
-      http://localhost:8080
+      http://localhost:8080/
     </link>
     <language>
       en-US
@@ -42,7 +42,7 @@ X-XSS-Protection: 1; mode=block
         Point-Free Videos
       </title>
       <link>
-        http://localhost:8080
+        http://localhost:8080/
       </link>
     </image>
     <itunes:author>

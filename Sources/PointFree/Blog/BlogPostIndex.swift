@@ -9,7 +9,7 @@ import Views
 let blogIndexMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple4<[BlogPost], User?, SubscriberState, Route?>,
+  Tuple4<[BlogPost], User?, SubscriberState, SiteRoute?>,
   Data> =
   writeStatus(.ok)
     >=> map(lower)

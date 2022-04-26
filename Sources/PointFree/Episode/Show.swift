@@ -14,7 +14,7 @@ import Styleguide
 import Tuple
 import Views
 
-let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Episode.Collection.Slug?>> =
+let episodeResponse: M<Tuple5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Episode.Collection.Slug?>> =
   fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
@@ -77,7 +77,7 @@ private func episodePageData(
 }
 
 func useCreditResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
   conn
     |> (fetchEpisodeForParam
@@ -86,8 +86,8 @@ func useCreditResponse<Z>(
 }
 
 private func fetchEpisodeForParam<Z>(
-  middleware: @escaping M<T5<Episode, User?, SubscriberState, Route?, Z>>
-) -> M<T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>> {
+  middleware: @escaping M<T5<Episode, User?, SubscriberState, SiteRoute?, Z>>
+) -> M<T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>> {
   middleware
     |> filterMap(
       over1(episode(forParam:)) >>> require1 >>> pure,
@@ -96,7 +96,7 @@ private func fetchEpisodeForParam<Z>(
 }
 
 private func episodeNotFoundResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, Route?, Z>>
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
   conn
     |> writeStatus(.notFound)
@@ -276,7 +276,7 @@ func userEpisodePermission<I, Z>(
 private func episodeNotFoundView(
   user: User?,
   subscriberState: SubscriberState,
-  route: Route?
+  route: SiteRoute?
 ) -> Node {
   SimplePageLayoutData(
     currentSubscriberState: subscriberState,

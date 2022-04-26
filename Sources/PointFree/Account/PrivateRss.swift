@@ -1,4 +1,3 @@
-import ApplicativeRouter
 import Foundation
 import Either
 import Html
@@ -35,7 +34,7 @@ private func requireUser(
       or: invalidatedFeedMiddleware(errorMessage: """
         ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
         retrieve your most up-to-date private podcast URL by visiting your account page at \
-        \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+        \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
         """)
   )
 }
@@ -59,7 +58,7 @@ private let requireActiveSubscription: (
     or: invalidatedFeedMiddleware(errorMessage: """
       ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no longer \
       active. If you would like reactive this feed you can resubscribe to Point-Free on your account page at \
-      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+      \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
       """)
 )
 
@@ -130,7 +129,7 @@ private func validateUserAgent<Z>(
         |> invalidatedFeedMiddleware(errorMessage: """
             ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
             retrieve your most up-to-date private podcast URL by visiting your account page at \
-            \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+            \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
             """)
       }
   }
@@ -197,7 +196,7 @@ with anyone else.
     copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
     description: description,
     image: .init(
-      link: url(to: .home),
+      link: siteRouter.url(for: .home),
       title: title,
       url: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"
     ),
@@ -229,7 +228,7 @@ with anyone else.
       type: .episodic
     ),
     language: "en-US",
-    link: url(to: .home),
+    link: siteRouter.url(for: .home),
     title: title
   )
 }
@@ -254,7 +253,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
       type: "video/mp4",
       url: episode.fullVideo.downloadUrl(.hd720)
     ),
-    guid: url(to: .episode(.show(.left(episode.slug)))),
+    guid: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: episode.length.rawValue,
@@ -267,7 +266,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
       season: 1,
       title: episode.fullTitle
     ),
-    link: url(to: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
     media: .init(
       content: .init(
         length: episode.fullVideo.bytesLength,
@@ -296,7 +295,7 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
     image: .init(
       link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
       title: "Point-Free",
-      url: url(to: .home)
+      url: siteRouter.url(for: .home)
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
@@ -326,7 +325,7 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
       type: .episodic
     ),
     language: "en-US",
-    link: url(to: .home),
+    link: siteRouter.url(for: .home),
     title: "Point-Free"
   )
 }
@@ -354,7 +353,7 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
       season: 1,
       title: "Invalid Feed URL"
     ),
-    link: url(to: .home),
+    link: siteRouter.url(for: .home),
     media: .init(
       content: .init(
         length: episode.fullVideo.bytesLength,

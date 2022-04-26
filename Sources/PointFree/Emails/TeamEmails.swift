@@ -56,7 +56,7 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .pricingLanding)),
+                .href(siteRouter.url(for: .pricingLanding)),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "See subscription plans"
@@ -103,7 +103,7 @@ private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .account(.index))),
+                .href(siteRouter.url(for: .account())),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Account settings"

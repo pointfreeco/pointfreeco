@@ -6,7 +6,6 @@ extension Episode {
 Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. \
 Take a moment to hear from the hosts about what to expect from this new series.
 """,
-    codeSampleDirectory: "",
     exercises: [],
     fullVideo: .init(
       bytesLength: 90533615,

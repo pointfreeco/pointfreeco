@@ -17,7 +17,7 @@ public struct SimplePageLayoutData<A> {
     }
   }
 
-  public var currentRoute: Route?
+  public var currentRoute: SiteRoute?
   public var currentSubscriberState: SubscriberState
   public var currentUser: User?
   public var data: A
@@ -34,7 +34,7 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    currentRoute: Route? = nil,
+    currentRoute: SiteRoute? = nil,
     currentSubscriberState: SubscriberState = .nonSubscriber,
     currentUser: User?,
     data: A,
@@ -88,7 +88,7 @@ public func simplePageLayout<A>(
           .meta(viewport: .width(.deviceWidth), .initialScale(1)),
           .link(
             attributes: [
-              .href(url(to: .feed(.episodes))),
+              .href(siteRouter.url(for: .feed(.episodes))),
               .rel(.alternate),
               .title("Point-Free Episodes"),
               .type(.application(.init(rawValue: "atom+xml")))
@@ -96,7 +96,7 @@ public func simplePageLayout<A>(
           ),
           .link(
             attributes: [
-              .href(url(to: .blog(.feed))),
+              .href(siteRouter.url(for: .blog(.feed))),
               .rel(.alternate),
               .title("Point-Free Blog"),
               // TODO: add .atom to Html
@@ -151,7 +151,7 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(url(to: .blog(.show(slug: post0069_2021EOYSale.slug))))
+          .href(siteRouter.url(for: .blog(.show(slug: post0069_2021EOYSale.slug))))
         ],
         .strong("End-of-year sale")
       ),
@@ -296,7 +296,7 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .form(
           attributes: [
             .method(.post),
-            .action(pointFreeRouter.path(to: .endGhosting))
+            .action(siteRouter.path(for: .endGhosting))
           ],
           .input(
             attributes: [
@@ -322,7 +322,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .warning,
         """
         Your subscription is past-due! Please
-        [update your payment info](\(path(to: .account(.paymentInfo(.show))))) to ensure access to
+        [update your payment info](\(siteRouter.path(for: .account(.paymentInfo())))) to ensure access to
         Point-Free!
         """
       )
@@ -345,7 +345,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .warning,
         """
         Your subscription is canceled. To regain access to Point-Free,
-        [resubscribe](\(path(to: .pricingLanding))) anytime!
+        [resubscribe](\(siteRouter.path(for: .pricingLanding))) anytime!
         """
       )
     )

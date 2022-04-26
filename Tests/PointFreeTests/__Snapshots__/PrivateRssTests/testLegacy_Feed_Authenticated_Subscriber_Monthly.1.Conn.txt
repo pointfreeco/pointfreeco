@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/deadbeef/cafebeef
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 13311
+Content-Length: 13313
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,7 +23,7 @@ X-XSS-Protection: 1; mode=block
       Point-Free Videos (Private feed for hello@pointfree.co)
     </title>
     <link>
-      http://localhost:8080
+      http://localhost:8080/
     </link>
     <language>
       en-US
@@ -50,7 +50,7 @@ with anyone else.
         Point-Free Videos (Private feed for hello@pointfree.co)
       </title>
       <link>
-        http://localhost:8080
+        http://localhost:8080/
       </link>
     </image>
     <itunes:author>

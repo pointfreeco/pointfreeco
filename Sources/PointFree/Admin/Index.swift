@@ -46,10 +46,10 @@ let adminIndex
 
 private func adminIndexView(currentUser: User) -> Node {
   return .ul(
-    .li(.a(attributes: [.href(path(to: .admin(.newEpisodeEmail(.show))))], "Send new episode email")),
-    .li(.a(attributes: [.href(path(to: .admin(.episodeCredits(.show))))], "Send episode credits")),
-    .li(.a(attributes: [.href(path(to: .admin(.freeEpisodeEmail(.index))))], "Send free episode email")),
-    .li(.a(attributes: [.href(path(to: .admin(.newBlogPostEmail(.index))))], "Send new blog post email")),
-    .li(.a(attributes: [.href(path(to: .admin(.ghost(.index))))], "Ghost a user"))
+    .li(.a(attributes: [.href(siteRouter.path(for: .admin(.newEpisodeEmail())))], "Send new episode email")),
+    .li(.a(attributes: [.href(siteRouter.path(for: .admin(.episodeCredits())))], "Send episode credits")),
+    .li(.a(attributes: [.href(siteRouter.path(for: .admin(.freeEpisodeEmail())))], "Send free episode email")),
+    .li(.a(attributes: [.href(siteRouter.path(for: .admin(.newBlogPostEmail())))], "Send new blog post email")),
+    .li(.a(attributes: [.href(siteRouter.path(for: .admin(.ghost())))], "Ghost a user"))
   )
 }

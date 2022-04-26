@@ -57,7 +57,7 @@ private func fetchGhostee(userId: User.Id?) -> IO<User?> {
 private let indexView: Node = [
   .h3("Ghost a user"),
   .form(
-    attributes: [.method(.post), .action(pointFreeRouter.path(to: .admin(.ghost(.start(nil)))))],
+    attributes: [.method(.post), .action(siteRouter.path(for: .admin(.ghost(.start(nil)))))],
     .label("User id:"),
     .input(attributes: [.type(.text), .name("user_id")]),
     .input(attributes: [.type(.submit), .value("Ghost 👻")])

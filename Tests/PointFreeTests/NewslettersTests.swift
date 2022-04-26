@@ -26,9 +26,8 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let payload = expressUnsubscribeIso
-      .unapply((user.id, .announcements))
-      .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+    let payload = (try? expressUnsubscribe.print((user.id, .announcements)))
+      .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
 
     let unsubscribe = request(
       to: .expressUnsubscribe(payload: payload!),

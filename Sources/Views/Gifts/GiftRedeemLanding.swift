@@ -193,7 +193,7 @@ private func loginOrRedeem(
     return .gitHubLink(
       text: "Log in to redeem",
       type: .black,
-      href: path(to: .login(redirect: path(to: .gifts(.redeemLanding(gift.id))))),
+      href: siteRouter.loginPath(redirect: .gifts(.redeem(gift.id))),
       size: .regular,
       extraClasses:
         Class.display.block
@@ -204,7 +204,7 @@ private func loginOrRedeem(
     return .form(
       attributes: [
         .method(.post),
-        .action(path(to: .gifts(.redeem(gift.id))))
+        .action(siteRouter.path(for: .gifts(.redeem(gift.id, .confirm))))
       ],
       .input(
         attributes: [

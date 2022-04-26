@@ -88,5 +88,5 @@ func giftConfirmationMiddleware(
       Your gift has been delivered to \(formData.toEmail.rawValue).
       """
   }
-  return conn |> redirect(to: .gifts(.index), headersMiddleware: flash(.notice, message))
+  return conn |> redirect(to: .gifts(), headersMiddleware: flash(.notice, message))
 }

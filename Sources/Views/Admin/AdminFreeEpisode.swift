@@ -23,7 +23,7 @@ private func row(episode: Episode) -> Node {
     .text(episode.fullTitle),
     .form(
       attributes: [
-        .action(pointFreeRouter.path(to: .admin(.freeEpisodeEmail(.send(episode.id))))),
+        .action(siteRouter.path(for: .admin(.freeEpisodeEmail(.send(episode.id))))),
         .method(.post)
       ],
       .input(attributes: [.type(.submit), .value("Send email!")])
