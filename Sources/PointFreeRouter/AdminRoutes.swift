@@ -109,13 +109,13 @@ let adminRouter = OneOf {
       Route(.case(Admin.NewBlogPostEmail.index))
 
       Route(.case(Admin.NewBlogPostEmail.send)) {
-        Method.post
         Parse(
           .convert(
             apply: { ($0, $1.0, $1.1) },
             unapply: { ($0, ($1, $2)) }
           )
         ) {
+          Method.post
           Path {
             Digits().map(.representing(BlogPost.Id.self))
             "send"
