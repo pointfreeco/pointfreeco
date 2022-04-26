@@ -165,6 +165,7 @@ let adminRouter = OneOf {
             unapply: { ($0, ($1, $2, $3)) }
           )
         ) {
+          Method.post
           Path {
             Digits().map(.representing(Episode.Id.self))
             "send"

@@ -27,8 +27,16 @@ private func router<A>(
 
     return { middleware in
       return { conn in
-
-        (try? siteRouter.match(request: conn.request))
+        let route: SiteRoute?
+        do {
+          route = try siteRouter.match(request: conn.request)
+        } catch {
+          route = nil
+          #if DEBUG
+          print(error)
+          #endif
+        }
+        return route
           .map(const >>> conn.map >>> middleware)
           ?? notFound(conn)
       }
