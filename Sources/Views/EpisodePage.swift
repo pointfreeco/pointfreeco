@@ -494,7 +494,7 @@ private func currentEpisodeInfoRow(
     chaptersRow(data: data),
     exercisesRow(episode: data.episode),
     referencesRow(episode: data.episode),
-    downloadRow
+    downloadRow(episode: data.episode)
   )
 }
 
@@ -704,44 +704,49 @@ private func referencesRow(episode: Episode) -> Node {
   )
 }
 
-private let downloadRow = Node.gridRow(
-  attributes: [
-    .class([
-      Class.padding([.mobile: [.top: 1]]),
-      Class.grid.middle(.mobile)
-    ])
-  ],
-  .gridColumn(
-    sizes: [.mobile: 1],
-    attributes: [
-      .class([Class.type.align.center])
-    ],
-    .img(
-      base64: downloadIconSvgBase64,
-      type: .image(.svg),
-      alt: "",
-      attributes: [
-        .class([Class.align.middle]),
-        .style(margin(top: .px(-2)))
-      ]
-    )
-  ),
-  .gridColumn(
-    sizes: [.mobile: 11],
+private func downloadRow(episode: Episode) -> Node {
+  guard episode.codeSampleDirectory != nil
+  else { return [] }
+
+  return .gridRow(
     attributes: [
       .class([
-        Class.pf.type.body.regular,
-        Class.padding([.mobile: [.left: 1]])
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile)
       ])
     ],
-    .a(
+    .gridColumn(
+      sizes: [.mobile: 1],
       attributes: [
-        .href("#downloads")
+        .class([Class.type.align.center])
       ],
-      "Downloads"
+      .img(
+        base64: downloadIconSvgBase64,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-2)))
+        ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 11],
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.left: 1]])
+        ])
+      ],
+      .a(
+        attributes: [
+          .href("#downloads")
+        ],
+        "Downloads"
+      )
     )
   )
-)
+}
 
 private func mainContent(
   data: EpisodePageData,
@@ -939,7 +944,10 @@ private func callout(
 }
 
 private func downloadsView(episode: Episode) -> Node {
-  .div(
+  guard let codeSampleDirectory = episode.codeSampleDirectory
+  else { return [] }
+
+  return .div(
     attributes: [
       .class([
         Class.padding([
@@ -982,12 +990,12 @@ private func downloadsView(episode: Episode) -> Node {
         attributes: [
           .href(
             gitHubRouter
-              .url(for: .episodeCodeSample(directory: episode.codeSampleDirectory))
+              .url(for: .episodeCodeSample(directory: codeSampleDirectory))
               .absoluteString
           ),
           .class([Class.pf.colors.link.purple, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
         ],
-        .text(episode.codeSampleDirectory)
+        .text(codeSampleDirectory)
       )
     )
   )

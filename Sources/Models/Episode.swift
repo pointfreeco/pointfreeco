@@ -5,7 +5,7 @@ import TaggedTime
 public struct Episode: Equatable {
   public var alternateSlug: String?
   public var blurb: String
-  public var codeSampleDirectory: String
+  public var codeSampleDirectory: String?
   public var exercises: [Exercise]
   private var _fullVideo: Video?
   public var id: Id
@@ -23,7 +23,7 @@ public struct Episode: Equatable {
   public init(
     alternateSlug: String? = nil,
     blurb: String,
-    codeSampleDirectory: String,
+    codeSampleDirectory: String? = nil,
     exercises: [Exercise] = [],
     fullVideo: Video? = nil,
     id: Id,

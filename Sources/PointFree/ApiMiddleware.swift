@@ -34,7 +34,7 @@ extension Api {
 
   struct EpisodeDetail: Codable {
     var blurb: String
-    var codeSampleDirectory: String
+    var codeSampleDirectory: String?
     var id: Episode.Id
     var image: String
     var length: Seconds<Int>
@@ -48,7 +48,10 @@ extension Api {
     var video: Episode.Video
 
     init(episode: Episode, currentDate: Date) {
-      let subscriberOnly = episode.isSubscriberOnly(currentDate: currentDate, emergencyMode: Current.envVars.emergencyMode)
+      let subscriberOnly = episode.isSubscriberOnly(
+        currentDate: currentDate,
+        emergencyMode: Current.envVars.emergencyMode
+      )
 
       self.blurb = episode.blurb
       self.codeSampleDirectory = episode.codeSampleDirectory
