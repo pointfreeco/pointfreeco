@@ -495,8 +495,8 @@ let router = OneOf {
     Route(.case(SiteRoute.subscribe)) {
       Method.post
       Path { "subscribe" }
-      Optionally {
-        Body {
+      Body {
+        Optionally {
           FormData {
             Optionally {
               Field("coupon", .string.representing(Coupon.Id.self))
@@ -524,20 +524,20 @@ let router = OneOf {
               }
             }
           }
-        }
-        .map(
-          .convert(
-            apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
-            unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
-          )
           .map(
-            .memberwise(
-              SubscribeData.init(
-                coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
+            .convert(
+              apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
+              unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
+            )
+            .map(
+              .memberwise(
+                SubscribeData.init(
+                  coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
+                )
               )
             )
           )
-        )
+        }
       }
     }
 

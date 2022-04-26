@@ -54,8 +54,12 @@ let adminRouter = OneOf {
         Method.post
         Body {
           FormData {
-            Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
-            Field("episode_sequence") { Digits().map(.representing(Episode.Sequence.self)) }
+            Optionally {
+              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            }
+            Optionally {
+              Field("episode_sequence") { Digits().map(.representing(Episode.Sequence.self)) }
+            }
           }
         }
       }
@@ -88,7 +92,9 @@ let adminRouter = OneOf {
         Path { "start" }
         Body {
           FormData {
-            Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            Optionally {
+              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+            }
           }
         }
       }
