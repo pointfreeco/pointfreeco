@@ -1,14 +1,14 @@
 public struct NewBlogPostFormData: Codable, Equatable {
   public let nonsubscriberAnnouncement: String
-  public let nonsubscriberDeliver: Bool?
+  public let nonsubscriberDeliver: Bool
   public let subscriberAnnouncement: String
-  public let subscriberDeliver: Bool?
+  public let subscriberDeliver: Bool
   
   public init(
     nonsubscriberAnnouncement: String,
-    nonsubscriberDeliver: Bool?,
+    nonsubscriberDeliver: Bool,
     subscriberAnnouncement: String,
-    subscriberDeliver: Bool?
+    subscriberDeliver: Bool
   ) {
     self.nonsubscriberAnnouncement = nonsubscriberAnnouncement
     self.nonsubscriberDeliver = nonsubscriberDeliver

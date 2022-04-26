@@ -26,12 +26,17 @@ public enum Admin: Equatable {
   }
 
   public enum NewBlogPostEmail: Equatable {
-    case send(BlogPost.Id, formData: NewBlogPostFormData? = nil, isTest: Bool? = nil)
+    case send(BlogPost.Id, formData: NewBlogPostFormData? = nil, isTest: Bool = false)
     case index
   }
 
   public enum NewEpisodeEmail: Equatable {
-    case send(Episode.Id, subscriberAnnouncement: String? = nil, nonSubscriberAnnouncement: String? = nil, isTest: Bool? = nil)
+    case send(
+      Episode.Id,
+      subscriberAnnouncement: String = "",
+      nonSubscriberAnnouncement: String = "",
+      isTest: Bool = false
+    )
     case show
   }
 }
@@ -111,27 +116,29 @@ let adminRouter = OneOf {
           }
           Body {
             FormData {
-              Parse(.memberwise(NewBlogPostFormData.init)) {
-                Field(
-                  NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
-                  .string,
-                  default: ""
-                )
-                Optionally {
-                  Field(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue) {
+              Optionally {
+                Parse(.memberwise(NewBlogPostFormData.init)) {
+                  Field(
+                    NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
+                    .string,
+                    default: ""
+                  )
+                  Field(
+                    NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue, default: false
+                  ) {
+                    Bool.parser()
+                  }
+                  Field(
+                    NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
+                    .string,
+                    default: ""
+                  )
+                  Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue, default: false) {
                     Bool.parser()
                   }
                 }
-                Field(
-                  NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
-                  .string,
-                  default: ""
-                )
-                Optionally {
-                  Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue) { Bool.parser() }
-                }
               }
-              isTest
+              Field("test", .string.isPresent, default: false)
             }
           }
         }
@@ -158,13 +165,9 @@ let adminRouter = OneOf {
           }
           Body {
             FormData {
-              Optionally {
-                Field("subscriber_announcement", .string)
-              }
-              Optionally {
-                Field("nonsubscriber_announcement", .string)
-              }
-              isTest
+              Field("subscriber_announcement", .string, default: "")
+              Field("nonsubscriber_announcement", .string, default: "")
+              Field("test", .string.isPresent, default: false)
             }
           }
         }
@@ -173,14 +176,13 @@ let adminRouter = OneOf {
   }
 }
 
-private let isTest = Optionally {
-  Field(
-    "test",
-    .string.map(
+extension Conversion where Output == String  {
+  var isPresent: Conversions.Map<Self, AnyConversion<String, Bool>> {
+    self.map(
       .convert(
         apply: { _ in true },
         unapply: { $0 ? "" : nil }
       )
     )
-  )
+  }
 }

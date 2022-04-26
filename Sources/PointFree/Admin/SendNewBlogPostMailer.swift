@@ -103,11 +103,11 @@ private func sendNewBlogPostEmails<I>(
 
   let nonsubscriberOrSubscribersOnly: Either<Prelude.Unit, Prelude.Unit>?
   switch (formData.nonsubscriberDeliver, formData.subscriberDeliver) {
-  case (.some(true), .some(true)):
+  case (true, true):
     nonsubscriberOrSubscribersOnly = nil
-  case (.some(true), _):
+  case (true, _):
     nonsubscriberOrSubscribersOnly = .left(unit)
-  case (_, .some(true)):
+  case (_, true):
     nonsubscriberOrSubscribersOnly = .right(unit)
   case (_, _):
     return pure(conn.map(const(unit)))

@@ -115,7 +115,7 @@ class NewBlogPostEmailTests: TestCase {
       nonsubscriberAnnouncement: "",
       nonsubscriberDeliver: true,
       subscriberAnnouncement: "Hello!",
-      subscriberDeliver: nil
+      subscriberDeliver: false
     )
 
     XCTAssertEqual(
