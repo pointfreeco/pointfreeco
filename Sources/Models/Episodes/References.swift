@@ -1200,6 +1200,16 @@ general.
     title: "Value-Oriented Programming"
   )
 
+  public static let vaporRouting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A bidirectional Vapor router with more type safety and less fuss.
+""",
+    link: "https://github.com/pointfreeco/vapor-routing",
+    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    title: "Vapor Routing"
+  )
+
   public static let wikipediaMonad = Episode.Reference(
     author: nil,
     blurb: """
