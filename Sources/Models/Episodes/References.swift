@@ -475,6 +475,16 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
   )
 
+  public static let openSourcingURLRoutingAndVaporRouting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+New routing libraries that make client-side and server-side routing easy with more type safety and less fuss.
+""",
+    link: "http://pointfree.co/blog/posts/75-open-sourcing-urlrouting-and-vaporrouting#vaporrouting",
+    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    title: "Open Sourcing URLRouting and VaporRouting"
+  )
+
   public static let opticsByExample = Episode.Reference(
     author: "Chris Penner",
     blurb: #"""

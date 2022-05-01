@@ -1,9 +1,9 @@
 import Foundation
 
-public let post0075_VaporRouting = BlogPost(
+public let post0075_URLVaporRouting = BlogPost(
   author: .pointfree,
   blurb: """
-Introduction new routing libraries that make client-side and server-side routing easy with more type safety and less fuss.
+Introducing new routing libraries that make client-side and server-side routing easy with more type safety and less fuss.
 """,
   contentBlocks: [
     .init(

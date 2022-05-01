@@ -14,6 +14,7 @@ Now that we're familiar with swift-parsing's URL router, let's take a look at Sw
     references: [
       .vaporRouting,
       .urlRouting,
+      .openSourcingURLRoutingAndVaporRouting,
       .swiftParsing,
       .invertibleSyntaxDescriptions,
       .init(
