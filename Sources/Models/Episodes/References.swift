@@ -1187,6 +1187,16 @@ Another approach to the parsing-printing problem using a construct known as a "p
     title: "Unified Parsing and Printing with Prisms"
   )
 
+  public static let urlRouting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A bidirectional URL router with more type safety and less fuss.
+""",
+    link: "https://github.com/pointfreeco/swift-url-routing",
+    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    title: "URL Routing"
+  )
+
   public static let valueOrientedProgramming = Episode.Reference(
     author: "Matt Diephouse",
     blurb: """
