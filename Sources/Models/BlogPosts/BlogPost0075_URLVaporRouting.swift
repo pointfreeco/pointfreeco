@@ -21,7 +21,7 @@ Both libraries are built on the back of our powerful [parsing][swift-parsing] li
 
 The [URLRouting][swift-url-routing] library gives you access to tools that can parse a nebulous URL request into a first class data type, with composability, type safety and ergnomics in mind. This can be useful for client-side iOS applications that need to support deep-linking, as well as server-side applications.
 
-To use the library you first begin with a domain modeling exercise. You can model a route enum that represents each URL you want to recognize in your application, and each case of the enum holds the data you want to extract from the URL.
+To use the library you first begin with a domain modeling exercise. You model a route enum that represents each URL you want to recognize in your application, and each case of the enum holds the data you want to extract from the URL.
 
 For example, if we had screens in our application that represent showing all books, showing a particular book, and searching books, we can model this as an enum:
 
@@ -33,7 +33,9 @@ enum AppRoute {
 }
 ```
 
-Then we construct a router that can process any incoming URL request into this type using the tools that ship with this library. For example:
+Notice that we only encode the data we want to extract from the URL in these cases. There are no details of where this data lives in the URL, such as whether it comes from path parameters, query parameters or POST body data.
+
+Those details are determined by the router, which can be constructed with the tools shipped in [URLRouting][swift-url-routing] library. Its purpose is to transform an incoming URL into the `AppRoute` type. For example:
 
 ```swift
 import URLRouting
