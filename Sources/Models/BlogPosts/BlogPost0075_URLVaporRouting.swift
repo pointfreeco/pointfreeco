@@ -222,7 +222,7 @@ func siteHandler(
 
 Notice that handling the `.userBook` case is entirely focused on just the logic for the endpoint, not parsing and validating the parameters in the URL.
 
-With that done you can now easily generate URLs to any part of your website usinge a type safe, concise API. For example, generating the list of book links now looks like this:
+With that done you can now easily generate URLs to any part of your website using a type safe, concise API. For example, generating the list of book links now looks like this:
 
 ```swift
 Node.ul(
