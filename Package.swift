@@ -40,7 +40,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", from: "0.4.0"),
     .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
-    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.9.1"),
+    .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
@@ -247,7 +247,6 @@ var package = Package(
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
         .product(name: "Overture", package: "swift-overture"),
-        .product(name: "Parsing", package: "swift-parsing"),
         .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
@@ -281,12 +280,11 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
-        .product(name: "Parsing", package: "swift-parsing"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-        .product(name: "_URLRouting", package: "swift-parsing"),
+        .product(name: "URLRouting", package: "swift-url-routing"),
       ]
     ),
 

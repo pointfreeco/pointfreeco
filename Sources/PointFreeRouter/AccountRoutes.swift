@@ -1,7 +1,7 @@
 import Foundation
 import Models
 import Stripe
-import _URLRouting
+import URLRouting
 
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)

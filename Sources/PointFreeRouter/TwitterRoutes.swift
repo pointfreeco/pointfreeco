@@ -1,5 +1,5 @@
 import Prelude
-import _URLRouting
+import URLRouting
 
 public enum TwitterRoute: String, CaseIterable {
   case mbrandonw

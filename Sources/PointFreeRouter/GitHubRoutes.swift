@@ -1,5 +1,5 @@
 import GitHub
-import _URLRouting
+import URLRouting
 
 public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
@@ -30,9 +30,9 @@ public let gitHubRouter = OneOf {
     Query {
       Field("client_id", .string.representing(GitHub.Client.Id.self))
       Optionally {
-        Field("redirect_uri", .string)
+        Field("redirect_uri")
       }
-      Field("scope", .string)
+      Field("scope")
     }
   }
 
