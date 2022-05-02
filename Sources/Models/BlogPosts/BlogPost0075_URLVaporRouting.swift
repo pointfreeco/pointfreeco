@@ -88,25 +88,7 @@ appRoute.path(for: .searchBooks(query: "Blob Bio"))
 // "/books/search?query=Blob%20Bio"
 ```
 
-```swift
-Node.ul(
-  books.map { book in
-    .li(
-      .a(
-        .href(appRoute.path(for: .book(id: book.id))),
-        book.title
-      )
-    )
-  }
-)
-```
-```html
-<ul>
-  <li><a href="/books/1">Blob Autobiography</a></li>
-  <li><a href="/books/2">Blobbed around the world</a></li>
-  <li><a href="/books/3">Blob's guide to success</a></li>
-</ul>
-```
+This can be incredibly powerful for generating provably correct URLs within your site, and not having to worry about routes changing or typos being accidentally introduced. In fact, we use the URL routing to power routing on this very site, which you can see by peeking at the [code][pointfreeco-url-routing-example] since it is all [open source][pointfreeco-github].
 
 <div id="vaporrouting"></div>
 
@@ -253,6 +235,8 @@ That's a short summary of the powers these libraries contain, but there is a lot
 [vapor]: http://vapor.codes
 [express]: http://expressjs.com
 [sinatra]: http://sinatrarb.com
+[pointfreeco-url-routing-example]: https://github.com/pointfreeco/pointfreeco/blob/f96c00ee2ef188d4cdb9a867086de848b96e0dc5/Sources/PointFreeRouter/Routes.swift#L9
+[pointfreeco-github]: http://github.com/pointfreeco/pointfreeco
 """#,
       type: .paragraph
     )
