@@ -6,7 +6,7 @@ import Prelude
 import Stripe
 import Tagged
 import UrlFormEncoding
-import _URLRouting
+import URLRouting
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
@@ -456,10 +456,10 @@ let router = OneOf {
       Path { "github-auth" }
       Query {
         Optionally {
-          Field("code", .string)
+          Field("code")
         }
         Optionally {
-          Field("redirect", .string)
+          Field("redirect")
         }
       }
     }
@@ -473,7 +473,7 @@ let router = OneOf {
       Path { "login" }
       Query {
         Optionally {
-          Field("redirect", .string)
+          Field("redirect")
         }
       }
     }

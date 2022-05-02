@@ -1,5 +1,5 @@
 import Foundation
-import _URLRouting
+import URLRouting
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking

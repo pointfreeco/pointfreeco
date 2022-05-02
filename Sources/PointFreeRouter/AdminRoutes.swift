@@ -1,6 +1,6 @@
 import Foundation
 import Models
-import _URLRouting
+import URLRouting
 
 public enum Admin: Equatable {
   case episodeCredits(EpisodeCredit = .show)
@@ -126,7 +126,6 @@ let adminRouter = OneOf {
                 Parse(.memberwise(NewBlogPostFormData.init)) {
                   Field(
                     NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
-                    .string,
                     default: ""
                   )
                   Field(
@@ -136,7 +135,6 @@ let adminRouter = OneOf {
                   }
                   Field(
                     NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
-                    .string,
                     default: ""
                   )
                   Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue, default: false) {

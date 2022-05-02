@@ -28,8 +28,8 @@ import StripeTestSupport
 #if os(macOS)
 import WebKit
 #endif
+import URLRouting
 import XCTestDynamicOverlay
-import _URLRouting
 
 extension Environment {
   public static let mock = Environment(

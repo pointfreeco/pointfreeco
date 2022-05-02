@@ -2,7 +2,7 @@ import Foundation
 import Models
 import Stripe
 import TaggedMoney
-import _URLRouting
+import URLRouting
 
 public enum Gifts: Equatable {
   case confirmation(GiftFormData)

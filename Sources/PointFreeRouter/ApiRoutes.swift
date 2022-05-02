@@ -1,5 +1,5 @@
 import Models
-import _URLRouting
+import URLRouting
 
 extension SiteRoute {
   public enum Api: Equatable {

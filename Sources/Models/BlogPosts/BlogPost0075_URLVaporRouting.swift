@@ -8,22 +8,22 @@ Introducing new routing libraries that make client-side and server-side routing 
   contentBlocks: [
     .init(
       content: #"""
-We are excited to announce two brand new open source projects that bring composable, type safe and reversible routing to both iOS client applications and server-side Swift applications:
+We are excited to announce two brand new open source projects that bring composable, type safe, and bidirectional routing to both iOS client applications and server-side Swift applications:
 
-* The [URLRouting][swift-url-routing] library gives you tools for transforming URL requests into first class data types, and the reverse to turn data back into URL requests. [Learn more](#urlrouting) ⬇
-* The [VaporRouting][vapor-routing] library gives you tools for handling routing in a Vapor web application in a type safe way and for statically linking to any part of you website. [Learn more](#vaporrouting) ⬇
+* The [URL Routing][swift-url-routing] library gives you tools for transforming URL requests into first class data types, and the reverse to turn data back into URL requests. [Learn more](#urlrouting) ⬇
+* The [Vapor Routing][vapor-routing] library gives you tools for handling routing in a Vapor web application in a type safe way and for statically linking to any part of you website. [Learn more](#vaporrouting) ⬇
 
-Both libraries are built on the back of our powerful [parsing][swift-parsing] library, and shows just how useful generalized parsing can be.
+Both libraries are built on the back of our powerful [Parsing][swift-parsing] library, and shows just how useful generalized parsing can be.
 
 <div id="urlrouting"></div>
 
 ## URLRouting
 
-The [URLRouting][swift-url-routing] library gives you access to tools that can parse a nebulous URL request into a first class data type, with composability, type safety and ergnomics in mind. This can be useful for client-side iOS applications that need to support deep-linking, as well as server-side applications.
+The [URL Routing][swift-url-routing] library gives you access to tools that can parse a nebulous URL request into a first class data type, with composability, type safety and ergonomics in mind. This can be useful for client-side iOS applications that need to support deep-linking, as well as server-side applications.
 
 To use the library you first begin with a domain modeling exercise. You model a route enum that represents each URL you want to recognize in your application, and each case of the enum holds the data you want to extract from the URL.
 
-For example, if we had screens in our application that represent showing all books, showing a particular book, and searching books, we can model this as an enum:
+For example, if we had screens in our Books application that represent showing all books, showing a particular book, and searching books, we can model this as an enum:
 
 ```swift
 enum AppRoute {
@@ -35,7 +35,7 @@ enum AppRoute {
 
 Notice that we only encode the data we want to extract from the URL in these cases. There are no details of where this data lives in the URL, such as whether it comes from path parameters, query parameters or POST body data.
 
-Those details are determined by the router, which can be constructed with the tools shipped in [URLRouting][swift-url-routing] library. Its purpose is to transform an incoming URL into the `AppRoute` type. For example:
+Those details are determined by the router, which can be constructed with the tools shipped in [URL Routing][swift-url-routing] library. Its purpose is to transform an incoming URL into the `AppRoute` type. For example:
 
 ```swift
 import URLRouting
@@ -62,7 +62,7 @@ let appRouter = OneOf {
 }
 ```
 
-This router describes at a high-level how to pick apart the path components, query parameters, and more from a URL in order to transform it into a `AppRoute`.
+This router describes at a high-level how to pick apart the path components, query parameters, and more from a URL in order to transform it into an `AppRoute`.
 
 Once this router is defined you can use it to implement deep-linking logic in your application. You can implement a single function that accepts a `URL`, use the router's `match` method to transform it into an `AppRoute`, and then switch on the route to handle each deep link destination:
 
@@ -81,11 +81,11 @@ func handleDeepLink(url: URL) throws {
 }
 ```
 
-This kind of routing is incredibly useful in client side iOS applications, but it can also be used in server-side applications. Even better, it can automatically transform `AppRoute` values back into URL's which is handy for linking to various parts of your website:
+This kind of routing is incredibly useful in client side iOS applications, but it can also be used in server-side applications. Even better, it can automatically transform `AppRoute` values back into URLs, which is handy for linking to various parts of your website:
 
 ```swift
 appRoute.path(for: .searchBooks(query: "Blob Bio"))
-// /books/search?query=Blob%20Bio
+// "/books/search?query=Blob%20Bio"
 ```
 
 ```swift
@@ -112,9 +112,9 @@ Node.ul(
 
 ## VaporRouting
 
-As we can see, URLRouting provides some useful tools for server-side applications, which is why we are also open sourcing [VaporRouting][vapor-routing], a bidirectional Vapor router with more type safety and less fuss.
+As we can see, URL Routing provides some useful tools for server-side applications, which is why we are also open sourcing [Vapor Routing][vapor-routing], which provides [Vapor][vapor] bindings to the URL Routing library.
 
-Routing in [Vapor][vapor] has a simple API that is similar to popular web frameworks in other languages, such as Ruby's [Sinatra][sinatra] or Node's [Express][express]. It works well for simple routes, but complexity grows over time due to lack of type safety and inability to _generate_ correct URLs to pages on your site.
+Routing in Vapor has a simple API that is similar to popular web frameworks in other languages, such as Ruby's [Sinatra][sinatra] or Node's [Express][express]. It works well for simple routes, but complexity grows over time due to lack of type safety and inability to _generate_ correct URLs to pages on your site.
 
 To see this, consider an endpoint to fetch a book that is associated with a particular user:
 
@@ -138,9 +138,9 @@ app.get("users", ":userId", "books", ":bookId") { req -> Response in
 
 When a URL request is made to the server whose method and path matches the above pattern, the closure will be executed for handling that endpoint's logic.
 
-Notice that we must sprinkle in validation code and error handling into the endpoint's logic in order to coerce the stringy parameter types into first class data types. This obscures the real logic of the endpoint, and any changes to the route's pattern must be kept in sync with the validation logic, such as if we wanted to rename "users" to "user" and "books" to "book".
+Notice that we must sprinkle in validation code and error handling into the endpoint's logic in order to coerce the stringy parameter types into first class data types. This obscures the real logic of the endpoint, and any changes to the route's pattern must be kept in sync with the validation logic, such as if we wanted to rename the `:userId` or `:bookId` parameters.
 
-In addition to these drawbacks, we often need to be able to generate a valid URL to the user's book page by specifying a user and book id. For example, suppose we wanted to generate an HTML page with a list of all the books for a user, including a link to each book. We have no choice but to manually interpolate a string to form the URL:
+In addition to these drawbacks, we often need to be able to generate valid URLs to various server endpoints. For example, suppose we wanted to [generate an HTML page][swift-html-vapor] with a list of all the books for a user, including a link to each book. We have no choice but to manually interpolate a string to form the URL, or build our own ad hoc library of helper functions that do this string interpolation under the hood:
 
 ```swift
 Node.ul(
@@ -170,7 +170,7 @@ In fact, there is a typo in the above code. The URL constructed goes to "/book/:
 
 [VaporRouting][vapor-routing] aims to solve these problems, and more, when dealing with routing in a Vapor application.
 
-To use the libary, one starts by constructing an enum that describes all the routes your website supports. For example, the book endpoint described above can be represented as:
+To use the library, one starts by constructing an enum that describes all the routes your website supports. For example, the book endpoint described above can be represented as:
 
 ```swift
 enum SiteRoute {
@@ -179,7 +179,7 @@ enum SiteRoute {
 }
 ```
 
-Then you construct a router as a parser-printer from our [parsing library][swift-parsing], which is an object that is capable of parsing URL requests in `SiteRoute` and _printing_ `SiteRoute` values back into URL requests. Such routers can be constructed with various parser-printers the library vends, such as `Path`, `Query`, `Body` and more:
+Then you construct a router, which is an object that is capable of parsing URL requests into `SiteRoute` values and _printing_ `SiteRoute` values back into URL requests. Such routers can be built from various types the library vends, such as `Path` to match particular path components, `Query` to match particular query items, `Body` to decode request body data, and more:
 
 ```swift
 import VaporRouting
@@ -194,6 +194,8 @@ let siteRouter = OneOf {
   // More uses of Route for each case in SiteRoute
 }
 ```
+
+> Note: Routers are built on top of the [Parsing][swift-parsing] library, which provides a general solution for parsing more nebulous data into first-class data types, like URL requests into your app's routes.
 
 Once that little bit of upfront work is done, using the router doesn't look too dissimilar from using Vapor's native routing tools. First you mount the router to the application to take care of all routing responsibilities, and you do so by providing a closure that transforms `SiteRoute` to a response:
 
