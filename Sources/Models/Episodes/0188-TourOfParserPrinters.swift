@@ -13,6 +13,8 @@ Now that we're familiar with swift-parsing's URL router, let's take a look at Sw
     publishedAt:  Date(timeIntervalSince1970: 1651467600),
     references: [
       .vaporRouting,
+      .urlRouting,
+      .openSourcingURLRoutingAndVaporRouting,
       .swiftParsing,
       .invertibleSyntaxDescriptions,
       .init(

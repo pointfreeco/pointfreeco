@@ -475,6 +475,16 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
   )
 
+  public static let openSourcingURLRoutingAndVaporRouting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+New routing libraries that make client-side and server-side routing easy with more type safety and less fuss.
+""",
+    link: "http://pointfree.co/blog/posts/75-open-sourcing-urlrouting-and-vaporrouting#vaporrouting",
+    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    title: "Open Sourcing URLRouting and VaporRouting"
+  )
+
   public static let opticsByExample = Episode.Reference(
     author: "Chris Penner",
     blurb: #"""
@@ -1185,6 +1195,16 @@ Another approach to the parsing-printing problem using a construct known as a "p
     link: "https://skillsmatter.com/skillscasts/16594-unified-parsing-and-printing-with-prisms",
     publishedAt: referenceDateFormatter.date(from: "2016-04-29"),
     title: "Unified Parsing and Printing with Prisms"
+  )
+
+  public static let urlRouting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A bidirectional URL router with more type safety and less fuss.
+""",
+    link: "https://github.com/pointfreeco/swift-url-routing",
+    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    title: "URL Routing"
   )
 
   public static let valueOrientedProgramming = Episode.Reference(
