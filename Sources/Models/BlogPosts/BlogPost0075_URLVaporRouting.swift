@@ -88,6 +88,26 @@ appRoute.path(for: .searchBooks(query: "Blob Bio"))
 // "/books/search?query=Blob%20Bio"
 ```
 
+```swift
+Node.ul(
+  books.map { book in
+    .li(
+      .a(
+        .href(appRoute.path(for: .book(id: book.id))),
+        book.title
+      )
+    )
+  }
+)
+```
+```html
+<ul>
+  <li><a href="/books/1">Blob Autobiography</a></li>
+  <li><a href="/books/2">Blobbed around the world</a></li>
+  <li><a href="/books/3">Blob's guide to success</a></li>
+</ul>
+```
+
 This can be incredibly powerful for generating provably correct URLs within your site, and not having to worry about routes changing or typos being accidentally introduced. In fact, we use the URL routing to power routing on this very site, which you can see by peeking at the [code][pointfreeco-url-routing-example] since it is all [open source][pointfreeco-github].
 
 <div id="vaporrouting"></div>
