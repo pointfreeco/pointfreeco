@@ -2,10 +2,15 @@ import Stripe
 
 public enum SubscriberState {
   case nonSubscriber
-  case owner(hasSeat: Bool, status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?, deactivated: Bool)
-  case teammate(status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?, deactivated: Bool)
+  case owner(
+    hasSeat: Bool, status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?,
+    deactivated: Bool)
+  case teammate(
+    status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?, deactivated: Bool)
 
-  public init(user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?) {
+  public init(
+    user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?
+  ) {
     switch (user, subscriptionAndEnterpriseAccount) {
     case let (.some(user), .some((subscription, enterpriseAccount))):
       if subscription.userId == user.id {
@@ -44,7 +49,7 @@ public enum SubscriberState {
     case .nonSubscriber:
       return nil
     case let .owner(_, _, _, deactivated),
-         let .teammate(_, _, deactivated):
+      let .teammate(_, _, deactivated):
       return deactivated
     }
   }
@@ -70,9 +75,9 @@ public enum SubscriberState {
   public var isNonSubscriber: Bool {
     switch self {
     case .teammate(status: .active, _, _),
-         .teammate(status: .trialing, _, _),
-         .owner(hasSeat: _, status: .active, _, _),
-         .owner(hasSeat: _, status: .trialing, _, _):
+      .teammate(status: .trialing, _, _),
+      .owner(hasSeat: _, status: .active, _, _),
+      .owner(hasSeat: _, status: .trialing, _, _):
       return false
     default:
       return true
@@ -82,7 +87,7 @@ public enum SubscriberState {
   public var isActiveSubscriber: Bool {
     switch self {
     case let .teammate(status: status, _, false),
-         let .owner(hasSeat: true, status: status, _, false):
+      let .owner(hasSeat: true, status: status, _, false):
       return status.isActive
     default:
       return false

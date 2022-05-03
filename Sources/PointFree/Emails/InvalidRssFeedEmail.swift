@@ -1,9 +1,9 @@
 import Either
+import FunctionalCss
 import Html
 import Mailgun
 import Models
 import Prelude
-import FunctionalCss
 
 func sendInvalidRssFeedEmail(user: User, userAgent: String) -> EitherIO<Error, SendEmailResponse> {
   sendEmail(
@@ -14,16 +14,17 @@ func sendInvalidRssFeedEmail(user: User, userAgent: String) -> EitherIO<Error, S
   )
 }
 
-let invalidRssFeedEmail = simpleEmailLayout(invalidRssFeedEmailBody(user:userAgent:)) <<< { user, userAgent in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "Private RSS Feed",
-    preheader: "We detected that your private RSS feed URL was shared.",
-    template: .default(includeHeaderImage: false),
-    data: (user, userAgent)
-  )
-}
+let invalidRssFeedEmail =
+  simpleEmailLayout(invalidRssFeedEmailBody(user:userAgent:)) <<< { user, userAgent in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Private RSS Feed",
+      preheader: "We detected that your private RSS feed URL was shared.",
+      template: .default(includeHeaderImage: false),
+      data: (user, userAgent)
+    )
+  }
 
 private func invalidRssFeedEmailBody(user: User, userAgent: String) -> Node {
   .emailTable(
@@ -36,7 +37,8 @@ private func invalidRssFeedEmailBody(user: User, userAgent: String) -> Node {
           .h3(
             attributes: [.class([Class.pf.type.responsiveTitle3])], "Private RSS Feed"
           ),
-          .markdownBlock("""
+          .markdownBlock(
+            """
             Hi there,
 
             We detected that your private RSS feed URL was shared\(shareQualifier(userAgent: userAgent)). To protect your account, your RSS feed has been deactivated and a new URL has been generated for you, which is available on your [account](https://www.pointfree.co/account) page.

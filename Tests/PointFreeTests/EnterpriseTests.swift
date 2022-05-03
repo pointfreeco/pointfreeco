@@ -3,21 +3,23 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import PointFree
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 class EnterpriseTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testLanding_LoggedOut() {
@@ -30,15 +32,15 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 700)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 700))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 700)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 700)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -53,7 +55,8 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding_AlreadySubscribedToEnterprise() {
-    let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
+    let subscriptionId = Subscription.Id(
+      rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
     var account = EnterpriseAccount.mock
     account.subscriptionId = subscriptionId
     var user = User.mock
@@ -132,9 +135,10 @@ class EnterpriseTests: TestCase {
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
-    
+
     let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(
+        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -155,7 +159,8 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(
+        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -175,7 +180,8 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
 
     let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(
+        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)
@@ -197,7 +203,8 @@ class EnterpriseTests: TestCase {
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+      to: .enterprise(
+        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
       session: .loggedIn(as: loggedInUser)
     )
     let conn = connection(from: req)

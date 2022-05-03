@@ -4,15 +4,15 @@ import Overture
 extension Episode {
   public static let ep146_derivedBehavior = Episode(
     blurb: """
-The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and a possible solution in vanilla SwiftUI before turning our attention to the Composable Architecture.
-""",
+      The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and a possible solution in vanilla SwiftUI before turning our attention to the Composable Architecture.
+      """,
     codeSampleDirectory: "0146-derived-behavior-pt1",
     exercises: _exercises,
     fullVideo: nil,
     id: 146,
-    length: 42*60 + 8,
+    length: 42 * 60 + 8,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1621227600),
+    publishedAt: Date(timeIntervalSince1970: 1_621_227_600),
     references: [
       update(.stateObjectAndObservableObjectInSwiftUI) {
         $0.blurb = """
@@ -31,13 +31,13 @@ The ability to break down applications into small domains that are understandabl
     subtitle: "The Problem",
     title: "Derived Behavior",
     trailerVideo: .init(
-      bytesLength: 72969840,
+      bytesLength: 72_969_840,
       downloadUrls: .s3(
         hd1080: "0146-trailer-1080p-b9ab3990934d4c39965d2a2e36b67343",
         hd720: "0146-trailer-720p-a469cfa620c04678b9231d5ebec78779",
         sd540: "0146-trailer-540p-5d258308ac7d47c1b79435a0bdc107c0"
       ),
-      vimeoId: 549279750
+      vimeoId: 549_279_750
     )
   )
 }

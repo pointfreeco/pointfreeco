@@ -1,7 +1,7 @@
 import Css
+import Foundation
 import FunctionalCss
 import Html
-import Foundation
 import Prelude
 
 extension Attribute {
@@ -41,7 +41,6 @@ private let supElement = CssSelector.Element.other("sup")
 public let sup = CssSelector.elem(supElement)
 private let svgElement = CssSelector.Element.other("svg")
 public let svg = CssSelector.elem(svgElement)
-
 
 private let buttonElement = CssSelector.Element.other("button")
 public let button = CssSelector.elem(buttonElement)

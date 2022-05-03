@@ -15,31 +15,36 @@ private func footerInfoColumnsView(user: User?, year: Int) -> Node {
   return [
     .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView),
     linksColumnsView(currentUser: user),
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year))
+    .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year)),
   ]
 }
 
 private func linksColumnsView(currentUser: User?) -> Node {
   return [
     .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView)
+    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView),
   ]
 }
 
 private func legalView(year: Int) -> Node {
   return .p(
     attributes: [.class([legalClass, Class.padding([.mobile: [.top: 2]])])],
-    .text("© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "),
+    .text(
+      "© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "
+    ),
     "All other content is licensed under ",
     .a(
-      attributes: [.class([Class.pf.colors.link.gray650]), .href("https://creativecommons.org/licenses/by-nc-sa/4.0/")],
+      attributes: [
+        .class([Class.pf.colors.link.gray650]),
+        .href("https://creativecommons.org/licenses/by-nc-sa/4.0/"),
+      ],
       "CC BY-NC-SA 4.0"
     ),
     ", and the underlying ",
     .a(
       attributes: [
         .class([Class.pf.colors.link.gray650]),
-        .href(gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString)
+        .href(gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString),
       ],
       "source code"
     ),
@@ -47,7 +52,7 @@ private func legalView(year: Int) -> Node {
     .a(
       attributes: [
         .class([Class.pf.colors.link.gray650]),
-        .href(gitHubRouter.url(for: .license).absoluteString)
+        .href(gitHubRouter.url(for: .license).absoluteString),
       ],
       "MIT license"
     )
@@ -91,18 +96,23 @@ private func contentColumnView(currentUser: User?) -> Node {
     .ol(
       attributes: [.class([Class.type.list.reset])],
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))], "Pricing")
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))],
+          "Pricing")
       ),
       Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
         ? .li(
-          .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
+          .a(
+            attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
         )
         : [],
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
       ),
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))], "Collections")
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))],
+          "Collections")
       ),
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
@@ -119,33 +129,41 @@ private let moreColumnView = Node.div(
       .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString)], "Twitter")
+      .a(
+        attributes: [
+          .class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString),
+        ], "Twitter")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString)], "GitHub")
+      .a(
+        attributes: [
+          .class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString),
+        ], "GitHub")
     ),
     .li(
       .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
     ),
     .li(
-      .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))], "Privacy Policy")
+      .a(
+        attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))],
+        "Privacy Policy")
     )
   )
 )
 
 private let footerClass =
   Class.grid.row
-    | Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])
-    | Class.pf.colors.bg.black
+  | Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])
+  | Class.pf.colors.bg.black
 
 private let footerLinkClass =
   Class.pf.colors.link.purple
-    | Class.pf.type.body.regular
+  | Class.pf.type.body.regular
 
 private let columnTitleClass =
   Class.pf.type.responsiveTitle7
-    | Class.pf.colors.fg.white
+  | Class.pf.colors.fg.white
 
 private let legalClass =
   Class.pf.colors.fg.gray400
-    | Class.pf.type.body.small
+  | Class.pf.type.body.small

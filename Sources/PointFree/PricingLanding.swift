@@ -1,5 +1,5 @@
-import HttpPipeline
 import Foundation
+import HttpPipeline
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -7,13 +7,14 @@ import Prelude
 import Tuple
 import Views
 
-public let pricingLanding: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple3<User?, SiteRoute, SubscriberState>,
-  Data
-  >
-  = writeStatus(.ok)
+public let pricingLanding:
+  Middleware<
+    StatusLineOpen,
+    ResponseEnded,
+    Tuple3<User?, SiteRoute, SubscriberState>,
+    Data
+  > =
+    writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: Views.pricingLanding,
@@ -30,12 +31,12 @@ public let pricingLanding: Middleware<
             subscriberState
           ),
           description: """
-Get full access to all \(episodeStats.allEpisodeCount) videos on Point-Free. Choose from a variety of plans, including
-personal, team and enterprise subscriptions.
-""",
+            Get full access to all \(episodeStats.allEpisodeCount) videos on Point-Free. Choose from a variety of plans, including
+            personal, team and enterprise subscriptions.
+            """,
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
           title: "Subscribe to Point-Free"
         )
-    }
-)
+      }
+    )

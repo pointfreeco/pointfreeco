@@ -6,12 +6,13 @@ public let showEpisodeCreditsView: Node = [
   .form(
     attributes: [
       .method(.post),
-      .action(siteRouter.path(for: .admin(.episodeCredits(.add(userId: nil, episodeSequence: nil)))))
+      .action(
+        siteRouter.path(for: .admin(.episodeCredits(.add(userId: nil, episodeSequence: nil))))),
     ],
     .label("User id:"),
     .input(attributes: [.type(.text), .name("user_id")]),
     .label("Episode sequence #:"),
     .input(attributes: [.type(.text), .name("episode_sequence")]),
     .input(attributes: [.type(.submit), .value("Create")])
-  )
+  ),
 ]

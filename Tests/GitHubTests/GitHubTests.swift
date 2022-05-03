@@ -1,12 +1,14 @@
-@testable import GitHub
 import GitHubTestSupport
 import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
 
+@testable import GitHub
+
 final class GitHubTests: TestCase {
   func testRequests() {
-    let fetchAuthToken = fetchGitHubAuthToken(clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")
+    let fetchAuthToken = fetchGitHubAuthToken(
+      clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")
     assertSnapshot(
       matching: fetchAuthToken("deadbeef").rawValue,
       as: .raw,

@@ -5,9 +5,9 @@ import Models
 import Prelude
 import Stripe
 
-let stripePaymentIntentsWebhookMiddleware
-  : (Conn<StatusLineOpen, Event<PaymentIntent>>) -> IO<Conn<ResponseEnded, Data>>
-  = validateStripeSignature
+let stripePaymentIntentsWebhookMiddleware:
+  (Conn<StatusLineOpen, Event<PaymentIntent>>) -> IO<Conn<ResponseEnded, Data>> =
+    validateStripeSignature
     <<< validateEvent
     <<< fetchGift
     <| handlePaymentIntent
@@ -27,10 +27,11 @@ private func validateEvent(
       return conn.map(const(event.data.object)) |> middleware
 
     default:
-      return conn |> stripeHookFailure(
-        subject: "[PointFree Error] Stripe Hook Failed!",
-        body: "Payment intents hook received unhandled event \(event.type)"
-      )
+      return conn
+        |> stripeHookFailure(
+          subject: "[PointFree Error] Stripe Hook Failed!",
+          body: "Payment intents hook received unhandled event \(event.type)"
+        )
     }
   }
 }
@@ -66,18 +67,19 @@ private func handlePaymentIntent(
   return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     .flatMap { gift in
       gift.deliverAt == nil
-      ? sendGiftEmail(for: gift)
-        .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
-      : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
+        ? sendGiftEmail(for: gift)
+          .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
+        : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
     }
     .run
     .flatMap {
       switch $0 {
       case let .left(error):
-        return conn |> stripeHookFailure(
-          subject: "[PointFree Error] Stripe Hook Failed!",
-          body: "Failed to deliver gift \(gift.id): \(error)"
-        )
+        return conn
+          |> stripeHookFailure(
+            subject: "[PointFree Error] Stripe Hook Failed!",
+            body: "Failed to deliver gift \(gift.id): \(error)"
+          )
 
       case .right:
         return conn |> writeStatus(.ok) >=> respond(text: "OK")

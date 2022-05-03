@@ -1,8 +1,6 @@
 import Either
 import HttpPipeline
-@testable import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -10,6 +8,9 @@ import Prelude
 import SnapshotTesting
 import Stripe
 import XCTest
+
+@testable import Models
+@testable import PointFree
 
 private let episodes: [Episode] = [
   .ep0_introduction,
@@ -24,7 +25,7 @@ class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
     Current.episodes = { episodes }
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {

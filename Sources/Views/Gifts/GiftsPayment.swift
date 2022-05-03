@@ -3,8 +3,8 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
-import Stripe
 import PointFreeRouter
+import Stripe
 
 public func giftsPayment(
   plan: Gifts.Plan,
@@ -25,7 +25,7 @@ public func giftsPayment(
               plan: plan,
               currentUser: currentUser,
               stripePublishableKey: stripePublishableKey
-            )
+            ),
           ]
         )
       )
@@ -115,7 +115,7 @@ public func giftsPayment(
           })
         })
         """
-    )
+    ),
   ]
 }
 
@@ -241,7 +241,7 @@ private func formView(
           Class.pf.colors.border.gray850,
           Class.padding([.mobile: [.all: 2]]),
           Class.margin([.mobile: [.top: 1]]),
-        ]),
+        ])
       ],
       .div(
         attributes: [
@@ -266,7 +266,7 @@ private func formView(
       attributes: [
         .class([
           Class.grid.middle(.mobile),
-          Class.margin([.mobile: [.top: 3]])
+          Class.margin([.mobile: [.top: 3]]),
         ])
       ],
       .gridColumn(
@@ -285,7 +285,7 @@ private func formView(
               .class([
                 Class.pf.type.responsiveTitle2,
                 Class.type.normal,
-                Class.margin([.mobile: [.topBottom: 0]])
+                Class.margin([.mobile: [.topBottom: 0]]),
               ])
             ],
             .text("$\(Int(plan.amount.map(Double.init).dollars.rawValue))")
@@ -296,7 +296,7 @@ private func formView(
                 Class.pf.type.body.small,
                 Class.pf.colors.fg.gray400,
                 Class.margin([.mobile: [.left: 1]]),
-                Class.padding([.mobile: [.bottom: 1]])
+                Class.padding([.mobile: [.bottom: 1]]),
               ])
             ],
             "Total"
@@ -309,7 +309,7 @@ private func formView(
         .button(
           attributes: [
             .class([
-              Class.pf.components.button(color: .black),
+              Class.pf.components.button(color: .black)
             ])
           ],
           "Purchase"
@@ -321,27 +321,27 @@ private func formView(
       attributes: [
         .type(.hidden),
         .name(GiftFormData.CodingKeys.monthsFree.stringValue),
-        .value("\(plan.monthCount)")
+        .value("\(plan.monthCount)"),
       ]
     ),
 
     .input(
       attributes: [
         .type(.hidden),
-        .name(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue)
+        .name(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue),
       ]
     )
   )
 }
 
 private let textAreaClass =
-Class.size.width100pct
-| Class.display.block
-| Class.type.fontFamily.inherit
-| Class.pf.colors.fg.black
-| ".border-box"
-| Class.border.rounded.all
-| Class.border.all
-| Class.pf.colors.border.gray800
-| Class.padding([.mobile: [.all: 1]])
-| Class.margin([.mobile: [.bottom: 2]])
+  Class.size.width100pct
+  | Class.display.block
+  | Class.type.fontFamily.inherit
+  | Class.pf.colors.fg.black
+  | ".border-box"
+  | Class.border.rounded.all
+  | Class.border.all
+  | Class.pf.colors.border.gray800
+  | Class.padding([.mobile: [.all: 1]])
+  | Class.margin([.mobile: [.bottom: 2]])

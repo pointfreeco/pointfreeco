@@ -16,7 +16,7 @@ func faq(faqs: [Faq]) -> Node {
       .class([
         Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
       ]),
-      .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+      .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
     ],
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
@@ -28,7 +28,7 @@ func faq(faqs: [Faq]) -> Node {
             .class([
               Class.pf.type.responsiveTitle2,
               Class.grid.center(.desktop),
-              Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
+              Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]]),
             ]),
           ],
           "FAQ"
@@ -47,7 +47,7 @@ func faqItems(faqs: [Faq]) -> Node {
           attributes: [
             .class([
               Class.type.bold,
-              Class.pf.colors.fg.black
+              Class.pf.colors.fg.black,
             ])
           ],
           .text(faq.question)
@@ -61,7 +61,7 @@ func faqItems(faqs: [Faq]) -> Node {
           ],
           faq.answer,
           options: CMARK_OPT_UNSAFE
-        )
+        ),
       ]
     }
   )

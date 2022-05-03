@@ -10,17 +10,19 @@ public func videoView(
   isEpisodeViewable: Bool,
   episodeProgress: Int?
 ) -> Node {
-  let episodeSourceRoot = isEpisodeViewable
+  let episodeSourceRoot =
+    isEpisodeViewable
     ? episode.fullVideo.streamingSource
     : episode.trailerVideo.streamingSource
 
-  let episodeSource = episodeSourceRoot
+  let episodeSource =
+    episodeSourceRoot
     + (episodeProgress.map { "#t=\(Int(Double(episode.length.rawValue * $0) / 100.0))s" } ?? "")
 
   return .div(
     attributes: [
       .class([outerVideoContainerClass]),
-      .style(outerVideoContainerStyle)
+      .style(outerVideoContainerStyle),
     ],
     .iframe(
       attributes: [
@@ -28,31 +30,32 @@ public func videoView(
         .src(episodeSource),
         Attribute("frameborder", "0"),
         Attribute("allow", "autoplay; fullscreen"),
-        Attribute("allowfullscreen", "")
+        Attribute("allowfullscreen", ""),
       ]
     ),
     .script(attributes: [.async(true), .src("https://player.vimeo.com/api/player.js")]),
-    .script(safe: """
-window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
+    .script(
+      safe: """
+        window.addEventListener("load", function (event) {
+          var player = new Vimeo.Player(document.querySelector("iframe"));
 
-  jump(window.location.hash, false);
+          jump(window.location.hash, false);
 
-  document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.tagName != "A") { return; }
-    var hash = new URL(target.href).hash;
-    jump(hash, true);
-  });
+          document.addEventListener("click", function (event) {
+            var target = event.target;
+            if (target.tagName != "A") { return; }
+            var hash = new URL(target.href).hash;
+            jump(hash, true);
+          });
 
-  function jump(hash, play) {
-    var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "");
-    if (time <= 0) { return; }
-    player.setCurrentTime(time);
-    if (play) { player.play(); }
-  }
-});
-"""
+          function jump(hash, play) {
+            var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "");
+            if (time <= 0) { return; }
+            player.setCurrentTime(time);
+            if (play) { player.play(); }
+          }
+        });
+        """
     ),
     progressPollingScript(isEpisodeViewable: isEpisodeViewable)
   )
@@ -60,25 +63,26 @@ window.addEventListener("load", function (event) {
 
 private func progressPollingScript(isEpisodeViewable: Bool) -> Node {
   isEpisodeViewable
-    ? Node.script(safe: """
-window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
+    ? Node.script(
+      safe: """
+        window.addEventListener("load", function (event) {
+          var player = new Vimeo.Player(document.querySelector("iframe"));
 
-  var lastSeenPercent = 0
-  player.on('timeupdate', function(data) {
-    console.log(data.percent - lastSeenPercent)
-    if (data.percent - lastSeenPercent >= 0.01) {
-      lastSeenPercent = data.percent;
+          var lastSeenPercent = 0
+          player.on('timeupdate', function(data) {
+            console.log(data.percent - lastSeenPercent)
+            if (data.percent - lastSeenPercent >= 0.01) {
+              lastSeenPercent = data.percent;
 
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open(
-        "POST",
-        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-      );
-      httpRequest.send();
-    }
-  });
-});
-""")
+              var httpRequest = new XMLHttpRequest();
+              httpRequest.open(
+                "POST",
+                window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+              );
+              httpRequest.send();
+            }
+          });
+        });
+        """)
     : []
 }

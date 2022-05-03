@@ -67,7 +67,7 @@ private let lineHeightStyles: Stylesheet = concat([
     .concat(),
   [1, 2, 3, 4]
     .map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }
-    .concat()
+    .concat(),
 ])
 
 private let italicStyle = Class.type.italic % fontStyle(.italic)
@@ -87,10 +87,9 @@ private let emphasisStyles: Stylesheet = concat([
 ])
 
 private let capsStyles =
-  Class.type.caps % (
-    textTransform(.uppercase)
-      <> letterSpacing(.pt(0.54))
-)
+  Class.type.caps
+  % (textTransform(.uppercase)
+    <> letterSpacing(.pt(0.54)))
 
 private let boldStyles: Stylesheet = concat([
   Class.type.bold % fontWeight(.w700),
@@ -120,7 +119,7 @@ private let _alignStyles: Stylesheet = concat([
 
 private let wrapRules: Stylesheet = concat([
   Class.type.nowrap % key("white-space", "nowrap"),
-  Class.type.breakWord % key("word-wrap", "break-word")
+  Class.type.breakWord % key("word-wrap", "break-word"),
 ])
 
 //.truncate {

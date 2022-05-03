@@ -1,6 +1,7 @@
-import XCTest
-@testable import Models
 import PointFreeTestSupport
+import XCTest
+
+@testable import Models
 
 final class CollectionTests: TestCase {
   func testAllCollections() {

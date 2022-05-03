@@ -45,7 +45,7 @@ public func minimalNavView(
     attributes: [.class([newNavBarClass(for: style)])],
     .div(
       attributes: [
-        .style(.concat(maxWidth(.px(1080)), margin(topBottom: nil, leftRight: .auto))),
+        .style(.concat(maxWidth(.px(1080)), margin(topBottom: nil, leftRight: .auto)))
       ],
       .gridRow(
         attributes: [.class([Class.flex.items.center])],
@@ -79,7 +79,9 @@ public func minimalNavView(
         .gridColumn(
           sizes: [.desktop: 9],
           currentUser
-            .map { loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState) }
+            .map {
+              loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState)
+            }
             ?? loggedOutNavItemsView(style: style, currentRoute: currentRoute)
         )
       )
@@ -95,8 +97,8 @@ private func loggedInNavItemsView(
   return .ul(
     attributes: [.class([navListClass])],
     .li(
-        attributes: [.class([navListItemClass])],
-        collectionsLinkView(style: style)
+      attributes: [.class([navListItemClass])],
+      collectionsLinkView(style: style)
     ),
     .li(
       attributes: [.class([navListItemClass])],
@@ -121,7 +123,9 @@ private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: S
     Feature.allFeatures.hasAccess(to: .gifts, for: nil)
       ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
       : [],
-    .li(attributes: [.class([navListItemClass])], logInLinkView(style: style, currentRoute: currentRoute))
+    .li(
+      attributes: [.class([navListItemClass])],
+      logInLinkView(style: style, currentRoute: currentRoute))
   )
 }
 
@@ -135,19 +139,26 @@ private func collectionsLinkView(style: NavStyle.MinimalStyle) -> Node {
 }
 
 private func blogLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClass(for: style)])], "Blog")
+  return .a(
+    attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClass(for: style)])], "Blog")
 }
 
 private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClass(for: style)])], "Pricing")
+  return .a(
+    attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClass(for: style)])],
+    "Pricing")
 }
 
 private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClass(for: style)])], "Gifts")
+  return .a(
+    attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClass(for: style)])], "Gifts"
+  )
 }
 
 private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
-  return .a(attributes: [.href(siteRouter.path(for: .account())), .class([navLinkClass(for: style)])], "Account")
+  return .a(
+    attributes: [.href(siteRouter.path(for: .account())), .class([navLinkClass(for: style)])],
+    "Account")
 }
 
 private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
@@ -183,12 +194,12 @@ private func navLinkClass(for style: NavStyle.MinimalStyle) -> CssSelector {
 
 private let navListItemClass =
   Class.padding([.mobile: [.left: 2]])
-    | Class.display.inline
+  | Class.display.inline
 
 private let navListClass =
   Class.type.list.reset
-    | Class.grid.end(.mobile)
-    | Class.pf.type.body.small
+  | Class.grid.end(.mobile)
+  | Class.pf.type.body.small
 
 private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   let colorClass: CssSelector

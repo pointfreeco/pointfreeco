@@ -8,8 +8,8 @@ import Syndication
 
 let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
-    >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
-    >=> clearHeadBody
+  >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
+  >=> clearHeadBody
 
 private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
   [
@@ -22,15 +22,16 @@ private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
 
 var freeEpisodeRssChannel: RssChannel {
   let description = """
-Point-Free is a video series about functional programming and the Swift programming language. Each episode \
-covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of \
-each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show \
-how these ideas can improve the quality of your code today.
-"""
+    Point-Free is a video series about functional programming and the Swift programming language. Each episode \
+    covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of \
+    each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show \
+    how these ideas can improve the quality of your code today.
+    """
   let title = "Point-Free Videos"
 
   return RssChannel(
-    copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+    copyright:
+      "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
     description: description,
     image: .init(
       link: siteRouter.url(for: .home),
@@ -43,7 +44,7 @@ how these ideas can improve the quality of your code today.
       categories: [
         .init(name: "Technology", subcategory: "Software How-To"),
         .init(name: "Education", subcategory: "Training"),
-        ],
+      ],
       explicit: false,
       keywords: [
         "programming",
@@ -56,9 +57,10 @@ how these ideas can improve the quality of your code today.
         "developer",
         "software engineering",
         "server",
-        "app"
+        "app",
       ],
-      image: .init(href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
+      image: .init(
+        href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
       owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
       subtitle: "Functional programming concepts explained simply.",
       summary: description,
@@ -71,7 +73,8 @@ how these ideas can improve the quality of your code today.
 }
 
 private func items() -> [RssItem] {
-  return Current
+  return
+    Current
     .episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
     .prefix(4)
@@ -96,33 +99,33 @@ private func item(episode: Episode) -> RssItem {
     switch episode.permission {
     case .free:
       return """
-Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
-this episode, and if you find this interesting you may want to consider a subscription \
-\(siteRouter.url(for: .pricingLanding)).
+        Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
+        this episode, and if you find this interesting you may want to consider a subscription \
+        \(siteRouter.url(for: .pricingLanding)).
 
----
+        ---
 
-\(episode.blurb)
-"""
+        \(episode.blurb)
+        """
     case let .freeDuring(range) where range.contains(Current.date()):
       return """
-Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
-that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-subscription \(siteRouter.url(for: .pricingLanding)).
+        Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
+        that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
+        subscription \(siteRouter.url(for: .pricingLanding)).
 
----
+        ---
 
-\(episode.blurb)
-"""
+        \(episode.blurb)
+        """
     case .freeDuring, .subscriberOnly:
       return """
-Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
-can access your private podcast feed by visiting \(siteRouter.url(for: .account())).
+        Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
+        can access your private podcast feed by visiting \(siteRouter.url(for: .account())).
 
----
+        ---
 
-\(episode.blurb)
-"""
+        \(episode.blurb)
+        """
     }
   }
 
@@ -177,22 +180,26 @@ extension Html.Application {
   public static var atom = Html.Application(rawValue: "atom+xml")
 }
 
-public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<
+  HeadersOpen, ResponseEnded, A, Data
+> {
   return { conn in
     return conn
       |> respond(
         body: Current.renderXml(view(conn.data)),
         contentType: contentType
-    )
+      )
   }
 }
 
-public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middleware<
+  HeadersOpen, ResponseEnded, A, Data
+> {
   return { conn in
     conn
       |> respond(
         body: Current.renderXml(node),
         contentType: contentType
-    )
+      )
   }
 }

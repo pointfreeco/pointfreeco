@@ -2,9 +2,9 @@ import Database
 import Foundation
 import GitHub
 import Html
+import Logging
 import Mailgun
 import Models
-import Logging
 import Prelude
 import Stripe
 

@@ -10,4 +10,4 @@ extension Class {
 
 public let alignStyles =
   Class.align.middle % verticalAlign(.middle)
-    <> Class.align.top % verticalAlign(.top)
+  <> Class.align.top % verticalAlign(.top)

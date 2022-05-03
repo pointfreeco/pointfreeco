@@ -4,7 +4,7 @@ public struct Feature: Equatable {
   public var name: String
 
   public static let gifts = Self(isAdminEnabled: true, isEnabled: true, name: "Gifts")
-  
+
   public static let allFeatures: [Self] = [
     .gifts
   ]
@@ -12,7 +12,8 @@ public struct Feature: Equatable {
 
 extension Array where Element == Feature {
   public func hasAccess(to feature: Feature, for user: User?) -> Bool {
-    return self
+    return
+      self
       .first(where: { $0.name == feature.name })
       .map {
         $0.isEnabled

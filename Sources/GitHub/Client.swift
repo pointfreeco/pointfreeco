@@ -1,12 +1,13 @@
 import DecodableRequest
 import Either
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import FoundationPrelude
 import Logging
 import Tagged
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
@@ -22,7 +23,7 @@ public struct Client {
     fetchAuthToken: @escaping (String) -> EitherIO<Error, Either<OAuthError, AccessToken>>,
     fetchEmails: @escaping (AccessToken) -> EitherIO<Error, [GitHubUser.Email]>,
     fetchUser: @escaping (AccessToken) -> EitherIO<Error, GitHubUser>
-    ) {
+  ) {
     self.fetchAuthToken = fetchAuthToken
     self.fetchEmails = fetchEmails
     self.fetchUser = fetchUser
@@ -37,7 +38,7 @@ extension Client {
     self.init(
       fetchAuthToken: {
         runGitHub(logger)(fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
-    },
+      },
       fetchEmails: { runGitHub(logger)(fetchGitHubEmails(token: $0)) },
       fetchUser: { runGitHub(logger)(fetchGitHubUser(with: $0)) }
     )
@@ -46,27 +47,28 @@ extension Client {
 
 func fetchGitHubAuthToken(
   clientId: Client.Id, clientSecret: Client.Secret
-  )
+)
   -> (String)
-  -> DecodableRequest<Either<OAuthError, AccessToken>> {
+  -> DecodableRequest<Either<OAuthError, AccessToken>>
+{
 
-    return { code in
-      var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
-      request.httpMethod = "POST"
-      request.httpBody = try? gitHubJsonEncoder.encode(
-        [
-          "client_id": clientId.rawValue,
-          "client_secret": clientSecret.rawValue,
-          "code": code,
-          "accept": "json"
-        ])
-      request.allHTTPHeaderFields = [
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      ]
+  return { code in
+    var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
+    request.httpMethod = "POST"
+    request.httpBody = try? gitHubJsonEncoder.encode(
+      [
+        "client_id": clientId.rawValue,
+        "client_secret": clientSecret.rawValue,
+        "code": code,
+        "accept": "json",
+      ])
+    request.allHTTPHeaderFields = [
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    ]
 
-      return DecodableRequest(rawValue: request)
-    }
+    return DecodableRequest(rawValue: request)
+  }
 }
 
 func fetchGitHubEmails(token: AccessToken) -> DecodableRequest<[GitHubUser.Email]> {

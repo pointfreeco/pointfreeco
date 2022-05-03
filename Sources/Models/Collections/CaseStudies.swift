@@ -44,8 +44,8 @@ extension Episode.Collection.Section {
 
   public static var derivedBehavior = Self(
     blurb: #"""
-The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and solutions, in both vanilla SwiftUI and the Composable Architecture.
-"""#,
+      The ability to break down applications into small domains that are understandable in isolation is a universal problem, and yet there is no default story for doing so in SwiftUI. We explore the problem space and solutions, in both vanilla SwiftUI and the Composable Architecture.
+      """#,
     coreLessons: [
       .init(episode: .ep146_derivedBehavior),
       .init(episode: .ep147_derivedBehavior),
@@ -72,8 +72,8 @@ The ability to break down applications into small domains that are understandabl
   public static func swiftUIRedactions(title: String = "SwiftUI Redactions") -> Self {
     Self(
       blurb: #"""
-SwiftUI has introduced the concept of “redacted views”, which gives you a really nice way to redact the a view's content. This is really powerful, but just because the view has been redacted it doesn’t mean the logic has been. We will demonstrate this problem and show how the Composable Architecture offers a really nice solution.
-"""#,
+        SwiftUI has introduced the concept of “redacted views”, which gives you a really nice way to redact the a view's content. This is really powerful, but just because the view has been redacted it doesn’t mean the logic has been. We will demonstrate this problem and show how the Composable Architecture offers a really nice solution.
+        """#,
       coreLessons: [
         .init(episode: .ep115_redactions_pt1),
         .init(episode: .ep116_redactions_pt2),
@@ -83,8 +83,8 @@ SwiftUI has introduced the concept of “redacted views”, which gives you a re
       related: [
         .init(
           blurb: #"""
-For more on the Composable Architecture, be sure to check out the entire collection where we break down the problems of application architecture to build a solution from first principles.
-"""#,
+            For more on the Composable Architecture, be sure to check out the entire collection where we break down the problems of application architecture to build a solution from first principles.
+            """#,
           content: .collection(.composableArchitecture)
         )
       ],

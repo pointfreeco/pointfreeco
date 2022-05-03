@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v11),
+    .macOS(.v11)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -31,7 +31,7 @@ var package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Views", targets: ["Views"]),
-    .library(name: "WebPreview", targets: ["WebPreview"])
+    .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
@@ -42,7 +42,9 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
-    .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
+    .package(
+      name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      from: "1.8.2"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-web", .revision("8cbec70")),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
@@ -91,14 +93,14 @@ var package = Package(
     .target(
       name: "DecodableRequest",
       dependencies: [
-        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tagged", package: "swift-tagged")
       ]
     ),
 
     .target(
       name: "EmailAddress",
       dependencies: [
-        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tagged", package: "swift-tagged")
       ]
     ),
 
@@ -116,7 +118,7 @@ var package = Package(
       dependencies: [
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
-        .product(name: "Prelude", package: "swift-prelude")
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -130,7 +132,7 @@ var package = Package(
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
-        "__Snapshots__",
+        "__Snapshots__"
       ]
     ),
 
@@ -166,7 +168,7 @@ var package = Package(
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
-        "__Snapshots__",
+        "__Snapshots__"
       ]
     ),
 
@@ -197,7 +199,7 @@ var package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
       ],
       exclude: [
-        "Transcripts/README.md",
+        "Transcripts/README.md"
       ]
     ),
 
@@ -297,7 +299,7 @@ var package = Package(
         .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
-        .product(name: "UrlFormEncoding", package: "swift-web")
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -340,14 +342,14 @@ var package = Package(
     .executableTarget(
       name: "Runner",
       dependencies: [
-        "PointFree",
+        "PointFree"
       ]
     ),
 
     .executableTarget(
       name: "Server",
       dependencies: [
-        "PointFree",
+        "PointFree"
       ]
     ),
 
@@ -385,7 +387,7 @@ var package = Package(
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
-        "__Snapshots__",
+        "__Snapshots__"
       ]
     ),
 
@@ -410,7 +412,7 @@ var package = Package(
         .product(name: "SnapshotTesting", package: "SnapshotTesting"),
       ],
       exclude: [
-        "__Snapshots__",
+        "__Snapshots__"
       ]
     ),
 
@@ -418,7 +420,7 @@ var package = Package(
       name: "Syndication",
       dependencies: [
         "Models",
-        .product(name: "Html", package: "swift-html")
+        .product(name: "Html", package: "swift-html"),
       ]
     ),
 
@@ -468,7 +470,8 @@ extension SwiftSetting {
 }
 
 extension Array where Element == SwiftSetting {
-  static let pointFreeSettings: Array = isOss
+  static let pointFreeSettings: Array =
+    isOss
     ? [.define("OSS"), .warnLongExpressionTypeChecking]
     : [.warnLongExpressionTypeChecking]
 }

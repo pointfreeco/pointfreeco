@@ -4,14 +4,14 @@ extension Episode {
   public static let ep116_redactions_pt2 = Episode(
     alternateSlug: "redacted-swiftui-the-composable-architecture",
     blurb: """
-We've seen how cool redacted SwiftUI views are, but we've also seen some of their pitfalls: while it's easy to redact UI, it's not so easy to redact logic, that is unless you're using the Composable Architecture!
-""",
+      We've seen how cool redacted SwiftUI views are, but we've also seen some of their pitfalls: while it's easy to redact UI, it's not so easy to redact logic, that is unless you're using the Composable Architecture!
+      """,
     codeSampleDirectory: "0116-redacted-swiftui-pt2",
     exercises: _exercises,
     id: 116,
-    length: 20*60 + 32,
+    length: 20 * 60 + 32,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1599454800),
+    publishedAt: Date(timeIntervalSince1970: 1_599_454_800),
     references: [
       .init(
         author: nil,
@@ -42,7 +42,7 @@ We've seen how cool redacted SwiftUI views are, but we've also seen some of thei
         hd720: "0116-trailer-720p-184d42fa3fe74d15aab6d4356e2028d8",
         sd540: "0116-trailer-540p-ea3ca3af36e644a6b9f91ff182969d9c"
       ),
-      vimeoId: 454928021
+      vimeoId: 454_928_021
     )
   )
 }
@@ -50,4 +50,3 @@ We've seen how cool redacted SwiftUI views are, but we've also seen some of thei
 private let _exercises: [Episode.Exercise] = [
   // TODO
 ]
-

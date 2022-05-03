@@ -1,7 +1,5 @@
 import Either
-@testable import GitHub
 import HttpPipeline
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -9,10 +7,13 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
+@testable import GitHub
+@testable import PointFree
+
 class AuthIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+    //    SnapshotTesting.record = true
   }
 
   func testRegister() {
@@ -20,16 +21,17 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
     gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now - 60*60*24*365
-    gitHubUserEnvelope.gitHubUser.id = 1234567890
+    gitHubUserEnvelope.gitHubUser.createdAt = now - 60 * 60 * 24 * 365
+    gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
     Current.date = { now }
     Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
     Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
-    let result = connection(
-      from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+    let result =
+      connection(
+        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
       )
       |> siteMiddleware
       |> Prelude.perform
@@ -52,16 +54,17 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
     gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now - 5*60
-    gitHubUserEnvelope.gitHubUser.id = 1234567890
+    gitHubUserEnvelope.gitHubUser.createdAt = now - 5 * 60
+    gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
     Current.date = { now }
     Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
     Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
-    let result = connection(
-      from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+    let result =
+      connection(
+        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
       )
       |> siteMiddleware
       |> Prelude.perform
@@ -87,7 +90,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
   }
   func testLoginWithRedirect() {
 
-    let login = request(to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)
+    let login = request(
+      to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -97,7 +101,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 class AuthTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+    //    SnapshotTesting.record = true
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
@@ -110,8 +114,8 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
-    Current.gitHub.fetchAuthToken
-      = const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    Current.gitHub.fetchAuthToken = const(
+      pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -120,10 +124,12 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
-    Current.gitHub.fetchAuthToken
-      = const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    Current.gitHub.fetchAuthToken = const(
+      pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
-    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: siteRouter.url(for: .episode(.show(.right(42))))))
+    let auth = request(
+      to: .gitHubCallback(
+        code: "deadbeef", redirect: siteRouter.url(for: .episode(.show(.right(42))))))
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

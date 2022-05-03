@@ -17,13 +17,13 @@ public struct EmailSetting: Codable, Equatable {
       .announcements,
       .newBlogPost,
       .newEpisode,
-      .welcomeEmails
+      .welcomeEmails,
     ]
 
     public static let subscriberNewsletters: [Newsletter] = [
       .announcements,
       .newBlogPost,
-      .newEpisode
+      .newEpisode,
     ]
   }
 }

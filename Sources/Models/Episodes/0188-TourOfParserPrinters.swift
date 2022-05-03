@@ -3,14 +3,14 @@ import Foundation
 extension Episode {
   public static let ep188_tourOfParserPrinters = Episode(
     blurb: """
-Now that we're familiar with swift-parsing's URL router, let's take a look at Swift's most popular web framework, Vapor. We will rebuild our site router using Vapor's built-in router, and then we'll use our own companion library to power our Vapor application with a parser-printer, instead.
-""",
+      Now that we're familiar with swift-parsing's URL router, let's take a look at Swift's most popular web framework, Vapor. We will rebuild our site router using Vapor's built-in router, and then we'll use our own companion library to power our Vapor application with a parser-printer, instead.
+      """,
     codeSampleDirectory: "0188-parser-printers-tour-pt4",
     exercises: _exercises,
     id: 188,
-    length: 37*60 + 20,
+    length: 37 * 60 + 20,
     permission: .free,
-    publishedAt:  Date(timeIntervalSince1970: 1651467600),
+    publishedAt: Date(timeIntervalSince1970: 1_651_467_600),
     references: [
       .vaporRouting,
       .urlRouting,
@@ -19,8 +19,8 @@ Now that we're familiar with swift-parsing's URL router, let's take a look at Sw
       .invertibleSyntaxDescriptions,
       .init(
         blurb: #"""
-A popular Swift web framework. It comes with a router that is clearly inspired by frameworks like Express, but as a result is less type safe than it could be.
-"""#,
+          A popular Swift web framework. It comes with a router that is clearly inspired by frameworks like Express, but as a result is less type safe than it could be.
+          """#,
         link: "https://vapor.codes",
         title: "Vapor"
       ),
@@ -35,7 +35,7 @@ A popular Swift web framework. It comes with a router that is clearly inspired b
         hd720: "0188-trailer-720p-2278af221fdc4137b5a8c192c08fa4b0",
         sd540: "0188-trailer-540p-14ac0691d5cb447fa854f7134165656e"
       ),
-      vimeoId: 703115456
+      vimeoId: 703_115_456
     )
   )
 }

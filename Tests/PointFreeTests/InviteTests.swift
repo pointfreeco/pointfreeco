@@ -1,12 +1,11 @@
 import Database
 import DatabaseTestSupport
+import Either
 import EmailAddress
 import GitHub
-import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -15,17 +14,21 @@ import Stripe
 import StripeTestSupport
 import XCTest
 
+@testable import PointFree
+
 class InviteIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testSendInvite_HappyPath() {
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     _ = Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
       .run
@@ -34,17 +37,21 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     Current.stripe.fetchSubscription = const(pure(.teamYearly))
 
-    let sendInvite = request(to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id))
+    let sendInvite = request(
+      to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
+    )
     let conn = connection(from: sendInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testSendInvite_UnhappyPath_NoSeats() {
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = Current.database.createSubscription(sub, inviterUser.id, true, nil)
@@ -59,17 +66,21 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    let sendInvite = request(to: .invite(.send("blobber2@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id))
+    let sendInvite = request(
+      to: .invite(.send("blobber2@pointfree.co")),
+      session: .init(flash: nil, userId: inviterUser.id))
     let conn = connection(from: sendInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testResendInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
       .run
@@ -86,10 +97,12 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRevokeInvite_HappyPath() {
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
       .run
@@ -115,16 +128,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testRevokeInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
@@ -150,16 +167,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_HappyPath() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
       .run
@@ -198,16 +219,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterIsNotSubscriber() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
@@ -234,16 +259,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
       .run
@@ -276,20 +305,26 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id, true, nil)
-      .run
-      .perform()
+    _ = Current.database.createSubscription(
+      Stripe.Subscription.canceling, inviterUser.id, true, nil
+    )
+    .run
+    .perform()
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
@@ -364,16 +399,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   func testResendInvite_CurrentUserIsNotInviter() {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
-    let currentUser = Current.database.registerUser(withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let currentUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     env.gitHubUser.id = 2
-    let inviterUser = Current.database.registerUser(withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock })
-      .run
-      .perform()
-      .right!!
+    let inviterUser = Current.database.registerUser(
+      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+    )
+    .run
+    .perform()
+    .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
@@ -393,7 +432,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 class InviteTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testShowInvite_LoggedOut() {
@@ -403,15 +442,15 @@ class InviteTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -420,7 +459,8 @@ class InviteTests: TestCase {
     currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
     var invite = Models.TeamInvite.mock
-    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+    invite.inviterUserId = .init(
+      rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
@@ -432,15 +472,15 @@ class InviteTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -449,7 +489,8 @@ class InviteTests: TestCase {
     currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
     var invite = TeamInvite.mock
-    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+    invite.inviterUserId = .init(
+      rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))

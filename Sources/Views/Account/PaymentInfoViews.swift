@@ -5,7 +5,8 @@ import PointFreeRouter
 import Stripe
 import Styleguide
 
-public func paymentInfoView(card: Stripe.Card?, publishableKey: String, stripeJsSrc: String) -> Node {
+public func paymentInfoView(card: Stripe.Card?, publishableKey: String, stripeJsSrc: String) -> Node
+{
   return .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
@@ -55,19 +56,23 @@ private func updatePaymentInfoRowView(publishableKey: String, stripeJsSrc: Strin
           attributes: [
             .action(siteRouter.path(for: .account(.paymentInfo(.update())))),
             .id(StripeHtml.formId),
-            .method(.post)
+            .method(.post),
           ],
           StripeHtml.cardInput(couponId: nil, publishableKey: publishableKey),
           StripeHtml.errors,
           StripeHtml.scripts(src: stripeJsSrc),
           .button(
-            attributes: [.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+            attributes: [
+              .class([
+                Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]]),
+              ])
+            ],
             "Update payment info"
           ),
           .a(
             attributes: [
               .href(siteRouter.path(for: .account())),
-              .class([Class.pf.components.button(color: .black, style: .underline)])
+              .class([Class.pf.components.button(color: .black, style: .underline)]),
             ],
             "Cancel"
           )

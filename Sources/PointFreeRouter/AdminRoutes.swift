@@ -181,7 +181,7 @@ let adminRouter = OneOf {
   }
 }
 
-extension Conversion where Output == String  {
+extension Conversion where Output == String {
   var isPresent: Conversions.Map<Self, AnyConversion<String, Bool>> {
     self.map(
       .convert(

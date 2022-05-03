@@ -1,11 +1,12 @@
 import Html
 import HtmlSnapshotTesting
-@testable import HttpPipeline
+import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-import PointFreeTestSupport
-@testable import Views
 import XCTest
+
+@testable import HttpPipeline
+@testable import Views
 
 class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
@@ -16,7 +17,7 @@ class MetaLayoutTests: TestCase {
         .html(
           .head(.title("Point-Free")),
           .body("Hello world!")
-        )
+        ),
       ]
     }
 

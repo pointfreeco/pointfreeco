@@ -5,8 +5,8 @@ import Models
 import Prelude
 import Stripe
 import Tagged
-import UrlFormEncoding
 import URLRouting
+import UrlFormEncoding
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
@@ -378,7 +378,10 @@ let router = OneOf {
     }
 
     Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
-      Path { ".well-known"; "apple-developer-merchantid-domain-association" }
+      Path {
+        ".well-known"
+        "apple-developer-merchantid-domain-association"
+      }
     }
 
     Route(.case(SiteRoute.blog)) {
@@ -430,7 +433,10 @@ let router = OneOf {
 
     Route(.case(SiteRoute.endGhosting)) {
       Method.post
-      Path { "ghosting"; "end" }
+      Path {
+        "ghosting"
+        "end"
+      }
     }
 
     Parse {

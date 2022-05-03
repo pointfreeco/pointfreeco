@@ -4,8 +4,8 @@ import Foundation
 import HttpPipeline
 import Mailgun
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Stripe
 import Tuple
@@ -13,210 +13,216 @@ import Views
 
 let showInviteMiddleware =
   validateTeamInvite
-    <| writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: Views.showInviteView,
-      layoutData: { teamInvite, inviter, currentUser in
-        SimplePageLayoutData(
-          currentUser: currentUser,
-          data: (teamInvite, inviter, currentUser),
-          title: "Accept Team Invite?"
-        )
+  <| writeStatus(.ok)
+  >=> map(lower)
+  >>> respond(
+    view: Views.showInviteView,
+    layoutData: { teamInvite, inviter, currentUser in
+      SimplePageLayoutData(
+        currentUser: currentUser,
+        data: (teamInvite, inviter, currentUser),
+        title: "Accept Team Invite?"
+      )
     }
-)
+  )
 
-private let validateTeamInvite
-  : MT<Tuple2<TeamInvite.Id, User?>, Tuple3<TeamInvite, User, User?>>
-  = redirectCurrentSubscribers
-    <<< requireTeamInvite
-    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
+private let validateTeamInvite: MT<Tuple2<TeamInvite.Id, User?>, Tuple3<TeamInvite, User, User?>> =
+  redirectCurrentSubscribers
+  <<< requireTeamInvite
+  <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
 
 private let genericInviteError = "You need to be the inviter to do that!"
 
-let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
-  = requireTeamInvite
-    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< filter(
-      validateCurrentUserIsInviter,
-      or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
-    )
-    <| { conn in
-      Current.database.deleteTeamInvite(get1(conn.data).id)
-        .run
-        .flatMap(
-          const(
-            conn
-              |> redirect(
-                to: siteRouter.path(for: .account()),
-                headersMiddleware: flash(
-                  .notice,
-                  "Invite to \(get1(conn.data).email.rawValue) has been revoked."
-                )
+let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+  requireTeamInvite
+  <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+  <<< filter(
+    validateCurrentUserIsInviter,
+    or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
+  )
+  <| { conn in
+    Current.database.deleteTeamInvite(get1(conn.data).id)
+      .run
+      .flatMap(
+        const(
+          conn
+            |> redirect(
+              to: siteRouter.path(for: .account()),
+              headersMiddleware: flash(
+                .notice,
+                "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+              )
             )
-          )
+        )
       )
-}
+  }
 
-let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
-  = filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< requireTeamInvite
-    <<< filter(
-      validateCurrentUserIsInviter,
-      or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
-    )
-    <| { conn in
-      let (invite, inviter) = lower(conn.data)
+let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+  filterMap(require2 >>> pure, or: loginAndRedirect)
+  <<< requireTeamInvite
+  <<< filter(
+    validateCurrentUserIsInviter,
+    or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
+  )
+  <| { conn in
+    let (invite, inviter) = lower(conn.data)
 
-      parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-        .run({ _ in })
-      return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+    parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+      .run({ _ in })
+    return conn
+      |> redirect(
+        to: .account(),
+        headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
       )
-}
+  }
 
-let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
-  = redirectCurrentSubscribers
-    <<< requireTeamInvite
-    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
-    <| { conn in
-      let (teamInvite, currentUser) = lower(conn.data)
+let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+  redirectCurrentSubscribers
+  <<< requireTeamInvite
+  <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+  <| { conn in
+    let (teamInvite, currentUser) = lower(conn.data)
 
-      let inviter = Current.database
-        .fetchUserById(teamInvite.inviterUserId)
-        .mapExcept(requireSome)
+    let inviter = Current.database
+      .fetchUserById(teamInvite.inviterUserId)
+      .mapExcept(requireSome)
 
-      // VERIFY: user is subscribed
-      let subscription = inviter
-        .flatMap(^\.id >>> Current.database.fetchSubscriptionByOwnerId)
-        .mapExcept(requireSome)
-        .flatMap { subscription in
-          Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-            .mapExcept(validateActiveStripeSubscription)
-            .bimap(const(unit as Error), id)
-            .flatMap { _ in
-              Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+    // VERIFY: user is subscribed
+    let subscription =
+      inviter
+      .flatMap(\.id >>> Current.database.fetchSubscriptionByOwnerId)
+      .mapExcept(requireSome)
+      .flatMap { subscription in
+        Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+          .mapExcept(validateActiveStripeSubscription)
+          .bimap(const(unit as Error), id)
+          .flatMap { _ in
+            Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
           }
       }
 
-      return subscription
-        .run
-        .flatMap { _ in
-          let sendInviterEmailOfAcceptance = parallel(
-            inviter
-              .run
-              .flatMap { errorOrInviter in
-                errorOrInviter.right.map { inviter in
-                  sendEmail(
-                    to: [inviter.email],
-                    subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                    content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
-                    )
-                    .run
-                    .map(const(unit))
-                  }
-                  ?? pure(unit)
-          })
+    return subscription
+      .run
+      .flatMap { _ in
+        let sendInviterEmailOfAcceptance = parallel(
+          inviter
+            .run
+            .flatMap { errorOrInviter in
+              errorOrInviter.right.map { inviter in
+                sendEmail(
+                  to: [inviter.email],
+                  subject:
+                    "\(currentUser.displayName) has accepted your Point-Free team invitation!",
+                  content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
+                )
+                .run
+                .map(const(unit))
+              }
+                ?? pure(unit)
+            })
 
-          let deleteInvite = parallel(
-            subscription
-              .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
-              .run
-          )
+        let deleteInvite = parallel(
+          subscription
+            .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
+            .run
+        )
 
-          // fire-and-forget email of acceptance and deletion of invite
-          zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+        // fire-and-forget email of acceptance and deletion of invite
+        zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
-          return conn |> redirect(to: siteRouter.path(for: .account()))
-        }
-}
+        return conn |> redirect(to: siteRouter.path(for: .account()))
+      }
+  }
 
-let addTeammateViaInviteMiddleware
-  = requireUserAndValidEmail
-    <<< requireStripeSubscription
-    <<< requireActiveSubscription
-    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
+let addTeammateViaInviteMiddleware =
+  requireUserAndValidEmail
+  <<< requireStripeSubscription
+  <<< requireActiveSubscription
+  <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
 
-      let (stripeSubscription, inviter, email) = lower(conn.data)
-      let newPricing = Pricing(
-        billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
-        quantity: stripeSubscription.quantity + 1
+    let (stripeSubscription, inviter, email) = lower(conn.data)
+    let newPricing = Pricing(
+      billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
+      quantity: stripeSubscription.quantity + 1
+    )
+
+    return
+      conn
+      .map(const((stripeSubscription, newPricing)))
+      |> changeSubscription(
+        error: subscriptionModificationErrorMiddleware,
+        success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
       )
+  }
 
-      return conn
-        .map(const((stripeSubscription, newPricing)))
-        |> changeSubscription(
-          error: subscriptionModificationErrorMiddleware,
-          success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
-      )
-}
-
-private let requireUserAndValidEmail
-  : MT<Tuple2<User?, EmailAddress?>, Tuple2<User, EmailAddress>>
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+private let requireUserAndValidEmail: MT<Tuple2<User?, EmailAddress?>, Tuple2<User, EmailAddress>> =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+  <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
 
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require1 >>> pure, or: redirect(to: .account()))
-    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, User>>) in
+  <<< filterMap(require1 >>> pure, or: redirect(to: .account()))
+  <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, User>>) in
 
-      let (email, inviter) = lower(conn.data)
+    let (email, inviter) = lower(conn.data)
 
-      let seatsTaken = zip2(
-        Current.database.fetchTeamInvites(inviter.id).run.parallel
-          .map { $0.right?.count ?? 0 },
-        Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).run.parallel
-          .map { $0.right?.count ?? 0 }
+    let seatsTaken = zip2(
+      Current.database.fetchTeamInvites(inviter.id).run.parallel
+        .map { $0.right?.count ?? 0 },
+      Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).run.parallel
+        .map { $0.right?.count ?? 0 }
+    )
+    .map(+)
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
+      .mapExcept(requireSome)
+      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .run
+      .parallel
+
+    let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
+      run: zip2(
+        subscription,
+        seatsTaken
       )
-      .map(+)
+      .map { subscription, seatsTaken in subscription.map { ($0, seatsTaken) } }
+      .sequential
+    )
+    .flatMap { $0.status.isActive && $0.quantity > $1 ? pure(()) : throwE(unit) }
 
-      let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
-        .mapExcept(requireSome)
-        .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-        .run
-        .parallel
-
-      let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
-        run: zip2(
-          subscription,
-          seatsTaken
-        )
-        .map { subscription, seatsTaken in subscription.map { ($0, seatsTaken) } }
-        .sequential
-      )
-      .flatMap { $0.status.isActive && $0.quantity > $1 ? pure(()) : throwE(unit) }
-
-      return subscriptionHasAvailableSeats
-        .flatMap { Current.database.insertTeamInvite(email, inviter.id) }
-        .run
-        .flatMap { errorOrTeamInvite in
-          switch errorOrTeamInvite {
-          case .left:
-            return conn |> redirect(
-              to: .account(), headersMiddleware: flash(.error, """
-              Couldn't invite \(email.rawValue)
-              """)
+    return
+      subscriptionHasAvailableSeats
+      .flatMap { Current.database.insertTeamInvite(email, inviter.id) }
+      .run
+      .flatMap { errorOrTeamInvite in
+        switch errorOrTeamInvite {
+        case .left:
+          return conn
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(
+                .error,
+                """
+                Couldn't invite \(email.rawValue)
+                """)
             )
 
-          case let .right(invite):
-            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-              .run({ _ in })
+        case let .right(invite):
+          parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+            .run({ _ in })
 
-            return conn
-              |> redirect(
-                to: .account(),
-                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+          return conn
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
             )
-          }
+        }
       }
-}
+  }
 
 func invalidSubscriptionErrorMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<ResponseEnded, Data>> {
+) -> IO<Conn<ResponseEnded, Data>> {
 
   return conn
     |> redirect(
@@ -225,12 +231,12 @@ func invalidSubscriptionErrorMiddleware<A>(
         .error,
         "Invalid subscription data. Please try again or contact <support@pointfree.co>."
       )
-  )
+    )
 }
 
 private func requireTeamInvite<A>(
   _ middleware: @escaping M<T2<TeamInvite, A>>
-  ) -> M<T2<TeamInvite.Id, A>> {
+) -> M<T2<TeamInvite.Id, A>> {
 
   return { conn in
     Current.database.fetchTeamInvite(get1(conn.data))
@@ -249,20 +255,20 @@ private func requireTeamInvite<A>(
                   data: data,
                   title: "Invite not found"
                 )
-            }
-          )
+              }
+            )
 
         case let .right(teamInvite):
           return conn.map(over1(const(teamInvite)))
             |> middleware
         }
-    }
+      }
   }
 }
 
 func sendInviteEmail(
   invite: TeamInvite, inviter: User
-  ) -> EitherIO<Error, SendEmailResponse> {
+) -> EitherIO<Error, SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],
@@ -281,23 +287,24 @@ private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User>
 
 private func validateActiveStripeSubscription(
   _ errorOrSubscription: Either<Error, Stripe.Subscription>
-  )
-  -> Either<Error, Stripe.Subscription> {
+)
+  -> Either<Error, Stripe.Subscription>
+{
 
-    return errorOrSubscription.flatMap { stripeSubscription in
-      !stripeSubscription.status.isActive ? .left(unit) : .right(stripeSubscription)
-    }
+  return errorOrSubscription.flatMap { stripeSubscription in
+    !stripeSubscription.status.isActive ? .left(unit) : .right(stripeSubscription)
+  }
 }
 
 private func redirectCurrentSubscribers<A, B>(
   _ middleware: @escaping M<T3<A, User?, B>>
-  ) -> M<T3<A, User?, B>> {
+) -> M<T3<A, User?, B>> {
 
   return { conn in
     guard
       let user = get2(conn.data),
       let subscriptionId = user.subscriptionId
-      else { return middleware(conn) }
+    else { return middleware(conn) }
 
     let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
       .mapExcept(requireSome)

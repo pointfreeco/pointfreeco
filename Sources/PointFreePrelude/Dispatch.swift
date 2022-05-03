@@ -20,7 +20,9 @@ extension DispatchTimeInterval {
     }
   }
 
-  public static func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
+  public static func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval)
+    -> DispatchTimeInterval
+  {
     return (curry(+) <¢> lhs.nanoseconds <*> rhs.nanoseconds)
       .map(DispatchTimeInterval.nanoseconds)
       ?? .never

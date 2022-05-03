@@ -265,6 +265,6 @@ extension Subscription.Item {
   )
 }
 
-fileprivate extension Date {
-  static let mock = Date(timeIntervalSince1970: 1517356800)
+extension Date {
+  fileprivate static let mock = Date(timeIntervalSince1970: 1_517_356_800)
 }

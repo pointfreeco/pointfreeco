@@ -86,7 +86,7 @@ extension Client {
         .first(decoding: Gift.self)
         .mapExcept(requireSome)
       },
-      createSubscription: { stripeSubscription, userId,  isOwnerTakingSeat, referrerId in
+      createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
         pool.sqlDatabase.raw(
           """
           INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
@@ -96,19 +96,17 @@ extension Client {
         )
         .first(decoding: Models.Subscription.self)
         .flatMap { subscription in
-          (
-            isOwnerTakingSeat
-              ? pool.sqlDatabase.raw(
-                """
+          (isOwnerTakingSeat
+            ? pool.sqlDatabase.raw(
+              """
               UPDATE "users"
               SET "subscription_id" = \(bind: subscription?.id), "referrer_id" = \(bind: referrerId)
               WHERE "users"."id" = \(bind: subscription?.userId)
               """
-              )
-              .run()
-              : pure(unit)
-          )
-          .map(const(subscription))
+            )
+            .run()
+            : pure(unit))
+            .map(const(subscription))
         }
       },
       deleteEnterpriseEmail: { userId in
@@ -203,7 +201,7 @@ extension Client {
           """
         )
         .first()
-        .map { try? $0?.decode(column: "percent")}
+        .map { try? $0?.decode(column: "percent") }
       },
       fetchFreeEpisodeUsers: {
         pool.sqlDatabase.raw(
@@ -667,21 +665,21 @@ extension Client {
           ),
           database.run(
             #"""
-              CREATE TABLE IF NOT EXISTS "episode_progresses" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "episode_sequence" smallint NOT NULL,
-              "percent" smallint NOT NULL,
-              "user_id" uuid REFERENCES "users" ("id") NOT NULL,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
-              )
-              """#
+            CREATE TABLE IF NOT EXISTS "episode_progresses" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "episode_sequence" smallint NOT NULL,
+            "percent" smallint NOT NULL,
+            "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+            )
+            """#
           ),
           database.run(
             """
-              CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
-              ON "episode_progresses" ("episode_sequence", "user_id")
-              """
+            CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+            ON "episode_progresses" ("episode_sequence", "user_id")
+            """
           ),
           database.run(
             """
@@ -863,7 +861,7 @@ extension Client {
           WHERE "user_id" = \(bind: userId)
           """
         )
-          .run()
+        .run()
 
         let updateEmailSettings = sequence(
           settings.map { type in
@@ -873,10 +871,10 @@ extension Client {
               VALUES (\(bind: type), \(bind: userId))
               """
             )
-              .run()
+            .run()
           }
         )
-          .map(const(unit))
+        .map(const(unit))
 
         return sequence([deleteEmailSettings, updateEmailSettings])
           .map(const(unit))

@@ -2,23 +2,25 @@ import CustomDump
 import Database
 import Either
 import HttpPipeline
-@testable import Models
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Stripe
 import TaggedMoney
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import Models
+@testable import PointFree
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 class GiftTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording=true
+    //    SnapshotTesting.isRecording=true
   }
 
   func testGiftCreate() {
@@ -48,54 +50,56 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={}
-    
-    {
-      "from_email" : "blob@pointfree.co",
-      "from_name" : "Blob",
-      "message" : "HBD!",
-      "months_free" : "3",
-      "to_email" : "blob.jr@pointfree.co",
-      "to_name" : "Blob Jr."
-    }
-    
-    200 OK
-    Content-Length: 44
-    Content-Type: application/json
-    Referrer-Policy: strict-origin-when-cross-origin
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    
-    {
-      "clientSecret" : "pi_test_secret_test"
-    }
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={}
+
+        {
+          "from_email" : "blob@pointfree.co",
+          "from_name" : "Blob",
+          "message" : "HBD!",
+          "months_free" : "3",
+          "to_email" : "blob.jr@pointfree.co",
+          "to_name" : "Blob Jr."
+        }
+
+        200 OK
+        Content-Length: 44
+        Content-Type: application/json
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+
+        {
+          "clientSecret" : "pi_test_secret_test"
+        }
+        """)
 
     XCTAssertNoDifference(
       createGiftRequest,
-        .init(
-          deliverAt: nil,
-          fromEmail: "blob@pointfree.co",
-          fromName: "Blob",
-          message: "HBD!",
-          monthsFree: 3,
-          stripePaymentIntentId: "pi_test",
-          toEmail: "blob.jr@pointfree.co",
-          toName: "Blob Jr."
-        )
+      .init(
+        deliverAt: nil,
+        fromEmail: "blob@pointfree.co",
+        fromName: "Blob",
+        message: "HBD!",
+        monthsFree: 3,
+        stripePaymentIntentId: "pi_test",
+        toEmail: "blob.jr@pointfree.co",
+        toName: "Blob Jr."
+      )
     )
   }
 
   func testGiftConfirmation() {
     Current = .failing
 
-    Current.date = { .init(timeIntervalSince1970: 1234567890) }
+    Current.date = { .init(timeIntervalSince1970: 1_234_567_890) }
 
     let conn = connection(
       from: request(
@@ -117,23 +121,25 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={}
-    
-    fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-    
-    302 Found
-    Location: /gifts
-    Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"Your gift has been delivered to blob.jr@pointfree.co.","priority":"notice"}}; Expires=Mon, 11 Feb 2019 23:31:30 GMT; Path=/
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={}
+
+        fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
+
+        302 Found
+        Location: /gifts
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"Your gift has been delivered to blob.jr@pointfree.co.","priority":"notice"}}; Expires=Mon, 11 Feb 2019 23:31:30 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testGiftCreate_StripeFailure() {
@@ -162,34 +168,36 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={}
-    
-    {
-      "from_email" : "blob@pointfree.co",
-      "from_name" : "Blob",
-      "message" : "HBD!",
-      "months_free" : "3",
-      "to_email" : "blob.jr@pointfree.co",
-      "to_name" : "Blob Jr."
-    }
-    
-    400 Bad Request
-    Content-Length: 65
-    Content-Type: application/json
-    Referrer-Policy: strict-origin-when-cross-origin
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    
-    {
-      "errorMessage" : "Unknown error with our payment processor"
-    }
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={}
+
+        {
+          "from_email" : "blob@pointfree.co",
+          "from_name" : "Blob",
+          "message" : "HBD!",
+          "months_free" : "3",
+          "to_email" : "blob.jr@pointfree.co",
+          "to_name" : "Blob Jr."
+        }
+
+        400 Bad Request
+        Content-Length: 65
+        Content-Type: application/json
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+
+        {
+          "errorMessage" : "Unknown error with our payment processor"
+        }
+        """)
   }
 
   func testGiftCreate_InvalidMonths() {
@@ -218,34 +226,36 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={}
-    
-    {
-      "from_email" : "blob@pointfree.co",
-      "from_name" : "Blob",
-      "message" : "HBD!",
-      "months_free" : "1",
-      "to_email" : "blob.jr@pointfree.co",
-      "to_name" : "Blob Jr."
-    }
-    
-    400 Bad Request
-    Content-Length: 45
-    Content-Type: application/json
-    Referrer-Policy: strict-origin-when-cross-origin
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    
-    {
-      "errorMessage" : "Unknown gift option."
-    }
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={}
+
+        {
+          "from_email" : "blob@pointfree.co",
+          "from_name" : "Blob",
+          "message" : "HBD!",
+          "months_free" : "1",
+          "to_email" : "blob.jr@pointfree.co",
+          "to_name" : "Blob Jr."
+        }
+
+        400 Bad Request
+        Content-Length: 45
+        Content-Type: application/json
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+
+        {
+          "errorMessage" : "Unknown gift option."
+        }
+        """)
   }
 
   func testGiftRedeem_NonSubscriber() {
@@ -272,10 +282,11 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.stripe.createCustomer = { _, _, _, _, amount in
       credit = amount
-      return pure(update(.mock) {
-        $0.defaultSource = nil
-        $0.sources = .mock([])
-      })
+      return pure(
+        update(.mock) {
+          $0.defaultSource = nil
+          $0.sources = .mock([])
+        })
     }
     Current.stripe.createSubscription = { _, _, _, _ in
       pure(.individualMonthly)
@@ -296,21 +307,23 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-    
-    302 Found
-    Location: /account
-    Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"You now have access to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+        302 Found
+        Location: /account
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"You now have access to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
 
     XCTAssertEqual(credit, -54_00)
     XCTAssertNotNil(stripeSubscriptionId)
@@ -356,21 +369,23 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-    
-    302 Found
-    Location: /account
-    Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"The gift has been applied to your account as credit.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+        302 Found
+        Location: /account
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"The gift has been applied to your account as credit.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
 
     XCTAssertEqual(credit, -54_00)
     XCTAssertNotNil(stripeSubscriptionId)
@@ -392,20 +407,22 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={}
-    
-    302 Found
-    Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Referrer-Policy: strict-origin-when-cross-origin
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={}
+
+        302 Found
+        Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testGiftRedeem_Invalid_Redeemed() {
@@ -433,21 +450,23 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-    
-    302 Found
-    Location: /gifts
-    Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"This gift was already redeemed.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+        302 Found
+        Location: /gifts
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"This gift was already redeemed.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testGiftRedeem_Invalid_Teammate() {
@@ -478,21 +497,23 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(matching: result, as: .ioConn, with: """
-    POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Authorization: Basic aGVsbG86d29ybGQ=
-    Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
-    
-    302 Found
-    Location: /gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-    Referrer-Policy: strict-origin-when-cross-origin
-    Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team subscription.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-    X-Content-Type-Options: nosniff
-    X-Download-Options: noopen
-    X-Frame-Options: SAMEORIGIN
-    X-Permitted-Cross-Domain-Policies: none
-    X-XSS-Protection: 1; mode=block
-    """)
+    _assertInlineSnapshot(
+      matching: result, as: .ioConn,
+      with: """
+        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Authorization: Basic aGVsbG86d29ybGQ=
+        Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
+
+        302 Found
+        Location: /gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team subscription.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testGiftLanding() {
@@ -503,15 +524,15 @@ class GiftTests: TestCase {
     let conn = connection(from: request(to: .gifts()))
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: siteMiddleware(conn),
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: siteMiddleware(conn),
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+          ]
+        )
+      }
     #endif
 
     assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
@@ -527,15 +548,15 @@ class GiftTests: TestCase {
     let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: siteMiddleware(conn),
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: siteMiddleware(conn),
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+          ]
+        )
+      }
     #endif
 
     assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)

@@ -42,7 +42,7 @@ public func collectionSection(
           ),
           .class([
             Class.pf.colors.link.gray650
-          ])
+          ]),
         ],
         .text(collection.sections.count == 1 ? "Collections" : collection.title)
       )
@@ -72,12 +72,12 @@ private func coreLessons(
 ) -> Node {
   .div(
     attributes: [
-      .style(backgroundColor(.other("#fafafa"))),
+      .style(backgroundColor(.other("#fafafa")))
     ],
     .gridRow(
       attributes: [
         .class([
-          Class.grid.between(.desktop),
+          Class.grid.between(.desktop)
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -88,21 +88,23 @@ private func coreLessons(
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
               .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
-            ]),
-          ]),
+            ])
+          ])
         ],
         .h2(
           attributes: [
             .class([
               Class.padding([.mobile: [.bottom: 1]]),
               Class.pf.type.responsiveTitle4,
-            ]),
+            ])
           ],
           "Core lessons"
         ),
         .fragment(
-          section.coreLessons.map { coreLesson(collection: collection, section: section, lesson: $0) }
-          + (section.isFinished ? [] : [moreComingSoon])
+          section.coreLessons.map {
+            coreLesson(collection: collection, section: section, lesson: $0)
+          }
+            + (section.isFinished ? [] : [moreComingSoon])
         )
       )
     )
@@ -117,7 +119,7 @@ private func coreLesson(
   .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
-      .style(margin(top: .px(4))),
+      .style(margin(top: .px(4)))
     ],
     contentRow(
       backgroundColor: Class.pf.colors.bg.white,
@@ -138,8 +140,8 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
   return .div(
     attributes: [
       .class([
-        Class.pf.colors.bg.white,
-      ]),
+        Class.pf.colors.bg.white
+      ])
     ],
     .gridRow(
       attributes: [
@@ -155,14 +157,14 @@ private func relatedItems(_ relatedItems: [Episode.Collection.Section.Related]) 
             Class.padding([
               .desktop: [.leftRight: 5],
               .mobile: [.leftRight: 3],
-            ]),
-          ]),
+            ])
+          ])
         ],
         .h2(
           attributes: [
             .class([
-              Class.pf.type.responsiveTitle4,
-            ]),
+              Class.pf.type.responsiveTitle4
+            ])
           ],
           "Related content"
         ),
@@ -177,8 +179,8 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
     sizes: [.mobile: 12],
     attributes: [
       .class([
-        Class.padding([.mobile: [.bottom: 2]]),
-      ]),
+        Class.padding([.mobile: [.bottom: 2]])
+      ])
     ],
     .div(
       attributes: [
@@ -195,25 +197,27 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
   switch content {
   case let .collections(collections):
-    return .fragment(collections().map { collection in
-      contentRow(
-        backgroundColor: Class.pf.colors.bg.gray900,
-        icon: collectionIconSvgBase64,
-        title: collection.title,
-        length: collection.length,
-        url: siteRouter.path(for: .collections(.collection(collection.slug)))
-      )
-    })
+    return .fragment(
+      collections().map { collection in
+        contentRow(
+          backgroundColor: Class.pf.colors.bg.gray900,
+          icon: collectionIconSvgBase64,
+          title: collection.title,
+          length: collection.length,
+          url: siteRouter.path(for: .collections(.collection(collection.slug)))
+        )
+      })
   case let .episodes(episodes):
-    return .fragment(episodes().map { episode in
-      contentRow(
-        backgroundColor: Class.pf.colors.bg.gray900,
-        icon: playIconSvgBase64(),
-        title: episode.fullTitle,
-        length: episode.length,
-        url: siteRouter.path(for: .episode(.show(.left(episode.slug))))
-      )
-    })
+    return .fragment(
+      episodes().map { episode in
+        contentRow(
+          backgroundColor: Class.pf.colors.bg.gray900,
+          icon: playIconSvgBase64(),
+          title: episode.fullTitle,
+          length: episode.length,
+          url: siteRouter.path(for: .episode(.show(.left(episode.slug))))
+        )
+      })
   case let .section(collection, index):
     let collection = collection()
     let section = collection.sections[index]
@@ -231,12 +235,12 @@ private func whereToGoFromHere(_ string: String?) -> Node {
   guard let string = string else { return [] }
   return .div(
     attributes: [
-      .style(backgroundColor(.other("#fafafa"))),
+      .style(backgroundColor(.other("#fafafa")))
     ],
     .gridRow(
       attributes: [
         .class([
-          Class.grid.between(.desktop),
+          Class.grid.between(.desktop)
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -247,15 +251,15 @@ private func whereToGoFromHere(_ string: String?) -> Node {
             Class.padding([
               .desktop: [.leftRight: 5, .top: 3, .bottom: 4],
               .mobile: [.leftRight: 3, .top: 2, .bottom: 3],
-            ]),
-          ]),
+            ])
+          ])
         ],
         .h2(
           attributes: [
             .class([
               Class.padding([.mobile: [.bottom: 1]]),
               Class.pf.type.responsiveTitle4,
-            ]),
+            ])
           ],
           "Where to go from here"
         ),
@@ -275,35 +279,37 @@ private func sectionNavigation(
     Node.a(
       attributes: [
         .class([
-          Class.grid.row,
+          Class.grid.row
         ]),
         .href(
           siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
         ),
       ],
-      .img(base64: leftChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
-        .class([
-          Class.padding([
-            .mobile: [.right: 1],
-            .desktop: [.right: 2]
-          ]),
+      .img(
+        base64: leftChevronSvgBase64, type: .image(.svg), alt: "",
+        attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.right: 1],
+              .desktop: [.right: 2],
+            ])
+          ])
         ]),
-      ]),
       .gridColumn(
         sizes: [:],
         .div(
           attributes: [
             .class([
-              Class.pf.type.body.small,
-            ]),
+              Class.pf.type.body.small
+            ])
           ],
           "Back to"
         ),
         .div(
           attributes: [
             .class([
-              Class.type.semiBold,
-            ]),
+              Class.type.semiBold
+            ])
           ],
           .text(section.title)
         )
@@ -315,7 +321,7 @@ private func sectionNavigation(
     Node.a(
       attributes: [
         .class([
-          Class.grid.row,
+          Class.grid.row
         ]),
         .href(
           siteRouter.url(for: .collections(.collection(collection.slug, .section(section.slug))))
@@ -326,35 +332,37 @@ private func sectionNavigation(
         .div(
           attributes: [
             .class([
-              Class.pf.type.body.small,
-            ]),
+              Class.pf.type.body.small
+            ])
           ],
           "Next up"
         ),
         .div(
           attributes: [
             .class([
-              Class.type.semiBold,
-            ]),
+              Class.type.semiBold
+            ])
           ],
           .text(section.title)
         )
       ),
-      .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
-        .class([
-          Class.padding([
-            .mobile: [.left: 1],
-            .desktop: [.left: 2]
-          ]),
-        ]),
-      ])
+      .img(
+        base64: rightChevronSvgBase64, type: .image(.svg), alt: "",
+        attributes: [
+          .class([
+            Class.padding([
+              .mobile: [.left: 1],
+              .desktop: [.left: 2],
+            ])
+          ])
+        ])
     )
   }
 
   return Node.div(
     attributes: [
       .class([
-        Class.border.top,
+        Class.border.top
       ]),
       .style(
         backgroundColor(.other("#fafafa"))
@@ -369,7 +377,7 @@ private func sectionNavigation(
           Class.padding([
             .desktop: [.leftRight: 5],
             .mobile: [.leftRight: 3],
-          ])
+          ]),
         ]),
         .style(
           maxWidth(.px(1080))
@@ -396,7 +404,7 @@ private func sectionNavigation(
           .class([
             Class.grid.end(.mobile),
             Class.padding([.mobile: [.topBottom: 3]]),
-          ]),
+          ])
         ],
         nextLink ?? []
       )
@@ -452,8 +460,8 @@ private func contentRow(
         ),
       ],
       length > 0
-      ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
-      : []
+        ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
+        : []
     )
   )
 }
@@ -461,7 +469,7 @@ private func contentRow(
 private let moreComingSoon = Node.gridColumn(
   sizes: [.mobile: 12],
   attributes: [
-    .style(margin(top: .px(4))),
+    .style(margin(top: .px(4)))
   ],
   .div(
     attributes: [
@@ -491,8 +499,8 @@ private let moreComingSoon = Node.gridColumn(
         .style(flex(grow: 1)),
         .class([
           Class.pf.colors.fg.gray400,
-          Class.type.italic
-        ])
+          Class.type.italic,
+        ]),
       ],
       .text("Currently in progress. More coming soon!")
     )

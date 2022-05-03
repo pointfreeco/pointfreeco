@@ -23,8 +23,8 @@ public enum Gifts: Equatable {
 
     public init?(monthCount: Int) {
       switch monthCount {
-      case 3:  self = .threeMonths
-      case 6:  self = .sixMonths
+      case 3: self = .threeMonths
+      case 6: self = .sixMonths
       case 12: self = .year
       default: return nil
       }

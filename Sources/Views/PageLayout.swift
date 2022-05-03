@@ -38,7 +38,8 @@ public struct SimplePageLayoutData<A> {
     currentSubscriberState: SubscriberState = .nonSubscriber,
     currentUser: User?,
     data: A,
-    description: String? = "Point-Free is a video series exploring functional programming and Swift.",
+    description: String? =
+      "Point-Free is a video series exploring functional programming and Swift.",
     extraHead: ChildOf<Tag.Head> = [],
     extraStyles: Stylesheet = .empty,
     image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
@@ -91,7 +92,7 @@ public func simplePageLayout<A>(
               .href(siteRouter.url(for: .feed(.episodes))),
               .rel(.alternate),
               .title("Point-Free Episodes"),
-              .type(.application(.init(rawValue: "atom+xml")))
+              .type(.application(.init(rawValue: "atom+xml"))),
             ]
           ),
           .link(
@@ -100,7 +101,7 @@ public func simplePageLayout<A>(
               .rel(.alternate),
               .title("Point-Free Blog"),
               // TODO: add .atom to Html
-              .type(.application(.init(rawValue: "atom+xml")))
+              .type(.application(.init(rawValue: "atom+xml"))),
             ]
           ),
           (layoutData.usePrismJs ? prismJsHead : []),
@@ -115,12 +116,14 @@ public func simplePageLayout<A>(
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
           contentView(layoutData.data),
-          layoutData.style.isMinimal ? [] : footerView(
-            user: layoutData.currentUser,
-            year: Calendar(identifier: .gregorian).component(.year, from: date())
-          )
+          layoutData.style.isMinimal
+            ? []
+            : footerView(
+              user: layoutData.currentUser,
+              year: Calendar(identifier: .gregorian).component(.year, from: date())
+            )
         )
-      )
+      ),
     ]
   }
 }
@@ -131,11 +134,12 @@ func announcementBanner<A>(
 ) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0069_2021EOYSale.publishedAt...Date(timeIntervalSince1970: 1641160800))
+    (post0069_2021EOYSale.publishedAt...Date(timeIntervalSince1970: 1_641_160_800))
       .contains(date())
   else { return [] }
 
-  let announcementClass = Class.type.align.center
+  let announcementClass =
+    Class.type.align.center
     | Class.padding([.mobile: [.topBottom: 3]])
     | Class.pf.colors.bg.purple
     | Class.pf.colors.fg.gray850
@@ -151,7 +155,7 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0069_2021EOYSale.slug))))
+          .href(siteRouter.url(for: .blog(.show(slug: post0069_2021EOYSale.slug)))),
         ],
         .strong("End-of-year sale")
       ),
@@ -164,7 +168,8 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
   guard emergencyMode
   else { return [] }
 
-  let announcementClass = Class.type.align.center
+  let announcementClass =
+    Class.type.align.center
     | Class.padding([.mobile: [.topBottom: 3]])
     | Class.pf.colors.bg.yellow
     | Class.pf.colors.fg.black
@@ -180,7 +185,7 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
             Class.pf.colors.link.black
               | Class.pf.type.underlineLink
           ]),
-          .href("mailto:support@pointfree.co")
+          .href("mailto:support@pointfree.co"),
         ],
         .strong("Temporary service disruption")
       ),
@@ -217,7 +222,7 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
     attributes: [
       .rel(.init(rawValue: "apple-touch-icon")),
       .init("sizes", "180x180"),
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png"),
     ]
   ),
   .link(
@@ -225,7 +230,7 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
       .rel(.init(rawValue: "icon")),
       .type(.png),
       .init("sizes", "32x32"),
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png"),
     ]
   ),
   .link(
@@ -233,21 +238,21 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
       .rel(.init(rawValue: "icon")),
       .type(.png),
       .init("sizes", "16x16"),
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png"),
     ]
   ),
   .link(
     attributes: [
       .rel(.init(rawValue: "manifest")),
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest"),
     ]
   ),
   .link(
     attributes: [
       .rel(.init(rawValue: "mask-icon")),
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg"),
     ]
-  )
+  ),
 ])
 
 private var prismJsHead: ChildOf<Tag.Head> {
@@ -256,23 +261,24 @@ private var prismJsHead: ChildOf<Tag.Head> {
       .map {
         .script(
           attributes: [
-            .src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-\($0).min.js"),
+            .src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-\($0).min.js")
           ]
         )
       }
-    )
+  )
   return .fragment([
-    .style(safe: """
-.language-diff .token.inserted {
-  background-color: #f0fff4;
-  color: #22863a;
-}
+    .style(
+      safe: """
+        .language-diff .token.inserted {
+          background-color: #f0fff4;
+          color: #22863a;
+        }
 
-.language-diff .token.deleted {
-  background-color: #ffeef0;
-  color: #b31d28;
-}
-"""),
+        .language-diff .token.deleted {
+          background-color: #ffeef0;
+          color: #b31d28;
+        }
+        """),
     .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js")]),
     plugins,
   ])
@@ -284,7 +290,7 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   return .gridRow(
     attributes: [
       .style(safe: "background: linear-gradient(to bottom, #FFF080, #79F2B0);"),
-      .class([Class.padding([.mobile: [.all: 4]])])
+      .class([Class.padding([.mobile: [.all: 4]])]),
     ],
     .gridColumn(
       sizes: [:],
@@ -296,13 +302,13 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
         .form(
           attributes: [
             .method(.post),
-            .action(siteRouter.path(for: .endGhosting))
+            .action(siteRouter.path(for: .endGhosting)),
           ],
           .input(
             attributes: [
               .type(.submit),
               .value("Stop ghosting"),
-              .class([Class.pf.components.button(color: .white, size: .small)])
+              .class([Class.pf.components.button(color: .white, size: .small)]),
             ]
           )
         )
@@ -362,7 +368,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
     )
 
   case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-       .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+    .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
@@ -397,7 +403,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
     )
 
   case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-       .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+    .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
@@ -423,7 +429,8 @@ public func flashView(_ flash: Flash) -> Node {
 }
 
 private func flashClass(for priority: Flash.Priority) -> CssSelector {
-  let base = Class.type.align.center
+  let base =
+    Class.type.align.center
     | Class.padding([.mobile: [.topBottom: 1]])
 
   switch priority {
@@ -441,4 +448,3 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
       | Class.pf.colors.bg.red
   }
 }
-

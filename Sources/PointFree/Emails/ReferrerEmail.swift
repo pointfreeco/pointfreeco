@@ -6,16 +6,17 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let referralEmailView = simpleEmailLayout(referralEmailBody) <<< {
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "You just got one month free!",
-    preheader: "",
-    template: .default(),
-    data: $0
-  )
-}
+let referralEmailView =
+  simpleEmailLayout(referralEmailBody) <<< {
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You just got one month free!",
+      preheader: "",
+      template: .default(),
+      data: $0
+    )
+  }
 
 private func referralEmailBody(_: Prelude.Unit) -> Node {
   return .emailTable(

@@ -32,7 +32,9 @@ public enum TypeScale: String {
     }
   }
 
-  fileprivate static let allTypeScales: [TypeScale] = [.r4, .r3, .r2, .r1_5, .r1_25, .r1, .r0_875, .r0_75]
+  fileprivate static let allTypeScales: [TypeScale] = [
+    .r4, .r3, .r2, .r1_5, .r1_25, .r1, .r0_875, .r0_75,
+  ]
 }
 
 extension Class {
@@ -44,12 +46,14 @@ extension Class {
   public static let h6 = CssSelector.class("h6")
 
   public static func typeScale(_ data: [Breakpoint: TypeScale]) -> CssSelector {
-    let selectors = data
+    let selectors =
+      data
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
       .map { breakpoint, typeScale in
         selector(breakpoint: breakpoint, typeScale: typeScale)
-    }
-    return selectors
+      }
+    return
+      selectors
       .dropFirst()
       .reduce(selectors.first ?? .class("not-found"), |)
   }
@@ -60,21 +64,21 @@ private func selector(breakpoint: Breakpoint, typeScale: TypeScale) -> CssSelect
 }
 
 public let typescale =
-  Class.h1 % fontSize(.rem(4))         // 64  56
-    <> Class.h2 % fontSize(.rem(3))    // 48  42
-    <> Class.h3 % fontSize(.rem(2))    // 32  28
-    <> Class.h4 % fontSize(.rem(1.5))  // 24  21
-    <> Class.h5 % fontSize(.rem(1.0))  // 16  14
-    <> Class.h6 % fontSize(.rem(0.875)) // 14  12.25
-    <> responsiveFontSizes
+  Class.h1 % fontSize(.rem(4))  // 64  56
+  <> Class.h2 % fontSize(.rem(3))  // 48  42
+  <> Class.h3 % fontSize(.rem(2))  // 32  28
+  <> Class.h4 % fontSize(.rem(1.5))  // 24  21
+  <> Class.h5 % fontSize(.rem(1.0))  // 16  14
+  <> Class.h6 % fontSize(.rem(0.875))  // 14  12.25
+  <> responsiveFontSizes
 
 private let responsiveFontSizes =
   Breakpoint.all.map { breakpoint in
     breakpoint.querySelfAndBigger(only: screen) {
       TypeScale.allTypeScales.map { typeScale in
         Class.typeScale([breakpoint: typeScale]) % fontSize(typeScale.size)
-        }
-        .concat()
+      }
+      .concat()
     }
-    }
-    .concat()
+  }
+  .concat()

@@ -2,9 +2,6 @@ import DecodableRequest
 import Either
 import EmailAddress
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import FoundationPrelude
 import Logging
 import Prelude
@@ -12,12 +9,22 @@ import Tagged
 import TaggedMoney
 import UrlFormEncoding
 
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 public struct Client {
-  public var cancelSubscription: (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
-  public var createCoupon: (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>
-  public var createCustomer: (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+  public var cancelSubscription:
+    (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
+  public var createCoupon:
+    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
+      Error, Coupon
+    >
+  public var createCustomer:
+    (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
-  public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
+  public var createSubscription:
+    (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
   public var deleteCoupon: (Coupon.Id) -> EitherIO<Error, Prelude.Unit>
   public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
@@ -36,11 +43,17 @@ public struct Client {
   public var js: String
 
   public init(
-    cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>,
-    createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<Error, Coupon>,
-    createCustomer: @escaping (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>,
+    cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<
+      Error, Subscription
+    >,
+    createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
+      -> EitherIO<Error, Coupon>,
+    createCustomer: @escaping (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
+      EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
-    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
+    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<
+      Error, Subscription
+    >,
     deleteCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Prelude.Unit>,
     fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
@@ -146,7 +159,9 @@ extension Client {
       fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
       invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
       updateCustomer: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, token: $1)) },
-      updateCustomerBalance: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1)) },
+      updateCustomerBalance: {
+        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+      },
       updateCustomerExtraInvoiceInfo: {
         runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
@@ -182,7 +197,8 @@ func createCoupon(
   name: String?,
   rate: Coupon.Rate
 )
--> DecodableRequest<Coupon> {
+  -> DecodableRequest<Coupon>
+{
 
   var params: [String: Any] = [:]
 
@@ -223,7 +239,8 @@ func createCustomer(
   vatNumber: Customer.Vat?,
   balance: Cents<Int>?
 )
--> DecodableRequest<Customer> {
+  -> DecodableRequest<Customer>
+{
 
   stripeRequest(
     "customers?expand[]=sources",
@@ -235,21 +252,25 @@ func createCustomer(
         "email": email?.rawValue,
         "source": token?.rawValue,
       ]
-        .compactMapValues { $0 }
+      .compactMapValues { $0 }
     )
   )
 }
 
 func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
--> DecodableRequest<PaymentIntent> {
+  -> DecodableRequest<PaymentIntent>
+{
 
-  stripeRequest("payment_intents", .post([
-    "amount": request.amount.rawValue,
-    "currency": request.currency,
-    "description": request.description as Any?,
-    "receipt_email": request.receiptEmail,
-    "statement_descriptor_suffix": request.statementDescriptorSuffix,
-  ].compactMapValues { $0 }))
+  stripeRequest(
+    "payment_intents",
+    .post(
+      [
+        "amount": request.amount.rawValue,
+        "currency": request.currency,
+        "description": request.description as Any?,
+        "receipt_email": request.receiptEmail,
+        "statement_descriptor_suffix": request.statementDescriptorSuffix,
+      ].compactMapValues { $0 }))
 }
 
 func createSubscription(
@@ -258,7 +279,8 @@ func createSubscription(
   quantity: Int,
   coupon: Coupon.Id?
 )
--> DecodableRequest<Subscription> {
+  -> DecodableRequest<Subscription>
+{
 
   var params: [String: Any] = [:]
   params["customer"] = customer.rawValue
@@ -291,7 +313,8 @@ func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
 }
 
 func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
-  stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
+  stripeRequest(
+    "invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
 func fetchPaymentIntent(id: PaymentIntent.Id) -> DecodableRequest<PaymentIntent> {
@@ -315,33 +338,43 @@ func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> 
 }
 
 func invoiceCustomer(_ customer: Customer.Id)
--> DecodableRequest<Invoice> {
+  -> DecodableRequest<Invoice>
+{
 
-  stripeRequest("invoices", .post([
-    "customer": customer.rawValue,
-  ]))
+  stripeRequest(
+    "invoices",
+    .post([
+      "customer": customer.rawValue
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, token: Token.Id)
--> DecodableRequest<Customer> {
+  -> DecodableRequest<Customer>
+{
 
-  stripeRequest("customers/" + id.rawValue, .post([
-    "source": token.rawValue,
-  ]))
+  stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
+      "source": token.rawValue
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
 
-  stripeRequest("customers/" + id.rawValue, .post([
-    "balance": balance.rawValue,
-  ]))
+  stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
+      "balance": balance.rawValue
+    ]))
 }
 
 func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
 
-  stripeRequest("customers/" + id.rawValue, .post([
-    "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
-  ]))
+  stripeRequest(
+    "customers/" + id.rawValue,
+    .post([
+      "metadata": ["extraInvoiceInfo": extraInvoiceInfo]
+    ]))
 }
 
 func updateSubscription(
@@ -349,7 +382,8 @@ func updateSubscription(
   _ plan: Plan.Id,
   _ quantity: Int
 )
--> DecodableRequest<Subscription>? {
+  -> DecodableRequest<Subscription>?
+{
 
   guard let item = currentSubscription.items.data.first else { return nil }
 
@@ -365,7 +399,7 @@ func updateSubscription(
         "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
       ]
-        .compactMapValues { $0 }
+      .compactMapValues { $0 }
     )
   )
 }
@@ -385,7 +419,9 @@ public let jsonEncoder: JSONEncoder = {
   return encoder
 }()
 
-func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
+func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:]))
+  -> DecodableRequest<A>
+{
   var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
   request.setHeader(name: "Stripe-Version", value: "2020-08-27")
   request.attach(method: method)
@@ -393,7 +429,9 @@ func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get(
   return DecodableRequest(rawValue: request)
 }
 
-private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
+  DecodableRequest<A>?
+) -> EitherIO<Error, A> {
   return { stripeRequest in
     guard
       var stripeRequest = stripeRequest?.rawValue
@@ -411,7 +449,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
                 return try jsonDecoder.decode(A.self, from: data)
               } catch {
                 throw (try? jsonDecoder.decode(StripeErrorEnvelope.self, from: data))
-                ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
+                  ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
               }
             }
           }

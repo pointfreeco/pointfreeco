@@ -15,9 +15,9 @@ public func homeView(
   episodes: [Episode],
   date: () -> Date,
   emergencyMode: Bool
-  ) -> Node {
+) -> Node {
 
-  let episodes = episodes.sorted(by: their(^\.sequence, >))
+  let episodes = episodes.sorted(by: their(\.sequence, >))
 
   let ctaInsertionIndex = subscriberState.isNonSubscriber ? min(3, episodes.count) : 0
   let firstBatch = episodes[0..<ctaInsertionIndex]
@@ -27,11 +27,11 @@ public func homeView(
     holidaySpecialCalloutView(currentDate: currentDate, subscriberState: subscriberState),
     episodesListView(episodes: firstBatch, date: date, emergencyMode: emergencyMode),
     subscriberCalloutView(currentDate: currentDate, subscriberState: subscriberState),
-    episodesListView(episodes: secondBatch, date: date, emergencyMode: emergencyMode)
+    episodesListView(episodes: secondBatch, date: date, emergencyMode: emergencyMode),
   ]
 }
 
-let holidayDiscount2019Interval: ClosedRange<Double> = 1577080800...1577854800
+let holidayDiscount2019Interval: ClosedRange<Double> = 1_577_080_800...1_577_854_800
 
 private func holidaySpecialCalloutView(
   currentDate: Date,
@@ -49,27 +49,27 @@ private func holidaySpecialCalloutView(
         .div(
           attributes: [
             .class([
-              Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]]),
+              Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]])
             ])
           ],
           holidaySpecialContent
         )
       )
-    )
+    ),
   ]
 }
 
 let holidaySpecialContent: Node = .div(
   attributes: [
     .style(backgroundColor(.other("#D6FFE1"))),
-    .class([Class.padding([.mobile: [.all: 3]])])
+    .class([Class.padding([.mobile: [.all: 3]])]),
   ],
   .h4(
     attributes: [
       .class(
         [
           Class.pf.type.responsiveTitle4,
-          Class.padding([.mobile: [.bottom: 2]])
+          Class.padding([.mobile: [.bottom: 2]]),
         ]
       )
     ],
@@ -86,7 +86,7 @@ let holidaySpecialContent: Node = .div(
     .a(
       attributes: [
         .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
-        .class([Class.pf.type.underlineLink])
+        .class([Class.pf.type.underlineLink]),
       ],
       "Act now"
     ),
@@ -100,7 +100,7 @@ let holidaySpecialContent: Node = .div(
     .a(
       attributes: [
         .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
-        .class([Class.pf.components.button(color: .black)])
+        .class([Class.pf.components.button(color: .black)]),
       ],
       "Subscribe now"
     )
@@ -125,7 +125,7 @@ private func subscriberCalloutView(
               [
                 Class.margin([.mobile: [.all: 4]]),
                 Class.padding([.mobile: [.all: 3]]),
-                Class.pf.colors.bg.gray900
+                Class.pf.colors.bg.gray900,
               ]
             )
           ],
@@ -134,7 +134,7 @@ private func subscriberCalloutView(
               .class(
                 [
                   Class.pf.type.responsiveTitle4,
-                  Class.padding([.mobile: [.bottom: 2]])
+                  Class.padding([.mobile: [.bottom: 2]]),
                 ]
               )
             ],
@@ -145,7 +145,7 @@ private func subscriberCalloutView(
             .a(
               attributes: [
                 .href(siteRouter.path(for: .pricingLanding)),
-                .class([Class.pf.type.underlineLink])
+                .class([Class.pf.type.underlineLink]),
               ],
               "subscribing"
             ),
@@ -153,26 +153,31 @@ private func subscriberCalloutView(
           )
         )
       )
-    )
+    ),
   ]
 }
 
-private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date, emergencyMode: Bool) -> Node {
-  return .fragment(episodes.map { episodeRowView(episode: $0, date: date, emergencyMode: emergencyMode) })
+private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date, emergencyMode: Bool)
+  -> Node
+{
+  return .fragment(
+    episodes.map { episodeRowView(episode: $0, date: date, emergencyMode: emergencyMode) })
 }
 
 private func episodeRowView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node {
   return [
     divider,
     .gridRow(
-      .gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView(episode: episode, date: date, emergencyMode: emergencyMode)),
+      .gridColumn(
+        sizes: [.mobile: 12, .desktop: 7],
+        episodeInfoColumnView(episode: episode, date: date, emergencyMode: emergencyMode)),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         .div(
           attributes: [
             .class([Class.size.height100pct]),
-            .style(lineHeight(0) <> gradient <> minHeight(.px(300)))
+            .style(lineHeight(0) <> gradient <> minHeight(.px(300))),
           ],
           .a(
             attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
@@ -181,17 +186,18 @@ private func episodeRowView(episode: Episode, date: () -> Date, emergencyMode: B
                 .src(episode.image),
                 .alt(""),
                 .class([Class.size.width100pct, Class.size.height100pct]),
-                .style(objectFit(.cover))
+                .style(objectFit(.cover)),
               ]
             )
           )
         )
       )
-    )
+    ),
   ]
 }
 
-private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node {
+private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node
+{
   return .div(
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
@@ -202,21 +208,25 @@ private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergency
       .a(
         attributes: [
           .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
-          .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])
+          .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular]),
         ],
         .text("Watch episode (\(episode.length.rawValue / 60) min)"),
         .img(
           base64: rightArrowSvgBase64(fill: "#974DFF"),
           type: .image(.svg),
           alt: "",
-          attributes: [.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
+          attributes: [
+            .class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16),
+            .height(16),
+          ]
         )
       )
     )
   )
 }
 
-public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node {
+public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node
+{
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],
@@ -234,7 +244,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergenc
     .div(
       attributes: [.class([Class.pf.type.body.leading])],
       .markdownBlock(episode.blurb)
-    )
+    ),
   ]
 }
 
@@ -242,10 +252,12 @@ func topLevelEpisodeMetadata(episode: Episode, date: () -> Date, emergencyMode: 
   let components: [String?] = [
     "#\(episode.sequence)",
     episodeDateFormatter.string(from: episode.publishedAt),
-    episode.isSubscriberOnly(currentDate: date(), emergencyMode: emergencyMode) ? "Subscriber-only" : "Free Episode"
+    episode.isSubscriberOnly(currentDate: date(), emergencyMode: emergencyMode)
+      ? "Subscriber-only" : "Free Episode",
   ]
 
-  return components
+  return
+    components
     .compactMap { $0 }
     .joined(separator: " • ")
 }

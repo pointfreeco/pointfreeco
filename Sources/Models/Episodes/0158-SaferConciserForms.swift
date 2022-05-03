@@ -3,32 +3,32 @@ import Foundation
 extension Episode {
   public static let ep158_saferConciserForms = Episode(
     blurb: """
-Previously we explored how SwiftUI makes building forms a snap, and we contrasted it with the boilerplate introduced by the Composable Architecture. We employed a number of advanced tools to close the gap, but we can do better! We’ll start by using a property wrapper to make things much safer than before.
-""",
+      Previously we explored how SwiftUI makes building forms a snap, and we contrasted it with the boilerplate introduced by the Composable Architecture. We employed a number of advanced tools to close the gap, but we can do better! We’ll start by using a property wrapper to make things much safer than before.
+      """,
     codeSampleDirectory: "0158-safer-conciser-forms-pt1",
     exercises: _exercises,
     id: 158,
-    length: 29*60 + 28,
+    length: 29 * 60 + 28,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1630299600),
+    publishedAt: Date(timeIntervalSince1970: 1_630_299_600),
     references: [
       reference(
         forCollection: .composableArchitecture,
         additionalBlurb: "",
         collectionUrl: "https://www.pointfree.co/collections/composable-architecture"
-      ),
+      )
     ],
     sequence: 158,
     subtitle: "Part 1",
     title: "Safer, Conciser Forms",
     trailerVideo: .init(
-      bytesLength: 67284270,
+      bytesLength: 67_284_270,
       downloadUrls: .s3(
         hd1080: "0158-trailer-1080p-1e9a4f7e0a7c4994ba82c69d0e512b46",
         hd720: "0158-trailer-720p-6da9d20f226141c5bd23f0eecff1f524",
         sd540: "0158-trailer-540p-a53ab21377c64519a11d1e6f7468c2cf"
       ),
-      vimeoId: 592110963
+      vimeoId: 592_110_963
     )
   )
 }
@@ -36,117 +36,117 @@ Previously we explored how SwiftUI makes building forms a snap, and we contraste
 private let _exercises: [Episode.Exercise] = [
   .init(
     problem: #"""
-Update the effectful notification logic in the vanilla SwiftUI view model to use async/await. As of this episode, Apple does not provide async/await APIs for the UserNotifications framework, so you will need to write your own helpers using tools like `withUnsafeContinuation` and `withUnsafeThrowingContinuation`.
-"""#,
+      Update the effectful notification logic in the vanilla SwiftUI view model to use async/await. As of this episode, Apple does not provide async/await APIs for the UserNotifications framework, so you will need to write your own helpers using tools like `withUnsafeContinuation` and `withUnsafeThrowingContinuation`.
+      """#,
     solution: #"""
-First we need to introduce some helpers on `UNNotificationCenter`:
+      First we need to introduce some helpers on `UNNotificationCenter`:
 
-```swift
-extension UNUserNotificationCenter {
-  var notificationSettings: UNNotificationSettings {
-    get async {
-      await withUnsafeContinuation { continuation in
-        self.getNotificationSettings { notificationSettings in
-          continuation.resume(with: .success(notificationSettings))
+      ```swift
+      extension UNUserNotificationCenter {
+        var notificationSettings: UNNotificationSettings {
+          get async {
+            await withUnsafeContinuation { continuation in
+              self.getNotificationSettings { notificationSettings in
+                continuation.resume(with: .success(notificationSettings))
+              }
+            }
+          }
+        }
+
+        func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
+          try await withUnsafeThrowingContinuation { continuation in
+            self.requestAuthorization(options: options) { granted, error in
+              if let error = error {
+                continuation.resume(with: .failure(error))
+              } else {
+                continuation.resume(with: .success(granted))
+              }
+            }
+          }
         }
       }
-    }
-  }
+      ```
 
-  func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-    try await withUnsafeThrowingContinuation { continuation in
-      self.requestAuthorization(options: options) { granted, error in
-        if let error = error {
-          continuation.resume(with: .failure(error))
+      With these in place, we can simplify `attemptToggleSendNotifications`:
+
+      ```swift
+      @MainActor
+      func attemptToggleSendNotifications(isOn: Bool) async {
+        guard isOn else {
+          self.sendNotifications = false
+          return
+        }
+
+        let settings = await UNUserNotificationCenter.current().notificationSettings
+        guard settings.authorizationStatus != .denied
+        else {
+          self.alert = .init(title: "You need to enable permissions from iOS settings")
+          return
+        }
+
+        withAnimation {
+          self.sendNotifications = true
+        }
+        let granted =
+          (try? await UNUserNotificationCenter.current().requestAuthorization(options: .alert))
+          ?? false
+        if !granted {
+          withAnimation {
+            self.sendNotifications = false
+          }
         } else {
-          continuation.resume(with: .success(granted))
+          UIApplication.shared.registerForRemoteNotifications()
         }
       }
-    }
-  }
-}
-```
+      ```
 
-With these in place, we can simplify `attemptToggleSendNotifications`:
+      We:
 
-```swift
-@MainActor
-func attemptToggleSendNotifications(isOn: Bool) async {
-  guard isOn else {
-    self.sendNotifications = false
-    return
-  }
+      * Upgrade the method to be `async`
+      * Use `@MainActor` to eliminate the `DispatchQueue.main.async` calls
+      * Make calls to the async helpers we just defined and eliminate a lot of nesting
 
-  let settings = await UNUserNotificationCenter.current().notificationSettings
-  guard settings.authorizationStatus != .denied
-  else {
-    self.alert = .init(title: "You need to enable permissions from iOS settings")
-    return
-  }
+      Finally, in the view we can spin off a `Task`:
 
-  withAnimation {
-    self.sendNotifications = true
-  }
-  let granted =
-    (try? await UNUserNotificationCenter.current().requestAuthorization(options: .alert))
-    ?? false
-  if !granted {
-    withAnimation {
-      self.sendNotifications = false
-    }
-  } else {
-    UIApplication.shared.registerForRemoteNotifications()
-  }
-}
-```
-
-We:
-
-* Upgrade the method to be `async`
-* Use `@MainActor` to eliminate the `DispatchQueue.main.async` calls
-* Make calls to the async helpers we just defined and eliminate a lot of nesting
-
-Finally, in the view we can spin off a `Task`:
-
-```swift
-Toggle(
-  "Send notifications",
-  isOn: Binding(
-    get: { self.viewModel.sendNotifications },
-    set: { isOn in
-      Task { await self.viewModel.attemptToggleSendNotifications(isOn: isOn) }
-    }
-  )
-)
-```
-"""#
+      ```swift
+      Toggle(
+        "Send notifications",
+        isOn: Binding(
+          get: { self.viewModel.sendNotifications },
+          set: { isOn in
+            Task { await self.viewModel.attemptToggleSendNotifications(isOn: isOn) }
+          }
+        )
+      )
+      ```
+      """#
   ),
   .init(
     problem: #"""
-Update the live `NotificationsClient`, a dependency used by the Composable Architecture version of the application, to use these new async helpers with `Effect.task`
-"""#,
+      Update the live `NotificationsClient`, a dependency used by the Composable Architecture version of the application, to use these new async helpers with `Effect.task`
+      """#,
     solution: #"""
-```swift
-extension UserNotificationsClient {
-  static let live = Self(
-    getNotificationSettings: {
-      .task {
-        .init(rawValue: await UNUserNotificationCenter.current().notificationSettings)
+      ```swift
+      extension UserNotificationsClient {
+        static let live = Self(
+          getNotificationSettings: {
+            .task {
+              .init(rawValue: await UNUserNotificationCenter.current().notificationSettings)
+            }
+          },
+          registerForRemoteNotifications: {
+            .fireAndForget {
+              UIApplication.shared.registerForRemoteNotifications()
+            }
+          },
+          requestAuthorization: { options in
+            .task {
+              try await UNUserNotificationCenter.current().requestAuthorization(options: options)
+            }
+          }
+        )
       }
-    },
-    registerForRemoteNotifications: {
-      .fireAndForget {
-        UIApplication.shared.registerForRemoteNotifications()
-      }
-    },
-    requestAuthorization: { options in
-      .task {
-        try await UNUserNotificationCenter.current().requestAuthorization(options: options)
-      }
-    }
-  )
-}
-```
-"""#
-  )
+      ```
+      """#
+  ),
 ]

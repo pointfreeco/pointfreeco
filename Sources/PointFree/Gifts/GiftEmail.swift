@@ -1,15 +1,15 @@
+import Either
 import EmailAddress
 import FunctionalCss
-import Either
 import Html
 import HtmlCssSupport
 import Mailgun
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
-import Styleguide
 import Stripe
+import Styleguide
 import Views
 
 func sendGiftEmail(for gift: Gift) -> EitherIO<Error, SendEmailResponse> {
@@ -18,19 +18,20 @@ func sendGiftEmail(for gift: Gift) -> EitherIO<Error, SendEmailResponse> {
     subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
     content: inj2(giftEmail(gift))
   )
-    .catch(notifyAdmins(subject: "Gift delivery failed"))
+  .catch(notifyAdmins(subject: "Gift delivery failed"))
 }
 
-private let giftEmail = simpleEmailLayout(giftEmailBody(gift:)) <<< { gift in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-    preheader: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-    template: .default(),
-    data: gift
-  )
-}
+private let giftEmail =
+  simpleEmailLayout(giftEmailBody(gift:)) <<< { gift in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
+      preheader: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
+      template: .default(),
+      data: gift
+    )
+  }
 
 private func giftEmailBody(gift: Gift) -> Node {
   let quotedMessage = gift.message

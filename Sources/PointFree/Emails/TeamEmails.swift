@@ -21,16 +21,17 @@ enum RemovalType {
   }
 }
 
-let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody) <<< { removalType in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "You have been removed from \(removalType.displayName)’s Point-Free team",
-    preheader: "",
-    template: .default(),
-    data: removalType
-  )
-}
+let youHaveBeenRemovedEmailView =
+  simpleEmailLayout(youHaveBeenRemovedEmailBody) <<< { removalType in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You have been removed from \(removalType.displayName)’s Point-Free team",
+      preheader: "",
+      template: .default(),
+      data: removalType
+    )
+  }
 
 private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
   return .emailTable(
@@ -57,7 +58,7 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
             .a(
               attributes: [
                 .href(siteRouter.url(for: .pricingLanding)),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "See subscription plans"
             )
@@ -68,16 +69,17 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
   )
 }
 
-let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody) <<< { teamOwner, teammate in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "Your teammate \(teammate.displayName) has been removed",
-    preheader: "",
-    template: .default(),
-    data: (teamOwner, teammate)
-  )
-}
+let teammateRemovedEmailView =
+  simpleEmailLayout(teammateRemovedEmailBody) <<< { teamOwner, teammate in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your teammate \(teammate.displayName) has been removed",
+      preheader: "",
+      template: .default(),
+      data: (teamOwner, teammate)
+    )
+  }
 
 private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
   return .emailTable(
@@ -104,7 +106,7 @@ private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
             .a(
               attributes: [
                 .href(siteRouter.url(for: .account())),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Account settings"
             )
