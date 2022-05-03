@@ -40,7 +40,8 @@ extension GiftFormData: Codable {
         )
       )
     }
-    self.stripePaymentIntentId = try container
+    self.stripePaymentIntentId =
+      try container
       .decodeIfPresent(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
     self.toEmail = try container.decode(EmailAddress.self, forKey: .toEmail)
     self.toName = try container.decode(String.self, forKey: .toName)
@@ -48,7 +49,8 @@ extension GiftFormData: Codable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encodeIfPresent(self.deliverAt.map(dateFormatter.string(from:)), forKey: .deliverAt)
+    try container.encodeIfPresent(
+      self.deliverAt.map(dateFormatter.string(from:)), forKey: .deliverAt)
     try container.encode(self.fromEmail, forKey: .fromEmail)
     try container.encode(self.fromName, forKey: .fromName)
     try container.encode(self.message, forKey: .message)

@@ -1,6 +1,6 @@
 import Either
-import HttpPipeline
 import Foundation
+import HttpPipeline
 import Models
 import PointFreeRouter
 import Prelude
@@ -9,25 +9,28 @@ import Tuple
 
 let expressUnsubscribeMiddleware =
   decryptUserAndNewsletter
-    <| unsubscribeMiddleware
-    >=> redirect(to: .home, headersMiddleware: flash(.notice, "You’re now unsubscribed."))
+  <| unsubscribeMiddleware
+  >=> redirect(to: .home, headersMiddleware: flash(.notice, "You’re now unsubscribed."))
 
 let expressUnsubscribeReplyMiddleware =
   requireUserAndNewsletter
-    <| unsubscribeMiddleware
-    >=> head(.ok)
+  <| unsubscribeMiddleware
+  >=> head(.ok)
 
 private func requireUserAndNewsletter(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data
+  >
+) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
 
   return { conn in
 
     guard
-      let (userId, newsletter) = Current.mailgun.userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient),
+      let (userId, newsletter) = Current.mailgun.userIdAndNewsletter(
+        fromUnsubscribeEmail: conn.data.recipient),
       Current.mailgun.verify(payload: conn.data, with: Current.envVars.mailgun.apiKey)
-      else {
-        return conn |> head(.notAcceptable)
+    else {
+      return conn |> head(.notAcceptable)
     }
 
     return conn.map(const((userId, newsletter))) |> middleware
@@ -36,34 +39,36 @@ private func requireUserAndNewsletter(
 
 private func unsubscribeMiddleware<I>(
   _ conn: Conn<I, (User.Id, EmailSetting.Newsletter)>
-  ) -> IO<Conn<I, Prelude.Unit>> {
+) -> IO<Conn<I, Prelude.Unit>> {
 
   let (userId, newsletter) = conn.data
 
   return Current.database.fetchEmailSettingsForUserId(userId)
-    .map { settings in settings.filter(^\.newsletter != newsletter) }
+    .map { settings in settings.filter(\.newsletter != newsletter) }
     .flatMap { settings in
-      Current.database.updateUser(id: userId, emailSettings: settings.map(^\.newsletter))
+      Current.database.updateUser(id: userId, emailSettings: settings.map(\.newsletter))
     }
     .run
     .map(const(conn.map(const(unit))))
 }
 
 private func decryptUserAndNewsletter(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> {
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data
+  >
+) -> Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> {
 
   return { conn in
     guard
       let string = conn.data.decrypt(with: Current.envVars.appSecret),
       let (userId, newsletter) = try? expressUnsubscribe.parse(string)
-      else {
-        return conn.map(const(unit))
-          |> redirect(
-            to: .home,
-            headersMiddleware: flash(
-              .error, "An error occurred. Please contact <support@pointfree.co>."
-            )
+    else {
+      return conn.map(const(unit))
+        |> redirect(
+          to: .home,
+          headersMiddleware: flash(
+            .error, "An error occurred. Please contact <support@pointfree.co>."
+          )
         )
     }
 

@@ -1,15 +1,17 @@
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import HtmlSnapshotTesting
-@testable import HttpPipeline
 import HttpPipelineTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import XCTest
+
+@testable import HttpPipeline
+@testable import PointFree
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 private func secureRequest(_ urlString: String) -> URLRequest {
   var request = URLRequest(url: URL(string: urlString)!)
@@ -20,7 +22,7 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class SiteMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording=true
+    //    SnapshotTesting.isRecording=true
   }
 
   func testWithoutWWW() {

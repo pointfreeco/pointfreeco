@@ -3,26 +3,27 @@ import Foundation
 extension Episode {
   public static let ep152_casePathPerformance = Episode(
     blurb: """
-This week we improve the performance of another part of the Composable Architecture ecosystem: case paths! We will benchmark the reflection mechanism that powers case paths and speed things up with the help of a Swift runtime function.
-""",
+      This week we improve the performance of another part of the Composable Architecture ecosystem: case paths! We will benchmark the reflection mechanism that powers case paths and speed things up with the help of a Swift runtime function.
+      """,
     codeSampleDirectory: "0152-case-path-performance",
     exercises: _exercises,
     id: 152,
-    length: 31*60 + 18,
+    length: 31 * 60 + 18,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1625461200),
+    publishedAt: Date(timeIntervalSince1970: 1_625_461_200),
     references: [
       reference(
         forSection: .casePaths,
         additionalBlurb: #"""
-The series of episodes in which Case Paths were first theorized and introduced.
-"""#,
+          The series of episodes in which Case Paths were first theorized and introduced.
+          """#,
         sectionUrl: "https://www.pointfree.co/collections/enums-and-structs/case-paths"
       ),
       .init(
-        author: "Mike Ash", blurb: #"""
-A post on the official Swift Blog explaining how Swift's reflection APIs work, including calls to functions that live on the runtime metadata, like the enum tag code we use in this week's episode.
-"""#,
+        author: "Mike Ash",
+        blurb: #"""
+          A post on the official Swift Blog explaining how Swift's reflection APIs work, including calls to functions that live on the runtime metadata, like the enum tag code we use in this week's episode.
+          """#,
         link: "https://swift.org/blog/how-mirror-works/",
         publishedAt: referenceDateFormatter.date(from: "2018-09-26"),
         title: "How Mirror Works"
@@ -30,8 +31,8 @@ A post on the official Swift Blog explaining how Swift's reflection APIs work, i
       .init(
         author: "Jordan Rose",
         blurb: #"""
-A series of posts on the Swift runtime.
-"""#,
+          A series of posts on the Swift runtime.
+          """#,
         link: "https://belkadan.com/blog/tags/swift-runtime/",
         publishedAt: referenceDateFormatter.date(from: "2020-08-31"),
         title: "The Swift Runtime"
@@ -39,8 +40,8 @@ A series of posts on the Swift runtime.
       .init(
         author: "Alejandro Alonso",
         blurb: #"""
-A complete reflection library for Swift.
-"""#,
+          A complete reflection library for Swift.
+          """#,
         link: "https://github.com/Azoy/Echo",
         publishedAt: nil,
         title: "Echo"
@@ -56,7 +57,7 @@ A complete reflection library for Swift.
         hd720: "0152-trailer-720p-7fabf95afbe4452e8adcc3771eacc391",
         sd540: "0152-trailer-540p-88d07ebad06d423f902d3ba3355d80a3"
       ),
-      vimeoId: 571082849
+      vimeoId: 571_082_849
     )
   )
 }

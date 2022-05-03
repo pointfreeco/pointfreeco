@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -12,7 +12,8 @@ import Prelude
 import Styleguide
 import Views
 
-let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
+let newBlogPostEmail =
+  simpleEmailLayout(newBlogPostEmailContent)
   <<< { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
     SimpleEmailLayoutData(
       user: user,
@@ -27,7 +28,7 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
           : nonSubscriberAnnouncement
       )
     )
-}
+  }
 
 func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> Node {
   return .emailTable(
@@ -56,15 +57,15 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> Node {
                 .img(attributes: [.src($0), .alt(""), .style(maxWidth(.pct(100)))])
               )
             )
-            } ?? [],
+          } ?? [],
           .a(
             attributes: [
               .href(siteRouter.url(for: .blog(.show(slug: post.slug)))),
               .class([
                 Class.pf.colors.link.purple,
                 Class.pf.colors.fg.purple,
-                Class.pf.type.body.leading
-              ])
+                Class.pf.type.body.leading,
+              ]),
             ],
             "Read the full post…"
           )
@@ -87,7 +88,7 @@ private func announcementView(announcement: String?) -> Node {
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
         Class.pf.colors.bg.blue900,
-        Class.type.italic
+        Class.type.italic,
       ])
     ],
     .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], ["Announcements"]),
@@ -95,7 +96,8 @@ private func announcementView(announcement: String?) -> Node {
   )
 }
 
-let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminReportEmailContent)
+let newBlogPostEmailAdminReportEmail =
+  simpleEmailLayout(newBlogPostEmailAdminReportEmailContent)
   <<< { erroredUsers, totalAttempted in
     SimpleEmailLayoutData(
       user: nil,
@@ -105,7 +107,7 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
       template: .blog,
       data: (erroredUsers, totalAttempted)
     )
-}
+  }
 
 func newBlogPostEmailAdminReportEmailContent(erroredUsers: [User], totalAttempted: Int) -> Node {
   return .emailTable(

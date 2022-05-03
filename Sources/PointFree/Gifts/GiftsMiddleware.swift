@@ -15,27 +15,27 @@ public func giftsMiddleware(
   switch gift {
   case let .confirmation(formData):
     return conn.map(const(formData))
-    |> giftConfirmationMiddleware
+      |> giftConfirmationMiddleware
 
   case let .create(formData):
     return conn.map(const(formData))
-    |> giftCreateMiddleware
-    >=> respondJson
+      |> giftCreateMiddleware
+      >=> respondJson
 
   case .index:
     return conn.map(const(user .*. route .*. subscriberState .*. unit))
-    |> giftsIndexMiddleware
+      |> giftsIndexMiddleware
 
   case let .plan(plan):
     return conn.map(const(plan .*. user .*. route .*. subscriberState .*. unit))
-    |> giftPaymentMiddleware
+      |> giftPaymentMiddleware
 
   case let .redeem(giftId, .confirm):
     return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. unit))
-    |> giftRedemptionMiddleware
+      |> giftRedemptionMiddleware
 
   case let .redeem(giftId, .landing):
     return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. route .*. unit))
-    |> giftRedemptionLandingMiddleware
+      |> giftRedemptionLandingMiddleware
   }
 }

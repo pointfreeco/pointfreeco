@@ -13,7 +13,8 @@ import Prelude
 #endif
 let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
 
-_ = try! PointFree
+_ =
+  try! PointFree
   .bootstrap(eventLoopGroup: eventLoopGroup)
   .run
   .perform()

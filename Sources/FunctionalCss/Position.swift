@@ -29,14 +29,14 @@ extension Class {
 
 public let positionStyles: Stylesheet =
   Class.position.static % position(.static)
-    <> Class.position.relative % position(.relative)
-    <> Class.position.absolute % position(.absolute)
-    <> Class.position.fixed % position(.fixed)
-    <> Class.position.sticky % stickyPosition
-    <> responsiveStyles
-    <> sideStyles
-    <> zIndexStyles
-    <> Class.position.farFarAway % (position(.absolute) <> top(.px(-9999)) <> left(.px(-9999)))
+  <> Class.position.relative % position(.relative)
+  <> Class.position.absolute % position(.absolute)
+  <> Class.position.fixed % position(.fixed)
+  <> Class.position.sticky % stickyPosition
+  <> responsiveStyles
+  <> sideStyles
+  <> zIndexStyles
+  <> Class.position.farFarAway % (position(.absolute) <> top(.px(-9999)) <> left(.px(-9999)))
 
 private let responsiveStyles: Stylesheet = Breakpoint.all
   .map { breakpoint in
@@ -47,16 +47,16 @@ private let responsiveStyles: Stylesheet = Breakpoint.all
 
 private let stickyPosition =
   position(.sticky)
-    <> position("-webkit-sticky")
+  <> position("-webkit-sticky")
 
 private let sideStyles: Stylesheet =
   Class.position.top0 % top(0)
-    <> Class.position.right0 % right(0)
-    <> Class.position.bottom0 % bottom(0)
-    <> Class.position.left0 % left(0)
+  <> Class.position.right0 % right(0)
+  <> Class.position.bottom0 % bottom(0)
+  <> Class.position.left0 % left(0)
 
 private let zIndexStyles =
   Class.position.z1 % zIndex(1)
-    <> Class.position.z2 % zIndex(2)
-    <> Class.position.z3 % zIndex(3)
-    <> Class.position.z4 % zIndex(4)
+  <> Class.position.z2 % zIndex(2)
+  <> Class.position.z3 % zIndex(3)
+  <> Class.position.z4 % zIndex(4)

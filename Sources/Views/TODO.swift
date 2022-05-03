@@ -13,7 +13,7 @@ extension Tagged where Tag == EncryptedTag, RawValue == String {
         secret: secret.rawValue,
         nonce: [0x30, 0x9D, 0xF8, 0xA2, 0x72, 0xA7, 0x4D, 0x37, 0xB9, 0x02, 0xDF, 0x4F]
       )
-      else { return nil }
+    else { return nil }
     self.init(rawValue: string)
   }
 
@@ -45,8 +45,9 @@ extension ChildOf where Element == Tag.Head {
     attributes: [Attribute<Tag.Style>] = [],
     _ css: Stylesheet,
     config: Css.Config = .compact
-    )
-    -> ChildOf<Tag.Head> {
-      return .style(unsafe: render(config: config, css: css))
+  )
+    -> ChildOf<Tag.Head>
+  {
+    return .style(unsafe: render(config: config, css: css))
   }
 }

@@ -21,7 +21,7 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
           .href(siteRouter.path(for: .collections())),
           .class([
             Class.pf.colors.link.gray650
-          ])
+          ]),
         ],
         .text("Collections")
       )
@@ -39,17 +39,17 @@ public func collectionShow(_ collection: Episode.Collection) -> Node {
       attributes: [
         .class([
           Class.padding([.mobile: [.bottom: 4]])
-        ]),
+        ])
       ],
       .fragment(collection.sections.map { sectionRow(collection: collection, section: $0) })
-    )
+    ),
   ]
 }
 
 private let sectionsTitle = Node.div(
   attributes: [
     .class([
-      Class.border.bottom,
+      Class.border.bottom
     ]),
     .style(key("border-bottom-color", "#E8E8E8")),
   ],
@@ -67,14 +67,14 @@ private let sectionsTitle = Node.div(
           Class.padding([
             .desktop: [.leftRight: 5],
             .mobile: [.leftRight: 3],
-          ]),
-        ]),
+          ])
+        ])
       ],
       .h2(
         attributes: [
           .class([
-            Class.pf.type.responsiveTitle3,
-          ]),
+            Class.pf.type.responsiveTitle3
+          ])
         ],
         "Sections"
       )
@@ -99,8 +99,8 @@ private func sectionRow(
         .class([
           Class.padding([
             .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3]
-          ]),
+            .mobile: [.leftRight: 3],
+          ])
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
@@ -126,8 +126,8 @@ private func sectionRow(
           .gridRow(
             attributes: [
               .class([
-                Class.align.middle,
-              ]),
+                Class.align.middle
+              ])
             ],
             .gridColumn(
               sizes: [.mobile: 11],
@@ -137,8 +137,8 @@ private func sectionRow(
               sizes: [.mobile: 1],
               attributes: [
                 .class([
-                  Class.grid.end(.mobile),
-                ]),
+                  Class.grid.end(.mobile)
+                ])
               ],
               .img(base64: rightChevronSvgBase64, type: .image(.svg), alt: "")
             )

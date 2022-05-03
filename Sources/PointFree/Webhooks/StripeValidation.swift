@@ -1,13 +1,14 @@
 import Either
 import Foundation
-import Prelude
 import HttpPipeline
+import Prelude
 
 func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
   return { conn in
-    let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+    let pairs =
+      conn.request.value(forHTTPHeaderField: "Stripe-Signature")
       .map(keysWithAllValues(separator: ","))
-    ?? []
+      ?? []
 
     let params = Dictionary(pairs, uniquingKeysWith: +)
 
@@ -18,10 +19,11 @@ func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
       let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
       signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
     else {
-      return conn |> stripeHookFailure(
-        subject: "[PointFree Error] Stripe Hook Failed!",
-        body: "Couldn't verify signature."
-      )
+      return conn
+        |> stripeHookFailure(
+          subject: "[PointFree Error] Stripe Hook Failed!",
+          body: "Couldn't verify signature."
+        )
     }
 
     return conn |> middleware
@@ -32,8 +34,9 @@ func stripeHookFailure<A>(
   subject: String = "[PointFree Error] Stripe Hook Failed!",
   body: String
 )
--> (Conn<StatusLineOpen, A>)
--> IO<Conn<ResponseEnded, Data>> {
+  -> (Conn<StatusLineOpen, A>)
+  -> IO<Conn<ResponseEnded, Data>>
+{
 
   return { conn in
     IO<Void> {
@@ -58,8 +61,8 @@ func stripeHookFailure<A>(
     }
     .flatMap {
       conn
-      |> writeStatus(.badRequest)
-      >=> respond(text: body)
+        |> writeStatus(.badRequest)
+        >=> respond(text: body)
     }
   }
 }
@@ -80,9 +83,9 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
     else { return false }
 
     let constantTimeSignature =
-    signature.count == digest.count
-    ? signature
-    : String(repeating: " ", count: digest.count)
+      signature.count == digest.count
+      ? signature
+      : String(repeating: " ", count: digest.count)
 
     // NB: constant-time equality check
     return zip(constantTimeSignature.utf8, digest.utf8).reduce(true) { $0 && $1.0 == $1.1 }
@@ -91,7 +94,7 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
 
 private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
   return Date(timeIntervalSince1970: timestamp)
-  > Current.date().addingTimeInterval(-tolerance)
+    > Current.date().addingTimeInterval(-tolerance)
 }
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
@@ -103,4 +106,3 @@ private func keysWithAllValues(separator: Character) -> (String) -> [(String, [S
       }
   }
 }
-

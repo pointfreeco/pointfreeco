@@ -4,9 +4,9 @@ import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter
+import Prelude
 import Stripe
 import Styleguide
-import Prelude
 
 public func giftRedeemLanding(
   gift: Gift,
@@ -41,7 +41,7 @@ private func mainContent(
         .class([
           Class.padding([.mobile: [.leftRight: 2, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
           Class.grid.between(.desktop),
-        ]),
+        ])
       ],
       .gridColumn(
         sizes: [.mobile: 12],
@@ -66,13 +66,13 @@ private func mainContent(
           Class.grid.center(.desktop),
           Class.padding([
             .mobile: [.leftRight: 0, .top: 0, .bottom: 3],
-            .desktop: [.leftRight: 2, .top: 0, .bottom: 4]
+            .desktop: [.leftRight: 2, .top: 0, .bottom: 4],
           ]),
           Class.type.list.styleNone,
           Class.flex.wrap,
           Class.flex.flex,
         ]),
-        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
       giftOption(
         gift: gift,
@@ -111,7 +111,7 @@ func giftOption(
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
         giftOptionSelector,
-        ])
+      ])
     ],
     .div(
       attributes: [
@@ -121,7 +121,7 @@ func giftOption(
           Class.padding([.mobile: [.all: 2]]),
           Class.size.width100pct,
           Class.flex.flex,
-        ]),
+        ])
       ],
       .h4(
         attributes: [.class([Class.pf.type.responsiveTitle4])],
@@ -135,9 +135,9 @@ func giftOption(
             Class.pf.colors.fg.gray400,
             Class.pf.type.body.regular,
             Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
-            Class.pf.colors.fg.gray400
-            ]),
-          .style(flex(grow: 1, shrink: 0, basis: .auto))
+            Class.pf.colors.fg.gray400,
+          ]),
+          .style(flex(grow: 1, shrink: 0, basis: .auto)),
         ],
         .fragment(
           plan.features(episodeStats: episodeStats)
@@ -147,7 +147,7 @@ func giftOption(
                 attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
                 .div(
                   attributes: [
-                    .class([pricingPlanFeatureClass]),
+                    .class([pricingPlanFeatureClass])
                   ],
                   .raw(unsafeMark(from: feature.name))
                 )
@@ -172,11 +172,11 @@ private func existingSubscriberNotice(
       attributes: [
         .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 2]]),
-          Class.padding([.mobile: [.all: 2]])
+          Class.padding([.mobile: [.all: 2]]),
         ]),
         .style(
           key("background", "#ffd")
-        )
+        ),
       ],
       "Since you are already a subscriber, the gift amount will be applied to your future invoices."
     )
@@ -197,14 +197,14 @@ private func loginOrRedeem(
       size: .regular,
       extraClasses:
         Class.display.block
-      | Class.size.width100pct
-      | Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]])
+        | Class.size.width100pct
+        | Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]])
     )
   } else {
     return .form(
       attributes: [
         .method(.post),
-        .action(siteRouter.path(for: .gifts(.redeem(gift.id, .confirm))))
+        .action(siteRouter.path(for: .gifts(.redeem(gift.id, .confirm)))),
       ],
       .input(
         attributes: [
@@ -213,8 +213,8 @@ private func loginOrRedeem(
           .class([
             Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
             Class.pf.components.button(color: .black, size: .regular, style: .normal),
-            Class.size.width100pct
-          ])
+            Class.size.width100pct,
+          ]),
         ]
       )
     )
@@ -226,8 +226,8 @@ extension Array where Element == Faq {
     Faq(
       question: "Do I need to give a credit card to redeem the gift?",
       answer: """
-Nope. No credit card is required, and when the gift time is almost up we will send you an email to see if you want to continue your subscription.
-"""),
+        Nope. No credit card is required, and when the gift time is almost up we will send you an email to see if you want to continue your subscription.
+        """),
     .existingSubscriberRedeemGift,
     .combinedWithStudentDiscountsEtc,
   ]

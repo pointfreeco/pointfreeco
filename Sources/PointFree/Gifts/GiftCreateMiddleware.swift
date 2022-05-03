@@ -1,7 +1,6 @@
 import Either
-import HttpPipeline
 import Foundation
-import Views
+import HttpPipeline
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -25,14 +24,14 @@ func giftCreateMiddleware(
   guard let plan = Gifts.Plan.init(monthCount: giftFormData.monthsFree)
   else {
     return conn.map(const(.left(.init(errorMessage: "Unknown gift option."))))
-    |> writeStatus(.badRequest)
+      |> writeStatus(.badRequest)
   }
 
   let deliverAt = giftFormData.deliverAt
     .flatMap {
       Current.calendar.startOfDay(for: $0) <= Current.calendar.startOfDay(for: Current.date())
-      ? nil
-      : $0
+        ? nil
+        : $0
     }
 
   return Current.stripe.createPaymentIntent(
@@ -44,33 +43,33 @@ func giftCreateMiddleware(
       statementDescriptorSuffix: "Gift Subscription"
     )
   )
-    .flatMap { paymentIntent in
-      Current.database.createGift(
-        .init(
-          deliverAt: deliverAt,
-          fromEmail: giftFormData.fromEmail,
-          fromName: giftFormData.fromName,
-          message: giftFormData.message,
-          monthsFree: giftFormData.monthsFree,
-          stripePaymentIntentId: paymentIntent.id,
-          toEmail: giftFormData.toEmail,
-          toName: giftFormData.toName
-        )
+  .flatMap { paymentIntent in
+    Current.database.createGift(
+      .init(
+        deliverAt: deliverAt,
+        fromEmail: giftFormData.fromEmail,
+        fromName: giftFormData.fromName,
+        message: giftFormData.message,
+        monthsFree: giftFormData.monthsFree,
+        stripePaymentIntentId: paymentIntent.id,
+        toEmail: giftFormData.toEmail,
+        toName: giftFormData.toName
       )
-        .map { _ in paymentIntent }
-    }
-    .run
-    .flatMap { errorOrPaymentIntent in
-      switch errorOrPaymentIntent {
-      case .left:
-        return conn.map(const(.left(.init(errorMessage: "Unknown error with our payment processor"))))
+    )
+    .map { _ in paymentIntent }
+  }
+  .run
+  .flatMap { errorOrPaymentIntent in
+    switch errorOrPaymentIntent {
+    case .left:
+      return conn.map(const(.left(.init(errorMessage: "Unknown error with our payment processor"))))
         |> writeStatus(.badRequest)
 
-      case let .right(paymentIntent):
-        return conn.map(const(.right(.init(clientSecret: paymentIntent.clientSecret))))
+    case let .right(paymentIntent):
+      return conn.map(const(.right(.init(clientSecret: paymentIntent.clientSecret))))
         |> writeStatus(.ok)
-      }
     }
+  }
 }
 
 func giftConfirmationMiddleware(

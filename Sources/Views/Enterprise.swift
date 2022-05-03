@@ -28,7 +28,8 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
       attributes: [
         .class([
           Class.padding([.mobile: [.bottom: 3]]),
-          Class.margin([.mobile: [.top: 2]])]
+          Class.margin([.mobile: [.top: 2]]),
+        ]
         )
       ],
       .gridColumn(
@@ -47,8 +48,8 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
                 Class.padding([.mobile: [.bottom: 3]]),
                 Class.margin([.mobile: [.top: 4]]),
                 Class.flex.flex,
-                Class.flex.items.baseline
-                ])
+                Class.flex.items.baseline,
+              ])
             ],
             .gridColumn(
               sizes: [.mobile: 8],
@@ -65,13 +66,17 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
               sizes: [.mobile: 4],
               attributes: [],
               .button(
-                attributes: [.class([Class.pf.components.button(color: .white), Class.margin([.mobile: [.left: 1]])])],
+                attributes: [
+                  .class([
+                    Class.pf.components.button(color: .white), Class.margin([.mobile: [.left: 1]]),
+                  ])
+                ],
                 "Request Access")
             )
           )
         )
       )
-    )
+    ),
   ]
 
   return .gridRow(
@@ -94,24 +99,26 @@ let pointFreeRaw = Node.raw("Point&#8209;Free")
 
 private let enterpriseRowClass =
   Class.pf.colors.bg.purple150
-    | Class.grid.center(.mobile)
-    | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
+  | Class.grid.center(.mobile)
+  | Class.padding([
+    .mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0],
+  ])
 
 public let blockInputClass =
   regularInputClass
-    | Class.size.width100pct
-    | Class.display.block
+  | Class.size.width100pct
+  | Class.display.block
 
 let baseInputClass =
   Class.type.fontFamily.inherit
-    | Class.pf.colors.fg.black
-    | ".border-box"
-    | Class.border.rounded.all
-    | Class.border.all
-    | Class.pf.colors.border.gray800
+  | Class.pf.colors.fg.black
+  | ".border-box"
+  | Class.border.rounded.all
+  | Class.border.all
+  | Class.pf.colors.border.gray800
 
 public let regularInputClass =
   baseInputClass
-    | Class.size.height(rem: 3)
-    | Class.padding([.mobile: [.all: 1]])
-    | Class.margin([.mobile: [.bottom: 2]])
+  | Class.size.height(rem: 3)
+  | Class.padding([.mobile: [.all: 1]])
+  | Class.margin([.mobile: [.bottom: 2]])

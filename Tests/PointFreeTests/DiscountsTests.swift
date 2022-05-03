@@ -1,9 +1,5 @@
 import Either
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import HttpPipeline
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -11,10 +7,16 @@ import SnapshotTesting
 import Stripe
 import XCTest
 
+@testable import PointFree
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording=true
+    //    SnapshotTesting.isRecording=true
   }
 
   func testDiscounts_LoggedOut() {
@@ -25,17 +27,17 @@ class DiscountsTests: TestCase {
     )
 
     #if !os(Linux)
-     if self.isScreenshotTestingAvailable {
-       assertSnapshots(
-         matching: connection(from: request(to: .discounts(code: "blobfest", nil)))
-         |> siteMiddleware,
-         as: [
-           "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-           "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-         ]
-       )
-     }
-     #endif
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: connection(from: request(to: .discounts(code: "blobfest", nil)))
+            |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
+    #endif
   }
 
   func testDiscounts_LoggedIn_PercentOff_Forever() {
@@ -52,24 +54,24 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
 
     #if !os(Linux)
-     if self.isScreenshotTestingAvailable {
-       assertSnapshots(
-         matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn)
-         )
-         |> siteMiddleware,
-         as: [
-           "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-           "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-         ]
-       )
-     }
-     #endif
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: connection(
+            from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn)
+          )
+            |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
+    #endif
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Forever() {
@@ -86,7 +88,7 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -105,7 +107,7 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -124,7 +126,7 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -143,7 +145,7 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
   }
@@ -162,11 +164,11 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-      |> siteMiddleware,
+        |> siteMiddleware,
       as: .ioConn
     )
   }
-  
+
   func testDiscounts_UsingRegionalCouponId() {
     assertSnapshot(
       matching: siteMiddleware(

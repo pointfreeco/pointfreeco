@@ -29,55 +29,58 @@ public func prepareEmail(
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
-  )
-  -> Email {
+)
+  -> Email
+{
 
-    let (plain, html): (String, String?) =
-      either3(
-        content,
-        { plain in (plain, nil) },
-        { node in (plainText(for: node), render(node)) },
-        second { render($0) }
+  let (plain, html): (String, String?) =
+    either3(
+      content,
+      { plain in (plain, nil) },
+      { node in (plainText(for: node), render(node)) },
+      second { render($0) }
     )
 
-    let headers: [(String, String)] = unsubscribeData
-      .map { userId, newsletter in
-        guard
-          let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
-          let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
-            .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
-            .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
-          else {
-            Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
-            return []
-        }
-
-        return [
-          (
-            "List-Unsubscribe",
-            "<mailto:\(unsubEmail)>, <\(unsubUrl)>"
-          )
-        ]
+  let headers: [(String, String)] =
+    unsubscribeData
+    .map { userId, newsletter in
+      guard
+        let unsubEmail = Current.mailgun.unsubscribeEmail(
+          fromUserId: userId, andNewsletter: newsletter),
+        let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
+          .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
+          .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
+      else {
+        Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
+        return []
       }
-      ?? []
 
-    return Email(
-      from: from,
-      to: to,
-      cc: cc,
-      bcc: bcc,
-      subject: Current.envVars.appEnv == .production
-        ? subject
-        : "[\(Current.envVars.appEnv)] " + subject,
-      text: plain,
-      html: html,
-      testMode: nil,
-      tracking: nil,
-      trackingClicks: nil,
-      trackingOpens: nil,
-      domain: domain,
-      headers: headers
-    )
+      return [
+        (
+          "List-Unsubscribe",
+          "<mailto:\(unsubEmail)>, <\(unsubUrl)>"
+        )
+      ]
+    }
+    ?? []
+
+  return Email(
+    from: from,
+    to: to,
+    cc: cc,
+    bcc: bcc,
+    subject: Current.envVars.appEnv == .production
+      ? subject
+      : "[\(Current.envVars.appEnv)] " + subject,
+    text: plain,
+    html: html,
+    testMode: nil,
+    tracking: nil,
+    trackingClicks: nil,
+    trackingOpens: nil,
+    domain: domain,
+    headers: headers
+  )
 }
 
 public func send(email: Email) -> EitherIO<Error, SendEmailResponse> {
@@ -93,21 +96,22 @@ public func sendEmail(
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
-  )
-  -> EitherIO<Error, SendEmailResponse> {
+)
+  -> EitherIO<Error, SendEmailResponse>
+{
 
-    return Current.mailgun.sendEmail(
-      prepareEmail(
-        from: from,
-        to: to,
-        cc: cc,
-        bcc: bcc,
-        subject: subject,
-        unsubscribeData: unsubscribeData,
-        content: content,
-        domain: domain
-      )
+  return Current.mailgun.sendEmail(
+    prepareEmail(
+      from: from,
+      to: to,
+      cc: cc,
+      bcc: bcc,
+      subject: subject,
+      unsubscribeData: unsubscribeData,
+      content: content,
+      domain: domain
     )
+  )
 }
 
 func notifyError(subject: String) -> (Error) -> Prelude.Unit {
@@ -120,8 +124,8 @@ func notifyError(subject: String) -> (Error) -> Prelude.Unit {
         to: adminEmails,
         subject: "[PointFree Error] \(subject)",
         content: inj1(errorDump)
-        ).run
-      ).run { _ in }
+      ).run
+    ).run { _ in }
 
     return unit
   }

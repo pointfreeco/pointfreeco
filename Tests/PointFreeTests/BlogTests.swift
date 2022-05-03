@@ -1,22 +1,24 @@
 import Either
 import HttpPipeline
-@testable import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import Models
+@testable import PointFree
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+    //    SnapshotTesting.record = true
   }
 
   func testBlogIndex() {
@@ -25,15 +27,15 @@ class BlogTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -49,7 +51,7 @@ class BlogTests: TestCase {
       hiddenMock,
       shortMock,
       shortMock,
-      shortMock
+      shortMock,
     ]
 
     Current.blogPosts = unzurry(posts)
@@ -59,15 +61,15 @@ class BlogTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -78,15 +80,15 @@ class BlogTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+          ]
+        )
+      }
     #endif
   }
 

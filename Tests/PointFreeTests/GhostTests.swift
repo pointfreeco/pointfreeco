@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-@testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -9,50 +8,57 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
+@testable import PointFree
+
 final class GhostTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record=true
+    //    SnapshotTesting.record=true
   }
 
   func testStartGhosting_HappyPath() {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
     adminSession.user = .standard(adminUser.id)
-    
+
     var ghostee = User.mock
     ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
-    
+
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
-        userId == adminUser.id ? adminUser
-          : userId == ghostee.id ? ghostee
-          : nil
+        userId == adminUser.id
+          ? adminUser
+          : userId == ghostee.id
+            ? ghostee
+            : nil
       )
     }
 
-    let conn = connection(
-      from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
+    let conn =
+      connection(
+        from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
       )
       |> siteMiddleware
       |> Prelude.perform
 
-    _assertInlineSnapshot(matching: conn, as: .conn, with: """
-POST http://localhost:8080/admin/ghost/start
-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
+    _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
+        POST http://localhost:8080/admin/ghost/start
+        Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
-user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-302 Found
-Location: /
-Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-X-Content-Type-Options: nosniff
-X-Download-Options: noopen
-X-Frame-Options: SAMEORIGIN
-X-Permitted-Cross-Domain-Policies: none
-X-XSS-Protection: 1; mode=block
-""")
+        302 Found
+        Location: /
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testStartGhosting_InvalidGhostee() {
@@ -65,33 +71,37 @@ X-XSS-Protection: 1; mode=block
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
-        userId == adminUser.id ? adminUser
+        userId == adminUser.id
+          ? adminUser
           : nil
       )
     }
 
-    let conn = connection(
-      from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
+    let conn =
+      connection(
+        from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
       )
       |> siteMiddleware
       |> Prelude.perform
 
-    _assertInlineSnapshot(matching: conn, as: .conn, with: """
-POST http://localhost:8080/admin/ghost/start
-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
+    _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
+        POST http://localhost:8080/admin/ghost/start
+        Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
-user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-302 Found
-Location: /admin/ghost
-Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"flash":{"message":"Couldn't find user with that id","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-X-Content-Type-Options: nosniff
-X-Download-Options: noopen
-X-Frame-Options: SAMEORIGIN
-X-Permitted-Cross-Domain-Policies: none
-X-XSS-Protection: 1; mode=block
-""")
+        302 Found
+        Location: /admin/ghost
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"Couldn't find user with that id","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testStartGhosting_NonAdmin() {
@@ -104,34 +114,39 @@ X-XSS-Protection: 1; mode=block
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
-        userId == user.id ? user
-          : userId == ghostee.id ? ghostee
-          : nil
+        userId == user.id
+          ? user
+          : userId == ghostee.id
+            ? ghostee
+            : nil
       )
     }
 
-    let conn = connection(
-      from: request(to: .admin(.ghost(.start(ghostee.id))), session: session)
+    let conn =
+      connection(
+        from: request(to: .admin(.ghost(.start(ghostee.id))), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
 
-    _assertInlineSnapshot(matching: conn, as: .conn, with: """
-POST http://localhost:8080/admin/ghost/start
-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+    _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
+        POST http://localhost:8080/admin/ghost/start
+        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-302 Found
-Location: /
-Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"flash":{"message":"You don't have access to that.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-X-Content-Type-Options: nosniff
-X-Download-Options: noopen
-X-Frame-Options: SAMEORIGIN
-X-Permitted-Cross-Domain-Policies: none
-X-XSS-Protection: 1; mode=block
-""")
+        302 Found
+        Location: /
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"flash":{"message":"You don't have access to that.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 
   func testEndGhosting_HappyPath() {
@@ -144,31 +159,36 @@ X-XSS-Protection: 1; mode=block
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
-        userId == adminUser.id ? adminUser
-          : userId == ghostee.id ? ghostee
-          : nil
+        userId == adminUser.id
+          ? adminUser
+          : userId == ghostee.id
+            ? ghostee
+            : nil
       )
     }
 
-    let conn = connection(
-      from: request(to: .endGhosting, session: adminSession)
+    let conn =
+      connection(
+        from: request(to: .endGhosting, session: adminSession)
       )
       |> siteMiddleware
       |> Prelude.perform
 
-    _assertInlineSnapshot(matching: conn, as: .conn, with: """
-POST http://localhost:8080/ghosting/end
-Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
+    _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
+        POST http://localhost:8080/ghosting/end
+        Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
 
-302 Found
-Location: /
-Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-X-Content-Type-Options: nosniff
-X-Download-Options: noopen
-X-Frame-Options: SAMEORIGIN
-X-Permitted-Cross-Domain-Policies: none
-X-XSS-Protection: 1; mode=block
-""")
+        302 Found
+        Location: /
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """)
   }
 }

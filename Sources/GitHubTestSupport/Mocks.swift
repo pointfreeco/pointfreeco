@@ -18,7 +18,7 @@ extension AccessToken {
 
 extension GitHubUser {
   public static let mock = GitHubUser(
-    createdAt: .init(timeIntervalSince1970: 1234543210),
+    createdAt: .init(timeIntervalSince1970: 1_234_543_210),
     id: 1,
     name: "Blob"
   )

@@ -17,7 +17,7 @@ public struct Subscription: Decodable {
     stripeSubscriptionStatus: Stripe.Subscription.Status,
     teamInviteCode: TeamInviteCode,
     userId: User.Id
-    ) {
+  ) {
     self.deactivated = deactivated
     self.id = id
     self.stripeSubscriptionId = stripeSubscriptionId

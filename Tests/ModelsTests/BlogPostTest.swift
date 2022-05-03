@@ -1,7 +1,7 @@
-import XCTest
 import Models
 import ModelsTestSupport
 import PointFreeTestSupport
+import XCTest
 
 final class BlogPostTests: TestCase {
 

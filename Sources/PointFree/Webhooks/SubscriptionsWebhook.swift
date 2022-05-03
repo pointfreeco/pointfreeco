@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -11,82 +11,87 @@ import Models
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Stripe
+import Styleguide
 
-let stripeSubscriptionsWebhookMiddleware
-  = validateStripeSignature
-    <<< filterInvalidInvoices
-    <<< requireSubscriptionId
-    <| handleFailedPayment
+let stripeSubscriptionsWebhookMiddleware =
+  validateStripeSignature
+  <<< filterInvalidInvoices
+  <<< requireSubscriptionId
+  <| handleFailedPayment
 
-private let filterInvalidInvoices
-  : MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>>
-  = filter(
-    { extraSubscriptionId(fromEvent: $0) == nil || $0.data.object.either({ $0.number != nil }, const(true)) },
-    or: writeStatus(.ok) >=> respond(text: "OK")
-)
+private let filterInvalidInvoices:
+  MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>> =
+    filter(
+      {
+        extraSubscriptionId(fromEvent: $0) == nil
+          || $0.data.object.either({ $0.number != nil }, const(true))
+      },
+      or: writeStatus(.ok) >=> respond(text: "OK")
+    )
 
-private let requireSubscriptionId
-  : MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id>
-  = filterMap(
+private let requireSubscriptionId:
+  MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id> = filterMap(
     extraSubscriptionId(fromEvent:) >>> pure,
     or: stripeHookFailure(
       subject: "[PointFree Error] Stripe Hook Failed!",
       body: "Couldn't extract subscription id from event payload."
     )
-)
+  )
 
 private func handleFailedPayment(
   _ conn: Conn<StatusLineOpen, Stripe.Subscription.Id>
-  )
-  -> IO<Conn<ResponseEnded, Data>> {
+)
+  -> IO<Conn<ResponseEnded, Data>>
+{
 
-    return Current.stripe.fetchSubscription(conn.data)
-      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
-      .flatMap(Current.database.updateStripeSubscription)
-      .mapExcept(requireSome)
-      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
-      .flatMap { subscription in
-        Current.database.fetchUserById(subscription.userId)
-          .mapExcept(requireSome)
-          .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
-          .map { ($0, subscription) }
-      }
-      .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
-      .run
-      .flatMap(
-        either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
-          if subscription.stripeSubscriptionStatus == .pastDue {
-            parallel(sendPastDueEmail(to: user).run)
-              .run { _ in }
-          }
-
-          return conn |> writeStatus(.ok) >=> end
+  return Current.stripe.fetchSubscription(conn.data)
+    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
+    .flatMap(Current.database.updateStripeSubscription)
+    .mapExcept(requireSome)
+    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
+    .flatMap { subscription in
+      Current.database.fetchUserById(subscription.userId)
+        .mapExcept(requireSome)
+        .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
+        .map { ($0, subscription) }
+    }
+    .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
+    .run
+    .flatMap(
+      either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
+        if subscription.stripeSubscriptionStatus == .pastDue {
+          parallel(sendPastDueEmail(to: user).run)
+            .run { _ in }
         }
+
+        return conn |> writeStatus(.ok) >=> end
+      }
     )
 }
 
 private func sendPastDueEmail(to owner: User)
-  -> EitherIO<Error, SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse>
+{
 
-    return sendEmail(
-      to: [owner.email],
-      subject: "Your subscription is past-due",
-      content: inj2(pastDueEmailView(unit))
-    )
-}
-
-let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView) <<< { unit in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "Your subscription is past-due",
-    preheader: "Your most recent payment was declined.",
-    template: .default(),
-    data: unit
+  return sendEmail(
+    to: [owner.email],
+    subject: "Your subscription is past-due",
+    content: inj2(pastDueEmailView(unit))
   )
 }
+
+let pastDueEmailView =
+  simpleEmailLayout(pastDueEmailBodyView) <<< { unit in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your subscription is past-due",
+      preheader: "Your most recent payment was declined.",
+      template: .default(),
+      data: unit
+    )
+  }
 
 private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
   return .emailTable(
@@ -119,7 +124,7 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
             .a(
               attributes: [
                 .href(siteRouter.url(for: .account(.paymentInfo()))),
-                .class([Class.pf.components.button(color: .purple)])
+                .class([Class.pf.components.button(color: .purple)]),
               ],
               "Update payment info"
             )
@@ -132,12 +137,12 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
 
 private func extraSubscriptionId(
   fromEvent event: Event<Either<Invoice, Stripe.Subscription>>
-  ) -> Stripe.Subscription.Id? {
+) -> Stripe.Subscription.Id? {
 
   switch event.data.object {
   case let .left(invoice):
     return invoice.subscription
-      ?? invoice.lines.data.compactMap(^\.subscription).first
+      ?? invoice.lines.data.compactMap(\.subscription).first
   case let .right(subscription):
     return subscription.id
   }

@@ -3,14 +3,14 @@ import Foundation
 extension Episode {
   public static let ep163_navigationSheets = Episode(
     blurb: """
-This week we’ll explore how to drive a sheet with optional state and how to facilitate communication between the sheet and the view presenting it. In the process we will discover a wonderful binding transformation for working with optionals.
-""",
+      This week we’ll explore how to drive a sheet with optional state and how to facilitate communication between the sheet and the view presenting it. In the process we will discover a wonderful binding transformation for working with optionals.
+      """,
     codeSampleDirectory: "0163-navigation-pt4",
     exercises: _exercises,
     id: 163,
-    length: 31*60 + 51,
+    length: 31 * 60 + 51,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1633928400),
+    publishedAt: Date(timeIntervalSince1970: 1_633_928_400),
     references: [
       .swiftUINav,
       .init(
@@ -28,7 +28,7 @@ This week we’ll explore how to drive a sheet with optional state and how to fa
       reference(
         forSection: .derivedBehavior,
         additionalBlurb: #"""
-"""#,
+          """#,
         sectionUrl: "https://www.pointfree.co/collections/case-studies/derived-behavior"
       ),
     ],
@@ -36,13 +36,13 @@ This week we’ll explore how to drive a sheet with optional state and how to fa
     subtitle: "Sheets & Popovers, Part 2",
     title: "SwiftUI Navigation",
     trailerVideo: .init(
-      bytesLength: 36419368,
+      bytesLength: 36_419_368,
       downloadUrls: .s3(
         hd1080: "0163-trailer-1080p-c2a27c13d52544ddbd813ee1c5709320",
         hd720: "0163-trailer-720p-f0150f11844f43a8900d40ff37f1efbb",
         sd540: "0163-trailer-540p-d82fc125744f40b2af99bbae5619eb72"
       ),
-      vimeoId: 617405838
+      vimeoId: 617_405_838
     )
   )
 }

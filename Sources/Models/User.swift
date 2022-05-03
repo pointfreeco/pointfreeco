@@ -30,7 +30,7 @@ public struct User: Decodable, Equatable {
     referrerId: Id?,
     rssSalt: RssSalt,
     subscriptionId: Subscription.Id?
-    ) {
+  ) {
     self.email = email
     self.episodeCreditCount = episodeCreditCount
     self.gitHubUserId = gitHubUserId
@@ -67,6 +67,7 @@ public struct User: Decodable, Equatable {
   }
 
   public var gitHubAvatarUrl: URL {
-    return URL(string: "https://avatars0.githubusercontent.com/u/\(self.gitHubUserId.rawValue)?v=4")!
+    return URL(
+      string: "https://avatars0.githubusercontent.com/u/\(self.gitHubUserId.rawValue)?v=4")!
   }
 }

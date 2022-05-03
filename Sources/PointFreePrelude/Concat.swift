@@ -23,9 +23,10 @@ public func concat<A>(_ fs: [(inout A) -> Void]) -> (inout A) -> Void {
 }
 
 public func concat<A>(_ fs: ((inout A) -> Void)..., and fz: @escaping (inout A) -> Void = { _ in })
-  -> (inout A) -> Void {
+  -> (inout A) -> Void
+{
 
-    return concat(fs + [fz])
+  return concat(fs + [fz])
 }
 
 public func update<A>(_ value: inout A, _ changes: ((A) -> A)...) {

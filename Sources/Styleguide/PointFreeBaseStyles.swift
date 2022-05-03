@@ -78,68 +78,68 @@ extension Class {
     public enum type {
       private static let titleBase =
         Class.pf.colors.fg.black
-          | Class.type.bold
+        | Class.type.bold
 
       public static let responsiveTitle1 =
         titleBase
-          | Class.typeScale([.mobile: .r3, .desktop: .r4])
-          | Class.type.lineHeight(2)
+        | Class.typeScale([.mobile: .r3, .desktop: .r4])
+        | Class.type.lineHeight(2)
 
       public static let responsiveTitle2 =
         titleBase
-          | Class.typeScale([.mobile: .r2, .desktop: .r3])
-          | Class.type.lineHeight(2)
+        | Class.typeScale([.mobile: .r2, .desktop: .r3])
+        | Class.type.lineHeight(2)
 
       public static let responsiveTitle3 =
         titleBase
-          | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
-          | Class.type.lineHeight(2)
+        | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
+        | Class.type.lineHeight(2)
 
       public static let responsiveTitle4 =
         titleBase
-          | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
-          | Class.type.lineHeight(2)
+        | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
+        | Class.type.lineHeight(2)
 
       public static let responsiveTitle5 =
         titleBase
-          | Class.typeScale([.mobile: .r1, .desktop: .r1_25])
-          | Class.type.lineHeight(1)
+        | Class.typeScale([.mobile: .r1, .desktop: .r1_25])
+        | Class.type.lineHeight(1)
 
       public static let responsiveTitle6 =
         titleBase
-          | Class.typeScale([.mobile: .r0_875, .desktop: .r1])
-          | Class.type.lineHeight(1)
+        | Class.typeScale([.mobile: .r0_875, .desktop: .r1])
+        | Class.type.lineHeight(1)
 
       public static let responsiveTitle7 =
         titleBase
-          | Class.typeScale([.mobile: .r0_75, .desktop: .r0_875])
-          | Class.type.lineHeight(1)
-          | Class.type.caps
+        | Class.typeScale([.mobile: .r0_75, .desktop: .r0_875])
+        | Class.type.lineHeight(1)
+        | Class.type.caps
 
       public static let responsiveTitle8 =
         titleBase
-          | Class.typeScale([.mobile: .r0_75])
-          | Class.type.lineHeight(1)
-          | Class.type.caps
+        | Class.typeScale([.mobile: .r0_75])
+        | Class.type.lineHeight(1)
+        | Class.type.caps
 
       public enum body {
         public static let small =
           Class.pf.colors.fg.black
-            | Class.type.normal
-            | Class.h6
-            | Class.type.lineHeight(4)
+          | Class.type.normal
+          | Class.h6
+          | Class.type.lineHeight(4)
 
         public static let regular =
           Class.pf.colors.fg.black
-            | Class.type.normal
-            | Class.h5
-            | Class.type.lineHeight(4)
+          | Class.type.normal
+          | Class.h5
+          | Class.type.lineHeight(4)
 
         public static let leading =
           bodyLeadingClass
-            | Class.pf.colors.fg.black
-            | Class.type.normal
-            | Class.type.lineHeight(4)
+          | Class.pf.colors.fg.black
+          | Class.type.normal
+          | Class.type.lineHeight(4)
       }
 
       public static let underlineLink = CssSelector.class("underline-link")
@@ -169,24 +169,29 @@ extension Class.pf {
       case underline
     }
 
-    public static func button(color: Color, size: Size = .regular, style: Style = .normal) -> CssSelector {
+    public static func button(color: Color, size: Size = .regular, style: Style = .normal)
+      -> CssSelector
+    {
       let baseStyles =
         Class.type.medium
-          | Class.cursor.pointer
-          | Class.type.nowrap
+        | Class.cursor.pointer
+        | Class.type.nowrap
 
       let borderStyles: CssSelector
       switch style {
       case .normal:
-        borderStyles = baseNormalButtonClass
+        borderStyles =
+          baseNormalButtonClass
           | Class.border.none
           | Class.type.textDecorationNone
       case .outline:
-        borderStyles = Class.border.rounded.all
+        borderStyles =
+          Class.border.rounded.all
           | Class.border.none
           | Class.type.textDecorationNone
       case .underline:
-        borderStyles = baseUnderlineButtonClass
+        borderStyles =
+          baseUnderlineButtonClass
           | Class.border.none
           | Class.type.underline
       }
@@ -250,43 +255,44 @@ extension Class.pf {
 
     private static let pricingTabBase =
       Class.layout.fit
-        | Class.pf.type.responsiveTitle5
-        | Class.type.medium
-        | Class.padding([.mobile: [.leftRight: 2]])
-        | Class.padding([.mobile: [.topBottom: 2]])
-        | Class.border.none
-        | Class.display.inlineBlock
-        | Class.border.rounded.all
-        | Class.cursor.pointer
+      | Class.pf.type.responsiveTitle5
+      | Class.type.medium
+      | Class.padding([.mobile: [.leftRight: 2]])
+      | Class.padding([.mobile: [.topBottom: 2]])
+      | Class.border.none
+      | Class.display.inlineBlock
+      | Class.border.rounded.all
+      | Class.cursor.pointer
 
     public static let pricingTabSelected =
       pricingTabBase
-        | Class.pf.colors.bg.white
-        | Class.pf.colors.fg.purple
+      | Class.pf.colors.bg.white
+      | Class.pf.colors.fg.purple
 
     public static let pricingTab =
       pricingTabBase
-        | Class.pf.colors.bg.purple
-        | Class.pf.colors.fg.white
+      | Class.pf.colors.bg.purple
+      | Class.pf.colors.fg.white
 
     private static let _codeClasses =
       _codeClass
-        | Class.border.all
-        | Class.border.rounded.all
-        | Class.display.block
-        | Class.margin([
-          .desktop: [.topBottom: 1],
-          .mobile: [.topBottom: 2, .bottom: 3]
-        ])
-        | Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
-        | Class.layout.overflowAuto(.x)
-        | Class.layout.overflowHidden
+      | Class.border.all
+      | Class.border.rounded.all
+      | Class.display.block
+      | Class.margin([
+        .desktop: [.topBottom: 1],
+        .mobile: [.topBottom: 2, .bottom: 3],
+      ])
+      | Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+      | Class.layout.overflowAuto(.x)
+      | Class.layout.overflowHidden
 
     public static func code(lang: String?) -> CssSelector {
       return _codeClasses | .class(lang.map { "language-\($0)" } ?? "")
     }
 
-    public static let divider = dividerClass
+    public static let divider =
+      dividerClass
       | Class.border.top
       | Class.margin([.mobile: [.all: 0]])
       | Class.pf.colors.bg.white
@@ -294,24 +300,24 @@ extension Class.pf {
     /// The standard nav bar style.
     public static let navBar =
       _navBar
-        | Class.pf.colors.bg.purple
-        | Class.padding([.mobile: [.leftRight: 2]])
-        | Class.type.lineHeight(rem: 4)
-        | Class.size.height(rem: 4)
+      | Class.pf.colors.bg.purple
+      | Class.padding([.mobile: [.leftRight: 2]])
+      | Class.type.lineHeight(rem: 4)
+      | Class.size.height(rem: 4)
 
     /// A minimal nav bar style.
     public static let minimalNavBar =
       _navBar
-        | Class.pf.colors.bg.black
-        | Class.padding([.mobile: [.leftRight: 2]])
-        | Class.type.lineHeight(rem: 3)
-        | Class.size.height(rem: 3)
+      | Class.pf.colors.bg.black
+      | Class.padding([.mobile: [.leftRight: 2]])
+      | Class.type.lineHeight(rem: 3)
+      | Class.size.height(rem: 3)
 
     public static let videoTimeLink =
       videoTimeLinkClass
-        | Class.type.textDecorationNone
-        | Class.pf.colors.link.gray650
-        | Class.h6
+      | Class.type.textDecorationNone
+      | Class.pf.colors.link.gray650
+      | Class.h6
 
     public static let heroLogo = CssSelector.class("hero-logo")
 
@@ -343,19 +349,18 @@ public let pointFreeBaseStyles: Stylesheet = concat([
 ])
 
 private let bodyStyles =
-  html % (
-    fontSize(.px(14))
-      <> fontFamily(["-apple-system", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"])
-      <> lineHeight(1.5)
-      <> boxSizing(.borderBox)
-    )
-    <> Breakpoint.desktop.querySelfAndBigger(only: screen) {
-      html % fontSize(.px(16))
-}
+  html
+  % (fontSize(.px(14))
+    <> fontFamily(["-apple-system", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"])
+    <> lineHeight(1.5)
+    <> boxSizing(.borderBox))
+  <> Breakpoint.desktop.querySelfAndBigger(only: screen) {
+    html % fontSize(.px(16))
+  }
 
 private let resets =
   body % boxSizing(.borderBox)
-    <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
+  <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
 private let colorStyles: Stylesheet = concat([
   Class.pf.colors.bg.black % backgroundColor(Colors.black),
@@ -408,23 +413,22 @@ private let colorStyles: Stylesheet = concat([
 
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
-  _codeClass % (
-    backgroundColor(.white(0, 0.02))
-      <> borderColor(all: .white(0, 0.15))
-      <> color(.other("#24292e"))
-      <> fontFamily(["monospace"])
+  _codeClass
+  % (backgroundColor(.white(0, 0.02))
+    <> borderColor(all: .white(0, 0.15))
+    <> color(.other("#24292e"))
+    <> fontFamily(["monospace"])
 
-)
+  )
 
 private let inlineCodeStyles =
-  Class.pf.inlineCode % (
-    color(.other("#24292e"))
-      <> fontFamily(["monospace"])
-      <> padding(topBottom: .px(1), leftRight: .px(5))
-      <> borderWidth(all: .px(1))
-      <> borderRadius(all: .px(3))
-      <> backgroundColor(.white(0, 0.02))
-)
+  Class.pf.inlineCode
+  % (color(.other("#24292e"))
+    <> fontFamily(["monospace"])
+    <> padding(topBottom: .px(1), leftRight: .px(5))
+    <> borderWidth(all: .px(1))
+    <> borderRadius(all: .px(3))
+    <> backgroundColor(.white(0, 0.02)))
 
 private let token = CssSelector.class("token")
 
@@ -447,19 +451,16 @@ private let opacities: Stylesheet = concat([
 
 private let aStyles =
   _textDecorationNone
-    <> _textDecorationUnderline
-    <> _textDecorationUnderlineLink
+  <> _textDecorationUnderline
+  <> _textDecorationUnderlineLink
 
 private let _textDecorationNone =
-  (a | a & .pseudo(.link) | a & .pseudo(.visited)) % (
-    color(Colors.black)
-      <> key("text-decoration", "none")
-)
+  (a | a & .pseudo(.link) | a & .pseudo(.visited))
+  % (color(Colors.black)
+    <> key("text-decoration", "none"))
 
 private let _textDecorationUnderline =
-  (a & .pseudo(.hover) | a & .pseudo(.active)) % (
-    key("text-decoration", "underline")
-)
+  (a & .pseudo(.hover) | a & .pseudo(.active)) % (key("text-decoration", "underline"))
 
 private let _textDecorationUnderlineLink =
   (a & Class.pf.type.underlineLink) % key("text-decoration", "underline")
@@ -476,10 +477,9 @@ private let hrReset =
 
 private let dividerClass = CssSelector.class("pf-divider")
 private let dividerStyles =
-  dividerClass % (
-    borderColor(top: Color.other("#ddd"))
-      <> height(.px(0))
-)
+  dividerClass
+  % (borderColor(top: Color.other("#ddd"))
+    <> height(.px(0)))
 
 private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
@@ -487,19 +487,19 @@ private let navBarStyles =
 
 private let baseButtonStyles =
   baseNormalButtonStyles
-    <> baseUnderlineButtonStyles
+  <> baseUnderlineButtonStyles
 
 private let baseNormalButtonClass = CssSelector.class("btn-normal")
 private let baseNormalButtonStyles: Stylesheet =
   (baseNormalButtonClass & .pseudo(.hover)) % darken1
-    <> (a & .pseudo(.active) & baseNormalButtonClass) % darken3
-    <> (a & .pseudo(.link) & baseNormalButtonClass) % key("text-decoration", "none")
-    <> baseNormalButtonClass % padding(topBottom: .rem(0.75))
+  <> (a & .pseudo(.active) & baseNormalButtonClass) % darken3
+  <> (a & .pseudo(.link) & baseNormalButtonClass) % key("text-decoration", "none")
+  <> baseNormalButtonClass % padding(topBottom: .rem(0.75))
 
 private let baseUnderlineButtonClass = CssSelector.class("btn-outline")
 private let baseUnderlineButtonStyles: Stylesheet =
   (baseUnderlineButtonClass & .pseudo(.hover)) % key("text-decoration", "none !important")
-    <> baseUnderlineButtonClass % key("text-decoration", "underline !important")
+  <> baseUnderlineButtonClass % key("text-decoration", "underline !important")
 
 private let darken1 = boxShadow(
   stroke: .inset,
@@ -531,30 +531,37 @@ private let darken3 = boxShadow(
 private let heroLogoStyles =
   Breakpoint.mobile.query(only: screen) {
     Class.pf.components.heroLogo % maxWidth(.px(260))
-}
+  }
 
 private let videoTimeLinkClass = CssSelector.class("vid-time-link")
 private let videoTimeLinkStyles =
-  videoTimeLinkClass % (
-    padding(top: .rem(0.25))
-)
+  videoTimeLinkClass % (padding(top: .rem(0.25)))
 
 private let blueGradientStyles =
-  Class.pf.components.blueGradient % (
-    key("background", "rgba(128,219,255,0.85)")
-      <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)))")
-      <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
-)
+  Class.pf.components.blueGradient
+  % (key("background", "rgba(128,219,255,0.85)")
+    <> key(
+      "background", "-moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)"
+    )
+    <> key(
+      "background",
+      "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)))"
+    )
+    <> key(
+      "background",
+      "-webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+    <> key(
+      "background", "-o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+    <> key(
+      "background", "-ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+    <> key(
+      "background",
+      "linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)"))
 
 private let reflectStyles =
-  Class.pf.components.reflectX % (
-    key("transform", "scaleX(-1)")
-      <> key("-webkit-transform", "scaleX(-1)")
-      <> key("-moz-transform", "scaleX(-1)")
-      <> key("-o-transform", "scaleX(-1)")
-      <> key("-ms-transform", "scaleX(-1)")
-)
+  Class.pf.components.reflectX
+  % (key("transform", "scaleX(-1)")
+    <> key("-webkit-transform", "scaleX(-1)")
+    <> key("-moz-transform", "scaleX(-1)")
+    <> key("-o-transform", "scaleX(-1)")
+    <> key("-ms-transform", "scaleX(-1)"))

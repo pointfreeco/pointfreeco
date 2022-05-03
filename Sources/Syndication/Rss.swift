@@ -18,7 +18,8 @@ public struct RssChannel {
     itunes: Itunes?,
     language: String,
     link: String,
-    title: String) {
+    title: String
+  ) {
     self.copyright = copyright
     self.description = description
     self.image = image
@@ -36,7 +37,8 @@ public struct RssChannel {
     public init(
       link: String,
       title: String,
-      url: String) {
+      url: String
+    ) {
       self.link = link
       self.title = title
       self.url = url
@@ -65,7 +67,8 @@ public struct RssChannel {
       owner: Owner,
       subtitle: String,
       summary: String,
-      type: ChannelType) {
+      type: ChannelType
+    ) {
       self.author = author
       self.block = block
       self.categories = categories
@@ -102,7 +105,8 @@ public struct RssChannel {
 
       public init(
         name: String,
-        subcategory: String) {
+        subcategory: String
+      ) {
         self.name = name
         self.subcategory = subcategory
       }
@@ -114,7 +118,8 @@ public struct RssChannel {
 
       public init(
         email: String,
-        name: String) {
+        name: String
+      ) {
         self.email = email
         self.name = name
       }
@@ -142,7 +147,8 @@ public struct RssItem {
     link: String,
     media: Media?,
     pubDate: Date,
-    title: String) {
+    title: String
+  ) {
     self.description = description
     self.dublinCore = dublinCore
     self.enclosure = enclosure
@@ -170,7 +176,8 @@ public struct RssItem {
     public init(
       length: Int,
       type: String,
-      url: String) {
+      url: String
+    ) {
       self.length = length
       self.type = type
       self.url = url
@@ -199,7 +206,8 @@ public struct RssItem {
       subtitle: String,
       summary: String,
       season: Int,
-      title: String) {
+      title: String
+    ) {
       self.author = author
       self.duration = duration
       self.episode = episode
@@ -225,7 +233,8 @@ public struct RssItem {
 
     public init(
       content: Content,
-      title: String) {
+      title: String
+    ) {
       self.content = content
       self.title = title
     }
@@ -240,7 +249,8 @@ public struct RssItem {
         length: Int,
         medium: String,
         type: String,
-        url: String) {
+        url: String
+      ) {
         self.length = length
         self.medium = medium
         self.type = type
@@ -268,11 +278,11 @@ public func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
         .fragment([
           .element("url", [], .text(channel.image.url)),
           .element("title", [], .text(channel.image.title)),
-          .element("link", [], .text(channel.image.link))
+          .element("link", [], .text(channel.image.link)),
         ])
       ),
       itunesNodes,
-      .fragment(items.map(node(rssItem:)))
+      .fragment(items.map(node(rssItem:))),
     ])
   )
 }
@@ -293,10 +303,10 @@ public func itunesRssFeedLayout<A>(_ view: @escaping (A) -> Node) -> (A) -> Node
           ("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
           ("xmlns:media", "http://www.rssboard.org/media-rss"),
           ("xmlns:atom", "http://www.w3.org/2005/Atom"),
-          ("version", "2.0")
+          ("version", "2.0"),
         ],
         view(a)
-      )
+      ),
     ]
   }
 }
@@ -321,7 +331,7 @@ private func nodes(itunes: RssChannel.Itunes) -> Node {
       [],
       .fragment([
         .element("itunes:name", [], .text(itunes.owner.name)),
-        .element("itunes:email", [], .text(itunes.owner.email))
+        .element("itunes:email", [], .text(itunes.owner.email)),
       ])
     ),
     .element("itunes:type", [], .text(itunes.type.rawValue)),
@@ -331,7 +341,7 @@ private func nodes(itunes: RssChannel.Itunes) -> Node {
       [("href", itunes.image.href)],
       ""
     ),
-    .fragment(itunes.categories.map(node(category:)))
+    .fragment(itunes.categories.map(node(category:))),
   ]
 }
 
@@ -346,7 +356,7 @@ private func nodes(itunes: RssItem.Itunes) -> Node {
     .element("itunes:season", [], .text("\(itunes.season)")),
     .element("itunes:episode", [], .text("\(itunes.episode)")),
     .element("itunes:title", [], .text(itunes.title)),
-    .element("itunes:episodeType", [], .text(itunes.episodeType.rawValue))
+    .element("itunes:episodeType", [], .text(itunes.episodeType.rawValue)),
   ]
 }
 
@@ -355,30 +365,32 @@ private func node(rssItem: RssItem) -> Node {
     (rssItem.dublinCore?.creators ?? []).map { .element("dc:creator", [], .text($0)) }
   )
   let itunesNodes = rssItem.itunes.map(nodes(itunes:)) ?? .fragment([])
-  let enclosureNodes = rssItem.enclosure.map { enclosure in
-    .element(
-      "enclosure",
-      [
-        ("url", enclosure.url.replacingOccurrences(of: "&", with: "&amp;")),
-        ("length", "\(enclosure.length)"),
-        ("type", enclosure.type),
-      ],
-      []
-    )
+  let enclosureNodes =
+    rssItem.enclosure.map { enclosure in
+      .element(
+        "enclosure",
+        [
+          ("url", enclosure.url.replacingOccurrences(of: "&", with: "&amp;")),
+          ("length", "\(enclosure.length)"),
+          ("type", enclosure.type),
+        ],
+        []
+      )
     }
     ?? Node.fragment([])
 
-  let mediaNodes = rssItem.media.map { media in
-    .element(
-      "media:content",
-      [
-        ("url", media.content.url.replacingOccurrences(of: "&", with: "&amp;")),
-        ("length", "\(media.content.length)"),
-        ("type", media.content.type),
-        ("medium", media.content.medium)
-      ],
-      .element("media:title", [], .text(media.title))
-    )
+  let mediaNodes =
+    rssItem.media.map { media in
+      .element(
+        "media:content",
+        [
+          ("url", media.content.url.replacingOccurrences(of: "&", with: "&amp;")),
+          ("length", "\(media.content.length)"),
+          ("type", media.content.type),
+          ("medium", media.content.medium),
+        ],
+        .element("media:title", [], .text(media.title))
+      )
     }
     ?? Node.fragment([])
 
@@ -394,7 +406,7 @@ private func node(rssItem: RssItem) -> Node {
       creatorNodes,
       itunesNodes,
       enclosureNodes,
-      mediaNodes
+      mediaNodes,
     ])
   )
 }

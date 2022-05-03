@@ -14,8 +14,8 @@ extension Class {
 
 public let displayStyles =
   Class.display.inline % display(.inline)
-    <> Class.display.block % display(.block)
-    <> Class.display.inlineBlock % display(.inlineBlock)
-    <> Class.display.none % display(.none)
-    <> Class.display.table % display(.table)
-    <> Class.display.tableCell % display(.tableCell)
+  <> Class.display.block % display(.block)
+  <> Class.display.inlineBlock % display(.inlineBlock)
+  <> Class.display.none % display(.none)
+  <> Class.display.table % display(.table)
+  <> Class.display.tableCell % display(.tableCell)

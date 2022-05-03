@@ -1,7 +1,7 @@
 import Foundation
 import Models
-import Prelude
 import PointFreePrelude
+import Prelude
 import Stripe
 import StripeTestSupport
 
@@ -126,13 +126,13 @@ extension Models.User {
 extension Episode.Collection {
   public static let mock = Episode.Collection(
     blurb: #"""
-This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.
-"""#,
+      This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.
+      """#,
     sections: [
       .init(
         blurb: #"""
-    This is the blurb for the section of the collection.
-    """#,
+          This is the blurb for the section of the collection.
+          """#,
         coreLessons: [
           .init(episode: .mock),
           .init(episode: .free),
@@ -140,21 +140,21 @@ This is the blurb for the collection. It can be as long as you want, and it _can
         related: [
           .init(
             blurb: #"""
-    This is a blurb for some related grouping of episodes.
-    """#,
+              This is a blurb for some related grouping of episodes.
+              """#,
             content: .episodes([.mock, .mock])
           ),
           .init(
             blurb: #"""
-    This is a blurb for a single related episode
-    """#,
+              This is a blurb for a single related episode
+              """#,
             content: .episode(.mock)
-          )
+          ),
         ],
         title: "Functions that begin with A",
         whereToGoFromHere: #"""
-    Here are some closing remarks for the collection.
-    """#
+          Here are some closing remarks for the collection.
+          """#
       ),
       .init(
         blurb: #"""
@@ -167,16 +167,16 @@ This is the blurb for the collection. It can be as long as you want, and it _can
         related: [
           .init(
             blurb: #"""
-          This is a blurb for some related grouping of episodes.
-          """#,
+              This is a blurb for some related grouping of episodes.
+              """#,
             content: .episodes([.mock, .mock])
           ),
           .init(
             blurb: #"""
-          This is a blurb for a single related episode
-          """#,
+              This is a blurb for a single related episode
+              """#,
             content: .episode(.mock)
-          )
+          ),
         ],
         title: "Functions that begin with B",
         whereToGoFromHere: #"""
@@ -194,27 +194,27 @@ This is the blurb for the collection. It can be as long as you want, and it _can
         related: [
           .init(
             blurb: #"""
-          This is a blurb for some related grouping of episodes.
-          """#,
+              This is a blurb for some related grouping of episodes.
+              """#,
             content: .episodes([.mock, .mock])
           ),
           .init(
             blurb: #"""
-          This is a blurb for a single related episode
-          """#,
+              This is a blurb for a single related episode
+              """#,
             content: .episode(.mock)
-          )
+          ),
         ],
         title: "Functions that begin with C",
         whereToGoFromHere: #"""
           Here are some closing remarks for the collection.
           """#
-      )
+      ),
     ],
     title: "Functions"
   )
 }
 
-fileprivate extension Date {
-  static let mock = Date(timeIntervalSince1970: 1517356800)
+extension Date {
+  fileprivate static let mock = Date(timeIntervalSince1970: 1_517_356_800)
 }

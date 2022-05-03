@@ -43,25 +43,27 @@ func collectionNavigation(
         left
           .map {
             [
-              .img(base64: leftNavigationChevronSvgBase64, type: .image(.svg), alt: "", attributes: [
-                .class([
-                  Class.padding([.mobile: [.right: 1]]),
+              .img(
+                base64: leftNavigationChevronSvgBase64, type: .image(.svg), alt: "",
+                attributes: [
+                  .class([
+                    Class.padding([.mobile: [.right: 1]])
+                  ])
                 ]),
-              ]),
-              $0
+              $0,
             ]
           }
           ?? []
-      )//,
-//      .gridColumn(
-//        sizes: [.desktop: 6, .mobile: 12],
-//        attributes: [
-//          .class([
-//            Class.grid.end(.mobile)
-//          ]),
-//        ],
-//        ""
-//      )
+      )  //,
+      //      .gridColumn(
+      //        sizes: [.desktop: 6, .mobile: 12],
+      //        attributes: [
+      //          .class([
+      //            Class.grid.end(.mobile)
+      //          ]),
+      //        ],
+      //        ""
+      //      )
     )
   )
 }
@@ -103,7 +105,7 @@ func collectionHeader(
               Class.pf.type.responsiveTitle2,
               Class.type.align.center,
             ]),
-            .style(lineHeight(1.2))
+            .style(lineHeight(1.2)),
           ],
           .text(title)
         ),
@@ -113,17 +115,19 @@ func collectionHeader(
               Class.pf.type.body.small,
               Class.type.align.center,
             ]),
-            .style(color(.other("#a1a1a1")))
+            .style(color(.other("#a1a1a1"))),
           ],
           "\(category) • \(subcategory.pluralize(subcategoryCount)) • \(length.formattedDescription)"
         ),
         .div(
           attributes: [
             .class([
-              Class.padding([.mobile: [.top: 2, .leftRight: 2], .desktop: [.top: 3, .leftRight: 4]]),
+              Class.padding([
+                .mobile: [.top: 2, .leftRight: 2], .desktop: [.top: 3, .leftRight: 4],
+              ]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
-            ]),
+            ])
           ],
           .markdownBlock(blurb)
         )
@@ -149,12 +153,14 @@ extension Class.pf {
 
 // MARK: - Helpers
 
-fileprivate extension String {
-  func pluralize(_ count: Int) -> String {
+extension String {
+  fileprivate func pluralize(_ count: Int) -> String {
     let string = "\(count) \(self)"
-    return count == 1 ? string
-      : string.hasSuffix("y") ? string.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression)
-      : "\(string)s"
+    return count == 1
+      ? string
+      : string.hasSuffix("y")
+        ? string.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression)
+        : "\(string)s"
   }
 }
 

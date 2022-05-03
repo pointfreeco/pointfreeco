@@ -5,29 +5,32 @@ import GitHub
 import HttpPipeline
 import Models
 import ModelsTestSupport
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Stripe
 import StripeTestSupport
-#if !os(Linux)
-import WebKit
-#endif
 import XCTest
+
+@testable import PointFree
+
+#if !os(Linux)
+  import WebKit
+#endif
 
 final class AccountIntegrationTests: LiveDatabaseTestCase {
   func testLeaveTeam() {
     let currentUser = Current.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
-        gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 1, name: "Blob")
+        gitHubUser: .init(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 1, name: "Blob")
       ),
       email: "blob@pointfree.co",
       now: { .mock }
     )
-      .run.perform().right!!
+    .run.perform().right!!
 
     _ = Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
       .run.perform().right!!
@@ -35,7 +38,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let owner = Current.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
-        gitHubUser: .init(createdAt: .init(timeIntervalSince1970: 1234543210), id: 2, name: "Owner")
+        gitHubUser: .init(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 2, name: "Owner")
       ),
       email: "owner@pointfree.co",
       now: { .mock }
@@ -48,7 +52,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       false,
       nil
     )
-      .run.perform().right!!
+    .run.perform().right!!
 
     _ = Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
       .run.perform().right!
@@ -74,7 +78,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testAccount() {
@@ -85,15 +89,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2400)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -110,15 +114,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2400)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -140,15 +144,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1800)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -173,15 +177,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1600)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -193,15 +197,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1300))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1300)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -216,15 +220,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1300))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1300)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -242,15 +246,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -264,15 +268,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 80)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -285,15 +289,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 80)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -306,15 +310,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 80))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 80)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 80)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -335,15 +339,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1800)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -355,15 +359,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2200)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2200)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -376,15 +380,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -402,15 +406,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -428,15 +432,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1200)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -451,15 +455,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2000)),
+          ]
+        )
+      }
     #endif
   }
 
@@ -474,15 +478,15 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
-        ]
-      )
-    }
+      if self.isScreenshotTestingAvailable {
+        assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2400)),
+          ]
+        )
+      }
     #endif
   }
 }

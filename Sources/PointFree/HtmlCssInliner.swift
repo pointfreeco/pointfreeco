@@ -35,7 +35,8 @@ private func applyInlineStyles(
   let elemStyles = inlineStyles(for: .elem(.other(tag)), stylesheet: stylesheet)
 
   // Computes all inline styles based on the id of the element.
-  let idStyles = (attribs.first(where: { $0.key == "id" })?.value)
+  let idStyles =
+    (attribs.first(where: { $0.key == "id" })?.value)
     .map { inlineStyles(for: .id($0), stylesheet: stylesheet) }
     ?? ""
 
@@ -44,11 +45,12 @@ private func applyInlineStyles(
     classStyles,
     idStyles,
     currentStyles,
-    ]
-    .filter { !$0.isEmpty }
-    .joined(separator: ";")
+  ]
+  .filter { !$0.isEmpty }
+  .joined(separator: ";")
 
-  let newAttribs = attribs
+  let newAttribs =
+    attribs
     .filter { $0.key != "style" }
     + (newStyles.isEmpty ? [] : [("style", newStyles)])
 
@@ -61,7 +63,7 @@ private func applyInlineStyles(
 
 // Computes the inline styles for a selector given a stylesheet.
 private func inlineStyles(for selector: CssSelector, stylesheet: Stylesheet) -> String {
-  return stylesheet.rules // TODO: make rules public
+  return stylesheet.rules  // TODO: make rules public
     .lazy
     .map { inlineStyles(for: selector, rule: $0) }
     .filter { !$0.isEmpty }
@@ -76,7 +78,8 @@ private func inlineStyles(for selector: CssSelector, rule: Rule) -> String {
 
   case let .nested(app, rules):
     if doesApp(app, contain: selector) {
-      return rules
+      return
+        rules
         .map { inlineStyles(for: selector, rule: $0) }
         .joined(separator: ";")
     }

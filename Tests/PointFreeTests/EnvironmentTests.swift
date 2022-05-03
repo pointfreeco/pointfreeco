@@ -1,7 +1,8 @@
-@testable import PointFree
 import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
+
+@testable import PointFree
 
 class EnvironmentTests: TestCase {
   func testDefault() {

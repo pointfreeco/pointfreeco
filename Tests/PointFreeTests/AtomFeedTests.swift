@@ -1,17 +1,18 @@
-import SnapshotTesting
-@testable import Models
+import HttpPipeline
 import ModelsTestSupport
-import Prelude
-import XCTest
-@testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
-import HttpPipeline
+import Prelude
+import SnapshotTesting
+import XCTest
+
+@testable import Models
+@testable import PointFree
 
 class AtomFeedTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testAtomFeed() {
@@ -34,7 +35,8 @@ class AtomFeedTests: TestCase {
     var recentlyFreeEpisode = Episode.subscriberOnly
     recentlyFreeEpisode.title = "Subscriber-Only Episode that is now free!"
     recentlyFreeEpisode.publishedAt = now.addingTimeInterval(-60 * 60 * 24 * 14)
-    recentlyFreeEpisode.permission = .freeDuring(now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
+    recentlyFreeEpisode.permission = .freeDuring(
+      now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
 
     Current.episodes = unzurry([recentlyFreeEpisode, freeEpisode])
 

@@ -1,12 +1,12 @@
+import Either
 import EmailAddress
 import FunctionalCss
-import Either
 import Html
 import HtmlCssSupport
 import Mailgun
 import Models
-import PointFreeRouter
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Views
@@ -20,7 +20,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       .map(map(welcomeEmail2))
       .run.parallel,
     Current.database.fetchUsersToWelcome(3)
-      .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
+      .flatMap { users in Current.database.incrementEpisodeCredits(users.map(\.id)) }
       .map(map(welcomeEmail3))
       .run.parallel
   )
@@ -29,32 +29,35 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let emails = EitherIO(run: flattenedEmails.sequential)
     .debug { "📧: Sending \($0.count) welcome emails..." }
 
-  let delayedSend = send(email:)
+  let delayedSend =
+    send(email:)
     >>> delay(.milliseconds(200))
     >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
 
-  return emails
+  return
+    emails
     .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
     .flatMap { (emails: [Email]) -> EitherIO<Error, SendEmailResponse> in
-      let stats = emails
+      let stats =
+        emails
         .reduce(into: [String: [EmailAddress]]()) { dict, email in
           dict[email.subject, default: []].append(contentsOf: email.to)
-      }
-      .map { subject, emails in
-        """
-        \(emails.count) \"\(subject)\" emails
-        \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
-        """
-      }
-      .joined(separator: "\n\n")
+        }
+        .map { subject, emails in
+          """
+          \(emails.count) \"\(subject)\" emails
+          \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
+          """
+        }
+        .joined(separator: "\n\n")
       return sendEmail(
         to: adminEmails,
         subject: "Welcome emails sent",
         content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
       )
-  }
-  .map(const(unit))
-  .catch(notifyAdmins(subject: "Welcome emails failed"))
+    }
+    .map(const(unit))
+    .catch(notifyAdmins(subject: "Welcome emails failed"))
 }
 
 func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
@@ -66,8 +69,8 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
       to: adminEmails,
       subject: "[PointFree Error] \(subject)",
       content: inj1(errorDump)
-      )
-      .flatMap(const(throwE(error)))
+    )
+    .flatMap(const(throwE(error)))
   }
 }
 
@@ -141,28 +144,27 @@ func welcomeEmail1Content(user: User) -> Node {
         Here are some of our most popular collections of episodes:
 
         * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
-        
+
           Learn how to build an architecture from the ground up, with a focus on ergnomics, composition,
         testing, and more.
-        
+
         * [SwiftUI](https://www.pointfree.co/collections/swiftui)
-        
+
           We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings, animation
         and navigation.
-        
+
         * [Dependencies](https://www.pointfree.co/collections/dependencies)
-        
+
           Dependencies can wreak havoc on a codebase. We take the time to properly define what a dependency is,
         why they are so complex, and how we can take control of them rather than letting them control us.
-        
+
         * [Parsing](https://www.pointfree.co/collections/parsing)
-        
+
           Parsing is the process of turning nebulous input data into well-structured output data. It's a
         surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       When you're ready to subscribe for yourself _or_ your team, visit
@@ -170,7 +172,7 @@ func welcomeEmail1Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
@@ -185,14 +187,14 @@ func welcomeEmail2(_ user: User) -> Email {
 
 func welcomeEmail2Content(user: User) -> Node {
   let freeEpisodeLinks = Current.episodes()
-    .sorted(by: their(^\.sequence, >))
+    .sorted(by: their(\.sequence, >))
     .filter { !$0.subscriberOnly }
     .map {
       """
       * [\($0.fullTitle)](\(siteRouter.url(for: .episode(.show(.left($0.slug))))))
       """
-  }
-  .joined(separator: "\n")
+    }
+    .joined(separator: "\n")
 
   return [
     .markdownBlock(
@@ -213,9 +215,8 @@ func welcomeEmail2Content(user: User) -> Node {
         You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
         completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       If you have any questions, don't hesitate to reply to this email!
@@ -225,7 +226,7 @@ func welcomeEmail2Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
@@ -254,9 +255,8 @@ func welcomeEmail3Content(user: User) -> Node {
         It looks like you may have been saving the last one for a rainy day! But now you have
         \(user.episodeCreditCount), so it's time to cash one in! 🤑
         """
-        )
-      : []
-    ,
+      )
+      : [],
     .markdownBlock(
       """
       Please use it to check out _any_ subscriber-only episode, completely free! Just visit
@@ -289,14 +289,17 @@ func welcomeEmail3Content(user: User) -> Node {
       """
     ),
     subscribeButton,
-    hostSignOffView
+    hostSignOffView,
   ]
 }
 
 private let subscribeButton = Node.p(
   attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
   .a(
-    attributes: [.href(siteRouter.url(for: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+    attributes: [
+      .href(siteRouter.url(for: .pricingLanding)),
+      .class([Class.pf.components.button(color: .purple)]),
+    ],
     "Subscribe to Point-Free!"
   )
 )

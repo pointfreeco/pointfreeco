@@ -10,89 +10,100 @@ import TaggedMoney
 import Tuple
 import Views
 
-let giftRedemptionLandingMiddleware
-: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data>
-= fetchAndValidateGiftAndDiscount
-<| writeStatus(.ok)
->=> map(lower)
->>> respond(
-  view: giftRedeemLanding(gift:subscriberState:currentUser:episodeStats:),
-  layoutData: { gift, amount, user, subscription, subscriberState, route in
-    SimplePageLayoutData(
-      currentRoute: route,
-      currentSubscriberState: subscriberState,
-      currentUser: user,
-      data: (gift, subscriberState, user, stats(forEpisodes: Current.episodes())),
-      extraStyles: extraGiftLandingStyles <> testimonialStyle,
-      style: .base(.some(.minimal(.black))),
-      title: "Redeem your Point-Free gift"
+let giftRedemptionLandingMiddleware:
+  Middleware<
+    StatusLineOpen, ResponseEnded,
+    Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data
+  > =
+    fetchAndValidateGiftAndDiscount
+    <| writeStatus(.ok)
+    >=> map(lower)
+    >>> respond(
+      view: giftRedeemLanding(gift:subscriberState:currentUser:episodeStats:),
+      layoutData: { gift, amount, user, subscription, subscriberState, route in
+        SimplePageLayoutData(
+          currentRoute: route,
+          currentSubscriberState: subscriberState,
+          currentUser: user,
+          data: (gift, subscriberState, user, stats(forEpisodes: Current.episodes())),
+          extraStyles: extraGiftLandingStyles <> testimonialStyle,
+          style: .base(.some(.minimal(.black))),
+          title: "Redeem your Point-Free gift"
+        )
+      }
     )
-  }
-)
 
-let giftRedemptionMiddleware
-: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Gift.Id, User?, Models.Subscription?, SubscriberState>, Data>
-= fetchAndValidateGiftAndDiscount
-<<< filterMap(require3 >>> pure, or: loginAndRedirect)
-<| redeemGift
+let giftRedemptionMiddleware:
+  Middleware<
+    StatusLineOpen, ResponseEnded, Tuple4<Gift.Id, User?, Models.Subscription?, SubscriberState>,
+    Data
+  > =
+    fetchAndValidateGiftAndDiscount
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
+    <| redeemGift
 
 private func redeemGift(
-_ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?, SubscriberState>>
+  _ conn: Conn<
+    StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?, SubscriberState>
+  >
 ) -> IO<Conn<ResponseEnded, Data>> {
   let (gift, discount, user, subscription, subscriberState) = lower(conn.data)
 
   if let subscription = subscription, subscription.stripeSubscriptionStatus.isActive {
     guard subscriberState.isOwner
     else {
-      return conn |> redirect(
-        to: .gifts(.redeem(gift.id)),
-        headersMiddleware: flash(
-          .error,
-          "You are already part of an active team subscription."
+      return conn
+        |> redirect(
+          to: .gifts(.redeem(gift.id)),
+          headersMiddleware: flash(
+            .error,
+            "You are already part of an active team subscription."
+          )
         )
-      )
     }
 
     return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
       .flatMap { stripeSubscription -> EitherIO<Error, Customer> in
-//        // TODO: Should we disallow gifts from applying to team subscriptions?
-//        guard stripeSubscription.quantity == 1
-//        else {
-//
-//        }
+        //        // TODO: Should we disallow gifts from applying to team subscriptions?
+        //        guard stripeSubscription.quantity == 1
+        //        else {
+        //
+        //        }
 
         return Current.stripe.updateCustomerBalance(
           stripeSubscription.customer.either(id, \.id),
           (stripeSubscription.customer.right?.balance ?? 0) - discount
         )
-          .flatMap { customer in
-            Current.database.updateGift(gift.id, stripeSubscription.id)
-              .map(const(customer))
-          }
+        .flatMap { customer in
+          Current.database.updateGift(gift.id, stripeSubscription.id)
+            .map(const(customer))
+        }
       }
       .run
       .flatMap { errorOrCustomer in
         switch errorOrCustomer {
         case .left:
-          return conn |> redirect(
-            to: .gifts(.redeem(gift.id)),
-            headersMiddleware: flash(
-              .error,
-              """
-              We were unable to redeem your gift. Please try again, or contact \
-              <support@pointfree.co> for more help.
-              """
+          return conn
+            |> redirect(
+              to: .gifts(.redeem(gift.id)),
+              headersMiddleware: flash(
+                .error,
+                """
+                We were unable to redeem your gift. Please try again, or contact \
+                <support@pointfree.co> for more help.
+                """
+              )
             )
-          )
 
         case .right:
-          return conn |> redirect(
-            to: .account(),
-            headersMiddleware: flash(
-              .notice,
-              "The gift has been applied to your account as credit."
+          return conn
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(
+                .notice,
+                "The gift has been applied to your account as credit."
+              )
             )
-          )
         }
       }
   } else {
@@ -104,21 +115,22 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
       nil,
       -discount
     )
-      .flatMap { customer in
-        Current.stripe.createSubscription(customer.id, plan, 1, nil)
-          .flatMap { stripeSubscription in
-            Current.database.createSubscription(stripeSubscription, user.id, true, nil)
-              .flatMap { _ in
-                Current.database.updateGift(gift.id, stripeSubscription.id)
+    .flatMap { customer in
+      Current.stripe.createSubscription(customer.id, plan, 1, nil)
+        .flatMap { stripeSubscription in
+          Current.database.createSubscription(stripeSubscription, user.id, true, nil)
+            .flatMap { _ in
+              Current.database.updateGift(gift.id, stripeSubscription.id)
                 .map(const(customer))
-              }
-          }
-      }
-      .run
-      .flatMap { errorOrSubscription in
-        switch errorOrSubscription {
-        case .left:
-          return conn |> redirect(
+            }
+        }
+    }
+    .run
+    .flatMap { errorOrSubscription in
+      switch errorOrSubscription {
+      case .left:
+        return conn
+          |> redirect(
             to: .gifts(.redeem(gift.id)),
             headersMiddleware: flash(
               .error,
@@ -129,13 +141,14 @@ _ conn: Conn<StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?
             )
           )
 
-        case .right:
-          return conn |> redirect(
+      case .right:
+        return conn
+          |> redirect(
             to: .account(),
             headersMiddleware: flash(.notice, "You now have access to Point-Free!")
           )
-        }
       }
+    }
   }
 }
 
@@ -159,10 +172,11 @@ private func fetchAndValidateGiftAndDiscount<A>(
         case let .right((gift, paymentIntent)):
           guard gift.stripeSubscriptionId == nil
           else {
-            return conn |> redirect(
-              to: .gifts(),
-              headersMiddleware: flash(.error, "This gift was already redeemed.")
-            )
+            return conn
+              |> redirect(
+                to: .gifts(),
+                headersMiddleware: flash(.error, "This gift was already redeemed.")
+              )
           }
 
           return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware

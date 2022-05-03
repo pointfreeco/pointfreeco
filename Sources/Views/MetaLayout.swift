@@ -34,64 +34,72 @@ public struct Metadata<A> {
     twitterSite: String? = nil,
     type: OpenGraphType? = nil,
     url: String? = nil
-    )
-    -> (A) -> Metadata<A> {
-      return { rest in
-        .init(
-          description: description,
-          image: image,
-          rest: rest,
-          title: title,
-          twitterCard: twitterCard,
-          twitterSite: twitterSite,
-          type: type,
-          url: url
-        )
-      }
+  )
+    -> (A) -> Metadata<A>
+  {
+    return { rest in
+      .init(
+        description: description,
+        image: image,
+        rest: rest,
+        title: title,
+        twitterCard: twitterCard,
+        twitterSite: twitterSite,
+        type: type,
+        url: url
+      )
+    }
   }
-  
+
   var metaNodes: Node {
-    let description: Node = self.description.map {
-      [
-        ChildOf.meta(name: "description", content: $0).rawValue,
-        ChildOf.meta(property: "og:description", content: $0).rawValue,
-        ChildOf.meta(name: "twitter:description", content: $0).rawValue,
-      ]
-    } ?? []
+    let description: Node =
+      self.description.map {
+        [
+          ChildOf.meta(name: "description", content: $0).rawValue,
+          ChildOf.meta(property: "og:description", content: $0).rawValue,
+          ChildOf.meta(name: "twitter:description", content: $0).rawValue,
+        ]
+      } ?? []
 
-    let image: Node = self.image.map {
-      [
-        ChildOf.meta(name: "twitter:image", content: $0).rawValue,
-        ChildOf.meta(property: "og:image", content: $0).rawValue,
-      ]
-    } ?? []
+    let image: Node =
+      self.image.map {
+        [
+          ChildOf.meta(name: "twitter:image", content: $0).rawValue,
+          ChildOf.meta(property: "og:image", content: $0).rawValue,
+        ]
+      } ?? []
 
-    let title: Node = self.title.map {
-      [
-        ChildOf.meta(name: "title", content: $0).rawValue,
-        ChildOf.meta(property: "og:title", content: $0).rawValue,
-        ChildOf.meta(name: "twitter:title", content: $0).rawValue,
-      ]
-    } ?? []
+    let title: Node =
+      self.title.map {
+        [
+          ChildOf.meta(name: "title", content: $0).rawValue,
+          ChildOf.meta(property: "og:title", content: $0).rawValue,
+          ChildOf.meta(name: "twitter:title", content: $0).rawValue,
+        ]
+      } ?? []
 
-    let type: Node = self.type
+    let type: Node =
+      self.type
       .map { ChildOf.meta(property: "og:type", content: $0.rawValue).rawValue }
-    ?? []
+      ?? []
 
-    let twitterCard: Node = self.twitterCard
+    let twitterCard: Node =
+      self.twitterCard
       .map { ChildOf.meta(name: "twitter:card", content: $0.rawValue).rawValue }
-    ?? []
+      ?? []
 
-    let twitterSite: Node = self.twitterSite
+    let twitterSite: Node =
+      self.twitterSite
       .map { ChildOf.meta(name: "twitter:site", content: $0).rawValue }
-    ?? []
+      ?? []
 
-    let url: Node = self.url.map {
-      [
-        ChildOf.meta(property: "og:url", content: $0).rawValue,
-        ChildOf.meta(name: "twitter:url", content: $0).rawValue,
-      ]
-    } ?? []
+    let url: Node =
+      self.url.map {
+        [
+          ChildOf.meta(property: "og:url", content: $0).rawValue,
+          ChildOf.meta(name: "twitter:url", content: $0).rawValue,
+        ]
+      } ?? []
 
     return [
       description,

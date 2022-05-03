@@ -18,8 +18,8 @@ private func validate(enterpriseEmails: [EnterpriseEmail]) -> EitherIO<Error, [V
     sequence(
       enterpriseEmails
         .map(validate(enterpriseEmail:))
-      )
-      .sequential
+    )
+    .sequential
   )
 }
 
@@ -40,7 +40,7 @@ private func validate(enterpriseEmail: EnterpriseEmail) -> Parallel<ValidationRe
 private func validateSubscription(
   validation: Mailgun.Client.Validation,
   enterpriseEmail: EnterpriseEmail
-  ) -> EitherIO<Error, Prelude.Unit> {
+) -> EitherIO<Error, Prelude.Unit> {
 
   guard !validation.mailboxVerification else { return pure(unit) }
 
@@ -52,14 +52,16 @@ private func validateSubscription(
 private func unlinkSubscription(
   enterpriseEmail: EnterpriseEmail,
   user: Models.User
-  ) -> EitherIO<Error, Prelude.Unit> {
+) -> EitherIO<Error, Prelude.Unit> {
 
   return Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
     .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
       guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
       return Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
-        .catch(notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)"))
+        .catch(
+          notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
+        )
     }
     .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
 }
@@ -67,7 +69,7 @@ private func unlinkSubscription(
 private func notifyUserSubscriptionWasRemoved(
   user: Models.User,
   enterpriseEmail: EnterpriseEmail
-  ) -> EitherIO<Error, Prelude.Unit> {
+) -> EitherIO<Error, Prelude.Unit> {
 
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
@@ -78,12 +80,14 @@ private func notifyUserSubscriptionWasRemoved(
         to: [user.email],
         subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
         content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
-        )
-        .map(const(unit))
-  }
+      )
+      .map(const(unit))
+    }
 }
 
-private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<Error, Prelude.Unit> {
+private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<
+  Error, Prelude.Unit
+> {
 
   // TODO: send admin email
   return pure(unit)

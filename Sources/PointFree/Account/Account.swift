@@ -9,30 +9,31 @@ import Stripe
 import Tuple
 import Views
 
-let accountResponse
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <| fetchAccountData
-    >=> writeStatus(.ok)
-    >=> respond(
-      view: Views.accountView(accountData:allEpisodes:currentDate:),
-      layoutData: { accountData in
-        SimplePageLayoutData(
-          currentSubscriberState: accountData.subscriberState,
-          currentUser: accountData.currentUser,
-          data: (accountData, Current.episodes(), Current.date()),
-          extraStyles: markdownBlockStyles,
-          title: "Account"
-        )
+let accountResponse =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+  <| fetchAccountData
+  >=> writeStatus(.ok)
+  >=> respond(
+    view: Views.accountView(accountData:allEpisodes:currentDate:),
+    layoutData: { accountData in
+      SimplePageLayoutData(
+        currentSubscriberState: accountData.subscriberState,
+        currentUser: accountData.currentUser,
+        data: (accountData, Current.episodes(), Current.date()),
+        extraStyles: markdownBlockStyles,
+        title: "Account"
+      )
     }
-)
+  )
 
 private func fetchAccountData<I>(
   _ conn: Conn<I, Tuple2<User, SubscriberState>>
-  ) -> IO<Conn<I, AccountData>> {
+) -> IO<Conn<I, AccountData>> {
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription: EitherIO<Error, Models.Subscription> = user.subscriptionId
+  let userSubscription: EitherIO<Error, Models.Subscription> =
+    user.subscriptionId
     .map(
       Current.database.fetchSubscriptionById
         >>> mapExcept(requireSome)
@@ -44,17 +45,20 @@ private func fetchAccountData<I>(
 
   let subscription = userSubscription <|> ownerSubscription
 
-  let owner = subscription
-    .flatMap(Current.database.fetchUserById <<< ^\.userId)
+  let owner =
+    subscription
+    .flatMap(Current.database.fetchUserById <<< \.userId)
     .mapExcept(requireSome)
 
-  let stripeSubscription = subscription
-    .map(^\.stripeSubscriptionId)
+  let stripeSubscription =
+    subscription
+    .map(\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
-  let upcomingInvoice = stripeSubscription
+  let upcomingInvoice =
+    stripeSubscription
     .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }
-    .map(^\.customer >>> either(id, ^\.id))
+    .map(\.customer >>> either(id, \.id))
     .flatMap(Current.stripe.fetchUpcomingInvoice)
 
   let everything = zip8(
@@ -64,11 +68,11 @@ private func fetchAccountData<I>(
     Current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    stripeSubscription.run.map(^\.right).parallel,
+    stripeSubscription.run.map(\.right).parallel,
 
-    subscription.run.map(^\.right).parallel,
+    subscription.run.map(\.right).parallel,
 
-    owner.run.map(^\.right).parallel,
+    owner.run.map(\.right).parallel,
 
     Current.database.fetchTeamInvites(user.id).run.parallel
       .map { $0.right ?? [] },
@@ -76,10 +80,11 @@ private func fetchAccountData<I>(
     Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    upcomingInvoice.run.map(^\.right).parallel
+    upcomingInvoice.run.map(\.right).parallel
   )
 
-  return everything
+  return
+    everything
     .map {
       conn.map(
         const(

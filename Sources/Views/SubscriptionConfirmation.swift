@@ -41,10 +41,12 @@ public func subscriptionConfirmation(
       coupon: coupon,
       useRegionalDiscount: subscribeData.useRegionalDiscount
     ),
-    currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
+    currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) }
+      ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
     currentUser != nil
-      ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
+      ? payment(
+        lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
       : [],
     total(
       isLoggedIn: currentUser != nil,
@@ -73,7 +75,7 @@ private func additionalDiscountInfo(
         .name(SubscribeData.CodingKeys.referralCode.rawValue),
         .type(.hidden),
         .value(referrer.referralCode.rawValue),
-      ])
+      ]),
     ]
   }
 
@@ -89,9 +91,9 @@ private func additionalDiscountInfo(
           .name(SubscribeData.CodingKeys.coupon.rawValue),
           .placeholder("Coupon Code"),
           .type(.hidden),
-          .value(coupon.id.rawValue)
+          .value(coupon.id.rawValue),
         ]
-      )
+      ),
     ]
   }
 
@@ -125,9 +127,9 @@ private func additionalDiscountInfo(
         .name(SubscribeData.CodingKeys.useRegionalDiscount.rawValue),
         .placeholder("Coupon Code"),
         .type(.hidden),
-        .value("\(useRegionalDiscount)")
+        .value("\(useRegionalDiscount)"),
       ]
-    )
+    ),
   ]
 
   if let referrer = referrer, useRegionalDiscount {
@@ -176,7 +178,7 @@ private func additionalDiscountInfo(
     .div(
       attributes: [
         .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
-        .class([Class.margin([.mobile: [.top: 2]]), Class.padding([.mobile: [.all: 2]])])
+        .class([Class.margin([.mobile: [.top: 2]]), Class.padding([.mobile: [.all: 2]])]),
       ],
       .h4(
         attributes: [
@@ -212,9 +214,9 @@ private func header(
         attributes: [
           .class([
             Class.pf.colors.link.gray650,
-            Class.pf.type.underlineLink
+            Class.pf.type.underlineLink,
           ]),
-          .href(siteRouter.url(for: .pricingLanding))
+          .href(siteRouter.url(for: .pricingLanding)),
         ],
         "Change plan"
       )
@@ -224,7 +226,8 @@ private func header(
       episodeStats: episodeStats,
       lane: lane
     ),
-    additionalDiscountInfo(referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount)
+    additionalDiscountInfo(
+      referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount),
   ]
 
   return [
@@ -240,7 +243,7 @@ private func header(
         .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
       ),
       header
-    )
+    ),
   ]
 }
 
@@ -260,9 +263,9 @@ func planFeatures(
           Class.pf.colors.fg.gray400,
           Class.pf.type.body.regular,
           Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
-          Class.pf.colors.fg.gray400
+          Class.pf.colors.fg.gray400,
         ]),
-        .style(flex(grow: 1, shrink: 0, basis: .auto))
+        .style(flex(grow: 1, shrink: 0, basis: .auto)),
       ],
       .fragment(
         PricingPlan.personal(
@@ -270,15 +273,15 @@ func planFeatures(
           episodeHourCount: episodeStats.episodeHourCount,
           showDiscountOptions: showDiscountOptions
         )
-          .features
-          .map { feature in
-            .li(
-              attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-              .div(
-                attributes: [.class([pricingPlanFeatureClass])],
-                .raw(unsafeMark(from: feature))
-              )
+        .features
+        .map { feature in
+          .li(
+            attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
+            .div(
+              attributes: [.class([pricingPlanFeatureClass])],
+              .raw(unsafeMark(from: feature))
             )
+          )
         }
       )
     )
@@ -295,7 +298,7 @@ private func teamMembers(
     return .input(attributes: [
       .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
       .type(.hidden),
-      .value("true")
+      .value("true"),
     ])
   }
 
@@ -338,12 +341,13 @@ private func teamMembers(
               Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
               Class.border.all,
               Class.pf.colors.border.gray850,
-              ]),
-            .onclick(safe: """
-var teamMember = document.getElementById("team-member-template").content.cloneNode(true)
-document.getElementById("team-members").appendChild(teamMember)
-updateSeats()
-""")
+            ]),
+            .onclick(
+              safe: """
+                var teamMember = document.getElementById("team-member-template").content.cloneNode(true)
+                document.getElementById("team-members").appendChild(teamMember)
+                updateSeats()
+                """),
           ],
           "Add team member"
         )
@@ -354,13 +358,13 @@ updateSeats()
         .class([
           Class.pf.type.body.small,
           Class.pf.colors.fg.gray400,
-          Class.padding([.mobile: [.top: 3]])
+          Class.padding([.mobile: [.top: 3]]),
         ])
       ],
       """
-You must have at least two seats for your team subscription. You can add additional team members at any time
-from your account page.
-"""
+      You must have at least two seats for your team subscription. You can add additional team members at any time
+      from your account page.
+      """
     )
   )
 }
@@ -370,7 +374,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
     return .input(attributes: [
       .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
       .type(.hidden),
-      .value("false")
+      .value("false"),
     ])
   }
 
@@ -384,20 +388,20 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.top: 1]]),
       ]),
-      .style(lineHeight(0))
+      .style(lineHeight(0)),
     ],
     .div(
       attributes: [
         .class([
           Class.flex.flex,
-          Class.grid.middle(.mobile)
+          Class.grid.middle(.mobile),
         ])
       ],
       .input(
         attributes: [
           .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
           .type(.hidden),
-          .value("true")
+          .value("true"),
         ]
       ),
       .img(
@@ -407,9 +411,9 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
           .class([
             Class.pf.colors.bg.green,
             Class.border.circle,
-            Class.margin([.mobile: [.right: 1]])
+            Class.margin([.mobile: [.right: 1]]),
           ]),
-          .style(width(.px(24)) <> height(.px(24)))
+          .style(width(.px(24)) <> height(.px(24))),
         ]
       ),
       .span(
@@ -425,20 +429,20 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
             Class.pf.colors.link.red,
             Class.type.light,
             Class.pf.type.body.small,
-            Class.pf.type.underlineLink
+            Class.pf.type.underlineLink,
           ]),
           .onclick(
             safe: """
-var ownerRow = this.parentNode.parentNode
-ownerRow.parentNode.removeChild(ownerRow)
+              var ownerRow = this.parentNode.parentNode
+              ownerRow.parentNode.removeChild(ownerRow)
 
-var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
-var teamMembersContainer = document.getElementById("team-members")
-teamMembersContainer.insertBefore(teamMember, teamMembersContainer.firstChild)
+              var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
+              var teamMembersContainer = document.getElementById("team-members")
+              teamMembersContainer.insertBefore(teamMember, teamMembersContainer.firstChild)
 
-updateSeats()
-"""
-          )
+              updateSeats()
+              """
+          ),
         ],
         .raw("Remove&nbsp;yourself")
       )
@@ -454,15 +458,15 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         Class.border.all,
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]]),
-        Class.margin([.mobile: [.top: 1]])
+        Class.margin([.mobile: [.top: 1]]),
       ]),
-      .style(lineHeight(0))
+      .style(lineHeight(0)),
     ],
     .div(
       attributes: [
         .class([
           Class.flex.flex,
-          Class.grid.middle(.mobile)
+          Class.grid.middle(.mobile),
         ])
       ],
       .img(
@@ -473,7 +477,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
           .class([
             Class.margin([.mobile: [.right: 1]])
           ]),
-          .style(width(.px(24)) <> height(.px(24)))
+          .style(width(.px(24)) <> height(.px(24))),
         ]
       ),
       .input(attributes: [
@@ -488,21 +492,23 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         .value(email.rawValue),
       ]),
       withRemoveButton
-        ? .a(attributes: [
-          .class([
-            Class.cursor.pointer,
-            Class.pf.colors.fg.red,
-            Class.pf.colors.link.red,
-            Class.type.light,
-            Class.pf.type.body.small,
-            Class.pf.type.underlineLink
-          ]),
-          .onclick(safe: """
-var teamMemberRow = this.parentNode.parentNode
-teamMemberRow.parentNode.removeChild(teamMemberRow)
-updateSeats()
-""")
-        ], "Remove")
+        ? .a(
+          attributes: [
+            .class([
+              Class.cursor.pointer,
+              Class.pf.colors.fg.red,
+              Class.pf.colors.link.red,
+              Class.type.light,
+              Class.pf.type.body.small,
+              Class.pf.type.underlineLink,
+            ]),
+            .onclick(
+              safe: """
+                var teamMemberRow = this.parentNode.parentNode
+                teamMemberRow.parentNode.removeChild(teamMemberRow)
+                updateSeats()
+                """),
+          ], "Remove")
         : []
     )
   )
@@ -526,16 +532,16 @@ private func billingPeriod(
       .class([
         Class.border.all,
         Class.pf.colors.border.gray850,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
       ]),
-      .style(lineHeight(0))
+      .style(lineHeight(0)),
     ],
     .label(
       attributes: [
         .class([
           Class.cursor.pointer,
           Class.flex.flex,
-          Class.flex.items.baseline
+          Class.flex.items.baseline,
         ])
       ],
       .div(
@@ -555,7 +561,7 @@ private func billingPeriod(
           attributes: [
             .class([
               Class.pf.type.responsiveTitle6,
-              Class.margin([.mobile: [.all: 0]])
+              Class.margin([.mobile: [.all: 0]]),
             ])
           ],
           lane == .team
@@ -567,7 +573,7 @@ private func billingPeriod(
             .class([
               Class.padding([.mobile: [.top: 1]]),
               Class.pf.type.body.small,
-              Class.pf.colors.fg.gray650
+              Class.pf.colors.fg.gray650,
             ])
           ],
           lane == .team
@@ -576,7 +582,7 @@ private func billingPeriod(
               interval: .year,
               coupon: coupon,
               useRegionalDiscount: subscribeData.useRegionalDiscount
-          )
+            )
         )
       )
     )
@@ -590,16 +596,16 @@ private func billingPeriod(
         Class.border.right,
         Class.border.bottom,
         Class.pf.colors.border.gray850,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
       ]),
-      .style(lineHeight(0))
+      .style(lineHeight(0)),
     ],
     .label(
       attributes: [
         .class([
           Class.cursor.pointer,
           Class.flex.flex,
-          Class.flex.items.baseline
+          Class.flex.items.baseline,
         ])
       ],
       .div(
@@ -619,7 +625,7 @@ private func billingPeriod(
           attributes: [
             .class([
               Class.pf.type.responsiveTitle6,
-              Class.margin([.mobile: [.all: 0]])
+              Class.margin([.mobile: [.all: 0]]),
             ])
           ],
           "Monthly"
@@ -629,7 +635,7 @@ private func billingPeriod(
             .class([
               Class.padding([.mobile: [.top: 1]]),
               Class.pf.type.body.small,
-              Class.pf.colors.fg.gray650
+              Class.pf.colors.fg.gray650,
             ])
           ],
           lane == .team
@@ -638,7 +644,7 @@ private func billingPeriod(
               interval: .month,
               coupon: coupon,
               useRegionalDiscount: subscribeData.useRegionalDiscount
-          )
+            )
         )
       )
     )
@@ -662,11 +668,13 @@ private func discountedBillingIntervalSubtitle(
   switch interval {
   case .month:
     let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per month")
   case .year:
     let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per year")
   }
 }
@@ -705,9 +713,9 @@ private func payment(
           Class.border.all,
           Class.pf.colors.border.gray850,
           Class.padding([.mobile: [.all: 2]]),
-          Class.margin([.mobile: [.top: 1]])
+          Class.margin([.mobile: [.top: 1]]),
         ]),
-        .style(lineHeight(0))
+        .style(lineHeight(0)),
       ],
       .div(
         attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
@@ -736,60 +744,61 @@ private func payment(
       .input(
         attributes: [
           .name("token"),
-          .type(.hidden)
+          .type(.hidden),
         ]
       ),
       .script(attributes: [.src(stripeJs)]),
-      .script(safe: """
-window.addEventListener("load", function() {
-  var apiKey = document.getElementById("card-element").dataset.stripeKey
-  var stripe = Stripe(apiKey)
-  var elements = stripe.elements()
-  var style = {
-    base: {
-      fontSize: "16px",
-    }
-  }
-  var card = elements.create("card", { style: style })
-  card.mount("#card-element")
-  var displayError = document.getElementById("card-errors")
-  card.addEventListener("change", function(event) {
-    if (event.error) {
-      displayError.textContent = event.error.message
-    } else {
-      displayError.textContent = ""
-    }
-  });
-  var form = document.getElementById("subscribe-form")
-  function setFormEnabled(isEnabled, elementsMatching) {
-    for (var idx = 0; idx < form.length; idx++) {
-      var formElement = form[idx]
-      if (elementsMatching(formElement)) {
-        formElement.disabled = !isEnabled
-        if (formElement.tagName == "BUTTON") {
-          formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
-        }
-      }
-    }
-  }
-  form.addEventListener("submit", function(event) {
-    event.preventDefault()
-    setFormEnabled(false, function() { return true })
-    stripe.createToken(card).then(function(result) {
-      if (result.error) {
-        displayError.textContent = result.error.message
-        setFormEnabled(true, function(el) { return true })
-      } else {
-        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-        form.token.value = result.token.id
-        form.submit()
-      }
-    }).catch(function() {
-      setFormEnabled(true, function(el) { return true })
-    })
-  })
-})
-""")
+      .script(
+        safe: """
+          window.addEventListener("load", function() {
+            var apiKey = document.getElementById("card-element").dataset.stripeKey
+            var stripe = Stripe(apiKey)
+            var elements = stripe.elements()
+            var style = {
+              base: {
+                fontSize: "16px",
+              }
+            }
+            var card = elements.create("card", { style: style })
+            card.mount("#card-element")
+            var displayError = document.getElementById("card-errors")
+            card.addEventListener("change", function(event) {
+              if (event.error) {
+                displayError.textContent = event.error.message
+              } else {
+                displayError.textContent = ""
+              }
+            });
+            var form = document.getElementById("subscribe-form")
+            function setFormEnabled(isEnabled, elementsMatching) {
+              for (var idx = 0; idx < form.length; idx++) {
+                var formElement = form[idx]
+                if (elementsMatching(formElement)) {
+                  formElement.disabled = !isEnabled
+                  if (formElement.tagName == "BUTTON") {
+                    formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+                  }
+                }
+              }
+            }
+            form.addEventListener("submit", function(event) {
+              event.preventDefault()
+              setFormEnabled(false, function() { return true })
+              stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                  displayError.textContent = result.error.message
+                  setFormEnabled(true, function(el) { return true })
+                } else {
+                  setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+                  form.token.value = result.token.id
+                  form.submit()
+                }
+              }).catch(function() {
+                setFormEnabled(true, function(el) { return true })
+              })
+            })
+          })
+          """)
     )
   )
 }
@@ -808,7 +817,7 @@ private func total(
       .class([
         Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
         Class.padding([.mobile: [.top: 3, .bottom: 4], .desktop: [.top: 3, .bottom: 4]]),
-        Class.grid.middle(.mobile)
+        Class.grid.middle(.mobile),
       ])
     ],
     .gridColumn(
@@ -818,7 +827,7 @@ private func total(
         attributes: [
           .class([
             Class.pf.type.body.small,
-            Class.pf.colors.fg.gray400
+            Class.pf.colors.fg.gray400,
           ]),
           .id("pricing-preview"),
         ]
@@ -840,7 +849,7 @@ private func total(
             .class([
               Class.pf.type.responsiveTitle2,
               Class.type.normal,
-              Class.margin([.mobile: [.topBottom: 0]])
+              Class.margin([.mobile: [.topBottom: 0]]),
             ]),
             .id("total"),
           ]
@@ -849,57 +858,58 @@ private func total(
           .name("pricing[quantity]"),
           .type(.hidden),
         ]),
-        .script(unsafe: #"""
-function format(money) {
-  return "$" + money.toFixed(2).replace(/\.00$/, "")
-}
-function updateSeats() {
-  var teamMembers = document.getElementById("team-members")
-  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
-  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammate"
-  }
-  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
-  var seats = teamMembers
-    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-    : 1
-  var form = document.getElementById("subscribe-form")
-  form["pricing[quantity]"].value = seats
-  var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
-  var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPricePerSeat = (
-    monthly
-      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
-      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
-  )
-  var monthlyPrice = seats * monthlyPricePerSeat
-  document.getElementById("total").textContent = format(
-    monthly
-      ? monthlyPrice
-      : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
-  )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
-}
-window.addEventListener("load", function() {
-  updateSeats()
-  var form = document.getElementById("subscribe-form")
-  form.addEventListener("change", updateSeats)
-})
-"""#),
+        .script(
+          unsafe: #"""
+            function format(money) {
+              return "$" + money.toFixed(2).replace(/\.00$/, "")
+            }
+            function updateSeats() {
+              var teamMembers = document.getElementById("team-members")
+              var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
+              for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+                teamMemberInputs[idx].name = "teammate"
+              }
+              var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
+              var seats = teamMembers
+                ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
+                : 1
+              var form = document.getElementById("subscribe-form")
+              form["pricing[quantity]"].value = seats
+              var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
+              var monthly = form["pricing[billing]"].value == "monthly"
+              var monthlyPricePerSeat = (
+                monthly
+                  ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+                  : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
+              )
+              var monthlyPrice = seats * monthlyPricePerSeat
+              document.getElementById("total").textContent = format(
+                monthly
+                  ? monthlyPrice
+                  : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
+              )
+              document.getElementById("pricing-preview").innerHTML = (
+                "You will be charged <strong>"
+                  + format(monthlyPricePerSeat)
+                  + " per month</strong>"
+                  + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+                  + (monthly ? "" : " times <strong>12 months</strong>")
+                  + "."
+              )
+            }
+            window.addEventListener("load", function() {
+              updateSeats()
+              var form = document.getElementById("subscribe-form")
+              form.addEventListener("change", updateSeats)
+            })
+            """#),
         .span(
           attributes: [
             .class([
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray400,
               Class.margin([.mobile: [.left: 1]]),
-              Class.padding([.mobile: [.bottom: 1]])
+              Class.padding([.mobile: [.bottom: 1]]),
             ])
           ],
           "Total"
@@ -910,51 +920,51 @@ window.addEventListener("load", function() {
       sizes: [:],
       attributes: [.class([Class.grid.end(.mobile)])],
       isLoggedIn
-      ? .button(
-        attributes: [
-          .class([
-            Class.border.none,
-            Class.type.textDecorationNone,
-            Class.cursor.pointer,
-            Class.type.bold,
-            Class.typeScale([.mobile: .r1, .desktop: .r1]),
-            Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
-            Class.type.align.center,
-            Class.pf.colors.bg.black,
-            Class.pf.colors.fg.white,
-            Class.pf.colors.link.white,
-          ])
-        ],
-        "Subscribe"
-      )
-      : .gitHubLink(
-        text: "Log in to Subscribe",
-        type: .black,
-        href: siteRouter.loginPath(
-          redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
-          ?? .subscribeConfirmation(
-            lane: lane,
-            referralCode: referrer?.referralCode,
-            useRegionalDiscount: useRegionalDiscount
+        ? .button(
+          attributes: [
+            .class([
+              Class.border.none,
+              Class.type.textDecorationNone,
+              Class.cursor.pointer,
+              Class.type.bold,
+              Class.typeScale([.mobile: .r1, .desktop: .r1]),
+              Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+              Class.type.align.center,
+              Class.pf.colors.bg.black,
+              Class.pf.colors.fg.white,
+              Class.pf.colors.link.white,
+            ])
+          ],
+          "Subscribe"
+        )
+        : .gitHubLink(
+          text: "Log in to Subscribe",
+          type: .black,
+          href: siteRouter.loginPath(
+            redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
+              ?? .subscribeConfirmation(
+                lane: lane,
+                referralCode: referrer?.referralCode,
+                useRegionalDiscount: useRegionalDiscount
+              )
           )
         )
-      )
     )
   )
 }
 
 private let moduleTitleClass =
   Class.pf.type.responsiveTitle3
-    | Class.margin([.mobile: [.top: 0]])
+  | Class.margin([.mobile: [.top: 0]])
 
 private let moduleTitleColumnClass =
   Class.padding([.mobile: [.bottom: 1], .desktop: [.bottom: 2]])
 
 let moduleRowClass =
   Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]])
-    | Class.padding([.mobile: [.topBottom: 3]])
-    | Class.border.bottom
-    | Class.pf.colors.border.gray850
+  | Class.padding([.mobile: [.topBottom: 3]])
+  | Class.border.bottom
+  | Class.pf.colors.border.gray850
 
 public let currencyFormatter: NumberFormatter = {
   let formatter = NumberFormatter()

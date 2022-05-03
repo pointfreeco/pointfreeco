@@ -32,9 +32,10 @@ public enum Breakpoint: String {
 
   public func query(only mediaType: MediaType, rs: () -> Stylesheet) -> Stylesheet {
 
-    let features: [Feature] = [
-      self.minSize.map(minWidth),
-      self.maxSize.map(maxWidth)
+    let features: [Feature] =
+      [
+        self.minSize.map(minWidth),
+        self.maxSize.map(maxWidth),
       ]
       |> catOptionals
 

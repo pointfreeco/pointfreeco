@@ -1,6 +1,7 @@
-import XCTest
-@testable import Models
 import PointFreeTestSupport
+import XCTest
+
+@testable import Models
 
 final class EpisodeTests: TestCase {
   func testSlug() {
@@ -21,8 +22,8 @@ final class EpisodeTests: TestCase {
     episode.permission = .subscriberOnly
     XCTAssertEqual(true, episode.isSubscriberOnly(currentDate: Date(), emergencyMode: false))
 
-    let start = Date(timeIntervalSince1970: 123456789)
-    let end = start.addingTimeInterval(60*60*24*7)
+    let start = Date(timeIntervalSince1970: 123_456_789)
+    let end = start.addingTimeInterval(60 * 60 * 24 * 7)
     episode.permission = .freeDuring(start..<end)
     XCTAssertEqual(
       true,
@@ -48,8 +49,8 @@ final class EpisodeTests: TestCase {
     episode.permission = .free
     XCTAssertEqual(.some(episode.publishedAt), episode.freeSince)
 
-    let start = Date(timeIntervalSince1970: 123456789)
-    let end = start.addingTimeInterval(60*60*24*7)
+    let start = Date(timeIntervalSince1970: 123_456_789)
+    let end = start.addingTimeInterval(60 * 60 * 24 * 7)
     episode.permission = .freeDuring(start..<end)
     XCTAssertEqual(.some(start), episode.freeSince)
 

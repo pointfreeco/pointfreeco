@@ -8,7 +8,7 @@ import XCTest
 class FunctionalCssTests: TestCase {
   override func setUp() {
     super.setUp()
-//    SnapshotTesting.record = true
+    //    SnapshotTesting.record = true
   }
 
   func testFunctionalCss() {

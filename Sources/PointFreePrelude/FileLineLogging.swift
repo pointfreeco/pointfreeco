@@ -13,7 +13,8 @@ extension Logger {
     self.log(
       level: level,
       message(),
-      metadata: (metadata ?? [:]).merging(["file": "\(file)", "line": "\(line)"], uniquingKeysWith: { $1 }),
+      metadata: (metadata ?? [:]).merging(
+        ["file": "\(file)", "line": "\(line)"], uniquingKeysWith: { $1 }),
       file: file,
       function: function,
       line: line

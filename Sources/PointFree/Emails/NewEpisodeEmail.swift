@@ -1,7 +1,7 @@
 import Css
-import FunctionalCss
 import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -12,7 +12,8 @@ import Prelude
 import Styleguide
 import Views
 
-public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
+public let newEpisodeEmail =
+  simpleEmailLayout(newEpisodeEmailContent)
   <<< { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
     SimpleEmailLayoutData(
       user: user,
@@ -28,7 +29,7 @@ public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
         user.subscriptionId != nil
       )
     )
-}
+  }
 
 func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bool) -> Node {
   return .emailTable(
@@ -41,7 +42,9 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
           announcementView(announcement: announcement),
           .a(
             attributes: [.href(siteRouter.url(for: .episode(.show(.left(ep.slug)))))],
-            .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], .text("#\(ep.sequence): \(ep.fullTitle)"))
+            .h3(
+              attributes: [.class([Class.pf.type.responsiveTitle3])],
+              .text("#\(ep.sequence): \(ep.fullTitle)"))
           ),
           .markdownBlock(ep.blurb),
           .p(
@@ -62,14 +65,14 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
 
 private func announcementView(announcement: String?) -> Node {
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
-  
+
   return .blockquote(
     attributes: [
       .class([
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
         Class.pf.colors.bg.blue900,
-        Class.type.italic
+        Class.type.italic,
       ])
     ],
     .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], "Announcements"),
@@ -79,37 +82,44 @@ private func announcementView(announcement: String?) -> Node {
 
 private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard !isSubscriber else { return [] }
-  
-  let blurb = ep.subscriberOnly
+
+  let blurb =
+    ep.subscriberOnly
     ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
     : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
-  
-  let watchText = ep.subscriberOnly
+
+  let watchText =
+    ep.subscriberOnly
     ? "Watch preview"
     : "Watch"
-  
+
   return [
     .p(.text(blurb)),
     .p(
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
       .a(
-        attributes: [.href(siteRouter.url(for: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+        attributes: [
+          .href(siteRouter.url(for: .pricingLanding)),
+          .class([Class.pf.components.button(color: .purple)]),
+        ],
         "Subscribe to Point-Free!"
       ),
       .a(
         attributes: [
           .href(siteRouter.url(for: .episode(.show(.left(ep.slug))))),
-          .class([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
+          .class([
+            Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock,
+          ]),
         ],
         .text(watchText)
       )
-    )
+    ),
   ]
 }
 
 private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard isSubscriber else { return [] }
-  
+
   return [
     .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),
     .p(
@@ -117,10 +127,10 @@ private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
       .a(
         attributes: [
           .href(siteRouter.url(for: .episode(.show(.left(ep.slug))))),
-          .class([Class.pf.components.button(color: .purple)])
+          .class([Class.pf.components.button(color: .purple)]),
         ],
         "Watch now!"
       )
-    )
+    ),
   ]
 }

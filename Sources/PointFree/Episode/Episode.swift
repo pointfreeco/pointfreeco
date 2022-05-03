@@ -3,7 +3,8 @@ import PointFreeRouter
 
 extension Episode {
   public var subscriberOnly: Bool {
-    return self.isSubscriberOnly(currentDate: Current.date(), emergencyMode: Current.envVars.emergencyMode)
+    return self.isSubscriberOnly(
+      currentDate: Current.date(), emergencyMode: Current.envVars.emergencyMode)
   }
 }
 
@@ -11,24 +12,26 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-    \(additionalBlurb)
+      \(additionalBlurb)
 
-    > \(episode.blurb)
-    """,
+      > \(episode.blurb)
+      """,
     link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
     publishedAt: episode.publishedAt,
     title: episode.fullTitle
   )
 }
 
-func reference(forCollection collection: Episode.Collection, additionalBlurb: String) -> Episode.Reference {
+func reference(forCollection collection: Episode.Collection, additionalBlurb: String)
+  -> Episode.Reference
+{
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-    \(additionalBlurb)
+      \(additionalBlurb)
 
-    > \(collection.blurb)
-    """,
+      > \(collection.blurb)
+      """,
     link: siteRouter.url(for: .collections(.collection(collection.slug))),
     publishedAt: collection.sections
       .flatMap { $0.coreLessons.map(\.episode) }
