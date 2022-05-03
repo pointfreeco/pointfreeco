@@ -146,13 +146,21 @@ scorch-docker:
 clean-snapshots:
 	find Tests -name "__Snapshots__" | xargs -n1 rm -fr
 
+format:
+	swift format \
+		--ignore-unparsable-files \
+		--in-place \
+		--recursive \
+		./Package.swift ./Sources ./Tests
+
 .PHONY: bootstrap \
 	uninstall-colortheme \
 	check-cmark \
 	check-postgres \
 	db \
 	db-drop \
-	env-local \
 	deploy-local \
 	deploy-production \
+	env-local \
+	format \
 	test-oss
