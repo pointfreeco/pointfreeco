@@ -69,8 +69,8 @@ extension Episode.Collection.Section {
 
   static let parsing = Self(
     blurb: #"""
-    A tour of our parser-printer library for parsing unstructured data into structure data, and simultaneously being able to print the structured data back into structured data. We built a few parser-printers from scratch, building up complexity along the way, and ultimately apply these ideas to iOS client-side _and_ Swift server-side URL routing.
-    """#,
+      A tour of our parser-printer library for parsing unstructured data into structure data, and simultaneously being able to print the structured data back into structured data. We built a few parser-printers from scratch, building up complexity along the way, and ultimately apply these ideas to iOS client-side _and_ Swift server-side URL routing.
+      """#,
     coreLessons: [
       .init(episode: .ep185_tourOfParserPrinters),
       .init(episode: .ep186_tourOfParserPrinters),
