@@ -215,9 +215,12 @@ extension Episode.Collection {
           ],
           related: [],
           title: "Invertible Parsing",
-          whereToGoFromHere: nil
+          whereToGoFromHere: #"""
+          Join us for a tour of our powerful parser-printer library!
+          """#
         ),
 
+        .parsing,
       ],
       title: "Parsing"
     )
