@@ -116,7 +116,7 @@ extension Episode.Collection {
       ),
       .init(
         blurb: #"""
-          An architecture is only as strong as its testability, and the Composable Architecture is incredibly testable. We are able to unit test every part of the architecture, include the core types that features are built with, the side effects that interact with the outside world, and the runtime that glues everything together to actually power the application.
+          An architecture is only as strong as its testability, and the Composable Architecture is incredibly testable. We are able to unit test every part of the architecture, including the core types that features are built with, the side effects that interact with the outside world, and the runtime that glues everything together to actually power the application.
           """#,
         coreLessons: [
           .init(episode: .ep82_testableStateManagement_reducers),
