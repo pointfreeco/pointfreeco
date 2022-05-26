@@ -191,5 +191,6 @@ extension Episode {
     .ep188_tourOfParserPrinters,
     .ep189_tourOfParserPrinters,
     .ep190_concurrency,
+    .ep191_concurrency,
   ]
 }
