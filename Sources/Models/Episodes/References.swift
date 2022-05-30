@@ -288,8 +288,8 @@ extension Episode.Reference {
   public static let introducingSwiftAtomics = Self(
     author: "Karoy Lorentey",
     blurb: """
-    > I’m delighted to announce Swift Atomics, a new open source package that enables direct use of low-level atomic operations in Swift code. The goal of this library is to enable intrepid systems programmers to start building synchronization constructs (such as concurrent data structures) directly in Swift.
-    """,
+      > I’m delighted to announce Swift Atomics, a new open source package that enables direct use of low-level atomic operations in Swift code. The goal of this library is to enable intrepid systems programmers to start building synchronization constructs (such as concurrent data structures) directly in Swift.
+      """,
     link: "https://www.swift.org/blog/swift-atomics/",
     publishedAt: referenceDateFormatter.date(from: "2020-10-01"),
     title: "Introducing Swift Atomics"
@@ -402,8 +402,8 @@ extension Episode.Reference {
   public static let libdispatchEfficiencyTechniques = Self(
     author: "Thomas Clement",
     blurb: """
-    > The libdispatch is one of the most misused API due to the way it was presented to us when it was introduced and for many years after that, and due to the confusing documentation and API. This page is a compilation of important things to know if you're going to use this library. Many references are available at the end of this document pointing to comments from Apple's very own libdispatch maintainer (Pierre Habouzit).
-    """,
+      > The libdispatch is one of the most misused API due to the way it was presented to us when it was introduced and for many years after that, and due to the confusing documentation and API. This page is a compilation of important things to know if you're going to use this library. Many references are available at the end of this document pointing to comments from Apple's very own libdispatch maintainer (Pierre Habouzit).
+      """,
     link: "https://gist.github.com/tclementdev/6af616354912b0347cdf6db159c37057",
     publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
     title: "libdispatch efficiency tips"
@@ -434,8 +434,8 @@ extension Episode.Reference {
   public static let modernizingGrandCentralDispatchUsage = Self(
     author: "Apple",
     blurb: """
-    > macOS 10.13 and iOS 11 have reinvented how Grand Central Dispatch and the Darwin kernel collaborate, enabling your applications to run concurrent workloads more efficiently. Learn how to modernize your code to take advantage of these improvements and make optimal use of hardware resources.
-    """,
+      > macOS 10.13 and iOS 11 have reinvented how Grand Central Dispatch and the Darwin kernel collaborate, enabling your applications to run concurrent workloads more efficiently. Learn how to modernize your code to take advantage of these improvements and make optimal use of hardware resources.
+      """,
     link: "https://developer.apple.com/videos/play/wwdc2017/706/",
     publishedAt: referenceDateFormatter.date(from: "2017-06-05"),
     title: "Modernizing Grand Central Dispatch Usage"
@@ -484,8 +484,8 @@ extension Episode.Reference {
   public static let nsOperationNsHipster = Self(
     author: "Mattt",
     blurb: """
-    > In life, there’s always work to be done. Every day brings with it a steady stream of tasks and chores to fill the working hours of our existence. Productivity is, as in life as it is in programming, a matter of scheduling and prioritizing and multi-tasking work in order to keep up appearances.
-    """,
+      > In life, there’s always work to be done. Every day brings with it a steady stream of tasks and chores to fill the working hours of our existence. Productivity is, as in life as it is in programming, a matter of scheduling and prioritizing and multi-tasking work in order to keep up appearances.
+      """,
     link: "https://nshipster.com/nsoperation/",
     publishedAt: referenceDateFormatter.date(from: "2014-07-14"),
     title: "NSOperation"
@@ -1205,11 +1205,12 @@ extension Episode.Reference {
   public static let threadingProgammingGuide = Self(
     author: "Apple",
     blurb: """
-> Threads are one of several technologies that make it possible to execute multiple code paths concurrently inside a single application. Although newer technologies such as operation objects and Grand Central Dispatch (GCD) provide a more modern and efficient infrastructure for implementing concurrency, OS X and iOS also provide interfaces for creating and managing threads.
->
-> This document provides an introduction to the thread packages available in OS X and shows you how to use them. This document also describes the relevant technologies provided to support threading and the synchronization of multithreaded code inside your application.
-""",
-    link: "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/Introduction/Introduction.html#//apple_ref/doc/uid/10000057i",
+      > Threads are one of several technologies that make it possible to execute multiple code paths concurrently inside a single application. Although newer technologies such as operation objects and Grand Central Dispatch (GCD) provide a more modern and efficient infrastructure for implementing concurrency, OS X and iOS also provide interfaces for creating and managing threads.
+      >
+      > This document provides an introduction to the thread packages available in OS X and shows you how to use them. This document also describes the relevant technologies provided to support threading and the synchronization of multithreaded code inside your application.
+      """,
+    link:
+      "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/Introduction/Introduction.html#//apple_ref/doc/uid/10000057i",
     title: "Threading Programming Guide"
   )
 
