@@ -11,7 +11,10 @@ extension Episode {
     length: 52 * 60 + 55,
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_653_282_000),
-    references: [],
+    references: [
+      .threadingProgammingGuide,
+      .introducingSwiftAtomics,
+    ],
     sequence: 190,
     subtitle: "Threads",
     title: "Concurrency's Past",
