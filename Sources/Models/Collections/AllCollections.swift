@@ -1,5 +1,6 @@
 extension Episode.Collection {
   public static let all: [Self] = [
+    .concurrency,
     .composableArchitecture,
     .caseStudies,
     .swiftUI,
