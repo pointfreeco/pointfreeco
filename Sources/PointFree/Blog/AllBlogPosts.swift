@@ -87,4 +87,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0073_ParserErrors,
   post0074_ParserPrinters,
   post0075_URLVaporRouting,
+  post0076_WWDCSale,
 ]
