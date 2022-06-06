@@ -27,6 +27,6 @@ public let post0076_WWDCSale = BlogPost(
   coverImage: nil,
   hidden: false,
   id: 76,
-  publishedAt: Date(timeIntervalSince1970: 1654491600),
+  publishedAt: Date(timeIntervalSince1970: 1_654_491_600),
   title: "WWDC Sale 2022"
 )
