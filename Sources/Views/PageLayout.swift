@@ -134,7 +134,7 @@ func announcementBanner<A>(
 ) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0076_WWDCSale.publishedAt...post0076_WWDCSale.publishedAt.advanced(by: 5*24*60*60))
+    (post0076_WWDCSale.publishedAt...post0076_WWDCSale.publishedAt.advanced(by: 5 * 24 * 60 * 60))
       .contains(date())
   else { return [] }
 
