@@ -10,7 +10,7 @@ extension Episode {
     id: 192,
     length: 45 * 60 + 20,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1655096400),
+    publishedAt: Date(timeIntervalSince1970: 1_655_096_400),
     references: [
       .nsOperationNsHipster,
       .libdispatchEfficiencyTechniques,
