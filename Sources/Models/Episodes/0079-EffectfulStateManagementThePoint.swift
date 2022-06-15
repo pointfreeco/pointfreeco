@@ -113,7 +113,7 @@ private let _exercises: [Episode.Exercise] = [
           for duration: TimeInterval,
           id: Id
         ) -> Effect {
-          fatalError("Unimplemented)"
+          fatalError("Unimplemented")
         }
       }
       ```
