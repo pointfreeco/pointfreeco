@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep193_concurrency = Episode(
     blurb: """
-      When working with concurrent code, you must content with data synchronization and data races. While the tools of the past made it difficult to reason about these issues, Swift's new tools make it a breeze, including the `Sendable` protocol,  `@Sendable` closures, and actors.
+      When working with concurrent code, you must contend with data synchronization and data races. While the tools of the past made it difficult to reason about these issues, Swift's new tools make it a breeze, including the `Sendable` protocol,  `@Sendable` closures, and actors.
       """,
     codeSampleDirectory: "0193-concurrency-pt4",
     exercises: _exercises,
