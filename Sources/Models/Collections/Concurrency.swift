@@ -13,8 +13,8 @@ extension Episode.Collection {
           .init(episode: .ep191_concurrency),
           .init(episode: .ep192_concurrency),
           .init(episode: .ep193_concurrency),
+          .init(episode: .ep194_concurrency),
         ],
-        isFinished: false,
         related: [
           .init(
             blurb: """
