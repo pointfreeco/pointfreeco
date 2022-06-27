@@ -148,7 +148,7 @@ private let _exercises: [Episode.Exercise] = [
     problem: #"""
       One problem with using an environment struct in each module is that it does not play nicely with sharing dependencies across module boundaries. For example, suppose another module needed a `FileClient`. You would have no choice but to have two `FileClients` alive in your application, one for each module, which means you would need to remember to mock _both_ when you want to write tests.
 
-      One way to fix this is to bake the notion of "ennvironment" directly into the reducer signature. Try this out by updating `Reducer` to be the following shape:
+      One way to fix this is to bake the notion of "environment" directly into the reducer signature. Try this out by updating `Reducer` to be the following shape:
 
       ```swift
       typealias Reducer<Value, Action, Environment> =
