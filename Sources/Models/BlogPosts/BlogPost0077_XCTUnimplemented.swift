@@ -10,7 +10,7 @@ public let post0077_XCTUnimplemented = BlogPost(
       content: #"""
         We have just released 0.3.0 of our [XCTest Dynamic Overlay][dynamic-overlay-github] library, which brings a new tool that aids in constructing stronger dependencies for tests.
 
-        ## Dynamic `XCTFail`
+        ## Dynamic XCTFail
 
         We first open sourced XCTest Dynamic Overlay over [a year ago][better-testing-bonanza], and its sole purpose at that time was to allow using `XCTFail` in application code. This allows you to write test helpers right alongside feature code without importing XCTest, which otherwise does not compile for simulators or devices.
 
@@ -55,7 +55,7 @@ public let post0077_XCTUnimplemented = BlogPost(
 
         Without XCTest Dynamic Overlay you would need to extract this unimplemented instance to its own module just so that it could only be imported in tests. That causes a proliferation of unnecessary modules for something that should be quite simple.
 
-        ## `XCTUnimplemented`
+        ## XCTUnimplemented
 
         The new `XCTUnimplemented` function builds on XCTest Dynamic Overlay's core functionality by making it even easier to construct unimplemented dependencies. It is a massively overloaded function that allows you to construct a function of any form (up to 5 arguments, throwing and non-throwing, async and non-async) that immediately fails the test suite if it is ever invoked.
 
