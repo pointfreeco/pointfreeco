@@ -97,7 +97,7 @@ public let post0077_XCTUnimplemented = BlogPost(
 
         [dynamic-overlay-github]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [better-testing-bonanza]: https://www.pointfree.co/blog/posts/56-better-testing-bonanza
-        [failability-episode]: (https://www.pointfree.co/collections/dependencies/better-test-dependencies/ep139-better-test-dependencies-failability)
+        [failability-episode]: https://www.pointfree.co/collections/dependencies/better-test-dependencies/ep139-better-test-dependencies-failability
         """#,
       type: .paragraph
     )
