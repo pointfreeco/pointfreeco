@@ -3,12 +3,12 @@ import Foundation
 public let post0077_XCTUnimplemented = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We've added a new tool to our xctest-dynamic-overlay library, which makes it easier to construct stronger dependencies for tests.
     """,
   contentBlocks: [
     .init(
       content: #"""
-      We have just released 0.3.0 of our [xctest-dynamic-overlay][dynamic-overlay-github] library, which brings a new tool that aids in constructing stronger dependencies in tests.
+      We have just released 0.3.0 of our [xctest-dynamic-overlay][dynamic-overlay-github] library, which brings a new tool that aids in constructing stronger dependencies for tests.
 
       ## Dynamic `XCTFail`
 
