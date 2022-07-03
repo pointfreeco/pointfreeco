@@ -11,7 +11,7 @@ extension Episode {
     id: 195,
     length: 40 * 60 + 40,
     permission: .free,
-    publishedAt: Date(timeIntervalSince1970: 1656910800),
+    publishedAt: Date(timeIntervalSince1970: 1_656_910_800),
     references: [
       // TODO
     ],
@@ -25,7 +25,7 @@ extension Episode {
         hd720: "0195-trailer-720p-a457f5a6becc4d85978883eb03fad7b4",
         sd540: "0195-trailer-540p-512c522b100c41c1ad7da8abd650f9ea"
       ),
-      vimeoId: 726095967
+      vimeoId: 726_095_967
     )
   )
 }
