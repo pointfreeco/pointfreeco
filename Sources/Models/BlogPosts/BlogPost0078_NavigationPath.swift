@@ -416,7 +416,7 @@ let data = try _openExistential(type(of: value), do: encode)
 
 This function allows us to peek into an `Any` type and get access to the actual static type of the underlying value. It's underscored because the Swift team would rather have a nicer syntax for capturing its functionality, and that is precisely what Swift 5.7's new existential tools brings to the table.
 
-The name is called “openExistential” because it’s job is to take a peek inside a type that we know nothing about in order to figure out its actual static type. The term “existential” is borrowed from predicate logic in mathematics, and if you want to know more how the mathematics is connected to the types, checkout [this week's][episode-0196] episode.
+The name is called [“openExistential”][openexistential-source] because it’s job is to take a peek inside a type that we know nothing about in order to figure out its actual static type. The term “existential” is borrowed from predicate logic in mathematics, and if you want to know more how the mathematics is connected to the types, checkout [this week's][episode-0196] episode.
 
 We can now finish the encoding by turng the data into a string and encoding that into the container:
 
@@ -431,7 +431,7 @@ try container.encode(string)
 
 We can even conditionally use Swift 5.7 features using a compiler directive:
 
-```
+```swift`
 #if swift(<5.7)
 func encode<A: Encodable>(_: A.Type) throws -> Data {
   try JSONEncoder().encode(element as! A)
@@ -460,10 +460,10 @@ The work is nearly identical to what we did for `Encodable`, and so we will imme
 
 ```swift
 #if swift(<5.7)
-func open<A: Decodable>(_: A.Type) throws -> A {
+func decode<A: Decodable>(_: A.Type) throws -> A {
   try JSONDecoder().decode(A.self, from: Data(encodedValue.utf8))
 }
-return try _openExistential(type, do: open)
+return try _openExistential(type, do: decode)
 #else
 return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
 #endif
@@ -486,6 +486,7 @@ In this week’s [episode][episode-0196] we explored another application of exis
 [navigation-path-feedback]: https://gist.github.com/mbrandonw/f8b94957031160336cac6898a919cbb7#file-fb10395052-md
 [typeof-docs]: https://developer.apple.com/documentation/swift/type(of:)
 [gist]: https://gist.github.com/mbrandonw/ed5d14b86e263fa6df008329cba74142
+[openexistential-source]: https://github.com/apple/swift/blob/7cd3541c62276f53926bc6d0c9b3970d73dc2ea2/stdlib/public/core/Builtin.swift#L1003-L1016
 """###,
       type: .paragraph
     )
