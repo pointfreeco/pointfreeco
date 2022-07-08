@@ -158,7 +158,7 @@ List {
 
 ## Encoding and decoding `Any`
 
-Is it possible to recreate this seemingly magical functionality ourselves? Can we really take a nebulous blob of stringy json and turn it into values with static types? Well, the answer is yes, by using a little bit of runtime magic and Swift's new existential super powers.
+Is it possible to recreate this seemingly magical functionality ourselves? Can we really take a nebulous blob of stringy JSON and turn it into values with static types? Well, the answer is yes, by using a little bit of runtime magic and Swift's new existential super powers.
 
 Let's start with a simple wrapper around an array of fully type-erased `Any` values, as well as a method for appending an `Any` to the end of the array:
 
