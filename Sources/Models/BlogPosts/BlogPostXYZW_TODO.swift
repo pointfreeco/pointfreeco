@@ -6,7 +6,12 @@ public let postXYZW_TODO = BlogPost(
     TODO
     """,
   contentBlocks: [
-    // TODO
+    .init(
+      content: ###"""
+        TODO
+        """###,
+      type: .paragraph
+    )
   ],
   coverImage: nil,  // TODO
   id: 0,  // TODO
