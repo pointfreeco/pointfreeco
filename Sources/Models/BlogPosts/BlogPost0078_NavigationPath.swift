@@ -155,7 +155,7 @@ List {
 }
 ```
 
-## Existential codability
+## Encoding and decoding `Any`
 
 Is it possible to recreate this seemingly magical functionality ourselves? Can we really take a nebulous blob of stringy json and turn it into values with static types? Well, the answer is yes, by using a little bit of runtime magic and Swift’s new existential super powers.
 
@@ -243,14 +243,16 @@ print(String(decoding: data, as: UTF8.self))
 
 <blockquote>
 <pre>
-"11nav_codable4UserV",
-"{\"id\":42,\"name\":\"Blob\"}",
-"Swift.Bool",
-"true",
-"Swift.Int",
-"42",
-"Swift.String",
-"\"hello\""
+[
+  "11nav_codable4UserV",
+  "{\"id\":42,\"name\":\"Blob\"}",
+  "Swift.Bool",
+  "true",
+  "Swift.Int",
+  "42",
+  "Swift.String",
+  "\"hello\""
+]
 </pre>
 </blockquote>
 
@@ -368,10 +370,13 @@ All of the above was accomplished in just a few lines of code thanks to Swift 5.
 Follow us down the rabbit hole of pre-Swift 5.7 existentials... 🐰
 </summary>
 
-If we try to compile the current code in Swift 5.6 we get the following error:
+If we try to compile the current code in Swift 5.6 we get an error on the following line:
 
 ```swift
-let string = try String(decoding: JSONEncoder().encode(element), as: UTF8.self)
+let string = try String(
+  decoding: JSONEncoder().encode(element),
+  as: UTF8.self
+)
 ```
 
 > 🛑 Protocol 'Encodable' as a type cannot conform to the protocol itself
