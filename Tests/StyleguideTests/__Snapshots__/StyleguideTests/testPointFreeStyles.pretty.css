@@ -219,31 +219,30 @@ a:visited.pf-link-yellow {
 }
 
 .code {
-  background-color    : rgba(0,0,0,0.02);
-  border-top-color    : rgba(0,0,0,0.15);
-  border-right-color  : rgba(0,0,0,0.15);
-  border-bottom-color : rgba(0,0,0,0.15);
-  border-left-color   : rgba(0,0,0,0.15);
-  color               : #24292e;
-  font-family         : monospace;
+  background-color : rgba(0,0,0,0.02);
+  color            : #24292e;
+  font-family      : ui-monospace,monospace;
+}
+
+code {
+  font-family : ui-monospace,monospace;
+}
+
+pre {
+  font-family : ui-monospace,monospace;
 }
 
 .inline-code {
   color                      : #24292e;
-  font-family                : monospace;
+  font-family                : ui-monospace,monospace;
   padding-top                : 1px;
   padding-bottom             : 1px;
   padding-right              : 5px;
   padding-left               : 5px;
-  border-top-width           : 1px;
-  border-right-width         : 1px;
-  border-bottom-width        : 1px;
-  border-left-width          : 1px;
   border-top-left-radius     : 3px;
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.02);
 }
 
 .opacity-25 {
