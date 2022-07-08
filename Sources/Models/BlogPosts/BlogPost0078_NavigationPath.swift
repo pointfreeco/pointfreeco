@@ -8,11 +8,11 @@ public let post0078_NavigationPath = BlogPost(
   contentBlocks: [
     .init(
       content: ###"""
-        iOS 16 introduced brand new navigation tools that aim to model stack-based navigations with simple collection-based APIs. One of those tools is `NavigationPath`, which is a fully type-erased collection of data that allows you to drive navigation with state without coupling unrelated views together.
+        iOS 16 introduced brand new navigation tools that aim to model stack-based navigations with simple collection-based APIs. One of those tools is [`NavigationPath`][navigation-path-docs], which is a fully type-erased collection of data that allows you to drive navigation with state without coupling unrelated views together.
 
         `NavigationPath` has an interesting feature that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
 
-        Join us for a deep dive into some of Swift’s hidden runtime functions and Swift 5.7’s new existential tools.
+        Join us for a deep dive into some of Swift’s hidden runtime functions and Swift 5.7’s new existential tools so that we can reverse engineer `NavigationPath`'s codability.
 
         ## NavigationPath codability
 
@@ -193,7 +193,7 @@ public let post0078_NavigationPath = BlogPost(
 
         For each element in the array we need to first encode the name of the type, and then encode its JSON representation as a string.
 
-        We can use an underscored Swift [function][_mangledTypeName] that is capable of turning a type into a string. Although `element` is a fully erased `Any` value, we can get its runtime type using the `type(of:)` function, and then encode its string name:
+        We can use an underscored Swift [function][_mangledTypeName-source] that is capable of turning a type into a string. Although `element` is a fully erased `Any` value, we can get its runtime type using the `type(of:)` function, and then encode its string name:
 
         ```swift
         try container.encode(_mangledTypeName(type(of: element)))
@@ -290,7 +290,7 @@ public let post0078_NavigationPath = BlogPost(
         }
         ```
 
-        Now we have the string representation of the type we want to decode, as well as the JSON encoded string of the value. Just as there is an underscored Swift function for turning a type into a string, there is also [one][_typeByName] that goes in the reverse direction, but it is failable because the string may not represent a type known to Swift:
+        Now we have the string representation of the type we want to decode, as well as the JSON encoded string of the value. Just as there is an underscored Swift function for turning a type into a string, there is also [one][_typeByName-source] that goes in the reverse direction, but it is failable because the string may not represent a type known to Swift:
 
         ```swift
         guard let type = _typeByName(typeName)
@@ -336,7 +336,7 @@ public let post0078_NavigationPath = BlogPost(
 
         And we can verify that all of the type information is retained because we can cast each element in the path to the type we expect:
 
-        ```swift`
+        ```swift
         decodedPath.elements[0] as! Int    // 1
         decodedPath.elements[1] as! String // "Hello"
         decodedPath.elements[2] as! Bool   // true
@@ -349,11 +349,12 @@ public let post0078_NavigationPath = BlogPost(
 
         It’s incredible to see what Swift 5.7’s existential types unlock. They allow us to create an interface that for all intents and purposes is dynamic, being an array of `Any` values, while simultaneously being able to pull static type information from it when needed. This allows for building tools that are both flexible and safe, such as `NavigationStack`, which helps decouple domains in a navigation stack while simultaneously retaining type information to pass to destination views.
 
-        In this week’s [episode][episode] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
+        In this week’s [episode][episode-196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
 
-        [episode]: TODO
-        [_mangledTypeName]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L87-L94
-        [_typeByName]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L118-L127
+        [episode-0196]: TODO
+        [_mangledTypeName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L87-L94
+        [_typeByName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L118-L127
+        [navigation-path-docs]: https://developer.apple.com/documentation/swiftui/navigationpath
         """###,
       type: .paragraph
     )
