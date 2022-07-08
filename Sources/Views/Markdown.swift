@@ -68,8 +68,8 @@ private let blockquoteMarkdownStyles: Stylesheet =
      <> borderRadius(all: .px(2))
      <> borderStyle(left: .solid)
      <> borderWidth(left: .px(3))
-     <> margin(right: .rem(0), bottom: .rem(1.5), left: .rem(0))
-     <> padding(right: .rem(2), bottom: .rem(0.5), left: .rem(2)))
+     <> margin(right: .rem(0), bottom: .rem(2), left: .rem(0))
+     <> padding(leftRight: .rem(2)))
 
 private let aMarkdownStyles = Stylesheet.concat(
   a % key("text-decoration", "underline"),
