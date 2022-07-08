@@ -254,7 +254,7 @@ path.append(())
 
 Then we get an encoding error letting us know exactly what went wrong:
 
-> invalidValue((), Context(codingPath: [], debugDescription: "() is not encodable.", underlyingError: nil))
+> invalidValue((), Context(codingPath: [], debugDescription: **"() is not encodable."**, underlyingError: nil))
 
 We are halfway towards our goal of reverse engineering `NavigationPath`. Next we need to make `NavPath` conform to the `Decodable` protocol:
 
