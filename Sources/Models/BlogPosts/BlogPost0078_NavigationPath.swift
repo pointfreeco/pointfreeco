@@ -3,7 +3,7 @@ import Foundation
 public let post0078_NavigationPath = BlogPost(
   author: .pointfree,
   blurb: #"""
-    How to encode and decode type erased values.
+    Learn how to use Swift 5.7's new existential type super powers to encode and decode type-erased values.
     """#,
   contentBlocks: [
     .init(
@@ -349,7 +349,7 @@ From a string that holds onto a heterogenous array of types we were able to buil
 
 It’s incredible to see what Swift 5.7’s existential types unlock. They allow us to create an interface that for all intents and purposes is dynamic, being an array of `Any` values, while simultaneously being able to pull static type information from it when needed. This allows for building tools that are both flexible and safe, such as `NavigationStack`, which helps decouple domains in a navigation stack while simultaneously retaining type information to pass to destination views.
 
-In this week’s [episode][episode-196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
+In this week’s [episode][episode-0196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
 
 [episode-0196]: TODO
 [_mangledTypeName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L87-L94
@@ -362,7 +362,7 @@ In this week’s [episode][episode-196] we explored another application of exist
   ],
   coverImage: nil,
   id: 78,
-  publishedAt: .init(timeIntervalSince1970: 1_657_515_600),
+  publishedAt: .init(timeIntervalSince1970: 1657602000),
   title: "Reverse Engineering SwiftUI’s NavigationPath Codability"
 )
 
