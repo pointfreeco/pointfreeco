@@ -111,20 +111,20 @@ It can somehow take the nebulous blob of text and turn it back into statically t
 To see this concretely we can take the nebulous JSON string of data and turn it back into a navigation path:
 
 ```swift
-  let decodedPath = try NavigationPath(
-    JSONDecoder().decode(
-      NavigationPath.CodableRepresentation.self,
-      from: Data(#"""
-        [
-          "User","{\"id\":42,\"name\":\"Blob\"}",
-          "Swift.Bool","true",
-          "Swift.Int","123",
-          "Swift.String","\"Hello\""
-        ]
-        """#.utf8
-      )
+let decodedPath = try NavigationPath(
+  JSONDecoder().decode(
+    NavigationPath.CodableRepresentation.self,
+    from: Data(#"""
+      [
+        "User","{\"id\":42,\"name\":\"Blob\"}",
+        "Swift.Bool","true",
+        "Swift.Int","123",
+        "Swift.String","\"Hello\""
+      ]
+      """#.utf8
     )
   )
+)
 ```
 
 It’s pretty incredible this is possible. We can take this newly formed path, stick it into a `NavigationStack`, and then the actual, statically typed values will be passed to `navigationDestination` so that we can construct views for each destination:
@@ -163,7 +163,7 @@ struct NavPath {
 }
 ```
 
-What would it take to implement an `Encodable` conformance on this type so that it encodes as a flat array of strings that alternate between a description of the type and the JSON encoding of a value:
+What would it take to implement an `Encodable` conformance on this type so that it encodes as a flat array of strings that alternate between a description of a type and the JSON encoding of a value:
 
 ```swift
 extension NavPath: Encodable {
@@ -345,6 +345,134 @@ decodedPath.elements[3] as! User   // User(id: 42, name: "Blob")
 
 From a string that holds onto a heterogenous array of types we were able to build up an array of `Any` values that still retain their static types if we cast them.
 
+## Pre-Swift 5.7 existentials
+
+All of the above was accomplished in just a few lines of code thanks to Swift 5.7's greatly improved ability to handle existential types in an ergonomic way. If you are curious how we could have reverse engineered `NavigationPath` without those tools...
+
+<details>
+<summary>
+Follow us down the rabbit hole of pre-Swift 5.7 existentials... 🐰
+</summary>
+
+If we try to compile the current code in Swift 5.6 we get the following error:
+
+```swift
+let string = try String(decoding: JSONEncoder().encode(element), as: UTF8.self)
+```
+
+> 🛑 Protocol 'Encodable' as a type cannot conform to the protocol itself
+
+This is because `element` is of type `any Encodable`, not a concrete type that conforms to the `Encodable` protocol. When you write:
+
+```swift
+let value: any Encodable = 1
+```
+
+...you are simultaneously doing two things: first you are choosing a particular type in the infinite expanse of all types that conform to the `Encodable` protocol, and then you are choosing a value in that type. This is different enough from concrete types, where you simply write:
+
+```swift
+let value: Int = 1
+```
+
+...that it warrants a different type of syntax, `any Encodable`, and a different name, "existential type".
+
+In 5.7, Swift is capable of seemlessly translating from the existential type to the concrete type, but in Swift <5.7 we have to do a little bit of extra work.
+
+Although `element` is partially erased to just an `any Encodable`, we can still access its dynamic runtime type with [`type(of:)`][typeof-docs]. What if we could “peek” into the dynamic type of `value` and turn it into a static type `A`:
+
+```swift
+peek(type(of: element)) { <A: Encodable> in
+}
+```
+
+Here we using a theoretical `peek` function to peek into the dynamic type `type(of: value)` to get an actual static type `A`.
+
+Now this doesn't work because closures can’t introduce generics in Swift. But, we can define a little local function that is capable of introducing generics:
+
+```swift
+func encode<A: Encodable>(_: A.Type) {}
+peek(type(of: value), do: encode)
+```
+
+Then we could perform the encoding logic inside the helper function with the generic:
+
+```swift
+func encode<A: Encodable>(_: A.Type) throws -> Data {
+  try JSONEncoder().encode(element as! A)
+}
+let data = try peek(type(of: value), do: encode)
+```
+
+This is all still theoretical, but if this was possible we have somehow magically turned a dynamic type into a static type, albeit in a roundabout way.
+
+Well, this theoretical tool does exist in pre-Swift 5.7, though it is underscored and has a strange name:
+
+```swift
+func encode<A: Encodable>(_: A.Type) throws -> Data {
+  try JSONEncoder().encode(element as! A)
+}
+let data = try _openExistential(type(of: value), do: encode)
+```
+
+This function allows us to peek into an `Any` type and get access to the actual static type of the underlying value. It's underscored because the Swift team would rather have a nicer syntax for capturing its functionality, and that is precisely what Swift 5.7's new existential tools brings to the table.
+
+The name is called “openExistential” because it’s job is to take a peek inside a type that we know nothing about in order to figure out its actual static type. The term “existential” is borrowed from predicate logic in mathematics, and if you want to know more how the mathematics is connected to the types, checkout [this week's][episode-0196] episode.
+
+We can now finish the encoding by turng the data into a string and encoding that into the container:
+
+```swift
+func encode<A: Encodable>(_: A.Type) throws -> Data {
+  try JSONEncoder().encode(element as! A)
+}
+let data = try _openExistential(type(of: value), do: encode)
+let string = String(decoding: data, as: UTF8.self)
+try container.encode(string)
+```
+
+We can even conditionally use Swift 5.7 features using a compiler directive:
+
+```
+#if swift(<5.7)
+func encode<A: Encodable>(_: A.Type) throws -> Data {
+  try JSONEncoder().encode(element as! A)
+}
+let data = try _openExistential(type(of: value), do: encode)
+let string = String(decoding: data, as: UTF8.self)
+try container.encode(string)
+#else
+let string = try String(decoding: JSONEncoder().encode(element), as: UTF8.self)
+try container.encode(string)
+#endif
+```
+
+Next, we have the `Decodable` conformance. It currently does not compile in Swift 5.6 due to this line:
+
+```swift
+return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+```
+
+> 🛑 Cannot convert value of type 'Decodable.Type' to expected argument type 'Any.Protocol'<br>
+> 🛑 Protocol 'Any' as a type cannot conform to 'Decodable'
+
+The error messages aren't great, but the problem is the same as what we say for the `Encodable` conformance: Swift 5.6 can't automatically open the existential for us, so we have to do it manually.
+
+The work is nearly identical to what we did for `Encodable`, and so we will immediately jump to the solution:
+
+```swift
+#if swift(<5.7)
+func open<A: Decodable>(_: A.Type) throws -> A {
+  try JSONDecoder().decode(A.self, from: Data(encodedValue.utf8))
+}
+return try _openExistential(type, do: open)
+#else
+return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+#endif
+```
+
+And that is all it takes to support existential codability in Swift 5.6 and lower. It's pretty amazing to see how much more ergonomic existentials are in Swift 5.7.
+
+</details>
+
 ## Existential super powers
 
 It’s incredible to see what Swift 5.7’s existential types unlock. They allow us to create an interface that for all intents and purposes is dynamic, being an array of `Any` values, while simultaneously being able to pull static type information from it when needed. This allows for building tools that are both flexible and safe, such as `NavigationStack`, which helps decouple domains in a navigation stack while simultaneously retaining type information to pass to destination views.
@@ -356,6 +484,7 @@ In this week’s [episode][episode-0196] we explored another application of exis
 [_typeByName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L118-L127
 [navigation-path-docs]: https://developer.apple.com/documentation/swiftui/navigationpath
 [navigation-path-feedback]: https://gist.github.com/mbrandonw/f8b94957031160336cac6898a919cbb7#file-fb10395052-md
+[typeof-docs]: https://developer.apple.com/documentation/swift/type(of:)
 """###,
       type: .paragraph
     )
