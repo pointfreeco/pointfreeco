@@ -12,7 +12,7 @@ iOS 16 introduced brand new navigation tools that aim to model stack-based navig
 
 `NavigationPath` has an interesting feature that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
 
-Join us for a deep dive into some of Swift’s hidden runtime functions and Swift 5.7’s new existential tools so that we can reverse engineer `NavigationPath`'s codability.
+Join us for a deep dive into some of Swift’s hidden runtime functions and Swift 5.7’s new existential tools so that we can reverse engineer `NavigationPath`'s codability. A compilable [gist][gist] is available to following along too.
 
 ## NavigationPath codability
 
@@ -485,6 +485,7 @@ In this week’s [episode][episode-0196] we explored another application of exis
 [navigation-path-docs]: https://developer.apple.com/documentation/swiftui/navigationpath
 [navigation-path-feedback]: https://gist.github.com/mbrandonw/f8b94957031160336cac6898a919cbb7#file-fb10395052-md
 [typeof-docs]: https://developer.apple.com/documentation/swift/type(of:)
+[gist]: https://gist.github.com/mbrandonw/ed5d14b86e263fa6df008329cba74142
 """###,
       type: .paragraph
     )
@@ -496,4 +497,3 @@ In this week’s [episode][episode-0196] we explored another application of exis
 )
 
 // TODO: make gist
-// TODO: show _openExistential style
