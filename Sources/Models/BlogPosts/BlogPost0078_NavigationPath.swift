@@ -282,33 +282,32 @@ extension NavPath: Decodable {
 }
 ```
 
-We can start by decoding the array of strings that all of our types and values are encoded into:
+We can start by getting an unkeyed container since we are trying to decode a flat array of strings, and we will start the path's elements off as an empty array:
 
 ```swift
 init(from decoder: Decoder) throws {
-  let container = try decoder.singleValueContainer()
-  let strings = try container.decode([String].self)
+  var container = try decoder.unkeyedContainer()
+  self.elements = []
 }
 ```
 
-And then we can transform the flat array of strings into an array of pairs, where the first element holds the string name of the type and the second element holds the JSON encoded string of the value:
+We can iterate over the unkeyed container while it still has elements to process:
 
 ```swift
-let pairs = stride(from: strings.startIndex, to: strings.endIndex, by: 2)
-  .map { (strings[$0], strings[$0 + 1]) }
-```
-
-We need to somehow transform these pairs into values that are fully type-erased as `Any`, but still retain their static type information, such as `Int`, `Bool`, `String`, etc. It’s not entirely clear how we are going to accomplish this, but we can at least start by `map`'ing on the array of pairs so that we can consider a single pair in isolation, but doing so in reverse:
-
-```swift
-self.elements = pairs.reversed().map { typeName, encodedValue in
-
+while !container.isAtEnd {
 }
 ```
 
-Now we have the string representation of the type we want to decode, as well as the JSON encoded string of the value. Just as there is an underscored Swift function for turning a type into a string, there is also [one][_typeByName-source] that goes in the reverse direction, but it is failable because the string may not represent a type known to Swift:
+In here we can try decoding a string from the container, which should be the name of the type that we want to decode:
 
 ```swift
+let typeName = try container.decode(String.self)
+```
+
+Just as there is an underscored Swift function for turning a type into a string, there is also [one][_typeByName-source] that goes in the reverse direction, but it is failable because the string may not represent a type known to Swift:
+
+```swift
+let typeName = try container.decode(String.self)
 guard let type = _typeByName(typeName)
 else {
 }
@@ -317,21 +316,22 @@ else {
 But we don’t want to allow just any type here. We only want to consider those types that are `Decodable`, and if we encounter a non-`Decodable` type it is a decoding error. We can do this by once again using Swift’s powerful existential type features by casting the `Any.Type` given to us by `_typeByName` into an `any Decodable.Type`:
 
 ```swift
+let typeName = try container.decode(String.self)
 guard let type = _typeByName(typeName) as? any Decodable.Type
 else {
-  throw DecodingError.dataCorrupted(
-    .init(
-      codingPath: container.codingPath,
-      debugDescription: "\(typeName) is not decodable."
-    )
+  throw DecodingError.dataCorruptedError(
+    in: container,
+    debugDescription: "\(typeName) is not decodable."
   )
 }
 ```
 
-If we get past this guard it means that the type is `Decodable`, so we can try decoding it:
+If we get past this guard it means that the type is `Decodable`, so we can get the next string in the container, try decoding it, and then insert it at the beginning of the `elements` array since encoding was reversed:
 
 ```swift
-return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+let encodedValue = try container.decode(String.self)
+let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+self.elements.insert(value, at: 0)
 ```
 
 This completes the second half of reverse engineering `NavigationPath`. We can now decode nebulous JSON data back into `NavPath`:
@@ -452,22 +452,22 @@ We can even conditionally use Swift 5.7 features using a compiler directive:
 
 ```swift`
 #if swift(<5.7)
-func encode<A: Encodable>(_: A.Type) throws -> Data {
-  try JSONEncoder().encode(element as! A)
-}
-let data = try _openExistential(type(of: value), do: encode)
-let string = String(decoding: data, as: UTF8.self)
-try container.encode(string)
+  func encode<A: Encodable>(_: A.Type) throws -> Data {
+    try JSONEncoder().encode(element as! A)
+  }
+  let data = try _openExistential(type(of: value), do: encode)
+  let string = String(decoding: data, as: UTF8.self)
+  try container.encode(string)
 #else
-let string = try String(decoding: JSONEncoder().encode(element), as: UTF8.self)
-try container.encode(string)
+  let string = try String(decoding: JSONEncoder().encode(element), as: UTF8.self)
+  try container.encode(string)
 #endif
 ```
 
 Next, we have the `Decodable` conformance. It currently does not compile in Swift 5.6 due to this line:
 
 ```swift
-return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
 ```
 
 > 🛑 Cannot convert value of type 'Decodable.Type' to expected argument type 'Any.Protocol'<br>
@@ -478,14 +478,16 @@ The error messages aren't great, but the problem is the same as what we say for 
 The work is nearly identical to what we did for `Encodable`, and so we will immediately jump to the solution:
 
 ```swift
+let encodedValue = try container.decode(String.self)
 #if swift(<5.7)
-func decode<A: Decodable>(_: A.Type) throws -> A {
-  try JSONDecoder().decode(A.self, from: Data(encodedValue.utf8))
-}
-return try _openExistential(type, do: decode)
+  func decode<A: Decodable>(_: A.Type) throws -> A {
+    try JSONDecoder().decode(A.self, from: Data(encodedValue.utf8))
+  }
+  let value = try _openExistential(type, do: decode)
 #else
-return try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
+  let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
 #endif
+self.elements.insert(value, at: 0)
 ```
 
 And that is all it takes to support existential codability in Swift 5.6 and lower. It's pretty amazing to see how much more ergonomic existentials are in Swift 5.7.
