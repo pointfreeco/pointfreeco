@@ -415,20 +415,18 @@ private let _codeClass = CssSelector.class("code")
 private let codeStyles =
   _codeClass
   % (backgroundColor(.white(0, 0.02))
-    <> borderColor(all: .white(0, 0.15))
     <> color(.other("#24292e"))
-    <> fontFamily(["monospace"])
-
+    <> fontFamily(["ui-monospace", "monospace"])
   )
+  <> (code % fontFamily(["ui-monospace", "monospace"]))
+  <> (pre % fontFamily(["ui-monospace", "monospace"]))
 
 private let inlineCodeStyles =
   Class.pf.inlineCode
   % (color(.other("#24292e"))
-    <> fontFamily(["monospace"])
+    <> fontFamily(["ui-monospace", "monospace"])
     <> padding(topBottom: .px(1), leftRight: .px(5))
-    <> borderWidth(all: .px(1))
-    <> borderRadius(all: .px(3))
-    <> backgroundColor(.white(0, 0.02)))
+    <> borderRadius(all: .px(3)))
 
 private let token = CssSelector.class("token")
 

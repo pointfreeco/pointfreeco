@@ -8,7 +8,7 @@ public let post0078_NavigationPath = BlogPost(
   contentBlocks: [
     .init(
       content: ###"""
-iOS 16 introduced brand new navigation tools that aim to model stack-based navigations with simple collection-based APIs. One of those tools is [`NavigationPath`][navigation-path-docs], which is a fully type-erased collection of data that allows you to drive navigation with state without coupling unrelated views together.
+iOS 16 introduced brand new navigation tools that aim to model stack-based navigation with simple collection-based APIs. One of those tools is [`NavigationPath`][navigation-path-docs], which is a fully type-erased collection of data that allows you to drive navigation with state without coupling unrelated views together.
 
 `NavigationPath` has an interesting feature that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
 
@@ -16,7 +16,7 @@ Join us for a deep dive into some of Swift’s hidden runtime functions and Swif
 
 ## NavigationPath codability
 
-The `NavigationPath` is a collection-like type of fully type-erased data that exposes a few simple methods. You create one without specifying what kind of data it holds:
+`NavigationPath` is a collection-like type of fully type-erased data that exposes a few simple methods. You create one without specifying what kind of data it holds:
 
 ```swift
 var path = NavigationPath()
@@ -41,9 +41,9 @@ struct User: Hashable {
 path.append(User(id: 42, name: "Blob"))
 ```
 
-Although `NavigationPath` exposes some collection-like methods, such as `append`, `remove` and `count`, it does not allow you to actually iterate over its elements. This may be just an oversight right now (we’ve filed a [feedback][navigation-path-feedback]!), but even if its elements were exposed they would be given to us as `any Hashable` values. That is, they have lost all of their type information except for the fact that they are `Hashable`.
+Although `NavigationPath` exposes some collection-like methods, such as `append`, `remove` and `count`, it does not allow you to actually iterate over its elements. This may be just an oversight right now (we've filed a [feedback][navigation-path-feedback]!), but even if its elements were exposed they would be given to us as `any Hashable` values. That is, they have lost all of their type information except for the fact that they are `Hashable`.
 
-However, even though all of the type information as been erased, `NavigationPath` has the magical ability to encode the data to JSON, and even more magically, decode back into a fully-formed `NavigationPath` with data and static types intact!
+However, even though all of the type information has been erased, `NavigationPath` has the magical ability to encode its data to JSON, and even more magically, decode back into a fully-formed `NavigationPath` with data and static types intact!
 
 This is done by accessing the `codable` property on `NavigationPath`, which returns an optional value:
 
@@ -53,9 +53,9 @@ path.codable // nil
 
 Currently this value is `nil` because the `User` struct we defined earlier does not conform to `Codable`, and a warning is even printed in the logs explaining as such:
 
-> Cannot create CodableRepresentation of navigation path, because presented value of type “User” is not Codable.
+> `Cannot create CodableRepresentation of navigation path, because presented value of type "User" is not Codable.`
 
-`NavigationPath` requires that everything you append to it be `Codable` in order for its magic trick to work. So, let’s make the `User` struct `Codable`:
+`NavigationPath` requires that everything you append to it be `Codable` in order for its magic trick to work. So, let's make the `User` struct `Codable`:
 
 ```swift
 struct User: Codable, Hashable {
@@ -63,7 +63,7 @@ struct User: Codable, Hashable {
 }
 ```
 
-And now `codable` returns something non-`nil` called `CodableRepresentation`:
+Now `codable` returns something non-`nil` called `CodableRepresentation`:
 
 ```swift
 path.codable // NavigationPath.CodableRepresentation
@@ -80,29 +80,37 @@ And we can feed this data to a `String` initializer to see the actual JSON strin
 ```swift
 print(
   String(
-    decoding: try JSONEncoder().encode(path.codable),
+    decoding: try JSONEncoder().encode(path.codable!),
     as: UTF8.self
   )
 )
 ```
 
-> [<br>
-> &nbsp;&nbsp;&nbsp;"User",<br>
-> &nbsp;&nbsp;&nbsp;"{\"id\":42,\"name\":\"Blob\"}",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.Bool",<br>
-> &nbsp;&nbsp;&nbsp;"true",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.Int",<br>
-> &nbsp;&nbsp;&nbsp;"42",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.String",<br>
-> &nbsp;&nbsp;&nbsp;"\"hello\""<br>
-> ]
+<blockquote>
+<pre>
+[
+  "User",
+  "{\"id\":42,\"name\":\"Blob\"}",
+  "Swift.Bool",
+  "true",
+  "Swift.Int",
+  "42",
+  "Swift.String",
+  "\"hello\""
+]
+</pre>
+</blockquote>
 
-This is very interesting. Every piece of data we added to the path was serialized into a flat array containing both a string representation of the name of the type and a string representation of its JSON. For example, our `User` value was serialized into a pair of array elements for the type name and the JSON of the id and name:
+Every piece of data we added to the path was serialized into a flat array containing both a string representation of the name of the type and a string representation of its JSON. For example, our `User` value was serialized into a pair of array elements for the type name and the JSON of the id and name:
 
-> "User",<br>
-> "{\"id\":42,\"name\":\"Blob\"}",
+<blockquote>
+<pre>
+"User",
+"{\"id\":42,\"name\":\"Blob\"}",
+</pre>
+</blockquote>
 
-It’s interesting that even though `NavigationPath` has no type information about the elements it holds, it can still somehow detect when the element conforms to `Encodable` and encode it.
+It's interesting that even though `NavigationPath` has no type information about the elements it holds, it can still somehow detect when the element conforms to `Encodable` and encode it.
 
 Even more interesting, it can do the opposite!
 
@@ -233,16 +241,18 @@ let data = try JSONEncoder().encode(path)
 print(String(decoding: data, as: UTF8.self))
 ```
 
-> [<br>
-> &nbsp;&nbsp;&nbsp;"11nav_codable4UserV",<br>
-> &nbsp;&nbsp;&nbsp;"{\"id\":42,\"name\":\"Blob\"}",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.Bool",<br>
-> &nbsp;&nbsp;&nbsp;"true",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.Int",<br>
-> &nbsp;&nbsp;&nbsp;"42",<br>
-> &nbsp;&nbsp;&nbsp;"Swift.String",<br>
-> &nbsp;&nbsp;&nbsp;"\"hello\""<br>
-> ]
+<blockquote>
+<pre>
+"11nav_codable4UserV",
+"{\"id\":42,\"name\":\"Blob\"}",
+"Swift.Bool",
+"true",
+"Swift.Int",
+"42",
+"Swift.String",
+"\"hello\""
+</pre>
+</blockquote>
 
 We are able to encode all the values even though we are storing them as fully type-erased `Any` values internally.
 
@@ -254,7 +264,11 @@ path.append(())
 
 Then we get an encoding error letting us know exactly what went wrong:
 
-> invalidValue((), Context(codingPath: [], debugDescription: **"() is not encodable."**, underlyingError: nil))
+<blockquote>
+<code>
+invalidValue((), Context(codingPath: [], debugDescription: <strong>"() is not encodable."</strong>, underlyingError: nil))
+</code>
+</blockquote>
 
 We are halfway towards our goal of reverse engineering `NavigationPath`. Next we need to make `NavPath` conform to the `Decodable` protocol:
 
@@ -332,7 +346,7 @@ let decodedPath = try JSONDecoder().decode(NavPath.self, from: data)
 print(decodedPath)
 ```
 
-> NavPath(elements: [1, "Hello", true, User(id: 42, name: "Blob")])
+> `NavPath(elements: [1, "Hello", true, User(id: 42, name: "Blob")])`
 
 And we can verify that all of the type information is retained because we can cast each element in the path to the type we expect:
 

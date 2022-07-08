@@ -100,7 +100,7 @@ private let boldStyles: Stylesheet = concat([
 
 private let miscStyles: Stylesheet = concat([
   Class.type.fontFamily.inherit % fontFamily(.inherit),
-  Class.type.fontFamily.monospace % fontFamily(["monospace"]),
+  Class.type.fontFamily.monospace % fontFamily(["ui-monospace", "monospace"]),
   Class.type.fontSizeInherit % fontSize(.inherit),
   Class.type.textDecorationNone % key("text-decoration", "none"),
 ])
