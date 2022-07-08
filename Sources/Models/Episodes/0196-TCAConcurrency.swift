@@ -11,7 +11,7 @@ extension Episode {
     id: 196,
     length: 52 * 60 + 58,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1657515600),
+    publishedAt: Date(timeIntervalSince1970: 1_657_515_600),
     references: [
       // TODO
     ],
@@ -33,14 +33,14 @@ extension Episode {
 private let _exercises: [Episode.Exercise] = [
   Episode.Exercise(
     problem: #"""
-Is `Any` a subtype or supertype of all types?
-"""#,
+      Is `Any` a subtype or supertype of all types?
+      """#,
     solution: nil
   ),
   Episode.Exercise(
     problem: #"""
-Is `All` a subtype or supertype of all types?
-"""#,
+      Is `All` a subtype or supertype of all types?
+      """#,
     solution: nil
   ),
 ]
