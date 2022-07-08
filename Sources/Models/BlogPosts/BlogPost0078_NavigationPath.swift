@@ -10,9 +10,9 @@ public let post0078_NavigationPath = BlogPost(
       content: ###"""
 iOS 16 introduced brand new navigation tools that aim to model stack-based navigation with simple collection-based APIs. One of those tools is [`NavigationPath`][navigation-path-docs], which is a fully type-erased collection of data that allows you to drive navigation with state without coupling unrelated views together.
 
-`NavigationPath` has an interesting feature that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
+An interesting feature of `NavigationPath` is that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
 
-Join us for a deep dive into some of Swift’s hidden runtime functions and Swift 5.7’s new existential tools so that we can reverse engineer `NavigationPath`'s codability. A compilable [gist][gist] is available to following along too.
+Join us for a deep dive into some of Swift's hidden runtime functions and Swift 5.7's new existential tools so that we can reverse engineer `NavigationPath`'s codability. A compilable [gist][gist] is available to following along too.
 
 ## NavigationPath codability
 
@@ -122,7 +122,8 @@ To see this concretely we can take the nebulous JSON string of data and turn it 
 let decodedPath = try NavigationPath(
   JSONDecoder().decode(
     NavigationPath.CodableRepresentation.self,
-    from: Data(#"""
+    from: Data(
+      #"""
       [
         "User","{\"id\":42,\"name\":\"Blob\"}",
         "Swift.Bool","true",
@@ -135,7 +136,7 @@ let decodedPath = try NavigationPath(
 )
 ```
 
-It’s pretty incredible this is possible. We can take this newly formed path, stick it into a `NavigationStack`, and then the actual, statically typed values will be passed to `navigationDestination` so that we can construct views for each destination:
+It's pretty incredible this is possible. We can take this newly formed path, stick it into a `NavigationStack`, and then the actual, statically typed values will be passed to `navigationDestination` so that we can construct views for each destination:
 
 ```swift
 List {
@@ -157,9 +158,9 @@ List {
 
 ## Encoding and decoding `Any`
 
-Is it possible to recreate this seemingly magical functionality ourselves? Can we really take a nebulous blob of stringy json and turn it into values with static types? Well, the answer is yes, by using a little bit of runtime magic and Swift’s new existential super powers.
+Is it possible to recreate this seemingly magical functionality ourselves? Can we really take a nebulous blob of stringy json and turn it into values with static types? Well, the answer is yes, by using a little bit of runtime magic and Swift's new existential super powers.
 
-Let’s start with a simple wrapper around an array of fully type-erased `Any` values, as well as a method for appending an `Any` to the end of the array:
+Let's start with a simple wrapper around an array of fully type-erased `Any` values, as well as a method for appending an `Any` to the end of the array:
 
 ```swift
 struct NavPath {
@@ -207,7 +208,7 @@ We can use an underscored Swift [function][_mangledTypeName-source] that is capa
 try container.encode(_mangledTypeName(type(of: element)))
 ```
 
-Next we want to try to encode the element into a JSON string. First we need to check if the element is `Encodable` to begin with, which we can do easily thanks to Swift’s new powerful existential type features:
+Next we want to try to encode the element into a JSON string. First we need to check if the element is `Encodable` to begin with, which we can do easily thanks to Swift's new powerful existential type features:
 
 ```swift
 guard let element = element as? any Encodable
@@ -229,7 +230,7 @@ try container.encode(
 )
 ```
 
-This completes the `Encodable` conformance for `NavPath`, and amazingly it works just like `NavigationPath`’s conformance:
+This completes the `Encodable` conformance for `NavPath`, and amazingly it works just like `NavigationPath`'s conformance:
 
 ```swift
 var path = NavPath()
@@ -313,7 +314,7 @@ else {
 }
 ```
 
-But we don’t want to allow just any type here. We only want to consider those types that are `Decodable`, and if we encounter a non-`Decodable` type it is a decoding error. We can do this by once again using Swift’s powerful existential type features by casting the `Any.Type` given to us by `_typeByName` into an `any Decodable.Type`:
+But we don't want to allow just any type here. We only want to consider those types that are `Decodable`, and if we encounter a non-`Decodable` type it is a decoding error. We can do this by once again using Swift's powerful existential type features by casting the `Any.Type` given to us by `_typeByName` into an `any Decodable.Type`:
 
 ```swift
 let typeName = try container.decode(String.self)
@@ -367,7 +368,7 @@ All of the above was accomplished in just a few lines of code thanks to Swift 5.
 
 <details>
 <summary>
-Follow us down the rabbit hole of pre-Swift 5.7 existentials... 🐰
+Follow us down the rabbit hole of pre-Swift 5.7 existentials... 🐰🕳
 </summary>
 
 If we try to compile the current code in Swift 5.6 we get an error on the following line:
@@ -395,9 +396,9 @@ let value: Int = 1
 
 ...that it warrants a different type of syntax, `any Encodable`, and a different name, "existential type".
 
-In 5.7, Swift is capable of seemlessly translating from the existential type to the concrete type, but in Swift <5.7 we have to do a little bit of extra work.
+In 5.7, Swift is capable of seamlessly translating from the existential type to the concrete type, but in Swift <5.7 we have to do a little bit of extra work.
 
-Although `element` is partially erased to just an `any Encodable`, we can still access its dynamic runtime type with [`type(of:)`][typeof-docs]. What if we could “peek” into the dynamic type of `value` and turn it into a static type `A`:
+Although `element` is partially erased to just an `any Encodable`, we can still access its dynamic runtime type with [`type(of:)`][typeof-docs]. What if we could "peek" into the dynamic type of `value` and turn it into a static type `A`:
 
 ```swift
 peek(type(of: element)) { <A: Encodable> in
@@ -406,7 +407,7 @@ peek(type(of: element)) { <A: Encodable> in
 
 Here we using a theoretical `peek` function to peek into the dynamic type `type(of: value)` to get an actual static type `A`.
 
-Now this doesn't work because closures can’t introduce generics in Swift. But, we can define a little local function that is capable of introducing generics:
+Now this doesn't work because closures can't introduce generics in Swift. But, we can define a little local function that is capable of introducing generics:
 
 ```swift
 func encode<A: Encodable>(_: A.Type) {}
@@ -435,9 +436,9 @@ let data = try _openExistential(type(of: value), do: encode)
 
 This function allows us to peek into an `Any` type and get access to the actual static type of the underlying value. It's underscored because the Swift team would rather have a nicer syntax for capturing its functionality, and that is precisely what Swift 5.7's new existential tools brings to the table.
 
-The name is called [“openExistential”][openexistential-source] because it’s job is to take a peek inside a type that we know nothing about in order to figure out its actual static type. The term “existential” is borrowed from predicate logic in mathematics, and if you want to know more how the mathematics is connected to the types, checkout [this week's][episode-0196] episode.
+The name is called [`_openExistential`][openexistential-source] because its job is to take a peek inside a type that we know nothing about in order to figure out its actual static type. The term "existential" is borrowed from predicate logic in mathematics, and if you want to know more how the mathematics is connected to the types, checkout [this week's][episode-0196] episode.
 
-We can now finish the encoding by turng the data into a string and encoding that into the container:
+We can now finish the encoding by turning the data into a string and encoding that into the container:
 
 ```swift
 func encode<A: Encodable>(_: A.Type) throws -> Data {
@@ -470,7 +471,8 @@ Next, we have the `Decodable` conformance. It currently does not compile in Swif
 let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
 ```
 
-> 🛑 Cannot convert value of type 'Decodable.Type' to expected argument type 'Any.Protocol'<br>
+> 🛑 Cannot convert value of type 'Decodable.Type' to expected argument type 'Any.Protocol'
+>
 > 🛑 Protocol 'Any' as a type cannot conform to 'Decodable'
 
 The error messages aren't great, but the problem is the same as what we say for the `Encodable` conformance: Swift 5.6 can't automatically open the existential for us, so we have to do it manually.
@@ -491,14 +493,13 @@ self.elements.insert(value, at: 0)
 ```
 
 And that is all it takes to support existential codability in Swift 5.6 and lower. It's pretty amazing to see how much more ergonomic existentials are in Swift 5.7.
-
 </details>
 
 ## Existential super powers
 
-It’s incredible to see what Swift 5.7’s existential types unlock. They allow us to create an interface that for all intents and purposes is dynamic, being an array of `Any` values, while simultaneously being able to pull static type information from it when needed. This allows for building tools that are both flexible and safe, such as `NavigationStack`, which helps decouple domains in a navigation stack while simultaneously retaining type information to pass to destination views.
+It's incredible to see what Swift 5.7's existential types unlock. They allow us to create an interface that for all intents and purposes is dynamic, being an array of `Any` values, while simultaneously being able to pull static type information from it when needed. This allows for building tools that are both flexible and safe, such as `NavigationStack`, which helps decouple domains in a navigation stack while simultaneously retaining type information to pass to destination views.
 
-In this week’s [episode][episode-0196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
+In this week's [episode][episode-0196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
 
 [episode-0196]: TODO
 [_mangledTypeName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L87-L94

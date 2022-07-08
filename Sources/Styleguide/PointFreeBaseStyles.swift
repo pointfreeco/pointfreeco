@@ -276,14 +276,13 @@ extension Class.pf {
 
     private static let _codeClasses =
       _codeClass
-      | Class.border.all
       | Class.border.rounded.all
       | Class.display.block
       | Class.margin([
         .desktop: [.topBottom: 1],
         .mobile: [.topBottom: 2, .bottom: 3],
       ])
-      | Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+      | Class.padding([.desktop: [.leftRight: 3], .mobile: [.topBottom: 1, .leftRight: 2]])
       | Class.layout.overflowAuto(.x)
       | Class.layout.overflowHidden
 

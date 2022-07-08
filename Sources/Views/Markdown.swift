@@ -51,7 +51,7 @@ private let pMarkdownStyles: Stylesheet =
 private let codeMarkdownStyles: Stylesheet =
   pre
   % (code
-     % (padding(topBottom: .rem(0.5), leftRight: .rem(2))
+    % (padding(topBottom: .rem(0.5), leftRight: .rem(2))
       <> backgroundColor(.white(0, 0.02))
       <> borderColor(all: .white(0, 0.15))
       <> borderRadius(all: .px(6))
@@ -64,7 +64,12 @@ private let codeMarkdownStyles: Stylesheet =
 private let blockquoteMarkdownStyles: Stylesheet =
   blockquote
   % (color(Colors.gray300)
-     <> margin(top: nil, right: .rem(2), bottom: .rem(2), left: .rem(2)))
+    <> borderColor(left: Colors.gray850)
+     <> borderRadius(all: .px(2))
+     <> borderStyle(left: .solid)
+     <> borderWidth(left: .px(3))
+     <> margin(right: .rem(0), bottom: .rem(1.5), left: .rem(0))
+     <> padding(right: .rem(2), bottom: .rem(0.5), left: .rem(2)))
 
 private let aMarkdownStyles = Stylesheet.concat(
   a % key("text-decoration", "underline"),
