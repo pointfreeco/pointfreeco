@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep196_tcaConcurrency = Episode(
     blurb: """
-      This week we fix the problems created by using concurrency tasks directly in our reducers, and along the way we open Pandora's box of existential types in order to solve some mind bending type issues.
+      This week we start fixing the problems we outlined last week. We build the tools necessary to start using concurrency tasks directly in reducers, and along the way we open Pandora's box of existential types to solve some mind-bending type issues.
       """,
     codeSampleDirectory: "0196-tca-concurrency-pt2",
     exercises: _exercises,
