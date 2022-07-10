@@ -588,7 +588,7 @@
 }
 
 .font-family-monospace {
-  font-family : monospace;
+  font-family : ui-monospace,monospace;
 }
 
 .font-size-inherit {

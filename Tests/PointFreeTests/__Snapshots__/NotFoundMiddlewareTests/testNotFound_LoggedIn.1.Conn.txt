@@ -2,7 +2,7 @@ GET http://localhost:8080/404
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 404 Not Found
-Content-Length: 43021
+Content-Length: 42819
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -243,31 +243,30 @@ a:visited.pf-link-yellow {
 }
 
 .code {
-  background-color    : rgba(0,0,0,0.02);
-  border-top-color    : rgba(0,0,0,0.15);
-  border-right-color  : rgba(0,0,0,0.15);
-  border-bottom-color : rgba(0,0,0,0.15);
-  border-left-color   : rgba(0,0,0,0.15);
-  color               : #24292e;
-  font-family         : monospace;
+  background-color : rgba(0,0,0,0.02);
+  color            : #24292e;
+  font-family      : ui-monospace,monospace;
+}
+
+code {
+  font-family : ui-monospace,monospace;
+}
+
+pre {
+  font-family : ui-monospace,monospace;
 }
 
 .inline-code {
   color                      : #24292e;
-  font-family                : monospace;
+  font-family                : ui-monospace,monospace;
   padding-top                : 1px;
   padding-bottom             : 1px;
   padding-right              : 5px;
   padding-left               : 5px;
-  border-top-width           : 1px;
-  border-right-width         : 1px;
-  border-bottom-width        : 1px;
-  border-left-width          : 1px;
   border-top-left-radius     : 3px;
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.02);
 }
 
 .opacity-25 {
@@ -1006,7 +1005,7 @@ a:link.btn-normal {
 }
 
 .font-family-monospace {
-  font-family : monospace;
+  font-family : ui-monospace,monospace;
 }
 
 .font-size-inherit {
@@ -1857,7 +1856,6 @@ html {
           </h5>
           <pre>
             <code class="code
-                         border
                          rounded
                          block
                          d-mt1
@@ -1865,6 +1863,8 @@ html {
                          m-mb3
                          m-mt2
                          m-mb2
+                         d-pl3
+                         d-pr3
                          m-pl2
                          m-pr2
                          m-pt1

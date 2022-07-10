@@ -89,4 +89,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0075_URLVaporRouting,
   post0076_WWDCSale,
   post0077_XCTUnimplemented,
+  post0078_NavigationPath,
 ]

@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 95992
+Content-Length: 95826
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -243,31 +243,30 @@ a:visited.pf-link-yellow {
 }
 
 .code {
-  background-color    : rgba(0,0,0,0.02);
-  border-top-color    : rgba(0,0,0,0.15);
-  border-right-color  : rgba(0,0,0,0.15);
-  border-bottom-color : rgba(0,0,0,0.15);
-  border-left-color   : rgba(0,0,0,0.15);
-  color               : #24292e;
-  font-family         : monospace;
+  background-color : rgba(0,0,0,0.02);
+  color            : #24292e;
+  font-family      : ui-monospace,monospace;
+}
+
+code {
+  font-family : ui-monospace,monospace;
+}
+
+pre {
+  font-family : ui-monospace,monospace;
 }
 
 .inline-code {
   color                      : #24292e;
-  font-family                : monospace;
+  font-family                : ui-monospace,monospace;
   padding-top                : 1px;
   padding-bottom             : 1px;
   padding-right              : 5px;
   padding-left               : 5px;
-  border-top-width           : 1px;
-  border-right-width         : 1px;
-  border-bottom-width        : 1px;
-  border-left-width          : 1px;
   border-top-left-radius     : 3px;
   border-top-right-radius    : 3px;
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
-  background-color           : rgba(0,0,0,0.02);
 }
 
 .opacity-25 {
@@ -1006,7 +1005,7 @@ a:link.btn-normal {
 }
 
 .font-family-monospace {
-  font-family : monospace;
+  font-family : ui-monospace,monospace;
 }
 
 .font-size-inherit {
@@ -1744,7 +1743,19 @@ html {
 }
 
 .md-ctn blockquote {
-  font-style : italic;
+  color                      : #555555;
+  border-left-color          : #d8d8d8;
+  border-top-left-radius     : 2px;
+  border-top-right-radius    : 2px;
+  border-bottom-right-radius : 2px;
+  border-bottom-left-radius  : 2px;
+  border-left-style          : solid;
+  border-left-width          : 3px;
+  margin-right               : 0rem;
+  margin-bottom              : 2rem;
+  margin-left                : 0rem;
+  padding-right              : 2rem;
+  padding-left               : 2rem;
 }
 
 .md-ctn p {
@@ -1759,8 +1770,13 @@ html {
 .md-ctn pre code {
   padding-top                : 0.5rem;
   padding-bottom             : 0.5rem;
-  padding-right              : 1rem;
-  padding-left               : 1rem;
+  padding-right              : 2rem;
+  padding-left               : 2rem;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
   border-top-left-radius     : 6px;
   border-top-right-radius    : 6px;
   border-bottom-right-radius : 6px;
@@ -1771,28 +1787,7 @@ html {
 }
 
 .md-ctn code {
-  font-family                : monospace;
-  background-color           : rgba(0,0,0,0.02);
-  border-top-color           : rgba(0,0,0,0.15);
-  border-right-color         : rgba(0,0,0,0.15);
-  border-bottom-color        : rgba(0,0,0,0.15);
-  border-left-color          : rgba(0,0,0,0.15);
-  border-top-left-radius     : 3px;
-  border-top-right-radius    : 3px;
-  border-bottom-right-radius : 3px;
-  border-bottom-left-radius  : 3px;
-  border-top-style           : solid;
-  border-right-style         : solid;
-  border-bottom-style        : solid;
-  border-left-style          : solid;
-  border-top-width           : 1px;
-  border-right-width         : 1px;
-  border-bottom-width        : 1px;
-  border-left-width          : 1px;
-  padding-top                : 1px;
-  padding-bottom             : 1px;
-  padding-right              : 5px;
-  padding-left               : 5px;
+  font-family : ui-monospace,monospace;
 }
 
 
@@ -2667,7 +2662,6 @@ html {
             </div>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2675,6 +2669,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1
@@ -2703,7 +2699,6 @@ html {
             </div>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2711,6 +2706,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1
@@ -2739,7 +2736,6 @@ html {
             </div>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2747,6 +2743,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1
@@ -2775,7 +2773,6 @@ html {
             </div>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2783,6 +2780,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1
@@ -2797,7 +2796,6 @@ html {
             </pre>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2805,6 +2803,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1
@@ -2905,7 +2905,6 @@ html {
             </div>
             <pre>
               <code class="code
-                           border
                            rounded
                            block
                            d-mt1
@@ -2913,6 +2912,8 @@ html {
                            m-mb3
                            m-mt2
                            m-mb2
+                           d-pl3
+                           d-pr3
                            m-pl2
                            m-pr2
                            m-pt1

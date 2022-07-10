@@ -276,14 +276,13 @@ extension Class.pf {
 
     private static let _codeClasses =
       _codeClass
-      | Class.border.all
       | Class.border.rounded.all
       | Class.display.block
       | Class.margin([
         .desktop: [.topBottom: 1],
         .mobile: [.topBottom: 2, .bottom: 3],
       ])
-      | Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]])
+      | Class.padding([.desktop: [.leftRight: 3], .mobile: [.topBottom: 1, .leftRight: 2]])
       | Class.layout.overflowAuto(.x)
       | Class.layout.overflowHidden
 
@@ -415,20 +414,18 @@ private let _codeClass = CssSelector.class("code")
 private let codeStyles =
   _codeClass
   % (backgroundColor(.white(0, 0.02))
-    <> borderColor(all: .white(0, 0.15))
     <> color(.other("#24292e"))
-    <> fontFamily(["monospace"])
-
+    <> fontFamily(["ui-monospace", "monospace"])
   )
+  <> (code % fontFamily(["ui-monospace", "monospace"]))
+  <> (pre % fontFamily(["ui-monospace", "monospace"]))
 
 private let inlineCodeStyles =
   Class.pf.inlineCode
   % (color(.other("#24292e"))
-    <> fontFamily(["monospace"])
+    <> fontFamily(["ui-monospace", "monospace"])
     <> padding(topBottom: .px(1), leftRight: .px(5))
-    <> borderWidth(all: .px(1))
-    <> borderRadius(all: .px(3))
-    <> backgroundColor(.white(0, 0.02)))
+    <> borderRadius(all: .px(3)))
 
 private let token = CssSelector.class("token")
 
