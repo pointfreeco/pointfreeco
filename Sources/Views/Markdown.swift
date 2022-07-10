@@ -65,11 +65,11 @@ private let blockquoteMarkdownStyles: Stylesheet =
   blockquote
   % (color(Colors.gray300)
     <> borderColor(left: Colors.gray850)
-     <> borderRadius(all: .px(2))
-     <> borderStyle(left: .solid)
-     <> borderWidth(left: .px(3))
-     <> margin(right: .rem(0), bottom: .rem(2), left: .rem(0))
-     <> padding(leftRight: .rem(2)))
+    <> borderRadius(all: .px(2))
+    <> borderStyle(left: .solid)
+    <> borderWidth(left: .px(3))
+    <> margin(right: .rem(0), bottom: .rem(2), left: .rem(0))
+    <> padding(leftRight: .rem(2)))
 
 private let aMarkdownStyles = Stylesheet.concat(
   a % key("text-decoration", "underline"),

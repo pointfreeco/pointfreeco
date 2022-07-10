@@ -415,8 +415,7 @@ private let codeStyles =
   _codeClass
   % (backgroundColor(.white(0, 0.02))
     <> color(.other("#24292e"))
-    <> fontFamily(["ui-monospace", "monospace"])
-  )
+    <> fontFamily(["ui-monospace", "monospace"]))
   <> (code % fontFamily(["ui-monospace", "monospace"]))
   <> (pre % fontFamily(["ui-monospace", "monospace"]))
 
