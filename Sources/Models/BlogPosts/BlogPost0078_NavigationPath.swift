@@ -411,7 +411,7 @@ public let post0078_NavigationPath = BlogPost(
 
         Here we using a theoretical `peek` function to peek into the dynamic type `type(of: value)` to get an actual static type `A`.
 
-        Now this doesn't work because closures can't introduce generics in Swift. But, we can define a little local function that is capable of introducing generics:
+        Even if we had a `peek` function, this couldn't possibly work because closures can't introduce generics in Swift. But, we can define a little local function that is capable of introducing generics:
 
         ```swift
         func encode<A: Encodable>(_: A.Type) {}
