@@ -501,7 +501,7 @@ public let post0078_NavigationPath = BlogPost(
 
         In this week's [episode][episode-0196] we explored another application of existential types, wherein we somewhat weaken result types used in the Composable Architecture while not losing the ability to maintain equatability, which is a vital feature for performance and testing in the library. Both of these use cases are only scratching the surface of what is possible with existential types in Swift.
 
-        [episode-0196]: TODO
+        [episode-0196]: https://www.pointfree.co/episodes/ep196-async-composable-architecture-tasks
         [_mangledTypeName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L87-L94
         [_typeByName-source]: https://github.com/apple/swift/blob/c8f4b09809de1fab3301c0cfc483986aa6bdecfa/stdlib/public/core/Misc.swift#L118-L127
         [navigation-path-docs]: https://developer.apple.com/documentation/swiftui/navigationpath
