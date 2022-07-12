@@ -247,12 +247,12 @@ public let post0078_NavigationPath = BlogPost(
         [
           "11nav_codable4UserV",
           "{\"id\":42,\"name\":\"Blob\"}",
-          "Swift.Bool",
+          "Sb",
           "true",
-          "Swift.Int",
+          "Si",
           "42",
-          "Swift.String",
-          "\"hello\""
+          "SS",
+          "\"Hello\""
         ]
         </pre>
         </blockquote>
