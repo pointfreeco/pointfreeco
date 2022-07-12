@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 58830
+Content-Length: 59515
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -388,12 +388,24 @@ a:link.btn-normal {
   color : #d73a49;
 }
 
+.token.boolean {
+  color : #d73a49;
+}
+
 .token.builtin {
+  color : #6f42c1;
+}
+
+.token.class-name {
   color : #6f42c1;
 }
 
 .token.comment {
   color : #6a737d;
+}
+
+.token.constant {
+  color : #d73a49;
 }
 
 .token.function {
@@ -408,12 +420,29 @@ a:link.btn-normal {
   color : #a963ff;
 }
 
-.token.operator {
-  color : #d73a49;
-}
-
 .token.string {
   color : #032f62;
+}
+
+.token.placeholder-open, .placeholder-close {
+  display : none;
+}
+
+.token.placeholder {
+  background-color           : #a8a8a8;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  color                      : #fff;
+  margin-top                 : -2px;
+  margin-bottom              : -2px;
+  margin-right               : -4px;
+  margin-left                : -4px;
+  padding-top                : 2px;
+  padding-bottom             : 2px;
+  padding-right              : 4px;
+  padding-left               : 4px;
 }
 
 .h1 {

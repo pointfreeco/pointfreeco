@@ -257,11 +257,11 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
 
 private var prismJsHead: ChildOf<Tag.Head> {
   let plugins: ChildOf<Tag.Head> = .fragment(
-    ["swift", "clike", "css", "diff", "html", "javascript", "ruby"]
+    ["swift", "clike", "css", "diff", "javascript", "ruby"]
       .map {
         .script(
           attributes: [
-            .src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-\($0).min.js")
+            .src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\($0).min.js")
           ]
         )
       }
@@ -279,8 +279,27 @@ private var prismJsHead: ChildOf<Tag.Head> {
           color: #b31d28;
         }
         """),
-    .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js")]),
+    .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")]),
     plugins,
+    .script(safe: #"""
+Prism.languages.swift.keyword = [
+  /\bany\b/,
+  Prism.languages.swift.keyword
+];
+Prism.languages.insertBefore('swift', 'other-directive', {
+  'placeholder': {
+    pattern: /<#.+#>/,
+    inside: {
+      'placeholder-open': {
+        pattern: /<#/
+      },
+      'placeholder-close': {
+        pattern: /#>/
+      },
+    }
+  },
+});
+"""#),
   ])
 }
 
