@@ -59,7 +59,7 @@ public let post0078_NavigationPath = BlogPost(
 
         ```swift
         struct User: Codable, Hashable {
-          ...
+          …
         }
         ```
 
@@ -140,7 +140,7 @@ public let post0078_NavigationPath = BlogPost(
 
         ```swift
         List {
-          ...
+          …
         }
         .navigationDestination(for: String.self) { string in
           Text("String view: \(string)")
