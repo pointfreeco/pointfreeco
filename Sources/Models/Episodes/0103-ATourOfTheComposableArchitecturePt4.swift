@@ -744,7 +744,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       DispatchQueue timer
       DispatchQueue timer
       DispatchQueue timer
-      ...
+      …
       """#,
     timestamp: nil,
     type: .code(lang: .plainText)
@@ -789,7 +789,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       RunLoop delayed
       DispatchQueue timer
       RunLoop timer
-      ...
+      …
       """#,
     timestamp: nil,
     type: .code(lang: .plainText)
@@ -1081,7 +1081,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      ...
+      …
       TestScheduler timer
       TestScheduler timer
       TestScheduler timer

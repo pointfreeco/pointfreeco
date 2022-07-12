@@ -21,7 +21,7 @@ public let post0046_AnnouncingComposableCoreMotion = BlogPost(
           case motionUpdate(Result<DeviceMotion, NSError>)
 
           // Your feature's other actions:
-          ...
+          …
         }
         ```
 
@@ -34,7 +34,7 @@ public let post0046_AnnouncingComposableCoreMotion = BlogPost(
           var motionManager: MotionManager
 
           // Your feature's other dependencies:
-          ...
+          …
         }
         ```
 
@@ -64,7 +64,7 @@ public let post0046_AnnouncingComposableCoreMotion = BlogPost(
                 .map(AppAction.motionUpdate)
             )
 
-          ...
+          …
           }
         }
         ```
@@ -124,7 +124,7 @@ public let post0046_AnnouncingComposableCoreMotion = BlogPost(
             )
           )
 
-          ...
+          …
         }
         ```
 

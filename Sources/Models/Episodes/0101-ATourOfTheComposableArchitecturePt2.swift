@@ -558,7 +558,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
         ),
         content: TodoView.init(store:)
       )
-      ...
+      …
       text: viewStore.binding(
         get: \.description,
         send: TodoAction.textFieldChanged

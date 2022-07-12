@@ -518,7 +518,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         public enum SettingsAction: Equatable {
-          ...
+          …
 
           case form(FormAction<SettingsState>)
         }
@@ -536,7 +536,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         switch action {
-        ...
+        …
 
         case .form:
           return .none
@@ -757,7 +757,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         primaryButton: .default("Ok", send: .form(.set(\.alert, nil))),
-        ...
+        …
         onDismiss: .form(.set(\.alert, nil)))
         """#,
       timestamp: nil,
@@ -1134,7 +1134,7 @@ extension Array where Element == Episode.TranscriptBlock {
         case .form(\.enableNotifications):
           guard
             state.enableNotifications,
-            ...
+            …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1177,7 +1177,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         $ git diff --stat
-        ...
+        …
          Sources/SettingsFeature/Settings.swift              | 75 +++++-----------------
         """#,
       timestamp: nil,

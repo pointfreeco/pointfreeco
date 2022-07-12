@@ -163,7 +163,7 @@ extension Array where Element == Episode.TranscriptBlock {
           case privacyPolicy
           case sharedGame(SharedGame)
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -766,7 +766,7 @@ extension Array where Element == Episode.TranscriptBlock {
             .catchToEffect()
             .map(DailyChallengeAction.fetchTodaysDailyChallengeResponse),
 
-            ...
+            …
           )
         """#,
       timestamp: nil,
@@ -1083,7 +1083,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         import ComposableArchitecture
         import GameOverFeature
-        ...
+        …
         let store = TestStore(
           initialState: GameOverState(
             completedGame: .mock,
@@ -1300,8 +1300,8 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         🛑 ApiClient.currentPlayer is unimplemented
-        ...
-        🛑 ApiClient.apiRequest(.games(.submit(...))
+        …
+        🛑 ApiClient.apiRequest(.games(.submit(…))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1359,7 +1359,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         import IntegrationTestHelpers
-        ...
+        …
         environment.apiClient = .init(
           middleware: <#T##Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##(Conn<StatusLineOpen, Unit>) -> IO<Conn<ResponseEnded, Data>>#>,
           router: <#T##Router<ServerRoute>#>
@@ -1385,7 +1385,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         import SiteMiddleware
-        ...
+        …
         environment.apiClient = .init(
           middleware: siteMiddleware(environment: <#T##ServerEnvironment#>),
           router: <#T##Router<ServerRoute>#>
@@ -1415,7 +1415,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var router: Router<ServerRoute>
           public var snsClient: SnsClient
 
-          ...
+          …
         }
         """#,
       timestamp: nil,

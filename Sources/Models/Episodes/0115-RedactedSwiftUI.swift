@@ -256,7 +256,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       let liveArticles = [
-        ...
+        …
       ]
       """#,
     timestamp: nil,
@@ -367,7 +367,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       private struct ArticleRowView: View {
         @StateObject var viewModel: ArticleViewModel
 
-        ...
+        …
       }
       """#,
     timestamp: nil,
@@ -413,7 +413,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       @propertyWrapper
       struct StateObject<ObjectType>: DynamicProperty
       where ObjectType: ObservableObject {
-        ...
+        …
         init(wrappedValue thunk: @autoclosure @escaping () -> ObjectType)
       """#,
     timestamp: nil,
@@ -595,7 +595,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       ForEach {
-        ...
+        …
       }
       .redacted(reason: <#T##RedactionReasons#>)
       """#,
@@ -738,7 +738,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
         @StateObject var viewModel: ArticleViewModel
         @Environment(\.redactionReasons) var redactionReasons
 
-        ...
+        …
       }
       """#,
     timestamp: nil,
@@ -758,7 +758,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
           guard self.redactionReasons.isEmpty else { return }
           self.viewModel.favorite()
         }) {
-        ...
+        …
       }
 
       Button(
@@ -766,7 +766,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
           guard self.redactionReasons.isEmpty else { return }
           self.viewModel.readLater()
         }) {
-        ...
+        …
       }
 
       Button(
@@ -774,7 +774,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
           guard self.redactionReasons.isEmpty else { return }
           self.viewModel.hide()
         }) {
-        ...
+        …
       }
       """#,
     timestamp: nil,
@@ -794,7 +794,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
           guard !self.viewModel.isLoading else { return }
           self.viewModel.tapped(article: article)
         }) {
-        ...
+        …
       }
       """#,
     timestamp: nil,
@@ -824,7 +824,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       ForEach {
-        ...
+        …
       }
       .disabled(self.viewModel.isLoading)
       """#,

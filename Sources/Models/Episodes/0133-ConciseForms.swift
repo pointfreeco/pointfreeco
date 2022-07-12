@@ -85,7 +85,7 @@ private let _exercises: [Episode.Exercise] = [
         ) -> Self where Value: Equatable {
           self.init(keyPath, value)
         }
-        ...
+        …
       }
       ```
 

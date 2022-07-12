@@ -126,7 +126,7 @@ public let post0052 = BlogPost(
         let store = TestStore(
           initialState: SettingsState(),
           reducer: settingsReducer,
-          environment: SettingsEnvironment(...)
+          environment: SettingsEnvironment(…)
         )
 
         store.assert(

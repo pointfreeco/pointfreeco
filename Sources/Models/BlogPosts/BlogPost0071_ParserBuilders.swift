@@ -52,7 +52,7 @@ public let post0071_ParserBuilders = BlogPost(
         Running this parser on the input string produces an array of users and consumes the entire input, leaving only an empty string:
 
         ```swift
-        users.parse(&input) // [User(id: 1, name: "Blob", admin: true), ...]
+        users.parse(&input) // [User(id: 1, name: "Blob", admin: true), …]
         input // ""
         ```
 
@@ -112,7 +112,7 @@ public let post0071_ParserBuilders = BlogPost(
         And everything works exactly as it did before:
 
         ```swift
-        users.parse(&input) // => [User(id: 1, name: "Blob", isAdmin: true), ...]
+        users.parse(&input) // => [User(id: 1, name: "Blob", isAdmin: true), …]
         input // => ""
         ```
 

@@ -139,7 +139,7 @@ public let post0049_OpenSourcingParsing = BlogPost(
         ```swift
         let users = Many(user, separator: StartsWith("\n"))
 
-        user.parse(&input) // => [User(id: 1, name: "Blob", isAdmin: true), ...]
+        user.parse(&input) // => [User(id: 1, name: "Blob", isAdmin: true), …]
         input // => ""
         ```
 

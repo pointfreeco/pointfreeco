@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67891
+Content-Length: 68045
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -385,11 +385,13 @@ a:link.btn-normal {
 }
 
 .token.atrule {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.boolean {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.builtin {
@@ -405,7 +407,12 @@ a:link.btn-normal {
 }
 
 .token.constant {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
+}
+
+.token.directive-name {
+  color : #643820;
 }
 
 .token.function {
@@ -413,7 +420,8 @@ a:link.btn-normal {
 }
 
 .token.keyword {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.number {

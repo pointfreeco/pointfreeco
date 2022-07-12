@@ -153,7 +153,7 @@ public let post0066_AnnouncingSwiftUINavigation = BlogPost(
           @Binding var post: Post
 
           var body: some View {
-            ...
+            …
           }
         }
         ```
@@ -216,7 +216,7 @@ public let post0066_AnnouncingSwiftUINavigation = BlogPost(
           let content: () -> Content
 
           var body: some View {
-            ...
+            …
           }
         }
         ```

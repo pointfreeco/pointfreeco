@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68778
+Content-Length: 68932
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -386,11 +386,13 @@ a:link.btn-normal {
 }
 
 .token.atrule {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.boolean {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.builtin {
@@ -406,7 +408,12 @@ a:link.btn-normal {
 }
 
 .token.constant {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
+}
+
+.token.directive-name {
+  color : #643820;
 }
 
 .token.function {
@@ -414,7 +421,8 @@ a:link.btn-normal {
 }
 
 .token.keyword {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.number {

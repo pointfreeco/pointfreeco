@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 62298
+Content-Length: 62452
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -384,11 +384,13 @@ a:link.btn-normal {
 }
 
 .token.atrule {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.boolean {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.builtin {
@@ -404,7 +406,12 @@ a:link.btn-normal {
 }
 
 .token.constant {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
+}
+
+.token.directive-name {
+  color : #643820;
 }
 
 .token.function {
@@ -412,7 +419,8 @@ a:link.btn-normal {
 }
 
 .token.keyword {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.number {

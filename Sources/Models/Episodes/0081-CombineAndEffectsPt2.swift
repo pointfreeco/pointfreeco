@@ -1176,7 +1176,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
     content: #"""
       private func saveEffect(favoritePrimes: [Int]) -> Effect<FavoritePrimesAction> {
         return .fireAndForget {
-          ...
+          …
         }
       }
       """#,
@@ -1277,8 +1277,8 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       private let loadEffect = Effect<FavoritePrimesAction>.sync {
-        ...
-          else { return }
+        guard …
+        else { return }
         return .loadedFavoritePrimes(favoritePrimes)
       }
       """#,
@@ -1295,8 +1295,8 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       private let loadEffect = Effect<FavoritePrimesAction?>.sync {
-        ...
-          else { return nil }
+        guard …
+        else { return nil }
         return .loadedFavoritePrimes(favoritePrimes)
       }
       """#,

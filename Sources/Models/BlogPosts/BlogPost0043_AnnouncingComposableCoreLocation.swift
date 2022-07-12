@@ -27,7 +27,7 @@ public let post0043_AnnouncingComposableCoreLocation = BlogPost(
           case locationManager(LocationManager.Action)
 
           // Your domain's other actions:
-          ...
+          …
         }
         ```
 
@@ -40,7 +40,7 @@ public let post0043_AnnouncingComposableCoreLocation = BlogPost(
           var locationManager: LocationManager
 
           // Your domain's other dependencies:
-          ...
+          …
         }
         ```
 
@@ -66,7 +66,7 @@ public let post0043_AnnouncingComposableCoreLocation = BlogPost(
                 .fireAndForget()
               )
 
-          ...
+          …
           }
         }
         ```
@@ -99,7 +99,7 @@ public let post0043_AnnouncingComposableCoreLocation = BlogPost(
         ```swift
         case let .locationManager(.didUpdateLocations(locations)):
           // Do something cool with user's current location.
-          ...
+          …
         ```
 
         Once you have handled all the `CLLocationManagerDelegate` actions you care about, you can ignore the rest:
@@ -117,7 +117,7 @@ public let post0043_AnnouncingComposableCoreLocation = BlogPost(
           reducer: appReducer,
           environment: AppEnvironment(
             locationManager: .live,
-            // And your other dependencies...
+            … // And your other dependencies...
           )
         )
         ```

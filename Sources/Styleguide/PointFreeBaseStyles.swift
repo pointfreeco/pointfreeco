@@ -429,14 +429,15 @@ private let inlineCodeStyles =
 private let token = CssSelector.class("token")
 
 private let prismJsTheme: Stylesheet = concat([
-  (token & CssSelector.class("atrule")) % color(.other("#d73a49")),
-  (token & CssSelector.class("boolean")) % color(.other("#d73a49")),
+  (token & CssSelector.class("atrule")) % _keywordStyle,
+  (token & CssSelector.class("boolean")) % _keywordStyle,
   (token & CssSelector.class("builtin")) % color(.other("#6f42c1")),
   (token & CssSelector.class("class-name")) % color(.other("#6f42c1")),
   (token & CssSelector.class("comment")) % color(.other("#6a737d")),
-  (token & CssSelector.class("constant")) % color(.other("#d73a49")),
+  (token & CssSelector.class("constant")) % _keywordStyle,
+  (token & CssSelector.class("directive-name")) % color(.other("#643820")),
   (token & CssSelector.class("function")) % color(.other("#005cc5")),
-  (token & CssSelector.class("keyword")) % color(.other("#d73a49")),
+  (token & CssSelector.class("keyword")) % _keywordStyle,
   (token & CssSelector.class("number")) % color(.other("#a963ff")),
   (token & CssSelector.class("string")) % color(.other("#032f62")),
   (token & (CssSelector.class("placeholder-open") | CssSelector.class("placeholder-close"))
@@ -444,6 +445,8 @@ private let prismJsTheme: Stylesheet = concat([
   (token & CssSelector.class("placeholder")) % _placeholderStyle,
   (token & CssSelector.class("code-fold")) % _placeholderStyle,
 ])
+
+private let _keywordStyle = color(.other("#d73a49")) <> fontWeight(.w600)
 
 private let _placeholderStyle: Stylesheet = concat([
   backgroundColor(Colors.gray650),

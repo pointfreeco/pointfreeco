@@ -25,7 +25,7 @@ public let post0056_BetterTestingBonanza = BlogPost(
 
         Neither of these options is ideal. In the first case you cannot share your test support, and the second case will lead you to a proliferation of modules. For each feature you potentially need 3 modules: `MyFeature`, `MyFeatureTests` and `MyFeatureTestSupport`. SPM makes managing this quite easy, but it's still a burden.
 
-        It would be far better if we could ship the test support code right along side or actual library or application code. After all, they are intimately related. You can even fence off the test support code in `#if DEBUG ... #endif` if you are worried about leaking test code into production.
+        It would be far better if we could ship the test support code right along side or actual library or application code. After all, they are intimately related. You can even fence off the test support code in `#if DEBUG … #endif` if you are worried about leaking test code into production.
 
         However, as soon as you add `import XCTest` to a source file in your application or a library it loads, the target becomes unbuildable:
 
@@ -67,13 +67,11 @@ public let post0056_BetterTestingBonanza = BlogPost(
 
         ```swift
         class LoginViewModel: ObservableObject {
-          ...
-
+          …
           init(analytics: AnalyticsClient) {
-            ...
+            …
           }
-
-          ...
+          …
         }
         ```
 
@@ -86,7 +84,7 @@ public let post0056_BetterTestingBonanza = BlogPost(
             analytics: .test { events.append($0) }
           )
 
-          ...
+          …
 
           XCTAssertEqual(events, [.init(name: "Login Success")])
         }
@@ -116,7 +114,7 @@ public let post0056_BetterTestingBonanza = BlogPost(
             analytics: .failing
           )
 
-          ...
+          …
         }
         ```
 
@@ -173,7 +171,7 @@ public let post0056_BetterTestingBonanza = BlogPost(
         )
         ```
 
-        Thanks to some recent infrastructure work we have done on the `TestStore` we can now flatten this code by getting rid of the surrounding `store.assert(...)` and calling `.send` and `.receive` directly on the store:
+        Thanks to some recent infrastructure work we have done on the `TestStore` we can now flatten this code by getting rid of the surrounding `store.assert(…)` and calling `.send` and `.receive` directly on the store:
 
         ```swift
         store.send(.incrementButtonTapped) {
@@ -194,7 +192,7 @@ public let post0056_BetterTestingBonanza = BlogPost(
 
         All the same guarantees are made, such as exhaustive checking of effect lifetimes, but now with less nesting and in fewer lines of code. Further, flattening the code in this way allows Xcode 12 to better track test failures to the `.send` line that caused the failure.
 
-        This change is 100% backwards compatible with the current `.assert(...)` method, so no need to immediately switch over, but we think there are a lot of benefits to doing so.
+        This change is 100% backwards compatible with the current `.assert(…)` method, so no need to immediately switch over, but we think there are a lot of benefits to doing so.
 
         ## Combine Schedulers 0.4.0
 

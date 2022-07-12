@@ -182,9 +182,9 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         import SwiftUI
-        ...
+        …
         struct LoginForm: View {
-        ...
+        …
         // handleLogin(username, password)
         """#,
       timestamp: nil,
@@ -207,11 +207,11 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         struct LoginForm: View {
-          ...
+          …
 
           var body: some View {
             VStack {
-              ...
+              …
             }
           }
         }
@@ -383,7 +383,7 @@ extension Array where Element == Episode.TranscriptBlock {
         struct LoginForm: View {
           @ObservedObject var viewModel: LoginViewModel
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -405,7 +405,7 @@ extension Array where Element == Episode.TranscriptBlock {
           SecureField("Password", text: $viewModel.password)
             .focused(viewModel.$focusedField, equals: .password)
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -436,7 +436,7 @@ extension Array where Element == Episode.TranscriptBlock {
             // handleLogin(username, password)
           }
         }
-        ...
+        …
         Button("Sign In") {
           self.viewModel.signInButtonTapped()
         }
@@ -479,7 +479,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         class LoginViewModel: ObservableObject {
         //  @FocusState var focusedField: LoginForm.Field?
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -714,7 +714,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         func signInButtonTapped(focusedField: inout LoginForm.Field?) async {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -782,7 +782,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         class LoginViewModel: ObservableObject {
           @Published var focusedField: LoginForm.Field?
-          ...
+          …
         }
         """#,
       timestamp: nil,

@@ -327,7 +327,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         // MARK: - shared
         var package = Package(
-          ...
+          …
         )
         """#,
       timestamp: nil,
@@ -454,7 +454,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var side: Side
           public var useCount: Int
 
-          ...
+          …
 
           public enum Side: Int, CaseIterable, Codable, Equatable, Hashable {
             case top = 0
@@ -488,7 +488,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var top: CubeFace
           public var wasRemoved: Bool
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -542,9 +542,9 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         @dynamicMemberLookup
         public struct Three<Element>: Sequence {
-          ...
+          …
           private var rawValue: [Element]
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -573,7 +573,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var score: Int
           public var type: MoveType
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -616,7 +616,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var y: Index
           public var z: Index
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -766,7 +766,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         public func randomCubes(for letter: Gen<String>) -> Gen<Puzzle> {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1186,7 +1186,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var fetchActiveDailyChallengeArns: () -> EitherIO<Error, [DailyChallengeArn]>
           public var fetchAppleReceipt: (Player.Id) -> EitherIO<Error, AppleReceipt?>
           public var fetchDailyChallengeById: (DailyChallenge.Id) -> EitherIO<Error, DailyChallenge>
-          ...
+          …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)

@@ -576,7 +576,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
         var body: some View {
           NavigationView {
             WithViewStore(self.store) { viewStore in
-              ...
+              …
             }
           }
         }
@@ -1199,7 +1199,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       let appReducer = Reducer<AppState, AppAction, Void> { state, action, _ in
-        ...
+        …
       }
       .debug()
       """#,

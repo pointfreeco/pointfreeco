@@ -115,7 +115,7 @@ public let post0074_ParserPrinters = BlogPost(
         In just 26 lines of code we have written a parser that can extract first class Swift data types from an unstructured blob of text:
 
         ```swift
-        try instructions.parse(input) // Instructions(dots: [...], folds: [...])
+        try instructions.parse(input) // Instructions(dots: […], folds: […])
         ```
 
         ## Printing
