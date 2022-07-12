@@ -286,6 +286,11 @@ Prism.languages.swift.keyword = [
   /\bany\b/,
   Prism.languages.swift.keyword
 ];
+Prism.languages.insertBefore('swift', 'operator', {
+  'code-fold': {
+    pattern: /…/
+  },
+});
 Prism.languages.insertBefore('swift', 'other-directive', {
   'placeholder': {
     pattern: /<#.+#>/,

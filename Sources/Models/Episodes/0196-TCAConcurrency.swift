@@ -7,7 +7,6 @@ extension Episode {
       """,
     codeSampleDirectory: "0196-tca-concurrency-pt2",
     exercises: _exercises,
-    fullVideo: .ep196_tcaConcurrency,
     id: 196,
     length: 52 * 60 + 58,
     permission: .subscriberOnly,

@@ -442,6 +442,7 @@ private let prismJsTheme: Stylesheet = concat([
   (token & (CssSelector.class("placeholder-open") | CssSelector.class("placeholder-close"))
     % display(.none)),
   (token & CssSelector.class("placeholder")) % _placeholderStyle,
+  (token & CssSelector.class("code-fold")) % _placeholderStyle,
 ])
 
 private let _placeholderStyle: Stylesheet = concat([
@@ -450,6 +451,11 @@ private let _placeholderStyle: Stylesheet = concat([
   color(Colors.white),
   margin(topBottom: .px(-2), leftRight: .px(-4)),
   padding(topBottom: .px(2), leftRight: .px(4)),
+])
+
+private let _foldedStyle: Stylesheet = concat([
+  visibility(.collapse),
+  content(stringContent("•••")),
 ])
 
 private let opacities: Stylesheet = concat([

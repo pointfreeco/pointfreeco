@@ -421,6 +421,23 @@ a:link.btn-normal {
   padding-left               : 4px;
 }
 
+.token.code-fold {
+  background-color           : #a8a8a8;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  color                      : #fff;
+  margin-top                 : -2px;
+  margin-bottom              : -2px;
+  margin-right               : -4px;
+  margin-left                : -4px;
+  padding-top                : 2px;
+  padding-bottom             : 2px;
+  padding-right              : 4px;
+  padding-left               : 4px;
+}
+
 .h1 {
   font-size : 4rem;
 }
