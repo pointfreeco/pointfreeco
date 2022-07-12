@@ -135,11 +135,11 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       enum TodoAction: Equatable {
-        ...
+        …
       }
 
       struct AppState: Equatable {
-        ...
+        …
       }
       """#,
     timestamp: nil,
@@ -460,9 +460,9 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
-        ...,
+        …,
         Reducer { state, action, environment in
-          ...
+          …
         }
       }
       """#,

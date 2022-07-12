@@ -199,7 +199,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         List {
-          ...
+          …
         }
         .refreshable {
 
@@ -324,7 +324,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         func getFact() async {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -436,7 +436,7 @@ extension Array where Element == Episode.TranscriptBlock {
         func getFact() async {
           Task.sleep(2 * NSEC_PER_SEC)
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -470,7 +470,7 @@ extension Array where Element == Episode.TranscriptBlock {
         func getFact() async {
           self.fact = nil
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -613,7 +613,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         let task = Task<String, Error> {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -709,7 +709,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         self.task = Task {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -797,13 +797,13 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         private var task: Task<String, Error>?
 
-        ...
+        …
 
         var isLoading: Bool {
           self.task != nil
         }
 
-        ...
+        …
 
         if let fact = self.viewModel.fact {
           Text(fact)
@@ -948,7 +948,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         @MainActor
         func getFact() async {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -983,7 +983,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         class PullToRefreshViewModel: ObservableObject {
-          ...
+          …
 
           let fetch: (Int) async throws -> String
 
@@ -991,7 +991,7 @@ extension Array where Element == Episode.TranscriptBlock {
             self.fetch = fetch
           }
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1143,7 +1143,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         func testVanilla() async {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1202,7 +1202,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         XCTAssertEqual(viewModel.isLoading, false)
         await viewModel.getFact()
-        ...
+        …
         XCTAssertEqual(viewModel.isLoading, false)
         """#,
       timestamp: nil,

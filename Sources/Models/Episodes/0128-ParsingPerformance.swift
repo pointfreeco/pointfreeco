@@ -81,12 +81,12 @@ private let _exercises: [Episode.Exercise] = [
       ```swift
       // Directly on the string:
       string.withUTF8 { (ptr: UnsafeBufferPointer<UInt8>) in
-        ...
+        …
       }
 
       // On any collection:
       string.utf8.withContiguousStorageIfAvailable { (ptr: UnsafeBufferPointer<UInt8>) in
-        ...
+        …
       }
       ```
 

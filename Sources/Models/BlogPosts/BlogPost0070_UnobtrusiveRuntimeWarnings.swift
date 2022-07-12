@@ -195,7 +195,7 @@ public let post0070_UnobtrusiveRuntimeWarnings = BlogPost(
 
         Luckily Xcode ships with a tool for exploring of the symbol names in a framework, and it’s called `nm`. If you run the following command in terminal you will see over 52,000 symbols printed to the console:
 
-        ```
+        ```sh
         $ nm -g /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SwiftUI.framework/SwiftUI.tbd
 
         00000000 S _$s10Foundation15AttributeScopesO7SwiftUIE05swiftE0AcDE0D12UIAttributesVmvg
@@ -203,8 +203,7 @@ public let post0070_UnobtrusiveRuntimeWarnings = BlogPost(
         00000000 S _$s10Foundation15AttributeScopesO7SwiftUIE0D12UIAttributesV014BaselineOffsetB0O4nameSSvgZ
         00000000 S _$s10Foundation15AttributeScopesO7SwiftUIE0D12UIAttributesV014BaselineOffsetB0OAA19AttributedStringKeyADMc
         00000000 S _$s10Foundation15AttributeScopesO7SwiftUIE0D12UIAttributesV014BaselineOffsetB0OAA28DecodableAttributedStringKeyADMc
-        ...
-        52,000 more lines...
+        … # 52,000 more lines...
 
 
         ----------

@@ -421,7 +421,7 @@ extension Array where Element == Episode.TranscriptBlock {
             environment: .live
           )
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -519,7 +519,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         extension AppEnvironment {
           static var live: Self {
-            ...
+            …
           }
         }
         """#,
@@ -573,7 +573,7 @@ extension Array where Element == Episode.TranscriptBlock {
           public var onboarding: OnboardingState?
           public var home: HomeState
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -768,7 +768,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
-          ...
+          …
         )
         """#,
       timestamp: nil,
@@ -1051,7 +1051,7 @@ extension Array where Element == Episode.TranscriptBlock {
           MultiplayerAction,
           MultiplayerEnvironment
         >.combine(
-          ...
+          …
         )
         """#,
       timestamp: nil,
@@ -1108,7 +1108,7 @@ extension Array where Element == Episode.TranscriptBlock {
         public struct MultiplayerView: View {
           let store: Store<MultiplayerState, MultiplayerAction>
           @ObservedObject var viewStore: ViewStore<ViewState, MultiplayerAction>
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1181,7 +1181,7 @@ extension Array where Element == Episode.TranscriptBlock {
         var environment = MultiplayerEnvironment.failing
         environment.gameCenter.localPlayer.localPlayer = { .authenticated }
         environment.gameCenter.turnBasedMatchmakerViewController.present = { _ in
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1402,7 +1402,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         store.receive(.pastGame("id", .rematchResponse(.failure(RematchFailure() as NSError)))) {
-          ...
+          …
         }
         """#,
       timestamp: nil,

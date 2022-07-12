@@ -40,7 +40,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
           var body: some View {
             List(self.viewModel.todos) { todo in
-              ...
+              …
             }
           }
         }
@@ -52,7 +52,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         class TodosViewModel: ObservableObject {
-          ...
+          …
           func todoCheckboxToggled(at id: Todo.ID) {
             guard let index = self.todos.firstIndex(where: { $0.id == id })
             else { return }
@@ -69,7 +69,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         List(self.viewModel.todos.enumerated(), id: \.element.id) { index, todo in
-          ...
+          …
         }
         ```
 
@@ -77,7 +77,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         List(Array(self.viewModel.todos.enumerated()), id: \.element.id) { index, todo in
-          ...
+          …
         }
         ```
 
@@ -89,7 +89,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         class TodosViewModel: ObservableObject {
-          ...
+          …
           func todoCheckboxToggled(at index: Int) {
             self.todos[index].isComplete.toggle()
             // TODO: Update todo on backend using an API client
@@ -101,7 +101,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         class TodosViewModel: ObservableObject {
-          ...
+          …
           func todoCheckboxToggled(at index: Int) async {
             self.todos[index].isComplete.toggle()
 
@@ -119,7 +119,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         class TodosViewModel: ObservableObject {
-          ...
+          …
           func todoCheckboxToggled(at index: Int) async {
             self.todos[index].isComplete.toggle()
 
@@ -153,7 +153,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         class TodosViewModel: ObservableObject {
           @Published var todos: IdentifiedArrayOf<Todo> = []
-          ...
+          …
         }
         ```
 
@@ -161,7 +161,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         class TodosViewModel: ObservableObject {
-          ...
+          …
           func todoCheckboxToggled(at id: Todo.ID) async {
             self.todos[id: id]?.isComplete.toggle()
 
@@ -181,7 +181,7 @@ public let post0060_OpenSourcingIdentifiedCollections = BlogPost(
 
         ```swift
         List(self.viewModel.todos) { todo in
-          ...
+          …
         }
         ```
 

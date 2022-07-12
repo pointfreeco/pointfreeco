@@ -165,7 +165,7 @@ public let post0041_AnnouncingTheComposableArchitecture = BlogPost(
               let decrementButton = UIButton()
               let factButton = UIButton()
 
-              // Omitted: Add subviews and set up constraints...
+              … // Omitted: Add subviews and set up constraints...
 
               self.viewStore.publisher
                 .map { "\($0.count)" }

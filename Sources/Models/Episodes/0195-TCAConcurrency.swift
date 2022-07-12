@@ -210,7 +210,7 @@ extension Array where Element == Episode.TranscriptBlock {
           case decrementButtonTapped
           case numberFactButtonTapped
           case incrementButtonTapped
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -359,7 +359,7 @@ extension Array where Element == Episode.TranscriptBlock {
           EffectsBasicsAction,
           EffectsBasicsEnvironment
         > { state, action, environment in
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -382,7 +382,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         switch action {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -429,7 +429,7 @@ extension Array where Element == Episode.TranscriptBlock {
         case .numberFactButtonTapped:
           state.isNumberFactRequestInFlight = true
           state.numberFact = nil
-          ...
+          …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -460,7 +460,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum EffectsBasicsAction: Equatable {
-          ...
+          …
           case numberFactResponse(Result<String, FactClient.Failure>)
         }
         """#,
@@ -501,7 +501,7 @@ extension Array where Element == Episode.TranscriptBlock {
         struct EffectsBasicsView: View {
           let store: Store<EffectsBasicsState, EffectsBasicsAction>
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -525,7 +525,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         var body: some View {
           WithViewStore(self.store) { viewStore in
-            ...
+            …
           }
         }
         """#,
@@ -584,7 +584,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         Button("−") { viewStore.send(.decrementButtonTapped) }
-        ...
+        …
         Button("+") { viewStore.send(.incrementButtonTapped) }
         """#,
       timestamp: nil,
@@ -832,7 +832,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         case .incrementButtonTapped:
           state.count += 2
-          ...
+          …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -903,7 +903,7 @@ extension Array where Element == Episode.TranscriptBlock {
             environment: .unimplemented
           )
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1177,7 +1177,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         static let live = Self(
           fetch: { number in
-            ...
+            …
           },
           fetchAsync: { number in
             try await Task.sleep(nanoseconds: NSEC_PER_SEC)
@@ -1208,7 +1208,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         extension FactClient {
           static let unimplemented = Self(
-            fetch: { _ in ... },
+            fetch: { _ in … },
             fetchAsync: XCTUnimplemented("\(Self.self).fetchAsync")
           )
         }
@@ -1629,7 +1629,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         _ = XCTWaiter.wait(for: [.init()], timeout: 0.1)
         store.receive(.numberFactResponse(.success("1 is a good number Brent"))) {
-          ...
+          …
         }
         """#,
       timestamp: nil,

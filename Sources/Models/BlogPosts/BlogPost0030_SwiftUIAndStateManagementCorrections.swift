@@ -78,7 +78,7 @@ public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
         struct ContentView: View {
           @ObservedObject var state: AppState
 
-          var body: some View { ... }
+          var body: some View { … }
         }
         """,
       timestamp: nil,
@@ -159,7 +159,7 @@ public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
         struct ActivityView: View {
           @Binding var activityFeed: [Activity]
 
-          var body: some View { ... }
+          var body: some View { … }
         }
         """,
       timestamp: nil,
@@ -180,11 +180,11 @@ public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
           var body: some View {
             NavigationView {
               List {
-                ...
+                …
                 NavigationLink(destination: ActivityView(activityFeed: self.$state.activityFeed)) {
                   Text("Activity feed")
                 }
-                ...
+                …
               }
             }
           }
@@ -224,12 +224,12 @@ public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
       content: """
         struct CounterView: View {
           @State var alertNthPrime: Int?
-          ...
+          …
 
           var body: some View {
-            ...
+            …
               .alert(item: self.$alertNthPrime) { prime in
-                ...
+                …
               }
           }
         }
@@ -253,12 +253,12 @@ public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
 
         struct CounterView: View {
           @State var alertNthPrime: PrimeAlert?
-          ...
+          …
 
           var body: some View {
-            ...
+            …
               .alert(item: self.$alertNthPrime) { prime in
-                ...
+                …
               }
           }
         }

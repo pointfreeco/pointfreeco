@@ -134,7 +134,7 @@ public let post0075_URLVaporRouting = BlogPost(
           // Logic for fetching user and book and constructing response...
           let user = try await database.fetchUser(user.id)
           let book = try await database.fetchBook(book.id)
-          return BookResponse(...)
+          return BookResponse(…)
         }
         ```
 
@@ -204,7 +204,7 @@ public let post0075_URLVaporRouting = BlogPost(
         ```swift
         // configure.swift
         public func configure(_ app: Application) throws {
-          ...
+          …
 
           app.mount(siteRouter, use: siteHandler)
         }
@@ -217,9 +217,9 @@ public let post0075_URLVaporRouting = BlogPost(
           case .userBook(userId: userId, bookId: bookId):
             let user = try await database.fetchUser(user.id)
             let book = try await database.fetchBook(book.id)
-            return BookResponse(...)
+            return BookResponse(…)
 
-          // more cases...
+          … // more cases
           }
         }
         ```

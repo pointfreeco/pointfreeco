@@ -332,7 +332,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
         @Published var activityFeed: [Activity] = []
         @Published var loggedInUser: User?
 
-        ...
+        …
       }
       ```
       """,

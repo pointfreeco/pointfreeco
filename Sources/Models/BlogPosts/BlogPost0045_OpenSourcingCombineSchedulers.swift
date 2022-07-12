@@ -105,7 +105,7 @@ public let post0045_OpenSourcingCombinePublishers = BlogPost(
 
         ```swift
         let viewModel = EpisodeViewModel(
-          apiClient: ...,
+          apiClient: …,
           scheduler: DispatchQueue.main.eraseToAnyScheduler()
         )
         ```
@@ -114,7 +114,7 @@ public let post0045_OpenSourcingCombinePublishers = BlogPost(
 
         ```swift
         let viewModel = EpisodeViewModel(
-          apiClient: ...,
+          apiClient: …,
           scheduler: DispatchQueue.immediateScheduler.eraseToAnyScheduler()
         )
         ```

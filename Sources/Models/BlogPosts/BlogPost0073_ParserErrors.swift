@@ -139,7 +139,7 @@ public let post0073_ParserErrors = BlogPost(
         +  func parse(_ input: inout Substring) throws {
              guard input.isEmpty else {
         -      return nil
-        +      throw ...
+        +      throw …
              }
         -    return ()
            }
@@ -264,7 +264,7 @@ public let post0073_ParserErrors = BlogPost(
 
         ```swift
         func parse(_ input: inout Upstream.Input) rethrows -> NewOutput {
-          ...
+          …
         }
         ```
 
@@ -353,11 +353,11 @@ public let post0073_ParserErrors = BlogPost(
 
         ```swift
         @rethrows public protocol AsyncIteratorProtocol {
-          ...
+          …
         }
 
         @rethrows public protocol AsyncSequence {
-          ...
+          …
         }
         ```
 

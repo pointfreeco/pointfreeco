@@ -44,7 +44,7 @@ private let _exercises: [Episode.Exercise] = [
 
       ```swift
       class TodosTests: XCTestCase {
-        ...
+        …
 
         func assertTracked(events: [AnalyticsClient.Event]) {
           XCTAssertEqual(events, self.events)

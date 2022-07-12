@@ -76,7 +76,7 @@ private let _exercises: [Episode.Exercise] = [
       WWDC introduced another search-related API that we didn't have time to explore, and that's the [`onSubmit(of:_:)`](https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)/) view modifier, which evaluates an action closure when it detects a particular "submit trigger" is executed, which includes a "search" trigger:
 
       ```swift
-      .onSubmit(of: .search) { ... }
+      .onSubmit(of: .search) { … }
       ```
 
       Use this API to introduce the ability for a user to fire off a search by submitting the current query string to the local search endpoint from the previous exercise.
@@ -279,7 +279,7 @@ extension Array where Element == Episode.TranscriptBlock {
         //     timeZone = "America/New_York (EDT) offset -14400 (Daylight)";
         //     url = "http://www.apple.com/retail/grandcentral";
         // },
-        // ...
+        // …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -684,7 +684,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         struct AppEnvironment {
           var localSearch: LocalSearchClient
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -700,10 +700,10 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum AppAction {
-          ...
+          …
           case tappedCompletion(MKLocalSearchCompletion)
         }
-        ...
+        …
         ForEach(viewStore.completions, id: \.id) { completion in
           Button(action: { viewStore.send(.tappedCompletion(completion)) }) {
             VStack(alignment: .leading) {
@@ -821,9 +821,9 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         struct AppState: Equatable {
-          ...
+          …
           var mapItems: [MKMapItem] = []
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1004,7 +1004,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         struct AppEnvironment {
-          ...
+          …
           var mainQueue: AnySchedulerOf<DispatchQueue>
         }
         """#,
@@ -1296,7 +1296,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         import Combine
         import MapKit
-        ...
+        …
         let completionsSubject = PassthroughSubject<Result<[MKLocalSearchCompletion], Error>, Never>()
         """#,
       timestamp: nil,
@@ -1494,7 +1494,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum AppAction: Equatable {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1512,7 +1512,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         case completionsUpdated(Result<[MKLocalSearchCompletion], NSError>)
-        ...
+        …
         case searchResponse(Result<MKLocalSearch.Response, NSError>)
         """#,
       timestamp: nil,
@@ -1532,7 +1532,7 @@ extension Array where Element == Episode.TranscriptBlock {
             .map { $0.mapError { $0 as NSError } }
             .map(AppAction.completionsUpdated)
             .eraseToEffect()
-        ...
+        …
         case let .tappedCompletion(completion):
           return environment.localSearch.search(completion)
             .receive(on: environment.mainQueue.animation())
@@ -1611,7 +1611,7 @@ extension Array where Element == Episode.TranscriptBlock {
             completionsSubject.send(.success([completion]))
           }
         }
-        ...
+        …
         store.receive(.completionsUpdated(.success([completion])))
         """#,
       timestamp: nil,
@@ -1719,7 +1719,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         struct LocalSearchCompletion: Equatable {
-          ...
+          …
           static func == (lhs: Self, rhs: Self) -> Bool {
             lhs.subtitle == rhs.subtitle
               && lhs.title == rhs.title
@@ -1764,7 +1764,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         struct LocalSearchCompleter {
           var completions: () -> Effect<Result<[LocalSearchCompletion], Error>, Never>
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1854,7 +1854,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         struct AppState: Equatable {
           var completions: [LocalSearchCompletion] = []
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1871,7 +1871,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         enum AppAction: Equatable {
           case completionsUpdated(Result<[LocalSearchCompletion], NSError>)
-          ...
+          …
           case tappedCompletion(LocalSearchCompletion)
         }
         """#,
@@ -1922,7 +1922,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         ForEach(viewStore.completions) { completion in
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -2148,9 +2148,9 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum AppAction: Equatable {
-          ...
+          …
           case searchResponse(Result<LocalSearchClient.Response, NSError>)
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -2266,10 +2266,10 @@ extension Array where Element == Episode.TranscriptBlock {
         > ❌ State change does not match expectation: …
         >
         >       AppState(
-        >         ...
+        >         …
         >     -   query: "Apple",
         >     +   query: "Apple Store",
-        >         ...
+        >         …
         >       )
 
         Our tests give us instant feedback as to how state changed based of our expectations, making it easy to update:

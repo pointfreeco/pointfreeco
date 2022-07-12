@@ -504,7 +504,7 @@ extension Array where Element == Episode.TranscriptBlock {
         case .cancelButtonTapped:
           return .cancel(id: CancelId())
 
-        ...
+        …
 
         case .refresh:
           return environment.fact.fetch(state.count)
@@ -561,7 +561,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         struct PullToRefreshState: Equatable {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -833,7 +833,7 @@ extension Array where Element == Episode.TranscriptBlock {
           // TODO: do some error handling
           return .none
 
-        ...
+        …
 
         case .refresh:
           state.isLoading = true
@@ -1222,7 +1222,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         .delay(for: 2, scheduler: environment.mainQueue.animation())
 
-        ...
+        …
 
         viewStore.send(.cancelButtonTapped, animation: .default)
         """#,
@@ -1295,7 +1295,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         import ComposableArchitecture
-        ...
+        …
         func testTca() {
           let store = TestStore(
             initialState: .init(),
@@ -1417,7 +1417,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum PullToRefreshAction: Equatable {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1631,7 +1631,7 @@ extension Array where Element == Episode.TranscriptBlock {
         // store.send(.cancelButtonTapped) {
         //   $0.isLoading = false
         // }
-        ...
+        …
         mainQueue.advance(by: .seconds(2))
         """#,
       timestamp: nil,

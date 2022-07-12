@@ -318,7 +318,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         NavigationView {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -594,7 +594,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         struct ContentView: View {
           let store: Store<AppState, AppAction>
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -611,7 +611,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         var body: some View {
           WithViewStore(self.store) { viewStore in
-            ...
+            …
           }
         }
         """#,
@@ -788,7 +788,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         enum AppAction {
-          ...
+          …
           case regionChanged(CoordinateRegion)
         }
         """#,
@@ -1415,7 +1415,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         enum AppAction: Equatable {
           case onAppear
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1494,7 +1494,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         struct AppState: Equatable {
           var completions: [MKLocalSearchCompletion] = []
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1563,7 +1563,7 @@ extension Array where Element == Episode.TranscriptBlock {
             send: AppAction.queryChanged
           )
         ) {
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1610,7 +1610,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         ForEach(viewStore.completions, id: \.title) { completion in
-          ...
+          …
         }
         """#,
       timestamp: nil,

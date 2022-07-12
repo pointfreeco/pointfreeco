@@ -176,7 +176,6 @@ public let post0063_SaferConciserForms = BlogPost(
           "Display name",
           text: viewStore.binding(keyPath: \.displayName, send: SettingsAction.binding)
         )
-        ...
         ```
 
         This was overall a _huge_ improvement! We were able to eliminate a ton of boilerplate in action enums and reducers.
@@ -187,7 +186,7 @@ public let post0063_SaferConciserForms = BlogPost(
 
         ```swift
         struct SettingsState {
-          ...
+          …
           var isLoading = false
         }
         ```

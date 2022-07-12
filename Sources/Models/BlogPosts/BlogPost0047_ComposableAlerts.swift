@@ -57,7 +57,7 @@ public let post0047_ComposableAlerts = BlogPost(
 
             case .alertConfirmTapped:
               state.alert = nil
-              // Do deletion logic...
+              … // deletion logic...
           }
         }
         ```

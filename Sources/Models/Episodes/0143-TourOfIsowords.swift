@@ -318,7 +318,7 @@ extension Array where Element == Episode.TranscriptBlock {
           OnboardingAction,
           OnboardingEnvironment
         > { state, action, environment in
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1047,7 +1047,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         import LeaderboardFeature
-        ...
+        …
         LeaderboardView(
           store: <#T##Store<LeaderboardState, LeaderboardAction>#>
         )
@@ -1320,7 +1320,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         environment: .init(
           apiClient: apiClient,
-          ...
+          …
         )
         """#,
       timestamp: nil,
@@ -1616,7 +1616,7 @@ extension Array where Element == Episode.TranscriptBlock {
           var nub: CubeSceneView.ViewState.NubState
           var opacity: Double
 
-          ...
+          …
         }
         """#,
       timestamp: nil,
@@ -1680,7 +1680,7 @@ extension Array where Element == Episode.TranscriptBlock {
         case .delayedOnAppear:
           state.opacity = 1
 
-          ...
+          …
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1753,7 +1753,7 @@ extension Array where Element == Episode.TranscriptBlock {
             .init(letter: "A", index: LatticePoint(x: 0, y: 2, z: 0)!, side: .top),
             .init(letter: "Y", index: LatticePoint(x: 1, y: 2, z: 0)!, side: .top),
           ],
-          ...
+          …
         ]
         """#,
       timestamp: nil,

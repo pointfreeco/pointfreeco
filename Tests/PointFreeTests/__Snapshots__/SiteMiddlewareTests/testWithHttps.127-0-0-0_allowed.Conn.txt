@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 61078
+Content-Length: 62452
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -384,10 +384,20 @@ a:link.btn-normal {
 }
 
 .token.atrule {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
+}
+
+.token.boolean {
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.builtin {
+  color : #6f42c1;
+}
+
+.token.class-name {
   color : #6f42c1;
 }
 
@@ -395,24 +405,68 @@ a:link.btn-normal {
   color : #6a737d;
 }
 
+.token.constant {
+  color       : #d73a49;
+  font-weight : 600;
+}
+
+.token.directive-name {
+  color : #643820;
+}
+
 .token.function {
   color : #005cc5;
 }
 
 .token.keyword {
-  color : #d73a49;
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.number {
   color : #a963ff;
 }
 
-.token.operator {
-  color : #d73a49;
-}
-
 .token.string {
   color : #032f62;
+}
+
+.token.placeholder-open, .placeholder-close {
+  display : none;
+}
+
+.token.placeholder {
+  background-color           : #a8a8a8;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  color                      : #fff;
+  margin-top                 : -2px;
+  margin-bottom              : -2px;
+  margin-right               : -4px;
+  margin-left                : -4px;
+  padding-top                : 2px;
+  padding-bottom             : 2px;
+  padding-right              : 4px;
+  padding-left               : 4px;
+}
+
+.token.code-fold {
+  background-color           : #a8a8a8;
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  color                      : #fff;
+  margin-top                 : -2px;
+  margin-bottom              : -2px;
+  margin-right               : -4px;
+  margin-left                : -4px;
+  padding-top                : 2px;
+  padding-bottom             : 2px;
+  padding-right              : 4px;
+  padding-left               : 4px;
 }
 
 .h1 {
