@@ -338,15 +338,19 @@ public let post0078_NavigationPath = BlogPost(
         This completes the second half of reverse engineering `NavigationPath`. We can now decode nebulous JSON data back into `NavPath`:
 
         ```swift
-        var path = NavPath()
-        path.append(1)
-        path.append("Hello")
-        path.append(true)
-        path.append(User(id: 42, name: "Blob"))
-
-        let data = try JSONEncoder().encode(path)
-        let decodedPath = try JSONDecoder().decode(NavPath.self, from: data)
-        print(decodedPath)
+        let decodedPath = JSONDecoder().decode(
+          NavPath.self,
+          from: Data(
+            #"""
+            [
+              "11nav_codable4UserV", "{\"id\":42,\"name\":\"Blob\"}",
+              "Sb", "true",
+              "Si", "42",
+              "SS", "\"Hello\""
+            ]
+            """#.utf8
+          )
+        )
         ```
 
         > `NavPath(elements: [1, "Hello", true, User(id: 42, name: "Blob")])`
@@ -360,7 +364,7 @@ public let post0078_NavigationPath = BlogPost(
         decodedPath.elements[3] as! User   // User(id: 42, name: "Blob")
         ```
 
-        From a string that holds onto a heterogenous array of types we were able to build up an array of `Any` values that still retain their static types if we cast them.
+        We were able to build up an array of `Any` values that still secretly retain their static types if we cast them, all from a string that holds onto a heterogenous array of types and values.
 
         ## Pre-Swift 5.7 existentials
 
