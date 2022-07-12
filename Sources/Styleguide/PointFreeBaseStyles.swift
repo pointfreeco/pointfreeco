@@ -452,13 +452,8 @@ private let _placeholderStyle: Stylesheet = concat([
   backgroundColor(Colors.gray650),
   borderRadius(all: .px(6)),
   color(Colors.white),
-  margin(topBottom: .px(-2), leftRight: .px(-4)),
-  padding(topBottom: .px(2), leftRight: .px(4)),
-])
-
-private let _foldedStyle: Stylesheet = concat([
-  visibility(.collapse),
-  content(stringContent("•••")),
+  margin(topBottom: .px(-2), leftRight: .px(-2)),
+  padding(topBottom: .px(2), leftRight: .px(2)),
 ])
 
 private let opacities: Stylesheet = concat([

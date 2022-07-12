@@ -421,12 +421,12 @@ a:link.btn-normal {
   color                      : #fff;
   margin-top                 : -2px;
   margin-bottom              : -2px;
-  margin-right               : -4px;
-  margin-left                : -4px;
+  margin-right               : -2px;
+  margin-left                : -2px;
   padding-top                : 2px;
   padding-bottom             : 2px;
-  padding-right              : 4px;
-  padding-left               : 4px;
+  padding-right              : 2px;
+  padding-left               : 2px;
 }
 
 .token.code-fold {
@@ -438,12 +438,12 @@ a:link.btn-normal {
   color                      : #fff;
   margin-top                 : -2px;
   margin-bottom              : -2px;
-  margin-right               : -4px;
-  margin-left                : -4px;
+  margin-right               : -2px;
+  margin-left                : -2px;
   padding-top                : 2px;
   padding-bottom             : 2px;
-  padding-right              : 4px;
-  padding-left               : 4px;
+  padding-right              : 2px;
+  padding-left               : 2px;
 }
 
 .h1 {
