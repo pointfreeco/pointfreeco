@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60077
+Content-Length: 60078
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1836,8 +1836,11 @@ html {
   border-bottom-right-radius : 6px;
   border-bottom-left-radius  : 6px;
   display                    : block;
-  overflow-x                 : auto;
   margin-bottom              : 1.5rem;
+}
+
+.md-ctn pre {
+  overflow-x : auto;
 }
 
 .md-ctn code {

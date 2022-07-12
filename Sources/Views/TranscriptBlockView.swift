@@ -13,6 +13,21 @@ public func transcriptBlockView(
   fadeOutBlock: Bool = false
 ) -> Node {
   switch block.type {
+  case .code(.plainText):
+    return transcriptBlockView(
+      .init(
+        content: """
+          <blockquote>
+          <pre>
+          \(block.content)
+          </pre>
+          </blockquote>
+          """,
+        timestamp: block.timestamp,
+        type: .paragraph
+      )
+    )
+
   case let .code(lang):
     return .pre(
       .code(

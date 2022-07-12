@@ -56,8 +56,8 @@ private let codeMarkdownStyles: Stylesheet =
       <> borderColor(all: .white(0, 0.15))
       <> borderRadius(all: .px(6))
       <> display(.block)
-      <> overflow(x: .auto)
       <> margin(bottom: .rem(1.5))))
+  <> pre % overflow(x: .auto)
   <> code
   % (fontFamily(["ui-monospace", "monospace"]))
 

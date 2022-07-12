@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68921
+Content-Length: 68922
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1837,8 +1837,11 @@ html {
   border-bottom-right-radius : 6px;
   border-bottom-left-radius  : 6px;
   display                    : block;
-  overflow-x                 : auto;
   margin-bottom              : 1.5rem;
+}
+
+.md-ctn pre {
+  overflow-x : auto;
 }
 
 .md-ctn code {

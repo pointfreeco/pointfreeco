@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 55434
+Content-Length: 55435
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1837,8 +1837,11 @@ html {
   border-bottom-right-radius : 6px;
   border-bottom-left-radius  : 6px;
   display                    : block;
-  overflow-x                 : auto;
   margin-bottom              : 1.5rem;
+}
+
+.md-ctn pre {
+  overflow-x : auto;
 }
 
 .md-ctn code {

@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 62452
+Content-Length: 62453
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1835,8 +1835,11 @@ html {
   border-bottom-right-radius : 6px;
   border-bottom-left-radius  : 6px;
   display                    : block;
-  overflow-x                 : auto;
   margin-bottom              : 1.5rem;
+}
+
+.md-ctn pre {
+  overflow-x : auto;
 }
 
 .md-ctn code {
