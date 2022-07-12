@@ -451,7 +451,7 @@ public let post0078_NavigationPath = BlogPost(
 
         We can even conditionally use Swift 5.7 features using a compiler directive:
 
-        ```swift`
+        ```swift
         #if swift(<5.7)
           func encode<A: Encodable>(_: A.Type) throws -> Data {
             try JSONEncoder().encode(element as! A)
