@@ -281,30 +281,31 @@ private var prismJsHead: ChildOf<Tag.Head> {
         """),
     .script(attributes: [.src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")]),
     plugins,
-    .script(safe: #"""
-Prism.languages.swift.keyword = [
-  /\bany\b/,
-  Prism.languages.swift.keyword
-];
-Prism.languages.insertBefore('swift', 'operator', {
-  'code-fold': {
-    pattern: /…/
-  },
-});
-Prism.languages.insertBefore('swift', 'other-directive', {
-  'placeholder': {
-    pattern: /<#.+#>/,
-    inside: {
-      'placeholder-open': {
-        pattern: /<#/
-      },
-      'placeholder-close': {
-        pattern: /#>/
-      },
-    }
-  },
-});
-"""#),
+    .script(
+      safe: #"""
+        Prism.languages.swift.keyword = [
+          /\bany\b/,
+          Prism.languages.swift.keyword
+        ];
+        Prism.languages.insertBefore('swift', 'operator', {
+          'code-fold': {
+            pattern: /…/
+          },
+        });
+        Prism.languages.insertBefore('swift', 'other-directive', {
+          'placeholder': {
+            pattern: /<#.+#>/,
+            inside: {
+              'placeholder-open': {
+                pattern: /<#/
+              },
+              'placeholder-close': {
+                pattern: /#>/
+              },
+            }
+          },
+        });
+        """#),
   ])
 }
 
