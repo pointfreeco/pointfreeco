@@ -14,17 +14,14 @@ public func transcriptBlockView(
 ) -> Node {
   switch block.type {
   case .code(.plainText):
-    return transcriptBlockView(
-      .init(
-        content: """
-          <blockquote>
-          <pre>
-          \(block.content)
-          </pre>
-          </blockquote>
-          """,
-        timestamp: block.timestamp,
-        type: .paragraph
+    return .div(
+      attributes: [
+        .class("md-ctn")
+      ],
+      .blockquote(
+        .pre(
+          .text(block.content)
+        )
       )
     )
 

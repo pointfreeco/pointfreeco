@@ -294,7 +294,7 @@ private var prismJsHead: ChildOf<Tag.Head> {
         });
         Prism.languages.insertBefore('swift', 'other-directive', {
           'placeholder': {
-            pattern: /<#.+#>/,
+            pattern: /<#.+?#>/,
             inside: {
               'placeholder-open': {
                 pattern: /<#/

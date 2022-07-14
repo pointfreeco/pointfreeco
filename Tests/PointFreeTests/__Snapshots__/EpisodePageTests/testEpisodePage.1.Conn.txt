@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 81258
+Content-Length: 81259
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1901,7 +1901,7 @@ Prism.languages.insertBefore('swift', 'operator', {
 });
 Prism.languages.insertBefore('swift', 'other-directive', {
   'placeholder': {
-    pattern: /<#.+#>/,
+    pattern: /<#.+?#>/,
     inside: {
       'placeholder-open': {
         pattern: /<#/
