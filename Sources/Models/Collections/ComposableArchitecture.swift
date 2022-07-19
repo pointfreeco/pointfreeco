@@ -228,6 +228,21 @@ extension Episode.Collection {
         title: "A Tour of the Composable Architecture",
         whereToGoFromHere: nil
       ),
+
+      .init(
+        blurb: #"""
+          We add all new concurrency tools to the library, allowing you to construct complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and accomplishing all of that while keeping your code 100% testable. This is the biggest update to the library since it was first released in May of 2020.
+          """#,
+        coreLessons: [
+          .init(episode: .ep195_tcaConcurrency),
+          .init(episode: .ep196_tcaConcurrency),
+          .init(episode: .ep197_tcaConcurrency),
+        ],
+        isFinished: false,
+        related: [],
+        title: "Async Composable Architecture",
+        whereToGoFromHere: nil
+      )
     ],
     title: "Composable Architecture"
   )
