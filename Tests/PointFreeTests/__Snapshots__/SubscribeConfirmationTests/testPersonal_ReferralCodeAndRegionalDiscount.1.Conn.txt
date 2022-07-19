@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=tr
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 71537
+Content-Length: 71629
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2356,6 +2356,9 @@ below we will apply a
                         </li>
                         <li>
                           Jamaica
+                        </li>
+                        <li>
+                          Jordan
                         </li>
                         <li>
                           Kazakhstan
