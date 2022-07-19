@@ -3,7 +3,10 @@ import Foundation
 public let post0079_ConcurrencyRelease = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    Today we are releasing the biggest update to the Composable Architecture since it's first
+    release over 2 years ago. The library has all new concurrency tools allowing you to construct
+    complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
+    accomplishing all of that while keeping your code 100% testable.
     """,
   contentBlocks: [
     .init(
