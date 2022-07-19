@@ -9,8 +9,8 @@ public let post0079_ConcurrencyRelease = BlogPost(
     .init(
       content: ###"""
         Today is a very special day. It both marks the 200th episode of [Point-Free](/) _and_
-        the biggest release of our popular library, the [Composable Architecture][tca-github], since
-        its initial release over 2 years ago.
+        the biggest release of our popular library, the [Composable Architecture][tca-github],
+        first released over 2 years ago.
 
         This update brings all new concurrency tools to the library, allowing you to construct
         complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
