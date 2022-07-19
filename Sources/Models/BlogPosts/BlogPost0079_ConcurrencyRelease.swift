@@ -19,6 +19,15 @@ public let post0079_ConcurrencyRelease = BlogPost(
         complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
         accomplishing all of that while keeping your code 100% testable.
 
+        <--
+        TODO: list out stats?
+        Stats:
+          51 releases
+          76 contributors
+          10,000 clones a week
+          20,000 repository visits a week
+        -->
+
         ## Structured effects
 
         The library's dependence on Combine for effects is now considered "soft-deprecated". Rather
@@ -132,8 +141,8 @@ public let post0079_ConcurrencyRelease = BlogPost(
 
         We are also shipping an update to our [combine schedulers][combine-schedulers-github]
         library that gives the `Scheduler` protocol an interface similar to Swift 5.7's new
-        `Clock` protocol. Rather than telling a scheduler to perform some work at a later time
-        you can now tell a scheduler to suspend for a duration of time:
+        [`Clock`][clock-evo] protocol. Rather than telling a scheduler to perform some work at a
+        later time you can now tell a scheduler to suspend for a duration of time:
 
         ```swift
         try await mainQueue.sleep(for: .seconds(1))
@@ -211,8 +220,8 @@ public let post0079_ConcurrencyRelease = BlogPost(
 
         [tca-github]: http://github.com/pointfreeco/swift-composable-architecture
         [speech-recognition-demo]: https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/SpeechRecognition
-        [concurrency-collection]: https://www.pointfree.co/collections/concurrency
-        [async-tca-collection]: https://www.pointfree.co/collections/composable-architecture/async-composable-architecture
+        [concurrency-collection]: /collections/concurrency
+        [async-tca-collection]: /collections/composable-architecture/async-composable-architecture
         [task-view-modifier]: https://developer.apple.com/documentation/swiftui/view/task(priority:_:)
         [test-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/teststore
         [combine-schedulers-github]: http://github.com/pointfreeco/combine-schedulers
@@ -222,6 +231,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
         [animations-test-source]: https://github.com/pointfreeco/swift-composable-architecture/blob/main/Examples/CaseStudies/SwiftUICaseStudiesTests/01-GettingStarted-AnimationsTests.swift#L8-L61
         [tca-0-39-0]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.39.0
         [combine-schedulers-0-7-0]: https://github.com/pointfreeco/combine-schedulers/releases/tag/0.7.0
+        [clock-evo]: https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md
         """###,
       type: .paragraph
     )
