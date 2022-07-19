@@ -242,7 +242,7 @@ extension Episode.Collection {
         related: [],
         title: "Async Composable Architecture",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Composable Architecture"
   )
