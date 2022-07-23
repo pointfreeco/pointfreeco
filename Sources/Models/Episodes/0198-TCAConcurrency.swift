@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep198_tcaConcurrency = Episode(
     blurb: """
-      A big piece is missing from our asynchronous effects story for the Composable Architecture: effects that need to send multiple actions back into the system. This week we will introduce another helper to the `Effect` type that does all that and more, all without sacrificing testability.
+      We introduce another helper to the `Effect` type that can use an asynchronous context to send multiple actions back into the system. By leveraging Swift's structured concurrency we can create complex effects in a natural way, all without sacrificing testability.
       """,
     codeSampleDirectory: "0198-tca-concurrency-pt4",
     exercises: _exercises,

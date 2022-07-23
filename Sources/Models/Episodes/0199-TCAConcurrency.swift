@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep199_tcaConcurrency = Episode(
     blurb: """
-      The lifetime of an effect is completely hidden to the outside world, including views and tests, which leads to extra boilerplate and coordination. We will explore bridging these worlds by exposing an effect's lifetime to SwiftUI views.
+      We explore ways to tie the lifetime of an effect to the lifetime of a view, making it possible to automatically cancel and tear down work when a view goes away. This unexpectedly helps us write even stronger tests for our features.
       """,
     codeSampleDirectory: "0199-tca-concurrency-pt5",
     exercises: _exercises,
