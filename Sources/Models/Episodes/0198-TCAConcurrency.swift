@@ -8,9 +8,9 @@ extension Episode {
     codeSampleDirectory: "0198-tca-concurrency-pt4",
     exercises: _exercises,
     id: 198,
-    length: 41*60 + 23,
+    length: 41 * 60 + 23,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1658725200),
+    publishedAt: Date(timeIntervalSince1970: 1_658_725_200),
     references: [
       // TODO
     ],
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0198-trailer-720p-6d231f67b4b94ac79015edd39de730a7",
         sd540: "0198-trailer-540p-7ed9c1742c9d46f59e879796fe74659b"
       ),
-      vimeoId: 730055480
+      vimeoId: 730_055_480
     )
   )
 }
