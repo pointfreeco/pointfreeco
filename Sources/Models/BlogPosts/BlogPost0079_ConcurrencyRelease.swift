@@ -12,10 +12,10 @@ public let post0079_ConcurrencyRelease = BlogPost(
     .init(
       content: ###"""
         Today is a very special day. It both marks the 200th episode of [Point-Free](/) _and_
-        the biggest release of our popular library, the [Composable Architecture][tca-github],
+        the biggest release of our popular library, [the Composable Architecture][tca-github],
         first released over 2 years ago.
 
-        This update brings all new concurrency tools to the library, allowing you to construct
+        This update brings all-new concurrency tools to the library, allowing you to construct
         complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
         accomplishing all of that while keeping your code 100% testable.
 
@@ -24,22 +24,25 @@ public let post0079_ConcurrencyRelease = BlogPost(
         Stats:
           51 releases
           76 contributors
+          6,500 stars
           10,000 clones a week
           20,000 repository visits a week
         -->
 
         ## Structured effects
 
-        The library's dependence on Combine for effects is now considered "soft-deprecated". Rather
-        than using using Combine publishers and magical incantations of publisher operators to
-        express your effects, you can now write complex effects from top-to-bottom using Swift's
-        structured concurrency tools.
+        The library's dependence on Combine for effects is now considered "soft-deprecated." Rather
+        than using Combine publishers and magical incantations of publisher operators to express
+        your effects, you can now write complex effects from top-to-bottom using Swift's structured
+        concurrency tools.
 
         As an example, in the [speech recognition demo][speech-recognition-demo] from the repo we
-        construct an effect for 1) asking the user for recording authorization and, if granted, 2)
-        start a voice recognition task to get a stream of transcription results. Previously this
-        was quite complex with Combine, requiring expert use of `flatMap`, `filter` and `map`
-        operators, but can now be a simple combination of `await`, `guard` and `for await`:
+        construct an effect that:
+
+        1. Asks the user for speech authorization and, if granted,
+        2. Starts a voice recognition task to get a stream of transcription results. Previously this
+            was quite complex with Combine, requiring expert use of `flatMap`, `filter` and `map`
+            operators, but can now be a simple combination of `await`, `guard` and `for await`:
 
         ```swift
         case .recordButtonTapped:
@@ -61,7 +64,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
         ```
 
         This will greatly simplify how you construct complex effects. You can make use of all the
-        tools gives us for concurrency, such as `await` for concatenating asynchronous work,
+        tools Swift gives us for concurrency, such as `await` for concatenating asynchronous work,
         `for await` for subscribing to async sequences, as well as `async let` and task groups
         for running multiple units of work in parallel.
 
@@ -72,8 +75,8 @@ public let post0079_ConcurrencyRelease = BlogPost(
 
         SwiftUI has a useful view modifier called [`task`][task-view-modifier] that allows you to
         start an asynchronous task when a view appears, and that task will automatically be
-        cancelled when the view disappears. This is great for tying the lifetime of some work
-        you want to perform to the lifetime of the view.
+        cancelled when the view disappears. This is great for tying the lifetime of some work you
+        want to perform to the lifetime of the view.
 
         By more deeply integrating concurrency into the tools of the Composable Architecture we
         make it possible to tie the lifetime of effects to the lifetime of views. For example,
@@ -139,7 +142,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
         }
         ```
 
-        We are also shipping an update to our [combine schedulers][combine-schedulers-github]
+        We are also shipping an update to our [Combine Schedulers][combine-schedulers-github]
         library that gives the `Scheduler` protocol an interface similar to Swift 5.7's new
         [`Clock`][clock-evo] protocol. Rather than telling a scheduler to perform some work at a
         later time you can now tell a scheduler to suspend for a duration of time:
@@ -149,8 +152,8 @@ public let post0079_ConcurrencyRelease = BlogPost(
         ```
 
         This allows you to perform time-based asynchrony, and because schedulers are testable,
-        thanks to [`TestSchedule`][test-scheduler-docs] and
-        [`ImmediateScheduler`][immediate-scheduler-docs], we can fully test all features making
+        thanks to [`TestScheduler`][test-scheduler-docs] and
+        [`ImmediateScheduler`][immediate-scheduler-docs], we can fully test all features that make
         use of time-based asynchrony.
 
         For example, in the [animations case study][animations-case-study-source] we demonstrate
@@ -165,7 +168,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
         }
         ```
 
-        This effect can be [tested][animations-test-source] using a test schedule, which allows you
+        This effect can be [tested][animations-test-source] using a test scheduler, which allows you
         to explicitly advance time forward in order to understand how the time-based effect
         executes. In particular, if we advance 7 seconds we will receive 7 actions for each color
         after the first one:
@@ -202,17 +205,17 @@ public let post0079_ConcurrencyRelease = BlogPost(
         }
         ```
 
-        This makes it possible to test very complex and naunced effects in a determinstic manner.
-        We think it's some of the most ergnomic testing tools available to the greater Swift
+        This makes it possible to test very complex and nuanced effects in a deterministic manner.
+        We think these are some of the most ergonomic testing tools available to the greater Swift
         ecosystem.
 
         ## Upgrade to 0.39.0 today!
 
         Starting today you can update your applications to use
-        [Composable Architecture 0.39.0][tca-0-39-0] to get access to all of these tools and more.
-        You can also update any usages of Combine Schedulers to [0.7.0][combine-schedulers-0-7-0]
-        in order to start writing time-based asynchronous feature code without sacrificing
-        testability, even if you are not using the Composable Architecture.
+        [the Composable Architecture 0.39.0][tca-0-39-0] to get access to all of these tools and
+        more. You can also update any usages of Combine Schedulers to
+        [0.7.0][combine-schedulers-0-7-0] in order to start writing time-based asynchronous feature
+        code without sacrificing testability, even if you are not using the Composable Architecture.
 
         If you are interested in the decisions and thinking that went into these releases be sure
         to watch our [Async Composable Architecture][async-tca-collection] series of episodes
