@@ -426,21 +426,21 @@ extension Client {
       migrate: {
         let database = pool.database(logger: Logger(label: "Postgres"))
         return sequence([
-          database.run(
-            """
-            CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
-            """
-          ),
-          database.run(
-            """
-            CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
-            """
-          ),
-          database.run(
-            """
-            CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
-            """
-          ),
+//          database.run(
+//            """
+//            CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
+//            """
+//          ),
+//          database.run(
+//            """
+//            CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
+//            """
+//          ),
+//          database.run(
+//            """
+//            CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
+//            """
+//          ),
           database.run(
             """
             CREATE TABLE IF NOT EXISTS "users" (
