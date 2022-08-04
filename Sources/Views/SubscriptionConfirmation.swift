@@ -1036,6 +1036,7 @@ public struct DiscountCountry {
     .init(countryCode: "ID", name: "Indonesia"),
     .init(countryCode: "CI", name: "Ivory Coast"),
     .init(countryCode: "JM", name: "Jamaica"),
+    .init(countryCode: "JO", name: "Jordan"),
     .init(countryCode: "KZ", name: "Kazakhstan"),
     .init(countryCode: "KE", name: "Kenya"),
     .init(countryCode: "LA", name: "Laos"),
