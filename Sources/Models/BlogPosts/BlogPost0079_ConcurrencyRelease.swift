@@ -17,9 +17,11 @@ public let post0079_ConcurrencyRelease = BlogPost(
 
         This update brings all-new concurrency tools to the library, allowing you to construct
         complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
-        accomplishing all of that while keeping your code 100% testable.
+        accomplishing all of that while keeping your code 100% testable. We think it might even be
+        the best way to test concurrent code in SwiftUI applications. 😇
 
-        <--
+        <!--
+        
         TODO: list out stats?
         Stats:
           51 releases
@@ -27,6 +29,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
           6,500 stars
           10,000 clones a week
           20,000 repository visits a week
+
         -->
 
         ## Structured effects
@@ -78,10 +81,10 @@ public let post0079_ConcurrencyRelease = BlogPost(
         cancelled when the view disappears. This is great for tying the lifetime of some work you
         want to perform to the lifetime of the view.
 
-        By more deeply integrating concurrency into the tools of the Composable Architecture we
-        make it possible to tie the lifetime of effects to the lifetime of views. For example,
-        in the view we can send an action to the view store representing the view appeared, and
-        we can await its completion:
+        By more deeply integrating concurrency into the Composable Architecture we make it possible
+        to tie the lifetime of effects to the lifetime of views. For example, in the view we can
+        send an action to the view store representing the view appeared, and we can await its
+        completion:
 
         ```swift
         struct ContentView: View {
