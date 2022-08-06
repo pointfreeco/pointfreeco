@@ -428,17 +428,17 @@ extension Client {
         return sequence([
           database.run(
             """
-            CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
+            CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "heroku_ext"
             """
           ),
           database.run(
             """
-            CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "heroku_ext"
             """
           ),
           database.run(
             """
-            CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
+            CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "heroku_ext"
             """
           ),
           database.run(
