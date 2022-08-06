@@ -25,11 +25,6 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1659934800),
     references: [
       reference(
-        forSection: .asyncComposableArchitecture,
-        additionalBlurb: "",
-        sectionUrl: "http://pointfree.co/collections/composable-architecture/async-composable-architecture"
-      ),
-      reference(
         forCollection: .concurrency,
         additionalBlurb: "",
         collectionUrl: "http://pointfree.co/collections/concurrency"

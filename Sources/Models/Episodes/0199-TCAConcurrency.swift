@@ -12,7 +12,11 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_659_330_000),
     references: [
-      // TODO
+      reference(
+        forCollection: .concurrency,
+        additionalBlurb: "",
+        collectionUrl: "http://pointfree.co/collections/concurrency"
+      )
     ],
     sequence: 199,
     subtitle: "Effect Lifetimes",
