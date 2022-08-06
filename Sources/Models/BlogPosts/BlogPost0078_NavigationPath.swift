@@ -12,7 +12,7 @@ public let post0078_NavigationPath = BlogPost(
 
         An interesting feature of `NavigationPath` is that it is capable of encoding and decoding itself to JSON, even though all of its type information has been erased. This is powerful because it makes state restoration as simple as serializing and deserializing data, but how does it work?
 
-        Join us for a deep dive into some of Swift's hidden runtime functions and Swift 5.7's new existential tools so that we can reverse engineer `NavigationPath`'s codability. A compilable [gist][gist] is available to following along too.
+        Join us for a deep dive into some of Swift's hidden runtime functions and Swift 5.7's new existential tools so that we can reverse engineer `NavigationPath`'s codability. A compilable [gist][gist] is available for following along.
 
         ## NavigationPath codability
 
