@@ -13,7 +13,11 @@ extension Episode {
     permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_656_910_800),
     references: [
-      // TODO
+      reference(
+        forCollection: .concurrency,
+        additionalBlurb: "",
+        collectionUrl: "http://pointfree.co/collections/concurrency"
+      )
     ],
     sequence: 195,
     subtitle: "The Problem",

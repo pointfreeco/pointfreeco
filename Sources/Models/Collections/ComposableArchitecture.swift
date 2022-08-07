@@ -229,23 +229,27 @@ extension Episode.Collection {
         whereToGoFromHere: nil
       ),
 
-      .init(
-        blurb: #"""
-          We add all new concurrency tools to the library, allowing you to construct complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and accomplishing all of that while keeping your code 100% testable. This is the biggest update to the library since it was first released in May of 2020.
-          """#,
-        coreLessons: [
-          .init(episode: .ep195_tcaConcurrency),
-          .init(episode: .ep196_tcaConcurrency),
-          .init(episode: .ep197_tcaConcurrency),
-          .init(episode: .ep198_tcaConcurrency),
-          .init(episode: .ep199_tcaConcurrency),
-        ],
-        isFinished: false,
-        related: [],
-        title: "Async Composable Architecture",
-        whereToGoFromHere: nil
-      ),
+      .asyncComposableArchitecture,
     ],
     title: "Composable Architecture"
+  )
+}
+
+extension Episode.Collection.Section {
+  static let asyncComposableArchitecture = Self(
+    blurb: #"""
+      We add all new concurrency tools to the library, allowing you to construct complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and accomplishing all of that while keeping your code 100% testable. This is the biggest update to the library since it was first released in May of 2020.
+      """#,
+    coreLessons: [
+      .init(episode: .ep195_tcaConcurrency),
+      .init(episode: .ep196_tcaConcurrency),
+      .init(episode: .ep197_tcaConcurrency),
+      .init(episode: .ep198_tcaConcurrency),
+      .init(episode: .ep199_tcaConcurrency),
+      .init(episode: .ep200_tcaConcurrency),
+    ],
+    related: [],
+    title: "Async Composable Architecture",
+    whereToGoFromHere: nil
   )
 }

@@ -117,19 +117,19 @@ private let _exercises: [Episode.Exercise] = [
             break
 
           case .primeModal(.removeFavoritePrimeTapped):
-            value.activityFeed.append(
-              .init(timestamp: Date(), type: .removedFavoritePrime(value.count))
+            state.activityFeed.append(
+              .init(timestamp: Date(), type: .removedFavoritePrime(state.count))
             )
 
           case .primeModal(.addFavoritePrime):
-            value.activityFeed.append(
-              .init(timestamp: Date(), type: .saveFavoritePrimeTapped(value.count))
+            state.activityFeed.append(
+              .init(timestamp: Date(), type: .saveFavoritePrimeTapped(state.count))
             )
 
           case let .favoritePrimes(.deleteFavoritePrimes(indexSet)):
             for index in indexSet {
-              value.activityFeed.append(
-                .init(timestamp: Date(), type: .removedFavoritePrime(value.favoritePrimes[index]))
+              state.activityFeed.append(
+                .init(timestamp: Date(), type: .removedFavoritePrime(state.favoritePrimes[index]))
               )
             }
           }

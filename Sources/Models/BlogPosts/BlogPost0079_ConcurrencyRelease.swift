@@ -6,28 +6,22 @@ public let post0079_ConcurrencyRelease = BlogPost(
     Today we are releasing the biggest update to the Composable Architecture since it's first
     release over 2 years ago. The library has all new concurrency tools allowing you to construct
     complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
-    accomplishing all of that while keeping your code 100% testable.
+    we accomplish all of this while keeping your code 100% testable. We think it might even be the
+    best way to test concurrent code in SwiftUI applications. 😇
     """,
   contentBlocks: [
     .init(
       content: ###"""
         Today is a very special day. It both marks the 200th episode of [Point-Free](/) _and_
         the biggest release of our popular library, [the Composable Architecture][tca-github],
-        first released over 2 years ago.
+        since its first release over 2 years ago. In those two years we've had 51 releases, 76
+        contributors, 6,600 stars, and now receive over 10,000 clones a week and 20,000 visits a
+        week to its GitHub page.
 
         This update brings all-new concurrency tools to the library, allowing you to construct
         complex effects using structured concurrency, tie effect lifetimes to view lifetimes, and
-        accomplishing all of that while keeping your code 100% testable.
-
-        <--
-        TODO: list out stats?
-        Stats:
-          51 releases
-          76 contributors
-          6,500 stars
-          10,000 clones a week
-          20,000 repository visits a week
-        -->
+        we accomplish all of this while keeping your code 100% testable. We think it might even be
+        the best way to test concurrent code in SwiftUI applications. 😇
 
         ## Structured effects
 
@@ -39,20 +33,25 @@ public let post0079_ConcurrencyRelease = BlogPost(
         As an example, in the [speech recognition demo][speech-recognition-demo] from the repo we
         construct an effect that:
 
-        1. Asks the user for speech authorization and, if granted,
-        2. Starts a voice recognition task to get a stream of transcription results. Previously this
-            was quite complex with Combine, requiring expert use of `flatMap`, `filter` and `map`
-            operators, but can now be a simple combination of `await`, `guard` and `for await`:
+        1. Ask the user for speech authorization and, if granted,
+        1. Start a voice recognition task to get a stream of transcription results.
+
+        Previously this was quite complex with Combine, requiring expert use of `flatMap`, `filter`
+        and `map` operators, but can now be a simple combination of `await`, `guard` and
+        `for await`:
 
         ```swift
         case .recordButtonTapped:
           return Effect.run { send in
+            // 1️⃣ Ask user for speech recording permission.
             let status = await speechClient.requestAuthorization()
             await send(.speechRecognizerAuthorizationStatusResponse(status))
 
+            // 2️⃣ If not authorized, then there's nothing more to do.
             guard status == .authorized
             else { return }
 
+            // 3️⃣ If authorized, then start recording audio and live transcribing.
             let request = SFSpeechAudioBufferRecognitionRequest()
             for try await result in await speechClient.startTask(request) {
               await send(
@@ -74,14 +73,14 @@ public let post0079_ConcurrencyRelease = BlogPost(
         ## Effect lifetimes
 
         SwiftUI has a useful view modifier called [`task`][task-view-modifier] that allows you to
-        start an asynchronous task when a view appears, and that task will automatically be
+        start an asynchronous task when a view appears, and the task will be automatically
         cancelled when the view disappears. This is great for tying the lifetime of some work you
         want to perform to the lifetime of the view.
 
-        By more deeply integrating concurrency into the tools of the Composable Architecture we
-        make it possible to tie the lifetime of effects to the lifetime of views. For example,
-        in the view we can send an action to the view store representing the view appeared, and
-        we can await its completion:
+        By more deeply integrating concurrency into the Composable Architecture we make it possible
+        to tie the lifetime of effects to the lifetime of views. For example, in the view we can
+        send an action to the view store representing the view appeared, and we can await its
+        completion:
 
         ```swift
         struct ContentView: View {

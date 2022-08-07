@@ -12,7 +12,11 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_657_515_600),
     references: [
-      // TODO
+      reference(
+        forCollection: .concurrency,
+        additionalBlurb: "",
+        collectionUrl: "http://pointfree.co/collections/concurrency"
+      )
     ],
     sequence: 196,
     subtitle: "Tasks",
