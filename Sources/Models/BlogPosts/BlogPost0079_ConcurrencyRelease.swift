@@ -239,7 +239,7 @@ public let post0079_ConcurrencyRelease = BlogPost(
     )
   ],
   coverImage: nil,
-  id: 79,  
-  publishedAt: Date(timeIntervalSince1970: 1659934800),
+  id: 79,
+  publishedAt: Date(timeIntervalSince1970: 1_659_934_800),
   title: "Async Composable Architecture"
 )
