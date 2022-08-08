@@ -428,6 +428,11 @@ extension Client {
         return sequence([
           database.run(
             """
+            CREATE SCHEMA IF NOT EXISTS "heroku_ext"
+            """
+          ),
+          database.run(
+            """
             CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "heroku_ext"
             """
           ),
