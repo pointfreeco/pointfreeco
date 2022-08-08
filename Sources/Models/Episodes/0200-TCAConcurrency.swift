@@ -166,7 +166,7 @@ The part we are most interested in is what happens when the “Rainbow” button
       content: #"""
 case .rainbowButtonTapped:
   return .keyFrames(
-    values: [Color.red, .blue, .green, .orange, .pink, .purple, .yellow, .black]
+    values: [Color.red, .blue, .green, .orange, …]
       .map { (output: .setColor($0), duration: 1) },
     scheduler: environment.mainQueue.animation(.linear)
   )
@@ -186,7 +186,12 @@ We do this because the effect for cycling over a bunch of colors to send actions
       content: #"""
 extension Effect where Failure == Never {
   public static func keyFrames<S: Scheduler>(
-    values: [(output: Output, duration: S.SchedulerTimeType.Stride)],
+    values: [
+      (
+        output: Output,
+        duration: S.SchedulerTimeType.Stride
+      )
+    ],
     scheduler: S
   ) -> Self {
     .concatenate(
@@ -196,7 +201,10 @@ extension Effect where Failure == Never {
           index == 0
             ? Effect(value: animationState.output)
             : Just(animationState.output)
-              .delay(for: values[index - 1].duration, scheduler: scheduler)
+              .delay(
+                for: values[index - 1].duration,
+                scheduler: scheduler
+              )
               .eraseToEffect()
         }
     )
@@ -253,7 +261,10 @@ Once we have the `index` of the value as well as the value we want to send into 
   index == 0
     ? Effect(value: animationState.output)
     : Just(animationState.output)
-      .delay(for: values[index - 1].duration, scheduler: scheduler)
+      .delay(
+        for: values[index - 1].duration,
+        scheduler: scheduler
+      )
       .eraseToEffect()
 }
 """#,
@@ -300,7 +311,7 @@ We can start by looping over all the colors we want to cycle through, but this t
     ),
     Episode.TranscriptBlock(
       content: #"""
-for color in [Color.red, .blue, .green, .orange, .pink, .purple, .yellow, .black] {
+for color in [Color.red, .blue, .green, .orange, …] {
 }
 """#,
       timestamp: nil,
@@ -366,7 +377,7 @@ And amazingly that’s it. All that is left is to make the whole effect cancella
       content: #"""
 case .rainbowButtonTapped:
   return .run { send in
-    for color in [Color.red, .blue, .green, .orange, .pink, .purple, .yellow, .black] {
+    for color in [Color.red, .blue, .green, …] {
       await send(.setColor(color), animation: .linear)
       try await environment.mainQueue.sleep(for: 1)
     }
@@ -547,9 +558,11 @@ We do this by introducing a lightweight struct to define the interface of endpoi
       content: #"""
 struct SpeechClient {
   var finishTask: () -> Effect<Never, Never>
-  var requestAuthorization: () -> Effect<SFSpeechRecognizerAuthorizationStatus, Never>
-  var startTask:
-    (SFSpeechAudioBufferRecognitionRequest) -> Effect<SpeechRecognitionResult, Error>
+  var requestAuthorization: () -> Effect<
+    SFSpeechRecognizerAuthorizationStatus, Never
+  >
+  var startTask: (SFSpeechAudioBufferRecognitionRequest)
+    -> Effect<SpeechRecognitionResult, Error>
 
   enum Error: Swift.Error, Equatable {
     case taskError
@@ -631,7 +644,10 @@ case .recordButtonTapped:
   if state.isRecording {
     return environment.speechClient.requestAuthorization()
       .receive(on: environment.mainQueue)
-      .eraseToEffect(AppAction.speechRecognizerAuthorizationStatusResponse)
+      .eraseToEffect(
+        AppAction
+          .speechRecognizerAuthorizationStatusResponse
+      )
   } else {
     return environment.speechClient.finishTask()
       .fireAndForget()
@@ -656,7 +672,9 @@ Then, down below a bit, we have the `speechRecognizerAuthorizationStatusResponse
     ),
     Episode.TranscriptBlock(
       content: #"""
-case let .speechRecognizerAuthorizationStatusResponse(status):
+case let .speechRecognizerAuthorizationStatusResponse(
+  status
+):
   …
 """#,
       timestamp: nil,
@@ -672,7 +690,9 @@ We do a few things depending on the authorization status. If for some reason we 
     Episode.TranscriptBlock(
       content: #"""
 case .notDetermined:
-  state.alert = AlertState(title: TextState("Try again."))
+  state.alert = AlertState(
+    title: TextState("Try again.")
+  )
   return .none
 """#,
       timestamp: nil,
@@ -691,7 +711,8 @@ case .denied:
   state.alert = AlertState(
     title: TextState(
       """
-      You denied access to speech recognition. This app needs access to transcribe your speech.
+      You denied access to speech recognition. This \
+      app needs access to transcribe your speech.
       """
     )
   )
@@ -710,7 +731,13 @@ If the status is “restricted” it means that due to parental controls on the 
     Episode.TranscriptBlock(
       content: #"""
 case .restricted:
-  state.alert = AlertState(title: TextState("Your device does not allow speech recognition."))
+  state.alert = AlertState(
+    title: TextState(
+      """
+      Your device does not allow speech recognition.
+      """
+    )
+  )
   return .none
 """#,
       timestamp: nil,
@@ -747,7 +774,8 @@ Starting the recording causes a long-living effect to fire up, the `startTask` e
     Episode.TranscriptBlock(
       content: #"""
 case let .speech(.success(result)):
-  state.transcribedText = result.bestTranscription.formattedString
+  state.transcribedText =
+    result.bestTranscription.formattedString
   return .none
 """#,
       timestamp: nil,
@@ -830,7 +858,8 @@ We will start with the speech client dependency. Let’s forget we have Combine,
       content: #"""
 struct SpeechClient {
   var finishTask: () async -> Void
-  var requestAuthorization: () async -> SFSpeechRecognizerAuthorizationStatus
+  var requestAuthorization: () async
+    -> SFSpeechRecognizerAuthorizationStatus
   …
 }
 """#,
@@ -853,7 +882,10 @@ We haven’t talked about this type before, but the tool to do this is called `A
     ),
     Episode.TranscriptBlock(
       content: #"""
-var startTask: (SFSpeechAudioBufferRecognitionRequest) -> AsyncThrowingStream<SpeechRecognitionResult, Swift.Error>
+var startTask: (SFSpeechAudioBufferRecognitionRequest)
+  -> AsyncThrowingStream<
+    SpeechRecognitionResult, Swift.Error
+  >
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -893,9 +925,17 @@ import XCTestDynamicOverlay
 #if DEBUG
   extension SpeechClient {
     static let unimplemented = Self(
-      finishTask: XCTUnimplemented("\(Self.self).finishTask"),
-      requestAuthorization: XCTUnimplemented("\(Self.self).requestAuthorization", placeholder: .notDetermined),
-      startTask: XCTUnimplemented("\(Self.self).recognitionTask", placeholder: .finished)
+      finishTask: XCTUnimplemented(
+        "\(Self.self).finishTask"
+      ),
+      requestAuthorization: XCTUnimplemented(
+        "\(Self.self).requestAuthorization",
+        placeholder: .notDetermined
+      ),
+      startTask: XCTUnimplemented(
+        "\(Self.self).recognitionTask",
+        placeholder: .finished
+      )
     )
   }
 #endif
@@ -1008,14 +1048,21 @@ We don’t have to know about everything that is happening in this endpoint. The
     ),
     Episode.TranscriptBlock(
       content: #"""
-recognitionTask = speechRecognizer.recognitionTask(with: request) { result, error in
+recognitionTask = speechRecognizer.recognitionTask(
+  with: request
+) { result, error in
   switch (result, error) {
   case let (.some(result), _):
     subscriber.send(SpeechRecognitionResult(result))
   case (_, .some):
     subscriber.send(completion: .failure(.taskError))
   case (.none, .none):
-    fatalError("It should not be possible to have both a nil result and nil error.")
+    fatalError(
+      """
+      It should not be possible to have both a nil \
+      result and nil error.
+      """
+    )
   }
 }
 """#,
@@ -1126,13 +1173,20 @@ In this closure we can basically do all the same work, except using the continua
     ),
     Episode.TranscriptBlock(
       content: #"""
-continuation.finish(throwing: SpeechClient.Error.couldntConfigureAudioSession)
+continuation.finish(
+  throwing: SpeechClient.Error
+    .couldntConfigureAudioSession
+)
 …
 continuation.yield(SpeechRecognitionResult(result))
 …
-continuation.finish(throwing: SpeechClient.Error.taskError)
+continuation.finish(
+  throwing: SpeechClient.Error.taskError
+)
 …
-continuation.finish(throwing: SpeechClient.Error.couldntStartAudioEngine)
+continuation.finish(
+  throwing: SpeechClient.Error.couldntStartAudioEngine
+)
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1167,9 +1221,10 @@ Well, now we get a bunch of warnings. It turns out that the `onTermination` clos
     ),
     Episode.TranscriptBlock(
       content: #"""
-continuation.onTermination = { [audioEngine, recognitionTask] _ in
-  …
-}
+continuation.onTermination =
+  { [audioEngine, recognitionTask] _ in
+    …
+  }
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1192,7 +1247,11 @@ First, let’s update the `.speech` action case to take a `TaskResult` instead o
       content: #"""
 enum AppAction: Equatable {
   case speech(TaskResult<SpeechRecognitionResult>)
-  // case speech(Result<SpeechRecognitionResult, SpeechClient.Error>)
+  // case speech(
+  //   Result<
+  //     SpeechRecognitionResult, SpeechClient.Error
+  //   >
+  // )
   …
 }
 """#,
@@ -1222,7 +1281,10 @@ return .task {
 }
 // return environment.speechClient.requestAuthorization()
 //   .receive(on: environment.mainQueue)
-//   .eraseToEffect(AppAction.speechRecognizerAuthorizationStatusResponse)
+//   .eraseToEffect(
+//     AppAction
+//       .speechRecognizerAuthorizationStatusResponse
+//   )
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1243,7 +1305,9 @@ Next we have a few spots where we want to finish the speech recognition task, an
     ),
     Episode.TranscriptBlock(
       content: #"""
-return .fireAndForget { await environment.speechClient.finishTask() }
+return .fireAndForget {
+  await environment.speechClient.finishTask()
+}
 // return environment.speechClient.finishTask()
 //   .fireAndForget()
 """#,
@@ -1260,9 +1324,19 @@ The next error is where we are trying to destructure a speech client failure int
     Episode.TranscriptBlock(
       content: #"""
 case
-  .speech(.failure(SpeechClient.Error.couldntConfigureAudioSession)),
-  .speech(.failure(SpeechClient.Error.couldntStartAudioEngine)):
-  state.alert = AlertState(title: TextState("Problem with audio device. Please try again."))
+  .speech(
+    .failure(
+      SpeechClient.Error.couldntConfigureAudioSession
+    )
+  ),
+  .speech(
+    .failure(SpeechClient.Error.couldntStartAudioEngine)
+  ):
+  state.alert = AlertState(
+    title: TextState(
+      "Problem with audio device. Please try again."
+    )
+  )
   return .none
 """#,
       timestamp: nil,
@@ -1278,9 +1352,14 @@ Next we have the spot where we start up the speech recognition task, and send al
     Episode.TranscriptBlock(
       content: #"""
 return .run { send in
-  for try await result in environment.speechClient.startTask(request) {
+  for try await result
+  in environment.speechClient.startTask(request) {
     await send(
-      .speech(.success(result.bestTranscription.formattedString)),
+      .speech(
+        .success(
+          result.bestTranscription.formattedString
+        )
+      ),
       animation: .default
     )
   }
@@ -1310,8 +1389,11 @@ The closure used to construct an `Effect.run` is allowed to throw, but it will r
     Episode.TranscriptBlock(
       content: #"""
 return .run { send in
-  for try await result in environment.speechClient.startTask(request) {
-    await send(.speech(.success(result)), animation: .default)
+  for try await result
+  in environment.speechClient.startTask(request) {
+    await send(
+      .speech(.success(result)), animation: .default
+    )
   }
 } catch: { error, send in
   await send(.speech(.failure(error)))
@@ -1410,11 +1492,16 @@ startTask: { _ in
     isRecording = true
     Task {
       var finalText = """
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor \
-      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud \
-      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure \
-      dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. \
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt \
+      Lorem ipsum dolor sit amet, consectetur \
+      adipiscing elit, sed do eiusmod tempor \
+      incididunt ut labore et dolore magna aliqua. \
+      Ut enim ad minim veniam, quis nostrud \
+      exercitation ullamco laboris nisi ut aliquip \
+      ex ea commodo consequat. Duis aute irure \
+      dolor in reprehenderit in voluptate velit \
+      esse cillum dolore eu fugiat nulla pariatur. \
+      Excepteur sint occaecat cupidatat non \
+      proident, sunt in culpa qui officia deserunt \
       mollit anim id est laborum.
       """
       var text = ""
@@ -1426,7 +1513,9 @@ startTask: { _ in
           finalText.removeFirst()
           text += " "
         }
-        try await Task.sleep(nanoseconds: NSEC_PER_SEC / 3)
+        try await Task.sleep(
+          nanoseconds: NSEC_PER_SEC / 3
+        )
         continuation.yield(
           .init(
             bestTranscription: .init(
@@ -1491,7 +1580,7 @@ We can emulate this by defining the sleep in terms of how long the word is, as w
       content: #"""
 try await Task.sleep(
   nanoseconds: UInt64(word.count) * NSEC_PER_MSEC * 50
-  + .random(in: 0 ... (NSEC_PER_MSEC * 200))
+    + .random(in: 0 ... (NSEC_PER_MSEC * 200))
 )
 """#,
       timestamp: nil,
@@ -1521,7 +1610,10 @@ Currently there is a bit of ping-ponging happening where we ask for authorizatio
     Episode.TranscriptBlock(
       content: #"""
 return .task {
-  .speechRecognizerAuthorizationStatusResponse(await environment.speechClient.requestAuthorization())
+  .speechRecognizerAuthorizationStatusResponse(
+    await environment.speechClient
+      .requestAuthorization()
+  )
 }
 """#,
       timestamp: nil,
@@ -1583,8 +1675,11 @@ The first thing we can do in this effect is request authorization, and then send
     Episode.TranscriptBlock(
       content: #"""
 return .run { send in
-  let status = await environment.speechClient.requestAuthorization()
-  await send(.speechRecognizerAuthorizationStatusResponse(status))
+  let status = await environment.speechClient
+    .requestAuthorization()
+  await send(
+    .speechRecognizerAuthorizationStatusResponse(status)
+  )
 }
 """#,
       timestamp: nil,
@@ -1600,8 +1695,11 @@ But then, directly in this effect, we can check if we are authorized:
     Episode.TranscriptBlock(
       content: #"""
 return .run { send in
-  let status = await environment.speechClient.requestAuthorization()
-  await send(.speechRecognizerAuthorizationStatusResponse(status))
+  let status = await environment.speechClient
+    .requestAuthorization()
+  await send(
+    .speechRecognizerAuthorizationStatusResponse(status)
+  )
 
   guard status == .authorized
   else { return }
@@ -1622,8 +1720,14 @@ If we get past this guard we can immediately start recording:
 let request = SFSpeechAudioBufferRecognitionRequest()
 request.shouldReportPartialResults = true
 request.requiresOnDeviceRecognition = false
-for try await result in environment.speechClient.startTask(request) {
-  await send(.speech(.success(result.bestTranscription.formattedString)), animation: .default)
+for try await result
+in environment.speechClient.startTask(request) {
+  await send(
+    .speech(
+      .success(result.bestTranscription.formattedString)
+    ),
+    animation: .default
+  )
 }
 """#,
       timestamp: nil,
@@ -1706,7 +1810,9 @@ Next we can refactor each spot where we override the `requestAuthorization` endp
     ),
     Episode.TranscriptBlock(
       content: #"""
-store.environment.speechClient.requestAuthorization = { .denied }
+store.environment.speechClient.requestAuthorization = {
+  .denied
+}
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1735,7 +1841,9 @@ Instead, we can use async streams and continuations. The library even comes with
     Episode.TranscriptBlock(
       content: #"""
 class SpeechRecognitionTests: XCTestCase {
-  let recognitionTask = AsyncThrowingStream<SpeechRecognitionResult, Error>.streamWithContinuation()
+  let recognitionTask = AsyncThrowingStream<
+    SpeechRecognitionResult, Error
+  >.streamWithContinuation()
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1755,7 +1863,10 @@ store.environment.speechClient.finishTask = {
 …
 self.recognitionTask.continuation.yield(result)
 …
-self.recognitionTask.continuation.finish(throwing: SpeechClient.Error.couldntConfigureAudioSession)
+self.recognitionTask.continuation.finish(
+  throwing: SpeechClient.Error
+    .couldntConfigureAudioSession
+)
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1769,7 +1880,9 @@ And then everywhere we were using the passthrough subject as a publisher, we can
     ),
     Episode.TranscriptBlock(
       content: #"""
-store.environment.speechClient.startTask = { _ in self.recognitionTask.stream }
+store.environment.speechClient.startTask = { _ in
+  self.recognitionTask.stream
+}
 """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1783,11 +1896,21 @@ And finally there are a few failures we have to fix where previously we were usi
     ),
     Episode.TranscriptBlock(
       content: #"""
-store.receive(.speech(.failure(SpeechClient.Error.couldntConfigureAudioSession))) {
+store.receive(
+  .speech(
+    .failure(
+      SpeechClient.Error.couldntConfigureAudioSession
+    )
+  )
+) {
   …
 }
 …
-store.receive(.speech(.failure(SpeechClient.Error.couldntStartAudioEngine))) {
+store.receive(
+  .speech(
+    .failure(SpeechClient.Error.couldntStartAudioEngine)
+  )
+) {
   …
 }
 """#,
@@ -1973,7 +2096,8 @@ In the structured concurrency style we can simply open up a single `Effect.run` 
     Episode.TranscriptBlock(
       content: #"""
 case .task:
-  return .run { [move = state.moves[state.moveIndex]] send in
+  return .run {
+    [move = state.moves[state.moveIndex]] send in
     …
   }
 """#,
@@ -2005,7 +2129,9 @@ For example, we can start by loading the current low power mode, sending it back
       content: #"""
 await send(
   .lowPowerModeResponse(
-    await environment.lowPowerMode.start().first(where: { _ in true }) ?? false
+    await environment.lowPowerMode.start()
+      .first(where: { _ in true })
+      ?? false
   )
 )
 try await environment.mainQueue.sleep(for: .seconds(1))
@@ -2190,7 +2316,11 @@ And then we can just open up a single `Effect.run` to put all of the effect logi
     ),
     Episode.TranscriptBlock(
       content: #"""
-return .run { [completedGame = state.completedGame, isDemo = state.isDemo] send in
+return .run {
+  [
+    completedGame = state.completedGame,
+    isDemo = state.isDemo
+  ] send in
   …
 }
 """#,
@@ -2265,9 +2395,9 @@ Further, all of that logic for constructing the submit game effect can now go di
 group.addTask {
   if isDemo {
     …
-  } else if let request = ServerRoute.Api.Route.Games.SubmitRequest(
-    completedGame: completedGame
-  ) {
+  } else if let request = ServerRoute.Api.Route.Games
+    .SubmitRequest( completedGame: completedGame)
+  {
     …
   }
 }
@@ -2369,8 +2499,11 @@ And we now see that the kick-off action is `.task` instead of `onAppear`, so tha
       content: #"""
 case .task:
   return .run { send in
-    async let authenticate: Void = authenticate(send: send, environment: environment)
-    await listenForGameCenterEvents(send: send, environment: environment)
+    async let authenticate: Void =
+      authenticate(send: send, environment: environment)
+    await listenForGameCenterEvents(
+      send: send, environment: environment
+    )
   }
   .animation()
 """#,
@@ -2492,7 +2625,8 @@ This also uses a tool that is new in the library but we haven’t discussed in e
 if !isDismissable {
   group.addTask {
     await withTaskCancellation(id: TimerID.self) {
-      for await _ in environment.mainRunLoop.timer(interval: 1) {
+      for await _
+      in environment.mainRunLoop.timer(interval: 1) {
         await send(.timerTick, animation: .default)
       }
     }
