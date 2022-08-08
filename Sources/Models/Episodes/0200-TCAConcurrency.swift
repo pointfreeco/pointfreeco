@@ -107,7 +107,7 @@ So, let’s get started.
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Animation case study"#,
+      content: #"SwiftUI Case Study: Animation"#,
       timestamp: (2*60 + 3),
       type: .title
     ),
@@ -490,7 +490,7 @@ This await represents the time it takes for the action to be sent, and for the r
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Speech recognition"#,
+      content: #"Demo: Speech Recognition"#,
       timestamp: (11*60 + 54),
       type: .title
     ),
@@ -1844,9 +1844,9 @@ Previously we were ping-ponging actions by firing off an effect to get the autho
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"isowords"#,
+      content: #"isowords: Playback Effects"#,
       timestamp: (41*60 + 5),
-      type: .paragraph
+      type: .title
     ),
     Episode.TranscriptBlock(
       content: #"""
@@ -1867,11 +1867,6 @@ The code base has many parts where we need to construct complex effects. Sometim
 Let’s quickly take a look at some of these effects, and see how much simpler they got using structured concurrency instead of Combine.
 """#,
       timestamp: (41*60 + 48),
-      type: .paragraph
-    ),
-    Episode.TranscriptBlock(
-      content: #"Cube preview"#,
-      timestamp: (41*60 + 57),
       type: .paragraph
     ),
     Episode.TranscriptBlock(
@@ -2054,7 +2049,7 @@ So, already we are seeing a huge win for constructing complex effects, at least 
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Game over"#,
+      content: #"isowords: Game Over Effects"#,
       timestamp: (48*60 + 44),
       type: .title
     ),
@@ -2295,7 +2290,7 @@ Further, we have a very comprehensive test suite for this feature because it is 
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Home"#,
+      content: #"isowords: Home Screen Effects"#,
       timestamp: (56*60 + 4),
       type: .title
     ),
@@ -2432,7 +2427,7 @@ However, when the code was written with Combine, we added accidental complexity 
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Upgrade interstitial"#,
+      content: #"isowords: Upgrade Interstitial"#,
       timestamp: (62*60 + 2),
       type: .title
     ),
@@ -2515,7 +2510,7 @@ The rest of the effect runs just like normal. Only the timer will actually be ca
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: #"Outro"#,
+      content: #"Conclusion"#,
       timestamp: (64*60 + 37),
       type: .title
     ),
