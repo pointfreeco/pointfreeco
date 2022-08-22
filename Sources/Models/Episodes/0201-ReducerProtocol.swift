@@ -10,7 +10,7 @@ extension Episode {
     id: 201,
     length: 39 * 60 + 53,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1661144400),
+    publishedAt: Date(timeIntervalSince1970: 1_661_144_400),
     references: [
       // TODO
     ],
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "TODO",
         sd540: "TODO"
       ),
-      vimeoId: 740853246
+      vimeoId: 740_853_246
     )
   )
 }
