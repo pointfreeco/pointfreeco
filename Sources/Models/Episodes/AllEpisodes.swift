@@ -202,5 +202,6 @@ extension Episode {
     .ep199_tcaConcurrency,
     .ep200_tcaConcurrency,
     .ep201_reducerProtocol,
+    .ep202_reducerProtocol,
   ]
 }
