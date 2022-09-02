@@ -42,9 +42,9 @@ extension Episode.Video {
   public static let ep144_tourOfIsowords = Self(
     bytesLength: 363_938_131,
     downloadUrls: .s3(
-      hd1080: "0144-1080p-ae83079618d84e4baf5cbbeb0a2df306",
-      hd720: "0144-720p-e9241f26e1734e96ac64e68406449a8a",
-      sd540: "0144-540p-1f06a22a4a814b3b9ad5bae55f3f069d"
+      hd1080: "0144-1080p-234ed3c75ea24eb6bc9bf3e41cd8d21d",
+      hd720: "0144-720p-f1f94c5ec60b43f8a6543f8d5b79f06e",
+      sd540: "0144-540p-696e70ad0ba149db8d1b34bf8db6b90b"
     ),
     vimeoId: 542_626_967
   )
