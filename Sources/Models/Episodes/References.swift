@@ -817,7 +817,7 @@ extension Episode.Reference {
       """,
     link: "https://forums.swift.org/t/se-0235-add-result-to-the-standard-library/17752",
     publishedAt: Date(timeIntervalSince1970: 1_541_610_000),
-    title: "SE-0235 - Add Result to the Standard Library"
+    title: "SE-0235: Add Result to the Standard Library"
   )
 
   public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
@@ -827,7 +827,7 @@ extension Episode.Reference {
       """#,
     link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
     publishedAt: Date(timeIntervalSince1970: 1_553_004_000),
-    title: "SE-0249 - Key Path Expressions as Functions"
+    title: "SE-0249: Key Path Expressions as Functions"
   )
 
   public static let se_0293 = Episode.Reference(
@@ -838,6 +838,14 @@ extension Episode.Reference {
       "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
     publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
     title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
+  )
+
+  public static let se_0348_buildPartialBlock = Episode.Reference(
+    author: "Richard Wei",
+    blurb: "The Swift Evolution proposal that introduced `buildPartialBlock` to result builders, making it possible to accumulate a result from many components. This works around the common limitation of having to define a number of `buildBlock` overloads to support larger builders.",
+    link: "https://github.com/apple/swift-evolution/blob/4f0726385513577f25a2533f1863af4d6093e61a/proposals/0348-buildpartialblock.md",
+    publishedAt: referenceDateFormatter.date(from: "2022-03-22"),
+    title: "SE-0348: buildPartialBlock for result builders"
   )
 
   public static let semanticEditorCombinators = Episode.Reference(
