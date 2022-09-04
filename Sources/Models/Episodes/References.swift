@@ -842,8 +842,10 @@ extension Episode.Reference {
 
   public static let se_0348_buildPartialBlock = Episode.Reference(
     author: "Richard Wei",
-    blurb: "The Swift Evolution proposal that introduced `buildPartialBlock` to result builders, making it possible to accumulate a result from many components. This works around the common limitation of having to define a number of `buildBlock` overloads to support larger builders.",
-    link: "https://github.com/apple/swift-evolution/blob/4f0726385513577f25a2533f1863af4d6093e61a/proposals/0348-buildpartialblock.md",
+    blurb:
+      "The Swift Evolution proposal that introduced `buildPartialBlock` to result builders, making it possible to accumulate a result from many components. This works around the common limitation of having to define a number of `buildBlock` overloads to support larger builders.",
+    link:
+      "https://github.com/apple/swift-evolution/blob/4f0726385513577f25a2533f1863af4d6093e61a/proposals/0348-buildpartialblock.md",
     publishedAt: referenceDateFormatter.date(from: "2022-03-22"),
     title: "SE-0348: buildPartialBlock for result builders"
   )
