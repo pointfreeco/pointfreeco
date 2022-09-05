@@ -15,7 +15,7 @@ extension Episode {
       .se_0348_buildPartialBlock
     ],
     sequence: 203,
-    subtitle: "Composition Part 1",
+    subtitle: "Composition, Part 1",
     title: "Reducer Protocol",
     trailerVideo: .init(
       bytesLength: 31_400_000,
