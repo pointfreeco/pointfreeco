@@ -91,4 +91,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0077_XCTUnimplemented,
   post0078_NavigationPath,
   post0079_ConcurrencyRelease,
+  post0080_TCAPerformance,
 ]
