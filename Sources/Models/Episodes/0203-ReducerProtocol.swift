@@ -10,9 +10,9 @@ extension Episode {
     id: 203,
     length: 30 * 60 + 44,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1662354000),
+    publishedAt: Date(timeIntervalSince1970: 1_662_354_000),
     references: [
-      .se_0348_buildPartialBlock,
+      .se_0348_buildPartialBlock
     ],
     sequence: 203,
     subtitle: "Composition Part 1",
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0203-trailer-720p-48376fcb78b1469fb8bc9d02afb2b925",
         sd540: "0203-trailer-540p-743593ba4a6745a28bb0c485ef8a2cca"
       ),
-      vimeoId: 742852856
+      vimeoId: 742_852_856
     )
   )
 }
