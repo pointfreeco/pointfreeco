@@ -8,13 +8,13 @@ public let post0080_TCAPerformance = BlogPost(
   contentBlocks: [
     .init(
       content: ###"""
-        We are always looking for ways to improve the performance of our [Composable Architecture][tca-gh], and spurred by some fascinating [discussions][performance-gh-discussion], we spent most of last week looking for performance wins in the libray. This has all culminated in a new release, [0.40.0][0_40_0], which brings a number of improvements to the library, and best of all, most of the changes came from collaboration with people in the community! 🤗
+        We are always looking for ways to improve the performance of our [Composable Architecture][tca-gh], and spurred by some fascinating [discussions][performance-gh-discussion], we spent most of last week looking for performance wins in the library. This has all culminated in a new release, [0.40.0][0_40_0], which brings a number of improvements to the library, and best of all, most of the changes came from collaboration with people in the community! 🤗
 
         ## ForEachStore performance
 
         The [`ForEachStore`][foreachstore-docs] type is a SwiftUI view that allows you to easily derive the behavior of a single row in a list from a domain that holds a collection of state. For example, the voice memos demo application uses this to allow [each row of a list][voice-memos-foreachstore-gh] of recorded memos to encapsulate their own logic, including playback of audio and a timer. It is an incredibly powerful tool.
 
-        Unfortunately, it also had a performance gotcha. Under the hood it was checking for equality between two collections of data in order to skip unneccessary view recomputations. We did this by checking for equality of the elements' ids because we know that all of the elements conform to `Identifiable`. However, when those collections get big, it can start to take significant time to check for equality.
+        Unfortunately, it also had a performance gotcha. Under the hood it was checking for equality between two collections of data in order to skip unnecessary view recomputations. We did this by checking for equality of the elements' ids because we know that all of the elements conform to `Identifiable`. However, when those collections get big, it can start to take significant time to check for equality.
 
         Luckily there is a better way. [Thomas Grapperon][tgrapperon-twitter] realized that because the ids of the collections are stored in an `OrderedSet`, which has copy-on-write semantics, we could [compare the sets of ids as raw memory][memcmp-foreachstore-pr] using `memcmp`, which is a near-instant operation. Only if the `memcmp` check fails, which is in the minority of times, will we need to actually check each individual element. This will instantly give all uses of `ForEachStore` a massive performance boost.
 
@@ -52,7 +52,7 @@ public let post0080_TCAPerformance = BlogPost(
 
         Up until 0.40.0, `WithViewStore` used an `@ObservedObject` under the hood. This means that whenever the parent of `FeatureView` needs to recompute its body, it will force `FeatureView` to recreate the observable object, resubscribe to publisher of state changes, and recompute `==` on `FeatureState`. None of this work needs to be performed again after the first time, and so can lead to degraded performance.
 
-        The [fix][withviewstore-stateobject-pr] is to make `WithViewStore` use a `@StateObject` under the hood instead of a `@ObservedObject`. Unfortunately we still needed to maintain iOS 13 compatability, and so [Thomas Grapperon][tgrapperon-twitter] [contributed][ios13-stateobject-pr] a slim backport of state objects to work with iOS 13.
+        The [fix][withviewstore-stateobject-pr] is to make `WithViewStore` use a `@StateObject` under the hood instead of a `@ObservedObject`. Unfortunately we still needed to maintain iOS 13 compatibility, and so [Thomas Grapperon][tgrapperon-twitter] [contributed][ios13-stateobject-pr] a slim backport of state objects to work with iOS 13.
 
         The results can be quite substantial, causing the number of view stores being created and the number of times views re-compute their bodies to plummet.
 
@@ -64,7 +64,7 @@ public let post0080_TCAPerformance = BlogPost(
 
         We have found that large, complex SwiftUI views that use `WithViewStore` can take a long time to compile, and can eventually lead to "complex expression" compiler errors. This is due to the fact that `WithViewStore` is highly generic with a large number of initializers that can be used in a variety of situations, such as in scenes, commands, and more.
 
-        We have decided to [deprecate][withviewstore-deprecations-pr] all non-view uses of `WithViewStore` in order to eventually pair down the number of initializers defined. We won't be able to delete those initializers for a bit of time, but once we can we have found it greatly improves the Swift compiler's ability to handle large, complex views.
+        We have decided to [deprecate][withviewstore-deprecations-pr] all non-view uses of `WithViewStore` in order to eventually pare down the number of initializers defined. We won't be able to delete those initializers for a bit of time, but once we can we have found it greatly improves the Swift compiler's ability to handle large, complex views.
 
         ## Get started today
 
