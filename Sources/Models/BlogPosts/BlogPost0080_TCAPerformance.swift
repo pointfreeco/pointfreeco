@@ -120,6 +120,6 @@ public let post0080_TCAPerformance = BlogPost(
   ],
   coverImage: nil,
   id: 80,
-  publishedAt: Date(timeIntervalSince1970: 1662526800),
+  publishedAt: Date(timeIntervalSince1970: 1662613200),
   title: "Improving Composable Architecture performance"
 )
