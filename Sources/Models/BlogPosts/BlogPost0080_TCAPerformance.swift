@@ -3,12 +3,12 @@ import Foundation
 public let post0080_TCAPerformance = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    The latest release of the Composable Architecture brings a number of performance improvements to its tools, and best of all, most of the changes came from collaboration with people in the TCA community! 🤗
     """,
   contentBlocks: [
     .init(
       content: ###"""
-        We are always looking for ways to improve the performance of our [Composable Architecture][tca-gh], and spurred by some fascinating [discussions][performance-gh-discussion], we spent most of last week looking for performance wins in the library. This has all culminated in a new release, [0.40.0][0_40_0], which brings a number of improvements to the library, and best of all, most of the changes came from collaboration with people in the community! 🤗
+        We are always looking for ways to improve the performance of our [Composable Architecture][tca-gh], and spurred by some fascinating recent [discussions][performance-gh-discussion], we spent most of last week looking for performance wins in the library. This has all culminated in a new release, [0.40.0][0_40_0], which brings a number of improvements to the library, and best of all, most of the changes came from collaboration with people in the community! 🤗
 
         ## ForEachStore performance
 
@@ -54,11 +54,21 @@ public let post0080_TCAPerformance = BlogPost(
 
         The [fix][withviewstore-stateobject-pr] is to make `WithViewStore` use a `@StateObject` under the hood instead of a `@ObservedObject`. Unfortunately we still needed to maintain iOS 13 compatibility, and so [Thomas Grapperon][tgrapperon-twitter] [contributed][ios13-stateobject-pr] a slim backport of state objects to work with iOS 13.
 
-        The results can be quite substantial, causing the number of view stores being created and the number of times views re-compute their bodies to plummet.
+        The results can be quite substantial, causing the number of view stores being created and subscribed to plummet.
 
         ## WithViewStore correctness
 
-        The `WithViewStore` view is a convenient and lightweight tool that allows you to tune the performance of your Composable Architecture view layer, but it can also be a performance pitfall when wielded incorrectly. It is quite common for `WithViewStore` views to observe far more state than it needs, leading to unnecessary view computations and even buggy behavior, especially when these observations are made at the root of your application.
+        While the above changes to the library essentially come for "free", we have also made changes to nudge you towards a more efficient way of using the existing tools.
+
+        The `WithViewStore` view is a convenient and lightweight tool that allows you to tune the performance of your Composable Architecture view layer, but it can also be a performance pitfall when wielded incorrectly. It is quite common for us to see code that constructs a `WithViewStore` that observes _all_ of state, like this:
+
+        ```swift
+        WithViewStore(self.store) { viewStore in
+          // View in here
+        }
+        ```
+
+        While this might be fine for small applications or at the leaf nodes of your application, in bigger applications it can be a problem. It will cause the view to be recomputed for every little change to state, even if the view doesn't use the state, and it can cause buggy behavior in SwiftUI, especially with navigation.
 
         In order to mitigate the problem, 0.40.0 introduces a new interface for constructing `WithViewStore` views that makes state observation explicit:
 
@@ -67,6 +77,8 @@ public let post0080_TCAPerformance = BlogPost(
           // ...
         }
         ```
+
+        This API is intended to nudge you towards chiseling away at `State` to just the bare essentials so that you do not observe too many state changes. See our article on [view store performance][view-store-performance-article] for more information on this technique.
 
         We hope this will help folks identify views that may benefit from the use of dedicated view state, and encourage folks to adopt view state for their features.
 
@@ -101,11 +113,12 @@ public let post0080_TCAPerformance = BlogPost(
         [reducer-protocol-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1282
         [store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/store
         [scope-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/store/scope(state:action:)
+        [view-store-performance-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance#View-stores
         """###,
       type: .paragraph
     )
   ],
-  coverImage: nil,  // TODO
+  coverImage: nil,
   id: 80,
   publishedAt: Date(timeIntervalSince1970: 1662526800),
   title: "Improving Composable Architecture performance"
