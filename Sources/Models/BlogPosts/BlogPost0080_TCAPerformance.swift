@@ -58,7 +58,7 @@ public let post0080_TCAPerformance = BlogPost(
 
         ## WithViewStore correctness
 
-        While the above changes to the library essentially come for "free", we have also made changes to nudge you towards a more efficient way of using the existing tools.
+        While the above performance improvements to the library essentially come for "free" once you update to [0.40.0][0_40_0], we have also made changes to nudge you towards a more efficient way of using the existing tools.
 
         The `WithViewStore` view is a convenient and lightweight tool that allows you to tune the performance of your Composable Architecture view layer, but it can also be a performance pitfall when wielded incorrectly. It is quite common for us to see code that constructs a `WithViewStore` that observes _all_ of state, like this:
 
@@ -92,7 +92,7 @@ public let post0080_TCAPerformance = BlogPost(
 
         ## Get started today
 
-        Upgrade your applications to use 0.40.0 today to start taking advantage of all of these improvements. We also have future changes coming, such as the [`ReducerProtocol`][reducer-protocol-discussion], that will bring even _more_ performance enhancements to applications.
+        Upgrade your applications to use [0.40.0][0_40_0] today to start taking advantage of all of these improvements. We also have future changes coming, such as the [`ReducerProtocol`][reducer-protocol-discussion], that will bring even _more_ performance enhancements to applications.
 
         [pat-brown-gh]: https://github.com/iampatbrown
         [effect-lol]: https://gist.github.com/mbrandonw/4c88b045cc1c161931e9be875957654a
