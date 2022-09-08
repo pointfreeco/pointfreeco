@@ -56,7 +56,19 @@ public let post0080_TCAPerformance = BlogPost(
 
         The results can be quite substantial, causing the number of view stores being created and the number of times views re-compute their bodies to plummet.
 
-        <!-- todo: talk about WithViewStore(_:observing:) -->
+        ## WithViewStore correctness
+
+        The `WithViewStore` view is a convenient and lightweight tool that allows you to tune the performance of your Composable Architecture view layer, but it can also be a performance pitfall when wielded incorrectly. It is quite common for `WithViewStore` views to observe far more state than it needs, leading to unnecessary view computations and even buggy behavior, especially when these observations are made at the root of your application.
+
+        In order to mitigate the problem, 0.40.0 introduces a new interface for constructing `WithViewStore` views that makes state observation explicit:
+
+        ```swift
+        WithViewStore(self.store, observe: <#(State) -> ViewState#>) { viewStore in
+          // ...
+        }
+        ```
+
+        We hope this will help folks identify views that may benefit from the use of dedicated view state, and encourage folks to adopt view state for their features.
 
         ## Compiler performance
 
