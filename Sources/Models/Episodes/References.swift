@@ -810,6 +810,16 @@ extension Episode.Reference {
     title: "Scrap your type classes"
   )
 
+  public static let se0215_conformNeverToEquatableAndHashable = Episode.Reference(
+    author: "Matt Diephouse",
+    blurb: #"""
+      The Swift evolution proposal that extended `Never` to conform to `Equatable` and `Hashable`. The `Never` type, sometimes called a "bottom" type, cannot be instantiated, and can theoretically conform to _most_ protocols.
+      """#,
+    link: "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
+    publishedAt: referenceDateFormatter.date(from: "2018-05-24")!,
+    title: "SE-0215: Conform Never to Equatable and Hashable"
+  )
+
   public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
     author: nil,
     blurb: """
@@ -838,6 +848,16 @@ extension Episode.Reference {
       "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
     publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
     title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
+  )
+
+  public static let se0346_primaryAssociatedTypes = Episode.Reference(
+    author: "Pavel Yaskevich, Holly Borla, Slava Pestov",
+    blurb: #"""
+      The Swift evolution proposal that introduced primary associated types to protocols, which are what unlocked the Composable Architecture's ability to allow reducer compositions to be more ergonomically defined.
+      """#,
+    link: "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
+    publishedAt: referenceDateFormatter.date(from: "2022-03-11")!,
+    title: "SE-0346: Lightweight same-type requirements for primary associated types"
   )
 
   public static let se_0348_buildPartialBlock = Episode.Reference(
