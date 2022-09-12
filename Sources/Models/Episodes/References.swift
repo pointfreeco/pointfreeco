@@ -815,7 +815,8 @@ extension Episode.Reference {
     blurb: #"""
       The Swift evolution proposal that extended `Never` to conform to `Equatable` and `Hashable`. The `Never` type, sometimes called a "bottom" type, cannot be instantiated, and can theoretically conform to _most_ protocols.
       """#,
-    link: "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
+    link:
+      "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
     publishedAt: referenceDateFormatter.date(from: "2018-05-24")!,
     title: "SE-0215: Conform Never to Equatable and Hashable"
   )
@@ -855,7 +856,8 @@ extension Episode.Reference {
     blurb: #"""
       The Swift evolution proposal that introduced primary associated types to protocols, which are what unlocked the Composable Architecture's ability to allow reducer compositions to be more ergonomically defined.
       """#,
-    link: "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
+    link:
+      "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
     publishedAt: referenceDateFormatter.date(from: "2022-03-11")!,
     title: "SE-0346: Lightweight same-type requirements for primary associated types"
   )
