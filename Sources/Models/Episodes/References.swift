@@ -857,7 +857,7 @@ extension Episode.Reference {
       The Swift evolution proposal that introduced primary associated types to protocols, which are what unlocked the Composable Architecture's ability to allow reducer compositions to be more ergonomically defined.
       """#,
     link:
-      "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
+      "https://github.com/apple/swift-evolution/blob/9544e17966879e4a492f0924ab2e6a6e31748225/proposals/0346-light-weight-same-type-syntax.md",
     publishedAt: referenceDateFormatter.date(from: "2022-03-11")!,
     title: "SE-0346: Lightweight same-type requirements for primary associated types"
   )
