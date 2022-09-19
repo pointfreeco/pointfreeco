@@ -205,5 +205,8 @@ extension Episode {
     .ep202_reducerProtocol,
     .ep203_reducerProtocol,
     .ep204_reducerProtocol,
+    .ep205_reducerProtocol,
+    .ep206_reducerProtocol,
+    .ep207_reducerProtocol,
   ]
 }
