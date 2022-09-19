@@ -8,9 +8,9 @@ extension Episode {
     codeSampleDirectory: "0205-reducer-protocol-pt5",
     exercises: _exercises,
     id: 205,
-    length: 36*60 + 9,
+    length: 36 * 60 + 9,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1663563600),
+    publishedAt: Date(timeIntervalSince1970: 1_663_563_600),
     references: [
       // TODO
     ],
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0205-trailer-720p-fa3130e47265433bab7f4d5bc3e0d49d",
         sd540: "0205-trailer-540p-5149697b441644b7850a4be470509504"
       ),
-      vimeoId: 747451051
+      vimeoId: 747_451_051
     )
   )
 }
