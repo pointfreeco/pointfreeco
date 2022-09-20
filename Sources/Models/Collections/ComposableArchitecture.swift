@@ -230,6 +230,7 @@ extension Episode.Collection {
       ),
 
       .asyncComposableArchitecture,
+      .reducerProtocol
     ],
     title: "Composable Architecture"
   )
@@ -250,6 +251,25 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "Async Composable Architecture",
+    whereToGoFromHere: #"""
+      Adding a deeper integration with Swift's concurrency tools greatly improved the ergonomics of the library, but it pales in comparison to the next series of episodes.
+      """#
+  )
+
+  static let reducerProtocol = Self(
+    blurb: #"""
+      We make the biggest update to the core ergonomics of the library since it's first release in 2020. By putting a protocol in front of the reducer type, we will greatly improve the compiler's ability to typecheck our features, find new ways to compose features together, and greatly simplify how dependencies are managed in applications.
+      """#,
+    coreLessons: [
+      .init(episode: .ep201_reducerProtocol),
+      .init(episode: .ep202_reducerProtocol),
+      .init(episode: .ep203_reducerProtocol),
+      .init(episode: .ep204_reducerProtocol),
+      .init(episode: .ep205_reducerProtocol),
+    ],
+    isFinished: false,
+    related: [],
+    title: "Reducer Protocol",
     whereToGoFromHere: nil
   )
 }
