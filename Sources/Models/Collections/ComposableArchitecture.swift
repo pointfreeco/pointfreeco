@@ -230,7 +230,7 @@ extension Episode.Collection {
       ),
 
       .asyncComposableArchitecture,
-      .reducerProtocol
+      .reducerProtocol,
     ],
     title: "Composable Architecture"
   )
