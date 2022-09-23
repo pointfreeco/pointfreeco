@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep206_reducerProtocol = Episode(
     blurb: """
-      TODO
+      We now have a SwiftUI-inspired system for plucking dependencies out of thin air to provide them to reducers, but we can’t control them or separate interface from implementation. Once we do, we’ll have something far better than ever before.
       """,
     codeSampleDirectory: "0206-reducer-protocol-pt6",
     exercises: _exercises,
