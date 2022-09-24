@@ -38,7 +38,7 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", .exact("1.3.1")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
-    .package(url: "https://github.com/pointfreeco/swift-html", from: "0.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-html", .revision("b0e6254")),
     .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
