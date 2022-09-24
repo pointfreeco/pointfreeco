@@ -38,7 +38,7 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", .exact("1.3.1")),
     .package(url: "https://github.com/vapor/postgres-kit", .exact("2.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
-    .package(url: "https://github.com/pointfreeco/swift-html", .revision("b0e6254")),
+    .package(url: "https://github.com/pointfreeco/swift-html", .revision("59d1ec6")),
     .package(url: "https://github.com/pointfreeco/swift-overture", .revision("ac1cd0f")),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
@@ -127,7 +127,7 @@ var package = Package(
         "PointFreeTestSupport",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
@@ -163,7 +163,7 @@ var package = Package(
         "GitHub",
         "GitHubTestSupport",
         "PointFreeTestSupport",
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
@@ -296,7 +296,7 @@ var package = Package(
         "PointFreeTestSupport",
         .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Overture", package: "swift-overture"),
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
@@ -333,7 +333,7 @@ var package = Package(
         .product(name: "HttpPipelineTestSupport", package: "swift-web"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "swift-prelude"),
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
@@ -382,7 +382,7 @@ var package = Package(
         "PointFreeTestSupport",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
@@ -407,7 +407,7 @@ var package = Package(
         "Styleguide",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
-        .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
