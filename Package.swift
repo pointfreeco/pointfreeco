@@ -44,7 +44,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.10.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", .revision("8cbec70")),
+    .package(url: "https://github.com/pointfreeco/swift-web", .revision("ccd0763")),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
   targets: [
