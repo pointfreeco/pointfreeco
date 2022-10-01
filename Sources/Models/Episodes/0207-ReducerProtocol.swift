@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep207_reducerProtocol = Episode(
     blurb: """
-      TODO
+      The Composable Architecture makes testing a top priority and we never want to introduce changes that hurt this. How about the reducer protocol? It improves testability by codifying a pattern that makes tests stronger and more exhaustive.
       """,
     codeSampleDirectory: "0207-reducer-protocol-pt7",
     exercises: _exercises,
