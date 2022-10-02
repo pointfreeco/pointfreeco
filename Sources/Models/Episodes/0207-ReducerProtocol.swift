@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep207_reducerProtocol = Episode(
     blurb: """
-      TODO
+      Testing is a top priority in the Composable Architecture, so what does the reducer protocol
+      and new dependency management system add to testing features? It allows us to codify a testing
+      pattern directly into the library that makes our tests instantly stronger and more exhaustive.
       """,
     codeSampleDirectory: "0207-reducer-protocol-pt7",
     exercises: _exercises,
