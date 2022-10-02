@@ -15,7 +15,7 @@ public let post0081_ReducerProtocol = BlogPost(
         system to everyone who upgrades to version [0.41.0][0_41_0].
 
         To celebrate, we are releasing a [free episode][in-practice] to show off some of the
-        changes, and demonstrate how it has massively simplified many of our case studies and demo
+        changes, and demonstrate how it has massively simplifies many of our case studies and demo
         applications, as well as [isowords][isowords], our [open-source][isowords-gh] word game
         built entirely in the Composable Architecture and SwiftUI.
 
@@ -44,13 +44,13 @@ public let post0081_ReducerProtocol = BlogPost(
         ```
 
         …and in the process of doing this can improve the stability of the Swift compiler to
-        properly typecheck your program and provide inline warnings.
+        properly type check your program and provide inline warnings.
 
         The protocol also gives us the opportunity to reimagine what composition of reducers looks
         like. By leveraging result builders and Swift 5.7's new support for constrained opaque
-        types, we can provide a way to compose multiple reducers that looks familiar to SwiftUI
-        syntax. For example, the app-level reducer that handles the functionality for 3 tabs
-        in a tab view can look like this:
+        types, we can provide a way to compose multiple reducers that looks similar to SwiftUI
+        syntax. For example, the app-level reducer that handles the functionality for 3 tabs in a
+        tab view can look like this:
 
         ```swift
         struct App: ReducerProtocol {
@@ -112,12 +112,12 @@ public let post0081_ReducerProtocol = BlogPost(
 
         The library also bakes in some extra safety around dependency usage. For example, "live"
         dependencies are not allowed to be used in tests, and if they are it will cause a test
-        failure. This makes you be explicit with mocking dependencies so that you do not
+        failure. This encourages you to be explicit with mocking dependencies so that you do not
         unknowingly interact with the real world in tests unless you explicitly state you want to.
 
         Further, when registering a dependency with the library you can optionally provide extra
-        implementations in addition to the live value. You can provide a test value that will
-        be used when you test your feature in a `TestStore`. And you can provide a preview value
+        implementations in addition to the live value. You can provide a "test" value that will
+        be used when you test your feature in a `TestStore`. And you can provide a "preview" value
         that will be used when your feature is run in an Xcode preview.
 
         If you want to learn more about how to best leverage the dependency system in the
