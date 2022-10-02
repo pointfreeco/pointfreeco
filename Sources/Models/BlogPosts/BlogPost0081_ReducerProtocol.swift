@@ -86,7 +86,7 @@ public let post0081_ReducerProtocol = BlogPost(
         ## Dependencies made easy
 
         The biggest new feature that the reducer protocol unlocked for the library is a brand new
-        dependency management system. Now that reducers are types, they become the natural place
+        dependency management system. Now that reducers are types they become the natural place
         to hold onto dependencies. There's no need to define a separate "environment" type that
         holds all of the dependencies the feature needs to do its job, which means no need to
         maintain the boilerplate of an initializer if you decide to modularize later.
