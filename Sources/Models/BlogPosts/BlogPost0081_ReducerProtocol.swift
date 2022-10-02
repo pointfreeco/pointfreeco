@@ -15,7 +15,7 @@ public let post0081_ReducerProtocol = BlogPost(
         system to everyone who upgrades to version [0.41.0][0_41_0].
 
         To celebrate, we are releasing a [free episode][in-practice] to show off some of the
-        changes, and demonstrate how it has massively simplifies many of our case studies and demo
+        changes, and demonstrate how it massively simplifies many of our case studies and demo
         applications, as well as [isowords][isowords], our [open-source][isowords-gh] word game
         built entirely in the Composable Architecture and SwiftUI.
 
