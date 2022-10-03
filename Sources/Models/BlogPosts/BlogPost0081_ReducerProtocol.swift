@@ -124,17 +124,42 @@ public let post0081_ReducerProtocol = BlogPost(
         Composable Architecture, and how to best design your own dependencies, read our dedicated
         [article][dependencies-article] on the subject.
 
+        ## Performance improvements
+
+        Once you have moved your features built in the library to the new `ReducerProtocol` you
+        stand to see some performance improvements, especially for deeply nested features. The
+        Swift compiler can do a much better job optimizing and inlining methods than it can with
+        escaping closures, causing stack traces to become slimmer and hence stack memory usage to
+        drop.
+
+        We demonstrated this in [this week's][in-practice] where we showed that drilling many layers
+        deep into a recursive UI led to a stack trace of 164 frames, but only 29 of those frames
+        were actually from the application. To contrast, the same application running on the
+        previous version of the library produced a stack trace of 191 stack frames, and 113 of those
+        frames were due to the application. This means the `ReducerProtocol` version of the
+        application has about a fourth of the number of stack frames.
+
         ## Updated documentation
 
-        <!--
-        docs
-        upgrade guide
-        new articles
-        -->
+        This release has also brought a massive improvement to the documentation of the library.
+        Many types and methods now have fuller descriptions and explanations, some articles
+        have been updated, and a few new articles have been added.
+
+        There is now a dedicated article on [dependency management][dependencies-article]. It
+        covers the "why" and "how" of dependency management, and shows how to make use of the
+        controllable dependencies the library comes with, as well as how to register your own.
+        It also gives a detailed explanation of how the new dependency management system works
+        with testing and Xcode previews, as well as some tips on how to best design your own
+        dependency clients.
+
+        There is also a dedicated article on [migration strategies][migration-article] to the
+        new `ReducerProtocol` style of building features. It outlines many scenarious you are likely
+        to encounter while migrating your existing application, and if something is not covered
+        we highly recommend you open a [GitHub discussion][gh-discussions] about it.
 
         ## Get started today
 
-        We have only scratched the surface of the far reaching consequences of this update. Be
+        We have barely scratched the surface of the far reaching consequences of this update. Be
         sure to watch this week's [free episode][in-practice] and update to version
         [0.41.0][0_41_0] today!
 
@@ -151,6 +176,8 @@ public let post0081_ReducerProtocol = BlogPost(
         [ifcaselet-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/scope/ifcaselet(_:action:then:file:fileid:line:)
         [dependency-pw-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/dependencies/dependency
         [dependencies-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/dependencymanagement/
+        [migration-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/migratingtothereducerprotocol/
+        [gh-discussions]: http://github.com/pointfreeco/swift-composable-architecture/discussions
         """###,
       type: .paragraph
     )
