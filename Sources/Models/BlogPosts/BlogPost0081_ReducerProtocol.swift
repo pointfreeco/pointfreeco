@@ -141,8 +141,8 @@ public let post0081_ReducerProtocol = BlogPost(
 
         ## Updated documentation
 
-        This release has also brought a massive improvement to the documentation of the library.
-        Many types and methods now have fuller descriptions and explanations, some articles
+        This release has also brought a massive improvement to the [documentation][tca-docs] of the
+        library. Many types and methods now have fuller descriptions and explanations, some articles
         have been updated, and a few new articles have been added.
 
         There is now a dedicated article on [dependency management][dependencies-article]. It
@@ -177,6 +177,7 @@ public let post0081_ReducerProtocol = BlogPost(
         [dependency-pw-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/dependencies/dependency
         [dependencies-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/dependencymanagement/
         [migration-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/migratingtothereducerprotocol/
+        [tca-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/
         [gh-discussions]: http://github.com/pointfreeco/swift-composable-architecture/discussions
         """###,
       type: .paragraph
