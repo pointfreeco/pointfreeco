@@ -137,6 +137,9 @@ public let post0081_ReducerProtocol = BlogPost(
         of those frames were due to the application. This means the `ReducerProtocol` version of the
         application has about a fourth of the number of stack frames for that use case.
 
+        For more information on maximizing performance when using the library, be sure to check out
+        our dedicated [performance][performance-article] article.
+
         ## Updated documentation
 
         This release has also brought a massive improvement to the [documentation][tca-docs] of the
@@ -178,6 +181,7 @@ public let post0081_ReducerProtocol = BlogPost(
         [tca-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/
         [gh-discussions]: http://github.com/pointfreeco/swift-composable-architecture/discussions
         [dependency-key-writer-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/reducerprotocol/dependency(_:_:)
+        [performance-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/performance/
         """###,
       type: .paragraph
     )
