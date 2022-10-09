@@ -125,17 +125,17 @@ public let post0081_ReducerProtocol = BlogPost(
 
         ## Performance improvements
 
-        Once you have moved your features to the new `ReducerProtocol` you stand to see some
+        Once you have moved your features to the new `ReducerProtocol` you may see some
         performance improvements, especially for deeply nested features. The Swift compiler can do
         a much better job optimizing and inlining methods than it can with escaping closures,
-        causing stack traces to become slimmer and hence stack memory usage to drop.
+        causing stack traces to become slimmer and stack memory usage to drop.
 
         We demonstrated this in [this week's episode][in-practice] where we showed that drilling
         many layers deep into a recursive UI led to a stack trace of 164 frames, but only 29 of
         those frames were actually from the application. To contrast, the same application running
         on the previous version of the library produced a stack trace of 191 stack frames, and 113
         of those frames were due to the application. This means the `ReducerProtocol` version of the
-        application has about a fourth of the number of stack frames.
+        application has about a fourth of the number of stack frames for that use case.
 
         ## Updated documentation
 
