@@ -86,7 +86,7 @@ public let post0081_ReducerProtocol = BlogPost(
         ## Dependencies made easy
 
         The biggest new feature that the reducer protocol unlocked for the library is a brand new
-        dependency management system. Now that reducers are types they become the natural place
+        dependency management system. Now that reducers are types, they become the natural place
         to hold onto dependencies. There's no need to define a separate "environment" type that
         holds all of the dependencies the feature needs to do its job, which means no need to
         maintain the boilerplate of an initializer if you decide to modularize later.
@@ -107,8 +107,8 @@ public let post0081_ReducerProtocol = BlogPost(
 
         There's no need to explicitly pass dependencies through every layer of the application.
         You can add a new dependency to a leaf node of your features with a single line of code
-        and without updating any other feature. And it's possible to override dependencies for
-        a specific reducer and its effects.
+        and without updating any other feature. And it's possible to
+        [override][dependency-key-writer-docs] dependencies for a specific reducer and its effects.
 
         The library also bakes in some extra safety around dependency usage. For example, "live"
         dependencies are not allowed to be used in tests, and if they are it will cause a test
@@ -120,23 +120,21 @@ public let post0081_ReducerProtocol = BlogPost(
         be used when you test your feature in a `TestStore`. And you can provide a "preview" value
         that will be used when your feature is run in an Xcode preview.
 
-        If you want to learn more about how to best leverage the dependency system in the
-        Composable Architecture, and how to best design your own dependencies, read our dedicated
-        [article][dependencies-article] on the subject.
+        Read our dedicated [article][dependencies-article] to learn more about how to best leverage
+        the dependency system in the library, and how to best design your own dependencies.
 
         ## Performance improvements
 
-        Once you have moved your features built in the library to the new `ReducerProtocol` you
-        stand to see some performance improvements, especially for deeply nested features. The
-        Swift compiler can do a much better job optimizing and inlining methods than it can with
-        escaping closures, causing stack traces to become slimmer and hence stack memory usage to
-        drop.
+        Once you have moved your features to the new `ReducerProtocol` you stand to see some
+        performance improvements, especially for deeply nested features. The Swift compiler can do
+        a much better job optimizing and inlining methods than it can with escaping closures,
+        causing stack traces to become slimmer and hence stack memory usage to drop.
 
-        We demonstrated this in [this week's][in-practice] where we showed that drilling many layers
-        deep into a recursive UI led to a stack trace of 164 frames, but only 29 of those frames
-        were actually from the application. To contrast, the same application running on the
-        previous version of the library produced a stack trace of 191 stack frames, and 113 of those
-        frames were due to the application. This means the `ReducerProtocol` version of the
+        We demonstrated this in [this week's episode][in-practice] where we showed that drilling
+        many layers deep into a recursive UI led to a stack trace of 164 frames, but only 29 of
+        those frames were actually from the application. To contrast, the same application running
+        on the previous version of the library produced a stack trace of 191 stack frames, and 113
+        of those frames were due to the application. This means the `ReducerProtocol` version of the
         application has about a fourth of the number of stack frames.
 
         ## Updated documentation
@@ -179,6 +177,7 @@ public let post0081_ReducerProtocol = BlogPost(
         [migration-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/migratingtothereducerprotocol/
         [tca-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/
         [gh-discussions]: http://github.com/pointfreeco/swift-composable-architecture/discussions
+        [dependency-key-writer-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/reducerprotocol/dependency(_:_:)
         """###,
       type: .paragraph
     )
