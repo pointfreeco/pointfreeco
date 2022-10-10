@@ -166,7 +166,7 @@ public let post0081_ReducerProtocol = BlogPost(
 
         [async-tca-blog-post]: /blog/posts/79-async-composable-architecture
         [0_41_0]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.41.0
-        [in-practice]: TODO
+        [in-practice]: /episodes/ep208-reducer-protocol-in-practice
         [isowords]: http://isowords.xyz
         [isowords-gh]: http://github.com/pointfreeco/isowords
         [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
