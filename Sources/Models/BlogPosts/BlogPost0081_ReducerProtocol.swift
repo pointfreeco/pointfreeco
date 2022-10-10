@@ -92,7 +92,7 @@ public let post0081_ReducerProtocol = BlogPost(
         maintain the boilerplate of an initializer if you decide to modularize later.
 
         Even better, by taking some inspiration from SwiftUI, you can provide dependencies to your
-        reducers via a [property wrapper][dependency-pw-docs] that pulls from a global store of
+        reducers via a property wrapper that pulls from a global store of
         dependencies:
 
         ```swift
@@ -175,7 +175,6 @@ public let post0081_ReducerProtocol = BlogPost(
         [iflet-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/scope/iflet(_:action:then:file:fileid:line:)
         [foreach-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/scope/foreach(_:action:_:file:fileid:line:)
         [ifcaselet-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/scope/ifcaselet(_:action:then:file:fileid:line:)
-        [dependency-pw-docs]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/dependencies/dependency
         [dependencies-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/dependencymanagement/
         [migration-article]: https://pointfreeco.github.io/swift-composable-architecture/0.41.0/documentation/composablearchitecture/migratingtothereducerprotocol/
         [tca-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/
