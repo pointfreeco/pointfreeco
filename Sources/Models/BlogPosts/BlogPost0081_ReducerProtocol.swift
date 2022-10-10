@@ -186,8 +186,8 @@ public let post0081_ReducerProtocol = BlogPost(
       type: .paragraph
     )
   ],
-  coverImage: nil,  
+  coverImage: nil,
   id: 81,
-  publishedAt: .init(timeIntervalSince1970: 1665378000),
+  publishedAt: .init(timeIntervalSince1970: 1_665_378_000),
   title: "Announcing the Reducer Protocol"
 )
