@@ -872,6 +872,17 @@ extension Episode.Reference {
     title: "SE-0348: buildPartialBlock for result builders"
   )
 
+  public static let se_0374_clockSleepFor = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      A Swift Evolution proposal from yours truly that introduced a `sleep(for:)` method to `Clock`, making it possible for clock existentials to sleep.
+      """,
+    link:
+      "https://github.com/apple/swift-evolution/blob/main/proposals/0374-clock-sleep-for.md",
+    publishedAt: referenceDateFormatter.date(from: "2022-09-19"),
+    title: "SE-0374: Add `sleep(for:)` to `Clock`"
+  )
+
   public static let semanticEditorCombinators = Episode.Reference(
     author: "Conal Elliott",
     blurb: """
