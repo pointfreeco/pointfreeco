@@ -10,9 +10,9 @@ extension Episode {
     id: 209,
     length: 53 * 60 + 2,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1665982800),
+    publishedAt: Date(timeIntervalSince1970: 1_665_982_800),
     references: [
-      .se_0374_clockSleepFor,
+      .se_0374_clockSleepFor
     ],
     sequence: 209,
     subtitle: "Existential Time",
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0209-trailer-720p-710024ee675643238cc46da960c72159",
         sd540: "0209-trailer-540p-ad8caaa926a64465967bf5713650d493"
       ),
-      vimeoId: 756544245
+      vimeoId: 756_544_245
     )
   )
 }
