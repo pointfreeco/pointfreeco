@@ -856,7 +856,8 @@ extension Episode.Reference {
     blurb: """
       The proposal that introduced the `Clock` protocol to the Swift standard library.
       """,
-    link: "https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md",
+    link:
+      "https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md",
     publishedAt: referenceDateFormatter.date(from: "2021-09-29"),
     title: "SE-0329: Clock, Instant, and Duration"
   )
