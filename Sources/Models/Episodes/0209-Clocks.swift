@@ -12,7 +12,17 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_665_982_800),
     references: [
-      .se_0374_clockSleepFor
+      .se0329_clockInstantDuration,
+      Reference(
+        author: "Brandon Williams & Stephen Celis",
+        blurb: """
+          Originally there was some question as to whether or not the `Clock` protocol should have a primary associated type. We took to the forums to help motivate it.
+          """,
+        link: "https://forums.swift.org/t/pitch-primary-associated-types-in-the-standard-library/56426/30",
+        publishedAt: referenceDateFormatter.date(from: "2022-04-06"),
+        title: "Reply to Pitch: 'Primary Associated Types in the Standard Library'"
+      ),
+      .se_0374_clockSleepFor,
     ],
     sequence: 209,
     subtitle: "Existential Time",

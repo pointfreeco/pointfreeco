@@ -851,6 +851,16 @@ extension Episode.Reference {
     title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
   )
 
+  public static let se0329_clockInstantDuration = Episode.Reference(
+    author: "Philippe Hausler",
+    blurb: """
+      The proposal that introduced the `Clock` protocol to the Swift standard library.
+      """,
+    link: "https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md",
+    publishedAt: referenceDateFormatter.date(from: "2021-09-29"),
+    title: "SE-0329: Clock, Instant, and Duration"
+  )
+
   public static let se0346_primaryAssociatedTypes = Episode.Reference(
     author: "Pavel Yaskevich, Holly Borla, Slava Pestov",
     blurb: #"""
