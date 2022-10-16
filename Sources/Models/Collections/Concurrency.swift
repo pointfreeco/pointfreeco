@@ -23,7 +23,32 @@ extension Episode.Collection {
             content: .section(.wwdc, index: 0)
           )
         ],
-        title: "Concurrency",
+        title: "Threads, queues and tasks",
+        whereToGoFromHere: nil
+      ),
+      .init(
+        blurb: """
+          The `Clock` protocol is the fundamental unit for expressing time-based asynchrony in
+          Swift. It serves a similar purpose to Combine's `Scheduler` protocol, but is simpler
+          and more powerful. Understanding this protocol and creating your own conformances can
+          allow you to take control over time in your applications, rather than letting it control
+          you.
+          """,
+        coreLessons: [
+          .init(episode: .ep209_clocks),
+        ],
+        isFinished: false,
+        related: [
+          .init(
+            blurb: """
+              We previously covered Combine schedulers in depth, including how to erase their
+              types for tests and how to build clocks that allow us to control how time flows
+              through our features' code.
+              """,
+            content: .section(.combine, index: 1)
+          )
+        ],
+        title: "Clocks",
         whereToGoFromHere: nil
       )
     ],
