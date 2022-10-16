@@ -35,7 +35,7 @@ extension Episode.Collection {
           you.
           """,
         coreLessons: [
-          .init(episode: .ep209_clocks),
+          .init(episode: .ep209_clocks)
         ],
         isFinished: false,
         related: [
@@ -50,7 +50,7 @@ extension Episode.Collection {
         ],
         title: "Clocks",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Concurrency"
   )
