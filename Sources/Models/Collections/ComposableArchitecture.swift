@@ -268,6 +268,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep205_reducerProtocol),
       .init(episode: .ep206_reducerProtocol),
       .init(episode: .ep207_reducerProtocol),
+      .init(episode: .ep208_reducerProtocol),
     ],
     related: [],
     title: "Reducer Protocol",
