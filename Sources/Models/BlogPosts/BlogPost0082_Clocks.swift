@@ -18,9 +18,9 @@ public let post0082_AnnouncingClocks = BlogPost(
 
         ## Motivation
 
-        The `Clock` protocol provides a powerful abstraction for time-based asynchrony in Swift's
-        structured concurrency. With just a single `sleep` method you can express many powerful
-        async operators, such as timers, `debounce`, `throttle`, `timeout` and more (see
+        The `Clock` protocol in Swift provides a powerful abstraction for time-based asynchrony in
+        Swift's structured concurrency. With just a single `sleep` method you can express many
+        powerful async operators, such as timers, `debounce`, `throttle`, `timeout` and more (see
         [swift-async-algorithms][swift-async-algorithms]).
 
         However, the moment you use a concrete clock in your asynchronous code, or use `Task.sleep`
@@ -147,7 +147,7 @@ public let post0082_AnnouncingClocks = BlogPost(
 
         This is currently using a real life clock by calling out to `Task.sleep`, which means that
         while iterating on the styling and behavior of this feature in an Xcode preview you will
-        have to wait for 5 real life seconds to pass before you see the affect. This will severely
+        have to wait for 5 real life seconds to pass before you see the effect. This will severely
         hurt you ability to quickly iterate on the feature in an Xcode preview.
 
         The fix is to have your view hold onto a clock so that it can be controlled from the
