@@ -8,36 +8,47 @@ public let post0082_AnnouncingClocks = BlogPost(
   contentBlocks: [
     .init(
       content: #"""
-        Over the past [couple weeks](/collections/concurrency/clocks) we explored Swift 5.7's new `Clock` protocol, compared it to [Combine's `Scheduler` protocol](/collections/combine/schedulers), and defined a whole bunch of useful conformances.
+        Over the past [couple weeks](/collections/concurrency/clocks) we explored Swift 5.7's new
+        `Clock` protocol, compared it to [Combine's `Scheduler` protocol][schedulers-collection],
+        and defined a whole bunch of useful conformances.
 
-        We believe these tools are highly applicable to everyone working with time-based asynchrony in Swift, and so today we are excited to release them in [a new open source library](https://swiftpackageindex.com/pointfreeco/swift-clocks).
+        We believe these tools are highly applicable to everyone working with time-based asynchrony
+        in Swift, and so today we are excited to release them in
+        [a new open source library][spi-swift-clocks].
 
         ## Motivation
 
-        The `Clock` protocol in provides a powerful abstraction for time-based asynchrony in Swift's
-        structured concurrency. With just a single `sleep` method you can express many powerful async
-        operators, such as timers, `debounce`, `throttle`, `timeout` and more (see
+        The `Clock` protocol provides a powerful abstraction for time-based asynchrony in Swift's
+        structured concurrency. With just a single `sleep` method you can express many powerful
+        async operators, such as timers, `debounce`, `throttle`, `timeout` and more (see
         [swift-async-algorithms][swift-async-algorithms]).
 
         However, the moment you use a concrete clock in your asynchronous code, or use `Task.sleep`
-        directly, you instantly lose the  ability to easily test and preview your features, forcing you to
-        wait for real world time to pass to see how your feature works.
+        directly, you instantly lose the  ability to easily test and preview your features, forcing
+        you to wait for real world time to pass to see how your feature works.
 
         ## Tools
 
-        This library provides new `Clock` conformances that allow you to turn any time-based asynchronous
-        code into something that is easier to test and debug.
+        This library provides new `Clock` conformances that allow you to turn any time-based
+        asynchronous code into something that is easier to test and debug:
+
+        * [TestClock](#TestClock)
+        * [ImmediateClock](#ImmediateClock)
+        * [UnimplementedClock](#UnimplementedClock)
+        * [Timers](#Timers)
+
+        <div id="TestClock"></div>
 
         ### `TestClock`
 
-        A clock whose time can be controlled in a deterministic manner.
+        This is a clock whose time can be controlled in a deterministic manner.
 
-        This clock is useful for testing how the flow of time affects asynchronous and concurrent code.
-        This includes any code that makes use of `sleep` or any time-based async operators, such as
-        `debounce`, `throttle`, `timeout`, and more.
+        This clock is useful for testing how the flow of time affects asynchronous and concurrent
+        code. This includes any code that makes use of `sleep` or any time-based async operators,
+        such as `debounce`, `throttle`, `timeout`, and more.
 
-        For example, suppose you have a model that encapsulates the behavior of a timer that be started and
-        stopped, and with each tick of the timer a count value was incremented:
+        For example, suppose you have a model that encapsulates the behavior of a timer that can be
+        started and stopped, and with each tick of the timer a count value is incremented:
 
         ```swift
         @MainActor
@@ -64,12 +75,13 @@ public let post0082_AnnouncingClocks = BlogPost(
         }
         ```
 
-        Note that we have explicitly forced a clock to be provided in order to construct the `FeatureModel`.
-        This makes it possible to use a real life clock, such as `ContinuousClock`, when running on a device
-        or simulator, and use a more controllable clock in tests, such as the `TestClock`.
+        Note that we have explicitly forced a clock to be provided in order to construct the
+        `FeatureModel`. This makes it possible to use a real life clock, such as `ContinuousClock`,
+        when running on a device or simulator, and use a more controllable clock in tests, such as
+        the [`TestClock`][test-clock-docs].
 
-        To write a test for this feature we can construct a `FeatureModel` with a `TestClock`, then advance
-        the clock forward and assert on how the model changes:
+        To write a test for this feature we can construct a `FeatureModel` with a `TestClock`, then
+        advance the clock forward and assert on how the model changes:
 
         ```swift
         func testTimer() async {
@@ -79,31 +91,39 @@ public let post0082_AnnouncingClocks = BlogPost(
           XCTAssertEqual(model.count, 0)
           model.startTimerButtonTapped()
 
+          // Advance the clock 1 second and prove that the model's
+          // count incremented by one.
           await clock.advance(by: .seconds(1))
           XCTAssertEqual(model.count, 1)
 
+          // Advance the clock 4 seconds and prove that the model's
+          // count incremented by 4.
           await clock.advance(by: .seconds(4))
           XCTAssertEqual(model.count, 5)
 
+          // Stop the timer, run the clock until there is no more
+          // suspensions, and prove that the count did not increment.
           model.stopTimerButtonTapped()
           await clock.run()
           XCTAssertEqual(model.count, 5)
         }
         ```
 
-        This test is easy to write, passes deterministically, and takes a fraction of a second to run. If
-        you were to use a concrete clock in your feature, such as test would be difficult to write. You
-        would have to wait for real time to pass, slowing down your test suite, and you would have to take
-        extra care to allow for the inherent imprecision in time-based asynchrony so that you do not have
-        flakey tests.
+        This test is easy to write, passes deterministically, and takes a fraction of a second to
+        run. If you were to use a concrete clock in your feature, such a test would be difficult
+        to write. You would have to wait for real time to pass, slowing down your test suite, and
+        you would have to take extra care to allow for the inherent imprecision in time-based
+        asynchrony so that you do not have flakey tests.
+
+        <div id="ImmediateClock"></div>
 
         ### `ImmediateClock`
 
         A clock that does not suspend when sleeping.
 
-        This clock is useful for squashing all of time down to a single instant, forcing any `sleep`s to
-        execute immediately. For example, suppose you have a feature that needs to wait 5 seconds before
-        performing some action, like showing a welcome message:
+        This clock is useful for squashing all of time down to a single instant, forcing any
+        `sleep`s to execute immediately. For example, suppose you have a feature that needs to wait
+        5 seconds before performing some action, like showing a welcome message:
 
         ```swift
         struct Feature: View {
@@ -125,12 +145,13 @@ public let post0082_AnnouncingClocks = BlogPost(
         }
         ```
 
-        This is currently using a real life clock by calling out to `Task.sleep`, which means every change
-        you make to the styling and behavior of this feature you must wait for 5 real life seconds to pass
-        before you see the affect. This will severely hurt you ability to quickly iterate on the feature in
-        an Xcode preview.
+        This is currently using a real life clock by calling out to `Task.sleep`, which means that
+        while iterating on the styling and behavior of this feature in an Xcode preview you will
+        have to wait for 5 real life seconds to pass before you see the affect. This will severely
+        hurt you ability to quickly iterate on the feature in an Xcode preview.
 
-        The fix is to have your view hold onto a clock so that it can be controlled from the outside:
+        The fix is to have your view hold onto a clock so that it can be controlled from the
+        outside:
 
         ```swift
         struct Feature: View {
@@ -153,13 +174,14 @@ public let post0082_AnnouncingClocks = BlogPost(
         }
         ```
 
-        Then you can construct this view with a `ContinuousClock` when running on a device or simulator,
-        and use an ``ImmediateClock`` when running in an Xcode preview:
+        Then you can construct this view with a `ContinuousClock` when running on a device or
+        simulator, and use an [``ImmediateClock``][immediate-clock-docs] when running in an Xcode
+        preview:
 
         ```swift
         struct Feature_Previews: PreviewProvider {
           static var previews: some View {
-            Feature(clock: .immediate)
+            Feature(clock: ImmediateClock())
           }
         }
         ```
@@ -167,8 +189,8 @@ public let post0082_AnnouncingClocks = BlogPost(
         Now the welcome message will be displayed immediately with every change made to the view. No
         need to wait for 5 real world seconds to pass.
 
-        You can also propagate a clock to a SwiftUI view via the `continuousClock` and `suspendingClock`
-        environment values that ship with the library:
+        You can also propagate a clock to a SwiftUI view via the `continuousClock` and
+        `suspendingClock` environment values that ship with the library:
 
         ```swift
         struct Feature: View {
@@ -193,21 +215,24 @@ public let post0082_AnnouncingClocks = BlogPost(
         struct Feature_Previews: PreviewProvider {
           static var previews: some View {
             Feature()
-              .environment(\.continuousClock, .immediate)
+              .environment(\.continuousClock, ImmediateClock())
           }
         }
         ```
+
+        <div id="UnimplementedClock"></div>
 
         ### `UnimplementedClock`
 
         A clock that causes an XCTest failure when any of its endpoints are invoked.
 
-        This test is useful when a clock dependency must be provided to test a feature, but you don't
-        actually expect the clock to be used in the particular execution flow you are exercising.
+        This clock is useful when a clock dependency must be provided to test a feature, but you
+        don't actually expect the clock to be used in the particular execution flow you are
+        exercising.
 
-        For example, consider the following model that encapsulates the behavior of being able to increment
-        and decrement a count, as well as starting and stopping a timer that increments the counter every
-        second:
+        For example, consider the following model that encapsulates the behavior of being able to
+        increment and decrement a count, as well as starting and stopping a timer that increments
+        the counter every second:
 
         ```swift
         @MainActor
@@ -239,9 +264,9 @@ public let post0082_AnnouncingClocks = BlogPost(
         }
         ```
 
-        If we test the flow of the user incrementing and decrementing the count, there is no need for the
-        clock. We don't expect any time-based asynchrony to occur. To make this clear, we can use an
-        `UnimplementedClock`:
+        If we test the flow of the user incrementing and decrementing the count, there is no need
+        for the clock. We don't expect any time-based asynchrony to occur. To make this clear, we
+        can use an [`UnimplementedClock`][unimplemented-clock-docs]:
 
         ```swift
         func testIncrementDecrement() {
@@ -255,18 +280,20 @@ public let post0082_AnnouncingClocks = BlogPost(
         }
         ```
 
-        If this test passes it definitively proves that the clock is not used at all in the user flow being
-        tested, making this test stronger. If in the future the increment and decrement endpoints start
-        making use of time-based asynchrony using the clock, we will be instantly notified by test failures.
-        This will help us find the tests that should be updated to assert on the new behavior in the
-        feature.
+        If this test passes it definitively proves that the clock is not used at all in the user
+        flow being tested, making this test stronger. If in the future the increment and decrement
+        endpoints start making use of time-based asynchrony using the clock, we will be instantly
+        notified by test failures. This will help us find the tests that should be updated to assert
+        on the new behavior in the feature.
+
+        <div id="Timers"></div>
 
         ### Timers
 
-        All clocks now come with a method that allows you to create an `AsyncSequence`-based timer on an
-        interval specified by a duration. This allows you to handle timers with simple `for await` syntax,
-        such as this observable object that exposes the ability to start and stop a timer for incrementing a
-        value every second:
+        The library ships with a method defined on all clocks that allows you to create an
+        `AsyncSequence`-based timer on an interval specified by a duration. This allows you to
+        handle timers with simple `for await` syntax, such as this observable object that exposes
+        the ability to start and stop a timer for incrementing a value every second:
 
         ```swift
         @MainActor
@@ -315,9 +342,20 @@ public let post0082_AnnouncingClocks = BlogPost(
 
         ## Try it today
 
-        [swift-clocks 0.1.0](https://github.com/pointfreeco/swift-clocks/releases/tag/0.1.0) is available today! Give it a spin to introduce controllable, time-based asynchrony to your Swift applications. And if you're a user of [the Composable Architecture](/collections/composable-architecture), try out [the latest release](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.44.0) to bring these tools to your reducers!
+        [swift-clocks 0.1.0](https://github.com/pointfreeco/swift-clocks/releases/tag/0.1.0) is
+        available today! Give it a spin to introduce controllable, time-based asynchrony to your
+        Swift applications. And if you're a user of [the Composable Architecture][tca-collection],
+        try out [the latest release][tca-0.44.0] to bring these tools to your reducers!
 
         [swift-async-algorithms]: http://github.com/apple/swift-async-algorithms
+        [schedulers-collection]: /collections/combine/schedulers
+        [spi-swift-clocks]: https://swiftpackageindex.com/pointfreeco/swift-clocks
+        [tca-collection]: /collections/composable-architecture
+        [tca-0.44.0]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.44.0
+        [swift-clock-docs]: todo
+        [test-clock-docs]: todo
+        [immediate-clock-docs]: todo
+        [unimplemented-clock-docs]: todo
         """#,
       type: .paragraph
     )
