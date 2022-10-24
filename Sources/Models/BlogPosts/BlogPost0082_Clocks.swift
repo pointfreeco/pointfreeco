@@ -352,10 +352,10 @@ public let post0082_AnnouncingClocks = BlogPost(
         [spi-swift-clocks]: https://swiftpackageindex.com/pointfreeco/swift-clocks
         [tca-collection]: /collections/composable-architecture
         [tca-0.44.0]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.44.0
-        [swift-clock-docs]: todo
-        [test-clock-docs]: todo
-        [immediate-clock-docs]: todo
-        [unimplemented-clock-docs]: todo
+        [swift-clock-docs]: https://pointfreeco.github.io/swift-clocks/main/documentation/clocks/
+        [test-clock-docs]: https://pointfreeco.github.io/swift-clocks/main/documentation/clocks/testclock
+        [immediate-clock-docs]: https://pointfreeco.github.io/swift-clocks/main/documentation/clocks/immediateclock
+        [unimplemented-clock-docs]: https://pointfreeco.github.io/swift-clocks/main/documentation/clocks/unimplementedclock
         """#,
       type: .paragraph
     )
