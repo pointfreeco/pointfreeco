@@ -175,7 +175,7 @@ public let post0082_AnnouncingClocks = BlogPost(
         ```
 
         Then you can construct this view with a `ContinuousClock` when running on a device or
-        simulator, and use an [``ImmediateClock``][immediate-clock-docs] when running in an Xcode
+        simulator, and use an [`ImmediateClock`][immediate-clock-docs] when running in an Xcode
         preview:
 
         ```swift
