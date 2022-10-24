@@ -10,7 +10,7 @@ extension Episode {
     id: 210,
     length: 41 * 60 + 56,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1666587600),
+    publishedAt: Date(timeIntervalSince1970: 1_666_587_600),
     references: [
       .se0329_clockInstantDuration,
       .init(
@@ -18,10 +18,11 @@ extension Episode {
         blurb: """
           A Swift forum post in which we highlight a problem with testing Swift concurrency with the tools that ship today.
           """,
-        link: "https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304",
+        link:
+          "https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304",
         publishedAt: referenceDateFormatter.date(from: "2022-05-13"),
         title: "Reliably testing code that adopts Swift Concurrency"
-      )
+      ),
     ],
     sequence: 210,
     subtitle: "Controlling Time",
@@ -33,7 +34,7 @@ extension Episode {
         hd720: "0210-trailer-720p-3ffcc4f611d6407db63e8486c519f6e8",
         sd540: "0210-trailer-540p-8fc46012a00c4ad6a38131a1f51046d7"
       ),
-      vimeoId: 756541991
+      vimeoId: 756_541_991
     )
   )
 }
