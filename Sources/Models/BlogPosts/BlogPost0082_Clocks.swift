@@ -14,7 +14,7 @@ public let post0082_AnnouncingClocks = BlogPost(
 
         We believe these tools are highly applicable to everyone working with time-based asynchrony
         in Swift, and so today we are excited to release them in
-        [a new open source library][spi-swift-clocks].
+        [a new open source library][gh-swift-clocks].
 
         ## Motivation
 
@@ -350,6 +350,7 @@ public let post0082_AnnouncingClocks = BlogPost(
         [swift-async-algorithms]: http://github.com/apple/swift-async-algorithms
         [schedulers-collection]: /collections/combine/schedulers
         [spi-swift-clocks]: https://swiftpackageindex.com/pointfreeco/swift-clocks
+        [gh-swift-clocks]: http://github.com/pointfreeco/swift-clocks
         [tca-collection]: /collections/composable-architecture
         [tca-0.44.0]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.44.0
         [swift-clock-docs]: https://pointfreeco.github.io/swift-clocks/main/documentation/clocks/
