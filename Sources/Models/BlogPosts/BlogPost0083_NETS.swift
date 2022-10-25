@@ -21,8 +21,8 @@ public let post0083_NETS = BlogPost(
         of which parts of the application you want to actually asssert on.
 
         And now, as of version [0.45.0][tca-0.45.0] of the library, there is first class support
-        for non-exhaustive test stores. Join us for a quick overview of how exhaustive testing
-        works, how it breaks down, and how non-exhaustive testing can help.
+        for non-exhaustive test stores. Join us for a quick overview of the why and how of
+        exhaustive testing, as well as when it breaks down and how non-exhaustive testing can help.
 
         * [Why exhaustive testing?](#)
         * [How to write exhaustive tests](#)
@@ -140,18 +140,11 @@ public let post0083_NETS = BlogPost(
         To fix, we need to mutate that state to its actual value in the `send` assertion:
 
         ```swift
-        func testAddItem() async {
-          let store = TestStore(
-            initialState: Feature.State(),
-            reducer: Feature()
-          )
-
-          await store.send(.addButtonTapped) {
-            $0.isAddding = true
-            $0.items = [
-              Item(name: "", quantity: 1)
-            ]
-          }
+        await store.send(.addButtonTapped) {
+          $0.isAddding = true
+          $0.items = [
+            Item(name: "", quantity: 1)
+          ]
         }
         ```
 
@@ -260,6 +253,9 @@ public let post0083_NETS = BlogPost(
         * This test is very long, and so if there are other similar but slightly different flows
         we want to test we will be tempted to copy-and-paste the whole thing, leading to lots of
         duplicated, fragile tests.
+
+        So, exhaustive testing can definitely be cumbersome, and this is what led [Krzysztof
+        Zabłocki][merowing.info] to pursue "non-exaustive" test stores.
 
         ## Introducing non-exhaustive testing
 
