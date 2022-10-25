@@ -24,11 +24,13 @@ public let post0083_NETS = BlogPost(
         for non-exhaustive test stores. Join us for a quick overview of the why and how of
         exhaustive testing, as well as when it breaks down and how non-exhaustive testing can help.
 
-        * [Why exhaustive testing?](#)
-        * [How to write exhaustive tests](#)
-        * [When exhaustive testing breaks down](#)
-        * [Introducing non-exhaustive testing](#)
-        * [Start using non-exaustive test stores today!](#)
+        * [Why exhaustive testing?](#Why-exhaustive-testing)
+        * [How to write exhaustive tests](#How-to-write-exhaustive-tests)
+        * [When exhaustive testing breaks down](#When-exhaustive-testing-breaks-down)
+        * [Introducing non-exhaustive testing](#Introducing-non-exhaustive-testing)
+        * [Start using non-exhaustive test stores today!](#Start-using-non-exhaustive-test-stores-today)
+
+        <div id="Why-exhaustive-testing"></div>
 
         ## Why exhaustive testing?
 
@@ -84,6 +86,8 @@ public let post0083_NETS = BlogPost(
         assertions like the above without also asserting on how the rest of the system evolves.
         You should be forced to assert on how each piece of state changes, as well as how each side
         effect executes and feeds data back into the system.
+
+        <div id="How-to-write-exhaustive-tests"></div>
 
         ## How to write exhaustive tests
 
@@ -190,6 +194,8 @@ public let post0083_NETS = BlogPost(
         instantly be notified in existing tests that more work needs to be done to assert on
         how the feature evolved.
 
+        <div id="When-exhaustive-testing-breaks-down"></div>
+
         ## When exhaustive testing breaks down
 
         While exhaustive testing can be powerful, it also has its drawbacks. In particular, for
@@ -256,6 +262,8 @@ public let post0083_NETS = BlogPost(
 
         So, exhaustive testing can definitely be cumbersome, and this is what led [Krzysztof
         Zabłocki][merowing.info] to pursue "non-exaustive" test stores.
+
+        <div id="Introducing-non-exhaustive-testing"></div>
 
         ## Introducing non-exhaustive testing
 
@@ -348,7 +356,9 @@ public let post0083_NETS = BlogPost(
         know what things you are not explicitly asserting against, and can be useful to see when
         tracking down bugs that happen in production but that aren't currently detected in tests.
 
-        ## Start using non-exaustive test stores today!
+        <div id="Start-using-non-exhaustive-test-stores-today"></div>
+
+        ## Start using non-exhaustive test stores today!
 
         All of these tools (and more) are available in [0.45.0][tca-0.45.0] of the library, which
         is available today. Be sure to upgrade and read the [testing documentation][testing-article]
