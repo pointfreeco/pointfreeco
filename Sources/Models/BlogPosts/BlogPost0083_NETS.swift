@@ -9,20 +9,24 @@ public let post0083_NETS = BlogPost(
     .init(
       content: ###"""
         Testing is by far the #1 priority of the [Composable Architecture][gh-tca]. The library
-        provides a tool, the [`TestStore`][test-store-docs], that allow you to prove how your
-        features evolve over time. This not only includes how state changes with every user action,
-        but also how effects are executed and how data is fed back into the system.
+        provides a tool, the [`TestStore`][test-store-docs], that makes it possible to prove how
+        your features evolve over time. This not only includes how state changes with every user
+        action, but also how effects are executed and how data is fed back into the system.
 
         While this can be powerful, it can also sometimes become cumbersome, especially when
         testing the integration of how many features interact with each other. For this reason,
         the concept of a "non-exhaustive" test store was first conceived of by
         [Krzysztof Zabłocki][merowing.info] in a [blog post][exhaustive-testing-in-tca] and a
         [conference talk][Composable-Architecture-at-Scale], which allows you to be more selective
-        of which parts of the application you want to actually asssert on.
+        over which parts of the application you want to actually asssert on.
 
-        And now, as of version [0.45.0][tca-0.45.0] of the library, there is first class support
-        for non-exhaustive test stores. Join us for a quick overview of the why and how of
-        exhaustive testing, as well as when it breaks down and how non-exhaustive testing can help.
+        And now, thanks to close collaboration with Krzysztof and his employer, [The Browser
+        Company](https://thebrowser.company), the [0.45.0][tca-0.45.0] release of the library brings
+        class support for non-exhaustive test stores. Join us for a quick overview of the "why" and
+        "how" of exhaustive testing, as well as when it breaks down, and how non-exhaustive testing
+        can help.
+
+        <!-- as of version  of the library -->
 
         * [Why exhaustive testing?](#Why-exhaustive-testing)
         * [How to write exhaustive tests](#How-to-write-exhaustive-tests)
@@ -35,7 +39,7 @@ public let post0083_NETS = BlogPost(
         ## Why exhaustive testing?
 
         Test assertions allow you to prove that certain values in your feature are what you expect
-        them to be, but each assertion lies on a spectrum of strenght. For example, if your feature
+        them to be, but each assertion lies on a spectrum of strength. For example, if your feature
         has an "Add" button that when tapped adds an item to a collection, then you can write
         a test for that like so:
 
@@ -48,7 +52,7 @@ public let post0083_NETS = BlogPost(
         That certainly proves that _something_ was added to the `items` collection, but it doesn't
         prove anything about the item.
 
-        We can strenghten this assertion to further assert on the first item in the collection:
+        We can strengthen this assertion by further asserting on the first item in the collection:
 
         ```swift
         XCTAssertEqual(model.items.count, 0)
@@ -57,10 +61,10 @@ public let post0083_NETS = BlogPost(
         ```
 
         This is stronger since it now proves the first item has an empty string for its name and
-        1 for its quantity, but it doesn't prove anything about what else is in the `items`
+        1 for its quantity. But, it doesn't prove anything about what else is in the `items`
         collection.
 
-        So, we can again strenghten this assertion to prove that the `items` array consists of only
+        So, we can again strengthen this by asserting that the `items` array consists of only
         a single item:
 
         ```swift
@@ -176,13 +180,6 @@ public let post0083_NETS = BlogPost(
         receiving the action:
 
         ```swift
-        await store.send(.addButtonTapped) {
-          $0.isAdding = true
-          $0.items = [
-            Item(name: "", quantity: 1)
-          ]
-        }
-
         await store.receive(.addResponse(success: true)) {
           $0.isAdding = false
         }
@@ -227,24 +224,24 @@ public let post0083_NETS = BlogPost(
 
         // 1️⃣ Emulate user tapping on submit button.
         await store.send(.login(.submitButtonTapped)) {
-          // 2️⃣ Assert how state changes in the login feature
           $0.login?.isLoading = true
+          // 2️⃣ Assert how state changes in the login feature
         }
 
         // 3️⃣ Login feature performs API request to login, and
         //    sends response back into system.
         await store.receive(.login(.loginResponse(.success))) {
-          // 4️⃣ Assert how state changes in the login feature
           $0.login?.isLoading = false
+          // 4️⃣ Assert how state changes in the login feature
         }
 
         // 5️⃣ Login feature sends a delegate action to let parent
         //    feature know it has successfully logged in.
         await store.receive(.login(.delegate(.didLogin))) {
-          // 6️⃣ Assert how all of app state changes due to that action.
           $0.authenticatedTab = .loggedIn(
             Profile.State(...)
           )
+          // 6️⃣ Assert how all of app state changes due to that action.
           // 7️⃣ *Finally* assert that the selected tab switches to activity.
           $0.selectedTab = .activity
         }
@@ -304,7 +301,7 @@ public let post0083_NETS = BlogPost(
 
         The style of non-exhaustivity can even be customized. Using `.none` causes all un-asserted
         changes to pass without any notification. If you would like the test to pass but also see
-        what test failures are being surprised, then you can use `.partial` exhaustivity:
+        what test failures are being supressed, then you can use `.partial` exhaustivity:
 
         ```swift
         let store = TestStore(
