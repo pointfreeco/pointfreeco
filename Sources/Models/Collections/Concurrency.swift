@@ -38,7 +38,6 @@ extension Episode.Collection {
           .init(episode: .ep209_clocks),
           .init(episode: .ep210_clocks),
         ],
-        isFinished: false,
         related: [
           .init(
             blurb: """
