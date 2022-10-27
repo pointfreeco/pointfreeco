@@ -35,7 +35,8 @@ extension Episode.Collection {
           you.
           """,
         coreLessons: [
-          .init(episode: .ep209_clocks)
+          .init(episode: .ep209_clocks),
+          .init(episode: .ep210_clocks)
         ],
         isFinished: false,
         related: [
