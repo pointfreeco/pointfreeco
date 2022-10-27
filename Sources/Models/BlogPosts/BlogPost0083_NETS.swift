@@ -224,6 +224,7 @@ public let post0083_NETS = BlogPost(
         await store.send(.login(.submitButtonTapped)) {
           $0.login?.isLoading = true
           // 2️⃣ Assert how state changes in the login feature
+          …
         }
 
         // 3️⃣ Login feature performs API request to login, and
@@ -231,6 +232,7 @@ public let post0083_NETS = BlogPost(
         await store.receive(.login(.loginResponse(.success))) {
           $0.login?.isLoading = false
           // 4️⃣ Assert how state changes in the login feature
+          …
         }
 
         // 5️⃣ Login feature sends a delegate action to let parent
@@ -240,6 +242,7 @@ public let post0083_NETS = BlogPost(
             Profile.State(...)
           )
           // 6️⃣ Assert how all of app state changes due to that action.
+          …
           // 7️⃣ *Finally* assert that the selected tab switches to activity.
           $0.selectedTab = .activity
         }
