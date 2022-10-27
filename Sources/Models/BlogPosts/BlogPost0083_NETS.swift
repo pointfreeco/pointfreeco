@@ -22,11 +22,9 @@ public let post0083_NETS = BlogPost(
 
         And now, thanks to close collaboration with Krzysztof and his employer, [The Browser
         Company](https://thebrowser.company), the [0.45.0][tca-0.45.0] release of the library brings
-        class support for non-exhaustive test stores. Join us for a quick overview of the "why" and
-        "how" of exhaustive testing, as well as when it breaks down, and how non-exhaustive testing
-        can help.
-
-        <!-- as of version  of the library -->
+        firt class support for non-exhaustive test stores. Join us for a quick overview of the "why"
+        and "how" of exhaustive testing, as well as when it breaks down, and how non-exhaustive
+        testing can help.
 
         * [Why exhaustive testing?](#Why-exhaustive-testing)
         * [How to write exhaustive tests](#How-to-write-exhaustive-tests)
