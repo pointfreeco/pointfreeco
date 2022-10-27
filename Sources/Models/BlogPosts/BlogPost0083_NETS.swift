@@ -302,7 +302,7 @@ public let post0083_NETS = BlogPost(
 
         The style of non-exhaustivity can even be customized. Using `.none` causes all un-asserted
         changes to pass without any notification. If you would like the test to pass but also see
-        what test failures are being supressed, then you can use `.partial` exhaustivity:
+        what test failures are being suppressed, then you can use `.partial` exhaustivity:
 
         ```swift
         let store = TestStore(
