@@ -99,7 +99,7 @@ public let post0081_ReducerProtocol = BlogPost(
         struct Feature: ReducerProtocol {
           @Dependency(\.apiClient) var apiClient
           @Dependency(\.mainQueue) var mainQueue
-          @Dependnecy(\.uuid) var uuid
+          @Dependency(\.uuid) var uuid
 
           // ...
         }
