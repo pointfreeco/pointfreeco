@@ -9,22 +9,19 @@ public let post0083_NETS = BlogPost(
     .init(
       content: ###"""
         Testing is by far the #1 priority of the [Composable Architecture][gh-tca]. The library
-        provides a tool, the [`TestStore`][test-store-docs], that makes it possible to prove how
-        your features evolve over time. This not only includes how state changes with every user
-        action, but also how effects are executed and how data is fed back into the system.
+        provides a tool, the [`TestStore`][test-store-docs], that makes it possible to
+        _exhaustively_ prove how your features evolve over time. This not only includes how state
+        changes with every user action, but also how effects are executed and how data is fed back
+        into the system.
 
-        While this can be powerful, it can also sometimes become cumbersome, especially when
-        testing the integration of how many features interact with each other. For this reason,
-        the concept of a "non-exhaustive" test store was first conceived of by
-        [Krzysztof Zabłocki][merowing.info] in a [blog post][exhaustive-testing-in-tca] and a
-        [conference talk][Composable-Architecture-at-Scale], which allows you to be more selective
-        over which parts of the application you want to actually asssert on.
+        The testing tools in the library haven't changed much in the 2 and a half years since
+        release, but thanks to close collaboration with [Krzysztof Zabłocki][merowing.info] and
+        support from his employer, [The Browser Company](https://thebrowser.company), the
+        [0.45.0][tca-0.45.0] release of the library brings first class support for "non-exhaustive"
+        test stores.
 
-        And now, thanks to close collaboration with Krzysztof and his employer, [The Browser
-        Company](https://thebrowser.company), the [0.45.0][tca-0.45.0] release of the library brings
-        firt class support for non-exhaustive test stores. Join us for a quick overview of the "why"
-        and "how" of exhaustive testing, as well as when it breaks down, and how non-exhaustive
-        testing can help.
+        Join us for an overview of the "why" and "how" of exhaustive testing, as well as when it
+        breaks down, and how non-exhaustive testing can help.
 
         * [Why exhaustive testing?](#Why-exhaustive-testing)
         * [How to write exhaustive tests](#How-to-write-exhaustive-tests)
@@ -60,7 +57,8 @@ public let post0083_NETS = BlogPost(
 
         This is stronger since it now proves the first item has an empty string for its name and
         1 for its quantity. But, it doesn't prove anything about what else is in the `items`
-        collection.
+        collection. What if there was a bug that caused _two_ items to be added? This test would
+        happily pass.
 
         So, we can again strengthen this by asserting that the `items` array consists of only
         a single item:
@@ -76,7 +74,7 @@ public let post0083_NETS = BlogPost(
         And now this assertion is much stronger.
 
         But it's _still_ not as strong as it could be. We are not asserting on how anything else in
-        the `model` evolves over time. What if when tapping the "Add" button we also make a network
+        the `model` evolves over time. What if tapping the "Add" button also makes a network
         request to add the item in an external database, and while that request is in flight we
         show a progress view somewhere in the UI.
 
@@ -198,6 +196,12 @@ public let post0083_NETS = BlogPost(
         such cases it can be cumbersome to assert on _every_ little state change and effect
         execution inside every single feature.
 
+        For this reason, the concept of a "non-exhaustive"
+        test store was first conceived of by [Krzysztof Zabłocki][merowing.info] in a [blog
+        post][exhaustive-testing-in-tca] and a [conference talk][Composable-Architecture-at-Scale],
+        which allows you to be more selective over which parts of the application you want to
+        actually assert on.
+
         For example, suppose you have a tab-based application where the 3rd tab is a login screen.
         The user can fill in some data on the screen, then tap the "Submit" button, and then a
         series of events happens to  log the user in. Once the user is logged in, the 3rd tab
@@ -224,15 +228,15 @@ public let post0083_NETS = BlogPost(
         await store.send(.login(.submitButtonTapped)) {
           // 2️⃣ Assert how all state changes in the login feature
           $0.login?.isLoading = true
-          …
+          ...
         }
 
         // 3️⃣ Login feature performs API request to login, and
         //    sends response back into system.
         await store.receive(.login(.loginResponse(.success))) {
-        // 4️⃣ Assert how all state changes in the login feature
+          // 4️⃣ Assert how all state changes in the login feature
           $0.login?.isLoading = false
-          …
+          ...
         }
 
         // 5️⃣ Login feature sends a delegate action to let parent
@@ -242,7 +246,7 @@ public let post0083_NETS = BlogPost(
           $0.authenticatedTab = .loggedIn(
             Profile.State(...)
           )
-          …
+          ...
           // 7️⃣ *Finally* assert that the selected tab switches to activity.
           $0.selectedTab = .activity
         }
@@ -267,8 +271,8 @@ public let post0083_NETS = BlogPost(
 
         Non-exhaustive testing allows us to test the integration of many complex features, such as
         the situation above, without needing to assert on _everything_ in the feature. We can be
-        selective on which pieces we want to actually assert on, and only if we assert with bad
-        data do we actually get a test failure.
+        selective on which pieces we want to actually assert on, and only if we make an incorrect
+        assertion do we actually get a test failure.
 
         Take for example the above test, which wants to confirm that the selected tab switches to
         the activity tab after login. In order to do that we had to assert on all of the details
@@ -302,7 +306,7 @@ public let post0083_NETS = BlogPost(
 
         The style of non-exhaustivity can even be customized. Using `.none` causes all un-asserted
         changes to pass without any notification. If you would like the test to pass but also see
-        what test failures are being suppressed, then you can use `.partial` exhaustivity:
+        what test asssertions are being suppressed, then you can use `.partial` exhaustivity:
 
         ```swift
         let store = TestStore(
