@@ -196,11 +196,10 @@ public let post0083_NETS = BlogPost(
         such cases it can be cumbersome to assert on _every_ little state change and effect
         execution inside every single feature.
 
-        For this reason, the concept of a "non-exhaustive"
-        test store was first conceived by [Krzysztof Zabłocki][merowing.info] in a [blog
-        post][exhaustive-testing-in-tca] and a [conference talk][Composable-Architecture-at-Scale].
-        It allows you to be more selective over which parts of the application you want to
-        actually assert on.
+        For this reason, the concept of a "non-exhaustive" test store was first conceived by
+        [Krzysztof Zabłocki][merowing.info] in a [blog post][exhaustive-testing-in-tca] and a
+        [conference talk][Composable-Architecture-at-Scale]. It allows you to be more selective
+        over which parts of the application you want to actually assert on.
 
         For example, suppose you have a tab-based application where the 3rd tab is a login screen.
         The user can fill in some data on the screen, then tap the "Submit" button, and then a
