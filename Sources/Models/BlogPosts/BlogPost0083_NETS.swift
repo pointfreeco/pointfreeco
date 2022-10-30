@@ -122,7 +122,7 @@ public let post0083_NETS = BlogPost(
         then we would get a test failure because we have not asserted on how the entire feature
         evolves.
 
-        In fact, we get two test failures. The first is due to the fact that we did not fully
+        In fact, we would get two test failures. The first is due to the fact that we did not fully
         describe how the state changes:
 
         ```
@@ -294,8 +294,8 @@ public let post0083_NETS = BlogPost(
         }
         ```
 
-        This test passes and ignores all of the superfluous details that we do not care about for
-        this particular integration test.
+        This test still passes and ignores all of the superfluous details that we do not care about
+        for this particular integration test.
 
         In particular, it proves when the "Submit" button is tapped in the login feature that
         eventually a `.didLogin` action is sent to indicate that log in succeeded, at which point
