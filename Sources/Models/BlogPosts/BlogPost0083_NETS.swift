@@ -3,7 +3,10 @@ import Foundation
 public let post0083_NETS = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    Exhaustive testing is one of the most powerful features of the Composable Architecture, but it
+    can also be cumbersome for large, highly composed features. Join us for an overview of the "why"
+    and "how" of exhaustive testing, as well as when it breaks down, and how non-exhaustive testing
+    can help.
     """,
   contentBlocks: [
     .init(
