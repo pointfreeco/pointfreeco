@@ -9,10 +9,9 @@ public let currencyFormatter: NumberFormatter = {
   return formatter
 }()
 
-public let dateFormatter: DateFormatter = {
+public let monthDayYearFormatter: DateFormatter = {
   let formatter = DateFormatter()
-  formatter.dateStyle = .short
-  formatter.timeStyle = .none
+  formatter.dateFormat = "MMM d, yyyy"
   formatter.timeZone = TimeZone(secondsFromGMT: 0)
   return formatter
 }()

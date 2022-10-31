@@ -244,7 +244,7 @@ let cancelEmailView =
       title: "Your subscription has been canceled",
       preheader: """
         Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
-        \(dateFormatter.string(from: subscription.currentPeriodEnd)).
+        \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).
         """,
       template: .default(),
       data: (owner, subscription)
@@ -268,7 +268,7 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
             "Your ",
             .strong(.text(subscription.plan.nickname)),
             " subscription has been canceled and will remain active through ",
-            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
             .a(attributes: [.href(siteRouter.url(for: .account()))], "your account page"),
             "."
@@ -297,7 +297,7 @@ let reactivateEmailView =
       newsletter: nil,
       title: "Your subscription has been reactivated",
       preheader:
-        "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+        "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).",
       template: .default(),
       data: (owner, subscription)
     )
@@ -320,7 +320,7 @@ private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscripti
             "Thanks for sticking with us! Your ",
             .strong(.text(subscription.plan.nickname)),
             " subscription has been reactivated and will renew on ",
-            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             "."
           )
         )

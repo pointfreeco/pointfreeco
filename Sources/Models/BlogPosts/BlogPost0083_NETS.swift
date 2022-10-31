@@ -376,7 +376,7 @@ public let post0083_NETS = BlogPost(
       type: .paragraph
     )
   ],
-  coverImage: nil,
+  coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0083-non-exhaustive-test-store/poster-light.jpg",
   id: 83,
   publishedAt: Date(timeIntervalSince1970: 1667192400),
   title: "Non-exhaustive testing in the Composable Architecture"

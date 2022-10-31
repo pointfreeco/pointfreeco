@@ -1359,9 +1359,8 @@ public struct AccountData {
 }
 
 private let dateFormatter: DateFormatter = {
-  let formatter = DateFormatter()
-  formatter.dateStyle = .short
-  formatter.timeStyle = .none
-  formatter.timeZone = TimeZone(secondsFromGMT: 0)
-  return formatter
+  let df = DateFormatter()
+  df.dateFormat = "MMM d, yyyy"
+  df.timeZone = TimeZone(secondsFromGMT: 0)
+  return df
 }()
