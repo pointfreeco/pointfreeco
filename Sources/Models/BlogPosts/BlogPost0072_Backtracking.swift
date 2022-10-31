@@ -3,6 +3,8 @@ import Foundation
 public let post0072_Backtracking = BlogPost(
   author: .pointfree,
   blurb: """
+    Today we are releasing 0.6.0 of our swift-parsing library that changes its backtracking
+    behavior.
     """,
   contentBlocks: [
     .init(

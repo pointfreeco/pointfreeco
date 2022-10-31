@@ -94,4 +94,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0080_TCAPerformance,
   post0081_ReducerProtocol,
   post0082_AnnouncingClocks,
+  post0083_NETS,
 ]

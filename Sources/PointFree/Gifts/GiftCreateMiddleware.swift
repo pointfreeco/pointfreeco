@@ -80,7 +80,7 @@ func giftConfirmationMiddleware(
   if let deliverAt = formData.deliverAt {
     message = """
       Your gift will be delivered to \(formData.toEmail.rawValue) on \
-      \(dateFormatter.string(from: deliverAt)).
+      \(monthDayYearFormatter.string(from: deliverAt)).
       """
   } else {
     message = """
