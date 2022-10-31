@@ -14,7 +14,7 @@ public let post0083_NETS = BlogPost(
         Testing is by far the #1 priority of the [Composable Architecture][gh-tca]. The library
         provides a tool, the [`TestStore`][test-store-docs], that makes it possible to
         _exhaustively_ prove how your features evolve over time. This not only includes how state
-        changes with every user action, but also how effects are executed and how data is fed back
+        changes with every user action, but also how effects are executed, and how data is fed back
         into the system.
 
         The testing tools in the library haven't changed much in the 2 and a half years since
@@ -176,7 +176,7 @@ public let post0083_NETS = BlogPost(
         be fixed.
 
         To fix this test we must assert on receiving this action as well as how state changes after
-        receiving the action:
+        receiving it:
 
         ```swift
         await store.receive(.addResponse(success: true)) {
@@ -206,7 +206,7 @@ public let post0083_NETS = BlogPost(
 
         For example, suppose you have a tab-based application where the 3rd tab is a login screen.
         The user can fill in some data on the screen, then tap the "Submit" button, and then a
-        series of events happens to  log the user in. Once the user is logged in, the 3rd tab
+        series of events happens to log the user in. Once the user is logged in, the 3rd tab
         switches from a login screen to a profile screen, _and_ the selected tab switches to the
         first tab, which is an activity screen.
 
@@ -256,7 +256,7 @@ public let post0083_NETS = BlogPost(
 
         Doing this with exhaustive testing is verbose, and there are a few problems with this:
 
-        * We need to be have intimate knowledge on how the login feature works so that we can
+        * We need to have intimate knowledge on how the login feature works so that we can
         assert on how its state changes and how its effects feed data back into the system.
         * If the login feature were to change its logic we may get test failures here even though
         the logic we are acutally trying to test doesn't really care about those changes.
