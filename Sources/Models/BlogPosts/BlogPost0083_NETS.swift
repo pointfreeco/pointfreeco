@@ -277,7 +277,7 @@ public let post0083_NETS = BlogPost(
         the activity tab after login. In order to do that we had to assert on all of the details
         of the login feature, including how state changed and effects executed.
 
-        Instead, we can set the store's `exhaustivity` setting to `.none`, and then we get to
+        Instead, we can set the store's `exhaustivity` setting to `.off`, and then we get to
         decide what we want to actually assert on:
 
         ```swift
@@ -285,7 +285,7 @@ public let post0083_NETS = BlogPost(
           initialState: App.State(),
           reducer: App()
         )
-        store.exhaustivity = .none // ⬅️
+        store.exhaustivity = .off // ⬅️
 
         await store.send(.login(.submitButtonTapped))
         await store.receive(.login(.delegate(.didLogin))) {
@@ -303,16 +303,17 @@ public let post0083_NETS = BlogPost(
         it wants to its logic without affecting the outcome of this test, as long as it sends
         the `.didLogin` action when log in occurs.
 
-        The style of non-exhaustivity can even be customized. Using `.none` causes all un-asserted
+        The style of non-exhaustivity can even be customized. Using `.off` causes all un-asserted
         changes to pass without any notification. If you would like the test to pass but also see
-        what test assertions are being suppressed, then you can use `.partial` exhaustivity:
+        what test assertions are being suppressed, then you can specify the `showSkippedAssertions`
+        flag:
 
         ```swift
         let store = TestStore(
           initialState: App.State(),
           reducer: App()
         )
-        store.exhaustivity = .partial // ⬅️
+        store.exhaustivity = .off(showSkippedAssertions: true) // ⬅️
 
         await store.send(.login(.submitButtonTapped))
         await store.receive(.login(.delegate(.didLogin))) {
