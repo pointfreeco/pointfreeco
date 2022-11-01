@@ -17,7 +17,7 @@ public let post0083_NETS = BlogPost(
         changes with every user action, but also how effects are executed, and how data is fed back
         into the system.
 
-        The testing tools in the library haven't changed much in the 2 and a half years since
+        The testing tools in the library haven't changed much in the two and a half years since
         release, but thanks to close collaboration with [Krzysztof Zabłocki][merowing.info] and
         support from his employer, [The Browser Company](https://thebrowser.company), the
         [0.45.0][tca-0.45.0] release of the library brings first class support for "non-exhaustive"
