@@ -10,9 +10,9 @@ extension Episode {
     id: 211,
     length: 49 * 60 + 58,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1667800800),
+    publishedAt: Date(timeIntervalSince1970: 1_667_800_800),
     references: [
-      .swiftUINav,
+      .swiftUINav
     ],
     sequence: 211,
     subtitle: "Recap",
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0211-trailer-720p-3786b076ae6246ddb3dcc77c1677c87b",
         sd540: "0211-trailer-540p-753a0c197f3740fe93d767bd902ce9c7"
       ),
-      vimeoId: 767694109
+      vimeoId: 767_694_109
     )
   )
 }
