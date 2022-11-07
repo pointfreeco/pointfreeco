@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep211_navStacks = Episode(
     blurb: """
-      A year ago we dove deep into the topic of navigation through SwiftUI’s tool. Then this WWDC Apple deprecated many of them, replacing them with a brand new suite. To make sense of these changes, let's recap what we built over those many episodes, and why.
+      A year ago we dove deep into the topic of navigation in SwiftUI. Then Apple deprecated many of those APIs
+      at this year's WWDC, replacing them with a brand new suite. To make sense of these changes, let's recap what 
+      we built over those past episodes, and why.
       """,
     codeSampleDirectory: "0211-navigation-stacks-pt1",
     exercises: _exercises,
