@@ -83,7 +83,9 @@ extension Episode.Collection.Section {
       .init(episode: .ep166_navigationLinks),
       .init(episode: .ep167_navigationLinks),
       .init(episode: .ep168_navigationThePoint),
+      .init(episode: .ep211_navStacks),
     ],
+    isFinished: false,
     related: [
       .init(
         blurb: #"""
