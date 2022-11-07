@@ -18,7 +18,7 @@ extension Episode {
     ],
     sequence: 211,
     subtitle: "Recap",
-    title: "Navigation Stacks",
+    title: "SwiftUI Navigation",
     trailerVideo: .init(
       bytesLength: 76_500_000,
       downloadUrls: .s3(
