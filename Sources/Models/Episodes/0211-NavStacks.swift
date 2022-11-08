@@ -31,5 +31,4 @@ extension Episode {
   )
 }
 
-private let _exercises: [Episode.Exercise] = [
-]
+private let _exercises: [Episode.Exercise] = []
