@@ -32,6 +32,4 @@ extension Episode {
 }
 
 private let _exercises: [Episode.Exercise] = [
-  // TODO
-  // 1. Better model and control the use of user defaults in `FeatureModel.task`
 ]
