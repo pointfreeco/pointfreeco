@@ -10,7 +10,7 @@ extension Episode {
     id: 212,
     length: 57 * 60 + 27,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1668405600),
+    publishedAt: Date(timeIntervalSince1970: 1_668_405_600),
     references: [
       .swiftUINav
     ],
@@ -24,10 +24,9 @@ extension Episode {
         hd720: "0212-trailer-720p-603a5327d5d74015a6eefb39c6c1f4c5",
         sd540: "0212-trailer-540p-06cfefe80241466a964cc8092dfd74ad"
       ),
-      vimeoId: 768743212
+      vimeoId: 768_743_212
     )
   )
 }
 
-private let _exercises: [Episode.Exercise] = [
-]
+private let _exercises: [Episode.Exercise] = []
