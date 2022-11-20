@@ -3,7 +3,9 @@ import Foundation
 public let post0084_SwiftUINavRelease = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    Navigation in SwiftUI can be complex, but it doesn't have to be that way. We are releasing a
+    new version of our SwiftUI Navigation library that makes it easier to use NavigationStack,
+    alerts, confirmation dialogs, and even fixes a few bugs in SwiftUI.
     """,
   contentBlocks: [
     .init(
@@ -15,7 +17,6 @@ public let post0084_SwiftUINavRelease = BlogPost(
 
         Join us for a quick overview of the new features, and be sure to update to
         [0.4.0][0_4_0_release] to get access to this, and more:
-
 
         - [Navigation stacks](#stacks)
         - [Navigation bugs fixes](#bug-fixes)
@@ -171,10 +172,8 @@ public let post0084_SwiftUINavRelease = BlogPost(
           @State var isPresented = true
 
           var body: some View {
-            Button {
+            Button("Go to destination") {
               self.isPresented = true
-            } label: {
-              Text("Go to destination")
             }
             .navigationDestination(isPresented: self.$isPresented) {
               Text("Hello!")
@@ -222,20 +221,27 @@ public let post0084_SwiftUINavRelease = BlogPost(
         displayed:
 
         ```swift
-        if item.isLocked {
-          self.alert = AlertState(
-            title: TextState("Cannot be deleted"),
-            message: TextState("This item is locked, and so cannot be deleted.")
-          )
-        } else {
-          self.alert = AlertState(
-            title: TextState("Delete?"),
-            message: TextState("Are you sure you want to delete \(item.name)?"),
-            buttons: [
-              .destructive(TextState("Yes, delete"), action: .send(.confirmDeletion)),
-              .cancel(TextState("Nevermind"))
-            ]
-          )
+        func deleteButtonTapped() {
+          if item.isLocked {
+            self.alert = AlertState {
+              TextState("Cannot be deleted")
+            } message: {
+              TextState("This item is locked, and so cannot be deleted.")
+            }
+          } else {
+            self.alert = AlertState {
+              TextState("Delete?")
+            } message: {
+              TextState(#"Are you sure you want to delete "\(item.name)"?"#)
+            } buttons: {
+              ButtonState(role: .destructive, action: .send(.confirmDeletion)) {
+                TextState("Yes, delete")
+              }
+              ButtonState(role: cancel) {
+                TextState("Nevermind")
+              }
+            }
+          }
         }
         ```
 
@@ -256,11 +262,11 @@ public let post0084_SwiftUINavRelease = BlogPost(
         library:
 
         ```swift
-        struct UsersListView: View {
-          @ObservedObject var model: UsersModel
+        struct ItemView: View {
+          @ObservedObject var model: ItemModel
 
           var body: some View {
-            List {
+            Form {
               …
             }
             .alert(unwrapping: self.$model.alert) { action in
@@ -270,9 +276,24 @@ public let post0084_SwiftUINavRelease = BlogPost(
         }
         ```
 
-        Notice that there is very little logic in the view. All of the logic for when to display
-        the alert and what information is displayed (title, message, buttons) has all been moved
-        into the model, and therefore very easy to test.
+        Notice that there is no logic in the view for what kind of alert to show. All of the logic
+        for when to display the alert and what information is displayed (title, message, buttons)
+        has all been moved into the model, and therefore very easy to test.
+
+        To test, you can simply assert against any parts of the alert state you want. For example,
+        if you want to verify that the message of the alert is what you expected, can just use
+        `XCTAssertEqual`:
+
+        ```swift
+        let headphones = Item(…)
+        let model = ItemModel(item: headphones)
+        model.deleteButtonTapped()
+
+        XCTAssertEqual(
+          model.alert.message,
+          TextState(#"Are you sure you want to delete "Headphones"?"#)
+        )
+        ```
 
         <div id="get-started"></div>
 
