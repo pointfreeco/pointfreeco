@@ -77,7 +77,7 @@ func sale2022(name: String) -> String {
 
   We have plenty of exciting topics planned for 2023, including first class navigation
   tools for the Composable Architecture, more improvements to our parser builders, as well
-  as all new styles of content (live streams!).
+  as all new styles of content from us (live streams!).
 
   Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
   offer is valid for only a few days, so you better hurry!
