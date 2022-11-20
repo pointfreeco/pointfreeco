@@ -12,11 +12,11 @@ public let post0084_SwiftUINavRelease = BlogPost(
       content: ###"""
         Today we are releasing the biggest update to our [SwiftUINavigation][swiftui-nav-gh] library
         since its first release [one year ago][swiftui-nav-blog-post]. This brings support for new
-        iOS 16 APIs, bug fixes for some of Apple’s navigation tools, and better support for alerts
-        and confirmation dialogs.
+        iOS 16 APIs, bug fixes for some of Apple’s navigation tools, better support for alerts
+        and confirmation dialogs, and improved documentation.
 
         Join us for a quick overview of the new features, and be sure to update to
-        [0.4.0][0_4_0_release] to get access to this, and more:
+        [0.4.0][0_4_0_release] to get access to all of this, and more:
 
         - [Navigation stacks](#stacks)
         - [Navigation bugs fixes](#bug-fixes)
@@ -111,9 +111,9 @@ public let post0084_SwiftUINavRelease = BlogPost(
 
         ```swift
         struct UsersListView: View {
-          @State var destination: Destination?
           @State var categories: [Category]
           @State var users: [User]
+          @State var destination: Destination?
           enum Destination {
             case edit(user: User)
             case edit(cateogry: Category)
