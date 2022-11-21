@@ -100,7 +100,8 @@ public struct Client {
       .map { $0.components(separatedBy: boundary) }
       .flatMap { components in
         guard
-          let userId = components.first.flatMap(UUID.init(uuidString:)).flatMap(User.Id.init(rawValue:)),
+          let userId = components.first.flatMap(UUID.init(uuidString:)).flatMap(
+            User.Id.init(rawValue:)),
           let newsletter = components.last.flatMap(EmailSetting.Newsletter.init(rawValue:))
         else { return nil }
 
