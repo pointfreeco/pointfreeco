@@ -12,6 +12,7 @@ import Logging
 import Mailgun
 import Models
 import ModelsTestSupport
+import OrderedCollections
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -186,7 +187,7 @@ extension Snapshotting {
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)
   -> URLRequest
 {
-  var headers: [String: [String?]] = [:]
+  var headers: OrderedDictionary<String, [String?]> = [:]
 
   if basicAuth {
     let authString = "\(Current.envVars.basicAuth.username):\(Current.envVars.basicAuth.password)"
