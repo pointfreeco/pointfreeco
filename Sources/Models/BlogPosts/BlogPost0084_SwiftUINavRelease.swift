@@ -321,6 +321,6 @@ public let post0084_SwiftUINavRelease = BlogPost(
   ],
   coverImage: nil,
   id: 84,
-  publishedAt: Date(timeIntervalSince1970: 1_669_096_800),
+  publishedAt: Date(timeIntervalSince1970: 1669010400),
   title: "Better SwiftUI navigation APIs"
 )
