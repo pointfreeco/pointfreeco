@@ -2,9 +2,7 @@ import Foundation
 
 public let post0085_BlackFriday2022 = BlogPost(
   author: .pointfree,
-  blurb: """
-    We're offering a 30% discount for the first year of a Point-Free subscription!
-    """,
+  blurb: sale2020Blurb,
   contentBlocks: [
     .init(
       content: sale2022(name: "Black Friday"),
@@ -17,6 +15,12 @@ public let post0085_BlackFriday2022 = BlogPost(
   publishedAt: Date(timeIntervalSince1970: 1669356000),
   title: "Black Friday Sale: 30% Off Point-Free"
 )
+
+let sale2020Blurb = """
+  We're offering a 30% discount for the first year of a Point-Free subscription! Get instant
+  access to all past 214 episodes instantly, as well as access to everything we have planned
+  for 2023.
+  """
 
 func sale2022(name: String) -> String {
   """
