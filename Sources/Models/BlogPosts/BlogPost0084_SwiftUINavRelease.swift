@@ -309,9 +309,9 @@ public let post0084_SwiftUINavRelease = BlogPost(
         [nav-dest-docs]: https://developer.apple.com/documentation/swiftui/view/navigationdestination(for:destination:)
         [nav-link-init-docs]: https://developer.apple.com/documentation/swiftui/navigationlink/init(value:label:)-4jswo
         [nav-dest-ispresented-docs]: https://developer.apple.com/documentation/swiftui/view/navigationdestination(ispresented:destination:)
-        [nav-dest-unwrapping-code]: TODO
-        [nav-dest-unwrapping-case-code]: TODO
-        [alert-unwrapping-code]: TODO
+        [nav-dest-unwrapping-code]: https://github.com/pointfreeco/swiftui-navigation/blob/102ab45e10986a27ef2cfacac00f03410461436b/Sources/SwiftUINavigation/NavigationDestination.swift#LL41-L44
+        [nav-dest-unwrapping-case-code]: https://github.com/pointfreeco/swiftui-navigation/blob/102ab45e10986a27ef2cfacac00f03410461436b/Sources/SwiftUINavigation/NavigationDestination.swift#L70-L74
+        [alert-unwrapping-code]: https://github.com/pointfreeco/swiftui-navigation/blob/102ab45e10986a27ef2cfacac00f03410461436b/Sources/SwiftUINavigation/Alert.swift#L119-L122
         [nav-dest-ispresented-fb]: https://gist.github.com/mbrandonw/f8b94957031160336cac6898a919cbb7#file-fb11056434-md
         [alerts-code]: https://github.com/pointfreeco/swiftui-navigation/blob/5bf9dadd086d2d6beef5ea1fe9a2070ad4eab2b8/Sources/SwiftUINavigation/Alert.swift
         [dialogs-code]: https://github.com/pointfreeco/swiftui-navigation/blob/5bf9dadd086d2d6beef5ea1fe9a2070ad4eab2b8/Sources/SwiftUINavigation/ConfirmationDialog.swift
