@@ -132,11 +132,13 @@ func announcementBanner<A>(
   _ data: SimplePageLayoutData<A>,
   date: () -> Date
 ) -> Node {
-  guard
-    case .nonSubscriber = data.currentSubscriberState,
-    (post0076_WWDCSale.publishedAt...post0076_WWDCSale.publishedAt.advanced(by: 5 * 24 * 60 * 60))
-      .contains(date())
-  else { return [] }
+  #if !DEBUG
+    guard
+      case .nonSubscriber = data.currentSubscriberState,
+      (post0085_BlackFriday2022.publishedAt...post0086_CyberMonday2022.publishedAt.advanced(
+        by: 86_400)).contains(date())
+    else { return [] }
+  #endif
 
   let announcementClass =
     Class.type.align.center
@@ -144,6 +146,7 @@ func announcementBanner<A>(
     | Class.pf.colors.bg.purple
     | Class.pf.colors.fg.gray850
     | Class.pf.colors.link.white
+  | Class.pf.type.body.leading
 
   return .gridRow(
     attributes: [.class([announcementClass])],
@@ -155,11 +158,22 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0076_WWDCSale.slug)))),
+          .href("/discounts/black-friday-2022"),
         ],
-        .strong("WWDC sale")
+        .strong("Black Friday sale")
       ),
-      ": save 25% when you subscribe!"
+      ": save 30% when you subscribe! ",
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.white
+              | Class.pf.type.underlineLink
+          ]),
+          .href(siteRouter.url(for: .blog(.show(slug: post0085_BlackFriday2022.slug)))),
+        ],
+        "Read more"
+      ),
+      " about our sale."
     )
   )
 }
