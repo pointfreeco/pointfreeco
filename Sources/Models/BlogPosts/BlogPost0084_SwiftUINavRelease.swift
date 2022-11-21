@@ -319,8 +319,8 @@ public let post0084_SwiftUINavRelease = BlogPost(
       type: .paragraph
     )
   ],
-  coverImage: nil, 
+  coverImage: nil,
   id: 84,
-  publishedAt: Date(timeIntervalSince1970: 1669096800),
+  publishedAt: Date(timeIntervalSince1970: 1_669_096_800),
   title: "Better SwiftUI navigation APIs"
 )
