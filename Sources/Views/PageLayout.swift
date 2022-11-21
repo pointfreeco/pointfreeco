@@ -146,7 +146,7 @@ func announcementBanner<A>(
     | Class.pf.colors.bg.purple
     | Class.pf.colors.fg.gray850
     | Class.pf.colors.link.white
-  | Class.pf.type.body.leading
+    | Class.pf.type.body.leading
 
   return .gridRow(
     attributes: [.class([announcementClass])],
