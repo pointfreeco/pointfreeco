@@ -12,7 +12,7 @@ public let post0085_BlackFriday2022 = BlogPost(
   coverImage: nil,
   hidden: false,
   id: 85,
-  publishedAt: Date(timeIntervalSince1970: 1669356000),
+  publishedAt: Date(timeIntervalSince1970: 1_669_356_000),
   title: "Black Friday Sale: 30% Off Point-Free"
 )
 
@@ -61,7 +61,7 @@ func sale2022(name: String) -> String {
 
   We expanded our [Composable Architecture][tca-gh] collection of episodes by modernizing nearly
   every aspect of the library.
-  
+
   First, we introduced first class support for structured concurrency in effects, which allows you
   to use async/await and tie the lifetime of effects to the lifetime of views.
 

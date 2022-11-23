@@ -147,10 +147,10 @@ private func headerLinks(
 ) -> Node {
   return [
     subscriberState.isNonSubscriber
-    ? .a(
-      attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])],
-      "Pricing")
-    : [],
+      ? .a(
+        attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])],
+        "Pricing")
+      : [],
 
     .a(
       attributes: [.href(siteRouter.path(for: .collections())), .class([navLinkClasses])],

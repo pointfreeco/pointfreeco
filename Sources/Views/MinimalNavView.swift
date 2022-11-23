@@ -97,8 +97,8 @@ private func loggedInNavItemsView(
   return .ul(
     attributes: [.class([navListClass])],
     subscriberState.isNonSubscriber
-    ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
-    : [],
+      ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
+      : [],
     .li(
       attributes: [.class([navListItemClass])],
       collectionsLinkView(style: style)

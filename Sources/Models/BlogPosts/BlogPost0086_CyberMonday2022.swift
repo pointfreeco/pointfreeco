@@ -12,6 +12,6 @@ public let post0086_CyberMonday2022 = BlogPost(
   coverImage: nil,
   hidden: false,
   id: 86,
-  publishedAt: Date(timeIntervalSince1970: 1669615200),
+  publishedAt: Date(timeIntervalSince1970: 1_669_615_200),
   title: "Cyber Monday Sale: 30% Off Point-Free"
 )
