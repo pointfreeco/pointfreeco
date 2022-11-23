@@ -1980,6 +1980,13 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                       col-d-6
                       col-m-12">
             <div class="end-m">
+              <a href="/pricing"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Pricing
+              </a>
               <a href="/collections"
                  class="medium
                         pf-link-black
@@ -1993,13 +2000,6 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                         d-mr3
                         m-mr2">
                 Blog
-              </a>
-              <a href="/pricing"
-                 class="medium
-                        pf-link-black
-                        d-mr3
-                        m-mr2">
-                Pricing
               </a>
               <a href="/gifts"
                  class="medium

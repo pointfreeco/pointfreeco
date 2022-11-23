@@ -1957,6 +1957,13 @@ Point-Free!</p>
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a href="/pricing"
+                   class="pf-link-black">
+                  Pricing
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a class="pf-link-black"
                    href="/collections">
                   Collections
@@ -1967,13 +1974,6 @@ Point-Free!</p>
                 <a href="/blog"
                    class="pf-link-black">
                   Blog
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/pricing"
-                   class="pf-link-black">
-                  Pricing
                 </a>
               </li>
               <li class="m-pl2

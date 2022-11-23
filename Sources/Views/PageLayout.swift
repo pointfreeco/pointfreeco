@@ -132,13 +132,11 @@ func announcementBanner<A>(
   _ data: SimplePageLayoutData<A>,
   date: () -> Date
 ) -> Node {
-  #if !DEBUG
-    guard
-      case .nonSubscriber = data.currentSubscriberState,
-      (post0085_BlackFriday2022.publishedAt...post0086_CyberMonday2022.publishedAt.advanced(
-        by: 86_400)).contains(date())
-    else { return [] }
-  #endif
+  guard
+    case .nonSubscriber = data.currentSubscriberState,
+    (post0085_BlackFriday2022.publishedAt...post0086_CyberMonday2022.publishedAt.advanced(
+      by: 86_400)).contains(date())
+  else { return [] }
 
   let announcementClass =
     Class.type.align.center

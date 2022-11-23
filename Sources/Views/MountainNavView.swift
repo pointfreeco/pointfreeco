@@ -146,6 +146,12 @@ private func headerLinks(
   currentRoute: SiteRoute?
 ) -> Node {
   return [
+    subscriberState.isNonSubscriber
+    ? .a(
+      attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])],
+      "Pricing")
+    : [],
+
     .a(
       attributes: [.href(siteRouter.path(for: .collections())), .class([navLinkClasses])],
       "Collections"
@@ -155,12 +161,6 @@ private func headerLinks(
       attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClasses])],
       "Blog"
     ),
-
-    subscriberState.isNonSubscriber
-      ? .a(
-        attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])],
-        "Pricing")
-      : [],
 
     Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
       ? .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts")

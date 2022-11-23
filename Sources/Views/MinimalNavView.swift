@@ -96,6 +96,9 @@ private func loggedInNavItemsView(
 ) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
+    subscriberState.isNonSubscriber
+    ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
+    : [],
     .li(
       attributes: [.class([navListItemClass])],
       collectionsLinkView(style: style)
@@ -104,9 +107,6 @@ private func loggedInNavItemsView(
       attributes: [.class([navListItemClass])],
       blogLinkView(style: style)
     ),
-    subscriberState.isNonSubscriber
-      ? .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style))
-      : [],
     Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
       ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
       : [],
@@ -117,9 +117,9 @@ private func loggedInNavItemsView(
 private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
+    .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], blogLinkView(style: style)),
-    .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
     Feature.allFeatures.hasAccess(to: .gifts, for: nil)
       ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
       : [],

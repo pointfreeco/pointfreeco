@@ -1931,6 +1931,13 @@ html {
                       col-d-6
                       col-m-12">
             <div class="end-m">
+              <a href="/pricing"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Pricing
+              </a>
               <a href="/collections"
                  class="medium
                         pf-link-black
@@ -1944,13 +1951,6 @@ html {
                         d-mr3
                         m-mr2">
                 Blog
-              </a>
-              <a href="/pricing"
-                 class="medium
-                        pf-link-black
-                        d-mr3
-                        m-mr2">
-                Pricing
               </a>
               <a href="/gifts"
                  class="medium

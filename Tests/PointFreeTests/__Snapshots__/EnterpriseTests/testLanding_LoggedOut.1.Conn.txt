@@ -1857,6 +1857,13 @@ html {
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a href="/pricing"
+                   class="pf-link-green">
+                  Pricing
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a class="pf-link-green"
                    href="/collections">
                   Collections
@@ -1867,13 +1874,6 @@ html {
                 <a href="/blog"
                    class="pf-link-green">
                   Blog
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/pricing"
-                   class="pf-link-green">
-                  Pricing
                 </a>
               </li>
               <li class="m-pl2

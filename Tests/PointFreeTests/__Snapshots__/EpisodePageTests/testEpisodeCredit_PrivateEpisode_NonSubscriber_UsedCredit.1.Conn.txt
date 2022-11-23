@@ -1999,6 +1999,13 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a href="/pricing"
+                   class="pf-link-gray650">
+                  Pricing
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a class="pf-link-gray650"
                    href="/collections">
                   Collections
@@ -2009,13 +2016,6 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                 <a href="/blog"
                    class="pf-link-gray650">
                   Blog
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/pricing"
-                   class="pf-link-gray650">
-                  Pricing
                 </a>
               </li>
               <li class="m-pl2
