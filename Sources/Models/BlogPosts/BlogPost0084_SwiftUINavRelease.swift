@@ -116,7 +116,7 @@ public let post0084_SwiftUINavRelease = BlogPost(
           @State var destination: Destination?
           enum Destination {
             case edit(user: User)
-            case edit(cateogry: Category)
+            case edit(category: Category)
           }
 
           var body: some View {
@@ -231,15 +231,15 @@ public let post0084_SwiftUINavRelease = BlogPost(
           } else {
             self.alert = AlertState {
               TextState("Delete?")
-            } message: {
-              TextState(#"Are you sure you want to delete "\(item.name)"?"#)
-            } buttons: {
-              ButtonState(role: .destructive, action: .send(.confirmDeletion)) {
+            } actions: {
+              ButtonState(role: .destructive, action: .confirmDeletion) {
                 TextState("Yes, delete")
               }
               ButtonState(role: cancel) {
                 TextState("Nevermind")
               }
+            } message: {
+              TextState(#"Are you sure you want to delete "\(item.name)"?"#)
             }
           }
         }
