@@ -11,7 +11,7 @@ extension Episode {
     exercises: _exercises,
     id: 211,
     length: 49 * 60 + 58,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_667_800_800),
     references: [
       .swiftUINav
