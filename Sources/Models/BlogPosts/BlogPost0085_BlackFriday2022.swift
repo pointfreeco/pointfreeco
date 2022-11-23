@@ -36,23 +36,23 @@ func sale2022(name: String) -> String {
   ## [Concurrency][concurrency-collection]
 
   Swift 5.6 brought all new concurrency tools to the language, including async/await, actors,
-  structured concurrency, "sendability", streams, clocks and more. Understanding all of these
+  structured concurrency, "sendability", streams, clocks, and more. Understanding all of these
   tools at once can be overwhelming, so we thought it would be best to uncover them from the
-  perspective of the past tools on Apple's platforms.
+  perspective of the past tools on Apple's platforms: from threads, to queues, to Combine
+  publishers, and finally to today's tools.
 
-  This includes threads, queues, Combine publishers and more. Each of those concurrency
-  tools are powerful in their own way, and even have many features that async/await has,
-  but also have significant shortcomings. Understanding this can help us understand why
-  Swift's native tools were designed the way they were, and help us leverage them to the
-  best of their abilities.
+  Each generation of tools is powerful in its own way, and even have many features that 
+  async/await has, but also have significant shortcomings. Understanding this can help us
+  understand why Swift's native tools were designed the way they were, and help us leverage
+  them to the best of their abilities.
 
   ## [SwiftUI navigation][swiftui-nav-collection]
 
   Navigation in SwiftUI can be complex, but it doesn't have to be that way. In our [12-part
   series][swiftui-nav-collection] we show how all of SwiftUI's seemingly disparate forms of
   navigation (sheets, covers, popovers, links, alerts, and more!) can all be unified under
-  essentially one API. This greatly simplifies the process of modeling the state for
-  navigation in your features, and can even make your code safer and more concise.
+  essentially one API. This greatly simplifies the process of modeling state for navigation in
+  your features, and can even make your code safer and more concise.
 
   We also have an [open source library][swiftui-nav-gh] that makes it super easy to integrate
   these tools into your codebase.
@@ -60,22 +60,23 @@ func sale2022(name: String) -> String {
   ## [Composable Architecture][tca-collection]
 
   We expanded our [Composable Architecture][tca-gh] collection of episodes by modernizing nearly
-  every aspect of the library. It now has first class support for structured concurrency in
-  effects, which allows you to use async/await and tie the lifetime of effects to the lifetime
-  of views.
+  every aspect of the library.
+  
+  First, we introduced first class support for structured concurrency in effects, which allows you
+  to use async/await and tie the lifetime of effects to the lifetime of views.
 
-  And we introduced a protocol for defining reducers, which has much better ergnomics for
-  implementing and composing features together. It also unlocks a whole new way of managing
-  dependencies that makes is easier and safer to access dependencies from any part of your
+  Then we introduced a protocol and result builder for defining reducers, which has much better
+  ergonomics for implementing and composing features together. It also unlocks a whole new way of
+  managing dependencies that makes is easier and safer to access dependencies from any part of your
   application code base.
 
   ## [Parsers][parsers-collection]
 
   We made significant updates to our [parser library][parsers-gh], including better error handling
   and error messaging, a new builder-style of creating parsers, and the ability to "invert"
-  parsers, which allows you to print values back into a string format. These features make
-  our parser library one of the most powerful ways to turn unstructured data into structured
-  data, and our episodes show how we built it from the ground up.
+  parsers, which allows you to print values back into the original string format. These features
+  make our parser library one of the most powerful ways to turn unstructured data into structured
+  data (and back again!), and our episodes show how we built it from the ground up.
 
   ## Subscribe today!
 
