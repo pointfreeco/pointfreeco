@@ -93,6 +93,11 @@ public let post0084_SwiftUINavRelease = BlogPost(
         at the same time. SwiftUI considers that a user error, and can lead to the interface
         becoming non-responsive or even crash.
 
+        > Subscribe to Point-Free through
+        > [our Black Friday sale](https://www.pointfree.co/discounts/black-friday-2022)
+        > at a 30% discount! Learn how we motivated and built the SwiftUI Navigation library along
+        > with [many other topics](https://www.pointfree.co/collections).
+
         That’s why our library ships with another overload, named
         [`navigationDestination(unwrapping:case:)`][nav-dest-unwrapping-case-code], which allows
         driving multiple destinations from a single piece of enum state:
