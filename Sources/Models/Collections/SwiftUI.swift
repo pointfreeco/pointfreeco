@@ -34,6 +34,8 @@ extension Episode.Collection {
       .swiftUIAnimations(title: "Animations"),
 
       .navigation,
+
+      .modernSwiftUI,
     ],
     title: "SwiftUI"
   )
@@ -69,6 +71,20 @@ extension Episode.Collection.Section {
       """#
   )
 
+  public static let modernSwiftUI = Self(
+    blurb: #"""
+      What does it take to build a vanilla SwiftUI application with best, modern practices? We rebuild Apple's Scrumdinger code sample, a decently complex application that tackles real world problems, in a way that can be tested, modularized, and uses all of Swift's powerful domain modeling tools.
+      """#,
+    coreLessons: [
+      .init(episode: .ep214_modernSwiftUI),
+    ],
+    isFinished: false,
+    related: [
+    ],
+    title: "Modern SwiftUI",
+    whereToGoFromHere: nil
+  )
+
   public static let navigation = Self(
     blurb: #"""
       Navigation is a really, really complex topic, and it’s going to take us many episodes go deep into it. We will show at its heart, navigation is really a domain modeling problem, which means we need to discover tools that allow us to transform one domain into another. Once this is accomplished we will see that many seemingly disparate forms of navigation can be unified in a really amazing way.
@@ -96,6 +112,10 @@ extension Episode.Collection.Section {
       )
     ],
     title: "Navigation",
-    whereToGoFromHere: nil
+    whereToGoFromHere:
+      #"""
+      We will tackle an even larger topic: building a SwiftUI application using modern, best practices.
+      """#
+
   )
 }

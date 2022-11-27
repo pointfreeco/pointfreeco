@@ -226,6 +226,26 @@ extension Episode.Reference {
     title: "Everything’s a Function."
   )
 
+  public static let foodTruck = Self(
+    author: "Apple",
+    blurb: """
+      Create a single codebase and app target for Mac, iPad, and iPhone.
+      """,
+    link: "https://developer.apple.com/documentation/swiftui/food_truck_building_a_swiftui_multiplatform_app/",
+    publishedAt: nil,
+    title: "Food Truck: Building a SwiftUI multiplatform app"
+  )
+
+  public static let fruta = Self(
+    author: "Apple",
+    blurb: """
+      Create a shared codebase to build a multiplatform app that offers widgets and an App Clip.
+      """,
+    link: "https://developer.apple.com/documentation/swiftui/fruta_building_a_feature-rich_app_with_swiftui/",
+    publishedAt: nil,
+    title: "Fruta: Building a Feature-Rich App with SwiftUI"
+  )
+
   public static let fusionPrimer = Self(
     author: "Jasdev Singh",
     blurb: """
@@ -594,6 +614,16 @@ extension Episode.Reference {
     title: "pointfreeco/swift-enum-properties"
   )
 
+  public static let pointfreecoPackageCollection = Episode.Reference(
+    author: "Swift Package Index",
+    blurb: """
+      These packages are available as a package collection, usable in Xcode 13 or the Swift Package Manager 5.5.
+      """,
+    link: "https://swiftpackageindex.com/pointfreeco",
+    publishedAt: nil,
+    title: "Packages authored by Point-Free"
+  )
+
   public static let promisesAreNotNeutralEnough = Episode.Reference(
     author: "André Staltz",
     blurb: """
@@ -808,6 +838,16 @@ extension Episode.Reference {
     link: "http://www.haskellforall.com/2012/05/scrap-your-type-classes.html",
     publishedAt: Date(timeIntervalSince1970: 1_335_931_200),
     title: "Scrap your type classes"
+  )
+
+  public static let scrumdinger = Episode.Reference(
+    author: "Apple",
+    blurb: """
+      Learn the essentials of iOS app development by building a fully functional app using SwiftUI.
+      """,
+    link: "https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger",
+    publishedAt: nil,
+    title: "Getting started with Scrumdinger"
   )
 
   public static let se0215_conformNeverToEquatableAndHashable = Episode.Reference(
