@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep214_modernSwiftUI = Episode(
     blurb: """
-      What goes into building a SwiftUI application with best, modern practices? We’ll take Apple’s “Scrumdinger” sample code, a decently complex app that tackles many real world problems, get comfortable with the existing project, and rewrite it!
+      What goes into building a SwiftUI application with best, modern practices? We’ll take a look
+      at Apple’s “Scrumdinger” sample code, a decently complex app that tackles many real world
+      problems, get familiar with how it's built, and then rewrite it!
       """,
     codeSampleDirectory: "0214-modern-swiftui-pt1",
     exercises: _exercises,

@@ -10,7 +10,7 @@ public let post0085_BlackFriday2022 = BlogPost(
     )
   ],
   coverImage: nil,
-  hidden: false,
+  hidden: true,
   id: 85,
   publishedAt: Date(timeIntervalSince1970: 1_669_356_000),
   title: "Black Friday Sale: 30% Off Point-Free"
