@@ -231,7 +231,8 @@ extension Episode.Reference {
     blurb: """
       Create a single codebase and app target for Mac, iPad, and iPhone.
       """,
-    link: "https://developer.apple.com/documentation/swiftui/food_truck_building_a_swiftui_multiplatform_app/",
+    link:
+      "https://developer.apple.com/documentation/swiftui/food_truck_building_a_swiftui_multiplatform_app/",
     publishedAt: nil,
     title: "Food Truck: Building a SwiftUI multiplatform app"
   )
@@ -241,7 +242,8 @@ extension Episode.Reference {
     blurb: """
       Create a shared codebase to build a multiplatform app that offers widgets and an App Clip.
       """,
-    link: "https://developer.apple.com/documentation/swiftui/fruta_building_a_feature-rich_app_with_swiftui/",
+    link:
+      "https://developer.apple.com/documentation/swiftui/fruta_building_a_feature-rich_app_with_swiftui/",
     publishedAt: nil,
     title: "Fruta: Building a Feature-Rich App with SwiftUI"
   )
