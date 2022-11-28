@@ -24,7 +24,7 @@ let sale2020Blurb = """
 
 func sale2022(name: String) -> String {
   """
-  We do this only a few times a year: we're having a [rare, Point-Free sale][black-friday-sale]
+  We do this only a few times a year: we're having a [rare, Point-Free sale][cyber-monday-sale]
   this \(name) by offering 30% off the first year of your subscription!
 
   Once subscribed you'll get instant access to all [214 episodes][pf] (126 hours of video and
@@ -84,12 +84,12 @@ func sale2022(name: String) -> String {
   tools for the Composable Architecture, more improvements to our parser builders, as well
   as all new styles of content from us (live streams!).
 
-  Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
+  Be sure to [subscribe today][cyber-monday-sale] to get access to all of this and more. The
   offer is valid for only a few days, so you better hurry!
 
   [tca-collection]: /collections/composable-architecture
   [concurrency-collection]: /collections/concurrency
-  [black-friday-sale]: /discounts/black-friday-2022
+  [cyber-monday-sale]: /discounts/cyber-monday-2022
   [swiftui-nav-collection]: /collections/swiftui/navigation
   [parsers-collection]: /collections/parsing
   [pf]: /
