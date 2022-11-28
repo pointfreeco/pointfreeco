@@ -156,9 +156,9 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href("/discounts/black-friday-2022"),
+          .href("/discounts/cyber-monday-2022"),
         ],
-        .strong("Black Friday sale")
+        .strong("Cyber Monday sale")
       ),
       ": save 30% when you subscribe! ",
       .a(
@@ -167,7 +167,7 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0085_BlackFriday2022.slug)))),
+          .href(siteRouter.url(for: .blog(.show(slug: post0086_CyberMonday2022.slug)))),
         ],
         "Read more"
       ),
