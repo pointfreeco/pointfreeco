@@ -133,7 +133,7 @@ public let post0084_SwiftUINavRelease = BlogPost(
               }
               Section(header: Text("Categories")) {
                 ForEach(self.categories) { category in
-                  Button("\(category.name)") { self.destination = .edit(category: user) }
+                  Button("\(category.name)") { self.destination = .edit(category: category) }
                 }
               }
             }
