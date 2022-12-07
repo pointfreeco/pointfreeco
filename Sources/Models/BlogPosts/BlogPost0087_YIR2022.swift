@@ -12,8 +12,8 @@ public let post0087_YIR2022 = BlogPost(
         everything we produced for 2022, so join us for a quick review of some of our favorite
         highlights.
 
-        We are also offering [25% off][eoy-discount] the first year for first-time subscribers. If
-        you’ve been on the fence on whether or not to subscribe, now is the time!
+        We are also offering [25% off 🎁][eoy-discount] the first year for first-time subscribers.
+        If you’ve been on the fence on whether or not to subscribe, now is the time!
 
         ## Highlights
 
@@ -36,7 +36,7 @@ public let post0087_YIR2022 = BlogPost(
         accomplish. And along the way we released one brand new open source library, as well as
         many significant updates to some of our most popular libraries.
 
-        ### Parsers
+        #### Parsers
 
         The first 17 episodes of 2022 brought 3 substantial improvements to our
         [Parsing][swift-parsing-gh] library:
@@ -132,7 +132,9 @@ public let post0087_YIR2022 = BlogPost(
         episodes][parsers-collection] (including the _free_ [5-part tour][parsers-tour]), and
         give the [library][swift-parsing-gh] a spin today!
 
-        ### Concurrency
+        <!-- todo: routing -->
+
+        #### Concurrency
 
         We devoted a [5-part series][concurrency-collection] of episodes to uncovering many of
         Apple's concurrency tools from the past, present and into the future. We started by diving
@@ -140,44 +142,74 @@ public let post0087_YIR2022 = BlogPost(
         Thosem tools are powerful for running concurrent code, but can be difficult to wield
         correctly, and the compiler does nothing to help you out.
 
-        [concurrency-collection]: /collections/concurrency/threads-queues-and-tasks
-        [clocks-collection]: /collections/concurrency/clocks
+        Understanding the tools of the past helps us understand why Swift's new concurrency tools
+        take the form they do. The new tools are meant to allow us to write concurrent code in a
+        style that looks like "regular" code, and do so in a way that allows the compiler to catch
+        race conditions at compile time rather than runtime.
 
-        ### The Composable Architecture
+        #### The Composable Architecture
 
         We had two separate series of episodes dedicated to improving nearly every facet of our
-        popular SwiftUI architecture library:
+        popular SwiftUI architecture library: the [Composable Architecture][tca-gh].
 
-        * First, we more tightly integrated Swift's new concurrency tools into the library but
-        making it possible to use structured concurrency in your feature's effects. This makes it
-        much easier to construct effects, including complex, long-living effects.
+        * First, we more [tightly integrated Swift's new concurrency tools][async-tca-collection]
+        into the library but making it possible to use structured concurrency in your feature's
+        effects. This makes it much easier to construct effects, including complex, long-living
+        effects, and makes it possible to tie the lifecycle of effects to the lifecycle of views.
 
-         We also showed how one can tie the lifecycle of effects to the lifecycle of views. This
-        makes it possible to have a feature's async work be automatically torn down when a view
-        disappears.
+          While covering these topics we also had a fun [digression into Swift 5.7's new existential
+        type features][existential-digression] (subscription required). It shows how one can think
+        of existential types as a kind of "infinite" enum, which helps build intuition of why
+        protocols seem so different from regular, concrete types.
 
-        * Reducer protocol
+        * Second, [we revamped the fundamental unit][reducer-protocol-collection] that defines a
+        feature in the Composable Architecture: the reducer. It changed from being a struct that
+        wraps a function to a protocol. This allows one to create all new types for encapsulating
+        the logic for a feature, which unlocks new ways of structuring features and even a whole new
+        way of managing dependencies.
 
-        ### Clocks
+        In addition to those improvements, we also made a massive improvement to the testing
+        facilities of the library, thanks to a collaboration with [Krzysztof
+        Zabłocki][merowing.info]. We introduced the concept of ["non-exhaustive
+        `TestStore`"][nets-blog] to the library, which allows you to write high level integration
+        tests between many features without needing to assert on _everything_ that happens in the
+        feature. This can make it possible to write powerful tests that are not brittle and
+        difficult to maintain.
 
-        ### SwiftUI Navigation
+        #### Clocks
 
-        ### Modern SwiftUI
+        One of the most common forms of asynchrony is time-based asynchrony, and Swift introduced
+        the `Clock` protocol as a means of abstracting over the concept of "sleeping" in an async
+        context. This protocol even makes it possible to write controllable, testable async code,
+        and can even make Xcode previews more responsive for fast, iterative UI design.
 
-        <!--
-        * episodes
-          * parser builders, errors and invertibility
-            * free tour
-          * concurrency
-          * tca
-            * async
-              * existential digression
-            * reducer protocol
-            * dependency management
-          * clocks
-          * swiftui nav
-          * modern swiftui
-        -->
+        Our [2-part deep dive][clocks-collection] into the `Clock` protocol explains why this
+        tool is so important, and shows how to make a few new conformances, such as the "immediate
+        clock" and "test clock". We even [open sourced a brand new library][clocks-gh] that brings
+        these tools, and more, to everyone's codebase.
+
+        #### SwiftUI navigation and modern SwiftUI
+
+        SwiftUI navigation can be complex, but it doesn't have to be. That's why we devoted [12
+        episodes][swiftui-nav-collection] to the topic where we give a precise definition of what
+        navigation means in an application, explored SwiftUI's navigation tools (including tabs,
+        alerts, modal sheets, and links), and then showed how to build new navigation tools that
+        allow us to model our domains more concisely and correctly.
+
+        This year we updated that series of episodes to include iOS 16's new navigation tools,
+        including `NavigationStack`, `NavigationPath`, and the new `navigationDestination` view
+        modifier. After those episodes we [released an update][better-swiftui-blog] to our
+        [SwiftUI Navigation library][swiftu-nav-gh] that makes it possible to drive _all_ forms of
+        navigation from a single piece of enum state with a case for each possible destination in
+        your feature. This can massively simplify your navigation logic, and prevent a large class
+        of bugs from ever appearing in your code.
+
+        Once all of those tools were under our belt we started a [brand new series of
+        episodes][modern-swiftui-collection] (still ongoing at the time of publication of this
+        article) covering best, modern SwiftUI practices. We do this by rebuilding one of Apple's
+        most interesting demo applications, the [“Scrumdinger”][scrumdinger-tutorial]. This
+        application shows off many navigation flows, interesting user interactions, and some
+        complex effects such as timers, persistence, and even a speech recognizer.
 
         ## Blog posts
 
@@ -209,37 +241,38 @@ public let post0087_YIR2022 = BlogPost(
         well as Swift 5.7's new existential type features in order to [reverse engineer how
         `NavigationPath` works][nav-path-blog].
 
-        <!--
-        ### [Better SwiftUI navigation APIs][better-swiftui-blog]
+        #### [Non-exhaustive testing in the Composable Architecture][nets-blog]
 
-        SwiftUI navigation can be complex, but it doesn't have to be. That's why we devoted [many
-        episodes][swiftui-nav-collection] to the topic, and even
-        [rebuilt][modern-swiftui-collection] one of Apple's
-        -->
+        Testing is by far the #1 priority of the [Composable Architecture][tca-gh]. The library
+        provides a tool, the [`TestStore`][test-store-docs], that makes it possible to
+        _exhaustively_ prove how your features evolve over time. This not only includes how state
+        changes with every user action, but also how effects are executed, and how data is fed back
+        into the system.
 
-        <!--
-        * open source
-          * top level stats (starts for TCA, stars for all repos)
-          * parsers
-            * error handling
-            * parser builder
-            * parser-printer
-            * routing
-          * TCA
-            * async
-            * reducer protocol
-            * dependency management
-            * non-exhaustive test store
-          * Clocks
-          * SwiftUINav
-        -->
+        The testing tools in the library haven't changed much in the two and a half years since
+        release, but thanks to close collaboration with [Krzysztof Zabłocki][merowing.info] and
+        support from his employer, [The Browser Company](https://thebrowser.company), the
+        Composable Architecture was updated to bring first class support for "non-exhaustive"
+        test stores.
+
+        Read our article, ["Non-exhaustive testing in the Composable Architecture"][nets-blog],
+        for an overview of the "why" and "how" of exhaustive testing, as well as when it breaks
+        down, and how non-exhaustive testing can help.
 
         ## See you in 2023! 🥳
-        <!--
-        * 2023
-          * TCA nav
-          * live streams
-        -->
+
+        We're thankful to all of our subscribers for supporting us and helping us create this
+        content and these libraries. We could not do it without you.
+
+        Next year we have even more planned, including powerful new navigation tools in the
+        Composable Architecture, deep dives into existential types and other powerful type system
+        concepts, and we plan exploring new forms of content (live streams!).
+
+        To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year
+        for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
+        is the time!
+
+        See you in 2023!
 
         [eoy-discount]: /discounts/eoy-2022
         [runtime-warning-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
@@ -248,69 +281,19 @@ public let post0087_YIR2022 = BlogPost(
         [swiftui-nav-collection]: /collections/swiftui/navigation
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swift-parsing-gh]: http://github.com/pointfreeco/swift-parsing
+        [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
         [parsers-collection]: /collections/parsing
         [parsers-tour]: /collections/parsing/tour-of-parser-printers
-
-
-
-
-
-
-
-
-
-        <!--
-        ## SwiftUI Navigation
-
-        By far, the most ambitious series of episodes we tackled in 2021 was [SwiftUI Navigation](/collections/swiftui/navigation). Over the course of 9 episodes we gave a precise definition of what navigation means in an application, explored SwiftUI's navigation tools (including tabs, alerts, modal sheets, and links), and then showed how to build new navigation tools that allow us to model our domains more concisely and correctly.
-
-        After completing that series we [open sourced](/blog/posts/66-open-sourcing-swiftui-navigation) a [library](https://github.com/pointfreeco/swiftui-navigation) with all the tools discussed in the series. This makes it easy to model navigation in your application using optionals and enums, and makes it straightforward to drive deep-linking with your domain's state.
-
-        We also used the application built in the series to explore two additional topics at the end of the year. First, we rebuilt the application in UIKit ([part 1](/episodes/ep169-uikit-navigation-part-1), [part 2](/episodes/ep170-uikit-navigation-part-2)), all without making a single change to the view model layer. This shows just how powerful it is to drive navigation off of state. Second, we explored modularity ([part 1](/episodes/ep171-modularization-part-1), [part 2](/episodes/ep172-modularization-part-2)) by breaking down the application into many modules. Along the way to explored different types of modularity, how to structure a modern Xcode project with SPM, and how to build preview apps that allow you to run small portions of your code base without building the entire application.
-
-        <div id="open-source"></div>
-
-        ## Open Source
-
-        Since launching Point-Free in 2018 we have open sourced over [20 projects](https://github.com/pointfreeco), and this year alone we released 5 new projects (3 of which were extracted from our [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) library):
-
-        ### [isowords](https://github.com/pointfreeco/isowords)
-
-        In May of this year we released a word game for iOS called [isowords](https://www.isowords.xyz). Alongside the release we also open sourced the entire code base. Both the client and server code are written in Swift, and the client code shows how to build a large, modularized application in SwiftUI and the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture). We also released a [4-part series](/collections/tours/isowords) of episodes showing off some of the cooler aspects of the code base.
-
-        ### [xctest-dynamic-overlay](https://github.com/pointfreeco/xctest-dynamic-overlay)
-
-        It is very common to write test support code for libraries and applications, but due to how Xcode works one cannot do this easily. If you import `XCTest` in a file, then that file cannot be compiled to run on a simulator or device. This forces you to extract test helper code into its own target/module, even though ideally the code should live right next to your library code.
-
-        The `xctest-dynamic-overlay` library makes it possible to use the `XCTFail` assertion function from the `XCTest` framework in library and application code. It will dynamically find the `XCTFail` implementation in tests, and act as a no-op outside of tests.
-
-        ### [swift-identified-collections](https://github.com/pointfreeco/swift-identified-collections)
-
-        When modeling a collection of elements in your application's state, it is easy to reach for a standard `Array`. However, as your application becomes more complex, this approach can break down in many ways, including accidentally making mutations to the wrong elements or even crashing. 😬
-
-        Identified collections are designed to solve all of these problems by providing data structures for working with collections of identifiable elements in an ergonomic, performant way.
-
-        ### [swift-custom-dump](https://github.com/pointfreeco/swift-custom-dump)
-
-        Swift comes with a wonderful tool for debug-printing the contents of any value to a string, and it's called `dump`. It prints all the fields and sub-fields of a value into a tree-like description. However, the output is less than ideal: dictionaries are printed in non-deterministic order, values are printed with superfluous extra type information, and some types don't print any useful information at all.
-
-        The [swift-custom-dump](https://github.com/pointfreeco/swift-custom-dump) library ships with a function that emulates the behavior of dump, but provides a more refined output of nested structures, optimizing for readability. Further, it uses the more refined output to provide two additional tools. One for outputting a nicely formatted diff between two values of the same type, and another that acts as a drop-in replacement for `XCTAssertEqual` with a much better error message when a test fails.
-
-        ### [swiftui-navigation](https://github.com/pointfreeco/swiftui-navigation)
-
-        A collection of tools for making SwiftUI navigation simpler, more ergonomic and more precise. The library allows you to model your application's navigation as optionals and enums, and then provides the tools for driving alerts, modal sheets, and navigation links from state.
-
-        # 🎉 2022 🎉
-
-        We're thankful to all of our subscribers for supporting us and helping us create this content and these libraries. We could not do it without you.
-
-        Next year we have even more planned, including a deep dive into Swift's new concurrency tools, improvements to the Composable Architecture to play better with concurrency and SwiftUI navigation, as well as all new parsing episodes (including result builders, reversible parsing, routing) and more!
-
-        To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
-
-        See you in 2022!
-        -->
-
+        [concurrency-collection]: /collections/concurrency/threads-queues-and-tasks
+        [clocks-collection]: /collections/concurrency/clocks
+        [reducer-protocol-collection]: /collections/composable-architecture/reducer-protocol
+        [async-tca-collection]: /collections/composable-architecture/async-composable-architecture
+        [clocks-gh]: http://github.com/pointfreeco/swift-clocks
+        [swiftu-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
+        [existential-digression]: /episodes/ep196-async-composable-architecture-tasks#t1092
+        [nets-blog]: /blog/posts/83-non-exhaustive-testing-in-the-composable-architecture
+        [merowing.info]: http://merowing.info
+        [scrumdinger-tutorial]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         """#,
       type: .paragraph
     )
