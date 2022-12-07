@@ -279,7 +279,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok this is still `nil`, but it’s only because there are some required query parameters that also need to be supplied. Most importantly every API request must have an access token attached, which is assigned to every player upon authentication in the game. We can provide this in the query params:
+        OK this is still `nil`, but it’s only because there are some required query parameters that also need to be supplied. Most importantly every API request must have an access token attached, which is assigned to every player upon authentication in the game. We can provide this in the query params:
         """#,
       timestamp: (5 * 60 + 28),
       type: .paragraph
@@ -346,7 +346,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         router
-          .request(for: <#T##ServerRoute#>)
+          .request(for: <#ServerRoute#>)
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -384,7 +384,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         router
-          .request(for: .api(<#T##ServerRoute.Api#>))
+          .request(for: .api(<#ServerRoute.Api#>))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -398,7 +398,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        .init(accessToken: <#T##AccessToken#>, isDebug: <#T##Bool#>, route: <#T##ServerRoute.Api.Route#>)
+        .init(accessToken: <#AccessToken#>, isDebug: <#Bool#>, route: <#ServerRoute.Api.Route#>)
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -418,7 +418,7 @@ extension Array where Element == Episode.TranscriptBlock {
               .init(
                 accessToken: .init(rawValue: UUID()),
                 isDebug: false,
-                route: <#T##ServerRoute.Api.Route#>
+                route: <#ServerRoute.Api.Route#>
               )
             )
           )
@@ -463,7 +463,7 @@ extension Array where Element == Episode.TranscriptBlock {
               .init(
                 accessToken: .init(rawValue: UUID()),
                 isDebug: false,
-                route: .dailyChallenge(<#T##ServerRoute.Api.Route.DailyChallenge#>)
+                route: .dailyChallenge(<#ServerRoute.Api.Route.DailyChallenge#>)
               )
             )
           )
@@ -502,7 +502,7 @@ extension Array where Element == Episode.TranscriptBlock {
               .init(
                 accessToken: .init(rawValue: UUID()),
                 isDebug: false,
-                route: .dailyChallenge(.today(language: <#T##Language#>))
+                route: .dailyChallenge(.today(language: <#Language#>))
               )
             )
           )
@@ -569,7 +569,7 @@ extension Array where Element == Episode.TranscriptBlock {
               accessToken: .init(rawValue: UUID()),
               isDebug: false,
               route: .games(
-                .submit(<#T##ServerRoute.Api.Route.Games.SubmitRequest#>)
+                .submit(<#ServerRoute.Api.Route.Games.SubmitRequest#>)
               )
             )
           )
@@ -588,8 +588,8 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         .init(
-          gameContext: <#T##ServerRoute.Api.Route.Games.SubmitRequest.GameContext#>,
-          moves: <#T##Moves#>
+          gameContext: <#ServerRoute.Api.Route.Games.SubmitRequest.GameContext#>,
+          moves: <#Moves#>
         )
         """#,
       timestamp: nil,
@@ -621,7 +621,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        gameContext: .solo(<#T##ServerRoute.Api.Route.Games.SubmitRequest.GameContext.Solo#>),
+        gameContext: .solo(<#ServerRoute.Api.Route.Games.SubmitRequest.GameContext.Solo#>),
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -636,9 +636,9 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         .init(
-          gameMode: <#T##GameMode#>,
-          language: <#T##Language#>,
-          puzzle: <#T##ArchivablePuzzle#>
+          gameMode: <#GameMode#>,
+          language: <#Language#>,
+          puzzle: <#ArchivablePuzzle#>
         )
         """#,
       timestamp: nil,
@@ -1323,8 +1323,8 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         environment.apiClient.override(
-          route: .games(.submit(<#T##ServerRoute.Api.Route.Games.SubmitRequest#>)),
-          withResponse: <#T##Effect<(data: Data, response: URLResponse), URLError>#>
+          route: .games(.submit(<#ServerRoute.Api.Route.Games.SubmitRequest#>)),
+          withResponse: <#Effect<(data: Data, response: URLResponse), URLError>#>
         )
         """#,
       timestamp: nil,
@@ -1361,8 +1361,8 @@ extension Array where Element == Episode.TranscriptBlock {
         import IntegrationTestHelpers
         …
         environment.apiClient = .init(
-          middleware: <#T##Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##(Conn<StatusLineOpen, Unit>) -> IO<Conn<ResponseEnded, Data>>#>,
-          router: <#T##Router<ServerRoute>#>
+          middleware: <#Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##Middleware<StatusLineOpen, ResponseEnded, Unit, Data>##(Conn<StatusLineOpen, Unit>) -> IO<Conn<ResponseEnded, Data>>#>,
+          router: <#Router<ServerRoute>#>
         )
         """#,
       timestamp: nil,
@@ -1387,8 +1387,8 @@ extension Array where Element == Episode.TranscriptBlock {
         import SiteMiddleware
         …
         environment.apiClient = .init(
-          middleware: siteMiddleware(environment: <#T##ServerEnvironment#>),
-          router: <#T##Router<ServerRoute>#>
+          middleware: siteMiddleware(environment: <#ServerEnvironment#>),
+          router: <#Router<ServerRoute>#>
         )
         """#,
       timestamp: nil,
@@ -1818,7 +1818,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        store.receive(.submitGameResponse(<#T##Result<SubmitGameResponse, ApiError>#>))
+        store.receive(.submitGameResponse(<#Result<SubmitGameResponse, ApiError>#>))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1832,7 +1832,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        store.receive(.submitGameResponse(.success(<#T##SubmitGameResponse#>)))
+        store.receive(.submitGameResponse(.success(<#SubmitGameResponse#>)))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1846,7 +1846,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        store.receive(.submitGameResponse(.success(.solo(<#T##LeaderboardScoreResult#>))))
+        store.receive(.submitGameResponse(.success(.solo(<#LeaderboardScoreResult#>))))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1860,7 +1860,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        store.receive(.submitGameResponse(.success(.solo(.init(ranks: <#T##[TimeScope : LeaderboardScoreResult.Rank]#>)))))
+        store.receive(.submitGameResponse(.success(.solo(.init(ranks: <#[TimeScope : LeaderboardScoreResult.Rank]#>)))))
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1911,7 +1911,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        $0.summary = .leaderboard(<#T##[TimeScope : LeaderboardScoreResult.Rank]#>)
+        $0.summary = .leaderboard(<#[TimeScope : LeaderboardScoreResult.Rank]#>)
         """#,
       timestamp: nil,
       type: .code(lang: .swift)

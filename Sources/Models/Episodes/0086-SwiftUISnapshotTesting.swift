@@ -981,7 +981,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       button.tap()
       button.tap()
       app.buttons["What is the 2nd prime?"].tap()
-      app.alerts["The 2nd prime is 3"].scrollViews.otherElements.buttons["Ok"].tap()
+      app.alerts["The 2nd prime is 3"].scrollViews.otherElements.buttons["OK"].tap()
       app.buttons["Is this prime?"].tap()
       app.buttons["Save to favorite primes"].tap()
       app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 0).swipeDown()
@@ -998,7 +998,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      There are also some strange implementation details leaking out. For example, in order to find the "Ok" button inside the alert, it needed to traverse into the alert (which is found by its string title), and then we needed to know to traverse into a scroll view (for some reason), and then finally search it for the "Ok" button so that we could tap it. This means changes to the view hierarchy could break this test in the future.
+      There are also some strange implementation details leaking out. For example, in order to find the "OK" button inside the alert, it needed to traverse into the alert (which is found by its string title), and then we needed to know to traverse into a scroll view (for some reason), and then finally search it for the "OK" button so that we could tap it. This means changes to the view hierarchy could break this test in the future.
       """#,
     timestamp: (25 * 60 + 20),
     type: .paragraph
@@ -1035,7 +1035,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      app.alerts["The 2nd prime is 3"].scrollViews.otherElements.buttons["Ok"].tap()
+      app.alerts["The 2nd prime is 3"].scrollViews.otherElements.buttons["OK"].tap()
       """#,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -1082,7 +1082,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
     content: #"""
       let alert = app.alerts["The 2nd prime is 3"]
       XCTAssert(alert.waitForExistence(timeout: 5))
-      alert.scrollViews.otherElements.buttons["Ok"].tap()
+      alert.scrollViews.otherElements.buttons["OK"].tap()
       """#,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -1200,7 +1200,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      Ok, that's it for this episode. We hope everyone enjoyed this little holiday surprise episode. We hope everyone has wonder rest of 2019, and we'll see you in the new year!
+      OK, that's it for this episode. We hope everyone enjoyed this little holiday surprise episode. We hope everyone has wonder rest of 2019, and we'll see you in the new year!
       """#,
     timestamp: (33 * 60 + 59),
     type: .paragraph

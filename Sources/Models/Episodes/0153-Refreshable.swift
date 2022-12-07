@@ -507,7 +507,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, now it’s looking good.
+        OK, now it’s looking good.
         """#,
       timestamp: (10 * 60 + 4),
       type: .paragraph

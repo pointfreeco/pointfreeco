@@ -461,6 +461,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         > 🛑 SIGABRT
+        >
         > 🟣 Accessing FocusState's value outside of the body of a View. This will result in a constant Binding of the initial value and will not update.
 
         It seems that it’s not legitimate to move `@FocusState` to the view model. This says we accessed the `FocusState`’s value outside the body, but it sure does look like we are in the body. However, notice that we are accessing the wrapped value by going through the view model, `viewModel.$focusField`, and I believe this is what SwiftUI has a problem with. And we should have known better because the `FocusState` struct conforms to the `DynamicProperty` protocol, which is something that can only be used with views, not in observable objects.

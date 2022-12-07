@@ -1049,7 +1049,7 @@ extension Array where Element == Episode.TranscriptBlock {
         import LeaderboardFeature
         …
         LeaderboardView(
-          store: <#T##Store<LeaderboardState, LeaderboardAction>#>
+          store: <#Store<LeaderboardState, LeaderboardAction>#>
         )
         """#,
       timestamp: nil,
@@ -1066,9 +1066,9 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         LeaderboardView(
           store: .init(
-            initialState: <#T##LeaderboardState#>,
-            reducer: <#T##Reducer<LeaderboardState, LeaderboardAction, Environment>#>,
-            environment: <#T##Environment#>
+            initialState: <#LeaderboardState#>,
+            reducer: <#Reducer<LeaderboardState, LeaderboardAction, Environment>#>,
+            environment: <#Environment#>
           )
         )
         """#,
@@ -1139,8 +1139,8 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         apiClient.override(
-          route: <#T##ServerRoute.Api.Route#>,
-          withResponse: <#T##Effect<(data: Data, response: URLResponse), URLError>#>
+          route: <#ServerRoute.Api.Route#>,
+          withResponse: <#Effect<(data: Data, response: URLResponse), URLError>#>
         )
         """#,
       timestamp: nil,
@@ -1193,7 +1193,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        route: .leaderboard(.fetch(gameMode: <#T##GameMode#>, language: <#T##Language#>, timeScope: <#T##TimeScope#>)),
+        route: .leaderboard(.fetch(gameMode: <#GameMode#>, language: <#Language#>, timeScope: <#TimeScope#>)),
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1215,7 +1215,7 @@ extension Array where Element == Episode.TranscriptBlock {
               timeScope: .lastWeek
             )
           ),
-          withResponse: <#T##Effect<(data: Data, response: URLResponse), URLError>#>
+          withResponse: <#Effect<(data: Data, response: URLResponse), URLError>#>
         )
         """#,
       timestamp: nil,
@@ -1230,7 +1230,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        withResponse: .ok(<#T##value: Encodable##Encodable#>)
+        withResponse: .ok(<#Encodable#>)
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -1246,7 +1246,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         withResponse: .ok(
           FetchLeaderboardResponse(
-            entries: <#T##[FetchLeaderboardResponse.Entry]#>
+            entries: <#[FetchLeaderboardResponse.Entry]#>
           )
         )
         """#,
@@ -1266,13 +1266,13 @@ extension Array where Element == Episode.TranscriptBlock {
           FetchLeaderboardResponse(
             entries: [
               .init(
-                id: <#T##LeaderboardScore.Id#>,
-                isSupporter: <#T##Bool#>,
-                isYourScore: <#T##Bool#>,
-                outOf: <#T##Int#>,
-                playerDisplayName: <#T##String?#>,
-                rank: <#T##Int#>,
-                score: <#T##Int#>
+                id: <#LeaderboardScore.Id#>,
+                isSupporter: <#Bool#>,
+                isYourScore: <#Bool#>,
+                outOf: <#Int#>,
+                playerDisplayName: <#String?#>,
+                rank: <#Int#>,
+                score: <#Int#>
               )
             ]
           )
@@ -1403,7 +1403,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, so we’ve now seen that certain choices we made early on in building isowords really paid dividends down the line. Using the Composable Architecture made it easy and straightforward to build an onboarding experience. Highly modularizing our app made it easier to build our App Clip. And modularizing also made it easy for us to build little app previews that compile super fast and allow us to test specific features in isolation.
+        OK, so we’ve now seen that certain choices we made early on in building isowords really paid dividends down the line. Using the Composable Architecture made it easy and straightforward to build an onboarding experience. Highly modularizing our app made it easier to build our App Clip. And modularizing also made it easy for us to build little app previews that compile super fast and allow us to test specific features in isolation.
         """#,
       timestamp: (39 * 60 + 13),
       type: .paragraph

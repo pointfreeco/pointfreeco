@@ -826,12 +826,12 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       Just(1)
-        .receive(on: <#T##Scheduler#>)
-        .subscribe(on: <#T##Scheduler#>)
-        .timeout(<#T##interval: SchedulerTimeIntervalConvertible & Comparable & SignedNumeric##SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#T##Scheduler#>)
-        .throttle(for: <#T##SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#T##Scheduler#>, latest: <#T##Bool#>)
-        .debounce(for: <#T##SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#T##Scheduler#>)
-        .delay(for: <#T##SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#T##Scheduler#>)
+        .receive(on: <#Scheduler#>)
+        .subscribe(on: <#Scheduler#>)
+        .timeout(<#SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#Scheduler#>)
+        .throttle(for: <#SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#Scheduler#>, latest: <#Bool#>)
+        .debounce(for: <#SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#Scheduler#>)
+        .delay(for: <#SchedulerTimeIntervalConvertible & Comparable & SignedNumeric#>, scheduler: <#Scheduler#>)
       """#,
     timestamp: nil,
     type: .code(lang: .swift)

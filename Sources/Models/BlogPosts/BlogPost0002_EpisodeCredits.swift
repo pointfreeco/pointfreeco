@@ -343,7 +343,7 @@ public let post0002_episodeCredits = BlogPost(
 
     .init(
       content: """
-        Ok, this has been fun, but we've been entirely working in comments and pseudocode. It's now our job to
+        OK, this has been fun, but we've been entirely working in comments and pseudocode. It's now our job to
         translate this to a Swift data type. Well, we want the sum of all these states, so I'm thinking at the root
         level we want an enum. We can see that it splits first at the question of logged in or not logged in.
         So let's start there!
@@ -465,7 +465,7 @@ public let post0002_episodeCredits = BlogPost(
 
     .init(
       content: """
-        Ok we're so close! The `hasUsedCredit` is finished, no extra data is needed, but the `hasNotUsedCredit` needs
+        OK we're so close! The `hasUsedCredit` is finished, no extra data is needed, but the `hasNotUsedCredit` needs
         to further know if the episode is for subscribers only. A simple boolean will solve that:
         """,
       timestamp: nil,

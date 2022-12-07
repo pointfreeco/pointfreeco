@@ -405,7 +405,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
           .alert(item: self.$alertNthPrime) { alert in
             Alert(
               title: Text("The \(ordinal(self.state.count)) prime is \(alert.prime)"),
-              dismissButton: .default(Text("Ok"))
+              dismissButton: .default(Text("OK"))
             )
           }
         }
@@ -1665,7 +1665,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      Ok! That actually concludes our introductory series of episodes on the Composable Architecture. I don't think we planned on spending 18 weeks on this topic when we started, but it's an incredibly deep topic. And honestly, we've only barely scratched the surface of this topic.
+      OK! That actually concludes our introductory series of episodes on the Composable Architecture. I don't think we planned on spending 18 weeks on this topic when we started, but it's an incredibly deep topic. And honestly, we've only barely scratched the surface of this topic.
       """#,
     timestamp: (32 * 60 + 37),
     type: .paragraph

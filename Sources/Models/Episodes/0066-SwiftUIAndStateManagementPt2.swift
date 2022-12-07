@@ -64,7 +64,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      Ok, so we had to do a bit of plumbing to properly get our global app state inside each of our views, but the benefit of doing this work is that now the count value will persist across all screens. We can drill down into the counter, change it, go back to the main screen, and drill down again and everything is restored to how it was previously. So we have achieved persistence with very little work using the power of `@ObjectBinding` in SwiftUI.
+      OK, so we had to do a bit of plumbing to properly get our global app state inside each of our views, but the benefit of doing this work is that now the count value will persist across all screens. We can drill down into the counter, change it, go back to the main screen, and drill down again and everything is restored to how it was previously. So we have achieved persistence with very little work using the power of `@ObjectBinding` in SwiftUI.
       """,
     timestamp: (0 * 60 + 05),
     type: .paragraph
@@ -97,7 +97,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      .presentation(<#T##modal: Modal?##Modal?#>)
+      .presentation(<#Modal?#>)
       """,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -635,8 +635,8 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      .presentation(<#T##isShown: Binding<Bool>##Binding<Bool>#>, alert: <#T##() -> Alert#>)
-      .presentation(<#T##data: Binding<Identifiable?>##Binding<Identifiable?>#>, alert: <#T##(Identifiable) -> Alert#>)
+      .presentation(<#Binding<Bool>#>, alert: <#() -> Alert#>)
+      .presentation(<#Binding<Identifiable?>#>, alert: <#(Identifiable) -> Alert#>)
       """,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -681,7 +681,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       .presentation(self.$alertNthPrime) { n in
         Alert(
           title: Text("The \\(ordinal(self.state.count)) prime is \\(n)"),
-          dismissButton: Alert.Button.default(Text("Ok"))
+          dismissButton: Alert.Button.default(Text("OK"))
         )
       }
       """,

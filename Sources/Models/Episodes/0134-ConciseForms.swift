@@ -756,7 +756,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        primaryButton: .default("Ok", send: .form(.set(\.alert, nil))),
+        primaryButton: .default("OK", send: .form(.set(\.alert, nil))),
         …
         onDismiss: .form(.set(\.alert, nil)))
         """#,

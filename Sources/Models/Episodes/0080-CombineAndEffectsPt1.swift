@@ -866,7 +866,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      Ok, that fixes the eagerness problem, and also makes for an important lesson when dealing with Combine: sometimes things in Combine are eager, but we never want eager things in our architecture. Luckily there is a nice way to turn eager publishers into lazy publishers, but it would also be nice if Combine's architecture clearly called out publishers that are eager.
+      OK, that fixes the eagerness problem, and also makes for an important lesson when dealing with Combine: sometimes things in Combine are eager, but we never want eager things in our architecture. Luckily there is a nice way to turn eager publishers into lazy publishers, but it would also be nice if Combine's architecture clearly called out publishers that are eager.
       """#,
     timestamp: (18 * 60 + 39),
     type: .paragraph

@@ -1607,7 +1607,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      .replaceError(with: <#T##WolframAlphaResult#>)
+      .replaceError(with: <#WolframAlphaResult#>)
       """#,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -1729,7 +1729,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      .receive(on: <#T##Scheduler#>)
+      .receive(on: <#Scheduler#>)
       """#,
     timestamp: nil,
     type: .code(lang: .swift)

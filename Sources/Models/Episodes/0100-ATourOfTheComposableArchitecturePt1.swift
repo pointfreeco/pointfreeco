@@ -401,9 +401,9 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
         static var previews: some View {
           ContentView(
             store: Store(
-              initialState: <#T##_#>,
-              reducer: <#T##Reducer<_, _, Environment>#>,
-              environment: <#T##Environment#>
+              initialState: <#_#>,
+              reducer: <#Reducer<_, _, Environment>#>,
+              environment: <#Environment#>
             )
           )
         }
@@ -662,7 +662,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: #"""
-      ForEach(viewStore.todos, id: <#T##KeyPath<_.Element, _>#>) {
+      ForEach(viewStore.todos, id: <#KeyPath<_.Element, _>#>) {
       """#,
     timestamp: nil,
     type: .code(lang: .swift)

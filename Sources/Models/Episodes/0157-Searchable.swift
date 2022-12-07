@@ -116,7 +116,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, so we’re now about halfway to implementing our search feature. We’ve got a map on the screen that we can pan and zoom around, and we’re getting real time search suggestions as we type, all powered by MapKit’s local search completer API.
+        OK, so we’re now about halfway to implementing our search feature. We’ve got a map on the screen that we can pan and zoom around, and we’re getting real time search suggestions as we type, all powered by MapKit’s local search completer API.
         """#,
       timestamp: 5,
       type: .paragraph
@@ -157,7 +157,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         MKLocalSearch(
-          request: MKLocalPointsOfInterestRequest(coordinateRegion: <#T##MKCoordinateRegion#>)
+          request: MKLocalPointsOfInterestRequest(coordinateRegion: <#MKCoordinateRegion#>)
         )
         """#,
       timestamp: nil,
@@ -173,7 +173,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         MKLocalSearch(
-          request: <#T##MKLocalSearch.Request#>
+          request: <#MKLocalSearch.Request#>
         )
         """#,
       timestamp: nil,
@@ -188,7 +188,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        MKLocalSearch.Request.init(completion: <#T##MKLocalSearchCompletion#>)
+        MKLocalSearch.Request.init(completion: <#MKLocalSearchCompletion#>)
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -970,7 +970,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        > 🟪 SwiftUI: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
+        > 🟣 SwiftUI: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
 
         This is because MapKit’s local search is delivering its response on a background queue. We need to redispatch this work on the main queue so that it can be rendered on the UI thread.
         """#,
@@ -2002,7 +2002,7 @@ extension Array where Element == Episode.TranscriptBlock {
         > ❌ DispatchQueue - A failing scheduler scheduled an action to run immediately.
         > ❌ LocalSearchClient.search is unimplemented - A failing effect ran.
 
-        Ok, 3 failures! And if we read through them we see they’re all related:
+        OK, 3 failures! And if we read through them we see they’re all related:
         """#,
       timestamp: (46 * 60 + 6),
       type: .paragraph
