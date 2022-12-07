@@ -303,5 +303,3 @@ public let post0087_YIR2022 = BlogPost(
   publishedAt: Date(timeIntervalSince1970: 1671429600),
   title: "2022 Year-in-review"
 )
-
-// todo: double check 2021 mentions
