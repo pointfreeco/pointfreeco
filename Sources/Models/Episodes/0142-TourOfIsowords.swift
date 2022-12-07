@@ -1422,7 +1422,7 @@ extension Array where Element == Episode.TranscriptBlock {
           $0.alert = .init(
             title: .init("Error"),
             message: .init("We couldn’t start the rematch. Try again later."),
-            primaryButton: .default(.init("Ok"), send: .dismissAlert),
+            primaryButton: .default(.init("OK"), send: .dismissAlert),
             secondaryButton: nil
           )
         }

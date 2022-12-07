@@ -339,7 +339,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, we are now in a position to create our first module. Let's start with some of those simpler modules that we described earlier, like ones that hold models or helpers. Whenever we want to add a new module there's just a few steps we need to take.
+        OK, we are now in a position to create our first module. Let's start with some of those simpler modules that we described earlier, like ones that hold models or helpers. Whenever we want to add a new module there's just a few steps we need to take.
         """#,
       timestamp: (10 * 60 + 20),
       type: .paragraph

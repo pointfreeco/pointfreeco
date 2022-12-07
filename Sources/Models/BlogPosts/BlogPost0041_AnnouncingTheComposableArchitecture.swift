@@ -179,7 +179,7 @@ public let post0041_AnnouncingTheComposableArchitecture = BlogPost(
                   )
                   alertController.addAction(
                     UIAlertAction(
-                      title: "Ok",
+                      title: "OK",
                       style: .default,
                       handler: { _ in self?.viewStore.send(.factAlertDismissed) }
                     )

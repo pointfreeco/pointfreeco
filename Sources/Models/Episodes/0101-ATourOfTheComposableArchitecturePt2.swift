@@ -199,9 +199,9 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       let appReducer = todoReducer.forEach(
-        state: <#T##WritableKeyPath<GlobalState, MutableCollection>#>,
-        action: <#T##CasePath<GlobalAction, (Comparable, TodoAction)>#>,
-        environment: <#T##(GlobalEnvironment) -> TodoEnvironment#>
+        state: <#WritableKeyPath<GlobalState, MutableCollection>#>,
+        action: <#CasePath<GlobalAction, (Comparable, TodoAction)>#>,
+        environment: <#(GlobalEnvironment) -> TodoEnvironment#>
       )
       """#,
     timestamp: nil,
@@ -260,8 +260,8 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
     content: #"""
       todoReducer.forEach(
         state: \AppState.todos,
-        action: <#T##CasePath<GlobalAction, (Comparable, TodoAction)>#>,
-        environment: <#T##(GlobalEnvironment) -> TodoEnvironment#>
+        action: <#CasePath<GlobalAction, (Comparable, TodoAction)>#>,
+        environment: <#(GlobalEnvironment) -> TodoEnvironment#>
       )
       """#,
     timestamp: nil,
@@ -279,7 +279,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       todoReducer.forEach(
         state: \AppState.todos,
         action: /AppAction.todo(index:action:),
-        environment: <#T##(GlobalEnvironment) -> TodoEnvironment#>
+        environment: <#(GlobalEnvironment) -> TodoEnvironment#>
       )
       """#,
     timestamp: nil,
@@ -408,8 +408,8 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
     content: #"""
       ForEachStore(
         self.store.scope(
-          state: <#T##(AppState) -> LocalState#>,
-          action: <#T##(LocalAction) -> AppAction#>
+          state: <#(AppState) -> LocalState#>,
+          action: <#(LocalAction) -> AppAction#>
         )
       ) { todoStore in
 
@@ -430,9 +430,9 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ForEachStore(
         self.store.scope(
           state: { $0.todos },
-          action: <#T##(LocalAction) -> AppAction#>
+          action: <#(LocalAction) -> AppAction#>
         ),
-        content: <#T##(Store<Identifiable, Action>) -> _#>
+        content: <#(Store<Identifiable, Action>) -> _#>
       )
       """#,
     timestamp: nil,

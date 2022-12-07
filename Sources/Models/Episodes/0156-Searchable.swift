@@ -249,7 +249,7 @@ extension Array where Element == Episode.TranscriptBlock {
           text: <#Binding<String>#>,
           placement: <#SearchFieldPlacement#>,
           prompt: <#Text#>,
-          suggestions: <#T##() -> View#>
+          suggestions: <#() -> View#>
         )
         """#,
       timestamp: nil,
@@ -287,7 +287,7 @@ extension Array where Element == Episode.TranscriptBlock {
       content: #"""
         //placement: <#SearchFieldPlacement#>,
         //prompt: <#Text#>,
-        //suggestions: <#T##() -> View#>
+        //suggestions: <#() -> View#>
         """#,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -386,7 +386,7 @@ extension Array where Element == Episode.TranscriptBlock {
           text: .constant("")
         //  placement: <#SearchFieldPlacement#>,
         //  prompt: <#Text#>,
-        //  suggestions: <#T##() -> View#>
+        //  suggestions: <#() -> View#>
         ) {
           Text("Apple Store")
           Text("Cafe")
@@ -1161,8 +1161,8 @@ extension Array where Element == Episode.TranscriptBlock {
             let completer = MKLocalSearchCompleter()
 
             return Self(
-              completions: <#T##() -> Effect<Result<[MKLocalSearchCompletion], Error>, Never>#>,
-              search: <#T##(String) -> Effect<Never, Never>#>
+              completions: <#() -> Effect<Result<[MKLocalSearchCompletion], Error>, Never>#>,
+              search: <#(String) -> Effect<Never, Never>#>
             )
           }
         }
@@ -1180,7 +1180,7 @@ extension Array where Element == Episode.TranscriptBlock {
     Episode.TranscriptBlock(
       content: #"""
         return Self(
-          completions: <#T##() -> Effect<Result<[MKLocalSearchCompletion], Error>, Never>#>,
+          completions: <#() -> Effect<Result<[MKLocalSearchCompletion], Error>, Never>#>,
           search: { query in
             .fireAndForget {
               completer.queryFragment = query
@@ -1766,7 +1766,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, so we’re now about halfway to implementing our search feature. We’ve got a map on the screen that we can pan and zoom around, and we’re getting real time search suggestions as we type, all powered by MapKit’s local search completer API.
+        OK, so we’re now about halfway to implementing our search feature. We’ve got a map on the screen that we can pan and zoom around, and we’re getting real time search suggestions as we type, all powered by MapKit’s local search completer API.
         """#,
       timestamp: (39 * 60 + 49),
       type: .paragraph

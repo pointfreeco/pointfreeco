@@ -279,7 +279,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      Ok this has six values! Interesting!
+      OK this has six values! Interesting!
       """,
     timestamp: nil,
     type: .paragraph
@@ -592,7 +592,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      Ok, now we've seen that structs in Swift correspond to multiplication of types. But there's a corresponding "dual": addition! How's this look like in Swift's type system?
+      OK, now we've seen that structs in Swift correspond to multiplication of types. But there's a corresponding "dual": addition! How's this look like in Swift's type system?
       """,
     timestamp: nil,
     type: .paragraph

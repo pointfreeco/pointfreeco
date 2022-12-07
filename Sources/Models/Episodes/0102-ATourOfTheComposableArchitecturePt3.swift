@@ -525,7 +525,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: #"""
       environment: AppEnvironment(
-        uuid: <#T##() -> UUID#>
+        uuid: <#() -> UUID#>
       )
       """#,
     timestamp: nil,

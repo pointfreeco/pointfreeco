@@ -146,7 +146,7 @@ public let post0012_solutionsToZipExercisesPt2 = BlogPost(
 
     .init(
       content: """
-        Ok interesting. If we focus on just the shape of this, we see it's a function of the form:
+        OK interesting. If we focus on just the shape of this, we see it's a function of the form:
         `((UnsafeRawBufferPointer) -> R) -> R`. That is basically `F4<UnsafeRawBufferPointer, R>` as defined
         in exercise 2!
 
@@ -181,7 +181,7 @@ public let post0012_solutionsToZipExercisesPt2 = BlogPost(
 
     .init(
       content: """
-        Ok, now that we have `zip` defined, how can we use it? Well, imagine we had some C function that was imported
+        OK, now that we have `zip` defined, how can we use it? Well, imagine we had some C function that was imported
         that operates on `UnsafeRawBufferPointer` values. Then we could `zip` up the `withUnsafeBytes` of two
         arrays and invoke that C function:
         """,

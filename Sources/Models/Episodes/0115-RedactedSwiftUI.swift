@@ -597,7 +597,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ForEach {
         …
       }
-      .redacted(reason: <#T##RedactionReasons#>)
+      .redacted(reason: <#RedactionReasons#>)
       """#,
     timestamp: nil,
     type: .code(lang: .swift)

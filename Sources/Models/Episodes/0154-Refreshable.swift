@@ -1104,7 +1104,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, so that fixes one of our problems, that of bridging this Combine code to the `async`/`await` world. Next we have to figure out what to do about the cancellable returned to us from the `.sink` method because Swift is still warning us that the value is unused.
+        OK, so that fixes one of our problems, that of bridging this Combine code to the `async`/`await` world. Next we have to figure out what to do about the cancellable returned to us from the `.sink` method because Swift is still warning us that the value is unused.
         """#,
       timestamp: (18 * 60 + 22),
       type: .paragraph
@@ -1273,7 +1273,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Ok, so we’ve accomplished what we set out to do, but let’s do one more thing. Let’s write some tests! Perhaps the most important feature of the Composable Architecture is its comprehensive testing tools. We want absolutely everything to be testable in the architecture, from the execution of effects and how they feed data back into the system to the glue code that combines lots of disparate features into one big feature. We want it all to be capable of being tested, and done so in a simple, ergonomic way.
+        OK, so we’ve accomplished what we set out to do, but let’s do one more thing. Let’s write some tests! Perhaps the most important feature of the Composable Architecture is its comprehensive testing tools. We want absolutely everything to be testable in the architecture, from the execution of effects and how they feed data back into the system to the glue code that combines lots of disparate features into one big feature. We want it all to be capable of being tested, and done so in a simple, ergonomic way.
         """#,
       timestamp: (23 * 60 + 46),
       type: .paragraph

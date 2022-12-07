@@ -1070,6 +1070,27 @@ extension Episode.Reference {
     )
   }
 
+  public static let swiftCustomDump = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      Custom Dump is one of our open source projects. It provides a collection of tools for debugging, diffing, and testing your application's data structures.
+      """,
+    link: "https://github.com/pointfreeco/swift-custom-dump",
+    publishedAt: Date(timeIntervalSince1970: 1_629_681_133),
+    title: "CasePaths"
+  )
+
+  public static let swiftIdentifiedCollections = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      Identified Collections is our open source library that provides an ergonomic, performant way
+      to manage collections of identifiable data, and fits in perfectly with SwiftUI.
+      """,
+    link: "https://github.com/pointfreeco/swift-identified-collections",
+    publishedAt: Date(timeIntervalSince1970: 1_626_041_527),
+    title: "Identified Collections"
+  )
+
   public static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -1466,6 +1487,17 @@ extension Episode.Reference {
     link: "https://tclementdev.com/posts/what_went_wrong_with_the_libdispatch.html",
     publishedAt: referenceDateFormatter.date(from: "2020-11-23"),
     title: "What went wrong with the libdispatch. A tale of caution for the future of concurrency."
+  )
+
+  public static let xctestDynamicOverlay = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      XCTest Dynamic Overlay is a library we wrote that lets you write test helpers directly in your
+      application and library code.
+      """,
+    link: "https://github.com/pointfreeco/xctest-dynamic-overlay",
+    publishedAt: Date(timeIntervalSince1970: 1_615_989_917),
+    title: "XCTest Dynamic Overlay"
   )
 }
 

@@ -559,7 +559,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-      Ok, well this is very concerning. We now have a runtime crash. Not just an error being thrown which we can catch. This means that it could take down our server. We haven't yet updated the data being fed into the template, so when it tries to access `name` on the strings we're passing through, it presumably can't reconcile trying to find the `name` field of a string, and something in the library is causing a crash.
+      OK, well this is very concerning. We now have a runtime crash. Not just an error being thrown which we can catch. This means that it could take down our server. We haven't yet updated the data being fed into the template, so when it tries to access `name` on the strings we're passing through, it presumably can't reconcile trying to find the `name` field of a string, and something in the library is causing a crash.
       """,
     timestamp: (10 * 60 + 30),
     type: .paragraph
