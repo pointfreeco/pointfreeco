@@ -3,7 +3,7 @@ import Foundation
 public let post0087_YIR2022 = BlogPost(
   author: .pointfree,
   blurb: """
-    Point-Free year in review: 43 episodes, 150k visitors, dozens of open source releases, and more!
+    Point-Free year in review: 43 episodes, 150K visitors, dozens of open source releases, and more!
     """,
   contentBlocks: [
     .init(
@@ -19,10 +19,10 @@ public let post0087_YIR2022 = BlogPost(
 
         2022 was our biggest year yet:
 
-        * **150k** unique vistors to the site.
+        * **150K** unique visitors to the site.
         * **45** episodes released for a total of **31** hours of video, and **15** blog posts
         published.
-        * Over **200k** video views, **6 years** watching time, and over **44 terabytes** of video
+        * Over **200K** video views, **6 years** watching time, and over **44 terabytes** of video
         streamed.
         * **1** new project open sourced and dozens of updates to our other libraries.
 
@@ -30,9 +30,9 @@ public let post0087_YIR2022 = BlogPost(
 
         ## Episodes and open source
 
-        This years episodes were action packed, to say the least. We made use of many new, advanced
+        This year's episodes were action-packed, to say the least. We made use of many new, advanced
         features of Swift 5.7, especially result builders, existentials, and constrained opaque
-        types, in order to push the Swift language and SwiftUI to the limits of what it can
+        types, in order to push the Swift language and SwiftUI to the limit of what they can
         accomplish. And along the way we released one brand new open source library, as well as
         many significant updates to some of our most popular libraries.
 
@@ -41,92 +41,92 @@ public let post0087_YIR2022 = BlogPost(
         The first 17 episodes of 2022 brought 3 substantial improvements to our
         [Parsing][swift-parsing-gh] library:
 
-        * A builder syntax that allows one to concisely build complex parsers. For example,
-        before parser builders we could construct a parser of a comma-separated lists of users
-        like so:
+          * A builder syntax that allows one to concisely build complex parsers. For example,
+            before parser builders we could construct a parser of a comma-separated lists of users
+            like so:
 
-          ```swift
-          let user = Int.parser()
-            .skip(",")
-            .take(Prefix { $0 != "," }.map(String.init))
-            .skip(",")
-            .take(Bool.parser())
-            .map(User.init(id:name:isAdmin:))
-          let users = Many(user, separator: "\n")
-          ```
+            ```swift
+            let user = Int.parser()
+              .skip(",")
+              .take(Prefix { $0 != "," }.map(String.init))
+              .skip(",")
+              .take(Bool.parser())
+              .map(User.init(id:name:isAdmin:))
+            let users = Many(user, separator: "\n")
+            ```
 
-          While not bad, there is a lot of superfluous noise when using the `take` and `skip`
-        operators in order to incrementally parser from the beginning of an input string. Using
-        parser builders this becomes:
+            While not bad, there is a lot of superfluous noise when using the `take` and `skip`
+            operators in order to incrementally parser from the beginning of an input string. Using
+            parser builders this becomes:
 
-          ```swift
-          let users = Many {
-            Parse(User.init(id:name:role:)) {
-              Int.parser()
-              ","
-              Prefix { $0 != "," }.map(String.init)
-              ","
-              Bool.parser()
+            ```swift
+            let users = Many {
+              Parse(User.init(id:name:role:)) {
+                Int.parser()
+                ","
+                Prefix { $0 != "," }.map(String.init)
+                ","
+                Bool.parser()
+              }
+            } separator: {
+              "\n"
             }
-          } separator: {
-            "\n"
-          }
-          ```
+            ```
 
-        * We added error messaging for when a parser fails on some input. For example, using the
-        above parser to parse a string in which the boolean "true" is mispelled:
+          * We added error messaging for when a parser fails on some input. For example, using the
+            above parser to parse a string in which the boolean "true" is misspelled:
 
-          ```swift
-          try users.parse("""
-            1,Blob,true
-            2,Blob Jr.,false
-            3,Blob Sr.,tru
-            """)
-          ```
+            ```swift
+            try users.parse("""
+              1,Blob,true
+              2,Blob Jr.,false
+              3,Blob Sr.,tru
+              """)
+            ```
 
-          …causes the following error to be thrown:
+            …causes the following error to be thrown:
 
-          ```
-          caught error: "error: multiple failures occurred
+            ```
+            caught error: "error: multiple failures occurred
 
-          error: unexpected input
-           --> input:3:11
-          3 | 3,Blob Jr,tru
-            |           ^ expected "true" or "false"
-          ```
+            error: unexpected input
+             --> input:3:11
+            3 | 3,Blob Jr,tru
+              |           ^ expected "true" or "false"
+            ```
 
-        * And last, but not least, we added the ability for parsers to be "inverted" so that they
-        can print well-structured data types back into their raw input format, such as strings.
-        There is only one small change that needs to be made to the above `users` parser to
-        magically turn it into a parser-printer:
+          * And last, but not least, we added the ability for parsers to be "inverted" so that they
+            can print well-structured data types back into their raw input format, such as strings.
+            There is only one small change that needs to be made to the above `users` parser to
+            magically turn it into a parser-printer:
 
-          ```diff
-           let users = Many {
-          -  Parse(User.init(id:name:role:)) {
-          +  Parse(.memberwise(User.init(id:name:role:))) {
-               Int.parser()
-               ","
-               Prefix { $0 != "," }.map(String.init)
-               ","
-               Bool.parser()
+            ```diff
+             let users = Many {
+            -  Parse(User.init(id:name:role:)) {
+            +  Parse(.memberwise(User.init(id:name:role:))) {
+                 Int.parser()
+                 ","
+                 Prefix { $0 != "," }.map(String.init)
+                 ","
+                 Bool.parser()
+               }
+             } separator: {
+               "\n"
              }
-           } separator: {
-             "\n"
-           }
-          ```
+            ```
 
-          With that one change you can now print an array of `User` values back into a string:
+            With that one change you can now print an array of `User` values back into a string:
 
-          ```swift
-          try users.print([
-            User(id: 1, "Blob", isAdmin: true),
-            User(id: 2, "Blob Jr.", isAdmin: false),
-            User(id: 3, "Blob Sr.", isAdmin: true),
-          ])
-          // 1,Blob,true
-          // 2,Blob Jr.,false
-          // 3,Blob Sr.,true
-          ```
+            ```swift
+            try users.print([
+              User(id: 1, "Blob", isAdmin: true),
+              User(id: 2, "Blob Jr.", isAdmin: false),
+              User(id: 3, "Blob Sr.", isAdmin: true),
+            ])
+            // 1,Blob,true
+            // 2,Blob Jr.,false
+            // 3,Blob Sr.,true
+            ```
 
         If you want to learn more about parsers, be sure to check out our [collection of
         episodes][parsers-collection] (including the _free_ [5-part tour][parsers-tour]), and
@@ -137,9 +137,9 @@ public let post0087_YIR2022 = BlogPost(
         #### Concurrency
 
         We devoted a [5-part series][concurrency-collection] of episodes to uncovering many of
-        Apple's concurrency tools from the past, present and into the future. We started by diving
+        Apple's concurrency tools from the past, present, and into the future. We started by diving
         deep into threads and queues, which have been around on Apple's platforms for many years.
-        Thosem tools are powerful for running concurrent code, but can be difficult to wield
+        Those tools are powerful for running concurrent code, but can be difficult to wield
         correctly, and the compiler does nothing to help you out.
 
         Understanding the tools of the past helps us understand why Swift's new concurrency tools
@@ -152,36 +152,36 @@ public let post0087_YIR2022 = BlogPost(
         We had two separate series of episodes dedicated to improving nearly every facet of our
         popular SwiftUI architecture library: the [Composable Architecture][tca-gh].
 
-        * First, we more [tightly integrated Swift's new concurrency tools][async-tca-collection]
-        into the library but making it possible to use structured concurrency in your feature's
-        effects. This makes it much easier to construct effects, including complex, long-living
-        effects, and makes it possible to tie the lifecycle of effects to the lifecycle of views.
+          * First, we more [tightly integrated Swift's new concurrency tools][async-tca-collection]
+            into the library by making it possible to use structured concurrency in your feature's
+            effects. This makes it much easier to construct effects, including complex, long-living
+            ones, and makes it possible to tie the lifecycle of effects to the lifecycle of views.
 
-          While covering these topics we also had a fun [digression into Swift 5.7's new existential
-        type features][existential-digression] (subscription required). It shows how one can think
-        of existential types as a kind of "infinite" enum, which helps build intuition of why
-        protocols seem so different from regular, concrete types.
+            While covering these topics we also had a fun [digression into Swift 5.7's new
+            existential type features][existential-digression] (subscription required). It shows how
+            one can think of existential types as a kind of "infinite" enum, which helps build
+            intuition of why protocols seem so different from regular, concrete types.
 
-        * Second, [we revamped the fundamental unit][reducer-protocol-collection] that defines a
-        feature in the Composable Architecture: the reducer. It changed from being a struct that
-        wraps a function to a protocol. This allows one to create all new types for encapsulating
-        the logic for a feature, which unlocks new ways of structuring features and even a whole new
-        way of managing dependencies.
+          * Second, [we revamped the fundamental unit][reducer-protocol-collection] that defines a
+            feature in the Composable Architecture: the reducer. It changed from being a struct that
+            wraps a function to a protocol. This allows one to create all new types for
+            encapsulating the logic for a feature, which unlocks new ways of structuring and
+            composing features, and even a whole new way of managing dependencies.
 
-        In addition to those improvements, we also made a massive improvement to the testing
-        facilities of the library, thanks to a collaboration with [Krzysztof
-        Zabłocki][merowing.info]. We introduced the concept of ["non-exhaustive
-        `TestStore`"][nets-blog] to the library, which allows you to write high level integration
-        tests between many features without needing to assert on _everything_ that happens in the
-        feature. This can make it possible to write powerful tests that are not brittle and
-        difficult to maintain.
+            In addition to those improvements, we also made a massive improvement to the testing
+            facilities of the library, thanks to a collaboration with [Krzysztof
+            Zabłocki][merowing.info]. We introduced the concept of ["non-exhaustive
+            `TestStore`"][nets-blog] to the library, which allows you to write high level
+            integration tests between many features without needing to assert on _everything_ that
+            happens in the feature. This can make it possible to write powerful tests that are not
+            brittle and difficult to maintain.
 
         #### Clocks
 
-        One of the most common forms of asynchrony is time-based asynchrony, and Swift introduced
-        the `Clock` protocol as a means of abstracting over the concept of "sleeping" in an async
-        context. This protocol even makes it possible to write controllable, testable async code,
-        and can even make Xcode previews more responsive for fast, iterative UI design.
+        One of the most common forms of asynchrony is time-based asynchrony, and Swift 5.7
+        introduced the `Clock` protocol as a means of abstracting over the concept of "sleeping" in
+        an async context. This protocol even makes it possible to write controllable, testable async
+        code, and can even make Xcode previews more responsive for fast, iterative UI design.
 
         Our [2-part deep dive][clocks-collection] into the `Clock` protocol explains why this
         tool is so important, and shows how to make a few new conformances, such as the "immediate
@@ -200,16 +200,16 @@ public let post0087_YIR2022 = BlogPost(
         including `NavigationStack`, `NavigationPath`, and the new `navigationDestination` view
         modifier. After those episodes we [released an update][better-swiftui-blog] to our
         [SwiftUI Navigation library][swiftu-nav-gh] that makes it possible to drive _all_ forms of
-        navigation from a single piece of enum state with a case for each possible destination in
+        navigation from a single piece of enum state, with a case for each possible destination in
         your feature. This can massively simplify your navigation logic, and prevent a large class
         of bugs from ever appearing in your code.
 
         Once all of those tools were under our belt we started a [brand new series of
-        episodes][modern-swiftui-collection] (still ongoing at the time of publication of this
-        article) covering best, modern SwiftUI practices. We do this by rebuilding one of Apple's
-        most interesting demo applications, the [“Scrumdinger”][scrumdinger-tutorial]. This
-        application shows off many navigation flows, interesting user interactions, and some
-        complex effects such as timers, persistence, and even a speech recognizer.
+        episodes][modern-swiftui-collection] (still ongoing at the time of publishing this article)
+        covering best, modern SwiftUI practices. We do this by rebuilding one of Apple's most
+        interesting demo applications, the [“Scrumdinger”][scrumdinger-tutorial]. This application
+        shows off many navigation flows, interesting user interactions, and some complex effects
+        such as timers, persistence, and even a speech recognizer.
 
         ## Blog posts
 
@@ -217,13 +217,13 @@ public let post0087_YIR2022 = BlogPost(
 
         #### [Unobtrusive runtime warnings][runtime-warning-blog]
 
-        Xcode has a wonderful that can notify you of subtle problems in your code by showing a
-        prominent, yet unobtrusive, purple warning on the problematic line of code. This happens
-        if Xcode detects a threading porblem in your code, and if you mutate UI code on a non-main
+        Xcode has a wonderful feature that can notify you of subtle problems in your code by showing
+        a prominent, yet unobtrusive, purple warning on the problematic line of code. This happens
+        if Xcode detects a threading problem in your code, and if you mutate UI code on a non-main
         thread, and more.
 
         These warnings are incredibly useful, but sadly Apple does not make it possible to create
-        them from 3rd party libraries… well, at least not without some trickery. In our blog post,
+        them from 3rd party libraries…well, at least not without some trickery. In our blog post,
         ["Unobtrusive runtime warnings for libraries"][runtime-warning-blog], we show how to create
         these warnings, allowing library maintainers to notify users when certain invariants are
         broken.
@@ -262,7 +262,7 @@ public let post0087_YIR2022 = BlogPost(
         ## See you in 2023! 🥳
 
         We're thankful to all of our subscribers for supporting us and helping us create this
-        content and these libraries. We could not do it without you.
+        content and these libraries. We could not do it without you!
 
         Next year we have even more planned, including powerful new navigation tools in the
         Composable Architecture, deep dives into existential types and other powerful type system
