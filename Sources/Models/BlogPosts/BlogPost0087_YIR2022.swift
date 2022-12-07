@@ -19,10 +19,10 @@ public let post0087_YIR2022 = BlogPost(
 
         2022 was our biggest year yet:
 
-        * **150K** unique visitors to the site.
+        * **150k** unique visitors to the site.
         * **45** episodes released for a total of **31** hours of video, and **15** blog posts
         published.
-        * Over **200K** video views, **6 years** watching time, and over **44 terabytes** of video
+        * Over **200k** video views, **6 years** watching time, and over **44 terabytes** of video
         streamed.
         * **1** new project open sourced and dozens of updates to our other libraries.
 
