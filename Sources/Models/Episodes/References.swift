@@ -1060,6 +1060,16 @@ extension Episode.Reference {
     title: "CasePaths"
   )
 
+  public static let swiftClocks = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      An open source library of ours. A few clocks that make working with Swift concurrency more testable and more versatile.
+      """,
+    link: "https://github.com/pointfreeco/swift-clocks",
+    publishedAt: Date(timeIntervalSince1970: 1_656_525_503),
+    title: "Clocks"
+  )
+
   public static func swiftsCollectionTypes(blurb: String? = nil) -> Self {
     Self(
       author: "Harshil Shah",
@@ -1193,6 +1203,16 @@ extension Episode.Reference {
       """#,
     link: "https://github.com/pointfreeco/swiftui-navigation",
     publishedAt: referenceDateFormatter.date(from: "2021-11-16"),
+    title: "SwiftUI Navigation"
+  )
+
+  public static let swiftUINavigation = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+      A library we open sourced. Tools for making SwiftUI navigation simpler, more ergonomic and more precise.
+      """#,
+    link: "https://github.com/pointfreeco/swiftui-navigation",
+    publishedAt: Date(timeIntervalSince1970: 1_631_035_536),
     title: "SwiftUI Navigation"
   )
 
