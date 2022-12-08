@@ -164,6 +164,6 @@ public let post0087_ParsingSwift57 = BlogPost(
   ],
   coverImage: nil,
   id: 87,
-  publishedAt: Date(timeIntervalSince1970: 1670479200),
+  publishedAt: Date(timeIntervalSince1970: 1_670_479_200),
   title: "swift-parsing: Swift 5.7 improvements"
 )
