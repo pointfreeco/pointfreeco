@@ -45,11 +45,19 @@ public let post0087_ParsingSwift57 = BlogPost(
         }
         ```
 
+<<<<<<< HEAD
+        `ParserBuilder`, which breaks parsing jobs down into small incremental steps for each parser
+        passed to the block, was previously limited to only 6 parsers due to an exponential number
+        of `buildBlock` overloads that had to be code-generated: _hundreds_ of overloads were
+        required to support 6 parsers in a block, and _thousands_ would have been required to
+        support 7 or more!
+=======
         On the other hand, `@ParserBuilder`, which breaks parsing jobs down into small incremental
         steps for each parser passed to the block, was previously limited to only 6 parsers due to
-        an exponential number of `buildBlock` overloads that had to be [code
-        generated][code-gen-script]: [_hundreds_][code-gen-file] of overloads were required to
-        support 6 parsers in a block, and _thousands_ would be required to support 7 or more!
+        an exponential overload space that had to be [code-generated][code-gen-script]:
+        [_hundreds_][code-gen-file] of overloads were required to support 6 parsers in a block, and
+        _thousands_ would be required to support 7 or more!
+>>>>>>> fe06ce1f (wip)
 
         This limitation broke down quickly. For example, to parse a parentheses-surrounded and
         comma-separated set of values into a `User` type, you should be able to do this:
@@ -160,7 +168,12 @@ public let post0087_ParsingSwift57 = BlogPost(
     )
   ],
   coverImage: nil,
+<<<<<<< HEAD
+  id: 74,
+  publishedAt: Date(timeIntervalSince1970: 1_670_526_000),
+=======
   id: 87,
   publishedAt: Date(timeIntervalSince1970: 1670479200),
+>>>>>>> fe06ce1f (wip)
   title: "swift-parsing: Swift 5.7 improvements"
 )
