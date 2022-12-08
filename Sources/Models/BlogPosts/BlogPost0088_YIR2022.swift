@@ -294,6 +294,7 @@ public let post0088_YIR2022 = BlogPost(
         [nets-blog]: /blog/posts/83-non-exhaustive-testing-in-the-composable-architecture
         [merowing.info]: http://merowing.info
         [scrumdinger-tutorial]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
+        [test-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/teststore
         """#,
       type: .paragraph
     )
