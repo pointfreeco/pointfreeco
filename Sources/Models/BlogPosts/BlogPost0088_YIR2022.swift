@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0087_YIR2022 = BlogPost(
+public let post0088_YIR2022 = BlogPost(
   author: .pointfree,
   blurb: """
     Point-Free year in review: 43 episodes, 150K visitors, dozens of open source releases, and more!
@@ -299,7 +299,7 @@ public let post0087_YIR2022 = BlogPost(
     )
   ],
   coverImage: nil,
-  id: 87,
+  id: 88,
   publishedAt: Date(timeIntervalSince1970: 1671429600),
   title: "2022 Year-in-review"
 )
