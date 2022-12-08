@@ -15,9 +15,9 @@ public let post0087_ParsingSwift57 = BlogPost(
         to Swift 5.7 users.
 
         Our [0.11.0][0_11_0] release removes many limitations placed on parser builders in the
-        previous release of the library, as well as primary associated types, and the ability to
-        use formatters (e.g. date formatters, number formatters, and more) in your parsers and
-        printers.
+        previous release of the library, as well as introduces primary associated types, as well as
+        the ability to use formatters (_e.g._, date formatters, number formatters, and more) in your
+        parsers and parser-printers.
 
         ## More flexible builders
 
@@ -27,9 +27,9 @@ public let post0087_ParsingSwift57 = BlogPost(
 
         For example, `@OneOfBuilder`, which tries each parser given to the block till one succeeds,
         was previously limited to 10 parsers, which is similar to the limit SwiftUI imposes on
-        `ViewBuilder` blocks. This means if you were trying to parser an input string into an
-        enum with more than 10 cases, you would need to nest the `OneOf` parsers to get around
-        this limitation:
+        `ViewBuilder` blocks. This means if you were trying to parse an input string into an enum
+        with more than 10 cases, you would need to nest the `OneOf` parsers to get around this
+        limitation:
 
         ```swift
         let router = OneOf {
@@ -45,9 +45,9 @@ public let post0087_ParsingSwift57 = BlogPost(
         }
         ```
 
-        On the other hand, `@ParserBuilder`, which breaks parsing jobs down into small incremental
-        steps for each parser passed to the block, was previously limited to only 6 parsers due to
-        an exponential number of `buildBlock` overloads that had to be [code
+        Meanwhile, `@ParserBuilder`, which breaks parsing jobs down into small incremental steps for
+        each parser passed to the block, was previously limited to only 6 parsers due to an
+        exponential number of `buildBlock` overloads that had to be [code
         generated][code-gen-script]: [_hundreds_][code-gen-file] of overloads were required to
         support 6 parsers in a block, and _thousands_ would be required to support 7 or more!
 
@@ -55,7 +55,7 @@ public let post0087_ParsingSwift57 = BlogPost(
         comma-separated set of values into a `User` type, you should be able to do this:
 
         ```swift
-        let user = Parser(User.init) {
+        let user = Parse(User.init) {
           "("
           Int.parser()
           ","
@@ -70,9 +70,9 @@ public let post0087_ParsingSwift57 = BlogPost(
         limitation you would need to nest the `Parse` builder contexts:
 
         ```swift
-        let user = Parser {
+        let user = Parse {
           "("
-          Parser(User.init) {
+          Parse(User.init) {
             Int.parser()
             ","
             Prefix { $0 != "," }
@@ -85,7 +85,7 @@ public let post0087_ParsingSwift57 = BlogPost(
 
         Thankfully, Swift 5.7 comes with a brand new result builder feature called
         [`buildPartialBlock`][se-0348], which allows us to eliminate many of these restrictions and
-        overloads, improving library ergonomics and compile times!
+        overloads, and improve library ergonomics, compile times, and even binary size!
 
         `@OneOfBuilder` no longer has a limit at all: you can simply list as many parsers as needed
         (or as many as the Swift compiler can handle).
@@ -123,11 +123,14 @@ public let post0087_ParsingSwift57 = BlogPost(
         This change allows you to express and constrain these protocols in a more lightweight,
         natural manner, especially with the use of opaque `some` types.
 
-        ## `Formatter` parser-printer
+        ## `Formatted` parser-printer
 
-        We've also introduced a brand-new `Formatter` parser-printer, which is compatible with
-        Apple's entire formatter family, including byte formatters, date formatters,
-        number formatters, and many more!
+        We've also introduced a brand-new `Formatted` parser-printer, which is compatible with
+        Apple's entire family of formatters, including byte formatters, date formatters, number
+        formatters, and many more!
+
+        Simply pass the formatter to `Formatted` to take advantage of many of the complex formats
+        Apple provides for us.
 
         ```swift
         let total = ParsePrint {
