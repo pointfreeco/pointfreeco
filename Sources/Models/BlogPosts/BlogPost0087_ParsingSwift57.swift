@@ -32,9 +32,10 @@ public let post0087_ParsingSwift57 = BlogPost(
         ```
 
         `ParserBuilder`, which breaks parsing jobs down into small incremental steps for each parser
-        passed to the block, was previously limited to only 6 parsers due to an exponential overload
-        space that had to be code-generated: _hundreds_ of overloads were required to support 6
-        parsers in a block, and _thousands_ would be required to support 7 or more!
+        passed to the block, was previously limited to only 6 parsers due to an exponential number
+        of `buildBlock` overloads that had to be code-generated: _hundreds_ of overloads were
+        required to support 6 parsers in a block, and _thousands_ would have been required to
+        support 7 or more!
 
         <!-- TODO: link to old generated file -->
 
