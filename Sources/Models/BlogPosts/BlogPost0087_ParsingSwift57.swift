@@ -15,7 +15,7 @@ public let post0087_ParsingSwift57 = BlogPost(
         to Swift 5.7 users.
 
         Our [0.11.0][0_11_0] release removes many limitations placed on parser builders in the
-        previous release of the library, as well as introduces primary associated types, as well as
+        previous release of the library, as well as introduces primary associated types, and
         the ability to use formatters (_e.g._, date formatters, number formatters, and more) in your
         parsers and parser-printers.
 
