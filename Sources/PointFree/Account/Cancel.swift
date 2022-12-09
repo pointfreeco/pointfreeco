@@ -243,7 +243,7 @@ let cancelEmailView =
       newsletter: nil,
       title: "Your subscription has been canceled",
       preheader: """
-        Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
+        Your \(subscription.plan.description) subscription has been canceled and will remain active through
         \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).
         """,
       template: .default(),
@@ -266,7 +266,7 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Your ",
-            .strong(.text(subscription.plan.nickname)),
+            .strong(.text(subscription.plan.description)),
             " subscription has been canceled and will remain active through ",
             .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
@@ -297,7 +297,7 @@ let reactivateEmailView =
       newsletter: nil,
       title: "Your subscription has been reactivated",
       preheader:
-        "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).",
+        "Your \(subscription.plan.description) subscription has been reactivated and will renew on \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).",
       template: .default(),
       data: (owner, subscription)
     )
@@ -318,7 +318,7 @@ private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscripti
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Thanks for sticking with us! Your ",
-            .strong(.text(subscription.plan.nickname)),
+            .strong(.text(subscription.plan.description)),
             " subscription has been reactivated and will renew on ",
             .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             "."
