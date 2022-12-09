@@ -234,7 +234,7 @@ public func invoiceView(
         attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
         .gridColumn(
           sizes: [.mobile: 6, .desktop: 6],
-          .div(.text(item.description ?? subscription.plan.nickname))
+          .div(.text(item.description ?? subscription.plan.description))
         ),
         .gridColumn(
           sizes: [.mobile: 2, .desktop: 2],
