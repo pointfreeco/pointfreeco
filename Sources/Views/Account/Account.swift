@@ -617,8 +617,8 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
 
 private func planName(for subscription: Stripe.Subscription) -> String {
   return subscription.quantity > 1
-    ? subscription.plan.nickname + " (×" + String(subscription.quantity) + ")"
-    : subscription.plan.nickname
+    ? subscription.plan.description + " (×" + String(subscription.quantity) + ")"
+    : subscription.plan.description
 }
 
 public func status(for subscription: Stripe.Subscription) -> String {
