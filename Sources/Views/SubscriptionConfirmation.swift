@@ -693,66 +693,66 @@ private func payment(
       .h1(attributes: [.class([moduleTitleClass])], "Payment info")
     ),
 
-    .label(
-      attributes: [
-        .for("card"),
-        .class([
-          Class.type.nowrap,
-          Class.pf.colors.fg.black,
-          Class.pf.colors.bg.white,
-          Class.pf.type.responsiveTitle6,
-        ]),
-      ],
-      "Credit or debit card"
-    ),
+      .label(
+        attributes: [
+          .for("card"),
+          .class([
+            Class.type.nowrap,
+            Class.pf.colors.fg.black,
+            Class.pf.colors.bg.white,
+            Class.pf.type.responsiveTitle6,
+          ]),
+        ],
+        "Credit or debit card"
+      ),
 
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [
-        .class([
-          Class.border.all,
-          Class.pf.colors.border.gray850,
-          Class.padding([.mobile: [.all: 2]]),
-          Class.margin([.mobile: [.top: 1]]),
-        ]),
-        .style(lineHeight(0)),
-      ],
-      .div(
-        attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
-        .div(
-          attributes: [
-            .class([Class.size.width100pct]),
-            .data("stripe-key", stripePublishableKey.rawValue),
-            .id("card-element"),
-          ]
-        )
-      )
-    ),
-
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [],
-      .div(
+      .gridColumn(
+        sizes: [.mobile: 12],
         attributes: [
           .class([
-            Class.pf.colors.fg.red,
-            Class.pf.type.body.small,
+            Class.border.all,
+            Class.pf.colors.border.gray850,
+            Class.padding([.mobile: [.all: 2]]),
+            Class.margin([.mobile: [.top: 1]]),
           ]),
-          .id("card-errors"),
-        ]
+          .style(lineHeight(0)),
+        ],
+        .div(
+          attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+          .div(
+            attributes: [
+              .class([Class.size.width100pct]),
+              .data("stripe-key", stripePublishableKey.rawValue),
+              .id("card-element"),
+            ]
+          )
+        )
       ),
-      .input(
-        attributes: [
-          .name("token"),
-          .type(.hidden),
-        ]
-      ),
-      .script(attributes: [.src(stripeJs)]),
-      .script(
-        safe: """
+
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [],
+        .div(
+          attributes: [
+            .class([
+              Class.pf.colors.fg.red,
+              Class.pf.type.body.small,
+            ]),
+            .id("card-errors"),
+          ]
+        ),
+        .input(
+          attributes: [
+            .name("token"),
+            .type(.hidden),
+          ]
+        ),
+        .script(attributes: [.src(stripeJs)]),
+        .script(
+          safe: """
           window.addEventListener("load", function() {
             var apiKey = document.getElementById("card-element").dataset.stripeKey
-            var stripe = Stripe(apiKey)
+            var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
             var elements = stripe.elements()
             var style = {
               base: {
@@ -799,7 +799,19 @@ private func payment(
             })
           })
           """)
-    )
+      ),
+
+      .div(
+        attributes: [
+          .id("payment-request-button"),
+          .class([
+            Class.grid.col(.mobile, 7),
+            Class.grid.col(.desktop, 5),
+            Class.margin([.mobile: [.top: 2], .desktop: [.left: 2, .top: 0]]),
+          ])
+        ],
+        []
+      )
   )
 }
 

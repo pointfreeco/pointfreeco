@@ -692,7 +692,7 @@ private func footer(
       ],
       "Subscribe"
     )
-
+  
   return .div(
     attributes: [
       .class([
