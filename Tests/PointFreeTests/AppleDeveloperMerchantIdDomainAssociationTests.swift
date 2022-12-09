@@ -8,7 +8,7 @@ import XCTest
 @testable import PointFree
 
 final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
-  func testNotLoggedIn_IndividualMonthly() {
+  func testAssociationFile() {
     let conn =
       connection(from: request(to: .appleDeveloperMerchantIdDomainAssociation))
       |> siteMiddleware
