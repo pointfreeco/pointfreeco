@@ -10,7 +10,7 @@ extension Episode {
     id: 216,
     length: 42 * 60 + 33,
     permission: .subscriberOnly,
-    publishedAt: Date(timeIntervalSince1970: 1670824800),
+    publishedAt: Date(timeIntervalSince1970: 1_670_824_800),
     references: [
       .scrumdinger,
       .swiftUINavigation,
@@ -27,7 +27,7 @@ extension Episode {
         hd720: "0216-trailer-720p-82f813c87d1149caa7995e1b5af6243e",
         sd540: "0216-trailer-540p-d9b20c33dd8044febfdc85c334505166"
       ),
-      vimeoId: 775910723
+      vimeoId: 775_910_723
     )
   )
 }
