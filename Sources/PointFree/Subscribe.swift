@@ -30,6 +30,9 @@ private let validateSubscribeData:
 private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  // TODO: how does payment method screen update?
+  // TODO: how to show payment method on account page
+  // TODO: gifts
 
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
@@ -40,7 +43,6 @@ private func subscribe(
     subscribeData.useRegionalDiscount
     ? -9_00
     : -18_00
-
 
   let paymentType: Stripe.Client.CustomerCreationID
   switch subscribeData.paymentType {

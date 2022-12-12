@@ -704,9 +704,91 @@ private func payment(
       .h1(attributes: [.class([moduleTitleClass])], "Payment info")
     ),
 
+    .label(
+      attributes: [
+        .for("card"),
+        .class([
+          Class.type.nowrap,
+          Class.pf.colors.fg.black,
+          Class.pf.colors.bg.white,
+          Class.pf.type.responsiveTitle6,
+        ]),
+      ],
+      "Credit or debit card"
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]]),
+          Class.margin([.mobile: [.top: 1]]),
+        ]),
+        .style(lineHeight(0)),
+      ],
+      .div(
+        attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+        .div(
+          attributes: [
+            .class([Class.size.width100pct]),
+            .data("stripe-key", stripePublishableKey.rawValue),
+            .id("card-element"),
+          ]
+        )
+      )
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [],
+      .div(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.red,
+            Class.pf.type.body.small,
+          ]),
+          .id("card-errors"),
+        ]
+      ),
+      .input(
+        attributes: [
+          .name(SubscribeData.CodingKeys.token.rawValue),
+          .type(.hidden),
+        ]
+      ),
+      .input(
+        attributes: [
+          .name(SubscribeData.CodingKeys.paymentMethodID.rawValue),
+          .type(.hidden),
+        ]
+      ),
+      .script(attributes: [.src(stripeJs)]),
+      .script(
+        unsafe: checkoutJS(
+          coupon: coupon,
+          lane: lane,
+          referralDiscount: referralDiscount,
+          useRegionalDiscount: useRegionalDiscount
+        )
+      )
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .id("apple-pay-container"),
+        .class([
+          Class.margin([.mobile: [.left: 0]]),
+          Class.padding([.mobile: [.top: 3]]),
+          Class.display.none
+        ]),
+        .style(lineHeight(0)),
+      ],
       .label(
         attributes: [
-          .for("card"),
+          .for("apple-pay"),
           .class([
             Class.type.nowrap,
             Class.pf.colors.fg.black,
@@ -714,221 +796,20 @@ private func payment(
             Class.pf.type.responsiveTitle6,
           ]),
         ],
-        "Credit or debit card"
+        "or Apple Pay"
       ),
-
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [
-          .class([
-            Class.border.all,
-            Class.pf.colors.border.gray850,
-            Class.padding([.mobile: [.all: 2]]),
-            Class.margin([.mobile: [.top: 1]]),
-          ]),
-          .style(lineHeight(0)),
-        ],
-        .div(
-          attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
-          .div(
-            attributes: [
-              .class([Class.size.width100pct]),
-              .data("stripe-key", stripePublishableKey.rawValue),
-              .id("card-element"),
-            ]
-          )
-        )
-      ),
-
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [],
-        .div(
-          attributes: [
-            .class([
-              Class.pf.colors.fg.red,
-              Class.pf.type.body.small,
-            ]),
-            .id("card-errors"),
-          ]
-        ),
-        .input(
-          attributes: [
-            .name(SubscribeData.CodingKeys.token.rawValue),
-            .type(.hidden),
-          ]
-        ),
-        .input(
-          attributes: [
-            .name(SubscribeData.CodingKeys.paymentMethodID.rawValue),
-            .type(.hidden),
-          ]
-        ),
-        .script(attributes: [.src(stripeJs)]),
-        .script(
-          unsafe: """
-          var updateSeats;
-
-          function format(money) {
-            return "$" + money.toFixed(2).replace(/\\.00$/, "")
-          }
-
-          function currentSubscriptionData() {
-            const teamMembers = document.getElementById("team-members")
-            const teamMemberInputs = teamMembers == null
-              ? []
-              : Array.from(teamMembers.getElementsByTagName("INPUT"))
-            const teamOwnerIsTakingSeat = document
-              .getElementsByName("isOwnerTakingSeat")[0].value == "true"
-            const seatCount = teamMembers
-              ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-              : 1
-            const form = document.getElementById("subscribe-form")
-            const regionalDiscount = \(useRegionalDiscount ? 0.5 : 1.0)
-            const isMonthly = form["pricing[billing]"].value == "monthly"
-            const monthlyPricePerSeat = (
-              isMonthly
-                ? \(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
-                : \(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
-            )
-            const monthlyPrice = seatCount * monthlyPricePerSeat
-            const total = isMonthly
-              ? monthlyPrice
-              : (monthlyPrice * 12 - \(referralDiscount) * regionalDiscount)
-            const teammateEmails = []
-            for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-              teammateEmails.push(data.teamMemberInputs[idx].name)
-            }
-            return {
-              isMonthly: isMonthly,
-              monthlyPrice: monthlyPrice,
-              monthlyPricePerSeat: monthlyPricePerSeat,
-              seatCount: seatCount,
-              teammateEmails: teammateEmails,
-              teamMemberInputs: teamMemberInputs,
-              teamOwnerIsTakingSeat: teamOwnerIsTakingSeat,
-              total: total
-            }
-          }
-
-          window.addEventListener("load", function() {
-            var apiKey = document.getElementById("card-element").dataset.stripeKey
-            var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
-            var elements = stripe.elements()
-            var style = {
-              base: {
-                fontSize: "16px",
-              }
-            }
-            var card = elements.create("card", { style: style })
-            card.mount("#card-element")
-            var displayError = document.getElementById("card-errors")
-            card.addEventListener("change", function(event) {
-              if (event.error) {
-                displayError.textContent = event.error.message
-              } else {
-                displayError.textContent = ""
-              }
-            });
-
-            const paymentRequest = stripe.paymentRequest({
-              country: 'US',
-              currency: 'usd',
-              total: { label: '', amount: 100, }
-            });
-            const paymentRequestButton = elements.create('paymentRequestButton', {
-              paymentRequest,
-            });
-
-            (async () => {
-              const result = await paymentRequest.canMakePayment();
-              if (result) {
-                paymentRequestButton.mount('#payment-request-button');
-              } else {
-                document.getElementById('payment-request-button').style.display = 'none';
-              }
-            })();
-
-            paymentRequest.on('paymentmethod', async (ev) => {
-              setFormEnabled(false, function() { return true })
-              ev.complete('success')
-              form.paymentMethodID.value = ev.paymentMethod.id
-              setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-              form.submit()
-            });
-
-            var form = document.getElementById("subscribe-form")
-            function setFormEnabled(isEnabled, elementsMatching) {
-              for (var idx = 0; idx < form.length; idx++) {
-                var formElement = form[idx]
-                if (elementsMatching(formElement)) {
-                  formElement.disabled = !isEnabled
-                  if (formElement.tagName == "BUTTON") {
-                    formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
-                  }
-                }
-              }
-            }
-
-            form.addEventListener("submit", function(event) {
-              event.preventDefault()
-              setFormEnabled(false, function() { return true })
-              stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                  displayError.textContent = result.error.message
-                  setFormEnabled(true, function(el) { return true })
-                } else {
-                  setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-                  form.token.value = result.token.id
-                  form.submit()
-                }
-              }).catch(function() {
-                setFormEnabled(true, function(el) { return true })
-              })
-            })
-
-            updateSeats = () => {
-              const form = document.getElementById("subscribe-form")
-              const data = currentSubscriptionData()
-              for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
-                data.teamMemberInputs[idx].name = "teammate"
-              }
-              form["pricing[quantity]"].value = data.seatCount
-              document.getElementById("total").textContent = format(data.total)
-              document.getElementById("pricing-preview").innerHTML = (
-                "You will be charged <strong>"
-                  + format(data.monthlyPricePerSeat)
-                  + " per month</strong>"
-                  + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
-                  + (data.isMonthly ? "" : " times <strong>12 months</strong>")
-                  + "."
-              )
-
-              paymentRequest.update({
-                total: {
-                  label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
-                  amount: data.total * 100
-                }
-              })
-            }
-
-            updateSeats()
-            form.addEventListener("change", updateSeats)
-          })
-          """)
-      ),
-
       .div(
         attributes: [
           .id("payment-request-button"),
           .class([
             Class.grid.col(.mobile, 7),
             Class.grid.col(.desktop, 5),
-            Class.margin([.mobile: [.top: 2], .desktop: [.left: 2, .top: 0]]),
-          ])
+            Class.margin([.mobile: [.top: 2]]),
+          ]),
         ],
         []
       )
+    )
   )
 }
 
@@ -1172,4 +1053,164 @@ public struct DiscountCountry {
     .init(countryCode: "ZM", name: "Zambia"),
     .init(countryCode: "ZW", name: "Zimbabwe"),
   ]
+}
+
+private func checkoutJS(
+  coupon: Stripe.Coupon?,
+  lane: Pricing.Lane,
+  referralDiscount: Int,
+  useRegionalDiscount: Bool
+) -> String {
+  let discount = coupon?.discount(for:) ?? { $0 }
+  return """
+    var updateSeats;
+
+    function format(money) {
+      return "$" + money.toFixed(2).replace(/\\.00$/, "")
+    }
+
+    function currentSubscriptionData() {
+      const teamMembers = document.getElementById("team-members")
+      const teamMemberInputs = teamMembers == null
+        ? []
+        : Array.from(teamMembers.getElementsByTagName("INPUT"))
+      const teamOwnerIsTakingSeat = document
+        .getElementsByName("isOwnerTakingSeat")[0].value == "true"
+      const seatCount = teamMembers
+        ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
+        : 1
+      const form = document.getElementById("subscribe-form")
+      const regionalDiscount = \(useRegionalDiscount ? 0.5 : 1.0)
+      const isMonthly = form["pricing[billing]"].value == "monthly"
+      const monthlyPricePerSeat = (
+        isMonthly
+          ? \(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+          : \(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
+      )
+      const monthlyPrice = seatCount * monthlyPricePerSeat
+      const total = isMonthly
+        ? monthlyPrice
+        : (monthlyPrice * 12 - \(referralDiscount) * regionalDiscount)
+      const teammateEmails = []
+      for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+        teammateEmails.push(teamMemberInputs[idx].name)
+      }
+      return {
+        isMonthly: isMonthly,
+        monthlyPrice: monthlyPrice,
+        monthlyPricePerSeat: monthlyPricePerSeat,
+        seatCount: seatCount,
+        teammateEmails: teammateEmails,
+        teamMemberInputs: teamMemberInputs,
+        teamOwnerIsTakingSeat: teamOwnerIsTakingSeat,
+        total: total
+      }
+    }
+
+    window.addEventListener("load", function() {
+      var apiKey = document.getElementById("card-element").dataset.stripeKey
+      var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
+      var elements = stripe.elements()
+      var style = {
+        base: {
+          fontSize: "16px",
+        }
+      }
+      var card = elements.create("card", { style: style })
+      card.mount("#card-element")
+      var displayError = document.getElementById("card-errors")
+      card.addEventListener("change", function(event) {
+        if (event.error) {
+          displayError.textContent = event.error.message
+        } else {
+          displayError.textContent = ""
+        }
+      });
+
+      const paymentRequest = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: { label: '', amount: 100, }
+      });
+      const paymentRequestButton = elements.create('paymentRequestButton', {
+        paymentRequest,
+      });
+
+      (async () => {
+        const result = await paymentRequest.canMakePayment();
+        if (result) {
+          paymentRequestButton.mount('#payment-request-button');
+          document.getElementById("apple-pay-container").style.display = 'block'
+        } else {
+          document.getElementById('payment-request-button').style.display = 'none';
+        }
+      })();
+
+      paymentRequest.on('paymentmethod', async (ev) => {
+        setFormEnabled(false, function() { return true })
+        ev.complete('success')
+        form.paymentMethodID.value = ev.paymentMethod.id
+        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        form.submit()
+      });
+
+      var form = document.getElementById("subscribe-form")
+      function setFormEnabled(isEnabled, elementsMatching) {
+        for (var idx = 0; idx < form.length; idx++) {
+          var formElement = form[idx]
+          if (elementsMatching(formElement)) {
+            formElement.disabled = !isEnabled
+            if (formElement.tagName == "BUTTON") {
+              formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+            }
+          }
+        }
+      }
+
+      form.addEventListener("submit", function(event) {
+        event.preventDefault()
+        setFormEnabled(false, function() { return true })
+        stripe.createToken(card).then(function(result) {
+          if (result.error) {
+            displayError.textContent = result.error.message
+            setFormEnabled(true, function(el) { return true })
+          } else {
+            setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+            form.token.value = result.token.id
+            form.submit()
+          }
+        }).catch(function() {
+          setFormEnabled(true, function(el) { return true })
+        })
+      })
+
+      updateSeats = () => {
+        const form = document.getElementById("subscribe-form")
+        const data = currentSubscriptionData()
+        for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
+          data.teamMemberInputs[idx].name = "teammate"
+        }
+        form["pricing[quantity]"].value = data.seatCount
+        document.getElementById("total").textContent = format(data.total)
+        document.getElementById("pricing-preview").innerHTML = (
+          "You will be charged <strong>"
+            + format(data.monthlyPricePerSeat)
+            + " per month</strong>"
+            + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
+            + (data.isMonthly ? "" : " times <strong>12 months</strong>")
+            + "."
+        )
+
+        paymentRequest.update({
+          total: {
+            label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
+            amount: data.total * 100
+          }
+        })
+      }
+
+      updateSeats()
+      form.addEventListener("change", updateSeats)
+    })
+    """
 }

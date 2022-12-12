@@ -8,11 +8,22 @@ public struct GiftFormData: Equatable {
   public var fromName = ""
   public var message = ""
   public var monthsFree = 0
-  public var stripePaymentIntentId: PaymentIntent.Id?
+  public var paymentType: PaymentType?
   public var toEmail: EmailAddress = ""
   public var toName = ""
 
+  public enum PaymentType: Equatable {
+    case paymentIntentID(PaymentIntent.Id)
+    case paymentMethodID(PaymentMethod.ID)
+  }
+
   public static let empty = Self()
+
+  var stripePaymentIntentId: PaymentIntent.Id? {
+    guard case let .some(.paymentIntentID(id)) = self.paymentType
+    else { return nil }
+    return id
+  }
 }
 
 private let dateFormatter: DateFormatter = {
@@ -40,9 +51,14 @@ extension GiftFormData: Codable {
         )
       )
     }
-    self.stripePaymentIntentId =
-      try container
-      .decodeIfPresent(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
+    do {
+      self.paymentType = try .paymentIntentID(
+        container.decode(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
+      )
+    } catch {
+      // TODO: paymentMethodID
+      self.paymentType = nil
+    }
     self.toEmail = try container.decode(EmailAddress.self, forKey: .toEmail)
     self.toName = try container.decode(String.self, forKey: .toName)
   }
@@ -66,6 +82,7 @@ extension GiftFormData: Codable {
     case fromName
     case message
     case monthsFree
+    case paymentMethodID
     case stripePaymentIntentId
     case toEmail
     case toName

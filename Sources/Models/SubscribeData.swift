@@ -10,7 +10,7 @@ public struct SubscribeData: Codable, Equatable {
   public var teammates: [EmailAddress]
   public var useRegionalDiscount: Bool
 
-  public enum PaymentType: Codable, Equatable {
+  public enum PaymentType: Equatable {
     case paymentMethodID(PaymentMethod.ID)
     case token(Stripe.Token.Id)
   }

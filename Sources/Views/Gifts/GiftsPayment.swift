@@ -45,6 +45,8 @@ public func giftsPayment(
           var card = elements.create("card", { style: style })
           card.mount("#card-element")
           var displayError = document.getElementById("card-errors")
+          var form = document.getElementById("gift-form")
+
           card.addEventListener("change", function(event) {
             if (event.error) {
               displayError.textContent = event.error.message
@@ -52,7 +54,30 @@ public func giftsPayment(
               displayError.textContent = ""
             }
           });
-          var form = document.getElementById("gift-form")
+
+          const paymentRequest = stripe.paymentRequest({
+            country: 'US',
+            currency: 'usd',
+            total: { label: '', amount: \(plan.amount), }
+          });
+          const paymentRequestButton = elements.create('paymentRequestButton', {
+            paymentRequest,
+          });
+
+          (async () => {
+            const result = await paymentRequest.canMakePayment();
+            if (result) {
+              paymentRequestButton.mount('#payment-request-button');
+              document.getElementById("apple-pay-container").style.display = 'block'
+            } else {
+              document.getElementById('payment-request-button').style.display = 'none';
+            }
+          })();
+
+          paymentRequest.on('paymentmethod', async (ev) => {
+            ev.complete('success')
+          });
+
           function setFormEnabled(isEnabled, elementsMatching) {
             for (var idx = 0; idx < form.length; idx++) {
               var formElement = form[idx]
@@ -65,7 +90,7 @@ public func giftsPayment(
             }
           }
           var submitted = false
-          form.addEventListener("submit", function(event) {
+          form.addEventListener("submit", async (event) => {
             displayError.textContent = ""
             event.preventDefault()
             if (submitted) { return }
@@ -76,13 +101,14 @@ public func giftsPayment(
               json[name] = value
             })
             setFormEnabled(false, function() { return true })
+
             var httpRequest = new XMLHttpRequest()
             httpRequest.open("POST", "\(siteRouter.path(for: .gifts(.create(.empty))))")
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=utf-8")
             httpRequest.onreadystatechange = function() {
               if (httpRequest.readyState == XMLHttpRequest.DONE) {
                 var response = JSON.parse(httpRequest.responseText)
-                  if (response.clientSecret) {
+                if (response.clientSecret) {
                   stripe.confirmCardPayment(response.clientSecret, {
                     payment_method: {
                       card: card,
@@ -188,6 +214,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toName.stringValue),
               .type(.text),
               .required(true),
+              .value("asdf")
             ]
           )
         )
@@ -203,6 +230,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toEmail.stringValue),
               .type(.email),
               .required(true),
+              .value("asdf@asdf.com")
             ]
           )
         )
@@ -231,7 +259,7 @@ private func formView(
       """
     ),
 
-    .label(attributes: [.class([labelClass])], "Payment"),
+    .label(attributes: [.class([labelClass])], "Pay with credit or debit card"),
     .div(
       attributes: [
         .class([
@@ -249,6 +277,37 @@ private func formView(
           .data("stripe-key", stripePublishableKey.rawValue),
           .id("card-element"),
         ]
+      )
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .id("apple-pay-container"),
+        .class([
+          Class.padding([.desktop: [.right: 2]]),
+          Class.display.none
+        ])
+      ],
+      .label(attributes: [.class([labelClass])], "or Apple Pay"),
+      .div(
+        attributes: [
+          .class([
+            Class.margin([.mobile: [.left: 0]]),
+            Class.padding([.mobile: [.top: 3]]),
+          ])
+        ],
+        .div(
+          attributes: [
+            .id("payment-request-button"),
+            .class([
+              Class.grid.col(.mobile, 7),
+              Class.grid.col(.desktop, 5),
+              Class.margin([.mobile: [.top: 2]]),
+            ]),
+          ],
+          []
+        )
       )
     ),
 
@@ -329,6 +388,12 @@ private func formView(
       attributes: [
         .type(.hidden),
         .name(GiftFormData.CodingKeys.stripePaymentIntentId.stringValue),
+      ]
+    ),
+    .input(
+      attributes: [
+        .type(.hidden),
+        .name(GiftFormData.CodingKeys.paymentMethodID.stringValue),
       ]
     )
   )
