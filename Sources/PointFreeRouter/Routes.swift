@@ -1,3 +1,4 @@
+import CasePaths
 import Either
 import EmailAddress
 import Foundation
@@ -19,6 +20,7 @@ public enum SiteRoute: Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog = .index)
   case collections(Collections = .index)
+  case createApplePaymentIntent(CreateApplePaymentIntent)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case gifts(Gifts = .index)
   case endGhosting
@@ -46,6 +48,12 @@ public enum SiteRoute: Equatable {
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
+
+  public struct CreateApplePaymentIntent: Codable, Equatable {
+    public let billing: Pricing.Billing
+    public let paymentMethodID: PaymentMethod.ID
+    public let quantity: Int
+  }
 
   public enum Blog: Equatable {
     case feed
@@ -355,249 +363,278 @@ private let webhooksRouter = Route(.case(SiteRoute.Webhooks.stripe)) {
 }
 
 let router = OneOf {
-  OneOf {
-    Route(.case(SiteRoute.home))
+  Route(.case(SiteRoute.home))
 
-    Route(.case(SiteRoute.about)) {
-      Path { "about" }
-    }
+  Route(.case(SiteRoute.about)) {
+    Path { "about" }
+  }
 
-    Route(.case(SiteRoute.account)) {
-      Path { "account" }
-      accountRouter
-    }
+  Route(.case(SiteRoute.account)) {
+    Path { "account" }
+    accountRouter
+  }
 
-    Route(.case(SiteRoute.admin)) {
-      Path { "admin" }
-      adminRouter
-    }
+  Route(.case(SiteRoute.admin)) {
+    Path { "admin" }
+    adminRouter
+  }
 
-    Route(.case(SiteRoute.api)) {
-      Path { "api" }
-      apiRouter
-    }
+  Route(.case(SiteRoute.api)) {
+    Path { "api" }
+    apiRouter
+  }
 
-    Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
-      Path {
-        ".well-known"
-        "apple-developer-merchantid-domain-association"
-      }
-    }
-
-    Route(.case(SiteRoute.blog)) {
-      Path { "blog" }
-      blogRouter
-    }
-
-    Route(.case(SiteRoute.collections)) {
-      Path { "collections" }
-      collectionsRouter
-    }
-
-    Route(.case(SiteRoute.episode)) {
-      Path { "episodes" }
-      episodeRouter
-    }
-
-    Route(.case(SiteRoute.enterprise)) {
-      Path {
-        "enterprise"
-        Parse(.string.representing(EnterpriseAccount.Domain.self))
-      }
-      enterpriseRouter
+  Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
+    Path {
+      ".well-known"
+      "apple-developer-merchantid-domain-association"
     }
   }
 
-  OneOf {
-    Route(.case(SiteRoute.feed)) {
-      Path { "feed" }
-      feedRouter
-    }
+  Route(.case(SiteRoute.blog)) {
+    Path { "blog" }
+    blogRouter
+  }
 
-    Route(.case(SiteRoute.gifts)) {
-      Path { "gifts" }
-      giftsRouter
-    }
+  Route(.case(SiteRoute.collections)) {
+    Path { "collections" }
+    collectionsRouter
+  }
 
-    Route(.case(SiteRoute.discounts)) {
+  Route(.case(SiteRoute.episode)) {
+    Path { "episodes" }
+    episodeRouter
+  }
+
+  Route(.case(SiteRoute.enterprise)) {
+    Path {
+      "enterprise"
+      Parse(.string.representing(EnterpriseAccount.Domain.self))
+    }
+    enterpriseRouter
+  }
+
+  Route(.case(SiteRoute.feed)) {
+    Path { "feed" }
+    feedRouter
+  }
+
+  Route(.case(SiteRoute.gifts)) {
+    Path { "gifts" }
+    giftsRouter
+  }
+
+  Route(.case(SiteRoute.discounts)) {
+    Path {
+      "discounts"
+      Parse(.string.representing(Stripe.Coupon.Id.self))
+    }
+    Query {
+      Optionally {
+        Field("billing") { Pricing.Billing.parser() }
+      }
+    }
+  }
+
+  Route(.case(SiteRoute.endGhosting)) {
+    Method.post
+    Path {
+      "ghosting"
+      "end"
+    }
+  }
+
+  Parse {
+    Path { "newsletters" }
+
+    OneOf {
+      Route(.case(SiteRoute.expressUnsubscribe)) {
+        Path { "express-unsubscribe" }
+        Query {
+          Field("payload", .string.representing(Encrypted.self))
+        }
+      }
+
+      Route(.case(SiteRoute.expressUnsubscribeReply)) {
+        Method.post
+        Path { "express-unsubscribe-reply" }
+        Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
+      }
+    }
+  }
+
+  Route(.case(SiteRoute.gitHubCallback)) {
+    Path { "github-auth" }
+    Query {
+      Optionally {
+        Field("code")
+      }
+      Optionally {
+        Field("redirect")
+      }
+    }
+  }
+
+  Route(.case(SiteRoute.invite)) {
+    Path { "invites" }
+    inviteRouter
+  }
+
+  Route(.case(SiteRoute.login)) {
+    Path { "login" }
+    Query {
+      Optionally {
+        Field("redirect")
+      }
+    }
+  }
+
+  Route(.case(SiteRoute.logout)) {
+    Path { "logout" }
+  }
+
+  Route(.case(SiteRoute.pricingLanding)) {
+    Path { "pricing" }
+  }
+
+  Route(.case(SiteRoute.privacy)) {
+    Path { "privacy" }
+  }
+
+  Route(.case(SiteRoute.subscribe)) {
+    Method.post
+    Path { "subscribe" }
+    subscribeData
+  }
+
+  Route(.case(SiteRoute.createApplePaymentIntent)) {
+    Method.post
+    Path {
+      "subscribe"
+      "apple-pay"
+    }
+    Body(
+      .json(
+        SiteRoute.CreateApplePaymentIntent.self,
+        decoder: Stripe.jsonDecoder,
+        encoder: Stripe.jsonEncoder
+      )
+      //      FormData {
+      //        Field("billing") { Pricing.Billing.parser() }
+      //        Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
+      //        Field("quantity") { Int.parser() }
+      //      }
+    )
+  }
+
+  Route(.case(SiteRoute.subscribeConfirmation)) {
+    Parse(
+      .convert(
+        apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
+        unapply: { ($0, ($1, $2, $3, $4, $5)) }
+      )
+    ) {
       Path {
-        "discounts"
-        Parse(.string.representing(Stripe.Coupon.Id.self))
+        "subscribe"
+        Pricing.Lane.parser()
       }
       Query {
         Optionally {
           Field("billing") { Pricing.Billing.parser() }
         }
-      }
-    }
-
-    Route(.case(SiteRoute.endGhosting)) {
-      Method.post
-      Path {
-        "ghosting"
-        "end"
-      }
-    }
-
-    Parse {
-      Path { "newsletters" }
-
-      OneOf {
-        Route(.case(SiteRoute.expressUnsubscribe)) {
-          Path { "express-unsubscribe" }
-          Query {
-            Field("payload", .string.representing(Encrypted.self))
+        Optionally {
+          Field("isOwnerTakingSeat") { Bool.parser() }
+        }
+        Optionally {
+          Field("teammates") {
+            Many {
+              Prefix { $0 != "," }.map(.string.representing(EmailAddress.self))
+            } separator: {
+              ","
+            }
           }
         }
-
-        Route(.case(SiteRoute.expressUnsubscribeReply)) {
-          Method.post
-          Path { "express-unsubscribe-reply" }
-          Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
-        }
-      }
-    }
-
-    Route(.case(SiteRoute.gitHubCallback)) {
-      Path { "github-auth" }
-      Query {
         Optionally {
-          Field("code")
+          Field("ref", .string.representing(User.ReferralCode.self))
         }
         Optionally {
-          Field("redirect")
+          Field("useRegionalDiscount") { Bool.parser() }
         }
       }
-    }
-
-    Route(.case(SiteRoute.invite)) {
-      Path { "invites" }
-      inviteRouter
-    }
-
-    Route(.case(SiteRoute.login)) {
-      Path { "login" }
-      Query {
-        Optionally {
-          Field("redirect")
-        }
-      }
-    }
-
-    Route(.case(SiteRoute.logout)) {
-      Path { "logout" }
-    }
-
-    Route(.case(SiteRoute.pricingLanding)) {
-      Path { "pricing" }
     }
   }
 
-  OneOf {
-    Route(.case(SiteRoute.privacy)) {
-      Path { "privacy" }
-    }
+  Route(.case(SiteRoute.team)) { teamRouter }
 
-    Route(.case(SiteRoute.subscribe)) {
-      Method.post
-      Path { "subscribe" }
-      Body {
+  Route(.case(SiteRoute.useEpisodeCredit)) {
+    Method.post
+    Path {
+      "episodes"
+      Digits().map(.representing(Episode.Id.self))
+      "credit"
+    }
+  }
+
+  Route(.case(SiteRoute.webhooks)) {
+    Path { "webhooks" }
+    webhooksRouter
+  }
+}
+
+let subscribeData = OneOf {
+  Body(
+    .json(
+      SubscribeData.self,
+      decoder: Stripe.jsonDecoder,
+      encoder: Stripe.jsonEncoder
+    )
+  )
+  .map(/Optional.some) // TODO: better way?
+
+  Body {
+    Optionally {
+      FormData {
         Optionally {
-          FormData {
-            Optionally {
-              Field("coupon", .string.representing(Coupon.Id.self))
-            }
-            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
-              Bool.parser()
-            }
-            Parse(.memberwise(Pricing.init(billing:quantity:))) {
-              Field("pricing[billing]") { Pricing.Billing.parser() }
-              Field("pricing[quantity]") { Digits() }
-            }
-            Optionally {
-              Field(
-                SubscribeData.CodingKeys.referralCode.rawValue,
-                .string.representing(User.ReferralCode.self)
-              )
-            }
-            Many {
-              Field("teammate", .string.representing(EmailAddress.self))
-            }
-            Parse {
-              Field("token", .string.representing(Token.Id.self))
-              Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
-                Bool.parser()
-              }
-            }
-          }
-          .map(
-            .convert(
-              apply: { ($0, $1, $2, $3, $4, $5.0, $5.1) },
-              unapply: { ($0, $1, $2, $3, $4, ($5, $6)) }
-            )
-            .map(
-              .memberwise(
-                SubscribeData.init(
-                  coupon:isOwnerTakingSeat:pricing:referralCode:teammates:token:useRegionalDiscount:
-                )
-              )
-            )
+          Field(
+            SubscribeData.CodingKeys.coupon.rawValue,
+            .string.representing(Coupon.Id.self)
           )
         }
-      }
-    }
-
-    Route(.case(SiteRoute.subscribeConfirmation)) {
-      Parse(
-        .convert(
-          apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4) },
-          unapply: { ($0, ($1, $2, $3, $4, $5)) }
-        )
-      ) {
-        Path {
-          "subscribe"
-          Pricing.Lane.parser()
+        Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
+          Bool.parser()
         }
-        Query {
-          Optionally {
-            Field("billing") { Pricing.Billing.parser() }
-          }
-          Optionally {
-            Field("isOwnerTakingSeat") { Bool.parser() }
-          }
-          Optionally {
-            Field("teammates") {
-              Many {
-                Prefix { $0 != "," }.map(.string.representing(EmailAddress.self))
-              } separator: {
-                ","
-              }
-            }
-          }
-          Optionally {
-            Field("ref", .string.representing(User.ReferralCode.self))
-          }
-          Optionally {
-            Field("useRegionalDiscount") { Bool.parser() }
-          }
+        tmp
+        Parse(.memberwise(Pricing.init(billing:quantity:))) {
+          Field("pricing[billing]") { Pricing.Billing.parser() }
+          Field("pricing[quantity]") { Digits() }
+        }
+        Optionally {
+          Field(
+            SubscribeData.CodingKeys.referralCode.rawValue,
+            .string.representing(User.ReferralCode.self)
+          )
+        }
+        Many {
+          Field("teammate", .string.representing(EmailAddress.self))
+        }
+        Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
+          Bool.parser()
         }
       }
-    }
-
-    Route(.case(SiteRoute.team)) { teamRouter }
-
-    Route(.case(SiteRoute.useEpisodeCredit)) {
-      Method.post
-      Path {
-        "episodes"
-        Digits().map(.representing(Episode.Id.self))
-        "credit"
-      }
-    }
-
-    Route(.case(SiteRoute.webhooks)) {
-      Path { "webhooks" }
-      webhooksRouter
+      .map(.memberwise(SubscribeData.init))
     }
   }
+}
+
+let tmp = OneOf {
+  Field(
+    SubscribeData.CodingKeys.paymentMethodID.rawValue,
+    .string.representing(PaymentMethod.ID.self)
+  )
+  .map(/SubscribeData.PaymentType.paymentMethodID)
+  Field(
+    SubscribeData.CodingKeys.token.rawValue,
+    .string.representing(Token.Id.self)
+  )
+  .map(/SubscribeData.PaymentType.token)
 }

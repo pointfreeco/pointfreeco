@@ -31,6 +31,10 @@ private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
+  // TODO: can double subscribe if you own a sub without taking a seat
+  // TODO: payment method isn't associated?
+  // TODO: how does payment method screen update?
+
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
@@ -41,8 +45,11 @@ private func subscribe(
     ? -9_00
     : -18_00
 
+  // TODO: throw error if guest?
   let stripeSubscription = Current.stripe.createCustomer(
-    subscribeData.token,
+    subscribeData.token.map(Stripe.Client.CustomerCreationID.token)
+    ?? subscribeData.paymentMethodID.map(Stripe.Client.CustomerCreationID.paymentMethod)
+    ?? .guest,
     user.id.rawValue.uuidString,
     user.email,
     nil,
@@ -88,7 +95,7 @@ private func subscribe(
     return Current.stripe.createSubscription(
       customer.id,
       subscribeData.pricing.plan,
-      subscribeData.pricing.quantity,
+      subscribeData.pricing.quantity, 
       subscribeData.coupon ?? regionalDiscountCouponId
     )
   }
@@ -157,13 +164,13 @@ private func subscribe(
             headersMiddleware: flash(.error, errorMessage)
           )
       },
-      const(
+      { _ in
         conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-          )
-      )
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
+        )
+      }
     )
   )
 }

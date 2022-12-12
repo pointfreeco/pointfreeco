@@ -59,7 +59,7 @@ public enum StripeHtml {
           }
 
           var apiKey = document.getElementById('card-element').dataset.stripeKey;
-          var stripe = Stripe(apiKey);
+          var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
           var elements = stripe.elements();
 
           var style = {

@@ -55,6 +55,8 @@ private func fetchAccountData<I>(
     .map(\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
+  print(stripeSubscription.run.perform())
+
   let upcomingInvoice =
     stripeSubscription
     .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }

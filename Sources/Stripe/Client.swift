@@ -21,7 +21,7 @@ public struct Client {
       Error, Coupon
     >
   public var createCustomer:
-    (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+    (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription:
     (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
@@ -42,13 +42,19 @@ public struct Client {
   public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
+  public enum CustomerCreationID {
+    case guest
+    case paymentMethod(PaymentMethod.ID)
+    case token(Token.Id)
+  }
+
   public init(
     cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<
       Error, Subscription
     >,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
       -> EitherIO<Error, Coupon>,
-    createCustomer: @escaping (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
+    createCustomer: @escaping (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
       EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
     createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<
@@ -98,6 +104,7 @@ public struct Client {
     public var amount: Cents<Int>
     public var currency: Currency
     public var description: String?
+    public var paymentMethodID: PaymentMethod.ID?
     public var receiptEmail: String?
     public var statementDescriptorSuffix: String?
 
@@ -105,12 +112,14 @@ public struct Client {
       amount: Cents<Int>,
       currency: Currency,
       description: String?,
+      paymentMethodID: PaymentMethod.ID? = nil,
       receiptEmail: String?,
       statementDescriptorSuffix: String?
     ) {
       self.amount = amount
       self.currency = currency
       self.description = description
+      self.paymentMethodID = paymentMethodID
       self.receiptEmail = receiptEmail
       self.statementDescriptorSuffix = statementDescriptorSuffix
     }
@@ -134,7 +143,7 @@ extension Client {
       },
       createCustomer: {
         runStripe(secretKey, logger)(
-          Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
+          Stripe.createCustomer(id: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
       },
       createPaymentIntent: {
@@ -233,7 +242,7 @@ func createCoupon(
 }
 
 func createCustomer(
-  token: Token.Id?,
+  id: Client.CustomerCreationID,
   description: String?,
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
@@ -241,19 +250,24 @@ func createCustomer(
 )
   -> DecodableRequest<Customer>
 {
+  var params: [String: Any] = [:]
+  params["balance"] = balance?.map(String.init).rawValue
+  params["business_vat_id"] = vatNumber?.rawValue
+  params["description"] = description
+  params["email"] = email?.rawValue
+  switch id {
+  case .guest:
+    break
+  case let .paymentMethod(paymentMethodID):
+    params["payment_method"] = paymentMethodID
+    params["invoice_settings"] = ["default_payment_method": paymentMethodID]
+  case let .token(tokenID):
+    params["source"] = tokenID
+  }
 
-  stripeRequest(
+  return stripeRequest(
     "customers?expand[]=sources",
-    .post(
-      [
-        "balance": balance?.map(String.init).rawValue,
-        "business_vat_id": vatNumber?.rawValue,
-        "description": description,
-        "email": email?.rawValue,
-        "source": token?.rawValue,
-      ]
-      .compactMapValues { $0 }
-    )
+    .post(params)
   )
 }
 
@@ -268,6 +282,7 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
         "amount": request.amount.rawValue,
         "currency": request.currency,
         "description": request.description as Any?,
+        "payment_method": request.paymentMethodID?.rawValue as Any?,
         "receipt_email": request.receiptEmail,
         "statement_descriptor_suffix": request.statementDescriptorSuffix,
       ].compactMapValues { $0 }))

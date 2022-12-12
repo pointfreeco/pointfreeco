@@ -362,6 +362,16 @@ public struct PaymentIntent: Codable, Equatable {
   }
 }
 
+public struct PaymentMethod: Codable, Equatable {
+  public typealias ID = Tagged<Self, String>
+
+  public let id: ID
+
+  public init(id: ID) {
+    self.id = id
+  }
+}
+
 public struct Plan: Codable, Equatable {
   public var created: Date
   public var currency: Currency

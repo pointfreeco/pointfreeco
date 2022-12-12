@@ -1,10 +1,11 @@
 import CustomDump
 import Models
 import PointFreePrelude
-import PointFreeRouter
+@testable import PointFreeRouter
 import PointFreeTestSupport
 import SnapshotTesting
 import UrlFormEncoding
+import URLRouting
 import XCTest
 
 #if canImport(FoundationNetworking)
@@ -31,7 +32,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(route, try siteRouter.match(request: request))
   }
 
-  func testSubscribeRoute() {
+  func testSubscribeRoute_FormData() {
     let subscribeData = SubscribeData(
       coupon: "student-discount",
       isOwnerTakingSeat: false,
@@ -53,6 +54,41 @@ class PointFreeRouterTests: TestCase {
         """)
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
+  }
+
+  func testSubscribeRoute_JSONData() throws {
+    let request = URLRequestData(
+      method: "POST",
+      scheme: "http",
+      host: "localhost",
+      port: 8080,
+      path: "subscribe",
+      body: Data(
+        """
+        {"coupon":"student-discount","isOwnerTakingSeat":true,"paymenthMethodID": "pm_deadbeef","pricing":{"billing":"monthly","quantity":1},"teammates":[],"token":"src_deadbeef","useRegionalDiscount":false}
+        """.utf8
+      )
+    )
+
+    let route = SiteRoute.subscribe(
+      .init(
+        coupon: "student-discount",
+        isOwnerTakingSeat: true,
+        paymenthMethodID: "pm_deadbeef",
+        pricing: .individualMonthly,
+        referralCode: nil,
+        teammates: [],
+        token: "src_deadbeef",
+        useRegionalDiscount: false
+      )
+    )
+
+    XCTAssertNoDifference(try siteRouter.parse(request), route)
+
+    try JSONDecoder().decode(SubscribeData.self, from: Data("""
+      {"isOwnerTakingSeat":false,"paymenthMethodID":"pm_1MDc7sD0Nyli3dRg4bIYC6t2","pricing":{"billing":"yearly","quantity":1},"teammates":[]}
+
+      """.utf8))
   }
 
   func testEpisodeShowRoute() {
@@ -184,6 +220,26 @@ class PointFreeRouterTests: TestCase {
           $0.toEmail = "blob.jr@pointfree.co"
           $0.toName = "Blob Jr."
         }))
+
+    XCTAssertNoDifference(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  func testApplyPay() {
+    var request = URLRequest.init(url: .init(string: "http://localhost:8080/subscribe/apple-pay")!)
+    request.httpMethod = "POST"
+    request.httpBody = Data(
+      """
+      {"billing":"monthly","paymentMethodID":"pm_deadbeef","quantity":10}
+      """.utf8)
+
+    let route = SiteRoute.createApplePaymentIntent(
+      .init(
+        billing: .monthly,
+        paymentMethodID: "pm_deadbeef",
+        quantity: 10
+      )
+    )
 
     XCTAssertNoDifference(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
