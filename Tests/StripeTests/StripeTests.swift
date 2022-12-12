@@ -427,7 +427,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil,
+        id: .token("tok_test"), description: "blob", email: "blob@pointfree.co", vatNumber: nil,
         balance: nil
       ).rawValue,
       as: .raw,
@@ -435,7 +435,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1",
+        id: .token("tok_test"), description: "blob", email: "blob@pointfree.co", vatNumber: "1",
         balance: -18_00
       ).rawValue,
       as: .raw,

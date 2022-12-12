@@ -293,10 +293,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -378,10 +378,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -564,10 +564,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: true
     )
 
@@ -658,10 +658,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: true
     )
 
@@ -900,10 +900,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-      token: "stripe-deadbeef",
       useRegionalDiscount: false
     )
 
@@ -927,10 +927,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
-      token: "stripe-deadbeef",
       useRegionalDiscount: false
     )
 
@@ -971,10 +971,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -997,10 +997,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .teamYearly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -1024,10 +1024,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -1055,10 +1055,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentType: .token("deadbeef"),
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 

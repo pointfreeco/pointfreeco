@@ -19,6 +19,7 @@ public struct GiftFormData: Equatable {
 
   public static let empty = Self()
 
+  @available(*, deprecated)
   var stripePaymentIntentId: PaymentIntent.Id? {
     guard case let .some(.paymentIntentID(id)) = self.paymentType
     else { return nil }
@@ -56,8 +57,13 @@ extension GiftFormData: Codable {
         container.decode(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
       )
     } catch {
-      // TODO: paymentMethodID
-      self.paymentType = nil
+      do {
+        self.paymentType = try .paymentMethodID(
+          container.decode(PaymentMethod.ID.self, forKey: .paymentMethodID)
+        )
+      } catch {
+        self.paymentType = nil
+      }
     }
     self.toEmail = try container.decode(EmailAddress.self, forKey: .toEmail)
     self.toName = try container.decode(String.self, forKey: .toName)
@@ -71,7 +77,14 @@ extension GiftFormData: Codable {
     try container.encode(self.fromName, forKey: .fromName)
     try container.encode(self.message, forKey: .message)
     try container.encode(String(self.monthsFree), forKey: .monthsFree)
-    try container.encodeIfPresent(self.stripePaymentIntentId, forKey: .stripePaymentIntentId)
+    switch self.paymentType {
+    case let .paymentIntentID(paymentIntentID):
+      try container.encodeIfPresent(paymentIntentID, forKey: .stripePaymentIntentId)
+    case let .paymentMethodID(paymentMethodID):
+      try container.encodeIfPresent(paymentMethodID, forKey: .paymentMethodID)
+    case .none:
+      break
+    }
     try container.encode(self.toEmail, forKey: .toEmail)
     try container.encode(self.toName, forKey: .toName)
   }

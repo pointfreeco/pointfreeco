@@ -36,10 +36,10 @@ class PointFreeRouterTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: "student-discount",
       isOwnerTakingSeat: false,
+      paymentType: .token("deadbeef"),
       pricing: .init(billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
-      token: "deadbeef",
       useRegionalDiscount: true
     )
     let route = SiteRoute.subscribe(subscribeData)
@@ -74,11 +74,10 @@ class PointFreeRouterTests: TestCase {
       .init(
         coupon: "student-discount",
         isOwnerTakingSeat: true,
-        paymenthMethodID: "pm_deadbeef",
+        paymentType: .token("src_deadbeef"),
         pricing: .individualMonthly,
         referralCode: nil,
         teammates: [],
-        token: "src_deadbeef",
         useRegionalDiscount: false
       )
     )
