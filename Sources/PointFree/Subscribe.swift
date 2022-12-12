@@ -31,10 +31,6 @@ private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
-  // TODO: can double subscribe if you own a sub without taking a seat
-  // TODO: payment method isn't associated?
-  // TODO: how does payment method screen update?
-
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
@@ -45,11 +41,17 @@ private func subscribe(
     ? -9_00
     : -18_00
 
-  // TODO: throw error if guest?
+
+  let paymentType: Stripe.Client.CustomerCreationID
+  switch subscribeData.paymentType {
+  case let .paymentMethodID(paymentMethodID):
+    paymentType = .paymentMethod(paymentMethodID)
+  case let .token(token):
+    paymentType = .token(token)
+  }
+
   let stripeSubscription = Current.stripe.createCustomer(
-    subscribeData.token.map(Stripe.Client.CustomerCreationID.token)
-    ?? subscribeData.paymentMethodID.map(Stripe.Client.CustomerCreationID.paymentMethod)
-    ?? .guest,
+    paymentType,
     user.id.rawValue.uuidString,
     user.email,
     nil,

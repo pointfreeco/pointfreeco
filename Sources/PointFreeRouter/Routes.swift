@@ -585,8 +585,8 @@ let subscribeData = OneOf {
   Body(
     .json(
       SubscribeData.self,
-      decoder: Stripe.jsonDecoder,
-      encoder: Stripe.jsonEncoder
+      decoder: JSONDecoder(), // TODO
+      encoder: JSONEncoder() // TODO
     )
   )
   .map(/Optional.some) // TODO: better way?

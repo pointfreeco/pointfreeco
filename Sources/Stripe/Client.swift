@@ -237,7 +237,7 @@ func createCoupon(
   case let .percentOff(percent):
     params["percent_off"] = percent
   }
-
+ 
   return stripeRequest("coupons", .post(params))
 }
 

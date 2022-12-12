@@ -232,9 +232,8 @@ private func render(
   case .privacy:
     return conn.map(const(user .*. subscriberState .*. route .*. unit))
       |> privacyResponse
-
+ 
   case let .subscribe(data):
-    print(data)
     return conn.map(const(user .*. data .*. unit))
       |> subscribeMiddleware
 

@@ -754,7 +754,13 @@ private func payment(
         ),
         .input(
           attributes: [
-            .name("token"),
+            .name(SubscribeData.CodingKeys.token.rawValue),
+            .type(.hidden),
+          ]
+        ),
+        .input(
+          attributes: [
+            .name(SubscribeData.CodingKeys.paymentMethodID.rawValue),
             .type(.hidden),
           ]
         ),
@@ -772,7 +778,8 @@ private func payment(
             const teamMemberInputs = teamMembers == null
               ? []
               : Array.from(teamMembers.getElementsByTagName("INPUT"))
-            const teamOwnerIsTakingSeat = document.getElementsByName("isOwnerTakingSeat")[0].value == "true"
+            const teamOwnerIsTakingSeat = document
+              .getElementsByName("isOwnerTakingSeat")[0].value == "true"
             const seatCount = teamMembers
               ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
               : 1
@@ -843,70 +850,11 @@ private func payment(
             })();
 
             paymentRequest.on('paymentmethod', async (ev) => {
-              ev.complete('success');
-
-              let subscriptionData = currentSubscriptionData()
-              let postData = {
-                //coupon: null, // TODO
-                isOwnerTakingSeat: subscriptionData.teamOwnerIsTakingSeat,
-                paymenthMethodID: ev.paymentMethod.id,
-                pricing: {
-                  billing: subscriptionData.isMonthly ? "monthly" : "yearly",
-                  quantity: subscriptionData.seatCount
-                },
-                //referralCode: null, // TODO
-                teammates: subscriptionData.teammateEmails,
-                //token: null, // TODO
-                useRegionalDiscount: false, // TODO
-              }
-              console.log(postData)
-
-              const response = await fetch("/subscribe", {
-                method: "POST",
-                body: JSON.stringify(postData),
-              })
-
-              console.log(response)
-
-              if (response.status == 200 && response.redirected) {
-                // TODO: how to handle flash?
-                window.location.href = response.url
-              } else {
-                // TODO: error handling
-              }
-
-              return
-
-              // TODO: Hit our server to create a payment intent, and respond with clientSecret
-
-              // Confirm the PaymentIntent without handling potential next actions (yet).
-              const {paymentIntent, error} = await stripe.confirmCardPayment(
-                clientSecret,
-                {payment_method: ev.paymentMethod.id},
-                {handleActions: false}
-              );
-
-              if (error) {
-                displayError.textContent = error.message
-                ev.complete('fail');
-              } else {
-                displayError.textContent = ""
-                ev.complete('success');
-                // Check if the PaymentIntent requires any actions and if so let Stripe.js
-                // handle the flow. If using an API version older than "2019-02-11"
-                // instead check for: `paymentIntent.status === "requires_source_action"`.
-                if (paymentIntent.status === "requires_action") {
-                  // Let Stripe.js handle the rest of the payment flow.
-                  const {error} = await stripe.confirmCardPayment(clientSecret);
-                  if (error) {
-                    // The payment failed -- ask your customer for a new payment method.
-                  } else {
-                    // The payment has succeeded.
-                  }
-                } else {
-                  // The payment has succeeded.
-                }
-              }
+              setFormEnabled(false, function() { return true })
+              ev.complete('success')
+              form.paymentMethodID.value = ev.paymentMethod.id
+              setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+              form.submit()
             });
 
             var form = document.getElementById("subscribe-form")
