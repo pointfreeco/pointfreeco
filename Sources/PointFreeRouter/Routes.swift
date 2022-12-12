@@ -20,7 +20,6 @@ public enum SiteRoute: Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog = .index)
   case collections(Collections = .index)
-  case createApplePaymentIntent(CreateApplePaymentIntent)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case gifts(Gifts = .index)
   case endGhosting
@@ -48,12 +47,6 @@ public enum SiteRoute: Equatable {
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
-
-  public struct CreateApplePaymentIntent: Codable, Equatable {
-    public let billing: Pricing.Billing
-    public let paymentMethodID: PaymentMethod.ID
-    public let quantity: Int
-  }
 
   public enum Blog: Equatable {
     case feed
@@ -507,26 +500,6 @@ let router = OneOf {
     subscribeData
   }
 
-  Route(.case(SiteRoute.createApplePaymentIntent)) {
-    Method.post
-    Path {
-      "subscribe"
-      "apple-pay"
-    }
-    Body(
-      .json(
-        SiteRoute.CreateApplePaymentIntent.self,
-        decoder: Stripe.jsonDecoder,
-        encoder: Stripe.jsonEncoder
-      )
-      //      FormData {
-      //        Field("billing") { Pricing.Billing.parser() }
-      //        Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
-      //        Field("quantity") { Int.parser() }
-      //      }
-    )
-  }
-
   Route(.case(SiteRoute.subscribeConfirmation)) {
     Parse(
       .convert(
@@ -581,52 +554,41 @@ let router = OneOf {
   }
 }
 
-let subscribeData = OneOf {
-  Body(
-    .json(
-      SubscribeData.self,
-      decoder: JSONDecoder(), // TODO
-      encoder: JSONEncoder() // TODO
-    )
-  )
-  .map(/Optional.some) // TODO: better way?
-
-  Body {
-    Optionally {
-      FormData {
-        Optionally {
-          Field(
-            SubscribeData.CodingKeys.coupon.rawValue,
-            .string.representing(Coupon.Id.self)
-          )
-        }
-        Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
-          Bool.parser()
-        }
-        tmp
-        Parse(.memberwise(Pricing.init(billing:quantity:))) {
-          Field("pricing[billing]") { Pricing.Billing.parser() }
-          Field("pricing[quantity]") { Digits() }
-        }
-        Optionally {
-          Field(
-            SubscribeData.CodingKeys.referralCode.rawValue,
-            .string.representing(User.ReferralCode.self)
-          )
-        }
-        Many {
-          Field("teammate", .string.representing(EmailAddress.self))
-        }
-        Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
-          Bool.parser()
-        }
+let subscribeData = Body {
+  Optionally {
+    FormData {
+      Optionally {
+        Field(
+          SubscribeData.CodingKeys.coupon.rawValue,
+          .string.representing(Coupon.Id.self)
+        )
       }
-      .map(.memberwise(SubscribeData.init))
+      Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
+        Bool.parser()
+      }
+      paymentType
+      Parse(.memberwise(Pricing.init(billing:quantity:))) {
+        Field("pricing[billing]") { Pricing.Billing.parser() }
+        Field("pricing[quantity]") { Digits() }
+      }
+      Optionally {
+        Field(
+          SubscribeData.CodingKeys.referralCode.rawValue,
+          .string.representing(User.ReferralCode.self)
+        )
+      }
+      Many {
+        Field("teammate", .string.representing(EmailAddress.self))
+      }
+      Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
+        Bool.parser()
+      }
     }
+    .map(.memberwise(SubscribeData.init))
   }
 }
 
-let tmp = OneOf {
+private let paymentType = OneOf {
   Field(
     SubscribeData.CodingKeys.paymentMethodID.rawValue,
     .string.representing(PaymentMethod.ID.self)

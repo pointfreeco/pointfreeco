@@ -106,11 +106,6 @@ private func render(
       .map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
       |> episodeResponse
 
-  case let .createApplePaymentIntent(data):
-    return conn.map(
-      const(user .*. route .*. subscriberState .*. data.billing .*. data.paymentMethodID .*. data.quantity .*. unit))
-    |> createApplePaymentIntent
-
   case let .discounts(couponId, billing):
     let subscribeData = SubscribeConfirmationData(
       billing: billing ?? .yearly,

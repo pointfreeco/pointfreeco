@@ -60,11 +60,6 @@ public struct Pricing: Equatable {
       ? .personal
       : .team
   }
-
-  // TODO: deprecate
-  public var plan: Stripe.Plan.Id {
-    self.billing.plan
-  }
 }
 
 extension Pricing: Codable {

@@ -693,10 +693,7 @@ private func payment(
   referrer: User?,
   useRegionalDiscount: Bool
 ) -> Node {
-  let discount = coupon?.discount(for:) ?? { $0 }
-  let referralDiscount = referrer == nil ? 0 : 18
-
-  return .gridRow(
+  .gridRow(
     attributes: [.class([moduleRowClass])],
     .gridColumn(
       sizes: [.mobile: 12],
@@ -769,7 +766,7 @@ private func payment(
         unsafe: checkoutJS(
           coupon: coupon,
           lane: lane,
-          referralDiscount: referralDiscount,
+          referrer: referrer,
           useRegionalDiscount: useRegionalDiscount
         )
       )
@@ -1058,10 +1055,11 @@ public struct DiscountCountry {
 private func checkoutJS(
   coupon: Stripe.Coupon?,
   lane: Pricing.Lane,
-  referralDiscount: Int,
+  referrer: User?,
   useRegionalDiscount: Bool
 ) -> String {
   let discount = coupon?.discount(for:) ?? { $0 }
+  let referralDiscount = referrer == nil ? 0 : 18
   return """
     var updateSeats;
 

@@ -223,24 +223,4 @@ class PointFreeRouterTests: TestCase {
     XCTAssertNoDifference(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
-
-  func testApplyPay() {
-    var request = URLRequest.init(url: .init(string: "http://localhost:8080/subscribe/apple-pay")!)
-    request.httpMethod = "POST"
-    request.httpBody = Data(
-      """
-      {"billing":"monthly","paymentMethodID":"pm_deadbeef","quantity":10}
-      """.utf8)
-
-    let route = SiteRoute.createApplePaymentIntent(
-      .init(
-        billing: .monthly,
-        paymentMethodID: "pm_deadbeef",
-        quantity: 10
-      )
-    )
-
-    XCTAssertNoDifference(try siteRouter.match(request: request), route)
-    XCTAssertEqual(try siteRouter.request(for: route), request)
-  }
 }

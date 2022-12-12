@@ -18,13 +18,6 @@ public struct GiftFormData: Equatable {
   }
 
   public static let empty = Self()
-
-  @available(*, deprecated)
-  var stripePaymentIntentId: PaymentIntent.Id? {
-    guard case let .some(.paymentIntentID(id)) = self.paymentType
-    else { return nil }
-    return id
-  }
 }
 
 private let dateFormatter: DateFormatter = {

@@ -98,7 +98,7 @@ private func subscribe(
 
     return Current.stripe.createSubscription(
       customer.id,
-      subscribeData.pricing.plan,
+      subscribeData.pricing.billing.plan,
       subscribeData.pricing.quantity, 
       subscribeData.coupon ?? regionalDiscountCouponId
     )

@@ -90,7 +90,7 @@ public func giftsPayment(
             }
           }
           var submitted = false
-          form.addEventListener("submit", async (event) => {
+          form.addEventListener("submit", function(event) {
             displayError.textContent = ""
             event.preventDefault()
             if (submitted) { return }
@@ -214,7 +214,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toName.stringValue),
               .type(.text),
               .required(true),
-              .value("asdf")
+              .value("asdf") // TODO: remove debug code
             ]
           )
         )
@@ -230,7 +230,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toEmail.stringValue),
               .type(.email),
               .required(true),
-              .value("asdf@asdf.com")
+              .value("asdf@asdf.com") // TODO: remove debug code
             ]
           )
         )
