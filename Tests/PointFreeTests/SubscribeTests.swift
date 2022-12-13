@@ -95,7 +95,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -137,7 +137,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -327,7 +327,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -406,7 +406,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -444,7 +444,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let card = update(Card.mock) { $0.country = "BO" }
     customer.sources = .mock([.left(card)])
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(.mock)
@@ -454,7 +454,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -499,7 +499,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let card = update(Card.mock) { $0.country = "US" }
     customer.sources = .mock([.left(card)])
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(.mock)
@@ -509,7 +509,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -585,7 +585,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         })
     }
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(
@@ -601,7 +601,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -679,7 +679,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         })
     }
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(
@@ -695,7 +695,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)

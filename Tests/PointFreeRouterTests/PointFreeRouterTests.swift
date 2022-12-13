@@ -56,39 +56,39 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.match(request: request), route)
   }
 
-  func testSubscribeRoute_JSONData() throws {
-    let request = URLRequestData(
-      method: "POST",
-      scheme: "http",
-      host: "localhost",
-      port: 8080,
-      path: "subscribe",
-      body: Data(
-        """
-        {"coupon":"student-discount","isOwnerTakingSeat":true,"paymenthMethodID": "pm_deadbeef","pricing":{"billing":"monthly","quantity":1},"teammates":[],"token":"src_deadbeef","useRegionalDiscount":false}
-        """.utf8
-      )
-    )
-
-    let route = SiteRoute.subscribe(
-      .init(
-        coupon: "student-discount",
-        isOwnerTakingSeat: true,
-        paymentType: .token("src_deadbeef"),
-        pricing: .individualMonthly,
-        referralCode: nil,
-        teammates: [],
-        useRegionalDiscount: false
-      )
-    )
-
-    XCTAssertNoDifference(try siteRouter.parse(request), route)
-
-    try JSONDecoder().decode(SubscribeData.self, from: Data("""
-      {"isOwnerTakingSeat":false,"paymenthMethodID":"pm_1MDc7sD0Nyli3dRg4bIYC6t2","pricing":{"billing":"yearly","quantity":1},"teammates":[]}
-
-      """.utf8))
-  }
+//  func testSubscribeRoute_JSONData() throws {
+//    let request = URLRequestData(
+//      method: "POST",
+//      scheme: "http",
+//      host: "localhost",
+//      port: 8080,
+//      path: "subscribe",
+//      body: Data(
+//        """
+//        {"coupon":"student-discount","isOwnerTakingSeat":true,"paymenthMethodID": "pm_deadbeef","pricing":{"billing":"monthly","quantity":1},"teammates":[],"token":"src_deadbeef","useRegionalDiscount":false}
+//        """.utf8
+//      )
+//    )
+//
+//    let route = SiteRoute.subscribe(
+//      .init(
+//        coupon: "student-discount",
+//        isOwnerTakingSeat: true,
+//        paymentType: .token("src_deadbeef"),
+//        pricing: .individualMonthly,
+//        referralCode: nil,
+//        teammates: [],
+//        useRegionalDiscount: false
+//      )
+//    )
+//
+//    XCTAssertNoDifference(try siteRouter.parse(request), route)
+//
+//    try JSONDecoder().decode(SubscribeData.self, from: Data("""
+//      {"isOwnerTakingSeat":false,"paymenthMethodID":"pm_1MDc7sD0Nyli3dRg4bIYC6t2","pricing":{"billing":"yearly","quantity":1},"teammates":[]}
+//
+//      """.utf8))
+//  }
 
   func testEpisodeShowRoute() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)

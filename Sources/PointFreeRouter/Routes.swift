@@ -20,7 +20,7 @@ public enum SiteRoute: Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog = .index)
   case collections(Collections = .index)
-  case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
+  case discounts(code: Stripe.Coupon.ID, Pricing.Billing?)
   case gifts(Gifts = .index)
   case endGhosting
   case enterprise(EnterpriseAccount.Domain, Enterprise = .landing)
@@ -45,16 +45,16 @@ public enum SiteRoute: Equatable {
     useRegionalDiscount: Bool? = nil
   )
   case team(Team)
-  case useEpisodeCredit(Episode.Id)
+  case useEpisodeCredit(Episode.ID)
   case webhooks(Webhooks)
 
   public enum Blog: Equatable {
     case feed
     case index
-    case show(Either<String, BlogPost.Id>)
+    case show(Either<String, BlogPost.ID>)
 
     public static func show(slug: String) -> Blog { .show(.left(slug)) }
-    public static func show(id: BlogPost.Id) -> Blog { .show(.right(id)) }
+    public static func show(id: BlogPost.ID) -> Blog { .show(.right(id)) }
   }
 
   public enum Collections: Equatable {
@@ -68,7 +68,7 @@ public enum SiteRoute: Equatable {
 
     public enum Section: Equatable {
       case show
-      case episode(Either<String, Episode.Id>)
+      case episode(Either<String, Episode.ID>)
     }
   }
 
@@ -80,8 +80,8 @@ public enum SiteRoute: Equatable {
 
   public enum EpisodeRoute: Equatable {
     case index
-    case progress(param: Either<String, Episode.Id>, percent: Int)
-    case show(Either<String, Episode.Id>)
+    case progress(param: Either<String, Episode.ID>, percent: Int)
+    case show(Either<String, Episode.ID>)
   }
 
   public enum Feed: Equatable {
@@ -91,7 +91,7 @@ public enum SiteRoute: Equatable {
 
   public enum Invite: Equatable {
     case addTeammate(EmailAddress?)
-    case invitation(TeamInvite.Id, Invitation = .show)
+    case invitation(TeamInvite.ID, Invitation = .show)
     case send(EmailAddress?)
 
     public enum Invitation: Equatable {
@@ -105,7 +105,7 @@ public enum SiteRoute: Equatable {
   public enum Team: Equatable {
     case join(Models.Subscription.TeamInviteCode, Join = .landing)
     case leave
-    case remove(User.Id)
+    case remove(User.ID)
 
     public enum Join: Equatable {
       case confirm
@@ -126,10 +126,10 @@ public enum SiteRoute: Equatable {
 }
 
 private let blogSlugOrId = OneOf {
-  Parse(.string.map(.case(Either<String, BlogPost.Id>.left)))
+  Parse(.string.map(.case(Either<String, BlogPost.ID>.left)))
 
   Int.parser(of: Substring.self)
-    .map(.representing(BlogPost.Id.self).map(.case(Either<String, BlogPost.Id>.right)))
+    .map(.representing(BlogPost.ID.self).map(.case(Either<String, BlogPost.ID>.right)))
 }
 
 private let blogRouter = OneOf {
@@ -151,10 +151,10 @@ private let blogRouter = OneOf {
 }
 
 private let episodeSlugOrId = OneOf {
-  Parse(.string.map(.case(Either<String, Episode.Id>.left)))
+  Parse(.string.map(.case(Either<String, Episode.ID>.left)))
 
   Int.parser(of: Substring.self)
-    .map(.representing(Episode.Id.self).map(.case(Either<String, Episode.Id>.right)))
+    .map(.representing(Episode.ID.self).map(.case(Either<String, Episode.ID>.right)))
 }
 
 private let collectionsRouter = OneOf {
@@ -242,7 +242,7 @@ private let inviteRouter = OneOf {
   }
 
   Route(.case(SiteRoute.Invite.invitation)) {
-    Path { UUID.parser().map(.representing(TeamInvite.Id.self)) }
+    Path { UUID.parser().map(.representing(TeamInvite.ID.self)) }
 
     OneOf {
       Route(.case(SiteRoute.Invite.Invitation.show))
@@ -309,7 +309,7 @@ private let teamRouter = OneOf {
         Method.post
         Path {
           "members"
-          UUID.parser().map(.representing(User.Id.self))
+          UUID.parser().map(.representing(User.ID.self))
           "remove"
         }
       }
@@ -420,7 +420,7 @@ let router = OneOf {
   Route(.case(SiteRoute.discounts)) {
     Path {
       "discounts"
-      Parse(.string.representing(Stripe.Coupon.Id.self))
+      Parse(.string.representing(Stripe.Coupon.ID.self))
     }
     Query {
       Optionally {
@@ -543,7 +543,7 @@ let router = OneOf {
     Method.post
     Path {
       "episodes"
-      Digits().map(.representing(Episode.Id.self))
+      Digits().map(.representing(Episode.ID.self))
       "credit"
     }
   }
@@ -560,7 +560,7 @@ let subscribeData = Body {
       Optionally {
         Field(
           SubscribeData.CodingKeys.coupon.rawValue,
-          .string.representing(Coupon.Id.self)
+          .string.representing(Coupon.ID.self)
         )
       }
       Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
@@ -596,7 +596,7 @@ private let paymentType = OneOf {
   .map(/SubscribeData.PaymentType.paymentMethodID)
   Field(
     SubscribeData.CodingKeys.token.rawValue,
-    .string.representing(Token.Id.self)
+    .string.representing(Token.ID.self)
   )
   .map(/SubscribeData.PaymentType.token)
 }

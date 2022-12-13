@@ -11,7 +11,7 @@ Current = .mock
 Current.database.fetchTeamInvite = const(pure(.some(.mock)))
 Current.database.fetchUserById = const(pure(.some(.nonSubscriber)))
 
-let teamInviteId = TeamInvite.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+let teamInviteId = TeamInvite.ID(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
 
 let req = request(to: .invite(.show(teamInviteId)), session: .loggedIn)
 let result = siteMiddleware(connection(from: req)).perform()

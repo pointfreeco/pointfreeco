@@ -47,7 +47,7 @@ let invoiceResponse =
 
 private let requireInvoice:
   MT<
-    Tuple3<Stripe.Subscription, User, Invoice.Id>,
+    Tuple3<Stripe.Subscription, User, Invoice.ID>,
     Tuple3<Stripe.Subscription, User, Invoice>
   > =
     filterMap(
@@ -104,7 +104,7 @@ private func fetchInvoices<A>(
   }
 }
 
-private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
+private func fetchInvoice(id: Stripe.Invoice.ID) -> IO<Stripe.Invoice?> {
   return Current.stripe.fetchInvoice(id)
     .run
     .map(\.right)

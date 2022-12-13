@@ -31,7 +31,7 @@ private let filterInvalidInvoices:
     )
 
 private let requireSubscriptionId:
-  MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id> = filterMap(
+  MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.ID> = filterMap(
     extraSubscriptionId(fromEvent:) >>> pure,
     or: stripeHookFailure(
       subject: "[PointFree Error] Stripe Hook Failed!",
@@ -40,7 +40,7 @@ private let requireSubscriptionId:
   )
 
 private func handleFailedPayment(
-  _ conn: Conn<StatusLineOpen, Stripe.Subscription.Id>
+  _ conn: Conn<StatusLineOpen, Stripe.Subscription.ID>
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
@@ -137,7 +137,7 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
 
 private func extraSubscriptionId(
   fromEvent event: Event<Either<Invoice, Stripe.Subscription>>
-) -> Stripe.Subscription.Id? {
+) -> Stripe.Subscription.ID? {
 
   switch event.data.object {
   case let .left(invoice):

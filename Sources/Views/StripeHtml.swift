@@ -6,7 +6,7 @@ import Stripe
 public enum StripeHtml {
   public static let formId = "card-form"
 
-  public static func cardInput(couponId: Stripe.Coupon.Id?, publishableKey: String) -> Node {
+  public static func cardInput(couponId: Stripe.Coupon.ID?, publishableKey: String) -> Node {
     return [
       .input(attributes: [.name("token"), .type(.hidden)]),
       .div(

@@ -15,7 +15,7 @@ public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
 
 let expressUnsubscribe = ParsePrint {
-  UUID.parser().map(.representing(User.Id.self))
+  UUID.parser().map(.representing(User.ID.self))
   "--POINT-FREE-BOUNDARY--"
   Rest().map(.string.representing(EmailSetting.Newsletter.self))
 }
@@ -26,7 +26,7 @@ public func prepareEmail(
   cc: [EmailAddress]? = nil,
   bcc: [EmailAddress]? = nil,
   subject: String,
-  unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
+  unsubscribeData: (User.ID, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
 )
@@ -93,7 +93,7 @@ public func sendEmail(
   cc: [EmailAddress]? = nil,
   bcc: [EmailAddress]? = nil,
   subject: String,
-  unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
+  unsubscribeData: (User.ID, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
 )

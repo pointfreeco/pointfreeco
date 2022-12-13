@@ -147,7 +147,7 @@ private func validateUserAgent<Z>(
 }
 
 private func trackFeedRequest<A, I>(
-  userId: @escaping (A) -> User.Id
+  userId: @escaping (A) -> User.ID
 )
   -> (Conn<I, A>) -> IO<Conn<I, A>>
 {

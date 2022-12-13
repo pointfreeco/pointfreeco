@@ -4,7 +4,7 @@ import URLRouting
 extension SiteRoute {
   public enum Api: Equatable {
     case episodes
-    case episode(Episode.Id)
+    case episode(Episode.ID)
   }
 }
 
@@ -15,7 +15,7 @@ let apiRouter = Parse {
     Route(.case(SiteRoute.Api.episodes))
 
     Route(.case(SiteRoute.Api.episode)) {
-      Path { Digits().map(.representing(Episode.Id.self)) }
+      Path { Digits().map(.representing(Episode.ID.self)) }
     }
   }
 }

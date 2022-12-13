@@ -54,7 +54,7 @@ let updatePaymentInfoMiddleware =
   }
 
 private let requireUserAndToken:
-  MT<Tuple2<User?, Stripe.Token.Id?>, Tuple2<User, Stripe.Token.Id>> =
+  MT<Tuple2<User?, Stripe.Token.ID?>, Tuple2<User, Stripe.Token.ID>> =
     filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,

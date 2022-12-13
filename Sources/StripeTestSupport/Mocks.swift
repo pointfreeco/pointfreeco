@@ -110,7 +110,7 @@ extension Event where T == Either<Invoice, Subscription> {
 }
 
 extension Invoice {
-  public static func mock(charge: Either<Charge.Id, Charge>?) -> Invoice {
+  public static func mock(charge: Expandable<Charge>?) -> Invoice {
     return Invoice(
       amountDue: 0_00,
       amountPaid: 17_00,

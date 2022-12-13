@@ -264,8 +264,8 @@ class GiftTests: TestCase {
     let user = User.nonSubscriber
 
     var credit: Cents<Int>?
-    var stripeSubscriptionId: Stripe.Subscription.Id?
-    var userId: User.Id?
+    var stripeSubscriptionId: Stripe.Subscription.ID?
+    var userId: User.ID?
 
     Current.database.createSubscription = { _, id, _, _ in
       userId = id
@@ -336,7 +336,7 @@ class GiftTests: TestCase {
     let user = User.owner
 
     var credit: Cents<Int>?
-    var stripeSubscriptionId: Stripe.Subscription.Id?
+    var stripeSubscriptionId: Stripe.Subscription.ID?
 
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }

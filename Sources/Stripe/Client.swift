@@ -15,7 +15,7 @@ import UrlFormEncoding
 
 public struct Client {
   public var cancelSubscription:
-    (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
+    (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
   public var createCoupon:
     (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
       Error, Coupon
@@ -24,32 +24,32 @@ public struct Client {
     (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription:
-    (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
-  public var deleteCoupon: (Coupon.Id) -> EitherIO<Error, Prelude.Unit>
-  public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
-  public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
-  public var fetchInvoice: (Invoice.Id) -> EitherIO<Error, Invoice>
-  public var fetchInvoices: (Customer.Id) -> EitherIO<Error, ListEnvelope<Invoice>>
-  public var fetchPaymentIntent: (PaymentIntent.Id) -> EitherIO<Error, PaymentIntent>
+    (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<Error, Subscription>
+  public var deleteCoupon: (Coupon.ID) -> EitherIO<Error, Prelude.Unit>
+  public var fetchCoupon: (Coupon.ID) -> EitherIO<Error, Coupon>
+  public var fetchCustomer: (Customer.ID) -> EitherIO<Error, Customer>
+  public var fetchInvoice: (Invoice.ID) -> EitherIO<Error, Invoice>
+  public var fetchInvoices: (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>
+  public var fetchPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
   public var fetchPlans: () -> EitherIO<Error, ListEnvelope<Plan>>
-  public var fetchPlan: (Plan.Id) -> EitherIO<Error, Plan>
-  public var fetchSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var fetchUpcomingInvoice: (Customer.Id) -> EitherIO<Error, Invoice>
-  public var invoiceCustomer: (Customer.Id) -> EitherIO<Error, Invoice>
-  public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Error, Customer>
-  public var updateCustomerBalance: (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>
-  public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Error, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
+  public var fetchPlan: (Plan.ID) -> EitherIO<Error, Plan>
+  public var fetchSubscription: (Subscription.ID) -> EitherIO<Error, Subscription>
+  public var fetchUpcomingInvoice: (Customer.ID) -> EitherIO<Error, Invoice>
+  public var invoiceCustomer: (Customer.ID) -> EitherIO<Error, Invoice>
+  public var updateCustomer: (Customer.ID, Token.ID) -> EitherIO<Error, Customer>
+  public var updateCustomerBalance: (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>
+  public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) -> EitherIO<Error, Customer>
+  public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
   public enum CustomerCreationID {
     case guest
     case paymentMethod(PaymentMethod.ID)
-    case token(Token.Id)
+    case token(Token.ID)
   }
 
   public init(
-    cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<
+    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
       Error, Subscription
     >,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
@@ -57,24 +57,24 @@ public struct Client {
     createCustomer: @escaping (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
       EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
-    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<
+    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<
       Error, Subscription
     >,
-    deleteCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Prelude.Unit>,
-    fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
-    fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
-    fetchInvoice: @escaping (Invoice.Id) -> EitherIO<Error, Invoice>,
-    fetchInvoices: @escaping (Customer.Id) -> EitherIO<Error, ListEnvelope<Invoice>>,
-    fetchPaymentIntent: @escaping (PaymentIntent.Id) -> EitherIO<Error, PaymentIntent>,
+    deleteCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Prelude.Unit>,
+    fetchCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Coupon>,
+    fetchCustomer: @escaping (Customer.ID) -> EitherIO<Error, Customer>,
+    fetchInvoice: @escaping (Invoice.ID) -> EitherIO<Error, Invoice>,
+    fetchInvoices: @escaping (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>,
+    fetchPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
     fetchPlans: @escaping () -> EitherIO<Error, ListEnvelope<Plan>>,
-    fetchPlan: @escaping (Plan.Id) -> EitherIO<Error, Plan>,
-    fetchSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
-    fetchUpcomingInvoice: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
-    invoiceCustomer: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
-    updateCustomer: @escaping (Customer.Id, Token.Id) -> EitherIO<Error, Customer>,
-    updateCustomerBalance: @escaping (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>,
-    updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
-    updateSubscription: @escaping (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>,
+    fetchPlan: @escaping (Plan.ID) -> EitherIO<Error, Plan>,
+    fetchSubscription: @escaping (Subscription.ID) -> EitherIO<Error, Subscription>,
+    fetchUpcomingInvoice: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
+    invoiceCustomer: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
+    updateCustomer: @escaping (Customer.ID, Token.ID) -> EitherIO<Error, Customer>,
+    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>,
+    updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) -> EitherIO<Error, Customer>,
+    updateSubscription: @escaping (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>,
     js: String
   ) {
     self.cancelSubscription = cancelSubscription
@@ -127,9 +127,9 @@ public struct Client {
 }
 
 extension Client {
-  public typealias EndpointSecret = Tagged<(Client, endpointSecret: ()), String>
-  public typealias PublishableKey = Tagged<(Client, publishableKey: ()), String>
-  public typealias SecretKey = Tagged<(Client, secretKey: ()), String>
+  public typealias EndpointSecret = Tagged<(Self, endpointSecret: ()), String>
+  public typealias PublishableKey = Tagged<(Self, publishableKey: ()), String>
+  public typealias SecretKey = Tagged<(Self, secretKey: ()), String>
 
   public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
@@ -186,7 +186,7 @@ extension Client {
   }
 }
 
-func cancelSubscription(id: Subscription.Id, immediately: Bool) -> DecodableRequest<Subscription> {
+func cancelSubscription(id: Subscription.ID, immediately: Bool) -> DecodableRequest<Subscription> {
   if immediately {
     return stripeRequest(
       "subscriptions/" + id.rawValue + "?expand[]=customer",
@@ -289,10 +289,10 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
 }
 
 func createSubscription(
-  customer: Customer.Id,
-  plan: Plan.Id,
+  customer: Customer.ID,
+  plan: Plan.ID,
   quantity: Int,
-  coupon: Coupon.Id?
+  coupon: Coupon.ID?
 )
   -> DecodableRequest<Subscription>
 {
@@ -306,33 +306,33 @@ func createSubscription(
   return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
-func deleteCoupon(id: Coupon.Id) -> DecodableRequest<Prelude.Unit> {
+func deleteCoupon(id: Coupon.ID) -> DecodableRequest<Prelude.Unit> {
   stripeRequest(
     "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""),
     .delete([:])
   )
 }
 
-func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
+func fetchCoupon(id: Coupon.ID) -> DecodableRequest<Coupon> {
   stripeRequest(
     "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
   )
 }
 
-func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
+func fetchCustomer(id: Customer.ID) -> DecodableRequest<Customer> {
   stripeRequest("customers/" + id.rawValue)
 }
 
-func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
+func fetchInvoice(id: Invoice.ID) -> DecodableRequest<Invoice> {
   stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
+func fetchInvoices(for customer: Customer.ID) -> DecodableRequest<ListEnvelope<Invoice>> {
   stripeRequest(
     "invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
-func fetchPaymentIntent(id: PaymentIntent.Id) -> DecodableRequest<PaymentIntent> {
+func fetchPaymentIntent(id: PaymentIntent.ID) -> DecodableRequest<PaymentIntent> {
   stripeRequest("payment_intents/" + id.rawValue)
 }
 
@@ -340,19 +340,19 @@ func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
   stripeRequest("plans")
 }
 
-func fetchPlan(id: Plan.Id) -> DecodableRequest<Plan> {
+func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
   stripeRequest("plans/" + id.rawValue)
 }
 
-func fetchSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
+func fetchSubscription(id: Subscription.ID) -> DecodableRequest<Subscription> {
   stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.sources")
 }
 
-func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> {
+func fetchUpcomingInvoice(_ customer: Customer.ID) -> DecodableRequest<Invoice> {
   stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
 }
 
-func invoiceCustomer(_ customer: Customer.Id)
+func invoiceCustomer(_ customer: Customer.ID)
   -> DecodableRequest<Invoice>
 {
 
@@ -363,7 +363,7 @@ func invoiceCustomer(_ customer: Customer.Id)
     ]))
 }
 
-func updateCustomer(id: Customer.Id, token: Token.Id)
+func updateCustomer(id: Customer.ID, token: Token.ID)
   -> DecodableRequest<Customer>
 {
 
@@ -374,7 +374,7 @@ func updateCustomer(id: Customer.Id, token: Token.Id)
     ]))
 }
 
-func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
+func updateCustomer(id: Customer.ID, balance: Cents<Int>) -> DecodableRequest<Customer> {
 
   stripeRequest(
     "customers/" + id.rawValue,
@@ -383,7 +383,7 @@ func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Cu
     ]))
 }
 
-func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
+func updateCustomer(id: Customer.ID, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
 
   stripeRequest(
     "customers/" + id.rawValue,
@@ -394,7 +394,7 @@ func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableReque
 
 func updateSubscription(
   _ currentSubscription: Subscription,
-  _ plan: Plan.Id,
+  _ plan: Plan.ID,
   _ quantity: Int
 )
   -> DecodableRequest<Subscription>?

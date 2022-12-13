@@ -17,7 +17,7 @@ public struct Pricing: Equatable {
     case monthly
     case yearly
 
-    public var plan: Stripe.Plan.Id {
+    public var plan: Stripe.Plan.ID {
       switch self {
       case .monthly:
         return .monthly

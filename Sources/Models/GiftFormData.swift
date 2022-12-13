@@ -13,7 +13,7 @@ public struct GiftFormData: Equatable {
   public var toName = ""
 
   public enum PaymentType: Equatable {
-    case paymentIntentID(PaymentIntent.Id)
+    case paymentIntentID(PaymentIntent.ID)
     case paymentMethodID(PaymentMethod.ID)
   }
 
@@ -47,7 +47,7 @@ extension GiftFormData: Codable {
     }
     do {
       self.paymentType = try .paymentIntentID(
-        container.decode(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
+        container.decode(PaymentIntent.ID.self, forKey: .stripePaymentIntentId)
       )
     } catch {
       do {

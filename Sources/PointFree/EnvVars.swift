@@ -6,7 +6,7 @@ import Models
 import Stripe
 import Tagged
 
-public typealias GitHubClientId = GitHub.Client.Id
+public typealias GitHubClientId = GitHub.Client.ID
 public typealias GitHubClientSecret = GitHub.Client.Secret
 
 public typealias MailgunApiKey = Mailgun.Client.ApiKey
@@ -26,7 +26,7 @@ public struct EnvVars: Codable {
   public var mailgun: Mailgun
   public var port: Int
   public var postgres: Postgres
-  public var regionalDiscountCouponId: Coupon.Id
+  public var regionalDiscountCouponId: Coupon.ID
   public var rssUserAgentWatchlist: [String]
   public var stripe: Stripe
 
@@ -40,7 +40,7 @@ public struct EnvVars: Codable {
     mailgun: Mailgun = Mailgun(),
     port: Int = 8080,
     postgres: Postgres = Postgres(),
-    regionalDiscountCouponId: Coupon.Id = "regional-discount",
+    regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
     stripe: Stripe = Stripe()
   ) {
@@ -130,7 +130,7 @@ public struct EnvVars: Codable {
   }
 
   public struct Postgres: Codable {
-    public typealias DatabaseUrl = Tagged<Postgres, String>
+    public typealias DatabaseUrl = Tagged<Self, String>
 
     public var databaseUrl: DatabaseUrl
 
@@ -182,7 +182,7 @@ extension EnvVars {
     self.port = Int(try container.decode(String.self, forKey: .port))!
     self.postgres = try .init(from: decoder)
     self.regionalDiscountCouponId = try container.decode(
-      Coupon.Id.self, forKey: .regionalDiscountCouponId)
+      Coupon.ID.self, forKey: .regionalDiscountCouponId)
     self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
       .split(separator: ",")
       .map(String.init)

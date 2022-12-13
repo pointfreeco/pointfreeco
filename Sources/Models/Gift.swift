@@ -3,17 +3,17 @@ import Foundation
 import Stripe
 import Tagged
 
-public struct Gift: Decodable {
+public struct Gift: Decodable, Identifiable {
   public var deliverAt: Date?
   public var delivered: Bool
   public var fromEmail: EmailAddress
   public var fromName: String
-  public var id: Id
+  public var id: Tagged<Self, UUID>
   public var message: String
   public var monthsFree: Int
-  public var stripePaymentIntentId: PaymentIntent.Id
+  public var stripePaymentIntentId: PaymentIntent.ID
   public var stripePaymentIntentStatus: PaymentIntent.Status
-  public var stripeSubscriptionId: Stripe.Subscription.Id?
+  public var stripeSubscriptionId: Stripe.Subscription.ID?
   public var toEmail: EmailAddress
   public var toName: String
 
@@ -22,12 +22,12 @@ public struct Gift: Decodable {
     delivered: Bool,
     fromEmail: EmailAddress,
     fromName: String,
-    id: Id,
+    id: ID,
     message: String,
     monthsFree: Int,
-    stripePaymentIntentId: PaymentIntent.Id,
+    stripePaymentIntentId: PaymentIntent.ID,
     stripePaymentIntentStatus: PaymentIntent.Status,
-    stripeSubscriptionId: Stripe.Subscription.Id?,
+    stripeSubscriptionId: Stripe.Subscription.ID?,
     toEmail: EmailAddress,
     toName: String
   ) {
@@ -44,6 +44,4 @@ public struct Gift: Decodable {
     self.toEmail = toEmail
     self.toName = toName
   }
-
-  public typealias Id = Tagged<Self, UUID>
 }

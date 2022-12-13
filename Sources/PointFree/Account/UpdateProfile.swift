@@ -132,7 +132,7 @@ func encryptPayload<A>(
 }
 
 let emailChange = ParsePrint {
-  UUID.parser().map(.representing(User.Id.self))
+  UUID.parser().map(.representing(User.ID.self))
   "--POINT-FREE-BOUNDARY--"
   Rest().map(.string.representing(EmailAddress.self))
 }

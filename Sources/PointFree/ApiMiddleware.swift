@@ -12,7 +12,7 @@ enum Api {}
 extension Api {
   struct EpisodeListItem: Codable {
     var blurb: String
-    var id: Episode.Id
+    var id: Episode.ID
     var image: String
     var length: Seconds<Int>
     var publishedAt: Date
@@ -36,7 +36,7 @@ extension Api {
   struct EpisodeDetail: Codable {
     var blurb: String
     var codeSampleDirectory: String?
-    var id: Episode.Id
+    var id: Episode.ID
     var image: String
     var length: Seconds<Int>
     var previousEpisodesInCollection: [EpisodeListItem]

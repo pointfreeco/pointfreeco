@@ -11,28 +11,28 @@ public enum Admin: Equatable {
   case newEpisodeEmail(NewEpisodeEmail = .show)
 
   public enum EpisodeCredit: Equatable {
-    case add(userId: User.Id?, episodeSequence: Episode.Sequence?)
+    case add(userId: User.ID?, episodeSequence: Episode.Sequence?)
     case show
   }
 
   public enum FreeEpisodeEmail: Equatable {
-    case send(Episode.Id)
+    case send(Episode.ID)
     case index
   }
 
   public enum Ghost: Equatable {
     case index
-    case start(User.Id?)
+    case start(User.ID?)
   }
 
   public enum NewBlogPostEmail: Equatable {
-    case send(BlogPost.Id, formData: NewBlogPostFormData? = nil, isTest: Bool = false)
+    case send(BlogPost.ID, formData: NewBlogPostFormData? = nil, isTest: Bool = false)
     case index
   }
 
   public enum NewEpisodeEmail: Equatable {
     case send(
-      Episode.Id,
+      Episode.ID,
       subscriberAnnouncement: String = "",
       nonSubscriberAnnouncement: String = "",
       isTest: Bool = false
@@ -55,7 +55,7 @@ let adminRouter = OneOf {
         Body {
           FormData {
             Optionally {
-              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+              Field("user_id") { UUID.parser().map(.representing(User.ID.self)) }
             }
             Optionally {
               Field("episode_sequence") { Digits().map(.representing(Episode.Sequence.self)) }
@@ -75,7 +75,7 @@ let adminRouter = OneOf {
       Route(.case(Admin.FreeEpisodeEmail.send)) {
         Method.post
         Path {
-          Digits().map(.representing(Episode.Id.self))
+          Digits().map(.representing(Episode.ID.self))
           "send"
         }
       }
@@ -94,7 +94,7 @@ let adminRouter = OneOf {
         Body {
           FormData {
             Optionally {
-              Field("user_id") { UUID.parser().map(.representing(User.Id.self)) }
+              Field("user_id") { UUID.parser().map(.representing(User.ID.self)) }
             }
           }
         }
@@ -117,7 +117,7 @@ let adminRouter = OneOf {
         ) {
           Method.post
           Path {
-            Digits().map(.representing(BlogPost.Id.self))
+            Digits().map(.representing(BlogPost.ID.self))
             "send"
           }
           Body {
@@ -165,7 +165,7 @@ let adminRouter = OneOf {
         ) {
           Method.post
           Path {
-            Digits().map(.representing(Episode.Id.self))
+            Digits().map(.representing(Episode.ID.self))
             "send"
           }
           Body {

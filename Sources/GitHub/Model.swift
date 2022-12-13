@@ -37,12 +37,12 @@ public struct OAuthError: Codable {
   }
 }
 
-public struct GitHubUser: Codable {
+public struct GitHubUser: Codable, Identifiable {
   public var createdAt: Date
-  public var id: Id
+  public var id: Tagged<Self, Int>
   public var name: String?
 
-  public init(createdAt: Date, id: Id, name: String?) {
+  public init(createdAt: Date, id: ID, name: String?) {
     self.createdAt = createdAt
     self.id = id
     self.name = name
@@ -57,8 +57,6 @@ public struct GitHubUser: Codable {
       self.primary = primary
     }
   }
-
-  public typealias Id = Tagged<GitHubUser, Int>
 
   private enum CodingKeys: String, CodingKey {
     case createdAt = "created_at"

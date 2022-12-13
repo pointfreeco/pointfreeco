@@ -2,7 +2,7 @@ import EmailAddress
 import Stripe
 
 public struct SubscribeData: Equatable {
-  public var coupon: Stripe.Coupon.Id?
+  public var coupon: Stripe.Coupon.ID?
   public var isOwnerTakingSeat: Bool
   public var paymentType: PaymentType
   public var pricing: Pricing
@@ -12,11 +12,11 @@ public struct SubscribeData: Equatable {
 
   public enum PaymentType: Equatable {
     case paymentMethodID(PaymentMethod.ID)
-    case token(Stripe.Token.Id)
+    case token(Stripe.Token.ID)
   }
   
   public init(
-    coupon: Stripe.Coupon.Id?,
+    coupon: Stripe.Coupon.ID?,
     isOwnerTakingSeat: Bool,
     paymentType: PaymentType,
     pricing: Pricing,

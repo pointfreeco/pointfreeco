@@ -78,14 +78,14 @@ let sendNewBlogPostEmailMiddleware =
 
 private let fetchBlogPostForId:
   MT<
-    Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>,
+    Tuple4<User, BlogPost.ID, NewBlogPostFormData?, Bool?>,
     Tuple4<User, BlogPost, NewBlogPostFormData?, Bool?>
   > = filterMap(
     over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
     or: redirect(to: .admin(.newBlogPostEmail(.index)))
   )
 
-func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
+func fetchBlogPost(forId id: BlogPost.ID) -> BlogPost? {
   return Current.blogPosts()
     .first(where: { id == $0.id })
 }

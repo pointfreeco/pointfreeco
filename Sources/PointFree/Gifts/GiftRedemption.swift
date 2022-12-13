@@ -13,7 +13,7 @@ import Views
 let giftRedemptionLandingMiddleware:
   Middleware<
     StatusLineOpen, ResponseEnded,
-    Tuple5<Gift.Id, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data
+    Tuple5<Gift.ID, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data
   > =
     fetchAndValidateGiftAndDiscount
     <| writeStatus(.ok)
@@ -35,7 +35,7 @@ let giftRedemptionLandingMiddleware:
 
 let giftRedemptionMiddleware:
   Middleware<
-    StatusLineOpen, ResponseEnded, Tuple4<Gift.Id, User?, Models.Subscription?, SubscriberState>,
+    StatusLineOpen, ResponseEnded, Tuple4<Gift.ID, User?, Models.Subscription?, SubscriberState>,
     Data
   > =
     fetchAndValidateGiftAndDiscount
@@ -107,7 +107,7 @@ private func redeemGift(
         }
       }
   } else {
-    let plan: Plan.Id = gift.monthsFree < 12 ? .monthly : .yearly
+    let plan: Plan.ID = gift.monthsFree < 12 ? .monthly : .yearly
     return Current.stripe.createCustomer(
       .guest,
       user.id.rawValue.uuidString,
@@ -154,7 +154,7 @@ private func redeemGift(
 
 private func fetchAndValidateGiftAndDiscount<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Gift, Cents<Int>, A>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<Gift.Id, A>, Data> {
+) -> Middleware<StatusLineOpen, ResponseEnded, T2<Gift.ID, A>, Data> {
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
