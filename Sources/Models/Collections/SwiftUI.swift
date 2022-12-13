@@ -78,6 +78,7 @@ extension Episode.Collection.Section {
     coreLessons: [
       .init(episode: .ep214_modernSwiftUI),
       .init(episode: .ep215_modernSwiftUI),
+      .init(episode: .ep216_modernSwiftUI),
     ],
     isFinished: false,
     related: [],

@@ -368,7 +368,7 @@ public struct Plan: Codable, Equatable {
   public var id: Id
   public var interval: Interval
   public var metadata: [String: String]
-  public var nickname: String
+  public var nickname: String?
 
   public init(
     created: Date,
@@ -376,7 +376,7 @@ public struct Plan: Codable, Equatable {
     id: Id,
     interval: Interval,
     metadata: [String: String],
-    nickname: String
+    nickname: String?
   ) {
     self.created = created
     self.currency = currency
@@ -391,6 +391,10 @@ public struct Plan: Codable, Equatable {
   public enum Interval: String, Codable {
     case month
     case year
+  }
+
+  public var description: String {
+    self.nickname ?? self.id.rawValue
   }
 }
 
