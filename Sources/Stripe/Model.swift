@@ -149,9 +149,14 @@ public enum Currency: String, Codable {
 public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
+
+  @available(*, deprecated)
   public var defaultSource: Card.ID?
+
   public var id: StripeID<Self>
   public var metadata: [String: String]
+
+  @available(*, deprecated)
   public var sources: ListEnvelope<Either<Card, Source>>?
 
   public init(
@@ -238,7 +243,7 @@ public struct Invoice: Codable, Equatable {
   public var created: Date
   public var customer: Customer.ID
   public var discount: Discount?
-  public var id: StripeID<Self>?
+  public var id: ID?
   public var invoicePdf: String?
   public var lines: ListEnvelope<LineItem>
   public var number: Number?
@@ -367,6 +372,69 @@ public struct PaymentMethod: Codable, Equatable, Identifiable {
     self.card = card
     self.customer = customer
     self.id = id
+  }
+
+  public struct Card: Codable, Equatable {
+    public var brand: Brand
+    public var country: Country
+    public var expMonth: Int
+    public var expYear: Int
+    public var funding: Funding
+    public var last4: String
+
+    public init(
+      brand: Brand,
+      country: Country,
+      expMonth: Int,
+      expYear: Int,
+      funding: Funding,
+      last4: String
+    ) {
+      self.brand = brand
+      self.country = country
+      self.expMonth = expMonth
+      self.expYear = expYear
+      self.funding = funding
+      self.last4 = last4
+    }
+
+    public enum Brand: String, Codable, Equatable {
+      case amex
+      case diners
+      case discover
+      case jcb
+      case mastercard
+      case unionpay
+      case visa
+
+      public var description: String {
+        switch self {
+        case .amex:
+          return "American Express"
+        case .diners:
+          return "Diner's Club"
+        case .discover:
+          return "Discover"
+        case .jcb:
+          return "JCB"
+        case .mastercard:
+          return "MasterCard"
+        case .unionpay:
+          return "UnionPay"
+        case .visa:
+          return "Visa"
+        }
+      }
+    }
+
+    public typealias Country = Tagged<(country: (), Self), String>
+
+    public enum Funding: String, Codable, Equatable {
+      case credit
+      case debit
+      case prepaid
+      case unknown
+    }
   }
 }
 
@@ -503,6 +571,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
   }
 }
 
+@available(*, deprecated)
 public struct Token: Codable, Identifiable {
   public var id: StripeID<Self>
 

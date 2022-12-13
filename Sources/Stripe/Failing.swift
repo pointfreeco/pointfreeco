@@ -3,6 +3,7 @@ import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
+    attachPaymentMethod: { _, _ in .failing("Stripe.Client.attachPaymentMethod") },
     cancelSubscription: { _, _ in .failing("Stripe.Client.cancelSubscription") },
     createCoupon: { _, _, _, _ in .failing("Stripe.Client.createCoupon") },
     createCustomer: { _, _, _, _, _ in .failing("Stripe.Client.createCustomer") },
@@ -11,6 +12,7 @@ extension Client {
     deleteCoupon: { _ in .failing("Stripe.Client.deleteCoupon") },
     fetchCoupon: { _ in .failing("Stripe.Client.fetchCoupon") },
     fetchCustomer: { _ in .failing("Stripe.Client.fetchCustomer") },
+    fetchCustomerPaymentMethods: { _ in .failing("Stripe.Client.fetchCustomerPaymentMethods") },
     fetchInvoice: { _ in .failing("Stripe.Client.fetchInvoice") },
     fetchInvoices: { _ in .failing("Stripe.Client.fetchInvoices") },
     fetchPaymentIntent: { _ in .failing("Stripe.Client.fetchPaymentIntent") },

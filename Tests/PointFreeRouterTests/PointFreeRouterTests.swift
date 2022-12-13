@@ -56,40 +56,6 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.match(request: request), route)
   }
 
-//  func testSubscribeRoute_JSONData() throws {
-//    let request = URLRequestData(
-//      method: "POST",
-//      scheme: "http",
-//      host: "localhost",
-//      port: 8080,
-//      path: "subscribe",
-//      body: Data(
-//        """
-//        {"coupon":"student-discount","isOwnerTakingSeat":true,"paymenthMethodID": "pm_deadbeef","pricing":{"billing":"monthly","quantity":1},"teammates":[],"token":"src_deadbeef","useRegionalDiscount":false}
-//        """.utf8
-//      )
-//    )
-//
-//    let route = SiteRoute.subscribe(
-//      .init(
-//        coupon: "student-discount",
-//        isOwnerTakingSeat: true,
-//        paymentType: .token("src_deadbeef"),
-//        pricing: .individualMonthly,
-//        referralCode: nil,
-//        teammates: [],
-//        useRegionalDiscount: false
-//      )
-//    )
-//
-//    XCTAssertNoDifference(try siteRouter.parse(request), route)
-//
-//    try JSONDecoder().decode(SubscribeData.self, from: Data("""
-//      {"isOwnerTakingSeat":false,"paymenthMethodID":"pm_1MDc7sD0Nyli3dRg4bIYC6t2","pricing":{"billing":"yearly","quantity":1},"teammates":[]}
-//
-//      """.utf8))
-//  }
-
   func testEpisodeShowRoute() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 
@@ -183,7 +149,7 @@ class PointFreeRouterTests: TestCase {
       url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
 
     let route = SiteRoute.gifts(
-      .redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!)))
+      .redeem(.init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
@@ -195,7 +161,7 @@ class PointFreeRouterTests: TestCase {
     request.httpMethod = "POST"
 
     let route = SiteRoute.gifts(
-      .redeem(.init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm))
+      .redeem(.init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)

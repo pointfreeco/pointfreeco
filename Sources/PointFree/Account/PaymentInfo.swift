@@ -35,12 +35,17 @@ private let genericPaymentInfoError = """
   """
 
 let updatePaymentInfoMiddleware =
-  requireUserAndToken
+  requireUserAndPaymentMethod
   <<< requireStripeSubscription
   <| { conn in
-    let (subscription, _, token) = lower(conn.data)
+    let (subscription, _, paymentMethodID) = lower(conn.data)
 
-    return Current.stripe.updateCustomer(subscription.customer.either(id, \.id), token)
+    let customer = subscription.customer.either(id, \.id)
+
+    return Current.stripe.attachPaymentMethod(paymentMethodID, customer)
+      .flatMap {
+        Current.stripe.updateCustomer(subscription.customer.either(id, \.id), $0.id)
+      }
       .run
       .flatMap {
         conn
@@ -53,8 +58,8 @@ let updatePaymentInfoMiddleware =
       }
   }
 
-private let requireUserAndToken:
-  MT<Tuple2<User?, Stripe.Token.ID?>, Tuple2<User, Stripe.Token.ID>> =
+private let requireUserAndPaymentMethod:
+  MT<Tuple2<User?, PaymentMethod.ID?>, Tuple2<User, PaymentMethod.ID>> =
     filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,

@@ -12,6 +12,8 @@ public struct SubscribeData: Equatable {
 
   public enum PaymentType: Equatable {
     case paymentMethodID(PaymentMethod.ID)
+    
+    @available(*, deprecated)
     case token(Stripe.Token.ID)
   }
   

@@ -29,7 +29,7 @@ final class SessionTests: TestCase {
 
     session = Session(
       flash: nil,
-      user: .standard(User.ID(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
+      user: .standard(User.ID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
     )
     _assertInlineSnapshot(
       matching: session, as: .json(encoder),
@@ -42,8 +42,8 @@ final class SessionTests: TestCase {
     session = Session(
       flash: nil,
       user: .ghosting(
-        ghosteeId: User.ID(rawValue: UUID(uuidString: "00000000-dead-beef-dead-beefdeadbeef")!),
-        ghosterId: User.ID(rawValue: UUID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!)
+        ghosteeId: User.ID(uuidString: "00000000-dead-beef-dead-beefdeadbeef")!,
+        ghosterId: User.ID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!
       )
     )
     _assertInlineSnapshot(
@@ -68,7 +68,7 @@ final class SessionTests: TestCase {
       Session(
         flash: nil,
         user: .standard(
-          User.ID(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
+          User.ID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
       ),
       try JSONDecoder().decode(
         Session.self,
@@ -80,7 +80,7 @@ final class SessionTests: TestCase {
       Session(
         flash: nil,
         user: .standard(
-          User.ID(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
+          User.ID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
       ),
       try JSONDecoder().decode(
         Session.self,
@@ -92,8 +92,8 @@ final class SessionTests: TestCase {
       Session(
         flash: nil,
         user: .ghosting(
-          ghosteeId: User.ID(rawValue: UUID(uuidString: "00000000-dead-beef-dead-beefdeadbeef")!),
-          ghosterId: User.ID(rawValue: UUID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!)
+          ghosteeId: User.ID(uuidString: "00000000-dead-beef-dead-beefdeadbeef")!,
+          ghosterId: User.ID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!
         )
       ),
       try JSONDecoder().decode(

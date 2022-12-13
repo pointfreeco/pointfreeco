@@ -20,7 +20,7 @@ public enum Account: Equatable {
 
   public enum PaymentInfo: Equatable {
     case show
-    case update(Stripe.Token.ID? = nil)
+    case update(Stripe.PaymentMethod.ID? = nil)
   }
 
   public enum Subscription: Equatable {
@@ -68,7 +68,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", .string.representing(Token.ID.self))
+              Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
             }
           }
         }

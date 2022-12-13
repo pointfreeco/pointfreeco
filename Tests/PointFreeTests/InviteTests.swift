@@ -456,11 +456,11 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_NonSubscriber() {
     var currentUser = Models.User.mock
-    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+    currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
     var invite = Models.TeamInvite.mock
     invite.inviterUserId = .init(
-      rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
@@ -486,11 +486,11 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_Subscriber() {
     var currentUser = User.mock
-    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+    currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
     var invite = TeamInvite.mock
     invite.inviterUserId = .init(
-      rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))

@@ -55,11 +55,19 @@ private func fetchAccountData<I>(
     .map(\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
-  let upcomingInvoice =
+  let upcomingInvoiceAndPaymentMethod =
     stripeSubscription
     .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }
     .map(\.customer >>> either(id, \.id))
-    .flatMap(Current.stripe.fetchUpcomingInvoice)
+    .flatMap { customerId in
+      lift(
+        zip2(
+          Current.stripe.fetchUpcomingInvoice(customerId).run.map(\.right).parallel,
+          Current.stripe.fetchCustomerPaymentMethods(customerId).run.map(\.right?.data.first).parallel
+        )
+        .sequential
+      )
+    }
 
   let everything = zip8(
     Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
@@ -80,7 +88,8 @@ private func fetchAccountData<I>(
     Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    upcomingInvoice.run.map(\.right).parallel
+    upcomingInvoiceAndPaymentMethod.run.parallel
+      .map { $0.right ?? (nil, nil) }
   )
 
   return
@@ -92,13 +101,14 @@ private func fetchAccountData<I>(
             currentUser: user,
             emailSettings: $0,
             episodeCredits: $1,
+            paymentMethod: $7.1,
             stripeSubscription: $2,
             subscriberState: subscriberState,
             subscription: $3,
             subscriptionOwner: $4,
             teamInvites: $5,
             teammates: $6,
-            upcomingInvoice: $7
+            upcomingInvoice: $7.0
           )
         )
       )

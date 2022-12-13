@@ -36,8 +36,8 @@ func accountMiddleware(
     return conn.map(const(user .*. subscriberState .*. unit))
       |> paymentInfoResponse
 
-  case let .paymentInfo(.update(token)):
-    return conn.map(const(user .*. token .*. unit))
+  case let .paymentInfo(.update(paymentMethodID)):
+    return conn.map(const(user .*. paymentMethodID .*. unit))
       |> updatePaymentInfoMiddleware
 
   case let .rss(salt):

@@ -297,7 +297,7 @@ class GiftTests: TestCase {
       from: request(
         to: .gifts(
           .redeem(
-            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!),
+            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!,
             .confirm
           )
         ),
@@ -360,7 +360,7 @@ class GiftTests: TestCase {
       from: request(
         to: .gifts(
           .redeem(
-            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
           )
         ),
         session: .loggedIn(as: user),
@@ -398,7 +398,7 @@ class GiftTests: TestCase {
       from: request(
         to: .gifts(
           .redeem(
-            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
           )
         ),
         session: .loggedOut,
@@ -441,7 +441,7 @@ class GiftTests: TestCase {
       from: request(
         to: .gifts(
           .redeem(
-            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
           )
         ),
         session: .loggedIn(as: user),
@@ -488,7 +488,7 @@ class GiftTests: TestCase {
       from: request(
         to: .gifts(
           .redeem(
-            .init(rawValue: UUID(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!), .confirm
+            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
           )
         ),
         session: .loggedIn(as: user),

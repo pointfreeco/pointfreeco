@@ -440,13 +440,14 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       subscriptionPlanRows(
         subscription: subscription,
         upcomingInvoice: accountData.upcomingInvoice,
+        paymentMethod: accountData.paymentMethod,
         currentDate: currentDate
       ),
       subscriptionTeamRow(accountData),
       subscriptionInvitesRowView(accountData.teamInvites),
       subscriptionInviteMoreRowView(accountData),
       addTeammateToSubscriptionRow(accountData),
-      subscriptionPaymentInfoView(subscription),
+      subscriptionPaymentInfoView(subscription, paymentMethod: accountData.paymentMethod),
     ]
 
   return .gridRow(
@@ -662,6 +663,7 @@ public func nextBilling(
 private func subscriptionPlanRows(
   subscription: Stripe.Subscription,
   upcomingInvoice: Stripe.Invoice?,
+  paymentMethod: Stripe.PaymentMethod?,
   currentDate: Date
 ) -> Node {
 
@@ -686,7 +688,7 @@ private func subscriptionPlanRows(
             attributes: [
               .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
             ],
-            .p(mainAction(for: subscription))
+            .p(mainAction(for: subscription, paymentMethod: paymentMethod))
           )
         )
       )
@@ -824,7 +826,7 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
   )
 }
 
-private func mainAction(for subscription: Stripe.Subscription) -> Node {
+private func mainAction(for subscription: Stripe.Subscription, paymentMethod: PaymentMethod?) -> Node {
   if subscription.isCanceling {
     return .form(
       attributes: [
@@ -852,7 +854,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
         .map { $0 * subscription.quantity }
       let formattedAmount = currencyFormatter.string(
         from: NSNumber(value: Double(amount.rawValue) / 100))
-      if subscription.customer.right?.sources?.data.isEmpty == false {
+      if paymentMethod != nil {
         return .form(
           attributes: [
             .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
@@ -1047,7 +1049,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
 
-  guard subscription.customer.right?.sources?.data.first?.left != nil
+  guard data.paymentMethod != nil
   else {
     return .gridRow(
       attributes: [.class([subscriptionInfoRowClass])],
@@ -1205,12 +1207,16 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
   return .text("You have \(seats) on your team. Invite a team member below:")
 }
 
-private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> Node {
-  let card = subscription.customer.right?.sources?.data.first?.left
+private func subscriptionPaymentInfoView(
+  _ subscription: Stripe.Subscription,
+  paymentMethod: PaymentMethod?
+) -> Node {
+//  let card = subscription.customer.right?.sources?.data.first?.left
+  let card = paymentMethod?.card
   let paymentInfo: Node
   if let card = card {
     paymentInfo = [
-      .p(.text(card.brand.rawValue + " ending in " + String(card.last4))),
+      .p(.text(card.brand.description + " ending in " + String(card.last4))),
       .p(.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))),
     ]
   } else {
@@ -1317,6 +1323,7 @@ public struct AccountData {
   public let currentUser: User
   public let emailSettings: [EmailSetting]
   public let episodeCredits: [EpisodeCredit]
+  public let paymentMethod: Stripe.PaymentMethod?
   public let stripeSubscription: Stripe.Subscription?
   public let subscriberState: SubscriberState
   public let subscription: Models.Subscription?
@@ -1329,6 +1336,7 @@ public struct AccountData {
     currentUser: User,
     emailSettings: [EmailSetting],
     episodeCredits: [EpisodeCredit],
+    paymentMethod: Stripe.PaymentMethod?,
     stripeSubscription: Stripe.Subscription?,
     subscriberState: SubscriberState,
     subscription: Models.Subscription?,
@@ -1340,6 +1348,7 @@ public struct AccountData {
     self.currentUser = currentUser
     self.emailSettings = emailSettings
     self.episodeCredits = episodeCredits
+    self.paymentMethod = paymentMethod
     self.stripeSubscription = stripeSubscription
     self.subscriberState = subscriberState
     self.subscription = subscription

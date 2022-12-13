@@ -1168,13 +1168,16 @@ private func checkoutJS(
       form.addEventListener("submit", function(event) {
         event.preventDefault()
         setFormEnabled(false, function() { return true })
-        stripe.createToken(card).then(function(result) {
+        stripe.createPaymentMethod({
+          type: 'card',
+          card: card,
+        })
+        .then(function(result) {
           if (result.error) {
             displayError.textContent = result.error.message
             setFormEnabled(true, function(el) { return true })
           } else {
-            setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-            form.token.value = result.token.id
+            form.paymentMethodID.value = result.paymentMethod.id
             form.submit()
           }
         }).catch(function() {
