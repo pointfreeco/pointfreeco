@@ -224,7 +224,7 @@ public let post0088_YIR2022 = BlogPost(
 
         Xcode has a wonderful feature that can notify you of subtle problems in your code by showing
         a prominent, yet unobtrusive, purple warning on the problematic line of code. This happens
-        if Xcode detects a threading problem in your code, and if you mutate UI code on a non-main
+        if Xcode detects a threading problem in your code, if you mutate UI code on a non-main
         thread, and more.
 
         These warnings are incredibly useful, but sadly Apple does not make it possible to create
