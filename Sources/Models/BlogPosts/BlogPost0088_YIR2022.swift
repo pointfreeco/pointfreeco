@@ -87,8 +87,6 @@ public let post0088_YIR2022 = BlogPost(
             …causes the following error to be thrown:
 
             ```
-            caught error: "error: multiple failures occurred
-
             error: unexpected input
              --> input:3:11
             3 | 3,Blob Jr,tru
@@ -158,9 +156,10 @@ public let post0088_YIR2022 = BlogPost(
             ones, and makes it possible to tie the lifecycle of effects to the lifecycle of views.
 
             While covering these topics we also had a fun [digression into Swift 5.7's new
-            existential type features][existential-digression] (subscription required). It shows how
-            one can think of existential types as a kind of "infinite" enum, which helps build
-            intuition of why protocols seem so different from regular, concrete types.
+            existential type features][existential-digression] (starts at 18:12, subscription
+            required). It shows how one can think of existential types as a kind of "infinite" enum,
+            which helps build intuition of why protocols seem so different from regular, concrete
+            types.
 
           * Second, [we revamped the fundamental unit][reducer-protocol-collection] that defines a
             feature in the Composable Architecture: the reducer. It changed from being a struct that
@@ -168,7 +167,13 @@ public let post0088_YIR2022 = BlogPost(
             encapsulating the logic for a feature, which unlocks new ways of structuring and
             composing features, and even a whole new way of managing dependencies.
 
-            In addition to those improvements, we also made a massive improvement to the testing
+            While covering these topics we also had a fun [digression into improving type inference
+            in result builders][type-inference-builders] (starts at 21:34, subscription required).
+            We showed that a combination of generic result builders and `buildExpression` can allow
+            types to more fully propogate to all parts of the builder, greatly enhancing its
+            ergnomics.
+
+          * In addition to those improvements, we also made a massive improvement to the testing
             facilities of the library, thanks to a collaboration with [Krzysztof
             Zabłocki][merowing.info]. We introduced the concept of ["non-exhaustive
             `TestStore`"][nets-blog] to the library, which allows you to write high level
@@ -295,6 +300,7 @@ public let post0088_YIR2022 = BlogPost(
         [merowing.info]: http://merowing.info
         [scrumdinger-tutorial]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [test-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/teststore
+        [type-inference-builders]: /episodes/ep204-reducer-protocol-composition-part-2#t1294
         """#,
       type: .paragraph
     )
