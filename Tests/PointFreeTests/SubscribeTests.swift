@@ -441,8 +441,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(user.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
@@ -453,6 +452,22 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
       return pure(customer)
+    }
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -496,8 +511,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(user.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "US" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
@@ -508,6 +522,22 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
       return pure(customer)
+    }
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "US",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -558,8 +588,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(referred.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -571,6 +600,22 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: true
     )
 
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
     Current.stripe.fetchSubscription = { _ in
       pure(
         update(.mock) {
@@ -652,8 +697,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(referred.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -665,6 +709,22 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: true
     )
 
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
     Current.stripe.fetchSubscription = { _ in
       pure(
         update(.mock) {

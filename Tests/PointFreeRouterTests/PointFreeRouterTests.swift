@@ -50,7 +50,7 @@ class PointFreeRouterTests: TestCase {
       with: """
         POST http://localhost:8080/subscribe
 
-        coupon=student-discount&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&token=deadbeef&useRegionalDiscount=true
+        coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
         """)
 
     XCTAssertEqual(try siteRouter.match(request: request), route)

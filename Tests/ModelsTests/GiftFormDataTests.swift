@@ -24,7 +24,7 @@ final class GiftFormDataTests: TestCase {
       "fromName" : "Blob",
       "message" : "Happy Birthday!",
       "monthsFree" : "12",
-      "stripePaymentIntentId" : "pi_deadbeef",
+      "paymentMethodID" : "pm_deadbeef",
       "toEmail" : "blob.jr",
       "toName" : "Blob Jr."
     }

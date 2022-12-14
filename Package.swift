@@ -43,7 +43,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", .revision("7ff9911")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.10.0"),
-    .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.6.0"),
+    .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-web", .revision("f4bb612")),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
