@@ -66,10 +66,8 @@ final class StripeTests: TestCase {
       let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
       XCTAssertEqual(nil, customer.businessVatId)
-      XCTAssertEqual(nil, customer.defaultSource)
       XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
       XCTAssertEqual([:], customer.metadata)
-      XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -128,11 +126,9 @@ final class StripeTests: TestCase {
     let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual(nil, customer.businessVatId)
-    XCTAssertEqual(nil, customer.defaultSource)
     XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
     XCTAssertEqual(["extraInvoiceInfo": "VAT: 123456789"], customer.metadata)
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
-    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
 
   func testDecodingPlan_WithNickname() throws {

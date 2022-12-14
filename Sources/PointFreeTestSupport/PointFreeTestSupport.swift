@@ -56,22 +56,13 @@ extension Environment {
 
   public static let failing = Self(
     assets: .mock,
-    blogPosts: {
-      XCTFail("Current.blogPosts not implemented")
-      return []
-    },
+    blogPosts: unimplemented("Current.blogPosts", placeholder: []),
     cookieTransform: .plaintext,
     collections: [.mock],
     database: .failing,
-    date: {
-      XCTFail("Current.date not implemented")
-      return Date()
-    },
+    date: unimplemented("Current.date", placeholder: Date()),
     envVars: .mock,
-    episodes: {
-      XCTFail("Current.episodes not implemented")
-      return []
-    },
+    episodes: unimplemented("Current.episodes", placeholder: []),
     features: Feature.allFeatures,
     gitHub: .failing,
     logger: .mock,
@@ -79,10 +70,7 @@ extension Environment {
     renderHtml: { Html.render($0) },
     renderXml: Html._xmlRender,
     stripe: .failing,
-    uuid: {
-      XCTFail("Current.uuid not implemented")
-      return UUID()
-    }
+    uuid: unimplemented("Current.uuid", placeholder: UUID())
   )
 
   public static let teamYearly = update(mock) {

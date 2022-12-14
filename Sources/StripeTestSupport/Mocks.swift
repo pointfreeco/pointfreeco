@@ -80,15 +80,26 @@ extension Charge {
   )
 }
 
+extension Charge.PaymentMethodDetails {
+  public static let mock = Self(
+    card: .init(
+      brand: .visa,
+      country: "US",
+      expMonth: 1,
+      expYear: 2020,
+      funding: .credit,
+      last4: "4242"
+    )
+  )
+}
+
 extension Customer {
   public static let mock = Customer(
     balance: 0,
     businessVatId: nil,
-    defaultSource: "card_test",
     id: "cus_test",
     invoiceSettings: .init(defaultPaymentMethod: "pm_card_test"),
-    metadata: [:],
-    sources: .mock([.left(.mock)])
+    metadata: [:]
   )
 }
 
