@@ -8,7 +8,7 @@ import XCTest
 
 final class InvoiceTests: TestCase {
   func testDecoding() throws {
-    try Stripe.jsonDecoder.decode(ListEnvelope<Invoice>.self, from: Data(invoicesJSON.utf8))
+    _ = try Stripe.jsonDecoder.decode(ListEnvelope<Invoice>.self, from: Data(invoicesJSON.utf8))
   }
 }
 

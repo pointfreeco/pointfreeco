@@ -206,8 +206,7 @@ private func formView(
               .class([blockInputClass]),
               .name(GiftFormData.CodingKeys.toName.stringValue),
               .type(.text),
-              .required(true),
-              .value("")
+              .required(true)
             ]
           )
         )
@@ -222,8 +221,7 @@ private func formView(
               .class([blockInputClass]),
               .name(GiftFormData.CodingKeys.toEmail.stringValue),
               .type(.email),
-              .required(true),
-              .value("") 
+              .required(true)
             ]
           )
         )

@@ -1143,7 +1143,7 @@ private func checkoutJS(
       window.paymentRequest.on('paymentmethod', async (ev) => {
         setFormEnabled(false, function() { return true })
         ev.complete('success')
-        form.paymentMethodID.value = ev.paymentMethod.id
+        form.\(SubscribeData.CodingKeys.paymentMethodID.rawValue).value = ev.paymentMethod.id
         setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
         form.submit()
       });
@@ -1177,7 +1177,7 @@ private func checkoutJS(
           if (result.error) {
             displayError.textContent = result.error.message
           } else {
-            form.paymentMethodID.value = result.paymentMethod.id
+            form.\(SubscribeData.CodingKeys.paymentMethodID.rawValue).value = result.paymentMethod.id
             setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
             form.submit()
             return // NB: Early out so to not re-enable form.
