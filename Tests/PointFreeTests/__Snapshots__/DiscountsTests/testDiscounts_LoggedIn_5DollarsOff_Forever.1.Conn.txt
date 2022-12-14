@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60048
+Content-Length: 62793
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2342,23 +2342,109 @@ available</p>
                       lh-4"
                id="card-errors">
           </div>
-          <input name="token"
+          <input name="paymentMethodID"
                  type="hidden">
           <script src>
           </script>
           <script>
-            window.addEventListener("load", function() {
+            var updateSeats;
+
+function format(money) {
+  return "$" + money.toFixed(2).replace(/\.00$/, "")
+}
+
+function currentSubscriptionData() {
+  const teamMembers = document.getElementById("team-members")
+  const teamMemberInputs = teamMembers == null
+    ? []
+    : Array.from(teamMembers.getElementsByTagName("INPUT"))
+  const teamOwnerIsTakingSeat = document
+    .getElementsByName("isOwnerTakingSeat")[0].value == "true"
+  const seatCount = teamMembers
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
+    : 1
+  const form = document.getElementById("subscribe-form")
+  const regionalDiscount = 1.0
+  const isMonthly = form["pricing[billing]"].value == "monthly"
+  const monthlyPricePerSeat = (
+    isMonthly
+      ? 1300 * 0.01 * regionalDiscount
+      : 900 * 0.01 * regionalDiscount
+  )
+  const monthlyPrice = seatCount * monthlyPricePerSeat
+  const total = isMonthly
+    ? monthlyPrice
+    : (monthlyPrice * 12 - 0 * regionalDiscount)
+  const teammateEmails = []
+  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+    teammateEmails.push(teamMemberInputs[idx].name)
+  }
+  return {
+    isMonthly: isMonthly,
+    monthlyPrice: monthlyPrice,
+    monthlyPricePerSeat: monthlyPricePerSeat,
+    seatCount: seatCount,
+    teammateEmails: teammateEmails,
+    teamMemberInputs: teamMemberInputs,
+    teamOwnerIsTakingSeat: teamOwnerIsTakingSeat,
+    total: total
+  }
+}
+
+window.addEventListener("load", function() {
+  var form = document.getElementById("subscribe-form")
+  var displayError = document.getElementById("card-errors")
+  var paymentRequest
+
+  updateSeats = () => {
+    const data = currentSubscriptionData()
+    for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
+      data.teamMemberInputs[idx].name = "teammate"
+    }
+    form["pricing[quantity]"].value = data.seatCount
+    document.getElementById("total").textContent = format(data.total)
+    document.getElementById("pricing-preview").innerHTML = (
+      "You will be charged <strong>"
+        + format(data.monthlyPricePerSeat)
+        + " per month</strong>"
+        + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
+        + (data.isMonthly ? "" : " times <strong>12 months</strong>")
+        + "."
+    )
+
+    if (paymentRequest) {
+      paymentRequest.update({
+        total: {
+          label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
+          amount: data.total * 100
+        }
+      })
+    }
+  }
+
+  updateSeats()
+  form.addEventListener("change", updateSeats);
+
   var apiKey = document.getElementById("card-element").dataset.stripeKey
-  var stripe = Stripe(apiKey)
+  var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
   var elements = stripe.elements()
   var style = {
     base: {
       fontSize: "16px",
     }
   }
+
+  paymentRequest = stripe.paymentRequest({
+    country: 'US',
+    currency: 'usd',
+    total: { label: '', amount: 100, }
+  });
+  const paymentRequestButton = elements.create('paymentRequestButton', {
+    paymentRequest,
+  });
+
   var card = elements.create("card", { style: style })
   card.mount("#card-element")
-  var displayError = document.getElementById("card-errors")
   card.addEventListener("change", function(event) {
     if (event.error) {
       displayError.textContent = event.error.message
@@ -2366,7 +2452,15 @@ available</p>
       displayError.textContent = ""
     }
   });
-  var form = document.getElementById("subscribe-form")
+
+  paymentRequest.on('paymentmethod', async (ev) => {
+    setFormEnabled(false, function() { return true })
+    ev.complete('success')
+    form.paymentMethodID.value = ev.paymentMethod.id
+    setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+    form.submit()
+  });
+
   function setFormEnabled(isEnabled, elementsMatching) {
     for (var idx = 0; idx < form.length; idx++) {
       var formElement = form[idx]
@@ -2378,24 +2472,73 @@ available</p>
       }
     }
   }
-  form.addEventListener("submit", function(event) {
+
+  var submitting = false
+  form.addEventListener("submit", async (event) => {
     event.preventDefault()
+    if (submitting) { return }
+
+    displayError.textContent = ""
+    submitting = true
     setFormEnabled(false, function() { return true })
-    stripe.createToken(card).then(function(result) {
+
+    try {
+      const result = await stripe.createPaymentMethod({
+        type: 'card',
+        card: card,
+      })
       if (result.error) {
         displayError.textContent = result.error.message
-        setFormEnabled(true, function(el) { return true })
       } else {
+        form.paymentMethodID.value = result.paymentMethod.id
         setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-        form.token.value = result.token.id
         form.submit()
+        return // NB: Early out so to not re-enable form.
       }
-    }).catch(function() {
-      setFormEnabled(true, function(el) { return true })
-    })
-  })
+    } catch {
+      displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+    }
+
+    submitting = false
+    setFormEnabled(true, function(el) { return true })
+  });
+
+  (async () => {
+    const result = await paymentRequest.canMakePayment();
+    if (result) {
+      paymentRequestButton.mount('#payment-request-button');
+      document.getElementById("apple-pay-container").style.display = 'block'
+      updateSeats()
+    } else {
+      document.getElementById('payment-request-button').style.display = 'none';
+    }
+  })();
 })
           </script>
+        </div>
+        <div id="apple-pay-container"
+             class="m-ml0
+                    m-pt3
+                    none
+                    col-m
+                    col-m-12"
+             style="line-height:0">
+          <label for="apple-pay"
+                 class="nowrap
+                        fg-black
+                        bg-white
+                        fg-black
+                        bold
+                        ts-d-r1
+                        ts-m-r0_875
+                        lh-1">
+            or Apple Pay
+          </label>
+          <div id="payment-request-button"
+               class="col-m-12
+                      col-d-4
+                      m-mt2">
+          </div>
         </div>
       </div>
       <div class="d-ml4
@@ -2436,50 +2579,6 @@ available</p>
             </h3>
             <input name="pricing[quantity]"
                    type="hidden">
-            <script>
-              function format(money) {
-  return "$" + money.toFixed(2).replace(/\.00$/, "")
-}
-function updateSeats() {
-  var teamMembers = document.getElementById("team-members")
-  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
-  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammate"
-  }
-  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
-  var seats = teamMembers
-    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-    : 1
-  var form = document.getElementById("subscribe-form")
-  form["pricing[quantity]"].value = seats
-  var regionalDiscount = 1.0
-  var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPricePerSeat = (
-    monthly
-      ? 1300 * 0.01 * regionalDiscount
-      : 900 * 0.01 * regionalDiscount
-  )
-  var monthlyPrice = seats * monthlyPricePerSeat
-  document.getElementById("total").textContent = format(
-    monthly
-      ? monthlyPrice
-      : (monthlyPrice * 12 - 0 * regionalDiscount)
-  )
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
-}
-window.addEventListener("load", function() {
-  updateSeats()
-  var form = document.getElementById("subscribe-form")
-  form.addEventListener("change", updateSeats)
-})
-            </script>
             <span class="fg-black
                          normal
                          h6
