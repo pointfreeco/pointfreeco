@@ -15,29 +15,28 @@ public let post0089_2022EOYSale = BlogPost(
 
         - [Concurrency][concurrency-collection]: We devoted a 5-part series of episodes to
         uncovering many of Apple’s concurrency tools from the past, present, and into the future.
-        We dived deep into threads and queues, which have been around on Apple’s platforms for many
-        years, and then Swift's fancy new tools, including async/await, structured concurrency,
-        actors and clocks.
+        We dove deep into threads and queues, which have been around on Apple's platforms for many
+        years, and then explored Swift's fancy new tools, including async/await, structured
+        concurrency, actors, and clocks.
 
         - [SwiftUI Navigation][swiftui-nav-collection]: We expanded our existing SwiftUI navigation
-        collection in order to cover iOS 16's new tools, and discovered all new tools that allow us
-        to embrace simpler and more concise domains for driving navigation.
+        collection to cover iOS 16's new tools, and discovered all new tools that allow us to
+        embrace simpler and more concise domains for driving navigation.
 
         - [Modern SwiftUI][modern-swiftui-collection]: We started a brand new collection (still
-        in progress when this blog post was first published) to demonstrate modern, best practices
-        for building vanilla SwiftUI applications. Many advance topics are covered, such as
-        navigation, domain modeling, effects, dependencies, and testing.
+        in progress at the time of this blog post) to demonstrate modern, best practices for
+        building vanilla SwiftUI applications. Many advance topics are covered, such as navigation,
+        domain modeling, effects, dependencies, and testing.
 
         - [Composable Architecture][tca-collection]: We modernized many aspects of our popular
-        SwiftUI architecture library: the [Composable Architecture][tca-gh]. This includes a
-        deeper integration with Swift's concurrency tools, a new protocol-based approach to
-        implementing features, and a powerful new dependency management system.
+        SwiftUI architecture library: [the Composable Architecture][tca-gh]. This includes a deeper
+        integration with Swift's concurrency tools, a new protocol-based approach to implementing
+        features, and a powerful new dependency management system.
 
-        - [Parsers][parsers-collection]: And last, but not least, we also modernized our
-        powerful [parsing][parsing-gh] library. We reimagined the syntax of constructing complex
-        parsers using result builders, we added error messaging for when parsers fail, and we
-        made it possible to _invert_ parsers so that they can turn well-structured data back into
-        strings.
+        - [Parsers][parsers-collection]: And last, but not least, we modernized our powerful
+        [parsing][parsing-gh] library. We reimagined the syntax of constructing complex parsers
+        using result builders, we added error messaging for when parsers fail, and we made it
+        possible to _invert_ parsers so that they can turn well-structured data back into strings.
 
         That's a very brief recap of our 2022 (see more [here][eoy-2022]), and we have even bigger
         plans for 2023! [Click here][eoy-discount] to redeem the coupon code now. The offer will

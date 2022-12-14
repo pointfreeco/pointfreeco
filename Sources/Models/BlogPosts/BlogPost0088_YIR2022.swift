@@ -3,7 +3,7 @@ import Foundation
 public let post0088_YIR2022 = BlogPost(
   author: .pointfree,
   blurb: """
-    Point-Free year in review: 43 episodes, 150K visitors, dozens of open source releases, and more!
+    Point-Free year in review: 45 episodes, 150K visitors, dozens of open source releases, and more!
     """,
   contentBlocks: [
     .init(
