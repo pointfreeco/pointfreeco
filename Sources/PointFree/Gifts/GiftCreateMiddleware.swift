@@ -18,16 +18,14 @@ struct GiftCreateError: Encodable {
 
 func giftCreateMiddleware(
   _ conn: Conn<StatusLineOpen, GiftFormData>
-) -> IO<Conn<HeadersOpen, Either<GiftCreateError, GiftCreateResponse>>> {
+) -> IO<Conn<ResponseEnded, Data>> {
 
   let giftFormData = conn.data
   guard let plan = Gifts.Plan.init(monthCount: giftFormData.monthsFree)
   else {
-    return conn.map(const(.left(.init(errorMessage: "Unknown gift option."))))
-      |> writeStatus(.badRequest)
+    return conn
+      |> redirect(to: .gifts(), headersMiddleware: flash(.notice, "Unknown gift option."))
   }
-
-//  Current.stripe.create
 
   let deliverAt = giftFormData.deliverAt
     .flatMap {
@@ -68,30 +66,25 @@ func giftCreateMiddleware(
   .flatMap { errorOrPaymentIntent in
     switch errorOrPaymentIntent {
     case .left:
-      return conn.map(const(.left(.init(errorMessage: "Unknown error with our payment processor"))))
-        |> writeStatus(.badRequest)
+      return conn
+        |> redirect(
+          to: .gifts(),
+          headersMiddleware: flash(.notice, "Unknown error with our payment processor")
+        )
 
-    case let .right(paymentIntent):
-      return conn.map(const(.right(.init(clientSecret: paymentIntent.clientSecret))))
-        |> writeStatus(.ok)
+    case .right:
+      let message: String
+      if let deliverAt = giftFormData.deliverAt {
+        message = """
+          Your gift will be delivered to \(giftFormData.toEmail.rawValue) on \
+          \(monthDayYearFormatter.string(from: deliverAt)).
+          """
+      } else {
+        message = """
+          Your gift has been delivered to \(giftFormData.toEmail.rawValue).
+          """
+      }
+      return conn |> redirect(to: .gifts(), headersMiddleware: flash(.notice, message))
     }
   }
-}
-
-func giftConfirmationMiddleware(
-  conn: Conn<StatusLineOpen, GiftFormData>
-) -> IO<Conn<ResponseEnded, Data>> {
-  let formData = conn.data
-  let message: String
-  if let deliverAt = formData.deliverAt {
-    message = """
-      Your gift will be delivered to \(formData.toEmail.rawValue) on \
-      \(monthDayYearFormatter.string(from: deliverAt)).
-      """
-  } else {
-    message = """
-      Your gift has been delivered to \(formData.toEmail.rawValue).
-      """
-  }
-  return conn |> redirect(to: .gifts(), headersMiddleware: flash(.notice, message))
 }

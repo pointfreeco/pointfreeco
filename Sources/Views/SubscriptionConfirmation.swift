@@ -1165,24 +1165,34 @@ private func checkoutJS(
         }
       }
 
-      form.addEventListener("submit", function(event) {
+      var submitting = false
+      form.addEventListener("submit", async (event) => {
         event.preventDefault()
+        if (submitting) { return }
+    
+        displayError.textContent = ""
+        submitting = true
         setFormEnabled(false, function() { return true })
-        stripe.createPaymentMethod({
-          type: 'card',
-          card: card,
-        })
-        .then(function(result) {
+
+        try {
+          const result = await stripe.createPaymentMethod({
+            type: 'card',
+            card: card,
+          })
           if (result.error) {
             displayError.textContent = result.error.message
-            setFormEnabled(true, function(el) { return true })
           } else {
             form.paymentMethodID.value = result.paymentMethod.id
+            setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
             form.submit()
+            return // NB: Early out so to not re-enable form.
           }
-        }).catch(function() {
-          setFormEnabled(true, function(el) { return true })
-        })
+        } catch {
+          displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+        }
+
+        submitting = false
+        setFormEnabled(true, function(el) { return true })
       })
 
       updateSeats = () => {

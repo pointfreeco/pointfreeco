@@ -8,23 +8,11 @@ public struct GiftFormData: Equatable {
   public var fromName = ""
   public var message = ""
   public var monthsFree = 0
-  public var paymentType: PaymentType?
+  public var paymentMethodID: PaymentMethod.ID?
   public var toEmail: EmailAddress = ""
   public var toName = ""
 
-  public enum PaymentType: Equatable {
-    case paymentIntentID(PaymentIntent.ID)
-    case paymentMethodID(PaymentMethod.ID)
-  }
-
   public static let empty = Self()
-
-  @available(*, deprecated) // TODO: remove
-  public var paymentMethodID: PaymentMethod.ID? {
-    guard case let .some(.paymentMethodID(id)) = paymentType
-    else { return nil }
-    return id
-  }
 }
 
 private let dateFormatter: DateFormatter = {
@@ -52,19 +40,10 @@ extension GiftFormData: Codable {
         )
       )
     }
-    do {
-      self.paymentType = try .paymentIntentID(
-        container.decode(PaymentIntent.ID.self, forKey: .stripePaymentIntentId)
-      )
-    } catch {
-      do {
-        self.paymentType = try .paymentMethodID(
-          container.decode(PaymentMethod.ID.self, forKey: .paymentMethodID)
-        )
-      } catch {
-        self.paymentType = nil
-      }
-    }
+    self.paymentMethodID = try container.decodeIfPresent(
+      PaymentMethod.ID.self,
+      forKey: .paymentMethodID
+    )
     self.toEmail = try container.decode(EmailAddress.self, forKey: .toEmail)
     self.toName = try container.decode(String.self, forKey: .toName)
   }
@@ -77,14 +56,7 @@ extension GiftFormData: Codable {
     try container.encode(self.fromName, forKey: .fromName)
     try container.encode(self.message, forKey: .message)
     try container.encode(String(self.monthsFree), forKey: .monthsFree)
-    switch self.paymentType {
-    case let .paymentIntentID(paymentIntentID):
-      try container.encodeIfPresent(paymentIntentID, forKey: .stripePaymentIntentId)
-    case let .paymentMethodID(paymentMethodID):
-      try container.encodeIfPresent(paymentMethodID, forKey: .paymentMethodID)
-    case .none:
-      break
-    }
+    try container.encodeIfPresent(self.paymentMethodID, forKey: .paymentMethodID)
     try container.encode(self.toEmail, forKey: .toEmail)
     try container.encode(self.toName, forKey: .toName)
   }
@@ -96,7 +68,6 @@ extension GiftFormData: Codable {
     case message
     case monthsFree
     case paymentMethodID
-    case stripePaymentIntentId
     case toEmail
     case toName
   }
