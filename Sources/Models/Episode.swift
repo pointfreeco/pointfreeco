@@ -2,13 +2,13 @@ import Foundation
 import Tagged
 import TaggedTime
 
-public struct Episode: Equatable {
+public struct Episode: Equatable, Identifiable {
   public var alternateSlug: String?
   public var blurb: String
   public var codeSampleDirectory: String?
   public var exercises: [Exercise]
   private var _fullVideo: Video?
-  public var id: Id
+  public var id: Tagged<Self, Int>
   public var image: String
   public var length: Seconds<Int>
   public var permission: Permission
@@ -26,7 +26,7 @@ public struct Episode: Equatable {
     codeSampleDirectory: String? = nil,
     exercises: [Exercise] = [],
     fullVideo: Video? = nil,
-    id: Id,
+    id: ID,
     image: String? = nil,
     length: Seconds<Int>,
     permission: Permission,
@@ -118,8 +118,7 @@ public struct Episode: Equatable {
     }
   }
 
-  public typealias Id = Tagged<Episode, Int>
-  public typealias Sequence = Tagged<(sequence: (), Episode), Int>
+  public typealias Sequence = Tagged<(sequence: (), Self), Int>
 
   public struct Collection: Equatable {
     public var blurb: String

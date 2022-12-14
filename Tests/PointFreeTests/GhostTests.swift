@@ -22,7 +22,7 @@ final class GhostTests: TestCase {
     adminSession.user = .standard(adminUser.id)
 
     var ghostee = User.mock
-    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
@@ -67,7 +67,7 @@ final class GhostTests: TestCase {
     adminSession.user = .standard(adminUser.id)
 
     var ghostee = User.mock
-    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
@@ -110,7 +110,7 @@ final class GhostTests: TestCase {
     session.user = .standard(user.id)
 
     var ghostee = User.mock
-    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
     Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
       pure(
@@ -151,7 +151,7 @@ final class GhostTests: TestCase {
 
   func testEndGhosting_HappyPath() {
     var ghostee = User.mock
-    ghostee.id = User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
+    ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
     let adminUser = User.admin
     var adminSession = Session.loggedIn

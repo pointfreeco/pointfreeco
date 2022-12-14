@@ -85,7 +85,7 @@ private let redirectCurrentSubscribersAndRequireEnterpriseAccount:
 private let validateInvitationAndLink:
   MT<
     Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>,
-    Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
+    Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
   > =
     filterMap(
       validateInvitation >>> pure,
@@ -119,8 +119,8 @@ private func requireEnterpriseAccount<A, Z>(
 }
 
 private func createEnterpriseEmail(
-  _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
-) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>?> {
+  _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
+) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>?> {
 
   return Current.database.createEnterpriseEmail(get3(data), get4(data))
     .map(const(data))
@@ -188,7 +188,7 @@ private func validateMembership<Z>(
 
 private func validateInvitation(
   _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
-) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>? {
+) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>? {
 
   let (user, account, encryptedEmail, encryptedUserId) = lower(data)
 
@@ -206,7 +206,7 @@ private func validateInvitation(
   guard
     let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
       .flatMap(UUID.init(uuidString:))
-      .map(User.Id.init(rawValue:))
+      .map(User.ID.init(rawValue:))
   else { return nil }
 
   // Validates that the userId encrypted into the invite link is the same as the email accepting the

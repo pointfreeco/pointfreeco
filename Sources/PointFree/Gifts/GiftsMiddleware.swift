@@ -13,14 +13,9 @@ public func giftsMiddleware(
   let (user, subscription, subscriberState, route, gift) = lower(conn.data)
 
   switch gift {
-  case let .confirmation(formData):
-    return conn.map(const(formData))
-      |> giftConfirmationMiddleware
-
   case let .create(formData):
-    return conn.map(const(formData))
+    return conn.map(const(formData)) 
       |> giftCreateMiddleware
-      >=> respondJson
 
   case .index:
     return conn.map(const(user .*. route .*. subscriberState .*. unit))

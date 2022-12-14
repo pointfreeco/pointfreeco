@@ -6,9 +6,13 @@ import Stripe
 public enum StripeHtml {
   public static let formId = "card-form"
 
-  public static func cardInput(couponId: Stripe.Coupon.Id?, publishableKey: String) -> Node {
+  public static func cardInput(
+    couponId: Stripe.Coupon.ID?,
+    publishableKey: String
+  ) -> Node {
     return [
       .input(attributes: [.name("token"), .type(.hidden)]),
+      .input(attributes: [.name("paymentMethodID"), .type(.hidden)]),
       .div(
         attributes: [.class(couponId != nil ? [] : [Class.display.none])],
         .input(
@@ -59,7 +63,7 @@ public enum StripeHtml {
           }
 
           var apiKey = document.getElementById('card-element').dataset.stripeKey;
-          var stripe = Stripe(apiKey);
+          var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
           var elements = stripe.elements();
 
           var style = {
@@ -89,7 +93,11 @@ public enum StripeHtml {
               return true;
             });
 
-            stripe.createToken(card).then(function(result) {
+            stripe.createPaymentMethod({
+              type: 'card',
+              card: card,
+            })
+            .then(function(result) {
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
@@ -102,7 +110,7 @@ public enum StripeHtml {
                   return el.tagName != 'BUTTON';
                 });
 
-                form.token.value = result.token.id;
+                form.paymentMethodID.value = result.paymentMethod.id;
                 form.submit();
               }
             }).catch(function() {

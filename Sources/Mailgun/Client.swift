@@ -14,8 +14,8 @@ import UrlFormEncoding
 #endif
 
 public struct Client {
-  public typealias ApiKey = Tagged<(Client, apiKey: ()), String>
-  public typealias Domain = Tagged<(Client, domain: ()), String>
+  public typealias ApiKey = Tagged<(Self, apiKey: ()), String>
+  public typealias Domain = Tagged<(Self, domain: ()), String>
 
   private let appSecret: AppSecret
 
@@ -66,7 +66,7 @@ public struct Client {
 
   /// Constructs the email address that users can email in order to unsubscribe from a particular newsletter.
   public func unsubscribeEmail(
-    fromUserId userId: User.Id,
+    fromUserId userId: User.ID,
     andNewsletter newsletter: EmailSetting.Newsletter,
     boundary: String = "--"
   ) -> EmailAddress? {
@@ -86,7 +86,7 @@ public struct Client {
   public func userIdAndNewsletter(
     fromUnsubscribeEmail email: EmailAddress,
     boundary: String = "--"
-  ) -> (User.Id, EmailSetting.Newsletter)? {
+  ) -> (User.ID, EmailSetting.Newsletter)? {
 
     let payload = email.rawValue
       .components(separatedBy: "unsub-")
@@ -101,7 +101,7 @@ public struct Client {
       .flatMap { components in
         guard
           let userId = components.first.flatMap(UUID.init(uuidString:)).flatMap(
-            User.Id.init(rawValue:)),
+            User.ID.init(rawValue:)),
           let newsletter = components.last.flatMap(EmailSetting.Newsletter.init(rawValue:))
         else { return nil }
 

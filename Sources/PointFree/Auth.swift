@@ -117,7 +117,7 @@ public func currentSubscriptionMiddleware<A, I>(
     .map { conn.map(const($0 .*. conn.data)) }
 }
 
-public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.Id, A>>)
+public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
 

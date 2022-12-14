@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60078
+Content-Length: 62309
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2342,23 +2342,35 @@ available</p>
                       lh-4"
                id="card-errors">
           </div>
-          <input name="token"
+          <input name="paymentMethodID"
                  type="hidden">
           <script src>
           </script>
           <script>
             window.addEventListener("load", function() {
+  var form = document.getElementById("subscribe-form")
+  var displayError = document.getElementById("card-errors")
+
   var apiKey = document.getElementById("card-element").dataset.stripeKey
-  var stripe = Stripe(apiKey)
+  var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
   var elements = stripe.elements()
   var style = {
     base: {
       fontSize: "16px",
     }
   }
+
+  window.paymentRequest = stripe.paymentRequest({
+    country: 'US',
+    currency: 'usd',
+    total: { label: '', amount: 100, }
+  });
+  const paymentRequestButton = elements.create('paymentRequestButton', {
+    paymentRequest: window.paymentRequest,
+  });
+
   var card = elements.create("card", { style: style })
   card.mount("#card-element")
-  var displayError = document.getElementById("card-errors")
   card.addEventListener("change", function(event) {
     if (event.error) {
       displayError.textContent = event.error.message
@@ -2366,7 +2378,15 @@ available</p>
       displayError.textContent = ""
     }
   });
-  var form = document.getElementById("subscribe-form")
+
+  window.paymentRequest.on('paymentmethod', async (ev) => {
+    setFormEnabled(false, function() { return true })
+    ev.complete('success')
+    form.paymentMethodID.value = ev.paymentMethod.id
+    setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+    form.submit()
+  });
+
   function setFormEnabled(isEnabled, elementsMatching) {
     for (var idx = 0; idx < form.length; idx++) {
       var formElement = form[idx]
@@ -2378,24 +2398,73 @@ available</p>
       }
     }
   }
-  form.addEventListener("submit", function(event) {
+
+  var submitting = false
+  form.addEventListener("submit", async (event) => {
     event.preventDefault()
+    if (submitting) { return }
+
+    displayError.textContent = ""
+    submitting = true
     setFormEnabled(false, function() { return true })
-    stripe.createToken(card).then(function(result) {
+
+    try {
+      const result = await stripe.createPaymentMethod({
+        type: 'card',
+        card: card,
+      })
       if (result.error) {
         displayError.textContent = result.error.message
-        setFormEnabled(true, function(el) { return true })
       } else {
+        form.paymentMethodID.value = result.paymentMethod.id
         setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-        form.token.value = result.token.id
         form.submit()
+        return // NB: Early out so to not re-enable form.
       }
-    }).catch(function() {
-      setFormEnabled(true, function(el) { return true })
-    })
-  })
+    } catch {
+      displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+    }
+
+    submitting = false
+    setFormEnabled(true, function(el) { return true })
+  });
+
+  (async () => {
+    const result = await window.paymentRequest.canMakePayment();
+    if (result) {
+      paymentRequestButton.mount('#payment-request-button');
+      document.getElementById("apple-pay-container").style.display = 'block'
+      updateSeats()
+    } else {
+      document.getElementById('payment-request-button').style.display = 'none';
+    }
+  })();
 })
           </script>
+        </div>
+        <div id="apple-pay-container"
+             class="m-ml0
+                    m-pt3
+                    none
+                    col-m
+                    col-m-12"
+             style="line-height:0">
+          <label for="apple-pay"
+                 class="nowrap
+                        fg-black
+                        bg-white
+                        fg-black
+                        bold
+                        ts-d-r1
+                        ts-m-r0_875
+                        lh-1">
+            or Apple Pay
+          </label>
+          <div id="payment-request-button"
+               class="col-m-12
+                      col-d-4
+                      m-mt2">
+          </div>
         </div>
       </div>
       <div class="d-ml4
@@ -2459,12 +2528,11 @@ function updateSeats() {
       ? 1300 * 0.01 * regionalDiscount
       : 900 * 0.01 * regionalDiscount
   )
-  var monthlyPrice = seats * monthlyPricePerSeat
-  document.getElementById("total").textContent = format(
-    monthly
-      ? monthlyPrice
-      : (monthlyPrice * 12 - 0 * regionalDiscount)
-  )
+  const monthlyPrice = seats * monthlyPricePerSeat
+  const total = monthly
+    ? monthlyPrice
+    : (monthlyPrice * 12 - 0 * regionalDiscount)
+  document.getElementById("total").textContent = format(total)
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
       + format(monthlyPricePerSeat)
@@ -2473,6 +2541,14 @@ function updateSeats() {
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
   )
+  if (window.paymentRequest) {
+    window.paymentRequest.update({
+      total: {
+        label: monthly ? "Monthly subscription" : "Yearly subscription",
+        amount: total * 100
+      }
+    })
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

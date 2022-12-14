@@ -14,9 +14,9 @@ public struct EpisodeStats {
   public let episodeHourCount: EpisodeHourCount
   public let freeEpisodeCount: FreeEpisodeCount
 
-  public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
-  public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
-  public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
+  public typealias FreeEpisodeCount = Tagged<(Self, freeEpisodeCount: ()), Int>
+  public typealias AllEpisodeCount = Tagged<(Self, allEpisodeCount: ()), Int>
+  public typealias EpisodeHourCount = Tagged<(Self, episodeHourCount: ()), Int>
 }
 
 public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
@@ -692,7 +692,7 @@ private func footer(
       ],
       "Subscribe"
     )
-
+  
   return .div(
     attributes: [
       .class([

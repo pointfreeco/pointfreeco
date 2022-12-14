@@ -172,7 +172,7 @@ public let discountSubscribeConfirmation =
 private let fetchAndValidateCoupon:
   MT<
     Tuple6<
-      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?
+      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.ID?
     >,
     Tuple6<
       User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon
@@ -201,7 +201,7 @@ private let fetchAndValidateCoupon:
 
 private let couponError = "That coupon code is invalid or has expired."
 
-private func fetchCoupon(_ couponId: Stripe.Coupon.Id?) -> IO<Stripe.Coupon?> {
+private func fetchCoupon(_ couponId: Stripe.Coupon.ID?) -> IO<Stripe.Coupon?> {
   guard let couponId = couponId else { return pure(nil) }
   guard couponId != Current.envVars.regionalDiscountCouponId else { return pure(nil) }
   return Current.stripe.fetchCoupon(couponId)

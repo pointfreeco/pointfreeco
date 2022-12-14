@@ -103,7 +103,7 @@ final class AccountTests: TestCase {
 
   func testAccount_InvoiceBilling() {
     var customer = Stripe.Customer.mock
-    customer.sources = .mock([.right(.mock)])
+    customer.invoiceSettings.defaultPaymentMethod = nil
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
     Current = .teamYearly

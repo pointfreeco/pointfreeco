@@ -66,10 +66,8 @@ final class StripeTests: TestCase {
       let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
       XCTAssertEqual(nil, customer.businessVatId)
-      XCTAssertEqual(nil, customer.defaultSource)
       XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
       XCTAssertEqual([:], customer.metadata)
-      XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -128,11 +126,9 @@ final class StripeTests: TestCase {
     let customer = try Stripe.jsonDecoder.decode(Customer.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual(nil, customer.businessVatId)
-    XCTAssertEqual(nil, customer.defaultSource)
     XCTAssertEqual("cus_GlUzpQx6pl4AIh", customer.id)
     XCTAssertEqual(["extraInvoiceInfo": "VAT: 123456789"], customer.metadata)
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
-    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
 
   func testDecodingPlan_WithNickname() throws {
@@ -403,7 +399,7 @@ final class StripeTests: TestCase {
   }
 
   func testRequests() {
-    //    SnapshotTesting.isRecording=true
+    //SnapshotTesting.isRecording = true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
       as: .raw,
@@ -427,7 +423,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil,
+        paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil,
         balance: nil
       ).rawValue,
       as: .raw,
@@ -435,7 +431,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        token: "tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1",
+        paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1",
         balance: -18_00
       ).rawValue,
       as: .raw,
@@ -534,7 +530,7 @@ final class StripeTests: TestCase {
       named: "invoice-customer"
     )
     assertSnapshot(
-      matching: Stripe.updateCustomer(id: "cus_test", token: "tok_test").rawValue,
+      matching: Stripe.updateCustomer(id: "cus_test", paymentMethodID: "pm_tok_test").rawValue,
       as: .raw,
       named: "update-customer"
     )

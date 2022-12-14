@@ -18,7 +18,7 @@ import XCTest
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
-    //    SnapshotTesting.isRecording=true
+    //SnapshotTesting.isRecording = true
   }
 
   func testCoupon_Individual() {
@@ -95,7 +95,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -137,7 +137,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -293,10 +293,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -327,7 +327,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -378,10 +378,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -406,7 +406,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = $4
       return pure(update(.mock) { $0.id = "cus_referred" })
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(.mock)
@@ -441,10 +441,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(user.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(.mock)
@@ -454,7 +453,23 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -496,10 +511,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(user.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "US" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(.mock)
@@ -509,7 +523,23 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "US",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -558,19 +588,34 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(referred.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: true
     )
 
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
     Current.stripe.fetchSubscription = { _ in
       pure(
         update(.mock) {
@@ -585,7 +630,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         })
     }
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(
@@ -601,7 +646,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -652,19 +697,34 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(referred.id)
 
     var customer = Customer.mock
-    let card = update(Card.mock) { $0.country = "BO" }
-    customer.sources = .mock([.left(card)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: true
     )
 
+    Current.stripe.fetchPaymentMethod = { _ in
+      return pure(
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      )
+    }
     Current.stripe.fetchSubscription = { _ in
       pure(
         update(.mock) {
@@ -679,7 +739,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         })
     }
 
-    var subscriptionCoupon: Coupon.Id?
+    var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
       return pure(
@@ -695,7 +755,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       balance = newBalance
       return pure(customer)
     }
-    var balanceUpdates: [Customer.Id: Cents<Int>] = [:]
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
       return pure(customer)
@@ -730,11 +790,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
-    Current.stripe.createCustomer = { _, _, _, _, _ in
-      var customer = Customer.mock
-      let card = update(Card.mock) { $0.country = "BO" }
-      customer.sources = .mock([.left(card)])
-      return pure(customer)
+    var customer = Customer.mock
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
+    Current.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
+    Current.stripe.fetchPaymentMethod = {
+      pure(
+        PaymentMethod(
+          card: .regional,
+          customer: .left(customer.id),
+          id: $0
+        )
+      )
     }
 
     var subscribeData = SubscribeData.individualMonthly
@@ -757,7 +823,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    //    SnapshotTesting.record=true
+    //SnapshotTesting.isRecording = true
   }
 
   func testNotLoggedIn_IndividualMonthly() {
@@ -900,10 +966,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-      token: "stripe-deadbeef",
       useRegionalDiscount: false
     )
 
@@ -927,10 +993,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .init(billing: .monthly, quantity: 3),
       referralCode: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
-      token: "stripe-deadbeef",
       useRegionalDiscount: false
     )
 
@@ -971,10 +1037,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -997,10 +1063,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .teamYearly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -1024,10 +1090,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 
@@ -1055,10 +1121,10 @@ final class SubscribeTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: nil,
       isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: "cafed00d",
       teammates: [],
-      token: "deadbeef",
       useRegionalDiscount: false
     )
 

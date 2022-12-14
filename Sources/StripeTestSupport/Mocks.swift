@@ -6,7 +6,9 @@ import Stripe
 
 extension Client {
   public static let mock = Client(
+    attachPaymentMethod: { _, _ in pure(.mock) },
     cancelSubscription: { _, _ in pure(.canceling) },
+    confirmPaymentIntent: { _ in pure(.succeeded) },
     createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
@@ -14,9 +16,11 @@ extension Client {
     deleteCoupon: const(pure(unit)),
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
+    fetchCustomerPaymentMethods: { _ in pure(.mock([])) },
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
     fetchPaymentIntent: const(pure(.succeeded)),
+    fetchPaymentMethod: { _ in pure(.mock) },
     fetchPlans: { pure(.mock([.mock])) },
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
@@ -72,7 +76,20 @@ extension Charge {
   public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
-    source: .left(.mock)
+    paymentMethodDetails: .mock
+  )
+}
+
+extension Charge.PaymentMethodDetails {
+  public static let mock = Self(
+    card: .init(
+      brand: .visa,
+      country: "US",
+      expMonth: 1,
+      expYear: 2020,
+      funding: .credit,
+      last4: "4242"
+    )
   )
 }
 
@@ -80,10 +97,9 @@ extension Customer {
   public static let mock = Customer(
     balance: 0,
     businessVatId: nil,
-    defaultSource: "card_test",
     id: "cus_test",
-    metadata: [:],
-    sources: .mock([.left(.mock)])
+    invoiceSettings: .init(defaultPaymentMethod: "pm_card_test"),
+    metadata: [:]
   )
 }
 
@@ -110,7 +126,7 @@ extension Event where T == Either<Invoice, Subscription> {
 }
 
 extension Invoice {
-  public static func mock(charge: Either<Charge.Id, Charge>?) -> Invoice {
+  public static func mock(charge: Expandable<Charge>?) -> Invoice {
     return Invoice(
       amountDue: 0_00,
       amountPaid: 17_00,
@@ -155,6 +171,34 @@ extension ListEnvelope {
       hasMore: false
     )
   }
+}
+
+extension PaymentMethod {
+  public static let mock = Self(
+    card: .mock,
+    customer: .left("cus_test"),
+    id: "pm_card"
+  )
+}
+
+extension PaymentMethod.Card {
+  public static let mock = Self(
+    brand: .visa,
+    country: "US",
+    expMonth: 1,
+    expYear: 2020,
+    funding: .credit,
+    last4: "4242"
+  )
+
+  public static let regional = Self(
+    brand: .visa,
+    country: "BO",
+    expMonth: 1,
+    expYear: 2020,
+    funding: .credit,
+    last4: "4242"
+  )
 }
 
 extension Plan {

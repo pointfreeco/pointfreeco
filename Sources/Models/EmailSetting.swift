@@ -1,8 +1,8 @@
 public struct EmailSetting: Codable, Equatable {
   public var newsletter: Newsletter
-  public var userId: User.Id
+  public var userId: User.ID
 
-  public init(newsletter: Newsletter, userId: User.Id) {
+  public init(newsletter: Newsletter, userId: User.ID) {
     self.newsletter = newsletter
     self.userId = userId
   }

@@ -71,7 +71,7 @@ final class InvoicesTests: TestCase {
 
   func testInvoice_InvoiceBilling() {
     var charge = Charge.mock
-    charge.source = .right(.mock)
+    charge.paymentMethodDetails = .init()
     let invoice = Invoice.mock(charge: .right(charge))
 
     Current = .teamYearly

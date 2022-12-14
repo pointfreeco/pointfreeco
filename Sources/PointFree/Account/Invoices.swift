@@ -47,7 +47,7 @@ let invoiceResponse =
 
 private let requireInvoice:
   MT<
-    Tuple3<Stripe.Subscription, User, Invoice.Id>,
+    Tuple3<Stripe.Subscription, User, Invoice.ID>,
     Tuple3<Stripe.Subscription, User, Invoice>
   > =
     filterMap(
@@ -91,20 +91,14 @@ private func fetchInvoices<A>(
           return conn
             |> redirect(
               to: .account(),
-              headersMiddleware: flash(
-                .error,
-                """
-                We had some trouble loading your invoices! Please try again later.
-                If the problem persists, please notify <support@pointfree.co>.
-                """
-              )
+              headersMiddleware: flash(.error, invoiceError)
             )
         }
       }
   }
 }
 
-private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
+private func fetchInvoice(id: Stripe.Invoice.ID) -> IO<Stripe.Invoice?> {
   return Current.stripe.fetchInvoice(id)
     .run
     .map(\.right)

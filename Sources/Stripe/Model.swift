@@ -3,23 +3,27 @@ import Foundation
 import Tagged
 import TaggedMoney
 
-public struct Card: Codable, Equatable {
+public typealias Expandable<Field: Identifiable> = Either<Field.ID, Field>
+
+public typealias StripeID<Field> = Tagged<Field, String>
+
+public struct Card: Codable, Equatable, Identifiable {
   public var brand: Brand
   public var country: Country?
-  public var customer: Customer.Id
+  public var customer: Customer.ID
   public var expMonth: Int
   public var expYear: Int
-  public var id: Id
+  public var id: StripeID<Self>
   public var last4: String
   public var object: Object
 
   public init(
     brand: Brand,
     country: Country,
-    customer: Customer.Id,
+    customer: Customer.ID,
     expMonth: Int,
     expYear: Int,
-    id: Id,
+    id: ID,
     last4: String,
     object: Object
   ) {
@@ -32,9 +36,6 @@ public struct Card: Codable, Equatable {
     self.last4 = last4
     self.object = object
   }
-
-  public typealias Country = Tagged<(country: (), Card), String>
-  public typealias Id = Tagged<Card, String>
 
   public enum Object: String, Codable { case card }
 
@@ -56,28 +57,34 @@ public struct Card: Codable, Equatable {
   }
 }
 
-public struct Charge: Codable, Equatable {
+public struct Charge: Codable, Equatable, Identifiable {
   public var amount: Cents<Int>
-  public var id: Id
-  public var source: Either<Card, Source>
+  public var id: StripeID<Self>
+  public var paymentMethodDetails: PaymentMethodDetails
 
-  public init(amount: Cents<Int>, id: Id, source: Either<Card, Source>) {
+  public init(amount: Cents<Int>, id: ID, paymentMethodDetails: PaymentMethodDetails) {
     self.amount = amount
     self.id = id
-    self.source = source
+    self.paymentMethodDetails = paymentMethodDetails
   }
 
-  public typealias Id = Tagged<Charge, String>
+  public struct PaymentMethodDetails: Codable, Equatable {
+    public var card: PaymentMethod.Card?
+
+    public init(card: PaymentMethod.Card? = nil) {
+      self.card = card
+    }
+  }
 }
 
-public struct Coupon: Equatable {
+public struct Coupon: Equatable, Identifiable {
   public var duration: Duration
-  public var id: Id
+  public var id: StripeID<Self>
   public var name: String?
   public var rate: Rate
   public var valid: Bool
 
-  public init(duration: Duration, id: Id, name: String?, rate: Rate, valid: Bool) {
+  public init(duration: Duration, id: ID, name: String?, rate: Rate, valid: Bool) {
     self.duration = duration
     self.id = id
     self.name = name
@@ -108,8 +115,6 @@ public struct Coupon: Equatable {
     }
   }
 
-  public typealias Id = Tagged<Coupon, String>
-
   public enum Duration: Equatable {
     case forever
     case once
@@ -131,15 +136,13 @@ public struct Coupon: Equatable {
   }
 }
 
-public struct Source: Codable, Equatable {
-  public var id: Id
+public struct Source: Codable, Equatable, Identifiable {
+  public var id: StripeID<Self>
   public var object: Object
-
-  public typealias Id = Tagged<Source, String>
 
   public enum Object: String, Codable { case source }
 
-  public init(id: Id, object: Object) {
+  public init(id: ID, object: Object) {
     self.id = id
     self.object = object
   }
@@ -149,35 +152,41 @@ public enum Currency: String, Codable {
   case usd
 }
 
-public struct Customer: Codable, Equatable {
+public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
-  public var defaultSource: Card.Id?
-  public var id: Id
+  public var id: StripeID<Self>
+  public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
-  public var sources: ListEnvelope<Either<Card, Source>>?
 
   public init(
     balance: Cents<Int>,
     businessVatId: Vat?,
-    defaultSource: Card.Id?,
-    id: Id,
-    metadata: [String: String],
-    sources: ListEnvelope<Either<Card, Source>>?
+    id: ID,
+    invoiceSettings: InvoiceSettings,
+    metadata: [String: String]
   ) {
     self.balance = balance
     self.businessVatId = businessVatId
-    self.defaultSource = defaultSource
     self.id = id
+    self.invoiceSettings = invoiceSettings
     self.metadata = metadata
-    self.sources = sources
   }
 
-  public typealias Id = Tagged<(Customer, id: ()), String>
-  public typealias Vat = Tagged<(Customer, vat: ()), String>
+  public typealias Vat = Tagged<(Self, vat: ()), String>
 
   public var extraInvoiceInfo: String? {
     return self.metadata["extraInvoiceInfo"]
+  }
+
+  public struct InvoiceSettings: Codable, Equatable {
+    public var defaultPaymentMethod: PaymentMethod.ID?
+
+    public init(
+      defaultPaymentMethod: PaymentMethod.ID?
+    ) {
+      self.defaultPaymentMethod = defaultPaymentMethod
+    }
   }
 }
 
@@ -205,18 +214,16 @@ public struct StripeError: Codable, Error {
   }
 }
 
-public struct Event<T: Codable & Equatable>: Equatable, Codable {
+public struct Event<T: Codable & Equatable>: Equatable, Codable, Identifiable {
   public var data: Data
-  public var id: Id
+  public var id: StripeID<Self>
   public var type: `Type`
 
-  public init(data: Data, id: Id, type: `Type`) {
+  public init(data: Data, id: ID, type: `Type`) {
     self.data = data
     self.id = id
     self.type = type
   }
-
-  public typealias Id = Tagged<Event, String>
 
   public struct Data: Codable, Equatable {
     public var object: T
@@ -236,36 +243,38 @@ public struct Event<T: Codable & Equatable>: Equatable, Codable {
 }
 
 public struct Invoice: Codable, Equatable {
+  public typealias ID = StripeID<Self>
+
   public var amountDue: Cents<Int>
   public var amountPaid: Cents<Int>
-  public var charge: Either<Charge.Id, Charge>?
+  public var charge: Expandable<Charge>?
   public var created: Date
-  public var customer: Customer.Id
+  public var customer: Customer.ID
   public var discount: Discount?
-  public var id: Id?
+  public var id: ID?
   public var invoicePdf: String?
   public var lines: ListEnvelope<LineItem>
   public var number: Number?
   public var periodStart: Date
   public var periodEnd: Date
-  public var subscription: Subscription.Id?
+  public var subscription: Subscription.ID?
   public var subtotal: Cents<Int>
   public var total: Cents<Int>
 
   public init(
     amountDue: Cents<Int>,
     amountPaid: Cents<Int>,
-    charge: Either<Charge.Id, Charge>?,
+    charge: Expandable<Charge>?,
     created: Date,
-    customer: Customer.Id,
+    customer: Customer.ID,
     discount: Discount?,
-    id: Id?,
+    id: ID?,
     invoicePdf: String?,
     lines: ListEnvelope<LineItem>,
     number: Number?,
     periodStart: Date,
     periodEnd: Date,
-    subscription: Subscription.Id?,
+    subscription: Subscription.ID?,
     subtotal: Cents<Int>,
     total: Cents<Int>
   ) {
@@ -286,25 +295,24 @@ public struct Invoice: Codable, Equatable {
     self.total = total
   }
 
-  public typealias Id = Tagged<(Invoice, id: ()), String>
-  public typealias Number = Tagged<(Invoice, number: ()), String>
+  public typealias Number = Tagged<(Self, number: ()), String>
 }
 
-public struct LineItem: Codable, Equatable {
+public struct LineItem: Codable, Equatable, Identifiable {
   public var amount: Cents<Int>
   public var description: String?
-  public var id: Id
+  public var id: StripeID<Self>
   public var plan: Plan?
   public var quantity: Int
-  public var subscription: Subscription.Id?
+  public var subscription: Subscription.ID?
 
   public init(
     amount: Cents<Int>,
     description: String?,
-    id: Id,
+    id: ID,
     plan: Plan?,
     quantity: Int,
-    subscription: Subscription.Id?
+    subscription: Subscription.ID?
   ) {
     self.amount = amount
     self.description = description
@@ -313,8 +321,6 @@ public struct LineItem: Codable, Equatable {
     self.quantity = quantity
     self.subscription = subscription
   }
-
-  public typealias Id = Tagged<LineItem, String>
 }
 
 public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
@@ -327,18 +333,18 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
   }
 }
 
-public struct PaymentIntent: Codable, Equatable {
+public struct PaymentIntent: Codable, Equatable, Identifiable {
   public var amount: Cents<Int>
   public var clientSecret: ClientSecret
   public var currency: Currency
-  public var id: Id
+  public var id: StripeID<Self>
   public var status: Status
 
   public init(
     amount: Cents<Int>,
     clientSecret: ClientSecret,
     currency: Currency,
-    id: Id,
+    id: ID,
     status: Status
   ) {
     self.amount = amount
@@ -349,7 +355,6 @@ public struct PaymentIntent: Codable, Equatable {
   }
 
   public typealias ClientSecret = Tagged<(Self, secret: ()), String>
-  public typealias Id = Tagged<Self, String>
 
   public enum Status: String, Codable, Equatable {
     case requiresPaymentMethod = "requires_payment_method"
@@ -362,10 +367,90 @@ public struct PaymentIntent: Codable, Equatable {
   }
 }
 
-public struct Plan: Codable, Equatable {
+public enum CountryTag {}
+public typealias Country = Tagged<CountryTag, String>
+
+public struct PaymentMethod: Codable, Equatable, Identifiable {
+  public var card: Card?
+  public var customer: Expandable<Customer>?
+  public var id: StripeID<Self>
+
+  public init(
+    card: Card? = nil,
+    customer: Expandable<Customer>? = nil,
+    id: ID
+  ) {
+    self.card = card
+    self.customer = customer
+    self.id = id
+  }
+
+  public struct Card: Codable, Equatable {
+    public var brand: Brand
+    public var country: Country
+    public var expMonth: Int
+    public var expYear: Int
+    public var funding: Funding
+    public var last4: String
+
+    public init(
+      brand: Brand,
+      country: Country,
+      expMonth: Int,
+      expYear: Int,
+      funding: Funding,
+      last4: String
+    ) {
+      self.brand = brand
+      self.country = country
+      self.expMonth = expMonth
+      self.expYear = expYear
+      self.funding = funding
+      self.last4 = last4
+    }
+
+    public enum Brand: String, Codable, Equatable {
+      case amex
+      case diners
+      case discover
+      case jcb
+      case mastercard
+      case unionpay
+      case visa
+
+      public var description: String {
+        switch self {
+        case .amex:
+          return "American Express"
+        case .diners:
+          return "Diner's Club"
+        case .discover:
+          return "Discover"
+        case .jcb:
+          return "JCB"
+        case .mastercard:
+          return "MasterCard"
+        case .unionpay:
+          return "UnionPay"
+        case .visa:
+          return "Visa"
+        }
+      }
+    }
+
+    public enum Funding: String, Codable, Equatable {
+      case credit
+      case debit
+      case prepaid
+      case unknown
+    }
+  }
+}
+
+public struct Plan: Codable, Equatable, Identifiable {
   public var created: Date
   public var currency: Currency
-  public var id: Id
+  public var id: StripeID<Self>
   public var interval: Interval
   public var metadata: [String: String]
   public var nickname: String?
@@ -373,7 +458,7 @@ public struct Plan: Codable, Equatable {
   public init(
     created: Date,
     currency: Currency,
-    id: Id,
+    id: ID,
     interval: Interval,
     metadata: [String: String],
     nickname: String?
@@ -386,8 +471,6 @@ public struct Plan: Codable, Equatable {
     self.nickname = nickname
   }
 
-  public typealias Id = Tagged<Plan, String>
-
   public enum Interval: String, Codable {
     case month
     case year
@@ -398,16 +481,16 @@ public struct Plan: Codable, Equatable {
   }
 }
 
-public struct Subscription: Codable, Equatable {
+public struct Subscription: Codable, Equatable, Identifiable {
   public var canceledAt: Date?
   public var cancelAtPeriodEnd: Bool
   public var created: Date
   public var currentPeriodStart: Date
   public var currentPeriodEnd: Date
-  public var customer: Either<Customer.Id, Customer>
+  public var customer: Expandable<Customer>
   public var discount: Discount?
   public var endedAt: Date?
-  public var id: Id
+  public var id: StripeID<Self>
   public var items: ListEnvelope<Item>
   public var plan: Plan
   public var quantity: Int
@@ -420,10 +503,10 @@ public struct Subscription: Codable, Equatable {
     created: Date,
     currentPeriodStart: Date,
     currentPeriodEnd: Date,
-    customer: Either<Customer.Id, Customer>,
+    customer: Expandable<Customer>,
     discount: Discount?,
     endedAt: Date?,
-    id: Id,
+    id: ID,
     items: ListEnvelope<Item>,
     plan: Plan,
     quantity: Int,
@@ -458,17 +541,17 @@ public struct Subscription: Codable, Equatable {
     return self.status != .canceled && !self.cancelAtPeriodEnd
   }
 
-  public typealias Id = Tagged<Subscription, String>
+  public struct Item: Codable, Equatable, Identifiable {
+    public typealias ID = StripeID<Self>
 
-  public struct Item: Codable, Equatable {
     public var created: Date
-    public var id: Id
+    public var id: ID
     public var plan: Plan
     public var quantity: Int
 
     public init(
       created: Date,
-      id: Id,
+      id: ID,
       plan: Plan,
       quantity: Int
     ) {
@@ -477,8 +560,6 @@ public struct Subscription: Codable, Equatable {
       self.plan = plan
       self.quantity = quantity
     }
-
-    public typealias Id = Tagged<Item, String>
   }
 
   public enum Status: String, Codable {
@@ -497,16 +578,6 @@ public struct Subscription: Codable, Equatable {
       }
     }
   }
-}
-
-public struct Token: Codable {
-  public var id: Id
-
-  public init(id: Id) {
-    self.id = id
-  }
-
-  public typealias Id = Tagged<Token, String>
 }
 
 extension Coupon.Rate: Codable {
@@ -590,7 +661,7 @@ extension Coupon: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.init(
       duration: try Coupon.Duration(from: decoder),
-      id: try container.decode(Coupon.Id.self, forKey: .id),
+      id: try container.decode(Coupon.ID.self, forKey: .id),
       name: try container.decodeIfPresent(String.self, forKey: .name),
       rate: try Coupon.Rate(from: decoder),
       valid: try container.decode(Bool.self, forKey: .valid)
@@ -613,12 +684,7 @@ extension Coupon: Codable {
   }
 }
 
-extension Tagged where Tag == Plan, RawValue == String {
-  public static var monthly: Plan.Id {
-    return "monthly-2019"
-  }
-
-  public static var yearly: Plan.Id {
-    return "yearly-2019"
-  }
+extension Plan.ID {
+  public static let monthly: Self = "monthly-2019"
+  public static var yearly: Self = "yearly-2019"
 }

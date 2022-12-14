@@ -43,7 +43,7 @@ func changeSubscription(
     let (currentSubscription, newPricing) = conn.data
 
     return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity)
+      .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
       .run
       .flatMap(
         either(

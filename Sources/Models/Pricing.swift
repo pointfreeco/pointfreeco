@@ -16,6 +16,15 @@ public struct Pricing: Equatable {
   public enum Billing: String, CaseIterable, Codable {
     case monthly
     case yearly
+
+    public var plan: Stripe.Plan.ID {
+      switch self {
+      case .monthly:
+        return .monthly
+      case .yearly:
+        return .yearly
+      }
+    }
   }
 
   public enum Lane: String, CaseIterable, Codable {
@@ -50,15 +59,6 @@ public struct Pricing: Equatable {
     return self.quantity == 1
       ? .personal
       : .team
-  }
-
-  public var plan: Stripe.Plan.Id {
-    switch self.billing {
-    case .monthly:
-      return .monthly
-    case .yearly:
-      return .yearly
-    }
   }
 }
 

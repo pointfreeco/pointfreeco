@@ -16,7 +16,7 @@ import Views
 
 let episodeResponse:
   M<
-    Tuple5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Episode.Collection.Slug?>
+    Tuple5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Episode.Collection.Slug?>
   > =
     fetchEpisodeForParam
     <| writeStatus(.ok)
@@ -82,7 +82,7 @@ private func episodePageData(
 }
 
 func useCreditResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>>
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
   conn
     |> (fetchEpisodeForParam
@@ -92,7 +92,7 @@ func useCreditResponse<Z>(
 
 private func fetchEpisodeForParam<Z>(
   middleware: @escaping M<T5<Episode, User?, SubscriberState, SiteRoute?, Z>>
-) -> M<T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>> {
+) -> M<T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>> {
   middleware
     |> filterMap(
       over1(episode(forParam:)) >>> require1 >>> pure,
@@ -101,7 +101,7 @@ private func fetchEpisodeForParam<Z>(
 }
 
 private func episodeNotFoundResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.Id>, User?, SubscriberState, SiteRoute?, Z>>
+  conn: Conn<StatusLineOpen, T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
   conn
     |> writeStatus(.notFound)
@@ -120,7 +120,7 @@ private func validateUserEpisodePermission<Z>(
 let progressResponse:
   M<
     Tuple4<
-      Either<String, Episode.Id>,
+      Either<String, Episode.ID>,
       Models.User?,
       SubscriberState,
       Int
@@ -322,7 +322,7 @@ private func episodeNotFoundView(
     })
 }
 
-private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
+private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {
   return Current.episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id)

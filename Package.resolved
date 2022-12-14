@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-parsing",
         "state": {
           "branch": null,
-          "revision": "bc92e84968990b41640214b636667f35b6e5d44c",
-          "version": "0.10.0"
+          "revision": "4bb9192468c1a8be57f46b7d6fd4f561c88b2195",
+          "version": "0.11.0"
         }
       },
       {
@@ -204,8 +204,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-tagged",
         "state": {
           "branch": null,
-          "revision": "33f44ceb793b12d6af5019cbe26f8b0e66e6389f",
-          "version": "0.8.0"
+          "revision": "af06825aaa6adffd636c10a2570b2010c7c07e6a",
+          "version": "0.9.0"
         }
       },
       {

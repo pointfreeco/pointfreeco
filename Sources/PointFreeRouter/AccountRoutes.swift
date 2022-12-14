@@ -15,12 +15,12 @@ public enum Account: Equatable {
 
   public enum Invoices: Equatable {
     case index
-    case show(Stripe.Invoice.Id)
+    case show(Stripe.Invoice.ID)
   }
 
   public enum PaymentInfo: Equatable {
     case show
-    case update(Stripe.Token.Id? = nil)
+    case update(Stripe.PaymentMethod.ID? = nil)
   }
 
   public enum Subscription: Equatable {
@@ -52,7 +52,7 @@ let accountRouter = OneOf {
       Route(.case(Account.Invoices.index))
 
       Route(.case(Account.Invoices.show)) {
-        Path { Parse(.string.representing(Invoice.Id.self)) }
+        Path { Parse(.string.representing(Invoice.ID.self)) }
       }
     }
   }
@@ -68,7 +68,7 @@ let accountRouter = OneOf {
         Optionally {
           Body {
             FormData {
-              Field("token", .string.representing(Token.Id.self))
+              Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
             }
           }
         }
