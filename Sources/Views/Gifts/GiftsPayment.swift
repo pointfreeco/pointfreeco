@@ -290,7 +290,7 @@ private func formView(
     ),
 
     .gridColumn(
-      sizes: [.mobile: 12, .desktop: 6],
+      sizes: [.mobile: 12, .desktop: 12],
       attributes: [
         .id("apple-pay-container"),
         .class([
@@ -311,8 +311,8 @@ private func formView(
         attributes: [
           .id("payment-request-button"),
           .class([
-            Class.grid.col(.mobile, 7),
-            Class.grid.col(.desktop, 5),
+            Class.grid.col(.mobile, 12),
+            Class.grid.col(.desktop, 4),
             Class.margin([.mobile: [.top: 2]]),
           ]),
         ],

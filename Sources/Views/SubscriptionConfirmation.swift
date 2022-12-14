@@ -793,8 +793,8 @@ private func payment(
         attributes: [
           .id("payment-request-button"),
           .class([
-            Class.grid.col(.mobile, 7),
-            Class.grid.col(.desktop, 5),
+            Class.grid.col(.mobile, 12),
+            Class.grid.col(.desktop, 4),
             Class.margin([.mobile: [.top: 2]]),
           ]),
         ],
@@ -1100,6 +1100,39 @@ private func checkoutJS(
     }
 
     window.addEventListener("load", function() {
+      var form = document.getElementById("subscribe-form")
+      var displayError = document.getElementById("card-errors")
+      var paymentRequest
+
+      updateSeats = () => {
+        const data = currentSubscriptionData()
+        for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
+          data.teamMemberInputs[idx].name = "teammate"
+        }
+        form["pricing[quantity]"].value = data.seatCount
+        document.getElementById("total").textContent = format(data.total)
+        document.getElementById("pricing-preview").innerHTML = (
+          "You will be charged <strong>"
+            + format(data.monthlyPricePerSeat)
+            + " per month</strong>"
+            + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
+            + (data.isMonthly ? "" : " times <strong>12 months</strong>")
+            + "."
+        )
+
+        if (paymentRequest) {
+          paymentRequest.update({
+            total: {
+              label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
+              amount: data.total * 100
+            }
+          })
+        }
+      }
+
+      updateSeats()
+      form.addEventListener("change", updateSeats);
+
       var apiKey = document.getElementById("card-element").dataset.stripeKey
       var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
       var elements = stripe.elements()
@@ -1108,18 +1141,8 @@ private func checkoutJS(
           fontSize: "16px",
         }
       }
-      var card = elements.create("card", { style: style })
-      card.mount("#card-element")
-      var displayError = document.getElementById("card-errors")
-      card.addEventListener("change", function(event) {
-        if (event.error) {
-          displayError.textContent = event.error.message
-        } else {
-          displayError.textContent = ""
-        }
-      });
 
-      const paymentRequest = stripe.paymentRequest({
+      paymentRequest = stripe.paymentRequest({
         country: 'US',
         currency: 'usd',
         total: { label: '', amount: 100, }
@@ -1128,15 +1151,15 @@ private func checkoutJS(
         paymentRequest,
       });
 
-      (async () => {
-        const result = await paymentRequest.canMakePayment();
-        if (result) {
-          paymentRequestButton.mount('#payment-request-button');
-          document.getElementById("apple-pay-container").style.display = 'block'
+      var card = elements.create("card", { style: style })
+      card.mount("#card-element")
+      card.addEventListener("change", function(event) {
+        if (event.error) {
+          displayError.textContent = event.error.message
         } else {
-          document.getElementById('payment-request-button').style.display = 'none';
+          displayError.textContent = ""
         }
-      })();
+      });
 
       paymentRequest.on('paymentmethod', async (ev) => {
         setFormEnabled(false, function() { return true })
@@ -1146,7 +1169,6 @@ private func checkoutJS(
         form.submit()
       });
 
-      var form = document.getElementById("subscribe-form")
       function setFormEnabled(isEnabled, elementsMatching) {
         for (var idx = 0; idx < form.length; idx++) {
           var formElement = form[idx]
@@ -1187,34 +1209,18 @@ private func checkoutJS(
 
         submitting = false
         setFormEnabled(true, function(el) { return true })
-      })
+      });
 
-      updateSeats = () => {
-        const data = currentSubscriptionData()
-        for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
-          data.teamMemberInputs[idx].name = "teammate"
+      (async () => {
+        const result = await paymentRequest.canMakePayment();
+        if (result) {
+          paymentRequestButton.mount('#payment-request-button');
+          document.getElementById("apple-pay-container").style.display = 'block'
+          updateSeats()
+        } else {
+          document.getElementById('payment-request-button').style.display = 'none';
         }
-        form["pricing[quantity]"].value = data.seatCount
-        document.getElementById("total").textContent = format(data.total)
-        document.getElementById("pricing-preview").innerHTML = (
-          "You will be charged <strong>"
-            + format(data.monthlyPricePerSeat)
-            + " per month</strong>"
-            + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
-            + (data.isMonthly ? "" : " times <strong>12 months</strong>")
-            + "."
-        )
-
-        paymentRequest.update({
-          total: {
-            label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
-            amount: data.total * 100
-          }
-        })
-      }
-
-      updateSeats()
-      form.addEventListener("change", updateSeats)
+      })();
     })
     """
 }
