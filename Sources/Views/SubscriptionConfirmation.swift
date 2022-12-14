@@ -29,7 +29,7 @@ public func subscriptionConfirmation(
       .action(siteRouter.path(for: .subscribe())),
       .id("subscribe-form"),
       .method(.post),
-      .onsubmit(unsafe: "event.preventDefault()"),
+      .onsubmit(safe: "event.preventDefault()"),
       .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
     ],
     header(
@@ -1186,7 +1186,6 @@ private func checkoutJS(
       })
 
       updateSeats = () => {
-        const form = document.getElementById("subscribe-form")
         const data = currentSubscriptionData()
         for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
           data.teamMemberInputs[idx].name = "teammate"

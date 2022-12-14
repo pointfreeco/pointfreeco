@@ -17,6 +17,7 @@ public struct Client {
   public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) -> EitherIO<Error, PaymentMethod>
   public var cancelSubscription:
     (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
+  public var confirmPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
   public var createCoupon:
     (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
       Error, Coupon
@@ -57,6 +58,7 @@ public struct Client {
     cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
       Error, Subscription
     >,
+    confirmPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
       -> EitherIO<Error, Coupon>,
     createCustomer: @escaping (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
@@ -85,6 +87,7 @@ public struct Client {
   ) {
     self.attachPaymentMethod = attachPaymentMethod
     self.cancelSubscription = cancelSubscription
+    self.confirmPaymentIntent = confirmPaymentIntent
     self.createCoupon = createCoupon
     self.createCustomer = createCustomer
     self.createPaymentIntent = createPaymentIntent
@@ -146,6 +149,11 @@ extension Client {
       },
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+      },
+      confirmPaymentIntent: {
+        runStripe(secretKey, logger)(
+          Stripe.confirmPaymentIntent(id: $0)
+        )
       },
       createCoupon: {
         runStripe(secretKey, logger)(
@@ -219,6 +227,15 @@ func cancelSubscription(id: Subscription.ID, immediately: Bool) -> DecodableRequ
   }
 }
 
+func confirmPaymentIntent(
+  id: PaymentIntent.ID
+) -> DecodableRequest<PaymentIntent> {
+  stripeRequest(
+    "payment_intents/\(id.rawValue)/confirm",
+    .post([:])
+  )
+}
+
 func createCoupon(
   duration: Coupon.Duration?,
   maxRedemptions: Int?,
@@ -289,7 +306,7 @@ func createCustomer(
     .post(params)
   )
 }
-
+ 
 func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
   -> DecodableRequest<PaymentIntent>
 {

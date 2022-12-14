@@ -27,6 +27,8 @@ func giftCreateMiddleware(
       |> writeStatus(.badRequest)
   }
 
+//  Current.stripe.create
+
   let deliverAt = giftFormData.deliverAt
     .flatMap {
       Current.calendar.startOfDay(for: $0) <= Current.calendar.startOfDay(for: Current.date())
@@ -39,10 +41,14 @@ func giftCreateMiddleware(
       amount: plan.amount,
       currency: .usd,
       description: "Gift subscription: \(plan.monthCount) months",
+      paymentMethodID: giftFormData.paymentMethodID,
       receiptEmail: giftFormData.fromEmail.rawValue,
       statementDescriptorSuffix: "Gift Subscription"
     )
   )
+  .flatMap { paymentIntent in
+    Current.stripe.confirmPaymentIntent(paymentIntent.id)
+  }
   .flatMap { paymentIntent in
     Current.database.createGift(
       .init(

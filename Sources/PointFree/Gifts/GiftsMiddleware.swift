@@ -18,7 +18,7 @@ public func giftsMiddleware(
       |> giftConfirmationMiddleware
 
   case let .create(formData):
-    return conn.map(const(formData))
+    return conn.map(const(formData)) 
       |> giftCreateMiddleware
       >=> respondJson
 

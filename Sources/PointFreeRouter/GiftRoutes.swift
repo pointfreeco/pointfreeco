@@ -5,6 +5,7 @@ import TaggedMoney
 import URLRouting
 
 public enum Gifts: Equatable {
+  // TODO: remove
   case confirmation(GiftFormData)
   case create(GiftFormData)
   case index
@@ -57,14 +58,15 @@ public enum Gifts: Equatable {
 let giftsRouter = OneOf {
   Route(.case(Gifts.index))
 
-  Route(.case(Gifts.confirmation)) {
-    Method.post
-    Body(.form(GiftFormData.self, decoder: formDecoder))
-  }
+//  Route(.case(Gifts.confirmation)) {
+//    Method.post
+//    Body(.form(GiftFormData.self, decoder: formDecoder))
+//  }
 
   Route(.case(Gifts.create)) {
     Method.post
-    Body(.json(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder))
+    Body(.form(GiftFormData.self, decoder: formDecoder))
+//    Body(.json(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder))
   }
 
   Route(.case(Gifts.plan)) {

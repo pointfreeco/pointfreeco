@@ -18,6 +18,13 @@ public struct GiftFormData: Equatable {
   }
 
   public static let empty = Self()
+
+  @available(*, deprecated) // TODO: remove
+  public var paymentMethodID: PaymentMethod.ID? {
+    guard case let .some(.paymentMethodID(id)) = paymentType
+    else { return nil }
+    return id
+  }
 }
 
 private let dateFormatter: DateFormatter = {

@@ -31,7 +31,7 @@ private func router<A>(
     return { conn in
       let route: SiteRoute?
       do {
-        route = try siteRouter.match(request: conn.request)
+        route = try siteRouter.match(request: conn.request) 
       } catch {
         route = nil
         #if DEBUG
