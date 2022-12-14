@@ -163,15 +163,6 @@ private func formView(
       .method(.post),
       .onsubmit(safe: "event.preventDefault()"),
     ],
-
-    .input(
-      attributes: [
-        .type(.hidden),
-        .name("testing"),
-        .value("what"),
-      ]
-    ),
-
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 6],
