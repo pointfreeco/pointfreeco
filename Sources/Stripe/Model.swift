@@ -583,15 +583,6 @@ public struct Subscription: Codable, Equatable, Identifiable {
   }
 }
 
-@available(*, deprecated)
-public struct Token: Codable, Identifiable {
-  public var id: StripeID<Self>
-
-  public init(id: ID) {
-    self.id = id
-  }
-}
-
 extension Coupon.Rate: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
