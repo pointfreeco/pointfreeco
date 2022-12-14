@@ -1,4 +1,3 @@
-import CasePaths
 import Either
 import EmailAddress
 import Foundation
