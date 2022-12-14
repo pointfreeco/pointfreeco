@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59971
+Content-Length: 60184
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2361,12 +2361,11 @@ function updateSeats() {
       ? 900 * 0.01 * regionalDiscount
       : 700 * 0.01 * regionalDiscount
   )
-  var monthlyPrice = seats * monthlyPricePerSeat
-  document.getElementById("total").textContent = format(
-    monthly
-      ? monthlyPrice
-      : (monthlyPrice * 12 - 0 * regionalDiscount)
-  )
+  const monthlyPrice = seats * monthlyPricePerSeat
+  const total = monthly
+    ? monthlyPrice
+    : (monthlyPrice * 12 - 0 * regionalDiscount)
+  document.getElementById("total").textContent = format(total)
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
       + format(monthlyPricePerSeat)
@@ -2375,6 +2374,14 @@ function updateSeats() {
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
   )
+  if (window.paymentRequest) {
+    window.paymentRequest.update({
+      total: {
+        label: monthly ? "Monthly subscription" : "Yearly subscription",
+        amount: total * 100
+      }
+    })
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

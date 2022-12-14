@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62794
+Content-Length: 62280
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2347,83 +2347,9 @@ available</p>
           <script src>
           </script>
           <script>
-            var updateSeats;
-
-function format(money) {
-  return "$" + money.toFixed(2).replace(/\.00$/, "")
-}
-
-function currentSubscriptionData() {
-  const teamMembers = document.getElementById("team-members")
-  const teamMemberInputs = teamMembers == null
-    ? []
-    : Array.from(teamMembers.getElementsByTagName("INPUT"))
-  const teamOwnerIsTakingSeat = document
-    .getElementsByName("isOwnerTakingSeat")[0].value == "true"
-  const seatCount = teamMembers
-    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-    : 1
-  const form = document.getElementById("subscribe-form")
-  const regionalDiscount = 1.0
-  const isMonthly = form["pricing[billing]"].value == "monthly"
-  const monthlyPricePerSeat = (
-    isMonthly
-      ? 1300 * 0.01 * regionalDiscount
-      : 900 * 0.01 * regionalDiscount
-  )
-  const monthlyPrice = seatCount * monthlyPricePerSeat
-  const total = isMonthly
-    ? monthlyPrice
-    : (monthlyPrice * 12 - 0 * regionalDiscount)
-  const teammateEmails = []
-  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teammateEmails.push(teamMemberInputs[idx].name)
-  }
-  return {
-    isMonthly: isMonthly,
-    monthlyPrice: monthlyPrice,
-    monthlyPricePerSeat: monthlyPricePerSeat,
-    seatCount: seatCount,
-    teammateEmails: teammateEmails,
-    teamMemberInputs: teamMemberInputs,
-    teamOwnerIsTakingSeat: teamOwnerIsTakingSeat,
-    total: total
-  }
-}
-
-window.addEventListener("load", function() {
+            window.addEventListener("load", function() {
   var form = document.getElementById("subscribe-form")
   var displayError = document.getElementById("card-errors")
-  var paymentRequest
-
-  updateSeats = () => {
-    const data = currentSubscriptionData()
-    for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
-      data.teamMemberInputs[idx].name = "teammate"
-    }
-    form["pricing[quantity]"].value = data.seatCount
-    document.getElementById("total").textContent = format(data.total)
-    document.getElementById("pricing-preview").innerHTML = (
-      "You will be charged <strong>"
-        + format(data.monthlyPricePerSeat)
-        + " per month</strong>"
-        + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
-        + (data.isMonthly ? "" : " times <strong>12 months</strong>")
-        + "."
-    )
-
-    if (paymentRequest) {
-      paymentRequest.update({
-        total: {
-          label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
-          amount: data.total * 100
-        }
-      })
-    }
-  }
-
-  updateSeats()
-  form.addEventListener("change", updateSeats);
 
   var apiKey = document.getElementById("card-element").dataset.stripeKey
   var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
@@ -2434,13 +2360,13 @@ window.addEventListener("load", function() {
     }
   }
 
-  paymentRequest = stripe.paymentRequest({
+  window.paymentRequest = stripe.paymentRequest({
     country: 'US',
     currency: 'usd',
     total: { label: '', amount: 100, }
   });
   const paymentRequestButton = elements.create('paymentRequestButton', {
-    paymentRequest,
+    paymentRequest: window.paymentRequest,
   });
 
   var card = elements.create("card", { style: style })
@@ -2453,7 +2379,7 @@ window.addEventListener("load", function() {
     }
   });
 
-  paymentRequest.on('paymentmethod', async (ev) => {
+  window.paymentRequest.on('paymentmethod', async (ev) => {
     setFormEnabled(false, function() { return true })
     ev.complete('success')
     form.paymentMethodID.value = ev.paymentMethod.id
@@ -2504,7 +2430,7 @@ window.addEventListener("load", function() {
   });
 
   (async () => {
-    const result = await paymentRequest.canMakePayment();
+    const result = await window.paymentRequest.canMakePayment();
     if (result) {
       paymentRequestButton.mount('#payment-request-button');
       document.getElementById("apple-pay-container").style.display = 'block'
@@ -2579,6 +2505,57 @@ window.addEventListener("load", function() {
             </h3>
             <input name="pricing[quantity]"
                    type="hidden">
+            <script>
+              function format(money) {
+  return "$" + money.toFixed(2).replace(/\.00$/, "")
+}
+function updateSeats() {
+  var teamMembers = document.getElementById("team-members")
+  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
+  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+    teamMemberInputs[idx].name = "teammate"
+  }
+  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
+  var seats = teamMembers
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
+    : 1
+  var form = document.getElementById("subscribe-form")
+  form["pricing[quantity]"].value = seats
+  var regionalDiscount = 1.0
+  var monthly = form["pricing[billing]"].value == "monthly"
+  var monthlyPricePerSeat = (
+    monthly
+      ? 1300 * 0.01 * regionalDiscount
+      : 900 * 0.01 * regionalDiscount
+  )
+  const monthlyPrice = seats * monthlyPricePerSeat
+  const total = monthly
+    ? monthlyPrice
+    : (monthlyPrice * 12 - 0 * regionalDiscount)
+  document.getElementById("total").textContent = format(total)
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPricePerSeat)
+      + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
+  if (window.paymentRequest) {
+    window.paymentRequest.update({
+      total: {
+        label: monthly ? "Monthly subscription" : "Yearly subscription",
+        amount: total * 100
+      }
+    })
+  }
+}
+window.addEventListener("load", function() {
+  updateSeats()
+  var form = document.getElementById("subscribe-form")
+  form.addEventListener("change", updateSeats)
+})
+            </script>
             <span class="fg-black
                          normal
                          h6
