@@ -34,6 +34,7 @@ public struct Client {
   public var fetchInvoice: (Invoice.ID) -> EitherIO<Error, Invoice>
   public var fetchInvoices: (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>
   public var fetchPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
+  public var fetchPaymentMethod: (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>
   public var fetchPlans: () -> EitherIO<Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.ID) -> EitherIO<Error, Plan>
   public var fetchSubscription: (Subscription.ID) -> EitherIO<Error, Subscription>
@@ -74,6 +75,7 @@ public struct Client {
     fetchInvoice: @escaping (Invoice.ID) -> EitherIO<Error, Invoice>,
     fetchInvoices: @escaping (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>,
     fetchPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
+    fetchPaymentMethod: @escaping (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>,
     fetchPlans: @escaping () -> EitherIO<Error, ListEnvelope<Plan>>,
     fetchPlan: @escaping (Plan.ID) -> EitherIO<Error, Plan>,
     fetchSubscription: @escaping (Subscription.ID) -> EitherIO<Error, Subscription>,
@@ -99,6 +101,7 @@ public struct Client {
     self.fetchInvoice = fetchInvoice
     self.fetchInvoices = fetchInvoices
     self.fetchPaymentIntent = fetchPaymentIntent
+    self.fetchPaymentMethod = fetchPaymentMethod
     self.fetchPlans = fetchPlans
     self.fetchPlan = fetchPlan
     self.fetchSubscription = fetchSubscription
@@ -182,6 +185,7 @@ extension Client {
       fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
       fetchInvoices: { runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0)) },
       fetchPaymentIntent: { runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0)) },
+      fetchPaymentMethod: { runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0)) },
       fetchPlans: { runStripe(secretKey, logger)(Stripe.fetchPlans()) },
       fetchPlan: { runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0)) },
       fetchSubscription: { runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)) },
@@ -374,6 +378,10 @@ func fetchInvoices(for customer: Customer.ID) -> DecodableRequest<ListEnvelope<I
 
 func fetchPaymentIntent(id: PaymentIntent.ID) -> DecodableRequest<PaymentIntent> {
   stripeRequest("payment_intents/" + id.rawValue)
+}
+
+func fetchPaymentMethod(id: PaymentMethod.ID) -> DecodableRequest<PaymentMethod> {
+  stripeRequest("payment_methods/" + id.rawValue)
 }
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {

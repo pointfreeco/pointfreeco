@@ -154,6 +154,7 @@ public struct Customer: Codable, Equatable, Identifiable {
   public var defaultSource: Card.ID?
 
   public var id: StripeID<Self>
+  public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
 
   @available(*, deprecated)
@@ -164,6 +165,7 @@ public struct Customer: Codable, Equatable, Identifiable {
     businessVatId: Vat?,
     defaultSource: Card.ID?,
     id: ID,
+    invoiceSettings: InvoiceSettings,
     metadata: [String: String],
     sources: ListEnvelope<Either<Card, Source>>?
   ) {
@@ -171,6 +173,7 @@ public struct Customer: Codable, Equatable, Identifiable {
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource
     self.id = id
+    self.invoiceSettings = invoiceSettings
     self.metadata = metadata
     self.sources = sources
   }
@@ -179,6 +182,16 @@ public struct Customer: Codable, Equatable, Identifiable {
 
   public var extraInvoiceInfo: String? {
     return self.metadata["extraInvoiceInfo"]
+  }
+
+  public struct InvoiceSettings: Codable, Equatable {
+    public var defaultPaymentMethod: PaymentMethod.ID?
+
+    public init(
+      defaultPaymentMethod: PaymentMethod.ID?
+    ) {
+      self.defaultPaymentMethod = defaultPaymentMethod
+    }
   }
 }
 

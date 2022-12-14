@@ -1211,7 +1211,6 @@ private func subscriptionPaymentInfoView(
   _ subscription: Stripe.Subscription,
   paymentMethod: PaymentMethod?
 ) -> Node {
-//  let card = subscription.customer.right?.sources?.data.first?.left
   let card = paymentMethod?.card
   let paymentInfo: Node
   if let card = card {

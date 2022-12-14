@@ -55,26 +55,35 @@ private func fetchAccountData<I>(
     .map(\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
-  let upcomingInvoiceAndPaymentMethod =
+  let upcomingInvoice =
     stripeSubscription
     .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }
     .map(\.customer >>> either(id, \.id))
-    .flatMap { customerId in
-      lift(
-        zip2(
-          Current.stripe.fetchUpcomingInvoice(customerId).run.map(\.right).parallel,
-          Current.stripe.fetchCustomerPaymentMethods(customerId).run.map(\.right?.data.first).parallel
-        )
-        .sequential
-      )
-    }
+    .flatMap(Current.stripe.fetchUpcomingInvoice)
 
-  let everything = zip8(
+  let paymentMethod =
+    stripeSubscription
+    .flatMap { ($0.customer.right?.invoiceSettings.defaultPaymentMethod).map(pure) ?? throwE(unit) }
+    .flatMap(Current.stripe.fetchPaymentMethod)
+
+  let everything: Parallel<(
+    [EmailSetting],
+    [EpisodeCredit],
+    PaymentMethod?,
+    Stripe.Subscription?,
+    Models.Subscription?,
+    User?,
+    [TeamInvite],
+    [User],
+    Invoice?
+  )> = zip9(
     Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] },
 
     Current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
+
+    paymentMethod.run.map(\.right).parallel,
 
     stripeSubscription.run.map(\.right).parallel,
 
@@ -88,8 +97,7 @@ private func fetchAccountData<I>(
     Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    upcomingInvoiceAndPaymentMethod.run.parallel
-      .map { $0.right ?? (nil, nil) }
+    upcomingInvoice.run.map(\.right).parallel
   )
 
   return
@@ -101,14 +109,14 @@ private func fetchAccountData<I>(
             currentUser: user,
             emailSettings: $0,
             episodeCredits: $1,
-            paymentMethod: $7.1,
-            stripeSubscription: $2,
+            paymentMethod: $2,
+            stripeSubscription: $3,
             subscriberState: subscriberState,
-            subscription: $3,
-            subscriptionOwner: $4,
-            teamInvites: $5,
-            teammates: $6,
-            upcomingInvoice: $7.0
+            subscription: $4,
+            subscriptionOwner: $5,
+            teamInvites: $6,
+            teammates: $7,
+            upcomingInvoice: $8
           )
         )
       )
