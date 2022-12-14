@@ -40,7 +40,7 @@ private func currentPaymentInfoRowView(card: PaymentMethod.Card) -> Node {
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Current Payment Info"),
         .p(.text("\(card.brand.description) ending in \(card.last4)")),
-        .p(.text("Expires \(card.expMonth) / \(card.expYear)"))
+        .p(.text("Expires \(card.expMonth)/\(card.expYear)"))
       )
     )
   )

@@ -2,7 +2,7 @@ GET http://localhost:8080/account/payment-info
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 49712
+Content-Length: 49893
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1955,6 +1955,8 @@ html {
                       method="post">
                   <input name="token"
                          type="hidden">
+                  <input name="paymentMethodID"
+                         type="hidden">
                   <div class="none">
                     <input class="font-family-inherit
                                   fg-black
@@ -2014,7 +2016,7 @@ html {
 }
 
 var apiKey = document.getElementById('card-element').dataset.stripeKey;
-var stripe = Stripe(apiKey);
+var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
 var elements = stripe.elements();
 
 var style = {
@@ -2044,7 +2046,11 @@ form.addEventListener('submit', function(event) {
     return true;
   });
 
-  stripe.createToken(card).then(function(result) {
+  stripe.createPaymentMethod({
+    type: 'card',
+    card: card,
+  })
+  .then(function(result) {
     if (result.error) {
       var errorElement = document.getElementById('card-errors');
       errorElement.textContent = result.error.message;
@@ -2057,7 +2063,7 @@ form.addEventListener('submit', function(event) {
         return el.tagName != 'BUTTON';
       });
 
-      form.token.value = result.token.id;
+      form.paymentMethodID.value = result.paymentMethod.id;
       form.submit();
     }
   }).catch(function() {

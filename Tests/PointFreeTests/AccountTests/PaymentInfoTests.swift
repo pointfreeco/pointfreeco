@@ -17,7 +17,7 @@ import XCTest
 class PaymentInfoTests: TestCase {
   override func setUp() {
     super.setUp()
-    //    SnapshotTesting.record=true
+    //SnapshotTesting.isRecording = true
   }
 
   func testRender() {
@@ -40,7 +40,7 @@ class PaymentInfoTests: TestCase {
 
   func testNoBillingInfo() {
     var customer = Stripe.Customer.mock
-    customer.sources = .mock([.right(.mock)])
+    customer.invoiceSettings = .init(defaultPaymentMethod: nil)
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
     Current = .teamYearly
