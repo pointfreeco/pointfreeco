@@ -18,17 +18,19 @@ final class GiftFormDataTests: TestCase {
     )
 
     let data = try encoder.encode(giftFormData)
-    _assertInlineSnapshot(matching: String(decoding: data, as: UTF8.self), as: .lines, with: """
-    {
-      "fromEmail" : "blob@pointfree.co",
-      "fromName" : "Blob",
-      "message" : "Happy Birthday!",
-      "monthsFree" : "12",
-      "paymentMethodID" : "pm_deadbeef",
-      "toEmail" : "blob.jr",
-      "toName" : "Blob Jr."
-    }
-    """)
+    _assertInlineSnapshot(
+      matching: String(decoding: data, as: UTF8.self), as: .lines,
+      with: """
+        {
+          "fromEmail" : "blob@pointfree.co",
+          "fromName" : "Blob",
+          "message" : "Happy Birthday!",
+          "monthsFree" : "12",
+          "paymentMethodID" : "pm_deadbeef",
+          "toEmail" : "blob.jr",
+          "toName" : "Blob Jr."
+        }
+        """)
 
     let roundtripGiftFormData = try JSONDecoder().decode(GiftFormData.self, from: data)
     XCTAssertEqual(roundtripGiftFormData, giftFormData)
@@ -47,17 +49,19 @@ final class GiftFormDataTests: TestCase {
     )
 
     let data = try encoder.encode(giftFormData)
-    _assertInlineSnapshot(matching: String(decoding: data, as: UTF8.self), as: .lines, with: """
-    {
-      "fromEmail" : "blob@pointfree.co",
-      "fromName" : "Blob",
-      "message" : "Happy Birthday!",
-      "monthsFree" : "12",
-      "paymentMethodID" : "pm_deadbeef",
-      "toEmail" : "blob.jr",
-      "toName" : "Blob Jr."
-    }
-    """)
+    _assertInlineSnapshot(
+      matching: String(decoding: data, as: UTF8.self), as: .lines,
+      with: """
+        {
+          "fromEmail" : "blob@pointfree.co",
+          "fromName" : "Blob",
+          "message" : "Happy Birthday!",
+          "monthsFree" : "12",
+          "paymentMethodID" : "pm_deadbeef",
+          "toEmail" : "blob.jr",
+          "toName" : "Blob Jr."
+        }
+        """)
 
     let roundtripGiftFormData = try JSONDecoder().decode(GiftFormData.self, from: data)
     XCTAssertEqual(roundtripGiftFormData, giftFormData)

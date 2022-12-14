@@ -1,12 +1,13 @@
 import CustomDump
 import Models
 import PointFreePrelude
-@testable import PointFreeRouter
 import PointFreeTestSupport
 import SnapshotTesting
-import UrlFormEncoding
 import URLRouting
+import UrlFormEncoding
 import XCTest
+
+@testable import PointFreeRouter
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking

@@ -773,7 +773,7 @@ private func payment(
         .class([
           Class.margin([.mobile: [.left: 0]]),
           Class.padding([.mobile: [.top: 3]]),
-          Class.display.none
+          Class.display.none,
         ]),
         .style(lineHeight(0)),
       ],
@@ -1164,7 +1164,7 @@ private func checkoutJS(
       form.addEventListener("submit", async (event) => {
         event.preventDefault()
         if (submitting) { return }
-    
+
         displayError.textContent = ""
         submitting = true
         setFormEnabled(false, function() { return true })

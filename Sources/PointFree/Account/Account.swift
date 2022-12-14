@@ -66,39 +66,42 @@ private func fetchAccountData<I>(
     .flatMap { ($0.customer.right?.invoiceSettings.defaultPaymentMethod).map(pure) ?? throwE(unit) }
     .flatMap(Current.stripe.fetchPaymentMethod)
 
-  let everything: Parallel<(
-    [EmailSetting],
-    [EpisodeCredit],
-    PaymentMethod?,
-    Stripe.Subscription?,
-    Models.Subscription?,
-    User?,
-    [TeamInvite],
-    [User],
-    Invoice?
-  )> = zip9(
-    Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-      .map { $0.right ?? [] },
+  let everything:
+    Parallel<
+      (
+        [EmailSetting],
+        [EpisodeCredit],
+        PaymentMethod?,
+        Stripe.Subscription?,
+        Models.Subscription?,
+        User?,
+        [TeamInvite],
+        [User],
+        Invoice?
+      )
+    > = zip9(
+      Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    Current.database.fetchEpisodeCredits(user.id).run.parallel
-      .map { $0.right ?? [] },
+      Current.database.fetchEpisodeCredits(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    paymentMethod.run.map(\.right).parallel,
+      paymentMethod.run.map(\.right).parallel,
 
-    stripeSubscription.run.map(\.right).parallel,
+      stripeSubscription.run.map(\.right).parallel,
 
-    subscription.run.map(\.right).parallel,
+      subscription.run.map(\.right).parallel,
 
-    owner.run.map(\.right).parallel,
+      owner.run.map(\.right).parallel,
 
-    Current.database.fetchTeamInvites(user.id).run.parallel
-      .map { $0.right ?? [] },
+      Current.database.fetchTeamInvites(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-      .map { $0.right ?? [] },
+      Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    upcomingInvoice.run.map(\.right).parallel
-  )
+      upcomingInvoice.run.map(\.right).parallel
+    )
 
   return
     everything

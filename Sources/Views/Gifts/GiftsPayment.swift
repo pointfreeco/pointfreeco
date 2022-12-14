@@ -100,7 +100,7 @@ public func giftsPayment(
           form.addEventListener("submit", async (event) => {
             event.preventDefault()
             if (submitting) { return }
-        
+
             submitting = true
             setFormEnabled(false, () => { return true })
             displayError.textContent = ""
@@ -206,7 +206,7 @@ private func formView(
               .class([blockInputClass]),
               .name(GiftFormData.CodingKeys.toName.stringValue),
               .type(.text),
-              .required(true)
+              .required(true),
             ]
           )
         )
@@ -221,7 +221,7 @@ private func formView(
               .class([blockInputClass]),
               .name(GiftFormData.CodingKeys.toEmail.stringValue),
               .type(.email),
-              .required(true)
+              .required(true),
             ]
           )
         )
@@ -287,8 +287,8 @@ private func formView(
         .id("apple-pay-container"),
         .class([
           Class.padding([.desktop: [.right: 2]]),
-          Class.display.none
-        ])
+          Class.display.none,
+        ]),
       ],
       .label(
         attributes: [

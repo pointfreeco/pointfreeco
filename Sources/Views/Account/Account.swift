@@ -826,7 +826,9 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
   )
 }
 
-private func mainAction(for subscription: Stripe.Subscription, paymentMethod: PaymentMethod?) -> Node {
+private func mainAction(for subscription: Stripe.Subscription, paymentMethod: PaymentMethod?)
+  -> Node
+{
   if subscription.isCanceling {
     return .form(
       attributes: [

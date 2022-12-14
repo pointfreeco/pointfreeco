@@ -31,7 +31,7 @@ private func router<A>(
     return { conn in
       let route: SiteRoute?
       do {
-        route = try siteRouter.match(request: conn.request) 
+        route = try siteRouter.match(request: conn.request)
       } catch {
         route = nil
         #if DEBUG
@@ -227,7 +227,7 @@ private func render(
   case .privacy:
     return conn.map(const(user .*. subscriberState .*. route .*. unit))
       |> privacyResponse
- 
+
   case let .subscribe(data):
     return conn.map(const(user .*. data .*. unit))
       |> subscribeMiddleware
