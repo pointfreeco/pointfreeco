@@ -58,7 +58,10 @@ public func giftsPayment(
           const paymentRequest = stripe.paymentRequest({
             country: 'US',
             currency: 'usd',
-            total: { label: '', amount: \(plan.amount), }
+            total: {
+              label: 'Gift subscription: \(plan.monthCount) months',
+              amount: \(plan.amount),
+            }
           });
           const paymentRequestButton = elements.create('paymentRequestButton', {
             paymentRequest,
