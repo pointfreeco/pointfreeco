@@ -287,7 +287,7 @@ func createCustomer(
   params["business_vat_id"] = vatNumber?.rawValue
   params["description"] = description
   params["email"] = email?.rawValue
-  if let paymentMethodID {
+  if let paymentMethodID = paymentMethodID {
     params["payment_method"] = paymentMethodID
     params["invoice_settings"] = ["default_payment_method": paymentMethodID]
   }
