@@ -19,7 +19,7 @@ jobs:
           repository: pointfreeco/episode-transcripts
           token: ${{ secrets.GH_PAT }}
           path: Sources/Models/Transcripts
-      - uses: akhileshns/heroku-deploy@v3.4.6
+      - uses: akhileshns/heroku-deploy@v3
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
