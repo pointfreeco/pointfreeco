@@ -790,11 +790,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
-    Current.stripe.createCustomer = { _, _, _, _, _ in
-      var customer = Customer.mock
-      let card = update(Card.mock) { $0.country = "BO" }
-      customer.sources = .mock([.left(card)])
-      return pure(customer)
+    var customer = Customer.mock
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
+    Current.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
+    Current.stripe.fetchPaymentMethod = {
+      pure(
+        PaymentMethod(
+          card: .regional,
+          customer: .left(customer.id),
+          id: $0
+        )
+      )
     }
 
     var subscribeData = SubscribeData.individualMonthly

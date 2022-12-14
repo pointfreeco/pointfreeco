@@ -175,16 +175,29 @@ extension ListEnvelope {
 
 extension PaymentMethod {
   public static let mock = Self(
-    card: Card(
-      brand: .visa,
-      country: "US",
-      expMonth: 1,
-      expYear: 2020,
-      funding: .credit,
-      last4: "4242"
-    ),
+    card: .mock,
     customer: .left("cus_test"),
     id: "pm_card"
+  )
+}
+
+extension PaymentMethod.Card {
+  public static let mock = Self(
+    brand: .visa,
+    country: "US",
+    expMonth: 1,
+    expYear: 2020,
+    funding: .credit,
+    last4: "4242"
+  )
+
+  public static let regional = Self(
+    brand: .visa,
+    country: "BO",
+    expMonth: 1,
+    expYear: 2020,
+    funding: .credit,
+    last4: "4242"
   )
 }
 
