@@ -90,6 +90,7 @@ extension Environment {
     $0.database.fetchTeamInvites = const(pure([.mock]))
     $0.stripe.fetchSubscription = const(pure(.teamYearly))
     $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
+    $0.stripe.fetchPaymentMethod = const(pure(.mock))
   }
 
   public static let teamYearlyTeammate = update(teamYearly) {

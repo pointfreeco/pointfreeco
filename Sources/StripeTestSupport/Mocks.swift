@@ -92,10 +92,6 @@ extension Customer {
   )
 }
 
-extension PaymentMethod {
-  static let mock = Self(id: "pm_deadbeef")
-}
-
 extension StripeError {
   public static let mock = StripeError(
     message: "Your card has insufficient funds."
@@ -164,6 +160,21 @@ extension ListEnvelope {
       hasMore: false
     )
   }
+}
+
+extension PaymentMethod {
+  public static let mock = Self(
+    card: Card(
+      brand: .visa,
+      country: "US",
+      expMonth: 1,
+      expYear: 2020,
+      funding: .credit,
+      last4: "4242"
+    ),
+    customer: .left("cus_test"),
+    id: "pm_card"
+  )
 }
 
 extension Plan {
