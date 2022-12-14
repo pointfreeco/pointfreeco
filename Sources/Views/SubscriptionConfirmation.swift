@@ -811,6 +811,9 @@ private func total(
   referrer: User?,
   useRegionalDiscount: Bool
 ) -> Node {
+  let discount = coupon?.discount(for:) ?? { $0 }
+  let referralDiscount = referrer == nil ? 0 : 18
+
   return .gridRow(
     attributes: [
       .class([
@@ -857,6 +860,58 @@ private func total(
           .name("pricing[quantity]"),
           .type(.hidden),
         ]),
+        .script(
+          unsafe: #"""
+            function format(money) {
+              return "$" + money.toFixed(2).replace(/\.00$/, "")
+            }
+            function updateSeats() {
+              var teamMembers = document.getElementById("team-members")
+              var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
+              for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+                teamMemberInputs[idx].name = "teammate"
+              }
+              var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
+              var seats = teamMembers
+                ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
+                : 1
+              var form = document.getElementById("subscribe-form")
+              form["pricing[quantity]"].value = seats
+              var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
+              var monthly = form["pricing[billing]"].value == "monthly"
+              var monthlyPricePerSeat = (
+                monthly
+                  ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+                  : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
+              )
+              const monthlyPrice = seats * monthlyPricePerSeat
+              const total = monthly
+                ? monthlyPrice
+                : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
+              document.getElementById("total").textContent = format(total)
+              document.getElementById("pricing-preview").innerHTML = (
+                "You will be charged <strong>"
+                  + format(monthlyPricePerSeat)
+                  + " per month</strong>"
+                  + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
+                  + (monthly ? "" : " times <strong>12 months</strong>")
+                  + "."
+              )
+              if (window.paymentRequest) {
+                window.paymentRequest.update({
+                  total: {
+                    label: monthly ? "Monthly subscription" : "Yearly subscription",
+                    amount: total * 100
+                  }
+                })
+              }
+            }
+            window.addEventListener("load", function() {
+              updateSeats()
+              var form = document.getElementById("subscribe-form")
+              form.addEventListener("change", updateSeats)
+            })
+            """#),
         .span(
           attributes: [
             .class([
@@ -1052,86 +1107,10 @@ private func checkoutJS(
   referrer: User?,
   useRegionalDiscount: Bool
 ) -> String {
-  let discount = coupon?.discount(for:) ?? { $0 }
-  let referralDiscount = referrer == nil ? 0 : 18
   return """
-    var updateSeats;
-
-    function format(money) {
-      return "$" + money.toFixed(2).replace(/\\.00$/, "")
-    }
-
-    function currentSubscriptionData() {
-      const teamMembers = document.getElementById("team-members")
-      const teamMemberInputs = teamMembers == null
-        ? []
-        : Array.from(teamMembers.getElementsByTagName("INPUT"))
-      const teamOwnerIsTakingSeat = document
-        .getElementsByName("isOwnerTakingSeat")[0].value == "true"
-      const seatCount = teamMembers
-        ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-        : 1
-      const form = document.getElementById("subscribe-form")
-      const regionalDiscount = \(useRegionalDiscount ? 0.5 : 1.0)
-      const isMonthly = form["pricing[billing]"].value == "monthly"
-      const monthlyPricePerSeat = (
-        isMonthly
-          ? \(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
-          : \(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
-      )
-      const monthlyPrice = seatCount * monthlyPricePerSeat
-      const total = isMonthly
-        ? monthlyPrice
-        : (monthlyPrice * 12 - \(referralDiscount) * regionalDiscount)
-      const teammateEmails = []
-      for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-        teammateEmails.push(teamMemberInputs[idx].name)
-      }
-      return {
-        isMonthly: isMonthly,
-        monthlyPrice: monthlyPrice,
-        monthlyPricePerSeat: monthlyPricePerSeat,
-        seatCount: seatCount,
-        teammateEmails: teammateEmails,
-        teamMemberInputs: teamMemberInputs,
-        teamOwnerIsTakingSeat: teamOwnerIsTakingSeat,
-        total: total
-      }
-    }
-
     window.addEventListener("load", function() {
       var form = document.getElementById("subscribe-form")
       var displayError = document.getElementById("card-errors")
-      var paymentRequest
-
-      updateSeats = () => {
-        const data = currentSubscriptionData()
-        for (var idx = 0; idx < data.teamMemberInputs.length; idx++) {
-          data.teamMemberInputs[idx].name = "teammate"
-        }
-        form["pricing[quantity]"].value = data.seatCount
-        document.getElementById("total").textContent = format(data.total)
-        document.getElementById("pricing-preview").innerHTML = (
-          "You will be charged <strong>"
-            + format(data.monthlyPricePerSeat)
-            + " per month</strong>"
-            + (data.seatCount > 1 ? " times <strong>" + data.seatCount + " seats</strong>" : "")
-            + (data.isMonthly ? "" : " times <strong>12 months</strong>")
-            + "."
-        )
-
-        if (paymentRequest) {
-          paymentRequest.update({
-            total: {
-              label: data.isMonthly ? "Monthly subscription" : "Yearly subscription",
-              amount: data.total * 100
-            }
-          })
-        }
-      }
-
-      updateSeats()
-      form.addEventListener("change", updateSeats);
 
       var apiKey = document.getElementById("card-element").dataset.stripeKey
       var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
@@ -1142,13 +1121,13 @@ private func checkoutJS(
         }
       }
 
-      paymentRequest = stripe.paymentRequest({
+      window.paymentRequest = stripe.paymentRequest({
         country: 'US',
         currency: 'usd',
         total: { label: '', amount: 100, }
       });
       const paymentRequestButton = elements.create('paymentRequestButton', {
-        paymentRequest,
+        paymentRequest: window.paymentRequest,
       });
 
       var card = elements.create("card", { style: style })
@@ -1161,7 +1140,7 @@ private func checkoutJS(
         }
       });
 
-      paymentRequest.on('paymentmethod', async (ev) => {
+      window.paymentRequest.on('paymentmethod', async (ev) => {
         setFormEnabled(false, function() { return true })
         ev.complete('success')
         form.paymentMethodID.value = ev.paymentMethod.id
@@ -1212,7 +1191,7 @@ private func checkoutJS(
       });
 
       (async () => {
-        const result = await paymentRequest.canMakePayment();
+        const result = await window.paymentRequest.canMakePayment();
         if (result) {
           paymentRequestButton.mount('#payment-request-button');
           document.getElementById("apple-pay-container").style.display = 'block'

@@ -16,7 +16,7 @@ import XCTest
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
-    //SnapshotTesting.isRecording = true
+        SnapshotTesting.isRecording=true
   }
 
   func testDiscounts_LoggedOut() {
