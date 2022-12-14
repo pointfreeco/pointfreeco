@@ -37,8 +37,6 @@ public struct Card: Codable, Equatable, Identifiable {
     self.object = object
   }
 
-  public typealias Country = Tagged<(country: (), Self), String>
-
   public enum Object: String, Codable { case card }
 
   public enum Brand: String, Codable, Equatable {
@@ -372,6 +370,9 @@ public struct PaymentIntent: Codable, Equatable, Identifiable {
   }
 }
 
+public enum CountryTag {}
+public typealias Country = Tagged<CountryTag, String>
+
 public struct PaymentMethod: Codable, Equatable, Identifiable {
   public var card: Card?
   public var customer: Expandable<Customer>?
@@ -439,8 +440,6 @@ public struct PaymentMethod: Codable, Equatable, Identifiable {
         }
       }
     }
-
-    public typealias Country = Tagged<(country: (), Self), String>
 
     public enum Funding: String, Codable, Equatable {
       case credit

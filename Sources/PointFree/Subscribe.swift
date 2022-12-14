@@ -44,24 +44,19 @@ private func subscribe(
     ? -9_00
     : -18_00
 
-  let paymentType: Stripe.Client.CustomerCreationID
-  switch subscribeData.paymentType {
-  case let .paymentMethodID(paymentMethodID):
-    paymentType = .paymentMethod(paymentMethodID)
-  case let .token(token):
-    paymentType = .token(token)
-  }
-
   let stripeSubscription = Current.stripe.createCustomer(
-    paymentType,
+    subscribeData.paymentMethodID,
     user.id.rawValue.uuidString,
     user.email,
     nil,
     subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
   )
-  .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
-    let country = customer.sources?.data.first?.left?.country
-
+    .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
+      Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+        .map { ($0, customer) }
+    }
+  .flatMap { paymentMethod, customer -> EitherIO<Error, Stripe.Subscription> in
+    let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
       return throwE(
         StripeErrorEnvelope(

@@ -6,7 +6,9 @@ import Stripe
 
 extension Client {
   public static let mock = Client(
+    attachPaymentMethod: { _, _ in pure(.mock) },
     cancelSubscription: { _, _ in pure(.canceling) },
+    confirmPaymentIntent: { _ in pure(.succeeded) },
     createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
@@ -14,9 +16,11 @@ extension Client {
     deleteCoupon: const(pure(unit)),
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
+    fetchCustomerPaymentMethods: { _ in pure(.mock([])) },
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
     fetchPaymentIntent: const(pure(.succeeded)),
+    fetchPaymentMethod: { _ in pure(.mock) },
     fetchPlans: { pure(.mock([.mock])) },
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
@@ -82,9 +86,14 @@ extension Customer {
     businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",
+    invoiceSettings: .init(defaultPaymentMethod: "pm_card_test"),
     metadata: [:],
     sources: .mock([.left(.mock)])
   )
+}
+
+extension PaymentMethod {
+  static let mock = Self(id: "pm_deadbeef")
 }
 
 extension StripeError {

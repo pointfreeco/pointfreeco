@@ -4,23 +4,16 @@ import Stripe
 public struct SubscribeData: Equatable {
   public var coupon: Stripe.Coupon.ID?
   public var isOwnerTakingSeat: Bool
-  public var paymentType: PaymentType
+  public var paymentMethodID: PaymentMethod.ID
   public var pricing: Pricing
   public var referralCode: User.ReferralCode?
   public var teammates: [EmailAddress]
   public var useRegionalDiscount: Bool
 
-  public enum PaymentType: Equatable {
-    case paymentMethodID(PaymentMethod.ID)
-    
-    @available(*, deprecated)
-    case token(Stripe.Token.ID)
-  }
-  
   public init(
     coupon: Stripe.Coupon.ID?,
     isOwnerTakingSeat: Bool,
-    paymentType: PaymentType,
+    paymentMethodID: PaymentMethod.ID,
     pricing: Pricing,
     referralCode: User.ReferralCode?,
     teammates: [EmailAddress],
@@ -28,7 +21,7 @@ public struct SubscribeData: Equatable {
   ) {
     self.coupon = coupon
     self.isOwnerTakingSeat = isOwnerTakingSeat
-    self.paymentType = paymentType
+    self.paymentMethodID = paymentMethodID
     self.pricing = pricing
     self.referralCode = referralCode
     self.teammates = teammates

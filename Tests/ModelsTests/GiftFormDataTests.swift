@@ -12,7 +12,7 @@ final class GiftFormDataTests: TestCase {
       fromName: "Blob",
       message: "Happy Birthday!",
       monthsFree: 12,
-      paymentType: .paymentIntentID("pi_deadbeef"),
+      paymentMethodID: "pm_deadbeef",
       toEmail: "blob.jr",
       toName: "Blob Jr."
     )
@@ -41,7 +41,7 @@ final class GiftFormDataTests: TestCase {
       fromName: "Blob",
       message: "Happy Birthday!",
       monthsFree: 12,
-      paymentType: .paymentMethodID("pm_deadbeef"),
+      paymentMethodID: "pm_deadbeef",
       toEmail: "blob.jr",
       toName: "Blob Jr."
     )

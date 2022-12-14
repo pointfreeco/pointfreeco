@@ -427,7 +427,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        id: .token("tok_test"), description: "blob", email: "blob@pointfree.co", vatNumber: nil,
+        paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: nil,
         balance: nil
       ).rawValue,
       as: .raw,
@@ -435,7 +435,7 @@ final class StripeTests: TestCase {
     )
     assertSnapshot(
       matching: Stripe.createCustomer(
-        id: .token("tok_test"), description: "blob", email: "blob@pointfree.co", vatNumber: "1",
+        paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co", vatNumber: "1",
         balance: -18_00
       ).rawValue,
       as: .raw,
@@ -534,7 +534,7 @@ final class StripeTests: TestCase {
       named: "invoice-customer"
     )
     assertSnapshot(
-      matching: Stripe.updateCustomer(id: "cus_test", token: "tok_test").rawValue,
+      matching: Stripe.updateCustomer(id: "cus_test", paymentMethodID: "pm_tok_test").rawValue,
       as: .raw,
       named: "update-customer"
     )

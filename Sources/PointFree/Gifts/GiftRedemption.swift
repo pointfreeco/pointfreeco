@@ -109,7 +109,7 @@ private func redeemGift(
   } else {
     let plan: Plan.ID = gift.monthsFree < 12 ? .monthly : .yearly
     return Current.stripe.createCustomer(
-      .guest,
+      nil,
       user.id.rawValue.uuidString,
       user.email,
       nil,

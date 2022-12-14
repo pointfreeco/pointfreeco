@@ -566,7 +566,10 @@ let subscribeData = Body {
       Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
         Bool.parser()
       }
-      paymentType
+      Field(
+        SubscribeData.CodingKeys.paymentMethodID.rawValue,
+        .string.representing(PaymentMethod.ID.self)
+      )
       Parse(.memberwise(Pricing.init(billing:quantity:))) {
         Field("pricing[billing]") { Pricing.Billing.parser() }
         Field("pricing[quantity]") { Digits() }
@@ -586,17 +589,4 @@ let subscribeData = Body {
     }
     .map(.memberwise(SubscribeData.init))
   }
-}
-
-private let paymentType = OneOf {
-  Field(
-    SubscribeData.CodingKeys.paymentMethodID.rawValue,
-    .string.representing(PaymentMethod.ID.self)
-  )
-  .map(/SubscribeData.PaymentType.paymentMethodID)
-  Field(
-    SubscribeData.CodingKeys.token.rawValue,
-    .string.representing(Token.ID.self)
-  )
-  .map(/SubscribeData.PaymentType.token)
 }

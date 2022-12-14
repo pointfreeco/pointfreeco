@@ -36,7 +36,7 @@ class PointFreeRouterTests: TestCase {
     let subscribeData = SubscribeData(
       coupon: "student-discount",
       isOwnerTakingSeat: false,
-      paymentType: .token("deadbeef"),
+      paymentMethodID: "pm_deadbeef",
       pricing: .init(billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
@@ -164,29 +164,6 @@ class PointFreeRouterTests: TestCase {
       .redeem(.init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
-    XCTAssertEqual(try siteRouter.request(for: route), request)
-  }
-
-  func testGiftsConfirmation() {
-    var request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
-    request.httpMethod = "POST"
-    request.httpBody = Data(
-      """
-      fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-      """.utf8)
-
-    let route = SiteRoute.gifts(
-      .confirmation(
-        update(.empty) {
-          $0.fromEmail = "blob@pointfree.co"
-          $0.fromName = "Blob"
-          $0.message = "HBD!"
-          $0.monthsFree = 3
-          $0.toEmail = "blob.jr@pointfree.co"
-          $0.toName = "Blob Jr."
-        }))
-
-    XCTAssertNoDifference(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 }

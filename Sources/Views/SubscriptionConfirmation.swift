@@ -935,7 +935,7 @@ public let currencyFormatter: NumberFormatter = {
 }()
 
 public struct DiscountCountry {
-  public var countryCode: Stripe.Card.Country
+  public var countryCode: Stripe.Country
   public var name: String
 
   public static let all: [DiscountCountry] = [

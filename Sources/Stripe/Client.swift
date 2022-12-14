@@ -23,7 +23,7 @@ public struct Client {
       Error, Coupon
     >
   public var createCustomer:
-    (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+    (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription:
     (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<Error, Subscription>
@@ -46,14 +46,6 @@ public struct Client {
   public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
-  public enum CustomerCreationID {
-    case guest
-    case paymentMethod(PaymentMethod.ID)
-
-    @available(*, deprecated)
-    case token(Token.ID)
-  }
-
   public init(
     attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) -> EitherIO<Error, PaymentMethod>,
     cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
@@ -62,7 +54,7 @@ public struct Client {
     confirmPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
       -> EitherIO<Error, Coupon>,
-    createCustomer: @escaping (CustomerCreationID, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
+    createCustomer: @escaping (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
       EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
     createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<
@@ -165,7 +157,7 @@ extension Client {
       },
       createCustomer: {
         runStripe(secretKey, logger)(
-          Stripe.createCustomer(id: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
+          Stripe.createCustomer(paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
       },
       createPaymentIntent: {
@@ -282,7 +274,7 @@ func createCoupon(
 }
 
 func createCustomer(
-  id: Client.CustomerCreationID,
+  paymentMethodID: PaymentMethod.ID?,
   description: String?,
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
@@ -295,16 +287,10 @@ func createCustomer(
   params["business_vat_id"] = vatNumber?.rawValue
   params["description"] = description
   params["email"] = email?.rawValue
-  switch id {
-  case .guest:
-    break
-  case let .paymentMethod(paymentMethodID):
+  if let paymentMethodID {
     params["payment_method"] = paymentMethodID
     params["invoice_settings"] = ["default_payment_method": paymentMethodID]
-  case let .token(tokenID):
-    params["source"] = tokenID
   }
-
   return stripeRequest(
     "customers?expand[]=sources",
     .post(params)
