@@ -823,7 +823,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    //    SnapshotTesting.record=true
+    //SnapshotTesting.isRecording = true
   }
 
   func testNotLoggedIn_IndividualMonthly() {

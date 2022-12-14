@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={}
 
-isOwnerTakingSeat=true&pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=5&token=stripe-deadbeef
+isOwnerTakingSeat=true&paymentMethodID=pm_stripe-deadbeef&pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=5
 
 302 Found
 Location: /login?redirect=http://localhost:8080/pricing
