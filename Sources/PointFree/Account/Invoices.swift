@@ -91,13 +91,7 @@ private func fetchInvoices<A>(
           return conn
             |> redirect(
               to: .account(),
-              headersMiddleware: flash(
-                .error,
-                """
-                We had some trouble loading your invoices! Please try again later.
-                If the problem persists, please notify <support@pointfree.co>.
-                """
-              )
+              headersMiddleware: flash(.error, invoiceError)
             )
         }
       }

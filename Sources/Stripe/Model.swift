@@ -60,12 +60,20 @@ public struct Card: Codable, Equatable, Identifiable {
 public struct Charge: Codable, Equatable, Identifiable {
   public var amount: Cents<Int>
   public var id: StripeID<Self>
-  public var source: Either<Card, Source>
+  public var paymentMethodDetails: PaymentMethodDetails
 
-  public init(amount: Cents<Int>, id: ID, source: Either<Card, Source>) {
+  public init(amount: Cents<Int>, id: ID, paymentMethodDetails: PaymentMethodDetails) {
     self.amount = amount
     self.id = id
-    self.source = source
+    self.paymentMethodDetails = paymentMethodDetails
+  }
+
+  public struct PaymentMethodDetails: Codable, Equatable {
+    public var card: PaymentMethod.Card?
+
+    public init(card: PaymentMethod.Card? = nil) {
+      self.card = card
+    }
   }
 }
 
@@ -147,33 +155,22 @@ public enum Currency: String, Codable {
 public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
-
-  @available(*, deprecated)
-  public var defaultSource: Card.ID?
-
   public var id: StripeID<Self>
   public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
 
-  @available(*, deprecated)
-  public var sources: ListEnvelope<Either<Card, Source>>?
-
   public init(
     balance: Cents<Int>,
     businessVatId: Vat?,
-    defaultSource: Card.ID?,
     id: ID,
     invoiceSettings: InvoiceSettings,
-    metadata: [String: String],
-    sources: ListEnvelope<Either<Card, Source>>?
+    metadata: [String: String]
   ) {
     self.balance = balance
     self.businessVatId = businessVatId
-    self.defaultSource = defaultSource
     self.id = id
     self.invoiceSettings = invoiceSettings
     self.metadata = metadata
-    self.sources = sources
   }
 
   public typealias Vat = Tagged<(Self, vat: ()), String>

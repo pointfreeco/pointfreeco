@@ -238,8 +238,7 @@ class GiftTests: TestCase {
       credit = amount
       return pure(
         update(.mock) {
-          $0.defaultSource = nil
-          $0.sources = .mock([])
+          $0.invoiceSettings = .init(defaultPaymentMethod: nil)
         })
     }
     Current.stripe.createSubscription = { _, _, _, _ in

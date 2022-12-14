@@ -379,7 +379,7 @@ func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
 }
 
 func fetchSubscription(id: Subscription.ID) -> DecodableRequest<Subscription> {
-  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.sources")
+  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
 func fetchUpcomingInvoice(_ customer: Customer.ID) -> DecodableRequest<Invoice> {

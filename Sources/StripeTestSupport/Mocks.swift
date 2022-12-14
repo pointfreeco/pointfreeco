@@ -76,7 +76,7 @@ extension Charge {
   public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
-    source: .left(.mock)
+    paymentMethodDetails: .mock
   )
 }
 
