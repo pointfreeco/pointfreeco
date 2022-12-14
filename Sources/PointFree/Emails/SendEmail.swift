@@ -117,7 +117,6 @@ public func sendEmail(
 func notifyError(subject: String) -> (Error) -> Prelude.Unit {
   return { error in
     var errorDump = ""
-    print(error)
     dump(error, to: &errorDump)
 
     parallel(
