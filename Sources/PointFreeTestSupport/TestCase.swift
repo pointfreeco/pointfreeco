@@ -19,7 +19,7 @@ open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
-            SnapshotTesting.isRecording = true
+//    SnapshotTesting.isRecording = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
     siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
@@ -44,7 +44,7 @@ open class LiveDatabaseTestCase: TestCase {
     super.setUp()
 
     diffTool = "ksdiff"
-    SnapshotTesting.isRecording = true
+//    SnapshotTesting.isRecording = true
 
     precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
     self.pool = EventLoopGroupConnectionPool(
