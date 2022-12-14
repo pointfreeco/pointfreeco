@@ -35,7 +35,6 @@ public struct SubscribeData: Equatable {
     case pricing
     case referralCode = "ref"
     case teammates
-    case token
     case useRegionalDiscount
   }
 }

@@ -751,12 +751,6 @@ private func payment(
       ),
       .input(
         attributes: [
-          .name(SubscribeData.CodingKeys.token.rawValue),
-          .type(.hidden),
-        ]
-      ),
-      .input(
-        attributes: [
           .name(SubscribeData.CodingKeys.paymentMethodID.rawValue),
           .type(.hidden),
         ]
