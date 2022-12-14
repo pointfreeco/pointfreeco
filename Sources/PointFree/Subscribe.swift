@@ -30,10 +30,6 @@ private let validateSubscribeData:
 private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
-  // TODO: how does payment method screen update?
-  // TODO: how to show payment method on account page
-  // TODO: gifts
-
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
@@ -51,10 +47,10 @@ private func subscribe(
     nil,
     subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
   )
-    .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
-      Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
-        .map { ($0, customer) }
-    }
+  .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
+    Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+      .map { ($0, customer) }
+  }
   .flatMap { paymentMethod, customer -> EitherIO<Error, Stripe.Subscription> in
     let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
@@ -94,7 +90,7 @@ private func subscribe(
     return Current.stripe.createSubscription(
       customer.id,
       subscribeData.pricing.billing.plan,
-      subscribeData.pricing.quantity, 
+      subscribeData.pricing.quantity,
       subscribeData.coupon ?? regionalDiscountCouponId
     )
   }
@@ -165,10 +161,10 @@ private func subscribe(
       },
       { _ in
         conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-        )
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
+          )
       }
     )
   )
