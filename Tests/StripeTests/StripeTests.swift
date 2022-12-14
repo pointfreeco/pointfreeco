@@ -399,7 +399,7 @@ final class StripeTests: TestCase {
   }
 
   func testRequests() {
-    //    SnapshotTesting.isRecording=true
+    //SnapshotTesting.isRecording = true
     assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
       as: .raw,
