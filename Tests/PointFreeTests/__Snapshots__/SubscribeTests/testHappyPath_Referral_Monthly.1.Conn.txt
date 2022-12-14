@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000004"}
 
-isOwnerTakingSeat=true&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=1&ref=users-referral_code1&token=deadbeef
+isOwnerTakingSeat=true&paymentMethodID=pm_deadbeef&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=1&ref=users-referral_code1
 
 302 Found
 Location: /account
