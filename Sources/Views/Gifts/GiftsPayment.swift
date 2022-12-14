@@ -213,7 +213,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toName.stringValue),
               .type(.text),
               .required(true),
-              .value("asdf") // TODO: remove debug code
+              .value("")
             ]
           )
         )
@@ -229,7 +229,7 @@ private func formView(
               .name(GiftFormData.CodingKeys.toEmail.stringValue),
               .type(.email),
               .required(true),
-              .value("asdf@asdf.com") // TODO: remove debug code
+              .value("") 
             ]
           )
         )
