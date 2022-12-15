@@ -66,6 +66,13 @@ public func giftsPayment(
           const paymentRequestButton = elements.create('paymentRequestButton', {
             paymentRequest,
           });
+          paymentRequestButton.on('click', (event) => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              form.reportValidity()
+              return
+            }
+          });
 
           (async () => {
             const result = await paymentRequest.canMakePayment();

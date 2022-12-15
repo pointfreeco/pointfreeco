@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Update Heroku CLI
         run: heroku update
       - name: Check out submodules
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: pointfreeco/episode-transcripts
           token: ${{ secrets.GH_PAT }}
