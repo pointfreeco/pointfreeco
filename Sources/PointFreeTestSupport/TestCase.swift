@@ -40,8 +40,8 @@ open class LiveDatabaseTestCase: TestCase {
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
   let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
-  override open func setUp() {
-    super.setUp()
+  override open func setUp() async throws {
+    try await super.setUp()
 
     diffTool = "ksdiff"
     //    SnapshotTesting.isRecording = true
@@ -56,7 +56,7 @@ open class LiveDatabaseTestCase: TestCase {
       on: self.eventLoopGroup
     )
     Current.database = .live(pool: self.pool)
-    try! Current.database.resetForTesting(pool: pool)
+    try await Current.database.resetForTesting(pool: pool)
   }
 
   override open func tearDown() {
