@@ -5,16 +5,17 @@ import PointFreeRouter
 import Stripe
 import Styleguide
 
-public func paymentInfoView(card: Stripe.Card?, publishableKey: String, stripeJsSrc: String) -> Node
-{
-  return .gridRow(
+public func paymentInfoView(
+  paymentMethod: PaymentMethod?, publishableKey: String, stripeJsSrc: String
+) -> Node {
+  .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
       attributes: [.style(margin(leftRight: .auto))],
       .div(
         attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         titleRowView,
-        card.map(currentPaymentInfoRowView(card:)) ?? [],
+        (paymentMethod?.card).map(currentPaymentInfoRowView(card:)) ?? [],
         updatePaymentInfoRowView(publishableKey: publishableKey, stripeJsSrc: stripeJsSrc)
       )
     )
@@ -31,15 +32,15 @@ private let titleRowView = Node.gridRow(
   )
 )
 
-private func currentPaymentInfoRowView(card: Stripe.Card) -> Node {
-  return Node.gridRow(
+private func currentPaymentInfoRowView(card: PaymentMethod.Card) -> Node {
+  .gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
-    Node.gridColumn(
+    .gridColumn(
       sizes: [.mobile: 12],
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Current Payment Info"),
-        .p(.text(card.brand.rawValue + " ending in " + String(card.last4))),
-        .p(.text("Expires " + String(card.expMonth) + "/" + String(card.expYear)))
+        .p(.text("\(card.brand.description) ending in \(card.last4)")),
+        .p(.text("Expires \(card.expMonth)/\(card.expYear)"))
       )
     )
   )

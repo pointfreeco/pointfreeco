@@ -5,31 +5,31 @@ import GitHub
 import Stripe
 import Tagged
 
-public struct User: Decodable, Equatable {
+public struct User: Decodable, Equatable, Identifiable {
   public var email: EmailAddress
   public var episodeCreditCount: Int
-  public var gitHubUserId: GitHubUser.Id
+  public var gitHubUserId: GitHubUser.ID
   public var gitHubAccessToken: String
-  public var id: Id
+  public var id: Tagged<Self, UUID>
   public var isAdmin: Bool
   public var name: String?
   public var referralCode: ReferralCode
-  public var referrerId: Id?
+  public var referrerId: ID?
   public var rssSalt: RssSalt
-  public var subscriptionId: Subscription.Id?
+  public var subscriptionId: Subscription.ID?
 
   public init(
     email: EmailAddress,
     episodeCreditCount: Int,
-    gitHubUserId: GitHubUser.Id,
+    gitHubUserId: GitHubUser.ID,
     gitHubAccessToken: String,
-    id: Id,
+    id: ID,
     isAdmin: Bool,
     name: String?,
     referralCode: ReferralCode,
-    referrerId: Id?,
+    referrerId: ID?,
     rssSalt: RssSalt,
-    subscriptionId: Subscription.Id?
+    subscriptionId: Subscription.ID?
   ) {
     self.email = email
     self.episodeCreditCount = episodeCreditCount
@@ -44,9 +44,8 @@ public struct User: Decodable, Equatable {
     self.subscriptionId = subscriptionId
   }
 
-  public typealias Id = Tagged<User, UUID>
-  public typealias ReferralCode = Tagged<(User, referralCode: ()), String>
-  public typealias RssSalt = Tagged<(User, rssSalt: ()), String>
+  public typealias ReferralCode = Tagged<(Self, referralCode: ()), String>
+  public typealias RssSalt = Tagged<(Self, rssSalt: ()), String>
 
   public enum CodingKeys: String, CodingKey {
     case email

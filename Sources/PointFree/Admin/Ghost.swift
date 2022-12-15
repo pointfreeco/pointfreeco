@@ -15,7 +15,7 @@ let ghostIndexMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
   >=> respond({ _ in indexView })
 
-let ghostStartMiddleware: M<Tuple2<User, User.Id?>> =
+let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
   filterMap(
     over2(fetchGhostee) >>> sequence2 >>> map(require2),
     or: redirect(
@@ -49,7 +49,7 @@ private func startGhosting(
     }
 }
 
-private func fetchGhostee(userId: User.Id?) -> IO<User?> {
+private func fetchGhostee(userId: User.ID?) -> IO<User?> {
   guard let userId = userId else { return pure(nil) }
 
   return Current.database.fetchUserById(userId)

@@ -2,17 +2,17 @@ import EmailAddress
 import Foundation
 import Tagged
 
-public struct EnterpriseAccount: Decodable, Equatable {
+public struct EnterpriseAccount: Decodable, Equatable, Identifiable {
   public var companyName: String
   public var domain: Domain
-  public var id: Id
-  public var subscriptionId: Subscription.Id
+  public var id: Tagged<Self, UUID>
+  public var subscriptionId: Subscription.ID
 
   public init(
     companyName: String,
     domain: Domain,
-    id: Id,
-    subscriptionId: Subscription.Id
+    id: ID,
+    subscriptionId: Subscription.ID
   ) {
     self.companyName = companyName
     self.domain = domain
@@ -20,18 +20,15 @@ public struct EnterpriseAccount: Decodable, Equatable {
     self.subscriptionId = subscriptionId
   }
 
-  public typealias Domain = Tagged<EnterpriseAccount, String>
-  public typealias Id = Tagged<EnterpriseAccount, UUID>
+  public typealias Domain = Tagged<Self, String>
 }
 
-public struct EnterpriseEmail: Decodable, Equatable {
-  public var id: Id
+public struct EnterpriseEmail: Decodable, Equatable, Identifiable {
+  public var id: Tagged<Self, UUID>
   public var email: EmailAddress
-  public var userId: User.Id
+  public var userId: User.ID
 
-  public typealias Id = Tagged<EnterpriseEmail, UUID>
-
-  public init(id: Id, email: EmailAddress, userId: User.Id) {
+  public init(id: ID, email: EmailAddress, userId: User.ID) {
     self.id = id
     self.email = email
     self.userId = userId

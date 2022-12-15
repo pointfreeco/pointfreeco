@@ -45,7 +45,7 @@ private func newEpisodeEmailRowView(ep: Episode) -> Node {
   )
 }
 
-let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, Bool?>> =
+let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.ID, String?, String?, Bool?>> =
   requireEpisode
   <<< requireIsTest
   <| sendNewEpisodeEmails
@@ -53,7 +53,7 @@ let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, 
 
 private let requireEpisode:
   MT<
-    Tuple5<User, Episode.Id, String?, String?, Bool?>,
+    Tuple5<User, Episode.ID, String?, String?, Bool?>,
     Tuple5<User, Episode, String?, String?, Bool?>
   > = filterMap(
     over2(fetchEpisode) >>> require2 >>> pure,

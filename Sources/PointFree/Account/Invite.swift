@@ -26,14 +26,14 @@ let showInviteMiddleware =
     }
   )
 
-private let validateTeamInvite: MT<Tuple2<TeamInvite.Id, User?>, Tuple3<TeamInvite, User, User?>> =
+private let validateTeamInvite: MT<Tuple2<TeamInvite.ID, User?>, Tuple3<TeamInvite, User, User?>> =
   redirectCurrentSubscribers
   <<< requireTeamInvite
   <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
 
 private let genericInviteError = "You need to be the inviter to do that!"
 
-let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   requireTeamInvite
   <<< filterMap(require2 >>> pure, or: loginAndRedirect)
   <<< filter(
@@ -57,7 +57,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
       )
   }
 
-let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+let resendInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
   <<< requireTeamInvite
   <<< filter(
@@ -76,7 +76,7 @@ let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
       )
   }
 
-let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>> =
+let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   redirectCurrentSubscribers
   <<< requireTeamInvite
   <<< filterMap(require2 >>> pure, or: loginAndRedirect)
@@ -236,7 +236,7 @@ func invalidSubscriptionErrorMiddleware<A>(
 
 private func requireTeamInvite<A>(
   _ middleware: @escaping M<T2<TeamInvite, A>>
-) -> M<T2<TeamInvite.Id, A>> {
+) -> M<T2<TeamInvite.ID, A>> {
 
   return { conn in
     Current.database.fetchTeamInvite(get1(conn.data))

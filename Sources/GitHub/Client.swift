@@ -31,10 +31,10 @@ public struct Client {
 }
 
 extension Client {
-  public typealias Id = Tagged<(Client, id: ()), String>
-  public typealias Secret = Tagged<(Client, secret: ()), String>
+  public typealias ID = Tagged<(Self, id: ()), String>
+  public typealias Secret = Tagged<(Self, secret: ()), String>
 
-  public init(clientId: Id, clientSecret: Secret, logger: Logger?) {
+  public init(clientId: ID, clientSecret: Secret, logger: Logger?) {
     self.init(
       fetchAuthToken: {
         runGitHub(logger)(fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
@@ -46,7 +46,7 @@ extension Client {
 }
 
 func fetchGitHubAuthToken(
-  clientId: Client.Id, clientSecret: Client.Secret
+  clientId: Client.ID, clientSecret: Client.Secret
 )
   -> (String)
   -> DecodableRequest<Either<OAuthError, AccessToken>>

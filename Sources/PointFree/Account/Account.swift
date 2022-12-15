@@ -61,27 +61,47 @@ private func fetchAccountData<I>(
     .map(\.customer >>> either(id, \.id))
     .flatMap(Current.stripe.fetchUpcomingInvoice)
 
-  let everything = zip8(
-    Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-      .map { $0.right ?? [] },
+  let paymentMethod =
+    stripeSubscription
+    .flatMap { ($0.customer.right?.invoiceSettings.defaultPaymentMethod).map(pure) ?? throwE(unit) }
+    .flatMap(Current.stripe.fetchPaymentMethod)
 
-    Current.database.fetchEpisodeCredits(user.id).run.parallel
-      .map { $0.right ?? [] },
+  let everything:
+    Parallel<
+      (
+        [EmailSetting],
+        [EpisodeCredit],
+        PaymentMethod?,
+        Stripe.Subscription?,
+        Models.Subscription?,
+        User?,
+        [TeamInvite],
+        [User],
+        Invoice?
+      )
+    > = zip9(
+      Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    stripeSubscription.run.map(\.right).parallel,
+      Current.database.fetchEpisodeCredits(user.id).run.parallel
+        .map { $0.right ?? [] },
 
-    subscription.run.map(\.right).parallel,
+      paymentMethod.run.map(\.right).parallel,
 
-    owner.run.map(\.right).parallel,
+      stripeSubscription.run.map(\.right).parallel,
 
-    Current.database.fetchTeamInvites(user.id).run.parallel
-      .map { $0.right ?? [] },
+      subscription.run.map(\.right).parallel,
 
-    Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-      .map { $0.right ?? [] },
+      owner.run.map(\.right).parallel,
 
-    upcomingInvoice.run.map(\.right).parallel
-  )
+      Current.database.fetchTeamInvites(user.id).run.parallel
+        .map { $0.right ?? [] },
+
+      Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
+        .map { $0.right ?? [] },
+
+      upcomingInvoice.run.map(\.right).parallel
+    )
 
   return
     everything
@@ -92,13 +112,14 @@ private func fetchAccountData<I>(
             currentUser: user,
             emailSettings: $0,
             episodeCredits: $1,
-            stripeSubscription: $2,
+            paymentMethod: $2,
+            stripeSubscription: $3,
             subscriberState: subscriberState,
-            subscription: $3,
-            subscriptionOwner: $4,
-            teamInvites: $5,
-            teammates: $6,
-            upcomingInvoice: $7
+            subscription: $4,
+            subscriptionOwner: $5,
+            teamInvites: $6,
+            teammates: $7,
+            upcomingInvoice: $8
           )
         )
       )

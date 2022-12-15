@@ -14,64 +14,83 @@ import UrlFormEncoding
 #endif
 
 public struct Client {
+  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) -> EitherIO<Error, PaymentMethod>
   public var cancelSubscription:
-    (Subscription.Id, _ immediately: Bool) -> EitherIO<Error, Subscription>
+    (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
+  public var confirmPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
   public var createCoupon:
     (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
       Error, Coupon
     >
   public var createCustomer:
-    (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<Error, Customer>
+    (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<
+      Error, Customer
+    >
   public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
   public var createSubscription:
-    (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>
-  public var deleteCoupon: (Coupon.Id) -> EitherIO<Error, Prelude.Unit>
-  public var fetchCoupon: (Coupon.Id) -> EitherIO<Error, Coupon>
-  public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
-  public var fetchInvoice: (Invoice.Id) -> EitherIO<Error, Invoice>
-  public var fetchInvoices: (Customer.Id) -> EitherIO<Error, ListEnvelope<Invoice>>
-  public var fetchPaymentIntent: (PaymentIntent.Id) -> EitherIO<Error, PaymentIntent>
+    (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<Error, Subscription>
+  public var deleteCoupon: (Coupon.ID) -> EitherIO<Error, Prelude.Unit>
+  public var fetchCoupon: (Coupon.ID) -> EitherIO<Error, Coupon>
+  public var fetchCustomer: (Customer.ID) -> EitherIO<Error, Customer>
+  public var fetchCustomerPaymentMethods:
+    (Customer.ID) -> EitherIO<Error, ListEnvelope<PaymentMethod>>
+  public var fetchInvoice: (Invoice.ID) -> EitherIO<Error, Invoice>
+  public var fetchInvoices: (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>
+  public var fetchPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
+  public var fetchPaymentMethod: (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>
   public var fetchPlans: () -> EitherIO<Error, ListEnvelope<Plan>>
-  public var fetchPlan: (Plan.Id) -> EitherIO<Error, Plan>
-  public var fetchSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var fetchUpcomingInvoice: (Customer.Id) -> EitherIO<Error, Invoice>
-  public var invoiceCustomer: (Customer.Id) -> EitherIO<Error, Invoice>
-  public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Error, Customer>
-  public var updateCustomerBalance: (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>
-  public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Error, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
+  public var fetchPlan: (Plan.ID) -> EitherIO<Error, Plan>
+  public var fetchSubscription: (Subscription.ID) -> EitherIO<Error, Subscription>
+  public var fetchUpcomingInvoice: (Customer.ID) -> EitherIO<Error, Invoice>
+  public var invoiceCustomer: (Customer.ID) -> EitherIO<Error, Invoice>
+  public var updateCustomer: (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>
+  public var updateCustomerBalance: (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>
+  public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) -> EitherIO<Error, Customer>
+  public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
   public init(
-    cancelSubscription: @escaping (Subscription.Id, _ immediately: Bool) -> EitherIO<
+    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) -> EitherIO<
+      Error, PaymentMethod
+    >,
+    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
       Error, Subscription
     >,
+    confirmPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
       -> EitherIO<Error, Coupon>,
-    createCustomer: @escaping (Token.Id?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) ->
+    createCustomer: @escaping (
+      PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?
+    ) ->
       EitherIO<Error, Customer>,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
-    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<
+    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<
       Error, Subscription
     >,
-    deleteCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Prelude.Unit>,
-    fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
-    fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
-    fetchInvoice: @escaping (Invoice.Id) -> EitherIO<Error, Invoice>,
-    fetchInvoices: @escaping (Customer.Id) -> EitherIO<Error, ListEnvelope<Invoice>>,
-    fetchPaymentIntent: @escaping (PaymentIntent.Id) -> EitherIO<Error, PaymentIntent>,
+    deleteCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Prelude.Unit>,
+    fetchCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Coupon>,
+    fetchCustomer: @escaping (Customer.ID) -> EitherIO<Error, Customer>,
+    fetchCustomerPaymentMethods: @escaping (Customer.ID) -> EitherIO<
+      Error, ListEnvelope<PaymentMethod>
+    >,
+    fetchInvoice: @escaping (Invoice.ID) -> EitherIO<Error, Invoice>,
+    fetchInvoices: @escaping (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>,
+    fetchPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
+    fetchPaymentMethod: @escaping (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>,
     fetchPlans: @escaping () -> EitherIO<Error, ListEnvelope<Plan>>,
-    fetchPlan: @escaping (Plan.Id) -> EitherIO<Error, Plan>,
-    fetchSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
-    fetchUpcomingInvoice: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
-    invoiceCustomer: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
-    updateCustomer: @escaping (Customer.Id, Token.Id) -> EitherIO<Error, Customer>,
-    updateCustomerBalance: @escaping (Customer.Id, Cents<Int>) -> EitherIO<Error, Customer>,
-    updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
-    updateSubscription: @escaping (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>,
+    fetchPlan: @escaping (Plan.ID) -> EitherIO<Error, Plan>,
+    fetchSubscription: @escaping (Subscription.ID) -> EitherIO<Error, Subscription>,
+    fetchUpcomingInvoice: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
+    invoiceCustomer: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
+    updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>,
+    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>,
+    updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) -> EitherIO<Error, Customer>,
+    updateSubscription: @escaping (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>,
     js: String
   ) {
+    self.attachPaymentMethod = attachPaymentMethod
     self.cancelSubscription = cancelSubscription
+    self.confirmPaymentIntent = confirmPaymentIntent
     self.createCoupon = createCoupon
     self.createCustomer = createCustomer
     self.createPaymentIntent = createPaymentIntent
@@ -79,9 +98,11 @@ public struct Client {
     self.deleteCoupon = deleteCoupon
     self.fetchCoupon = fetchCoupon
     self.fetchCustomer = fetchCustomer
+    self.fetchCustomerPaymentMethods = fetchCustomerPaymentMethods
     self.fetchInvoice = fetchInvoice
     self.fetchInvoices = fetchInvoices
     self.fetchPaymentIntent = fetchPaymentIntent
+    self.fetchPaymentMethod = fetchPaymentMethod
     self.fetchPlans = fetchPlans
     self.fetchPlan = fetchPlan
     self.fetchSubscription = fetchSubscription
@@ -98,6 +119,7 @@ public struct Client {
     public var amount: Cents<Int>
     public var currency: Currency
     public var description: String?
+    public var paymentMethodID: PaymentMethod.ID?
     public var receiptEmail: String?
     public var statementDescriptorSuffix: String?
 
@@ -105,12 +127,14 @@ public struct Client {
       amount: Cents<Int>,
       currency: Currency,
       description: String?,
+      paymentMethodID: PaymentMethod.ID? = nil,
       receiptEmail: String?,
       statementDescriptorSuffix: String?
     ) {
       self.amount = amount
       self.currency = currency
       self.description = description
+      self.paymentMethodID = paymentMethodID
       self.receiptEmail = receiptEmail
       self.statementDescriptorSuffix = statementDescriptorSuffix
     }
@@ -118,14 +142,22 @@ public struct Client {
 }
 
 extension Client {
-  public typealias EndpointSecret = Tagged<(Client, endpointSecret: ()), String>
-  public typealias PublishableKey = Tagged<(Client, publishableKey: ()), String>
-  public typealias SecretKey = Tagged<(Client, secretKey: ()), String>
+  public typealias EndpointSecret = Tagged<(Self, endpointSecret: ()), String>
+  public typealias PublishableKey = Tagged<(Self, publishableKey: ()), String>
+  public typealias SecretKey = Tagged<(Self, secretKey: ()), String>
 
   public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
+      attachPaymentMethod: {
+        runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
+      },
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+      },
+      confirmPaymentIntent: {
+        runStripe(secretKey, logger)(
+          Stripe.confirmPaymentIntent(id: $0)
+        )
       },
       createCoupon: {
         runStripe(secretKey, logger)(
@@ -134,7 +166,8 @@ extension Client {
       },
       createCustomer: {
         runStripe(secretKey, logger)(
-          Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
+          Stripe.createCustomer(
+            paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
         )
       },
       createPaymentIntent: {
@@ -150,15 +183,21 @@ extension Client {
       deleteCoupon: { runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)) },
       fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
       fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
+      fetchCustomerPaymentMethods: {
+        runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))
+      },
       fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
       fetchInvoices: { runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0)) },
       fetchPaymentIntent: { runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0)) },
+      fetchPaymentMethod: { runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0)) },
       fetchPlans: { runStripe(secretKey, logger)(Stripe.fetchPlans()) },
       fetchPlan: { runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0)) },
       fetchSubscription: { runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)) },
       fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
       invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
-      updateCustomer: { runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, token: $1)) },
+      updateCustomer: {
+        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
+      },
       updateCustomerBalance: {
         runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
       },
@@ -177,7 +216,16 @@ extension Client {
   }
 }
 
-func cancelSubscription(id: Subscription.Id, immediately: Bool) -> DecodableRequest<Subscription> {
+func attach(paymentMethod: PaymentMethod.ID, customer: Customer.ID) -> DecodableRequest<
+  PaymentMethod
+> {
+  stripeRequest(
+    "payment_methods/" + paymentMethod.rawValue + "/attach",
+    .post(["customer": customer])
+  )
+}
+
+func cancelSubscription(id: Subscription.ID, immediately: Bool) -> DecodableRequest<Subscription> {
   if immediately {
     return stripeRequest(
       "subscriptions/" + id.rawValue + "?expand[]=customer",
@@ -189,6 +237,15 @@ func cancelSubscription(id: Subscription.Id, immediately: Bool) -> DecodableRequ
       .post(["cancel_at_period_end": "true"])
     )
   }
+}
+
+func confirmPaymentIntent(
+  id: PaymentIntent.ID
+) -> DecodableRequest<PaymentIntent> {
+  stripeRequest(
+    "payment_intents/\(id.rawValue)/confirm",
+    .post([:])
+  )
 }
 
 func createCoupon(
@@ -233,7 +290,7 @@ func createCoupon(
 }
 
 func createCustomer(
-  token: Token.Id?,
+  paymentMethodID: PaymentMethod.ID?,
   description: String?,
   email: EmailAddress?,
   vatNumber: Customer.Vat?,
@@ -241,19 +298,18 @@ func createCustomer(
 )
   -> DecodableRequest<Customer>
 {
-
-  stripeRequest(
+  var params: [String: Any] = [:]
+  params["balance"] = balance?.map(String.init).rawValue
+  params["business_vat_id"] = vatNumber?.rawValue
+  params["description"] = description
+  params["email"] = email?.rawValue
+  if let paymentMethodID = paymentMethodID {
+    params["payment_method"] = paymentMethodID
+    params["invoice_settings"] = ["default_payment_method": paymentMethodID]
+  }
+  return stripeRequest(
     "customers?expand[]=sources",
-    .post(
-      [
-        "balance": balance?.map(String.init).rawValue,
-        "business_vat_id": vatNumber?.rawValue,
-        "description": description,
-        "email": email?.rawValue,
-        "source": token?.rawValue,
-      ]
-      .compactMapValues { $0 }
-    )
+    .post(params)
   )
 }
 
@@ -268,16 +324,17 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
         "amount": request.amount.rawValue,
         "currency": request.currency,
         "description": request.description as Any?,
+        "payment_method": request.paymentMethodID?.rawValue as Any?,
         "receipt_email": request.receiptEmail,
         "statement_descriptor_suffix": request.statementDescriptorSuffix,
       ].compactMapValues { $0 }))
 }
 
 func createSubscription(
-  customer: Customer.Id,
-  plan: Plan.Id,
+  customer: Customer.ID,
+  plan: Plan.ID,
   quantity: Int,
-  coupon: Coupon.Id?
+  coupon: Coupon.ID?
 )
   -> DecodableRequest<Subscription>
 {
@@ -291,53 +348,61 @@ func createSubscription(
   return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
-func deleteCoupon(id: Coupon.Id) -> DecodableRequest<Prelude.Unit> {
+func deleteCoupon(id: Coupon.ID) -> DecodableRequest<Prelude.Unit> {
   stripeRequest(
     "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""),
     .delete([:])
   )
 }
 
-func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
+func fetchCoupon(id: Coupon.ID) -> DecodableRequest<Coupon> {
   stripeRequest(
     "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
   )
 }
 
-func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
+func fetchCustomer(id: Customer.ID) -> DecodableRequest<Customer> {
   stripeRequest("customers/" + id.rawValue)
 }
 
-func fetchInvoice(id: Invoice.Id) -> DecodableRequest<Invoice> {
+func fetchCustomerPaymentMethods(id: Customer.ID) -> DecodableRequest<ListEnvelope<PaymentMethod>> {
+  stripeRequest("customers/" + id.rawValue + "/payment_methods")
+}
+
+func fetchInvoice(id: Invoice.ID) -> DecodableRequest<Invoice> {
   stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-func fetchInvoices(for customer: Customer.Id) -> DecodableRequest<ListEnvelope<Invoice>> {
+func fetchInvoices(for customer: Customer.ID) -> DecodableRequest<ListEnvelope<Invoice>> {
   stripeRequest(
     "invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
 }
 
-func fetchPaymentIntent(id: PaymentIntent.Id) -> DecodableRequest<PaymentIntent> {
+func fetchPaymentIntent(id: PaymentIntent.ID) -> DecodableRequest<PaymentIntent> {
   stripeRequest("payment_intents/" + id.rawValue)
+}
+
+func fetchPaymentMethod(id: PaymentMethod.ID) -> DecodableRequest<PaymentMethod> {
+  stripeRequest("payment_methods/" + id.rawValue)
 }
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
   stripeRequest("plans")
 }
 
-func fetchPlan(id: Plan.Id) -> DecodableRequest<Plan> {
+func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
   stripeRequest("plans/" + id.rawValue)
 }
 
-func fetchSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.sources")
+func fetchSubscription(id: Subscription.ID) -> DecodableRequest<Subscription> {
+  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
-func fetchUpcomingInvoice(_ customer: Customer.Id) -> DecodableRequest<Invoice> {
+func fetchUpcomingInvoice(_ customer: Customer.ID) -> DecodableRequest<Invoice> {
   stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
 }
 
-func invoiceCustomer(_ customer: Customer.Id)
+func invoiceCustomer(_ customer: Customer.ID)
   -> DecodableRequest<Invoice>
 {
 
@@ -348,18 +413,19 @@ func invoiceCustomer(_ customer: Customer.Id)
     ]))
 }
 
-func updateCustomer(id: Customer.Id, token: Token.Id)
+func updateCustomer(id: Customer.ID, paymentMethodID: PaymentMethod.ID)
   -> DecodableRequest<Customer>
 {
 
   stripeRequest(
     "customers/" + id.rawValue,
     .post([
-      "source": token.rawValue
-    ]))
+      "invoice_settings": ["default_payment_method": paymentMethodID]
+    ])
+  )
 }
 
-func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Customer> {
+func updateCustomer(id: Customer.ID, balance: Cents<Int>) -> DecodableRequest<Customer> {
 
   stripeRequest(
     "customers/" + id.rawValue,
@@ -368,7 +434,7 @@ func updateCustomer(id: Customer.Id, balance: Cents<Int>) -> DecodableRequest<Cu
     ]))
 }
 
-func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
+func updateCustomer(id: Customer.ID, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
 
   stripeRequest(
     "customers/" + id.rawValue,
@@ -379,7 +445,7 @@ func updateCustomer(id: Customer.Id, extraInvoiceInfo: String) -> DecodableReque
 
 func updateSubscription(
   _ currentSubscription: Subscription,
-  _ plan: Plan.Id,
+  _ plan: Plan.ID,
   _ quantity: Int
 )
   -> DecodableRequest<Subscription>?

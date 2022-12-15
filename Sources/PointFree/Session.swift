@@ -66,7 +66,7 @@ public struct Session: Equatable {
 
   public static let empty = Session(flash: nil, user: nil)
 
-  public var userId: Models.User.Id? {
+  public var userId: Models.User.ID? {
     switch self.user {
     case let .some(.ghosting(ghosteeId, _)):
       return ghosteeId
@@ -77,7 +77,7 @@ public struct Session: Equatable {
     }
   }
 
-  public var ghosterId: Models.User.Id? {
+  public var ghosterId: Models.User.ID? {
     switch self.user {
     case let .some(.ghosting(ghosteeId: _, ghosterId: ghosterId)):
       return ghosterId
@@ -86,7 +86,7 @@ public struct Session: Equatable {
     }
   }
 
-  public var ghosteeId: Models.User.Id? {
+  public var ghosteeId: Models.User.ID? {
     switch self.user {
     case let .some(.ghosting(ghosteeId: ghosteeId, ghosterId: _)):
       return ghosteeId
@@ -96,8 +96,8 @@ public struct Session: Equatable {
   }
 
   public enum User: Codable, Equatable {
-    case ghosting(ghosteeId: Models.User.Id, ghosterId: Models.User.Id)
-    case standard(Models.User.Id)
+    case ghosting(ghosteeId: Models.User.ID, ghosterId: Models.User.ID)
+    case standard(Models.User.ID)
 
     private enum CodingKeys: CodingKey {
       case ghosteeId
@@ -121,11 +121,11 @@ public struct Session: Equatable {
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       do {
-        self = .standard(try container.decode(Models.User.Id.self, forKey: .userId))
+        self = .standard(try container.decode(Models.User.ID.self, forKey: .userId))
       } catch {
         self = .ghosting(
-          ghosteeId: try container.decode(Models.User.Id.self, forKey: .ghosteeId),
-          ghosterId: try container.decode(Models.User.Id.self, forKey: .ghosterId)
+          ghosteeId: try container.decode(Models.User.ID.self, forKey: .ghosteeId),
+          ghosterId: try container.decode(Models.User.ID.self, forKey: .ghosterId)
         )
       }
     }
@@ -157,14 +157,14 @@ extension Session: Codable {
 
     self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
     self.user =
-      (try? container.decode(Models.User.Id.self, forKey: .userId)).map(User.standard)
+      (try? container.decode(Models.User.ID.self, forKey: .userId)).map(User.standard)
       ?? (try? container.decode(Session.User.self, forKey: .user))
       ?? .empty
   }
 }
 
 extension Session {
-  public init(flash: Flash?, userId: Models.User.Id?) {
+  public init(flash: Flash?, userId: Models.User.ID?) {
     self.flash = flash
     self.user = userId.map(Session.User.standard)
   }

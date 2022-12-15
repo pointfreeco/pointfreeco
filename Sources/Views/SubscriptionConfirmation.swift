@@ -29,7 +29,7 @@ public func subscriptionConfirmation(
       .action(siteRouter.path(for: .subscribe())),
       .id("subscribe-form"),
       .method(.post),
-      .onsubmit(unsafe: "event.preventDefault()"),
+      .onsubmit(safe: "event.preventDefault()"),
       .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
     ],
     header(
@@ -46,7 +46,13 @@ public func subscriptionConfirmation(
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
     currentUser != nil
       ? payment(
-        lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
+        lane: lane,
+        coupon: coupon,
+        stripeJs: stripeJs,
+        stripePublishableKey: stripePublishableKey,
+        referrer: referrer,
+        useRegionalDiscount: subscribeData.useRegionalDiscount
+      )
       : [],
     total(
       isLoggedIn: currentUser != nil,
@@ -683,9 +689,11 @@ private func payment(
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
   stripeJs: String,
-  stripePublishableKey: Stripe.Client.PublishableKey
+  stripePublishableKey: Stripe.Client.PublishableKey,
+  referrer: User?,
+  useRegionalDiscount: Bool
 ) -> Node {
-  return .gridRow(
+  .gridRow(
     attributes: [.class([moduleRowClass])],
     .gridColumn(
       sizes: [.mobile: 12],
@@ -743,62 +751,55 @@ private func payment(
       ),
       .input(
         attributes: [
-          .name("token"),
+          .name(SubscribeData.CodingKeys.paymentMethodID.rawValue),
           .type(.hidden),
         ]
       ),
       .script(attributes: [.src(stripeJs)]),
       .script(
-        safe: """
-          window.addEventListener("load", function() {
-            var apiKey = document.getElementById("card-element").dataset.stripeKey
-            var stripe = Stripe(apiKey)
-            var elements = stripe.elements()
-            var style = {
-              base: {
-                fontSize: "16px",
-              }
-            }
-            var card = elements.create("card", { style: style })
-            card.mount("#card-element")
-            var displayError = document.getElementById("card-errors")
-            card.addEventListener("change", function(event) {
-              if (event.error) {
-                displayError.textContent = event.error.message
-              } else {
-                displayError.textContent = ""
-              }
-            });
-            var form = document.getElementById("subscribe-form")
-            function setFormEnabled(isEnabled, elementsMatching) {
-              for (var idx = 0; idx < form.length; idx++) {
-                var formElement = form[idx]
-                if (elementsMatching(formElement)) {
-                  formElement.disabled = !isEnabled
-                  if (formElement.tagName == "BUTTON") {
-                    formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
-                  }
-                }
-              }
-            }
-            form.addEventListener("submit", function(event) {
-              event.preventDefault()
-              setFormEnabled(false, function() { return true })
-              stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                  displayError.textContent = result.error.message
-                  setFormEnabled(true, function(el) { return true })
-                } else {
-                  setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-                  form.token.value = result.token.id
-                  form.submit()
-                }
-              }).catch(function() {
-                setFormEnabled(true, function(el) { return true })
-              })
-            })
-          })
-          """)
+        unsafe: checkoutJS(
+          coupon: coupon,
+          lane: lane,
+          referrer: referrer,
+          useRegionalDiscount: useRegionalDiscount
+        )
+      )
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .id("apple-pay-container"),
+        .class([
+          Class.margin([.mobile: [.left: 0]]),
+          Class.padding([.mobile: [.top: 3]]),
+          Class.display.none,
+        ]),
+        .style(lineHeight(0)),
+      ],
+      .label(
+        attributes: [
+          .for("apple-pay"),
+          .class([
+            Class.type.nowrap,
+            Class.pf.colors.fg.black,
+            Class.pf.colors.bg.white,
+            Class.pf.type.responsiveTitle6,
+          ]),
+        ],
+        "or Apple Pay"
+      ),
+      .div(
+        attributes: [
+          .id("payment-request-button"),
+          .class([
+            Class.grid.col(.mobile, 12),
+            Class.grid.col(.desktop, 4),
+            Class.margin([.mobile: [.top: 2]]),
+          ]),
+        ],
+        []
+      )
     )
   )
 }
@@ -812,6 +813,7 @@ private func total(
 ) -> Node {
   let discount = coupon?.discount(for:) ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
+
   return .gridRow(
     attributes: [
       .class([
@@ -882,12 +884,11 @@ private func total(
                   ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
                   : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
               )
-              var monthlyPrice = seats * monthlyPricePerSeat
-              document.getElementById("total").textContent = format(
-                monthly
-                  ? monthlyPrice
-                  : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
-              )
+              const monthlyPrice = seats * monthlyPricePerSeat
+              const total = monthly
+                ? monthlyPrice
+                : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
+              document.getElementById("total").textContent = format(total)
               document.getElementById("pricing-preview").innerHTML = (
                 "You will be charged <strong>"
                   + format(monthlyPricePerSeat)
@@ -896,6 +897,14 @@ private func total(
                   + (monthly ? "" : " times <strong>12 months</strong>")
                   + "."
               )
+              if (window.paymentRequest) {
+                window.paymentRequest.update({
+                  total: {
+                    label: monthly ? "Monthly subscription" : "Yearly subscription",
+                    amount: total * 100
+                  }
+                })
+              }
             }
             window.addEventListener("load", function() {
               updateSeats()
@@ -975,7 +984,7 @@ public let currencyFormatter: NumberFormatter = {
 }()
 
 public struct DiscountCountry {
-  public var countryCode: Stripe.Card.Country
+  public var countryCode: Stripe.Country
   public var name: String
 
   public static let all: [DiscountCountry] = [
@@ -1090,4 +1099,107 @@ public struct DiscountCountry {
     .init(countryCode: "ZM", name: "Zambia"),
     .init(countryCode: "ZW", name: "Zimbabwe"),
   ]
+}
+
+private func checkoutJS(
+  coupon: Stripe.Coupon?,
+  lane: Pricing.Lane,
+  referrer: User?,
+  useRegionalDiscount: Bool
+) -> String {
+  return """
+    window.addEventListener("load", function() {
+      var form = document.getElementById("subscribe-form")
+      var displayError = document.getElementById("card-errors")
+
+      var apiKey = document.getElementById("card-element").dataset.stripeKey
+      var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
+      var elements = stripe.elements()
+      var style = {
+        base: {
+          fontSize: "16px",
+        }
+      }
+
+      window.paymentRequest = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: { label: '', amount: 100, }
+      });
+      const paymentRequestButton = elements.create('paymentRequestButton', {
+        paymentRequest: window.paymentRequest,
+      });
+
+      var card = elements.create("card", { style: style })
+      card.mount("#card-element")
+      card.addEventListener("change", function(event) {
+        if (event.error) {
+          displayError.textContent = event.error.message
+        } else {
+          displayError.textContent = ""
+        }
+      });
+
+      window.paymentRequest.on('paymentmethod', async (ev) => {
+        setFormEnabled(false, function() { return true })
+        ev.complete('success')
+        form.\(SubscribeData.CodingKeys.paymentMethodID.rawValue).value = ev.paymentMethod.id
+        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        form.submit()
+      });
+
+      function setFormEnabled(isEnabled, elementsMatching) {
+        for (var idx = 0; idx < form.length; idx++) {
+          var formElement = form[idx]
+          if (elementsMatching(formElement)) {
+            formElement.disabled = !isEnabled
+            if (formElement.tagName == "BUTTON") {
+              formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+            }
+          }
+        }
+      }
+
+      var submitting = false
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault()
+        if (submitting) { return }
+
+        displayError.textContent = ""
+        submitting = true
+        setFormEnabled(false, function() { return true })
+
+        try {
+          const result = await stripe.createPaymentMethod({
+            type: 'card',
+            card: card,
+          })
+          if (result.error) {
+            displayError.textContent = result.error.message
+          } else {
+            form.\(SubscribeData.CodingKeys.paymentMethodID.rawValue).value = result.paymentMethod.id
+            setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+            form.submit()
+            return // NB: Early out so to not re-enable form.
+          }
+        } catch {
+          displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+        }
+
+        submitting = false
+        setFormEnabled(true, function(el) { return true })
+      });
+
+      (async () => {
+        const result = await window.paymentRequest.canMakePayment();
+        if (result) {
+          paymentRequestButton.mount('#payment-request-button');
+          document.getElementById("apple-pay-container").style.display = 'block'
+          updateSeats()
+        } else {
+          document.getElementById('payment-request-button').style.display = 'none';
+        }
+      })();
+    })
+    """
 }

@@ -19,7 +19,7 @@ let expressUnsubscribeReplyMiddleware =
 
 private func requireUserAndNewsletter(
   _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data
+    StatusLineOpen, ResponseEnded, (User.ID, EmailSetting.Newsletter), Data
   >
 ) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
 
@@ -38,7 +38,7 @@ private func requireUserAndNewsletter(
 }
 
 private func unsubscribeMiddleware<I>(
-  _ conn: Conn<I, (User.Id, EmailSetting.Newsletter)>
+  _ conn: Conn<I, (User.ID, EmailSetting.Newsletter)>
 ) -> IO<Conn<I, Prelude.Unit>> {
 
   let (userId, newsletter) = conn.data
@@ -54,7 +54,7 @@ private func unsubscribeMiddleware<I>(
 
 private func decryptUserAndNewsletter(
   _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, (User.Id, EmailSetting.Newsletter), Data
+    StatusLineOpen, ResponseEnded, (User.ID, EmailSetting.Newsletter), Data
   >
 ) -> Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> {
 

@@ -55,8 +55,7 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding_AlreadySubscribedToEnterprise() {
-    let subscriptionId = Subscription.Id(
-      rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
+    let subscriptionId = Subscription.ID(uuidString: "00000000-0000-0000-0000-012387451903")!
     var account = EnterpriseAccount.mock
     account.subscriptionId = subscriptionId
     var user = User.mock
@@ -83,7 +82,7 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_BadEmail() {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId
@@ -105,7 +104,7 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
@@ -126,7 +125,7 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.biz", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId
@@ -149,10 +148,10 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     var loggedInUser = User.mock
-    loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
+    loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
@@ -174,10 +173,10 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     var loggedInUser = User.mock
-    loggedInUser.id = User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
+    loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
     let req = request(
       to: .enterprise(
@@ -192,7 +191,7 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId

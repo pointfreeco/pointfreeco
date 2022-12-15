@@ -2,7 +2,7 @@ import GitHub
 import URLRouting
 
 public enum GitHubRoute {
-  case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
+  case authorize(clientId: GitHub.Client.ID, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
   case license
   case organization
@@ -32,7 +32,7 @@ public let gitHubRouter = OneOf {
       "authorize"
     }
     Query {
-      Field("client_id", .string.representing(GitHub.Client.Id.self))
+      Field("client_id", .string.representing(GitHub.Client.ID.self))
       Optionally {
         Field("redirect_uri")
       }

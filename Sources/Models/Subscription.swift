@@ -2,21 +2,21 @@ import Foundation
 import Stripe
 import Tagged
 
-public struct Subscription: Decodable {
+public struct Subscription: Decodable, Identifiable {
   public var deactivated: Bool
-  public var id: Id
-  public var stripeSubscriptionId: Stripe.Subscription.Id
+  public var id: Tagged<Self, UUID>
+  public var stripeSubscriptionId: Stripe.Subscription.ID
   public var stripeSubscriptionStatus: Stripe.Subscription.Status
   public var teamInviteCode: TeamInviteCode
-  public var userId: User.Id
+  public var userId: User.ID
 
   public init(
     deactivated: Bool,
-    id: Id,
-    stripeSubscriptionId: Stripe.Subscription.Id,
+    id: ID,
+    stripeSubscriptionId: Stripe.Subscription.ID,
     stripeSubscriptionStatus: Stripe.Subscription.Status,
     teamInviteCode: TeamInviteCode,
-    userId: User.Id
+    userId: User.ID
   ) {
     self.deactivated = deactivated
     self.id = id
@@ -26,6 +26,5 @@ public struct Subscription: Decodable {
     self.userId = userId
   }
 
-  public typealias Id = Tagged<Subscription, UUID>
-  public typealias TeamInviteCode = Tagged<(Subscription, teamInviteCode: ()), String>
+  public typealias TeamInviteCode = Tagged<(Self, teamInviteCode: ()), String>
 }

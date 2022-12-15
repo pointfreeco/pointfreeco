@@ -176,12 +176,12 @@ public func invoiceView(
           rightColumnCount: 6,
           rightColumnContent: .text(dateFormatter.string(from: invoice.created))
         ),
-        invoice.charge?.right?.source.left.map {
+        (invoice.charge?.right?.paymentMethodDetails.card).map { card in
           SectionData(
             leftColumnCount: 6,
             leftColumnName: "Payment info",
             rightColumnCount: 6,
-            rightColumnContent: .text($0.brand.rawValue + " ⋯ \($0.last4)")
+            rightColumnContent: .text(card.brand.description + " ⋯ \(card.last4)")
           )
         },
         subscription.customer.right?.businessVatId.map {

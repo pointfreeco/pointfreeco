@@ -5,11 +5,10 @@ import TaggedMoney
 import URLRouting
 
 public enum Gifts: Equatable {
-  case confirmation(GiftFormData)
   case create(GiftFormData)
   case index
   case plan(Plan)
-  case redeem(Gift.Id, Redeem = .landing)
+  case redeem(Gift.ID, Redeem = .landing)
 
   public enum Redeem: Equatable {
     case confirm
@@ -57,14 +56,9 @@ public enum Gifts: Equatable {
 let giftsRouter = OneOf {
   Route(.case(Gifts.index))
 
-  Route(.case(Gifts.confirmation)) {
-    Method.post
-    Body(.form(GiftFormData.self, decoder: formDecoder))
-  }
-
   Route(.case(Gifts.create)) {
     Method.post
-    Body(.json(GiftFormData.self, decoder: routeJsonDecoder, encoder: routeJsonEncoder))
+    Body(.form(GiftFormData.self, decoder: formDecoder))
   }
 
   Route(.case(Gifts.plan)) {
@@ -72,7 +66,7 @@ let giftsRouter = OneOf {
   }
 
   Route(.case(Gifts.redeem)) {
-    Path { UUID.parser().map(.representing(Gift.Id.self)) }
+    Path { UUID.parser().map(.representing(Gift.ID.self)) }
 
     OneOf {
       Route(.case(Gifts.Redeem.landing))

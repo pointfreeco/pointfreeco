@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 60205
+Content-Length: 60418
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2365,12 +2365,11 @@ function updateSeats() {
       ? 1800 * 0.01 * regionalDiscount
       : 1400 * 0.01 * regionalDiscount
   )
-  var monthlyPrice = seats * monthlyPricePerSeat
-  document.getElementById("total").textContent = format(
-    monthly
-      ? monthlyPrice
-      : (monthlyPrice * 12 - 18 * regionalDiscount)
-  )
+  const monthlyPrice = seats * monthlyPricePerSeat
+  const total = monthly
+    ? monthlyPrice
+    : (monthlyPrice * 12 - 18 * regionalDiscount)
+  document.getElementById("total").textContent = format(total)
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
       + format(monthlyPricePerSeat)
@@ -2379,6 +2378,14 @@ function updateSeats() {
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
   )
+  if (window.paymentRequest) {
+    window.paymentRequest.update({
+      total: {
+        label: monthly ? "Monthly subscription" : "Yearly subscription",
+        amount: total * 100
+      }
+    })
+  }
 }
 window.addEventListener("load", function() {
   updateSeats()

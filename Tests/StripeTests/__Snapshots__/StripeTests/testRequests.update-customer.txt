@@ -1,4 +1,4 @@
 POST https://api.stripe.com/v1/customers/cus_test
 Stripe-Version: 2020-08-27
 
-source=tok_test
+invoice_settings[default_payment_method]=pm_tok_test

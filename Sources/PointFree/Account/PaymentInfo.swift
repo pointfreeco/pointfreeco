@@ -11,14 +11,15 @@ import Views
 let paymentInfoResponse =
   requireUserAndStripeSubscription
   <| writeStatus(.ok)
-  >=> map(over1(\.customer.right?.sources?.data.first?.left) >>> lower)
+  >=> fetchPaymentMethod
+  >=> map(lower)
   >>> respond(
-    view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
-    layoutData: { card, currentUser, subscriberState in
+    view: Views.paymentInfoView(paymentMethod:publishableKey:stripeJsSrc:),
+    layoutData: { paymentMethod, currentUser, subscriberState in
       SimplePageLayoutData(
         currentSubscriberState: subscriberState,
         currentUser: currentUser,
-        data: (card, Current.envVars.stripe.publishableKey.rawValue, Current.stripe.js),
+        data: (paymentMethod, Current.envVars.stripe.publishableKey.rawValue, Current.stripe.js),
         title: "Update Payment Info"
       )
     }
@@ -29,18 +30,36 @@ private let requireUserAndStripeSubscription:
     filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
 
+private func fetchPaymentMethod<A>(
+  conn: Conn<A, Tuple3<Stripe.Subscription, User, SubscriberState>>
+) -> IO<Conn<A, Tuple3<PaymentMethod?, User, SubscriberState>>> {
+  let (subscription, user, subscriberState) = lower(conn.data)
+
+  if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
+    return Current.stripe.fetchPaymentMethod(paymentMethodID)
+      .run
+      .map(\.right)
+      .map { conn.map(const($0 .*. user .*. subscriberState .*. unit)) }
+  } else {
+    return pure(conn.map(const(nil .*. user .*. subscriberState .*. unit)))
+  }
+}
+
 private let genericPaymentInfoError = """
   We couldn’t update your payment info at this time. Please try again later or contact
   <support@pointfree.co>.
   """
 
 let updatePaymentInfoMiddleware =
-  requireUserAndToken
+  requireUserAndPaymentMethod
   <<< requireStripeSubscription
   <| { conn in
-    let (subscription, _, token) = lower(conn.data)
+    let (subscription, _, paymentMethodID) = lower(conn.data)
 
-    return Current.stripe.updateCustomer(subscription.customer.either(id, \.id), token)
+    let customer = subscription.customer.either(id, \.id)
+
+    return Current.stripe.attachPaymentMethod(paymentMethodID, customer)
+      .flatMap { Current.stripe.updateCustomer(customer, $0.id) }
       .run
       .flatMap {
         conn
@@ -53,8 +72,8 @@ let updatePaymentInfoMiddleware =
       }
   }
 
-private let requireUserAndToken:
-  MT<Tuple2<User?, Stripe.Token.Id?>, Tuple2<User, Stripe.Token.Id>> =
+private let requireUserAndPaymentMethod:
+  MT<Tuple2<User?, PaymentMethod.ID?>, Tuple2<User, PaymentMethod.ID>> =
     filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,

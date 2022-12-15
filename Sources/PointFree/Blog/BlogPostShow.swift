@@ -38,14 +38,14 @@ let blogPostShowMiddleware =
 
 private let fetchBlogPostForParam:
   MT<
-    Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, SiteRoute?>,
+    Tuple4<Either<String, BlogPost.ID>, User?, SubscriberState, SiteRoute?>,
     Tuple4<BlogPost, User?, SubscriberState, SiteRoute?>
   > = filterMap(
     over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),
     or: redirect(to: .home)
   )
 
-func fetchBlogPost(forParam param: Either<String, BlogPost.Id>) -> BlogPost? {
+func fetchBlogPost(forParam param: Either<String, BlogPost.ID>) -> BlogPost? {
   return Current.blogPosts()
     .first(where: {
       param.right == .some($0.id)

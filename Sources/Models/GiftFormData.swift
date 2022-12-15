@@ -8,7 +8,7 @@ public struct GiftFormData: Equatable {
   public var fromName = ""
   public var message = ""
   public var monthsFree = 0
-  public var stripePaymentIntentId: PaymentIntent.Id?
+  public var paymentMethodID: PaymentMethod.ID?
   public var toEmail: EmailAddress = ""
   public var toName = ""
 
@@ -40,9 +40,10 @@ extension GiftFormData: Codable {
         )
       )
     }
-    self.stripePaymentIntentId =
-      try container
-      .decodeIfPresent(PaymentIntent.Id.self, forKey: .stripePaymentIntentId)
+    self.paymentMethodID = try container.decodeIfPresent(
+      PaymentMethod.ID.self,
+      forKey: .paymentMethodID
+    )
     self.toEmail = try container.decode(EmailAddress.self, forKey: .toEmail)
     self.toName = try container.decode(String.self, forKey: .toName)
   }
@@ -55,7 +56,7 @@ extension GiftFormData: Codable {
     try container.encode(self.fromName, forKey: .fromName)
     try container.encode(self.message, forKey: .message)
     try container.encode(String(self.monthsFree), forKey: .monthsFree)
-    try container.encodeIfPresent(self.stripePaymentIntentId, forKey: .stripePaymentIntentId)
+    try container.encodeIfPresent(self.paymentMethodID, forKey: .paymentMethodID)
     try container.encode(self.toEmail, forKey: .toEmail)
     try container.encode(self.toName, forKey: .toName)
   }
@@ -66,7 +67,7 @@ extension GiftFormData: Codable {
     case fromName
     case message
     case monthsFree
-    case stripePaymentIntentId
+    case paymentMethodID
     case toEmail
     case toName
   }

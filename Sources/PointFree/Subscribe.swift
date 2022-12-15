@@ -30,7 +30,6 @@ private let validateSubscribeData:
 private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
-
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
@@ -42,15 +41,18 @@ private func subscribe(
     : -18_00
 
   let stripeSubscription = Current.stripe.createCustomer(
-    subscribeData.token,
+    subscribeData.paymentMethodID,
     user.id.rawValue.uuidString,
     user.email,
     nil,
     subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
   )
-  .flatMap { customer -> EitherIO<Error, Stripe.Subscription> in
-    let country = customer.sources?.data.first?.left?.country
-
+  .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
+    Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+      .map { ($0, customer) }
+  }
+  .flatMap { paymentMethod, customer -> EitherIO<Error, Stripe.Subscription> in
+    let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
       return throwE(
         StripeErrorEnvelope(
@@ -87,7 +89,7 @@ private func subscribe(
 
     return Current.stripe.createSubscription(
       customer.id,
-      subscribeData.pricing.plan,
+      subscribeData.pricing.billing.plan,
       subscribeData.pricing.quantity,
       subscribeData.coupon ?? regionalDiscountCouponId
     )
@@ -157,13 +159,13 @@ private func subscribe(
             headersMiddleware: flash(.error, errorMessage)
           )
       },
-      const(
+      { _ in
         conn
           |> redirect(
             to: .account(),
             headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
           )
-      )
+      }
     )
   )
 }

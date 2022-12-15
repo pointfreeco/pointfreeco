@@ -1,13 +1,13 @@
 import Foundation
 import Tagged
 
-public struct BlogPost: Equatable {
+public struct BlogPost: Equatable, Identifiable {
   public var author: Author?
   public var blurb: String
   public var contentBlocks: [Episode.TranscriptBlock]
   public var coverImage: String?
   public var hidden: Bool
-  public var id: Id
+  public var id: Tagged<Self, Int>
   public var publishedAt: Date
   public var title: String
 
@@ -17,7 +17,7 @@ public struct BlogPost: Equatable {
     contentBlocks: [Episode.TranscriptBlock],
     coverImage: String?,
     hidden: Bool = false,
-    id: Id,
+    id: ID,
     publishedAt: Date,
     title: String
   ) {
@@ -30,8 +30,6 @@ public struct BlogPost: Equatable {
     self.publishedAt = publishedAt
     self.title = title
   }
-
-  public typealias Id = Tagged<BlogPost, Int>
 
   public struct Video: Equatable {
     public var sources: [String]
