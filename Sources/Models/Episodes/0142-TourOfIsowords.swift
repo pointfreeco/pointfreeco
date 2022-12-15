@@ -97,7 +97,7 @@ extension Array where Element == Episode.TranscriptBlock {
         To make sure you are following the newest directions for setting up the project, please see the [README](https://github.com/pointfreeco/isowords#readme) for the project.
         """#,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     Episode.TranscriptBlock(
       content: #"""

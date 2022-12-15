@@ -10,7 +10,7 @@ public let post0063_SaferConciserForms = BlogPost(
       content: #"""
         Due to a problem involving nested bindable state, we have since had to make things slightly less concise by trading dynamic member lookup for a more explicit method: _e.g._ `viewStore.$field` is now `viewStore.binding(\.$field)`. For more information on the change see [this release](https://github.com/pointfreeco/swift-composable-architecture/releases/0.28.0) and [this pull request](https://github.com/pointfreeco/swift-composable-architecture/pull/810).
         """#,
-      type: .correction
+      type: .box(.correction)
     ),
     .init(
       content: #"""

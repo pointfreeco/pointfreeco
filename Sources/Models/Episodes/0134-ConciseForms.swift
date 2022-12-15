@@ -1298,7 +1298,7 @@ extension Array where Element == Episode.TranscriptBlock {
         We released this feature the week before this episode aired and made a few changes after hearing back from you! We have generalized the "form" naming to apply more generally to bindings. This means `FormAction` is now `BindingAction`, and the `form` higher-order reducer is now a `binding` higher-order reducer, as well. Thanks to the community for this feedback!
         """#,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     Episode.TranscriptBlock(
       content: #"""

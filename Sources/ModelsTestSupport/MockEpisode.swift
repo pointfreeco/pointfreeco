@@ -96,7 +96,15 @@ private let subscriberOnlyEpisode = Episode(
         including code snippets: `map(f >>> g)`.
         """,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
+    ),
+    Episode.TranscriptBlock(
+      content: """
+        This is a note for those time we want to make side remarks. We can use _markdown_ in this
+        block, including code snippets: `map(f >>> g)`.
+        """,
+      timestamp: nil,
+      type: .box(.note)
     ),
     Episode.TranscriptBlock(
       content: """

@@ -1453,7 +1453,7 @@ extension Array where Element == Episode.TranscriptBlock {
         After recording this episode, we realized that `ReferenceWritableKeyPath` _is_ an abstraction that would work here, though there are some caveats involved in defining a `synchronize` helper using them. We'll leave that exploration as an exercise for the viewer.
         """#,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     Episode.TranscriptBlock(
       content: #"""
