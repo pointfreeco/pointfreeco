@@ -28,7 +28,7 @@ extension Episode {
           The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
           """,
         link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
-        publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+        publishedAt: yearMonthDayFormatter.date(from: "2019-01-02"),
         title: "Unknown Pleasures – Artwork and packaging"
       ),
       Episode.Reference(
@@ -37,7 +37,7 @@ extension Episode {
           We used "bump functions" in this episode to construct functions that are zero everywhere except in a small region where they smoothly climb to 1 and then plateau. They are useful in mathematics for taking lots of local descriptions of a function and patching them together into a global function.
           """,
         link: "https://en.wikipedia.org/wiki/Bump_function",
-        publishedAt: referenceDateFormatter.date(from: "2018-04-06"),
+        publishedAt: yearMonthDayFormatter.date(from: "2018-04-06"),
         title: "Bump Function"
       ),
     ],

@@ -267,6 +267,6 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
   ],
   coverImage: nil,
   id: 90,  // TODO
-  publishedAt: .distantFuture,  // TODO
+  publishedAt: yearMonthDayFormatter.date(from: "2023-01-09")!,
   title: "Take control of dependencies. Don't let them control you."
 )

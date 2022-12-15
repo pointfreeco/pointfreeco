@@ -21,7 +21,7 @@ extension Episode {
           """#,
         link:
           "https://forums.swift.org/t/function-builder-cannot-infer-generic-parameters-even-though-direct-call-to-buildblock-can/35886/5",
-        publishedAt: referenceDateFormatter.date(from: "2020-04-26"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-04-26"),
         title:
           "Function builder cannot infer generic parameters even though direct call to `buildBlock` can"
       ),

@@ -37,7 +37,7 @@ extension Episode {
           Federico demonstrates how you can use `RedactionReasons` to render custom redactions differently than the standard API.
           """#,
         link: "https://fivestars.blog/code/redacted-custom-effects.html",
-        publishedAt: referenceDateFormatter.date(from: "2020-07-28"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-07-28"),
         title: "Creating custom .redacted effects"
       ),
       .init(
@@ -55,7 +55,7 @@ extension Episode {
           This WWDC 2020 session covers the various APIs SwiftUI provides to drive your views with your data models using bindings, `@State`, `@ObservedObject`, and the newly-introduced `@StateObject`.
           """#,
         link: "https://developer.apple.com/videos/play/wwdc2020/10040/",
-        publishedAt: referenceDateFormatter.date(from: "2020-06-27"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-06-27"),
         title: "Data Essentials in SwiftUI"
       ),
       .init(
@@ -73,7 +73,7 @@ extension Episode {
           A Twitter thread between the community and several Apple engineers about when to use `@StateObject` and when to use `@ObservedObject`. Nick Lockwood [succinctly explains](https://twitter.com/nicklockwood/status/1280133214489710596) that `@StateObject` is persisted across view instantiations, while SwiftUI engineer Luca Bernardi gives both [a general guideline](https://twitter.com/luka_bernardi/status/1280224429637681152) on when to use which, while [expanding](https://twitter.com/luka_bernardi/status/1279124141837185025) that it should be valid to instantiate a `StateObject` with data it depends on.
           """#,
         link: "https://twitter.com/chriseidhof/status/1280085055021383681",
-        publishedAt: referenceDateFormatter.date(from: "2020-07-06"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-07-06"),
         title: "StateObject vs. ObservedObject"
       ),
       .init(
@@ -82,7 +82,7 @@ extension Episode {
           Swift engineer Joe Groff explains how `@State` should only be initialized where the property is declared and that parent views should not pass data to child views to be handed to any internal `@State`.
           """#,
         link: "https://twitter.com/jckarter/status/1270135428394315776",
-        publishedAt: referenceDateFormatter.date(from: "2020-07-06"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-07-06"),
         title: "Initializing @State from a parent"
       ),
     ],

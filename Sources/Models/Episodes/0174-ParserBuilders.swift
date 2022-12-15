@@ -29,7 +29,7 @@ extension Episode {
           The Swift core team's proposal and experimental repository for declarative string processing, which includes result builder syntax for creating regular expressions, and inspired us to explore result builders for parsing.
           """#,
         link: "https://github.com/apple/swift-experimental-string-processing",
-        publishedAt: referenceDateFormatter.date(from: "2021-09-29"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-09-29"),
         title: "Declarative String Processing"
       ),
     ],

@@ -20,7 +20,7 @@ extension Episode {
           > We show a parsing technique that we use for many parsing tasks in our day-to-day work.
           """,
         link: "https://talk.objc.io/episodes/S01E170-parsing-with-mutating-methods",
-        publishedAt: referenceDateFormatter.date(from: "2019-09-20"),
+        publishedAt: yearMonthDayFormatter.date(from: "2019-09-20"),
         title: "Parsing with Mutating Methods"
       ),
       .swiftBenchmark,
