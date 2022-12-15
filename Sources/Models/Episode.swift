@@ -297,7 +297,6 @@ public struct Episode: Equatable, Identifiable {
     public enum BlockType: Codable, Equatable {
       case box(Box)
       case code(lang: CodeLang)
-      case correction
       case image(src: String, sizing: ImageSizing)
       case paragraph
       case title
@@ -306,6 +305,11 @@ public struct Episode: Equatable, Identifiable {
       public enum Box: Codable {
         case correction
         case note
+      }
+
+      @available(*, deprecated)
+      public static var correction: BlockType {
+        .box(.correction)
       }
 
       private enum CodingKeys: CodingKey {
@@ -325,8 +329,6 @@ public struct Episode: Equatable, Identifiable {
         case let .code(lang):
           try container.encode("code", forKey: .type)
           try container.encode(lang, forKey: .lang)
-        case .correction:
-          try container.encode("correction", forKey: .type)
         case let .image(src, sizing):
           try container.encode("image", forKey: .type)
           try container.encode(sizing, forKey: .sizing)

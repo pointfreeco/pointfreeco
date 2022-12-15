@@ -65,22 +65,6 @@ public func transcriptBlockView(
       )
     )
  
-  case .correction:
-    return .div(
-      attributes: [
-        .class([
-          Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
-          Class.padding([.mobile: [.all: 2]]),
-        ]),
-        .style(safe: "background-color: #ffdbdd;border-left: 3px solid #eb1c26;"),
-      ],
-      .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], "Correction"),
-      .div(
-        attributes: [.class([Class.pf.type.body.regular])],
-        .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
-      )
-    )
-
   case let .image(src, sizing):
     let imageClasses =
       sizing == .inset
