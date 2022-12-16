@@ -136,8 +136,10 @@ private func fetchSeatsTaken<A>(
     let invitesAndTeammates = sequence([
       parallel(Current.database.fetchTeamInvites(user.id).run)
         .map { $0.right?.count ?? 0 },
-      parallel(Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
-        .map { $0.right?.count ?? 0 },
+      IO {
+        (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).count) ?? 0
+      }
+      .parallel
     ])
 
     return invitesAndTeammates

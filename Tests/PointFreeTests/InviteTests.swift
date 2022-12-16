@@ -277,7 +277,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAddTeammate() async throws {
-    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
 
     let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .performAsync()!

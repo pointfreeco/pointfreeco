@@ -283,7 +283,7 @@ extension Client {
         .first(decoding: Models.Subscription.self)
       },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"

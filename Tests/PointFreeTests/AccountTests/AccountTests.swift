@@ -127,7 +127,7 @@ final class AccountTests: TestCase {
 
     Current = .teamYearly
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([]))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
     var session = Session.loggedIn
@@ -158,7 +158,7 @@ final class AccountTests: TestCase {
 
     Current = .teamYearly
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     Current.database.fetchSubscriptionById = { _ in subscription }
     Current.database.fetchTeamInvites = const(pure([]))
     Current.stripe.fetchSubscription = const(pure(stripeSubscription))

@@ -40,7 +40,7 @@ public struct Client {
   public var fetchGiftsToDeliver: () async throws -> [Gift]
   public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription?
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription?
-  public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) -> EitherIO<Error, [Models.User]>
+  public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>
   public var fetchTeamInvites: (Models.User.ID) -> EitherIO<Error, [TeamInvite]>
   public var fetchUserByGitHub: (GitHubUser.ID) -> EitherIO<Error, Models.User?>
@@ -103,9 +103,7 @@ public struct Client {
     fetchGiftsToDeliver: @escaping () async throws -> [Gift],
     fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription?,
     fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription?,
-    fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) -> EitherIO<
-      Error, [Models.User]
-    >,
+    fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
     fetchTeamInvite: @escaping (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>,
     fetchTeamInvites: @escaping (Models.User.ID) -> EitherIO<Error, [TeamInvite]>,
     fetchUserByGitHub: @escaping (GitHubUser.ID) -> EitherIO<Error, Models.User?>,
