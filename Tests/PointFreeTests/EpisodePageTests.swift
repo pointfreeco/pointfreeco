@@ -357,7 +357,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.episodes = unzurry([episode])
 
     let conn = connection(
@@ -389,7 +389,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.episodes = unzurry([episode])
 
     let conn = connection(
@@ -422,7 +422,7 @@ class EpisodePageTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([episode])
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -454,7 +454,7 @@ class EpisodePageTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([episode])
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)

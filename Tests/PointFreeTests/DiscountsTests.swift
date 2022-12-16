@@ -49,7 +49,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
@@ -83,7 +83,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
@@ -102,7 +102,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
@@ -121,7 +121,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
@@ -140,7 +140,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
@@ -159,7 +159,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(

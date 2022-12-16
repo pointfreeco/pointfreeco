@@ -88,13 +88,9 @@ public func currentSubscriptionMiddleware<A, I>(
     try await requireSome(Current.database.fetchSubscriptionById(requireSome(user?.subscriptionId)))
   }
 
-  let ownerSubscription =
-    (user?.id)
-    .map(
-      Current.database.fetchSubscriptionByOwnerId
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+  let ownerSubscription = EitherIO {
+    try await requireSome(Current.database.fetchSubscriptionByOwnerId(requireSome(user?.id)))
+  }
 
   return (userSubscription <|> ownerSubscription)
     .run

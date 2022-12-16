@@ -39,7 +39,7 @@ public struct Client {
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
   public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription?
-  public var fetchSubscriptionByOwnerId: (Models.User.ID) -> EitherIO<Error, Models.Subscription?>
+  public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription?
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) -> EitherIO<Error, [Models.User]>
   public var fetchTeamInvite: (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>
   public var fetchTeamInvites: (Models.User.ID) -> EitherIO<Error, [TeamInvite]>
@@ -102,7 +102,7 @@ public struct Client {
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.ID) async throws -> Gift,
     fetchGiftsToDeliver: @escaping () async throws -> [Gift],
     fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription?,
-    fetchSubscriptionByOwnerId: @escaping (Models.User.ID) -> EitherIO<Error, Models.Subscription?>,
+    fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription?,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) -> EitherIO<
       Error, [Models.User]
     >,

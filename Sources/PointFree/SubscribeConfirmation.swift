@@ -121,12 +121,13 @@ private func validateReferralCode(
     return Current.database.fetchUserByReferralCode(referralCode)
       .mapExcept(requireSome)
       .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
-              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
-          }
+        EitherIO {
+          try await requireSome(Current.database.fetchSubscriptionByOwnerId(referrer.id))
+        }
+        .flatMap {
+          Current.stripe.fetchSubscription($0.stripeSubscriptionId)
+            .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
+        }
       }
       .run
       .flatMap(
@@ -226,10 +227,9 @@ func redirectActiveSubscribers<A>(
         )
       }
 
-      let ownerSubscription =
-        (user?.id)
-        .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
-        ?? throwE(unit)
+      let ownerSubscription = EitherIO {
+        try await requireSome(Current.database.fetchSubscriptionByOwnerId(requireSome(user?.id)))
+      }
 
       let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
 

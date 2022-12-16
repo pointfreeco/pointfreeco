@@ -36,8 +36,9 @@ private func fetchAccountData<I>(
     try await requireSome(Current.database.fetchSubscriptionById(requireSome(user.subscriptionId)))
   }
 
-  let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
-    .mapExcept(requireSome)
+  let ownerSubscription = EitherIO {
+    try await requireSome(Current.database.fetchSubscriptionByOwnerId(user.id))
+  }
 
   let subscription = userSubscription <|> ownerSubscription
 

@@ -23,7 +23,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -51,7 +51,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_SwitchToMonthly() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -79,7 +79,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -110,7 +110,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -141,7 +141,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -178,7 +178,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -215,7 +215,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -246,7 +246,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -298,7 +298,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedOut() {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(
@@ -326,7 +326,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_WithDiscount() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -352,7 +352,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in nil }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(
       from: request(

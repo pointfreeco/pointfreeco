@@ -26,7 +26,7 @@ extension Client {
     fetchGiftByStripePaymentIntentId: { _ in throw NoopError() },
     fetchGiftsToDeliver: { throw NoopError() },
     fetchSubscriptionById: { _ in throw NoopError() },
-    fetchSubscriptionByOwnerId: { _ in throwE(NoopError()) },
+    fetchSubscriptionByOwnerId: { _ in throw NoopError() },
     fetchSubscriptionTeammatesByOwnerId: { _ in throwE(NoopError()) },
     fetchTeamInvite: { _ in throwE(NoopError()) },
     fetchTeamInvites: { _ in throwE(NoopError()) },

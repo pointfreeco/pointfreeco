@@ -191,10 +191,11 @@ func fetchSubscription<A>(
 {
 
   return { conn in
-    let subscription = Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
-      .mapExcept(requireSome)
-      .run
-      .map(\.right)
+    let subscription = EitherIO {
+      try await requireSome(Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id))
+    }
+    .run
+    .map(\.right)
 
     return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
   }

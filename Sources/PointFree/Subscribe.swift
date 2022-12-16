@@ -330,15 +330,16 @@ private func validateReferrer(
       fetchReferrer
       .mapExcept(requireSome)
       .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
-              $0.isCancellable
-                ? pure(Referrer(user: referrer, stripeSubscription: $0))
-                : throwE(unit as Error)
-            }
+        EitherIO {
+          try await requireSome(Current.database.fetchSubscriptionByOwnerId(referrer.id))
+        }
+        .flatMap {
+          Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
+            $0.isCancellable
+              ? pure(Referrer(user: referrer, stripeSubscription: $0))
+              : throwE(unit as Error)
           }
+        }
       }
       .run
       .flatMap(

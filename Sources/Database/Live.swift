@@ -271,7 +271,7 @@ extension Client {
         .first(decoding: Models.Subscription.self)
       },
       fetchSubscriptionByOwnerId: { ownerId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"

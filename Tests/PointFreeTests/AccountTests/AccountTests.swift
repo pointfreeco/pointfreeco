@@ -392,7 +392,7 @@ final class AccountTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -418,7 +418,7 @@ final class AccountTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in nil }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
