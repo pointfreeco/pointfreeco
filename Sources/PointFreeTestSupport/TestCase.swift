@@ -16,8 +16,8 @@ open class TestCase: XCTestCase {
     Backtrace.install()
   }
 
-  override open func setUp() {
-    super.setUp()
+  override open func setUp() async throws {
+    try await super.setUp()
     diffTool = "ksdiff"
     //    SnapshotTesting.isRecording = true
     Current = .mock
