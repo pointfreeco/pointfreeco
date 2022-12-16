@@ -34,7 +34,7 @@ extension Client {
         .first(decoding: EnterpriseAccount.self)
       },
       createEnterpriseEmail: { email, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "enterprise_emails"
           ("email", "user_id")

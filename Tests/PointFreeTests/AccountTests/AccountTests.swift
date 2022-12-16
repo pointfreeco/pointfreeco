@@ -33,8 +33,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
-      .performAsync()!
+    _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)!
 
     let owner = try await Current.database.registerUser(
       withGitHubEnvelope: .init(
