@@ -114,7 +114,7 @@ private func sendNewBlogPostEmails<I>(
 
   let users =
     isTest
-    ? Current.database.fetchAdmins()
+    ? EitherIO { try await Current.database.fetchAdmins() }
     : Current.database.fetchUsersSubscribedToNewsletter(
       .newBlogPost, nonsubscriberOrSubscribersOnly)
 

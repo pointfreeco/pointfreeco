@@ -80,8 +80,8 @@ private func fetchAccountData<I>(
         Invoice?
       )
     > = zip9(
-      Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchEmailSettingsForUserId(user.id)) ?? [] }
+        .parallel,
 
       Current.database.fetchEpisodeCredits(user.id).run.parallel
         .map { $0.right ?? [] },

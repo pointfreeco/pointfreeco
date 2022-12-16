@@ -39,7 +39,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       session: .loggedIn
     )
 
-    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
     assertSnapshot(
       matching: settings,
       as: .customDump,
@@ -49,7 +49,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
     assertSnapshot(matching: output, as: .conn)
 
-    settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+    settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
     assertSnapshot(
       matching: settings,
       as: .customDump,
@@ -80,7 +80,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -90,7 +90,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -124,7 +124,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -134,7 +134,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -170,7 +170,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -180,7 +180,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
       assertSnapshot(
         matching: settings,
         as: .customDump,
