@@ -33,8 +33,8 @@ public struct Client {
     (Models.Subscription.ID) async throws -> EnterpriseAccount?
   public var fetchEnterpriseEmails: () async throws -> [EnterpriseEmail]
   public var fetchEpisodeCredits: (Models.User.ID) async throws -> [EpisodeCredit]
-  public var fetchEpisodeProgress: (User.ID, Episode.Sequence) -> EitherIO<Error, Int?>
-  public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
+  public var fetchEpisodeProgress: (User.ID, Episode.Sequence) async throws -> Int?
+  public var fetchFreeEpisodeUsers: () async throws -> [Models.User]
   public var fetchGift: (Gift.ID) -> EitherIO<Error, Gift>
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) -> EitherIO<Error, Gift>
   public var fetchGiftsToDeliver: () -> EitherIO<Error, [Gift]>
@@ -97,8 +97,8 @@ public struct Client {
       EnterpriseAccount?,
     fetchEnterpriseEmails: @escaping () async throws -> [EnterpriseEmail],
     fetchEpisodeCredits: @escaping (Models.User.ID) async throws -> [EpisodeCredit],
-    fetchEpisodeProgress: @escaping (User.ID, Episode.Sequence) -> EitherIO<Error, Int?>,
-    fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
+    fetchEpisodeProgress: @escaping (User.ID, Episode.Sequence) async throws -> Int?,
+    fetchFreeEpisodeUsers: @escaping () async throws -> [Models.User],
     fetchGift: @escaping (Gift.ID) -> EitherIO<Error, Gift>,
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.ID) -> EitherIO<Error, Gift>,
     fetchGiftsToDeliver: @escaping () -> EitherIO<Error, [Gift]>,

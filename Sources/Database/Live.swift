@@ -191,7 +191,7 @@ extension Client {
         .all(decoding: EpisodeCredit.self)
       },
       fetchEpisodeProgress: { userId, sequence in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "percent"
           FROM "episode_progresses"
@@ -199,11 +199,11 @@ extension Client {
           AND "episode_sequence" = \(bind: sequence)
           """
         )
-        .first()
-        .map { try? $0?.decode(column: "percent") }
+        .first()?
+        .decode(column: "percent")
       },
       fetchFreeEpisodeUsers: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"

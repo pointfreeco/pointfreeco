@@ -235,15 +235,14 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, Use
 
   let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-  return
-    (currentUser
-    .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
-    ?? pure(nil))
-    .run
-    .map {
-      conn.map(
-        const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
-    }
+  return IO<Int?> {
+    guard let user = currentUser else { return nil }
+    return try? await Current.database.fetchEpisodeProgress(user.id, episode.sequence)
+  }
+  .map {
+    conn.map(
+      const(permission .*. episode .*. $0 .*. currentUser .*. rest(conn.data)))
+  }
 }
 
 func userEpisodePermission<I, Z>(

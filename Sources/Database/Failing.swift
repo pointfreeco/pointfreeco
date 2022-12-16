@@ -22,8 +22,8 @@ extension Client {
     ),
     fetchEnterpriseEmails: unimplemented("Database.Client.fetchEnterpriseEmails"),
     fetchEpisodeCredits: unimplemented("Database.Client.fetchEpisodeCredits"),
-    fetchEpisodeProgress: { _, _ in .failing("Database.Client.fetchEpisodeProgress") },
-    fetchFreeEpisodeUsers: { .failing("Database.Client.fetchFreeEpisodeUsers") },
+    fetchEpisodeProgress: unimplemented("Database.Client.fetchEpisodeProgress"),
+    fetchFreeEpisodeUsers: unimplemented("Database.Client.fetchFreeEpisodeUsers"),
     fetchGift: { _ in .failing("Database.Client.fetchGift") },
     fetchGiftByStripePaymentIntentId: { _ in
       .failing("Database.Client.fetchGiftByStripePaymentIntentId")
