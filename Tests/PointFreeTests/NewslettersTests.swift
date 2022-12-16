@@ -15,61 +15,54 @@ import XCTest
 @testable import HttpPipeline
 @testable import PointFree
 
+@MainActor
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.isRecording = true
   }
 
-  func testExpressUnsubscribe() {
-    let user = Current.database.registerUser(
+  func testExpressUnsubscribe() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    let payload = (try? expressUnsubscribe.print((user.id, .announcements)))
-      .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
+    let payload = try XCTUnwrap(
+      Encrypted(
+        String(expressUnsubscribe.print((user.id, .announcements))), with: Current.envVars.appSecret
+      )
+    )
 
     let unsubscribe = request(
-      to: .expressUnsubscribe(payload: payload!),
+      to: .expressUnsubscribe(payload: payload),
       session: .loggedIn
     )
 
+    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
-        .run
-        .perform()
-        .right!,
+      matching: settings,
       as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
-    let output =
-      connection(from: unsubscribe)
-      |> siteMiddleware
-      |> Prelude.perform
+    let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
     assertSnapshot(matching: output, as: .conn)
 
+    settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
-        .run
-        .perform()
-        .right!,
+      matching: settings,
       as: .customDump,
       named: "email_settings_after_unsubscribe"
     )
   }
 
-  func testExpressUnsubscribeReply() {
+  func testExpressUnsubscribeReply() async throws {
     #if !os(Linux)
-      let user = Current.database.registerUser(
+      let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .run
-      .perform()
-      .right!!
+      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -87,42 +80,33 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
-      let output =
-        connection(from: unsubscribe)
-        |> siteMiddleware
-        |> Prelude.perform
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
       )
     #endif
   }
 
-  func testExpressUnsubscribeReply_IncorrectSignature() {
+  func testExpressUnsubscribeReply_IncorrectSignature() async throws {
     #if !os(Linux)
       Current.renderHtml = { debugRender($0) }
 
-      let user = Current.database.registerUser(
+      let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .run
-      .perform()
-      .right!!
+      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -140,40 +124,31 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
-      let output =
-        connection(from: unsubscribe)
-        |> siteMiddleware
-        |> Prelude.perform
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
       )
     #endif
   }
 
-  func testExpressUnsubscribeReply_UnknownNewsletter() {
+  func testExpressUnsubscribeReply_UnknownNewsletter() async throws {
     #if !os(Linux)
-      let user = Current.database.registerUser(
+      let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .run
-      .perform()
-      .right!!
+      .performAsync()!
 
       let payload = encrypted(
         text: "\(user.id.rawValue.uuidString)--unknown",
@@ -195,26 +170,19 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
-      let output =
-        connection(from: unsubscribe)
-        |> siteMiddleware
-        |> Prelude.perform
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       assertSnapshot(matching: output, as: .conn)
 
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
+        matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
       )

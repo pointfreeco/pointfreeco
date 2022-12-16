@@ -10,13 +10,14 @@ import XCTest
 @testable import GitHub
 @testable import PointFree
 
+@MainActor
 class AuthIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record = true
   }
 
-  func testRegister() {
+  func testRegister() async throws {
     let now = Date.mock
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
@@ -29,19 +30,17 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
     Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
-    let result =
+    let result = await siteMiddleware(
       connection(
         from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
       )
-      |> siteMiddleware
-      |> Prelude.perform
+    )
+    .performAsync()
     assertSnapshot(matching: result, as: .conn)
 
-    let registeredUser = Current.database
+    let registeredUser = try await Current.database
       .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
-      .run
-      .perform()
-      .right!!
+      .performAsync()!
 
     XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
     XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
@@ -49,7 +48,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(1, registeredUser.episodeCreditCount)
   }
 
-  func testRegisterRecentAccount() {
+  func testRegisterRecentAccount() async throws {
     let now = Date.mock
 
     var gitHubUserEnvelope = GitHubUserEnvelope.mock
@@ -62,19 +61,17 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
     Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
-    let result =
+    let result = await siteMiddleware(
       connection(
         from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
       )
-      |> siteMiddleware
-      |> Prelude.perform
+    )
+    .performAsync()
     assertSnapshot(matching: result, as: .conn)
 
-    let registeredUser = Current.database
+    let registeredUser = try await Current.database
       .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
-      .run
-      .perform()
-      .right!!
+      .performAsync()!
 
     XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
     XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
@@ -82,13 +79,14 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(0, registeredUser.episodeCreditCount)
   }
 
-  func testAuth() {
+  func testAuth() async throws{
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
-  func testLoginWithRedirect() {
+
+  func testLoginWithRedirect() async throws{
 
     let login = request(
       to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)
