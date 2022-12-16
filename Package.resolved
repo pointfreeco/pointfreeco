@@ -185,8 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-prelude",
       "state" : {
-        "branch" : "async",
-        "revision" : "ad345ed655038c19b12ab2ea0117d54aff28b24b"
+        "branch" : "35ee343",
+        "revision" : "35ee343e31e0ae4ea349d3f556d55a5f4eaf4432"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-web",
       "state" : {
-        "branch" : "async",
-        "revision" : "4c7fc1eed5a48bcb5ef7392ed7a238ce24fc1614"
+        "branch" : "29b9dad",
+        "revision" : "29b9dadc670a5d730eebc6eea55f116114104ca6"
       }
     },
     {
