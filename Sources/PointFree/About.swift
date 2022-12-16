@@ -8,10 +8,9 @@ import Tuple
 import Views
 
 let aboutResponse:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, SiteRoute?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, (User?, SubscriberState, SiteRoute?), Data> =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
+    >=> respond(
       view: aboutView,
       layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
