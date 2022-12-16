@@ -9,7 +9,7 @@ extension Client {
     createEnterpriseAccount: { _, _, _ in throw NoopError() },
     createEnterpriseEmail: { _, _ in throw NoopError() },
     createFeedRequestEvent: { _, _, _ in throw NoopError() },
-    createGift: { _ in throwE(NoopError()) },
+    createGift: { _ in throw NoopError() },
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
     deleteEnterpriseEmail: { _ in throwE(NoopError()) },
     deleteTeamInvite: { _ in throwE(NoopError()) },

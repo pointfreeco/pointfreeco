@@ -46,7 +46,7 @@ extension Client {
         .first(decoding: EnterpriseEmail.self)
       },
       createFeedRequestEvent: { type, userAgent, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "feed_request_events"
           ("type", "user_agent", "user_id")
@@ -56,36 +56,38 @@ extension Client {
           SET "count" = "feed_request_events"."count" + 1
           """
         )
-        .run()
+        .run { _ in }
+        .get()
       },
       createGift: { request in
-        pool.sqlDatabase.raw(
-          """
-          INSERT INTO "gifts" (
-            "deliver_at",
-            "from_email",
-            "from_name",
-            "message",
-            "months_free",
-            "stripe_payment_intent_id",
-            "to_email",
-            "to_name"
+        try await requireSome(
+          pool.sqlDatabase.raw(
+            """
+            INSERT INTO "gifts" (
+              "deliver_at",
+              "from_email",
+              "from_name",
+              "message",
+              "months_free",
+              "stripe_payment_intent_id",
+              "to_email",
+              "to_name"
+            )
+            VALUES (
+              \(bind: request.deliverAt),
+              \(bind: request.fromEmail),
+              \(bind: request.fromName),
+              \(bind: request.message),
+              \(bind: request.monthsFree),
+              \(bind: request.stripePaymentIntentId),
+              \(bind: request.toEmail),
+              \(bind: request.toName)
+            )
+            RETURNING *
+            """
           )
-          VALUES (
-            \(bind: request.deliverAt),
-            \(bind: request.fromEmail),
-            \(bind: request.fromName),
-            \(bind: request.message),
-            \(bind: request.monthsFree),
-            \(bind: request.stripePaymentIntentId),
-            \(bind: request.toEmail),
-            \(bind: request.toName)
-          )
-          RETURNING *
-          """
+          .first(decoding: Gift.self)
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
       },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
         pool.sqlDatabase.raw(

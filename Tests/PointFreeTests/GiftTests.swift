@@ -27,7 +27,7 @@ class GiftTests: TestCase {
     var createGiftRequest: Database.Client.CreateGiftRequest!
     Current.database.createGift = { request in
       createGiftRequest = request
-      return pure(.unfulfilled)
+      return .unfulfilled
     }
 
     let conn = connection(
