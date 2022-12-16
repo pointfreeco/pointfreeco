@@ -116,17 +116,20 @@ public func sendEmail(
 
 func notifyError(subject: String) -> (Error) -> Prelude.Unit {
   return { error in
-    var errorDump = ""
-    dump(error, to: &errorDump)
-
-    parallel(
-      sendEmail(
-        to: adminEmails,
-        subject: "[PointFree Error] \(subject)",
-        content: inj1(errorDump)
-      ).run
-    ).run { _ in }
-
+    notifyError(error, subject: subject)
     return unit
   }
+}
+
+func notifyError(_ error: Error, subject: String) {
+  var errorDump = ""
+  dump(error, to: &errorDump)
+
+  parallel(
+    sendEmail(
+      to: adminEmails,
+      subject: "[PointFree Error] \(subject)",
+      content: inj1(errorDump)
+    ).run
+  ).run { _ in }
 }

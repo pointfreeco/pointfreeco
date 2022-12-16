@@ -8,7 +8,7 @@ extension Client {
     addUserIdToSubscriptionId: { _, _ in throw NoopError() },
     createEnterpriseAccount: { _, _, _ in throw NoopError() },
     createEnterpriseEmail: { _, _ in throw NoopError() },
-    createFeedRequestEvent: { _, _, _ in throwE(NoopError()) },
+    createFeedRequestEvent: { _, _, _ in throw NoopError() },
     createGift: { _ in throwE(NoopError()) },
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
     deleteEnterpriseEmail: { _ in throwE(NoopError()) },

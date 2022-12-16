@@ -153,14 +153,18 @@ private func trackFeedRequest<A, I>(
 {
 
   return { conn in
-    Current.database.createFeedRequestEvent(
-      .privateEpisodesFeed,
-      conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-      userId(conn.data)
-    )
-    .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
-    .run
-    .map { _ in conn }
+    IO {
+      do {
+        try await Current.database.createFeedRequestEvent(
+          .privateEpisodesFeed,
+          conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+          userId(conn.data)
+        )
+      } catch {
+        notifyError(error, subject: "Create Feed Request Event Failed")
+      }
+      return conn
+    }
   }
 }
 

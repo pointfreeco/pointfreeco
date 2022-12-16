@@ -139,7 +139,6 @@ class PrivateRssTests: TestCase {
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.createFeedRequestEvent = { _, _, _ in
       feedRequestEventCreated = true
-      return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
@@ -308,7 +307,6 @@ class PrivateRssTests: TestCase {
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
     Current.database.createFeedRequestEvent = { _, _, _ in
       feedRequestEventCreated = true
-      return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
