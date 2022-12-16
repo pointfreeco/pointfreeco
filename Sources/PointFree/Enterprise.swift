@@ -274,10 +274,9 @@ private func sendEnterpriseInvitation<Z>(
 }
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
-  return Current.database.fetchEnterpriseAccountForDomain(domain)
-    .mapExcept(requireSome)
-    .run
-    .map(\.right)
+  IO {
+    try? await Current.database.fetchEnterpriseAccountForDomain(domain)
+  }
 }
 
 let enterpriseInviteEmailView =

@@ -30,7 +30,7 @@ public struct Client {
   public var fetchEnterpriseAccountForDomain:
     (EnterpriseAccount.Domain) async throws -> EnterpriseAccount?
   public var fetchEnterpriseAccountForSubscription:
-    (Models.Subscription.ID) -> EitherIO<Error, EnterpriseAccount?>
+    (Models.Subscription.ID) async throws -> EnterpriseAccount?
   public var fetchEnterpriseEmails: () -> EitherIO<Error, [EnterpriseEmail]>
   public var fetchEpisodeCredits: (Models.User.ID) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchEpisodeProgress: (User.ID, Episode.Sequence) -> EitherIO<Error, Int?>
@@ -93,9 +93,8 @@ public struct Client {
     fetchEmailSettingsForUserId: @escaping (Models.User.ID) async throws -> [EmailSetting],
     fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) async throws ->
       EnterpriseAccount?,
-    fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.ID) -> EitherIO<
-      Error, EnterpriseAccount?
-    >,
+    fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.ID) async throws ->
+      EnterpriseAccount?,
     fetchEnterpriseEmails: @escaping () -> EitherIO<Error, [EnterpriseEmail]>,
     fetchEpisodeCredits: @escaping (Models.User.ID) -> EitherIO<Error, [EpisodeCredit]>,
     fetchEpisodeProgress: @escaping (User.ID, Episode.Sequence) -> EitherIO<Error, Int?>,

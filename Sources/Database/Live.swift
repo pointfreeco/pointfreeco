@@ -161,7 +161,7 @@ extension Client {
         .first(decoding: EnterpriseAccount.self)
       },
       fetchEnterpriseAccountForSubscription: { subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "company_name", "domain", "id", "subscription_id"
           FROM "enterprise_accounts"

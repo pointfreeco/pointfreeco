@@ -17,9 +17,9 @@ extension Client {
     fetchEnterpriseAccountForDomain: unimplemented(
       "Database.Client.fetchEnterpriseAccountForDomain"
     ),
-    fetchEnterpriseAccountForSubscription: { _ in
-      .failing("Database.Client.fetchEnterpriseAccountForSubscription")
-    },
+    fetchEnterpriseAccountForSubscription: unimplemented(
+      "Database.Client.fetchEnterpriseAccountForSubscription"
+    ),
     fetchEnterpriseEmails: { .failing("Database.Client.fetchEnterpriseEmails") },
     fetchEpisodeCredits: { _ in .failing("Database.Client.fetchEpisodeCredits") },
     fetchEpisodeProgress: { _, _ in .failing("Database.Client.fetchEpisodeProgress") },
