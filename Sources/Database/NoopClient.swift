@@ -24,7 +24,7 @@ extension Client {
     fetchFreeEpisodeUsers: { throw NoopError() },
     fetchGift: { _ in throw NoopError() },
     fetchGiftByStripePaymentIntentId: { _ in throw NoopError() },
-    fetchGiftsToDeliver: { throwE(NoopError()) },
+    fetchGiftsToDeliver: { throw NoopError() },
     fetchSubscriptionById: { _ in throwE(NoopError()) },
     fetchSubscriptionByOwnerId: { _ in throwE(NoopError()) },
     fetchSubscriptionTeammatesByOwnerId: { _ in throwE(NoopError()) },

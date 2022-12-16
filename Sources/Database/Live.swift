@@ -245,7 +245,7 @@ extension Client {
         )
       },
       fetchGiftsToDeliver: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
