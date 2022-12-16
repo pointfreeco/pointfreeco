@@ -41,18 +41,18 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
   )
   <| { conn in
-    Current.database.deleteTeamInvite(get1(conn.data).id)
+    EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
       .run
       .flatMap(
         const(
           conn
-            |> redirect(
-              to: siteRouter.path(for: .account()),
-              headersMiddleware: flash(
-                .notice,
-                "Invite to \(get1(conn.data).email.rawValue) has been revoked."
-              )
+          |> redirect(
+            to: siteRouter.path(for: .account()),
+            headersMiddleware: flash(
+              .notice,
+              "Invite to \(get1(conn.data).email.rawValue) has been revoked."
             )
+          )
         )
       )
   }
@@ -125,7 +125,9 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
 
         let deleteInvite = parallel(
           subscription
-            .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
+            .flatMap { _ in
+              EitherIO { try await Current.database.deleteTeamInvite(teamInvite.id) }
+            }
             .run
         )
 
