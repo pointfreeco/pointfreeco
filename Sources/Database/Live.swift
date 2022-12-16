@@ -22,7 +22,7 @@ extension Client {
         .get()
       },
       createEnterpriseAccount: { companyName, domain, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "enterprise_accounts"
           ("company_name", "domain", "subscription_id")
