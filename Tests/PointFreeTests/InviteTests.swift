@@ -186,8 +186,10 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    let teamInvite = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
+    let teamInvite = try await Current.database.insertTeamInvite(
+      "blobber@pointfree.co", inviterUser.id
+    )
+    .performAsync()
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -274,7 +276,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNil(subscriptionId, "Current user now has a subscription")
   }
 
-  func testAddTeammate() async throws  {
+  func testAddTeammate() async throws {
     Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
 
     let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })

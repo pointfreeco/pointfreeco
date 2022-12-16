@@ -13,7 +13,8 @@ import Prelude
 #endif
 let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
 
-_ = try await PointFree
+_ =
+  try await PointFree
   .bootstrap(eventLoopGroup: eventLoopGroup)
   .performAsync()
 

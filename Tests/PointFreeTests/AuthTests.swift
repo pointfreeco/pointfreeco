@@ -79,14 +79,14 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(0, registeredUser.episodeCreditCount)
   }
 
-  func testAuth() async throws{
+  func testAuth() async throws {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLoginWithRedirect() async throws{
+  func testLoginWithRedirect() async throws {
 
     let login = request(
       to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)

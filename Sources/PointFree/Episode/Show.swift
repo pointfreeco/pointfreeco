@@ -261,16 +261,17 @@ func userEpisodePermission<I, Z>(
     if subscriberState.isActiveSubscriber {
       return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
     } else {
-      let hasCredit = (try? await Current.database.fetchEpisodeCredits(user.id))?
-      .contains { $0.episodeSequence == episode.sequence }
-      ?? false
+      let hasCredit =
+        (try? await Current.database.fetchEpisodeCredits(user.id))?
+        .contains { $0.episodeSequence == episode.sequence }
+        ?? false
 
       return .loggedIn(
         user: user,
         subscriptionPermission: .isNotSubscriber(
           creditPermission: hasCredit
-          ? .hasUsedCredit
-          : .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
+            ? .hasUsedCredit
+            : .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
         )
       )
     }

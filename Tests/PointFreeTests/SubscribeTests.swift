@@ -791,7 +791,7 @@ final class SubscribeTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
     )
-      .performAsync()
+    .performAsync()
 
     #if !os(Linux)
       assertSnapshot(matching: conn, as: .conn)

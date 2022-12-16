@@ -46,13 +46,13 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       .flatMap(
         const(
           conn
-          |> redirect(
-            to: siteRouter.path(for: .account()),
-            headersMiddleware: flash(
-              .notice,
-              "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+            |> redirect(
+              to: siteRouter.path(for: .account()),
+              headersMiddleware: flash(
+                .notice,
+                "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+              )
             )
-          )
         )
       )
   }
