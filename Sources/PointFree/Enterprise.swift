@@ -132,10 +132,10 @@ private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
 ) -> IO<T3<User, EnterpriseAccount, Z>?> {
 
-  return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
-    .map(const(data))
-    .run
-    .map(\.right)
+  return IO {
+    try? await Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+    return data
+  }
 }
 
 private func successfullyAcceptedInviteMiddleware<A, Z>(

@@ -12,7 +12,7 @@ import Tagged
 
 public struct Client {
   public var addUserIdToSubscriptionId:
-    (Models.User.ID, Models.Subscription.ID) -> EitherIO<Error, Prelude.Unit>
+    (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var createEnterpriseAccount:
     (String, EnterpriseAccount.Domain, Models.Subscription.ID) -> EitherIO<
       Error, EnterpriseAccount?
@@ -79,9 +79,8 @@ public struct Client {
     (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
 
   public init(
-    addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
+    addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async throws ->
+      Void,
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.ID) ->
       EitherIO<Error, EnterpriseAccount?>,
     createEnterpriseEmail: @escaping (EmailAddress, User.ID) -> EitherIO<Error, EnterpriseEmail?>,
@@ -263,7 +262,8 @@ public struct Client {
       let database = pool.database(logger: Logger(label: "Postgres"))
       _ = try await database.run("DROP SCHEMA IF EXISTS public CASCADE").run.performAsync().unwrap()
       _ = try await database.run("CREATE SCHEMA public").run.performAsync().unwrap()
-      _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync().unwrap()
+      _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync()
+        .unwrap()
       _ = try await database.run("GRANT ALL ON SCHEMA public TO public").run.performAsync().unwrap()
       _ = try await self.migrate().run.performAsync().unwrap()
       _ = try await database.run("CREATE SEQUENCE test_uuids").run.performAsync().unwrap()

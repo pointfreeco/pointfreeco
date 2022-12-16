@@ -1,8 +1,9 @@
 import PointFreePrelude
+import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
-    addUserIdToSubscriptionId: { _, _ in .failing("Database.Client.addUserIdToSubscriptionId") },
+    addUserIdToSubscriptionId: unimplemented("Database.Client.addUserIdToSubscriptionId"),
     createEnterpriseAccount: { _, _, _ in .failing("Database.Client.createEnterpriseAccount") },
     createEnterpriseEmail: { _, _ in .failing("Database.Client.createEnterpriseEmail") },
     createFeedRequestEvent: { _, _, _ in .failing("Database.Client.createFeedRequestEvent") },

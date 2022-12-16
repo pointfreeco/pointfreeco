@@ -11,14 +11,15 @@ extension Client {
   ) -> Self {
     Self(
       addUserIdToSubscriptionId: { userId, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "subscription_id" = \(bind: subscriptionId)
           WHERE "users"."id" = \(bind: userId)
           """
         )
-        .run()
+        .run { _ in }
+        .get()
       },
       createEnterpriseAccount: { companyName, domain, subscriptionId in
         pool.sqlDatabase.raw(
