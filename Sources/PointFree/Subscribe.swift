@@ -130,18 +130,18 @@ private func subscribe(
   let databaseSubscription =
     stripeSubscription
     .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
-      Current.database
-        .createSubscription(
-          stripeSubscription,
-          user.id,
-          subscribeData.isOwnerTakingSeat,
-          referrer?.user.id
+      EitherIO {
+        let subscription = try await requireSome(
+          Current.database.createSubscription(
+            stripeSubscription,
+            user.id,
+            subscribeData.isOwnerTakingSeat,
+            referrer?.user.id
+          )
         )
-        .mapExcept(requireSome)
-        .flatMap { subscription in
-          runTasksFor(stripeSubscription: stripeSubscription)
-            .map(const(subscription))
-        }
+        _ = try await runTasksFor(stripeSubscription: stripeSubscription).performAsync()
+        return subscription
+      }
     }
 
   return databaseSubscription.run.flatMap(

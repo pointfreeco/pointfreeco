@@ -90,7 +90,7 @@ extension Client {
         )
       },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
-        pool.sqlDatabase.raw(
+        let subscription = try await pool.sqlDatabase.raw(
           """
           INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
           VALUES (\(bind: stripeSubscription.id), \(bind: stripeSubscription.status), \(bind: userId))
@@ -98,19 +98,18 @@ extension Client {
           """
         )
         .first(decoding: Models.Subscription.self)
-        .flatMap { subscription in
-          (isOwnerTakingSeat
-            ? pool.sqlDatabase.raw(
-              """
-              UPDATE "users"
-              SET "subscription_id" = \(bind: subscription?.id), "referrer_id" = \(bind: referrerId)
-              WHERE "users"."id" = \(bind: subscription?.userId)
-              """
-            )
-            .run()
-            : pure(unit))
-            .map(const(subscription))
+        if isOwnerTakingSeat {
+          try await pool.sqlDatabase.raw(
+            """
+            UPDATE "users"
+            SET "subscription_id" = \(bind: subscription?.id), "referrer_id" = \(bind: referrerId)
+            WHERE "users"."id" = \(bind: subscription?.userId)
+            """
+          )
+          .run { _ in }
+          .get()
         }
+        return subscription
       },
       deleteEnterpriseEmail: { userId in
         pool.sqlDatabase.raw(

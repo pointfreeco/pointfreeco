@@ -20,9 +20,8 @@ public struct Client {
     (FeedRequestEvent.FeedType, String, Models.User.ID) async throws -> Void
   public var createGift: (CreateGiftRequest) async throws -> Gift
   public var createSubscription:
-    (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) -> EitherIO<
-      Error, Models.Subscription?
-    >
+    (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async throws -> Models
+      .Subscription?
   public var deleteEnterpriseEmail: (User.ID) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>
   public var execute: (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>
@@ -85,8 +84,8 @@ public struct Client {
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID) async
       throws -> Void,
     createGift: @escaping (CreateGiftRequest) async throws -> Gift,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) ->
-      EitherIO<Error, Models.Subscription?>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async
+      throws -> Models.Subscription?,
     deleteEnterpriseEmail: @escaping (User.ID) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>,

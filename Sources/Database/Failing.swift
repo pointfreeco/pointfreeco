@@ -8,7 +8,7 @@ extension Client {
     createEnterpriseEmail: unimplemented("Database.Client.createEnterpriseEmail"),
     createFeedRequestEvent: unimplemented("Database.Client.createFeedRequestEvent"),
     createGift: unimplemented("Database.Client.createGift"),
-    createSubscription: { _, _, _, _ in .failing("Database.Client.createSubscription") },
+    createSubscription: unimplemented("Database.Client.createSubscription"),
     deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },
     deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
     execute: { _ in .failing("Database.Client.execute") },
