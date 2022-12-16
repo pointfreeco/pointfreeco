@@ -232,16 +232,17 @@ extension Client {
         )
       },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
-        pool.sqlDatabase.raw(
-          """
-          SELECT *
-          FROM "gifts"
-          WHERE "stripe_payment_intent_id" = \(bind: paymentIntentId)
-          LIMIT 1
-          """
+        try await requireSome(
+          pool.sqlDatabase.raw(
+            """
+            SELECT *
+            FROM "gifts"
+            WHERE "stripe_payment_intent_id" = \(bind: paymentIntentId)
+            LIMIT 1
+            """
+          )
+          .first(decoding: Gift.self)
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
       },
       fetchGiftsToDeliver: {
         pool.sqlDatabase.raw(

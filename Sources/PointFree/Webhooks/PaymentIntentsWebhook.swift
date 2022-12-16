@@ -42,17 +42,19 @@ private func fetchGift(
 
   return { conn in
     let paymentIntent = conn.data
-    return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
-      .run
-      .flatMap { errorOrGift in
-        switch errorOrGift {
-        case .left:
-          return conn |> writeStatus(.ok) >=> respond(text: "OK")
+    return EitherIO {
+      try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+    }
+    .run
+    .flatMap { errorOrGift in
+      switch errorOrGift {
+      case .left:
+        return conn |> writeStatus(.ok) >=> respond(text: "OK")
 
-        case let .right(gift):
-          return conn.map(const((paymentIntent, gift))) |> middleware
-        }
+      case let .right(gift):
+        return conn.map(const((paymentIntent, gift))) |> middleware
       }
+    }
   }
 }
 
@@ -64,7 +66,7 @@ private func handlePaymentIntent(
   guard paymentIntent.status == .succeeded
   else { return conn |> writeStatus(.ok) >=> respond(text: "OK") }
 
-  return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+  return EitherIO { try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id) }
     .flatMap { gift in
       gift.deliverAt == nil
         ? sendGiftEmail(for: gift)

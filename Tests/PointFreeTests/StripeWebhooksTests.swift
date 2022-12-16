@@ -436,7 +436,7 @@ final class StripeWebhooksTests: TestCase {
   func testPaymentIntent_Gift() throws {
     Current = .failing
     Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
     var delivered = false
     Current.database.updateGiftStatus = {
       delivered = $2
@@ -501,7 +501,7 @@ final class StripeWebhooksTests: TestCase {
   func testPaymentIntent_NoGift() throws {
     Current = .failing
     Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
 
     let event = Event(
       data: .init(object: PaymentIntent.succeeded),
@@ -553,7 +553,7 @@ final class StripeWebhooksTests: TestCase {
   func testFailedPaymentIntent() throws {
     Current = .failing
     Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
 
     let event = Event(
       data: .init(object: PaymentIntent.requiresConfirmation),
