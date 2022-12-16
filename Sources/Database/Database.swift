@@ -28,7 +28,7 @@ public struct Client {
   public var fetchAdmins: () async throws -> [Models.User]
   public var fetchEmailSettingsForUserId: (Models.User.ID) async throws -> [EmailSetting]
   public var fetchEnterpriseAccountForDomain:
-    (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
+    (EnterpriseAccount.Domain) async throws -> EnterpriseAccount?
   public var fetchEnterpriseAccountForSubscription:
     (Models.Subscription.ID) -> EitherIO<Error, EnterpriseAccount?>
   public var fetchEnterpriseEmails: () -> EitherIO<Error, [EnterpriseEmail]>
@@ -91,9 +91,8 @@ public struct Client {
     execute: @escaping (SQLQueryString) async throws -> [SQLRow],
     fetchAdmins: @escaping () async throws -> [Models.User],
     fetchEmailSettingsForUserId: @escaping (Models.User.ID) async throws -> [EmailSetting],
-    fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<
-      Error, EnterpriseAccount?
-    >,
+    fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) async throws ->
+      EnterpriseAccount?,
     fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.ID) -> EitherIO<
       Error, EnterpriseAccount?
     >,

@@ -150,7 +150,7 @@ extension Client {
         .all(decoding: EmailSetting.self)
       },
       fetchEnterpriseAccountForDomain: { domain in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "company_name", "domain", "id", "subscription_id"
           FROM "enterprise_accounts"
