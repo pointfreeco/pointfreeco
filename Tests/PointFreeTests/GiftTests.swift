@@ -195,7 +195,7 @@ class GiftTests: TestCase {
       userId = id
       return pure(.mock)
     }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
@@ -262,7 +262,7 @@ class GiftTests: TestCase {
     var credit: Cents<Int>?
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in nil }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
@@ -356,7 +356,7 @@ class GiftTests: TestCase {
 
     let user = User.nonSubscriber
 
-    Current.database.fetchGift = { _ in pure(.fulfilled) }
+    Current.database.fetchGift = { _ in .fulfilled }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
@@ -401,7 +401,7 @@ class GiftTests: TestCase {
 
     let user = User.teammate
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in nil }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
@@ -470,7 +470,7 @@ class GiftTests: TestCase {
     Current = .failing
     Current.date = { .mock }
     Current.episodes = { [] }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.database.fetchGift = { _ in .unfulfilled }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
     let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))

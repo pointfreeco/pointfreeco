@@ -35,7 +35,7 @@ public struct Client {
   public var fetchEpisodeCredits: (Models.User.ID) async throws -> [EpisodeCredit]
   public var fetchEpisodeProgress: (User.ID, Episode.Sequence) async throws -> Int?
   public var fetchFreeEpisodeUsers: () async throws -> [Models.User]
-  public var fetchGift: (Gift.ID) -> EitherIO<Error, Gift>
+  public var fetchGift: (Gift.ID) async throws -> Gift
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) -> EitherIO<Error, Gift>
   public var fetchGiftsToDeliver: () -> EitherIO<Error, [Gift]>
   public var fetchSubscriptionById:
@@ -99,7 +99,7 @@ public struct Client {
     fetchEpisodeCredits: @escaping (Models.User.ID) async throws -> [EpisodeCredit],
     fetchEpisodeProgress: @escaping (User.ID, Episode.Sequence) async throws -> Int?,
     fetchFreeEpisodeUsers: @escaping () async throws -> [Models.User],
-    fetchGift: @escaping (Gift.ID) -> EitherIO<Error, Gift>,
+    fetchGift: @escaping (Gift.ID) async throws -> Gift,
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.ID) -> EitherIO<Error, Gift>,
     fetchGiftsToDeliver: @escaping () -> EitherIO<Error, [Gift]>,
     fetchSubscriptionById: @escaping (Models.Subscription.ID) -> EitherIO<

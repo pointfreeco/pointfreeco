@@ -219,16 +219,17 @@ extension Client {
         .all(decoding: Models.User.self)
       },
       fetchGift: { id in
-        pool.sqlDatabase.raw(
-          """
-          SELECT *
-          FROM "gifts"
-          WHERE "id" = \(bind: id)
-          LIMIT 1
-          """
+        try await requireSome(
+          pool.sqlDatabase.raw(
+            """
+            SELECT *
+            FROM "gifts"
+            WHERE "id" = \(bind: id)
+            LIMIT 1
+            """
+          )
+          .first(decoding: Gift.self)
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
       },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
         pool.sqlDatabase.raw(
