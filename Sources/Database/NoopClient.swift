@@ -28,7 +28,7 @@ extension Client {
     fetchSubscriptionById: { _ in throw NoopError() },
     fetchSubscriptionByOwnerId: { _ in throw NoopError() },
     fetchSubscriptionTeammatesByOwnerId: { _ in throw NoopError() },
-    fetchTeamInvite: { _ in throwE(NoopError()) },
+    fetchTeamInvite: { _ in throw NoopError() },
     fetchTeamInvites: { _ in throwE(NoopError()) },
     fetchUserByGitHub: { _ in throwE(NoopError()) },
     fetchUserById: { _ in throwE(NoopError()) },

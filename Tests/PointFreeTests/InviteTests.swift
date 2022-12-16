@@ -100,7 +100,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNil(invite)
   }
 
@@ -130,7 +130,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNotNil(invite)
   }
 
@@ -378,7 +378,7 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in nil }
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
@@ -408,8 +408,8 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchTeamInvite = const(pure(.some(invite)))
-    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchTeamInvite = { _ in invite }
+    Current.database.fetchSubscriptionById = { _ in .mock }
 
     Current.stripe.fetchSubscription = const(pure(.mock))
 

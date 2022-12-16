@@ -281,7 +281,7 @@ class SubscriptionConfirmationTests: TestCase {
 
   func testPersonal_LoggedIn_ActiveSubscriber() {
     Current.database.fetchUserById = const(pure(.mock))
-    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
     let conn = connection(
