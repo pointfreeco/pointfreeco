@@ -15,20 +15,27 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
-  func testIncrementEpisodeCredits() throws {
-    let users: [User] = [1, 2, 3].map {
+  func testIncrementEpisodeCredits() async throws {
+    var users: [User] = []
+    for id in [1, 2, 3] {
       var env = GitHubUserEnvelope.mock
-      env.gitHubUser.id = .init(rawValue: $0)
-      return Current.database.registerUser(
-        withGitHubEnvelope: env, email: .init(rawValue: "\($0)@pointfree.co"), now: { .mock }
+      env.gitHubUser.id = .init(rawValue: id)
+      try await users.append(
+        Current.database.registerUser(
+          withGitHubEnvelope: env, email: .init(rawValue: "\(id)@pointfree.co"), now: { .mock }
+        )
+        .performAsync()!
       )
-      .run.perform().right!!
     }
 
-    _ = try Current.database.incrementEpisodeCredits(users.map(\.id)).run.perform().unwrap()
+    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id)).performAsync()
 
-    let updatedUsers = users.map { Current.database.fetchUserById($0.id).run.perform().right!! }
+    var updatedUsers: [User] = []
+    for user in users {
+      try await updatedUsers.append(Current.database.fetchUserById(user.id).performAsync()!)
+    }
 
     zip(users, updatedUsers).forEach {
       XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount)

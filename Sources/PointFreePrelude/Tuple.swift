@@ -60,31 +60,31 @@ public func require6<A, B, C, D, E, F, Z>(_ x: T7<A, B, C, D, E, F?, Z>) -> T7<A
 
 public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
   return IO {
-    return t |> over1(perform)
+    await get1(t).performAsync() .*. rest(t)
   }
 }
 
 public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
   return IO {
-    return t |> over2(perform)
+    await get1(t) .*. get2(t).performAsync() .*. rest(t)
   }
 }
 
 public func sequence3<A, B, C, Z>(_ t: T4<A, B, IO<C>, Z>) -> IO<T4<A, B, C, Z>> {
   return IO {
-    return t |> over3(perform)
+    await get1(t) .*. get2(t) .*. get3(t).performAsync() .*. rest(t)
   }
 }
 
 public func sequence4<A, B, C, D, Z>(_ t: T5<A, B, C, IO<D>, Z>) -> IO<T5<A, B, C, D, Z>> {
   return IO {
-    return t |> over4(perform)
+    await get1(t) .*. get2(t) .*. get3(t) .*. get4(t).performAsync() .*. rest(t)
   }
 }
 
 public func sequence5<A, B, C, D, E, Z>(_ t: T6<A, B, C, D, IO<E>, Z>) -> IO<T6<A, B, C, D, E, Z>> {
   return IO {
-    return t |> over5(perform)
+    await get1(t) .*. get2(t) .*. get3(t) .*. get4(t) .*. get5(t).performAsync() .*. rest(t)
   }
 }
 
@@ -92,6 +92,12 @@ public func sequence6<A, B, C, D, E, F, Z>(_ t: T7<A, B, C, D, E, IO<F>, Z>) -> 
   T7<A, B, C, D, E, F, Z>
 > {
   return IO {
-    return t |> over6(perform)
+    await get1(t)
+      .*. get2(t)
+      .*. get3(t)
+      .*. get4(t)
+      .*. get5(t)
+      .*. get6(t).performAsync()
+      .*. rest(t)
   }
 }

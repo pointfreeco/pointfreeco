@@ -13,23 +13,17 @@ import Prelude
 #endif
 let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
 
-_ =
-  try! PointFree
+_ = try await PointFree
   .bootstrap(eventLoopGroup: eventLoopGroup)
-  .run
-  .perform()
-  .unwrap()
+  .performAsync()
 
-_ = EitherIO.debug(prefix: "📧 Sending welcome emails...")
+_ = try await EitherIO.debug(prefix: "📧 Sending welcome emails...")
   .flatMap(const(sendWelcomeEmails()))
-  .run
-  .perform()
+  .performAsync()
 
-_ = EitherIO.debug(prefix: "📧 Delivering gifts...")
+_ = try await EitherIO.debug(prefix: "📧 Delivering gifts...")
   .flatMap(const(deliverGifts()))
-  .run
-  .perform()
+  .performAsync()
 
-//_ = validateEnterpriseEmails()
-//  .run
-//  .perform()
+//_ = await validateEnterpriseEmails()
+//  .performAsync()

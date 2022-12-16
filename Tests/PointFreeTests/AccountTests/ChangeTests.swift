@@ -119,7 +119,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateAddSeatsTeamPlan() {
+  func testChangeUpdateAddSeatsTeamPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.teamMonthly))
       var pricing = Pricing.teamMonthly
@@ -129,7 +129,7 @@ final class ChangeTests: TestCase {
         from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
       let result = conn |> siteMiddleware
 
-      let performed = result.perform()
+      let performed = await result.performAsync()
       assertSnapshot(matching: performed, as: .conn)
     #endif
   }

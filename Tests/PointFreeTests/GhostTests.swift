@@ -10,13 +10,14 @@ import XCTest
 
 @testable import PointFree
 
+@MainActor
 final class GhostTests: TestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record=true
   }
 
-  func testStartGhosting_HappyPath() {
+  func testStartGhosting_HappyPath() async {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
     adminSession.user = .standard(adminUser.id)
@@ -34,12 +35,10 @@ final class GhostTests: TestCase {
       )
     }
 
-    let conn =
-      connection(
-        from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
+    )
+    .performAsync()
 
     _assertInlineSnapshot(
       matching: conn, as: .conn,
@@ -61,7 +60,7 @@ final class GhostTests: TestCase {
         """)
   }
 
-  func testStartGhosting_InvalidGhostee() {
+  func testStartGhosting_InvalidGhostee() async {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
     adminSession.user = .standard(adminUser.id)
@@ -77,12 +76,10 @@ final class GhostTests: TestCase {
       )
     }
 
-    let conn =
-      connection(
-        from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
+    )
+    .performAsync()
 
     _assertInlineSnapshot(
       matching: conn, as: .conn,
@@ -104,7 +101,7 @@ final class GhostTests: TestCase {
         """)
   }
 
-  func testStartGhosting_NonAdmin() {
+  func testStartGhosting_NonAdmin() async {
     let user = User.mock
     var session = Session.loggedIn
     session.user = .standard(user.id)
@@ -122,12 +119,10 @@ final class GhostTests: TestCase {
       )
     }
 
-    let conn =
-      connection(
-        from: request(to: .admin(.ghost(.start(ghostee.id))), session: session)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
+    )
+    .performAsync()
 
     _assertInlineSnapshot(
       matching: conn, as: .conn,
@@ -149,7 +144,7 @@ final class GhostTests: TestCase {
         """)
   }
 
-  func testEndGhosting_HappyPath() {
+  func testEndGhosting_HappyPath() async {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
@@ -167,12 +162,10 @@ final class GhostTests: TestCase {
       )
     }
 
-    let conn =
-      connection(
-        from: request(to: .endGhosting, session: adminSession)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
+    let conn = await siteMiddleware(
+      connection(from: request(to: .endGhosting, session: adminSession))
+    )
+    .performAsync()
 
     _assertInlineSnapshot(
       matching: conn, as: .conn,

@@ -7,12 +7,13 @@ import XCTest
 
 @testable import PointFree
 
+@MainActor
 final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
-  func testAssociationFile() {
-    let conn =
+  func testAssociationFile() async {
+    let conn = await siteMiddleware(
       connection(from: request(to: .appleDeveloperMerchantIdDomainAssociation))
-      |> siteMiddleware
-      |> Prelude.perform
+    )
+    .performAsync()
 
     assertSnapshot(matching: conn, as: .conn)
   }

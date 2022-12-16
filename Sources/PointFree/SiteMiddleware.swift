@@ -63,8 +63,7 @@ private func render(
 
   switch route {
   case .about:
-    return conn.map(const(user .*. subscriberState .*. route .*. unit))
-      |> aboutResponse
+    return aboutResponse(conn.map(const((user, subscriberState, route))))
 
   case let .account(account):
     return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))

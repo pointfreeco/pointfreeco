@@ -18,22 +18,23 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.isRecording = true
   }
 
-  func testRedeemEpisodeCredit_HappyPath() {
+  func testRedeemEpisodeCredit_HappyPath() async throws {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
 
     Current.episodes = unzurry([episode])
 
-    let user = Current.database
+    let user = try await Current.database
       .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run.perform().right!!
-    _ = Current.database.updateUser(id: user.id, episodeCreditCount: 1).run.perform()
+      .performAsync()!
+    _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -45,17 +46,14 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    XCTAssertEqual(
-      [credit],
-      Current.database.fetchEpisodeCredits(user.id).run.perform().right!
-    )
-    XCTAssertEqual(
-      0,
-      Current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
-    )
+    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    XCTAssertEqual([credit], credits)
+
+    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    XCTAssertEqual(0, count)
   }
 
-  func testRedeemEpisodeCredit_NotEnoughCredits() {
+  func testRedeemEpisodeCredit_NotEnoughCredits() async throws {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
 
@@ -74,17 +72,14 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    XCTAssertEqual(
-      [],
-      Current.database.fetchEpisodeCredits(user.id).run.perform().right!
-    )
-    XCTAssertEqual(
-      0,
-      Current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
-    )
+    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    XCTAssertEqual([], credits)
+
+    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    XCTAssertEqual(0, count)
   }
 
-  func testRedeemEpisodeCredit_PublicEpisode() {
+  func testRedeemEpisodeCredit_PublicEpisode() async throws {
     var episode = Episode.mock
     episode.permission = .free
 
@@ -103,27 +98,24 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    XCTAssertEqual(
-      [],
-      Current.database.fetchEpisodeCredits(user.id).run.perform().right!
-    )
-    XCTAssertEqual(
-      1,
-      Current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
-    )
+    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    XCTAssertEqual([], credits)
+
+    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    XCTAssertEqual(1, count)
   }
 
-  func testRedeemEpisodeCredit_AlreadyCredited() {
+  func testRedeemEpisodeCredit_AlreadyCredited() async throws {
     var episode = Episode.mock
     episode.permission = .free
 
     Current.episodes = unzurry([episode])
 
-    let user = Current.database
+    let user = try await Current.database
       .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .run.perform().right!!
-    _ = Current.database.updateUser(id: user.id, episodeCreditCount: 1).run.perform()
-    _ = Current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
+      .performAsync()!
+    _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
+    _ = try await Current.database.redeemEpisodeCredit(episode.sequence, user.id).performAsync()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -135,14 +127,11 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    XCTAssertEqual(
-      [credit],
-      Current.database.fetchEpisodeCredits(user.id).run.perform().right!
-    )
-    XCTAssertEqual(
-      1,
-      Current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
-    )
+    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    XCTAssertEqual([credit], credits)
+
+    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    XCTAssertEqual(1, count)
   }
 }
 
