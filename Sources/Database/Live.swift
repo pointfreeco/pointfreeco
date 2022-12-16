@@ -172,7 +172,7 @@ extension Client {
         .first(decoding: EnterpriseAccount.self)
       },
       fetchEnterpriseEmails: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "enterprise_emails"

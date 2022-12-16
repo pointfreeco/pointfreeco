@@ -63,7 +63,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       .performAsync()!.subscriptionId
     XCTAssertEqual(subscriptionId, nil)
 
-    let emails = try await Current.database.fetchEnterpriseEmails().performAsync()
+    let emails = try await Current.database.fetchEnterpriseEmails()
     XCTAssertEqual(emails, [])
   }
 }

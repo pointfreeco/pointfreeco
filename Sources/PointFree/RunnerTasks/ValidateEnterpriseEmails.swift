@@ -8,7 +8,7 @@ public func validateEnterpriseEmails() -> EitherIO<Error, Prelude.Unit> {
 
   // TODO: calendar check for first of the month
 
-  return Current.database.fetchEnterpriseEmails()
+  return EitherIO { try await Current.database.fetchEnterpriseEmails() }
     .flatMap(validate(enterpriseEmails:))
     .flatMap(sendValidationSummaryEmail(results:))
 }
