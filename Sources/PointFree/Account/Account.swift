@@ -32,13 +32,9 @@ private func fetchAccountData<I>(
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription: EitherIO<Error, Models.Subscription> =
-    user.subscriptionId
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+  let userSubscription = EitherIO {
+    try await requireSome(Current.database.fetchSubscriptionById(requireSome(user.subscriptionId)))
+  }
 
   let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
     .mapExcept(requireSome)

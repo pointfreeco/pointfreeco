@@ -48,7 +48,7 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
@@ -82,7 +82,7 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
@@ -101,7 +101,7 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
@@ -120,7 +120,7 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
@@ -139,7 +139,7 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
@@ -158,7 +158,7 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 

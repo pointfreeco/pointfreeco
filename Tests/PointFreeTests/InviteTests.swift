@@ -379,7 +379,7 @@ class InviteTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in nil }
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)

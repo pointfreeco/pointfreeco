@@ -29,7 +29,7 @@ extension Client {
       "Database.Client.fetchGiftByStripePaymentIntentId"
     ),
     fetchGiftsToDeliver: unimplemented("Database.Client.fetchGiftsToDeliver"),
-    fetchSubscriptionById: { _ in .failing("Database.Client.fetchSubscriptionById") },
+    fetchSubscriptionById: unimplemented("Database.Client.fetchSubscriptionById"),
     fetchSubscriptionByOwnerId: { _ in .failing("Database.Client.fetchSubscriptionByOwnerId") },
     fetchSubscriptionTeammatesByOwnerId: { _ in
       .failing("Database.Client.fetchSubscriptionTeammatesByOwnerId")

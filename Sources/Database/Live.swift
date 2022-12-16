@@ -260,7 +260,7 @@ extension Client {
         .all(decoding: Gift.self)
       },
       fetchSubscriptionById: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"

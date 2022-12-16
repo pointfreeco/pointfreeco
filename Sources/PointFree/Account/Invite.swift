@@ -310,12 +310,12 @@ private func redirectCurrentSubscribers<A, B>(
       let subscriptionId = user.subscriptionId
     else { return middleware(conn) }
 
-    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .bimap(const(unit), id)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .map { $0.right?.isRenewing ?? false }
+    let hasActiveSubscription = EitherIO {
+      try await requireSome(Current.database.fetchSubscriptionById(subscriptionId))
+    }
+    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+    .run
+    .map { $0.right?.isRenewing ?? false }
 
     return hasActiveSubscription.flatMap {
       $0
