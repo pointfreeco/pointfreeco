@@ -46,7 +46,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
 
     let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
@@ -72,7 +72,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
 
     let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
@@ -98,7 +98,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
 
     let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
@@ -127,7 +127,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
 
     let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
@@ -356,7 +356,7 @@ class EpisodePageTests: TestCase {
     episode.permission = .free
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.database.fetchEpisodeCredits = const(pure([.mock]))
+    Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.episodes = unzurry([episode])
 
@@ -388,7 +388,7 @@ class EpisodePageTests: TestCase {
     episode.permission = .subscriberOnly
 
     Current.database.fetchUserById = const(pure(.some(user)))
-    Current.database.fetchEpisodeCredits = const(pure([.mock]))
+    Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.episodes = unzurry([episode])
 
@@ -421,7 +421,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([episode])
-    Current.database.fetchEpisodeCredits = const(pure([]))
+    Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
@@ -453,7 +453,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([episode])
-    Current.database.fetchEpisodeCredits = const(pure([]))
+    Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(

@@ -181,7 +181,7 @@ extension Client {
         .all(decoding: EnterpriseEmail.self)
       },
       fetchEpisodeCredits: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "episode_sequence", "user_id"
           FROM "episode_credits"

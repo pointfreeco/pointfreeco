@@ -21,7 +21,7 @@ extension Client {
     fetchEnterpriseAccountForDomain: { _ in .mock },
     fetchEnterpriseAccountForSubscription: { _ in nil },
     fetchEnterpriseEmails: { [.mock] },
-    fetchEpisodeCredits: const(pure([])),
+    fetchEpisodeCredits: { _ in [] },
     fetchEpisodeProgress: { _, _ in pure(nil) },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchGift: { _ in pure(.unfulfilled) },

@@ -254,34 +254,28 @@ func userEpisodePermission<I, Z>(
 
   let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-  guard let user = currentUser else {
-    let permission: EpisodePermission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
-    return pure(conn.map(const(permission .*. conn.data)))
-  }
-
-  let hasCredit = Current.database.fetchEpisodeCredits(user.id)
-    .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
-    .run
-    .map { $0.right ?? false }
-
-  let permission =
-    hasCredit
-    .map { hasCredit -> EpisodePermission in
-      switch (hasCredit, subscriberState.isActiveSubscriber) {
-      case (_, true):
-        return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
-      case (true, false):
-        return .loggedIn(
-          user: user, subscriptionPermission: .isNotSubscriber(creditPermission: .hasUsedCredit))
-      case (false, false):
-        return .loggedIn(
-          user: user,
-          subscriptionPermission: .isNotSubscriber(
-            creditPermission: .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
-          )
-        )
-      }
+  let permission = IO<EpisodePermission> {
+    guard let user = currentUser else {
+      return .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
     }
+
+    if subscriberState.isActiveSubscriber {
+      return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
+    } else {
+      let hasCredit = (try? await Current.database.fetchEpisodeCredits(user.id))?
+      .contains { $0.episodeSequence == episode.sequence }
+      ?? false
+
+      return .loggedIn(
+        user: user,
+        subscriptionPermission: .isNotSubscriber(
+          creditPermission: hasCredit
+          ? .hasUsedCredit
+          : .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
+        )
+      )
+    }
+  }
 
   return
     permission
