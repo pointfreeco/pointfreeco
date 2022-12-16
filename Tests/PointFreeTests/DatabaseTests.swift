@@ -87,7 +87,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 20
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
     _ = try await Current.database.updateEpisodeProgress(1, 10, user.id).performAsync()
@@ -100,7 +100,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 10
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
     _ = try await Current.database.updateEpisodeProgress(1, 30, user.id).performAsync()
@@ -113,7 +113,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 30
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
   }
 

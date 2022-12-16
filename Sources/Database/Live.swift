@@ -18,8 +18,7 @@ extension Client {
           WHERE "users"."id" = \(bind: userId)
           """
         )
-        .run { _ in }
-        .get()
+        .run()
       },
       createEnterpriseAccount: { companyName, domain, subscriptionId in
         try await pool.sqlDatabase.raw(
@@ -56,8 +55,7 @@ extension Client {
           SET "count" = "feed_request_events"."count" + 1
           """
         )
-        .run { _ in }
-        .get()
+        .run()
       },
       createGift: { request in
         try await requireSome(
@@ -106,13 +104,12 @@ extension Client {
             WHERE "users"."id" = \(bind: subscription?.userId)
             """
           )
-          .run { _ in }
-          .get()
+          .run()
         }
         return subscription
       },
       deleteEnterpriseEmail: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "enterprise_emails"
           WHERE "user_id" = \(bind: userId)
@@ -121,7 +118,7 @@ extension Client {
         .run()
       },
       deleteTeamInvite: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "team_invites"
           WHERE "id" = \(bind: id)
@@ -130,7 +127,7 @@ extension Client {
         .run()
       },
       execute: { sql in
-        .init(pool.sqlDatabase.raw(sql).all())
+        try await pool.sqlDatabase.raw(sql).all()
       },
       fetchAdmins: {
         pool.sqlDatabase.raw(
