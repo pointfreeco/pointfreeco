@@ -54,16 +54,19 @@ private func unlinkSubscription(
   user: Models.User
 ) -> EitherIO<Error, Prelude.Unit> {
 
-  return Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
-    .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
-      guard let subscriptionId = user.subscriptionId else { return pure(unit) }
+  return EitherIO {
+    try await Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
+    return unit
+  }
+  .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
+    guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-      return Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
-        .catch(
-          notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
-        )
-    }
-    .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
+    return Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
+      .catch(
+        notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
+      )
+  }
+  .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
 }
 
 private func notifyUserSubscriptionWasRemoved(

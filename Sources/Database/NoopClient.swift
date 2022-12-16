@@ -11,7 +11,7 @@ extension Client {
     createFeedRequestEvent: { _, _, _ in throw NoopError() },
     createGift: { _ in throw NoopError() },
     createSubscription: { _, _, _, _ in throw NoopError() },
-    deleteEnterpriseEmail: { _ in throwE(NoopError()) },
+    deleteEnterpriseEmail: { _ in throw NoopError() },
     deleteTeamInvite: { _ in throwE(NoopError()) },
     execute: { _ in throwE(NoopError()) },
     fetchAdmins: { throwE(NoopError()) },
