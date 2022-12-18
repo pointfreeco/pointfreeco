@@ -315,7 +315,7 @@ extension Client {
         .all(decoding: TeamInvite.self)
       },
       fetchUserByGitHub: { gitHubUserId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "users"

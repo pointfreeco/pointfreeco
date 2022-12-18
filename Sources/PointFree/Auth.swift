@@ -122,7 +122,7 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
 
 private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
-  return Current.database.fetchUserByGitHub(env.gitHubUser.id)
+  return EitherIO { try await Current.database.fetchUserByGitHub(env.gitHubUser.id) }
     .flatMap { user in user.map(pure) ?? registerUser(env: env) }
 }
 
