@@ -160,7 +160,7 @@ final class AccountTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     Current.database.fetchSubscriptionById = { _ in subscription }
-    Current.database.fetchTeamInvites = const(pure([]))
+    Current.database.fetchTeamInvites = { _ in [] }
     Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
     var session = Session.loggedIn

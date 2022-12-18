@@ -305,7 +305,7 @@ extension Client {
         .first(decoding: TeamInvite.self)
       },
       fetchTeamInvites: { inviterId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"

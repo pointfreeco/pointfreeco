@@ -176,17 +176,12 @@ let sendInviteMiddleware =
 
     let (email, inviter) = lower(conn.data)
 
-    let seatsTaken = zip2(
-      Current.database.fetchTeamInvites(inviter.id).run.parallel
-        .map { $0.right?.count ?? 0 },
-      EitherIO {
-        try await Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id)
-      }
-      .run
-      .parallel
-      .map { $0.right?.count ?? 0 }
-    )
-    .map(+)
+    let seatsTaken = IO {
+      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count
+      async let invites = Current.database.fetchTeamInvites(inviter.id).count
+      return (try? await teammates + invites) ?? 0
+    }
+    .parallel
 
     let subscription = EitherIO {
       try await requireSome(Current.database.fetchSubscriptionByOwnerId(inviter.id))

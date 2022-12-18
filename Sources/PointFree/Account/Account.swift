@@ -91,13 +91,11 @@ private func fetchAccountData<I>(
 
       owner.run.map(\.right).parallel,
 
-      Current.database.fetchTeamInvites(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchTeamInvites(user.id)) ?? [] }
+        .parallel,
 
-      IO {
-        (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? []
-      }
-      .parallel,
+      IO { (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
+        .parallel,
 
       upcomingInvoice.run.map(\.right).parallel
     )
