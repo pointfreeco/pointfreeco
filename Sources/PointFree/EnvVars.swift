@@ -1,4 +1,5 @@
 import Database
+import Dependencies
 import Foundation
 import GitHub
 import Mailgun
@@ -226,3 +227,46 @@ extension EnvVars {
 
 private let encoder = JSONEncoder()
 private let decoder = JSONDecoder()
+
+extension EnvVars: DependencyKey {
+  public static var liveValue: Self {
+    let envFilePath = URL(fileURLWithPath: #file)
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+      .appendingPathComponent(".pf-env")
+
+    let defaultEnvVarDict =
+      (try? encoder.encode(Current.envVars))
+      .flatMap { try? decoder.decode([String: String].self, from: $0) }
+      ?? [:]
+
+    let localEnvVarDict =
+      (try? Data(contentsOf: envFilePath))
+      .flatMap { try? decoder.decode([String: String].self, from: $0) }
+      ?? [:]
+
+    let envVarDict =
+      defaultEnvVarDict
+      .merging(localEnvVarDict, uniquingKeysWith: { $1 })
+      .merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
+
+    return (try? JSONSerialization.data(withJSONObject: envVarDict))
+      .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
+      ?? Self()
+  }
+
+  public static var testValue: EnvVars {
+    var envVars = EnvVars()
+    envVars.appEnv = EnvVars.AppEnv.testing
+    envVars.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+    return envVars
+  }
+}
+
+extension DependencyValues {
+  public var envVars: EnvVars {
+    get { self[EnvVars.self] }
+    set { self[EnvVars.self] = newValue }
+  }
+}

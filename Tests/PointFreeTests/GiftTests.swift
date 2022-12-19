@@ -1,5 +1,6 @@
 import CustomDump
 import Database
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -183,56 +184,58 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_NonSubscriber() {
-    Current = .failing
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
 
-    let user = User.nonSubscriber
+      let user = User.nonSubscriber
 
-    var credit: Cents<Int>?
-    var stripeSubscriptionId: Stripe.Subscription.ID?
-    var userId: User.ID?
+      var credit: Cents<Int>?
+      var stripeSubscriptionId: Stripe.Subscription.ID?
+      var userId: User.ID?
 
-    Current.database.createSubscription = { _, id, _, _ in
-      userId = id
-      return pure(.mock)
-    }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-    Current.database.fetchUserById = { _ in pure(user) }
-    Current.database.sawUser = { _ in pure(unit) }
-    Current.database.updateGift = { _, id in
-      stripeSubscriptionId = id
-      return pure(.fulfilled)
-    }
-    Current.date = { .mock }
-    Current.stripe.createCustomer = { _, _, _, _, amount in
-      credit = amount
-      return pure(
-        update(.mock) {
-          $0.invoiceSettings = .init(defaultPaymentMethod: nil)
-        })
-    }
-    Current.stripe.createSubscription = { _, _, _, _ in
-      pure(.individualMonthly)
-    }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      Current.database.createSubscription = { _, id, _, _ in
+        userId = id
+        return pure(.mock)
+      }
+      Current.database.fetchGift = { _ in pure(.unfulfilled) }
+      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      Current.database.fetchUserById = { _ in pure(user) }
+      Current.database.sawUser = { _ in pure(unit) }
+      Current.database.updateGift = { _, id in
+        stripeSubscriptionId = id
+        return pure(.fulfilled)
+      }
+      Current.stripe.createCustomer = { _, _, _, _, amount in
+        credit = amount
+        return pure(
+          update(.mock) {
+            $0.invoiceSettings = .init(defaultPaymentMethod: nil)
+          })
+      }
+      Current.stripe.createSubscription = { _, _, _, _ in
+        pure(.individualMonthly)
+      }
+      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .redeem(
-            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!,
-            .confirm
-          )
-        ),
-        session: .loggedIn(as: user),
-        basicAuth: true
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .redeem(
+              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!,
+              .confirm
+            )
+          ),
+          session: .loggedIn(as: user),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
@@ -247,55 +250,58 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
 
-    XCTAssertEqual(credit, -54_00)
-    XCTAssertNotNil(stripeSubscriptionId)
-    XCTAssertNotNil(userId)
+      XCTAssertEqual(credit, -54_00)
+      XCTAssertNotNil(stripeSubscriptionId)
+      XCTAssertNotNil(userId)
+    }
   }
 
   func testGiftRedeem_Subscriber() {
-    Current = .failing
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
 
-    let user = User.owner
+      let user = User.owner
 
-    var credit: Cents<Int>?
-    var stripeSubscriptionId: Stripe.Subscription.ID?
+      var credit: Cents<Int>?
+      var stripeSubscriptionId: Stripe.Subscription.ID?
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
-    Current.database.fetchUserById = { _ in pure(user) }
-    Current.database.sawUser = { _ in pure(unit) }
-    Current.database.updateGift = { _, id in
-      stripeSubscriptionId = id
-      return pure(.fulfilled)
-    }
-    Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-    Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
-    Current.stripe.updateCustomerBalance = { _, amount in
-      credit = amount
-      return pure(update(.mock))
-    }
+      Current.database.fetchGift = { _ in pure(.unfulfilled) }
+      Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+      Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+      Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
+      Current.database.fetchUserById = { _ in pure(user) }
+      Current.database.sawUser = { _ in pure(unit) }
+      Current.database.updateGift = { _, id in
+        stripeSubscriptionId = id
+        return pure(.fulfilled)
+      }
+      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
+      Current.stripe.updateCustomerBalance = { _, amount in
+        credit = amount
+        return pure(update(.mock))
+      }
 
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .redeem(
-            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
-          )
-        ),
-        session: .loggedIn(as: user),
-        basicAuth: true
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .redeem(
+              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
+            )
+          ),
+          session: .loggedIn(as: user),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
@@ -310,10 +316,11 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
 
-    XCTAssertEqual(credit, -54_00)
-    XCTAssertNotNil(stripeSubscriptionId)
+      XCTAssertEqual(credit, -54_00)
+      XCTAssertNotNil(stripeSubscriptionId)
+    }
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
@@ -352,33 +359,35 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_Redeemed() {
-    Current = .failing
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
 
-    let user = User.nonSubscriber
+      let user = User.nonSubscriber
 
-    Current.database.fetchGift = { _ in pure(.fulfilled) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-    Current.database.fetchUserById = { _ in pure(user) }
-    Current.database.sawUser = { _ in pure(unit) }
-    Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      Current.database.fetchGift = { _ in pure(.fulfilled) }
+      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      Current.database.fetchUserById = { _ in pure(user) }
+      Current.database.sawUser = { _ in pure(unit) }
+      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .redeem(
-            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
-          )
-        ),
-        session: .loggedIn(as: user),
-        basicAuth: true
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .redeem(
+              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
+            )
+          ),
+          session: .loggedIn(as: user),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
@@ -393,40 +402,43 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
+    }
   }
 
   func testGiftRedeem_Invalid_Teammate() {
-    Current = .failing
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
 
-    let user = User.teammate
+      let user = User.teammate
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-    Current.database.fetchUserById = { _ in pure(user) }
-    Current.database.sawUser = { _ in pure(unit) }
-    Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-    Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
+      Current.database.fetchGift = { _ in pure(.unfulfilled) }
+      Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+      Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      Current.database.fetchUserById = { _ in pure(user) }
+      Current.database.sawUser = { _ in pure(unit) }
+      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
 
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .redeem(
-            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
-          )
-        ),
-        session: .loggedIn(as: user),
-        basicAuth: true
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .redeem(
+              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
+            )
+          ),
+          session: .loggedIn(as: user),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
@@ -441,17 +453,20 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
+    }
   }
 
   func testGiftLanding() {
-    Current = .failing
-    Current.date = { .mock }
-    Current.episodes = { [] }
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
+      Current.episodes = { [] }
 
-    let conn = connection(from: request(to: .gifts()))
+      let conn = connection(from: request(to: .gifts()))
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: siteMiddleware(conn),
@@ -461,21 +476,24 @@ class GiftTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
 
-    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+      assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    }
   }
 
   func testGiftRedeemLanding() {
-    Current = .failing
-    Current.date = { .mock }
-    Current.episodes = { [] }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-
-    let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
-
-    #if !os(Linux)
+    DependencyValues.withTestValues {
+      $0.date.now = .mock
+    } operation: {
+      Current = .failing
+      Current.episodes = { [] }
+      Current.database.fetchGift = { _ in pure(.unfulfilled) }
+      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      
+      let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
+      
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: siteMiddleware(conn),
@@ -485,8 +503,9 @@ class GiftTests: TestCase {
           ]
         )
       }
-    #endif
-
-    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+#endif
+      
+      assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    }
   }
 }

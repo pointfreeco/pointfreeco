@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -19,64 +20,68 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
   func testRegister() async throws {
     let now = Date.mock
+    try await DependencyValues.withTestValues {
+      $0.date.now = now
+    } operation: {
+      var gitHubUserEnvelope = GitHubUserEnvelope.mock
+      gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+      gitHubUserEnvelope.gitHubUser.createdAt = now - 60 * 60 * 24 * 365
+      gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
+      gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
-    var gitHubUserEnvelope = GitHubUserEnvelope.mock
-    gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now - 60 * 60 * 24 * 365
-    gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
-    gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
+      Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
+      Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
-    Current.date = { now }
-    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
-    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
-
-    let result = await siteMiddleware(
-      connection(
-        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+      let result = await siteMiddleware(
+        connection(
+          from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+        )
       )
-    )
-    .performAsync()
-    assertSnapshot(matching: result, as: .conn)
+        .performAsync()
+      assertSnapshot(matching: result, as: .conn)
 
-    let registeredUser = try await Current.database
-      .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
-      .performAsync()!
+      let registeredUser = try await Current.database
+        .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
+        .performAsync()!
 
-    XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
-    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
-    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
-    XCTAssertEqual(1, registeredUser.episodeCreditCount)
+      XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
+      XCTAssertEqual(1, registeredUser.episodeCreditCount)
+    }
   }
 
   func testRegisterRecentAccount() async throws {
     let now = Date.mock
-
-    var gitHubUserEnvelope = GitHubUserEnvelope.mock
-    gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
-    gitHubUserEnvelope.gitHubUser.createdAt = now - 5 * 60
-    gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
-    gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
-
-    Current.date = { now }
-    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
-    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
-
-    let result = await siteMiddleware(
-      connection(
-        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+    try await DependencyValues.withTestValues {
+      $0.date.now = now
+    } operation: {
+      var gitHubUserEnvelope = GitHubUserEnvelope.mock
+      gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+      gitHubUserEnvelope.gitHubUser.createdAt = now - 5 * 60
+      gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
+      gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
+      
+      Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
+      Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
+      
+      let result = await siteMiddleware(
+        connection(
+          from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+        )
       )
-    )
-    .performAsync()
-    assertSnapshot(matching: result, as: .conn)
-
-    let registeredUser = try await Current.database
-      .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
-      .performAsync()!
-
-    XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
-    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
-    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
-    XCTAssertEqual(0, registeredUser.episodeCreditCount)
+        .performAsync()
+      assertSnapshot(matching: result, as: .conn)
+      
+      let registeredUser = try await Current.database
+        .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
+        .performAsync()!
+      
+      XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
+      XCTAssertEqual(0, registeredUser.episodeCreditCount)
+    }
   }
 
   func testAuth() async throws {

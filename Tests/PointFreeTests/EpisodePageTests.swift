@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import Dependencies
 import Either
 import GitHub
 import GitHubTestSupport
@@ -476,19 +477,25 @@ class EpisodePageTests: TestCase {
   }
 
   func test_permission() {
+    // TODO: double check this test
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
     var episode = Episode.mock
     episode.permission = .freeDuring(start..<end)
 
-    Current.date = { start.addingTimeInterval(-1) }
-    XCTAssertTrue(episode.subscriberOnly)
+    DependencyValues.withTestValues {
+      $0.date.now = start.addingTimeInterval(-1)
+    } operation: {
+      XCTAssertTrue(episode.subscriberOnly)
+    }
 
-    Current.date = { start.addingTimeInterval(1) }
     XCTAssertFalse(episode.subscriberOnly)
 
-    Current.date = { end.addingTimeInterval(1) }
-    XCTAssertTrue(episode.subscriberOnly)
+    DependencyValues.withTestValues {
+      $0.date.now = end.addingTimeInterval(1)
+    } operation: {
+      XCTAssertTrue(episode.subscriberOnly)
+    }
   }
 
   func testEpisodePage_ExercisesAndReferences() {

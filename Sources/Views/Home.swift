@@ -13,7 +13,6 @@ public func homeView(
   currentUser: User?,
   subscriberState: SubscriberState,
   episodes: [Episode],
-  date: () -> Date,
   emergencyMode: Bool
 ) -> Node {
 
@@ -25,9 +24,9 @@ public func homeView(
 
   return [
     holidaySpecialCalloutView(currentDate: currentDate, subscriberState: subscriberState),
-    episodesListView(episodes: firstBatch, date: date, emergencyMode: emergencyMode),
+    episodesListView(episodes: firstBatch, currentDate: currentDate, emergencyMode: emergencyMode),
     subscriberCalloutView(currentDate: currentDate, subscriberState: subscriberState),
-    episodesListView(episodes: secondBatch, date: date, emergencyMode: emergencyMode),
+    episodesListView(episodes: secondBatch, currentDate: currentDate, emergencyMode: emergencyMode),
   ]
 }
 
@@ -157,20 +156,20 @@ private func subscriberCalloutView(
   ]
 }
 
-private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date, emergencyMode: Bool)
+private func episodesListView(episodes: ArraySlice<Episode>, currentDate: Date, emergencyMode: Bool)
   -> Node
 {
   return .fragment(
-    episodes.map { episodeRowView(episode: $0, date: date, emergencyMode: emergencyMode) })
+    episodes.map { episodeRowView(episode: $0, currentDate: currentDate, emergencyMode: emergencyMode) })
 }
 
-private func episodeRowView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node {
+private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node {
   return [
     divider,
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        episodeInfoColumnView(episode: episode, date: date, emergencyMode: emergencyMode)),
+        episodeInfoColumnView(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode)),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
@@ -196,13 +195,13 @@ private func episodeRowView(episode: Episode, date: () -> Date, emergencyMode: B
   ]
 }
 
-private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node
+private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
 {
   return .div(
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
     ],
-    topLevelEpisodeInfoView(episode: episode, date: date, emergencyMode: emergencyMode),
+    topLevelEpisodeInfoView(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode),
     .div(
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
@@ -225,12 +224,12 @@ private func episodeInfoColumnView(episode: Episode, date: () -> Date, emergency
   )
 }
 
-public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergencyMode: Bool) -> Node
+public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
 {
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],
-      .text(topLevelEpisodeMetadata(episode: episode, date: date, emergencyMode: emergencyMode))
+      .text(topLevelEpisodeMetadata(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode))
     ),
     .h1(
       attributes: [
@@ -248,11 +247,11 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date, emergenc
   ]
 }
 
-func topLevelEpisodeMetadata(episode: Episode, date: () -> Date, emergencyMode: Bool) -> String {
+func topLevelEpisodeMetadata(episode: Episode, currentDate: Date, emergencyMode: Bool) -> String {
   let components: [String?] = [
     "#\(episode.sequence)",
     episodeDateFormatter.string(from: episode.publishedAt),
-    episode.isSubscriberOnly(currentDate: date(), emergencyMode: emergencyMode)
+    episode.isSubscriberOnly(currentDate: currentDate, emergencyMode: emergencyMode)
       ? "Subscriber-only" : "Free Episode",
   ]
 

@@ -56,7 +56,7 @@ func simplePageLayout<A>(
 ) -> (SimplePageLayoutData<A>) -> Node {
   simplePageLayout(
     cssConfig: Current.envVars.appEnv == .testing ? .pretty : .compact,
-    date: Current.date,
+    date: { Current.date() },
     emergencyMode: Current.envVars.emergencyMode,
     contentView
   )

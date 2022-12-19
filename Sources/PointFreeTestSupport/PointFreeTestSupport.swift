@@ -38,39 +38,31 @@ extension Environment {
   public static let mock = Environment(
     assets: .mock,
     blogPosts: { [.mock] },
-    cookieTransform: .plaintext,
     collections: [.mock],
     database: .some(.mock),
-    date: unzurry(.mock),
     envVars: .mock,
     episodes: unzurry(.mock),
     features: Feature.allFeatures,
     gitHub: .some(.mock),
-    logger: .mock,
     mailgun: .mock,
     renderHtml: { Html.render($0) },
     renderXml: Html._xmlRender,
-    stripe: .some(.mock),
-    uuid: unzurry(.mock)
+    stripe: .some(.mock)
   )
 
   public static let failing = Self(
     assets: .mock,
     blogPosts: unimplemented("Current.blogPosts", placeholder: []),
-    cookieTransform: .plaintext,
     collections: [.mock],
     database: .failing,
-    date: unimplemented("Current.date", placeholder: Date()),
     envVars: .mock,
     episodes: unimplemented("Current.episodes", placeholder: []),
     features: Feature.allFeatures,
     gitHub: .failing,
-    logger: .mock,
     mailgun: .failing,
     renderHtml: { Html.render($0) },
     renderXml: Html._xmlRender,
-    stripe: .failing,
-    uuid: unimplemented("Current.uuid", placeholder: UUID())
+    stripe: .failing
   )
 
   public static let teamYearly = update(mock) {

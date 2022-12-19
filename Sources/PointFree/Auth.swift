@@ -139,7 +139,11 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
     .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
 
-      Current.database.registerUser(withGitHubEnvelope: env, email: email.email, now: Current.date)
+      Current.database.registerUser(
+        withGitHubEnvelope: env,
+        email: email.email,
+        now: { Current.date() }
+      )
         .mapExcept(requireSome)
         .flatMap { user in
           EitherIO(

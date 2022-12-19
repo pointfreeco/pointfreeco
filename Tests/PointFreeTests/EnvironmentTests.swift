@@ -1,3 +1,4 @@
+import Dependencies
 import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
@@ -5,9 +6,12 @@ import XCTest
 @testable import PointFree
 
 class EnvironmentTests: TestCase {
-  func testDefault() {
+  func testLive() {
     let env = Environment()
-
-    XCTAssertEqual(.encrypted, env.cookieTransform)
+    DependencyValues.withValues {
+      $0.context = .live
+    } operation: {
+      XCTAssertEqual(env.cookieTransform, .encrypted)
+    }
   }
 }

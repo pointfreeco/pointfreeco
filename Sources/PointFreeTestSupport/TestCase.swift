@@ -1,5 +1,6 @@
 import Backtrace
 import Database
+import Dependencies
 import Models
 import NIO
 import PointFreeRouter
@@ -14,6 +15,12 @@ open class TestCase: XCTestCase {
   open override class func setUp() {
     super.setUp()
     Backtrace.install()
+  }
+
+  open override func invokeTest() {
+    DependencyValues.withTestValues {
+      super.invokeTest()
+    }
   }
 
   override open func setUp() async throws {
