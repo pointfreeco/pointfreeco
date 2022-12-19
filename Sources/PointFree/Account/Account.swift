@@ -61,17 +61,27 @@ private func fetchAccountData<I>(
     .map(\.customer >>> either(id, \.id))
     .flatMap(Current.stripe.fetchUpcomingInvoice)
 
-  let paymentMethod =
+  let paymentMethod: EitherIO<Error, Either<Card, PaymentMethod>?> =
     stripeSubscription
-    .flatMap { ($0.customer.right?.invoiceSettings.defaultPaymentMethod).map(pure) ?? throwE(unit) }
-    .flatMap(Current.stripe.fetchPaymentMethod)
+    .flatMap { subscription in
+      EitherIO<Error, Either<Card, PaymentMethod>?> {
+        guard let customer = subscription.customer.right else { return nil }
+        if let card = customer.defaultSource {
+          return .left(card)
+        } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
+          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod).performAsync())
+        } else {
+          return nil
+        }
+      }
+    }
 
   let everything:
     Parallel<
       (
         [EmailSetting],
         [EpisodeCredit],
-        PaymentMethod?,
+        Either<Card, PaymentMethod>?,
         Stripe.Subscription?,
         Models.Subscription?,
         User?,
@@ -86,7 +96,7 @@ private func fetchAccountData<I>(
       Current.database.fetchEpisodeCredits(user.id).run.parallel
         .map { $0.right ?? [] },
 
-      paymentMethod.run.map(\.right).parallel,
+      paymentMethod.run.map { $0.right ?? nil }.parallel,
 
       stripeSubscription.run.map(\.right).parallel,
 

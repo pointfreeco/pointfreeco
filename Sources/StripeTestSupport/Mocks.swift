@@ -97,6 +97,7 @@ extension Customer {
   public static let mock = Customer(
     balance: 0,
     businessVatId: nil,
+    defaultSource: nil,
     id: "cus_test",
     invoiceSettings: .init(defaultPaymentMethod: "pm_card_test"),
     metadata: [:]

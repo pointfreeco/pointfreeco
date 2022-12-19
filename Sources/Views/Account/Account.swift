@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import FunctionalCss
 import Html
@@ -663,7 +664,7 @@ public func nextBilling(
 private func subscriptionPlanRows(
   subscription: Stripe.Subscription,
   upcomingInvoice: Stripe.Invoice?,
-  paymentMethod: Stripe.PaymentMethod?,
+  paymentMethod: Either<Card, PaymentMethod>?,
   currentDate: Date
 ) -> Node {
 
@@ -826,9 +827,10 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
   )
 }
 
-private func mainAction(for subscription: Stripe.Subscription, paymentMethod: PaymentMethod?)
-  -> Node
-{
+private func mainAction(
+  for subscription: Stripe.Subscription,
+  paymentMethod: Either<Card, PaymentMethod>?
+) -> Node {
   if subscription.isCanceling {
     return .form(
       attributes: [
@@ -1211,14 +1213,18 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 
 private func subscriptionPaymentInfoView(
   _ subscription: Stripe.Subscription,
-  paymentMethod: PaymentMethod?
+  paymentMethod: Either<Card, PaymentMethod>?
 ) -> Node {
-  let card = paymentMethod?.card
   let paymentInfo: Node
-  if let card = card {
+  if let card = paymentMethod?.left {
     paymentInfo = [
-      .p(.text(card.brand.description + " ending in " + String(card.last4))),
-      .p(.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))),
+      .p(.text("\(card.brand.rawValue) ending in \(card.last4)")),
+      .p(.text("Expires \(card.expMonth)/\(card.expYear)")),
+    ]
+  } else if let card = paymentMethod?.right?.card {
+    paymentInfo = [
+      .p(.text("\(card.brand.description) ending in \(card.last4)")),
+      .p(.text("Expires \(card.expMonth)/\(card.expYear)")),
     ]
   } else {
     paymentInfo = [
@@ -1254,9 +1260,9 @@ private func subscriptionPaymentInfoView(
                   .class([Class.pf.components.button(color: .purple, size: .small)]),
                   .href(siteRouter.path(for: .account(.paymentInfo()))),
                 ],
-                card == nil
-                  ? "Add payment info"
-                  : "Update payment info"
+                subscription.customer.right?.hasPaymentInfo == true
+                  ? "Update payment info"
+                  : "Add payment info"
               )
             ),
             .p(
@@ -1324,7 +1330,7 @@ public struct AccountData {
   public let currentUser: User
   public let emailSettings: [EmailSetting]
   public let episodeCredits: [EpisodeCredit]
-  public let paymentMethod: Stripe.PaymentMethod?
+  public let paymentMethod: Either<Card, PaymentMethod>?
   public let stripeSubscription: Stripe.Subscription?
   public let subscriberState: SubscriberState
   public let subscription: Models.Subscription?
@@ -1337,7 +1343,7 @@ public struct AccountData {
     currentUser: User,
     emailSettings: [EmailSetting],
     episodeCredits: [EpisodeCredit],
-    paymentMethod: Stripe.PaymentMethod?,
+    paymentMethod: Either<Card, PaymentMethod>?,
     stripeSubscription: Stripe.Subscription?,
     subscriberState: SubscriberState,
     subscription: Models.Subscription?,
