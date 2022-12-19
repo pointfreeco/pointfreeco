@@ -135,7 +135,7 @@ func announcementBanner<A>(
   guard
     case .nonSubscriber = data.currentSubscriberState,
     (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
-      by: 1209600)).contains(date())
+      by: 1_209_600)).contains(date())
   else { return [] }
 
   let announcementClass =
