@@ -99,4 +99,7 @@ private let _allBlogPosts: [BlogPost] = [
   post0085_BlackFriday2022,
   post0086_CyberMonday2022,
   post0087_ParsingSwift57,
+  post0088_YIR2022,
+  post0089_2022EOYSale,
 ]
+
