@@ -1,4 +1,4 @@
-POST https://api.stripe.com/v1/customers?expand%5B%5D=sources
+POST https://api.stripe.com/v1/customers
 Stripe-Version: 2020-08-27
 
 description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test
