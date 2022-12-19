@@ -59,6 +59,6 @@ public let post0089_2022EOYSale = BlogPost(
   coverImage: nil,
   hidden: true,
   id: 89,
-  publishedAt: Date(timeIntervalSince1970: 1671602400),
+  publishedAt: Date(timeIntervalSince1970: 1_671_602_400),
   title: "End-of-year sale: 25% off Point-Free"
 )

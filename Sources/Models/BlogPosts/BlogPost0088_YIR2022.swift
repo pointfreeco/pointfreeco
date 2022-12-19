@@ -307,6 +307,6 @@ public let post0088_YIR2022 = BlogPost(
   ],
   coverImage: nil,
   id: 88,
-  publishedAt: Date(timeIntervalSince1970: 1671429600),
+  publishedAt: Date(timeIntervalSince1970: 1_671_429_600),
   title: "2022 Year-in-review"
 )
