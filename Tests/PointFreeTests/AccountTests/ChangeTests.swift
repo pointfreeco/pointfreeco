@@ -14,13 +14,14 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class ChangeTests: TestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record = true
   }
 
-  func testChangeRedirect() {
+  func testChangeRedirect() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
@@ -31,7 +32,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateUpgradeIndividualPlan() {
+  func testChangeUpdateUpgradeIndividualPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualMonthly))
       Current.stripe.invoiceCustomer = { _ in
@@ -47,7 +48,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateDowngradeIndividualPlan() {
+  func testChangeUpdateDowngradeIndividualPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualYearly))
       Current.stripe.invoiceCustomer = { _ in
@@ -63,7 +64,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateUpgradeTeamPlan() {
+  func testChangeUpdateUpgradeTeamPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.teamMonthly))
       Current.stripe.invoiceCustomer = { _ in
@@ -79,7 +80,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateDowngradeTeamPlan() {
+  func testChangeUpdateDowngradeTeamPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualYearly))
       Current.stripe.invoiceCustomer = { _ in
@@ -95,7 +96,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateAddSeatsIndividualPlan() {
+  func testChangeUpdateAddSeatsIndividualPlan() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
@@ -107,7 +108,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpgradeIndividualMonthlyToTeamYearly() {
+  func testChangeUpgradeIndividualMonthlyToTeamYearly() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
@@ -134,7 +135,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateRemoveSeats() {
+  func testChangeUpdateRemoveSeats() async {
     #if !os(Linux)
       Current.stripe.fetchSubscription = const(pure(.teamMonthly))
       Current.stripe.invoiceCustomer = { _ in
@@ -151,7 +152,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
-  func testChangeUpdateRemoveSeatsInvalidNumber() {
+  func testChangeUpdateRemoveSeatsInvalidNumber() async {
     #if !os(Linux)
       var subscription = Stripe.Subscription.mock
       subscription.plan = .teamYearly

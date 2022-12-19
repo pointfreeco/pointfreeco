@@ -131,6 +131,32 @@ private let moreColumnView = Node.div(
     .li(
       .a(
         attributes: [
+          .class([footerLinkClass]),
+          .href("http://hachyderm.io/@pointfreeco"),
+          .rel(.init(rawValue: "me"))
+        ], "Mastodon")
+    ),
+    .li(
+      attributes: [.class([Class.display.none])],
+      .a(
+        attributes: [
+          .class([footerLinkClass]),
+          .href("http://hachyderm.io/@mbrandonw"),
+          .rel(.init(rawValue: "me"))
+        ], "@mbrandonw")
+    ),
+    .li(
+      attributes: [.class([Class.display.none])],
+      .a(
+        attributes: [
+          .class([footerLinkClass]),
+          .href("http://hachyderm.io/@stephencelis"),
+          .rel(.init(rawValue: "me"))
+        ], "@stephencelis")
+    ),
+    .li(
+      .a(
+        attributes: [
           .class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString),
         ], "Twitter")
     ),
