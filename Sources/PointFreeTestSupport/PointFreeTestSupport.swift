@@ -40,7 +40,6 @@ extension Environment {
     blogPosts: { [.mock] },
     collections: [.mock],
     database: .some(.mock),
-    envVars: .mock,
     episodes: unzurry(.mock),
     features: Feature.allFeatures,
     gitHub: .some(.mock),
@@ -55,7 +54,6 @@ extension Environment {
     blogPosts: unimplemented("Current.blogPosts", placeholder: []),
     collections: [.mock],
     database: .failing,
-    envVars: .mock,
     episodes: unimplemented("Current.episodes", placeholder: []),
     features: Feature.allFeatures,
     gitHub: .failing,
@@ -101,6 +99,7 @@ extension Logger {
 }
 
 extension EnvVars {
+  @available(*, deprecated)
   public static var mock: EnvVars {
     return update(EnvVars()) {
       $0.appEnv = EnvVars.AppEnv.testing

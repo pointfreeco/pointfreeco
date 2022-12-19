@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import ModelsTestSupport
@@ -133,68 +134,77 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_InvalidUserAgent() {
-    let user = Models.User.mock
-    var feedRequestEventCreated = false
+    DependencyValues.withTestValues {
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      let user = Models.User.mock
+      var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.createFeedRequestEvent = { _, _, _ in
-      feedRequestEventCreated = true
-      return pure(unit)
+      Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+      Current.database.createFeedRequestEvent = { _, _, _ in
+        feedRequestEventCreated = true
+        return pure(unit)
+      }
+      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertTrue(feedRequestEventCreated)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
-
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    XCTAssertTrue(feedRequestEventCreated)
   }
 
   func testFeed_ValidUserAgent() {
-    var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    DependencyValues.withTestValues {
+    $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var user = Models.User.mock
+      user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
 
-    let conn = connection(from: req)
+      let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_BadSalt_InvalidUserAgent() {
-    var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    DependencyValues.withTestValues {
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var user = Models.User.mock
+      user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.none))
-    Current.database.updateUser = { _, _, _, _, _ in
-      XCTFail("The user should not be updated.")
-      return pure(unit)
+      Current.database.fetchUserByRssSalt = const(pure(.none))
+      Current.database.updateUser = { _, _, _, _, _ in
+        XCTFail("The user should not be updated.")
+        return pure(unit)
+      }
+
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLegacy_Feed_Authenticated_Subscriber_Monthly() {
@@ -302,68 +312,76 @@ class PrivateRssTests: TestCase {
   }
 
   func testLegacy_Feed_InvalidUserAgent() {
-    let user = Models.User.mock
-    var feedRequestEventCreated = false
+    DependencyValues.withTestValues {
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      let user = Models.User.mock
+      var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.createFeedRequestEvent = { _, _, _ in
-      feedRequestEventCreated = true
-      return pure(unit)
+      Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+      Current.database.createFeedRequestEvent = { _, _, _ in
+        feedRequestEventCreated = true
+        return pure(unit)
+      }
+      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertTrue(feedRequestEventCreated)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
-
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    XCTAssertTrue(feedRequestEventCreated)
   }
 
   func testLegacy_Feed_ValidUserAgent() {
-    var user = Models.User.mock
-    user.rssSalt = "deadbeef/cafebeef"
+    DependencyValues.withTestValues {
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var user = Models.User.mock
+      user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
 
-    let conn = connection(from: req)
+      let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_BadSalt_InvalidUserAgent() {
-    var user = Models.User.mock
-    user.rssSalt = "deadbeef/cafebeef"
+    DependencyValues.withTestValues {
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var user = Models.User.mock
+      user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.none))
-    Current.database.updateUser = { _, _, _, _, _ in
-      XCTFail("The user should not be updated.")
-      return pure(unit)
+      Current.database.fetchUserByRssSalt = const(pure(.none))
+      Current.database.updateUser = { _, _, _, _, _ in
+        XCTFail("The user should not be updated.")
+        return pure(unit)
+      }
+
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
-
 }

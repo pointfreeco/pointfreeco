@@ -19,6 +19,8 @@ open class TestCase: XCTestCase {
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
+      $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+    } operation: {
       super.invokeTest()
     }
   }
@@ -28,7 +30,6 @@ open class TestCase: XCTestCase {
     diffTool = "ksdiff"
     //    SnapshotTesting.isRecording = true
     Current = .mock
-    Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
     siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
   }
 
