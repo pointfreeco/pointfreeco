@@ -13,19 +13,18 @@ import XCTest
 @testable import PointFree
 @testable import Stripe
 
+@MainActor
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.isRecording=true
   }
 
-  func testUpdateNameAndEmail() {
-    var user = Current.database.registerUser(
+  func testUpdateNameAndEmail() async throws {
+    var user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
     user.referralCode = "deadbeef"
 
     assertSnapshot(
@@ -44,15 +43,9 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output =
-      connection(from: update)
-      |> siteMiddleware
-      |> Prelude.perform
+    let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    user = Current.database.fetchUserById(user.id)
-      .run
-      .perform()
-      .right!!
+    user = try await Current.database.fetchUserById(user.id).performAsync()!
     user.referralCode = "deadbeef"
 
     assertSnapshot(
@@ -66,17 +59,13 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     #endif
   }
 
-  func testUpdateEmailSettings() {
-    let user = Current.database.registerUser(
+  func testUpdateEmailSettings() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
-    let emailSettings = Current.database.fetchEmailSettingsForUserId(user.id)
-      .run
-      .perform()
-      .right!
+    .performAsync()!
+    let emailSettings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      .performAsync()
 
     assertSnapshot(
       matching: emailSettings,
@@ -94,16 +83,11 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output =
-      connection(from: update)
-      |> siteMiddleware
-      |> Prelude.perform
+    let output = await siteMiddleware(connection(from: update)).performAsync()
 
+    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
-        .run
-        .perform()
-        .right!,
+      matching: settings,
       as: .customDump,
       named: "email_settings_after_update"
     )
@@ -114,13 +98,14 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
+@MainActor
 class UpdateProfileTests: TestCase {
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record=true
   }
 
-  func testUpdateExtraInvoiceInfo() {
+  func testUpdateExtraInvoiceInfo() async {
     var updatedCustomerWithExtraInvoiceInfo: String!
 
     var stripeSubscription = Stripe.Subscription.mock
@@ -151,10 +136,7 @@ class UpdateProfileTests: TestCase {
         userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
     )
 
-    let output =
-      connection(from: update)
-      |> siteMiddleware
-      |> Prelude.perform
+    let output = await siteMiddleware(connection(from: update)).performAsync()
 
     #if !os(Linux)
       assertSnapshot(matching: output, as: .conn)

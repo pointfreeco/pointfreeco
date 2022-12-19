@@ -13,10 +13,10 @@ import Prelude
 let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
 
 _ =
-  try! PointFree
+  try await PointFree
   .bootstrap(eventLoopGroup: eventLoopGroup)
   .run
-  .perform()
+  .performAsync()
   .unwrap()
 
 // Server

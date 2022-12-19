@@ -12,35 +12,34 @@ import XCTest
 
 @testable import PointFree
 
+@MainActor
 final class DatabaseTests: LiveDatabaseTestCase {
-  func testUpsertUser_FetchUserById() throws {
-    let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock }).run
-      .perform().unwrap()
-    let userB = try Current.database.fetchUserById(userA!.id).run.perform().unwrap()
+  func testUpsertUser_FetchUserById() async throws {
+    let userA = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+      .performAsync()
+    let userB = try await Current.database.fetchUserById(userA!.id).performAsync()
     XCTAssertEqual(userA?.id, userB?.id)
     XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
   }
 
-  func testFetchEnterpriseAccount() throws {
-    let user = Current.database.registerUser(
+  func testFetchEnterpriseAccount() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
-    ).run.perform().right!!
-    let subscription = Current.database.createSubscription(.mock, user.id, true, nil).run.perform()
-      .right!!
+    )
+    .performAsync()!
+    let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
+      .performAsync()!
 
-    let createdAccount = try Current.database.createEnterpriseAccount(
+    let createdAccount = try await Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
     )
-    .run
-    .perform()
-    .unwrap()!
+    .performAsync()!
 
-    let fetchedAccount = Current.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
-      .run
-      .perform()
-      .right!!
+    let fetchedAccount = try await Current.database
+      .fetchEnterpriseAccountForDomain(createdAccount.domain)
+      .performAsync()!
 
     XCTAssertEqual(createdAccount, fetchedAccount)
     XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
@@ -48,147 +47,107 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertEqual(subscription.id, createdAccount.subscriptionId)
   }
 
-  func testCreateSubscription_OwnerIsNotTakingSeat() {
-    let user = Current.database.registerUser(
+  func testCreateSubscription_OwnerIsNotTakingSeat() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    _ = Current.database.createSubscription(.mock, user.id, false, nil)
-      .run
-      .perform()
-      .right!!
+    _ = try await Current.database.createSubscription(.mock, user.id, false, nil).performAsync()!
 
-    let freshUser = Current.database.fetchUserById(user.id)
-      .run
-      .perform()
-      .right!!
+    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
-  func testCreateSubscription_OwnerIsTakingSeat() {
-    let user = Current.database.registerUser(
+  func testCreateSubscription_OwnerIsTakingSeat() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    let subscription = Current.database.createSubscription(.mock, user.id, true, nil)
-      .run
-      .perform()
-      .right!!
+    let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
+      .performAsync()!
 
-    let freshUser = Current.database.fetchUserById(user.id)
-      .run
-      .perform()
-      .right!!
+    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 
     XCTAssertEqual(subscription.id, freshUser.subscriptionId)
   }
 
-  func testUpdateEpisodeProgress() {
-    let user = Current.database.registerUser(
+  func testUpdateEpisodeProgress() async throws {
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    _ = Current.database.updateEpisodeProgress(1, 20, user.id)
-      .run
-      .perform()
-      .right!
+    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id).performAsync()
 
-    XCTAssertEqual(
-      Current.database.execute(
-        """
-        SELECT *
-        FROM "episode_progresses"
-        WHERE "user_id" = \(bind: user.id)
-        AND "percent" = 20
-        """
-      )
-      .run.perform().right!.count,
-      1
+    var count = try await Current.database.execute(
+      """
+      SELECT *
+      FROM "episode_progresses"
+      WHERE "user_id" = \(bind: user.id)
+      AND "percent" = 20
+      """
     )
+    .performAsync().count
+    XCTAssertEqual(count, 1)
 
-    _ = Current.database.updateEpisodeProgress(1, 10, user.id)
-      .run
-      .perform()
-      .right!
+    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id).performAsync()
 
-    XCTAssertEqual(
-      Current.database.execute(
-        """
-        SELECT *
-        FROM "episode_progresses"
-        WHERE "user_id" = \(bind: user.id)
-        AND "percent" = 10
-        """
-      )
-      .run.perform().right!.count,
-      1
+    count = try await Current.database.execute(
+      """
+      SELECT *
+      FROM "episode_progresses"
+      WHERE "user_id" = \(bind: user.id)
+      AND "percent" = 10
+      """
     )
+    .performAsync().count
+    XCTAssertEqual(count, 1)
 
-    _ = Current.database.updateEpisodeProgress(1, 30, user.id)
-      .run
-      .perform()
-      .right!
+    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id).performAsync()
 
-    XCTAssertEqual(
-      Current.database.execute(
-        """
-        SELECT *
-        FROM "episode_progresses"
-        WHERE "user_id" = \(bind: user.id)
-        AND "percent" = 30
-        """
-      )
-      .run.perform().right!.count,
-      1
+    count = try await Current.database.execute(
+      """
+      SELECT *
+      FROM "episode_progresses"
+      WHERE "user_id" = \(bind: user.id)
+      AND "percent" = 30
+      """
     )
+    .performAsync().count
+    XCTAssertEqual(count, 1)
   }
 
-  func testFetchEpisodeProgress() throws {
+  func testFetchEpisodeProgress() async throws {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    _ = Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
-      .run
-      .perform()
-      .right!
+    _ = try await Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
+      .performAsync()
 
-    let fetchedProgress = try XCTUnwrap(
-      Current.database.fetchEpisodeProgress(user.id, episodeSequence).run.perform().right
-    )
+    let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
+      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .some(20))
   }
 
-  func testFetchEpisodeProgress_NoProgress() throws {
+  func testFetchEpisodeProgress_NoProgress() async throws {
     let episodeSequence: Episode.Sequence = 1
 
-    let user = Current.database.registerUser(
+    let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .run
-    .perform()
-    .right!!
+    .performAsync()!
 
-    let fetchedProgress = try XCTUnwrap(
-      Current.database.fetchEpisodeProgress(user.id, episodeSequence).run.perform().right
-    )
+    let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
+      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .none)
   }

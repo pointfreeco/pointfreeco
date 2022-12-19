@@ -19,9 +19,10 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class AccountIntegrationTests: LiveDatabaseTestCase {
-  func testLeaveTeam() {
-    let currentUser = Current.database.registerUser(
+  func testLeaveTeam() async throws {
+    let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
         gitHubUser: .init(
@@ -30,12 +31,12 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "blob@pointfree.co",
       now: { .mock }
     )
-    .run.perform().right!!
+    .performAsync()!
 
-    _ = Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
-      .run.perform().right!!
+    _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
+      .performAsync()!
 
-    let owner = Current.database.registerUser(
+    let owner = try await Current.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
         gitHubUser: .init(
@@ -44,34 +45,29 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "owner@pointfree.co",
       now: { .mock }
     )
-    .run.perform().right!!
+    .performAsync()!
 
-    let subscription = Current.database.createSubscription(
+    let subscription = try await Current.database.createSubscription(
       Stripe.Subscription.mock,
       owner.id,
       false,
       nil
     )
-    .run.perform().right!!
+    .performAsync()!
 
-    _ = Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-      .run.perform().right!
+    _ = try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+      .performAsync()
 
     let conn = connection(from: request(to: .team(.leave), session: .loggedIn(as: currentUser)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    XCTAssertEqual(
-      Current.database.fetchUserById(currentUser.id)
-        .run.perform().right!!.subscriptionId,
-      nil
-    )
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id)
+      .performAsync()!.subscriptionId
+    XCTAssertEqual(subscriptionId, nil)
 
-    XCTAssertEqual(
-      Current.database.fetchEnterpriseEmails()
-        .run.perform().right!,
-      []
-    )
+    let emails = try await Current.database.fetchEnterpriseEmails().performAsync()
+    XCTAssertEqual(emails, [])
   }
 }
 

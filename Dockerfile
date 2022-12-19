@@ -1,7 +1,7 @@
 FROM swift:5.7 as build
 
 RUN apt-get --fix-missing update
-RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python
+RUN apt-get install -y build-essential cmake libpq-dev libssl-dev libz-dev openssl python-is-python3
 
 WORKDIR /build
 
