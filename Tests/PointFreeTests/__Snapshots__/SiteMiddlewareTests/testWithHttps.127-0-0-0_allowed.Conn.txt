@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 62453
+Content-Length: 63454
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2384,6 +2384,39 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         lh-4"
                  href="/about">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@pointfreeco"
+                 rel="me">
+                Mastodon
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@mbrandonw"
+                 rel="me">
+                @mbrandonw
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@stephencelis"
+                 rel="me">
+                @stephencelis
               </a>
             </li>
             <li>

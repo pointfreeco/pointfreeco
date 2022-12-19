@@ -14,6 +14,7 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class ChangeTests: TestCase {
   override func setUp() {
     super.setUp()

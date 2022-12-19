@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 52148
+Content-Length: 53149
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2320,6 +2320,39 @@ html {
                         lh-4"
                  href="/about">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@pointfreeco"
+                 rel="me">
+                Mastodon
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@mbrandonw"
+                 rel="me">
+                @mbrandonw
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@stephencelis"
+                 rel="me">
+                @stephencelis
               </a>
             </li>
             <li>

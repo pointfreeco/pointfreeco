@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 194933
+Content-Length: 195934
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -4048,6 +4048,39 @@ directly to that point in the video.
                         lh-4"
                  href="/about">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@pointfreeco"
+                 rel="me">
+                Mastodon
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@mbrandonw"
+                 rel="me">
+                @mbrandonw
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@stephencelis"
+                 rel="me">
+                @stephencelis
               </a>
             </li>
             <li>
