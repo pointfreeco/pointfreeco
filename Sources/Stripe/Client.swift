@@ -228,12 +228,12 @@ func attach(paymentMethod: PaymentMethod.ID, customer: Customer.ID) -> Decodable
 func cancelSubscription(id: Subscription.ID, immediately: Bool) -> DecodableRequest<Subscription> {
   if immediately {
     return stripeRequest(
-      "subscriptions/" + id.rawValue + "?expand[]=customer",
+      "subscriptions/" + id.rawValue + "?expand[]=customer.default_source",
       .delete([:])
     )
   } else {
     return stripeRequest(
-      "subscriptions/" + id.rawValue + "?expand[]=customer",
+      "subscriptions/" + id.rawValue + "?expand[]=customer.default_source",
       .post(["cancel_at_period_end": "true"])
     )
   }
@@ -307,10 +307,7 @@ func createCustomer(
     params["payment_method"] = paymentMethodID
     params["invoice_settings"] = ["default_payment_method": paymentMethodID]
   }
-  return stripeRequest(
-    "customers?expand[]=sources",
-    .post(params)
-  )
+  return stripeRequest("customers", .post(params))
 }
 
 func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
@@ -327,7 +324,9 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
         "payment_method": request.paymentMethodID?.rawValue as Any?,
         "receipt_email": request.receiptEmail,
         "statement_descriptor_suffix": request.statementDescriptorSuffix,
-      ].compactMapValues { $0 }))
+      ].compactMapValues { $0 }
+    )
+  )
 }
 
 func createSubscription(
@@ -345,7 +344,7 @@ func createSubscription(
   params["items[0][quantity]"] = String(quantity)
   params["coupon"] = coupon?.rawValue
 
-  return stripeRequest("subscriptions?expand[]=customer", .post(params))
+  return stripeRequest("subscriptions?expand[]=customer.default_source", .post(params))
 }
 
 func deleteCoupon(id: Coupon.ID) -> DecodableRequest<Prelude.Unit> {
@@ -395,7 +394,7 @@ func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
 }
 
 func fetchSubscription(id: Subscription.ID) -> DecodableRequest<Subscription> {
-  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
+  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.default_source")
 }
 
 func fetchUpcomingInvoice(_ customer: Customer.ID) -> DecodableRequest<Invoice> {
@@ -454,7 +453,7 @@ func updateSubscription(
   guard let item = currentSubscription.items.data.first else { return nil }
 
   return stripeRequest(
-    "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer",
+    "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
     .post(
       [
         "cancel_at_period_end": "false",
