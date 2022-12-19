@@ -134,8 +134,8 @@ func announcementBanner<A>(
 ) -> Node {
   guard
     case .nonSubscriber = data.currentSubscriberState,
-    (post0085_BlackFriday2022.publishedAt...post0086_CyberMonday2022.publishedAt.advanced(
-      by: 86_400)).contains(date())
+    (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
+      by: 1209600)).contains(date())
   else { return [] }
 
   let announcementClass =
@@ -156,18 +156,18 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href("/discounts/cyber-monday-2022"),
+          .href("/discounts/eoy-2022"),
         ],
-        .strong("Cyber Monday sale")
+        .strong("🎁 Holiday sale")
       ),
-      ": save 30% when you subscribe! ",
+      ": save 25% when you subscribe! ",
       .a(
         attributes: [
           .class([
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0086_CyberMonday2022.slug)))),
+          .href(siteRouter.url(for: .blog(.show(slug: post0088_YIR2022.slug)))),
         ],
         "Read more"
       ),
