@@ -10,7 +10,7 @@ extension Client {
     createGift: unimplemented("Database.Client.createGift"),
     createSubscription: unimplemented("Database.Client.createSubscription"),
     deleteEnterpriseEmail: unimplemented("Database.Client.deleteEnterpriseEmail"),
-    deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
+    deleteTeamInvite: unimplemented("Database.Client.deleteTeamInvite"),
     execute: { _ in .failing("Database.Client.execute") },
     fetchAdmins: { .failing("Database.Client.fetchAdmins") },
     fetchEmailSettingsForUserId: { _ in .failing("Database.Client.fetchEmailSettingsForUserId") },

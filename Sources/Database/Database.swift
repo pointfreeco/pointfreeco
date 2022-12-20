@@ -22,7 +22,7 @@ public struct Client {
   public var createSubscription:
     (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (User.ID) async throws -> Void
-  public var deleteTeamInvite: (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>
+  public var deleteTeamInvite: (TeamInvite.ID) async throws -> Void
   public var execute: (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.ID) -> EitherIO<Error, [EmailSetting]>
@@ -86,7 +86,7 @@ public struct Client {
     createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async
       throws -> Models.Subscription,
     deleteEnterpriseEmail: @escaping (User.ID) async throws -> Void,
-    deleteTeamInvite: @escaping (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>,
+    deleteTeamInvite: @escaping (TeamInvite.ID) async throws -> Void,
     execute: @escaping (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.ID) -> EitherIO<Error, [EmailSetting]>,

@@ -132,13 +132,14 @@ extension Client {
         .get()
       },
       deleteTeamInvite: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "team_invites"
           WHERE "id" = \(bind: id)
           """
         )
         .run()
+        .get()
       },
       execute: { sql in
         .init(pool.sqlDatabase.raw(sql).all())

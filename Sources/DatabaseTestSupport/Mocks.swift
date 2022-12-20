@@ -14,7 +14,7 @@ extension Client {
     createGift: { _ in .unfulfilled },
     createSubscription: { _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
-    deleteTeamInvite: const(pure(unit)),
+    deleteTeamInvite: { _ in },
     execute: { _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
