@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 81259
+Content-Length: 82260
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2946,6 +2946,39 @@ that timestamp jumps the video to that spot.</p>
                         lh-4"
                  href="/about">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@pointfreeco"
+                 rel="me">
+                Mastodon
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@mbrandonw"
+                 rel="me">
+                @mbrandonw
+              </a>
+            </li>
+            <li class="none">
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="http://hachyderm.io/@stephencelis"
+                 rel="me">
+                @stephencelis
               </a>
             </li>
             <li>
