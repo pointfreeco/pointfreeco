@@ -18,10 +18,11 @@ extension Client {
           WHERE "users"."id" = \(bind: userId)
           """
         )
-        .run().get()
+        .run()
+        .get()
       },
       createEnterpriseAccount: { companyName, domain, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "enterprise_accounts"
           ("company_name", "domain", "subscription_id")
@@ -30,7 +31,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: EnterpriseAccount.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createEnterpriseEmail: { email, userId in
         pool.sqlDatabase.raw(

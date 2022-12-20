@@ -19,6 +19,15 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   }
 }
 
+extension Optional {
+  struct Nil: Error {}
+
+  public func unwrap() throws -> Wrapped {
+    guard let unwrapped = self else { throw Nil() }
+    return unwrapped
+  }
+}
+
 public func retry<E, A>(maxRetries: Int) -> (EitherIO<E, A>) -> EitherIO<E, A> {
   return { $0.retry(maxRetries: maxRetries) }
 }

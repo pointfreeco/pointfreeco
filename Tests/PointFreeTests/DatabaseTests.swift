@@ -35,7 +35,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
       "blob.biz",
       subscription.id
     )
-    .performAsync()!
 
     let fetchedAccount = try await Current.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)

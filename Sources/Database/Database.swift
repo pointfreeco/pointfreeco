@@ -14,9 +14,7 @@ public struct Client {
   public var addUserIdToSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var createEnterpriseAccount:
-    (String, EnterpriseAccount.Domain, Models.Subscription.ID) -> EitherIO<
-      Error, EnterpriseAccount?
-    >
+    (String, EnterpriseAccount.Domain, Models.Subscription.ID) async throws -> EnterpriseAccount
   public var createEnterpriseEmail: (EmailAddress, User.ID) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent:
     (FeedRequestEvent.FeedType, String, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
@@ -81,8 +79,8 @@ public struct Client {
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async throws ->
       Void,
-    createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.ID) ->
-      EitherIO<Error, EnterpriseAccount?>,
+    createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.ID)
+      async throws -> EnterpriseAccount,
     createEnterpriseEmail: @escaping (EmailAddress, User.ID) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID) ->
       EitherIO<Error, Prelude.Unit>,

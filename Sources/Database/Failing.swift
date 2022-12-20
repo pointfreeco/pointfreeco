@@ -4,7 +4,7 @@ import XCTestDynamicOverlay
 extension Client {
   public static let failing = Self(
     addUserIdToSubscriptionId: unimplemented("Database.Client.addUserIdToSubscriptionId"),
-    createEnterpriseAccount: { _, _, _ in .failing("Database.Client.createEnterpriseAccount") },
+    createEnterpriseAccount: unimplemented("Database.Client.createEnterpriseAccount"),
     createEnterpriseEmail: { _, _ in .failing("Database.Client.createEnterpriseEmail") },
     createFeedRequestEvent: { _, _, _ in .failing("Database.Client.createFeedRequestEvent") },
     createGift: { _ in .failing("Database.Client.createGift") },
