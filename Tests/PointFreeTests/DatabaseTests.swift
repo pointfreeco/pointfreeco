@@ -28,7 +28,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     .performAsync()!
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
     let createdAccount = try await Current.database.createEnterpriseAccount(
       "Blob, Inc.",
@@ -52,7 +51,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    _ = try await Current.database.createSubscription(.mock, user.id, false, nil).performAsync()!
+    _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
 
     let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 
@@ -66,7 +65,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .performAsync()!
 
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
     let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 

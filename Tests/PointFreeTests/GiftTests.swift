@@ -193,7 +193,7 @@ class GiftTests: TestCase {
 
     Current.database.createSubscription = { _, id, _, _ in
       userId = id
-      return pure(.mock)
+      return .mock
     }
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }

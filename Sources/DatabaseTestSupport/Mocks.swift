@@ -12,7 +12,7 @@ extension Client {
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _ in .unfulfilled },
-    createSubscription: { _, _, _, _ in pure(.mock) },
+    createSubscription: { _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     execute: { _ in throwE(unit) },

@@ -118,11 +118,13 @@ private func redeemGift(
     .flatMap { customer in
       Current.stripe.createSubscription(customer.id, plan, 1, nil)
         .flatMap { stripeSubscription in
-          Current.database.createSubscription(stripeSubscription, user.id, true, nil)
-            .flatMap { _ in
-              Current.database.updateGift(gift.id, stripeSubscription.id)
-                .map(const(customer))
-            }
+          EitherIO {
+            try await Current.database.createSubscription(stripeSubscription, user.id, true, nil)
+          }
+          .flatMap { _ in
+            Current.database.updateGift(gift.id, stripeSubscription.id)
+              .map(const(customer))
+          }
         }
     }
     .run

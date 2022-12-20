@@ -52,7 +52,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       false,
       nil
     )
-    .performAsync()!
 
     _ = try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 

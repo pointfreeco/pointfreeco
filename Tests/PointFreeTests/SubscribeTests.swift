@@ -237,7 +237,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
@@ -314,7 +313,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     /*let referrerSubscription*/_ = try await Current
       .database.createSubscription(.mock, referrer.id, true, nil)
-      .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
@@ -506,7 +504,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
@@ -605,7 +602,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
@@ -910,7 +906,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() async {
-    Current.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
+    Current.database.createSubscription = { _, _, _, _ in throw unit }
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 

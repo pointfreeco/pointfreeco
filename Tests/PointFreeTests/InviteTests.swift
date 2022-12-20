@@ -30,7 +30,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     .performAsync()!
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
-      .performAsync()!
 
     Current.stripe.fetchSubscription = const(pure(.teamYearly))
 
@@ -50,7 +49,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
-      .performAsync()!
 
     Current.stripe.fetchSubscription = const(pure(sub))
 
@@ -152,7 +150,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -223,7 +220,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -261,7 +257,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     _ = try await Current.database.createSubscription(
       Stripe.Subscription.canceling, inviterUser.id, true, nil
     )
-    .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -293,7 +288,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
     _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
