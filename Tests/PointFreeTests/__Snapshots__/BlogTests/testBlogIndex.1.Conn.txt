@@ -2398,7 +2398,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@pointfreeco"
+                 href="https://hachyderm.io/@pointfreeco"
                  rel="me">
                 Mastodon
               </a>
@@ -2409,7 +2409,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@mbrandonw"
+                 href="https://hachyderm.io/@mbrandonw"
                  rel="me">
                 @mbrandonw
               </a>
@@ -2420,7 +2420,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@stephencelis"
+                 href="https://hachyderm.io/@stephencelis"
                  rel="me">
                 @stephencelis
               </a>

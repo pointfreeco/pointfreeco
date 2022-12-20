@@ -2934,7 +2934,7 @@ working how we expect:</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@pointfreeco"
+                 href="https://hachyderm.io/@pointfreeco"
                  rel="me">
                 Mastodon
               </a>
@@ -2945,7 +2945,7 @@ working how we expect:</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@mbrandonw"
+                 href="https://hachyderm.io/@mbrandonw"
                  rel="me">
                 @mbrandonw
               </a>
@@ -2956,7 +2956,7 @@ working how we expect:</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@stephencelis"
+                 href="https://hachyderm.io/@stephencelis"
                  rel="me">
                 @stephencelis
               </a>

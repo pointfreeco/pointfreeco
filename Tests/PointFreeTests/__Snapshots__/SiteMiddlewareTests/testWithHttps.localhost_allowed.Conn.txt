@@ -2392,7 +2392,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@pointfreeco"
+                 href="https://hachyderm.io/@pointfreeco"
                  rel="me">
                 Mastodon
               </a>
@@ -2403,7 +2403,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@mbrandonw"
+                 href="https://hachyderm.io/@mbrandonw"
                  rel="me">
                 @mbrandonw
               </a>
@@ -2414,7 +2414,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@stephencelis"
+                 href="https://hachyderm.io/@stephencelis"
                  rel="me">
                 @stephencelis
               </a>

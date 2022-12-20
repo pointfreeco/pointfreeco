@@ -132,7 +132,7 @@ private let moreColumnView = Node.div(
       .a(
         attributes: [
           .class([footerLinkClass]),
-          .href("http://hachyderm.io/@pointfreeco"),
+          .href("https://hachyderm.io/@pointfreeco"),
           .rel(.init(rawValue: "me")),
         ], "Mastodon")
     ),
@@ -141,7 +141,7 @@ private let moreColumnView = Node.div(
       .a(
         attributes: [
           .class([footerLinkClass]),
-          .href("http://hachyderm.io/@mbrandonw"),
+          .href("https://hachyderm.io/@mbrandonw"),
           .rel(.init(rawValue: "me")),
         ], "@mbrandonw")
     ),
@@ -150,7 +150,7 @@ private let moreColumnView = Node.div(
       .a(
         attributes: [
           .class([footerLinkClass]),
-          .href("http://hachyderm.io/@stephencelis"),
+          .href("https://hachyderm.io/@stephencelis"),
           .rel(.init(rawValue: "me")),
         ], "@stephencelis")
     ),

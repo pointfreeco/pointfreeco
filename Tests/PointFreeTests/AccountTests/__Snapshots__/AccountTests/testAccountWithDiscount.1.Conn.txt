@@ -2735,7 +2735,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@pointfreeco"
+                 href="https://hachyderm.io/@pointfreeco"
                  rel="me">
                 Mastodon
               </a>
@@ -2746,7 +2746,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@mbrandonw"
+                 href="https://hachyderm.io/@mbrandonw"
                  rel="me">
                 @mbrandonw
               </a>
@@ -2757,7 +2757,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@stephencelis"
+                 href="https://hachyderm.io/@stephencelis"
                  rel="me">
                 @stephencelis
               </a>
