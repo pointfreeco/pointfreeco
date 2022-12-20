@@ -18,7 +18,7 @@ extension Client {
     fetchEmailSettingsForUserId: { _ in throw NoopError() },
     fetchEnterpriseAccountForDomain: { _ in throw NoopError() },
     fetchEnterpriseAccountForSubscription: { _ in throw NoopError() },
-    fetchEnterpriseEmails: { throwE(NoopError()) },
+    fetchEnterpriseEmails: { throw NoopError() },
     fetchEpisodeCredits: { _ in throwE(NoopError()) },
     fetchEpisodeProgress: { _, _ in throwE(NoopError()) },
     fetchFreeEpisodeUsers: { throwE(NoopError()) },

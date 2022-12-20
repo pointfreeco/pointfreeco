@@ -20,7 +20,7 @@ extension Client {
     fetchEnterpriseAccountForSubscription: unimplemented(
       "Database.Client.fetchEnterpriseAccountForSubscription"
     ),
-    fetchEnterpriseEmails: { .failing("Database.Client.fetchEnterpriseEmails") },
+    fetchEnterpriseEmails: unimplemented("Database.Client.fetchEnterpriseEmails"),
     fetchEpisodeCredits: { _ in .failing("Database.Client.fetchEpisodeCredits") },
     fetchEpisodeProgress: { _, _ in .failing("Database.Client.fetchEpisodeProgress") },
     fetchFreeEpisodeUsers: { .failing("Database.Client.fetchFreeEpisodeUsers") },

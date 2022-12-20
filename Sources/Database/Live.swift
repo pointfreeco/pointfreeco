@@ -197,13 +197,17 @@ extension Client {
         .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchEnterpriseEmails: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "enterprise_emails"
           """
         )
-        .all(decoding: EnterpriseEmail.self)
+        .all()
+        .get()
+        .map {
+          try $0.decode(model: EnterpriseEmail.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
       },
       fetchEpisodeCredits: { userId in
         pool.sqlDatabase.raw(
