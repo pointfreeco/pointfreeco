@@ -145,14 +145,16 @@ extension Client {
         try await pool.sqlDatabase.raw(sql).all()
       },
       fetchAdmins: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "users"
           WHERE "users"."is_admin" = TRUE
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchEmailSettingsForUserId: { userId in
         pool.sqlDatabase.raw(

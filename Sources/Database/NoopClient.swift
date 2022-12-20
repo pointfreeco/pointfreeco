@@ -14,7 +14,7 @@ extension Client {
     deleteEnterpriseEmail: { _ in throw NoopError() },
     deleteTeamInvite: { _ in throw NoopError() },
     execute: { _ in throw NoopError() },
-    fetchAdmins: { throwE(NoopError()) },
+    fetchAdmins: { throw NoopError() },
     fetchEmailSettingsForUserId: { _ in throwE(NoopError()) },
     fetchEnterpriseAccountForDomain: { _ in throwE(NoopError()) },
     fetchEnterpriseAccountForSubscription: { _ in throwE(NoopError()) },
