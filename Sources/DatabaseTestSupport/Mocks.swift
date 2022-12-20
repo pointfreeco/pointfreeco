@@ -11,7 +11,7 @@ extension Client {
     createEnterpriseAccount: { _, _, _ in .mock },
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
-    createGift: { _ in pure(.unfulfilled) },
+    createGift: { _ in .unfulfilled },
     createSubscription: { _, _, _, _ in pure(.mock) },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),

@@ -18,7 +18,7 @@ public struct Client {
   public var createEnterpriseEmail: (EmailAddress, User.ID) async throws -> EnterpriseEmail
   public var createFeedRequestEvent:
     (FeedRequestEvent.FeedType, String, Models.User.ID) async throws -> Void
-  public var createGift: (CreateGiftRequest) -> EitherIO<Error, Gift>
+  public var createGift: (CreateGiftRequest) async throws -> Gift
   public var createSubscription:
     (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) -> EitherIO<
       Error, Models.Subscription?
@@ -84,7 +84,7 @@ public struct Client {
     createEnterpriseEmail: @escaping (EmailAddress, User.ID) async throws -> EnterpriseEmail,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID) async
       throws -> Void,
-    createGift: @escaping (CreateGiftRequest) -> EitherIO<Error, Gift>,
+    createGift: @escaping (CreateGiftRequest) async throws -> Gift,
     createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) ->
       EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.ID) -> EitherIO<Error, Prelude.Unit>,

@@ -66,7 +66,7 @@ extension Client {
         .get()
       },
       createGift: { request in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "gifts" (
             "deliver_at",
@@ -91,8 +91,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
         pool.sqlDatabase.raw(
