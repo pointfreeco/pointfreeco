@@ -9,7 +9,7 @@ extension Client {
   public static let mock = Client(
     addUserIdToSubscriptionId: { _, _ in },
     createEnterpriseAccount: { _, _, _ in .mock },
-    createEnterpriseEmail: { _, _ in pure(.mock) },
+    createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in pure(unit) },
     createGift: { _ in pure(.unfulfilled) },
     createSubscription: { _, _, _, _ in pure(.mock) },

@@ -122,10 +122,11 @@ private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
 ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>?> {
 
-  return Current.database.createEnterpriseEmail(get3(data), get4(data))
-    .map(const(data))
-    .run
-    .map(\.right)
+  return IO {
+    guard (try? await Current.database.createEnterpriseEmail(get3(data), get4(data))) != nil
+    else { return nil }
+    return data
+  }
 }
 
 private func linkToEnterpriseSubscription<Z>(

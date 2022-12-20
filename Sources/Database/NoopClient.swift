@@ -7,7 +7,7 @@ extension Client {
   public static let noop = Self(
     addUserIdToSubscriptionId: { _, _ in throw NoopError() },
     createEnterpriseAccount: { _, _, _ in throw NoopError() },
-    createEnterpriseEmail: { _, _ in throwE(NoopError()) },
+    createEnterpriseEmail: { _, _ in throw NoopError() },
     createFeedRequestEvent: { _, _, _ in throwE(NoopError()) },
     createGift: { _ in throwE(NoopError()) },
     createSubscription: { _, _, _, _ in throwE(NoopError()) },
