@@ -155,7 +155,7 @@ public enum Currency: String, Codable {
 public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
-  public var defaultSource: Card?
+  public var defaultSource: Expandable<Card>?
   public var id: StripeID<Self>
   public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
@@ -163,7 +163,7 @@ public struct Customer: Codable, Equatable, Identifiable {
   public init(
     balance: Cents<Int>,
     businessVatId: Vat?,
-    defaultSource: Card?,
+    defaultSource: Expandable<Card>?,
     id: ID,
     invoiceSettings: InvoiceSettings,
     metadata: [String: String]

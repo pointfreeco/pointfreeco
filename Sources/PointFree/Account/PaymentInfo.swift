@@ -59,7 +59,9 @@ let updatePaymentInfoMiddleware =
     let customer = subscription.customer.either(id, \.id)
 
     return Current.stripe.attachPaymentMethod(paymentMethodID, customer)
-      .flatMap { Current.stripe.updateCustomer(customer, $0.id) }
+      .flatMap {
+        Current.stripe.updateCustomer(customer, $0.id)
+      }
       .run
       .flatMap {
         conn

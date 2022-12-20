@@ -66,7 +66,7 @@ private func fetchAccountData<I>(
     .flatMap { subscription in
       EitherIO<Error, Either<Card, PaymentMethod>?> {
         guard let customer = subscription.customer.right else { return nil }
-        if let card = customer.defaultSource {
+        if let card = customer.defaultSource?.right {
           return .left(card)
         } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
           return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod).performAsync())
