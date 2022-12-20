@@ -25,7 +25,7 @@ class EnterpriseTests: TestCase {
   func testLanding_LoggedOut() {
     let account = EnterpriseAccount.mock
 
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
 
     let req = request(to: .enterprise(account.domain))
     let conn = connection(from: req)
@@ -47,7 +47,7 @@ class EnterpriseTests: TestCase {
   func testLanding_NonExistentEnterpriseAccount() {
     let account = EnterpriseAccount.mock
 
-    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
 
     let req = request(to: .enterprise(account.domain))
     let conn = connection(from: req)
@@ -61,7 +61,7 @@ class EnterpriseTests: TestCase {
     var user = User.mock
     user.subscriptionId = subscriptionId
 
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
 
     let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
     let conn = connection(from: req)
@@ -89,7 +89,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
@@ -110,7 +110,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
@@ -132,7 +132,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
@@ -154,7 +154,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(
@@ -167,7 +167,7 @@ class EnterpriseTests: TestCase {
   }
 
   func testAcceptInvitation_EnterpriseAccountDoesntExist() {
-    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     var account = EnterpriseAccount.mock
@@ -198,7 +198,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.subscriptionId = nil
 
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
     Current.database.fetchSubscriptionById = const(pure(nil))
 
     let req = request(

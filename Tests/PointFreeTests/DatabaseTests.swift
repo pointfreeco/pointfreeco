@@ -37,7 +37,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     let fetchedAccount = try await Current.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)
-      .performAsync()!
 
     XCTAssertEqual(createdAccount, fetchedAccount)
     XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
