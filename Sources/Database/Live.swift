@@ -210,14 +210,18 @@ extension Client {
         }
       },
       fetchEpisodeCredits: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "episode_sequence", "user_id"
           FROM "episode_credits"
           WHERE "user_id" = \(bind: userId)
           """
         )
-        .all(decoding: EpisodeCredit.self)
+        .all()
+        .get()
+        .map {
+          try $0.decode(model: EpisodeCredit.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
       },
       fetchEpisodeProgress: { userId, sequence in
         pool.sqlDatabase.raw(

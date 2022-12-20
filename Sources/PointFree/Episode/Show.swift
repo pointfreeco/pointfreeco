@@ -259,10 +259,11 @@ func userEpisodePermission<I, Z>(
     return pure(conn.map(const(permission .*. conn.data)))
   }
 
-  let hasCredit = Current.database.fetchEpisodeCredits(user.id)
-    .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
-    .run
-    .map { $0.right ?? false }
+  let hasCredit = IO {
+    guard let credits = try? await Current.database.fetchEpisodeCredits(user.id)
+    else { return false }
+    return credits.contains { $0.episodeSequence == episode.sequence }
+  }
 
   let permission =
     hasCredit
