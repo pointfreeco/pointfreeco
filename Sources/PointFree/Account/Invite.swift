@@ -97,7 +97,9 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
           .mapExcept(validateActiveStripeSubscription)
           .bimap(const(unit as Error), id)
           .flatMap { _ in
-            Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+            EitherIO {
+              try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+            }
           }
       }
 

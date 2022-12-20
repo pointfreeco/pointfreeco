@@ -56,7 +56,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     .performAsync()!
 
     _ = try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-      .performAsync()
 
     let conn = connection(from: request(to: .team(.leave), session: .loggedIn(as: currentUser)))
 

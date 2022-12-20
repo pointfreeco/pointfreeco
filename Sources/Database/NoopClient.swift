@@ -5,7 +5,7 @@ struct NoopError: Error {}
 
 extension Client {
   public static let noop = Self(
-    addUserIdToSubscriptionId: { _, _ in throwE(NoopError()) },
+    addUserIdToSubscriptionId: { _, _ in throw NoopError() },
     createEnterpriseAccount: { _, _, _ in throwE(NoopError()) },
     createEnterpriseEmail: { _, _ in throwE(NoopError()) },
     createFeedRequestEvent: { _, _, _ in throwE(NoopError()) },
