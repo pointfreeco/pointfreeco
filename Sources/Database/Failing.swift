@@ -28,7 +28,7 @@ extension Client {
     fetchGiftByStripePaymentIntentId: unimplemented(
       "Database.Client.fetchGiftByStripePaymentIntentId"
     ),
-    fetchGiftsToDeliver: { .failing("Database.Client.fetchGiftsToDeliver") },
+    fetchGiftsToDeliver: unimplemented("Database.Client.fetchGiftsToDeliver"),
     fetchSubscriptionById: { _ in .failing("Database.Client.fetchSubscriptionById") },
     fetchSubscriptionByOwnerId: { _ in .failing("Database.Client.fetchSubscriptionByOwnerId") },
     fetchSubscriptionTeammatesByOwnerId: { _ in

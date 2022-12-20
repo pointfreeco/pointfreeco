@@ -282,7 +282,7 @@ extension Client {
         .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchGiftsToDeliver: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
@@ -294,7 +294,9 @@ extension Client {
           )
           """
         )
-        .all(decoding: Gift.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchSubscriptionById: { id in
         pool.sqlDatabase.raw(

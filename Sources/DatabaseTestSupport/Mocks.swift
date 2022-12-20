@@ -27,7 +27,7 @@ extension Client {
     fetchGift: { _ in .unfulfilled },
     fetchGiftByStripePaymentIntentId: { _ in .unfulfilled },
     fetchGiftsToDeliver: {
-      pure([update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1_234_567_890) }])
+      [update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1_234_567_890) }]
     },
     fetchSubscriptionById: { id in pure(.some(update(.mock) { $0.id = id })) },
     fetchSubscriptionByOwnerId: { userId in pure(.some(update(.mock) { $0.userId = userId })) },
