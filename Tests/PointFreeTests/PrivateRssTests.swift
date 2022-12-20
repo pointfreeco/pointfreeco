@@ -25,8 +25,15 @@ private let episodes: [Episode] = [
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.episodes = { episodes }
     //    SnapshotTesting.isRecording = true
+  }
+
+  override func invokeTest() {
+    DependencyValues.withTestValues {
+      $0.episodes = { episodes }
+    } operation: {
+      super.invokeTest()
+    }
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {

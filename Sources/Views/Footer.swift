@@ -100,12 +100,10 @@ private func contentColumnView(currentUser: User?) -> Node {
           attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))],
           "Pricing")
       ),
-      Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
-        ? .li(
-          .a(
-            attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
-        )
-        : [],
+      .li(
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
+      ),
       .li(
         .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
       ),

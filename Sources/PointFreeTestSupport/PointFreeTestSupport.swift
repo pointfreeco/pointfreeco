@@ -1,6 +1,7 @@
 import Cryptor
 import Database
 import DatabaseTestSupport
+import Dependencies
 import Either
 import Foundation
 import GitHub
@@ -35,66 +36,32 @@ import XCTestDynamicOverlay
 #endif
 
 extension Environment {
-  public static let mock = Environment(
-    assets: .mock,
-    blogPosts: { [.mock] },
-    collections: [.mock],
-    database: .some(.mock),
-    episodes: unzurry(.mock),
-    features: Feature.allFeatures,
-    gitHub: .some(.mock),
-    mailgun: .mock,
-    renderHtml: { Html.render($0) },
-    renderXml: Html._xmlRender,
-    stripe: .some(.mock)
-  )
+  @available(*, deprecated)
+  public static let mock = Environment()
 
-  public static let failing = Self(
-    assets: .mock,
-    blogPosts: unimplemented("Current.blogPosts", placeholder: []),
-    collections: [.mock],
-    database: .failing,
-    episodes: unimplemented("Current.episodes", placeholder: []),
-    features: Feature.allFeatures,
-    gitHub: .failing,
-    mailgun: .failing,
-    renderHtml: { Html.render($0) },
-    renderXml: Html._xmlRender,
-    stripe: .failing
-  )
+  @available(*, deprecated)
+  public static let failing = Self()
 
-  public static let teamYearly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
-    $0.database.fetchTeamInvites = const(pure([.mock]))
-    $0.stripe.fetchSubscription = const(pure(.teamYearly))
-    $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
-    $0.stripe.fetchPaymentMethod = const(pure(.mock))
-  }
-
-  public static let teamYearlyTeammate = update(teamYearly) {
-    $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-  }
-
-  public static let individualMonthly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
-    $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-  }
-}
-
-extension Array where Element == Episode {
-  static let mock: [Element] = [.subscriberOnly, .free]
-}
-
-extension Assets {
-  static let mock = Assets(
-    brandonImgSrc: "",
-    stephenImgSrc: "",
-    emailHeaderImgSrc: "",
-    pointersEmailHeaderImgSrc: ""
-  )
+//  public static let teamYearly = update(mock) {
+//    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+//    $0.database.fetchTeamInvites = const(pure([.mock]))
+//    $0.stripe.fetchSubscription = const(pure(.teamYearly))
+//    $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
+//    $0.stripe.fetchPaymentMethod = const(pure(.mock))
+//  }
+//
+//  public static let teamYearlyTeammate = update(teamYearly) {
+//    $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+//  }
+//
+//  public static let individualMonthly = update(mock) {
+//    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+//    $0.stripe.fetchSubscription = const(pure(.individualMonthly))
+//  }
 }
 
 extension Logger {
+  @available(*, deprecated)
   public static let mock = Logger(label: "co.pointfree.PointFreeTestSupport")
 }
 
@@ -139,16 +106,9 @@ extension UUID {
 extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      let renderHtml = Current.renderHtml
-      let renderXml = Current.renderXml
-      Current.renderHtml = { debugRender($0) }
-      Current.renderXml = { _debugXmlRender($0) }
-      let conn = io.perform()
-      Current.renderHtml = renderHtml
-      Current.renderXml = renderXml
-      return conn
+      io.perform()
     }
-  }
+  } 
 
   #if os(macOS)
     @available(OSX 10.13, *)

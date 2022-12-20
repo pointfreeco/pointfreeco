@@ -29,8 +29,8 @@ open class TestCase: XCTestCase {
     try await super.setUp()
     diffTool = "ksdiff"
     //    SnapshotTesting.isRecording = true
-    Current = .mock
-    siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl)
+    //Current = .mock 
+    // siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl) // TODO: not needed?
   }
 
   override open func tearDown() {
@@ -54,17 +54,24 @@ open class LiveDatabaseTestCase: TestCase {
     diffTool = "ksdiff"
     //    SnapshotTesting.isRecording = true
 
-    precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
-    self.pool = EventLoopGroupConnectionPool(
-      source: PostgresConnectionSource(
-        configuration: PostgresConfiguration(
-          url: Current.envVars.postgres.databaseUrl.rawValue
-        )!
-      ),
-      on: self.eventLoopGroup
-    )
-    Current.database = .live(pool: self.pool)
     try await Current.database.resetForTesting(pool: pool)
+  }
+
+  open override func invokeTest() {
+    DependencyValues.withTestValues {
+      precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
+      self.pool = EventLoopGroupConnectionPool(
+        source: PostgresConnectionSource(
+          configuration: PostgresConfiguration(
+            url: Current.envVars.postgres.databaseUrl.rawValue
+          )!
+        ),
+        on: self.eventLoopGroup
+      )
+      $0.database = .live(pool: self.pool)
+    } operation: {
+      super.invokeTest()
+    }
   }
 
   override open func tearDown() {

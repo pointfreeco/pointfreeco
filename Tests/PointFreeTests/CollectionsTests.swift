@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import ModelsTestSupport
@@ -22,20 +23,18 @@ class CollectionsTests: TestCase {
   }
 
   func testCollectionIndex() {
-    Current.collections = [
-      .mock,
-      .mock,
-      .mock,
-      .mock,
-    ]
+    DependencyValues.withTestValues {
+      $0.collections = [
+        .mock,
+        .mock,
+        .mock,
+        .mock,
+      ]
+    } operation: {
+      let conn = connection(from: request(to: .collections(), basicAuth: true))
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(
-      from: request(to: .collections(), basicAuth: true)
-    )
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -45,7 +44,8 @@ class CollectionsTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testCollectionShow() {

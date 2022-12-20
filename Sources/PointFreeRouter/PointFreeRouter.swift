@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import URLRouting
 
@@ -31,4 +32,18 @@ public struct PointFreeRouter: ParserPrinter {
   }
 }
 
-public var siteRouter = PointFreeRouter()
+@available(*, deprecated)
+public var siteRouter: PointFreeRouter {
+  DependencyValues._current.siteRouter
+}
+
+extension PointFreeRouter: TestDependencyKey {
+  public static let testValue = PointFreeRouter()
+}
+
+extension DependencyValues {
+  public var siteRouter: PointFreeRouter {
+    get { self[PointFreeRouter.self] }
+    set { self[PointFreeRouter.self] = newValue }
+  }
+}

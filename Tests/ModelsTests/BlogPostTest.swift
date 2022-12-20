@@ -4,9 +4,8 @@ import PointFreeTestSupport
 import XCTest
 
 final class BlogPostTests: TestCase {
-
   func testSlug() {
-    var post = BlogPost.mock
+    var post = BlogPost.testValue()[0]
     post.id = 42
     post.title = "Launching Point-Free Pointers"
 

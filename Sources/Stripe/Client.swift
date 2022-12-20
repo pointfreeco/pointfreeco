@@ -1,4 +1,5 @@
 import DecodableRequest
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -521,5 +522,16 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
       }
 
     return task
+  }
+}
+
+extension Client: TestDependencyKey {
+  public static let testValue: Client = .failing
+}
+
+extension DependencyValues {
+  public var stripe: Client {
+    get { self[Client.self] }
+    set { self[Client.self] = newValue }
   }
 }

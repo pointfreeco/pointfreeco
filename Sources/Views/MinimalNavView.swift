@@ -107,9 +107,7 @@ private func loggedInNavItemsView(
       attributes: [.class([navListItemClass])],
       blogLinkView(style: style)
     ),
-    Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
-      ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
-      : [],
+    .li(attributes: [.class([navListItemClass])], giftLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], accountLinkView(style: style))
   )
 }
@@ -120,9 +118,7 @@ private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: S
     .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], collectionsLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], blogLinkView(style: style)),
-    Feature.allFeatures.hasAccess(to: .gifts, for: nil)
-      ? .li(attributes: [.class([navListItemClass])], giftLinkView(style: style))
-      : [],
+    .li(attributes: [.class([navListItemClass])], giftLinkView(style: style)),
     .li(
       attributes: [.class([navListItemClass])],
       logInLinkView(style: style, currentRoute: currentRoute))

@@ -1,4 +1,5 @@
 import DecodableRequest
+import Dependencies
 import Either
 import Foundation
 import FoundationPrelude
@@ -104,3 +105,14 @@ private let gitHubJsonDecoder: JSONDecoder = {
   decoder.dateDecodingStrategy = .iso8601
   return decoder
 }()
+
+extension Client: TestDependencyKey {
+  public static let testValue: Client = .failing
+}
+
+extension DependencyValues {
+  public var gitHub: Client {
+    get { self[Client.self] }
+    set { self[Client.self] = newValue }
+  }
+}

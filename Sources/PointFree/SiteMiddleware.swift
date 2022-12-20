@@ -166,13 +166,9 @@ private func render(
 
   case let .gifts(giftsRoute):
     return conn.map(
-      const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit))
-      |> (basicAuth(
-        user: Current.envVars.basicAuth.username,
-        password: Current.envVars.basicAuth.password,
-        protect: { _ in !Current.features.hasAccess(to: .gifts, for: user) }
-      )
-        <| giftsMiddleware)
+      const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit)
+    )
+      |> giftsMiddleware
 
   case let .gitHubCallback(code, redirect):
     return conn.map(const(user .*. code .*. redirect .*. unit))

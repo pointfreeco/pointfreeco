@@ -460,9 +460,9 @@ class GiftTests: TestCase {
   func testGiftLanding() {
     DependencyValues.withTestValues {
       $0.date.now = .mock
+      $0.episodes = { [] }
     } operation: {
       Current = .failing
-      Current.episodes = { [] }
 
       let conn = connection(from: request(to: .gifts()))
 
@@ -485,9 +485,9 @@ class GiftTests: TestCase {
   func testGiftRedeemLanding() {
     DependencyValues.withTestValues {
       $0.date.now = .mock
+      $0.episodes = { [] }
     } operation: {
       Current = .failing
-      Current.episodes = { [] }
       Current.database.fetchGift = { _ in pure(.unfulfilled) }
       Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
       

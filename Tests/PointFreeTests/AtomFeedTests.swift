@@ -1,3 +1,4 @@
+import Dependencies
 import HttpPipeline
 import ModelsTestSupport
 import PointFreePrelude
@@ -28,7 +29,7 @@ class AtomFeedTests: TestCase {
   }
 
   func testEpisodeFeed_WithRecentlyFreeEpisode() {
-    let now = Current.date()
+    let now = Date.mock
     var freeEpisode = Episode.free
     freeEpisode.title = "Free Episode"
     freeEpisode.publishedAt = now.addingTimeInterval(-60 * 60 * 24 * 7)
@@ -38,10 +39,11 @@ class AtomFeedTests: TestCase {
     recentlyFreeEpisode.permission = .freeDuring(
       now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
 
-    Current.episodes = unzurry([recentlyFreeEpisode, freeEpisode])
-
-    let conn = connection(from: request(to: .feed(.episodes)))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    DependencyValues.withTestValues {
+      $0.episodes = { [recentlyFreeEpisode, freeEpisode] }
+    } operation: {
+      let conn = connection(from: request(to: .feed(.episodes)))
+      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 }

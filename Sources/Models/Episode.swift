@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
@@ -470,4 +471,27 @@ func reference(
     publishedAt: section.coreLessons.first?.episode.publishedAt,
     title: "Collection: \(section.title)"
   )
+}
+
+extension Episode.Collection: DependencyKey {
+  public static let liveValue = Episode.Collection.all
+  public static let testValue = Episode.Collection.all
+}
+
+extension DependencyValues {
+  public var collections: [Episode.Collection] {
+    get { self[Episode.Collection.self] }
+    set { self[Episode.Collection.self] = newValue }
+  }
+}
+
+extension Episode: TestDependencyKey {
+  public static let testValue: () -> [Episode] = { [.subscriberOnly, .free] }
+}
+
+extension DependencyValues {
+  public var episodes: () -> [Episode] {
+    get { self[Episode.self] }
+    set { self[Episode .self] = newValue }
+  }
 }

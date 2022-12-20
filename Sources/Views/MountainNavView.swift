@@ -162,9 +162,7 @@ private func headerLinks(
       "Blog"
     ),
 
-    Feature.allFeatures.hasAccess(to: .gifts, for: currentUser)
-      ? .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts")
-      : [],
+    .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts"),
 
     currentUser == nil
       ? .gitHubLink(

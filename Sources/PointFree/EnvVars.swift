@@ -230,6 +230,7 @@ private let decoder = JSONDecoder()
 
 extension EnvVars: DependencyKey {
   public static var liveValue: Self {
+    print(URL(fileURLWithPath: #file))
     let envFilePath = URL(fileURLWithPath: #file)
       .deletingLastPathComponent()
       .deletingLastPathComponent()
@@ -237,7 +238,7 @@ extension EnvVars: DependencyKey {
       .appendingPathComponent(".pf-env")
 
     let defaultEnvVarDict =
-      (try? encoder.encode(Current.envVars))
+      (try? encoder.encode(EnvVars()))
       .flatMap { try? decoder.decode([String: String].self, from: $0) }
       ?? [:]
 

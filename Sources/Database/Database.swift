@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -292,4 +293,15 @@ public struct Client {
       .run.performAsync().unwrap()
     }
   #endif
+}
+
+extension Client: TestDependencyKey {
+  public static let testValue = Self.failing
+}
+
+extension DependencyValues {
+  public var database: Client {
+    get { self[Client.self] }
+    set { self[Client.self] = newValue }
+  }
 }
