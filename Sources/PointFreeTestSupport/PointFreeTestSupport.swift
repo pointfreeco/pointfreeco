@@ -41,23 +41,31 @@ extension Environment {
 
   @available(*, deprecated)
   public static let failing = Self()
+}
 
-//  public static let teamYearly = update(mock) {
-//    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
-//    $0.database.fetchTeamInvites = const(pure([.mock]))
-//    $0.stripe.fetchSubscription = const(pure(.teamYearly))
-//    $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
-//    $0.stripe.fetchPaymentMethod = const(pure(.mock))
-//  }
-//
-//  public static let teamYearlyTeammate = update(teamYearly) {
-//    $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-//  }
-//
-//  public static let individualMonthly = update(mock) {
-//    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
-//    $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-//  }
+extension DependencyValues {
+  public static var teamYearly: Self {
+    var deps = DependencyValues()
+    deps.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    deps.database.fetchTeamInvites = const(pure([.mock]))
+    deps.stripe.fetchSubscription = const(pure(.teamYearly))
+    deps.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
+    deps.stripe.fetchPaymentMethod = const(pure(.mock))
+    return deps
+  }
+
+  public static var teamYearlyTeammate: Self {
+    var deps = Self.teamYearly
+    deps.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    return deps
+  }
+
+  public static var individualMonthly: Self {
+    var deps = DependencyValues()
+    deps.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    deps.stripe.fetchSubscription = const(pure(.individualMonthly))
+    return deps
+  }
 }
 
 extension Logger {

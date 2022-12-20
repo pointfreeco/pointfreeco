@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -24,14 +25,15 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
     var user = User.mock
     user.subscriptionId = nil
 
-    Current.database.fetchUserById = const(pure(user))
+    DependencyValues.withTestValues {
+      $0.database.fetchUserById = const(pure(user))
+    } operation: {
+      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+      let result = conn |> siteMiddleware
 
-    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-    let result = conn |> siteMiddleware
+      assertSnapshot(matching: result, as: .ioConn)
 
-    assertSnapshot(matching: result, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -41,7 +43,8 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 }
 
@@ -52,16 +55,17 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() {
-    Current.database.fetchUserById = const(pure(.mock))
-    Current.database.fetchSubscriptionById = const(pure(.mock))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    DependencyValues.withTestValues {
+      $0.database.fetchUserById = const(pure(.mock))
+      $0.database.fetchSubscriptionById = const(pure(.mock))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    } operation: {
+      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+      let result = conn |> siteMiddleware
 
-    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-    let result = conn |> siteMiddleware
+      assertSnapshot(matching: result, as: .ioConn)
 
-    assertSnapshot(matching: result, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -71,7 +75,8 @@ class PricingLandingTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testLanding_LoggedOut() {

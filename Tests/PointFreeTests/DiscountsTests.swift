@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -48,30 +49,33 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         assertSnapshots(
           matching: connection(
             from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn)
           )
-            |> siteMiddleware,
+          |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
             "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Forever() {
@@ -82,15 +86,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_PercentOff_Repeating() {
@@ -101,15 +108,18 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Repeating() {
@@ -120,15 +130,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_PercentOff_Once() {
@@ -139,15 +152,18 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Once() {
@@ -158,15 +174,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = const(pure(nil))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
-    assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = const(pure(nil))
+      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    } operation: {
+      assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_UsingRegionalCouponId() {

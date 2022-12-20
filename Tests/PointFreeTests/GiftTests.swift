@@ -26,40 +26,42 @@ class GiftTests: TestCase {
 
   func testGiftCreate() {
     var createGiftRequest: Database.Client.CreateGiftRequest!
-    Current.database.createGift = { request in
-      createGiftRequest = request
-      return pure(.unfulfilled)
-    }
 
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .create(
-            .init(
-              deliverAt: nil,
-              fromEmail: "blob@pointfree.co",
-              fromName: "Blob",
-              message: "HBD!",
-              monthsFree: 3,
-              toEmail: "blob.jr@pointfree.co",
-              toName: "Blob Jr."
+    DependencyValues.withTestValues {
+      $0.database.createGift = { request in
+        createGiftRequest = request
+        return pure(.unfulfilled)
+      }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .create(
+              .init(
+                deliverAt: nil,
+                fromEmail: "blob@pointfree.co",
+                fromName: "Blob",
+                message: "HBD!",
+                monthsFree: 3,
+                toEmail: "blob.jr@pointfree.co",
+                toName: "Blob Jr."
+              )
             )
-          )
-        ),
-        basicAuth: true
+          ),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
-
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      let result = conn |> siteMiddleware
+      
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
-
+        
         fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-
+        
         302 Found
         Location: /gifts
         Referrer-Policy: strict-origin-when-cross-origin
@@ -70,52 +72,54 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
-
-    XCTAssertNoDifference(
-      createGiftRequest,
-      .init(
-        deliverAt: nil,
-        fromEmail: "blob@pointfree.co",
-        fromName: "Blob",
-        message: "HBD!",
-        monthsFree: 3,
-        stripePaymentIntentId: "pi_test",
-        toEmail: "blob.jr@pointfree.co",
-        toName: "Blob Jr."
       )
-    )
+      
+      XCTAssertNoDifference(
+        createGiftRequest,
+        .init(
+          deliverAt: nil,
+          fromEmail: "blob@pointfree.co",
+          fromName: "Blob",
+          message: "HBD!",
+          monthsFree: 3,
+          stripePaymentIntentId: "pi_test",
+          toEmail: "blob.jr@pointfree.co",
+          toName: "Blob Jr."
+        )
+      )
+    }
   }
 
   func testGiftCreate_StripeFailure() {
-    Current.stripe.createPaymentIntent = { _ in
-      struct Error: Swift.Error {}
-      return throwE(Error())
-    }
-
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .create(
-            .init(
-              deliverAt: nil,
-              fromEmail: "blob@pointfree.co",
-              fromName: "Blob",
-              message: "HBD!",
-              monthsFree: 3,
-              toEmail: "blob.jr@pointfree.co",
-              toName: "Blob Jr."
+    DependencyValues.withTestValues {
+      $0.stripe.createPaymentIntent = { _ in
+        struct Error: Swift.Error {}
+        return throwE(Error())
+      }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .create(
+              .init(
+                deliverAt: nil,
+                fromEmail: "blob@pointfree.co",
+                fromName: "Blob",
+                message: "HBD!",
+                monthsFree: 3,
+                toEmail: "blob.jr@pointfree.co",
+                toName: "Blob Jr."
+              )
             )
-          )
-        ),
-        basicAuth: true
+          ),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
@@ -132,38 +136,40 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
+    }
   }
 
   func testGiftCreate_InvalidMonths() {
-    Current.stripe.createPaymentIntent = { _ in
-      struct Error: Swift.Error {}
-      return throwE(Error())
-    }
-
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .create(
-            .init(
-              deliverAt: nil,
-              fromEmail: "blob@pointfree.co",
-              fromName: "Blob",
-              message: "HBD!",
-              monthsFree: 1,
-              toEmail: "blob.jr@pointfree.co",
-              toName: "Blob Jr."
+    DependencyValues.withTestValues {
+      $0.stripe.createPaymentIntent = { _ in
+        struct Error: Swift.Error {}
+        return throwE(Error())
+      }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .create(
+              .init(
+                deliverAt: nil,
+                fromEmail: "blob@pointfree.co",
+                fromName: "Blob",
+                message: "HBD!",
+                monthsFree: 1,
+                toEmail: "blob.jr@pointfree.co",
+                toName: "Blob Jr."
+              )
             )
-          )
-        ),
-        basicAuth: true
+          ),
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
@@ -180,45 +186,41 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
+    }
   }
 
   func testGiftRedeem_NonSubscriber() {
+    let user = User.nonSubscriber
+    var credit: Cents<Int>?
+    var stripeSubscriptionId: Stripe.Subscription.ID?
+    var userId: User.ID?
+
     DependencyValues.withTestValues {
-      $0.date.now = .mock
-    } operation: {
       Current = .failing
-
-      let user = User.nonSubscriber
-
-      var credit: Cents<Int>?
-      var stripeSubscriptionId: Stripe.Subscription.ID?
-      var userId: User.ID?
-
-      Current.database.createSubscription = { _, id, _, _ in
+      $0.date.now = .mock
+      $0.database.createSubscription = { _, id, _, _ in
         userId = id
         return pure(.mock)
       }
-      Current.database.fetchGift = { _ in pure(.unfulfilled) }
-      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-      Current.database.fetchUserById = { _ in pure(user) }
-      Current.database.sawUser = { _ in pure(unit) }
-      Current.database.updateGift = { _, id in
+      $0.database.fetchGift = { _ in pure(.unfulfilled) }
+      $0.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      $0.database.fetchUserById = { _ in pure(user) }
+      $0.database.sawUser = { _ in pure(unit) }
+      $0.database.updateGift = { _, id in
         stripeSubscriptionId = id
         return pure(.fulfilled)
       }
-      Current.stripe.createCustomer = { _, _, _, _, amount in
+      $0.stripe.createCustomer = { _, _, _, _, amount in
         credit = amount
         return pure(
           update(.mock) {
             $0.invoiceSettings = .init(defaultPaymentMethod: nil)
           })
       }
-      Current.stripe.createSubscription = { _, _, _, _ in
-        pure(.individualMonthly)
-      }
-      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-
+      $0.stripe.createSubscription = { _, _, _, _ in pure(.individualMonthly) }
+      $0.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    } operation: {
       let conn = connection(
         from: request(
           to: .gifts(
@@ -259,33 +261,30 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Subscriber() {
+    let user = User.owner
+    var credit: Cents<Int>?
+    var stripeSubscriptionId: Stripe.Subscription.ID?
+
     DependencyValues.withTestValues {
-      $0.date.now = .mock
-    } operation: {
       Current = .failing
-
-      let user = User.owner
-
-      var credit: Cents<Int>?
-      var stripeSubscriptionId: Stripe.Subscription.ID?
-
-      Current.database.fetchGift = { _ in pure(.unfulfilled) }
-      Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-      Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-      Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
-      Current.database.fetchUserById = { _ in pure(user) }
-      Current.database.sawUser = { _ in pure(unit) }
-      Current.database.updateGift = { _, id in
+      $0.date.now = .mock
+      $0.database.fetchGift = { _ in pure(.unfulfilled) }
+      $0.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+      $0.database.fetchSubscriptionById = { _ in pure(.mock) }
+      $0.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
+      $0.database.fetchUserById = { _ in pure(user) }
+      $0.database.sawUser = { _ in pure(unit) }
+      $0.database.updateGift = { _, id in
         stripeSubscriptionId = id
         return pure(.fulfilled)
       }
-      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-      Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
-      Current.stripe.updateCustomerBalance = { _, amount in
+      $0.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      $0.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
+      $0.stripe.updateCustomerBalance = { _, amount in
         credit = amount
         return pure(update(.mock))
       }
-
+    } operation: {
       let conn = connection(
         from: request(
           to: .gifts(
@@ -324,24 +323,25 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
-    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
-
-    let conn = connection(
-      from: request(
-        to: .gifts(
-          .redeem(
-            .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
-          )
-        ),
-        session: .loggedOut,
-        basicAuth: true
+    DependencyValues.withTestValues {
+      $0.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .gifts(
+            .redeem(
+              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!, .confirm
+            )
+          ),
+          session: .loggedOut,
+          basicAuth: true
+        )
       )
-    )
-    let result = conn |> siteMiddleware
+      let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
-      matching: result, as: .ioConn,
-      with: """
+      _assertInlineSnapshot(
+        matching: result, as: .ioConn,
+        with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
@@ -355,23 +355,22 @@ class GiftTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """
-    )
+      )
+    }
   }
 
   func testGiftRedeem_Invalid_Redeemed() {
+    let user = User.nonSubscriber
+
     DependencyValues.withTestValues {
-      $0.date.now = .mock
-    } operation: {
       Current = .failing
-
-      let user = User.nonSubscriber
-
-      Current.database.fetchGift = { _ in pure(.fulfilled) }
-      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-      Current.database.fetchUserById = { _ in pure(user) }
-      Current.database.sawUser = { _ in pure(unit) }
-      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-
+      $0.date.now = .mock
+      $0.database.fetchGift = { _ in pure(.fulfilled) }
+      $0.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      $0.database.fetchUserById = { _ in pure(user) }
+      $0.database.sawUser = { _ in pure(unit) }
+      $0.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    } operation: {
       let conn = connection(
         from: request(
           to: .gifts(
@@ -407,22 +406,20 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_Teammate() {
+    let user = User.teammate
+
     DependencyValues.withTestValues {
-      $0.date.now = .mock
-    } operation: {
       Current = .failing
-
-      let user = User.teammate
-
-      Current.database.fetchGift = { _ in pure(.unfulfilled) }
-      Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-      Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-      Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
-      Current.database.fetchUserById = { _ in pure(user) }
-      Current.database.sawUser = { _ in pure(unit) }
-      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-      Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
-
+      $0.date.now = .mock
+      $0.database.fetchGift = { _ in pure(.unfulfilled) }
+      $0.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+      $0.database.fetchSubscriptionById = { _ in pure(.mock) }
+      $0.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+      $0.database.fetchUserById = { _ in pure(user) }
+      $0.database.sawUser = { _ in pure(unit) }
+      $0.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+      $0.stripe.fetchSubscription = { _ in pure(.teamYearly) }
+    } operation: {
       let conn = connection(
         from: request(
           to: .gifts(
@@ -484,13 +481,12 @@ class GiftTests: TestCase {
 
   func testGiftRedeemLanding() {
     DependencyValues.withTestValues {
+      Current = .failing
       $0.date.now = .mock
       $0.episodes = { [] }
+      $0.database.fetchGift = { _ in pure(.unfulfilled) }
+      $0.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
     } operation: {
-      Current = .failing
-      Current.database.fetchGift = { _ in pure(.unfulfilled) }
-      Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
-      
       let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
       
 #if !os(Linux)
