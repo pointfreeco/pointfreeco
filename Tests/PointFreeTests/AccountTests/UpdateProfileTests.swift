@@ -65,7 +65,6 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()!
     let emailSettings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      .performAsync()
 
     assertSnapshot(
       matching: emailSettings,
@@ -85,7 +84,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
+    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
     assertSnapshot(
       matching: settings,
       as: .customDump,

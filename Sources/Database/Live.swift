@@ -157,14 +157,16 @@ extension Client {
         .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchEmailSettingsForUserId: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "newsletter", "user_id"
           FROM "email_settings"
           WHERE "user_id" = \(bind: userId)
           """
         )
-        .all(decoding: EmailSetting.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: EmailSetting.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchEnterpriseAccountForDomain: { domain in
         pool.sqlDatabase.raw(

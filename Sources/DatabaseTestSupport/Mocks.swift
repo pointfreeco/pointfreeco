@@ -17,7 +17,7 @@ extension Client {
     deleteTeamInvite: { _ in },
     execute: { _ in throw unit },
     fetchAdmins: { [] },
-    fetchEmailSettingsForUserId: const(pure([.mock])),
+    fetchEmailSettingsForUserId: { _ in [.mock] },
     fetchEnterpriseAccountForDomain: const(pure(.mock)),
     fetchEnterpriseAccountForSubscription: const(pure(.none)),
     fetchEnterpriseEmails: unzurry(pure([.mock])),
