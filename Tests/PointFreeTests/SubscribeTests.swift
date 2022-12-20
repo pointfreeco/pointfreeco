@@ -81,35 +81,39 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(user.id)
 
     var balance: Cents<Int>?
-    Current.stripe.createCustomer = {
-      balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
-    }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    Current.stripe.updateCustomerBalance = {
-      balanceUpdates[$0] = $1
-      return pure(.mock)
-    }
 
-    let conn = await siteMiddleware(
-      connection(
-        from: request(to: .subscribe(.some(.individualMonthly)), session: session)
+
+    DependencyValues.withTestValues {
+      $0.stripe.createCustomer = {
+        balance = $4
+        return pure(update(.mock) { $0.id = "cus_referred" })
+      }
+      $0.stripe.updateCustomerBalance = {
+        balanceUpdates[$0] = $1
+        return pure(.mock)
+      }
+    } operation: {
+      let conn = await siteMiddleware(
+        connection(
+          from: request(to: .subscribe(.some(.individualMonthly)), session: session)
+        )
       )
-    )
-    .performAsync()
-
-    #if !os(Linux)
+        .performAsync()
+      
+#if !os(Linux)
       assertSnapshot(matching: conn, as: .conn)
-    #endif
-
-    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-      .performAsync()!
-
-    #if !os(Linux)
+#endif
+      
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+        .performAsync()!
+      
+#if !os(Linux)
       assertSnapshot(matching: subscription, as: .customDump)
-    #endif
-    XCTAssertNil(balance)
-    XCTAssertEqual(balanceUpdates, [:])
+#endif
+      XCTAssertNil(balance)
+      XCTAssertEqual(balanceUpdates, [:])
+    }
   }
 
   func testHappyPath_Yearly() async throws {

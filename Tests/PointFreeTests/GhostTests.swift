@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -25,24 +26,25 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+        pure(
+          userId == adminUser.id
           ? adminUser
           : userId == ghostee.id
-            ? ghostee
-            : nil
+          ? ghostee
+          : nil
+        )
+      }
+    } operation: {
+      let conn = await siteMiddleware(
+        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
-    }
+        .performAsync()
 
-    let conn = await siteMiddleware(
-      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-    )
-    .performAsync()
-
-    _assertInlineSnapshot(
-      matching: conn, as: .conn,
-      with: """
+      _assertInlineSnapshot(
+        matching: conn, as: .conn,
+        with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
@@ -58,6 +60,7 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
+    }
   }
 
   func testStartGhosting_InvalidGhostee() async {
@@ -68,22 +71,23 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+        pure(
+          userId == adminUser.id
           ? adminUser
           : nil
+        )
+      }
+    } operation: {
+      let conn = await siteMiddleware(
+        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
-    }
+        .performAsync()
 
-    let conn = await siteMiddleware(
-      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-    )
-    .performAsync()
-
-    _assertInlineSnapshot(
-      matching: conn, as: .conn,
-      with: """
+      _assertInlineSnapshot(
+        matching: conn, as: .conn,
+        with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
@@ -99,6 +103,7 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
+    }
   }
 
   func testStartGhosting_NonAdmin() async {
@@ -109,24 +114,25 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == user.id
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+        pure(
+          userId == user.id
           ? user
           : userId == ghostee.id
-            ? ghostee
-            : nil
+          ? ghostee
+          : nil
+        )
+      }
+    } operation: {
+      let conn = await siteMiddleware(
+        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
       )
-    }
+        .performAsync()
 
-    let conn = await siteMiddleware(
-      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
-    )
-    .performAsync()
-
-    _assertInlineSnapshot(
-      matching: conn, as: .conn,
-      with: """
+      _assertInlineSnapshot(
+        matching: conn, as: .conn,
+        with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
@@ -142,6 +148,7 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
+    }
   }
 
   func testEndGhosting_HappyPath() async {
@@ -152,24 +159,25 @@ final class GhostTests: TestCase {
     var adminSession = Session.loggedIn
     adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
+        pure(
+          userId == adminUser.id
           ? adminUser
           : userId == ghostee.id
-            ? ghostee
-            : nil
+          ? ghostee
+          : nil
+        )
+      }
+    } operation: {
+      let conn = await siteMiddleware(
+        connection(from: request(to: .endGhosting, session: adminSession))
       )
-    }
+        .performAsync()
 
-    let conn = await siteMiddleware(
-      connection(from: request(to: .endGhosting, session: adminSession))
-    )
-    .performAsync()
-
-    _assertInlineSnapshot(
-      matching: conn, as: .conn,
-      with: """
+      _assertInlineSnapshot(
+        matching: conn, as: .conn,
+        with: """
         POST http://localhost:8080/ghosting/end
         Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
 
@@ -183,5 +191,6 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
+    }
   }
 }

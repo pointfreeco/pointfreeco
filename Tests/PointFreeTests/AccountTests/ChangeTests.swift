@@ -155,11 +155,13 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateRemoveSeats() async {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.teamMonthly))
-      Current.stripe.invoiceCustomer = { _ in
+    DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = const(pure(.teamMonthly))
+      $0.stripe.invoiceCustomer = { _ in
         XCTFail()
         return pure(.mock(charge: .right(.mock)))
       }
+    } operation: {
       var pricing = Pricing.teamMonthly
       pricing.quantity -= 1
 
@@ -167,6 +169,7 @@ final class ChangeTests: TestCase {
         from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
     #endif
   }
 
@@ -176,17 +179,19 @@ final class ChangeTests: TestCase {
       subscription.plan = .teamYearly
       subscription.quantity = 5
 
-      Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.teammate, .teammate]))
-      Current.database.fetchTeamInvites = const(pure([.mock, .mock]))
-      Current.stripe.fetchSubscription = const(pure(subscription))
-
+    DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.teammate, .teammate]))
+      $0.database.fetchTeamInvites = const(pure([.mock, .mock]))
+      $0.stripe.fetchSubscription = const(pure(subscription))
+    } operation: {
       var pricing = Pricing.teamYearly
       pricing.quantity = 3
-
+      
       let conn = connection(
         from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
-
+      
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
     #endif
   }
 }

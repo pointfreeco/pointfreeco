@@ -435,22 +435,22 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testPaymentIntent_Gift() throws {
+    var delivered = false
+    var didSendEmail = false
+
     try DependencyValues.withTestValues {
-      $0.date.now = .mock
-    } operation: {
       Current = .failing
-      Current.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
-      var delivered = false
-      Current.database.updateGiftStatus = {
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
+      $0.database.updateGiftStatus = {
         delivered = $2
         return pure(.unfulfilled)
       }
-      var didSendEmail = false
-      Current.mailgun.sendEmail = { _ in
+      $0.date.now = .mock
+      $0.mailgun.sendEmail = { _ in
         didSendEmail = true
         return pure(.init(id: "", message: ""))
       }
-
+    } operation: {
       let event = Event(
         data: .init(object: PaymentIntent.succeeded),
         id: "evt_test",
@@ -504,11 +504,10 @@ final class StripeWebhooksTests: TestCase {
 
   func testPaymentIntent_NoGift() throws {
     try DependencyValues.withTestValues {
+      Current = .failing
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock
     } operation: {
-      Current = .failing
-      Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
-
       let event = Event(
         data: .init(object: PaymentIntent.succeeded),
         id: "evt_test",
@@ -559,11 +558,10 @@ final class StripeWebhooksTests: TestCase {
 
   func testFailedPaymentIntent() throws {
     try DependencyValues.withTestValues {
+      Current = .failing
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock
     } operation: {
-      Current = .failing
-      Current.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
-      
       let event = Event(
         data: .init(object: PaymentIntent.requiresConfirmation),
         id: "evt_test",
