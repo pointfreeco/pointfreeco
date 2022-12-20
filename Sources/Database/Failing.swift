@@ -24,7 +24,7 @@ extension Client {
     fetchEpisodeCredits: unimplemented("Database.Client.fetchEpisodeCredits"),
     fetchEpisodeProgress: unimplemented("Database.Client.fetchEpisodeProgress"),
     fetchFreeEpisodeUsers: unimplemented("Database.Client.fetchFreeEpisodeUsers"),
-    fetchGift: { _ in .failing("Database.Client.fetchGift") },
+    fetchGift: unimplemented("Database.Client.fetchGift"),
     fetchGiftByStripePaymentIntentId: { _ in
       .failing("Database.Client.fetchGiftByStripePaymentIntentId")
     },

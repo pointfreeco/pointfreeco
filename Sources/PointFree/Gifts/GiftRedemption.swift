@@ -160,7 +160,7 @@ private func fetchAndValidateGiftAndDiscount<A>(
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
-    return Current.database.fetchGift(giftId)
+    return EitherIO { try await Current.database.fetchGift(giftId) }
       .flatMap { gift in
         Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
           .map { paymentIntent in (gift, paymentIntent) }

@@ -24,7 +24,7 @@ extension Client {
     fetchEpisodeCredits: { _ in [] },
     fetchEpisodeProgress: { _, _ in nil },
     fetchFreeEpisodeUsers: { [.mock] },
-    fetchGift: { _ in pure(.unfulfilled) },
+    fetchGift: { _ in .unfulfilled },
     fetchGiftByStripePaymentIntentId: { _ in pure(.unfulfilled) },
     fetchGiftsToDeliver: {
       pure([update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1_234_567_890) }])

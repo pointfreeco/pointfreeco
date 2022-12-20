@@ -254,7 +254,7 @@ extension Client {
         .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchGift: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "gifts"
@@ -262,8 +262,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
         pool.sqlDatabase.raw(
