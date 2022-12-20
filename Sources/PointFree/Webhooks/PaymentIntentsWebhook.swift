@@ -42,17 +42,19 @@ private func fetchGift(
 
   return { conn in
     let paymentIntent = conn.data
-    return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
-      .run
-      .flatMap { errorOrGift in
-        switch errorOrGift {
-        case .left:
-          return conn |> writeStatus(.ok) >=> respond(text: "OK")
+    return EitherIO {
+      try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+    }
+    .run
+    .flatMap { errorOrGift in
+      switch errorOrGift {
+      case .left:
+        return conn |> writeStatus(.ok) >=> respond(text: "OK")
 
-        case let .right(gift):
-          return conn.map(const((paymentIntent, gift))) |> middleware
-        }
+      case let .right(gift):
+        return conn.map(const((paymentIntent, gift))) |> middleware
       }
+    }
   }
 }
 
@@ -64,25 +66,27 @@ private func handlePaymentIntent(
   guard paymentIntent.status == .succeeded
   else { return conn |> writeStatus(.ok) >=> respond(text: "OK") }
 
-  return Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
-    .flatMap { gift in
-      gift.deliverAt == nil
-        ? sendGiftEmail(for: gift)
-          .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
-        : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
-    }
-    .run
-    .flatMap {
-      switch $0 {
-      case let .left(error):
-        return conn
-          |> stripeHookFailure(
-            subject: "[PointFree Error] Stripe Hook Failed!",
-            body: "Failed to deliver gift \(gift.id): \(error)"
-          )
+  return EitherIO {
+    try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+  }
+  .flatMap { gift in
+    gift.deliverAt == nil
+      ? sendGiftEmail(for: gift)
+        .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
+      : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
+  }
+  .run
+  .flatMap {
+    switch $0 {
+    case let .left(error):
+      return conn
+        |> stripeHookFailure(
+          subject: "[PointFree Error] Stripe Hook Failed!",
+          body: "Failed to deliver gift \(gift.id): \(error)"
+        )
 
-      case .right:
-        return conn |> writeStatus(.ok) >=> respond(text: "OK")
-      }
+    case .right:
+      return conn |> writeStatus(.ok) >=> respond(text: "OK")
     }
+  }
 }
