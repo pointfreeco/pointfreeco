@@ -67,7 +67,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(throwE(unit))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -87,7 +87,7 @@ class PrivateRssTests: TestCase {
     subscription.stripeSubscriptionStatus = .pastDue
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -107,7 +107,7 @@ class PrivateRssTests: TestCase {
     subscription.deactivated = true
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
       from: request(
@@ -235,7 +235,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(throwE(unit))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -255,7 +255,7 @@ class PrivateRssTests: TestCase {
     subscription.stripeSubscriptionStatus = .pastDue
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
       from: request(
@@ -275,7 +275,7 @@ class PrivateRssTests: TestCase {
     subscription.deactivated = true
 
     Current.database.fetchUserByRssSalt = const(pure(.some(user)))
-    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
       from: request(

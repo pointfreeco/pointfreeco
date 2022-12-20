@@ -90,7 +90,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let req = request(
       to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: encryptedUserId)),
@@ -111,7 +111,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let req = request(
       to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: "baddata")),
@@ -133,7 +133,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let req = request(
       to: .enterprise(
@@ -155,7 +155,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let req = request(
       to: .enterprise(
@@ -168,7 +168,7 @@ class EnterpriseTests: TestCase {
 
   func testAcceptInvitation_EnterpriseAccountDoesntExist() {
     Current.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -199,7 +199,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let req = request(
       to: .enterprise(

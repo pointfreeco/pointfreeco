@@ -257,7 +257,7 @@ class EpisodePageTests: TestCase {
 
   func testEpisodePageSubscriber_Deactivated() {
     let deactivated = update(Subscription.mock) { $0.deactivated = true }
-    Current.database.fetchSubscriptionById = const(pure(deactivated))
+    Current.database.fetchSubscriptionById = { _ in deactivated }
     Current.database.fetchSubscriptionByOwnerId = const(pure(deactivated))
 
     let episode = request(
@@ -528,7 +528,7 @@ class EpisodePageTests: TestCase {
   func testEpisodePage_Trialing() {
     var subscription = Subscription.mock
     subscription.stripeSubscriptionStatus = .trialing
-    Current.database.fetchSubscriptionById = { _ in pure(subscription) }
+    Current.database.fetchSubscriptionById = { _ in subscription }
 
     let episode = request(
       to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: .mock))

@@ -84,13 +84,9 @@ public func currentSubscriptionMiddleware<A, I>(
 
   let user = conn.data.first
 
-  let userSubscription =
-    (user?.subscriptionId)
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+  let userSubscription = EitherIO {
+    try await Current.database.fetchSubscriptionById(user.unwrap().subscriptionId.unwrap())
+  }
 
   let ownerSubscription =
     (user?.id)
@@ -235,8 +231,7 @@ private func requireAccessToken<A>(
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchSubscriptionById(subscriptionId)
-    .mapExcept(requireSome)
+  return EitherIO { try await Current.database.fetchSubscriptionById(subscriptionId) }
     .flatMap { subscription in
       Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in

@@ -299,7 +299,7 @@ extension Client {
         .map { try $0.decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchSubscriptionById: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"
@@ -307,7 +307,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Models.Subscription.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchSubscriptionByOwnerId: { ownerId in
         pool.sqlDatabase.raw(

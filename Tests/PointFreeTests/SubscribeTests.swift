@@ -745,7 +745,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() async throws {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
@@ -802,7 +802,7 @@ final class SubscribeTests: TestCase {
 
   func testInvalidQuantity() async {
     #if !os(Linux)
-      Current.database.fetchSubscriptionById = const(pure(nil))
+      Current.database.fetchSubscriptionById = { _ in throw unit }
       Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
       let conn = await siteMiddleware(
@@ -826,7 +826,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
 
@@ -841,7 +841,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
@@ -856,7 +856,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
@@ -881,7 +881,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
@@ -907,7 +907,7 @@ final class SubscribeTests: TestCase {
 
   func testCreateDatabaseSubscriptionFailure() async {
     Current.database.createSubscription = { _, _, _, _ in throw unit }
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = await siteMiddleware(
@@ -921,7 +921,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InvalidCode() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.database.fetchUserByReferralCode = const(pure(nil))
 
@@ -946,7 +946,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InvalidLane() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let subscribeData = SubscribeData(
@@ -970,7 +970,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InactiveCode() async {
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
 
@@ -1000,7 +1000,7 @@ final class SubscribeTests: TestCase {
     }
 
     Current.database.fetchUserById = const(pure(user))
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
     let subscribeData = SubscribeData(

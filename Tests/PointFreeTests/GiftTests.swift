@@ -264,7 +264,7 @@ class GiftTests: TestCase {
 
     Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
@@ -403,7 +403,7 @@ class GiftTests: TestCase {
 
     Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }

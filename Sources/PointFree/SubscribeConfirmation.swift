@@ -220,10 +220,9 @@ func redirectActiveSubscribers<A>(
     return { conn in
       let user = user(conn.data)
 
-      let userSubscription =
-        (user?.subscriptionId)
-        .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
-        ?? throwE(unit)
+      let userSubscription = EitherIO {
+        try await Current.database.fetchSubscriptionById(user.unwrap().subscriptionId.unwrap())
+      }
 
       let ownerSubscription =
         (user?.id)
