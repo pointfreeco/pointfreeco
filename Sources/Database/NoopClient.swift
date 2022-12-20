@@ -21,7 +21,7 @@ extension Client {
     fetchEnterpriseEmails: { throw NoopError() },
     fetchEpisodeCredits: { _ in throw NoopError() },
     fetchEpisodeProgress: { _, _ in throw NoopError() },
-    fetchFreeEpisodeUsers: { throwE(NoopError()) },
+    fetchFreeEpisodeUsers: { throw NoopError() },
     fetchGift: { _ in throwE(NoopError()) },
     fetchGiftByStripePaymentIntentId: { _ in throwE(NoopError()) },
     fetchGiftsToDeliver: { throwE(NoopError()) },

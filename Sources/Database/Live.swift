@@ -236,7 +236,7 @@ extension Client {
         .decode(column: "percent")
       },
       fetchFreeEpisodeUsers: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"
@@ -249,7 +249,9 @@ extension Client {
           AND "email_settings"."newsletter" = \(bind: EmailSetting.Newsletter.newEpisode)
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchGift: { id in
         pool.sqlDatabase.raw(
