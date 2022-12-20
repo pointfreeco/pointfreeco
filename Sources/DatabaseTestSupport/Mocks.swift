@@ -22,7 +22,7 @@ extension Client {
     fetchEnterpriseAccountForSubscription: { _ in throw unit },
     fetchEnterpriseEmails: { [.mock] },
     fetchEpisodeCredits: { _ in [] },
-    fetchEpisodeProgress: { _, _ in pure(nil) },
+    fetchEpisodeProgress: { _, _ in nil },
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchGift: { _ in pure(.unfulfilled) },
     fetchGiftByStripePaymentIntentId: { _ in pure(.unfulfilled) },

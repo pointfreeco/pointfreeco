@@ -129,7 +129,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
       .performAsync()
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .some(20))
   }
@@ -143,7 +142,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .performAsync()!
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .none)
   }
