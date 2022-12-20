@@ -6,7 +6,7 @@ extension Client {
     addUserIdToSubscriptionId: unimplemented("Database.Client.addUserIdToSubscriptionId"),
     createEnterpriseAccount: unimplemented("Database.Client.createEnterpriseAccount"),
     createEnterpriseEmail: unimplemented("Database.Client.createEnterpriseEmail"),
-    createFeedRequestEvent: { _, _, _ in .failing("Database.Client.createFeedRequestEvent") },
+    createFeedRequestEvent: unimplemented("Database.Client.createFeedRequestEvent"),
     createGift: { _ in .failing("Database.Client.createGift") },
     createSubscription: { _, _, _, _ in .failing("Database.Client.createSubscription") },
     deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },

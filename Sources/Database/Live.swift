@@ -52,7 +52,7 @@ extension Client {
         .decode(model: EnterpriseEmail.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createFeedRequestEvent: { type, userAgent, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "feed_request_events"
           ("type", "user_agent", "user_id")
@@ -63,6 +63,7 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       createGift: { request in
         pool.sqlDatabase.raw(
