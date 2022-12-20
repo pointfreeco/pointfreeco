@@ -73,16 +73,17 @@ private func notifyUserSubscriptionWasRemoved(
 
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
-    .mapExcept(requireSome)
-    .flatMap { enterpriseAccount in
-      sendEmail(
-        to: [user.email],
-        subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
-      )
-      .map(const(unit))
-    }
+  return EitherIO {
+    try await Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
+  }
+  .flatMap { enterpriseAccount in
+    sendEmail(
+      to: [user.email],
+      subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
+      content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
+    )
+    .map(const(unit))
+  }
 }
 
 private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<

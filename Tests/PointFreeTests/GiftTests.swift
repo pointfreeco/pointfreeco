@@ -263,7 +263,7 @@ class GiftTests: TestCase {
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
     Current.database.fetchUserById = { _ in pure(user) }
@@ -402,7 +402,7 @@ class GiftTests: TestCase {
     let user = User.teammate
 
     Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in pure(.mock) }
     Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
     Current.database.fetchUserById = { _ in pure(user) }

@@ -19,7 +19,7 @@ extension Client {
     fetchAdmins: { [] },
     fetchEmailSettingsForUserId: { _ in [.mock] },
     fetchEnterpriseAccountForDomain: { _ in .mock },
-    fetchEnterpriseAccountForSubscription: const(pure(.none)),
+    fetchEnterpriseAccountForSubscription: { _ in throw unit },
     fetchEnterpriseEmails: unzurry(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
     fetchEpisodeProgress: { _, _ in pure(nil) },

@@ -104,15 +104,13 @@ public func currentSubscriptionMiddleware<A, I>(
     .run
     .map(\.right)
     .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
-      subscription
-        .map { subscription in
-          Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
-            .mapExcept(requireSome)
-            .run
-            .map(\.right)
-            .map { enterpriseAccount in (subscription, enterpriseAccount) }
-        }
-        ?? pure(nil)
+      IO {
+        guard let subscription else { return nil }
+        return (
+          subscription,
+          try? await Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
+        )
+      }
     }
     .map { conn.map(const($0 .*. conn.data)) }
 }

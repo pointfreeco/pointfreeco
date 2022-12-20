@@ -183,7 +183,7 @@ extension Client {
         .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchEnterpriseAccountForSubscription: { subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "company_name", "domain", "id", "subscription_id"
           FROM "enterprise_accounts"
@@ -191,7 +191,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: EnterpriseAccount.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchEnterpriseEmails: {
         pool.sqlDatabase.raw(
