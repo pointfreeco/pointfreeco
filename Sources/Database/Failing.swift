@@ -11,7 +11,7 @@ extension Client {
     createSubscription: unimplemented("Database.Client.createSubscription"),
     deleteEnterpriseEmail: unimplemented("Database.Client.deleteEnterpriseEmail"),
     deleteTeamInvite: unimplemented("Database.Client.deleteTeamInvite"),
-    execute: { _ in .failing("Database.Client.execute") },
+    execute: unimplemented("Database.Client.execute"),
     fetchAdmins: { .failing("Database.Client.fetchAdmins") },
     fetchEmailSettingsForUserId: { _ in .failing("Database.Client.fetchEmailSettingsForUserId") },
     fetchEnterpriseAccountForDomain: { _ in

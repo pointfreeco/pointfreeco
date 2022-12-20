@@ -142,7 +142,7 @@ extension Client {
         .get()
       },
       execute: { sql in
-        .init(pool.sqlDatabase.raw(sql).all())
+        try await pool.sqlDatabase.raw(sql).all()
       },
       fetchAdmins: {
         pool.sqlDatabase.raw(
