@@ -59,6 +59,7 @@ open class LiveDatabaseTestCase: TestCase {
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
+      // TODO: simplify
       precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(

@@ -9,7 +9,7 @@ import PointFreePrelude
 import PointFreeRouter
 import PostgresKit
 import Prelude
-
+ 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
   Backtrace.install()
 

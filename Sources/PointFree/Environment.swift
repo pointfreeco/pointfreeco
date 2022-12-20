@@ -11,7 +11,7 @@ import PostgresKit
 import Prelude
 import Stripe 
 
-public var Current = Environment()
+public let Current = Environment()
 
 public struct Environment {
   @Dependency(\.assets) public var assets
