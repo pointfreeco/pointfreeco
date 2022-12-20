@@ -122,13 +122,14 @@ extension Client {
         return subscription
       },
       deleteEnterpriseEmail: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "enterprise_emails"
           WHERE "user_id" = \(bind: userId)
           """
         )
         .run()
+        .get()
       },
       deleteTeamInvite: { id in
         pool.sqlDatabase.raw(

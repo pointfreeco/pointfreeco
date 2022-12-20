@@ -21,7 +21,7 @@ public struct Client {
   public var createGift: (CreateGiftRequest) async throws -> Gift
   public var createSubscription:
     (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async throws -> Models.Subscription
-  public var deleteEnterpriseEmail: (User.ID) -> EitherIO<Error, Prelude.Unit>
+  public var deleteEnterpriseEmail: (User.ID) async throws -> Void
   public var deleteTeamInvite: (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>
   public var execute: (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
@@ -85,7 +85,7 @@ public struct Client {
     createGift: @escaping (CreateGiftRequest) async throws -> Gift,
     createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async
       throws -> Models.Subscription,
-    deleteEnterpriseEmail: @escaping (User.ID) -> EitherIO<Error, Prelude.Unit>,
+    deleteEnterpriseEmail: @escaping (User.ID) async throws -> Void,
     deleteTeamInvite: @escaping (TeamInvite.ID) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (SQLQueryString) -> EitherIO<Swift.Error, [SQLRow]>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,

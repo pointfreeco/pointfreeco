@@ -9,7 +9,7 @@ extension Client {
     createFeedRequestEvent: unimplemented("Database.Client.createFeedRequestEvent"),
     createGift: unimplemented("Database.Client.createGift"),
     createSubscription: unimplemented("Database.Client.createSubscription"),
-    deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },
+    deleteEnterpriseEmail: unimplemented("Database.Client.deleteEnterpriseEmail"),
     deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
     execute: { _ in .failing("Database.Client.execute") },
     fetchAdmins: { .failing("Database.Client.fetchAdmins") },

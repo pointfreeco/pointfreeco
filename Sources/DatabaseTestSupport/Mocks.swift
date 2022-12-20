@@ -13,7 +13,7 @@ extension Client {
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _ in .unfulfilled },
     createSubscription: { _, _, _, _ in .mock },
-    deleteEnterpriseEmail: { _ in pure(unit) },
+    deleteEnterpriseEmail: { _ in },
     deleteTeamInvite: const(pure(unit)),
     execute: { _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),

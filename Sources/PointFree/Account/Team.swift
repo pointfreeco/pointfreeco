@@ -46,9 +46,9 @@ private func leaveTeam<Z>(
       user.subscriptionId
       .map { subId in
         Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subId)
-          .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
+          .flatMap { _ in EitherIO { try await Current.database.deleteEnterpriseEmail(user.id) } }
       }
-      ?? pure(unit)
+      ?? pure(())
 
     return removed
       .run
