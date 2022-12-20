@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 49813
+Content-Length: 49816
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
