@@ -44,8 +44,9 @@ extension Environment {
 }
 
 extension DependencyValues {
+  @available(*, deprecated)
   public static var teamYearly: Self {
-    var deps = DependencyValues()
+    var deps = DependencyValues._current
     deps.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
     deps.database.fetchTeamInvites = const(pure([.mock]))
     deps.stripe.fetchSubscription = const(pure(.teamYearly))
@@ -54,17 +55,37 @@ extension DependencyValues {
     return deps
   }
 
+  public mutating func teamYearly() {
+    self.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    self.database.fetchTeamInvites = const(pure([.mock]))
+    self.stripe.fetchSubscription = const(pure(.teamYearly))
+    self.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
+    self.stripe.fetchPaymentMethod = const(pure(.mock))
+  }
+
+  @available(*, deprecated)
   public static var teamYearlyTeammate: Self {
     var deps = Self.teamYearly
     deps.database.fetchSubscriptionByOwnerId = const(pure(nil))
     return deps
   }
 
+  public mutating func teamYearlyTeammate() {
+    self.teamYearly()
+    self.database.fetchSubscriptionByOwnerId = const(pure(nil))
+  }
+
+  @available(*, deprecated)
   public static var individualMonthly: Self {
     var deps = DependencyValues()
     deps.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
     deps.stripe.fetchSubscription = const(pure(.individualMonthly))
     return deps
+  }
+
+  public mutating func individualMonthly() {
+    self.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    self.stripe.fetchSubscription = const(pure(.individualMonthly))
   }
 }
 

@@ -33,7 +33,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
       .performAsync()!
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = const(pure(.teamYearly))
     } operation: {
       let sendInvite = request(
@@ -55,7 +55,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
       .performAsync()!
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = const(pure(sub))
     } operation: {
       _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -234,7 +234,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .performAsync()
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = const(pure(.canceled))
     } operation: {
       let acceptInvite = request(
@@ -274,7 +274,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .performAsync()
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = const(pure(.canceled))
     } operation: {
       let acceptInvite = request(
@@ -292,7 +292,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAddTeammate() async throws {
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
     } operation: {
       let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
@@ -310,7 +310,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
       stripeSubscription.quantity += 3
 
-      try await DependencyValues.withTestValues {
+      try await DependencyValues.withValues {
         $0.stripe.fetchSubscription = const(pure(stripeSubscription))
       } operation: {
         let conn = connection(
@@ -397,7 +397,7 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(currentUser)))
       $0.database.fetchTeamInvite = const(pure(.some(invite)))
       $0.database.fetchSubscriptionById = const(pure(nil))
@@ -429,7 +429,7 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(currentUser)))
       $0.database.fetchTeamInvite = const(pure(.some(invite)))
       $0.database.fetchSubscriptionById = const(pure(.mock))

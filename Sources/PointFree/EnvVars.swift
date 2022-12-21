@@ -230,7 +230,6 @@ private let decoder = JSONDecoder()
 
 extension EnvVars: DependencyKey {
   public static var liveValue: Self {
-    print(URL(fileURLWithPath: #file))
     let envFilePath = URL(fileURLWithPath: #file)
       .deletingLastPathComponent()
       .deletingLastPathComponent()

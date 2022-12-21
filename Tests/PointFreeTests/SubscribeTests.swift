@@ -84,7 +84,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.createCustomer = {
         balance = $4
         return pure(update(.mock) { $0.id = "cus_referred" })
@@ -99,18 +99,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(.some(.individualMonthly)), session: session)
         )
       )
-        .performAsync()
-      
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
-      
+      .performAsync()
+
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
+
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
         .performAsync()!
-      
-#if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
-#endif
+
+      #if !os(Linux)
+        assertSnapshot(matching: subscription, as: .customDump)
+      #endif
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, [:])
     }
@@ -124,7 +124,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.createCustomer = {
         balance = $4
         return pure(update(.mock) { $0.id = "cus_referred" })
@@ -139,18 +139,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(.some(.individualYearly)), session: session)
         )
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
         .performAsync()!
 
-#if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: subscription, as: .customDump)
+      #endif
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, [:])
     }
@@ -264,7 +264,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = { _ in
         pure(
           update(.mock) {
@@ -300,10 +300,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(subscribeData), session: session)
         )
       )
-        .performAsync()
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      .performAsync()
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
         .performAsync()!
@@ -342,7 +342,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchSubscription = { _ in
         pure(
           update(.mock) {
@@ -370,10 +370,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-        .performAsync()
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      .performAsync()
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
         .performAsync()!
@@ -396,7 +396,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.createSubscription = { _, _, _, coupon in
         subscriptionCoupon = coupon
         return pure(.mock)
@@ -432,18 +432,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
         .performAsync()!
 
-#if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: subscription, as: .customDump)
+      #endif
       XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, [:])
@@ -462,7 +462,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.stripe.createSubscription = { _, _, _, coupon in
         subscriptionCoupon = coupon
         return pure(.mock)
@@ -498,11 +498,11 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       XCTAssertEqual(subscriptionCoupon, nil)
       XCTAssertNil(balance)
@@ -543,7 +543,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchPaymentMethod = { _ in
         return pure(
           .init(
@@ -594,10 +594,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-        .performAsync()
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      .performAsync()
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
         .performAsync()!
@@ -642,7 +642,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.stripe.fetchPaymentMethod = { _ in
         return pure(
           .init(
@@ -693,10 +693,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-        .performAsync()
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      .performAsync()
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
 
       let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
         .performAsync()!
@@ -717,7 +717,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var customer = Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
       $0.stripe.fetchPaymentMethod = {
         pure(
@@ -736,11 +736,11 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 }
@@ -764,7 +764,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() async throws {
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -780,11 +780,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -823,33 +823,33 @@ final class SubscribeTests: TestCase {
 
   func testInvalidQuantity() async {
     #if !os(Linux)
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(
-          from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
+      await DependencyValues.withValues {
+        $0.database.fetchSubscriptionById = const(pure(nil))
+        $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+      } operation: {
+        let conn = await siteMiddleware(
+          connection(
+            from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
+          )
         )
-      )
         .performAsync()
 
-      assertSnapshot(matching: conn, as: .conn, named: "too_high")
+        assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
-      let conn2 = await siteMiddleware(
-        connection(
-          from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
+        let conn2 = await siteMiddleware(
+          connection(
+            from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
+          )
         )
-      )
         .performAsync()
 
-      assertSnapshot(matching: conn2, as: .conn, named: "too_low")
-    }
+        assertSnapshot(matching: conn2, as: .conn, named: "too_low")
+      }
     #endif
   }
 
   func testCreateCustomerFailure() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
@@ -857,16 +857,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testCreateStripeSubscriptionFailure() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -874,16 +874,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -901,16 +901,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -928,16 +928,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testCreateDatabaseSubscriptionFailure() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -945,16 +945,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testReferrals_InvalidCode() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.database.fetchUserByReferralCode = const(pure(nil))
@@ -972,16 +972,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testReferrals_InvalidLane() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
     } operation: {
@@ -998,16 +998,16 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
   func testReferrals_InactiveCode() async {
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
@@ -1025,11 +1025,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -1038,7 +1038,7 @@ final class SubscribeTests: TestCase {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    await DependencyValues.withTestValues {
+    await DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
@@ -1056,11 +1056,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user)))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 }

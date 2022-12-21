@@ -26,7 +26,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.date.now = now
       $0.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
       $0.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
@@ -58,7 +58,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     gitHubUserEnvelope.gitHubUser.id = 1_234_567_890
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.date.now = now
       $0.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
       $0.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
@@ -106,7 +106,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.gitHub.fetchAuthToken = unit |> throwE >>> const
       $0.gitHub.fetchAuthToken = unit |> throwE >>> const
     } operation: {
@@ -118,7 +118,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.gitHub.fetchAuthToken = const(
         pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     } operation: {
@@ -130,7 +130,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.gitHub.fetchAuthToken = const(
         pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     } operation: {
@@ -144,7 +144,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.gitHub.fetchUser = unit |> throwE >>> const
     } operation: {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))

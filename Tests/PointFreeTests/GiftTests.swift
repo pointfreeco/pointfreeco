@@ -27,7 +27,7 @@ class GiftTests: TestCase {
   func testGiftCreate() {
     var createGiftRequest: Database.Client.CreateGiftRequest!
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.createGift = { request in
         createGiftRequest = request
         return pure(.unfulfilled)
@@ -91,7 +91,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate_StripeFailure() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.stripe.createPaymentIntent = { _ in
         struct Error: Swift.Error {}
         return throwE(Error())
@@ -141,7 +141,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate_InvalidMonths() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.stripe.createPaymentIntent = { _ in
         struct Error: Swift.Error {}
         return throwE(Error())
@@ -196,7 +196,7 @@ class GiftTests: TestCase {
     var stripeSubscriptionId: Stripe.Subscription.ID?
     var userId: User.ID?
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       //Current = .failing
       $0.date.now = .mock
       $0.database.createSubscription = { _, id, _, _ in
@@ -265,7 +265,7 @@ class GiftTests: TestCase {
     var credit: Cents<Int>?
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.unfulfilled) }
@@ -323,7 +323,8 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_LoggedOut() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
+      $0.database.fetchGift = { _ in pure(.unfulfilled) }
       $0.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
     } operation: {
       let conn = connection(
@@ -362,7 +363,7 @@ class GiftTests: TestCase {
   func testGiftRedeem_Invalid_Redeemed() {
     let user = User.nonSubscriber
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.fulfilled) }
@@ -408,7 +409,7 @@ class GiftTests: TestCase {
   func testGiftRedeem_Invalid_Teammate() {
     let user = User.teammate
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.unfulfilled) }
@@ -455,12 +456,10 @@ class GiftTests: TestCase {
   }
 
   func testGiftLanding() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.date.now = .mock
       $0.episodes = { [] }
     } operation: {
-      //Current = .failing
-
       let conn = connection(from: request(to: .gifts()))
 
 #if !os(Linux)
@@ -480,8 +479,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeemLanding() {
-    DependencyValues.withTestValues {
-      //Current = .failing
+    DependencyValues.withValues {
       $0.date.now = .mock
       $0.episodes = { [] }
       $0.database.fetchGift = { _ in pure(.unfulfilled) }

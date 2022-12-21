@@ -19,7 +19,13 @@ open class TestCase: XCTestCase {
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.date.now = .mock
       $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+      $0.gitHub = .mock
+      $0.mailgun = .mock
+      $0.stripe = .mock
+      $0.uuid = .incrementing
     } operation: {
       super.invokeTest()
     }
@@ -28,7 +34,7 @@ open class TestCase: XCTestCase {
   override open func setUp() async throws {
     try await super.setUp()
     diffTool = "ksdiff"
-    //    SnapshotTesting.isRecording = true
+    // SnapshotTesting.isRecording = true
     //Current = .mock 
     // siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl) // TODO: not needed?
   }
@@ -43,28 +49,19 @@ open class TestCase: XCTestCase {
   }
 }
 
-open class LiveDatabaseTestCase: XCTestCase {
-  var database: Database.Client!
+open class LiveDatabaseTestCase: TestCase {
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
   let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
-  open override class func setUp() {
-    super.setUp()
-    Backtrace.install()
-  }
-
   override open func setUp() async throws {
     try await super.setUp()
-
-    diffTool = "ksdiff"
-    //    SnapshotTesting.isRecording = true
-    try await self.database.resetForTesting(pool: self.pool)
+    try await DependencyValues._current.database.resetForTesting(pool: self.pool)
   }
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
       // TODO: simplify
-      $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+
       precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(
@@ -74,19 +71,9 @@ open class LiveDatabaseTestCase: XCTestCase {
         ),
         on: self.eventLoopGroup
       )
-      self.database = .live(pool: self.pool)
-      $0.database = self.database
+      $0.database = .live(pool: self.pool)
     } operation: {
       super.invokeTest()
     }
-  }
-
-  override open func tearDown() {
-    super.tearDown()
-    SnapshotTesting.isRecording = false
-  }
-
-  public var isScreenshotTestingAvailable: Bool {
-    ProcessInfo.processInfo.environment["CI"] == nil
   }
 }

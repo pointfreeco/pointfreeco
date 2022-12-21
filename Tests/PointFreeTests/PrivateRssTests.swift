@@ -29,7 +29,7 @@ class PrivateRssTests: TestCase {
   }
 
   override func invokeTest() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.episodes = { episodes }
     } operation: {
       super.invokeTest()
@@ -40,7 +40,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
     } operation: {
@@ -59,7 +59,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualYearly))
     } operation: {
@@ -78,7 +78,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(throwE(unit))
     } operation: {
@@ -100,7 +100,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(pure(subscription))
     } operation: {
@@ -122,7 +122,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(pure(subscription))
     } operation: {
@@ -138,7 +138,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_BadSalt() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.none))
     } operation: {
       let conn = connection(
@@ -156,7 +156,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.createFeedRequestEvent = { _, _, _ in
@@ -182,7 +182,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
@@ -203,7 +203,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.none))
       $0.database.updateUser = { _, _, _, _, _ in
@@ -227,7 +227,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
     } operation: {
@@ -246,7 +246,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualYearly))
     } operation: {
@@ -265,7 +265,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(throwE(unit))
     } operation: {
@@ -287,7 +287,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(pure(subscription))
     } operation: {
@@ -309,7 +309,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.fetchSubscriptionById = const(pure(subscription))
     } operation: {
@@ -325,7 +325,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testLegacy_Feed_BadSalt() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByRssSalt = const(pure(.none))
     } operation: {
       let conn = connection(
@@ -343,7 +343,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.database.createFeedRequestEvent = { _, _, _ in
@@ -369,7 +369,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.some(user)))
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
@@ -390,7 +390,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.database.fetchUserByRssSalt = const(pure(.none))
       $0.database.updateUser = { _, _, _, _, _ in

@@ -22,7 +22,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.mock))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -52,7 +52,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.mock))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -82,7 +82,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.mock))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -115,7 +115,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -148,7 +148,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -187,7 +187,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -226,7 +226,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -259,7 +259,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -297,7 +297,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_ActiveSubscriber() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.mock))
       $0.database.fetchSubscriptionById = const(pure(.mock))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
@@ -315,7 +315,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(nil))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -345,7 +345,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_WithDiscount() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.mock))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -373,7 +373,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -404,7 +404,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_ReferralCode() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(nil))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
@@ -442,7 +442,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_ReferralCodeAndRegionalDiscount() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserByReferralCode = { code in
         pure(update(.mock) { $0.referralCode = code })
       }
@@ -476,7 +476,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InactiveReferralCode() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(nil))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchUserByReferralCode = const(pure(.mock))
@@ -500,7 +500,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralCode() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(nil))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchUserByReferralCode = const(pure(nil))
@@ -522,7 +522,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralLane() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(nil))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
@@ -550,7 +550,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))

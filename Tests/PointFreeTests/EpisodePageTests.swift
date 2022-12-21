@@ -30,7 +30,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.episodes = unzurry([episode])
     } operation: {
       let user = try await Current.database
@@ -64,7 +64,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 0
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.episodes = unzurry([episode])
       $0.database.fetchUserById = const(pure(.some(user)))
     } operation: {
@@ -92,7 +92,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 1
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.episodes = unzurry([episode])
     } operation: {
@@ -116,7 +116,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     var episode = Episode.mock
     episode.permission = .free
 
-    try await DependencyValues.withTestValues {
+    try await DependencyValues.withValues {
       $0.episodes = unzurry([episode])
     } operation: {
       let user = try await Current.database
@@ -160,7 +160,7 @@ class EpisodePageTests: TestCase {
       return episode
     }
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.episodes = { episodes }
     } operation: {
       let episode = request(
@@ -268,7 +268,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePageSubscriber_Deactivated() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       let deactivated = update(Subscription.mock) { $0.deactivated = true }
       $0.database.fetchSubscriptionById = const(pure(deactivated))
       $0.database.fetchSubscriptionByOwnerId = const(pure(deactivated))
@@ -298,7 +298,7 @@ class EpisodePageTests: TestCase {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.episodes = { [freeEpisode] }
     } operation: {
       let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
@@ -323,7 +323,7 @@ class EpisodePageTests: TestCase {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.episodes = { [freeEpisode] }
     } operation: {
       let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
@@ -371,7 +371,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .free
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([.mock]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -405,7 +405,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([.mock]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -439,7 +439,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -473,7 +473,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -506,7 +506,7 @@ class EpisodePageTests: TestCase {
     var episode = Episode.mock
     episode.permission = .freeDuring(start..<end)
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.date.now = start.addingTimeInterval(-1)
     } operation: {
       XCTAssertTrue(episode.subscriberOnly)
@@ -514,7 +514,7 @@ class EpisodePageTests: TestCase {
 
     XCTAssertFalse(episode.subscriberOnly)
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.date.now = end.addingTimeInterval(1)
     } operation: {
       XCTAssertTrue(episode.subscriberOnly)
@@ -527,7 +527,7 @@ class EpisodePageTests: TestCase {
     episode.references = [.mock]
     episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.episodes = { [episode] }
     } operation: {
       let conn = connection(
@@ -561,7 +561,7 @@ class EpisodePageTests: TestCase {
     var subscription = Subscription.mock
     subscription.stripeSubscriptionStatus = .trialing
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = { _ in pure(subscription) }
     } operation: {
       let episode = request(
@@ -576,7 +576,7 @@ class EpisodePageTests: TestCase {
   func testProgress_LoggedIn() {
     var didUpdate = false
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.updateEpisodeProgress = { _, _, _ in
         didUpdate = true
         return pure(unit)
@@ -598,7 +598,7 @@ class EpisodePageTests: TestCase {
   func testProgress_LoggedOut() {
     var didUpdate = false
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.updateEpisodeProgress = { _, _, _ in
         didUpdate = true
         return pure(unit)
@@ -618,7 +618,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePage_WithEpisodeProgress() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchEpisodeProgress = { _, _ in pure(20) }
     } operation: {
       let episode = request(

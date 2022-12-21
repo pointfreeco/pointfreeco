@@ -50,7 +50,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
@@ -87,7 +87,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
@@ -109,7 +109,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
@@ -131,7 +131,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
@@ -153,7 +153,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
@@ -175,7 +175,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))

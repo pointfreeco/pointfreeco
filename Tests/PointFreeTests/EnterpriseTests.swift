@@ -26,7 +26,7 @@ class EnterpriseTests: TestCase {
   func testLanding_LoggedOut() {
     let account = EnterpriseAccount.mock
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     } operation: {
       let req = request(to: .enterprise(account.domain))
@@ -50,7 +50,7 @@ class EnterpriseTests: TestCase {
   func testLanding_NonExistentEnterpriseAccount() {
     let account = EnterpriseAccount.mock
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
     } operation: {
       let req = request(to: .enterprise(account.domain))
@@ -66,7 +66,7 @@ class EnterpriseTests: TestCase {
     var user = User.mock
     user.subscriptionId = subscriptionId
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     } operation: {
       let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
@@ -95,7 +95,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
       $0.database.fetchSubscriptionById = const(pure(nil))
@@ -118,7 +118,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
       $0.database.fetchSubscriptionById = const(pure(nil))
@@ -142,7 +142,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
       $0.database.fetchSubscriptionById = const(pure(nil))
@@ -166,7 +166,7 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
       $0.database.fetchSubscriptionById = const(pure(nil))
@@ -182,7 +182,7 @@ class EnterpriseTests: TestCase {
   }
 
   func testAcceptInvitation_EnterpriseAccountDoesntExist() {
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
       $0.database.fetchSubscriptionById = const(pure(nil))
     } operation: {
@@ -214,7 +214,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    DependencyValues.withTestValues {
+    DependencyValues.withValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
       $0.database.fetchSubscriptionById = const(pure(nil))
