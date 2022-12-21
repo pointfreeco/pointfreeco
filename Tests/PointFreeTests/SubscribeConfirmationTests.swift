@@ -23,7 +23,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -51,7 +51,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_SwitchToMonthly() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -79,7 +79,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -110,7 +110,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -141,7 +141,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -178,7 +178,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -215,7 +215,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -246,7 +246,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -282,7 +282,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_ActiveSubscriber() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in .mock }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
 
     let conn = connection(
       from: request(
@@ -298,7 +298,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedOut() {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -326,7 +326,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedIn_WithDiscount() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -352,7 +352,7 @@ class SubscriptionConfirmationTests: TestCase {
 
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -381,7 +381,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedOut_ReferralCode() {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in
       pure(update(.mock) { $0.referralCode = code })
     }
@@ -450,7 +450,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(.mock))
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.stripe.fetchSubscription = const(pure(.canceling))
 
     let conn = connection(
@@ -491,7 +491,7 @@ class SubscriptionConfirmationTests: TestCase {
   func testPersonal_LoggedOut_InvalidReferralLane() {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = const(pure(.mock))
     Current.stripe.fetchSubscription = const(pure(.mock))
 
@@ -516,7 +516,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
     Current.database.fetchUserById = const(pure(user))
     Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in
       pure(update(.mock) { $0.referralCode = code })
     }

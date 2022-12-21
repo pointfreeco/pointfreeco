@@ -54,7 +54,7 @@ class PricingLandingTests: TestCase {
   func testLanding_LoggedIn_ActiveSubscriber() {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in .mock }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
 
     let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware

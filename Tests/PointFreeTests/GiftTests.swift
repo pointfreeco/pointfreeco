@@ -196,7 +196,7 @@ class GiftTests: TestCase {
       return .mock
     }
     Current.database.fetchGift = { _ in .unfulfilled }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.database.updateGift = { _, id in
@@ -265,7 +265,7 @@ class GiftTests: TestCase {
     Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in .mock }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.database.updateGift = { _, id in
@@ -357,7 +357,7 @@ class GiftTests: TestCase {
     let user = User.nonSubscriber
 
     Current.database.fetchGift = { _ in .fulfilled }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
@@ -404,7 +404,7 @@ class GiftTests: TestCase {
     Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in .mock }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }

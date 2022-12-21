@@ -82,7 +82,7 @@ extension Environment {
   }
 
   public static let teamYearlyTeammate = update(teamYearly) {
-    $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
   }
 
   public static let individualMonthly = update(mock) {

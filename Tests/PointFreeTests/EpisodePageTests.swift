@@ -258,7 +258,7 @@ class EpisodePageTests: TestCase {
   func testEpisodePageSubscriber_Deactivated() {
     let deactivated = update(Subscription.mock) { $0.deactivated = true }
     Current.database.fetchSubscriptionById = { _ in deactivated }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(deactivated))
+    Current.database.fetchSubscriptionByOwnerId = { _ in deactivated }
 
     let episode = request(
       to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -357,7 +357,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.episodes = { [episode] }
 
     let conn = connection(
@@ -389,7 +389,7 @@ class EpisodePageTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.episodes = { [episode] }
 
     let conn = connection(
@@ -422,7 +422,7 @@ class EpisodePageTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = { [episode] }
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
@@ -454,7 +454,7 @@ class EpisodePageTests: TestCase {
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = { [episode] }
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)

@@ -88,20 +88,19 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       .mapExcept(requireSome)
 
     // VERIFY: user is subscribed
-    let subscription =
-      inviter
-      .flatMap(\.id >>> Current.database.fetchSubscriptionByOwnerId)
-      .mapExcept(requireSome)
-      .flatMap { subscription in
-        Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-          .mapExcept(validateActiveStripeSubscription)
-          .bimap(const(unit as Error), id)
-          .flatMap { _ in
-            EitherIO {
-              try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-            }
+    let subscription = inviter.flatMap { inviter in
+      EitherIO { try await Current.database.fetchSubscriptionByOwnerId(inviter.id) }
+    }
+    .flatMap { subscription in
+      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        .mapExcept(validateActiveStripeSubscription)
+        .bimap(const(unit as Error), id)
+        .flatMap { _ in
+          EitherIO {
+            try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
           }
-      }
+        }
+    }
 
     return subscription
       .run
@@ -178,11 +177,12 @@ let sendInviteMiddleware =
     )
     .map(+)
 
-    let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
-      .mapExcept(requireSome)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .parallel
+    let subscription = EitherIO {
+      try await Current.database.fetchSubscriptionByOwnerId(inviter.id)
+    }
+    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+    .run
+    .parallel
 
     let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
       run: zip2(

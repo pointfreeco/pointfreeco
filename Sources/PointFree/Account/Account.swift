@@ -32,14 +32,9 @@ private func fetchAccountData<I>(
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription = EitherIO {
-    try await Current.database.fetchSubscriptionById(user.subscriptionId.unwrap())
+  let subscription = EitherIO {
+    try await Current.database.fetchSubscription(user: user)
   }
-
-  let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
-    .mapExcept(requireSome)
-
-  let subscription = userSubscription <|> ownerSubscription
 
   let owner =
     subscription

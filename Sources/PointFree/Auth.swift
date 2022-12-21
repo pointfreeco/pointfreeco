@@ -84,31 +84,17 @@ public func currentSubscriptionMiddleware<A, I>(
 
   let user = conn.data.first
 
-  let userSubscription = EitherIO {
-    try await Current.database.fetchSubscriptionById(user.unwrap().subscriptionId.unwrap())
+  return EitherIO {
+    let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
+
+    let enterpriseAccount = try? await Current.database
+      .fetchEnterpriseAccountForSubscription(subscription.id)
+
+    return (subscription, enterpriseAccount)
   }
-
-  let ownerSubscription =
-    (user?.id)
-    .map(
-      Current.database.fetchSubscriptionByOwnerId
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
-
-  return (userSubscription <|> ownerSubscription)
-    .run
-    .map(\.right)
-    .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
-      IO {
-        guard let subscription else { return nil }
-        return (
-          subscription,
-          try? await Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
-        )
-      }
-    }
-    .map { conn.map(const($0 .*. conn.data)) }
+  .run
+  .map(\.right)
+  .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)

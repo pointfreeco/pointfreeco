@@ -205,7 +205,7 @@ final class AccountTests: TestCase {
   func testTeam_AsTeammate_previousSubscription() {
     Current = .teamYearlyTeammate
     Current.database.fetchSubscriptionByOwnerId = const(
-      pure(update(.canceled) { $0.userId = User.teammate.id })
+      update(.canceled) { $0.userId = User.teammate.id }
     )
 
     let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
@@ -324,7 +324,7 @@ final class AccountTests: TestCase {
     stripeSubscription.status = .pastDue
 
     Current.database.fetchSubscriptionById = { _ in subscription }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
+    Current.database.fetchSubscriptionByOwnerId = { _ in subscription }
     Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
@@ -392,7 +392,7 @@ final class AccountTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -418,7 +418,7 @@ final class AccountTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 

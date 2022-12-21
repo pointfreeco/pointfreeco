@@ -330,8 +330,7 @@ private func validateReferrer(
       fetchReferrer
       .mapExcept(requireSome)
       .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
+        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
               $0.isCancellable
