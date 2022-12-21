@@ -3,6 +3,7 @@ import DatabaseTestSupport
 import Dependencies
 import Either
 import GitHub
+import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -225,7 +226,7 @@ final class AccountTests: TestCase {
     } operation: {
       let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
 
 #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -502,7 +503,7 @@ final class AccountTests: TestCase {
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
 
     DependencyValues.withValues {
-      $0 = .individualMonthly
+      $0.individualMonthly()
       $0.stripe.fetchSubscription = const(pure(subscription))
     } operation: {
       let conn = connection(from: request(to: .account(), session: .loggedIn))

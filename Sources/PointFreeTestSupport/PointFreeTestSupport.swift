@@ -146,7 +146,17 @@ extension Snapshotting {
     > {
       return Snapshotting<NSView, NSImage>.image.pullback { io in
         let webView = WKWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
+        webView.loadHTMLString(
+          String(
+            decoding: DependencyValues.withValues {
+              $0.renderHtml = { Html.render($0) }
+            } operation: {
+              io.perform().data
+            },
+            as: UTF8.self
+          ),
+          baseURL: nil
+        )
         return webView
       }
     }
