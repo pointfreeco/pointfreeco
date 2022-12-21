@@ -44,10 +44,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-      .performAsync()!
+      .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      assertSnapshot(matching: try XCTUnwrap(subscription), as: .customDump)
     #endif
   }
 
