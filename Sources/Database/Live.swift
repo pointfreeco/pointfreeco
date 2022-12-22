@@ -471,7 +471,7 @@ extension Client {
         let ids: SQLQueryString = """
           \(raw: userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ", "))
           """
-        return pool.sqlDatabase.raw(
+        return try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "episode_credit_count" = "episode_credit_count" + 1
@@ -479,7 +479,9 @@ extension Client {
           RETURNING *
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       insertTeamInvite: { email, inviterUserId in
         pool.sqlDatabase.raw(

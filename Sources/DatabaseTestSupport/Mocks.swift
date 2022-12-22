@@ -40,7 +40,7 @@ extension Client {
     fetchUserByRssSalt: { _ in .mock },
     fetchUsersSubscribedToNewsletter: { _, _ in [.mock] },
     fetchUsersToWelcome: { _ in [.mock] },
-    incrementEpisodeCredits: const(pure([])),
+    incrementEpisodeCredits: { _ in [] },
     insertTeamInvite: { _, _ in pure(.mock) },
     migrate: unzurry(pure(unit)),
     redeemEpisodeCredit: { _, _ in pure(unit) },

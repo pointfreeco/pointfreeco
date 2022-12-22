@@ -30,7 +30,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
       )
     }
 
-    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id)).performAsync()
+    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id))
 
     var updatedUsers: [User] = []
     for user in users {
