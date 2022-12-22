@@ -80,7 +80,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccount() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
     } operation: {
       let conn = connection(from: request(to: .account(), session: .loggedIn))
@@ -107,7 +107,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
       $0.stripe.fetchSubscription = const(pure(subscription))
     } operation: {
@@ -134,7 +134,7 @@ final class AccountTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.userId = currentUser.id
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
       $0.database.fetchUserById = const(pure(.some(currentUser)))
       $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([]))
@@ -167,7 +167,7 @@ final class AccountTests: TestCase {
     var stripeSubscription = Stripe.Subscription.mock
     stripeSubscription.quantity = 2
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
       $0.database.fetchUserById = const(pure(.some(currentUser)))
       $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
@@ -196,7 +196,7 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_AsTeammate() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
     } operation: {
       let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
@@ -218,7 +218,7 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_AsTeammate_previousSubscription() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
       $0.database.fetchSubscriptionByOwnerId = const(
         pure(update(.canceled) { $0.userId = User.teammate.id })
@@ -348,7 +348,7 @@ final class AccountTests: TestCase {
     stripeSubscription.cancelAtPeriodEnd = false
     stripeSubscription.status = .pastDue
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(subscription))
       $0.database.fetchSubscriptionByOwnerId = const(pure(subscription))
       $0.stripe.fetchSubscription = const(pure(stripeSubscription))
@@ -372,7 +372,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCancelingSubscription() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.canceling))
     } operation: {
       let conn = connection(from: request(to: .account(), session: .loggedIn))
@@ -394,7 +394,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(.canceled))
       $0.stripe.fetchSubscription = const(pure(.canceled))
     } operation: {
@@ -421,7 +421,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -449,7 +449,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.database.fetchUserById = const(pure(.some(user)))
       $0.database.fetchEpisodeCredits = const(pure([.mock]))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -476,7 +476,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.discount = .mock
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.teamYearly()
       $0.stripe.fetchSubscription = const(pure(subscription))
     } operation: {
@@ -502,7 +502,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.individualMonthly()
       $0.stripe.fetchSubscription = const(pure(subscription))
     } operation: {

@@ -8,7 +8,7 @@ import XCTest
 class EnvironmentTests: TestCase {
   func testLive() {
     let env = Environment()
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.context = .live
     } operation: {
       XCTAssertEqual(env.cookieTransform, .encrypted)

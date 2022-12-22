@@ -24,7 +24,7 @@ final class ChangeTests: TestCase {
 
   func testChangeRedirect() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
     } operation: {
       let conn = connection(
@@ -37,7 +37,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeIndividualPlan() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
       $0.stripe.invoiceCustomer = { _ in
         XCTFail()
@@ -55,7 +55,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeIndividualPlan() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualYearly))
       $0.stripe.invoiceCustomer = { _ in
         XCTFail()
@@ -73,7 +73,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeTeamPlan() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.teamMonthly))
       $0.stripe.invoiceCustomer = { _ in
         XCTFail()
@@ -91,7 +91,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeTeamPlan() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualYearly))
       $0.stripe.invoiceCustomer = { _ in
         XCTFail()
@@ -109,7 +109,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsIndividualPlan() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
     } operation: {
       let conn = connection(
@@ -123,7 +123,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpgradeIndividualMonthlyToTeamYearly() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.individualMonthly))
     } operation: {
       let conn = connection(
@@ -137,7 +137,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsTeamPlan() async {
     #if !os(Linux)
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.teamMonthly))
     } operation: {
       var pricing = Pricing.teamMonthly
@@ -155,7 +155,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateRemoveSeats() async {
     #if !os(Linux)
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = const(pure(.teamMonthly))
       $0.stripe.invoiceCustomer = { _ in
         XCTFail()
@@ -179,7 +179,7 @@ final class ChangeTests: TestCase {
       subscription.plan = .teamYearly
       subscription.quantity = 5
 
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.teammate, .teammate]))
       $0.database.fetchTeamInvites = const(pure([.mock, .mock]))
       $0.stripe.fetchSubscription = const(pure(subscription))

@@ -26,7 +26,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
         pure(
           userId == adminUser.id
@@ -71,7 +71,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
         pure(
           userId == adminUser.id
@@ -114,7 +114,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
         pure(
           userId == user.id
@@ -159,7 +159,7 @@ final class GhostTests: TestCase {
     var adminSession = Session.loggedIn
     adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
         pure(
           userId == adminUser.id

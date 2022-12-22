@@ -49,18 +49,33 @@ open class TestCase: XCTestCase {
   }
 }
 
-open class LiveDatabaseTestCase: TestCase {
+open class LiveDatabaseTestCase: XCTestCase {
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
   let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
+  open override class func setUp() {
+    super.setUp()
+    Backtrace.install()
+  }
+
   override open func setUp() async throws {
     try await super.setUp()
+    diffTool = "ksdiff"
+    // SnapshotTesting.isRecording = true
     try await DependencyValues._current.database.resetForTesting(pool: self.pool)
   }
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
       // TODO: simplify
+
+//      $0.database = .mock
+      $0.date.now = .mock
+      $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+      $0.gitHub = .mock
+      $0.mailgun = .mock
+      $0.stripe = .mock
+      $0.uuid = .incrementing
 
       precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
@@ -75,5 +90,14 @@ open class LiveDatabaseTestCase: TestCase {
     } operation: {
       super.invokeTest()
     }
+  }
+
+  override open func tearDown() {
+    super.tearDown()
+    SnapshotTesting.isRecording = false
+  }
+
+  public var isScreenshotTestingAvailable: Bool {
+    ProcessInfo.processInfo.environment["CI"] == nil
   }
 }

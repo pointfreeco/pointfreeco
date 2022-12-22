@@ -84,7 +84,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
 
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.createCustomer = {
         balance = $4
         return pure(update(.mock) { $0.id = "cus_referred" })
@@ -124,7 +124,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.createCustomer = {
         balance = $4
         return pure(update(.mock) { $0.id = "cus_referred" })
@@ -264,7 +264,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = { _ in
         pure(
           update(.mock) {
@@ -342,7 +342,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.fetchSubscription = { _ in
         pure(
           update(.mock) {
@@ -396,7 +396,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.createSubscription = { _, _, _, coupon in
         subscriptionCoupon = coupon
         return pure(.mock)
@@ -462,7 +462,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.stripe.createSubscription = { _, _, _, coupon in
         subscriptionCoupon = coupon
         return pure(.mock)
@@ -543,7 +543,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.fetchPaymentMethod = { _ in
         return pure(
           .init(
@@ -642,7 +642,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.stripe.fetchPaymentMethod = { _ in
         return pure(
           .init(
@@ -717,7 +717,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var customer = Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
       $0.stripe.fetchPaymentMethod = {
         pure(
@@ -764,7 +764,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() async throws {
-    try await DependencyValues.withValues {
+    try await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -823,7 +823,7 @@ final class SubscribeTests: TestCase {
 
   func testInvalidQuantity() async {
     #if !os(Linux)
-      await DependencyValues.withValues {
+      await DependencyValues.withTestValues {
         $0.database.fetchSubscriptionById = const(pure(nil))
         $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       } operation: {
@@ -849,7 +849,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
@@ -866,7 +866,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -883,7 +883,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -910,7 +910,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -937,7 +937,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
@@ -954,7 +954,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InvalidCode() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.database.fetchUserByReferralCode = const(pure(nil))
@@ -981,7 +981,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InvalidLane() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
     } operation: {
@@ -1007,7 +1007,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testReferrals_InactiveCode() async {
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
       $0.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
@@ -1038,7 +1038,7 @@ final class SubscribeTests: TestCase {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    await DependencyValues.withValues {
+    await DependencyValues.withTestValues {
       $0.database.fetchUserById = const(pure(user))
       $0.database.fetchSubscriptionById = const(pure(nil))
       $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))

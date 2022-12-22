@@ -20,7 +20,7 @@ class HomeTests: TestCase {
   }
 
   override func invokeTest() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       var e1 = Episode.ep10_aTaleOfTwoFlatMaps
       e1.permission = .subscriberOnly
       e1.references = [.mock]

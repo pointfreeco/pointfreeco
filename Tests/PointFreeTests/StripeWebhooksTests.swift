@@ -438,7 +438,7 @@ final class StripeWebhooksTests: TestCase {
     var delivered = false
     var didSendEmail = false
 
-    try DependencyValues.withValues {
+    try DependencyValues.withTestValues {
       $0.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
       $0.database.updateGiftStatus = {
         delivered = $2
@@ -502,7 +502,7 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testPaymentIntent_NoGift() throws {
-    try DependencyValues.withValues {
+    try DependencyValues.withTestValues {
       //Current = .failing
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock
@@ -556,7 +556,7 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testFailedPaymentIntent() throws {
-    try DependencyValues.withValues {
+    try DependencyValues.withTestValues {
       //Current = .failing
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock

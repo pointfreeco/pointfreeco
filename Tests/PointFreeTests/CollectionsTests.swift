@@ -23,7 +23,7 @@ class CollectionsTests: TestCase {
   }
 
   func testCollectionIndex() {
-    DependencyValues.withValues {
+    DependencyValues.withTestValues {
       $0.collections = [
         .mock,
         .mock,
