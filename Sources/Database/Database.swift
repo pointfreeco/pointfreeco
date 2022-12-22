@@ -52,7 +52,7 @@ public struct Client {
   public var fetchUsersToWelcome: (Int) async throws -> [Models.User]
   public var incrementEpisodeCredits: ([Models.User.ID]) async throws -> [Models.User]
   public var insertTeamInvite: (EmailAddress, Models.User.ID) async throws -> TeamInvite
-  public var migrate: () -> EitherIO<Error, Prelude.Unit>
+  public var migrate: () async throws -> Void
   public var redeemEpisodeCredit:
     (Episode.Sequence, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
   public var removeTeammateUserIdFromSubscriptionId:
@@ -115,7 +115,7 @@ public struct Client {
     fetchUsersToWelcome: @escaping (Int) async throws -> [Models.User],
     incrementEpisodeCredits: @escaping ([Models.User.ID]) async throws -> [Models.User],
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
-    migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
+    migrate: @escaping () async throws -> Void,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) -> EitherIO<
       Error, Prelude.Unit
     >,
@@ -257,15 +257,14 @@ public struct Client {
       pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
     ) async throws {
       let database = pool.database(logger: Logger(label: "Postgres"))
-      _ = try await database.run("DROP SCHEMA IF EXISTS public CASCADE").run.performAsync().unwrap()
-      _ = try await database.run("CREATE SCHEMA public").run.performAsync().unwrap()
-      _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync()
-        .unwrap()
-      _ = try await database.run("GRANT ALL ON SCHEMA public TO public").run.performAsync().unwrap()
-      _ = try await self.migrate().run.performAsync().unwrap()
-      _ = try await database.run("CREATE SEQUENCE test_uuids").run.performAsync().unwrap()
-      _ = try await database.run("CREATE SEQUENCE test_shortids").run.performAsync().unwrap()
-      _ = try await database.run(
+      try await database.run("DROP SCHEMA IF EXISTS public CASCADE")
+      try await database.run("CREATE SCHEMA public")
+      try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco")
+      try await database.run("GRANT ALL ON SCHEMA public TO public")
+      try await self.migrate()
+      try await database.run("CREATE SEQUENCE test_uuids")
+      try await database.run("CREATE SEQUENCE test_shortids")
+      try await database.run(
         """
         CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
         BEGIN
@@ -274,8 +273,7 @@ public struct Client {
         LANGUAGE PLPGSQL;
         """
       )
-      .run.performAsync().unwrap()
-      _ = try await database.run(
+      try await database.run(
         """
         CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
         RETURNS text AS $$
@@ -285,7 +283,6 @@ public struct Client {
         LANGUAGE PLPGSQL;
         """
       )
-      .run.performAsync().unwrap()
     }
   #endif
 }

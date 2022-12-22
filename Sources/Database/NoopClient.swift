@@ -38,7 +38,7 @@ extension Client {
     fetchUsersToWelcome: { _ in throw NoopError() },
     incrementEpisodeCredits: { _ in throw NoopError() },
     insertTeamInvite: { _, _ in throw NoopError() },
-    migrate: { pure(unit) },
+    migrate: {},
     redeemEpisodeCredit: { _, _ in throwE(NoopError()) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in throwE(NoopError()) },
     sawUser: { _ in throwE(NoopError()) },

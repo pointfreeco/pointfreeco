@@ -20,6 +20,10 @@ extension PostgresDatabase {
   func run(_ query: SQLQueryString) -> EitherIO<Error, Unit> {
     EitherIO(self.sql().raw(query).run().map(const(unit)))
   }
+
+  func run(_ query: SQLQueryString) async throws {
+    try await self.sql().raw(query).run()
+  }
 }
 
 extension SQLRawBuilder {

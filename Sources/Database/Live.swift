@@ -498,393 +498,398 @@ extension Client {
       },
       migrate: {
         let database = pool.database(logger: Logger(label: "Postgres"))
-        return sequence([
-          database.run(#"CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "heroku_ext""#)
-            .catch { _ in database.run(#"CREATE EXTENSION IF NOT EXISTS "pgcrypto""#) },
-          database.run(#"CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "heroku_ext""#)
-            .catch { _ in database.run(#"CREATE EXTENSION IF NOT EXISTS "uuid-ossp""#) },
-          database.run(#"CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "heroku_ext""#)
-            .catch { _ in database.run(#"CREATE EXTENSION IF NOT EXISTS "citext""#) },
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "users" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "email" citext NOT NULL UNIQUE,
-              "github_user_id" integer UNIQUE,
-              "github_access_token" character varying,
-              "name" character varying,
-              "subscription_id" uuid,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
+        for `extension` in ["pgcrypto", "uuid-ossp", "citext"] {
+          do {
+            try await database.run(
+              """
+              CREATE EXTENSION IF NOT EXISTS "\(raw: `extension`)" WITH SCHEMA "heroku_ext"
+              """
             )
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "subscriptions" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "user_id" uuid REFERENCES "users" ("id") NOT NULL,
-              "stripe_subscription_id" character varying NOT NULL,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
-            );
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "team_invites" (
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "email" character varying,
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "inviter_user_id" uuid REFERENCES "users" ("id") NOT NULL
+          } catch {
+            try await database.run(
+              """
+              CREATE EXTENSION IF NOT EXISTS "\(raw: `extension`)"
+              """
             )
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "email_settings" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "newsletter" character varying,
-              "user_id" uuid REFERENCES "users" ("id") NOT NULL
-            )
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "subscriptions"
-            ADD COLUMN IF NOT EXISTS
-            "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD COLUMN IF NOT EXISTS
-            "is_admin" boolean NOT NULL DEFAULT FALSE
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
-            ON "subscriptions" ("stripe_subscription_id")
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "episode_credits" (
-              "episode_sequence" integer,
-              "user_id" uuid REFERENCES "users" ("id") NOT NULL
-            )
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
-            ON "episode_credits" ("episode_sequence", "user_id")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD COLUMN IF NOT EXISTS
-            "episode_credit_count" integer NOT NULL DEFAULT 0
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "episode_credits"
-            ADD COLUMN IF NOT EXISTS
-            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD COLUMN IF NOT EXISTS
-            "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "feed_request_events" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "type" character varying NOT NULL,
-              "user_agent" character varying NOT NULL,
-              "user_id" uuid REFERENCES "users" ("id"),
-              "count" integer NOT NULL DEFAULT 1,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
-            )
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
-            ON "feed_request_events" ("type", "user_agent", "user_id")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "feed_request_events"
-            ADD COLUMN IF NOT EXISTS
-            "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
-            ON "email_settings" ("newsletter", "user_id")
-            """
-          ),
-          database.run(
-            """
-            CREATE OR REPLACE FUNCTION update_updated_at()
-            RETURNS TRIGGER AS $$
-            BEGIN
-              NEW."updated_at" = NOW();
-              RETURN NEW;
-            END;
-            $$ LANGUAGE PLPGSQL;
-            """
-          ),
-          database.run(
-            """
-            DO $$
-            DECLARE
-              "table" text;
-            BEGIN
-              FOR "table" IN
-                SELECT "table_name" FROM "information_schema"."columns"
-                WHERE column_name = 'updated_at'
-              LOOP
-                IF NOT EXISTS (
-                  SELECT 1 FROM "information_schema"."triggers"
-                  WHERE "trigger_name" = 'update_updated_at_' || "table"
-                ) THEN
-                  EXECUTE format(
-                    '
-                    CREATE TRIGGER "update_updated_at_%I"
-                    BEFORE UPDATE ON "%I"
-                    FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
-                    ',
-                    "table", "table"
-                  );
-                END IF;
-              END LOOP;
-            END;
-            $$ LANGUAGE PLPGSQL;
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "enterprise_accounts" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "company_name" character varying NOT NULL,
-              "domain" character varying NOT NULL,
-              "subscription_id" uuid REFERENCES "subscriptions" ("id") NOT NULL,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
-            )
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
-            ON "enterprise_accounts" ("domain")
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
-            ON "enterprise_accounts" ("subscription_id")
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "enterprise_emails" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "email" character varying NOT NULL,
-              "user_id" uuid REFERENCES "users" ("id") NOT NULL,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
-            )
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email"
-            ON "enterprise_emails" (lower("email"))
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_user_id"
-            ON "enterprise_emails" ("user_id")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
-            """
-          ),
-          database.run(
-            #"""
-            CREATE TABLE IF NOT EXISTS "episode_progresses" (
+          }
+        }
+        try await  database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "users" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-            "episode_sequence" smallint NOT NULL,
-            "percent" smallint NOT NULL,
+            "email" citext NOT NULL UNIQUE,
+            "github_user_id" integer UNIQUE,
+            "github_access_token" character varying,
+            "name" character varying,
+            "subscription_id" uuid,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "subscriptions" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+            "stripe_subscription_id" character varying NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          );
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "team_invites" (
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "email" character varying,
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "inviter_user_id" uuid REFERENCES "users" ("id") NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "email_settings" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "newsletter" character varying,
+            "user_id" uuid REFERENCES "users" ("id") NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ADD COLUMN IF NOT EXISTS
+          "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD COLUMN IF NOT EXISTS
+          "is_admin" boolean NOT NULL DEFAULT FALSE
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
+          ON "subscriptions" ("stripe_subscription_id")
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "episode_credits" (
+            "episode_sequence" integer,
+            "user_id" uuid REFERENCES "users" ("id") NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
+          ON "episode_credits" ("episode_sequence", "user_id")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD COLUMN IF NOT EXISTS
+          "episode_credit_count" integer NOT NULL DEFAULT 0
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "episode_credits"
+          ADD COLUMN IF NOT EXISTS
+          "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD COLUMN IF NOT EXISTS
+          "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "feed_request_events" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "type" character varying NOT NULL,
+            "user_agent" character varying NOT NULL,
+            "user_id" uuid REFERENCES "users" ("id"),
+            "count" integer NOT NULL DEFAULT 1,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
+          ON "feed_request_events" ("type", "user_agent", "user_id")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "feed_request_events"
+          ADD COLUMN IF NOT EXISTS
+          "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
+          ON "email_settings" ("newsletter", "user_id")
+          """
+        )
+        try await database.run(
+          """
+          CREATE OR REPLACE FUNCTION update_updated_at()
+          RETURNS TRIGGER AS $$
+          BEGIN
+            NEW."updated_at" = NOW();
+            RETURN NEW;
+          END;
+          $$ LANGUAGE PLPGSQL;
+          """
+        )
+        try await database.run(
+          """
+          DO $$
+          DECLARE
+            "table" text;
+          BEGIN
+            FOR "table" IN
+              SELECT "table_name" FROM "information_schema"."columns"
+              WHERE column_name = 'updated_at'
+            LOOP
+              IF NOT EXISTS (
+                SELECT 1 FROM "information_schema"."triggers"
+                WHERE "trigger_name" = 'update_updated_at_' || "table"
+              ) THEN
+                EXECUTE format(
+                  '
+                  CREATE TRIGGER "update_updated_at_%I"
+                  BEFORE UPDATE ON "%I"
+                  FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
+                  ',
+                  "table", "table"
+                );
+              END IF;
+            END LOOP;
+          END;
+          $$ LANGUAGE PLPGSQL;
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "enterprise_accounts" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "company_name" character varying NOT NULL,
+            "domain" character varying NOT NULL,
+            "subscription_id" uuid REFERENCES "subscriptions" ("id") NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
+          ON "enterprise_accounts" ("domain")
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
+          ON "enterprise_accounts" ("subscription_id")
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "enterprise_emails" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "email" character varying NOT NULL,
             "user_id" uuid REFERENCES "users" ("id") NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "updated_at" timestamp without time zone
-            )
-            """#
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
-            ON "episode_progresses" ("episode_sequence", "user_id")
-            """
-          ),
-          database.run(
-            """
-            CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
-            RETURNS text AS $$
-            DECLARE
-              id text;
-              results text;
-              times integer := 0;
-            BEGIN
-              LOOP
-                id := encode(gen_random_bytes(6), 'base64');
-                id := replace(id, '/', 'p');
-                id := replace(id, '+', 'f');
-                EXECUTE 'SELECT '
-                  || quote_ident(column_name)
-                  || ' FROM '
-                  || quote_ident(table_name)
-                  || ' WHERE '
-                  || quote_ident(column_name)
-                  || ' = '
-                  || quote_literal(id) INTO results;
-                IF results IS NULL THEN
-                  EXIT;
-                END IF;
-                times := times + 1;
-                IF times > 100 THEN
-                  id := NULL;
-                  EXIT;
-                END IF;
-              END LOOP;
-              RETURN id;
-            END;
-            $$ LANGUAGE 'plpgsql';
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD COLUMN IF NOT EXISTS
-            "referral_code" character varying DEFAULT gen_shortid('users', 'referral_code') NOT NULL
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ADD COLUMN IF NOT EXISTS
-            "referrer_id" uuid REFERENCES "users" ("id")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "subscriptions"
-            ADD COLUMN IF NOT EXISTS
-            "team_invite_code" character varying DEFAULT gen_shortid('subscriptions', 'team_invite_code') NOT NULL
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_users_referral_code"
-            ON "users" ("referral_code")
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_team_invite_code"
-            ON "subscriptions" ("team_invite_code")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "subscriptions"
-            ADD COLUMN IF NOT EXISTS
-            "deactivated" boolean NOT NULL DEFAULT FALSE
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "users"
-            ALTER COLUMN "rss_salt" TYPE citext
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_users_on_rss_salt"
-            ON "users" ("rss_salt")
-            """
-          ),
-          database.run(
-            """
-            CREATE TABLE IF NOT EXISTS "gifts" (
-              "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-              "deliver_at" timestamp without time zone,
-              "from_email" citext NOT NULL,
-              "from_name" character varying NOT NULL,
-              "message" character varying NOT NULL,
-              "months_free" integer NOT NULL,
-              "stripe_coupon_id" character varying,
-              "stripe_payment_intent_id" character varying NOT NULL,
-              "to_email" citext NOT NULL,
-              "to_name" character varying NOT NULL,
-              "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-              "updated_at" timestamp without time zone
-            )
-            """
-          ),
-          database.run(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_payment_intent_id"
-            ON "gifts" ("stripe_payment_intent_id")
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "gifts"
-            ADD COLUMN IF NOT EXISTS "stripe_subscription_id" character varying
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "gifts"
-            DROP COLUMN IF EXISTS "stripe_coupon_id"
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "gifts"
-            ADD COLUMN IF NOT EXISTS
-            "delivered" boolean NOT NULL DEFAULT FALSE
-            """
-          ),
-          database.run(
-            """
-            ALTER TABLE "gifts"
-            ADD COLUMN IF NOT EXISTS
-            "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(raw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
-            """
-          ),
-        ])
-        .map(const(unit))
-
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email"
+          ON "enterprise_emails" (lower("email"))
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_user_id"
+          ON "enterprise_emails" ("user_id")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
+          """
+        )
+        try await database.run(
+          #"""
+          CREATE TABLE IF NOT EXISTS "episode_progresses" (
+          "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+          "episode_sequence" smallint NOT NULL,
+          "percent" smallint NOT NULL,
+          "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+          "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+          "updated_at" timestamp without time zone
+          )
+          """#
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+          ON "episode_progresses" ("episode_sequence", "user_id")
+          """
+        )
+        try await database.run(
+          """
+          CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
+          RETURNS text AS $$
+          DECLARE
+            id text;
+            results text;
+            times integer := 0;
+          BEGIN
+            LOOP
+              id := encode(gen_random_bytes(6), 'base64');
+              id := replace(id, '/', 'p');
+              id := replace(id, '+', 'f');
+              EXECUTE 'SELECT '
+                || quote_ident(column_name)
+                || ' FROM '
+                || quote_ident(table_name)
+                || ' WHERE '
+                || quote_ident(column_name)
+                || ' = '
+                || quote_literal(id) INTO results;
+              IF results IS NULL THEN
+                EXIT;
+              END IF;
+              times := times + 1;
+              IF times > 100 THEN
+                id := NULL;
+                EXIT;
+              END IF;
+            END LOOP;
+            RETURN id;
+          END;
+          $$ LANGUAGE 'plpgsql';
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD COLUMN IF NOT EXISTS
+          "referral_code" character varying DEFAULT gen_shortid('users', 'referral_code') NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ADD COLUMN IF NOT EXISTS
+          "referrer_id" uuid REFERENCES "users" ("id")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ADD COLUMN IF NOT EXISTS
+          "team_invite_code" character varying DEFAULT gen_shortid('subscriptions', 'team_invite_code') NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_users_referral_code"
+          ON "users" ("referral_code")
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_team_invite_code"
+          ON "subscriptions" ("team_invite_code")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ADD COLUMN IF NOT EXISTS
+          "deactivated" boolean NOT NULL DEFAULT FALSE
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ALTER COLUMN "rss_salt" TYPE citext
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_users_on_rss_salt"
+          ON "users" ("rss_salt")
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "gifts" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "deliver_at" timestamp without time zone,
+            "from_email" citext NOT NULL,
+            "from_name" character varying NOT NULL,
+            "message" character varying NOT NULL,
+            "months_free" integer NOT NULL,
+            "stripe_coupon_id" character varying,
+            "stripe_payment_intent_id" character varying NOT NULL,
+            "to_email" citext NOT NULL,
+            "to_name" character varying NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_gifts_on_stripe_payment_intent_id"
+          ON "gifts" ("stripe_payment_intent_id")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS "stripe_subscription_id" character varying
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          DROP COLUMN IF EXISTS "stripe_coupon_id"
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS
+          "delivered" boolean NOT NULL DEFAULT FALSE
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS
+          "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(raw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         pool.sqlDatabase.raw(
