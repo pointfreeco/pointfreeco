@@ -37,7 +37,7 @@ extension Client {
     fetchTeamInvite: unimplemented("Database.Client.fetchTeamInvite"),
     fetchTeamInvites: unimplemented("Database.Client.fetchTeamInvites"),
     fetchUserByGitHub: unimplemented("Database.Client.fetchUserByGitHub"),
-    fetchUserById: { _ in .failing("Database.Client.fetchUserById") },
+    fetchUserById: unimplemented("Database.Client.fetchUserById"),
     fetchUserByReferralCode: { _ in .failing("Database.Client.fetchUserByReferralCode") },
     fetchUserByRssSalt: { _ in .failing("Database.Client.fetchUserByRssSalt") },
     fetchUsersSubscribedToNewsletter: { _, _ in

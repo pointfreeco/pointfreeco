@@ -16,10 +16,10 @@ import XCTest
 final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() async throws {
     let userA = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()
-    let userB = try await Current.database.fetchUserById(userA!.id).performAsync()
-    XCTAssertEqual(userA?.id, userB?.id)
-    XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
+      .performAsync()!
+    let userB = try await Current.database.fetchUserById(userA.id)
+    XCTAssertEqual(userA.id, userB.id)
+    XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)
   }
 
   func testFetchEnterpriseAccount() async throws {
@@ -52,7 +52,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
 
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
@@ -65,7 +65,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
 
     XCTAssertEqual(subscription.id, freshUser.subscriptionId)
   }

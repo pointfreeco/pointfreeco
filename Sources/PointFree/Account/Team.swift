@@ -109,11 +109,8 @@ let removeTeammateMiddleware =
   >=> redirect(to: .account(), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
 private let requireTeammate: MT<Tuple2<User.ID, User>, Tuple2<User, User>> = filterMap(
-  over1 {
-    Current.database.fetchUserById($0)
-      .mapExcept(requireSome)
-      .run
-      .map(\.right)
+  over1 { id in
+    IO { try? await Current.database.fetchUserById(id) }
   }
     >>> sequence1
     >>> map(require1),

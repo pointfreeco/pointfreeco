@@ -25,14 +25,14 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
-          ? adminUser
-          : userId == ghostee.id
-            ? ghostee
-            : nil
-      )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id {
+        return adminUser
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
+      }
     }
 
     let conn = await siteMiddleware(
@@ -68,12 +68,12 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
-          ? adminUser
-          : nil
-      )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id  {
+        return adminUser
+      } else {
+        throw unit
+      }
     }
 
     let conn = await siteMiddleware(
@@ -109,14 +109,14 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == user.id
-          ? user
-          : userId == ghostee.id
-            ? ghostee
-            : nil
-      )
+    Current.database.fetchUserById = { userId in
+      if userId == user.id {
+        return user
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
+      }
     }
 
     let conn = await siteMiddleware(
@@ -152,14 +152,14 @@ final class GhostTests: TestCase {
     var adminSession = Session.loggedIn
     adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    Current.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-      pure(
-        userId == adminUser.id
-          ? adminUser
-          : userId == ghostee.id
-            ? ghostee
-            : nil
-      )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id {
+        return adminUser
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
+      }
     }
 
     let conn = await siteMiddleware(

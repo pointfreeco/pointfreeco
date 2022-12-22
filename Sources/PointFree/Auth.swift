@@ -54,14 +54,9 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
       .run { _ in }
   }
 
-  let user =
-    conn.request.session.userId
-    .flatMap {
-      Current.database.fetchUserById($0)
-        .run
-        .map(either(const(nil), id))
-    }
-    ?? pure(nil)
+  let user = IO {
+    return try? await Current.database.fetchUserById(conn.request.session.userId.unwrap())
+  }
 
   return user.map { conn.map(const($0 .*. conn.data)) }
 }
@@ -101,9 +96,8 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
 
-  return Current.database.fetchUserById(get1(conn.data))
-    .run
-    .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
+  return IO { try? await Current.database.fetchUserById(get1(conn.data)) }
+    .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
 private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {

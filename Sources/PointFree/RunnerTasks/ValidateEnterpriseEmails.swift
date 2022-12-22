@@ -44,8 +44,7 @@ private func validateSubscription(
 
   guard !validation.mailboxVerification else { return pure(unit) }
 
-  return Current.database.fetchUserById(enterpriseEmail.userId)
-    .mapExcept(requireSome)
+  return EitherIO { try await Current.database.fetchUserById(enterpriseEmail.userId) }
     .flatMap { user in unlinkSubscription(enterpriseEmail: enterpriseEmail, user: user) }
 }
 

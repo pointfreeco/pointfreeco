@@ -50,12 +50,7 @@ private func startGhosting(
 }
 
 private func fetchGhostee(userId: User.ID?) -> IO<User?> {
-  guard let userId = userId else { return pure(nil) }
-
-  return Current.database.fetchUserById(userId)
-    .mapExcept(requireSome)
-    .run
-    .map(\.right)
+  IO { try? await Current.database.fetchUserById(userId.unwrap()) }
 }
 
 private let indexView: Node = [

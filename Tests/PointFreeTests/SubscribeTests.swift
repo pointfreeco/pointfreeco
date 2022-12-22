@@ -218,7 +218,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let invites = try await Current.database.fetchTeamInvites(user.id)
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
     // Confirm that owner of subscription is not taking up a seat on the sub.
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
@@ -988,7 +988,7 @@ final class SubscribeTests: TestCase {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 

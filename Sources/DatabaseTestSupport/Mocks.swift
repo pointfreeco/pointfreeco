@@ -35,7 +35,7 @@ extension Client {
     fetchTeamInvite: { _ in .mock },
     fetchTeamInvites: { _ in [] },
     fetchUserByGitHub: { _ in .mock },
-    fetchUserById: { id in pure(update(.mock) { $0.id = id }) },
+    fetchUserById: { id in update(.mock) { $0.id = id } },
     fetchUserByReferralCode: { code in pure(update(.mock) { $0.referralCode = code }) },
     fetchUserByRssSalt: { _ in pure(.mock) },
     fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },

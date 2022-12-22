@@ -49,7 +49,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
 
-    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
     XCTAssertEqual(0, count)
   }
 
@@ -61,7 +61,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 0
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.episodes = { [episode] }
 
     let conn = connection(
@@ -75,7 +75,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
 
-    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
     XCTAssertEqual(0, count)
   }
 
@@ -87,7 +87,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 1
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.episodes = { [episode] }
 
     let conn = connection(
@@ -101,7 +101,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
 
-    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
     XCTAssertEqual(1, count)
   }
 
@@ -130,7 +130,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
 
-    let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
     XCTAssertEqual(1, count)
   }
 }
@@ -356,7 +356,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .free
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.episodes = { [episode] }
@@ -388,7 +388,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .subscriberOnly
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.episodes = { [episode] }
@@ -420,7 +420,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.episodes = { [episode] }
     Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -452,7 +452,7 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.episodes = { [episode] }
     Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }

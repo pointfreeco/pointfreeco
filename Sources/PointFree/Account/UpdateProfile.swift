@@ -154,8 +154,7 @@ let confirmEmailChangeMiddleware:
     }
 
     parallel(
-      Current.database.fetchUserById(userId)
-        .bimap(const(unit), id)
+      EitherIO { try await Current.database.fetchUserById(userId) }
         .flatMap { user in
           sendEmail(
             to: [newEmailAddress],

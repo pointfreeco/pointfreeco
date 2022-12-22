@@ -45,7 +45,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    user = try await Current.database.fetchUserById(user.id).performAsync()!
+    user = try await Current.database.fetchUserById(user.id)
     user.referralCode = "deadbeef"
 
     await assertSnapshot(

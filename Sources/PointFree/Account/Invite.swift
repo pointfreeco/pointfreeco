@@ -83,9 +83,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <| { conn in
     let (teamInvite, currentUser) = lower(conn.data)
 
-    let inviter = Current.database
-      .fetchUserById(teamInvite.inviterUserId)
-      .mapExcept(requireSome)
+    let inviter = EitherIO { try await Current.database.fetchUserById(teamInvite.inviterUserId) }
 
     // VERIFY: user is subscribed
     let subscription = inviter.flatMap { inviter in
@@ -344,9 +342,9 @@ private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Use
 }
 
 private func fetchTeamInviter<A>(_ data: T2<TeamInvite, A>) -> IO<T3<TeamInvite, User, A>?> {
-
-  return Current.database.fetchUserById(get1(data).inviterUserId)
-    .mapExcept(requireSome)
-    .run
-    .map { $0.right.map { get1(data) .*. $0 .*. data.second } }
+  IO {
+    guard let inviter = try? await Current.database.fetchUserById(get1(data).inviterUserId)
+    else { return nil }
+    return get1(data) .*. inviter .*. data.second
+  }
 }

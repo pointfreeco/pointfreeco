@@ -34,7 +34,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 
     var updatedUsers: [User] = []
     for user in users {
-      try await updatedUsers.append(Current.database.fetchUserById(user.id).performAsync()!)
+      try await updatedUsers.append(Current.database.fetchUserById(user.id))
     }
 
     zip(users, updatedUsers).forEach {

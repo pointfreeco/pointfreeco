@@ -53,12 +53,7 @@ private func creditUserMiddleware(
 }
 
 private func fetchUser(id: User.ID?) -> IO<User?> {
-  guard let id = id else { return pure(nil) }
-
-  return Current.database.fetchUserById(id)
-    .mapExcept(requireSome)
-    .run
-    .map(\.right)
+  IO { try? await Current.database.fetchUserById(id.unwrap()) }
 }
 
 private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {

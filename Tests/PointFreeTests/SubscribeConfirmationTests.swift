@@ -22,7 +22,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -50,7 +50,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -78,7 +78,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -109,7 +109,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -140,7 +140,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -177,7 +177,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -214,7 +214,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -245,7 +245,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -281,7 +281,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_ActiveSubscriber() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
 
@@ -297,7 +297,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut() async throws {
-    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchUserById = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -325,7 +325,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_WithDiscount() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -351,7 +351,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -380,7 +380,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_ReferralCode() async throws {
-    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchUserById = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in
@@ -448,7 +448,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InactiveReferralCode() async throws {
-    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchUserById = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(.mock))
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -470,7 +470,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralCode() async throws {
-    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchUserById = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(nil))
 
@@ -490,7 +490,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralLane() async throws {
-    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchUserById = { _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = const(pure(.mock))
@@ -515,7 +515,7 @@ class SubscriptionConfirmationTests: TestCase {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
     }
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in

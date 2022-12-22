@@ -167,8 +167,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     // let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     // XCTAssertNil(invite)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNotNil(subscriptionId, "Current user now has a subscription")
   }
 
@@ -199,8 +198,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNil(subscriptionId, "Current user does not have a subscription")
   }
 
@@ -235,8 +233,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNil(subscriptionId, "Current user now has a subscription")
   }
 
@@ -272,8 +269,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNil(subscriptionId, "Current user now has a subscription")
   }
 
@@ -377,7 +373,7 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in throw unit }
 
@@ -407,7 +403,7 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in .mock }
 

@@ -59,8 +59,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id)
-      .performAsync()!.subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertEqual(subscriptionId, nil)
 
     let emails = try await Current.database.fetchEnterpriseEmails()
@@ -127,7 +126,7 @@ final class AccountTests: TestCase {
     subscription.userId = currentUser.id
 
     Current = .teamYearly
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
@@ -158,7 +157,7 @@ final class AccountTests: TestCase {
     stripeSubscription.quantity = 2
 
     Current = .teamYearly
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     Current.database.fetchSubscriptionById = { _ in subscription }
     Current.database.fetchTeamInvites = { _ in [] }
@@ -391,7 +390,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -417,7 +416,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 

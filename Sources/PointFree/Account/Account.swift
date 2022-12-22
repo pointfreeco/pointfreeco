@@ -38,8 +38,9 @@ private func fetchAccountData<I>(
 
   let owner =
     subscription
-    .flatMap(Current.database.fetchUserById <<< \.userId)
-    .mapExcept(requireSome)
+    .flatMap { subscription in
+      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
+    }
 
   let stripeSubscription =
     subscription
