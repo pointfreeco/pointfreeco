@@ -43,7 +43,7 @@ public struct Client {
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (TeamInvite.ID) async throws -> TeamInvite
   public var fetchTeamInvites: (Models.User.ID) async throws -> [TeamInvite]
-  public var fetchUserByGitHub: (GitHubUser.ID) -> EitherIO<Error, Models.User?>
+  public var fetchUserByGitHub: (GitHubUser.ID) async throws -> Models.User
   public var fetchUserById: (Models.User.ID) -> EitherIO<Error, Models.User?>
   public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
   public var fetchUserByRssSalt: (Models.User.RssSalt) -> EitherIO<Error, Models.User?>
@@ -106,7 +106,7 @@ public struct Client {
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
     fetchTeamInvite: @escaping (TeamInvite.ID) async throws -> TeamInvite,
     fetchTeamInvites: @escaping (Models.User.ID) async throws -> [TeamInvite],
-    fetchUserByGitHub: @escaping (GitHubUser.ID) -> EitherIO<Error, Models.User?>,
+    fetchUserByGitHub: @escaping (GitHubUser.ID) async throws -> Models.User,
     fetchUserById: @escaping (Models.User.ID) -> EitherIO<Error, Models.User?>,
     fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
     fetchUserByRssSalt: @escaping (Models.User.RssSalt) -> EitherIO<Error, Models.User?>,

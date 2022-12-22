@@ -367,7 +367,7 @@ extension Client {
         .map { try $0.decode(model: TeamInvite.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchUserByGitHub: { gitHubUserId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "users"
@@ -375,7 +375,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Models.User.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchUserById: { id in
         pool.sqlDatabase.raw(

@@ -30,7 +30,7 @@ extension Client {
     fetchSubscriptionTeammatesByOwnerId: { _ in throw NoopError() },
     fetchTeamInvite: { _ in throw NoopError() },
     fetchTeamInvites: { _ in throw NoopError() },
-    fetchUserByGitHub: { _ in throwE(NoopError()) },
+    fetchUserByGitHub: { _ in throw NoopError() },
     fetchUserById: { _ in throwE(NoopError()) },
     fetchUserByReferralCode: { _ in throwE(NoopError()) },
     fetchUserByRssSalt: { _ in throwE(NoopError()) },
