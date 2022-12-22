@@ -305,7 +305,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
 
     let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
-      .performAsync()
     XCTAssertEqual(
       [teammateEmailAddress],
       teamInvites.map(\.email)

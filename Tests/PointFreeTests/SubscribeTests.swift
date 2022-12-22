@@ -179,7 +179,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #endif
 
     let invites = try await Current.database.fetchTeamInvites(user.id)
-      .performAsync()
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
   }
 
@@ -216,7 +215,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
-    let invites = try await Current.database.fetchTeamInvites(user.id).performAsync()
+    let invites = try await Current.database.fetchTeamInvites(user.id)
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
 
     let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!

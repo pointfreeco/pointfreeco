@@ -355,14 +355,16 @@ extension Client {
         .decode(model: TeamInvite.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchTeamInvites: { inviterId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"
           WHERE "inviter_user_id" = \(bind: inviterId)
           """
         )
-        .all(decoding: TeamInvite.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: TeamInvite.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchUserByGitHub: { gitHubUserId in
         pool.sqlDatabase.raw(
