@@ -11,6 +11,7 @@ import PostgresKit
 import Prelude
 import Stripe 
 
+// NB: Deprecate remove soon: @available(*, deprecated)
 public let Current = Environment()
 
 public struct Environment {
@@ -60,10 +61,11 @@ extension Episode: DependencyKey {
     assert(Episode.all.count == Set(Episode.all.map(\.sequence)).count)
 
     return {
-      let now = Current.date()
+      @Dependency(\.date.now) var now
+      @Dependency(\.envVars.appEnv) var appEnv
       return Episode.all
         .filter {
-          Current.envVars.appEnv == .production
+          appEnv == .production
           ? $0.publishedAt <= now
           : true
         }

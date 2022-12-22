@@ -52,9 +52,10 @@ private let requireUserAndStripeSubscription: MT<Tuple1<User?>, Tuple2<Stripe.Su
 private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.stripe.cancelSubscription) var cancelSubscription
 
   let (subscription, user) = conn.data
-  return Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
+  return cancelSubscription(subscription.id, subscription.status == .pastDue)
     .run
     .flatMap(
       either(
@@ -83,9 +84,10 @@ private func reactivate(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.stripe.updateSubscription) var updateSubscription
 
   let (item, subscription, user) = conn.data
-  return Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+  return updateSubscription(subscription, item.plan.id, item.quantity)
     .run
     .flatMap(
       either(
