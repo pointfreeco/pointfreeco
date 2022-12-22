@@ -513,7 +513,7 @@ extension Client {
             )
           }
         }
-        try await  database.run(
+        try await database.run(
           """
           CREATE TABLE IF NOT EXISTS "users" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -892,13 +892,14 @@ extension Client {
         )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "episode_credits" ("episode_sequence", "user_id")
           VALUES (\(bind: episodeSequence), \(bind: userId))
           """
         )
         .run()
+        .get()
       },
       removeTeammateUserIdFromSubscriptionId: { teammateUserId, subscriptionId in
         pool.sqlDatabase.raw(

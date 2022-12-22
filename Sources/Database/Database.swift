@@ -53,8 +53,7 @@ public struct Client {
   public var incrementEpisodeCredits: ([Models.User.ID]) async throws -> [Models.User]
   public var insertTeamInvite: (EmailAddress, Models.User.ID) async throws -> TeamInvite
   public var migrate: () async throws -> Void
-  public var redeemEpisodeCredit:
-    (Episode.Sequence, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
+  public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.ID) -> EitherIO<Error, Prelude.Unit>
@@ -116,9 +115,7 @@ public struct Client {
     incrementEpisodeCredits: @escaping ([Models.User.ID]) async throws -> [Models.User],
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
     migrate: @escaping () async throws -> Void,
-    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
+    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) ->
       EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.ID) -> EitherIO<Error, Prelude.Unit>,

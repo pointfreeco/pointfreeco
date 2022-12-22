@@ -43,7 +43,7 @@ extension Client {
     incrementEpisodeCredits: { _ in [] },
     insertTeamInvite: { _, _ in .mock },
     migrate: {},
-    redeemEpisodeCredit: { _, _ in pure(unit) },
+    redeemEpisodeCredit: { _, _ in },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     sawUser: const(pure(unit)),
     updateEmailSettings: { _, _ in pure(unit) },

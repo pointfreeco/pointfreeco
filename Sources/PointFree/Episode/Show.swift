@@ -175,7 +175,7 @@ private func applyCreditMiddleware<Z>(
       )
   }
 
-  return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
+  return EitherIO { try await Current.database.redeemEpisodeCredit(episode.sequence, user.id) }
     .flatMap { _ in
       Current.database.updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
     }
