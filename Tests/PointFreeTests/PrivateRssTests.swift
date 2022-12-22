@@ -33,7 +33,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let conn = connection(
@@ -50,7 +50,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
 
     let conn = connection(
@@ -67,7 +67,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
@@ -87,7 +87,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
@@ -107,7 +107,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
@@ -121,7 +121,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_BadSalt() async throws {
-    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.fetchUserByRssSalt = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -137,7 +137,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.createFeedRequestEvent = { _, _, _ in
       feedRequestEventCreated = true
     }
@@ -160,7 +160,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
@@ -179,7 +179,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.fetchUserByRssSalt = { _ in throw unit }
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)
@@ -201,7 +201,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let conn = connection(
@@ -218,7 +218,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
 
     let conn = connection(
@@ -235,7 +235,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let conn = connection(
@@ -255,7 +255,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
@@ -275,7 +275,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
     let conn = connection(
@@ -289,7 +289,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testLegacy_Feed_BadSalt() async throws {
-    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.fetchUserByRssSalt = { _ in throw unit }
 
     let conn = connection(
       from: request(
@@ -305,7 +305,7 @@ class PrivateRssTests: TestCase {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.database.createFeedRequestEvent = { _, _, _ in
       feedRequestEventCreated = true
     }
@@ -328,7 +328,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.some(user)))
+    Current.database.fetchUserByRssSalt = { _ in user }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
@@ -347,7 +347,7 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = const(pure(.none))
+    Current.database.fetchUserByRssSalt = { _ in throw unit }
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)

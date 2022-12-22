@@ -33,7 +33,7 @@ extension Client {
     fetchUserByGitHub: { _ in throw NoopError() },
     fetchUserById: { _ in throw NoopError() },
     fetchUserByReferralCode: { _ in throw NoopError() },
-    fetchUserByRssSalt: { _ in throwE(NoopError()) },
+    fetchUserByRssSalt: { _ in throw NoopError() },
     fetchUsersSubscribedToNewsletter: { _, _ in throwE(NoopError()) },
     fetchUsersToWelcome: { _ in throwE(NoopError()) },
     incrementEpisodeCredits: { _ in throwE(NoopError()) },

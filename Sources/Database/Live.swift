@@ -409,7 +409,7 @@ extension Client {
         .decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchUserByRssSalt: { salt in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "users"
@@ -417,7 +417,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Models.User.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchUsersSubscribedToNewsletter: { newsletter, nonsubscriberOrSubscriber in
         let condition: SQLQueryString

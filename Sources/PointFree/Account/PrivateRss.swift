@@ -90,9 +90,8 @@ private func fetchUserByRssSalt(
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User.RssSalt>, Data>
 {
   return { conn in
-    Current.database.fetchUserByRssSalt(get1(conn.data))
-      .run
-      .map { conn.map(const($0.right.flatMap(id) .*. unit)) }
+    IO { try? await Current.database.fetchUserByRssSalt(get1(conn.data)) }
+      .map { conn.map(const($0 .*. unit)) }
       .flatMap(middleware)
   }
 }

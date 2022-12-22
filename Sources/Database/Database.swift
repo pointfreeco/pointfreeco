@@ -46,7 +46,7 @@ public struct Client {
   public var fetchUserByGitHub: (GitHubUser.ID) async throws -> Models.User
   public var fetchUserById: (Models.User.ID) async throws -> Models.User
   public var fetchUserByReferralCode: (Models.User.ReferralCode) async throws -> Models.User
-  public var fetchUserByRssSalt: (Models.User.RssSalt) -> EitherIO<Error, Models.User?>
+  public var fetchUserByRssSalt: (Models.User.RssSalt) async throws -> Models.User
   public var fetchUsersSubscribedToNewsletter:
     (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
@@ -109,7 +109,7 @@ public struct Client {
     fetchUserByGitHub: @escaping (GitHubUser.ID) async throws -> Models.User,
     fetchUserById: @escaping (Models.User.ID) async throws -> Models.User,
     fetchUserByReferralCode: @escaping (Models.User.ReferralCode) async throws -> Models.User,
-    fetchUserByRssSalt: @escaping (Models.User.RssSalt) -> EitherIO<Error, Models.User?>,
+    fetchUserByRssSalt: @escaping (Models.User.RssSalt) async throws -> Models.User,
     fetchUsersSubscribedToNewsletter: @escaping (
       EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?
     ) -> EitherIO<Error, [Models.User]>,
