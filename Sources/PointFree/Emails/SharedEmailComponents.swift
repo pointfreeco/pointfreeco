@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -61,6 +62,8 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
     let user = user,
     let newsletter = newsletter
   else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   guard
     let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))

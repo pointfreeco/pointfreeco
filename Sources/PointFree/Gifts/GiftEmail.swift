@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import FunctionalCss
@@ -34,6 +35,8 @@ private let giftEmail =
   }
 
 private func giftEmailBody(gift: Gift) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   let quotedMessage = gift.message
     .split(separator: "\n", omittingEmptySubsequences: false)
     .map { "> \($0)" }

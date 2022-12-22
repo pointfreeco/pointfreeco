@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Html
 import HttpPipeline
@@ -13,7 +14,7 @@ import Tuple
 
 let ghostIndexMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-  >=> respond({ _ in indexView })
+  >=> respond({ _ in indexView() })
 
 let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
   filterMap(
@@ -58,12 +59,16 @@ private func fetchGhostee(userId: User.ID?) -> IO<User?> {
     .map(\.right)
 }
 
-private let indexView: Node = [
-  .h3("Ghost a user"),
-  .form(
-    attributes: [.method(.post), .action(siteRouter.path(for: .admin(.ghost(.start(nil)))))],
-    .label("User id:"),
-    .input(attributes: [.type(.text), .name("user_id")]),
-    .input(attributes: [.type(.submit), .value("Ghost 👻")])
-  ),
-]
+private func indexView() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return [
+    .h3("Ghost a user"),
+    .form(
+      attributes: [.method(.post), .action(siteRouter.path(for: .admin(.ghost(.start(nil)))))],
+      .label("User id:"),
+      .input(attributes: [.type(.text), .name("user_id")]),
+      .input(attributes: [.type(.submit), .value("Ghost 👻")])
+    ),
+  ]
+}

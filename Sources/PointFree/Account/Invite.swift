@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -41,7 +42,9 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
   )
   <| { conn in
-    Current.database.deleteTeamInvite(get1(conn.data).id)
+    @Dependency(\.siteRouter) var siteRouter
+
+    return Current.database.deleteTeamInvite(get1(conn.data).id)
       .run
       .flatMap(
         const(
@@ -81,6 +84,8 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <<< requireTeamInvite
   <<< filterMap(require2 >>> pure, or: loginAndRedirect)
   <| { conn in
+    @Dependency(\.siteRouter) var siteRouter
+
     let (teamInvite, currentUser) = lower(conn.data)
 
     let inviter = Current.database

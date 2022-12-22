@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -32,6 +33,7 @@ public func prepareEmail(
 )
   -> Email
 {
+  @Dependency(\.siteRouter) var siteRouter
 
   let (plain, html): (String, String?) =
     either3(

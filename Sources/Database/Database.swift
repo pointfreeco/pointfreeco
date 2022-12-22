@@ -261,17 +261,16 @@ public struct Client {
     public func resetForTesting(
       pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
     ) async throws {
-      do {
-        let database = pool.database(logger: Logger(label: "Postgres"))
-        _ = try await database.run("DROP SCHEMA IF EXISTS public CASCADE").run.performAsync().unwrap()
-        _ = try await database.run("CREATE SCHEMA public").run.performAsync().unwrap()
-        _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync()
-          .unwrap()
-        _ = try await database.run("GRANT ALL ON SCHEMA public TO public").run.performAsync().unwrap()
-        _ = try await self.migrate().run.performAsync().unwrap()
-        _ = try await database.run("CREATE SEQUENCE test_uuids").run.performAsync().unwrap()
-        _ = try await database.run("CREATE SEQUENCE test_shortids").run.performAsync().unwrap()
-        _ = try await database.run(
+      let database = pool.database(logger: Logger(label: "Postgres"))
+      _ = try await database.run("DROP SCHEMA IF EXISTS public CASCADE").run.performAsync().unwrap()
+      _ = try await database.run("CREATE SCHEMA public").run.performAsync().unwrap()
+      _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync()
+        .unwrap()
+      _ = try await database.run("GRANT ALL ON SCHEMA public TO public").run.performAsync().unwrap()
+      _ = try await self.migrate().run.performAsync().unwrap()
+      _ = try await database.run("CREATE SEQUENCE test_uuids").run.performAsync().unwrap()
+      _ = try await database.run("CREATE SEQUENCE test_shortids").run.performAsync().unwrap()
+      _ = try await database.run(
         """
         CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
         BEGIN
@@ -279,9 +278,9 @@ public struct Client {
         END; $$
         LANGUAGE PLPGSQL;
         """
-        )
-        .run.performAsync().unwrap()
-        _ = try await database.run(
+      )
+      .run.performAsync().unwrap()
+      _ = try await database.run(
         """
         CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
         RETURNS text AS $$
@@ -290,12 +289,8 @@ public struct Client {
         END; $$
         LANGUAGE PLPGSQL;
         """
-        )
-        .run.performAsync().unwrap()
-      } catch {
-        print(error)
-        print("")
-      }
+      )
+      .run.performAsync().unwrap()
     }
   #endif
 }

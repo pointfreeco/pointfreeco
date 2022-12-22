@@ -1,3 +1,4 @@
+import Dependencies
 import EmailAddress
 import FunctionalCss
 import Html
@@ -25,6 +26,8 @@ private func confirmEmailChangeEmailBody(
   newEmailAddress: EmailAddress,
   payload: Encrypted<String>
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

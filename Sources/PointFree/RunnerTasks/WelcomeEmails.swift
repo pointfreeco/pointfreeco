@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import FunctionalCss
@@ -122,6 +123,8 @@ func welcomeEmail1(_ user: User) -> Email {
 }
 
 func welcomeEmail1Content(user: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return [
     .markdownBlock(
       """
@@ -171,7 +174,7 @@ func welcomeEmail1Content(user: User) -> Node {
       [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
-    subscribeButton,
+    subscribeButton(),
     hostSignOffView,
   ]
 }
@@ -186,6 +189,8 @@ func welcomeEmail2(_ user: User) -> Email {
 }
 
 func welcomeEmail2Content(user: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -225,7 +230,7 @@ func welcomeEmail2Content(user: User) -> Node {
       [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
-    subscribeButton,
+    subscribeButton(),
     hostSignOffView,
   ]
 }
@@ -240,6 +245,8 @@ func welcomeEmail3(_ user: User) -> Email {
 }
 
 func welcomeEmail3Content(user: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return [
     .markdownBlock(
       """
@@ -288,18 +295,22 @@ func welcomeEmail3Content(user: User) -> Node {
       [getting a subscription](\(siteRouter.url(for: .pricingLanding))) for yourself or your team!
       """
     ),
-    subscribeButton,
+    subscribeButton(),
     hostSignOffView,
   ]
 }
 
-private let subscribeButton = Node.p(
-  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-  .a(
-    attributes: [
-      .href(siteRouter.url(for: .pricingLanding)),
-      .class([Class.pf.components.button(color: .purple)]),
-    ],
-    "Subscribe to Point-Free!"
+private func subscribeButton() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .p(
+    attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+    .a(
+      attributes: [
+        .href(siteRouter.url(for: .pricingLanding)),
+        .class([Class.pf.components.button(color: .purple)]),
+      ],
+      "Subscribe to Point-Free!"
+    )
   )
-)
+}

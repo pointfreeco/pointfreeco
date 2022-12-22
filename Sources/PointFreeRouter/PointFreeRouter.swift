@@ -32,11 +32,6 @@ public struct PointFreeRouter: ParserPrinter {
   }
 }
 
-@available(*, deprecated)
-public var siteRouter: PointFreeRouter {
-  DependencyValues._current.siteRouter
-}
-
 extension PointFreeRouter: TestDependencyKey {
   public static let testValue = PointFreeRouter()
 }

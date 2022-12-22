@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -252,6 +253,8 @@ let cancelEmailView =
   }
 
 private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

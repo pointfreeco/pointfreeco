@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -141,6 +142,7 @@ private func linkToEnterpriseSubscription<Z>(
 private func successfullyAcceptedInviteMiddleware<A, Z>(
   _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.siteRouter) var siteRouter
 
   let account = get2(conn.data)
 
@@ -155,6 +157,8 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
   -> (Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return { conn in
     conn
       |> redirect(
@@ -224,6 +228,7 @@ private func validateInvitation(
 private func sendEnterpriseInvitation<Z>(
   _ middleware: @escaping M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
 ) -> M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
+  @Dependency(\.siteRouter) var siteRouter
 
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -290,6 +295,8 @@ private func enterpriseInviteEmailBodyView(
   encryptedEmail: Encrypted<String>,
   encryptedUserId: Encrypted<String>
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

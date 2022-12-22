@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -28,6 +29,8 @@ private func router<A>(
 {
 
   return { middleware in
+    @Dependency(\.siteRouter) var siteRouter
+
     return { conn in
       let route: SiteRoute?
       do {
@@ -51,6 +54,7 @@ private func render(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.siteRouter) var siteRouter
 
   let (subscriptionAndEnterpriseAccount, user, route) = (
     conn.data.first, conn.data.second.first, conn.data.second.second
@@ -289,6 +293,8 @@ public func redirect<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return { conn in
     conn
       |> redirect(
@@ -302,7 +308,9 @@ public func redirect<A>(
   to route: SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
 ) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-  redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
+  @Dependency(\.siteRouter) var siteRouter
+
+  return redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

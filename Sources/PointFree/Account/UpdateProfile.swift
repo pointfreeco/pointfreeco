@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -52,6 +53,8 @@ private let validateEmail: MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileDat
 private func updateProfileMiddlewareHandler(
   conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.siteRouter) var siteRouter
+
   let (subscription, user, data, emailChangePayload) = lower(conn.data)
 
   let emailSettings = data.emailSettings.keys

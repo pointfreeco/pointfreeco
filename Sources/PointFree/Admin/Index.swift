@@ -1,3 +1,4 @@
+import Dependencies
 import EmailAddress
 import Foundation
 import Html
@@ -46,6 +47,8 @@ let adminIndex =
   )
 
 private func adminIndexView(currentUser: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .ul(
     .li(
       .a(
