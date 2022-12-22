@@ -425,21 +425,23 @@ extension Client {
       fetchUsersSubscribedToNewsletter: { newsletter, nonsubscriberOrSubscriber in
         let condition: SQLQueryString
         switch nonsubscriberOrSubscriber {
-        case .none:
+        case nil:
           condition = ""
-        case .some(.left):
+        case .nonSubscriber:
           condition = #" AND "users"."subscription_id" IS NULL"#
-        case .some(.right):
+        case .subscriber:
           condition = #" AND "users"."subscription_id" IS NOT NULL"#
         }
-        return pool.sqlDatabase.raw(
+        return try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
           WHERE "email_settings"."newsletter" = \(bind: newsletter)\(condition)
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchUsersToWelcome: { weeksAgo in
         let daysAgo = weeksAgo * 7

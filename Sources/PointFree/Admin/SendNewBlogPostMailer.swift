@@ -100,23 +100,24 @@ private func sendNewBlogPostEmails<I>(
     return pure(conn.map(const(unit)))
   }
 
-  let nonsubscriberOrSubscribersOnly: Either<Prelude.Unit, Prelude.Unit>?
+  let nonsubscriberOrSubscribersOnly: Models.User.SubscriberState?
   switch (formData.nonsubscriberDeliver, formData.subscriberDeliver) {
   case (true, true):
     nonsubscriberOrSubscribersOnly = nil
   case (true, _):
-    nonsubscriberOrSubscribersOnly = .left(unit)
+    nonsubscriberOrSubscribersOnly = .nonSubscriber
   case (_, true):
-    nonsubscriberOrSubscribersOnly = .right(unit)
+    nonsubscriberOrSubscribersOnly = .subscriber
   case (_, _):
     return pure(conn.map(const(unit)))
   }
 
-  let users =
-    isTest
-    ? EitherIO { try await Current.database.fetchAdmins() }
-    : Current.database.fetchUsersSubscribedToNewsletter(
-      .newBlogPost, nonsubscriberOrSubscribersOnly)
+  let users = EitherIO {
+    try await isTest
+      ? Current.database.fetchAdmins()
+      : Current.database
+        .fetchUsersSubscribedToNewsletter(.newBlogPost, nonsubscriberOrSubscribersOnly)
+  }
 
   return
     users

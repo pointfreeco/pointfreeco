@@ -40,9 +40,9 @@ extension Client {
     fetchUserById: unimplemented("Database.Client.fetchUserById"),
     fetchUserByReferralCode: unimplemented("Database.Client.fetchUserByReferralCode"),
     fetchUserByRssSalt: unimplemented("Database.Client.fetchUserByRssSalt"),
-    fetchUsersSubscribedToNewsletter: { _, _ in
-      .failing("Database.Client.fetchUsersSubscribedToNewsletter")
-    },
+    fetchUsersSubscribedToNewsletter: unimplemented(
+      "Database.Client.fetchUsersSubscribedToNewsletter"
+    ),
     fetchUsersToWelcome: { _ in .failing("Database.Client.fetchUsersToWelcome") },
     incrementEpisodeCredits: { _ in .failing("Database.Client.incrementEpisodeCredits") },
     insertTeamInvite: { _, _ in .failing("Database.Client.insertTeamInvite") },

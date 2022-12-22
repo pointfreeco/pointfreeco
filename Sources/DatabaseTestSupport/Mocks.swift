@@ -38,7 +38,7 @@ extension Client {
     fetchUserById: { id in update(.mock) { $0.id = id } },
     fetchUserByReferralCode: { code in update(.mock) { $0.referralCode = code } },
     fetchUserByRssSalt: { _ in .mock },
-    fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },
+    fetchUsersSubscribedToNewsletter: { _, _ in [.mock] },
     fetchUsersToWelcome: const(pure([.mock])),
     incrementEpisodeCredits: const(pure([])),
     insertTeamInvite: { _, _ in pure(.mock) },

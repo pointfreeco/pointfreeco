@@ -61,6 +61,11 @@ public struct User: Decodable, Equatable, Identifiable {
     case subscriptionId = "subscription_id"
   }
 
+  public enum SubscriberState {
+    case nonSubscriber
+    case subscriber
+  }
+
   public var displayName: String {
     return name ?? email.rawValue
   }
