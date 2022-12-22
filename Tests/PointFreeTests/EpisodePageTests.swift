@@ -4,6 +4,7 @@ import Dependencies
 import Either
 import GitHub
 import GitHubTestSupport
+import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -51,7 +52,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
       XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+      let count = try await Current.database.fetchUserById(user.id).performAsync()!
+        .episodeCreditCount
       XCTAssertEqual(0, count)
     }
   }
@@ -79,7 +81,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
       XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+      let count = try await Current.database.fetchUserById(user.id).performAsync()!
+        .episodeCreditCount
       XCTAssertEqual(0, count)
     }
   }
@@ -107,7 +110,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
       XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+      let count = try await Current.database.fetchUserById(user.id).performAsync()!
+        .episodeCreditCount
       XCTAssertEqual(1, count)
     }
   }
@@ -138,7 +142,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
       XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!.episodeCreditCount
+      let count = try await Current.database.fetchUserById(user.id).performAsync()!
+        .episodeCreditCount
       XCTAssertEqual(1, count)
     }
   }
@@ -170,17 +175,17 @@ class EpisodePageTests: TestCase {
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -280,17 +285,17 @@ class EpisodePageTests: TestCase {
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -305,17 +310,17 @@ class EpisodePageTests: TestCase {
       let conn = connection(from: episode)
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -332,17 +337,17 @@ class EpisodePageTests: TestCase {
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -383,17 +388,17 @@ class EpisodePageTests: TestCase {
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -412,22 +417,23 @@ class EpisodePageTests: TestCase {
       $0.episodes = unzurry([episode])
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -446,22 +452,23 @@ class EpisodePageTests: TestCase {
       $0.episodes = unzurry([episode])
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -480,22 +487,23 @@ class EpisodePageTests: TestCase {
       $0.episodes = unzurry([episode])
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -512,7 +520,11 @@ class EpisodePageTests: TestCase {
       XCTAssertTrue(episode.subscriberOnly)
     }
 
-    XCTAssertFalse(episode.subscriberOnly)
+    DependencyValues.withTestValues {
+      $0.date.now = start
+    } operation: {
+      XCTAssertFalse(episode.subscriberOnly)
+    }
 
     DependencyValues.withTestValues {
       $0.date.now = end.addingTimeInterval(1)
@@ -531,29 +543,36 @@ class EpisodePageTests: TestCase {
       $0.episodes = { [episode] }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
-      
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
-        webView.loadHTMLString(html, baseURL: nil)
-        assertSnapshot(matching: webView, as: .image, named: "desktop")
-        
-        webView.frame.size.width = 500
-        webView.frame.size.height = 1700
-        assertSnapshot(matching: webView, as: .image, named: "mobile")
-        
-        webView.evaluateJavaScript(
-          """
-          document.getElementsByTagName('details')[0].open = true
-          """)
-        assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-      }
-#endif
-      
+
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          DependencyValues.withTestValues {
+            $0.episodes = { [episode] }
+            // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
+            $0.renderHtml = { Html.render($0) }
+          } operation: {
+            let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+            let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
+            webView.loadHTMLString(html, baseURL: nil)
+            assertSnapshot(matching: webView, as: .image, named: "desktop")
+
+            webView.frame.size.width = 500
+            webView.frame.size.height = 1700
+            assertSnapshot(matching: webView, as: .image, named: "mobile")
+
+            webView.evaluateJavaScript(
+              """
+              document.getElementsByTagName('details')[0].open = true
+              """)
+            assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+          }
+        }
+      #endif
     }
   }
 
@@ -623,9 +642,9 @@ class EpisodePageTests: TestCase {
     } operation: {
       let episode = request(
         to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
-      
+
       let conn = connection(from: episode)
-      
+
       assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }

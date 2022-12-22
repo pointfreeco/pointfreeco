@@ -19,7 +19,7 @@ import XCTest
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-    //    SnapshotTesting.record = true
+    //SnapshotTesting.record = true
   }
 
   func testBlogIndex() {
@@ -103,13 +103,11 @@ class BlogTests: TestCase {
 
   func testBlogAtomFeed() {
     let conn = connection(from: request(to: .blog(.feed)))
-
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testBlogAtomFeed_Unauthed() {
     let conn = connection(from: request(to: .blog(.feed)))
-
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

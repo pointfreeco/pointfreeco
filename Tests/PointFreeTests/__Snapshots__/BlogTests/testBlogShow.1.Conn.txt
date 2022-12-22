@@ -1924,14 +1924,11 @@ Prism.languages.insertBefore('swift', 'other-directive', {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.">
     <meta property="og:description"
-          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.">
     <meta name="twitter:description"
-          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.">
     <meta name="twitter:image"
           content>
     <meta property="og:image"
@@ -2194,9 +2191,7 @@ text, no markdown.">
             </div>
             <div>
               <div class="md-ctn">
-                <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-should be broken out into separate content blocks so that we can use the JS syntax highlighting
-library. For example, here is some code:</p>
+                <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets should be broken out into separate content blocks so that we can use the JS syntax highlighting library. For example, here is some code:</p>
 
               </div>
             </div>

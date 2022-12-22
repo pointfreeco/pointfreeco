@@ -91,8 +91,8 @@ private enum RenderXML: DependencyKey {
 
 extension DependencyValues {
   public var renderXml: (Node) -> String {
-    get { self[RenderHTML.self] }
-    set { self[RenderHTML.self] = newValue }
+    get { self[RenderXML.self] }
+    set { self[RenderXML.self] = newValue }
   }
 }
 

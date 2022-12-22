@@ -50,14 +50,13 @@ class HomeTests: TestCase {
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 3000))
-        webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image, named: "desktop")
-
-        webView.frame.size.width = 400
-        webView.frame.size.height = 3500
-
-        assertSnapshot(matching: webView, as: .image, named: "mobile")
+        assertSnapshots(
+          matching: result,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 3000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 3500)),
+          ]
+        )
       }
     #endif
   }
