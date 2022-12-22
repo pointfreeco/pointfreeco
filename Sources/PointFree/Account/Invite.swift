@@ -167,58 +167,47 @@ let sendInviteMiddleware =
 
     let (email, inviter) = lower(conn.data)
 
-    let seatsTaken = IO {
+    return EitherIO<_, TeamInvite> {
       async let invites = Current.database.fetchTeamInvites(inviter.id).count
       async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count
-      return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
-    }
-    .parallel
 
-    let subscription = EitherIO {
-      try await Current.database.fetchSubscriptionByOwnerId(inviter.id)
+      async let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
+
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+        .performAsync()
+      let seatsTaken = try await invites + teammates
+
+      guard stripeSubscription.status.isActive && stripeSubscription.quantity > seatsTaken
+      else { throw unit }
+
+      return try await Current.database.insertTeamInvite(email, inviter.id)
     }
-    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
     .run
-    .parallel
+    .flatMap { errorOrTeamInvite in
+      switch errorOrTeamInvite {
+      case .left:
+        return conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(
+              .error,
+              """
+              Couldn't invite \(email.rawValue)
+              """)
+          )
 
-    let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
-      run: zip2(
-        subscription,
-        seatsTaken
-      )
-      .map { subscription, seatsTaken in subscription.map { ($0, seatsTaken) } }
-      .sequential
-    )
-    .flatMap { $0.status.isActive && $0.quantity > $1 ? pure(()) : throwE(unit) }
+      case let .right(invite):
+        parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+          .run({ _ in })
 
-    return
-      subscriptionHasAvailableSeats
-      .flatMap { Current.database.insertTeamInvite(email, inviter.id) }
-      .run
-      .flatMap { errorOrTeamInvite in
-        switch errorOrTeamInvite {
-        case .left:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(
-                .error,
-                """
-                Couldn't invite \(email.rawValue)
-                """)
-            )
-
-        case let .right(invite):
-          parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-            .run({ _ in })
-
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
-            )
-        }
+        return conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+          )
       }
+    }
   }
 
 func invalidSubscriptionErrorMiddleware<A>(

@@ -45,7 +45,7 @@ extension Client {
     ),
     fetchUsersToWelcome: unimplemented("Database.Client.fetchUsersToWelcome"),
     incrementEpisodeCredits: unimplemented("Database.Client.incrementEpisodeCredits"),
-    insertTeamInvite: { _, _ in .failing("Database.Client.insertTeamInvite") },
+    insertTeamInvite: unimplemented("Database.Client.insertTeamInvite"),
     migrate: { .failing("Database.Client.migrate") },
     redeemEpisodeCredit: { _, _ in .failing("Database.Client.redeemEpisodeCredit") },
     removeTeammateUserIdFromSubscriptionId: { _, _ in

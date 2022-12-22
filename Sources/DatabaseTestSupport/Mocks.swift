@@ -41,7 +41,7 @@ extension Client {
     fetchUsersSubscribedToNewsletter: { _, _ in [.mock] },
     fetchUsersToWelcome: { _ in [.mock] },
     incrementEpisodeCredits: { _ in [] },
-    insertTeamInvite: { _, _ in pure(.mock) },
+    insertTeamInvite: { _, _ in .mock },
     migrate: unzurry(pure(unit)),
     redeemEpisodeCredit: { _, _ in pure(unit) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },

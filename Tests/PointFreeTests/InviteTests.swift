@@ -53,7 +53,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     Current.stripe.fetchSubscription = const(pure(sub))
 
     _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let sendInvite = request(
       to: .invite(.send("blobber2@pointfree.co")),
@@ -71,7 +70,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .performAsync()
 
     let resendInvite = request(
       to: .invite(.invitation(teamInvite.id, .resend)),
@@ -90,7 +88,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .performAsync()
 
     let revokeInvite = request(
       to: .invite(.invitation(teamInvite.id, .revoke)),
@@ -120,7 +117,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let revokeInvite = request(
       to: .invite(.invitation(teamInvite.id, .revoke)),
@@ -153,7 +149,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -185,10 +180,8 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    let teamInvite = try await Current.database.insertTeamInvite(
-      "blobber@pointfree.co", inviterUser.id
-    )
-    .performAsync()
+    let teamInvite = try await Current.database
+      .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -221,7 +214,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     Current.stripe.fetchSubscription = const(pure(.canceled))
 
@@ -257,7 +249,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     Current.stripe.fetchSubscription = const(pure(.canceled))
 
@@ -327,7 +318,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let resendInvite = request(
       to: .invite(.invitation(teamInvite.id, .resend)),

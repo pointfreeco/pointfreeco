@@ -484,15 +484,17 @@ extension Client {
         .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       insertTeamInvite: { email, inviterUserId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "team_invites" ("email", "inviter_user_id")
           VALUES (\(bind: email), \(bind: inviterUserId))
           RETURNING *
           """
         )
-        .first(decoding: TeamInvite.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: TeamInvite.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       migrate: {
         let database = pool.database(logger: Logger(label: "Postgres"))

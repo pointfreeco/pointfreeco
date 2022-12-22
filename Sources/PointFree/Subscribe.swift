@@ -179,7 +179,7 @@ private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> Ei
         .filter { email in email.rawValue.contains("@") && email != inviter.email }
         .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
         .map { email in
-          Current.database.insertTeamInvite(email, inviter.id)
+          EitherIO { try await Current.database.insertTeamInvite(email, inviter.id) }
             .flatMap { invite in sendInviteEmail(invite: invite, inviter: inviter) }
             .run
             .parallel
