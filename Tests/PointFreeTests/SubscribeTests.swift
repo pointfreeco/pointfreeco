@@ -912,7 +912,7 @@ final class SubscribeTests: TestCase {
   func testReferrals_InvalidCode() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.database.fetchUserByReferralCode = const(pure(nil))
+    Current.database.fetchUserByReferralCode = { _ in throw unit }
 
     let subscribeData = SubscribeData(
       coupon: nil,

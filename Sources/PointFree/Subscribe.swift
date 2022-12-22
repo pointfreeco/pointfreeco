@@ -321,39 +321,30 @@ private func validateReferrer(
       subscribeData.pricing.lane == .personal
       && user.referrerId == nil
 
-    let fetchReferrer =
-      isSubscribeDataValidForReferral
-      ? Current.database.fetchUserByReferralCode(referralCode)
-      : throwE(unit as Error)
-
-    return
-      fetchReferrer
-      .mapExcept(requireSome)
-      .flatMap { referrer in
-        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
-              $0.isCancellable
-                ? pure(Referrer(user: referrer, stripeSubscription: $0))
-                : throwE(unit as Error)
-            }
-          }
-      }
-      .run
-      .flatMap(
-        either(
-          { _ in
-            var subscribeData = subscribeData
-            subscribeData.referralCode = nil
-            return conn
-              |> redirect(
-                to: subscribeConfirmationWithSubscribeData(subscribeData),
-                headersMiddleware: flash(.error, "Invalid referral code.")
-              )
-          },
-          { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
-        )
+    return EitherIO {
+      guard isSubscribeDataValidForReferral else { throw unit }
+      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+        .performAsync()
+      return Referrer(user: referrer, stripeSubscription: stripeSubscription)
+    }
+    .run
+    .flatMap(
+      either(
+        { _ in
+          var subscribeData = subscribeData
+          subscribeData.referralCode = nil
+          return conn
+          |> redirect(
+            to: subscribeConfirmationWithSubscribeData(subscribeData),
+            headersMiddleware: flash(.error, "Invalid referral code.")
+          )
+        },
+        { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
       )
+    )
   }
 }
 

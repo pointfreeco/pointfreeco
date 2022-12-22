@@ -32,7 +32,7 @@ extension Client {
     fetchTeamInvites: { _ in throw NoopError() },
     fetchUserByGitHub: { _ in throw NoopError() },
     fetchUserById: { _ in throw NoopError() },
-    fetchUserByReferralCode: { _ in throwE(NoopError()) },
+    fetchUserByReferralCode: { _ in throw NoopError() },
     fetchUserByRssSalt: { _ in throwE(NoopError()) },
     fetchUsersSubscribedToNewsletter: { _, _ in throwE(NoopError()) },
     fetchUsersToWelcome: { _ in throwE(NoopError()) },
