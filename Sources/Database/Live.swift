@@ -341,7 +341,7 @@ extension Client {
         .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchTeamInvite: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"
@@ -349,7 +349,10 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: TeamInvite.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: TeamInvite.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchTeamInvites: { inviterId in
         pool.sqlDatabase.raw(

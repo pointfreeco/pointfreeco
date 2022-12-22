@@ -245,9 +245,8 @@ private func requireTeamInvite<A>(
 ) -> M<T2<TeamInvite.ID, A>> {
 
   return { conn in
-    Current.database.fetchTeamInvite(get1(conn.data))
+    EitherIO { try await Current.database.fetchTeamInvite(get1(conn.data)) }
       .run
-      .map(requireSome)
       .flatMap { errorOrTeamInvite in
         switch errorOrTeamInvite {
         case .left:

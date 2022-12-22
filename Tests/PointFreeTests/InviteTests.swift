@@ -100,7 +100,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNil(invite)
   }
 
@@ -130,7 +130,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNotNil(invite)
   }
 
@@ -164,7 +164,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
-    // let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    // let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     // XCTAssertNil(invite)
 
     let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
@@ -379,7 +379,7 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
@@ -409,7 +409,7 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
-    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in .mock }
 
     Current.stripe.fetchSubscription = const(pure(.mock))
