@@ -2,6 +2,7 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -133,16 +134,17 @@ private func fetchSeatsTaken<A>(
   return { conn -> IO<Conn<ResponseEnded, Data>> in
     let user = conn.data.first
 
-    let invitesAndTeammates = sequence([
-      parallel(Current.database.fetchTeamInvites(user.id).run)
-        .map { $0.right?.count ?? 0 },
-      parallel(Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
-        .map { $0.right?.count ?? 0 },
-    ])
+    let invitesAndTeammates = IO {
+      async let teamInvites = Current.database.fetchTeamInvites(user.id)
+        .performAsync()
+        .count
+      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)
+        .count
+      return ((try? await teamInvites) ?? 0) + ((try? await teammates) ?? 0)
+    }
 
     return invitesAndTeammates
-      .sequential
-      .flatMap { middleware(conn.map(const(user .*. $0.reduce(0, +) .*. conn.data.second))) }
+      .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
   }
 }
 

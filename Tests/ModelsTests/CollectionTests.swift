@@ -3,8 +3,9 @@ import XCTest
 
 @testable import Models
 
+@MainActor
 final class CollectionTests: TestCase {
-  func testAllCollections() {
+  func testAllCollections() async throws {
     XCTAssertEqual(Episode.Collection.all, Episode.Collection.all)
   }
 }

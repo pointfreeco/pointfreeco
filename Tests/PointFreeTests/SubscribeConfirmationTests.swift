@@ -14,13 +14,14 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class SubscriptionConfirmationTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testPersonal_LoggedIn() {
+  func testPersonal_LoggedIn() async throws {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -33,11 +34,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
@@ -48,7 +49,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedIn_SwitchToMonthly() {
+  func testPersonal_LoggedIn_SwitchToMonthly() async throws {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -64,10 +65,10 @@ class SubscriptionConfirmationTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: result.perform().data, as: UTF8.self)
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
         webView.loadHTMLString(html, baseURL: nil)
 
-        assertSnapshot(
+        await assertSnapshot(
           matching: webView,
           as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
           named: "desktop"
@@ -76,7 +77,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
+  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() async throws {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -92,10 +93,10 @@ class SubscriptionConfirmationTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: result.perform().data, as: UTF8.self)
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
         webView.loadHTMLString(html, baseURL: nil)
 
-        assertSnapshot(
+        await assertSnapshot(
           matching: webView,
           as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
           named: "desktop"
@@ -104,7 +105,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn() {
+  func testTeam_LoggedIn() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
@@ -120,11 +121,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
@@ -135,7 +136,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn_WithDefaults() {
+  func testTeam_LoggedIn_WithDefaults() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
@@ -157,11 +158,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
@@ -172,7 +173,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() {
+  func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
@@ -194,11 +195,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
@@ -209,7 +210,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn_SwitchToMonthly() {
+  func testTeam_LoggedIn_SwitchToMonthly() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
@@ -228,10 +229,10 @@ class SubscriptionConfirmationTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: result.perform().data, as: UTF8.self)
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
         webView.loadHTMLString(html, baseURL: nil)
 
-        assertSnapshot(
+        await assertSnapshot(
           matching: webView,
           as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
           named: "desktop"
@@ -240,7 +241,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn_AddTeamMember() {
+  func testTeam_LoggedIn_AddTeamMember() async throws {
     var user = User.mock
     user.gitHubUserId = 1
 
@@ -266,10 +267,10 @@ class SubscriptionConfirmationTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: result.perform().data, as: UTF8.self)
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
         webView.loadHTMLString(html, baseURL: nil)
 
-        assertSnapshot(
+        await assertSnapshot(
           matching: webView,
           as: .image(
             afterEvaluatingJavascript: "document.getElementById('add-team-member-button').click()"),
@@ -279,7 +280,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedIn_ActiveSubscriber() {
+  func testPersonal_LoggedIn_ActiveSubscriber() async throws {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -292,10 +293,10 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedOut() {
+  func testPersonal_LoggedOut() async throws {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -308,11 +309,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
@@ -323,7 +324,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedIn_WithDiscount() {
+  func testPersonal_LoggedIn_WithDiscount() async throws {
     Current.database.fetchUserById = const(pure(.mock))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -331,11 +332,11 @@ class SubscriptionConfirmationTests: TestCase {
     let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
@@ -346,7 +347,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testTeam_LoggedIn_RemoveOwnerFromTeam() {
+  func testTeam_LoggedIn_RemoveOwnerFromTeam() async throws {
     var user = User.mock
     user.gitHubUserId = 1
 
@@ -365,10 +366,10 @@ class SubscriptionConfirmationTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: result.perform().data, as: UTF8.self)
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
         webView.loadHTMLString(html, baseURL: nil)
 
-        assertSnapshot(
+        await assertSnapshot(
           matching: webView,
           as: .image(
             afterEvaluatingJavascript: "document.getElementById('remove-yourself-button').click()"),
@@ -378,7 +379,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedOut_ReferralCode() {
+  func testPersonal_LoggedOut_ReferralCode() async throws {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -399,11 +400,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
@@ -414,7 +415,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_ReferralCodeAndRegionalDiscount() {
+  func testPersonal_ReferralCodeAndRegionalDiscount() async throws {
     Current.database.fetchUserByReferralCode = { code in
       pure(update(.mock) { $0.referralCode = code })
     }
@@ -431,11 +432,11 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
@@ -446,7 +447,7 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
-  func testPersonal_LoggedOut_InactiveReferralCode() {
+  func testPersonal_LoggedOut_InactiveReferralCode() async throws {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(.mock))
@@ -465,10 +466,10 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedOut_InvalidReferralCode() {
+  func testPersonal_LoggedOut_InvalidReferralCode() async throws {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(nil))
@@ -485,10 +486,10 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedOut_InvalidReferralLane() {
+  func testPersonal_LoggedOut_InvalidReferralLane() async throws {
     Current.database.fetchUserById = const(pure(nil))
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -507,10 +508,10 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedIn_PreviouslyReferred() {
+  func testPersonal_LoggedIn_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
     }
@@ -534,7 +535,7 @@ class SubscriptionConfirmationTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 }
 

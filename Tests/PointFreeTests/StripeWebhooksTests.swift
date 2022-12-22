@@ -18,13 +18,14 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class StripeWebhooksTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testDecoding() throws {
+  func testDecoding() async throws {
     let json = """
       {
         "id": "evt_1FyO3MD0Nyli3dRgk47ZGyCo",
@@ -311,7 +312,7 @@ final class StripeWebhooksTests: TestCase {
         """#.utf8))
   }
 
-  func testValidHook() throws {
+  func testValidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(
@@ -320,11 +321,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testStaleHook() throws {
+  func testStaleHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(
@@ -334,22 +335,22 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testInvalidHook() throws {
+  func testInvalidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(payload: "deadbeef")
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceSubscriptionId() throws {
+  func testNoInvoiceSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.subscription = nil
@@ -366,11 +367,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() throws {
+  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.subscription = nil
@@ -390,11 +391,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceNumber() throws {
+  func testNoInvoiceNumber() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.number = nil
@@ -411,29 +412,29 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testPastDueEmail() {
+  func testPastDueEmail() async throws {
     let doc = pastDueEmailView(unit)
 
-    assertSnapshot(matching: doc, as: .html)
-    assertSnapshot(matching: plainText(for: doc), as: .lines)
+    await assertSnapshot(matching: doc, as: .html)
+    await assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
 
         webView.frame.size = .init(width: 400, height: 700)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testPaymentIntent_Gift() throws {
+  func testPaymentIntent_Gift() async throws {
     Current = .failing
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
@@ -460,7 +461,7 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: conn |> siteMiddleware, as: .ioConn,
       with: """
         POST http://localhost:8080/webhooks/stripe
@@ -498,7 +499,7 @@ final class StripeWebhooksTests: TestCase {
     XCTAssertEqual(didSendEmail, true)
   }
 
-  func testPaymentIntent_NoGift() throws {
+  func testPaymentIntent_NoGift() async throws {
     Current = .failing
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
@@ -515,7 +516,7 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: conn |> siteMiddleware, as: .ioConn,
       with: """
         POST http://localhost:8080/webhooks/stripe
@@ -550,7 +551,7 @@ final class StripeWebhooksTests: TestCase {
         """)
   }
 
-  func testFailedPaymentIntent() throws {
+  func testFailedPaymentIntent() async throws {
     Current = .failing
     Current.date = { .mock }
     Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
@@ -567,7 +568,7 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: conn |> siteMiddleware, as: .ioConn,
       with: """
         POST http://localhost:8080/webhooks/stripe

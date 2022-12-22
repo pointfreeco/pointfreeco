@@ -11,38 +11,39 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class TeamEmailsTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.record=true
   }
 
-  func testYouHaveBeenRemovedEmailView() {
+  func testYouHaveBeenRemovedEmailView() async throws {
     let emailNodes = youHaveBeenRemovedEmailView(.teamOwner(.mock))
 
-    assertSnapshot(matching: emailNodes, as: .html)
+    await assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testTeammateRemovedEmailView() {
+  func testTeammateRemovedEmailView() async throws {
     let emailNodes = teammateRemovedEmailView((.mock, .mock))
 
-    assertSnapshot(matching: emailNodes, as: .html)
+    await assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }

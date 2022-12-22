@@ -14,19 +14,19 @@ import XCTest
 #endif
 
 final class InvoicesTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testInvoices() {
+  func testInvoices() async throws {
     let conn = connection(from: request(to: .account(.invoices()), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -37,7 +37,7 @@ final class InvoicesTests: TestCase {
     #endif
   }
 
-  func testInvoice() {
+  func testInvoice() async throws {
     var customer = Stripe.Customer.mock
     customer.metadata = [
       "extraInvoiceInfo": """
@@ -54,11 +54,11 @@ final class InvoicesTests: TestCase {
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -69,7 +69,7 @@ final class InvoicesTests: TestCase {
     #endif
   }
 
-  func testInvoice_InvoiceBilling() {
+  func testInvoice_InvoiceBilling() async throws {
     var charge = Charge.mock
     charge.paymentMethodDetails = .init()
     let invoice = Invoice.mock(charge: .right(charge))
@@ -80,11 +80,11 @@ final class InvoicesTests: TestCase {
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -95,7 +95,7 @@ final class InvoicesTests: TestCase {
     #endif
   }
 
-  func testInvoiceWithDiscount() {
+  func testInvoiceWithDiscount() async throws {
     var invoice = Stripe.Invoice.mock(charge: .right(.mock))
     invoice.discount = .mock
     invoice.total = 1455
@@ -105,11 +105,11 @@ final class InvoicesTests: TestCase {
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),

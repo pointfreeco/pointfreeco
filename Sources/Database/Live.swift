@@ -328,7 +328,7 @@ extension Client {
         .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"
@@ -336,7 +336,9 @@ extension Client {
           WHERE "subscriptions"."user_id" = \(bind: ownerId)
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchTeamInvite: { id in
         pool.sqlDatabase.raw(

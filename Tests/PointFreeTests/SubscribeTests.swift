@@ -17,8 +17,8 @@ import XCTest
 
 @MainActor
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
@@ -39,13 +39,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
   }
 
@@ -66,7 +66,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try? await Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -98,13 +98,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -135,13 +135,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertNil(balance)
     XCTAssertEqual(balanceUpdates, [:])
@@ -170,12 +170,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let conn = await siteMiddleware(connection(from: req)).performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
     let invites = try await Current.database.fetchTeamInvites(user.id)
@@ -208,12 +208,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let conn = await siteMiddleware(connection(from: req)).performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
     let invites = try await Current.database.fetchTeamInvites(user.id).performAsync()
@@ -290,7 +290,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -357,7 +357,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -417,13 +417,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
     XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
     XCTAssertNil(balance)
@@ -480,7 +480,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     XCTAssertEqual(subscriptionCoupon, nil)
@@ -574,7 +574,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -671,7 +671,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
     .performAsync()
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
@@ -711,26 +711,26 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 }
 
 @MainActor
 final class SubscribeTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testNotLoggedIn_IndividualMonthly() async {
+  func testNotLoggedIn_IndividualMonthly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
@@ -753,44 +753,44 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testNotLoggedIn_IndividualYearly() async {
+  func testNotLoggedIn_IndividualYearly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualYearly))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testNotLoggedIn_Team() async {
+  func testNotLoggedIn_Team() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCurrentSubscribers() async {
+  func testCurrentSubscribers() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testInvalidQuantity() async {
+  func testInvalidQuantity() async throws {
     #if !os(Linux)
       Current.database.fetchSubscriptionById = { _ in throw unit }
       Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -802,7 +802,7 @@ final class SubscribeTests: TestCase {
       )
       .performAsync()
 
-      assertSnapshot(matching: conn, as: .conn, named: "too_high")
+      await assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
       let conn2 = await siteMiddleware(
         connection(
@@ -811,11 +811,11 @@ final class SubscribeTests: TestCase {
       )
       .performAsync()
 
-      assertSnapshot(matching: conn2, as: .conn, named: "too_low")
+      await assertSnapshot(matching: conn2, as: .conn, named: "too_low")
     #endif
   }
 
-  func testCreateCustomerFailure() async {
+  func testCreateCustomerFailure() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
@@ -826,11 +826,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCreateStripeSubscriptionFailure() async {
+  func testCreateStripeSubscriptionFailure() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -841,11 +841,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCreateStripeSubscriptionFailure_TeamAndMonthly() async {
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -866,11 +866,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async {
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -891,11 +891,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCreateDatabaseSubscriptionFailure() async {
+  func testCreateDatabaseSubscriptionFailure() async throws {
     Current.database.createSubscription = { _, _, _, _ in throw unit }
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -906,11 +906,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testReferrals_InvalidCode() async {
+  func testReferrals_InvalidCode() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserByReferralCode = const(pure(nil))
@@ -931,11 +931,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testReferrals_InvalidLane() async {
+  func testReferrals_InvalidLane() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -955,11 +955,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testReferrals_InactiveCode() async {
+  func testReferrals_InactiveCode() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
@@ -980,11 +980,11 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testReferrals_PreviouslyReferred() async {
+  func testReferrals_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
     }
@@ -1009,7 +1009,7 @@ final class SubscribeTests: TestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 }

@@ -11,24 +11,25 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class StyleguideTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     diffTool = "ksdiff"
-    //    SnapshotTesting.isRecording = true
+    //SnapshotTesting.isRecording = true
   }
 
-  func testStyleguide() {
-    assertSnapshot(matching: styleguide, as: .css, named: "pretty")
-    assertSnapshot(matching: styleguide, as: .css(.compact), named: "mini")
+  func testStyleguide() async throws {
+    await assertSnapshot(matching: styleguide, as: .css, named: "pretty")
+    await assertSnapshot(matching: styleguide, as: .css(.compact), named: "mini")
   }
 
-  func testPointFreeStyles() {
-    assertSnapshot(matching: pointFreeBaseStyles, as: .css, named: "pretty")
-    assertSnapshot(matching: pointFreeBaseStyles, as: .css(.compact), named: "mini")
+  func testPointFreeStyles() async throws {
+    await assertSnapshot(matching: pointFreeBaseStyles, as: .css, named: "pretty")
+    await assertSnapshot(matching: pointFreeBaseStyles, as: .css(.compact), named: "mini")
   }
 
-  func testGitHubLink_Black() {
+  func testGitHubLink_Black() async throws {
     let doc: Node = [
       .doctype,
       .html(
@@ -45,18 +46,18 @@ class StyleguideTests: TestCase {
       ),
     ]
 
-    assertSnapshot(matching: doc, as: .html)
+    await assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
       if ProcessInfo.processInfo.environment["CI"] == nil {
         let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testGitHubLink_White() {
+  func testGitHubLink_White() async throws {
     let doc: Node = [
       .doctype,
       .html(
@@ -74,18 +75,18 @@ class StyleguideTests: TestCase {
       ),
     ]
 
-    assertSnapshot(matching: doc, as: .html)
+    await assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
       if ProcessInfo.processInfo.environment["CI"] == nil {
         let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testTwitterLink() {
+  func testTwitterLink() async throws {
     let doc: Node = [
       .doctype,
       .html(
@@ -98,13 +99,13 @@ class StyleguideTests: TestCase {
       ),
     ]
 
-    assertSnapshot(matching: doc, as: .html)
+    await assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
       if ProcessInfo.processInfo.environment["CI"] == nil {
         let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }

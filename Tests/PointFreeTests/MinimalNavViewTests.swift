@@ -16,33 +16,34 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class MinimalNavViewTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testNav_Html() {
-    states.forEach { key, state in
+  func testNav_Html() async throws {
+    for (key, state) in states {
       let doc = testDocView(state)
 
-      assertSnapshot(matching: doc, as: .html, named: key)
+      await assertSnapshot(matching: doc, as: .html, named: key)
     }
   }
 
-  func testNav_Screenshots() {
-    states.forEach { key, state in
+  func testNav_Screenshots() async throws {
+    for (key, state) in states {
       let doc = testDocView(state)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 180))
           webView.loadHTMLString(render(doc), baseURL: nil)
-          assertSnapshot(matching: webView, as: .image, named: "\(key)_desktop")
+          await assertSnapshot(matching: webView, as: .image, named: "\(key)_desktop")
 
           webView.frame.size.width = 500
           webView.frame.size.height = 140
-          assertSnapshot(matching: webView, as: .image, named: "\(key)_mobile")
+          await assertSnapshot(matching: webView, as: .image, named: "\(key)_mobile")
         }
       #endif
     }

@@ -74,7 +74,7 @@ extension Environment {
   )
 
   public static let teamYearly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
     $0.database.fetchTeamInvites = const(pure([.mock]))
     $0.stripe.fetchSubscription = const(pure(.teamYearly))
     $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
@@ -86,7 +86,7 @@ extension Environment {
   }
 
   public static let individualMonthly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
     $0.stripe.fetchSubscription = const(pure(.individualMonthly))
   }
 }
@@ -152,7 +152,7 @@ extension Snapshotting {
       let renderXml = Current.renderXml
       Current.renderHtml = { debugRender($0) }
       Current.renderXml = { _debugXmlRender($0) }
-      let conn = io.perform()
+      let conn = await io.performAsync()
       Current.renderHtml = renderHtml
       Current.renderXml = renderXml
       return conn
@@ -164,9 +164,12 @@ extension Snapshotting {
     public static func ioConnWebView(size: CGSize) -> Snapshotting<
       IO<Conn<ResponseEnded, Data>>, NSImage
     > {
-      return Snapshotting<NSView, NSImage>.image.pullback { io in
+      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
         let webView = WKWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
+        await webView.loadHTMLString(
+          String(decoding: io.performAsync().data, as: UTF8.self),
+          baseURL: nil
+        )
         return webView
       }
     }

@@ -21,14 +21,15 @@ private let episodes: [Episode] = [
   .ep22_aTourOfPointFree,
 ].map { update($0) { $0.image = "http://localhost:8080/images/\($0.sequence).jpg" } }
 
+@MainActor
 class PrivateRssTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     Current.episodes = { episodes }
-    //    SnapshotTesting.isRecording = true
+    //SnapshotTesting.isRecording = true
   }
 
-  func testFeed_Authenticated_Subscriber_Monthly() {
+  func testFeed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
@@ -42,10 +43,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_Subscriber_Yearly() {
+  func testFeed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
@@ -59,10 +60,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_NonSubscriber() {
+  func testFeed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef"
 
@@ -76,10 +77,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_InActiveSubscriber() {
+  func testFeed_Authenticated_InActiveSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef"
 
@@ -96,10 +97,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_Authenticated_DeactivatedSubscriber() {
+  func testFeed_Authenticated_DeactivatedSubscriber() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
@@ -116,10 +117,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_BadSalt() {
+  func testFeed_BadSalt() async throws {
     Current.database.fetchUserByRssSalt = const(pure(.none))
 
     let conn = connection(
@@ -129,10 +130,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_InvalidUserAgent() {
+  func testFeed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
@@ -151,11 +152,11 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     XCTAssertTrue(feedRequestEventCreated)
   }
 
-  func testFeed_ValidUserAgent() {
+  func testFeed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
@@ -171,10 +172,10 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testFeed_BadSalt_InvalidUserAgent() {
+  func testFeed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
@@ -193,10 +194,10 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_Authenticated_Subscriber_Monthly() {
+  func testLegacy_Feed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -210,10 +211,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_Authenticated_Subscriber_Yearly() {
+  func testLegacy_Feed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -227,10 +228,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_Authenticated_NonSubscriber() {
+  func testLegacy_Feed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -244,10 +245,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_Authenticated_InActiveSubscriber() {
+  func testLegacy_Feed_Authenticated_InActiveSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -264,10 +265,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_Authenticated_DeactivatedSubscriber() {
+  func testLegacy_Feed_Authenticated_DeactivatedSubscriber() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -284,10 +285,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_BadSalt() {
+  func testLegacy_Feed_BadSalt() async throws {
     Current.database.fetchUserByRssSalt = const(pure(.none))
 
     let conn = connection(
@@ -297,10 +298,10 @@ class PrivateRssTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_InvalidUserAgent() {
+  func testLegacy_Feed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
@@ -319,11 +320,11 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     XCTAssertTrue(feedRequestEventCreated)
   }
 
-  func testLegacy_Feed_ValidUserAgent() {
+  func testLegacy_Feed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -339,10 +340,10 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLegacy_Feed_BadSalt_InvalidUserAgent() {
+  func testLegacy_Feed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
@@ -361,7 +362,7 @@ class PrivateRssTests: TestCase {
 
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
 }

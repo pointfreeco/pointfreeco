@@ -4,8 +4,9 @@ import XCTest
 
 @testable import Models
 
+@MainActor
 final class GiftFormDataTests: TestCase {
-  func testCodable_PaymentIntent() throws {
+  func testCodable_PaymentIntent() async throws {
     let giftFormData = GiftFormData(
       deliverAt: nil,
       fromEmail: "blob@pointfree.co",
@@ -18,7 +19,7 @@ final class GiftFormDataTests: TestCase {
     )
 
     let data = try encoder.encode(giftFormData)
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: String(decoding: data, as: UTF8.self), as: .lines,
       with: """
         {
@@ -36,7 +37,7 @@ final class GiftFormDataTests: TestCase {
     XCTAssertEqual(roundtripGiftFormData, giftFormData)
   }
 
-  func testCodable_PaymentMethod() throws {
+  func testCodable_PaymentMethod() async throws {
     let giftFormData = GiftFormData(
       deliverAt: nil,
       fromEmail: "blob@pointfree.co",
@@ -49,7 +50,7 @@ final class GiftFormDataTests: TestCase {
     )
 
     let data = try encoder.encode(giftFormData)
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: String(decoding: data, as: UTF8.self), as: .lines,
       with: """
         {

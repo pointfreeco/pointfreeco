@@ -17,9 +17,9 @@ import XCTest
 
 @MainActor
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testExpressUnsubscribe() async throws {
@@ -40,17 +40,17 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     )
 
     var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-    assertSnapshot(
+    await assertSnapshot(
       matching: settings,
       as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
     let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-    assertSnapshot(matching: output, as: .conn)
+    await assertSnapshot(matching: output, as: .conn)
 
     settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-    assertSnapshot(
+    await assertSnapshot(
       matching: settings,
       as: .customDump,
       named: "email_settings_after_unsubscribe"
@@ -81,17 +81,17 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       )
 
       var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
       settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
@@ -125,17 +125,17 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       )
 
       var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
       settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
@@ -171,17 +171,17 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       )
 
       var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
       settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      assertSnapshot(
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"

@@ -31,9 +31,9 @@ extension Client {
     fetchGiftsToDeliver: unimplemented("Database.Client.fetchGiftsToDeliver"),
     fetchSubscriptionById: unimplemented("Database.Client.fetchSubscriptionById"),
     fetchSubscriptionByOwnerId: unimplemented("Database.Client.fetchSubscriptionByOwnerId"),
-    fetchSubscriptionTeammatesByOwnerId: { _ in
-      .failing("Database.Client.fetchSubscriptionTeammatesByOwnerId")
-    },
+    fetchSubscriptionTeammatesByOwnerId: unimplemented(
+      "Database.Client.fetchSubscriptionTeammatesByOwnerId"
+    ),
     fetchTeamInvite: { _ in .failing("Database.Client.fetchTeamInvite") },
     fetchTeamInvites: { _ in .failing("Database.Client.fetchTeamInvites") },
     fetchUserByGitHub: { _ in .failing("Database.Client.fetchUserByGitHub") },

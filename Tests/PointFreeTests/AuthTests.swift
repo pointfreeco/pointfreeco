@@ -12,9 +12,9 @@ import XCTest
 
 @MainActor
 class AuthIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.record = true
   }
 
   func testRegister() async throws {
@@ -36,7 +36,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       )
     )
     .performAsync()
-    assertSnapshot(matching: result, as: .conn)
+    await assertSnapshot(matching: result, as: .conn)
 
     let registeredUser = try await Current.database
       .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
@@ -67,7 +67,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       )
     )
     .performAsync()
-    assertSnapshot(matching: result, as: .conn)
+    await assertSnapshot(matching: result, as: .conn)
 
     let registeredUser = try await Current.database
       .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
@@ -83,7 +83,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLoginWithRedirect() async throws {
@@ -92,36 +92,37 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
 
+@MainActor
 class AuthTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.record = true
   }
 
-  func testAuth_WithFetchAuthTokenFailure() {
+  func testAuth_WithFetchAuthTokenFailure() async throws {
     Current.gitHub.fetchAuthToken = unit |> throwE >>> const
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAuth_WithFetchAuthTokenBadVerificationCode() {
+  func testAuth_WithFetchAuthTokenBadVerificationCode() async throws {
     Current.gitHub.fetchAuthToken = const(
       pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
+  func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
     Current.gitHub.fetchAuthToken = const(
       pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
 
@@ -130,47 +131,47 @@ class AuthTests: TestCase {
         code: "deadbeef", redirect: siteRouter.url(for: .episode(.show(.right(42))))))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testAuth_WithFetchUserFailure() {
+  func testAuth_WithFetchUserFailure() async throws {
     Current.gitHub.fetchUser = unit |> throwE >>> const
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLogin() {
+  func testLogin() async throws {
     let login = request(to: .login(redirect: nil))
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLogin_AlreadyLoggedIn() {
+  func testLogin_AlreadyLoggedIn() async throws {
     let login = request(to: .login(redirect: nil), session: .loggedIn)
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testLogout() {
+  func testLogout() async throws {
     let conn = connection(from: request(to: .logout))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testHome_LoggedOut() {
+  func testHome_LoggedOut() async throws {
     let conn = connection(from: request(to: .home, session: .loggedOut))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testHome_LoggedIn() {
+  func testHome_LoggedIn() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

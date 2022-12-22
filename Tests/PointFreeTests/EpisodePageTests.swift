@@ -20,9 +20,9 @@ import XCTest
 
 @MainActor
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testRedeemEpisodeCredit_HappyPath() async throws {
@@ -44,7 +44,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
@@ -70,7 +70,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
@@ -96,7 +96,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([], credits)
@@ -125,7 +125,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let credits = try await Current.database.fetchEpisodeCredits(user.id)
     XCTAssertEqual([credit], credits)
@@ -135,13 +135,14 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
+@MainActor
 class EpisodePageTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testEpisodePage() {
+  func testEpisodePage() async throws {
     let titles = ["Domain-Specific Languages", "Proof in Functions", "Composable Architecture"]
     let episodes = (0...2).map { idx -> Episode in
       var episode = Episode.mock
@@ -157,11 +158,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -172,7 +173,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePage_InCollectionContext() {
+  func testEpisodePage_InCollectionContext() async throws {
     let episode = request(
       to: .collections(
         .collection(
@@ -188,11 +189,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -203,7 +204,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePage_InCollectionContext_LastEpisode() {
+  func testEpisodePage_InCollectionContext_LastEpisode() async throws {
     let episode = request(
       to: .collections(
         .collection(
@@ -219,11 +220,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -234,17 +235,17 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePageSubscriber() {
+  func testEpisodePageSubscriber() async throws {
     let episode = request(
       to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
@@ -255,7 +256,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePageSubscriber_Deactivated() {
+  func testEpisodePageSubscriber_Deactivated() async throws {
     let deactivated = update(Subscription.mock) { $0.deactivated = true }
     Current.database.fetchSubscriptionById = { _ in deactivated }
     Current.database.fetchSubscriptionByOwnerId = { _ in deactivated }
@@ -265,11 +266,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
@@ -280,7 +281,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testFreeEpisodePage() {
+  func testFreeEpisodePage() async throws {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
@@ -290,11 +291,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
@@ -305,7 +306,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testFreeEpisodePageSubscriber() {
+  func testFreeEpisodePageSubscriber() async throws {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
@@ -315,11 +316,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
@@ -330,16 +331,16 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeNotFound() {
+  func testEpisodeNotFound() async throws {
     let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshot(
+        await assertSnapshot(
           matching: conn |> siteMiddleware,
           as: .ioConnWebView(size: .init(width: 1100, height: 1000))
         )
@@ -347,7 +348,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
+  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -364,11 +365,11 @@ class EpisodePageTests: TestCase {
       from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
@@ -379,7 +380,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -396,11 +397,11 @@ class EpisodePageTests: TestCase {
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
@@ -411,7 +412,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -428,11 +429,11 @@ class EpisodePageTests: TestCase {
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
@@ -443,7 +444,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 0
@@ -460,11 +461,11 @@ class EpisodePageTests: TestCase {
       from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
@@ -475,7 +476,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func test_permission() {
+  func test_permission() async throws {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
     var episode = Episode.mock
@@ -491,7 +492,7 @@ class EpisodePageTests: TestCase {
     XCTAssertTrue(episode.subscriberOnly)
   }
 
-  func testEpisodePage_ExercisesAndReferences() {
+  func testEpisodePage_ExercisesAndReferences() async throws {
     var episode = Current.episodes()[0]
     episode.exercises = [.mock, .mock]
     episode.references = [.mock]
@@ -506,26 +507,29 @@ class EpisodePageTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
+        let html = await String(
+          decoding: siteMiddleware(conn).performAsync().data, as: UTF8.self
+        )
         webView.loadHTMLString(html, baseURL: nil)
-        assertSnapshot(matching: webView, as: .image, named: "desktop")
+        await assertSnapshot(matching: webView, as: .image, named: "desktop")
 
         webView.frame.size.width = 500
         webView.frame.size.height = 1700
-        assertSnapshot(matching: webView, as: .image, named: "mobile")
+        await assertSnapshot(matching: webView, as: .image, named: "mobile")
 
-        webView.evaluateJavaScript(
+        try await webView.evaluateJavaScript(
           """
           document.getElementsByTagName('details')[0].open = true
-          """)
-        assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+          """
+        )
+        await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
       }
     #endif
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodePage_Trialing() {
+  func testEpisodePage_Trialing() async throws {
     var subscription = Subscription.mock
     subscription.stripeSubscriptionStatus = .trialing
     Current.database.fetchSubscriptionById = { _ in subscription }
@@ -535,10 +539,10 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testProgress_LoggedIn() {
+  func testProgress_LoggedIn() async throws {
     var didUpdate = false
     Current.database.updateEpisodeProgress = { _, _, _ in
       didUpdate = true
@@ -553,11 +557,11 @@ class EpisodePageTests: TestCase {
     )
     let conn = connection(from: progressRequest)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     XCTAssertEqual(didUpdate, true)
   }
 
-  func testProgress_LoggedOut() {
+  func testProgress_LoggedOut() async throws {
     var didUpdate = false
     Current.database.updateEpisodeProgress = { _, _, _ in
       didUpdate = true
@@ -572,17 +576,17 @@ class EpisodePageTests: TestCase {
     )
     let conn = connection(from: progressRequest)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     XCTAssertEqual(didUpdate, false)
   }
 
-  func testEpisodePage_WithEpisodeProgress() {
+  func testEpisodePage_WithEpisodeProgress() async throws {
     Current.database.fetchEpisodeProgress = { _, _ in pure(20) }
     let episode = request(
       to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
