@@ -35,7 +35,7 @@ extension Client {
     fetchUserByReferralCode: { _ in throw NoopError() },
     fetchUserByRssSalt: { _ in throw NoopError() },
     fetchUsersSubscribedToNewsletter: { _, _ in throw NoopError() },
-    fetchUsersToWelcome: { _ in throwE(NoopError()) },
+    fetchUsersToWelcome: { _ in throw NoopError() },
     incrementEpisodeCredits: { _ in throwE(NoopError()) },
     insertTeamInvite: { _, _ in throwE(NoopError()) },
     migrate: { pure(unit) },

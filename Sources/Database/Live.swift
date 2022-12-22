@@ -448,7 +448,7 @@ extension Client {
         let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo)") DAY'"
         let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo - 1)") DAY'"
 
-        return pool.sqlDatabase.raw(
+        return try await pool.sqlDatabase.raw(
           """
           SELECT
           "users".*
@@ -463,7 +463,9 @@ extension Client {
           AND "subscriptions"."user_id" IS NULL;
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       incrementEpisodeCredits: { userIds in
         let ids: SQLQueryString = """

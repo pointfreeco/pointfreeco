@@ -43,7 +43,7 @@ extension Client {
     fetchUsersSubscribedToNewsletter: unimplemented(
       "Database.Client.fetchUsersSubscribedToNewsletter"
     ),
-    fetchUsersToWelcome: { _ in .failing("Database.Client.fetchUsersToWelcome") },
+    fetchUsersToWelcome: unimplemented("Database.Client.fetchUsersToWelcome"),
     incrementEpisodeCredits: { _ in .failing("Database.Client.incrementEpisodeCredits") },
     insertTeamInvite: { _, _ in .failing("Database.Client.insertTeamInvite") },
     migrate: { .failing("Database.Client.migrate") },

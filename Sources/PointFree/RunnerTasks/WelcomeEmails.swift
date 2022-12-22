@@ -12,22 +12,13 @@ import Styleguide
 import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
-  let zippedEmails = zip3(
-    Current.database.fetchUsersToWelcome(1)
-      .map(map(welcomeEmail1))
-      .run.parallel,
-    Current.database.fetchUsersToWelcome(2)
-      .map(map(welcomeEmail2))
-      .run.parallel,
-    Current.database.fetchUsersToWelcome(3)
-      .flatMap { users in Current.database.incrementEpisodeCredits(users.map(\.id)) }
-      .map(map(welcomeEmail3))
-      .run.parallel
-  )
-  let flattenedEmails = zippedEmails.map { $0 <> $1 <> $2 }
-
-  let emails = EitherIO(run: flattenedEmails.sequential)
-    .debug { "📧: Sending \($0.count) welcome emails..." }
+  let emails = EitherIO {
+    async let emails1 = Current.database.fetchUsersToWelcome(1).map(welcomeEmail1)
+    async let emails2 = Current.database.fetchUsersToWelcome(2).map(welcomeEmail2)
+    async let emails3 = Current.database.fetchUsersToWelcome(3).map(welcomeEmail3)
+    return try await emails1 + emails2 + emails3
+  }
+  .debug { "📧: Sending \($0.count) welcome emails..." }
 
   let delayedSend =
     send(email:)

@@ -39,7 +39,7 @@ extension Client {
     fetchUserByReferralCode: { code in update(.mock) { $0.referralCode = code } },
     fetchUserByRssSalt: { _ in .mock },
     fetchUsersSubscribedToNewsletter: { _, _ in [.mock] },
-    fetchUsersToWelcome: const(pure([.mock])),
+    fetchUsersToWelcome: { _ in [.mock] },
     incrementEpisodeCredits: const(pure([])),
     insertTeamInvite: { _, _ in pure(.mock) },
     migrate: unzurry(pure(unit)),
