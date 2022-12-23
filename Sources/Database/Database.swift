@@ -236,7 +236,7 @@ public struct Client {
     public func resetForTesting(
       pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
     ) async throws {
-      let database = pool.database(logger: Logger(label: "Postgres"))
+      let database = pool.sqlDatabase
       try await database.run("DROP SCHEMA IF EXISTS public CASCADE")
       try await database.run("CREATE SCHEMA public")
       try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco")
