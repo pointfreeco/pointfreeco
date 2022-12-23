@@ -1,8 +1,6 @@
-import Either
 import Models
 import PointFreePrelude
 import PostgresKit
-import Prelude
 import Stripe
 
 extension Client {

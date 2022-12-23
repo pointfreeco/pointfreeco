@@ -1,6 +1,3 @@
-import Either
-import Prelude
-
 struct NoopError: Error {}
 
 extension Client {

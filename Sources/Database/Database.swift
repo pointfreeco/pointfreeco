@@ -1,4 +1,3 @@
-import Either
 import EmailAddress
 import Foundation
 import GitHub
@@ -6,7 +5,6 @@ import Logging
 import Models
 import PointFreePrelude
 import PostgresKit
-import Prelude
 import Stripe
 import Tagged
 
