@@ -214,8 +214,10 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
     .flatMap { subscription in
       Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
-          Current.database.updateStripeSubscription(stripeSubscription)
-            .map(const(unit))  // FIXME: mapExcept(requireSome) / handle failure?
+          EitherIO {
+            _ = try await Current.database.updateStripeSubscription(stripeSubscription)
+            return unit
+          }
         }
     }
 }

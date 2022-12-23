@@ -61,8 +61,7 @@ public struct Client {
   public var updateGift: (Gift.ID, Stripe.Subscription.ID) async throws -> Gift
   public var updateGiftStatus:
     (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
-  public var updateStripeSubscription:
-    (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
+  public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
   public var updateUser:
     (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<
       Error, Prelude.Unit
@@ -122,9 +121,7 @@ public struct Client {
     updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
     updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
       throws -> Gift,
-    updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<
-      Error, Models.Subscription?
-    >,
+    updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
     updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) ->
       EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<

@@ -988,7 +988,7 @@ extension Client {
         .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateStripeSubscription: { stripeSubscription in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "subscriptions"
           SET "stripe_subscription_status" = \(bind: stripeSubscription.status)
@@ -996,7 +996,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Models.Subscription.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateUser: { userId, name, email, episodeCreditCount, rssSalt in
         pool.sqlDatabase.raw(
