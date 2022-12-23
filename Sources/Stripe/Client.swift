@@ -25,7 +25,7 @@ public struct Client {
   public var createSubscription:
     (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws -> Subscription
   public var deleteCoupon: (Coupon.ID) async throws -> Void
-  public var fetchCoupon: (Coupon.ID) -> EitherIO<Error, Coupon>
+  public var fetchCoupon: (Coupon.ID) async throws -> Coupon
   public var fetchCustomer: (Customer.ID) -> EitherIO<Error, Customer>
   public var fetchCustomerPaymentMethods:
     (Customer.ID) -> EitherIO<Error, ListEnvelope<PaymentMethod>>
@@ -58,7 +58,7 @@ public struct Client {
     createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws ->
       Subscription,
     deleteCoupon: @escaping (Coupon.ID) async throws -> Void,
-    fetchCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Coupon>,
+    fetchCoupon: @escaping (Coupon.ID) async throws -> Coupon,
     fetchCustomer: @escaping (Customer.ID) -> EitherIO<Error, Customer>,
     fetchCustomerPaymentMethods: @escaping (Customer.ID) -> EitherIO<
       Error, ListEnvelope<PaymentMethod>
@@ -175,9 +175,11 @@ extension Client {
         .performAsync()
       },
       deleteCoupon: {
-        try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)).performAsync()
+        _ = try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)).performAsync()
       },
-      fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
+      fetchCoupon: {
+        try await runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)).performAsync()
+      },
       fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
       fetchCustomerPaymentMethods: {
         runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))

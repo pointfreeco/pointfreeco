@@ -315,7 +315,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_LoggedOut() async throws {
-    Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
+    Current.stripe.fetchCoupon = { _ in update(.mock) { $0.rate = .amountOff(54_00) } }
 
     let conn = connection(
       from: request(
