@@ -902,7 +902,7 @@ extension Client {
         .get()
       },
       removeTeammateUserIdFromSubscriptionId: { teammateUserId, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "subscription_id" = NULL
@@ -911,6 +911,7 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       sawUser: { userId in
         pool.sqlDatabase.raw(

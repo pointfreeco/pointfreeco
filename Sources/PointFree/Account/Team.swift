@@ -42,30 +42,26 @@ private func leaveTeam<Z>(
   return { conn in
     let user = get1(conn.data)
 
-    let removed =
-      user.subscriptionId
-      .map { subId in
-        Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subId)
-          .flatMap { _ in EitherIO { try await Current.database.deleteEnterpriseEmail(user.id) } }
-      }
-      ?? pure(())
-
-    return removed
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .account(),
-                headersMiddleware: flash(
-                  .error,
-                  "Something went wrong. Please try again or contact <support@pointfree.co>.")
-              )
-          ),
-          const(middleware(conn))
-        )
+    return EitherIO {
+      guard let subscriptionId = user.subscriptionId else { return }
+      try await Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
+      try await Current.database.deleteEnterpriseEmail(user.id)
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(
+              .error,
+              "Something went wrong. Please try again or contact <support@pointfree.co>.")
+          )
+        ),
+        const(middleware(conn))
       )
+    )
   }
 }
 
@@ -77,34 +73,22 @@ let removeTeammateMiddleware =
     guard let teammateSubscriptionId = teammate.subscriptionId
     else { return pure(conn.map(const(unit))) }
 
-    let validateSubscriptionData = EitherIO {
-      try await Current.database.fetchSubscriptionById(teammateSubscriptionId)
+    return EitherIO {
+      let subscription = try await Current.database.fetchSubscriptionById(teammateSubscriptionId)
+      // Validate the current user is the subscription owner,
+      // and the fetched user is in fact the current user's teammate.
+      guard subscription.userId == currentUser.id && subscription.id == teammate.subscriptionId
+      else { throw unit }
+
+      try await Current.database
+        .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
+
+      // Fire-and-forget emails to owner and teammate
+      sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
+        .run({ _ in })
     }
-    .mapExcept { errorOrSubscription in
-      // Validate the current user is the subscription owner
-      errorOrSubscription.right?.userId == .some(currentUser.id)
-        // Validate that the fetched user is in fact the current user's teammate.
-        && errorOrSubscription.right?.id == teammate.subscriptionId
-        ? .right(unit)
-        : .left(unit as Error)
-    }
-
-    return
-      validateSubscriptionData
-      .flatMap { _ in
-        Current.database
-          .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
-          .flatMap { x -> EitherIO<Error, Prelude.Unit> in
-
-            // Fire-and-forget emails to owner and teammate
-            sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
-              .run({ _ in })
-
-            return pure(x)
-          }
-      }
-      .run
-      .map(const(conn.map(const(unit))))
+    .run
+    .map(const(conn.map(const(unit))))
   }
   >=> redirect(to: .account(), headersMiddleware: flash(.notice, "That teammate has been removed."))
 

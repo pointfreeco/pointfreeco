@@ -40,7 +40,7 @@ extension Client {
     insertTeamInvite: { _, _ in throw NoopError() },
     migrate: {},
     redeemEpisodeCredit: { _, _ in throw NoopError() },
-    removeTeammateUserIdFromSubscriptionId: { _, _ in throwE(NoopError()) },
+    removeTeammateUserIdFromSubscriptionId: { _, _ in throw NoopError() },
     sawUser: { _ in throwE(NoopError()) },
     updateEmailSettings: { _, _ in throwE(NoopError()) },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },

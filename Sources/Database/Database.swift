@@ -55,7 +55,7 @@ public struct Client {
   public var migrate: () async throws -> Void
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
-    (Models.User.ID, Models.Subscription.ID) -> EitherIO<Error, Prelude.Unit>
+    (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) -> EitherIO<Error, Prelude.Unit>
   public var updateEmailSettings:
     ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
@@ -116,8 +116,8 @@ public struct Client {
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
     migrate: @escaping () async throws -> Void,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
-    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) ->
-      EitherIO<Error, Prelude.Unit>,
+    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
+      throws -> Void,
     sawUser: @escaping (Models.User.ID) -> EitherIO<Error, Prelude.Unit>,
     updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<
       Error, Prelude.Unit

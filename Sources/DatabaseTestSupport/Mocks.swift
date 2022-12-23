@@ -44,7 +44,7 @@ extension Client {
     insertTeamInvite: { _, _ in .mock },
     migrate: {},
     redeemEpisodeCredit: { _, _ in },
-    removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
+    removeTeammateUserIdFromSubscriptionId: { _, _ in },
     sawUser: const(pure(unit)),
     updateEmailSettings: { _, _ in pure(unit) },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
