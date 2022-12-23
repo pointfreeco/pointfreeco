@@ -1,3 +1,4 @@
+import Dependencies
 import Models
 import PointFreeRouter
 
@@ -9,6 +10,8 @@ extension Episode {
 }
 
 func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.Reference {
+  @Dependency(\.siteRouter) var siteRouter
+
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -25,6 +28,8 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
 func reference(forCollection collection: Episode.Collection, additionalBlurb: String)
   -> Episode.Reference
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """

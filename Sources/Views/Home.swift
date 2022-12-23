@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -51,66 +52,72 @@ private func holidaySpecialCalloutView(
               Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]])
             ])
           ],
-          holidaySpecialContent
+          holidaySpecialContent()
         )
       )
     ),
   ]
 }
 
-let holidaySpecialContent: Node = .div(
-  attributes: [
-    .style(backgroundColor(.other("#D6FFE1"))),
-    .class([Class.padding([.mobile: [.all: 3]])]),
-  ],
-  .h4(
+func holidaySpecialContent() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
+  return .div(
     attributes: [
-      .class(
-        [
-          Class.pf.type.responsiveTitle4,
-          Class.padding([.mobile: [.bottom: 2]]),
-        ]
+      .style(backgroundColor(.other("#D6FFE1"))),
+      .class([Class.padding([.mobile: [.all: 3]])]),
+    ],
+    .h4(
+      attributes: [
+        .class(
+          [
+            Class.pf.type.responsiveTitle4,
+            Class.padding([.mobile: [.bottom: 2]]),
+          ]
+        )
+      ],
+      .a(
+        attributes: [
+          .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil)))
+        ],
+        "🎉 Holiday Subscription Special 🎉"
       )
-    ],
-    .a(
-      attributes: [
-        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil)))
-      ],
-      "🎉 Holiday Subscription Special 🎉"
-    )
-  ),
-  .p(
-    "Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
-    "their subscription for the first year! ",
-    .a(
-      attributes: [
-        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
-        .class([Class.pf.type.underlineLink]),
-      ],
-      "Act now"
     ),
-    " to get access to all past and future episodes of Point-Free. This offer will only last until ",
-    "the end of the year!"
-  ),
-  .p(
-    attributes: [
-      .class([Class.margin([.mobile: [.top: 3]])])
-    ],
-    .a(
+    .p(
+      "Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
+      "their subscription for the first year! ",
+      .a(
+        attributes: [
+          .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
+          .class([Class.pf.type.underlineLink]),
+        ],
+        "Act now"
+      ),
+      " to get access to all past and future episodes of Point-Free. This offer will only last until ",
+      "the end of the year!"
+    ),
+    .p(
       attributes: [
-        .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
-        .class([Class.pf.components.button(color: .black)]),
+        .class([Class.margin([.mobile: [.top: 3]])])
       ],
-      "Subscribe now"
+      .a(
+        attributes: [
+          .href(siteRouter.path(for: .discounts(code: "holiday-2019", nil))),
+          .class([Class.pf.components.button(color: .black)]),
+        ],
+        "Subscribe now"
+      )
     )
   )
-)
+}
 
 private func subscriberCalloutView(
   currentDate: Date,
   subscriberState: SubscriberState
 ) -> Node {
   guard subscriberState.isNonSubscriber else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return [
     divider,
@@ -164,6 +171,8 @@ private func episodesListView(episodes: ArraySlice<Episode>, currentDate: Date, 
 }
 
 private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return [
     divider,
     .gridRow(
@@ -197,6 +206,8 @@ private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: 
 
 private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .div(
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
@@ -226,6 +237,8 @@ private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergenc
 
 public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
 {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],

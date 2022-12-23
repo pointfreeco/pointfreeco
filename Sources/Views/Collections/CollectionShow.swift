@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -14,7 +15,9 @@ import TaggedTime
 // MARK: - HTML
 
 public func collectionShow(_ collection: Episode.Collection) -> Node {
-  [
+  @Dependency(\.siteRouter) var siteRouter
+
+  return [
     collectionNavigation(
       left: .a(
         attributes: [
@@ -86,7 +89,9 @@ private func sectionRow(
   collection: Episode.Collection,
   section: Episode.Collection.Section
 ) -> Node {
-  .div(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .div(
     attributes: [
       .class([
         Class.border.bottom,

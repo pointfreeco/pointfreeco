@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -82,6 +83,8 @@ private func menuAndLogoHeaderView(
   subscriberState: SubscriberState,
   currentRoute: SiteRoute?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     attributes: [
       .class([
@@ -145,6 +148,8 @@ private func headerLinks(
   subscriberState: SubscriberState,
   currentRoute: SiteRoute?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return [
     subscriberState.isNonSubscriber
       ? .a(

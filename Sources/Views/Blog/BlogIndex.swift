@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -59,6 +60,8 @@ private func oldBlogPostsView(_ posts: ArraySlice<BlogPost>) -> Node {
 }
 
 private func oldBlogPostView(_ post: BlogPost) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return [
     .div(
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],

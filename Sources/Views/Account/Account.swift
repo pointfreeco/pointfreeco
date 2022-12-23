@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -22,7 +23,7 @@ public func accountView(
     referAFriend(accountData: accountData),
     subscriptionOverview(accountData: accountData, currentDate: currentDate),
     creditsView(accountData: accountData, allEpisodes: allEpisodes),
-    logoutView,
+    logoutView(),
   ]
 
   return .gridRow(
@@ -67,6 +68,8 @@ private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> No
 
 private func subscribeCallout(_ subscriberState: SubscriberState) -> Node {
   guard !subscriberState.isActiveSubscriber else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return .p(
     "To get all past and future episodes, ",
@@ -115,6 +118,8 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
 }
 
 private func episodeLinkView(_ episode: Episode) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .a(
     attributes: [
       .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
@@ -135,6 +140,7 @@ private let titleRowView = Node.gridRow(
 )
 
 private func profileRowView(_ data: AccountData) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   let nameFields: Node = [
     .label(attributes: [.class([labelClass])], "Name"),
@@ -290,6 +296,9 @@ private func subscriptionOverview(accountData: AccountData, currentDate: Date) -
 
 private func privateRssFeed(accountData: AccountData) -> Node {
   guard accountData.subscriberState.isActiveSubscriber else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
+
   let user = accountData.currentUser
   let rssUrl = siteRouter.url(for: .account(.rss(salt: user.rssSalt)))
   let rssLink: Node = [
@@ -378,6 +387,8 @@ private func referAFriend(
     accountData.stripeSubscription?.isCancellable == true,
     !accountData.subscriberState.isEnterpriseSubscriber
   else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   let referralUrl = siteRouter.url(
     for: .subscribeConfirmation(
@@ -468,6 +479,8 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
   guard
     case let .owner(_, _, .some(enterpriseAccount), _) = data.subscriberState
   else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   let planRow = Node.gridRow(
     .gridColumn(
@@ -569,6 +582,8 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
 
 private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
   guard data.stripeSubscription != nil else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   var enterpriseShareLink: Node
   if case let .teammate(_, .some(enterpriseAccount), _) = data.subscriberState {
@@ -807,7 +822,9 @@ private func discountDescription(for discount: Stripe.Discount) -> String {
 }
 
 private func cancelAction(for subscription: Stripe.Subscription) -> Node {
-  .form(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .form(
     attributes: [
       .action(siteRouter.path(for: .account(.subscription(.cancel)))),
       .method(.post),
@@ -831,6 +848,8 @@ private func mainAction(
   for subscription: Stripe.Subscription,
   paymentMethod: Either<Card, PaymentMethod>?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   if subscription.isCanceling {
     return .form(
       attributes: [
@@ -955,6 +974,7 @@ private func subscriptionTeamRow(_ data: AccountData) -> Node {
 }
 
 private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   let teammateLabel =
     currentUser.id == teammate.id
@@ -999,6 +1019,8 @@ private func subscriptionInvitesRowView(_ invites: [TeamInvite]) -> Node {
 }
 
 private func inviteRowView(_ invite: TeamInvite) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 6],
@@ -1052,6 +1074,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   guard subscription.isRenewing else { return [] }
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   guard data.paymentMethod != nil
   else {
@@ -1154,7 +1178,6 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 }
 
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
-
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
@@ -1162,6 +1185,8 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
   let teammates = data.teammates
   let invitesRemaining = subscription.quantity - invites.count - teammates.count
   guard invitesRemaining > 0 else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -1215,6 +1240,8 @@ private func subscriptionPaymentInfoView(
   _ subscription: Stripe.Subscription,
   paymentMethod: Either<Card, PaymentMethod>?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   let paymentInfo: Node
   if let card = paymentMethod?.left {
     paymentInfo = [
@@ -1289,18 +1316,22 @@ public func format(cents: Cents<Int>) -> String {
     ?? NumberFormatter.localizedString(from: dollars, number: .currency)
 }
 
-private let logoutView = Node.gridRow(
-  .gridColumn(
-    sizes: [.mobile: 12],
-    .a(
-      attributes: [
-        .class([Class.pf.components.button(color: .black)]),
-        .href(siteRouter.path(for: .logout)),
-      ],
-      "Logout"
+private func logoutView() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .gridRow(
+    .gridColumn(
+      sizes: [.mobile: 12],
+      .a(
+        attributes: [
+          .class([Class.pf.components.button(color: .black)]),
+          .href(siteRouter.path(for: .logout)),
+        ],
+        "Logout"
+      )
     )
   )
-)
+}
 
 private let subscriptionInfoRowClass =
   Class.border.top

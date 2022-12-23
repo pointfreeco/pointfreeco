@@ -166,6 +166,8 @@ extension Snapshotting {
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)
   -> URLRequest
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   var headers: OrderedDictionary<String, [String?]> = [:]
 
   if basicAuth {

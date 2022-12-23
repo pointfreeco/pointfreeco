@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import Models
@@ -13,7 +14,7 @@ public func footerView(user: User?, year: Int) -> Node {
 
 private func footerInfoColumnsView(user: User?, year: Int) -> Node {
   return [
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView),
+    .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView()),
     linksColumnsView(currentUser: user),
     .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year)),
   ]
@@ -22,7 +23,7 @@ private func footerInfoColumnsView(user: User?, year: Int) -> Node {
 private func linksColumnsView(currentUser: User?) -> Node {
   return [
     .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView),
+    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView()),
   ]
 }
 
@@ -59,38 +60,44 @@ private func legalView(year: Int) -> Node {
   )
 }
 
-private let pointFreeView = Node.div(
-  attributes: [.class([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])],
-  .h4(
-    attributes: [.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])],
-    .a(
-      attributes: [.href(siteRouter.path(for: .home)), .class([Class.pf.colors.link.white])],
-      "Point-Free"
+private func pointFreeView() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .div(
+    attributes: [.class([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])],
+    .h4(
+      attributes: [.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])],
+      .a(
+        attributes: [.href(siteRouter.path(for: .home)), .class([Class.pf.colors.link.white])],
+        "Point-Free"
+      )
+    ),
+    .p(
+      attributes: [.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])],
+      "A video series on functional programming and the Swift programming language. Hosted by ",
+      .a(
+        attributes: [
+          .href(twitterRouter.url(for: .mbrandonw).absoluteString),
+          .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
+        ],
+        .raw("Brandon&nbsp;Williams")
+      ),
+      " and ",
+      .a(
+        attributes: [
+          .href(twitterRouter.url(for: .stephencelis).absoluteString),
+          .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
+        ],
+        .raw("Stephen&nbsp;Celis")
+      ),
+      "."
     )
-  ),
-  .p(
-    attributes: [.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])],
-    "A video series on functional programming and the Swift programming language. Hosted by ",
-    .a(
-      attributes: [
-        .href(twitterRouter.url(for: .mbrandonw).absoluteString),
-        .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
-      ],
-      .raw("Brandon&nbsp;Williams")
-    ),
-    " and ",
-    .a(
-      attributes: [
-        .href(twitterRouter.url(for: .stephencelis).absoluteString),
-        .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
-      ],
-      .raw("Stephen&nbsp;Celis")
-    ),
-    "."
   )
-)
+}
 
 private func contentColumnView(currentUser: User?) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .div(
     .h5(attributes: [.class([columnTitleClass])], "Content"),
     .ol(
@@ -119,61 +126,65 @@ private func contentColumnView(currentUser: User?) -> Node {
   )
 }
 
-private let moreColumnView = Node.div(
-  .h5(attributes: [.class([columnTitleClass])], "More"),
-  .ol(
-    attributes: [.class([Class.type.list.reset])],
-    .li(
-      .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
-    ),
-    .li(
-      .a(
-        attributes: [
-          .class([footerLinkClass]),
-          .href("http://hachyderm.io/@pointfreeco"),
-          .rel(.init(rawValue: "me")),
-        ], "Mastodon")
-    ),
-    .li(
-      attributes: [.class([Class.display.none])],
-      .a(
-        attributes: [
-          .class([footerLinkClass]),
-          .href("http://hachyderm.io/@mbrandonw"),
-          .rel(.init(rawValue: "me")),
-        ], "@mbrandonw")
-    ),
-    .li(
-      attributes: [.class([Class.display.none])],
-      .a(
-        attributes: [
-          .class([footerLinkClass]),
-          .href("http://hachyderm.io/@stephencelis"),
-          .rel(.init(rawValue: "me")),
-        ], "@stephencelis")
-    ),
-    .li(
-      .a(
-        attributes: [
-          .class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString),
-        ], "Twitter")
-    ),
-    .li(
-      .a(
-        attributes: [
-          .class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString),
-        ], "GitHub")
-    ),
-    .li(
-      .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
-    ),
-    .li(
-      .a(
-        attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))],
-        "Privacy Policy")
+private func moreColumnView() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
+  return .div(
+    .h5(attributes: [.class([columnTitleClass])], "More"),
+    .ol(
+      attributes: [.class([Class.type.list.reset])],
+      .li(
+        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
+      ),
+      .li(
+        .a(
+          attributes: [
+            .class([footerLinkClass]),
+            .href("http://hachyderm.io/@pointfreeco"),
+            .rel(.init(rawValue: "me")),
+          ], "Mastodon")
+      ),
+      .li(
+        attributes: [.class([Class.display.none])],
+        .a(
+          attributes: [
+            .class([footerLinkClass]),
+            .href("http://hachyderm.io/@mbrandonw"),
+            .rel(.init(rawValue: "me")),
+          ], "@mbrandonw")
+      ),
+      .li(
+        attributes: [.class([Class.display.none])],
+        .a(
+          attributes: [
+            .class([footerLinkClass]),
+            .href("http://hachyderm.io/@stephencelis"),
+            .rel(.init(rawValue: "me")),
+          ], "@stephencelis")
+      ),
+      .li(
+        .a(
+          attributes: [
+            .class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString),
+          ], "Twitter")
+      ),
+      .li(
+        .a(
+          attributes: [
+            .class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString),
+          ], "GitHub")
+      ),
+      .li(
+        .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
+      ),
+      .li(
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))],
+          "Privacy Policy")
+      )
     )
   )
-)
+}
 
 private let footerClass =
   Class.grid.row

@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -22,6 +23,7 @@ func respond<A, B>(
 )
   -> Middleware<HeadersOpen, ResponseEnded, A, Data>
 {
+  @Dependency(\.siteRouter) var siteRouter
 
   return { conn in
     var newLayoutData = layoutData(conn.data)

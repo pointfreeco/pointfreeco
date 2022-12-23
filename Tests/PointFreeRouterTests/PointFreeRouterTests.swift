@@ -1,4 +1,5 @@
 import CustomDump
+import Dependencies
 import Models
 import PointFreePrelude
 import PointFreeTestSupport
@@ -14,6 +15,8 @@ import XCTest
 #endif
 
 class PointFreeRouterTests: TestCase {
+  @Dependency(\.siteRouter) var siteRouter
+
   func testUpdateProfile() {
     let profileData = ProfileData(
       email: "blobby@blob.co",

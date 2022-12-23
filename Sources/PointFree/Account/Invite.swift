@@ -253,7 +253,7 @@ private func requireTeamInvite<A>(
           return conn.map(const(unit))
             |> writeStatus(.notFound)
             >=> respond(
-              view: { _ in inviteNotFoundView },
+              view: { _ in inviteNotFoundView() },
               layoutData: { data in
                 SimplePageLayoutData(
                   currentUser: nil,

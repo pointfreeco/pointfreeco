@@ -1,5 +1,6 @@
 import Ccmark
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import PointFreeRouter
@@ -117,6 +118,7 @@ func giftOption(
   plan: Gifts.Plan,
   episodeStats: EpisodeStats
 ) -> ChildOf<Tag.Ul> {
+  @Dependency(\.siteRouter) var siteRouter
 
   let cost: Int
   switch plan {

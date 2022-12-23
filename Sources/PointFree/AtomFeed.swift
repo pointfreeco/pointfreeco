@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Html
 import HttpPipeline
@@ -21,6 +22,8 @@ private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
 }
 
 var freeEpisodeRssChannel: RssChannel {
+  @Dependency(\.siteRouter) var siteRouter
+
   let description = """
     Point-Free is a video series about functional programming and the Swift programming language. Each episode \
     covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of \
@@ -82,6 +85,7 @@ private func items() -> [RssItem] {
 }
 
 private func item(episode: Episode) -> RssItem {
+  @Dependency(\.siteRouter) var siteRouter
 
   func title(episode: Episode) -> String {
     return episode.subscriberOnly

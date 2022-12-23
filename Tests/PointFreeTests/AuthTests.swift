@@ -13,6 +13,8 @@ import XCTest
 
 @MainActor
 class AuthIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.siteRouter) var siteRouter
+  
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record = true
@@ -100,6 +102,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 }
 
 class AuthTests: TestCase {
+  @Dependency(\.siteRouter) var siteRouter
+
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.record = true

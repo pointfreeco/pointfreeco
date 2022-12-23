@@ -12,7 +12,9 @@ import Prelude
 import Stripe 
 
 // NB: Deprecate remove soon: @available(*, deprecated)
-public let Current = Environment()
+public var Current: DependencyValues {
+  DependencyValues._current
+}
 
 public struct Environment {
   @Dependency(\.assets) public var assets

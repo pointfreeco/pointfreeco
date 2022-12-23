@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -189,6 +190,8 @@ private func loginOrRedeem(
   gift: Gift,
   currentUser: User?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   if currentUser == nil {
     return .gitHubLink(
       text: "Log in to redeem",

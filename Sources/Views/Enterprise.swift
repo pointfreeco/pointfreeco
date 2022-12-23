@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import Models
@@ -7,6 +8,8 @@ import Styleguide
 import UrlFormEncoding
 
 public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   let loggedOutView: Node = [
     .p(
       attributes: [.class([Class.pf.colors.fg.green, Class.padding([.mobile: [.bottom: 3]])])],

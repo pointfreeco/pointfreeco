@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -17,6 +18,8 @@ public func collectionSection(
   _ collection: Episode.Collection,
   _ section: Episode.Collection.Section
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   let currentIndex = collection.sections.firstIndex(where: { $0 == section })
   let previousSection = currentIndex.flatMap {
     $0 == collection.sections.startIndex
@@ -116,7 +119,9 @@ private func coreLesson(
   section: Episode.Collection.Section,
   lesson: Episode.Collection.Section.Lesson
 ) -> Node {
-  .gridColumn(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
       .style(margin(top: .px(4)))
@@ -195,6 +200,8 @@ private func relatedItem(_ relatedItem: Episode.Collection.Section.Related) -> N
 }
 
 private func relatedItemContent(_ content: Episode.Collection.Section.Related.Content) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   switch content {
   case let .collections(collections):
     return .fragment(
@@ -275,6 +282,9 @@ private func sectionNavigation(
   nextSection: Episode.Collection.Section?
 ) -> Node {
   guard previousSection != nil || nextSection != nil else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
+  
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [

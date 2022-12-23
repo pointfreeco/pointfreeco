@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import EmailAddress
 import Foundation
 import FunctionalCss
@@ -24,6 +25,8 @@ public func subscriptionConfirmation(
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return .form(
     attributes: [
       .action(siteRouter.path(for: .subscribe())),
@@ -206,6 +209,7 @@ private func header(
   coupon: Coupon?,
   useRegionalDiscount: Bool
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   let header: Node = [
     .gridColumn(
@@ -811,6 +815,8 @@ private func total(
   referrer: User?,
   useRegionalDiscount: Bool
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   let discount = coupon?.discount(for:) ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
 

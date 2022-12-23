@@ -443,6 +443,7 @@ var package = Package(
         "Styleguide",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "Prelude", package: "swift-prelude"),

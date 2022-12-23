@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import Models
@@ -41,6 +42,8 @@ public func minimalNavView(
   subscriberState: SubscriberState,
   currentRoute: SiteRoute?
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .div(
     attributes: [.class([newNavBarClass(for: style)])],
     .div(
@@ -126,7 +129,9 @@ private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: S
 }
 
 private func collectionsLinkView(style: NavStyle.MinimalStyle) -> Node {
-  .a(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .a(
     attributes: [
       .class([navLinkClass(for: style)]),
       .href(siteRouter.path(for: .collections())),
@@ -135,29 +140,39 @@ private func collectionsLinkView(style: NavStyle.MinimalStyle) -> Node {
 }
 
 private func blogLinkView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .a(
     attributes: [.href(siteRouter.path(for: .blog())), .class([navLinkClass(for: style)])], "Blog")
 }
 
 private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .a(
     attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClass(for: style)])],
     "Pricing")
 }
 
 private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .a(
     attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClass(for: style)])], "Gifts"
   )
 }
 
 private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .a(
     attributes: [.href(siteRouter.path(for: .account())), .class([navLinkClass(for: style)])],
     "Account")
 }
 
 private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return .gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),

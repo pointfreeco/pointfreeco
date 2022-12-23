@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -64,6 +65,8 @@ private let combos =
   .filter { $0 != $1 }
 
 private func collectionItem(collection: Episode.Collection, index: Int) -> ChildOf<Tag.Ul> {
+  @Dependency(\.siteRouter) var siteRouter
+
   let (lower, upper) = combos[index % combos.count]
 
   return .li(

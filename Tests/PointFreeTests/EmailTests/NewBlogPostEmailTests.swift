@@ -1,3 +1,4 @@
+import Dependencies
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
@@ -20,6 +21,8 @@ import XCTest
 #endif
 
 class NewBlogPostEmailTests: TestCase {
+  @Dependency(\.siteRouter) var siteRouter
+
   override func setUp() {
     super.setUp()
     //    SnapshotTesting.isRecording=true

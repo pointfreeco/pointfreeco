@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -80,7 +81,9 @@ public struct EpisodePageData {
 public func episodePageView(
   episodePageData data: EpisodePageData
 ) -> Node {
-  [
+  @Dependency(\.siteRouter) var siteRouter
+
+  return [
     zip(data.collection, data.section)
       .map { collection, section in
         collectionNavigation(
@@ -180,7 +183,9 @@ private func sequentialEpisodes(
   section: Episode.Collection.Section,
   type: SequentialEpisodeType
 ) -> Node {
-  .fragment(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .fragment(
     episodes.map { episode in
       .gridRow(
         attributes: [
@@ -252,7 +257,9 @@ private func collectionHeaderRow(
   collection: Episode.Collection,
   section: Episode.Collection.Section
 ) -> Node {
-  Node.gridRow(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .gridRow(
     attributes: [
       .class([
         Class.padding([.mobile: [.leftRight: 2]]),
@@ -313,6 +320,8 @@ private func collectionFooterRow(
     let currentIndex = collection.sections.firstIndex(where: { $0 == section }),
     currentIndex != collection.sections.index(before: collection.sections.endIndex)
   else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   let nextSection = collection.sections[collection.sections.index(after: currentIndex)]
 
@@ -383,6 +392,8 @@ private func sequentialEpisodeRow(
   type: SequentialEpisodeType
 ) -> Node {
   guard let episode = episode else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return [
     .gridRow(
@@ -1016,6 +1027,7 @@ private func downloadsView(episode: Episode) -> Node {
 }
 
 private func creditSubscribeCallout(data: EpisodePageData) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   return callout(
     bar: calloutBar(icon: unlockSvgBase64, "You unlocked this episode with a credit."),
@@ -1034,8 +1046,9 @@ private func creditSubscribeCallout(data: EpisodePageData) -> Node {
 }
 
 private func subscribeCallout(data: EpisodePageData) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
-  callout(
+  return callout(
     bar: calloutBar(icon: lockSvgBase64, "This episode is for subscribers only."),
     title: "Subscribe to Point-Free",
     body: "Access this episode, plus all past and future episodes when you become a subscriber.",
@@ -1073,8 +1086,9 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
 }
 
 private func subscribeFreeCallout(data: EpisodePageData) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
-  callout(
+  return callout(
     bar: calloutBar(icon: unlockSvgBase64, "This episode is free for everyone."),
     title: "Subscribe to Point-Free",
     body: "Access all past and future episodes when you become a subscriber.",
@@ -1112,7 +1126,9 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
 }
 
 private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
-  callout(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return callout(
     icon: circleLockSvgBase64,
     title: "Unlock This Episode",
     body:
@@ -1126,7 +1142,9 @@ private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
 }
 
 private func unlockLoggedInCallout(user: User, data: EpisodePageData) -> Node {
-  callout(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return callout(
     icon: circleLockSvgBase64,
     title: "Unlock This Episode",
     body: """

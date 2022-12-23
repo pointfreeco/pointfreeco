@@ -19,7 +19,7 @@ let showEpisodeCreditsMiddleware:
     Data
   > =
     writeStatus(.ok)
-    >=> respond({ _ in showEpisodeCreditsView })
+    >=> respond({ _ in showEpisodeCreditsView() })
 
 let redeemEpisodeCreditMiddleware =
   filterMap(
