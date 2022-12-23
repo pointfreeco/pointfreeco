@@ -99,9 +99,7 @@ private func fetchInvoices<A>(
 }
 
 private func fetchInvoice(id: Stripe.Invoice.ID) -> IO<Stripe.Invoice?> {
-  return Current.stripe.fetchInvoice(id)
-    .run
-    .map(\.right)
+  IO { try? await Current.stripe.fetchInvoice(id) }
 }
 
 private let invoiceError = """
