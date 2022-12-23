@@ -79,22 +79,24 @@ private func fetchInvoices<A>(
   return { conn in
     let subscription = conn.data.first
 
-    return Current.stripe.fetchInvoices(subscription.customer.either(id, \.id))
-      .withExcept(notifyError(subject: "Couldn't load invoices"))
-      .run
-      .flatMap {
-        switch $0 {
-        case let .right(invoices):
-          return conn.map(const(subscription .*. invoices .*. conn.data.second))
-            |> middleware
-        case .left:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.error, invoiceError)
-            )
-        }
+    return EitherIO {
+      try await Current.stripe.fetchInvoices(subscription.customer.id)
+    }
+    .withExcept(notifyError(subject: "Couldn't load invoices"))
+    .run
+    .flatMap {
+      switch $0 {
+      case let .right(invoices):
+        return conn.map(const(subscription .*. invoices .*. conn.data.second))
+        |> middleware
+      case .left:
+        return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.error, invoiceError)
+        )
       }
+    }
   }
 }
 

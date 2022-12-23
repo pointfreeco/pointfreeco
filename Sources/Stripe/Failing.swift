@@ -15,7 +15,7 @@ extension Client {
     fetchCustomer: unimplemented("Stripe.Client.fetchCustomer"),
     fetchCustomerPaymentMethods: unimplemented("Stripe.Client.fetchCustomerPaymentMethods"),
     fetchInvoice: unimplemented("Stripe.Client.fetchInvoice"),
-    fetchInvoices: { _ in .failing("Stripe.Client.fetchInvoices") },
+    fetchInvoices: unimplemented("Stripe.Client.fetchInvoices"),
     fetchPaymentIntent: { _ in .failing("Stripe.Client.fetchPaymentIntent") },
     fetchPaymentMethod: { _ in .failing("Stripe.Client.fetchPaymentMethod") },
     fetchPlans: { .failing("Stripe.Client.fetchPlans") },

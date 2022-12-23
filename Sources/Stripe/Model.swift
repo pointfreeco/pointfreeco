@@ -5,6 +5,10 @@ import TaggedMoney
 
 public typealias Expandable<Field: Identifiable> = Either<Field.ID, Field>
 
+extension Either where Right: Identifiable, Left == Right.ID {
+  public var id: Right.ID { self.either(id, \.id) }
+}
+
 public typealias StripeID<Field> = Tagged<Field, String>
 
 public struct Card: Codable, Equatable, Identifiable {
