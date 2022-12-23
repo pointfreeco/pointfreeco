@@ -37,7 +37,7 @@ final class ChangeTests: TestCase {
     Current.stripe.fetchSubscription = { _ in .individualMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -53,7 +53,7 @@ final class ChangeTests: TestCase {
       Current.stripe.fetchSubscription = { _ in .individualYearly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -69,7 +69,7 @@ final class ChangeTests: TestCase {
       Current.stripe.fetchSubscription = { _ in .teamMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -85,7 +85,7 @@ final class ChangeTests: TestCase {
       Current.stripe.fetchSubscription = { _ in .individualYearly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -140,7 +140,7 @@ final class ChangeTests: TestCase {
       Current.stripe.fetchSubscription = { _ in .teamMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
       var pricing = Pricing.teamMonthly
       pricing.quantity -= 1
