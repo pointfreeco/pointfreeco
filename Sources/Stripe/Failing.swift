@@ -25,9 +25,7 @@ extension Client {
     invoiceCustomer: unimplemented("Stripe.Client.invoiceCustomer"),
     updateCustomer: unimplemented("Stripe.Client.updateCustomer"),
     updateCustomerBalance: unimplemented("Stripe.Client.updateCustomerBalance"),
-    updateCustomerExtraInvoiceInfo: { _, _ in
-      .failing("Stripe.Client.updateCustomerExtraInvoiceInfo")
-    },
+    updateCustomerExtraInvoiceInfo: unimplemented("Stripe.Client.updateCustomerExtraInvoiceInfo"),
     updateSubscription: { _, _, _ in .failing("Stripe.Client.updateSubscription") },
     js: ""
   )
