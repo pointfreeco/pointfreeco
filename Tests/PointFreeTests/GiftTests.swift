@@ -207,10 +207,9 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.stripe.createCustomer = { _, _, _, _, amount in
       credit = amount
-      return pure(
-        update(.mock) {
-          $0.invoiceSettings = .init(defaultPaymentMethod: nil)
-        })
+      return update(.mock) {
+        $0.invoiceSettings = .init(defaultPaymentMethod: nil)
+      }
     }
     Current.stripe.createSubscription = { _, _, _, _ in
       pure(.individualMonthly)

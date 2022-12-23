@@ -10,7 +10,7 @@ extension Client {
     cancelSubscription: { _, _ in .canceling },
     confirmPaymentIntent: { _ in .succeeded },
     createCoupon: { _, _, _, _ in .mock },
-    createCustomer: { _, _, _, _, _ in pure(.mock) },
+    createCustomer: { _, _, _, _, _ in .mock },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
     createSubscription: { _, _, _, _ in pure(.mock) },
     deleteCoupon: const(pure(unit)),

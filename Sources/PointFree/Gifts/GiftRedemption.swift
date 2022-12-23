@@ -110,13 +110,15 @@ private func redeemGift(
       }
   } else {
     let plan: Plan.ID = gift.monthsFree < 12 ? .monthly : .yearly
-    return Current.stripe.createCustomer(
-      nil,
-      user.id.rawValue.uuidString,
-      user.email,
-      nil,
-      -discount
-    )
+    return EitherIO {
+      try await Current.stripe.createCustomer(
+        nil,
+        user.id.rawValue.uuidString,
+        user.email,
+        nil,
+        -discount
+      )
+    }
     .flatMap { customer in
       Current.stripe.createSubscription(customer.id, plan, 1, nil)
         .flatMap { stripeSubscription in

@@ -7,7 +7,7 @@ extension Client {
     cancelSubscription: unimplemented("Stripe.Client.cancelSubscription"),
     confirmPaymentIntent: unimplemented("Stripe.Client.confirmPaymentIntent"),
     createCoupon: unimplemented("Stripe.Client.createCoupon"),
-    createCustomer: { _, _, _, _, _ in .failing("Stripe.Client.createCustomer") },
+    createCustomer: unimplemented("Stripe.Client.createCustomer"),
     createPaymentIntent: { _ in .failing("Stripe.Client.createPaymentIntent") },
     createSubscription: { _, _, _, _ in .failing("Stripe.Client.createSubscription") },
     deleteCoupon: { _ in .failing("Stripe.Client.deleteCoupon") },

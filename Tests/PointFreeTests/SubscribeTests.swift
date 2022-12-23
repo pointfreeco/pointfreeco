@@ -79,7 +79,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -115,7 +115,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -266,7 +266,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -333,7 +333,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -372,7 +372,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
       return pure(
@@ -434,7 +434,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
       pure(
@@ -546,7 +546,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -641,7 +641,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
@@ -672,7 +672,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var customer = Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
-    Current.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in customer }
     Current.stripe.fetchPaymentMethod = {
       pure(
         PaymentMethod(
@@ -799,7 +799,7 @@ final class SubscribeTests: TestCase {
   func testCreateCustomerFailure() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in throw unit }
 
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))

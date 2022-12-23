@@ -40,13 +40,15 @@ private func subscribe(
     ? -9_00
     : -18_00
 
-  let stripeSubscription = Current.stripe.createCustomer(
-    subscribeData.paymentMethodID,
-    user.id.rawValue.uuidString,
-    user.email,
-    nil,
-    subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
-  )
+  let stripeSubscription = EitherIO {
+    try await Current.stripe.createCustomer(
+      subscribeData.paymentMethodID,
+      user.id.rawValue.uuidString,
+      user.email,
+      nil,
+      subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
+    )
+  }
   .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
     Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
       .map { ($0, customer) }
