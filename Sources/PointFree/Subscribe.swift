@@ -97,7 +97,7 @@ private func subscribe(
       .map {
         Current.stripe
           .updateCustomerBalance(
-            $0.stripeSubscription.customer.either(id, \.id),
+            $0.stripeSubscription.customer.id,
             ($0.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
           )
           .flatMap(const(sendReferralEmail(to: $0.user)))
@@ -109,7 +109,7 @@ private func subscribe(
     let updateReferredBalance =
       referrer != nil && subscribeData.pricing.interval == .month
       ? Current.stripe
-        .updateCustomerBalance(stripeSubscription.customer.either(id, \.id), referredDiscount)
+        .updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
         .map(const(unit))
         .run.parallel
       : pure(.right(unit))

@@ -72,7 +72,7 @@ private func updateProfileMiddlewareHandler(
     updateFlash = flash(.notice, "We've updated your profile!")
   }
 
-  let customerId = subscription?.customer.either(id, \.id)
+  let customerId = subscription?.customer.id
   let updateCustomerExtraInvoiceInfo =
     zip(
       customerId,

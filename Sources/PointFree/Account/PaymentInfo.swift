@@ -55,22 +55,22 @@ let updatePaymentInfoMiddleware =
   <| { conn in
     let (subscription, _, paymentMethodID) = lower(conn.data)
 
-    let customer = subscription.customer.either(id, \.id)
+    let customer = subscription.customer.id
 
-    return EitherIO { try await Current.stripe.attachPaymentMethod(paymentMethodID, customer) }
-      .flatMap {
-        Current.stripe.updateCustomer(customer, $0.id)
-      }
-      .run
-      .flatMap {
-        conn
-          |> redirect(
-            to: .account(.paymentInfo()),
-            headersMiddleware: $0.isLeft
-              ? flash(.error, genericPaymentInfoError)
-              : flash(.notice, "Your payment information has been updated.")
-          )
-      }
+    return EitherIO {
+      let paymentMethod = try await Current.stripe.attachPaymentMethod(paymentMethodID, customer)
+      _ = try await Current.stripe.updateCustomer(customer, paymentMethod.id)
+    }
+    .run
+    .flatMap {
+      conn
+        |> redirect(
+          to: .account(.paymentInfo()),
+          headersMiddleware: $0.isLeft
+            ? flash(.error, genericPaymentInfoError)
+            : flash(.notice, "Your payment information has been updated.")
+        )
+    }
   }
 
 private let requireUserAndPaymentMethod:

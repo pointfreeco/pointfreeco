@@ -112,5 +112,5 @@ private let invoiceError = """
 private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, User, Stripe.Invoice>)
   -> Bool
 {
-  return get1(data).customer.either(id, \.id) == get3(data).customer
+  return get1(data).customer.id == get3(data).customer
 }
