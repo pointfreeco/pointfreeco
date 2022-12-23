@@ -111,12 +111,14 @@ private func sendEmail(
   let newEpisodeEmails = users.map { user in
     lift(IO { newEpisodeEmail((episode, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
       .flatMap { nodes in
-        sendEmail(
-          to: [user.email],
-          subject: "\(subjectPrefix)New Point-Free Episode: \(episode.fullTitle)",
-          unsubscribeData: (user.id, .newEpisode),
-          content: inj2(nodes)
-        )
+        EitherIO {
+          try await sendEmail(
+            to: [user.email],
+            subject: "\(subjectPrefix)New Point-Free Episode: \(episode.fullTitle)",
+            unsubscribeData: (user.id, .newEpisode),
+            content: inj2(nodes)
+          )
+        }
         .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
       }
   }
@@ -124,21 +126,23 @@ private func sendEmail(
   // An email to send to admins once all user emails are sent
   let newEpisodeEmailReport = sequence(newEpisodeEmails.map(\.run))
     .flatMap { results in
-      sendEmail(
-        to: adminEmails,
-        subject: "New episode email finished sending!",
-        content: inj2(
-          adminEmailReport("New episode")(
-            (
-              zip(users, results)
-                .filter(second >>> \.isLeft)
-                .map(first),
+      EitherIO {
+        try await sendEmail(
+          to: adminEmails,
+          subject: "New episode email finished sending!",
+          content: inj2(
+            adminEmailReport("New episode")(
+              (
+                zip(users, results)
+                  .filter(second >>> \.isLeft)
+                  .map(first),
 
-              results.count
+                results.count
+              )
             )
           )
         )
-      )
+      }
       .run
     }
 

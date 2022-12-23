@@ -227,12 +227,13 @@ private func fetchStripeSubscription<A>(
 private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscription)
   -> EitherIO<Error, SendEmailResponse>
 {
-
-  return sendEmail(
-    to: [owner.email],
-    subject: "Your subscription has been canceled",
-    content: inj2(cancelEmailView((owner, subscription)))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [owner.email],
+      subject: "Your subscription has been canceled",
+      content: inj2(cancelEmailView((owner, subscription)))
+    )
+  }
 }
 
 let cancelEmailView =
@@ -281,12 +282,13 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
 private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
   -> EitherIO<Error, SendEmailResponse>
 {
-
-  return sendEmail(
-    to: [owner.email],
-    subject: "Your subscription has been reactivated",
-    content: inj2(reactivateEmailView((owner, subscription)))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [owner.email],
+      subject: "Your subscription has been reactivated",
+      content: inj2(reactivateEmailView((owner, subscription)))
+    )
+  }
 }
 
 let reactivateEmailView =

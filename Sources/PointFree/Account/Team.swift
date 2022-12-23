@@ -83,9 +83,7 @@ let removeTeammateMiddleware =
       try await Current.database
         .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
 
-      // Fire-and-forget emails to owner and teammate
-      sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
-        .run({ _ in })
+      try await sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
     }
     .run
     .map(const(conn.map(const(unit))))
@@ -101,27 +99,22 @@ private let requireTeammate: MT<Tuple2<User.ID, User>, Tuple2<User, User>> = fil
   or: redirect(to: .account(), headersMiddleware: flash(.error, "Could not find that teammate."))
 )
 
-private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parallel<Prelude.Unit> {
+private func sendEmailsForTeammateRemoval(owner: User, teammate: User) async throws {
+  guard owner.id != teammate.id
+  else { return }
 
-  guard owner.id != teammate.id else {
-    return pure(unit)
-  }
-
-  return zip2(
-    parallel(
-      sendEmail(
-        to: [teammate.email],
-        subject: "You have been removed from \(owner.displayName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView(.teamOwner(owner)))
-      )
-      .run),
-    parallel(
-      sendEmail(
-        to: [owner.email],
-        subject: "Your teammate \(teammate.displayName) has been removed",
-        content: inj2(teammateRemovedEmailView((owner, teammate)))
-      )
-      .run)
+  async let response1 = sendEmail(
+    to: [teammate.email],
+    subject: "You have been removed from \(owner.displayName)’s Point-Free team",
+    content: inj2(youHaveBeenRemovedEmailView(.teamOwner(owner)))
   )
-  .map(const(unit))
+
+  async let response2 = sendEmail(
+    to: [owner.email],
+    subject: "Your teammate \(teammate.displayName) has been removed",
+    content: inj2(teammateRemovedEmailView((owner, teammate)))
+  )
+
+  // Fire-and-forget emails to owner and teammate
+  _ = try await (response1, response2)
 }

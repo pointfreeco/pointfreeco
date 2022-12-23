@@ -153,12 +153,14 @@ private func sendEmail(
   let newBlogPostEmails = users.map { user in
     lift(IO { newBlogPostEmail((post, subscriberAnnouncement, nonsubscriberAnnouncement, user)) })
       .flatMap { nodes in
-        sendEmail(
-          to: [user.email],
-          subject: "\(subjectPrefix)Point-Free Pointer: \(post.title)",
-          unsubscribeData: (user.id, .newBlogPost),
-          content: inj2(nodes)
-        )
+        EitherIO {
+          try await sendEmail(
+            to: [user.email],
+            subject: "\(subjectPrefix)Point-Free Pointer: \(post.title)",
+            unsubscribeData: (user.id, .newBlogPost),
+            content: inj2(nodes)
+          )
+        }
         .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
       }
   }
@@ -166,21 +168,23 @@ private func sendEmail(
   // An email to send to admins once all user emails are sent
   let newBlogPostEmailReport = sequence(newBlogPostEmails.map(\.run))
     .flatMap { results in
-      sendEmail(
-        to: adminEmails,
-        subject: "New blog post email finished sending!",
-        content: inj2(
-          newBlogPostEmailAdminReportEmail(
-            (
-              zip(users, results)
-                .filter(second >>> \.isLeft)
-                .map(first),
+      EitherIO {
+        try await sendEmail(
+          to: adminEmails,
+          subject: "New blog post email finished sending!",
+          content: inj2(
+            newBlogPostEmailAdminReportEmail(
+              (
+                zip(users, results)
+                  .filter(second >>> \.isLeft)
+                  .map(first),
 
-              results.count
+                results.count
+              )
             )
           )
         )
-      )
+      }
       .run
     }
 

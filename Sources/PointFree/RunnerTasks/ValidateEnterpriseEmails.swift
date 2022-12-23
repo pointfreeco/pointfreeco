@@ -25,7 +25,7 @@ private func validate(enterpriseEmails: [EnterpriseEmail]) -> EitherIO<Error, [V
 
 private func validate(enterpriseEmail: EnterpriseEmail) -> Parallel<ValidationResult> {
 
-  return Current.mailgun.validate(enterpriseEmail.email)
+  return EitherIO { try await Current.mailgun.validate(enterpriseEmail.email) }
     .flatMap { validation in
       validateSubscription(validation: validation, enterpriseEmail: enterpriseEmail)
         .map(const(validation))
@@ -76,12 +76,14 @@ private func notifyUserSubscriptionWasRemoved(
     try await Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
   }
   .flatMap { enterpriseAccount in
-    sendEmail(
-      to: [user.email],
-      subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
-      content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
-    )
-    .map(const(unit))
+    EitherIO {
+      _ = try await sendEmail(
+        to: [user.email],
+        subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
+        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
+      )
+      return unit
+    }
   }
 }
 

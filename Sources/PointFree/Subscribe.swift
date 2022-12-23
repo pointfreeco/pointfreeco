@@ -192,12 +192,13 @@ private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> Ei
 }
 
 private func sendReferralEmail(to referrer: User) -> EitherIO<Error, SendEmailResponse> {
-
-  sendEmail(
-    to: [referrer.email],
-    subject: "You just got one month free!",
-    content: inj2(referralEmailView(unit))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [referrer.email],
+      subject: "You just got one month free!",
+      content: inj2(referralEmailView(unit))
+    )
+  }
 }
 
 private func validateQuantity(_ pricing: Pricing) -> Bool {

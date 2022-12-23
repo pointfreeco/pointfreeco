@@ -244,15 +244,13 @@ private func sendEnterpriseInvitation<Z>(
       request.email.rawValue, with: Current.envVars.appSecret),
       let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)
     {
-
-      sendEmail(
-        to: [request.email],
-        subject: "You’re invited to join the \(account.companyName) team on Point-Free",
-        content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
-      )
-      .run
-      .parallel
-      .run({ _ in })
+      Task {
+        _ = try await sendEmail(
+          to: [request.email],
+          subject: "You’re invited to join the \(account.companyName) team on Point-Free",
+          content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
+        )
+      }
       return conn
         |> middleware
     } else {

@@ -73,12 +73,13 @@ private func handleFailedPayment(
 private func sendPastDueEmail(to owner: User)
   -> EitherIO<Error, SendEmailResponse>
 {
-
-  return sendEmail(
-    to: [owner.email],
-    subject: "Your subscription is past-due",
-    content: inj2(pastDueEmailView(unit))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [owner.email],
+      subject: "Your subscription is past-due",
+      content: inj2(pastDueEmailView(unit))
+    )
+  }
 }
 
 let pastDueEmailView =

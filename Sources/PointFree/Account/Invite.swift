@@ -108,12 +108,14 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
             .run
             .flatMap { errorOrInviter in
               errorOrInviter.right.map { inviter in
-                sendEmail(
-                  to: [inviter.email],
-                  subject:
-                    "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                  content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
-                )
+                EitherIO {
+                  try await sendEmail(
+                    to: [inviter.email],
+                    subject:
+                      "\(currentUser.displayName) has accepted your Point-Free team invitation!",
+                    content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
+                  )
+                }
                 .run
                 .map(const(unit))
               }
@@ -258,12 +260,13 @@ private func requireTeamInvite<A>(
 func sendInviteEmail(
   invite: TeamInvite, inviter: User
 ) -> EitherIO<Error, SendEmailResponse> {
-
-  return sendEmail(
-    to: [invite.email],
-    subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    content: inj2(teamInviteEmailView((inviter, invite)))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [invite.email],
+      subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
+      content: inj2(teamInviteEmailView((inviter, invite)))
+    )
+  }
 }
 
 private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User> {

@@ -60,15 +60,13 @@ private func updateProfileMiddlewareHandler(
   let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
   if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
     updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
-    parallel(
-      sendEmail(
+    Task {
+      _ = try await sendEmail(
         to: [user.email],
         subject: "Email change confirmation",
         content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
       )
-      .run
-    )
-    .run({ _ in })
+    }
   } else {
     // TODO: why is unicode ‘ not encoded correctly?
     updateFlash = flash(.notice, "We've updated your profile!")
@@ -162,11 +160,13 @@ let confirmEmailChangeMiddleware:
     parallel(
       EitherIO { try await Current.database.fetchUserById(userId) }
         .flatMap { user in
-          sendEmail(
-            to: [newEmailAddress],
-            subject: "Email change confirmation",
-            content: inj2(emailChangedEmailView((user, newEmailAddress)))
-          )
+          EitherIO {
+            try await sendEmail(
+              to: [newEmailAddress],
+              subject: "Email change confirmation",
+              content: inj2(emailChangedEmailView((user, newEmailAddress)))
+            )
+          }
         }
         .run
     )

@@ -120,8 +120,8 @@ extension EnvVars {
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
-    validate: const(pure(.init(mailboxVerification: true)))
+    sendEmail: { _ in SendEmailResponse(id: "deadbeef", message: "success!") },
+    validate: { _ in Validation(mailboxVerification: true) }
   )
 }
 
