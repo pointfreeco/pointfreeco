@@ -24,7 +24,7 @@ extension Client {
     fetchPlans: { .mock([.mock]) },
     fetchPlan: { _ in .mock },
     fetchSubscription: { _ in .mock },
-    fetchUpcomingInvoice: const(pure(.upcoming)),
+    fetchUpcomingInvoice: { _ in .upcoming },
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
     updateCustomer: { _, _ in pure(.mock) },
     updateCustomerBalance: { _, cents in pure(update(.mock) { $0.balance = cents }) },

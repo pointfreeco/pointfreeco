@@ -49,9 +49,12 @@ private func fetchAccountData<I>(
 
   let upcomingInvoice =
     stripeSubscription
-    .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }
-    .map(\.customer.id)
-    .flatMap(Current.stripe.fetchUpcomingInvoice)
+    .flatMap { stripeSubscription in
+      EitherIO {
+        guard stripeSubscription.isRenewing else { throw unit }
+        return try await Current.stripe.fetchUpcomingInvoice(stripeSubscription.customer.id)
+      }
+    }
 
   let paymentMethod: EitherIO<Error, Either<Card, PaymentMethod>?> =
     stripeSubscription
