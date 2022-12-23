@@ -3,7 +3,7 @@ import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
-    attachPaymentMethod: { _, _ in .failing("Stripe.Client.attachPaymentMethod") },
+    attachPaymentMethod: unimplemented("Stripe.Client.attachPaymentMethod"),
     cancelSubscription: { _, _ in .failing("Stripe.Client.cancelSubscription") },
     confirmPaymentIntent: { _ in .failing("Stripe.Client.confirmPaymentIntent") },
     createCoupon: { _, _, _, _ in .failing("Stripe.Client.createCoupon") },

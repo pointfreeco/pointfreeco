@@ -14,7 +14,7 @@ import UrlFormEncoding
 #endif
 
 public struct Client {
-  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) -> EitherIO<Error, PaymentMethod>
+  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod
   public var cancelSubscription:
     (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
   public var confirmPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
@@ -50,9 +50,7 @@ public struct Client {
   public var js: String
 
   public init(
-    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) -> EitherIO<
-      Error, PaymentMethod
-    >,
+    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod,
     cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
       Error, Subscription
     >,
@@ -149,7 +147,8 @@ extension Client {
   public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
       attachPaymentMethod: {
-        runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
+        try await runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
+          .performAsync()
       },
       cancelSubscription: {
         runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
