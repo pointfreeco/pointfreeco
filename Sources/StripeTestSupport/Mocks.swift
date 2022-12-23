@@ -22,7 +22,7 @@ extension Client {
     fetchPaymentIntent: { _ in .succeeded },
     fetchPaymentMethod: { _ in .mock },
     fetchPlans: { .mock([.mock]) },
-    fetchPlan: const(pure(.mock)),
+    fetchPlan: { _ in .mock },
     fetchSubscription: const(pure(.mock)),
     fetchUpcomingInvoice: const(pure(.upcoming)),
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
