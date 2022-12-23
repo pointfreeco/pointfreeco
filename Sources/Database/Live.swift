@@ -1016,7 +1016,7 @@ extension Client {
         .get()
       },
       upsertUser: { envelope, email, now in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "users"
           ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
@@ -1032,7 +1032,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Models.User.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase)
       }
     )
   }

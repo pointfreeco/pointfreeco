@@ -52,6 +52,6 @@ extension Client {
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },
     updateUser: { _, _, _, _, _ in },
-    upsertUser: { _, _, _ in pure(.some(.mock)) }
+    upsertUser: { _, _, _ in .mock }
   )
 }

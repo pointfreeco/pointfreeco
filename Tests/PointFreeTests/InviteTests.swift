@@ -268,7 +268,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
 
     let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
 
     var stripeSubscription = Stripe.Subscription.teamYearly
     stripeSubscription.quantity = 2

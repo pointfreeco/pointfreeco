@@ -16,7 +16,6 @@ import XCTest
 final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() async throws {
     let userA = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     let userB = try await Current.database.fetchUserById(userA.id)
     XCTAssertEqual(userA.id, userB.id)
     XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)

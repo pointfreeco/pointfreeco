@@ -64,8 +64,8 @@ public struct Client {
   public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
   public var updateUser:
     (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async throws -> Void
-  public var upsertUser:
-    (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
+  public var upsertUser: (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
+    Models.User
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async throws ->
@@ -122,9 +122,8 @@ public struct Client {
     updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
     updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async
       throws -> Void,
-    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<
-      Error, Models.User?
-    >
+    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
+      Models.User
   ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createEnterpriseAccount = createEnterpriseAccount
@@ -183,17 +182,14 @@ public struct Client {
   public func registerUser(
     withGitHubEnvelope envelope: GitHubUserEnvelope,
     email: EmailAddress,
-    now: () -> Date
-  ) -> EitherIO<Error, Models.User?> {
+    now: @escaping () -> Date
+  ) -> EitherIO<Error, Models.User?> { // TODO: non-optional
 
-    self.upsertUser(envelope, email, now)
-      .flatMap { optionalUser in
-        return EitherIO {
-          guard let user = optionalUser else { return nil }
-          try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
-          return user
-        }
-      }
+    return EitherIO {
+      let user = try await self.upsertUser(envelope, email, now)
+      try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
+      return user
+    }
   }
 
   public func updateUser(
