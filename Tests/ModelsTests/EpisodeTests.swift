@@ -3,8 +3,9 @@ import XCTest
 
 @testable import Models
 
+@MainActor
 final class EpisodeTests: TestCase {
-  func testSlug() {
+  func testSlug() async throws {
     var episode = Episode.mock
     episode.id = 42
     episode.sequence = 42
@@ -13,7 +14,7 @@ final class EpisodeTests: TestCase {
     XCTAssertEqual("ep42-launching-point-free", episode.slug)
   }
 
-  func testIsSubscriberOnly() {
+  func testIsSubscriberOnly() async throws {
     var episode = Episode.mock
 
     episode.permission = .free
@@ -43,7 +44,7 @@ final class EpisodeTests: TestCase {
     )
   }
 
-  func testFreeSince() {
+  func testFreeSince() async throws {
     var episode = Episode.mock
 
     episode.permission = .free

@@ -37,17 +37,14 @@ func fetchEpisode(_ id: Episode.ID) -> Episode? {
 
 private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
-  return Current.database.fetchFreeEpisodeUsers()
-    .mapExcept(bimap(const(unit), id))
-    .flatMap { users in
-      sendEmail(forFreeEpisode: conn.data, toUsers: users)
-    }
+  return EitherIO { try await Current.database.fetchFreeEpisodeUsers() }
+    .flatMap { users in sendEmail(forFreeEpisode: conn.data, toUsers: users) }
     .run
     .map { _ in conn.map(const(unit)) }
 }
 
 private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -> EitherIO<
-  Prelude.Unit, Prelude.Unit
+  Error, Prelude.Unit
 > {
 
   // A personalized email to send to each user.

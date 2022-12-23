@@ -118,11 +118,13 @@ private func redeemGift(
     .flatMap { customer in
       Current.stripe.createSubscription(customer.id, plan, 1, nil)
         .flatMap { stripeSubscription in
-          Current.database.createSubscription(stripeSubscription, user.id, true, nil)
-            .flatMap { _ in
-              Current.database.updateGift(gift.id, stripeSubscription.id)
-                .map(const(customer))
-            }
+          EitherIO {
+            try await Current.database.createSubscription(stripeSubscription, user.id, true, nil)
+          }
+          .flatMap { _ in
+            Current.database.updateGift(gift.id, stripeSubscription.id)
+              .map(const(customer))
+          }
         }
     }
     .run
@@ -158,7 +160,7 @@ private func fetchAndValidateGiftAndDiscount<A>(
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
-    return Current.database.fetchGift(giftId)
+    return EitherIO { try await Current.database.fetchGift(giftId) }
       .flatMap { gift in
         Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
           .map { paymentIntent in (gift, paymentIntent) }

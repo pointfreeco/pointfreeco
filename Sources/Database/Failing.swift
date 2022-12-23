@@ -1,38 +1,39 @@
 import PointFreePrelude
+import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
-    addUserIdToSubscriptionId: { _, _ in .failing("Database.Client.addUserIdToSubscriptionId") },
-    createEnterpriseAccount: { _, _, _ in .failing("Database.Client.createEnterpriseAccount") },
-    createEnterpriseEmail: { _, _ in .failing("Database.Client.createEnterpriseEmail") },
-    createFeedRequestEvent: { _, _, _ in .failing("Database.Client.createFeedRequestEvent") },
-    createGift: { _ in .failing("Database.Client.createGift") },
-    createSubscription: { _, _, _, _ in .failing("Database.Client.createSubscription") },
-    deleteEnterpriseEmail: { _ in .failing("Database.Client.deleteEnterpriseEmail") },
-    deleteTeamInvite: { _ in .failing("Database.Client.deleteTeamInvite") },
-    execute: { _ in .failing("Database.Client.execute") },
-    fetchAdmins: { .failing("Database.Client.fetchAdmins") },
-    fetchEmailSettingsForUserId: { _ in .failing("Database.Client.fetchEmailSettingsForUserId") },
-    fetchEnterpriseAccountForDomain: { _ in
-      .failing("Database.Client.fetchEnterpriseAccountForDomain")
-    },
-    fetchEnterpriseAccountForSubscription: { _ in
-      .failing("Database.Client.fetchEnterpriseAccountForSubscription")
-    },
-    fetchEnterpriseEmails: { .failing("Database.Client.fetchEnterpriseEmails") },
-    fetchEpisodeCredits: { _ in .failing("Database.Client.fetchEpisodeCredits") },
-    fetchEpisodeProgress: { _, _ in .failing("Database.Client.fetchEpisodeProgress") },
-    fetchFreeEpisodeUsers: { .failing("Database.Client.fetchFreeEpisodeUsers") },
-    fetchGift: { _ in .failing("Database.Client.fetchGift") },
-    fetchGiftByStripePaymentIntentId: { _ in
-      .failing("Database.Client.fetchGiftByStripePaymentIntentId")
-    },
-    fetchGiftsToDeliver: { .failing("Database.Client.fetchGiftsToDeliver") },
-    fetchSubscriptionById: { _ in .failing("Database.Client.fetchSubscriptionById") },
-    fetchSubscriptionByOwnerId: { _ in .failing("Database.Client.fetchSubscriptionByOwnerId") },
-    fetchSubscriptionTeammatesByOwnerId: { _ in
-      .failing("Database.Client.fetchSubscriptionTeammatesByOwnerId")
-    },
+    addUserIdToSubscriptionId: unimplemented("Database.Client.addUserIdToSubscriptionId"),
+    createEnterpriseAccount: unimplemented("Database.Client.createEnterpriseAccount"),
+    createEnterpriseEmail: unimplemented("Database.Client.createEnterpriseEmail"),
+    createFeedRequestEvent: unimplemented("Database.Client.createFeedRequestEvent"),
+    createGift: unimplemented("Database.Client.createGift"),
+    createSubscription: unimplemented("Database.Client.createSubscription"),
+    deleteEnterpriseEmail: unimplemented("Database.Client.deleteEnterpriseEmail"),
+    deleteTeamInvite: unimplemented("Database.Client.deleteTeamInvite"),
+    execute: unimplemented("Database.Client.execute"),
+    fetchAdmins: unimplemented("Database.Client.fetchAdmins"),
+    fetchEmailSettingsForUserId: unimplemented("Database.Client.fetchEmailSettingsForUserId"),
+    fetchEnterpriseAccountForDomain: unimplemented(
+      "Database.Client.fetchEnterpriseAccountForDomain"
+    ),
+    fetchEnterpriseAccountForSubscription: unimplemented(
+      "Database.Client.fetchEnterpriseAccountForSubscription"
+    ),
+    fetchEnterpriseEmails: unimplemented("Database.Client.fetchEnterpriseEmails"),
+    fetchEpisodeCredits: unimplemented("Database.Client.fetchEpisodeCredits"),
+    fetchEpisodeProgress: unimplemented("Database.Client.fetchEpisodeProgress"),
+    fetchFreeEpisodeUsers: unimplemented("Database.Client.fetchFreeEpisodeUsers"),
+    fetchGift: unimplemented("Database.Client.fetchGift"),
+    fetchGiftByStripePaymentIntentId: unimplemented(
+      "Database.Client.fetchGiftByStripePaymentIntentId"
+    ),
+    fetchGiftsToDeliver: unimplemented("Database.Client.fetchGiftsToDeliver"),
+    fetchSubscriptionById: unimplemented("Database.Client.fetchSubscriptionById"),
+    fetchSubscriptionByOwnerId: unimplemented("Database.Client.fetchSubscriptionByOwnerId"),
+    fetchSubscriptionTeammatesByOwnerId: unimplemented(
+      "Database.Client.fetchSubscriptionTeammatesByOwnerId"
+    ),
     fetchTeamInvite: { _ in .failing("Database.Client.fetchTeamInvite") },
     fetchTeamInvites: { _ in .failing("Database.Client.fetchTeamInvites") },
     fetchUserByGitHub: { _ in .failing("Database.Client.fetchUserByGitHub") },

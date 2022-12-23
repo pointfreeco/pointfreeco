@@ -28,18 +28,15 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     .performAsync()!
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
     let createdAccount = try await Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
     )
-    .performAsync()!
 
     let fetchedAccount = try await Current.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)
-      .performAsync()!
 
     XCTAssertEqual(createdAccount, fetchedAccount)
     XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
@@ -53,7 +50,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    _ = try await Current.database.createSubscription(.mock, user.id, false, nil).performAsync()!
+    _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
 
     let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 
@@ -67,7 +64,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .performAsync()!
 
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
     let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
 
@@ -90,7 +86,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 20
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
     _ = try await Current.database.updateEpisodeProgress(1, 10, user.id).performAsync()
@@ -103,7 +99,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 10
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
     _ = try await Current.database.updateEpisodeProgress(1, 30, user.id).performAsync()
@@ -116,7 +112,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 30
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
   }
 
@@ -133,7 +129,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
       .performAsync()
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .some(20))
   }
@@ -147,7 +142,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .performAsync()!
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .none)
   }

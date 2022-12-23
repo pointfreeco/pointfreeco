@@ -235,15 +235,15 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, Use
 
   let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-  return
-    (currentUser
-    .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
-    ?? pure(nil))
-    .run
-    .map {
-      conn.map(
-        const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
-    }
+  return EitherIO {
+    guard let currentUser else { return nil }
+    return try await Current.database.fetchEpisodeProgress(currentUser.id, episode.sequence)
+  }
+  .run
+  .map {
+    conn.map(
+      const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
+  }
 }
 
 func userEpisodePermission<I, Z>(
@@ -259,10 +259,11 @@ func userEpisodePermission<I, Z>(
     return pure(conn.map(const(permission .*. conn.data)))
   }
 
-  let hasCredit = Current.database.fetchEpisodeCredits(user.id)
-    .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
-    .run
-    .map { $0.right ?? false }
+  let hasCredit = IO {
+    guard let credits = try? await Current.database.fetchEpisodeCredits(user.id)
+    else { return false }
+    return credits.contains { $0.episodeSequence == episode.sequence }
+  }
 
   let permission =
     hasCredit

@@ -7,14 +7,15 @@ import XCTest
 
 @testable import Stripe
 
+@MainActor
 final class StripeTests: TestCase {
 
-  override func setUp() {
-    super.setUp()
-    // SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording=true
   }
 
-  func testDecodingCustomer() throws {
+  func testDecodingCustomer() async throws {
     let jsonString = """
       {
         "id": "cus_GlUzpQx6pl4AIh",
@@ -73,7 +74,7 @@ final class StripeTests: TestCase {
     }
   }
 
-  func testDecodingCustomer_Metadata() throws {
+  func testDecodingCustomer_Metadata() async throws {
     let jsonString = """
       {
         "id": "cus_GlUzpQx6pl4AIh",
@@ -131,7 +132,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
   }
 
-  func testDecodingPlan_WithNickname() throws {
+  func testDecodingPlan_WithNickname() async throws {
     let jsonString = """
       {
         "id": "individual-monthly",
@@ -163,7 +164,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("Individual Monthly", plan.nickname)
   }
 
-  func testDecodingSubscriptionWithDiscount() throws {
+  func testDecodingSubscriptionWithDiscount() async throws {
     let jsonString = """
       {
         "id": "sub_GVRtJttAzOiMPg",
@@ -301,7 +302,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("15-percent", subscription.discount?.coupon.id)
   }
 
-  func testDecodingDiscountJson() throws {
+  func testDecodingDiscountJson() async throws {
     let jsonString = """
         {
           "object": "discount",
@@ -337,7 +338,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual(.repeating(months: 12), discount.coupon.duration)
   }
 
-  func testDecodingPaymentIntentJson() throws {
+  func testDecodingPaymentIntentJson() async throws {
     let jsonString = """
       {
         "id": "pi_3JkDUdD0Nyli3dRg1caHB2LB",
@@ -398,19 +399,19 @@ final class StripeTests: TestCase {
     _ = try Stripe.jsonDecoder.decode(PaymentIntent.self, from: Data(jsonString.utf8))
   }
 
-  func testRequests() {
+  func testRequests() async throws {
     // SnapshotTesting.isRecording = true
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
       as: .raw,
       named: "cancel-subscription"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.cancelSubscription(id: "sub_test", immediately: true).rawValue,
       as: .raw,
       named: "cancel-subscription-immediately"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.createCoupon(
         duration: .once,
         maxRedemptions: 1,
@@ -421,7 +422,7 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-coupon"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.createCustomer(
         paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co",
         vatNumber: nil,
@@ -430,7 +431,7 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-customer"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.createCustomer(
         paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co",
         vatNumber: "1",
@@ -439,7 +440,7 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-customer-vat"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching:
         Stripe
         .createPaymentIntent(
@@ -455,7 +456,7 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-payment-intent"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching:
         Stripe
         .createSubscription(customer: "cus_test", plan: .yearly, quantity: 2, coupon: nil)
@@ -463,7 +464,7 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-subscription"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching:
         Stripe
         .createSubscription(customer: "cus_test", plan: .monthly, quantity: 1, coupon: "freebie")
@@ -471,82 +472,82 @@ final class StripeTests: TestCase {
       as: .raw,
       named: "create-subscription-coupon"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.deleteCoupon(id: "deadbeef").rawValue,
       as: .raw,
       named: "delete-coupon"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchCoupon(id: "15-percent").rawValue,
       as: .raw,
       named: "fetch-coupon"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchCoupon(id: "give me free subscription").rawValue,
       as: .raw,
       named: "fetch-coupon-bad-data"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchCustomer(id: "cus_test").rawValue,
       as: .raw,
       named: "fetch-customer"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchInvoice(id: "in_test").rawValue,
       as: .raw,
       named: "fetch-invoice"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchInvoices(for: "cus_test").rawValue,
       as: .raw,
       named: "fetch-invoices"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchPaymentIntent(id: "pi_test").rawValue,
       as: .raw,
       named: "fetch-payment-intent"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchPlans().rawValue,
       as: .raw,
       named: "fetch-plans"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchPlan(id: .monthly).rawValue,
       as: .raw,
       named: "fetch-plan"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchSubscription(id: "sub_test").rawValue,
       as: .raw,
       named: "fetch-subscription"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.fetchUpcomingInvoice("cus_test").rawValue,
       as: .raw,
       named: "fetch-upcoming-invoice"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.invoiceCustomer("cus_test").rawValue,
       as: .raw,
       named: "invoice-customer"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.updateCustomer(id: "cus_test", paymentMethodID: "pm_tok_test").rawValue,
       as: .raw,
       named: "update-customer"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.updateSubscription(.mock, .yearly, 1)!.rawValue,
       as: .raw,
       named: "update-subscription"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.updateSubscription(.discounted, .monthly, 1)!.rawValue,
       as: .raw,
       named: "update-subscription-discount-preserved"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: Stripe.updateSubscription(.discounted, .monthly, 2)!.rawValue,
       as: .raw,
       named: "update-subscription-discount-removed"

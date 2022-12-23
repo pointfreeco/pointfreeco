@@ -43,61 +43,59 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
+@MainActor
 final class WelcomeEmailTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording=true
   }
 
-  func testWelcomeEmail1() {
+  func testWelcomeEmail1() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
 
-        assertSnapshot(matching: emailNodes, as: .html)
+        await assertSnapshot(matching: emailNodes, as: .html)
 
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testWelcomeEmail2() {
+  func testWelcomeEmail2() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
 
-        assertSnapshot(matching: emailNodes, as: .html)
+        await assertSnapshot(matching: emailNodes, as: .html)
 
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testWelcomeEmail3() {
+  func testWelcomeEmail3() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
 
-        assertSnapshot(matching: emailNodes, as: .html)
+        await assertSnapshot(matching: emailNodes, as: .html)
 
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testEpisodeEmails() {
-    _ = sendWelcomeEmails()
-      .run
-      .perform()
-      .right!
+  func testEpisodeEmails() async throws {
+    _ = try await sendWelcomeEmails().performAsync()
   }
 }

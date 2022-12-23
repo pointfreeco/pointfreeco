@@ -18,9 +18,9 @@ import XCTest
 
 @MainActor
 class InviteIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testSendInvite_HappyPath() async throws {
@@ -30,7 +30,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     .performAsync()!
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
-      .performAsync()!
 
     Current.stripe.fetchSubscription = const(pure(.teamYearly))
 
@@ -39,7 +38,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: sendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testSendInvite_UnhappyPath_NoSeats() async throws {
@@ -50,7 +49,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
-      .performAsync()!
 
     Current.stripe.fetchSubscription = const(pure(sub))
 
@@ -62,7 +60,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       session: .init(flash: nil, userId: inviterUser.id))
     let conn = connection(from: sendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testResendInvite_HappyPath() async throws {
@@ -81,7 +79,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testRevokeInvite_HappyPath() async throws {
@@ -100,7 +98,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
     XCTAssertNil(invite)
@@ -130,7 +128,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
     XCTAssertNotNil(invite)
@@ -152,7 +150,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -164,7 +161,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
     // let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
@@ -200,7 +197,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
       .subscriptionId
@@ -223,7 +220,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -237,7 +233,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
       .subscriptionId
@@ -261,7 +257,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     _ = try await Current.database.createSubscription(
       Stripe.Subscription.canceling, inviterUser.id, true, nil
     )
-    .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -275,7 +270,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
       .subscriptionId
@@ -283,7 +278,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAddTeammate() async throws {
-    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
 
     let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       .performAsync()!
@@ -293,7 +288,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
     _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
@@ -308,7 +302,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       )
     )
 
-    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
 
     let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
       .performAsync()
@@ -346,25 +340,26 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
 
+@MainActor
 class InviteTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testShowInvite_LoggedOut() {
+  func testShowInvite_LoggedOut() async throws {
     let showInvite = request(to: .invite(.invitation(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -375,7 +370,7 @@ class InviteTests: TestCase {
     #endif
   }
 
-  func testShowInvite_LoggedIn_NonSubscriber() {
+  func testShowInvite_LoggedIn_NonSubscriber() async throws {
     var currentUser = Models.User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
@@ -385,16 +380,16 @@ class InviteTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
-    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -405,7 +400,7 @@ class InviteTests: TestCase {
     #endif
   }
 
-  func testShowInvite_LoggedIn_Subscriber() {
+  func testShowInvite_LoggedIn_Subscriber() async throws {
     var currentUser = User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
@@ -415,13 +410,13 @@ class InviteTests: TestCase {
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
-    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = { _ in .mock }
 
     Current.stripe.fetchSubscription = const(pure(.mock))
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

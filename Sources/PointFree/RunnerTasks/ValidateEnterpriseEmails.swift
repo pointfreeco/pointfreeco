@@ -8,7 +8,7 @@ public func validateEnterpriseEmails() -> EitherIO<Error, Prelude.Unit> {
 
   // TODO: calendar check for first of the month
 
-  return Current.database.fetchEnterpriseEmails()
+  return EitherIO { try await Current.database.fetchEnterpriseEmails() }
     .flatMap(validate(enterpriseEmails:))
     .flatMap(sendValidationSummaryEmail(results:))
 }
@@ -54,7 +54,7 @@ private func unlinkSubscription(
   user: Models.User
 ) -> EitherIO<Error, Prelude.Unit> {
 
-  return Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
+  return EitherIO { try await Current.database.deleteEnterpriseEmail(enterpriseEmail.userId) }
     .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
       guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
@@ -73,16 +73,17 @@ private func notifyUserSubscriptionWasRemoved(
 
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
-    .mapExcept(requireSome)
-    .flatMap { enterpriseAccount in
-      sendEmail(
-        to: [user.email],
-        subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
-      )
-      .map(const(unit))
-    }
+  return EitherIO {
+    try await Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
+  }
+  .flatMap { enterpriseAccount in
+    sendEmail(
+      to: [user.email],
+      subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
+      content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
+    )
+    .map(const(unit))
+  }
 }
 
 private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<

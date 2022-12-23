@@ -11,7 +11,7 @@ extension Client {
   ) -> Self {
     Self(
       addUserIdToSubscriptionId: { userId, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "subscription_id" = \(bind: subscriptionId)
@@ -19,9 +19,10 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       createEnterpriseAccount: { companyName, domain, subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "enterprise_accounts"
           ("company_name", "domain", "subscription_id")
@@ -30,10 +31,13 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: EnterpriseAccount.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createEnterpriseEmail: { email, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "enterprise_emails"
           ("email", "user_id")
@@ -42,10 +46,13 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: EnterpriseEmail.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseEmail.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createFeedRequestEvent: { type, userAgent, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "feed_request_events"
           ("type", "user_agent", "user_id")
@@ -56,9 +63,10 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       createGift: { request in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "gifts" (
             "deliver_at",
@@ -83,75 +91,85 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
-        pool.sqlDatabase.raw(
+        let subscription = try await pool.sqlDatabase.raw(
           """
           INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
           VALUES (\(bind: stripeSubscription.id), \(bind: stripeSubscription.status), \(bind: userId))
           RETURNING *
           """
         )
-        .first(decoding: Models.Subscription.self)
-        .flatMap { subscription in
-          (isOwnerTakingSeat
-            ? pool.sqlDatabase.raw(
-              """
-              UPDATE "users"
-              SET "subscription_id" = \(bind: subscription?.id), "referrer_id" = \(bind: referrerId)
-              WHERE "users"."id" = \(bind: subscription?.userId)
-              """
-            )
-            .run()
-            : pure(unit))
-            .map(const(subscription))
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
+        if isOwnerTakingSeat {
+          try await pool.sqlDatabase.raw(
+            """
+            UPDATE "users"
+            SET "subscription_id" = \(bind: subscription.id), "referrer_id" = \(bind: referrerId)
+            WHERE "users"."id" = \(bind: subscription.userId)
+            """
+          )
+          .run()
+          .get()
         }
+        return subscription
       },
       deleteEnterpriseEmail: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "enterprise_emails"
           WHERE "user_id" = \(bind: userId)
           """
         )
         .run()
+        .get()
       },
       deleteTeamInvite: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "team_invites"
           WHERE "id" = \(bind: id)
           """
         )
         .run()
+        .get()
       },
       execute: { sql in
-        .init(pool.sqlDatabase.raw(sql).all())
+        try await pool.sqlDatabase.raw(sql).all()
       },
       fetchAdmins: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "users"
           WHERE "users"."is_admin" = TRUE
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchEmailSettingsForUserId: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "newsletter", "user_id"
           FROM "email_settings"
           WHERE "user_id" = \(bind: userId)
           """
         )
-        .all(decoding: EmailSetting.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: EmailSetting.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchEnterpriseAccountForDomain: { domain in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "company_name", "domain", "id", "subscription_id"
           FROM "enterprise_accounts"
@@ -159,10 +177,13 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: EnterpriseAccount.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchEnterpriseAccountForSubscription: { subscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "company_name", "domain", "id", "subscription_id"
           FROM "enterprise_accounts"
@@ -170,29 +191,40 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: EnterpriseAccount.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: EnterpriseAccount.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchEnterpriseEmails: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "enterprise_emails"
           """
         )
-        .all(decoding: EnterpriseEmail.self)
+        .all()
+        .get()
+        .map {
+          try $0.decode(model: EnterpriseEmail.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
       },
       fetchEpisodeCredits: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "episode_sequence", "user_id"
           FROM "episode_credits"
           WHERE "user_id" = \(bind: userId)
           """
         )
-        .all(decoding: EpisodeCredit.self)
+        .all()
+        .get()
+        .map {
+          try $0.decode(model: EpisodeCredit.self, keyDecodingStrategy: .convertFromSnakeCase)
+        }
       },
       fetchEpisodeProgress: { userId, sequence in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "percent"
           FROM "episode_progresses"
@@ -200,11 +232,11 @@ extension Client {
           AND "episode_sequence" = \(bind: sequence)
           """
         )
-        .first()
-        .map { try? $0?.decode(column: "percent") }
+        .first()?
+        .decode(column: "percent")
       },
       fetchFreeEpisodeUsers: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"
@@ -217,10 +249,12 @@ extension Client {
           AND "email_settings"."newsletter" = \(bind: EmailSetting.Newsletter.newEpisode)
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchGift: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "gifts"
@@ -228,11 +262,13 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchGiftByStripePaymentIntentId: { paymentIntentId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "gifts"
@@ -240,11 +276,13 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchGiftsToDeliver: {
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT * FROM "gifts"
           WHERE "stripe_subscription_id" IS NULL
@@ -256,10 +294,12 @@ extension Client {
           )
           """
         )
-        .all(decoding: Gift.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchSubscriptionById: { id in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"
@@ -267,10 +307,13 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Models.Subscription.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchSubscriptionByOwnerId: { ownerId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT *
           FROM "subscriptions"
@@ -279,10 +322,13 @@ extension Client {
           LIMIT 1
           """
         )
-        .first(decoding: Models.Subscription.self)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           SELECT "users".*
           FROM "users"
@@ -290,7 +336,9 @@ extension Client {
           WHERE "subscriptions"."user_id" = \(bind: ownerId)
           """
         )
-        .all(decoding: Models.User.self)
+        .all()
+        .get()
+        .map { try $0.decode(model: Models.User.self, keyDecodingStrategy: .convertFromSnakeCase) }
       },
       fetchTeamInvite: { id in
         pool.sqlDatabase.raw(

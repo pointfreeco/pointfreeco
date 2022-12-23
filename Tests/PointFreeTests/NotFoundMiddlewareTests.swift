@@ -16,19 +16,19 @@ import XCTest
 #endif
 
 final class NotFoundMiddlewareTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testNotFound() {
+  func testNotFound() async throws {
     let conn = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
@@ -39,16 +39,16 @@ final class NotFoundMiddlewareTests: TestCase {
     #endif
   }
 
-  func testNotFound_LoggedIn() {
+  func testNotFound_LoggedIn() async throws {
     var req = request(to: .home, session: .loggedIn)
     req.url?.appendPathComponent("404")
     let conn = connection(from: req)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),

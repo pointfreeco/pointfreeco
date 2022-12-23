@@ -10,16 +10,17 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class AboutTests: TestCase {
-  func testAbout() {
-    //    SnapshotTesting.isRecording=true
+  func testAbout() async throws {
+    //SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),

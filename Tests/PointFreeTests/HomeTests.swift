@@ -12,10 +12,11 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class HomeTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording=true
 
     var e1 = Episode.ep10_aTaleOfTwoFlatMaps
     e1.permission = .subscriberOnly
@@ -35,34 +36,36 @@ class HomeTests: TestCase {
     )
   }
 
-  func testHomepage_LoggedOut() {
+  func testHomepage_LoggedOut() async throws {
     let conn = connection(from: request(to: .home))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 3000))
-        webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image, named: "desktop")
+        await webView.loadHTMLString(
+          String(decoding: result.performAsync().data, as: UTF8.self), baseURL: nil
+        )
+        await assertSnapshot(matching: webView, as: .image, named: "desktop")
 
         webView.frame.size.width = 400
         webView.frame.size.height = 3500
 
-        assertSnapshot(matching: webView, as: .image, named: "mobile")
+        await assertSnapshot(matching: webView, as: .image, named: "mobile")
       }
     #endif
   }
 
-  func testHomepage_Subscriber() {
+  func testHomepage_Subscriber() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
@@ -73,9 +76,9 @@ class HomeTests: TestCase {
     #endif
   }
 
-  func testEpisodesIndex() {
+  func testEpisodesIndex() async throws {
     let conn = connection(from: request(to: .episode(.index)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

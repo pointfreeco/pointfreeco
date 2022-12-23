@@ -153,11 +153,13 @@ private func trackFeedRequest<A, I>(
 {
 
   return { conn in
-    Current.database.createFeedRequestEvent(
-      .privateEpisodesFeed,
-      conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-      userId(conn.data)
-    )
+    EitherIO {
+      try await Current.database.createFeedRequestEvent(
+        .privateEpisodesFeed,
+        conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+        userId(conn.data)
+      )
+    }
     .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
     .run
     .map { _ in conn }
@@ -174,9 +176,8 @@ private func fetchStripeSubscriptionForUser<A>(
 
   return { conn in
     conn.data.first.subscriptionId
-      .map {
-        Current.database.fetchSubscriptionById($0)
-          .mapExcept(requireSome)
+      .map { subscriptionId in
+        EitherIO { try await Current.database.fetchSubscriptionById(subscriptionId) }
           .flatMap(Current.stripe.fetchSubscription <<< \.stripeSubscriptionId)
           .run
           .map(\.right)
@@ -412,10 +413,7 @@ private func fetchUserSubscription<A>(
       return conn.map(const(nil .*. conn.data)) |> middleware
     }
 
-    let subscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .run
-      .map(\.right)
+    let subscription = IO { try? await Current.database.fetchSubscriptionById(subscriptionId) }
 
     return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
   }

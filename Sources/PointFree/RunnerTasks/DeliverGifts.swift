@@ -5,7 +5,7 @@ import PointFreePrelude
 import Prelude
 
 public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
-  Current.database.fetchGiftsToDeliver()
+  EitherIO { try await Current.database.fetchGiftsToDeliver() }
     .flatMap { gifts in
       sequence(
         gifts.map { gift in

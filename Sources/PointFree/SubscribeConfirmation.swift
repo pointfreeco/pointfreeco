@@ -121,8 +121,7 @@ private func validateReferralCode(
     return Current.database.fetchUserByReferralCode(referralCode)
       .mapExcept(requireSome)
       .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
+        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId)
               .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
@@ -220,39 +219,27 @@ func redirectActiveSubscribers<A>(
     return { conn in
       let user = user(conn.data)
 
-      let userSubscription =
-        (user?.subscriptionId)
-        .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
-        ?? throwE(unit)
-
-      let ownerSubscription =
-        (user?.id)
-        .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
-        ?? throwE(unit)
-
-      let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
-
-      return EitherIO(run: race)
-        .flatMap {
-          $0.stripeSubscriptionStatus == .canceled
-            ? throwE(unit as Error)
-            : pure($0)
-        }
-        .run
-        .flatMap(
-          either(
-            const(
-              middleware(conn)
-            ),
-            const(
-              conn
-                |> redirect(
-                  to: .account(),
-                  headersMiddleware: flash(.warning, "You already have an active subscription.")
-                )
+      return EitherIO {
+        let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
+        guard subscription.stripeSubscriptionStatus != .canceled
+        else { throw unit }
+        return subscription
+      }
+      .run
+      .flatMap {
+        $0.either(
+          { _ in
+            middleware(conn)
+          },
+          { _ in
+            conn
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(.warning, "You already have an active subscription.")
             )
-          )
+          }
         )
+      }
     }
   }
 }

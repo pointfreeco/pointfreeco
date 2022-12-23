@@ -46,9 +46,9 @@ private func leaveTeam<Z>(
       user.subscriptionId
       .map { subId in
         Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subId)
-          .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
+          .flatMap { _ in EitherIO { try await Current.database.deleteEnterpriseEmail(user.id) } }
       }
-      ?? pure(unit)
+      ?? pure(())
 
     return removed
       .run
@@ -77,17 +77,17 @@ let removeTeammateMiddleware =
     guard let teammateSubscriptionId = teammate.subscriptionId
     else { return pure(conn.map(const(unit))) }
 
-    let validateSubscriptionData = Current.database
-      .fetchSubscriptionById(teammateSubscriptionId)
-      .mapExcept(requireSome)
-      .mapExcept { errorOrSubscription in
-        // Validate the current user is the subscription owner
-        errorOrSubscription.right?.userId == .some(currentUser.id)
-          // Validate that the fetched user is in fact the current user's teammate.
-          && errorOrSubscription.right?.id == teammate.subscriptionId
-          ? .right(unit)
-          : .left(unit as Error)
-      }
+    let validateSubscriptionData = EitherIO {
+      try await Current.database.fetchSubscriptionById(teammateSubscriptionId)
+    }
+    .mapExcept { errorOrSubscription in
+      // Validate the current user is the subscription owner
+      errorOrSubscription.right?.userId == .some(currentUser.id)
+        // Validate that the fetched user is in fact the current user's teammate.
+        && errorOrSubscription.right?.id == teammate.subscriptionId
+        ? .right(unit)
+        : .left(unit as Error)
+    }
 
     return
       validateSubscriptionData

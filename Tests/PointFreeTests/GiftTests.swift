@@ -17,17 +17,18 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class GiftTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testGiftCreate() {
+  func testGiftCreate() async throws {
     var createGiftRequest: Database.Client.CreateGiftRequest!
     Current.database.createGift = { request in
       createGiftRequest = request
-      return pure(.unfulfilled)
+      return .unfulfilled
     }
 
     let conn = connection(
@@ -50,7 +51,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts
@@ -86,7 +87,7 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftCreate_StripeFailure() {
+  func testGiftCreate_StripeFailure() async throws {
     Current.stripe.createPaymentIntent = { _ in
       struct Error: Swift.Error {}
       return throwE(Error())
@@ -112,7 +113,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts
@@ -134,7 +135,7 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftCreate_InvalidMonths() {
+  func testGiftCreate_InvalidMonths() async throws {
     Current.stripe.createPaymentIntent = { _ in
       struct Error: Swift.Error {}
       return throwE(Error())
@@ -160,7 +161,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts
@@ -182,7 +183,7 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftRedeem_NonSubscriber() {
+  func testGiftRedeem_NonSubscriber() async throws {
     Current = .failing
 
     let user = User.nonSubscriber
@@ -193,10 +194,10 @@ class GiftTests: TestCase {
 
     Current.database.createSubscription = { _, id, _, _ in
       userId = id
-      return pure(.mock)
+      return .mock
     }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchGift = { _ in .unfulfilled }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.database.updateGift = { _, id in
@@ -230,7 +231,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
@@ -254,7 +255,7 @@ class GiftTests: TestCase {
     XCTAssertNotNil(userId)
   }
 
-  func testGiftRedeem_Subscriber() {
+  func testGiftRedeem_Subscriber() async throws {
     Current = .failing
 
     let user = User.owner
@@ -262,10 +263,10 @@ class GiftTests: TestCase {
     var credit: Cents<Int>?
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(.mock) }
+    Current.database.fetchGift = { _ in .unfulfilled }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in .mock }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.database.updateGift = { _, id in
@@ -293,7 +294,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
@@ -316,7 +317,7 @@ class GiftTests: TestCase {
     XCTAssertNotNil(stripeSubscriptionId)
   }
 
-  func testGiftRedeem_Invalid_LoggedOut() {
+  func testGiftRedeem_Invalid_LoggedOut() async throws {
     Current.stripe.fetchCoupon = { _ in pure(update(.mock) { $0.rate = .amountOff(54_00) }) }
 
     let conn = connection(
@@ -332,7 +333,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
@@ -351,13 +352,13 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftRedeem_Invalid_Redeemed() {
+  func testGiftRedeem_Invalid_Redeemed() async throws {
     Current = .failing
 
     let user = User.nonSubscriber
 
-    Current.database.fetchGift = { _ in pure(.fulfilled) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchGift = { _ in .fulfilled }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
@@ -376,7 +377,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
@@ -396,15 +397,15 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftRedeem_Invalid_Teammate() {
+  func testGiftRedeem_Invalid_Teammate() async throws {
     Current = .failing
 
     let user = User.teammate
 
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
-    Current.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
-    Current.database.fetchSubscriptionById = { _ in pure(.mock) }
-    Current.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
+    Current.database.fetchGift = { _ in .unfulfilled }
+    Current.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in .mock }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in pure(user) }
     Current.database.sawUser = { _ in pure(unit) }
     Current.date = { .mock }
@@ -424,7 +425,7 @@ class GiftTests: TestCase {
     )
     let result = conn |> siteMiddleware
 
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: result, as: .ioConn,
       with: """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
@@ -444,7 +445,7 @@ class GiftTests: TestCase {
     )
   }
 
-  func testGiftLanding() {
+  func testGiftLanding() async throws {
     Current = .failing
     Current.date = { .mock }
     Current.episodes = { [] }
@@ -453,7 +454,7 @@ class GiftTests: TestCase {
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: siteMiddleware(conn),
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
@@ -463,21 +464,21 @@ class GiftTests: TestCase {
       }
     #endif
 
-    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
   }
 
-  func testGiftRedeemLanding() {
+  func testGiftRedeemLanding() async throws {
     Current = .failing
     Current.date = { .mock }
     Current.episodes = { [] }
-    Current.database.fetchGift = { _ in pure(.unfulfilled) }
+    Current.database.fetchGift = { _ in .unfulfilled }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
     let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: siteMiddleware(conn),
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
@@ -487,6 +488,6 @@ class GiftTests: TestCase {
       }
     #endif
 
-    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
   }
 }

@@ -9,25 +9,26 @@ import XCTest
 @testable import Models
 @testable import PointFree
 
+@MainActor
 class AtomFeedTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testAtomFeed() {
+  func testAtomFeed() async throws {
     let conn = connection(from: request(to: .feed(.atom)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodeFeed() {
+  func testEpisodeFeed() async throws {
     let conn = connection(from: request(to: .feed(.episodes)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodeFeed_WithRecentlyFreeEpisode() {
+  func testEpisodeFeed_WithRecentlyFreeEpisode() async throws {
     let now = Current.date()
     var freeEpisode = Episode.free
     freeEpisode.title = "Free Episode"
@@ -42,6 +43,6 @@ class AtomFeedTests: TestCase {
 
     let conn = connection(from: request(to: .feed(.episodes)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

@@ -8,8 +8,9 @@ import XCTest
 @testable import HttpPipeline
 @testable import Views
 
+@MainActor
 class MetaLayoutTests: TestCase {
-  func testMetaTagsWithStyleTag() {
+  func testMetaTagsWithStyleTag() async throws {
 
     func view(_: Prelude.Unit) -> Node {
       return [
@@ -23,7 +24,7 @@ class MetaLayoutTests: TestCase {
 
     let layoutView = metaLayout(view)
 
-    assertSnapshot(
+    await assertSnapshot(
       matching: layoutView(
         .init(
           description: "A video series on functional programming.",

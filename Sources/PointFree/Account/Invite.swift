@@ -41,7 +41,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
   )
   <| { conn in
-    Current.database.deleteTeamInvite(get1(conn.data).id)
+    EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
       .run
       .flatMap(
         const(
@@ -88,18 +88,19 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       .mapExcept(requireSome)
 
     // VERIFY: user is subscribed
-    let subscription =
-      inviter
-      .flatMap(\.id >>> Current.database.fetchSubscriptionByOwnerId)
-      .mapExcept(requireSome)
-      .flatMap { subscription in
-        Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-          .mapExcept(validateActiveStripeSubscription)
-          .bimap(const(unit as Error), id)
-          .flatMap { _ in
-            Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+    let subscription = inviter.flatMap { inviter in
+      EitherIO { try await Current.database.fetchSubscriptionByOwnerId(inviter.id) }
+    }
+    .flatMap { subscription in
+      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        .mapExcept(validateActiveStripeSubscription)
+        .bimap(const(unit as Error), id)
+        .flatMap { _ in
+          EitherIO {
+            try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
           }
-      }
+        }
+    }
 
     return subscription
       .run
@@ -123,7 +124,9 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
 
         let deleteInvite = parallel(
           subscription
-            .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
+            .flatMap { _ in
+              EitherIO { try await Current.database.deleteTeamInvite(teamInvite.id) }
+            }
             .run
         )
 
@@ -169,16 +172,19 @@ let sendInviteMiddleware =
     let seatsTaken = zip2(
       Current.database.fetchTeamInvites(inviter.id).run.parallel
         .map { $0.right?.count ?? 0 },
-      Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).run.parallel
-        .map { $0.right?.count ?? 0 }
+      IO {
+        (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count) ?? 0
+      }
+      .parallel
     )
     .map(+)
 
-    let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
-      .mapExcept(requireSome)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .parallel
+    let subscription = EitherIO {
+      try await Current.database.fetchSubscriptionByOwnerId(inviter.id)
+    }
+    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+    .run
+    .parallel
 
     let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
       run: zip2(
@@ -306,12 +312,12 @@ private func redirectCurrentSubscribers<A, B>(
       let subscriptionId = user.subscriptionId
     else { return middleware(conn) }
 
-    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .bimap(const(unit), id)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .map { $0.right?.isRenewing ?? false }
+    let hasActiveSubscription = EitherIO {
+      try await Current.database.fetchSubscriptionById(subscriptionId)
+    }
+    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+    .run
+    .map { $0.right?.isRenewing ?? false }
 
     return hasActiveSubscription.flatMap {
       $0

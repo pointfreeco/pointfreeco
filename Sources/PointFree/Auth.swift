@@ -84,37 +84,17 @@ public func currentSubscriptionMiddleware<A, I>(
 
   let user = conn.data.first
 
-  let userSubscription =
-    (user?.subscriptionId)
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+  return EitherIO {
+    let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
 
-  let ownerSubscription =
-    (user?.id)
-    .map(
-      Current.database.fetchSubscriptionByOwnerId
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+    let enterpriseAccount = try? await Current.database
+      .fetchEnterpriseAccountForSubscription(subscription.id)
 
-  return (userSubscription <|> ownerSubscription)
-    .run
-    .map(\.right)
-    .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
-      subscription
-        .map { subscription in
-          Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
-            .mapExcept(requireSome)
-            .run
-            .map(\.right)
-            .map { enterpriseAccount in (subscription, enterpriseAccount) }
-        }
-        ?? pure(nil)
-    }
-    .map { conn.map(const($0 .*. conn.data)) }
+    return (subscription, enterpriseAccount)
+  }
+  .run
+  .map(\.right)
+  .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
@@ -237,8 +217,7 @@ private func requireAccessToken<A>(
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchSubscriptionById(subscriptionId)
-    .mapExcept(requireSome)
+  return EitherIO { try await Current.database.fetchSubscriptionById(subscriptionId) }
     .flatMap { subscription in
       Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in

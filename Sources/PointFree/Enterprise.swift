@@ -122,20 +122,23 @@ private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
 ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>?> {
 
-  return Current.database.createEnterpriseEmail(get3(data), get4(data))
-    .map(const(data))
-    .run
-    .map(\.right)
+  return IO {
+    guard (try? await Current.database.createEnterpriseEmail(get3(data), get4(data))) != nil
+    else { return nil }
+    return data
+  }
 }
 
 private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
 ) -> IO<T3<User, EnterpriseAccount, Z>?> {
 
-  return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
-    .map(const(data))
-    .run
-    .map(\.right)
+  return EitherIO {
+    try await Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+  }
+  .map(const(data))
+  .run
+  .map(\.right)
 }
 
 private func successfullyAcceptedInviteMiddleware<A, Z>(
@@ -266,10 +269,7 @@ private func sendEnterpriseInvitation<Z>(
 }
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
-  return Current.database.fetchEnterpriseAccountForDomain(domain)
-    .mapExcept(requireSome)
-    .run
-    .map(\.right)
+  IO { try? await Current.database.fetchEnterpriseAccountForDomain(domain) }
 }
 
 let enterpriseInviteEmailView =
@@ -343,12 +343,12 @@ private func redirectCurrentSubscribers<Z>(
     guard let subscriptionId = user.subscriptionId
     else { return middleware(conn) }
 
-    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .bimap(const(unit), id)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .map { $0.right?.isRenewing ?? false }
+    let hasActiveSubscription = EitherIO {
+      try await Current.database.fetchSubscriptionById(subscriptionId)
+    }
+    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+    .run
+    .map { $0.right?.isRenewing ?? false }
 
     return hasActiveSubscription.flatMap {
       $0

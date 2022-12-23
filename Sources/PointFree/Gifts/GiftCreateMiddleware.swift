@@ -48,19 +48,21 @@ func giftCreateMiddleware(
     Current.stripe.confirmPaymentIntent(paymentIntent.id)
   }
   .flatMap { paymentIntent in
-    Current.database.createGift(
-      .init(
-        deliverAt: deliverAt,
-        fromEmail: giftFormData.fromEmail,
-        fromName: giftFormData.fromName,
-        message: giftFormData.message,
-        monthsFree: giftFormData.monthsFree,
-        stripePaymentIntentId: paymentIntent.id,
-        toEmail: giftFormData.toEmail,
-        toName: giftFormData.toName
+    EitherIO<Error, PaymentIntent> {
+      _ = try await Current.database.createGift(
+        .init(
+          deliverAt: deliverAt,
+          fromEmail: giftFormData.fromEmail,
+          fromName: giftFormData.fromName,
+          message: giftFormData.message,
+          monthsFree: giftFormData.monthsFree,
+          stripePaymentIntentId: paymentIntent.id,
+          toEmail: giftFormData.toEmail,
+          toName: giftFormData.toName
+        )
       )
-    )
-    .map { _ in paymentIntent }
+      return paymentIntent
+    }
   }
   .run
   .flatMap { errorOrPaymentIntent in

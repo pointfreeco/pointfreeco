@@ -9,12 +9,12 @@ import XCTest
 
 @MainActor
 final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
-  func testAssociationFile() async {
+  func testAssociationFile() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .appleDeveloperMerchantIdDomainAssociation))
     )
     .performAsync()
 
-    assertSnapshot(matching: conn, as: .conn)
+    await assertSnapshot(matching: conn, as: .conn)
   }
 }

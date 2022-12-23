@@ -32,18 +32,9 @@ private func fetchAccountData<I>(
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription: EitherIO<Error, Models.Subscription> =
-    user.subscriptionId
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
-
-  let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
-    .mapExcept(requireSome)
-
-  let subscription = userSubscription <|> ownerSubscription
+  let subscription = EitherIO {
+    try await Current.database.fetchSubscription(user: user)
+  }
 
   let owner =
     subscription
@@ -90,11 +81,11 @@ private func fetchAccountData<I>(
         Invoice?
       )
     > = zip9(
-      Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchEmailSettingsForUserId(user.id)) ?? [] }
+        .parallel,
 
-      Current.database.fetchEpisodeCredits(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchEpisodeCredits(user.id)) ?? [] }
+        .parallel,
 
       paymentMethod.run.map { $0.right ?? nil }.parallel,
 
@@ -107,8 +98,8 @@ private func fetchAccountData<I>(
       Current.database.fetchTeamInvites(user.id).run.parallel
         .map { $0.right ?? [] },
 
-      Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
+        .parallel,
 
       upcomingInvoice.run.map(\.right).parallel
     )

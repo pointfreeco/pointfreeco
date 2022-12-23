@@ -4,13 +4,14 @@ import XCTest
 
 @testable import PointFree
 
+@MainActor
 class EnvVarTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording=true
   }
 
-  func testDecoding() throws {
+  func testDecoding() async throws {
     let json = [
       "APP_ENV": "development",
       "APP_SECRET": "deadbeefdeadbeefdeadbeefdeadbeef",
@@ -37,6 +38,6 @@ class EnvVarTests: TestCase {
       try JSONSerialization.jsonObject(with: try JSONEncoder().encode(envVars), options: [])
       as! [String: String]
 
-    assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }), as: .customDump)
+    await assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }), as: .customDump)
   }
 }

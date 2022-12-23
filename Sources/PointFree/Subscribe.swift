@@ -130,18 +130,18 @@ private func subscribe(
   let databaseSubscription =
     stripeSubscription
     .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
-      Current.database
-        .createSubscription(
+      EitherIO {
+        try await Current.database.createSubscription(
           stripeSubscription,
           user.id,
           subscribeData.isOwnerTakingSeat,
           referrer?.user.id
         )
-        .mapExcept(requireSome)
-        .flatMap { subscription in
-          runTasksFor(stripeSubscription: stripeSubscription)
-            .map(const(subscription))
-        }
+      }
+      .flatMap { subscription in
+        runTasksFor(stripeSubscription: stripeSubscription)
+          .map(const(subscription))
+      }
     }
 
   return databaseSubscription.run.flatMap(
@@ -330,8 +330,7 @@ private func validateReferrer(
       fetchReferrer
       .mapExcept(requireSome)
       .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
+        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
           .flatMap {
             Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
               $0.isCancellable
