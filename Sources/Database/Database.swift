@@ -37,8 +37,7 @@ public struct Client {
   public var fetchGift: (Gift.ID) async throws -> Gift
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
-  public var fetchSubscriptionById:
-    (Models.Subscription.ID) async throws -> Models.Subscription
+  public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>

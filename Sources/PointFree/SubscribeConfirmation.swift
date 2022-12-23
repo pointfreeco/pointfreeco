@@ -233,10 +233,10 @@ func redirectActiveSubscribers<A>(
           },
           { _ in
             conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.warning, "You already have an active subscription.")
-            )
+              |> redirect(
+                to: .account(),
+                headersMiddleware: flash(.warning, "You already have an active subscription.")
+              )
           }
         )
       }
