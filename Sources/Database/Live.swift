@@ -948,7 +948,7 @@ extension Client {
         }
       },
       updateEpisodeProgress: { episodeSequence, percent, userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
           VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId))
@@ -957,6 +957,7 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       updateGift: { id, stripeSubscriptionId in
         pool.sqlDatabase.raw(

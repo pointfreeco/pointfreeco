@@ -147,13 +147,15 @@ private let updateProgress:
     }
 
     if isEpisodeViewable(for: permission) {
-      return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
-        .run
-        .flatMap { _ in
-          conn
-            |> writeStatus(.ok)
-            >=> end
-        }
+      return EitherIO {
+        try await Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+      }
+      .run
+      .flatMap { _ in
+        conn
+        |> writeStatus(.ok)
+        >=> end
+      }
     } else {
       return conn
         |> writeStatus(.ok)

@@ -59,7 +59,7 @@ public struct Client {
   public var updateEmailSettings:
     ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:
-    (Episode.Sequence, Int, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
+    (Episode.Sequence, Int, Models.User.ID) async throws -> Void
   public var updateGift: (Gift.ID, Stripe.Subscription.ID) -> EitherIO<Error, Gift>
   public var updateGiftStatus:
     (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) -> EitherIO<Error, Gift>
@@ -120,9 +120,7 @@ public struct Client {
     sawUser: @escaping (Models.User.ID) async throws -> Void,
     updateEmailSettings:
       @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void,
-    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) async throws -> Void,
     updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) -> EitherIO<Error, Gift>,
     updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) ->
       EitherIO<Error, Gift>,

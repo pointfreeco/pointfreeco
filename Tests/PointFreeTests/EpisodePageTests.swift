@@ -544,10 +544,7 @@ class EpisodePageTests: TestCase {
 
   func testProgress_LoggedIn() async throws {
     var didUpdate = false
-    Current.database.updateEpisodeProgress = { _, _, _ in
-      didUpdate = true
-      return pure(unit)
-    }
+    Current.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
 
     let episode = Current.episodes().first!
     let percent = 20
@@ -563,10 +560,7 @@ class EpisodePageTests: TestCase {
 
   func testProgress_LoggedOut() async throws {
     var didUpdate = false
-    Current.database.updateEpisodeProgress = { _, _, _ in
-      didUpdate = true
-      return pure(unit)
-    }
+    Current.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
 
     let episode = Current.episodes().first!
     let percent = 20

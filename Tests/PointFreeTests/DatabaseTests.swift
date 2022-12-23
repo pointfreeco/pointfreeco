@@ -76,7 +76,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     .performAsync()!
 
-    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id)
 
     var count = try await Current.database.execute(
       """
@@ -89,7 +89,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id)
 
     count = try await Current.database.execute(
       """
@@ -102,7 +102,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id)
 
     count = try await Current.database.execute(
       """
@@ -126,7 +126,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .performAsync()!
 
     _ = try await Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
-      .performAsync()
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
 
