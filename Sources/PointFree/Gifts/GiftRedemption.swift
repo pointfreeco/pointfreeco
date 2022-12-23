@@ -109,25 +109,19 @@ private func redeemGift(
         }
       }
   } else {
-    let plan: Plan.ID = gift.monthsFree < 12 ? .monthly : .yearly
     return EitherIO {
-      try await Current.stripe.createCustomer(
+      let customer = try await Current.stripe.createCustomer(
         nil,
         user.id.rawValue.uuidString,
         user.email,
         nil,
         -discount
       )
-    }
-    .flatMap { customer in
-      Current.stripe.createSubscription(customer.id, plan, 1, nil)
-        .flatMap { stripeSubscription in
-          EitherIO {
-            _ = try await Current.database
-              .createSubscription(stripeSubscription, user.id, true, nil)
-            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
-          }
-        }
+      let stripeSubscription = try await Current.stripe
+        .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
+      _ = try await Current.database
+        .createSubscription(stripeSubscription, user.id, true, nil)
+      _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
     }
     .run
     .flatMap { errorOrNot in

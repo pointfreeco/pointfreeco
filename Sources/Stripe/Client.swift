@@ -15,8 +15,7 @@ import UrlFormEncoding
 
 public struct Client {
   public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod
-  public var cancelSubscription:
-    (Subscription.ID, _ immediately: Bool) async throws -> Subscription
+  public var cancelSubscription: (Subscription.ID, _ immediately: Bool) async throws -> Subscription
   public var confirmPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
   public var createCoupon:
     (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) async throws -> Coupon
@@ -24,7 +23,7 @@ public struct Client {
     (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) async throws -> Customer
   public var createPaymentIntent: (CreatePaymentIntentRequest) async throws -> PaymentIntent
   public var createSubscription:
-    (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<Error, Subscription>
+    (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws -> Subscription
   public var deleteCoupon: (Coupon.ID) -> EitherIO<Error, Prelude.Unit>
   public var fetchCoupon: (Coupon.ID) -> EitherIO<Error, Coupon>
   public var fetchCustomer: (Customer.ID) -> EitherIO<Error, Customer>
@@ -56,9 +55,8 @@ public struct Client {
       PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?
     ) async throws -> Customer,
     createPaymentIntent: @escaping (CreatePaymentIntentRequest) async throws -> PaymentIntent,
-    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<
-      Error, Subscription
-    >,
+    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws ->
+      Subscription,
     deleteCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Prelude.Unit>,
     fetchCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Coupon>,
     fetchCustomer: @escaping (Customer.ID) -> EitherIO<Error, Customer>,
@@ -171,9 +169,10 @@ extension Client {
           .performAsync()
       },
       createSubscription: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
+        .performAsync()
       },
       deleteCoupon: { runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)) },
       fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },

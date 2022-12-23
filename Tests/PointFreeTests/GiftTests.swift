@@ -211,9 +211,7 @@ class GiftTests: TestCase {
         $0.invoiceSettings = .init(defaultPaymentMethod: nil)
       }
     }
-    Current.stripe.createSubscription = { _, _, _, _ in
-      pure(.individualMonthly)
-    }
+    Current.stripe.createSubscription = { _, _, _, _ in .individualMonthly }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
     let conn = connection(

@@ -89,12 +89,14 @@ private func subscribe(
       ? Current.envVars.regionalDiscountCouponId
       : nil
 
-    return Current.stripe.createSubscription(
-      customer.id,
-      subscribeData.pricing.billing.plan,
-      subscribeData.pricing.quantity,
-      subscribeData.coupon ?? regionalDiscountCouponId
-    )
+    return EitherIO {
+      try await Current.stripe.createSubscription(
+        customer.id,
+        subscribeData.pricing.billing.plan,
+        subscribeData.pricing.quantity,
+        subscribeData.coupon ?? regionalDiscountCouponId
+      )
+    }
   }
 
   func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
