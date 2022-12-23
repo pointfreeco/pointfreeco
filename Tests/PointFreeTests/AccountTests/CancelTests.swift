@@ -152,7 +152,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateStripeFailure() async throws {
-    Current.stripe.updateSubscription = { _, _, _ in throwE(unit) }
+    Current.stripe.updateSubscription = { _, _, _ in throw unit }
 
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))

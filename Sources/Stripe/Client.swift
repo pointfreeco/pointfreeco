@@ -40,7 +40,7 @@ public struct Client {
   public var updateCustomer: (Customer.ID, PaymentMethod.ID) async throws -> Customer
   public var updateCustomerBalance: (Customer.ID, Cents<Int>) async throws -> Customer
   public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) async throws -> Customer
-  public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
+  public var updateSubscription: (Subscription, Plan.ID, Int) async throws -> Subscription
   public var js: String
 
   public init(
@@ -74,7 +74,7 @@ public struct Client {
     updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) async throws -> Customer,
     updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) async throws -> Customer,
     updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) async throws -> Customer,
-    updateSubscription: @escaping (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>,
+    updateSubscription: @escaping (Subscription, Plan.ID, Int) async throws -> Subscription,
     js: String
   ) {
     self.attachPaymentMethod = attachPaymentMethod
@@ -228,9 +228,10 @@ extension Client {
         .performAsync()
       },
       updateSubscription: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.updateSubscription($0, $1, $2)
         )
+        .performAsync()
       },
       js: "https://js.stripe.com/v3/"
     )

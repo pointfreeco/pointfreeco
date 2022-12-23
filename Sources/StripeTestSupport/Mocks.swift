@@ -29,7 +29,7 @@ extension Client {
     updateCustomer: { _, _ in .mock },
     updateCustomerBalance: { _, cents in update(.mock) { $0.balance = cents } },
     updateCustomerExtraInvoiceInfo: { _, _ in .mock },
-    updateSubscription: { _, _, _ in pure(.mock) },
+    updateSubscription: { _, _, _ in .mock },
     js: ""
   )
 }
