@@ -13,7 +13,7 @@ extension Client {
     createCustomer: { _, _, _, _, _ in .mock },
     createPaymentIntent: { _ in .requiresConfirmation },
     createSubscription: { _, _, _, _ in .mock },
-    deleteCoupon: const(pure(unit)),
+    deleteCoupon: { _ in },
     fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
     fetchCustomerPaymentMethods: { _ in pure(.mock([])) },
