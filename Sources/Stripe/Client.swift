@@ -139,21 +139,17 @@ extension Client {
     self.init(
       attachPaymentMethod: {
         try await runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
-          .performAsync()
       },
       cancelSubscription: {
         try await runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
-          .performAsync()
       },
       confirmPaymentIntent: {
         try await runStripe(secretKey, logger)(Stripe.confirmPaymentIntent(id: $0))
-          .performAsync()
       },
       createCoupon: {
         try await runStripe(secretKey, logger)(
           Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
         )
-        .performAsync()
       },
       createCustomer: {
         try await runStripe(secretKey, logger)(
@@ -161,77 +157,69 @@ extension Client {
             paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4
           )
         )
-        .performAsync()
       },
       createPaymentIntent: {
         try await runStripe(secretKey, logger)(Stripe.createPaymentIntent($0))
-          .performAsync()
       },
       createSubscription: {
         try await runStripe(secretKey, logger)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
-        .performAsync()
       },
       deleteCoupon: {
-        _ = try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)).performAsync()
+        _ = try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0))
       },
       fetchCoupon: {
-        try await runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0))
       },
       fetchCustomer: {
-        try await runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0))
       },
       fetchCustomerPaymentMethods: {
         try await runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))
-          .performAsync()
       },
       fetchInvoice: {
-        try await runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0))
       },
       fetchInvoices: {
-        try await runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0))
       },
       fetchPaymentIntent: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0))
       },
       fetchPaymentMethod: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0))
       },
       fetchPlans: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPlans()).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchPlans())
       },
       fetchPlan: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0))
       },
       fetchSubscription: {
-        try await runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0))
       },
       fetchUpcomingInvoice: {
-        try await runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0))
       },
       invoiceCustomer: {
-        try await runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)).performAsync()
+        try await runStripe(secretKey, logger)(Stripe.invoiceCustomer($0))
       },
       updateCustomer: {
         try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
-          .performAsync()
       },
       updateCustomerBalance: {
         try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
-          .performAsync()
       },
       updateCustomerExtraInvoiceInfo: {
         try await runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
         )
-        .performAsync()
       },
       updateSubscription: {
         try await runStripe(secretKey, logger)(
           Stripe.updateSubscription($0, $1, $2)
         )
-        .performAsync()
       },
       js: "https://js.stripe.com/v3/"
     )
@@ -518,11 +506,11 @@ func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get(
 
 private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
   DecodableRequest<A>?
-) -> EitherIO<Error, A> {
+) async throws -> A {
   return { stripeRequest in
     guard
       var stripeRequest = stripeRequest?.rawValue
-    else { return throwE(StripeError(message: "Stripe request is nil.")) }
+    else { throw StripeError(message: "Stripe request is nil.") }
 
     stripeRequest.attachBasicAuth(username: secretKey.rawValue)
 
@@ -542,6 +530,6 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
           }
       }
 
-    return task
+    return try await task.performAsync()
   }
 }
