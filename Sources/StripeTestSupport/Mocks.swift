@@ -11,7 +11,7 @@ extension Client {
     confirmPaymentIntent: { _ in .succeeded },
     createCoupon: { _, _, _, _ in .mock },
     createCustomer: { _, _, _, _, _ in .mock },
-    createPaymentIntent: { _ in pure(.requiresConfirmation) },
+    createPaymentIntent: { _ in .requiresConfirmation },
     createSubscription: { _, _, _, _ in pure(.mock) },
     deleteCoupon: const(pure(unit)),
     fetchCoupon: const(pure(.mock)),

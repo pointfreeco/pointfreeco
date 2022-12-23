@@ -90,7 +90,7 @@ class GiftTests: TestCase {
   func testGiftCreate_StripeFailure() async throws {
     Current.stripe.createPaymentIntent = { _ in
       struct Error: Swift.Error {}
-      return throwE(Error())
+      throw Error()
     }
 
     let conn = connection(
@@ -138,7 +138,7 @@ class GiftTests: TestCase {
   func testGiftCreate_InvalidMonths() async throws {
     Current.stripe.createPaymentIntent = { _ in
       struct Error: Swift.Error {}
-      return throwE(Error())
+      throw Error()
     }
 
     let conn = connection(
