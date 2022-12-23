@@ -33,7 +33,6 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     let user = try await Current.database
       .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .performAsync()!
     _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
@@ -113,7 +112,6 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
     let user = try await Current.database
       .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      .performAsync()!
     _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
     try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
 

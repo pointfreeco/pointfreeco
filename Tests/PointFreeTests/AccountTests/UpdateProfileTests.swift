@@ -24,7 +24,6 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     var user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     user.referralCode = "deadbeef"
 
     await assertSnapshot(
@@ -63,7 +62,6 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     let emailSettings = try await Current.database.fetchEmailSettingsForUserId(user.id)
 
     await assertSnapshot(

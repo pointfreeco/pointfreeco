@@ -183,13 +183,10 @@ public struct Client {
     withGitHubEnvelope envelope: GitHubUserEnvelope,
     email: EmailAddress,
     now: @escaping () -> Date
-  ) -> EitherIO<Error, Models.User?> { // TODO: non-optional
-
-    return EitherIO {
-      let user = try await self.upsertUser(envelope, email, now)
-      try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
-      return user
-    }
+  ) async throws -> User {
+    let user = try await self.upsertUser(envelope, email, now)
+    try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
+    return user
   }
 
   public func updateUser(

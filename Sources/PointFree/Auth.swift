@@ -112,26 +112,31 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
     .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
 
-      Current.database.registerUser(withGitHubEnvelope: env, email: email.email, now: Current.date)
-        .mapExcept(requireSome)
-        .flatMap { user in
-          EitherIO(
-            run: IO { () -> Either<Error, Models.User> in
+      EitherIO {
+        try await Current.database.registerUser(
+          withGitHubEnvelope: env,
+          email: email.email,
+          now: Current.date
+        )
+      }
+      .flatMap { user in
+        EitherIO(
+          run: IO { () -> Either<Error, Models.User> in
 
-              // Fire-and-forget notify user that they signed up
-              parallel(
-                sendEmail(
-                  to: [email.email],
-                  subject: "Point-Free Registration",
-                  content: inj2(registrationEmailView(env.gitHubUser))
-                )
-                .run
+            // Fire-and-forget notify user that they signed up
+            parallel(
+              sendEmail(
+                to: [email.email],
+                subject: "Point-Free Registration",
+                content: inj2(registrationEmailView(env.gitHubUser))
               )
-              .run({ _ in })
+              .run
+            )
+            .run({ _ in })
 
-              return .right(user)
-            })
-        }
+            return .right(user)
+          })
+      }
     }
 }
 

@@ -27,7 +27,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
 
@@ -45,7 +44,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
@@ -66,7 +64,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
@@ -84,7 +81,6 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
@@ -107,13 +103,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -136,13 +130,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
@@ -172,13 +164,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -201,13 +191,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
@@ -235,13 +223,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createSubscription(
       Stripe.Subscription.canceling, inviterUser.id, true, nil
@@ -307,13 +293,11 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)

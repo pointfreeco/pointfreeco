@@ -26,7 +26,6 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
         Current.database.registerUser(
           withGitHubEnvelope: env, email: .init(rawValue: "\(id)@pointfree.co"), now: { .mock }
         )
-        .performAsync()!
       )
     }
 

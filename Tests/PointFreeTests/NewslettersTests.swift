@@ -26,7 +26,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let payload = try XCTUnwrap(
       Encrypted(
@@ -62,7 +61,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -106,7 +104,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -148,7 +145,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let payload = encrypted(
         text: "\(user.id.rawValue.uuidString)--unknown",

@@ -25,7 +25,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
 
     let createdAccount = try await Current.database.createEnterpriseAccount(
@@ -47,7 +46,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
 
@@ -60,7 +58,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
 
@@ -73,7 +70,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.updateEpisodeProgress(1, 20, user.id)
 
@@ -122,7 +118,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
 
@@ -137,7 +132,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
 

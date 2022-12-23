@@ -31,7 +31,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "blob@pointfree.co",
       now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
 
@@ -44,7 +43,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "owner@pointfree.co",
       now: { .mock }
     )
-    .performAsync()!
 
     let subscription = try await Current.database.createSubscription(
       Stripe.Subscription.mock,
