@@ -61,7 +61,7 @@ private func fetchAccountData<I>(
         if let card = customer.defaultSource?.right {
           return .left(card)
         } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
-          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod).performAsync())
+          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod))
         } else {
           return nil
         }

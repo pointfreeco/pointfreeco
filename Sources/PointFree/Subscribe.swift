@@ -41,28 +41,21 @@ private func subscribe(
     : -18_00
 
   let stripeSubscription = EitherIO {
-    try await Current.stripe.createCustomer(
+    let customer = try await Current.stripe.createCustomer(
       subscribeData.paymentMethodID,
       user.id.rawValue.uuidString,
       user.email,
       nil,
       subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
     )
-  }
-  .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
-    Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
-      .map { ($0, customer) }
-  }
-  .flatMap { paymentMethod, customer -> EitherIO<Error, Stripe.Subscription> in
+    let paymentMethod = try await Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
     let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
-      return throwE(
-        StripeErrorEnvelope(
-          error: .init(
-            message: """
-              Couldn't verify issue country on credit card. Please try another credit card.
-              """
-          )
+      throw StripeErrorEnvelope(
+        error: .init(
+          message: """
+            Couldn't verify issue country on credit card. Please try another credit card.
+            """
         )
       )
     }
@@ -71,15 +64,13 @@ private func subscribe(
       !subscribeData.useRegionalDiscount
         || DiscountCountry.all.contains(where: { $0.countryCode == country })
     else {
-      return throwE(
-        StripeErrorEnvelope(
-          error: .init(
-            message: """
-              The issuing country of your credit card is not on the list of countries that
-              qualify for a regional discount. Please use a different credit card, or subscribe
-              without the discount.
-              """
-          )
+      throw StripeErrorEnvelope(
+        error: .init(
+          message: """
+            The issuing country of your credit card is not on the list of countries that
+            qualify for a regional discount. Please use a different credit card, or subscribe
+            without the discount.
+            """
         )
       )
     }
@@ -89,14 +80,12 @@ private func subscribe(
       ? Current.envVars.regionalDiscountCouponId
       : nil
 
-    return EitherIO {
-      try await Current.stripe.createSubscription(
-        customer.id,
-        subscribeData.pricing.billing.plan,
-        subscribeData.pricing.quantity,
-        subscribeData.coupon ?? regionalDiscountCouponId
-      )
-    }
+    return try await Current.stripe.createSubscription(
+      customer.id,
+      subscribeData.pricing.billing.plan,
+      subscribeData.pricing.quantity,
+      subscribeData.coupon ?? regionalDiscountCouponId
+    )
   }
 
   func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {

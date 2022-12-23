@@ -373,19 +373,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
@@ -435,19 +433,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
-      pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "US",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "US",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
@@ -501,19 +497,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     Current.stripe.fetchSubscription = { _ in
@@ -595,19 +589,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     Current.stripe.fetchSubscription = { _ in
@@ -670,12 +662,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
     Current.stripe.createCustomer = { _, _, _, _, _ in customer }
     Current.stripe.fetchPaymentMethod = {
-      pure(
-        PaymentMethod(
-          card: .regional,
-          customer: .left(customer.id),
-          id: $0
-        )
+      PaymentMethod(
+        card: .regional,
+        customer: .left(customer.id),
+        id: $0
       )
     }
 

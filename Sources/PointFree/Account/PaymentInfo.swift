@@ -35,13 +35,12 @@ private func fetchPaymentMethod<A>(
 ) -> IO<Conn<A, Tuple3<PaymentMethod?, User, SubscriberState>>> {
   let (subscription, user, subscriberState) = lower(conn.data)
 
-  if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
-    return Current.stripe.fetchPaymentMethod(paymentMethodID)
-      .run
-      .map(\.right)
-      .map { conn.map(const($0 .*. user .*. subscriberState .*. unit)) }
-  } else {
-    return pure(conn.map(const(nil .*. user .*. subscriberState .*. unit)))
+  return IO {
+    var paymentMethod: PaymentMethod?
+    if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
+      paymentMethod = try? await Current.stripe.fetchPaymentMethod(paymentMethodID)
+    }
+    return conn.map(const(paymentMethod .*. user .*. subscriberState .*. unit))
   }
 }
 
