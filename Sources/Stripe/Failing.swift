@@ -13,7 +13,7 @@ extension Client {
     deleteCoupon: unimplemented("Stripe.Client.deleteCoupon"),
     fetchCoupon: unimplemented("Stripe.Client.fetchCoupon"),
     fetchCustomer: unimplemented("Stripe.Client.fetchCustomer"),
-    fetchCustomerPaymentMethods: { _ in .failing("Stripe.Client.fetchCustomerPaymentMethods") },
+    fetchCustomerPaymentMethods: unimplemented("Stripe.Client.fetchCustomerPaymentMethods"),
     fetchInvoice: { _ in .failing("Stripe.Client.fetchInvoice") },
     fetchInvoices: { _ in .failing("Stripe.Client.fetchInvoices") },
     fetchPaymentIntent: { _ in .failing("Stripe.Client.fetchPaymentIntent") },

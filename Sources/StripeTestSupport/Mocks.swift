@@ -16,7 +16,7 @@ extension Client {
     deleteCoupon: { _ in },
     fetchCoupon: { _ in .mock },
     fetchCustomer: { _ in .mock },
-    fetchCustomerPaymentMethods: { _ in pure(.mock([])) },
+    fetchCustomerPaymentMethods: { _ in .mock([]) },
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
     fetchPaymentIntent: const(pure(.succeeded)),
