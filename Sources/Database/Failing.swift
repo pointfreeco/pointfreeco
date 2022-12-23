@@ -34,30 +34,30 @@ extension Client {
     fetchSubscriptionTeammatesByOwnerId: unimplemented(
       "Database.Client.fetchSubscriptionTeammatesByOwnerId"
     ),
-    fetchTeamInvite: { _ in .failing("Database.Client.fetchTeamInvite") },
-    fetchTeamInvites: { _ in .failing("Database.Client.fetchTeamInvites") },
-    fetchUserByGitHub: { _ in .failing("Database.Client.fetchUserByGitHub") },
-    fetchUserById: { _ in .failing("Database.Client.fetchUserById") },
-    fetchUserByReferralCode: { _ in .failing("Database.Client.fetchUserByReferralCode") },
-    fetchUserByRssSalt: { _ in .failing("Database.Client.fetchUserByRssSalt") },
-    fetchUsersSubscribedToNewsletter: { _, _ in
-      .failing("Database.Client.fetchUsersSubscribedToNewsletter")
-    },
-    fetchUsersToWelcome: { _ in .failing("Database.Client.fetchUsersToWelcome") },
-    incrementEpisodeCredits: { _ in .failing("Database.Client.incrementEpisodeCredits") },
-    insertTeamInvite: { _, _ in .failing("Database.Client.insertTeamInvite") },
-    migrate: { .failing("Database.Client.migrate") },
-    redeemEpisodeCredit: { _, _ in .failing("Database.Client.redeemEpisodeCredit") },
-    removeTeammateUserIdFromSubscriptionId: { _, _ in
-      .failing("Database.Client.removeTeammateUserIdFromSubscriptionId")
-    },
-    sawUser: { _ in .failing("Database.Client.sawUser") },
-    updateEmailSettings: { _, _ in .failing("Database.Client.updateEmailSettings") },
-    updateEpisodeProgress: { _, _, _ in .failing("Database.Client.updateEpisodeProgress") },
-    updateGift: { _, _ in .failing("Database.Client.updateGift") },
-    updateGiftStatus: { _, _, _ in .failing("Database.Client.updateGiftStatus") },
-    updateStripeSubscription: { _ in .failing("Database.Client.updateStripeSubscription") },
-    updateUser: { _, _, _, _, _ in .failing("Database.Client.updateUser") },
-    upsertUser: { _, _, _ in .failing("Database.Client.upsertUser") }
+    fetchTeamInvite: unimplemented("Database.Client.fetchTeamInvite"),
+    fetchTeamInvites: unimplemented("Database.Client.fetchTeamInvites"),
+    fetchUserByGitHub: unimplemented("Database.Client.fetchUserByGitHub"),
+    fetchUserById: unimplemented("Database.Client.fetchUserById"),
+    fetchUserByReferralCode: unimplemented("Database.Client.fetchUserByReferralCode"),
+    fetchUserByRssSalt: unimplemented("Database.Client.fetchUserByRssSalt"),
+    fetchUsersSubscribedToNewsletter: unimplemented(
+      "Database.Client.fetchUsersSubscribedToNewsletter"
+    ),
+    fetchUsersToWelcome: unimplemented("Database.Client.fetchUsersToWelcome"),
+    incrementEpisodeCredits: unimplemented("Database.Client.incrementEpisodeCredits"),
+    insertTeamInvite: unimplemented("Database.Client.insertTeamInvite"),
+    migrate: unimplemented("Database.Client.migrate"),
+    redeemEpisodeCredit: unimplemented("Database.Client.redeemEpisodeCredit"),
+    removeTeammateUserIdFromSubscriptionId: unimplemented(
+      "Database.Client.removeTeammateUserIdFromSubscriptionId"
+    ),
+    sawUser: unimplemented("Database.Client.sawUser"),
+    updateEmailSettings: unimplemented("Database.Client.updateEmailSettings"),
+    updateEpisodeProgress: unimplemented("Database.Client.updateEpisodeProgress"),
+    updateGift: unimplemented("Database.Client.updateGift"),
+    updateGiftStatus: unimplemented("Database.Client.updateGiftStatus"),
+    updateStripeSubscription: unimplemented("Database.Client.updateStripeSubscription"),
+    updateUser: unimplemented("Database.Client.updateUser"),
+    upsertUser: unimplemented("Database.Client.upsertUser")
   )
 }

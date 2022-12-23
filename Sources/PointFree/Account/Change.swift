@@ -135,12 +135,9 @@ private func fetchSeatsTaken<A>(
     let user = conn.data.first
 
     let invitesAndTeammates = IO {
-      async let teamInvites = Current.database.fetchTeamInvites(user.id)
-        .performAsync()
-        .count
-      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)
-        .count
-      return ((try? await teamInvites) ?? 0) + ((try? await teammates) ?? 0)
+      async let invites = Current.database.fetchTeamInvites(user.id).count
+      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).count
+      return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
     }
 
     return

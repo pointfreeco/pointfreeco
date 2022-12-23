@@ -67,13 +67,11 @@ private func handlePaymentIntent(
   else { return conn |> writeStatus(.ok) >=> respond(text: "OK") }
 
   return EitherIO {
-    try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
-  }
-  .flatMap { gift in
-    gift.deliverAt == nil
-      ? sendGiftEmail(for: gift)
-        .flatMap(const(Current.database.updateGiftStatus(gift.id, paymentIntent.status, true)))
-      : Current.database.updateGiftStatus(gift.id, paymentIntent.status, false)
+    let deliverNow = gift.deliverAt == nil
+    if deliverNow {
+      _ = try await sendGiftEmail(for: gift).performAsync()
+    }
+    _ = try await Current.database.updateGiftStatus(gift.id, paymentIntent.status, deliverNow)
   }
   .run
   .flatMap {

@@ -179,7 +179,7 @@ private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> Ei
         .filter { email in email.rawValue.contains("@") && email != inviter.email }
         .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
         .map { email in
-          Current.database.insertTeamInvite(email, inviter.id)
+          EitherIO { try await Current.database.insertTeamInvite(email, inviter.id) }
             .flatMap { invite in sendInviteEmail(invite: invite, inviter: inviter) }
             .run
             .parallel
@@ -321,39 +321,30 @@ private func validateReferrer(
       subscribeData.pricing.lane == .personal
       && user.referrerId == nil
 
-    let fetchReferrer =
-      isSubscribeDataValidForReferral
-      ? Current.database.fetchUserByReferralCode(referralCode)
-      : throwE(unit as Error)
-
-    return
-      fetchReferrer
-      .mapExcept(requireSome)
-      .flatMap { referrer in
-        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId).flatMap {
-              $0.isCancellable
-                ? pure(Referrer(user: referrer, stripeSubscription: $0))
-                : throwE(unit as Error)
-            }
-          }
-      }
-      .run
-      .flatMap(
-        either(
-          { _ in
-            var subscribeData = subscribeData
-            subscribeData.referralCode = nil
-            return conn
-              |> redirect(
-                to: subscribeConfirmationWithSubscribeData(subscribeData),
-                headersMiddleware: flash(.error, "Invalid referral code.")
-              )
-          },
-          { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
-        )
+    return EitherIO {
+      guard isSubscribeDataValidForReferral else { throw unit }
+      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+        .performAsync()
+      return Referrer(user: referrer, stripeSubscription: stripeSubscription)
+    }
+    .run
+    .flatMap(
+      either(
+        { _ in
+          var subscribeData = subscribeData
+          subscribeData.referralCode = nil
+          return conn
+            |> redirect(
+              to: subscribeConfirmationWithSubscribeData(subscribeData),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
+        },
+        { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
       )
+    )
   }
 }
 

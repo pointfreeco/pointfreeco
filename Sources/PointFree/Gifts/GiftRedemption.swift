@@ -75,8 +75,10 @@ private func redeemGift(
           (stripeSubscription.customer.right?.balance ?? 0) - discount
         )
         .flatMap { customer in
-          Current.database.updateGift(gift.id, stripeSubscription.id)
-            .map(const(customer))
+          EitherIO {
+            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
+            return customer
+          }
         }
       }
       .run
@@ -119,17 +121,15 @@ private func redeemGift(
       Current.stripe.createSubscription(customer.id, plan, 1, nil)
         .flatMap { stripeSubscription in
           EitherIO {
-            try await Current.database.createSubscription(stripeSubscription, user.id, true, nil)
-          }
-          .flatMap { _ in
-            Current.database.updateGift(gift.id, stripeSubscription.id)
-              .map(const(customer))
+            _ = try await Current.database
+              .createSubscription(stripeSubscription, user.id, true, nil)
+            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
           }
         }
     }
     .run
-    .flatMap { errorOrSubscription in
-      switch errorOrSubscription {
+    .flatMap { errorOrNot in
+      switch errorOrNot {
       case .left:
         return conn
           |> redirect(

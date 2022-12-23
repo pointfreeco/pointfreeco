@@ -38,8 +38,9 @@ private func fetchAccountData<I>(
 
   let owner =
     subscription
-    .flatMap(Current.database.fetchUserById <<< \.userId)
-    .mapExcept(requireSome)
+    .flatMap { subscription in
+      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
+    }
 
   let stripeSubscription =
     subscription
@@ -95,8 +96,7 @@ private func fetchAccountData<I>(
 
       owner.run.map(\.right).parallel,
 
-      Current.database.fetchTeamInvites(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchTeamInvites(user.id)) ?? [] }.parallel,
 
       IO { (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
         .parallel,

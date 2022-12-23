@@ -31,7 +31,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "blob@pointfree.co",
       now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
 
@@ -44,7 +43,6 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "owner@pointfree.co",
       now: { .mock }
     )
-    .performAsync()!
 
     let subscription = try await Current.database.createSubscription(
       Stripe.Subscription.mock,
@@ -59,8 +57,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id)
-      .performAsync()!.subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertEqual(subscriptionId, nil)
 
     let emails = try await Current.database.fetchEnterpriseEmails()
@@ -127,7 +124,7 @@ final class AccountTests: TestCase {
     subscription.userId = currentUser.id
 
     Current = .teamYearly
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
     Current.database.fetchSubscriptionById = { _ in subscription }
 
@@ -158,10 +155,10 @@ final class AccountTests: TestCase {
     stripeSubscription.quantity = 2
 
     Current = .teamYearly
-    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchUserById = { _ in currentUser }
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     Current.database.fetchSubscriptionById = { _ in subscription }
-    Current.database.fetchTeamInvites = const(pure([]))
+    Current.database.fetchTeamInvites = { _ in [] }
     Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
     var session = Session.loggedIn
@@ -391,7 +388,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
@@ -417,7 +414,7 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchUserById = { _ in user }
     Current.database.fetchEpisodeCredits = { _ in [.mock] }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 

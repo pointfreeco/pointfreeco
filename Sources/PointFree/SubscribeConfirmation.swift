@@ -118,47 +118,47 @@ private func validateReferralCode(
       return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing))
     }
 
-    return Current.database.fetchUserByReferralCode(referralCode)
-      .mapExcept(requireSome)
-      .flatMap { referrer in
-        EitherIO { try await Current.database.fetchSubscriptionByOwnerId(referrer.id) }
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
-              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
-          }
-      }
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .subscribeConfirmation(
-                  lane: lane,
-                  billing: subscribeData.billing,
-                  isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-                  teammates: subscribeData.teammates,
-                  useRegionalDiscount: subscribeData.useRegionalDiscount
-                ),
-                headersMiddleware: flash(.error, "Invalid referral code.")
-              )
-          ),
-          { referrer in
-            conn.map(
-              const(
-                currentUser
-                  .*. currentRoute
-                  .*. subscriberState
-                  .*. lane
-                  .*. subscribeData
-                  .*. coupon
-                  .*. referrer
-                  .*. unit
-              )
-            ) |> middleware
-          }
-        )
+    return EitherIO {
+      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+        .performAsync()
+      guard stripeSubscription.isCancellable else { throw unit }
+      return referrer
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .subscribeConfirmation(
+                lane: lane,
+                billing: subscribeData.billing,
+                isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+                teammates: subscribeData.teammates,
+                useRegionalDiscount: subscribeData.useRegionalDiscount
+              ),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
+        ),
+        { referrer in
+          conn.map(
+            const(
+              currentUser
+                .*. currentRoute
+                .*. subscriberState
+                .*. lane
+                .*. subscribeData
+                .*. coupon
+                .*. referrer
+                .*. unit
+            )
+          ) |> middleware
+        }
       )
+    )
   }
 }
 

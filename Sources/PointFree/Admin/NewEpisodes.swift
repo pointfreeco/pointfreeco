@@ -75,10 +75,11 @@ private func sendNewEpisodeEmails<I>(
 
   let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
-  let users =
-    isTest
-    ? EitherIO { try await Current.database.fetchAdmins() }
-    : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
+  let users = EitherIO {
+    try await isTest
+      ? Current.database.fetchAdmins()
+      : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
+  }
 
   return
     users

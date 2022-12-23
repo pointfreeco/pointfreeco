@@ -83,9 +83,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <| { conn in
     let (teamInvite, currentUser) = lower(conn.data)
 
-    let inviter = Current.database
-      .fetchUserById(teamInvite.inviterUserId)
-      .mapExcept(requireSome)
+    let inviter = EitherIO { try await Current.database.fetchUserById(teamInvite.inviterUserId) }
 
     // VERIFY: user is subscribed
     let subscription = inviter.flatMap { inviter in
@@ -169,61 +167,47 @@ let sendInviteMiddleware =
 
     let (email, inviter) = lower(conn.data)
 
-    let seatsTaken = zip2(
-      Current.database.fetchTeamInvites(inviter.id).run.parallel
-        .map { $0.right?.count ?? 0 },
-      IO {
-        (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count) ?? 0
-      }
-      .parallel
-    )
-    .map(+)
+    return EitherIO<_, TeamInvite> {
+      async let invites = Current.database.fetchTeamInvites(inviter.id).count
+      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count
 
-    let subscription = EitherIO {
-      try await Current.database.fetchSubscriptionByOwnerId(inviter.id)
+      async let subscription = Current.database.fetchSubscriptionByOwnerId(inviter.id)
+
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+        .performAsync()
+      let seatsTaken = try await invites + teammates
+
+      guard stripeSubscription.status.isActive && stripeSubscription.quantity > seatsTaken
+      else { throw unit }
+
+      return try await Current.database.insertTeamInvite(email, inviter.id)
     }
-    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
     .run
-    .parallel
+    .flatMap { errorOrTeamInvite in
+      switch errorOrTeamInvite {
+      case .left:
+        return conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(
+              .error,
+              """
+              Couldn't invite \(email.rawValue)
+              """)
+          )
 
-    let subscriptionHasAvailableSeats: EitherIO<Error, Void> = EitherIO(
-      run: zip2(
-        subscription,
-        seatsTaken
-      )
-      .map { subscription, seatsTaken in subscription.map { ($0, seatsTaken) } }
-      .sequential
-    )
-    .flatMap { $0.status.isActive && $0.quantity > $1 ? pure(()) : throwE(unit) }
+      case let .right(invite):
+        parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+          .run({ _ in })
 
-    return
-      subscriptionHasAvailableSeats
-      .flatMap { Current.database.insertTeamInvite(email, inviter.id) }
-      .run
-      .flatMap { errorOrTeamInvite in
-        switch errorOrTeamInvite {
-        case .left:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(
-                .error,
-                """
-                Couldn't invite \(email.rawValue)
-                """)
-            )
-
-        case let .right(invite):
-          parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-            .run({ _ in })
-
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
-            )
-        }
+        return conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+          )
       }
+    }
   }
 
 func invalidSubscriptionErrorMiddleware<A>(
@@ -245,9 +229,8 @@ private func requireTeamInvite<A>(
 ) -> M<T2<TeamInvite.ID, A>> {
 
   return { conn in
-    Current.database.fetchTeamInvite(get1(conn.data))
+    EitherIO { try await Current.database.fetchTeamInvite(get1(conn.data)) }
       .run
-      .map(requireSome)
       .flatMap { errorOrTeamInvite in
         switch errorOrTeamInvite {
         case .left:
@@ -348,9 +331,9 @@ private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Use
 }
 
 private func fetchTeamInviter<A>(_ data: T2<TeamInvite, A>) -> IO<T3<TeamInvite, User, A>?> {
-
-  return Current.database.fetchUserById(get1(data).inviterUserId)
-    .mapExcept(requireSome)
-    .run
-    .map { $0.right.map { get1(data) .*. $0 .*. data.second } }
+  IO {
+    guard let inviter = try? await Current.database.fetchUserById(get1(data).inviterUserId)
+    else { return nil }
+    return get1(data) .*. inviter .*. data.second
+  }
 }

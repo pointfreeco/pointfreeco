@@ -90,9 +90,8 @@ private func fetchUserByRssSalt(
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User.RssSalt>, Data>
 {
   return { conn in
-    Current.database.fetchUserByRssSalt(get1(conn.data))
-      .run
-      .map { conn.map(const($0.right.flatMap(id) .*. unit)) }
+    IO { try? await Current.database.fetchUserByRssSalt(get1(conn.data)) }
+      .map { conn.map(const($0 .*. unit)) }
       .flatMap(middleware)
   }
 }
@@ -123,12 +122,12 @@ private func validateUserAgent<Z>(
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     else { return middleware(conn) }
 
-    return Current.database.updateUser(
-      id: user.id,
-      rssSalt: User.RssSalt(
-        rawValue: Current.uuid().uuidString.lowercased()
+    return EitherIO {
+      try await Current.database.updateUser(
+        id: user.id,
+        rssSalt: User.RssSalt(Current.uuid().uuidString.lowercased())
       )
-    )
+    }
     .flatMap { _ in
       sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }

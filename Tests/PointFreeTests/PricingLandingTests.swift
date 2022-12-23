@@ -25,7 +25,7 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
     var user = User.mock
     user.subscriptionId = nil
 
-    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchUserById = { _ in user }
 
     let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -54,7 +54,7 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() async throws {
-    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchUserById = { _ in .mock }
     Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
 

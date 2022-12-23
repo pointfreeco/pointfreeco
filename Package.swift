@@ -67,10 +67,8 @@ var package = Package(
         "Models",
         "PointFreePrelude",
         "Stripe",
-        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "PostgresKit", package: "postgres-kit"),
-        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]

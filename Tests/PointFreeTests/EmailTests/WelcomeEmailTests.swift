@@ -26,15 +26,14 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
         Current.database.registerUser(
           withGitHubEnvelope: env, email: .init(rawValue: "\(id)@pointfree.co"), now: { .mock }
         )
-        .performAsync()!
       )
     }
 
-    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id)).performAsync()
+    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id))
 
     var updatedUsers: [User] = []
     for user in users {
-      try await updatedUsers.append(Current.database.fetchUserById(user.id).performAsync()!)
+      try await updatedUsers.append(Current.database.fetchUserById(user.id))
     }
 
     zip(users, updatedUsers).forEach {

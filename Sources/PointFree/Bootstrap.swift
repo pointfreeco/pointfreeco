@@ -120,7 +120,7 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
 
 private let connectToPostgres =
   EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
-  .flatMap { _ in Current.database.migrate() }
+  .flatMap { _ in EitherIO { try await Current.database.migrate() } }
   .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
   .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
   .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))

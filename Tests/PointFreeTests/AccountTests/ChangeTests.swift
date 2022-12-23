@@ -159,7 +159,7 @@ final class ChangeTests: TestCase {
       subscription.quantity = 5
 
       Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.teammate, .teammate] }
-      Current.database.fetchTeamInvites = const(pure([.mock, .mock]))
+      Current.database.fetchTeamInvites = { _ in [.mock, .mock] }
       Current.stripe.fetchSubscription = const(pure(subscription))
 
       var pricing = Pricing.teamYearly

@@ -1,4 +1,3 @@
-import Either
 import EmailAddress
 import Foundation
 import GitHub
@@ -6,7 +5,6 @@ import Logging
 import Models
 import PointFreePrelude
 import PostgresKit
-import Prelude
 import Stripe
 import Tagged
 
@@ -40,38 +38,33 @@ public struct Client {
   public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
-  public var fetchTeamInvite: (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>
-  public var fetchTeamInvites: (Models.User.ID) -> EitherIO<Error, [TeamInvite]>
-  public var fetchUserByGitHub: (GitHubUser.ID) -> EitherIO<Error, Models.User?>
-  public var fetchUserById: (Models.User.ID) -> EitherIO<Error, Models.User?>
-  public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
-  public var fetchUserByRssSalt: (Models.User.RssSalt) -> EitherIO<Error, Models.User?>
+  public var fetchTeamInvite: (TeamInvite.ID) async throws -> TeamInvite
+  public var fetchTeamInvites: (Models.User.ID) async throws -> [TeamInvite]
+  public var fetchUserByGitHub: (GitHubUser.ID) async throws -> Models.User
+  public var fetchUserById: (Models.User.ID) async throws -> Models.User
+  public var fetchUserByReferralCode: (Models.User.ReferralCode) async throws -> Models.User
+  public var fetchUserByRssSalt: (Models.User.RssSalt) async throws -> Models.User
   public var fetchUsersSubscribedToNewsletter:
-    (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
-  public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
-  public var incrementEpisodeCredits: ([Models.User.ID]) -> EitherIO<Error, [Models.User]>
-  public var insertTeamInvite: (EmailAddress, Models.User.ID) -> EitherIO<Error, TeamInvite>
-  public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  public var redeemEpisodeCredit:
-    (Episode.Sequence, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
+    (EmailSetting.Newsletter, Models.User.SubscriberState?) async throws -> [Models.User]
+  public var fetchUsersToWelcome: (Int) async throws -> [Models.User]
+  public var incrementEpisodeCredits: ([Models.User.ID]) async throws -> [Models.User]
+  public var insertTeamInvite: (EmailAddress, Models.User.ID) async throws -> TeamInvite
+  public var migrate: () async throws -> Void
+  public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
-    (Models.User.ID, Models.Subscription.ID) -> EitherIO<Error, Prelude.Unit>
-  public var sawUser: (Models.User.ID) -> EitherIO<Error, Prelude.Unit>
-  public var updateEmailSettings:
-    ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
-  public var updateEpisodeProgress:
-    (Episode.Sequence, Int, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
-  public var updateGift: (Gift.ID, Stripe.Subscription.ID) -> EitherIO<Error, Gift>
+    (Models.User.ID, Models.Subscription.ID) async throws -> Void
+  public var sawUser: (Models.User.ID) async throws -> Void
+  public var updateEmailSettings: ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
+  public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.ID) async throws -> Void
+  public var updateGift: (Gift.ID, Stripe.Subscription.ID) async throws -> Gift
   public var updateGiftStatus:
-    (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) -> EitherIO<Error, Gift>
-  public var updateStripeSubscription:
-    (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
+    (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
+  public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
   public var updateUser:
-    (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<
-      Error, Prelude.Unit
-    >
+    (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async throws -> Void
   public var upsertUser:
-    (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
+    (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
+      Models.User
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async throws ->
@@ -103,42 +96,33 @@ public struct Client {
     fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription,
     fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
-    fetchTeamInvite: @escaping (TeamInvite.ID) -> EitherIO<Error, TeamInvite?>,
-    fetchTeamInvites: @escaping (Models.User.ID) -> EitherIO<Error, [TeamInvite]>,
-    fetchUserByGitHub: @escaping (GitHubUser.ID) -> EitherIO<Error, Models.User?>,
-    fetchUserById: @escaping (Models.User.ID) -> EitherIO<Error, Models.User?>,
-    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
-    fetchUserByRssSalt: @escaping (Models.User.RssSalt) -> EitherIO<Error, Models.User?>,
-    fetchUsersSubscribedToNewsletter: @escaping (
-      EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?
-    ) -> EitherIO<Error, [Models.User]>,
-    fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
-    incrementEpisodeCredits: @escaping ([Models.User.ID]) -> EitherIO<Error, [Models.User]>,
-    insertTeamInvite: @escaping (EmailAddress, Models.User.ID) -> EitherIO<Error, TeamInvite>,
-    migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
-    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
-    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) ->
-      EitherIO<Error, Prelude.Unit>,
-    sawUser: @escaping (Models.User.ID) -> EitherIO<Error, Prelude.Unit>,
-    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
-    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
-    updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) -> EitherIO<Error, Gift>,
-    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) ->
-      EitherIO<Error, Gift>,
-    updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<
-      Error, Models.Subscription?
-    >,
-    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) ->
-      EitherIO<Error, Prelude.Unit>,
-    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<
-      Error, Models.User?
-    >
+    fetchTeamInvite: @escaping (TeamInvite.ID) async throws -> TeamInvite,
+    fetchTeamInvites: @escaping (Models.User.ID) async throws -> [TeamInvite],
+    fetchUserByGitHub: @escaping (GitHubUser.ID) async throws -> Models.User,
+    fetchUserById: @escaping (Models.User.ID) async throws -> Models.User,
+    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) async throws -> Models.User,
+    fetchUserByRssSalt: @escaping (Models.User.RssSalt) async throws -> Models.User,
+    fetchUsersSubscribedToNewsletter: @escaping
+    (EmailSetting.Newsletter, Models.User.SubscriberState?) async throws -> [Models.User],
+    fetchUsersToWelcome: @escaping (Int) async throws -> [Models.User],
+    incrementEpisodeCredits: @escaping ([Models.User.ID]) async throws -> [Models.User],
+    insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
+    migrate: @escaping () async throws -> Void,
+    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
+    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
+      throws -> Void,
+    sawUser: @escaping (Models.User.ID) async throws -> Void,
+    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws ->
+      Void,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) async throws -> Void,
+    updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
+    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
+      throws -> Gift,
+    updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
+    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async
+      throws -> Void,
+    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
+      Models.User
   ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createEnterpriseAccount = createEnterpriseAccount
@@ -197,16 +181,11 @@ public struct Client {
   public func registerUser(
     withGitHubEnvelope envelope: GitHubUserEnvelope,
     email: EmailAddress,
-    now: () -> Date
-  ) -> EitherIO<Error, Models.User?> {
-
-    self.upsertUser(envelope, email, now)
-      .flatMap { optionalUser in
-        guard let user = optionalUser else { return pure(optionalUser) }
-
-        return self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
-          .map(const(optionalUser))
-      }
+    now: @escaping () -> Date
+  ) async throws -> User {
+    let user = try await self.upsertUser(envelope, email, now)
+    try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
+    return user
   }
 
   public func updateUser(
@@ -216,9 +195,9 @@ public struct Client {
     emailSettings: [EmailSetting.Newsletter]? = nil,
     episodeCreditCount: Int? = nil,
     rssSalt: Models.User.RssSalt? = nil
-  ) -> EitherIO<Error, Prelude.Unit> {
-    self.updateUser(id, name, email, episodeCreditCount, rssSalt)
-      .flatMap(const(self.updateEmailSettings(emailSettings, id)))
+  ) async throws {
+    try await self.updateUser(id, name, email, episodeCreditCount, rssSalt)
+    try await self.updateEmailSettings(emailSettings, id)
   }
 
   public struct CreateGiftRequest: Equatable {
@@ -256,16 +235,15 @@ public struct Client {
     public func resetForTesting(
       pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
     ) async throws {
-      let database = pool.database(logger: Logger(label: "Postgres"))
-      _ = try await database.run("DROP SCHEMA IF EXISTS public CASCADE").run.performAsync().unwrap()
-      _ = try await database.run("CREATE SCHEMA public").run.performAsync().unwrap()
-      _ = try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco").run.performAsync()
-        .unwrap()
-      _ = try await database.run("GRANT ALL ON SCHEMA public TO public").run.performAsync().unwrap()
-      _ = try await self.migrate().run.performAsync().unwrap()
-      _ = try await database.run("CREATE SEQUENCE test_uuids").run.performAsync().unwrap()
-      _ = try await database.run("CREATE SEQUENCE test_shortids").run.performAsync().unwrap()
-      _ = try await database.run(
+      let database = pool.sqlDatabase
+      try await database.run("DROP SCHEMA IF EXISTS public CASCADE")
+      try await database.run("CREATE SCHEMA public")
+      try await database.run("GRANT ALL ON SCHEMA public TO pointfreeco")
+      try await database.run("GRANT ALL ON SCHEMA public TO public")
+      try await self.migrate()
+      try await database.run("CREATE SEQUENCE test_uuids")
+      try await database.run("CREATE SEQUENCE test_shortids")
+      try await database.run(
         """
         CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
         BEGIN
@@ -274,8 +252,7 @@ public struct Client {
         LANGUAGE PLPGSQL;
         """
       )
-      .run.performAsync().unwrap()
-      _ = try await database.run(
+      try await database.run(
         """
         CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
         RETURNS text AS $$
@@ -285,7 +262,6 @@ public struct Client {
         LANGUAGE PLPGSQL;
         """
       )
-      .run.performAsync().unwrap()
     }
   #endif
 }

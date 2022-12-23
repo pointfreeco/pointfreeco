@@ -1,6 +1,3 @@
-import Either
-import Prelude
-
 struct NoopError: Error {}
 
 extension Client {
@@ -28,26 +25,26 @@ extension Client {
     fetchSubscriptionById: { _ in throw NoopError() },
     fetchSubscriptionByOwnerId: { _ in throw NoopError() },
     fetchSubscriptionTeammatesByOwnerId: { _ in throw NoopError() },
-    fetchTeamInvite: { _ in throwE(NoopError()) },
-    fetchTeamInvites: { _ in throwE(NoopError()) },
-    fetchUserByGitHub: { _ in throwE(NoopError()) },
-    fetchUserById: { _ in throwE(NoopError()) },
-    fetchUserByReferralCode: { _ in throwE(NoopError()) },
-    fetchUserByRssSalt: { _ in throwE(NoopError()) },
-    fetchUsersSubscribedToNewsletter: { _, _ in throwE(NoopError()) },
-    fetchUsersToWelcome: { _ in throwE(NoopError()) },
-    incrementEpisodeCredits: { _ in throwE(NoopError()) },
-    insertTeamInvite: { _, _ in throwE(NoopError()) },
-    migrate: { pure(unit) },
-    redeemEpisodeCredit: { _, _ in throwE(NoopError()) },
-    removeTeammateUserIdFromSubscriptionId: { _, _ in throwE(NoopError()) },
-    sawUser: { _ in throwE(NoopError()) },
-    updateEmailSettings: { _, _ in throwE(NoopError()) },
-    updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
-    updateGift: { _, _ in throwE(NoopError()) },
-    updateGiftStatus: { _, _, _ in throwE(NoopError()) },
-    updateStripeSubscription: { _ in throwE(NoopError()) },
-    updateUser: { _, _, _, _, _ in throwE(NoopError()) },
-    upsertUser: { _, _, _ in throwE(NoopError()) }
+    fetchTeamInvite: { _ in throw NoopError() },
+    fetchTeamInvites: { _ in throw NoopError() },
+    fetchUserByGitHub: { _ in throw NoopError() },
+    fetchUserById: { _ in throw NoopError() },
+    fetchUserByReferralCode: { _ in throw NoopError() },
+    fetchUserByRssSalt: { _ in throw NoopError() },
+    fetchUsersSubscribedToNewsletter: { _, _ in throw NoopError() },
+    fetchUsersToWelcome: { _ in throw NoopError() },
+    incrementEpisodeCredits: { _ in throw NoopError() },
+    insertTeamInvite: { _, _ in throw NoopError() },
+    migrate: {},
+    redeemEpisodeCredit: { _, _ in throw NoopError() },
+    removeTeammateUserIdFromSubscriptionId: { _, _ in throw NoopError() },
+    sawUser: { _ in throw NoopError() },
+    updateEmailSettings: { _, _ in throw NoopError() },
+    updateEpisodeProgress: { _, _, _ in throw NoopError() },
+    updateGift: { _, _ in throw NoopError() },
+    updateGiftStatus: { _, _, _ in throw NoopError() },
+    updateStripeSubscription: { _ in throw NoopError() },
+    updateUser: { _, _, _, _, _ in throw NoopError() },
+    upsertUser: { _, _, _ in throw NoopError() }
   )
 }
