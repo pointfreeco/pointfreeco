@@ -45,10 +45,8 @@ func giftCreateMiddleware(
     )
   )
   .flatMap { paymentIntent in
-    Current.stripe.confirmPaymentIntent(paymentIntent.id)
-  }
-  .flatMap { paymentIntent in
     EitherIO<Error, PaymentIntent> {
+      let paymentIntent = try await Current.stripe.confirmPaymentIntent(paymentIntent.id)
       _ = try await Current.database.createGift(
         .init(
           deliverAt: deliverAt,

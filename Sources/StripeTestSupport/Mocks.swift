@@ -8,7 +8,7 @@ extension Client {
   public static let mock = Client(
     attachPaymentMethod: { _, _ in .mock },
     cancelSubscription: { _, _ in .canceling },
-    confirmPaymentIntent: { _ in pure(.succeeded) },
+    confirmPaymentIntent: { _ in .succeeded },
     createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
