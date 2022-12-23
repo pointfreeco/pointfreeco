@@ -76,7 +76,7 @@ extension Environment {
   public static let teamYearly = update(mock) {
     $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
     $0.database.fetchTeamInvites = { _ in [.mock] }
-    $0.stripe.fetchSubscription = const(pure(.teamYearly))
+    $0.stripe.fetchSubscription = { _ in .teamYearly }
     $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
     $0.stripe.fetchPaymentMethod = { _ in .mock }
   }
@@ -87,7 +87,7 @@ extension Environment {
 
   public static let individualMonthly = update(mock) {
     $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
-    $0.stripe.fetchSubscription = const(pure(.individualMonthly))
+    $0.stripe.fetchSubscription = { _ in .individualMonthly }
   }
 }
 

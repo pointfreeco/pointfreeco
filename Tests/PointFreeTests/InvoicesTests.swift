@@ -49,7 +49,7 @@ final class InvoicesTests: TestCase {
     ]
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))

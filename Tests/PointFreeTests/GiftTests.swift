@@ -272,7 +272,7 @@ class GiftTests: TestCase {
     }
     Current.date = { .mock }
     Current.stripe.fetchPaymentIntent = { _ in .succeeded }
-    Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
     Current.stripe.updateCustomerBalance = { _, amount in
       credit = amount
       return pure(update(.mock))
@@ -407,7 +407,7 @@ class GiftTests: TestCase {
     Current.database.sawUser = { _ in }
     Current.date = { .mock }
     Current.stripe.fetchPaymentIntent = { _ in .succeeded }
-    Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
+    Current.stripe.fetchSubscription = { _ in .teamYearly }
 
     let conn = connection(
       from: request(

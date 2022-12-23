@@ -26,9 +26,7 @@ private func fetchStripeSubscription<A>(
     guard let subscription = get1(conn.data)
     else { return middleware(conn.map(over1(const(nil)))) }
 
-    return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-      .run
-      .map(\.right)
+    return IO { try? await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }

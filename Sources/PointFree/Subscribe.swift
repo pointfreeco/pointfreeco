@@ -320,7 +320,6 @@ private func validateReferrer(
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
       let stripeSubscription = try await Current.stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
-        .performAsync()
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)
     }
     .run

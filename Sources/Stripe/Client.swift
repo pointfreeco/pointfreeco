@@ -34,7 +34,7 @@ public struct Client {
   public var fetchPaymentMethod: (PaymentMethod.ID) async throws -> PaymentMethod
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
   public var fetchPlan: (Plan.ID) async throws -> Plan
-  public var fetchSubscription: (Subscription.ID) -> EitherIO<Error, Subscription>
+  public var fetchSubscription: (Subscription.ID) async throws -> Subscription
   public var fetchUpcomingInvoice: (Customer.ID) -> EitherIO<Error, Invoice>
   public var invoiceCustomer: (Customer.ID) -> EitherIO<Error, Invoice>
   public var updateCustomer: (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>
@@ -68,7 +68,7 @@ public struct Client {
     fetchPaymentMethod: @escaping (PaymentMethod.ID) async throws -> PaymentMethod,
     fetchPlans: @escaping () async throws -> ListEnvelope<Plan>,
     fetchPlan: @escaping (Plan.ID) async throws -> Plan,
-    fetchSubscription: @escaping (Subscription.ID) -> EitherIO<Error, Subscription>,
+    fetchSubscription: @escaping (Subscription.ID) async throws -> Subscription,
     fetchUpcomingInvoice: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
     invoiceCustomer: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
     updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>,
@@ -204,7 +204,9 @@ extension Client {
       fetchPlan: {
         try await runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0)).performAsync()
       },
-      fetchSubscription: { runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)) },
+      fetchSubscription: {
+        try await runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)).performAsync()
+      },
       fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
       invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
       updateCustomer: {

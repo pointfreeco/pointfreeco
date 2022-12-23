@@ -111,7 +111,7 @@ class UpdateProfileTests: TestCase {
     stripeSubscription.customer = .right(stripeCustomer)
 
     Current = .teamYearly
-    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
     Current.stripe.updateCustomerExtraInvoiceInfo = { _, info -> EitherIO<Error, Stripe.Customer> in
       updatedCustomerWithExtraInvoiceInfo = info
       return pure(.mock)

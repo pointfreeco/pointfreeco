@@ -53,61 +53,63 @@ private func redeemGift(
     guard subscriberState.isOwner
     else {
       return conn
+      |> redirect(
+        to: .gifts(.redeem(gift.id)),
+        headersMiddleware: flash(
+          .error,
+          "You are already part of an active team subscription."
+        )
+      )
+    }
+
+    return EitherIO {
+      try await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+    }
+    .flatMap { stripeSubscription -> EitherIO<Error, Customer> in
+      //        // TODO: Should we disallow gifts from applying to team subscriptions?
+      //        guard stripeSubscription.quantity == 1
+      //        else {
+      //
+      //        }
+
+      return Current.stripe.updateCustomerBalance(
+        stripeSubscription.customer.id,
+        (stripeSubscription.customer.right?.balance ?? 0) - discount
+      )
+      .flatMap { customer in
+        EitherIO {
+          _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
+          return customer
+        }
+      }
+    }
+    .run
+    .flatMap { errorOrCustomer in
+      switch errorOrCustomer {
+      case .left:
+        return conn
         |> redirect(
           to: .gifts(.redeem(gift.id)),
           headersMiddleware: flash(
             .error,
-            "You are already part of an active team subscription."
+              """
+              We were unable to redeem your gift. Please try again, or contact \
+              <support@pointfree.co> for more help.
+              """
           )
         )
-    }
 
-    return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-      .flatMap { stripeSubscription -> EitherIO<Error, Customer> in
-        //        // TODO: Should we disallow gifts from applying to team subscriptions?
-        //        guard stripeSubscription.quantity == 1
-        //        else {
-        //
-        //        }
-
-        return Current.stripe.updateCustomerBalance(
-          stripeSubscription.customer.either(id, \.id),
-          (stripeSubscription.customer.right?.balance ?? 0) - discount
+      case .right:
+        return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(
+            .notice,
+            "The gift has been applied to your account as credit."
+          )
         )
-        .flatMap { customer in
-          EitherIO {
-            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
-            return customer
-          }
-        }
       }
-      .run
-      .flatMap { errorOrCustomer in
-        switch errorOrCustomer {
-        case .left:
-          return conn
-            |> redirect(
-              to: .gifts(.redeem(gift.id)),
-              headersMiddleware: flash(
-                .error,
-                """
-                We were unable to redeem your gift. Please try again, or contact \
-                <support@pointfree.co> for more help.
-                """
-              )
-            )
-
-        case .right:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(
-                .notice,
-                "The gift has been applied to your account as credit."
-              )
-            )
-        }
-      }
+    }
   } else {
     return EitherIO {
       let customer = try await Current.stripe.createCustomer(

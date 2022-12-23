@@ -242,17 +242,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
     Current.stripe.createSubscription = { _, _, _, _ in
       update(.mock) {
@@ -314,11 +313,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      }
     }
     Current.stripe.createSubscription = { _, _, _, _ in
       update(.mock) {
@@ -511,17 +509,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
     }
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
 
     var subscriptionCoupon: Coupon.ID?
@@ -603,17 +600,16 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
     }
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
 
     var subscriptionCoupon: Coupon.ID?
@@ -929,7 +925,7 @@ final class SubscribeTests: TestCase {
   func testReferrals_InactiveCode() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
+    Current.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .canceled } }
 
     let subscribeData = SubscribeData(
       coupon: nil,

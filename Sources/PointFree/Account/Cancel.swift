@@ -217,9 +217,7 @@ private func fetchStripeSubscription<A>(
 {
 
   return { conn in
-    Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
-      .run
-      .map(\.right)
+    IO { try? await Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }

@@ -123,7 +123,6 @@ private func validateReferralCode(
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
       let stripeSubscription = try await Current.stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
-        .performAsync()
       guard stripeSubscription.isCancellable else { throw unit }
       return referrer
     }
