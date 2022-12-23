@@ -107,7 +107,7 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Mod
 
 private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
-  return Current.gitHub.fetchEmails(env.accessToken)
+  return EitherIO { try await Current.gitHub.fetchEmails(env.accessToken) }
     .map { emails in emails.first(where: \.primary) }
     .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
@@ -148,7 +148,7 @@ private func gitHubAuthTokenMiddleware(
 {
   let (token, redirect) = lower(conn.data)
 
-  return Current.gitHub.fetchUser(token)
+  return EitherIO { try await Current.gitHub.fetchUser(token) }
     .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
     .flatMap(fetchOrRegisterUser(env:))
     .flatMap { user in
@@ -190,7 +190,7 @@ private func requireAccessToken<A>(
   return { conn in
     let (code, redirect) = (get1(conn.data), get2(conn.data))
 
-    return Current.gitHub.fetchAuthToken(code)
+    return EitherIO { try await Current.gitHub.fetchAuthToken(code) }
       .run
       .flatMap { errorOrToken in
         switch errorOrToken {

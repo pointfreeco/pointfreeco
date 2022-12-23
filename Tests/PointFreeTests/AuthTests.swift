@@ -27,8 +27,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
     Current.date = { now }
-    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
-    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
+    Current.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
+    Current.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
 
     let result = await siteMiddleware(
       connection(
@@ -57,8 +57,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
     Current.date = { now }
-    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
-    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
+    Current.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
+    Current.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
 
     let result = await siteMiddleware(
       connection(
@@ -102,7 +102,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() async throws {
-    Current.gitHub.fetchAuthToken = unit |> throwE >>> const
+    Current.gitHub.fetchAuthToken = { _ in throw unit }
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -111,8 +111,9 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() async throws {
-    Current.gitHub.fetchAuthToken = const(
-      pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    Current.gitHub.fetchAuthToken = { _ in
+      .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+    }
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -121,8 +122,9 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
-    Current.gitHub.fetchAuthToken = const(
-      pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    Current.gitHub.fetchAuthToken = { _ in
+        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+    }
 
     let auth = request(
       to: .gitHubCallback(
@@ -133,7 +135,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() async throws {
-    Current.gitHub.fetchUser = unit |> throwE >>> const
+    Current.gitHub.fetchUser = { _ in throw unit }
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
