@@ -177,29 +177,30 @@ private func applyCreditMiddleware<Z>(
       )
   }
 
-  return EitherIO { try await Current.database.redeemEpisodeCredit(episode.sequence, user.id) }
-    .flatMap { _ in
-      Current.database.updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
-    }
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> redirect(
-              to: .episode(.show(.left(episode.slug))),
-              headersMiddleware: flash(.warning, "Something went wrong.")
-            )
-        ),
-        const(
-          conn
-            |> redirect(
-              to: .episode(.show(.left(episode.slug))),
-              headersMiddleware: flash(.notice, "You now have access to this episode!")
-            )
+  return EitherIO {
+    try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
+    try await Current.database
+      .updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
+  }
+  .run
+  .flatMap(
+    either(
+      const(
+        conn
+        |> redirect(
+          to: .episode(.show(.left(episode.slug))),
+          headersMiddleware: flash(.warning, "Something went wrong.")
+        )
+      ),
+      const(
+        conn
+        |> redirect(
+          to: .episode(.show(.left(episode.slug))),
+          headersMiddleware: flash(.notice, "You now have access to this episode!")
         )
       )
     )
+  )
 }
 
 private func validateCreditRequest<Z>(

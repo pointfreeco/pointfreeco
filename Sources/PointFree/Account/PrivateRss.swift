@@ -122,12 +122,12 @@ private func validateUserAgent<Z>(
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     else { return middleware(conn) }
 
-    return Current.database.updateUser(
-      id: user.id,
-      rssSalt: User.RssSalt(
-        rawValue: Current.uuid().uuidString.lowercased()
+    return EitherIO {
+      try await Current.database.updateUser(
+        id: user.id,
+        rssSalt: User.RssSalt(Current.uuid().uuidString.lowercased())
       )
-    )
+    }
     .flatMap { _ in
       sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }

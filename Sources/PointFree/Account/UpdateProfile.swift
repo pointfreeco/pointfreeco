@@ -83,15 +83,21 @@ private func updateProfileMiddlewareHandler(
     .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
     ?? pure(unit)
 
-  return Current.database.updateUser(id: user.id, name: data.name, emailSettings: emailSettings)
-    .flatMap(const(updateCustomerExtraInvoiceInfo))
-    .run
-    .flatMap(
-      const(
-        conn.map(const(unit))
-          |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
-      )
+  return EitherIO {
+    try await Current.database.updateUser(
+      id: user.id,
+      name: data.name,
+      emailSettings: emailSettings
     )
+  }
+  .flatMap(const(updateCustomerExtraInvoiceInfo))
+  .run
+  .flatMap(
+    const(
+      conn.map(const(unit))
+      |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
+    )
+  )
 }
 
 private let fetchSubscriptionAndStripeSubscription:
@@ -166,7 +172,7 @@ let confirmEmailChangeMiddleware:
     )
     .run({ _ in })
 
-    return Current.database.updateUser(id: userId, email: newEmailAddress)
+    return EitherIO { try await Current.database.updateUser(id: userId, email: newEmailAddress) }
       .run
       .flatMap(const(conn |> redirect(to: .account())))
   }

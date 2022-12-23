@@ -196,12 +196,9 @@ public struct Client {
     emailSettings: [EmailSetting.Newsletter]? = nil,
     episodeCreditCount: Int? = nil,
     rssSalt: Models.User.RssSalt? = nil
-  ) -> EitherIO<Error, Prelude.Unit> {
-    EitherIO {
-      try await self.updateUser(id, name, email, episodeCreditCount, rssSalt)
-      try await self.updateEmailSettings(emailSettings, id)
-      return unit
-    }
+  ) async throws {
+    try await self.updateUser(id, name, email, episodeCreditCount, rssSalt)
+    try await self.updateEmailSettings(emailSettings, id)
   }
 
   public struct CreateGiftRequest: Equatable {
