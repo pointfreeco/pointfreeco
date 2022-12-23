@@ -156,29 +156,29 @@ private func fetchAndValidateGiftAndDiscount<A>(
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
-    return EitherIO { try await Current.database.fetchGift(giftId) }
-      .flatMap { gift in
-        Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
-          .map { paymentIntent in (gift, paymentIntent) }
-      }
-      .run
-      .flatMap { errorOrGiftAndPaymentIntent in
-        switch errorOrGiftAndPaymentIntent {
-        case .left:
-          return conn |> routeNotFoundMiddleware
+    return EitherIO<_, (Gift, PaymentIntent)> {
+      let gift = try await Current.database.fetchGift(giftId)
+      let paymentIntent = try await Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
+      return (gift, paymentIntent)
+    }
+    .run
+    .flatMap { errorOrGiftAndPaymentIntent in
+      switch errorOrGiftAndPaymentIntent {
+      case .left:
+        return conn |> routeNotFoundMiddleware
 
-        case let .right((gift, paymentIntent)):
-          guard gift.stripeSubscriptionId == nil
-          else {
-            return conn
-              |> redirect(
-                to: .gifts(),
-                headersMiddleware: flash(.error, "This gift was already redeemed.")
-              )
-          }
-
-          return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware
+      case let .right((gift, paymentIntent)):
+        guard gift.stripeSubscriptionId == nil
+        else {
+          return conn
+          |> redirect(
+            to: .gifts(),
+            headersMiddleware: flash(.error, "This gift was already redeemed.")
+          )
         }
+
+        return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware
       }
+    }
   }
 }

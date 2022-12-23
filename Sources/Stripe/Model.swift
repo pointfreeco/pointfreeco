@@ -5,8 +5,8 @@ import TaggedMoney
 
 public typealias Expandable<Field: Identifiable> = Either<Field.ID, Field>
 
-extension Either where Right: Identifiable, Left == Right.ID {
-  public var id: Right.ID { self.either(id, \.id) }
+extension Either where R: Identifiable, L == R.ID {
+  public var id: R.ID { self.either({ $0 }, \.id) }
 }
 
 public typealias StripeID<Field> = Tagged<Field, String>

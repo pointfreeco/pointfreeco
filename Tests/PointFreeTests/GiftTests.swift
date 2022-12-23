@@ -212,7 +212,7 @@ class GiftTests: TestCase {
       }
     }
     Current.stripe.createSubscription = { _, _, _, _ in .individualMonthly }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    Current.stripe.fetchPaymentIntent = { _ in .succeeded }
 
     let conn = connection(
       from: request(
@@ -271,7 +271,7 @@ class GiftTests: TestCase {
       return .fulfilled
     }
     Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    Current.stripe.fetchPaymentIntent = { _ in .succeeded }
     Current.stripe.fetchSubscription = { _ in pure(.individualMonthly) }
     Current.stripe.updateCustomerBalance = { _, amount in
       credit = amount
@@ -359,7 +359,7 @@ class GiftTests: TestCase {
     Current.database.fetchUserById = { _ in user }
     Current.database.sawUser = { _ in }
     Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    Current.stripe.fetchPaymentIntent = { _ in .succeeded }
 
     let conn = connection(
       from: request(
@@ -406,7 +406,7 @@ class GiftTests: TestCase {
     Current.database.fetchUserById = { _ in user }
     Current.database.sawUser = { _ in }
     Current.date = { .mock }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    Current.stripe.fetchPaymentIntent = { _ in .succeeded }
     Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }
 
     let conn = connection(
@@ -469,7 +469,7 @@ class GiftTests: TestCase {
     Current.date = { .mock }
     Current.episodes = { [] }
     Current.database.fetchGift = { _ in .unfulfilled }
-    Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
+    Current.stripe.fetchPaymentIntent = { _ in .succeeded }
 
     let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
 
