@@ -35,8 +35,6 @@ open class TestCase: XCTestCase {
     try await super.setUp()
     diffTool = "ksdiff"
     // SnapshotTesting.isRecording = true
-    //Current = .mock 
-    // siteRouter = PointFreeRouter(baseURL: Current.envVars.baseUrl) // TODO: not needed?
   }
 
   override open func tearDown() {
@@ -51,7 +49,6 @@ open class TestCase: XCTestCase {
 
 open class LiveDatabaseTestCase: XCTestCase {
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
-  let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
   open override class func setUp() {
     super.setUp()
@@ -67,9 +64,6 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   open override func invokeTest() {
     DependencyValues.withTestValues {
-      // TODO: simplify
-
-//      $0.database = .mock
       $0.date.now = .mock
       $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
       $0.gitHub = .mock
@@ -84,7 +78,7 @@ open class LiveDatabaseTestCase: XCTestCase {
             url: Current.envVars.postgres.databaseUrl.rawValue
           )!
         ),
-        on: self.eventLoopGroup
+        on: MultiThreadedEventLoopGroup(numberOfThreads: 1)
       )
       $0.database = .live(pool: self.pool)
     } operation: {

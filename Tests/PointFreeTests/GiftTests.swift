@@ -197,7 +197,6 @@ class GiftTests: TestCase {
     var userId: User.ID?
 
     DependencyValues.withTestValues {
-      //Current = .failing
       $0.date.now = .mock
       $0.database.createSubscription = { _, id, _, _ in
         userId = id
@@ -266,7 +265,6 @@ class GiftTests: TestCase {
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
     DependencyValues.withTestValues {
-      //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.unfulfilled) }
       $0.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }
@@ -364,7 +362,6 @@ class GiftTests: TestCase {
     let user = User.nonSubscriber
 
     DependencyValues.withTestValues {
-      //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.fulfilled) }
       $0.database.fetchSubscriptionByOwnerId = { _ in pure(nil) }
@@ -410,7 +407,6 @@ class GiftTests: TestCase {
     let user = User.teammate
 
     DependencyValues.withTestValues {
-      //Current = .failing
       $0.date.now = .mock
       $0.database.fetchGift = { _ in pure(.unfulfilled) }
       $0.database.fetchEnterpriseAccountForSubscription = { _ in pure(nil) }

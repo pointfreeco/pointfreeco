@@ -503,7 +503,6 @@ final class StripeWebhooksTests: TestCase {
 
   func testPaymentIntent_NoGift() throws {
     try DependencyValues.withTestValues {
-      //Current = .failing
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock
     } operation: {
@@ -557,7 +556,6 @@ final class StripeWebhooksTests: TestCase {
 
   func testFailedPaymentIntent() throws {
     try DependencyValues.withTestValues {
-      //Current = .failing
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
       $0.date.now = .mock
     } operation: {
