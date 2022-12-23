@@ -182,7 +182,6 @@ class PrivateRssTests: TestCase {
     Current.database.fetchUserByRssSalt = { _ in throw unit }
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
-      return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
 
@@ -350,7 +349,6 @@ class PrivateRssTests: TestCase {
     Current.database.fetchUserByRssSalt = { _ in throw unit }
     Current.database.updateUser = { _, _, _, _, _ in
       XCTFail("The user should not be updated.")
-      return pure(unit)
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
 

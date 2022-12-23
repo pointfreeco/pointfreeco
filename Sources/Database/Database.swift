@@ -63,9 +63,7 @@ public struct Client {
     (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
   public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
   public var updateUser:
-    (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) -> EitherIO<
-      Error, Prelude.Unit
-    >
+    (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async throws -> Void
   public var upsertUser:
     (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<Error, Models.User?>
 
@@ -122,8 +120,8 @@ public struct Client {
     updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
       throws -> Gift,
     updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
-    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) ->
-      EitherIO<Error, Prelude.Unit>,
+    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async
+      throws -> Void,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, () -> Date) -> EitherIO<
       Error, Models.User?
     >
@@ -206,13 +204,11 @@ public struct Client {
     episodeCreditCount: Int? = nil,
     rssSalt: Models.User.RssSalt? = nil
   ) -> EitherIO<Error, Prelude.Unit> {
-    self.updateUser(id, name, email, episodeCreditCount, rssSalt)
-      .flatMap { _ in
-        EitherIO {
-          try await self.updateEmailSettings(emailSettings, id)
-          return unit
-        }
-      }
+    EitherIO {
+      try await self.updateUser(id, name, email, episodeCreditCount, rssSalt)
+      try await self.updateEmailSettings(emailSettings, id)
+      return unit
+    }
   }
 
   public struct CreateGiftRequest: Equatable {

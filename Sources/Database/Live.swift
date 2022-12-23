@@ -1002,7 +1002,7 @@ extension Client {
         .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateUser: { userId, name, email, episodeCreditCount, rssSalt in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "name" = COALESCE(\(bind: name), "name"),
@@ -1013,6 +1013,7 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       upsertUser: { envelope, email, now in
         pool.sqlDatabase.raw(
