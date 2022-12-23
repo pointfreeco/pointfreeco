@@ -45,7 +45,7 @@ extension Client {
     migrate: {},
     redeemEpisodeCredit: { _, _ in },
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
-    sawUser: const(pure(unit)),
+    sawUser: { _ in },
     updateEmailSettings: { _, _ in pure(unit) },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateGift: { _, _ in pure(.fulfilled) },

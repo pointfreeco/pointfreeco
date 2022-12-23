@@ -56,7 +56,7 @@ public struct Client {
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
-  public var sawUser: (Models.User.ID) -> EitherIO<Error, Prelude.Unit>
+  public var sawUser: (Models.User.ID) async throws -> Void
   public var updateEmailSettings:
     ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
   public var updateEpisodeProgress:
@@ -118,7 +118,7 @@ public struct Client {
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
       throws -> Void,
-    sawUser: @escaping (Models.User.ID) -> EitherIO<Error, Prelude.Unit>,
+    sawUser: @escaping (Models.User.ID) async throws -> Void,
     updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<
       Error, Prelude.Unit
     >,

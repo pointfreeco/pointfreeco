@@ -46,16 +46,10 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
-
-  if let userId = conn.request.session.userId {
-    Current.database.sawUser(userId)
-      .run
-      .parallel
-      .run { _ in }
-  }
-
-  let user = IO {
-    return try? await Current.database.fetchUserById(conn.request.session.userId.unwrap())
+  let user = IO<Models.User?> {
+    guard let userId = conn.request.session.userId else { return nil }
+    Task { try await Current.database.sawUser(userId) }
+    return try? await Current.database.fetchUserById(userId)
   }
 
   return user.map { conn.map(const($0 .*. conn.data)) }

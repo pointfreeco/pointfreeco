@@ -914,7 +914,7 @@ extension Client {
         .get()
       },
       sawUser: { userId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "users"
           SET "updated_at" = NOW()
@@ -922,6 +922,7 @@ extension Client {
           """
         )
         .run()
+        .get()
       },
       updateEmailSettings: { settings, userId in
         guard let settings = settings else { return pure(unit) }

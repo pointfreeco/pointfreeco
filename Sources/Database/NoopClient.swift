@@ -41,7 +41,7 @@ extension Client {
     migrate: {},
     redeemEpisodeCredit: { _, _ in throw NoopError() },
     removeTeammateUserIdFromSubscriptionId: { _, _ in throw NoopError() },
-    sawUser: { _ in throwE(NoopError()) },
+    sawUser: { _ in throw NoopError() },
     updateEmailSettings: { _, _ in throwE(NoopError()) },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
     updateGift: { _, _ in throwE(NoopError()) },

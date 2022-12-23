@@ -199,7 +199,7 @@ class GiftTests: TestCase {
     Current.database.fetchGift = { _ in .unfulfilled }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in user }
-    Current.database.sawUser = { _ in pure(unit) }
+    Current.database.sawUser = { _ in }
     Current.database.updateGift = { _, id in
       stripeSubscriptionId = id
       return pure(.fulfilled)
@@ -268,7 +268,7 @@ class GiftTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserById = { _ in user }
-    Current.database.sawUser = { _ in pure(unit) }
+    Current.database.sawUser = { _ in }
     Current.database.updateGift = { _, id in
       stripeSubscriptionId = id
       return pure(.fulfilled)
@@ -360,7 +360,7 @@ class GiftTests: TestCase {
     Current.database.fetchGift = { _ in .fulfilled }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in user }
-    Current.database.sawUser = { _ in pure(unit) }
+    Current.database.sawUser = { _ in }
     Current.date = { .mock }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
 
@@ -407,7 +407,7 @@ class GiftTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     Current.database.fetchUserById = { _ in user }
-    Current.database.sawUser = { _ in pure(unit) }
+    Current.database.sawUser = { _ in }
     Current.date = { .mock }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
     Current.stripe.fetchSubscription = { _ in pure(.teamYearly) }

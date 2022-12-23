@@ -51,7 +51,7 @@ extension Client {
     removeTeammateUserIdFromSubscriptionId: unimplemented(
       "Database.Client.removeTeammateUserIdFromSubscriptionId"
     ),
-    sawUser: { _ in .failing("Database.Client.sawUser") },
+    sawUser: unimplemented("Database.Client.sawUser"),
     updateEmailSettings: { _, _ in .failing("Database.Client.updateEmailSettings") },
     updateEpisodeProgress: { _, _, _ in .failing("Database.Client.updateEpisodeProgress") },
     updateGift: { _, _ in .failing("Database.Client.updateGift") },
