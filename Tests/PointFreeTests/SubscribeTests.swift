@@ -84,7 +84,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -120,7 +120,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -269,7 +269,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -334,7 +334,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -387,7 +387,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     var subscribeData = SubscribeData.individualMonthly
@@ -447,7 +447,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     var subscribeData = SubscribeData.individualMonthly
@@ -539,7 +539,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     let conn = await siteMiddleware(
@@ -630,7 +630,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     let conn = await siteMiddleware(

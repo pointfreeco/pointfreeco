@@ -38,7 +38,7 @@ public struct Client {
   public var fetchUpcomingInvoice: (Customer.ID) async throws -> Invoice
   public var invoiceCustomer: (Customer.ID) async throws -> Invoice
   public var updateCustomer: (Customer.ID, PaymentMethod.ID) async throws -> Customer
-  public var updateCustomerBalance: (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>
+  public var updateCustomerBalance: (Customer.ID, Cents<Int>) async throws -> Customer
   public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) -> EitherIO<Error, Customer>
   public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
   public var js: String
@@ -72,7 +72,7 @@ public struct Client {
     fetchUpcomingInvoice: @escaping (Customer.ID) async throws -> Invoice,
     invoiceCustomer: @escaping (Customer.ID) async throws -> Invoice,
     updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) async throws -> Customer,
-    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>,
+    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) async throws -> Customer,
     updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) -> EitherIO<Error, Customer>,
     updateSubscription: @escaping (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>,
     js: String
@@ -218,7 +218,8 @@ extension Client {
           .performAsync()
       },
       updateCustomerBalance: {
-        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+        try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+          .performAsync()
       },
       updateCustomerExtraInvoiceInfo: {
         runStripe(secretKey, logger)(

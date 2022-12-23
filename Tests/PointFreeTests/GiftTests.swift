@@ -275,7 +275,7 @@ class GiftTests: TestCase {
     Current.stripe.fetchSubscription = { _ in .individualMonthly }
     Current.stripe.updateCustomerBalance = { _, amount in
       credit = amount
-      return pure(update(.mock))
+      return update(.mock)
     }
 
     let conn = connection(

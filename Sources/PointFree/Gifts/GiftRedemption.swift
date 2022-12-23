@@ -63,25 +63,19 @@ private func redeemGift(
     }
 
     return EitherIO {
-      try await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-    }
-    .flatMap { stripeSubscription -> EitherIO<Error, Customer> in
-      //        // TODO: Should we disallow gifts from applying to team subscriptions?
-      //        guard stripeSubscription.quantity == 1
-      //        else {
-      //
-      //        }
-
-      return Current.stripe.updateCustomerBalance(
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      // TODO: Should we disallow gifts from applying to team subscriptions?
+      //guard stripeSubscription.quantity == 1
+      //else {
+      //  throw unit
+      //}
+      async let customer = Current.stripe.updateCustomerBalance(
         stripeSubscription.customer.id,
         (stripeSubscription.customer.right?.balance ?? 0) - discount
       )
-      .flatMap { customer in
-        EitherIO {
-          _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
-          return customer
-        }
-      }
+      async let gift = Current.database.updateGift(gift.id, stripeSubscription.id)
+      _ = try await (customer, gift)
     }
     .run
     .flatMap { errorOrCustomer in

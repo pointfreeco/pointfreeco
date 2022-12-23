@@ -88,52 +88,42 @@ private func subscribe(
     )
   }
 
-  func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
-    let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
-      .run.parallel
+  func runTasksFor(stripeSubscription: Stripe.Subscription) async throws {
+    async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
+      .performAsync()
+    guard let referrer else { return }
 
-    let updateReferrerBalance =
-      referrer
-      .map {
-        Current.stripe
-          .updateCustomerBalance(
-            $0.stripeSubscription.customer.id,
-            ($0.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
-          )
-          .flatMap(const(sendReferralEmail(to: $0.user)))
-          .map(const(unit))
-          .run.parallel
-      }
-      ?? pure(.right(unit))
+    async let updateReferrerBalance: Void = {
+      _ = try await Current.stripe.updateCustomerBalance(
+        referrer.stripeSubscription.customer.id,
+        (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
+      )
+      Task { try await sendReferralEmail(to: referrer.user).performAsync() }
+    }()
 
-    let updateReferredBalance =
-      referrer != nil && subscribeData.pricing.interval == .month
-      ? Current.stripe
+    async let updateReferredBalance: Void = {
+      guard subscribeData.pricing.interval == .month
+      else { return }
+      _ = try await Current.stripe
         .updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
-        .map(const(unit))
-        .run.parallel
-      : pure(.right(unit))
-
-    let results = sequence([sendEmails, updateReferrerBalance, updateReferredBalance])
+    }()
 
     // TODO: Log errors?
-    return lift(results.sequential).map(const(unit))
+    _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
   }
 
   let databaseSubscription =
     stripeSubscription
     .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
       EitherIO {
-        try await Current.database.createSubscription(
+        let subscription = try await Current.database.createSubscription(
           stripeSubscription,
           user.id,
           subscribeData.isOwnerTakingSeat,
           referrer?.user.id
         )
-      }
-      .flatMap { subscription in
-        runTasksFor(stripeSubscription: stripeSubscription)
-          .map(const(subscription))
+        try await runTasksFor(stripeSubscription: stripeSubscription)
+        return subscription
       }
     }
 
