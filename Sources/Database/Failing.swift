@@ -54,7 +54,7 @@ extension Client {
     sawUser: unimplemented("Database.Client.sawUser"),
     updateEmailSettings: unimplemented("Database.Client.updateEmailSettings"),
     updateEpisodeProgress: unimplemented("Database.Client.updateEpisodeProgress"),
-    updateGift: { _, _ in .failing("Database.Client.updateGift") },
+    updateGift: unimplemented("Database.Client.updateGift"),
     updateGiftStatus: { _, _, _ in .failing("Database.Client.updateGiftStatus") },
     updateStripeSubscription: { _ in .failing("Database.Client.updateStripeSubscription") },
     updateUser: { _, _, _, _, _ in .failing("Database.Client.updateUser") },

@@ -960,7 +960,7 @@ extension Client {
         .get()
       },
       updateGift: { id, stripeSubscriptionId in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "gifts"
           SET "stripe_subscription_id" = \(bind: stripeSubscriptionId)
@@ -968,8 +968,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateGiftStatus: { id, status, delivered in
         pool.sqlDatabase.raw(

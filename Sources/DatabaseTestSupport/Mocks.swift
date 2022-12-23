@@ -48,7 +48,7 @@ extension Client {
     sawUser: { _ in },
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _ in },
-    updateGift: { _, _ in pure(.fulfilled) },
+    updateGift: { _, _ in .fulfilled },
     updateGiftStatus: { _, _, _ in pure(.fulfilled) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },

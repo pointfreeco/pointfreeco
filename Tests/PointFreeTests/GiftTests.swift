@@ -202,7 +202,7 @@ class GiftTests: TestCase {
     Current.database.sawUser = { _ in }
     Current.database.updateGift = { _, id in
       stripeSubscriptionId = id
-      return pure(.fulfilled)
+      return .fulfilled
     }
     Current.date = { .mock }
     Current.stripe.createCustomer = { _, _, _, _, amount in
@@ -271,7 +271,7 @@ class GiftTests: TestCase {
     Current.database.sawUser = { _ in }
     Current.database.updateGift = { _, id in
       stripeSubscriptionId = id
-      return pure(.fulfilled)
+      return .fulfilled
     }
     Current.date = { .mock }
     Current.stripe.fetchPaymentIntent = { _ in pure(.succeeded) }
