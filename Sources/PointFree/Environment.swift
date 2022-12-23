@@ -16,28 +16,6 @@ public var Current: DependencyValues {
   DependencyValues._current
 }
 
-public struct Environment {
-  @Dependency(\.assets) public var assets
-  @Dependency(\.blogPosts) public var blogPosts
-  @Dependency(\.calendar) public var calendar
-  @Dependency(\.cookieTransform) public var cookieTransform
-  @Dependency(\.collections) public var collections
-  @Dependency(\.database) public var database
-  @Dependency(\.date) public var date
-  @Dependency(\.envVars) public var envVars
-  @Dependency(\.episodes) public var episodes
-  @Dependency(\.features) public var features
-  @Dependency(\.gitHub) public var gitHub
-  @Dependency(\.logger) public var logger
-  @Dependency(\.mailgun) public var mailgun
-  @Dependency(\.renderHtml) public var renderHtml
-  @Dependency(\.renderXml) public var renderXml
-  @Dependency(\.stripe) public var stripe
-  @Dependency(\.uuid) public var uuid
-
-  public init() {}
-}
-
 extension Logger: DependencyKey {
   public static let liveValue = Logger(label: "co.pointfree")
   public static let testValue = Logger(label: "co.pointfree.PointFreeTestSupport")
