@@ -9,7 +9,7 @@ extension Client {
     attachPaymentMethod: { _, _ in .mock },
     cancelSubscription: { _, _ in .canceling },
     confirmPaymentIntent: { _ in .succeeded },
-    createCoupon: { _, _, _, _ in pure(.mock) },
+    createCoupon: { _, _, _, _ in .mock },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
     createPaymentIntent: { _ in pure(.requiresConfirmation) },
     createSubscription: { _, _, _, _ in pure(.mock) },

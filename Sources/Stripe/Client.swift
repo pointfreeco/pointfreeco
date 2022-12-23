@@ -19,9 +19,7 @@ public struct Client {
     (Subscription.ID, _ immediately: Bool) async throws -> Subscription
   public var confirmPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
   public var createCoupon:
-    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
-      Error, Coupon
-    >
+    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) async throws -> Coupon
   public var createCustomer:
     (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<
       Error, Customer
@@ -55,7 +53,7 @@ public struct Client {
       Subscription,
     confirmPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
-      -> EitherIO<Error, Coupon>,
+      async throws -> Coupon,
     createCustomer: @escaping (
       PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?
     ) ->
@@ -158,9 +156,10 @@ extension Client {
           .performAsync()
       },
       createCoupon: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
         )
+        .performAsync()
       },
       createCustomer: {
         runStripe(secretKey, logger)(
