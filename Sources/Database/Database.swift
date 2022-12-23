@@ -37,8 +37,7 @@ public struct Client {
   public var fetchGift: (Gift.ID) async throws -> Gift
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
-  public var fetchSubscriptionById:
-    (Models.Subscription.ID) async throws -> Models.Subscription
+  public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (TeamInvite.ID) async throws -> TeamInvite
@@ -58,7 +57,7 @@ public struct Client {
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) async throws -> Void
   public var updateEmailSettings:
-    ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
+    ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:
     (Episode.Sequence, Int, Models.User.ID) -> EitherIO<Error, Prelude.Unit>
   public var updateGift: (Gift.ID, Stripe.Subscription.ID) -> EitherIO<Error, Gift>
@@ -110,7 +109,7 @@ public struct Client {
     fetchUserByReferralCode: @escaping (Models.User.ReferralCode) async throws -> Models.User,
     fetchUserByRssSalt: @escaping (Models.User.RssSalt) async throws -> Models.User,
     fetchUsersSubscribedToNewsletter: @escaping
-      (EmailSetting.Newsletter, Models.User.SubscriberState?) async throws -> [Models.User],
+    (EmailSetting.Newsletter, Models.User.SubscriberState?) async throws -> [Models.User],
     fetchUsersToWelcome: @escaping (Int) async throws -> [Models.User],
     incrementEpisodeCredits: @escaping ([Models.User.ID]) async throws -> [Models.User],
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
@@ -119,9 +118,8 @@ public struct Client {
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
       throws -> Void,
     sawUser: @escaping (Models.User.ID) async throws -> Void,
-    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) -> EitherIO<
-      Error, Prelude.Unit
-    >,
+    updateEmailSettings:
+      @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void,
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) -> EitherIO<
       Error, Prelude.Unit
     >,
@@ -199,10 +197,11 @@ public struct Client {
 
     self.upsertUser(envelope, email, now)
       .flatMap { optionalUser in
-        guard let user = optionalUser else { return pure(optionalUser) }
-
-        return self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
-          .map(const(optionalUser))
+        return EitherIO {
+          guard let user = optionalUser else { return nil }
+          try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
+          return user
+        }
       }
   }
 
@@ -215,7 +214,12 @@ public struct Client {
     rssSalt: Models.User.RssSalt? = nil
   ) -> EitherIO<Error, Prelude.Unit> {
     self.updateUser(id, name, email, episodeCreditCount, rssSalt)
-      .flatMap(const(self.updateEmailSettings(emailSettings, id)))
+      .flatMap { _ in
+        EitherIO {
+          try await self.updateEmailSettings(emailSettings, id)
+          return unit
+        }
+      }
   }
 
   public struct CreateGiftRequest: Equatable {

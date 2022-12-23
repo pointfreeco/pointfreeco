@@ -52,7 +52,7 @@ extension Client {
       "Database.Client.removeTeammateUserIdFromSubscriptionId"
     ),
     sawUser: unimplemented("Database.Client.sawUser"),
-    updateEmailSettings: { _, _ in .failing("Database.Client.updateEmailSettings") },
+    updateEmailSettings: unimplemented("Database.Client.updateEmailSettings"),
     updateEpisodeProgress: { _, _, _ in .failing("Database.Client.updateEpisodeProgress") },
     updateGift: { _, _ in .failing("Database.Client.updateGift") },
     updateGiftStatus: { _, _, _ in .failing("Database.Client.updateGiftStatus") },

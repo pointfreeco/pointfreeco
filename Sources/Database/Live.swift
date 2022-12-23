@@ -925,31 +925,27 @@ extension Client {
         .get()
       },
       updateEmailSettings: { settings, userId in
-        guard let settings = settings else { return pure(unit) }
+        guard let settings = settings else { return }
 
-        let deleteEmailSettings = pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           DELETE FROM "email_settings"
           WHERE "user_id" = \(bind: userId)
           """
         )
         .run()
+        .get()
 
-        let updateEmailSettings = sequence(
-          settings.map { type in
-            pool.sqlDatabase.raw(
-              """
-              INSERT INTO "email_settings" ("newsletter", "user_id")
-              VALUES (\(bind: type), \(bind: userId))
-              """
-            )
-            .run()
-          }
-        )
-        .map(const(unit))
-
-        return sequence([deleteEmailSettings, updateEmailSettings])
-          .map(const(unit))
+        for type in settings {
+          try await pool.sqlDatabase.raw(
+            """
+            INSERT INTO "email_settings" ("newsletter", "user_id")
+            VALUES (\(bind: type), \(bind: userId))
+            """
+          )
+          .run()
+          .get()
+        }
       },
       updateEpisodeProgress: { episodeSequence, percent, userId in
         pool.sqlDatabase.raw(

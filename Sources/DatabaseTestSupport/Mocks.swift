@@ -46,7 +46,7 @@ extension Client {
     redeemEpisodeCredit: { _, _ in },
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
     sawUser: { _ in },
-    updateEmailSettings: { _, _ in pure(unit) },
+    updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _ in pure(unit) },
     updateGift: { _, _ in pure(.fulfilled) },
     updateGiftStatus: { _, _, _ in pure(.fulfilled) },

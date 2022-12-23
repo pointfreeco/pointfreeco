@@ -42,7 +42,7 @@ extension Client {
     redeemEpisodeCredit: { _, _ in throw NoopError() },
     removeTeammateUserIdFromSubscriptionId: { _, _ in throw NoopError() },
     sawUser: { _ in throw NoopError() },
-    updateEmailSettings: { _, _ in throwE(NoopError()) },
+    updateEmailSettings: { _, _ in throw NoopError() },
     updateEpisodeProgress: { _, _, _ in throwE(NoopError()) },
     updateGift: { _, _ in throwE(NoopError()) },
     updateGiftStatus: { _, _, _ in throwE(NoopError()) },
