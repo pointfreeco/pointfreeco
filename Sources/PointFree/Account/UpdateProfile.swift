@@ -95,7 +95,7 @@ private func updateProfileMiddlewareHandler(
   .flatMap(
     const(
       conn.map(const(unit))
-      |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
+        |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
     )
   )
 }

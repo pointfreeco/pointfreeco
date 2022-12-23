@@ -295,7 +295,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let referrer = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
 
-    /*let referrerSubscription*/_ = try await Current
+    /*let referrerSubscription*/_ =
+      try await Current
       .database.createSubscription(.mock, referrer.id, true, nil)
 
     let referred = try await Current.database

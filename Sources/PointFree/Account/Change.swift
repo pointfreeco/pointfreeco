@@ -140,7 +140,8 @@ private func fetchSeatsTaken<A>(
       return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
     }
 
-    return invitesAndTeammates
+    return
+      invitesAndTeammates
       .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
   }
 }

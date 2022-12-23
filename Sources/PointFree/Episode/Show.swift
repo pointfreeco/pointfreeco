@@ -153,8 +153,8 @@ private let updateProgress:
       .run
       .flatMap { _ in
         conn
-        |> writeStatus(.ok)
-        >=> end
+          |> writeStatus(.ok)
+          >=> end
       }
     } else {
       return conn
@@ -187,17 +187,17 @@ private func applyCreditMiddleware<Z>(
     either(
       const(
         conn
-        |> redirect(
-          to: .episode(.show(.left(episode.slug))),
-          headersMiddleware: flash(.warning, "Something went wrong.")
-        )
+          |> redirect(
+            to: .episode(.show(.left(episode.slug))),
+            headersMiddleware: flash(.warning, "Something went wrong.")
+          )
       ),
       const(
         conn
-        |> redirect(
-          to: .episode(.show(.left(episode.slug))),
-          headersMiddleware: flash(.notice, "You now have access to this episode!")
-        )
+          |> redirect(
+            to: .episode(.show(.left(episode.slug))),
+            headersMiddleware: flash(.notice, "You now have access to this episode!")
+          )
       )
     )
   )
