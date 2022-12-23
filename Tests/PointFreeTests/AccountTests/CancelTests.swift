@@ -28,7 +28,7 @@ final class CancelTests: TestCase {
     let cancelSubscription = Current.stripe.cancelSubscription
     Current.stripe.cancelSubscription = {
       immediately = $1
-      return cancelSubscription($0, $1)
+      return try await cancelSubscription($0, $1)
     }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
@@ -45,7 +45,7 @@ final class CancelTests: TestCase {
     let cancelSubscription = Current.stripe.cancelSubscription
     Current.stripe.cancelSubscription = {
       immediately = $1
-      return cancelSubscription($0, $1)
+      return try await cancelSubscription($0, $1)
     }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
@@ -86,7 +86,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() async throws {
-    Current.stripe.cancelSubscription = { _, _ in throwE(unit) }
+    Current.stripe.cancelSubscription = { _, _ in throw unit }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 

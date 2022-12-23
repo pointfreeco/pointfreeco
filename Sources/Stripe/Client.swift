@@ -16,7 +16,7 @@ import UrlFormEncoding
 public struct Client {
   public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod
   public var cancelSubscription:
-    (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
+    (Subscription.ID, _ immediately: Bool) async throws -> Subscription
   public var confirmPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
   public var createCoupon:
     (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
@@ -51,9 +51,8 @@ public struct Client {
 
   public init(
     attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod,
-    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
-      Error, Subscription
-    >,
+    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) async throws ->
+      Subscription,
     confirmPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
       -> EitherIO<Error, Coupon>,
@@ -151,7 +150,8 @@ extension Client {
           .performAsync()
       },
       cancelSubscription: {
-        runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+        try await runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+          .performAsync()
       },
       confirmPaymentIntent: {
         runStripe(secretKey, logger)(

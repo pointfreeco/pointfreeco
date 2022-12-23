@@ -53,28 +53,30 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
 {
 
   let (subscription, user) = conn.data
-  return Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
-            )
+  return EitherIO {
+    try await Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
+  }
+  .run
+  .flatMap(
+    either(
+      const(
+        conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
         )
-      ) { _ in
-        parallel(sendCancelEmail(to: user, for: subscription).run)
-          .run { _ in }
+      )
+    ) { _ in
+      parallel(sendCancelEmail(to: user, for: subscription).run)
+        .run { _ in }
 
-        return conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
-          )
-      }
-    )
+      return conn
+      |> redirect(
+        to: .account(),
+        headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
+      )
+    }
+  )
 }
 
 private func reactivate(

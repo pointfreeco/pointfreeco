@@ -7,7 +7,7 @@ import Stripe
 extension Client {
   public static let mock = Client(
     attachPaymentMethod: { _, _ in .mock },
-    cancelSubscription: { _, _ in pure(.canceling) },
+    cancelSubscription: { _, _ in .canceling },
     confirmPaymentIntent: { _ in pure(.succeeded) },
     createCoupon: { _, _, _, _ in pure(.mock) },
     createCustomer: { _, _, _, _, _ in pure(.mock) },
