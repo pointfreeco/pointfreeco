@@ -441,7 +441,7 @@ final class StripeWebhooksTests: TestCase {
     var delivered = false
     Current.database.updateGiftStatus = {
       delivered = $2
-      return pure(.unfulfilled)
+      return .unfulfilled
     }
     var didSendEmail = false
     Current.mailgun.sendEmail = { _ in

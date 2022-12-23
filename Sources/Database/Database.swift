@@ -56,13 +56,11 @@ public struct Client {
   public var removeTeammateUserIdFromSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) async throws -> Void
-  public var updateEmailSettings:
-    ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
-  public var updateEpisodeProgress:
-    (Episode.Sequence, Int, Models.User.ID) async throws -> Void
+  public var updateEmailSettings: ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
+  public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.ID) async throws -> Void
   public var updateGift: (Gift.ID, Stripe.Subscription.ID) async throws -> Gift
   public var updateGiftStatus:
-    (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) -> EitherIO<Error, Gift>
+    (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
   public var updateStripeSubscription:
     (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser:
@@ -118,12 +116,12 @@ public struct Client {
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
       throws -> Void,
     sawUser: @escaping (Models.User.ID) async throws -> Void,
-    updateEmailSettings:
-      @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void,
+    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws ->
+      Void,
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) async throws -> Void,
     updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
-    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) ->
-      EitherIO<Error, Gift>,
+    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
+      throws -> Gift,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<
       Error, Models.Subscription?
     >,

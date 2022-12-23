@@ -45,7 +45,7 @@ extension Client {
     updateEmailSettings: { _, _ in throw NoopError() },
     updateEpisodeProgress: { _, _, _ in throw NoopError() },
     updateGift: { _, _ in throw NoopError() },
-    updateGiftStatus: { _, _, _ in throwE(NoopError()) },
+    updateGiftStatus: { _, _, _ in throw NoopError() },
     updateStripeSubscription: { _ in throwE(NoopError()) },
     updateUser: { _, _, _, _, _ in throwE(NoopError()) },
     upsertUser: { _, _, _ in throwE(NoopError()) }

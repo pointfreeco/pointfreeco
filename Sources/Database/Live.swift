@@ -974,7 +974,7 @@ extension Client {
         .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateGiftStatus: { id, status, delivered in
-        pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.raw(
           """
           UPDATE "gifts"
           SET "stripe_payment_intent_status" = \(bind: status), "delivered" = \(bind: delivered)
@@ -982,8 +982,10 @@ extension Client {
           RETURNING *
           """
         )
-        .first(decoding: Gift.self)
-        .mapExcept(requireSome)
+        .first()
+        .get()
+        .unwrap()
+        .decode(model: Gift.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateStripeSubscription: { stripeSubscription in
         pool.sqlDatabase.raw(

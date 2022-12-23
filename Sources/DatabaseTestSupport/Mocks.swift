@@ -49,7 +49,7 @@ extension Client {
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _ in },
     updateGift: { _, _ in .fulfilled },
-    updateGiftStatus: { _, _, _ in pure(.fulfilled) },
+    updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _, _ in pure(.some(.mock)) }

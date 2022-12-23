@@ -13,7 +13,11 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
             ? sendGiftEmail(for: gift)
               |> delay(.milliseconds(200))
               |> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-              |> flatMap(const(Current.database.updateGiftStatus(gift.id, .succeeded, true)))
+              |> flatMap { _ in
+                EitherIO {
+                  try await Current.database.updateGiftStatus(gift.id, .succeeded, true)
+                }
+              }
             : pure(gift)
         }
       )
