@@ -83,8 +83,8 @@ public func prepareEmail(
   )
 }
 
-public func send(email: Email) -> EitherIO<Error, SendEmailResponse> {
-  Current.mailgun.sendEmail(email)
+public func send(email: Email) async throws -> SendEmailResponse {
+  try await Current.mailgun.sendEmail(email)
 }
 
 public func sendEmail(
@@ -96,11 +96,8 @@ public func sendEmail(
   unsubscribeData: (User.ID, EmailSetting.Newsletter)? = nil,
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
-)
-  -> EitherIO<Error, SendEmailResponse>
-{
-
-  return Current.mailgun.sendEmail(
+) async throws -> SendEmailResponse {
+  try await Current.mailgun.sendEmail(
     prepareEmail(
       from: from,
       to: to,
@@ -116,17 +113,15 @@ public func sendEmail(
 
 func notifyError(subject: String) -> (Error) -> Prelude.Unit {
   return { error in
-    var errorDump = ""
-    dump(error, to: &errorDump)
-
-    parallel(
-      sendEmail(
+    Task {
+      var errorDump = ""
+      dump(error, to: &errorDump)
+      _ = try await sendEmail(
         to: adminEmails,
         subject: "[PointFree Error] \(subject)",
         content: inj1(errorDump)
-      ).run
-    ).run { _ in }
-
+      )
+    }
     return unit
   }
 }

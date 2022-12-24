@@ -2,6 +2,7 @@ import Either
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
+import Mailgun
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -446,7 +447,7 @@ final class StripeWebhooksTests: TestCase {
     var didSendEmail = false
     Current.mailgun.sendEmail = { _ in
       didSendEmail = true
-      return pure(.init(id: "", message: ""))
+      return SendEmailResponse(id: "", message: "")
     }
 
     let event = Event(

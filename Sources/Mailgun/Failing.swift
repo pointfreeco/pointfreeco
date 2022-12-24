@@ -1,9 +1,10 @@
 import PointFreePrelude
+import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
-    sendEmail: { _ in .failing("Mailgun.Client.sendEmail") },
-    validate: { _ in .failing("Mailgun.Client.validate") }
+    sendEmail: unimplemented("Mailgun.Client.sendEmail"),
+    validate: unimplemented("Mailgun.Client.validate")
   )
 }

@@ -20,10 +20,11 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   }
   .debug { "📧: Sending \($0.count) welcome emails..." }
 
-  let delayedSend =
-    send(email:)
-    >>> delay(.milliseconds(200))
-    >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+  let delayedSend = { email in
+    EitherIO { try await send(email: email) }
+    .delay(.milliseconds(200))
+    .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+  }
 
   return
     emails
@@ -41,11 +42,13 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
           """
         }
         .joined(separator: "\n\n")
-      return sendEmail(
-        to: adminEmails,
-        subject: "Welcome emails sent",
-        content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
-      )
+      return EitherIO {
+        try await sendEmail(
+          to: adminEmails,
+          subject: "Welcome emails sent",
+          content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
+        )
+      }
     }
     .map(const(unit))
     .catch(notifyAdmins(subject: "Welcome emails failed"))
@@ -53,15 +56,16 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
 
 func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
   return { error in
-    var errorDump = ""
-    dump(error, to: &errorDump)
-
-    return sendEmail(
-      to: adminEmails,
-      subject: "[PointFree Error] \(subject)",
-      content: inj1(errorDump)
-    )
-    .flatMap(const(throwE(error)))
+    EitherIO {
+      var errorDump = ""
+      dump(error, to: &errorDump)
+      _ = try await sendEmail(
+        to: adminEmails,
+        subject: "[PointFree Error] \(subject)",
+        content: inj1(errorDump)
+      )
+      throw error
+    }
   }
 }
 

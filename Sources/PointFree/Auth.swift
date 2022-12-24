@@ -124,15 +124,13 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
           run: IO { () -> Either<Error, Models.User> in
 
             // Fire-and-forget notify user that they signed up
-            parallel(
-              sendEmail(
+            Task {
+              _ = try await sendEmail(
                 to: [email.email],
                 subject: "Point-Free Registration",
                 content: inj2(registrationEmailView(env.gitHubUser))
               )
-              .run
-            )
-            .run({ _ in })
+            }
 
             return .right(user)
           })
