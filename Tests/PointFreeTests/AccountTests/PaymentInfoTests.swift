@@ -45,7 +45,7 @@ class PaymentInfoTests: TestCase {
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
     Current = .teamYearly
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 

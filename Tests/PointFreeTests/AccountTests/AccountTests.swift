@@ -98,7 +98,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
     Current = .teamYearly
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -159,7 +159,7 @@ final class AccountTests: TestCase {
     Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     Current.database.fetchSubscriptionById = { _ in subscription }
     Current.database.fetchTeamInvites = { _ in [] }
-    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
 
     var session = Session.loggedIn
     session.user = .standard(currentUser.id)
@@ -230,7 +230,7 @@ final class AccountTests: TestCase {
     subscription.customer = .right(customer)
 
     Current = .teamYearly
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -323,7 +323,7 @@ final class AccountTests: TestCase {
 
     Current.database.fetchSubscriptionById = { _ in subscription }
     Current.database.fetchSubscriptionByOwnerId = { _ in subscription }
-    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -343,7 +343,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCancelingSubscription() async throws {
-    Current.stripe.fetchSubscription = const(pure(.canceling))
+    Current.stripe.fetchSubscription = { _ in .canceling }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -364,7 +364,7 @@ final class AccountTests: TestCase {
 
   func testAccountCanceledSubscription() async throws {
     Current.database.fetchSubscriptionById = { _ in .canceled }
-    Current.stripe.fetchSubscription = const(pure(.canceled))
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -439,7 +439,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.discount = .mock
     Current = .teamYearly
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 
@@ -462,7 +462,7 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
     Current = .individualMonthly
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(from: request(to: .account(), session: .loggedIn))
 

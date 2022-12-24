@@ -343,14 +343,15 @@ private func redirectCurrentSubscribers<Z>(
     guard let subscriptionId = user.subscriptionId
     else { return middleware(conn) }
 
-    let hasActiveSubscription = EitherIO {
-      try await Current.database.fetchSubscriptionById(subscriptionId)
+    return EitherIO {
+      let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      return stripeSubscription.isRenewing
     }
-    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
     .run
-    .map { $0.right?.isRenewing ?? false }
-
-    return hasActiveSubscription.flatMap {
+    .map { $0.right ?? false }
+    .flatMap {
       $0
         ? conn
           |> redirect(

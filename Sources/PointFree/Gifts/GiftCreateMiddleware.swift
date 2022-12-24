@@ -34,35 +34,31 @@ func giftCreateMiddleware(
         : $0
     }
 
-  return Current.stripe.createPaymentIntent(
-    .init(
-      amount: plan.amount,
-      currency: .usd,
-      description: "Gift subscription: \(plan.monthCount) months",
-      paymentMethodID: giftFormData.paymentMethodID,
-      receiptEmail: giftFormData.fromEmail.rawValue,
-      statementDescriptorSuffix: "Gift Subscription"
-    )
-  )
-  .flatMap { paymentIntent in
-    Current.stripe.confirmPaymentIntent(paymentIntent.id)
-  }
-  .flatMap { paymentIntent in
-    EitherIO<Error, PaymentIntent> {
-      _ = try await Current.database.createGift(
-        .init(
-          deliverAt: deliverAt,
-          fromEmail: giftFormData.fromEmail,
-          fromName: giftFormData.fromName,
-          message: giftFormData.message,
-          monthsFree: giftFormData.monthsFree,
-          stripePaymentIntentId: paymentIntent.id,
-          toEmail: giftFormData.toEmail,
-          toName: giftFormData.toName
-        )
+  return EitherIO<_, PaymentIntent> {
+    var paymentIntent = try await Current.stripe.createPaymentIntent(
+      .init(
+        amount: plan.amount,
+        currency: .usd,
+        description: "Gift subscription: \(plan.monthCount) months",
+        paymentMethodID: giftFormData.paymentMethodID,
+        receiptEmail: giftFormData.fromEmail.rawValue,
+        statementDescriptorSuffix: "Gift Subscription"
       )
-      return paymentIntent
-    }
+    )
+    paymentIntent = try await Current.stripe.confirmPaymentIntent(paymentIntent.id)
+    _ = try await Current.database.createGift(
+      .init(
+        deliverAt: deliverAt,
+        fromEmail: giftFormData.fromEmail,
+        fromName: giftFormData.fromName,
+        message: giftFormData.message,
+        monthsFree: giftFormData.monthsFree,
+        stripePaymentIntentId: paymentIntent.id,
+        toEmail: giftFormData.toEmail,
+        toName: giftFormData.toName
+      )
+    )
+    return paymentIntent
   }
   .run
   .flatMap { errorOrPaymentIntent in

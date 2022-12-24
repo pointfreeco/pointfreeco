@@ -51,7 +51,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
@@ -85,7 +85,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
@@ -104,7 +104,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
@@ -123,7 +123,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
@@ -142,7 +142,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
@@ -161,7 +161,7 @@ class DiscountsTests: TestCase {
     )
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
+    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
     await assertSnapshot(
       matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))

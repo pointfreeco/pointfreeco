@@ -43,15 +43,17 @@ func changeSubscription(
   return { conn in
     let (currentSubscription, newPricing) = conn.data
 
-    return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
-      .run
-      .flatMap(
-        either(
-          { conn.map(const(unit)) |> error($0) },
-          const(success(conn.map(const(unit))))
-        )
+    return EitherIO {
+      try await Current.stripe
+        .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
+    }
+    .run
+    .flatMap(
+      either(
+        { conn.map(const(unit)) |> error($0) },
+        const(success(conn.map(const(unit))))
       )
+    )
   }
 }
 
@@ -140,8 +142,7 @@ private func fetchSeatsTaken<A>(
       return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
     }
 
-    return
-      invitesAndTeammates
+    return invitesAndTeammates
       .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
   }
 }

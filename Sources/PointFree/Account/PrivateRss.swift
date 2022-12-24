@@ -176,11 +176,12 @@ private func fetchStripeSubscriptionForUser<A>(
   return { conn in
     conn.data.first.subscriptionId
       .map { subscriptionId in
-        EitherIO { try await Current.database.fetchSubscriptionById(subscriptionId) }
-          .flatMap(Current.stripe.fetchSubscription <<< \.stripeSubscriptionId)
-          .run
-          .map(\.right)
-          .flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
+        EitherIO {
+          let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+          return try await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        }
+        .run
+        .flatMap { conn.map(const($0.right .*. conn.data)) |> middleware }
       }
       ?? (conn.map(const(nil .*. conn.data)) |> middleware)
   }

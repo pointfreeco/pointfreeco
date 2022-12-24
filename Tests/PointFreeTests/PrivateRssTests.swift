@@ -34,7 +34,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     let conn = connection(
       from: request(
@@ -51,7 +51,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+    Current.stripe.fetchSubscription = { _ in .individualYearly }
 
     let conn = connection(
       from: request(
@@ -142,7 +142,7 @@ class PrivateRssTests: TestCase {
       feedRequestEventCreated = true
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     var req = request(
       to: .account(.rss(salt: "deadbeef")),
@@ -162,7 +162,7 @@ class PrivateRssTests: TestCase {
 
     Current.database.fetchUserByRssSalt = { _ in user }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     var req = request(
       to: .account(.rss(salt: "deadbeef")),
@@ -201,7 +201,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     let conn = connection(
       from: request(
@@ -218,7 +218,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+    Current.stripe.fetchSubscription = { _ in .individualYearly }
 
     let conn = connection(
       from: request(
@@ -309,7 +309,7 @@ class PrivateRssTests: TestCase {
       feedRequestEventCreated = true
     }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     var req = request(
       to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
@@ -329,7 +329,7 @@ class PrivateRssTests: TestCase {
 
     Current.database.fetchUserByRssSalt = { _ in user }
     Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
     var req = request(
       to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),

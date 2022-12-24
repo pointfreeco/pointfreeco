@@ -123,7 +123,6 @@ private func validateReferralCode(
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
       let stripeSubscription = try await Current.stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
-        .performAsync()
       guard stripeSubscription.isCancellable else { throw unit }
       return referrer
     }
@@ -132,16 +131,16 @@ private func validateReferralCode(
       either(
         const(
           conn
-            |> redirect(
-              to: .subscribeConfirmation(
-                lane: lane,
-                billing: subscribeData.billing,
-                isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-                teammates: subscribeData.teammates,
-                useRegionalDiscount: subscribeData.useRegionalDiscount
-              ),
-              headersMiddleware: flash(.error, "Invalid referral code.")
-            )
+          |> redirect(
+            to: .subscribeConfirmation(
+              lane: lane,
+              billing: subscribeData.billing,
+              isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+              teammates: subscribeData.teammates,
+              useRegionalDiscount: subscribeData.useRegionalDiscount
+            ),
+            headersMiddleware: flash(.error, "Invalid referral code.")
+          )
         ),
         { referrer in
           conn.map(
@@ -201,11 +200,10 @@ private let fetchAndValidateCoupon:
 private let couponError = "That coupon code is invalid or has expired."
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.ID?) -> IO<Stripe.Coupon?> {
-  guard let couponId = couponId else { return pure(nil) }
-  guard couponId != Current.envVars.regionalDiscountCouponId else { return pure(nil) }
-  return Current.stripe.fetchCoupon(couponId)
-    .run
-    .map(\.right)
+  return IO {
+    guard let couponId, couponId != Current.envVars.regionalDiscountCouponId else { return nil }
+    return try? await Current.stripe.fetchCoupon(couponId)
+  }
 }
 
 func redirectActiveSubscribers<A>(
@@ -233,10 +231,10 @@ func redirectActiveSubscribers<A>(
           },
           { _ in
             conn
-              |> redirect(
-                to: .account(),
-                headersMiddleware: flash(.warning, "You already have an active subscription.")
-              )
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(.warning, "You already have an active subscription.")
+            )
           }
         )
       }

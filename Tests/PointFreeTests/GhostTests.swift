@@ -69,7 +69,7 @@ final class GhostTests: TestCase {
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
     Current.database.fetchUserById = { userId in
-      if userId == adminUser.id {
+      if userId == adminUser.id  {
         return adminUser
       } else {
         throw unit
