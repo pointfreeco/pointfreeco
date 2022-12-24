@@ -56,7 +56,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
 
   let (subscription, user) = conn.data
   return EitherIO {
-    try await Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
+    try await cancelSubscription(subscription.id, subscription.status == .pastDue)
   }
   .run
   .flatMap(
@@ -90,7 +90,7 @@ private func reactivate(
 
   let (item, subscription, user) = conn.data
   return EitherIO {
-    try await Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+    try await updateSubscription(subscription, item.plan.id, item.quantity)
   }
   .run
   .flatMap(

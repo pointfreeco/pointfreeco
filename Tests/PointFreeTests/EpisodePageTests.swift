@@ -4,6 +4,7 @@ import Dependencies
 import Either
 import GitHub
 import GitHubTestSupport
+import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -534,6 +535,7 @@ class EpisodePageTests: TestCase {
 
     try await DependencyValues.withTestValues {
       $0.episodes = { [episode] }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)

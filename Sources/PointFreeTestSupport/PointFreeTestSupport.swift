@@ -101,9 +101,13 @@ extension UUID {
 extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      io.perform()
+      await DependencyValues.withValues {
+        $0.renderHtml = { debugRender($0) }
+      } operation: {
+        await io.performAsync()
+      }
     }
-  } 
+  }
 
   #if os(macOS)
     @available(OSX 10.13, *)
@@ -117,7 +121,7 @@ extension Snapshotting {
             decoding: DependencyValues.withValues {
               $0.renderHtml = { Html.render($0) }
             } operation: {
-              io.perform().data
+              await io.performAsync().data
             },
             as: UTF8.self
           ),
@@ -127,6 +131,30 @@ extension Snapshotting {
       }
     }
   #endif
+
+  //
+  //  #if os(macOS)
+  //    @available(OSX 10.13, *)
+  //    public static func ioConnWebView(size: CGSize) -> Snapshotting<
+  //      IO<Conn<ResponseEnded, Data>>, NSImage
+  //    > {
+  //      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
+  //        let webView = WKWebView(frame: .init(origin: .zero, size: size))
+  //        await webView.loadHTMLString(
+  //          String(
+  //            decoding: DependencyValues.withValues {
+  //              $0.renderHtml = { Html.render($0) }
+  //            } operation: {
+  //              io.perform().data
+  //            },
+  //            as: UTF8.self
+  //          ),
+  //          baseURL: nil
+  //        )
+  //        return webView
+  //      }
+  //    }
+  //  #endif
 }
 
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)

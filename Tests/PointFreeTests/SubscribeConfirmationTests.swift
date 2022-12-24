@@ -1,5 +1,6 @@
 import Dependencies
 import Either
+import Html
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -57,6 +58,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(
@@ -87,6 +89,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(
@@ -231,6 +234,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(
@@ -264,6 +268,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(
@@ -378,6 +383,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
         from: request(
