@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 54435
+Content-Length: 54438
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2357,7 +2357,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@pointfreeco"
+                 href="https://hachyderm.io/@pointfreeco"
                  rel="me">
                 Mastodon
               </a>
@@ -2368,7 +2368,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@mbrandonw"
+                 href="https://hachyderm.io/@mbrandonw"
                  rel="me">
                 @mbrandonw
               </a>
@@ -2379,7 +2379,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         normal
                         h5
                         lh-4"
-                 href="http://hachyderm.io/@stephencelis"
+                 href="https://hachyderm.io/@stephencelis"
                  rel="me">
                 @stephencelis
               </a>

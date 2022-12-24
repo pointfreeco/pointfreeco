@@ -39,7 +39,7 @@ func stripeHookFailure<A>(
 {
 
   return { conn in
-    IO<Void> {
+    Task {
       var requestDump = body + "\n\n"
       print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
       print(
@@ -50,20 +50,16 @@ func stripeHookFailure<A>(
       dump(conn.request.allHTTPHeaderFields, to: &requestDump)
       print("\nBody:", to: &requestDump)
       print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
-
-      parallel(
-        sendEmail(
-          to: adminEmails,
-          subject: subject,
-          content: inj1(requestDump)
-        ).run
-      ).run { _ in }
+      _ = try await sendEmail(
+        to: adminEmails,
+        subject: subject,
+        content: inj1(requestDump)
+      )
     }
-    .flatMap {
+    return
       conn
-        |> writeStatus(.badRequest)
-        >=> respond(text: body)
-    }
+      |> writeStatus(.badRequest)
+      >=> respond(text: body)
   }
 }
 

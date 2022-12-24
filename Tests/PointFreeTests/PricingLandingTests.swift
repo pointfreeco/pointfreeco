@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -15,27 +14,27 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class PricingLandingIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testLanding_LoggedIn_InactiveSubscriber() {
+  func testLanding_LoggedIn_InactiveSubscriber() async throws {
     var user = User.mock
     user.subscriptionId = nil
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-    } operation: {
-      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = conn |> siteMiddleware
+    Current.database.fetchUserById = { _ in user }
 
-      assertSnapshot(matching: result, as: .ioConn)
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-#if !os(Linux)
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
@@ -43,31 +42,30 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
           ]
         )
       }
-#endif
-    }
+    #endif
   }
 }
 
+@MainActor
 class PricingLandingTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testLanding_LoggedIn_ActiveSubscriber() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(.mock))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-    } operation: {
-      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = conn |> siteMiddleware
+  func testLanding_LoggedIn_ActiveSubscriber() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in .mock }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
 
-      assertSnapshot(matching: result, as: .ioConn)
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-#if !os(Linux)
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 4000)),
@@ -75,19 +73,18 @@ class PricingLandingTests: TestCase {
           ]
         )
       }
-#endif
-    }
+    #endif
   }
 
-  func testLanding_LoggedOut() {
+  func testLanding_LoggedOut() async throws {
     let conn = connection(from: request(to: .pricingLanding, session: .loggedOut))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),

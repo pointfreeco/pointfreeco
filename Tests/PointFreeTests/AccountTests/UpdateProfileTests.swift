@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HtmlSnapshotTesting
 import HttpPipelineTestSupport
@@ -16,19 +15,18 @@ import XCTest
 
 @MainActor
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testUpdateNameAndEmail() async throws {
     var user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     user.referralCode = "deadbeef"
 
-    assertSnapshot(
+    await assertSnapshot(
       matching: user,
       as: .customDump,
       named: "user_before_update"
@@ -46,17 +44,17 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    user = try await Current.database.fetchUserById(user.id).performAsync()!
+    user = try await Current.database.fetchUserById(user.id)
     user.referralCode = "deadbeef"
 
-    assertSnapshot(
+    await assertSnapshot(
       matching: user,
       as: .customDump,
       named: "user_after_update"
     )
 
     #if !os(Linux)
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
     #endif
   }
 
@@ -64,11 +62,9 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     let emailSettings = try await Current.database.fetchEmailSettingsForUserId(user.id)
-      .performAsync()
 
-    assertSnapshot(
+    await assertSnapshot(
       matching: emailSettings,
       as: .customDump,
       named: "email_settings_before_update"
@@ -86,27 +82,27 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-    assertSnapshot(
+    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+    await assertSnapshot(
       matching: settings,
       as: .customDump,
       named: "email_settings_after_update"
     )
 
     #if !os(Linux)
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
     #endif
   }
 }
 
 @MainActor
 class UpdateProfileTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testUpdateExtraInvoiceInfo() async {
+  func testUpdateExtraInvoiceInfo() async throws {
     var updatedCustomerWithExtraInvoiceInfo: String!
 
     var stripeSubscription = Stripe.Subscription.mock
@@ -114,37 +110,35 @@ class UpdateProfileTests: TestCase {
     stripeCustomer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
     stripeSubscription.customer = .right(stripeCustomer)
 
-    await DependencyValues.withTestValues {
-      $0.teamYearly()
-      $0.stripe.fetchSubscription = const(pure(stripeSubscription))
-      $0.stripe.updateCustomerExtraInvoiceInfo = { _, info -> EitherIO<Error, Stripe.Customer> in
-        updatedCustomerWithExtraInvoiceInfo = info
-        return pure(.mock)
-      }
-    } operation: {
-      let update = request(
-        to: .account(
-          .update(
-            .init(
-              email: "blob@pointfree.co",
-              extraInvoiceInfo: "VAT: 123456789",
-              emailSettings: ["newEpisode": "on"],
-              name: "Blob"
-            )
-          )
-        ),
-        session: .init(
-          flash: nil,
-          userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
-      )
-
-      let output = await siteMiddleware(connection(from: update)).performAsync()
-
-#if !os(Linux)
-      assertSnapshot(matching: output, as: .conn)
-#endif
-
-      XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)
+    Current = .teamYearly
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
+    Current.stripe.updateCustomerExtraInvoiceInfo = { _, info in
+      updatedCustomerWithExtraInvoiceInfo = info
+      return .mock
     }
+
+    let update = request(
+      to: .account(
+        .update(
+          .init(
+            email: "blob@pointfree.co",
+            extraInvoiceInfo: "VAT: 123456789",
+            emailSettings: ["newEpisode": "on"],
+            name: "Blob"
+          )
+        )
+      ),
+      session: .init(
+        flash: nil,
+        userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+    )
+
+    let output = await siteMiddleware(connection(from: update)).performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: output, as: .conn)
+    #endif
+
+    XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)
   }
 }

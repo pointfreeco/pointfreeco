@@ -73,8 +73,8 @@ extension EnvVars {
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
-    validate: const(pure(.init(mailboxVerification: true)))
+    sendEmail: { _ in SendEmailResponse(id: "deadbeef", message: "success!") },
+    validate: { _ in Validation(mailboxVerification: true) }
   )
 }
 
@@ -110,9 +110,9 @@ extension Snapshotting {
     public static func ioConnWebView(size: CGSize) -> Snapshotting<
       IO<Conn<ResponseEnded, Data>>, NSImage
     > {
-      return Snapshotting<NSView, NSImage>.image.pullback { io in
+      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
         let webView = WKWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(
+        await webView.loadHTMLString(
           String(
             decoding: DependencyValues.withValues {
               $0.renderHtml = { Html.render($0) }

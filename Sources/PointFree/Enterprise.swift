@@ -123,20 +123,23 @@ private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
 ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>?> {
 
-  return Current.database.createEnterpriseEmail(get3(data), get4(data))
-    .map(const(data))
-    .run
-    .map(\.right)
+  return IO {
+    guard (try? await Current.database.createEnterpriseEmail(get3(data), get4(data))) != nil
+    else { return nil }
+    return data
+  }
 }
 
 private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
 ) -> IO<T3<User, EnterpriseAccount, Z>?> {
 
-  return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
-    .map(const(data))
-    .run
-    .map(\.right)
+  return EitherIO {
+    try await Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+  }
+  .map(const(data))
+  .run
+  .map(\.right)
 }
 
 private func successfullyAcceptedInviteMiddleware<A, Z>(
@@ -246,15 +249,13 @@ private func sendEnterpriseInvitation<Z>(
       request.email.rawValue, with: Current.envVars.appSecret),
       let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)
     {
-
-      sendEmail(
-        to: [request.email],
-        subject: "You’re invited to join the \(account.companyName) team on Point-Free",
-        content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
-      )
-      .run
-      .parallel
-      .run({ _ in })
+      Task {
+        _ = try await sendEmail(
+          to: [request.email],
+          subject: "You’re invited to join the \(account.companyName) team on Point-Free",
+          content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
+        )
+      }
       return conn
         |> middleware
     } else {
@@ -271,10 +272,7 @@ private func sendEnterpriseInvitation<Z>(
 }
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
-  return Current.database.fetchEnterpriseAccountForDomain(domain)
-    .mapExcept(requireSome)
-    .run
-    .map(\.right)
+  IO { try? await Current.database.fetchEnterpriseAccountForDomain(domain) }
 }
 
 let enterpriseInviteEmailView =
@@ -350,14 +348,15 @@ private func redirectCurrentSubscribers<Z>(
     guard let subscriptionId = user.subscriptionId
     else { return middleware(conn) }
 
-    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .bimap(const(unit), id)
-      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .map { $0.right?.isRenewing ?? false }
-
-    return hasActiveSubscription.flatMap {
+    return EitherIO {
+      let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      return stripeSubscription.isRenewing
+    }
+    .run
+    .map { $0.right ?? false }
+    .flatMap {
       $0
         ? conn
           |> redirect(

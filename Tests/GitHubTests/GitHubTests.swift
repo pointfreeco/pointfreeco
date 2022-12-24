@@ -5,21 +5,22 @@ import XCTest
 
 @testable import GitHub
 
+@MainActor
 final class GitHubTests: TestCase {
-  func testRequests() {
+  func testRequests() async throws {
     let fetchAuthToken = fetchGitHubAuthToken(
       clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")
-    assertSnapshot(
+    await assertSnapshot(
       matching: fetchAuthToken("deadbeef").rawValue,
       as: .raw,
       named: "fetch-auth-token"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: fetchGitHubEmails(token: .mock).rawValue,
       as: .raw,
       named: "fetch-emails"
     )
-    assertSnapshot(
+    await assertSnapshot(
       matching: fetchGitHubUser(with: .mock).rawValue,
       as: .raw,
       named: "fetch-user"

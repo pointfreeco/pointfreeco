@@ -6,19 +6,19 @@ import XCTest
 @testable import PointFree
 
 final class SessionTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testEncodable() {
+  func testEncodable() async throws {
     var session: Session
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
     #if !os(Linux)
       // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
-      _assertInlineSnapshot(
+      await _assertInlineSnapshot(
         matching: Session(flash: nil, user: nil), as: .json(encoder),
         with: """
           {
@@ -31,7 +31,7 @@ final class SessionTests: TestCase {
       flash: nil,
       user: .standard(User.ID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
     )
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: session, as: .json(encoder),
       with: """
         {
@@ -46,7 +46,7 @@ final class SessionTests: TestCase {
         ghosterId: User.ID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!
       )
     )
-    _assertInlineSnapshot(
+    await _assertInlineSnapshot(
       matching: session, as: .json(encoder),
       with: """
         {
@@ -58,7 +58,7 @@ final class SessionTests: TestCase {
         """)
   }
 
-  func testDecodable() throws {
+  func testDecodable() async throws {
     XCTAssertEqual(
       Session(flash: nil, user: nil),
       try JSONDecoder().decode(Session.self, from: Data("{}".utf8))

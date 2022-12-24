@@ -1,10 +1,8 @@
 import Database
 import DatabaseTestSupport
-import Dependencies
 import Either
 import GitHub
 import GitHubTestSupport
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -22,40 +20,36 @@ import XCTest
 
 @MainActor
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testRedeemEpisodeCredit_HappyPath() async throws {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
 
-    try await DependencyValues.withTestValues {
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let user = try await Current.database
-        .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-        .performAsync()!
-      _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
+    Current.episodes = { [episode] }
 
-      let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+    let user = try await Current.database
+      .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
+    try await Current.database.updateUser(id: user.id, episodeCreditCount: 1)
 
-      let conn = connection(
-        from: request(
-          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
-        )
+    let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+
+    let conn = connection(
+      from: request(
+        to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
       )
+    )
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
-      XCTAssertEqual([credit], credits)
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
+    XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!
-        .episodeCreditCount
-      XCTAssertEqual(0, count)
-    }
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+    XCTAssertEqual(0, count)
   }
 
   func testRedeemEpisodeCredit_NotEnoughCredits() async throws {
@@ -66,25 +60,22 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 0
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    try await DependencyValues.withTestValues {
-      $0.episodes = unzurry([episode])
-      $0.database.fetchUserById = const(pure(.some(user)))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.episodes = { [episode] }
+
+    let conn = connection(
+      from: request(
+        to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
       )
+    )
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
-      XCTAssertEqual([], credits)
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
+    XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!
-        .episodeCreditCount
-      XCTAssertEqual(0, count)
-    }
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+    XCTAssertEqual(0, count)
   }
 
   func testRedeemEpisodeCredit_PublicEpisode() async throws {
@@ -95,67 +86,61 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     user.episodeCreditCount = 1
     user.id = .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    try await DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(user)))
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.episodes = { [episode] }
+
+    let conn = connection(
+      from: request(
+        to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
       )
+    )
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
-      XCTAssertEqual([], credits)
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
+    XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!
-        .episodeCreditCount
-      XCTAssertEqual(1, count)
-    }
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+    XCTAssertEqual(1, count)
   }
 
   func testRedeemEpisodeCredit_AlreadyCredited() async throws {
     var episode = Episode.mock
     episode.permission = .free
 
-    try await DependencyValues.withTestValues {
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let user = try await Current.database
-        .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-        .performAsync()!
-      _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1).performAsync()
-      _ = try await Current.database.redeemEpisodeCredit(episode.sequence, user.id).performAsync()
+    Current.episodes = { [episode] }
 
-      let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+    let user = try await Current.database
+      .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
+    _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1)
+    try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
 
-      let conn = connection(
-        from: request(
-          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
-        )
+    let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+
+    let conn = connection(
+      from: request(
+        to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
       )
+    )
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id).performAsync()
-      XCTAssertEqual([credit], credits)
+    let credits = try await Current.database.fetchEpisodeCredits(user.id)
+    XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).performAsync()!
-        .episodeCreditCount
-      XCTAssertEqual(1, count)
-    }
+    let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+    XCTAssertEqual(1, count)
   }
 }
 
+@MainActor
 class EpisodePageTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testEpisodePage() {
+  func testEpisodePage() async throws {
     let titles = ["Domain-Specific Languages", "Proof in Functions", "Composable Architecture"]
     let episodes = (0...2).map { idx -> Episode in
       var episode = Episode.mock
@@ -165,31 +150,28 @@ class EpisodePageTests: TestCase {
       return episode
     }
 
-    DependencyValues.withTestValues {
-      $0.episodes = { episodes }
-    } operation: {
-      let episode = request(
-        to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedOut)
+    Current.episodes = { episodes }
+    let episode = request(
+      to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedOut)
 
-      let conn = connection(from: episode)
+    let conn = connection(from: episode)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
-            ]
-          )
-        }
-      #endif
-    }
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testEpisodePage_InCollectionContext() {
+  func testEpisodePage_InCollectionContext() async throws {
     let episode = request(
       to: .collections(
         .collection(
@@ -205,11 +187,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -220,7 +202,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePage_InCollectionContext_LastEpisode() {
+  func testEpisodePage_InCollectionContext_LastEpisode() async throws {
     let episode = request(
       to: .collections(
         .collection(
@@ -236,11 +218,11 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -251,17 +233,17 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePageSubscriber() {
+  func testEpisodePageSubscriber() async throws {
     let episode = request(
       to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
@@ -272,95 +254,91 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodePageSubscriber_Deactivated() {
-    DependencyValues.withTestValues {
-      let deactivated = update(Subscription.mock) { $0.deactivated = true }
-      $0.database.fetchSubscriptionById = const(pure(deactivated))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(deactivated))
-    } operation: {
-      let episode = request(
-        to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+  func testEpisodePageSubscriber_Deactivated() async throws {
+    let deactivated = update(Subscription.mock) { $0.deactivated = true }
+    Current.database.fetchSubscriptionById = { _ in deactivated }
+    Current.database.fetchSubscriptionByOwnerId = { _ in deactivated }
 
-      let conn = connection(from: episode)
+    let episode = request(
+      to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(from: episode)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testFreeEpisodePage() {
+  func testFreeEpisodePage() async throws {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
-    DependencyValues.withTestValues {
-      $0.episodes = { [freeEpisode] }
-    } operation: {
-      let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
-      let conn = connection(from: episode)
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    Current.episodes = { [freeEpisode] }
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-            ]
-          )
-        }
-      #endif
-    }
+    let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
+
+    let conn = connection(from: episode)
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testFreeEpisodePageSubscriber() {
+  func testFreeEpisodePageSubscriber() async throws {
     var freeEpisode = Current.episodes()[0]
     freeEpisode.permission = .free
 
-    DependencyValues.withTestValues {
-      $0.episodes = { [freeEpisode] }
-    } operation: {
-      let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
+    Current.episodes = { [freeEpisode] }
 
-      let conn = connection(from: episode)
+    let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(from: episode)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testEpisodeNotFound() {
+  func testEpisodeNotFound() async throws {
     let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
 
     let conn = connection(from: episode)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshot(
+        await assertSnapshot(
           matching: conn |> siteMiddleware,
           as: .ioConnWebView(size: .init(width: 1100, height: 1000))
         )
@@ -368,7 +346,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
+  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -376,33 +354,31 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .free
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(user)))
-      $0.database.fetchEpisodeCredits = const(pure([.mock]))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let conn = connection(
-        from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
-      )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchEpisodeCredits = { _ in [.mock] }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.episodes = { [episode] }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(
+      from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
+    )
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -410,34 +386,31 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes()[1]
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(user)))
-      $0.database.fetchEpisodeCredits = const(pure([.mock]))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
-      )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchEpisodeCredits = { _ in [.mock] }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.episodes = { [episode] }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+    )
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 1
@@ -445,34 +418,31 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(user)))
-      $0.database.fetchEpisodeCredits = const(pure([]))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
-      )
+    Current.database.fetchUserById = { _ in user }
+    Current.episodes = { [episode] }
+    Current.database.fetchEpisodeCredits = { _ in [] }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+    )
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
     user.episodeCreditCount = 0
@@ -480,172 +450,135 @@ class EpisodePageTests: TestCase {
     var episode = Current.episodes().first!
     episode.permission = .subscriberOnly
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(user)))
-      $0.database.fetchEpisodeCredits = const(pure([]))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.episodes = unzurry([episode])
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
-      )
+    Current.database.fetchUserById = { _ in user }
+    Current.episodes = { [episode] }
+    Current.database.fetchEpisodeCredits = { _ in [] }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+    )
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func test_permission() {
-    // TODO: double check this test
+  func test_permission() async throws {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
     var episode = Episode.mock
     episode.permission = .freeDuring(start..<end)
 
-    DependencyValues.withTestValues {
-      $0.date.now = start.addingTimeInterval(-1)
-    } operation: {
-      XCTAssertTrue(episode.subscriberOnly)
-    }
+    Current.date = { start.addingTimeInterval(-1) }
+    XCTAssertTrue(episode.subscriberOnly)
 
-    DependencyValues.withTestValues {
-      $0.date.now = start
-    } operation: {
-      XCTAssertFalse(episode.subscriberOnly)
-    }
+    Current.date = { start.addingTimeInterval(1) }
+    XCTAssertFalse(episode.subscriberOnly)
 
-    DependencyValues.withTestValues {
-      $0.date.now = end.addingTimeInterval(1)
-    } operation: {
-      XCTAssertTrue(episode.subscriberOnly)
-    }
+    Current.date = { end.addingTimeInterval(1) }
+    XCTAssertTrue(episode.subscriberOnly)
   }
 
-  func testEpisodePage_ExercisesAndReferences() {
+  func testEpisodePage_ExercisesAndReferences() async throws {
     var episode = Current.episodes()[0]
     episode.exercises = [.mock, .mock]
     episode.references = [.mock]
     episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
 
-    DependencyValues.withTestValues {
-      $0.episodes = { [episode] }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
-      )
+    Current.episodes = { [episode] }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let conn = connection(
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+    )
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          DependencyValues.withTestValues {
-            $0.episodes = { [episode] }
-            // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-            $0.renderHtml = { Html.render($0) }
-          } operation: {
-            let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-            let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
-            webView.loadHTMLString(html, baseURL: nil)
-            assertSnapshot(matching: webView, as: .image, named: "desktop")
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(
+          decoding: siteMiddleware(conn).performAsync().data, as: UTF8.self
+        )
+        webView.loadHTMLString(html, baseURL: nil)
+        await assertSnapshot(matching: webView, as: .image, named: "desktop")
 
-            webView.frame.size.width = 500
-            webView.frame.size.height = 1700
-            assertSnapshot(matching: webView, as: .image, named: "mobile")
+        webView.frame.size.width = 500
+        webView.frame.size.height = 1700
+        await assertSnapshot(matching: webView, as: .image, named: "mobile")
 
-            webView.evaluateJavaScript(
-              """
-              document.getElementsByTagName('details')[0].open = true
-              """)
-            assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-          }
-        }
-      #endif
-    }
+        try await webView.evaluateJavaScript(
+          """
+          document.getElementsByTagName('details')[0].open = true
+          """
+        )
+        await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+      }
+    #endif
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodePage_Trialing() {
+  func testEpisodePage_Trialing() async throws {
     var subscription = Subscription.mock
     subscription.stripeSubscriptionStatus = .trialing
+    Current.database.fetchSubscriptionById = { _ in subscription }
 
-    DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = { _ in pure(subscription) }
-    } operation: {
-      let episode = request(
-        to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: .mock))
+    let episode = request(
+      to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: .mock))
 
-      let conn = connection(from: episode)
+    let conn = connection(from: episode)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testProgress_LoggedIn() {
+  func testProgress_LoggedIn() async throws {
     var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
 
-    DependencyValues.withTestValues {
-      $0.database.updateEpisodeProgress = { _, _, _ in
-        didUpdate = true
-        return pure(unit)
-      }
-    } operation: {
-      let episode = Current.episodes().first!
-      let percent = 20
-      let progressRequest = request(
-        to: .episode(.progress(param: .left(episode.slug), percent: percent)),
-        session: .loggedIn
-      )
-      let conn = connection(from: progressRequest)
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedIn
+    )
+    let conn = connection(from: progressRequest)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-      XCTAssertEqual(didUpdate, true)
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, true)
   }
 
-  func testProgress_LoggedOut() {
+  func testProgress_LoggedOut() async throws {
     var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
 
-    DependencyValues.withTestValues {
-      $0.database.updateEpisodeProgress = { _, _, _ in
-        didUpdate = true
-        return pure(unit)
-      }
-    } operation: {
-      let episode = Current.episodes().first!
-      let percent = 20
-      let progressRequest = request(
-        to: .episode(.progress(param: .left(episode.slug), percent: percent)),
-        session: .loggedOut
-      )
-      let conn = connection(from: progressRequest)
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedOut
+    )
+    let conn = connection(from: progressRequest)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-      XCTAssertEqual(didUpdate, false)
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, false)
   }
 
-  func testEpisodePage_WithEpisodeProgress() {
-    DependencyValues.withTestValues {
-      $0.database.fetchEpisodeProgress = { _, _ in pure(20) }
-    } operation: {
-      let episode = request(
-        to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
+  func testEpisodePage_WithEpisodeProgress() async throws {
+    Current.database.fetchEpisodeProgress = { _, _ in pure(20) }
+    let episode = request(
+      to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
 
-      let conn = connection(from: episode)
+    let conn = connection(from: episode)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

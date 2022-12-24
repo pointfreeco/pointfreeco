@@ -172,7 +172,7 @@ func announcementBanner<A>(
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0088_YIR2022.slug)))),
+          .href(siteRouter.url(for: .blog(.show(slug: post0089_2022EOYSale.slug)))),
         ],
         "Read more"
       ),

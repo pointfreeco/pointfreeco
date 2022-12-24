@@ -42,30 +42,26 @@ private func leaveTeam<Z>(
   return { conn in
     let user = get1(conn.data)
 
-    let removed =
-      user.subscriptionId
-      .map { subId in
-        Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subId)
-          .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
-      }
-      ?? pure(unit)
-
-    return removed
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .account(),
-                headersMiddleware: flash(
-                  .error,
-                  "Something went wrong. Please try again or contact <support@pointfree.co>.")
-              )
-          ),
-          const(middleware(conn))
-        )
+    return EitherIO {
+      guard let subscriptionId = user.subscriptionId else { return }
+      try await Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
+      try await Current.database.deleteEnterpriseEmail(user.id)
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(
+                .error,
+                "Something went wrong. Please try again or contact <support@pointfree.co>.")
+            )
+        ),
+        const(middleware(conn))
       )
+    )
   }
 }
 
@@ -77,70 +73,43 @@ let removeTeammateMiddleware =
     guard let teammateSubscriptionId = teammate.subscriptionId
     else { return pure(conn.map(const(unit))) }
 
-    let validateSubscriptionData = Current.database
-      .fetchSubscriptionById(teammateSubscriptionId)
-      .mapExcept(requireSome)
-      .mapExcept { errorOrSubscription in
-        // Validate the current user is the subscription owner
-        errorOrSubscription.right?.userId == .some(currentUser.id)
-          // Validate that the fetched user is in fact the current user's teammate.
-          && errorOrSubscription.right?.id == teammate.subscriptionId
-          ? .right(unit)
-          : .left(unit as Error)
+    return EitherIO {
+      let subscription = try await Current.database.fetchSubscriptionById(teammateSubscriptionId)
+      // Validate the current user is the subscription owner,
+      // and the fetched user is in fact the current user's teammate.
+      guard subscription.userId == currentUser.id && subscription.id == teammate.subscriptionId
+      else { throw unit }
+
+      try await Current.database
+        .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
+
+      if currentUser.id != teammate.id {
+        Task {
+          try await sendEmail(
+            to: [teammate.email],
+            subject: "You have been removed from \(currentUser.displayName)’s Point-Free team",
+            content: inj2(youHaveBeenRemovedEmailView(.teamOwner(currentUser)))
+          )
+        }
+        Task {
+          try await sendEmail(
+            to: [currentUser.email],
+            subject: "Your teammate \(teammate.displayName) has been removed",
+            content: inj2(teammateRemovedEmailView((currentUser, teammate)))
+          )
+        }
       }
-
-    return
-      validateSubscriptionData
-      .flatMap { _ in
-        Current.database
-          .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
-          .flatMap { x -> EitherIO<Error, Prelude.Unit> in
-
-            // Fire-and-forget emails to owner and teammate
-            sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
-              .run({ _ in })
-
-            return pure(x)
-          }
-      }
-      .run
-      .map(const(conn.map(const(unit))))
+    }
+    .run
+    .map(const(conn.map(const(unit))))
   }
   >=> redirect(to: .account(), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
 private let requireTeammate: MT<Tuple2<User.ID, User>, Tuple2<User, User>> = filterMap(
-  over1 {
-    Current.database.fetchUserById($0)
-      .mapExcept(requireSome)
-      .run
-      .map(\.right)
+  over1 { id in
+    IO { try? await Current.database.fetchUserById(id) }
   }
     >>> sequence1
     >>> map(require1),
   or: redirect(to: .account(), headersMiddleware: flash(.error, "Could not find that teammate."))
 )
-
-private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parallel<Prelude.Unit> {
-
-  guard owner.id != teammate.id else {
-    return pure(unit)
-  }
-
-  return zip2(
-    parallel(
-      sendEmail(
-        to: [teammate.email],
-        subject: "You have been removed from \(owner.displayName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView(.teamOwner(owner)))
-      )
-      .run),
-    parallel(
-      sendEmail(
-        to: [owner.email],
-        subject: "Your teammate \(teammate.displayName) has been removed",
-        content: inj2(teammateRemovedEmailView((owner, teammate)))
-      )
-      .run)
-  )
-  .map(const(unit))
-}

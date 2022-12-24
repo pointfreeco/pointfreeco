@@ -10,20 +10,21 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class PrivacyTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testPrivacy() {
+  func testPrivacy() async throws {
     let conn = connection(from: request(to: .privacy))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),

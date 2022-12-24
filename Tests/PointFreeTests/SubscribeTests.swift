@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import EmailAddress
 import HttpPipeline
@@ -18,8 +17,8 @@ import XCTest
 
 @MainActor
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
@@ -28,7 +27,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     subscribeData.coupon = "deadbeef"
 
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -40,14 +38,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-      .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: try XCTUnwrap(subscription), as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
   }
 
@@ -56,7 +53,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     subscribeData.coupon = "deadbeef"
 
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -68,97 +64,87 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
 
-    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id).performAsync()
+    let subscription = try? await Current.database.fetchSubscriptionByOwnerId(user.id)
     XCTAssertNil(subscription)
   }
 
   func testHappyPath() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
     var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-
-    try await DependencyValues.withTestValues {
-      $0.stripe.createCustomer = {
-        balance = $4
-        return pure(update(.mock) { $0.id = "cus_referred" })
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(.mock)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(
-          from: request(to: .subscribe(.some(.individualMonthly)), session: session)
-        )
-      )
-      .performAsync()
-
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-        .performAsync()!
-
-      #if !os(Linux)
-        assertSnapshot(matching: subscription, as: .customDump)
-      #endif
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, [:])
+    Current.stripe.createCustomer = {
+      balance = $4
+      return update(.mock) { $0.id = "cus_referred" }
     }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return .mock
+    }
+
+    let conn = await siteMiddleware(
+      connection(
+        from: request(to: .subscribe(.some(.individualMonthly)), session: session)
+      )
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+
+    #if !os(Linux)
+      await assertSnapshot(matching: subscription, as: .customDump)
+    #endif
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
   }
 
   func testHappyPath_Yearly() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
     var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.createCustomer = {
-        balance = $4
-        return pure(update(.mock) { $0.id = "cus_referred" })
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(.mock)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(
-          from: request(to: .subscribe(.some(.individualYearly)), session: session)
-        )
-      )
-      .performAsync()
-
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-        .performAsync()!
-
-      #if !os(Linux)
-        assertSnapshot(matching: subscription, as: .customDump)
-      #endif
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, [:])
+    Current.stripe.createCustomer = {
+      balance = $4
+      return update(.mock) { $0.id = "cus_referred" }
     }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return .mock
+    }
+
+    let conn = await siteMiddleware(
+      connection(
+        from: request(to: .subscribe(.some(.individualYearly)), session: session)
+      )
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+
+    #if !os(Linux)
+      await assertSnapshot(matching: subscription, as: .customDump)
+    #endif
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
   }
 
   func testHappyPath_Team() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -179,23 +165,20 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let conn = await siteMiddleware(connection(from: req)).performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-      .performAsync()!
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
     let invites = try await Current.database.fetchTeamInvites(user.id)
-      .performAsync()
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
   }
 
   func testHappyPath_Team_OwnerIsNotTakingSeat() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -218,19 +201,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     let conn = await siteMiddleware(connection(from: req)).performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
     let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-      .performAsync()!
 
     #if !os(Linux)
-      assertSnapshot(matching: subscription, as: .customDump)
+      await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
-    let invites = try await Current.database.fetchTeamInvites(user.id).performAsync()
+    let invites = try await Current.database.fetchTeamInvites(user.id)
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
     // Confirm that owner of subscription is not taking up a seat on the sub.
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
@@ -238,16 +220,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   func testHappyPath_Referral_Monthly() async throws {
     let referrer = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
-      .performAsync()!
 
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -262,70 +241,64 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: false
     )
 
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = { _ in
-        pure(
-          update(.mock) {
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referrer" },
-              {
-                update($0) {
-                  $0.id = "cus_referrer"
-                  $0.balance = -18_00
-                }
-              })
+    Current.stripe.fetchSubscription = { _ in
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
           })
       }
-      $0.stripe.createSubscription = { _, _, _, _ in
-        pure(
-          update(.mock) {
-            $0.id = "sub_referred"
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-          })
-      }
-      $0.stripe.createCustomer = {
-        balance = $4
-        return pure(update(.mock) { $0.id = "cus_referred" })
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(.mock)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(
-          from: request(to: .subscribe(subscribeData), session: session)
-        )
-      )
-      .performAsync()
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
-        .performAsync()!
-
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -18_00])
-      XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
     }
+    Current.stripe.createSubscription = { _, _, _, _ in
+      update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return update(.mock) { $0.id = "cus_referred" }
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return .mock
+    }
+
+    let conn = await siteMiddleware(
+      connection(
+        from: request(to: .subscribe(subscribeData), session: session)
+      )
+    )
+    .performAsync()
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 
   func testHappyPath_Referral_Yearly() async throws {
     let referrer = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
-      .performAsync()!
 
-    /*let referrerSubscription*/_ = try await Current
+    /*let referrerSubscription*/_ =
+      try await Current
       .database.createSubscription(.mock, referrer.id, true, nil)
-      .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -340,53 +313,48 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: false
     )
 
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = { _ in
-        pure(
-          update(.mock) {
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
-          })
+    Current.stripe.fetchSubscription = { _ in
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
       }
-      $0.stripe.createSubscription = { _, _, _, _ in
-        pure(
-          update(.mock) {
-            $0.id = "sub_referred"
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-          })
-      }
-      $0.stripe.createCustomer = {
-        balance = $4
-        return pure(update(.mock) { $0.id = "cus_referred" })
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(.mock)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: session))
-      )
-      .performAsync()
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
-        .performAsync()!
-
-      XCTAssertEqual(balance, -18_00)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
-      XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
     }
+    Current.stripe.createSubscription = { _, _, _, _ in
+      update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = {
+      balance = $4
+      return update(.mock) { $0.id = "cus_referred" }
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return .mock
+    }
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: session))
+    )
+    .performAsync()
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+
+    XCTAssertEqual(balance, -18_00)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
   }
 
   func testHappyPath_RegionalDiscount() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -394,65 +362,59 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     var subscriptionCoupon: Coupon.ID?
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.createSubscription = { _, _, _, coupon in
-        subscriptionCoupon = coupon
-        return pure(.mock)
-      }
-      $0.stripe.createCustomer = { _, _, _, _, newBalance in
-        balance = newBalance
-        return pure(customer)
-      }
-      $0.stripe.fetchPaymentMethod = { _ in
-        return pure(
-          .init(
-            card: .init(
-              brand: .visa,
-              country: "BO",
-              expMonth: 12,
-              expYear: 2025,
-              funding: .credit,
-              last4: "1111"
-            ),
-            customer: .left(customer.id),
-            id: "pm_card"
-          )
-        )
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(customer)
-      }
-    } operation: {
-      var subscribeData = SubscribeData.individualMonthly
-      subscribeData.useRegionalDiscount = true
-
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
-      )
-      .performAsync()
-
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
-        .performAsync()!
-
-      #if !os(Linux)
-        assertSnapshot(matching: subscription, as: .customDump)
-      #endif
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, [:])
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return .mock
     }
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return customer
+    }
+    Current.stripe.fetchPaymentMethod = { _ in
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
+      )
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return customer
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.useRegionalDiscount = true
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+
+    #if !os(Linux)
+      await assertSnapshot(matching: subscription, as: .customDump)
+    #endif
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
   }
 
   func testUnhappyPath_RegionalDiscount() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -460,69 +422,62 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
 
     var subscriptionCoupon: Coupon.ID?
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    await DependencyValues.withTestValues {
-      $0.stripe.createSubscription = { _, _, _, coupon in
-        subscriptionCoupon = coupon
-        return pure(.mock)
-      }
-      $0.stripe.createCustomer = { _, _, _, _, newBalance in
-        balance = newBalance
-        return pure(customer)
-      }
-      $0.stripe.fetchPaymentMethod = { _ in
-        pure(
-          .init(
-            card: .init(
-              brand: .visa,
-              country: "US",
-              expMonth: 12,
-              expYear: 2025,
-              funding: .credit,
-              last4: "1111"
-            ),
-            customer: .left(customer.id),
-            id: "pm_card"
-          )
-        )
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(customer)
-      }
-    } operation: {
-      var subscribeData = SubscribeData.individualMonthly
-      subscribeData.useRegionalDiscount = true
-
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
-      )
-      .performAsync()
-
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      XCTAssertEqual(subscriptionCoupon, nil)
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, [:])
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return .mock
     }
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return customer
+    }
+    Current.stripe.fetchPaymentMethod = { _ in
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "US",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
+      )
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return customer
+    }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.useRegionalDiscount = true
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    XCTAssertEqual(subscriptionCoupon, nil)
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, [:])
   }
 
   func testRegionalDiscountWithReferral_Monthly() async throws {
     let referrer = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
-      .performAsync()!
 
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -540,88 +495,80 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: true
     )
 
-    var subscriptionCoupon: Coupon.ID?
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchPaymentMethod = { _ in
-        return pure(
-          .init(
-            card: .init(
-              brand: .visa,
-              country: "BO",
-              expMonth: 12,
-              expYear: 2025,
-              funding: .credit,
-              last4: "1111"
-            ),
-            customer: .left(customer.id),
-            id: "pm_card"
-          )
-        )
-      }
-      $0.stripe.fetchSubscription = { _ in
-        pure(
-          update(.mock) {
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referrer" },
-              {
-                update($0) {
-                  $0.id = "cus_referrer"
-                  $0.balance = -18_00
-                }
-              })
-          })
-      }
-      $0.stripe.createSubscription = { _, _, _, coupon in
-        subscriptionCoupon = coupon
-        return pure(
-          update(.mock) {
-            $0.id = "sub_referred"
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-          })
-      }
-      $0.stripe.createCustomer = { _, _, _, _, newBalance in
-        balance = newBalance
-        return pure(customer)
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(customer)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: session))
+    Current.stripe.fetchPaymentMethod = { _ in
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
-      .performAsync()
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
-        .performAsync()!
-
-      XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
-      XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
     }
+    Current.stripe.fetchSubscription = { _ in
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
+    }
+
+    var subscriptionCoupon: Coupon.ID?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return customer
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return customer
+    }
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: session))
+    )
+    .performAsync()
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+
+    XCTAssertNil(balance)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
   }
 
   func testRegionalDiscountWithReferral_Yearly() async throws {
     let referrer = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
-      .performAsync()!
 
     /*let referrerSubscription*/_ = try await Current.database.createSubscription(
       .mock, referrer.id, true, nil
     )
-    .performAsync()!
 
     let referred = try await Current.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
-      .performAsync()!
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -639,428 +586,394 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       useRegionalDiscount: true
     )
 
-    var subscriptionCoupon: Coupon.ID?
-    var balance: Cents<Int>?
-    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchPaymentMethod = { _ in
-        return pure(
-          .init(
-            card: .init(
-              brand: .visa,
-              country: "BO",
-              expMonth: 12,
-              expYear: 2025,
-              funding: .credit,
-              last4: "1111"
-            ),
-            customer: .left(customer.id),
-            id: "pm_card"
-          )
-        )
-      }
-      $0.stripe.fetchSubscription = { _ in
-        pure(
-          update(.mock) {
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referrer" },
-              {
-                update($0) {
-                  $0.id = "cus_referrer"
-                  $0.balance = -18_00
-                }
-              })
-          })
-      }
-      $0.stripe.createSubscription = { _, _, _, coupon in
-        subscriptionCoupon = coupon
-        return pure(
-          update(.mock) {
-            $0.id = "sub_referred"
-            $0.customer = $0.customer.bimap(
-              { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-          })
-      }
-      $0.stripe.createCustomer = { _, _, _, _, newBalance in
-        balance = newBalance
-        return pure(customer)
-      }
-      $0.stripe.updateCustomerBalance = {
-        balanceUpdates[$0] = $1
-        return pure(customer)
-      }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: session))
+    Current.stripe.fetchPaymentMethod = { _ in
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
-      .performAsync()
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
-        .performAsync()!
-
-      XCTAssertEqual(balance, -9_00)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
-      XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
     }
+    Current.stripe.fetchSubscription = { _ in
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
+    }
+
+    var subscriptionCoupon: Coupon.ID?
+    Current.stripe.createSubscription = { _, _, _, coupon in
+      subscriptionCoupon = coupon
+      return update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
+    }
+
+    var balance: Cents<Int>?
+    Current.stripe.createCustomer = { _, _, _, _, newBalance in
+      balance = newBalance
+      return customer
+    }
+    var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
+    Current.stripe.updateCustomerBalance = {
+      balanceUpdates[$0] = $1
+      return customer
+    }
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: session))
+    )
+    .performAsync()
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
+
+    let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+
+    XCTAssertEqual(balance, -9_00)
+    XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
+    XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
+    XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
   }
 
   func testSubscribingWithRegionalDiscountAndCoupon() async throws {
     let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()!
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
     var customer = Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
-
-    await DependencyValues.withTestValues {
-      $0.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
-      $0.stripe.fetchPaymentMethod = {
-        pure(
-          PaymentMethod(
-            card: .regional,
-            customer: .left(customer.id),
-            id: $0
-          )
-        )
-      }
-    } operation: {
-      var subscribeData = SubscribeData.individualMonthly
-      subscribeData.coupon = "deadbeef"
-      subscribeData.useRegionalDiscount = true
-
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+    Current.stripe.createCustomer = { _, _, _, _, _ in customer }
+    Current.stripe.fetchPaymentMethod = {
+      PaymentMethod(
+        card: .regional,
+        customer: .left(customer.id),
+        id: $0
       )
-      .performAsync()
-
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
     }
+
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
+    subscribeData.useRegionalDiscount = true
+
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 }
 
 @MainActor
 final class SubscribeTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testNotLoggedIn_IndividualMonthly() async {
+  func testNotLoggedIn_IndividualMonthly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
   func testCouponFailure_Individual() async throws {
-    try await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    } operation: {
-      var subscribeData = SubscribeData.individualMonthly
-      subscribeData.coupon = "deadbeef"
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
-      let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-        .performAsync()!
-      var session = Session.loggedIn
-      session.user = .standard(user.id)
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
-      )
-      .performAsync()
+    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testNotLoggedIn_IndividualYearly() async {
+  func testNotLoggedIn_IndividualYearly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualYearly))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testNotLoggedIn_Team() async {
+  func testNotLoggedIn_Team() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testCurrentSubscribers() async {
+  func testCurrentSubscribers() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
     )
     .performAsync()
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testInvalidQuantity() async {
+  func testInvalidQuantity() async throws {
     #if !os(Linux)
-      await DependencyValues.withTestValues {
-        $0.database.fetchSubscriptionById = const(pure(nil))
-        $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      } operation: {
-        let conn = await siteMiddleware(
-          connection(
-            from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
-          )
+      Current.database.fetchSubscriptionById = { _ in throw unit }
+      Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+      let conn = await siteMiddleware(
+        connection(
+          from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
         )
-        .performAsync()
+      )
+      .performAsync()
 
-        assertSnapshot(matching: conn, as: .conn, named: "too_high")
+      await assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
-        let conn2 = await siteMiddleware(
-          connection(
-            from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
-          )
+      let conn2 = await siteMiddleware(
+        connection(
+          from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
         )
-        .performAsync()
+      )
+      .performAsync()
 
-        assertSnapshot(matching: conn2, as: .conn, named: "too_low")
-      }
+      await assertSnapshot(matching: conn2, as: .conn, named: "too_low")
     #endif
   }
 
-  func testCreateCustomerFailure() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
-      )
-      .performAsync()
+  func testCreateCustomerFailure() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.createCustomer = { _, _, _, _, _ in throw unit }
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testCreateStripeSubscriptionFailure() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
-      )
-      .performAsync()
+  func testCreateStripeSubscriptionFailure() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testCreateStripeSubscriptionFailure_TeamAndMonthly() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .init(billing: .monthly, quantity: 3),
-        referralCode: nil,
-        teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-        useRegionalDiscount: false
-      )
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .init(billing: .monthly, quantity: 3),
+      referralCode: nil,
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .init(billing: .monthly, quantity: 3),
-        referralCode: nil,
-        teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
-        useRegionalDiscount: false
-      )
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .init(billing: .monthly, quantity: 3),
+      referralCode: nil,
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testCreateDatabaseSubscriptionFailure() async {
-    await DependencyValues.withTestValues {
-      $0.database.createSubscription = { _, _, _, _ in throwE(unit as Error) }
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
-      )
-      .performAsync()
+  func testCreateDatabaseSubscriptionFailure() async throws {
+    Current.database.createSubscription = { _, _, _, _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testReferrals_InvalidCode() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.database.fetchUserByReferralCode = const(pure(nil))
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .individualMonthly,
-        referralCode: "cafed00d",
-        teammates: [],
-        useRegionalDiscount: false
-      )
+  func testReferrals_InvalidCode() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.database.fetchUserByReferralCode = { _ in throw unit }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testReferrals_InvalidLane() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .teamYearly,
-        referralCode: "cafed00d",
-        teammates: [],
-        useRegionalDiscount: false
-      )
+  func testReferrals_InvalidLane() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .teamYearly,
+      referralCode: "cafed00d",
+      teammates: [],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testReferrals_InactiveCode() async {
-    await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      $0.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .individualMonthly,
-        referralCode: "cafed00d",
-        teammates: [],
-        useRegionalDiscount: false
-      )
+  func testReferrals_InactiveCode() async throws {
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    Current.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .canceled } }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
-  func testReferrals_PreviouslyReferred() async {
+  func testReferrals_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    await DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-    } operation: {
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        isOwnerTakingSeat: true,
-        paymentMethodID: "pm_deadbeef",
-        pricing: .individualMonthly,
-        referralCode: "cafed00d",
-        teammates: [],
-        useRegionalDiscount: false
-      )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user)))
-      )
-      .performAsync()
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .individualMonthly,
+      referralCode: "cafed00d",
+      teammates: [],
+      useRegionalDiscount: false
+    )
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, as: .conn)
-      #endif
-    }
+    let conn = await siteMiddleware(
+      connection(from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user)))
+    )
+    .performAsync()
+
+    #if !os(Linux)
+      await assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 }

@@ -1,6 +1,6 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
-[![Swift 5.5](https://img.shields.io/badge/swift-5.5-ED523F.svg?style=flat)](https://swift.org/download/)
+[![Swift 5.7](https://img.shields.io/badge/swift-5.7-ED523F.svg?style=flat)](https://swift.org/download/)
 [![CI](https://github.com/pointfreeco/pointfreeco/workflows/CI/badge.svg)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
 

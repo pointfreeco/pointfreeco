@@ -32,44 +32,39 @@ private func fetchAccountData<I>(
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription: EitherIO<Error, Models.Subscription> =
-    user.subscriptionId
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
-
-  let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
-    .mapExcept(requireSome)
-
-  let subscription = userSubscription <|> ownerSubscription
+  let subscription = EitherIO {
+    try await Current.database.fetchSubscription(user: user)
+  }
 
   let owner =
     subscription
-    .flatMap(Current.database.fetchUserById <<< \.userId)
-    .mapExcept(requireSome)
+    .flatMap { subscription in
+      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
+    }
 
   let stripeSubscription =
     subscription
     .map(\.stripeSubscriptionId)
-    .flatMap(Current.stripe.fetchSubscription)
+    .flatMap { id in EitherIO { try await Current.stripe.fetchSubscription(id) } }
 
   let upcomingInvoice =
     stripeSubscription
-    .flatMap { $0.isRenewing ? pure($0) : throwE(unit) }
-    .map(\.customer >>> either(id, \.id))
-    .flatMap(Current.stripe.fetchUpcomingInvoice)
+    .flatMap { stripeSubscription in
+      EitherIO {
+        guard stripeSubscription.isRenewing else { throw unit }
+        return try await Current.stripe.fetchUpcomingInvoice(stripeSubscription.customer.id)
+      }
+    }
 
   let paymentMethod: EitherIO<Error, Either<Card, PaymentMethod>?> =
     stripeSubscription
     .flatMap { subscription in
       EitherIO<Error, Either<Card, PaymentMethod>?> {
         guard let customer = subscription.customer.right else { return nil }
-        if let card = customer.defaultSource {
+        if let card = customer.defaultSource?.right {
           return .left(card)
         } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
-          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod).performAsync())
+          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod))
         } else {
           return nil
         }
@@ -90,11 +85,11 @@ private func fetchAccountData<I>(
         Invoice?
       )
     > = zip9(
-      Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchEmailSettingsForUserId(user.id)) ?? [] }
+        .parallel,
 
-      Current.database.fetchEpisodeCredits(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchEpisodeCredits(user.id)) ?? [] }
+        .parallel,
 
       paymentMethod.run.map { $0.right ?? nil }.parallel,
 
@@ -104,11 +99,10 @@ private func fetchAccountData<I>(
 
       owner.run.map(\.right).parallel,
 
-      Current.database.fetchTeamInvites(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchTeamInvites(user.id)) ?? [] }.parallel,
 
-      Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-        .map { $0.right ?? [] },
+      IO { (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
+        .parallel,
 
       upcomingInvoice.run.map(\.right).parallel
     )

@@ -38,7 +38,7 @@ func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node 
             .a(attributes: [.mailto("support@pointfree.co")], "support@pointfree.co"),
             ", on Mastodon ",
             .a(
-              attributes: [.href("http://hachyderm.io/@pointfreeco")],
+              attributes: [.href("https://hachyderm.io/@pointfreeco")],
               "@pointfreeco"),
             ", or on Twitter ",
             .a(

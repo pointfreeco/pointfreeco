@@ -5,6 +5,10 @@ import TaggedMoney
 
 public typealias Expandable<Field: Identifiable> = Either<Field.ID, Field>
 
+extension Either where R: Identifiable, L == R.ID {
+  public var id: R.ID { self.either({ $0 }, \.id) }
+}
+
 public typealias StripeID<Field> = Tagged<Field, String>
 
 public struct Card: Codable, Equatable, Identifiable {
@@ -155,7 +159,7 @@ public enum Currency: String, Codable {
 public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
-  public var defaultSource: Card?
+  public var defaultSource: Expandable<Card>?
   public var id: StripeID<Self>
   public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
@@ -163,7 +167,7 @@ public struct Customer: Codable, Equatable, Identifiable {
   public init(
     balance: Cents<Int>,
     businessVatId: Vat?,
-    defaultSource: Card?,
+    defaultSource: Expandable<Card>?,
     id: ID,
     invoiceSettings: InvoiceSettings,
     metadata: [String: String]

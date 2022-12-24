@@ -16,20 +16,21 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class BlogTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.record = true
   }
 
-  func testBlogIndex() {
+  func testBlogIndex() async throws {
     let conn = connection(from: request(to: .blog()))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
@@ -40,7 +41,7 @@ class BlogTests: TestCase {
     #endif
   }
 
-  func testBlogIndex_WithLotsOfPosts() {
+  func testBlogIndex_WithLotsOfPosts() async throws {
     var shortMock = BlogPost.testValue()[0]
     shortMock.contentBlocks = [shortMock.contentBlocks[1]]
     var hiddenMock = shortMock
@@ -59,11 +60,11 @@ class BlogTests: TestCase {
       $0.blogPosts = unzurry(posts)
     } operation: {
       let conn = connection(from: request(to: .blog()))
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
 #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
@@ -75,15 +76,15 @@ class BlogTests: TestCase {
     }
   }
 
-  func testBlogShow() {
+  func testBlogShow() async throws {
     let slug = Current.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
@@ -94,20 +95,20 @@ class BlogTests: TestCase {
     #endif
   }
 
-  func testBlogShow_Unauthed() {
+  func testBlogShow_Unauthed() async throws {
     let slug = Current.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testBlogAtomFeed() {
+  func testBlogAtomFeed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testBlogAtomFeed_Unauthed() {
+  func testBlogAtomFeed_Unauthed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

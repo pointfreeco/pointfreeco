@@ -1,4 +1,3 @@
-import Dependencies
 import HttpPipeline
 import ModelsTestSupport
 import PointFreePrelude
@@ -10,26 +9,27 @@ import XCTest
 @testable import Models
 @testable import PointFree
 
+@MainActor
 class AtomFeedTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testAtomFeed() {
+  func testAtomFeed() async throws {
     let conn = connection(from: request(to: .feed(.atom)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodeFeed() {
+  func testEpisodeFeed() async throws {
     let conn = connection(from: request(to: .feed(.episodes)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
-  func testEpisodeFeed_WithRecentlyFreeEpisode() {
-    let now = Date.mock
+  func testEpisodeFeed_WithRecentlyFreeEpisode() async throws {
+    let now = Current.date()
     var freeEpisode = Episode.free
     freeEpisode.title = "Free Episode"
     freeEpisode.publishedAt = now.addingTimeInterval(-60 * 60 * 24 * 7)
@@ -39,11 +39,10 @@ class AtomFeedTests: TestCase {
     recentlyFreeEpisode.permission = .freeDuring(
       now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
 
-    DependencyValues.withTestValues {
-      $0.episodes = { [recentlyFreeEpisode, freeEpisode] }
-    } operation: {
-      let conn = connection(from: request(to: .feed(.episodes)))
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    Current.episodes = unzurry([recentlyFreeEpisode, freeEpisode])
+
+    let conn = connection(from: request(to: .feed(.episodes)))
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

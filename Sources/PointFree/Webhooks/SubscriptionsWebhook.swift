@@ -46,14 +46,14 @@ private func handleFailedPayment(
   -> IO<Conn<ResponseEnded, Data>>
 {
 
-  return Current.stripe.fetchSubscription(conn.data)
+  return EitherIO { try await Current.stripe.fetchSubscription(conn.data) }
     .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
-    .flatMap(Current.database.updateStripeSubscription)
-    .mapExcept(requireSome)
+    .flatMap { stripeSubscription in
+      EitherIO { try await Current.database.updateStripeSubscription(stripeSubscription) }
+    }
     .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
     .flatMap { subscription in
-      Current.database.fetchUserById(subscription.userId)
-        .mapExcept(requireSome)
+      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
         .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
         .map { ($0, subscription) }
     }
@@ -74,12 +74,13 @@ private func handleFailedPayment(
 private func sendPastDueEmail(to owner: User)
   -> EitherIO<Error, SendEmailResponse>
 {
-
-  return sendEmail(
-    to: [owner.email],
-    subject: "Your subscription is past-due",
-    content: inj2(pastDueEmailView(unit))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [owner.email],
+      subject: "Your subscription is past-due",
+      content: inj2(pastDueEmailView(unit))
+    )
+  }
 }
 
 let pastDueEmailView =

@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HttpPipeline
 import ModelsTestSupport
@@ -16,48 +15,50 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class CollectionsTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testCollectionIndex() {
-    DependencyValues.withTestValues {
-      $0.collections = [
-        .mock,
-        .mock,
-        .mock,
-        .mock,
-      ]
-    } operation: {
-      let conn = connection(from: request(to: .collections(), basicAuth: true))
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  func testCollectionIndex() async throws {
+    Current.collections = [
+      .mock,
+      .mock,
+      .mock,
+      .mock,
+    ]
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1500)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 1900)),
-            ]
-          )
-        }
-      #endif
-    }
+    let conn = connection(
+      from: request(to: .collections(), basicAuth: true)
+    )
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1500)),
+            "mobile": .ioConnWebView(size: .init(width: 500, height: 1900)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testCollectionShow() {
+  func testCollectionShow() async throws {
     let conn = connection(
       from: request(to: .collections(.collection(Current.collections[0].slug)), basicAuth: true)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 1100)),
@@ -68,7 +69,7 @@ class CollectionsTests: TestCase {
     #endif
   }
 
-  func testCollectionSection() {
+  func testCollectionSection() async throws {
     let conn = connection(
       from: request(
         to: .collections(
@@ -81,11 +82,11 @@ class CollectionsTests: TestCase {
       )
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),

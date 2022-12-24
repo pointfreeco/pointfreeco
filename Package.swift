@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v11)
+    .macOS(.v12)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -44,10 +44,10 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.11.0"),
 //    .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "e275a2c"),
     .package(path: "../swift-prelude"),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.10.0"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
-//    .package(url: "https://github.com/pointfreeco/swift-web", revision: "dac3e90"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "13db455"),
     .package(path: "../swift-web"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
@@ -71,10 +71,8 @@ var package = Package(
         "PointFreePrelude",
         "Stripe",
         .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "PostgresKit", package: "postgres-kit"),
-        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]

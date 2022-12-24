@@ -118,48 +118,46 @@ private func validateReferralCode(
       return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing))
     }
 
-    return Current.database.fetchUserByReferralCode(referralCode)
-      .mapExcept(requireSome)
-      .flatMap { referrer in
-        Current.database.fetchSubscriptionByOwnerId(referrer.id)
-          .mapExcept(requireSome)
-          .flatMap {
-            Current.stripe.fetchSubscription($0.stripeSubscriptionId)
-              .flatMap { $0.isCancellable ? pure(referrer) : throwE(unit as Error) }
-          }
-      }
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .subscribeConfirmation(
-                  lane: lane,
-                  billing: subscribeData.billing,
-                  isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-                  teammates: subscribeData.teammates,
-                  useRegionalDiscount: subscribeData.useRegionalDiscount
-                ),
-                headersMiddleware: flash(.error, "Invalid referral code.")
-              )
-          ),
-          { referrer in
-            conn.map(
-              const(
-                currentUser
-                  .*. currentRoute
-                  .*. subscriberState
-                  .*. lane
-                  .*. subscribeData
-                  .*. coupon
-                  .*. referrer
-                  .*. unit
-              )
-            ) |> middleware
-          }
-        )
+    return EitherIO {
+      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      guard stripeSubscription.isCancellable else { throw unit }
+      return referrer
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .subscribeConfirmation(
+                lane: lane,
+                billing: subscribeData.billing,
+                isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+                teammates: subscribeData.teammates,
+                useRegionalDiscount: subscribeData.useRegionalDiscount
+              ),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
+        ),
+        { referrer in
+          conn.map(
+            const(
+              currentUser
+                .*. currentRoute
+                .*. subscriberState
+                .*. lane
+                .*. subscribeData
+                .*. coupon
+                .*. referrer
+                .*. unit
+            )
+          ) |> middleware
+        }
       )
+    )
   }
 }
 
@@ -202,11 +200,10 @@ private let fetchAndValidateCoupon:
 private let couponError = "That coupon code is invalid or has expired."
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.ID?) -> IO<Stripe.Coupon?> {
-  guard let couponId = couponId else { return pure(nil) }
-  guard couponId != Current.envVars.regionalDiscountCouponId else { return pure(nil) }
-  return Current.stripe.fetchCoupon(couponId)
-    .run
-    .map(\.right)
+  return IO {
+    guard let couponId, couponId != Current.envVars.regionalDiscountCouponId else { return nil }
+    return try? await Current.stripe.fetchCoupon(couponId)
+  }
 }
 
 func redirectActiveSubscribers<A>(
@@ -220,39 +217,27 @@ func redirectActiveSubscribers<A>(
     return { conn in
       let user = user(conn.data)
 
-      let userSubscription =
-        (user?.subscriptionId)
-        .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
-        ?? throwE(unit)
-
-      let ownerSubscription =
-        (user?.id)
-        .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
-        ?? throwE(unit)
-
-      let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
-
-      return EitherIO(run: race)
-        .flatMap {
-          $0.stripeSubscriptionStatus == .canceled
-            ? throwE(unit as Error)
-            : pure($0)
-        }
-        .run
-        .flatMap(
-          either(
-            const(
-              middleware(conn)
-            ),
-            const(
-              conn
-                |> redirect(
-                  to: .account(),
-                  headersMiddleware: flash(.warning, "You already have an active subscription.")
-                )
-            )
-          )
+      return EitherIO {
+        let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
+        guard subscription.stripeSubscriptionStatus != .canceled
+        else { throw unit }
+        return subscription
+      }
+      .run
+      .flatMap {
+        $0.either(
+          { _ in
+            middleware(conn)
+          },
+          { _ in
+            conn
+              |> redirect(
+                to: .account(),
+                headersMiddleware: flash(.warning, "You already have an active subscription.")
+              )
+          }
         )
+      }
     }
   }
 }

@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -13,12 +12,12 @@ import XCTest
 
 @MainActor
 final class GhostTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testStartGhosting_HappyPath() async {
+  func testStartGhosting_HappyPath() async throws {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
     adminSession.user = .standard(adminUser.id)
@@ -26,25 +25,24 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
-      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id
-          ? adminUser
-          : userId == ghostee.id
-          ? ghostee
-          : nil
-        )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id {
+        return adminUser
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
       }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-      )
-        .performAsync()
+    }
 
-      _assertInlineSnapshot(
-        matching: conn, as: .conn,
-        with: """
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
+    )
+    .performAsync()
+
+    await _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
@@ -60,10 +58,9 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
-    }
   }
 
-  func testStartGhosting_InvalidGhostee() async {
+  func testStartGhosting_InvalidGhostee() async throws {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
     adminSession.user = .standard(adminUser.id)
@@ -71,23 +68,22 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
-      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id
-          ? adminUser
-          : nil
-        )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id {
+        return adminUser
+      } else {
+        throw unit
       }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-      )
-        .performAsync()
+    }
 
-      _assertInlineSnapshot(
-        matching: conn, as: .conn,
-        with: """
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
+    )
+    .performAsync()
+
+    await _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
@@ -103,10 +99,9 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
-    }
   }
 
-  func testStartGhosting_NonAdmin() async {
+  func testStartGhosting_NonAdmin() async throws {
     let user = User.mock
     var session = Session.loggedIn
     session.user = .standard(user.id)
@@ -114,25 +109,24 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
-      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == user.id
-          ? user
-          : userId == ghostee.id
-          ? ghostee
-          : nil
-        )
+    Current.database.fetchUserById = { userId in
+      if userId == user.id {
+        return user
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
       }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
-      )
-        .performAsync()
+    }
 
-      _assertInlineSnapshot(
-        matching: conn, as: .conn,
-        with: """
+    let conn = await siteMiddleware(
+      connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
+    )
+    .performAsync()
+
+    await _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
@@ -148,10 +142,9 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
-    }
   }
 
-  func testEndGhosting_HappyPath() async {
+  func testEndGhosting_HappyPath() async throws {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
@@ -159,25 +152,24 @@ final class GhostTests: TestCase {
     var adminSession = Session.loggedIn
     adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    await DependencyValues.withTestValues {
-      $0.database.fetchUserById = { userId -> EitherIO<Error, User?> in
-        pure(
-          userId == adminUser.id
-          ? adminUser
-          : userId == ghostee.id
-          ? ghostee
-          : nil
-        )
+    Current.database.fetchUserById = { userId in
+      if userId == adminUser.id {
+        return adminUser
+      } else if userId == ghostee.id {
+        return ghostee
+      } else {
+        throw unit
       }
-    } operation: {
-      let conn = await siteMiddleware(
-        connection(from: request(to: .endGhosting, session: adminSession))
-      )
-        .performAsync()
+    }
 
-      _assertInlineSnapshot(
-        matching: conn, as: .conn,
-        with: """
+    let conn = await siteMiddleware(
+      connection(from: request(to: .endGhosting, session: adminSession))
+    )
+    .performAsync()
+
+    await _assertInlineSnapshot(
+      matching: conn, as: .conn,
+      with: """
         POST http://localhost:8080/ghosting/end
         Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
 
@@ -191,6 +183,5 @@ final class GhostTests: TestCase {
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
         """)
-    }
   }
 }

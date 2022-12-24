@@ -20,8 +20,8 @@ public struct Client {
 
   private let appSecret: AppSecret
 
-  public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
-  public var validate: (EmailAddress) -> EitherIO<Error, Validation>
+  public var sendEmail: (Email) async throws -> SendEmailResponse
+  public var validate: (EmailAddress) async throws -> Validation
 
   public struct Validation: Codable {
     public var mailboxVerification: Bool
@@ -43,8 +43,8 @@ public struct Client {
 
   public init(
     appSecret: AppSecret,
-    sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>,
-    validate: @escaping (EmailAddress) -> EitherIO<Error, Validation>
+    sendEmail: @escaping (Email) async throws -> SendEmailResponse,
+    validate: @escaping (EmailAddress) async throws -> Validation
   ) {
     self.appSecret = appSecret
     self.sendEmail = sendEmail
@@ -60,9 +60,11 @@ public struct Client {
     self.appSecret = appSecret
 
     self.sendEmail = { email in
-      runMailgun(apiKey: apiKey, logger: logger)(mailgunSend(email: email, domain: domain))
+      try await runMailgun(apiKey: apiKey, logger: logger)(mailgunSend(email: email, domain: domain))
     }
-    self.validate = { runMailgun(apiKey: apiKey, logger: logger)(mailgunValidate(email: $0)) }
+    self.validate = { emailAddress in
+      try await runMailgun(apiKey: apiKey, logger: logger)(mailgunValidate(email: emailAddress))
+    }
   }
 
   /// Constructs the email address that users can email in order to unsubscribe from a particular newsletter.
@@ -129,18 +131,18 @@ extension URLRequest {
 private func runMailgun<A>(
   apiKey: Client.ApiKey,
   logger: Logger
-) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+) async throws -> (DecodableRequest<A>?) async throws -> A {
 
   return { mailgunRequest in
     guard let baseUrl = URL(string: "https://api.mailgun.net")
-    else { return throwE(MailgunError()) }
+    else { throw MailgunError() }
     guard var mailgunRequest = mailgunRequest
-    else { return throwE(MailgunError()) }
+    else { throw MailgunError() }
 
     mailgunRequest.rawValue.set(baseUrl: baseUrl)
     mailgunRequest.rawValue.attachBasicAuth(username: "api", password: apiKey.rawValue)
 
-    return dataTask(with: mailgunRequest.rawValue, logger: logger)
+    return try await dataTask(with: mailgunRequest.rawValue, logger: logger)
       .map { data, _ in data }
       .flatMap { data in
         .wrap {
@@ -152,6 +154,7 @@ private func runMailgun<A>(
           }
         }
       }
+      .performAsync()
   }
 }
 

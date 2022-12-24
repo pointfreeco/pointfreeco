@@ -61,7 +61,7 @@ public let post0088_YIR2022 = BlogPost(
 
             ```swift
             let users = Many {
-              Parse(User.init(id:name:role:)) {
+              Parse(User.init(id:name:isAdmin:)) {
                 Int.parser()
                 ","
                 Prefix { $0 != "," }.map(String.init)
@@ -100,8 +100,8 @@ public let post0088_YIR2022 = BlogPost(
 
             ```diff
              let users = Many {
-            -  Parse(User.init(id:name:role:)) {
-            +  Parse(.memberwise(User.init(id:name:role:))) {
+            -  Parse(User.init(id:name:isAdmin:)) {
+            +  Parse(.memberwise(User.init(id:name:isAdmin:))) {
                  Int.parser()
                  ","
                  Prefix { $0 != "," }.map(String.init)

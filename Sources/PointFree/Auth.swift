@@ -52,22 +52,11 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
-
-  if let userId = conn.request.session.userId {
-    Current.database.sawUser(userId)
-      .run
-      .parallel
-      .run { _ in }
+  let user = IO<Models.User?> {
+    guard let userId = conn.request.session.userId else { return nil }
+    Task { try await Current.database.sawUser(userId) }
+    return try? await Current.database.fetchUserById(userId)
   }
-
-  let user =
-    conn.request.session.userId
-    .flatMap {
-      Current.database.fetchUserById($0)
-        .run
-        .map(either(const(nil), id))
-    }
-    ?? pure(nil)
 
   return user.map { conn.map(const($0 .*. conn.data)) }
 }
@@ -90,85 +79,68 @@ public func currentSubscriptionMiddleware<A, I>(
 
   let user = conn.data.first
 
-  let userSubscription =
-    (user?.subscriptionId)
-    .map(
-      Current.database.fetchSubscriptionById
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+  return EitherIO {
+    let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
 
-  let ownerSubscription =
-    (user?.id)
-    .map(
-      Current.database.fetchSubscriptionByOwnerId
-        >>> mapExcept(requireSome)
-    )
-    ?? throwE(unit)
+    let enterpriseAccount = try? await Current.database
+      .fetchEnterpriseAccountForSubscription(subscription.id)
 
-  return (userSubscription <|> ownerSubscription)
-    .run
-    .map(\.right)
-    .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
-      subscription
-        .map { subscription in
-          Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
-            .mapExcept(requireSome)
-            .run
-            .map(\.right)
-            .map { enterpriseAccount in (subscription, enterpriseAccount) }
-        }
-        ?? pure(nil)
-    }
-    .map { conn.map(const($0 .*. conn.data)) }
+    return (subscription, enterpriseAccount)
+  }
+  .run
+  .map(\.right)
+  .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
 
-  return Current.database.fetchUserById(get1(conn.data))
-    .run
-    .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
+  return IO { try? await Current.database.fetchUserById(get1(conn.data)) }
+    .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
 private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
-  return Current.database.fetchUserByGitHub(env.gitHubUser.id)
-    .flatMap { user in user.map(pure) ?? registerUser(env: env) }
+  return EitherIO {
+    do {
+      return try await Current.database.fetchUserByGitHub(env.gitHubUser.id)
+    } catch {
+      return try await registerUser(env: env).performAsync()
+    }
+  }
 }
 
 private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
-  return Current.gitHub.fetchEmails(env.accessToken)
+  return EitherIO { try await Current.gitHub.fetchEmails(env.accessToken) }
     .map { emails in emails.first(where: \.primary) }
     .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
 
-      Current.database.registerUser(
-        withGitHubEnvelope: env,
-        email: email.email,
-        now: { Current.date() }
-      )
-        .mapExcept(requireSome)
-        .flatMap { user in
-          EitherIO(
-            run: IO { () -> Either<Error, Models.User> in
+      EitherIO {
+        try await Current.database.registerUser(
+          withGitHubEnvelope: env,
+          email: email.email,
+          now: Current.date
+        )
+      }
+      .flatMap { user in
+        EitherIO(
+          run: IO { () -> Either<Error, Models.User> in
 
-              // Fire-and-forget notify user that they signed up
-              parallel(
-                sendEmail(
-                  to: [email.email],
-                  subject: "Point-Free Registration",
-                  content: inj2(registrationEmailView(env.gitHubUser))
-                )
-                .run
+            // Fire-and-forget notify user that they signed up
+            Task {
+              _ = try await sendEmail(
+                to: [email.email],
+                subject: "Point-Free Registration",
+                content: inj2(registrationEmailView(env.gitHubUser))
               )
-              .run({ _ in })
+            }
 
-              return .right(user)
-            })
-        }
+            return .right(user)
+          })
+      }
     }
 }
 
@@ -182,7 +154,7 @@ private func gitHubAuthTokenMiddleware(
 
   let (token, redirect) = lower(conn.data)
 
-  return Current.gitHub.fetchUser(token)
+  return EitherIO { try await Current.gitHub.fetchUser(token) }
     .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
     .flatMap(fetchOrRegisterUser(env:))
     .flatMap { user in
@@ -224,7 +196,7 @@ private func requireAccessToken<A>(
   return { conn in
     let (code, redirect) = (get1(conn.data), get2(conn.data))
 
-    return Current.gitHub.fetchAuthToken(code)
+    return EitherIO { try await Current.gitHub.fetchAuthToken(code) }
       .run
       .flatMap { errorOrToken in
         switch errorOrToken {
@@ -249,15 +221,13 @@ private func requireAccessToken<A>(
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchSubscriptionById(subscriptionId)
-    .mapExcept(requireSome)
-    .flatMap { subscription in
-      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-        .flatMap { stripeSubscription in
-          Current.database.updateStripeSubscription(stripeSubscription)
-            .map(const(unit))  // FIXME: mapExcept(requireSome) / handle failure?
-        }
-    }
+  return EitherIO {
+    let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+    let stripeSubscription = try await Current.stripe
+      .fetchSubscription(subscription.stripeSubscriptionId)
+    _ = try await Current.database.updateStripeSubscription(stripeSubscription)
+    return unit
+  }
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {

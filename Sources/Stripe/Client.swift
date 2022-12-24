@@ -15,78 +15,67 @@ import UrlFormEncoding
 #endif
 
 public struct Client {
-  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) -> EitherIO<Error, PaymentMethod>
-  public var cancelSubscription:
-    (Subscription.ID, _ immediately: Bool) -> EitherIO<Error, Subscription>
-  public var confirmPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
+  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod
+  public var cancelSubscription: (Subscription.ID, _ immediately: Bool) async throws -> Subscription
+  public var confirmPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
   public var createCoupon:
-    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) -> EitherIO<
-      Error, Coupon
-    >
+    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) async throws -> Coupon
   public var createCustomer:
-    (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) -> EitherIO<
-      Error, Customer
-    >
-  public var createPaymentIntent: (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>
+    (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) async throws -> Customer
+  public var createPaymentIntent: (CreatePaymentIntentRequest) async throws -> PaymentIntent
   public var createSubscription:
-    (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<Error, Subscription>
-  public var deleteCoupon: (Coupon.ID) -> EitherIO<Error, Prelude.Unit>
-  public var fetchCoupon: (Coupon.ID) -> EitherIO<Error, Coupon>
-  public var fetchCustomer: (Customer.ID) -> EitherIO<Error, Customer>
-  public var fetchCustomerPaymentMethods:
-    (Customer.ID) -> EitherIO<Error, ListEnvelope<PaymentMethod>>
-  public var fetchInvoice: (Invoice.ID) -> EitherIO<Error, Invoice>
-  public var fetchInvoices: (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>
-  public var fetchPaymentIntent: (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>
-  public var fetchPaymentMethod: (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>
-  public var fetchPlans: () -> EitherIO<Error, ListEnvelope<Plan>>
-  public var fetchPlan: (Plan.ID) -> EitherIO<Error, Plan>
-  public var fetchSubscription: (Subscription.ID) -> EitherIO<Error, Subscription>
-  public var fetchUpcomingInvoice: (Customer.ID) -> EitherIO<Error, Invoice>
-  public var invoiceCustomer: (Customer.ID) -> EitherIO<Error, Invoice>
-  public var updateCustomer: (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>
-  public var updateCustomerBalance: (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>
-  public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) -> EitherIO<Error, Customer>
-  public var updateSubscription: (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>
+    (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws -> Subscription
+  public var deleteCoupon: (Coupon.ID) async throws -> Void
+  public var fetchCoupon: (Coupon.ID) async throws -> Coupon
+  public var fetchCustomer: (Customer.ID) async throws -> Customer
+  public var fetchCustomerPaymentMethods: (Customer.ID) async throws -> ListEnvelope<PaymentMethod>
+  public var fetchInvoice: (Invoice.ID) async throws -> Invoice
+  public var fetchInvoices: (Customer.ID) async throws -> ListEnvelope<Invoice>
+  public var fetchPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
+  public var fetchPaymentMethod: (PaymentMethod.ID) async throws -> PaymentMethod
+  public var fetchPlans: () async throws -> ListEnvelope<Plan>
+  public var fetchPlan: (Plan.ID) async throws -> Plan
+  public var fetchSubscription: (Subscription.ID) async throws -> Subscription
+  public var fetchUpcomingInvoice: (Customer.ID) async throws -> Invoice
+  public var invoiceCustomer: (Customer.ID) async throws -> Invoice
+  public var updateCustomer: (Customer.ID, PaymentMethod.ID) async throws -> Customer
+  public var updateCustomerBalance: (Customer.ID, Cents<Int>) async throws -> Customer
+  public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) async throws -> Customer
+  public var updateSubscription: (Subscription, Plan.ID, Int) async throws -> Subscription
   public var js: String
 
   public init(
-    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) -> EitherIO<
-      Error, PaymentMethod
-    >,
-    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) -> EitherIO<
-      Error, Subscription
-    >,
-    confirmPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
+    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod,
+    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) async throws ->
+      Subscription,
+    confirmPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
     createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
-      -> EitherIO<Error, Coupon>,
+      async throws -> Coupon,
     createCustomer: @escaping (
       PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?
-    ) ->
-      EitherIO<Error, Customer>,
-    createPaymentIntent: @escaping (CreatePaymentIntentRequest) -> EitherIO<Error, PaymentIntent>,
-    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) -> EitherIO<
-      Error, Subscription
+    ) async throws -> Customer,
+    createPaymentIntent: @escaping (CreatePaymentIntentRequest) async throws -> PaymentIntent,
+    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws ->
+      Subscription,
+    deleteCoupon: @escaping (Coupon.ID) async throws -> Void,
+    fetchCoupon: @escaping (Coupon.ID) async throws -> Coupon,
+    fetchCustomer: @escaping (Customer.ID) async throws -> Customer,
+    fetchCustomerPaymentMethods: @escaping (Customer.ID) async throws -> ListEnvelope<
+      PaymentMethod
     >,
-    deleteCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Prelude.Unit>,
-    fetchCoupon: @escaping (Coupon.ID) -> EitherIO<Error, Coupon>,
-    fetchCustomer: @escaping (Customer.ID) -> EitherIO<Error, Customer>,
-    fetchCustomerPaymentMethods: @escaping (Customer.ID) -> EitherIO<
-      Error, ListEnvelope<PaymentMethod>
-    >,
-    fetchInvoice: @escaping (Invoice.ID) -> EitherIO<Error, Invoice>,
-    fetchInvoices: @escaping (Customer.ID) -> EitherIO<Error, ListEnvelope<Invoice>>,
-    fetchPaymentIntent: @escaping (PaymentIntent.ID) -> EitherIO<Error, PaymentIntent>,
-    fetchPaymentMethod: @escaping (PaymentMethod.ID) -> EitherIO<Error, PaymentMethod>,
-    fetchPlans: @escaping () -> EitherIO<Error, ListEnvelope<Plan>>,
-    fetchPlan: @escaping (Plan.ID) -> EitherIO<Error, Plan>,
-    fetchSubscription: @escaping (Subscription.ID) -> EitherIO<Error, Subscription>,
-    fetchUpcomingInvoice: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
-    invoiceCustomer: @escaping (Customer.ID) -> EitherIO<Error, Invoice>,
-    updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) -> EitherIO<Error, Customer>,
-    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) -> EitherIO<Error, Customer>,
-    updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) -> EitherIO<Error, Customer>,
-    updateSubscription: @escaping (Subscription, Plan.ID, Int) -> EitherIO<Error, Subscription>,
+    fetchInvoice: @escaping (Invoice.ID) async throws -> Invoice,
+    fetchInvoices: @escaping (Customer.ID) async throws -> ListEnvelope<Invoice>,
+    fetchPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
+    fetchPaymentMethod: @escaping (PaymentMethod.ID) async throws -> PaymentMethod,
+    fetchPlans: @escaping () async throws -> ListEnvelope<Plan>,
+    fetchPlan: @escaping (Plan.ID) async throws -> Plan,
+    fetchSubscription: @escaping (Subscription.ID) async throws -> Subscription,
+    fetchUpcomingInvoice: @escaping (Customer.ID) async throws -> Invoice,
+    invoiceCustomer: @escaping (Customer.ID) async throws -> Invoice,
+    updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) async throws -> Customer,
+    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) async throws -> Customer,
+    updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) async throws -> Customer,
+    updateSubscription: @escaping (Subscription, Plan.ID, Int) async throws -> Subscription,
     js: String
   ) {
     self.attachPaymentMethod = attachPaymentMethod
@@ -150,65 +139,86 @@ extension Client {
   public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
       attachPaymentMethod: {
-        runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
+        try await runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
       },
       cancelSubscription: {
-        runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+        try await runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
       },
       confirmPaymentIntent: {
-        runStripe(secretKey, logger)(
-          Stripe.confirmPaymentIntent(id: $0)
-        )
+        try await runStripe(secretKey, logger)(Stripe.confirmPaymentIntent(id: $0))
       },
       createCoupon: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
         )
       },
       createCustomer: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.createCustomer(
-            paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4)
+            paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4
+          )
         )
       },
       createPaymentIntent: {
-        runStripe(secretKey, logger)(
-          Stripe.createPaymentIntent($0)
-        )
+        try await runStripe(secretKey, logger)(Stripe.createPaymentIntent($0))
       },
       createSubscription: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
       },
-      deleteCoupon: { runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0)) },
-      fetchCoupon: { runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0)) },
-      fetchCustomer: { runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0)) },
-      fetchCustomerPaymentMethods: {
-        runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))
+      deleteCoupon: {
+        _ = try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0))
       },
-      fetchInvoice: { runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0)) },
-      fetchInvoices: { runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0)) },
-      fetchPaymentIntent: { runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0)) },
-      fetchPaymentMethod: { runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0)) },
-      fetchPlans: { runStripe(secretKey, logger)(Stripe.fetchPlans()) },
-      fetchPlan: { runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0)) },
-      fetchSubscription: { runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0)) },
-      fetchUpcomingInvoice: { runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0)) },
-      invoiceCustomer: { runStripe(secretKey, logger)(Stripe.invoiceCustomer($0)) },
+      fetchCoupon: {
+        try await runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0))
+      },
+      fetchCustomer: {
+        try await runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0))
+      },
+      fetchCustomerPaymentMethods: {
+        try await runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))
+      },
+      fetchInvoice: {
+        try await runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0))
+      },
+      fetchInvoices: {
+        try await runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0))
+      },
+      fetchPaymentIntent: {
+        try await runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0))
+      },
+      fetchPaymentMethod: {
+        try await runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0))
+      },
+      fetchPlans: {
+        try await runStripe(secretKey, logger)(Stripe.fetchPlans())
+      },
+      fetchPlan: {
+        try await runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0))
+      },
+      fetchSubscription: {
+        try await runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0))
+      },
+      fetchUpcomingInvoice: {
+        try await runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0))
+      },
+      invoiceCustomer: {
+        try await runStripe(secretKey, logger)(Stripe.invoiceCustomer($0))
+      },
       updateCustomer: {
-        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
+        try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
       },
       updateCustomerBalance: {
-        runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+        try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
       },
       updateCustomerExtraInvoiceInfo: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
         )
       },
       updateSubscription: {
-        runStripe(secretKey, logger)(
+        try await runStripe(secretKey, logger)(
           Stripe.updateSubscription($0, $1, $2)
         )
       },
@@ -497,11 +507,11 @@ func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get(
 
 private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
   DecodableRequest<A>?
-) -> EitherIO<Error, A> {
+) async throws -> A {
   return { stripeRequest in
     guard
       var stripeRequest = stripeRequest?.rawValue
-    else { return throwE(StripeError(message: "Stripe request is nil.")) }
+    else { throw StripeError(message: "Stripe request is nil.") }
 
     stripeRequest.attachBasicAuth(username: secretKey.rawValue)
 
@@ -521,7 +531,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
           }
       }
 
-    return task
+    return try await task.performAsync()
   }
 }
 

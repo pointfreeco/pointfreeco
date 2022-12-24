@@ -34,21 +34,19 @@ func giftCreateMiddleware(
         : $0
     }
 
-  return Current.stripe.createPaymentIntent(
-    .init(
-      amount: plan.amount,
-      currency: .usd,
-      description: "Gift subscription: \(plan.monthCount) months",
-      paymentMethodID: giftFormData.paymentMethodID,
-      receiptEmail: giftFormData.fromEmail.rawValue,
-      statementDescriptorSuffix: "Gift Subscription"
+  return EitherIO<_, PaymentIntent> {
+    var paymentIntent = try await Current.stripe.createPaymentIntent(
+      .init(
+        amount: plan.amount,
+        currency: .usd,
+        description: "Gift subscription: \(plan.monthCount) months",
+        paymentMethodID: giftFormData.paymentMethodID,
+        receiptEmail: giftFormData.fromEmail.rawValue,
+        statementDescriptorSuffix: "Gift Subscription"
+      )
     )
-  )
-  .flatMap { paymentIntent in
-    Current.stripe.confirmPaymentIntent(paymentIntent.id)
-  }
-  .flatMap { paymentIntent in
-    Current.database.createGift(
+    paymentIntent = try await Current.stripe.confirmPaymentIntent(paymentIntent.id)
+    _ = try await Current.database.createGift(
       .init(
         deliverAt: deliverAt,
         fromEmail: giftFormData.fromEmail,
@@ -60,7 +58,7 @@ func giftCreateMiddleware(
         toName: giftFormData.toName
       )
     )
-    .map { _ in paymentIntent }
+    return paymentIntent
   }
   .run
   .flatMap { errorOrPaymentIntent in

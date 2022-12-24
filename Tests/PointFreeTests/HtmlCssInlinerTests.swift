@@ -7,8 +7,9 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
+@MainActor
 class HtmlCssInlinerTests: TestCase {
-  func testHtmlCssInliner() {
+  func testHtmlCssInliner() async throws {
     let stylesheet1: Stylesheet =
       body % fontSize(.px(16))
       <> p % color(.black)
@@ -52,6 +53,6 @@ class HtmlCssInlinerTests: TestCase {
       ),
     ]
 
-    assertSnapshot(matching: applyInlineStyles(node: doc, stylesheet: stylesheet), as: .html)
+    await assertSnapshot(matching: applyInlineStyles(node: doc, stylesheet: stylesheet), as: .html)
   }
 }

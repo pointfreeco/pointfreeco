@@ -1,6 +1,4 @@
-import Dependencies
 import Either
-import Html
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -16,577 +14,522 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class SubscriptionConfirmationTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testPersonal_LoggedIn() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
-          session: .loggedIn
-        )
+  func testPersonal_LoggedIn() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
-            ]
-          )
-        }
-      #endif
-    }
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testPersonal_LoggedIn_SwitchToMonthly() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
-          session: .loggedIn
-        )
+  func testPersonal_LoggedIn_SwitchToMonthly() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = String(decoding: result.perform().data, as: UTF8.self)
-          webView.loadHTMLString(html, baseURL: nil)
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
+        webView.loadHTMLString(html, baseURL: nil)
 
-          assertSnapshot(
-            matching: webView,
-            as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
-            named: "desktop"
-          )
-        }
-      #endif
-    }
+        await assertSnapshot(
+          matching: webView,
+          as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
+          named: "desktop"
+        )
+      }
+    #endif
   }
 
-  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true),
-          session: .loggedIn
-        )
+  func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = String(decoding: result.perform().data, as: UTF8.self)
-          webView.loadHTMLString(html, baseURL: nil)
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
+        webView.loadHTMLString(html, baseURL: nil)
 
-          assertSnapshot(
-            matching: webView,
-            as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
-            named: "desktop"
-          )
-        }
-      #endif
-    }
+        await assertSnapshot(
+          matching: webView,
+          as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
+          named: "desktop"
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn() {
+  func testTeam_LoggedIn() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
-            ]
-          )
-        }
-      #endif
-    }
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn_WithDefaults() {
+  func testTeam_LoggedIn_WithDefaults() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .team,
-            billing: .monthly,
-            isOwnerTakingSeat: true,
-            teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-            useRegionalDiscount: false
-          ),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: .monthly,
+          isOwnerTakingSeat: true,
+          teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
+          useRegionalDiscount: false
+        ),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
-            ]
-          )
-        }
-      #endif
-    }
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() {
+  func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .team,
-            billing: .monthly,
-            isOwnerTakingSeat: false,
-            teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
-            useRegionalDiscount: false
-          ),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: .monthly,
+          isOwnerTakingSeat: false,
+          teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
+          useRegionalDiscount: false
+        ),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
-            ]
-          )
-        }
-      #endif
-    }
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn_SwitchToMonthly() {
+  func testTeam_LoggedIn_SwitchToMonthly() async throws {
     var user = User.mock
     user.gitHubUserId = -1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = String(decoding: result.perform().data, as: UTF8.self)
-          webView.loadHTMLString(html, baseURL: nil)
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
+        webView.loadHTMLString(html, baseURL: nil)
 
-          assertSnapshot(
-            matching: webView,
-            as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
-            named: "desktop"
-          )
-        }
-      #endif
-    }
+        await assertSnapshot(
+          matching: webView,
+          as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
+          named: "desktop"
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn_AddTeamMember() {
+  func testTeam_LoggedIn_AddTeamMember() async throws {
     var user = User.mock
     user.gitHubUserId = 1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .team,
-            billing: nil,
-            isOwnerTakingSeat: nil,
-            teammates: nil,
-            referralCode: nil,
-            useRegionalDiscount: false
-          ),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil,
+          referralCode: nil,
+          useRegionalDiscount: false
+        ),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = String(decoding: result.perform().data, as: UTF8.self)
-          webView.loadHTMLString(html, baseURL: nil)
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
+        webView.loadHTMLString(html, baseURL: nil)
 
-          assertSnapshot(
-            matching: webView,
-            as: .image(
-              afterEvaluatingJavascript: "document.getElementById('add-team-member-button').click()"
-            ),
-            named: "desktop"
-          )
-        }
-      #endif
-    }
-  }
-
-  func testPersonal_LoggedIn_ActiveSubscriber() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(.mock))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
-          session: .loggedIn
+        await assertSnapshot(
+          matching: webView,
+          as: .image(
+            afterEvaluatingJavascript: "document.getElementById('add-team-member-button').click()"),
+          named: "desktop"
         )
-      )
-      let result = conn |> siteMiddleware
-
-      assertSnapshot(matching: result, as: .ioConn)
-    }
+      }
+    #endif
   }
 
-  func testPersonal_LoggedOut() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(nil))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
-          session: .loggedOut
+  func testPersonal_LoggedIn_ActiveSubscriber() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in .mock }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedOut() async throws {
+    Current.database.fetchUserById = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .personal, useRegionalDiscount: false),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
         )
-      )
-      let result = conn |> siteMiddleware
-
-      assertSnapshot(matching: result, as: .ioConn)
-
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
-            ]
-          )
-        }
-      #endif
-    }
+      }
+    #endif
   }
 
-  func testPersonal_LoggedIn_WithDiscount() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.mock))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
-      let result = conn |> siteMiddleware
+  func testPersonal_LoggedIn_WithDiscount() async throws {
+    Current.database.fetchUserById = { _ in .mock }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
 
-      assertSnapshot(matching: result, as: .ioConn)
+    let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
-            ]
-          )
-        }
-      #endif
-    }
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testTeam_LoggedIn_RemoveOwnerFromTeam() {
+  func testTeam_LoggedIn_RemoveOwnerFromTeam() async throws {
     var user = User.mock
     user.gitHubUserId = 1
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
-      // NB: Can remove this if we add `afterEvaluatingJavascript` support to `.ioConnWebView`.
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
-          session: .loggedIn
-        )
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(lane: .team, useRegionalDiscount: false),
+        session: .loggedIn
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = String(decoding: result.perform().data, as: UTF8.self)
-          webView.loadHTMLString(html, baseURL: nil)
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+        let html = await String(decoding: result.performAsync().data, as: UTF8.self)
+        webView.loadHTMLString(html, baseURL: nil)
 
-          assertSnapshot(
-            matching: webView,
-            as: .image(
-              afterEvaluatingJavascript: "document.getElementById('remove-yourself-button').click()"
-            ),
-            named: "desktop"
-          )
-        }
-      #endif
-    }
-  }
-
-  func testPersonal_LoggedOut_ReferralCode() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(nil))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-      $0.database.fetchUserByReferralCode = { code in
-        pure(update(.mock) { $0.referralCode = code })
+        await assertSnapshot(
+          matching: webView,
+          as: .image(
+            afterEvaluatingJavascript: "document.getElementById('remove-yourself-button').click()"),
+          named: "desktop"
+        )
       }
-      $0.stripe.fetchSubscription = const(pure(.mock))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: "cafed00d",
-            useRegionalDiscount: false
-          ),
-          session: .loggedOut
-        )
-      )
-      let result = conn |> siteMiddleware
-
-      assertSnapshot(matching: result, as: .ioConn)
-
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
-            ]
-          )
-        }
-      #endif
-    }
+    #endif
   }
 
-  func testPersonal_ReferralCodeAndRegionalDiscount() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserByReferralCode = { code in
-        pure(update(.mock) { $0.referralCode = code })
+  func testPersonal_LoggedOut_ReferralCode() async throws {
+    Current.database.fetchUserById = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    Current.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
+    Current.stripe.fetchSubscription = { _ in .mock }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
+        )
       }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: "cafed00d",
-            useRegionalDiscount: true
-          ),
-          session: .loggedIn
-        )
-      )
-      let result = conn |> siteMiddleware
-
-      assertSnapshot(matching: result, as: .ioConn)
-
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          assertSnapshots(
-            matching: conn |> siteMiddleware,
-            as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
-            ]
-          )
-        }
-      #endif
-    }
+    #endif
   }
 
-  func testPersonal_LoggedOut_InactiveReferralCode() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(nil))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchUserByReferralCode = const(pure(.mock))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-      $0.stripe.fetchSubscription = const(pure(.canceling))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: "cafed00d",
-            useRegionalDiscount: false
-          ),
-          session: .loggedOut
-        )
-      )
-      let result = conn |> siteMiddleware
+  func testPersonal_ReferralCodeAndRegionalDiscount() async throws {
+    Current.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
 
-      assertSnapshot(matching: result, as: .ioConn)
-    }
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: "cafed00d",
+          useRegionalDiscount: true
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: conn |> siteMiddleware,
+          as: [
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
+          ]
+        )
+      }
+    #endif
   }
 
-  func testPersonal_LoggedOut_InvalidReferralCode() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(nil))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchUserByReferralCode = const(pure(nil))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: "cafed00d",
-            useRegionalDiscount: false
-          ),
-          session: .loggedOut
-        )
-      )
-      let result = conn |> siteMiddleware
+  func testPersonal_LoggedOut_InactiveReferralCode() async throws {
+    Current.database.fetchUserById = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchUserByReferralCode = { _ in .mock }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    Current.stripe.fetchSubscription = { _ in .canceling }
 
-      assertSnapshot(matching: result, as: .ioConn)
-    }
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedOut_InvalidReferralLane() {
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(nil))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-      $0.database.fetchUserByReferralCode = const(pure(.mock))
-      $0.stripe.fetchSubscription = const(pure(.mock))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .team,
-            referralCode: "cafed00d",
-            useRegionalDiscount: false
-          ),
-          session: .loggedOut
-        )
-      )
-      let result = conn |> siteMiddleware
+  func testPersonal_LoggedOut_InvalidReferralCode() async throws {
+    Current.database.fetchUserById = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchUserByReferralCode = { _ in throw unit }
 
-      assertSnapshot(matching: result, as: .ioConn)
-    }
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 
-  func testPersonal_LoggedIn_PreviouslyReferred() {
+  func testPersonal_LoggedOut_InvalidReferralLane() async throws {
+    Current.database.fetchUserById = { _ in throw unit }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    Current.database.fetchUserByReferralCode = { _ in .mock }
+    Current.stripe.fetchSubscription = { _ in .mock }
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
+        ),
+        session: .loggedOut
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    await assertSnapshot(matching: result, as: .ioConn)
+  }
+
+  func testPersonal_LoggedIn_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
     }
+    Current.database.fetchUserById = { _ in user }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
+    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    Current.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
+    Current.stripe.fetchSubscription = { _ in .mock }
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(user))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-      $0.database.fetchSubscriptionByOwnerId = const(pure(.mock))
-      $0.database.fetchUserByReferralCode = { code in
-        pure(update(.mock) { $0.referralCode = code })
-      }
-      $0.stripe.fetchSubscription = const(pure(.mock))
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: "cafed00d",
-            useRegionalDiscount: false
-          ),
-          session: .loggedIn(as: user)
-        )
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: "cafed00d",
+          useRegionalDiscount: false
+        ),
+        session: .loggedIn(as: user)
       )
-      let result = conn |> siteMiddleware
+    )
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result, as: .ioConn)
-    }
+    await assertSnapshot(matching: result, as: .ioConn)
   }
 }
 

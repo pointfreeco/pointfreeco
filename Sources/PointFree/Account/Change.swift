@@ -2,6 +2,7 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -42,15 +43,17 @@ func changeSubscription(
   return { conn in
     let (currentSubscription, newPricing) = conn.data
 
-    return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
-      .run
-      .flatMap(
-        either(
-          { conn.map(const(unit)) |> error($0) },
-          const(success(conn.map(const(unit))))
-        )
+    return EitherIO {
+      try await Current.stripe
+        .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
+    }
+    .run
+    .flatMap(
+      either(
+        { conn.map(const(unit)) |> error($0) },
+        const(success(conn.map(const(unit))))
       )
+    )
   }
 }
 
@@ -133,16 +136,15 @@ private func fetchSeatsTaken<A>(
   return { conn -> IO<Conn<ResponseEnded, Data>> in
     let user = conn.data.first
 
-    let invitesAndTeammates = sequence([
-      parallel(Current.database.fetchTeamInvites(user.id).run)
-        .map { $0.right?.count ?? 0 },
-      parallel(Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
-        .map { $0.right?.count ?? 0 },
-    ])
+    let invitesAndTeammates = IO {
+      async let invites = Current.database.fetchTeamInvites(user.id).count
+      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).count
+      return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
+    }
 
-    return invitesAndTeammates
-      .sequential
-      .flatMap { middleware(conn.map(const(user .*. $0.reduce(0, +) .*. conn.data.second))) }
+    return
+      invitesAndTeammates
+      .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
   }
 }
 

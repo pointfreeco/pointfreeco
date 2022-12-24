@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -15,20 +14,21 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 class PaymentInfoTests: TestCase {
-  override func setUp() {
-    super.setUp()
+  override func setUp() async throws {
+    try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
-  func testRender() {
+  func testRender() async throws {
     let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
@@ -39,19 +39,16 @@ class PaymentInfoTests: TestCase {
     #endif
   }
 
-  func testNoBillingInfo() {
+  func testNoBillingInfo() async throws {
     var customer = Stripe.Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: nil)
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
+    Current = .teamYearly
+    Current.stripe.fetchSubscription = { _ in subscription }
 
-    DependencyValues.withTestValues {
-      $0.teamYearly()
-      $0.stripe.fetchSubscription = const(pure(subscription))
-    } operation: {
-      let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

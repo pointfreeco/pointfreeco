@@ -6,12 +6,14 @@ import Models
 import Prelude
 
 func sendInvalidRssFeedEmail(user: User, userAgent: String) -> EitherIO<Error, SendEmailResponse> {
-  sendEmail(
-    to: [user.email],
-    bcc: ["support@pointfree.co"],
-    subject: "Private RSS Feed",
-    content: inj2(invalidRssFeedEmail((user, userAgent)))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [user.email],
+      bcc: ["support@pointfree.co"],
+      subject: "Private RSS Feed",
+      content: inj2(invalidRssFeedEmail((user, userAgent)))
+    )
+  }
 }
 
 let invalidRssFeedEmail =

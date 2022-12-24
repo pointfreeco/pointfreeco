@@ -14,11 +14,13 @@ import Styleguide
 import Views
 
 func sendGiftEmail(for gift: Gift) -> EitherIO<Error, SendEmailResponse> {
-  sendEmail(
-    to: ["\(gift.toName) <\(gift.toEmail)>"],
-    subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-    content: inj2(giftEmail(gift))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: ["\(gift.toName) <\(gift.toEmail)>"],
+      subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
+      content: inj2(giftEmail(gift))
+    )
+  }
   .catch(notifyAdmins(subject: "Gift delivery failed"))
 }
 

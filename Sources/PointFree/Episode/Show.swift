@@ -147,13 +147,15 @@ private let updateProgress:
     }
 
     if isEpisodeViewable(for: permission) {
-      return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
-        .run
-        .flatMap { _ in
-          conn
-            |> writeStatus(.ok)
-            >=> end
-        }
+      return EitherIO {
+        try await Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+      }
+      .run
+      .flatMap { _ in
+        conn
+          |> writeStatus(.ok)
+          >=> end
+      }
     } else {
       return conn
         |> writeStatus(.ok)
@@ -175,29 +177,30 @@ private func applyCreditMiddleware<Z>(
       )
   }
 
-  return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
-    .flatMap { _ in
-      Current.database.updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
-    }
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> redirect(
-              to: .episode(.show(.left(episode.slug))),
-              headersMiddleware: flash(.warning, "Something went wrong.")
-            )
-        ),
-        const(
-          conn
-            |> redirect(
-              to: .episode(.show(.left(episode.slug))),
-              headersMiddleware: flash(.notice, "You now have access to this episode!")
-            )
-        )
+  return EitherIO {
+    try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
+    try await Current.database
+      .updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
+  }
+  .run
+  .flatMap(
+    either(
+      const(
+        conn
+          |> redirect(
+            to: .episode(.show(.left(episode.slug))),
+            headersMiddleware: flash(.warning, "Something went wrong.")
+          )
+      ),
+      const(
+        conn
+          |> redirect(
+            to: .episode(.show(.left(episode.slug))),
+            headersMiddleware: flash(.notice, "You now have access to this episode!")
+          )
       )
     )
+  )
 }
 
 private func validateCreditRequest<Z>(
@@ -235,15 +238,15 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, Use
 
   let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-  return
-    (currentUser
-    .map { Current.database.fetchEpisodeProgress($0.id, episode.sequence) }
-    ?? pure(nil))
-    .run
-    .map {
-      conn.map(
-        const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
-    }
+  return EitherIO {
+    guard let currentUser else { return nil }
+    return try await Current.database.fetchEpisodeProgress(currentUser.id, episode.sequence)
+  }
+  .run
+  .map {
+    conn.map(
+      const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
+  }
 }
 
 func userEpisodePermission<I, Z>(
@@ -259,10 +262,11 @@ func userEpisodePermission<I, Z>(
     return pure(conn.map(const(permission .*. conn.data)))
   }
 
-  let hasCredit = Current.database.fetchEpisodeCredits(user.id)
-    .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
-    .run
-    .map { $0.right ?? false }
+  let hasCredit = IO {
+    guard let credits = try? await Current.database.fetchEpisodeCredits(user.id)
+    else { return false }
+    return credits.contains { $0.episodeSequence == episode.sequence }
+  }
 
   let permission =
     hasCredit

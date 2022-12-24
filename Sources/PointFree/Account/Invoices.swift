@@ -79,29 +79,29 @@ private func fetchInvoices<A>(
   return { conn in
     let subscription = conn.data.first
 
-    return Current.stripe.fetchInvoices(subscription.customer.either(id, \.id))
-      .withExcept(notifyError(subject: "Couldn't load invoices"))
-      .run
-      .flatMap {
-        switch $0 {
-        case let .right(invoices):
-          return conn.map(const(subscription .*. invoices .*. conn.data.second))
-            |> middleware
-        case .left:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.error, invoiceError)
-            )
-        }
+    return EitherIO {
+      try await Current.stripe.fetchInvoices(subscription.customer.id)
+    }
+    .withExcept(notifyError(subject: "Couldn't load invoices"))
+    .run
+    .flatMap {
+      switch $0 {
+      case let .right(invoices):
+        return conn.map(const(subscription .*. invoices .*. conn.data.second))
+          |> middleware
+      case .left:
+        return conn
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(.error, invoiceError)
+          )
       }
+    }
   }
 }
 
 private func fetchInvoice(id: Stripe.Invoice.ID) -> IO<Stripe.Invoice?> {
-  return Current.stripe.fetchInvoice(id)
-    .run
-    .map(\.right)
+  IO { try? await Current.stripe.fetchInvoice(id) }
 }
 
 private let invoiceError = """
@@ -112,5 +112,5 @@ private let invoiceError = """
 private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, User, Stripe.Invoice>)
   -> Bool
 {
-  return get1(data).customer.either(id, \.id) == get3(data).customer
+  return get1(data).customer.id == get3(data).customer
 }

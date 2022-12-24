@@ -27,9 +27,7 @@ private func fetchStripeSubscription<A>(
     guard let subscription = get1(conn.data)
     else { return middleware(conn.map(over1(const(nil)))) }
 
-    return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-      .run
-      .map(\.right)
+    return IO { try? await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }
@@ -63,38 +61,35 @@ private func updateProfileMiddlewareHandler(
   let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
   if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
     updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
-    parallel(
-      sendEmail(
+    Task {
+      _ = try await sendEmail(
         to: [user.email],
         subject: "Email change confirmation",
         content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
       )
-      .run
-    )
-    .run({ _ in })
+    }
   } else {
     // TODO: why is unicode ‘ not encoded correctly?
     updateFlash = flash(.notice, "We've updated your profile!")
   }
 
-  let customerId = subscription?.customer.either(id, \.id)
-  let updateCustomerExtraInvoiceInfo =
-    zip(
-      customerId,
-      data.extraInvoiceInfo
+  return EitherIO {
+    try await Current.database.updateUser(
+      id: user.id,
+      name: data.name,
+      emailSettings: emailSettings
     )
-    .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
-    ?? pure(unit)
-
-  return Current.database.updateUser(id: user.id, name: data.name, emailSettings: emailSettings)
-    .flatMap(const(updateCustomerExtraInvoiceInfo))
-    .run
-    .flatMap(
-      const(
-        conn.map(const(unit))
-          |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
-      )
+    if let customerId = subscription?.customer.id, let extraInvoiceInfo = data.extraInvoiceInfo {
+      _ = try await Current.stripe.updateCustomerExtraInvoiceInfo(customerId, extraInvoiceInfo)
+    }
+  }
+  .run
+  .flatMap(
+    const(
+      conn.map(const(unit))
+        |> redirect(to: siteRouter.path(for: .account()), headersMiddleware: updateFlash)
     )
+  )
 }
 
 private let fetchSubscriptionAndStripeSubscription:
@@ -157,20 +152,21 @@ let confirmEmailChangeMiddleware:
     }
 
     parallel(
-      Current.database.fetchUserById(userId)
-        .bimap(const(unit), id)
+      EitherIO { try await Current.database.fetchUserById(userId) }
         .flatMap { user in
-          sendEmail(
-            to: [newEmailAddress],
-            subject: "Email change confirmation",
-            content: inj2(emailChangedEmailView((user, newEmailAddress)))
-          )
+          EitherIO {
+            try await sendEmail(
+              to: [newEmailAddress],
+              subject: "Email change confirmation",
+              content: inj2(emailChangedEmailView((user, newEmailAddress)))
+            )
+          }
         }
         .run
     )
     .run({ _ in })
 
-    return Current.database.updateUser(id: userId, email: newEmailAddress)
+    return EitherIO { try await Current.database.updateUser(id: userId, email: newEmailAddress) }
       .run
       .flatMap(const(conn |> redirect(to: .account())))
   }

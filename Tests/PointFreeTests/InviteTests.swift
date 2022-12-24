@@ -1,6 +1,5 @@
 import Database
 import DatabaseTestSupport
-import Dependencies
 import Either
 import EmailAddress
 import GitHub
@@ -19,66 +18,55 @@ import XCTest
 
 @MainActor
 class InviteIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testSendInvite_HappyPath() async throws {
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
-      .performAsync()!
 
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.teamYearly))
-    } operation: {
-      let sendInvite = request(
-        to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
-      )
-      let conn = connection(from: sendInvite)
+    Current.stripe.fetchSubscription = { _ in .teamYearly }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    let sendInvite = request(
+      to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
+    )
+    let conn = connection(from: sendInvite)
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testSendInvite_UnhappyPath_NoSeats() async throws {
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
-      .performAsync()!
 
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(sub))
-    } operation: {
-      _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-        .performAsync()
+    Current.stripe.fetchSubscription = { _ in sub }
 
-      let sendInvite = request(
-        to: .invite(.send("blobber2@pointfree.co")),
-        session: .init(flash: nil, userId: inviterUser.id))
-      let conn = connection(from: sendInvite)
+    _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    let sendInvite = request(
+      to: .invite(.send("blobber2@pointfree.co")),
+      session: .init(flash: nil, userId: inviterUser.id))
+    let conn = connection(from: sendInvite)
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testResendInvite_HappyPath() async throws {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .performAsync()
 
     let resendInvite = request(
       to: .invite(.invitation(teamInvite.id, .resend)),
@@ -86,18 +74,16 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testRevokeInvite_HappyPath() async throws {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .performAsync()
 
     let revokeInvite = request(
       to: .invite(.invitation(teamInvite.id, .revoke)),
@@ -105,9 +91,9 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNil(invite)
   }
 
@@ -117,17 +103,14 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let revokeInvite = request(
       to: .invite(.invitation(teamInvite.id, .revoke)),
@@ -135,9 +118,9 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNotNil(invite)
   }
 
@@ -147,21 +130,17 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -169,14 +148,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
-    // let invite = try await Current.database.fetchTeamInvite(teamInvite.id).performAsync()
+    // let invite = try? await Current.database.fetchTeamInvite(teamInvite.id)
     // XCTAssertNil(invite)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNotNil(subscriptionId, "Current user now has a subscription")
   }
 
@@ -186,18 +164,14 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
-    let teamInvite = try await Current.database.insertTeamInvite(
-      "blobber@pointfree.co", inviterUser.id
-    )
-    .performAsync()
+    let teamInvite = try await Current.database
+      .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -205,10 +179,9 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-      .subscriptionId
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNil(subscriptionId, "Current user does not have a subscription")
   }
 
@@ -218,37 +191,30 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database
       .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
-      .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.canceled))
-    } operation: {
-      let acceptInvite = request(
-        to: .invite(.invitation(teamInvite.id, .accept)),
-        session: .init(flash: nil, userId: currentUser.id)
-      )
-      let conn = connection(from: acceptInvite)
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
+    let conn = connection(from: acceptInvite)
 
-      let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-        .subscriptionId
-      XCTAssertNil(subscriptionId, "Current user now has a subscription")
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
+    XCTAssertNil(subscriptionId, "Current user now has a subscription")
   }
 
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() async throws {
@@ -257,83 +223,68 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.createSubscription(
       Stripe.Subscription.canceling, inviterUser.id, true, nil
     )
-    .performAsync()
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
-    try await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.canceled))
-    } operation: {
-      let acceptInvite = request(
-        to: .invite(.invitation(teamInvite.id, .accept)),
-        session: .init(flash: nil, userId: currentUser.id)
-      )
-      let conn = connection(from: acceptInvite)
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let acceptInvite = request(
+      to: .invite(.invitation(teamInvite.id, .accept)),
+      session: .init(flash: nil, userId: currentUser.id)
+    )
+    let conn = connection(from: acceptInvite)
 
-      let subscriptionId = try await Current.database.fetchUserById(currentUser.id).performAsync()!
-        .subscriptionId
-      XCTAssertNil(subscriptionId, "Current user now has a subscription")
-    }
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
+    XCTAssertNil(subscriptionId, "Current user now has a subscription")
   }
 
   func testAddTeammate() async throws {
-    try await DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
-    } operation: {
-      let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-        .performAsync()!
+    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
 
-      var stripeSubscription = Stripe.Subscription.teamYearly
-      stripeSubscription.quantity = 2
-      let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
+    let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
 
-      _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
-        .performAsync()!
+    var stripeSubscription = Stripe.Subscription.teamYearly
+    stripeSubscription.quantity = 2
+    let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
-      var session = Session.loggedIn
-      session.user = .standard(currentUser.id)
+    _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
 
-      stripeSubscription.quantity += 3
+    var session = Session.loggedIn
+    session.user = .standard(currentUser.id)
 
-      try await DependencyValues.withTestValues {
-        $0.stripe.fetchSubscription = const(pure(stripeSubscription))
-      } operation: {
-        let conn = connection(
-          from: request(
-            to: .invite(.addTeammate(teammateEmailAddress)),
-            session: session
-          )
-        )
+    stripeSubscription.quantity += 3
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
 
-        assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+    let conn = connection(
+      from: request(
+        to: .invite(.addTeammate(teammateEmailAddress)),
+        session: session
+      )
+    )
 
-        let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
-          .performAsync()
-        XCTAssertEqual(
-          [teammateEmailAddress],
-          teamInvites.map(\.email)
-        )
-        XCTAssertEqual(
-          [currentUser.id],
-          teamInvites.map(\.inviterUserId)
-        )
-      }
-    }
+    await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+
+    let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
+    XCTAssertEqual(
+      [teammateEmailAddress],
+      teamInvites.map(\.email)
+    )
+    XCTAssertEqual(
+      [currentUser.id],
+      teamInvites.map(\.inviterUserId)
+    )
   }
 
   func testResendInvite_CurrentUserIsNotInviter() async throws {
@@ -342,17 +293,14 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     env.gitHubUser.id = 2
     let inviterUser = try await Current.database.registerUser(
       withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .performAsync()
 
     let resendInvite = request(
       to: .invite(.invitation(teamInvite.id, .resend)),
@@ -360,25 +308,26 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
 
+@MainActor
 class InviteTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testShowInvite_LoggedOut() {
+  func testShowInvite_LoggedOut() async throws {
     let showInvite = request(to: .invite(.invitation(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -389,7 +338,7 @@ class InviteTests: TestCase {
     #endif
   }
 
-  func testShowInvite_LoggedIn_NonSubscriber() {
+  func testShowInvite_LoggedIn_NonSubscriber() async throws {
     var currentUser = Models.User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
@@ -397,19 +346,18 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(currentUser)))
-      $0.database.fetchTeamInvite = const(pure(.some(invite)))
-      $0.database.fetchSubscriptionById = const(pure(nil))
-    } operation: {
-      let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
-      let conn = connection(from: showInvite)
+    Current.database.fetchUserById = { _ in currentUser }
+    Current.database.fetchTeamInvite = { _ in invite }
+    Current.database.fetchSubscriptionById = { _ in throw unit }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
+    let conn = connection(from: showInvite)
 
-#if !os(Linux)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
       if self.isScreenshotTestingAvailable {
-        assertSnapshots(
+        await assertSnapshots(
           matching: conn |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
@@ -417,11 +365,10 @@ class InviteTests: TestCase {
           ]
         )
       }
-#endif
-    }
+    #endif
   }
 
-  func testShowInvite_LoggedIn_Subscriber() {
+  func testShowInvite_LoggedIn_Subscriber() async throws {
     var currentUser = User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
 
@@ -429,16 +376,15 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    DependencyValues.withTestValues {
-      $0.database.fetchUserById = const(pure(.some(currentUser)))
-      $0.database.fetchTeamInvite = const(pure(.some(invite)))
-      $0.database.fetchSubscriptionById = const(pure(.mock))
-      $0.stripe.fetchSubscription = const(pure(.mock))
-    } operation: {
-      let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
-      let conn = connection(from: showInvite)
+    Current.database.fetchUserById = { _ in currentUser }
+    Current.database.fetchTeamInvite = { _ in invite }
+    Current.database.fetchSubscriptionById = { _ in .mock }
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+    Current.stripe.fetchSubscription = { _ in .mock }
+
+    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
+    let conn = connection(from: showInvite)
+
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

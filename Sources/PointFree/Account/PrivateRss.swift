@@ -96,9 +96,8 @@ private func fetchUserByRssSalt(
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User.RssSalt>, Data>
 {
   return { conn in
-    Current.database.fetchUserByRssSalt(get1(conn.data))
-      .run
-      .map { conn.map(const($0.right.flatMap(id) .*. unit)) }
+    IO { try? await Current.database.fetchUserByRssSalt(get1(conn.data)) }
+      .map { conn.map(const($0 .*. unit)) }
       .flatMap(middleware)
   }
 }
@@ -131,12 +130,12 @@ private func validateUserAgent<Z>(
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     else { return middleware(conn) }
 
-    return Current.database.updateUser(
-      id: user.id,
-      rssSalt: User.RssSalt(
-        rawValue: Current.uuid().uuidString.lowercased()
+    return EitherIO {
+      try await Current.database.updateUser(
+        id: user.id,
+        rssSalt: User.RssSalt(Current.uuid().uuidString.lowercased())
       )
-    )
+    }
     .flatMap { _ in
       sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }
@@ -161,11 +160,13 @@ private func trackFeedRequest<A, I>(
 {
 
   return { conn in
-    Current.database.createFeedRequestEvent(
-      .privateEpisodesFeed,
-      conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-      userId(conn.data)
-    )
+    EitherIO {
+      try await Current.database.createFeedRequestEvent(
+        .privateEpisodesFeed,
+        conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+        userId(conn.data)
+      )
+    }
     .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
     .run
     .map { _ in conn }
@@ -182,13 +183,13 @@ private func fetchStripeSubscriptionForUser<A>(
 
   return { conn in
     conn.data.first.subscriptionId
-      .map {
-        Current.database.fetchSubscriptionById($0)
-          .mapExcept(requireSome)
-          .flatMap(Current.stripe.fetchSubscription <<< \.stripeSubscriptionId)
-          .run
-          .map(\.right)
-          .flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
+      .map { subscriptionId in
+        EitherIO {
+          let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+          return try await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        }
+        .run
+        .flatMap { conn.map(const($0.right .*. conn.data)) |> middleware }
       }
       ?? (conn.map(const(nil .*. conn.data)) |> middleware)
   }
@@ -428,10 +429,7 @@ private func fetchUserSubscription<A>(
       return conn.map(const(nil .*. conn.data)) |> middleware
     }
 
-    let subscription = Current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .run
-      .map(\.right)
+    let subscription = IO { try? await Current.database.fetchSubscriptionById(subscriptionId) }
 
     return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
   }

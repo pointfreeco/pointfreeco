@@ -16,30 +16,25 @@ import XCTest
 final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() async throws {
     let userA = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-      .performAsync()
-    let userB = try await Current.database.fetchUserById(userA!.id).performAsync()
-    XCTAssertEqual(userA?.id, userB?.id)
-    XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
+    let userB = try await Current.database.fetchUserById(userA.id)
+    XCTAssertEqual(userA.id, userB.id)
+    XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)
   }
 
   func testFetchEnterpriseAccount() async throws {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
     let createdAccount = try await Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
     )
-    .performAsync()!
 
     let fetchedAccount = try await Current.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)
-      .performAsync()!
 
     XCTAssertEqual(createdAccount, fetchedAccount)
     XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
@@ -51,11 +46,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
-    _ = try await Current.database.createSubscription(.mock, user.id, false, nil).performAsync()!
+    _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
 
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
@@ -64,12 +58,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
-      .performAsync()!
 
-    let freshUser = try await Current.database.fetchUserById(user.id).performAsync()!
+    let freshUser = try await Current.database.fetchUserById(user.id)
 
     XCTAssertEqual(subscription.id, freshUser.subscriptionId)
   }
@@ -78,9 +70,8 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
-    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id)
 
     var count = try await Current.database.execute(
       """
@@ -90,10 +81,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 20
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id)
 
     count = try await Current.database.execute(
       """
@@ -103,10 +94,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 10
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id).performAsync()
+    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id)
 
     count = try await Current.database.execute(
       """
@@ -116,7 +107,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       AND "percent" = 30
       """
     )
-    .performAsync().count
+    .count
     XCTAssertEqual(count, 1)
   }
 
@@ -127,13 +118,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     _ = try await Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
-      .performAsync()
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .some(20))
   }
@@ -144,10 +132,8 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
-      .performAsync()
 
     XCTAssertEqual(fetchedProgress, .none)
   }

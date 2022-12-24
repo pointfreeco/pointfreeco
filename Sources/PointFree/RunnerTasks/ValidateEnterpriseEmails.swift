@@ -8,7 +8,7 @@ public func validateEnterpriseEmails() -> EitherIO<Error, Prelude.Unit> {
 
   // TODO: calendar check for first of the month
 
-  return Current.database.fetchEnterpriseEmails()
+  return EitherIO { try await Current.database.fetchEnterpriseEmails() }
     .flatMap(validate(enterpriseEmails:))
     .flatMap(sendValidationSummaryEmail(results:))
 }
@@ -25,7 +25,7 @@ private func validate(enterpriseEmails: [EnterpriseEmail]) -> EitherIO<Error, [V
 
 private func validate(enterpriseEmail: EnterpriseEmail) -> Parallel<ValidationResult> {
 
-  return Current.mailgun.validate(enterpriseEmail.email)
+  return EitherIO { try await Current.mailgun.validate(enterpriseEmail.email) }
     .flatMap { validation in
       validateSubscription(validation: validation, enterpriseEmail: enterpriseEmail)
         .map(const(validation))
@@ -44,8 +44,7 @@ private func validateSubscription(
 
   guard !validation.mailboxVerification else { return pure(unit) }
 
-  return Current.database.fetchUserById(enterpriseEmail.userId)
-    .mapExcept(requireSome)
+  return EitherIO { try await Current.database.fetchUserById(enterpriseEmail.userId) }
     .flatMap { user in unlinkSubscription(enterpriseEmail: enterpriseEmail, user: user) }
 }
 
@@ -54,16 +53,16 @@ private func unlinkSubscription(
   user: Models.User
 ) -> EitherIO<Error, Prelude.Unit> {
 
-  return Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
-    .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
-      guard let subscriptionId = user.subscriptionId else { return pure(unit) }
-
-      return Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
-        .catch(
-          notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
-        )
-    }
-    .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
+  return EitherIO {
+    try await Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
+    guard let subscriptionId = user.subscriptionId else { return }
+    try await Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
+  }
+  .mapExcept(const(pure(unit)))
+  .catch(
+    notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
+  )
+  .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
 }
 
 private func notifyUserSubscriptionWasRemoved(
@@ -73,16 +72,19 @@ private func notifyUserSubscriptionWasRemoved(
 
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
-    .mapExcept(requireSome)
-    .flatMap { enterpriseAccount in
-      sendEmail(
+  return EitherIO {
+    try await Current.database.fetchEnterpriseAccountForSubscription(subscriptionId)
+  }
+  .flatMap { enterpriseAccount in
+    EitherIO {
+      _ = try await sendEmail(
         to: [user.email],
         subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
         content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
       )
-      .map(const(unit))
+      return unit
     }
+  }
 }
 
 private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<

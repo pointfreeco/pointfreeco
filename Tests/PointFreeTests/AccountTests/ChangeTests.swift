@@ -1,4 +1,3 @@
-import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -17,129 +16,113 @@ import XCTest
 
 @MainActor
 final class ChangeTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.record = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.record = true
   }
 
-  func testChangeRedirect() async {
+  func testChangeRedirect() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-    } operation: {
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
+
       let conn = connection(
         from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateUpgradeIndividualPlan() async {
+  func testChangeUpdateUpgradeIndividualPlan() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-      $0.stripe.invoiceCustomer = { _ in
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
+      Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
-    } operation: {
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateDowngradeIndividualPlan() async {
+  func testChangeUpdateDowngradeIndividualPlan() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualYearly))
-      $0.stripe.invoiceCustomer = { _ in
+      Current.stripe.fetchSubscription = { _ in .individualYearly }
+      Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
-    } operation: {
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateUpgradeTeamPlan() async {
+  func testChangeUpdateUpgradeTeamPlan() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.teamMonthly))
-      $0.stripe.invoiceCustomer = { _ in
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
+      Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
-    } operation: {
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateDowngradeTeamPlan() async {
+  func testChangeUpdateDowngradeTeamPlan() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualYearly))
-      $0.stripe.invoiceCustomer = { _ in
+      Current.stripe.fetchSubscription = { _ in .individualYearly }
+      Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
-    } operation: {
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateAddSeatsIndividualPlan() async {
+  func testChangeUpdateAddSeatsIndividualPlan() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-    } operation: {
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpgradeIndividualMonthlyToTeamYearly() async {
+  func testChangeUpgradeIndividualMonthlyToTeamYearly() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.individualMonthly))
-    } operation: {
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
+
       let conn = connection(
         from: request(
           to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateAddSeatsTeamPlan() async {
+  func testChangeUpdateAddSeatsTeamPlan() async throws {
     #if !os(Linux)
-    await DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.teamMonthly))
-    } operation: {
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
       var pricing = Pricing.teamMonthly
       pricing.quantity += 4
 
@@ -148,50 +131,45 @@ final class ChangeTests: TestCase {
       let result = conn |> siteMiddleware
 
       let performed = await result.performAsync()
-      assertSnapshot(matching: performed, as: .conn)
-    }
+      await assertSnapshot(matching: performed, as: .conn)
     #endif
   }
 
-  func testChangeUpdateRemoveSeats() async {
+  func testChangeUpdateRemoveSeats() async throws {
     #if !os(Linux)
-    DependencyValues.withTestValues {
-      $0.stripe.fetchSubscription = const(pure(.teamMonthly))
-      $0.stripe.invoiceCustomer = { _ in
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
+      Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
-    } operation: {
       var pricing = Pricing.teamMonthly
       pricing.quantity -= 1
 
       let conn = connection(
         from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testChangeUpdateRemoveSeatsInvalidNumber() async {
+  func testChangeUpdateRemoveSeatsInvalidNumber() async throws {
     #if !os(Linux)
       var subscription = Stripe.Subscription.mock
       subscription.plan = .teamYearly
       subscription.quantity = 5
 
-    DependencyValues.withTestValues {
-      $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.teammate, .teammate]))
-      $0.database.fetchTeamInvites = const(pure([.mock, .mock]))
-      $0.stripe.fetchSubscription = const(pure(subscription))
-    } operation: {
+      Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.teammate, .teammate] }
+      Current.database.fetchTeamInvites = { _ in [.mock, .mock] }
+      Current.stripe.fetchSubscription = { _ in subscription }
+
       var pricing = Pricing.teamYearly
       pricing.quantity = 3
-      
+
       let conn = connection(
-        from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
-      
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    }
+        from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn)
+      )
+
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 }

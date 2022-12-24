@@ -8,27 +8,27 @@ import XCTest
 
 @MainActor
 final class ApiTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    // SnapshotTesting.isRecording=true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testEpisodes() async {
+  func testEpisodes() async throws {
     let conn = await siteMiddleware(connection(from: request(to: .api(.episodes)))).performAsync()
-    assertSnapshot(matching: conn, as: .conn)
+    await assertSnapshot(matching: conn, as: .conn)
   }
 
-  func testEpisode() async {
+  func testEpisode() async throws {
     let conn = await siteMiddleware(connection(from: request(to: .api(.episode(1))))).performAsync()
     #if !os(Linux)
       // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
-      assertSnapshot(matching: conn, as: .conn)
+      await assertSnapshot(matching: conn, as: .conn)
     #endif
   }
 
-  func testEpisode_NotFound() async {
+  func testEpisode_NotFound() async throws {
     let conn = await siteMiddleware(connection(from: request(to: .api(.episode(424242)))))
       .performAsync()
-    assertSnapshot(matching: conn, as: .conn)
+    await assertSnapshot(matching: conn, as: .conn)
   }
 }

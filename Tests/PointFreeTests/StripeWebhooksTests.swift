@@ -1,8 +1,8 @@
-import Dependencies
 import Either
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
+import Mailgun
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -19,13 +19,14 @@ import XCTest
   import WebKit
 #endif
 
+@MainActor
 final class StripeWebhooksTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
-  func testDecoding() throws {
+  func testDecoding() async throws {
     let json = """
       {
         "id": "evt_1FyO3MD0Nyli3dRgk47ZGyCo",
@@ -312,7 +313,7 @@ final class StripeWebhooksTests: TestCase {
         """#.utf8))
   }
 
-  func testValidHook() throws {
+  func testValidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(
@@ -321,11 +322,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testStaleHook() throws {
+  func testStaleHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(
@@ -335,22 +336,22 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testInvalidHook() throws {
+  func testInvalidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
       try hook.addStripeSignature(payload: "deadbeef")
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceSubscriptionId() throws {
+  func testNoInvoiceSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.subscription = nil
@@ -367,11 +368,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() throws {
+  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.subscription = nil
@@ -391,11 +392,11 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testNoInvoiceNumber() throws {
+  func testNoInvoiceNumber() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.number = nil
@@ -412,59 +413,58 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
-  func testPastDueEmail() {
+  func testPastDueEmail() async throws {
     let doc = pastDueEmailView(unit)
 
-    assertSnapshot(matching: doc, as: .html)
-    assertSnapshot(matching: plainText(for: doc), as: .lines)
+    await assertSnapshot(matching: doc, as: .html)
+    await assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
 
         webView.frame.size = .init(width: 400, height: 700)
-        assertSnapshot(matching: webView, as: .image)
+        await assertSnapshot(matching: webView, as: .image)
       }
     #endif
   }
 
-  func testPaymentIntent_Gift() throws {
+  func testPaymentIntent_Gift() async throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
     var delivered = false
+    Current.database.updateGiftStatus = {
+      delivered = $2
+      return .unfulfilled
+    }
     var didSendEmail = false
+    Current.mailgun.sendEmail = { _ in
+      didSendEmail = true
+      return SendEmailResponse(id: "", message: "")
+    }
 
-    try DependencyValues.withTestValues {
-      $0.database.fetchGiftByStripePaymentIntentId = { _ in pure(.unfulfilled) }
-      $0.database.updateGiftStatus = {
-        delivered = $2
-        return pure(.unfulfilled)
-      }
-      $0.date.now = .mock
-      $0.mailgun.sendEmail = { _ in
-        didSendEmail = true
-        return pure(.init(id: "", message: ""))
-      }
-    } operation: {
-      let event = Event(
-        data: .init(object: PaymentIntent.succeeded),
-        id: "evt_test",
-        type: .paymentIntentSucceeded
-      )
+    let event = Event(
+      data: .init(object: PaymentIntent.succeeded),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
 
-      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
-        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-      )
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
 
-      let conn = connection(from: hook)
-      _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
-        with: """
+    let conn = connection(from: hook)
+    await _assertInlineSnapshot(
+      matching: conn |> siteMiddleware, as: .ioConn,
+      with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
@@ -496,31 +496,30 @@ final class StripeWebhooksTests: TestCase {
         OK
         """)
 
-      XCTAssertEqual(delivered, true)
-      XCTAssertEqual(didSendEmail, true)
-    }
+    XCTAssertEqual(delivered, true)
+    XCTAssertEqual(didSendEmail, true)
   }
 
-  func testPaymentIntent_NoGift() throws {
-    try DependencyValues.withTestValues {
-      $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
-      $0.date.now = .mock
-    } operation: {
-      let event = Event(
-        data: .init(object: PaymentIntent.succeeded),
-        id: "evt_test",
-        type: .paymentIntentSucceeded
-      )
+  func testPaymentIntent_NoGift() async throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
 
-      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
-        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-      )
+    let event = Event(
+      data: .init(object: PaymentIntent.succeeded),
+      id: "evt_test",
+      type: .paymentIntentSucceeded
+    )
 
-      let conn = connection(from: hook)
-      _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
-        with: """
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
+
+    let conn = connection(from: hook)
+    await _assertInlineSnapshot(
+      matching: conn |> siteMiddleware, as: .ioConn,
+      with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
@@ -551,33 +550,32 @@ final class StripeWebhooksTests: TestCase {
 
         OK
         """)
-    }
   }
 
-  func testFailedPaymentIntent() throws {
-    try DependencyValues.withTestValues {
-      $0.database.fetchGiftByStripePaymentIntentId = { _ in throwE(unit) }
-      $0.date.now = .mock
-    } operation: {
-      let event = Event(
-        data: .init(object: PaymentIntent.requiresConfirmation),
-        id: "evt_test",
-        type: .paymentIntentPaymentFailed
-      )
-      
-      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
-        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-      )
-      
-      let conn = connection(from: hook)
-      _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
-        with: """
+  func testFailedPaymentIntent() async throws {
+    Current = .failing
+    Current.date = { .mock }
+    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
+
+    let event = Event(
+      data: .init(object: PaymentIntent.requiresConfirmation),
+      id: "evt_test",
+      type: .paymentIntentPaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+    try hook.addStripeSignature(
+      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+    )
+
+    let conn = connection(from: hook)
+    await _assertInlineSnapshot(
+      matching: conn |> siteMiddleware, as: .ioConn,
+      with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=0abe38e2637c25a8e99ea0cb9028534c41e240a3ca48fe7347ba23dd31f805a4
-        
+
         {
           "data" : {
             "object" : {
@@ -591,7 +589,7 @@ final class StripeWebhooksTests: TestCase {
           "id" : "evt_test",
           "type" : "payment_intent.payment_failed"
         }
-        
+
         200 OK
         Content-Length: 2
         Content-Type: text/plain
@@ -601,10 +599,9 @@ final class StripeWebhooksTests: TestCase {
         X-Frame-Options: SAMEORIGIN
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
-        
+
         OK
         """)
-    }
   }
 }
 

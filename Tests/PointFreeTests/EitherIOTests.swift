@@ -5,8 +5,9 @@ import XCTest
 
 @testable import PointFree
 
+@MainActor
 class EitherIOTests: TestCase {
-  func testRetry_Fails() async {
+  func testRetry_Fails() async throws {
     var count = 0
     let thing = EitherIO<Prelude.Unit, Prelude.Unit>(
       run: IO {
@@ -21,7 +22,7 @@ class EitherIOTests: TestCase {
     XCTAssertTrue(result.isLeft)
   }
 
-  func testRetry_Succeeds() async {
+  func testRetry_Succeeds() async throws {
     var count = 0
     let thing = EitherIO<Prelude.Unit, Prelude.Unit>(
       run: IO {
@@ -36,7 +37,7 @@ class EitherIOTests: TestCase {
     XCTAssertTrue(result.isRight)
   }
 
-  func testRetry_MaxRetriesZero_Success() async {
+  func testRetry_MaxRetriesZero_Success() async throws {
     let thing = EitherIO<Prelude.Unit, Prelude.Unit>(
       run: IO {
         return .right(unit)
@@ -49,7 +50,7 @@ class EitherIOTests: TestCase {
     XCTAssertTrue(result.isRight)
   }
 
-  func testRetry_MaxRetriesZero_Failure() async {
+  func testRetry_MaxRetriesZero_Failure() async throws {
     let thing = EitherIO<Prelude.Unit, Prelude.Unit>(
       run: IO {
         return .left(unit)

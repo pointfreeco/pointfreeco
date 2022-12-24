@@ -4,9 +4,9 @@ import Prelude
 
 extension Client {
   public static let mock = Client(
-    fetchAuthToken: const(pure(pure(.mock))),
-    fetchEmails: const(pure([.mock])),
-    fetchUser: const(pure(.mock))
+    fetchAuthToken: { _ in .right(.mock) },
+    fetchEmails: { _ in [.mock] },
+    fetchUser: { _ in .mock }
   )
 }
 

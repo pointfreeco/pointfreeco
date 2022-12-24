@@ -17,16 +17,15 @@ import XCTest
 
 @MainActor
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
-  override func setUp() {
-    super.setUp()
-    //    SnapshotTesting.isRecording = true
+  override func setUp() async throws {
+    try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   func testExpressUnsubscribe() async throws {
     let user = try await Current.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    .performAsync()!
 
     let payload = try XCTUnwrap(
       Encrypted(
@@ -39,18 +38,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       session: .loggedIn
     )
 
-    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-    assertSnapshot(
+    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+    await assertSnapshot(
       matching: settings,
       as: .customDump,
       named: "email_settings_before_unsubscribe"
     )
 
     let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-    assertSnapshot(matching: output, as: .conn)
+    await assertSnapshot(matching: output, as: .conn)
 
-    settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-    assertSnapshot(
+    settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+    await assertSnapshot(
       matching: settings,
       as: .customDump,
       named: "email_settings_after_unsubscribe"
@@ -62,7 +61,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -80,18 +78,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
@@ -104,7 +102,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let unsubEmail = Current.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
@@ -122,18 +119,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
@@ -146,7 +143,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
-      .performAsync()!
 
       let payload = encrypted(
         text: "\(user.id.rawValue.uuidString)--unknown",
@@ -168,18 +164,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_before_unsubscribe"
       )
 
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
-      assertSnapshot(matching: output, as: .conn)
+      await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id).performAsync()
-      assertSnapshot(
+      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      await assertSnapshot(
         matching: settings,
         as: .customDump,
         named: "email_settings_after_unsubscribe"
