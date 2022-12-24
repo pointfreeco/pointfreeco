@@ -133,7 +133,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
     await DependencyValues.withTestValues {
       $0.gitHub.fetchAuthToken = { _ in
-          .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
       }
     } operation: {
       @Dependency(\.siteRouter) var siteRouter

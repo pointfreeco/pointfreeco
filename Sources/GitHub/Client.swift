@@ -38,7 +38,8 @@ extension Client {
   public init(clientId: ID, clientSecret: Secret, logger: Logger?) {
     self.init(
       fetchAuthToken: {
-        try await runGitHub(logger)(fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
+        try await runGitHub(logger)(
+          fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
       },
       fetchEmails: { try await runGitHub(logger)(fetchGitHubEmails(token: $0)) },
       fetchUser: { try await runGitHub(logger)(fetchGitHubUser(with: $0)) }
