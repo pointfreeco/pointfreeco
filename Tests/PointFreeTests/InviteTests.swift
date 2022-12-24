@@ -30,7 +30,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
 
-    Current.stripe.fetchSubscription = const(pure(.teamYearly))
+    Current.stripe.fetchSubscription = { _ in .teamYearly }
 
     let sendInvite = request(
       to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
@@ -48,7 +48,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
 
-    Current.stripe.fetchSubscription = const(pure(sub))
+    Current.stripe.fetchSubscription = { _ in sub }
 
     _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
@@ -203,7 +203,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-    Current.stripe.fetchSubscription = const(pure(.canceled))
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -236,7 +236,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-    Current.stripe.fetchSubscription = const(pure(.canceled))
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
     let acceptInvite = request(
       to: .invite(.invitation(teamInvite.id, .accept)),
@@ -265,7 +265,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     session.user = .standard(currentUser.id)
 
     stripeSubscription.quantity += 3
-    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.fetchSubscription = { _ in stripeSubscription }
 
     let conn = connection(
       from: request(
@@ -380,7 +380,7 @@ class InviteTests: TestCase {
     Current.database.fetchTeamInvite = { _ in invite }
     Current.database.fetchSubscriptionById = { _ in .mock }
 
-    Current.stripe.fetchSubscription = const(pure(.mock))
+    Current.stripe.fetchSubscription = { _ in .mock }
 
     let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)

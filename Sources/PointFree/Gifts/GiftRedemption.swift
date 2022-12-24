@@ -53,79 +53,71 @@ private func redeemGift(
     guard subscriberState.isOwner
     else {
       return conn
+      |> redirect(
+        to: .gifts(.redeem(gift.id)),
+        headersMiddleware: flash(
+          .error,
+          "You are already part of an active team subscription."
+        )
+      )
+    }
+
+    return EitherIO {
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      // TODO: Should we disallow gifts from applying to team subscriptions?
+      //guard stripeSubscription.quantity == 1
+      //else {
+      //  throw unit
+      //}
+      async let customer = Current.stripe.updateCustomerBalance(
+        stripeSubscription.customer.id,
+        (stripeSubscription.customer.right?.balance ?? 0) - discount
+      )
+      async let gift = Current.database.updateGift(gift.id, stripeSubscription.id)
+      _ = try await (customer, gift)
+    }
+    .run
+    .flatMap { errorOrCustomer in
+      switch errorOrCustomer {
+      case .left:
+        return conn
         |> redirect(
           to: .gifts(.redeem(gift.id)),
           headersMiddleware: flash(
             .error,
-            "You are already part of an active team subscription."
+              """
+              We were unable to redeem your gift. Please try again, or contact \
+              <support@pointfree.co> for more help.
+              """
           )
         )
-    }
 
-    return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-      .flatMap { stripeSubscription -> EitherIO<Error, Customer> in
-        //        // TODO: Should we disallow gifts from applying to team subscriptions?
-        //        guard stripeSubscription.quantity == 1
-        //        else {
-        //
-        //        }
-
-        return Current.stripe.updateCustomerBalance(
-          stripeSubscription.customer.either(id, \.id),
-          (stripeSubscription.customer.right?.balance ?? 0) - discount
+      case .right:
+        return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(
+            .notice,
+            "The gift has been applied to your account as credit."
+          )
         )
-        .flatMap { customer in
-          EitherIO {
-            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
-            return customer
-          }
-        }
       }
-      .run
-      .flatMap { errorOrCustomer in
-        switch errorOrCustomer {
-        case .left:
-          return conn
-            |> redirect(
-              to: .gifts(.redeem(gift.id)),
-              headersMiddleware: flash(
-                .error,
-                """
-                We were unable to redeem your gift. Please try again, or contact \
-                <support@pointfree.co> for more help.
-                """
-              )
-            )
-
-        case .right:
-          return conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(
-                .notice,
-                "The gift has been applied to your account as credit."
-              )
-            )
-        }
-      }
+    }
   } else {
-    let plan: Plan.ID = gift.monthsFree < 12 ? .monthly : .yearly
-    return Current.stripe.createCustomer(
-      nil,
-      user.id.rawValue.uuidString,
-      user.email,
-      nil,
-      -discount
-    )
-    .flatMap { customer in
-      Current.stripe.createSubscription(customer.id, plan, 1, nil)
-        .flatMap { stripeSubscription in
-          EitherIO {
-            _ = try await Current.database
-              .createSubscription(stripeSubscription, user.id, true, nil)
-            _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
-          }
-        }
+    return EitherIO {
+      let customer = try await Current.stripe.createCustomer(
+        nil,
+        user.id.rawValue.uuidString,
+        user.email,
+        nil,
+        -discount
+      )
+      let stripeSubscription = try await Current.stripe
+        .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
+      _ = try await Current.database
+        .createSubscription(stripeSubscription, user.id, true, nil)
+      _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
     }
     .run
     .flatMap { errorOrNot in
@@ -160,29 +152,29 @@ private func fetchAndValidateGiftAndDiscount<A>(
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
-    return EitherIO { try await Current.database.fetchGift(giftId) }
-      .flatMap { gift in
-        Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
-          .map { paymentIntent in (gift, paymentIntent) }
-      }
-      .run
-      .flatMap { errorOrGiftAndPaymentIntent in
-        switch errorOrGiftAndPaymentIntent {
-        case .left:
-          return conn |> routeNotFoundMiddleware
+    return EitherIO<_, (Gift, PaymentIntent)> {
+      let gift = try await Current.database.fetchGift(giftId)
+      let paymentIntent = try await Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
+      return (gift, paymentIntent)
+    }
+    .run
+    .flatMap { errorOrGiftAndPaymentIntent in
+      switch errorOrGiftAndPaymentIntent {
+      case .left:
+        return conn |> routeNotFoundMiddleware
 
-        case let .right((gift, paymentIntent)):
-          guard gift.stripeSubscriptionId == nil
-          else {
-            return conn
-              |> redirect(
-                to: .gifts(),
-                headersMiddleware: flash(.error, "This gift was already redeemed.")
-              )
-          }
-
-          return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware
+      case let .right((gift, paymentIntent)):
+        guard gift.stripeSubscriptionId == nil
+        else {
+          return conn
+          |> redirect(
+            to: .gifts(),
+            headersMiddleware: flash(.error, "This gift was already redeemed.")
+          )
         }
+
+        return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware
       }
+    }
   }
 }

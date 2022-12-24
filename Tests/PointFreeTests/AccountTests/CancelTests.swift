@@ -28,7 +28,7 @@ final class CancelTests: TestCase {
     let cancelSubscription = Current.stripe.cancelSubscription
     Current.stripe.cancelSubscription = {
       immediately = $1
-      return cancelSubscription($0, $1)
+      return try await cancelSubscription($0, $1)
     }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
@@ -39,13 +39,13 @@ final class CancelTests: TestCase {
   }
 
   func testCancelPastDue() async throws {
-    Current.stripe.fetchSubscription = const(pure(update(.mock) { $0.status = .pastDue }))
+    Current.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .pastDue } }
 
     var immediately: Bool?
     let cancelSubscription = Current.stripe.cancelSubscription
     Current.stripe.cancelSubscription = {
       immediately = $1
-      return cancelSubscription($0, $1)
+      return try await cancelSubscription($0, $1)
     }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
@@ -62,7 +62,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelNoSubscription() async throws {
-    Current.stripe.fetchSubscription = const(throwE(unit))
+    Current.stripe.fetchSubscription = { _ in throw unit }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -70,7 +70,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCancelingSubscription() async throws {
-    Current.stripe.fetchSubscription = const(pure(.canceling))
+    Current.stripe.fetchSubscription = { _ in .canceling }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -78,7 +78,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCanceledSubscription() async throws {
-    Current.stripe.fetchSubscription = const(pure(.canceled))
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -86,7 +86,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() async throws {
-    Current.stripe.cancelSubscription = { _, _ in throwE(unit) }
+    Current.stripe.cancelSubscription = { _, _ in throw unit }
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
@@ -112,7 +112,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivate() async throws {
-    Current.stripe.fetchSubscription = const(pure(.canceling))
+    Current.stripe.fetchSubscription = { _ in .canceling }
 
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
@@ -127,7 +127,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateNoSubscription() async throws {
-    Current.stripe.fetchSubscription = const(throwE(unit))
+    Current.stripe.fetchSubscription = { _ in throw unit }
 
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
@@ -143,7 +143,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateCanceledSubscription() async throws {
-    Current.stripe.fetchSubscription = const(pure(.canceled))
+    Current.stripe.fetchSubscription = { _ in .canceled }
 
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
@@ -152,7 +152,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateStripeFailure() async throws {
-    Current.stripe.updateSubscription = { _, _, _ in throwE(unit) }
+    Current.stripe.updateSubscription = { _, _, _ in throw unit }
 
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))

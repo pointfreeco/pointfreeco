@@ -23,7 +23,7 @@ final class ChangeTests: TestCase {
 
   func testChangeRedirect() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
@@ -34,10 +34,10 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeIndividualPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -50,10 +50,10 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeIndividualPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualYearly))
+      Current.stripe.fetchSubscription = { _ in .individualYearly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -66,10 +66,10 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeTeamPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -82,10 +82,10 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeTeamPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualYearly))
+      Current.stripe.fetchSubscription = { _ in .individualYearly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
 
       let conn = connection(
@@ -98,7 +98,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsIndividualPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(
@@ -110,7 +110,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpgradeIndividualMonthlyToTeamYearly() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(
@@ -122,7 +122,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsTeamPlan() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
       var pricing = Pricing.teamMonthly
       pricing.quantity += 4
 
@@ -137,10 +137,10 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateRemoveSeats() async throws {
     #if !os(Linux)
-      Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+      Current.stripe.fetchSubscription = { _ in .teamMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
-        return pure(.mock(charge: .right(.mock)))
+        return .mock(charge: .right(.mock))
       }
       var pricing = Pricing.teamMonthly
       pricing.quantity -= 1
@@ -160,7 +160,7 @@ final class ChangeTests: TestCase {
 
       Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.teammate, .teammate] }
       Current.database.fetchTeamInvites = { _ in [.mock, .mock] }
-      Current.stripe.fetchSubscription = const(pure(subscription))
+      Current.stripe.fetchSubscription = { _ in subscription }
 
       var pricing = Pricing.teamYearly
       pricing.quantity = 3

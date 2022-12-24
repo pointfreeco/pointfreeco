@@ -35,13 +35,12 @@ private func fetchPaymentMethod<A>(
 ) -> IO<Conn<A, Tuple3<PaymentMethod?, User, SubscriberState>>> {
   let (subscription, user, subscriberState) = lower(conn.data)
 
-  if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
-    return Current.stripe.fetchPaymentMethod(paymentMethodID)
-      .run
-      .map(\.right)
-      .map { conn.map(const($0 .*. user .*. subscriberState .*. unit)) }
-  } else {
-    return pure(conn.map(const(nil .*. user .*. subscriberState .*. unit)))
+  return IO {
+    var paymentMethod: PaymentMethod?
+    if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
+      paymentMethod = try? await Current.stripe.fetchPaymentMethod(paymentMethodID)
+    }
+    return conn.map(const(paymentMethod .*. user .*. subscriberState .*. unit))
   }
 }
 
@@ -56,22 +55,22 @@ let updatePaymentInfoMiddleware =
   <| { conn in
     let (subscription, _, paymentMethodID) = lower(conn.data)
 
-    let customer = subscription.customer.either(id, \.id)
+    let customer = subscription.customer.id
 
-    return Current.stripe.attachPaymentMethod(paymentMethodID, customer)
-      .flatMap {
-        Current.stripe.updateCustomer(customer, $0.id)
-      }
-      .run
-      .flatMap {
-        conn
-          |> redirect(
-            to: .account(.paymentInfo()),
-            headersMiddleware: $0.isLeft
-              ? flash(.error, genericPaymentInfoError)
-              : flash(.notice, "Your payment information has been updated.")
-          )
-      }
+    return EitherIO {
+      let paymentMethod = try await Current.stripe.attachPaymentMethod(paymentMethodID, customer)
+      _ = try await Current.stripe.updateCustomer(customer, paymentMethod.id)
+    }
+    .run
+    .flatMap {
+      conn
+        |> redirect(
+          to: .account(.paymentInfo()),
+          headersMiddleware: $0.isLeft
+            ? flash(.error, genericPaymentInfoError)
+            : flash(.notice, "Your payment information has been updated.")
+        )
+    }
   }
 
 private let requireUserAndPaymentMethod:

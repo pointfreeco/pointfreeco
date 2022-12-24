@@ -213,16 +213,13 @@ private func requireAccessToken<A>(
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return EitherIO { try await Current.database.fetchSubscriptionById(subscriptionId) }
-    .flatMap { subscription in
-      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-        .flatMap { stripeSubscription in
-          EitherIO {
-            _ = try await Current.database.updateStripeSubscription(stripeSubscription)
-            return unit
-          }
-        }
-    }
+  return EitherIO {
+    let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+    let stripeSubscription = try await Current.stripe
+      .fetchSubscription(subscription.stripeSubscriptionId)
+    _ = try await Current.database.updateStripeSubscription(stripeSubscription)
+    return unit
+  }
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {

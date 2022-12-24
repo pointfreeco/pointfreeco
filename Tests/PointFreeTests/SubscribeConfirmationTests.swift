@@ -384,7 +384,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
-    Current.stripe.fetchSubscription = const(pure(.mock))
+    Current.stripe.fetchSubscription = { _ in .mock }
 
     let conn = connection(
       from: request(
@@ -448,7 +448,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchUserByReferralCode = { _ in .mock }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
-    Current.stripe.fetchSubscription = const(pure(.canceling))
+    Current.stripe.fetchSubscription = { _ in .canceling }
 
     let conn = connection(
       from: request(
@@ -490,7 +490,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { _ in .mock }
-    Current.stripe.fetchSubscription = const(pure(.mock))
+    Current.stripe.fetchSubscription = { _ in .mock }
 
     let conn = connection(
       from: request(
@@ -515,7 +515,7 @@ class SubscriptionConfirmationTests: TestCase {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
     Current.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
-    Current.stripe.fetchSubscription = const(pure(.mock))
+    Current.stripe.fetchSubscription = { _ in .mock }
 
     let conn = connection(
       from: request(

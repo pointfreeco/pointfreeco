@@ -40,27 +40,22 @@ private func subscribe(
     ? -9_00
     : -18_00
 
-  let stripeSubscription = Current.stripe.createCustomer(
-    subscribeData.paymentMethodID,
-    user.id.rawValue.uuidString,
-    user.email,
-    nil,
-    subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
-  )
-  .flatMap { customer -> EitherIO<Error, (PaymentMethod, Customer)> in
-    Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
-      .map { ($0, customer) }
-  }
-  .flatMap { paymentMethod, customer -> EitherIO<Error, Stripe.Subscription> in
+  let stripeSubscription = EitherIO {
+    let customer = try await Current.stripe.createCustomer(
+      subscribeData.paymentMethodID,
+      user.id.rawValue.uuidString,
+      user.email,
+      nil,
+      subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
+    )
+    let paymentMethod = try await Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
     let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
-      return throwE(
-        StripeErrorEnvelope(
-          error: .init(
-            message: """
-              Couldn't verify issue country on credit card. Please try another credit card.
-              """
-          )
+      throw StripeErrorEnvelope(
+        error: .init(
+          message: """
+            Couldn't verify issue country on credit card. Please try another credit card.
+            """
         )
       )
     }
@@ -69,15 +64,13 @@ private func subscribe(
       !subscribeData.useRegionalDiscount
         || DiscountCountry.all.contains(where: { $0.countryCode == country })
     else {
-      return throwE(
-        StripeErrorEnvelope(
-          error: .init(
-            message: """
-              The issuing country of your credit card is not on the list of countries that
-              qualify for a regional discount. Please use a different credit card, or subscribe
-              without the discount.
-              """
-          )
+      throw StripeErrorEnvelope(
+        error: .init(
+          message: """
+            The issuing country of your credit card is not on the list of countries that
+            qualify for a regional discount. Please use a different credit card, or subscribe
+            without the discount.
+            """
         )
       )
     }
@@ -87,7 +80,7 @@ private func subscribe(
       ? Current.envVars.regionalDiscountCouponId
       : nil
 
-    return Current.stripe.createSubscription(
+    return try await Current.stripe.createSubscription(
       customer.id,
       subscribeData.pricing.billing.plan,
       subscribeData.pricing.quantity,
@@ -95,52 +88,42 @@ private func subscribe(
     )
   }
 
-  func runTasksFor(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
-    let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
-      .run.parallel
+  func runTasksFor(stripeSubscription: Stripe.Subscription) async throws {
+    async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
+      .performAsync()
+    guard let referrer else { return }
 
-    let updateReferrerBalance =
-      referrer
-      .map {
-        Current.stripe
-          .updateCustomerBalance(
-            $0.stripeSubscription.customer.either(id, \.id),
-            ($0.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
-          )
-          .flatMap(const(sendReferralEmail(to: $0.user)))
-          .map(const(unit))
-          .run.parallel
-      }
-      ?? pure(.right(unit))
+    async let updateReferrerBalance: Void = {
+      _ = try await Current.stripe.updateCustomerBalance(
+        referrer.stripeSubscription.customer.id,
+        (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
+      )
+      Task { try await sendReferralEmail(to: referrer.user).performAsync() }
+    }()
 
-    let updateReferredBalance =
-      referrer != nil && subscribeData.pricing.interval == .month
-      ? Current.stripe
-        .updateCustomerBalance(stripeSubscription.customer.either(id, \.id), referredDiscount)
-        .map(const(unit))
-        .run.parallel
-      : pure(.right(unit))
-
-    let results = sequence([sendEmails, updateReferrerBalance, updateReferredBalance])
+    async let updateReferredBalance: Void = {
+      guard subscribeData.pricing.interval == .month
+      else { return }
+      _ = try await Current.stripe
+        .updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
+    }()
 
     // TODO: Log errors?
-    return lift(results.sequential).map(const(unit))
+    _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
   }
 
   let databaseSubscription =
     stripeSubscription
     .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
       EitherIO {
-        try await Current.database.createSubscription(
+        let subscription = try await Current.database.createSubscription(
           stripeSubscription,
           user.id,
           subscribeData.isOwnerTakingSeat,
           referrer?.user.id
         )
-      }
-      .flatMap { subscription in
-        runTasksFor(stripeSubscription: stripeSubscription)
-          .map(const(subscription))
+        try await runTasksFor(stripeSubscription: stripeSubscription)
+        return subscription
       }
     }
 
@@ -328,7 +311,6 @@ private func validateReferrer(
       let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
       let stripeSubscription = try await Current.stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
-        .performAsync()
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)
     }
     .run

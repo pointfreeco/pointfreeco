@@ -83,58 +83,36 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <| { conn in
     let (teamInvite, currentUser) = lower(conn.data)
 
-    let inviter = EitherIO { try await Current.database.fetchUserById(teamInvite.inviterUserId) }
+    return EitherIO {
+      let inviter = try await Current.database.fetchUserById(teamInvite.inviterUserId)
+      let subscription = try await Current.database.fetchSubscriptionByOwnerId(inviter.id)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      guard stripeSubscription.status.isActive else { throw unit }
+      try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
-    // VERIFY: user is subscribed
-    let subscription = inviter.flatMap { inviter in
-      EitherIO { try await Current.database.fetchSubscriptionByOwnerId(inviter.id) }
-    }
-    .flatMap { subscription in
-      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-        .mapExcept(validateActiveStripeSubscription)
-        .bimap(const(unit as Error), id)
-        .flatMap { _ in
-          EitherIO {
-            try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-          }
-        }
-    }
-
-    return subscription
-      .run
-      .flatMap { _ in
-        let sendInviterEmailOfAcceptance = parallel(
-          inviter
-            .run
-            .flatMap { errorOrInviter in
-              errorOrInviter.right.map { inviter in
-                EitherIO {
-                  try await sendEmail(
-                    to: [inviter.email],
-                    subject:
-                      "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                    content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
-                  )
-                }
-                .run
-                .map(const(unit))
-              }
-                ?? pure(unit)
-            })
-
-        let deleteInvite = parallel(
-          subscription
-            .flatMap { _ in
-              EitherIO { try await Current.database.deleteTeamInvite(teamInvite.id) }
-            }
-            .run
+      let sendInviterEmailOfAcceptance = parallel(
+        sendEmail(
+          to: [inviter.email],
+          subject:
+            "\(currentUser.displayName) has accepted your Point-Free team invitation!",
+          content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
         )
+        .run
+        .map(const(unit))
+      )
 
-        // fire-and-forget email of acceptance and deletion of invite
-        zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+      let deleteInvite = parallel(
+        EitherIO { try await Current.database.deleteTeamInvite(teamInvite.id) }.run
+      )
 
-        return conn |> redirect(to: siteRouter.path(for: .account()))
-      }
+      // fire-and-forget email of acceptance and deletion of invite
+      zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+    }
+    .run
+    .flatMap { _ in
+      return conn |> redirect(to: siteRouter.path(for: .account()))
+    }
   }
 
 let addTeammateViaInviteMiddleware =
@@ -177,7 +155,6 @@ let sendInviteMiddleware =
 
       let stripeSubscription = try await Current.stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
-        .performAsync()
       let seatsTaken = try await invites + teammates
 
       guard stripeSubscription.status.isActive && stripeSubscription.quantity > seatsTaken
@@ -196,7 +173,8 @@ let sendInviteMiddleware =
               .error,
               """
               Couldn't invite \(email.rawValue)
-              """)
+              """
+            )
           )
 
       case let .right(invite):
@@ -260,13 +238,12 @@ private func requireTeamInvite<A>(
 func sendInviteEmail(
   invite: TeamInvite, inviter: User
 ) -> EitherIO<Error, SendEmailResponse> {
-  EitherIO {
-    try await sendEmail(
-      to: [invite.email],
-      subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-      content: inj2(teamInviteEmailView((inviter, invite)))
-    )
-  }
+
+  return sendEmail(
+    to: [invite.email],
+    subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
+    content: inj2(teamInviteEmailView((inviter, invite)))
+  )
 }
 
 private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User> {
@@ -274,17 +251,6 @@ private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User>
     user.id == currentUser.id
       ? lift(.left(unit))
       : lift(.right(user))
-  }
-}
-
-private func validateActiveStripeSubscription(
-  _ errorOrSubscription: Either<Error, Stripe.Subscription>
-)
-  -> Either<Error, Stripe.Subscription>
-{
-
-  return errorOrSubscription.flatMap { stripeSubscription in
-    !stripeSubscription.status.isActive ? .left(unit) : .right(stripeSubscription)
   }
 }
 
@@ -299,11 +265,13 @@ private func redirectCurrentSubscribers<A, B>(
     else { return middleware(conn) }
 
     let hasActiveSubscription = EitherIO {
-      try await Current.database.fetchSubscriptionById(subscriptionId)
+      let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
+      let stripeSubscription = try await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+      return stripeSubscription.isRenewing
     }
-    .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
     .run
-    .map { $0.right?.isRenewing ?? false }
+    .map { $0.right ?? false }
 
     return hasActiveSubscription.flatMap {
       $0

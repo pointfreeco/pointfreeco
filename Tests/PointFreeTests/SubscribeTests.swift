@@ -79,12 +79,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -115,12 +115,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -242,36 +242,34 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(
-        update(.mock) {
-          $0.id = "sub_referred"
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-        })
+      update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
     }
 
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -316,30 +314,28 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+      }
     }
     Current.stripe.createSubscription = { _, _, _, _ in
-      pure(
-        update(.mock) {
-          $0.id = "sub_referred"
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-        })
+      update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
     }
 
     var balance: Cents<Int>?
     Current.stripe.createCustomer = {
       balance = $4
-      return pure(update(.mock) { $0.id = "cus_referred" })
+      return update(.mock) { $0.id = "cus_referred" }
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(.mock)
+      return .mock
     }
 
     let conn = await siteMiddleware(
@@ -368,33 +364,31 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(.mock)
+      return .mock
     }
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     var subscribeData = SubscribeData.individualMonthly
@@ -430,33 +424,31 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(.mock)
+      return .mock
     }
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     Current.stripe.fetchPaymentMethod = { _ in
-      pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "US",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "US",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     var subscribeData = SubscribeData.individualMonthly
@@ -504,55 +496,51 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
 
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(
-        update(.mock) {
-          $0.id = "sub_referred"
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-        })
+      return update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
     }
 
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     let conn = await siteMiddleware(
@@ -599,55 +587,51 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     )
 
     Current.stripe.fetchPaymentMethod = { _ in
-      return pure(
-        .init(
-          card: .init(
-            brand: .visa,
-            country: "BO",
-            expMonth: 12,
-            expYear: 2025,
-            funding: .credit,
-            last4: "1111"
-          ),
-          customer: .left(customer.id),
-          id: "pm_card"
-        )
+      .init(
+        card: .init(
+          brand: .visa,
+          country: "BO",
+          expMonth: 12,
+          expYear: 2025,
+          funding: .credit,
+          last4: "1111"
+        ),
+        customer: .left(customer.id),
+        id: "pm_card"
       )
     }
     Current.stripe.fetchSubscription = { _ in
-      pure(
-        update(.mock) {
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" },
-            {
-              update($0) {
-                $0.id = "cus_referrer"
-                $0.balance = -18_00
-              }
-            })
-        })
+      update(.mock) {
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referrer" },
+          {
+            update($0) {
+              $0.id = "cus_referrer"
+              $0.balance = -18_00
+            }
+          })
+      }
     }
 
     var subscriptionCoupon: Coupon.ID?
     Current.stripe.createSubscription = { _, _, _, coupon in
       subscriptionCoupon = coupon
-      return pure(
-        update(.mock) {
-          $0.id = "sub_referred"
-          $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
-        })
+      return update(.mock) {
+        $0.id = "sub_referred"
+        $0.customer = $0.customer.bimap(
+          { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+      }
     }
 
     var balance: Cents<Int>?
     Current.stripe.createCustomer = { _, _, _, _, newBalance in
       balance = newBalance
-      return pure(customer)
+      return customer
     }
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
     Current.stripe.updateCustomerBalance = {
       balanceUpdates[$0] = $1
-      return pure(customer)
+      return customer
     }
 
     let conn = await siteMiddleware(
@@ -673,14 +657,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
     var customer = Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
-    Current.stripe.createCustomer = { _, _, _, _, _ in pure(customer) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in customer }
     Current.stripe.fetchPaymentMethod = {
-      pure(
-        PaymentMethod(
-          card: .regional,
-          customer: .left(customer.id),
-          id: $0
-        )
+      PaymentMethod(
+        card: .regional,
+        customer: .left(customer.id),
+        id: $0
       )
     }
 
@@ -720,7 +702,7 @@ final class SubscribeTests: TestCase {
   func testCouponFailure_Individual() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
@@ -800,7 +782,7 @@ final class SubscribeTests: TestCase {
   func testCreateCustomerFailure() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createCustomer = { _, _, _, _, _ in throwE(unit as Error) }
+    Current.stripe.createCustomer = { _, _, _, _, _ in throw unit }
 
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
@@ -815,7 +797,7 @@ final class SubscribeTests: TestCase {
   func testCreateStripeSubscriptionFailure() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
@@ -830,7 +812,7 @@ final class SubscribeTests: TestCase {
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -855,7 +837,7 @@ final class SubscribeTests: TestCase {
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    Current.stripe.createSubscription = { _, _, _, _ in throw StripeErrorEnvelope.mock }
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -944,7 +926,7 @@ final class SubscribeTests: TestCase {
   func testReferrals_InactiveCode() async throws {
     Current.database.fetchSubscriptionById = { _ in throw unit }
     Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchSubscription = { _ in pure(update(.mock) { $0.status = .canceled }) }
+    Current.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .canceled } }
 
     let subscribeData = SubscribeData(
       coupon: nil,
