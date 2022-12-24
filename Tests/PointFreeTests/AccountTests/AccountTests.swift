@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import Dependencies
 import Either
 import GitHub
 import HttpPipeline
@@ -73,13 +74,13 @@ final class AccountTests: TestCase {
   }
 
   func testAccount() async throws {
-    Current = .teamYearly
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -89,7 +90,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccount_InvoiceBilling() async throws {
@@ -97,14 +99,15 @@ final class AccountTests: TestCase {
     customer.invoiceSettings.defaultPaymentMethod = nil
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
-    Current = .teamYearly
-    Current.stripe.fetchSubscription = { _ in subscription }
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -114,7 +117,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testTeam_OwnerIsNotSubscriber() async throws {
@@ -123,18 +127,19 @@ final class AccountTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.userId = currentUser.id
 
-    Current = .teamYearly
-    Current.database.fetchUserById = { _ in currentUser }
-    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
-    Current.database.fetchSubscriptionById = { _ in subscription }
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.database.fetchUserById = { _ in currentUser }
+      $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
+      $0.database.fetchSubscriptionById = { _ in subscription }
+    } operation: {
+      var session = Session.loggedIn
+      session.user = .standard(currentUser.id)
+      let conn = connection(from: request(to: .account(), session: session))
 
-    var session = Session.loggedIn
-    session.user = .standard(currentUser.id)
-    let conn = connection(from: request(to: .account(), session: session))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -144,7 +149,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testTeam_NoRemainingSeats() async throws {
@@ -154,20 +160,21 @@ final class AccountTests: TestCase {
     var stripeSubscription = Stripe.Subscription.mock
     stripeSubscription.quantity = 2
 
-    Current = .teamYearly
-    Current.database.fetchUserById = { _ in currentUser }
-    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
-    Current.database.fetchSubscriptionById = { _ in subscription }
-    Current.database.fetchTeamInvites = { _ in [] }
-    Current.stripe.fetchSubscription = { _ in stripeSubscription }
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.database.fetchUserById = { _ in currentUser }
+      $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
+      $0.database.fetchSubscriptionById = { _ in subscription }
+      $0.database.fetchTeamInvites = { _ in [] }
+      $0.stripe.fetchSubscription = { _ in stripeSubscription }
+    } operation: {
+      var session = Session.loggedIn
+      session.user = .standard(currentUser.id)
+      let conn = connection(from: request(to: .account(), session: session))
 
-    var session = Session.loggedIn
-    session.user = .standard(currentUser.id)
-    let conn = connection(from: request(to: .account(), session: session))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -177,17 +184,18 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testTeam_AsTeammate() async throws {
-    Current = .teamYearlyTeammate
+    await DependencyValues.withTestValues {
+      $0.teamYearlyTeammate()
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -197,20 +205,21 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testTeam_AsTeammate_previousSubscription() async throws {
-    Current = .teamYearlyTeammate
-    Current.database.fetchSubscriptionByOwnerId = const(
-      update(.canceled) { $0.userId = User.teammate.id }
-    )
+    await DependencyValues.withTestValues {
+      $0.teamYearlyTeammate()
+      $0.database.fetchSubscriptionByOwnerId = const(
+        update(.canceled) { $0.userId = User.teammate.id }
+      )
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn(as: .teammate)))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -220,7 +229,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccount_WithExtraInvoiceInfo() async throws {
@@ -229,14 +239,14 @@ final class AccountTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
 
-    Current = .teamYearly
-    Current.stripe.fetchSubscription = { _ in subscription }
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -246,7 +256,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccountWithFlashNotice() async throws {
@@ -321,15 +332,15 @@ final class AccountTests: TestCase {
     stripeSubscription.cancelAtPeriodEnd = false
     stripeSubscription.status = .pastDue
 
-    Current.database.fetchSubscriptionById = { _ in subscription }
-    Current.database.fetchSubscriptionByOwnerId = { _ in subscription }
-    Current.stripe.fetchSubscription = { _ in stripeSubscription }
+    await DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = { _ in subscription }
+      $0.database.fetchSubscriptionByOwnerId = { _ in subscription }
+      $0.stripe.fetchSubscription = { _ in stripeSubscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -339,17 +350,18 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccountCancelingSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in .canceling }
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in .canceling }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -359,18 +371,19 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccountCanceledSubscription() async throws {
-    Current.database.fetchSubscriptionById = { _ in .canceled }
-    Current.stripe.fetchSubscription = { _ in .canceled }
+    await DependencyValues.withTestValues {
+      $0.database.fetchSubscriptionById = { _ in .canceled }
+      $0.stripe.fetchSubscription = { _ in .canceled }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -380,7 +393,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() async throws {
@@ -388,15 +402,15 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = { _ in user }
-    Current.database.fetchEpisodeCredits = { _ in [] }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { _ in user }
+      $0.database.fetchEpisodeCredits = { _ in [] }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -406,7 +420,8 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testEpisodeCredits_1Credit_1Chosen() async throws {
@@ -414,15 +429,15 @@ final class AccountTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    Current.database.fetchUserById = { _ in user }
-    Current.database.fetchEpisodeCredits = { _ in [.mock] }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    await DependencyValues.withTestValues {
+      $0.database.fetchUserById = { _ in user }
+      $0.database.fetchEpisodeCredits = { _ in [.mock] }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -432,20 +447,22 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccountWithDiscount() async throws {
     var subscription = Stripe.Subscription.mock
     subscription.discount = .mock
-    Current = .teamYearly
-    Current.stripe.fetchSubscription = { _ in subscription }
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -455,20 +472,22 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testAccountWithCredit() async throws {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
-    Current = .individualMonthly
-    Current.stripe.fetchSubscription = { _ in subscription }
 
-    let conn = connection(from: request(to: .account(), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+    await DependencyValues.withTestValues {
+      $0.individualMonthly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -478,6 +497,7 @@ final class AccountTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 }

@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -44,11 +45,13 @@ class PaymentInfoTests: TestCase {
     customer.invoiceSettings = .init(defaultPaymentMethod: nil)
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
-    Current = .teamYearly
-    Current.stripe.fetchSubscription = { _ in subscription }
 
-    let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 }

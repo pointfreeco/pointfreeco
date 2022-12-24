@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HtmlSnapshotTesting
 import HttpPipelineTestSupport
@@ -110,35 +111,37 @@ class UpdateProfileTests: TestCase {
     stripeCustomer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
     stripeSubscription.customer = .right(stripeCustomer)
 
-    Current = .teamYearly
-    Current.stripe.fetchSubscription = { _ in stripeSubscription }
-    Current.stripe.updateCustomerExtraInvoiceInfo = { _, info in
-      updatedCustomerWithExtraInvoiceInfo = info
-      return .mock
-    }
-
-    let update = request(
-      to: .account(
-        .update(
-          .init(
-            email: "blob@pointfree.co",
-            extraInvoiceInfo: "VAT: 123456789",
-            emailSettings: ["newEpisode": "on"],
-            name: "Blob"
+    await DependencyValues.withTestValues {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in stripeSubscription }
+      $0.stripe.updateCustomerExtraInvoiceInfo = { _, info in
+        updatedCustomerWithExtraInvoiceInfo = info
+        return .mock
+      }
+    } operation: {
+      let update = request(
+        to: .account(
+          .update(
+            .init(
+              email: "blob@pointfree.co",
+              extraInvoiceInfo: "VAT: 123456789",
+              emailSettings: ["newEpisode": "on"],
+              name: "Blob"
+            )
           )
-        )
-      ),
-      session: .init(
-        flash: nil,
-        userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
-    )
+        ),
+        session: .init(
+          flash: nil,
+          userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+      )
 
-    let output = await siteMiddleware(connection(from: update)).performAsync()
+      let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    #if !os(Linux)
-      await assertSnapshot(matching: output, as: .conn)
-    #endif
+      #if !os(Linux)
+        await assertSnapshot(matching: output, as: .conn)
+      #endif
 
-    XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)
+      XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)
+    }
   }
 }

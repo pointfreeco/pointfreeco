@@ -56,7 +56,7 @@ class BlogTests: TestCase {
       shortMock,
     ]
 
-    DependencyValues.withTestValues {
+    await DependencyValues.withTestValues {
       $0.blogPosts = unzurry(posts)
     } operation: {
       let conn = connection(from: request(to: .blog()))

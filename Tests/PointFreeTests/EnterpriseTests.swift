@@ -1,4 +1,5 @@
 import Database
+import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -26,13 +27,14 @@ class EnterpriseTests: TestCase {
   func testLanding_LoggedOut() async throws {
     let account = EnterpriseAccount.mock
 
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
+    await DependencyValues.withTestValues {
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+    } operation: {
+      let req = request(to: .enterprise(account.domain))
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let req = request(to: .enterprise(account.domain))
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -42,17 +44,20 @@ class EnterpriseTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testLanding_NonExistentEnterpriseAccount() async throws {
     let account = EnterpriseAccount.mock
 
-    Current.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
-
-    let req = request(to: .enterprise(account.domain))
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
+    } operation: {
+      let req = request(to: .enterprise(account.domain))
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLanding_AlreadySubscribedToEnterprise() async throws {
@@ -62,11 +67,13 @@ class EnterpriseTests: TestCase {
     var user = User.mock
     user.subscriptionId = subscriptionId
 
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-
-    let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+    } operation: {
+      let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_LoggedOut() async throws {
@@ -89,16 +96,18 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_BadUserId() async throws {
@@ -110,16 +119,18 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let req = request(
-      to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: "baddata")),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: "baddata")),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_EmailDoesntMatchEnterpriseDomain() async throws {
@@ -132,17 +143,19 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let req = request(
-      to: .enterprise(
-        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_RequesterUserDoesntMatchAccepterUserId() async throws {
@@ -154,38 +167,42 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
-    Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let req = request(
-      to: .enterprise(
-        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_EnterpriseAccountDoesntExist() async throws {
-    Current.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    var account = EnterpriseAccount.mock
-    account.domain = "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
-    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
-    var loggedInUser = User.mock
-    loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
-
-    let req = request(
-      to: .enterprise(
-        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      var account = EnterpriseAccount.mock
+      account.domain = "pointfree.co"
+      let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+      let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
+      let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+      var loggedInUser = User.mock
+      loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
+      
+      let req = request(
+        to: .enterprise(
+          account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testAcceptInvitation_HappyPath() async throws {
@@ -198,17 +215,19 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = { _ in account }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let req = request(
-      to: .enterprise(
-        account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
-      session: .loggedIn(as: loggedInUser)
-    )
-    let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
 
     // todo: more verifications that subscription was linked
   }

@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Html
 import HtmlPlainTextPrint
@@ -25,34 +26,35 @@ final class CancelTests: TestCase {
 
   func testCancel() async throws {
     var immediately: Bool?
-    let cancelSubscription = Current.stripe.cancelSubscription
-    Current.stripe.cancelSubscription = {
-      immediately = $1
-      return try await cancelSubscription($0, $1)
+
+    await DependencyValues.withTestValues {
+      let cancelSubscription = Current.stripe.cancelSubscription
+      $0.stripe.cancelSubscription = {
+        immediately = $1
+        return try await cancelSubscription($0, $1)
+      }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertEqual(false, immediately)
     }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    XCTAssertEqual(false, immediately)
   }
 
   func testCancelPastDue() async throws {
-    Current.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .pastDue } }
-
     var immediately: Bool?
-    let cancelSubscription = Current.stripe.cancelSubscription
-    Current.stripe.cancelSubscription = {
-      immediately = $1
-      return try await cancelSubscription($0, $1)
+
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .pastDue } }
+      let cancelSubscription = Current.stripe.cancelSubscription
+      $0.stripe.cancelSubscription = {
+        immediately = $1
+        return try await cancelSubscription($0, $1)
+      }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertEqual(true, immediately)
     }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    XCTAssertEqual(true, immediately)
   }
 
   func testCancelLoggedOut() async throws {
@@ -62,35 +64,39 @@ final class CancelTests: TestCase {
   }
 
   func testCancelNoSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in throw unit }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in throw unit }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testCancelCancelingSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in .canceling }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in .canceling }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testCancelCanceledSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in .canceled }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in .canceled }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testCancelStripeFailure() async throws {
-    Current.stripe.cancelSubscription = { _, _ in throw unit }
-
-    let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.cancelSubscription = { _, _ in throw unit }
+    } operation: {
+      let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testCancelEmail() async throws {
@@ -112,12 +118,13 @@ final class CancelTests: TestCase {
   }
 
   func testReactivate() async throws {
-    Current.stripe.fetchSubscription = { _ in .canceling }
-
-    let conn = connection(
-      from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in .canceling }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testReactivateLoggedOut() async throws {
@@ -127,12 +134,13 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateNoSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in throw unit }
-
-    let conn = connection(
-      from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testReactivateActiveSubscription() async throws {
@@ -143,21 +151,23 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateCanceledSubscription() async throws {
-    Current.stripe.fetchSubscription = { _ in .canceled }
-
-    let conn = connection(
-      from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.fetchSubscription = { _ in .canceled }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testReactivateStripeFailure() async throws {
-    Current.stripe.updateSubscription = { _, _, _ in throw unit }
-
-    let conn = connection(
-      from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await DependencyValues.withTestValues {
+      $0.stripe.updateSubscription = { _, _, _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testReactivateEmail() async throws {

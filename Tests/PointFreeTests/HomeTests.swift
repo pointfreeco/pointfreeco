@@ -1,3 +1,4 @@
+import Dependencies
 import HttpPipeline
 import PointFreePrelude
 import PointFreeTestSupport
@@ -17,23 +18,28 @@ class HomeTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
+  }
 
-    var e1 = Episode.ep10_aTaleOfTwoFlatMaps
-    e1.permission = .subscriberOnly
-    e1.references = [.mock]
-    let e2 = Episode.ep2_sideEffects
-    var e3 = Episode.ep1_functions
-    e3.permission = .subscriberOnly
-    let e4 = Episode.ep0_introduction
-
-    Current.episodes = unzurry(
-      [e1, e2, e3, e4]
-        .map {
-          var e = $0
-          e.image = "http://localhost:8080/images/\(e.sequence).jpg"
-          return e
-        }
-    )
+  override func invokeTest() {
+    DependencyValues.withTestValues {
+      var e1 = Episode.ep10_aTaleOfTwoFlatMaps
+      e1.permission = .subscriberOnly
+      e1.references = [.mock]
+      let e2 = Episode.ep2_sideEffects
+      var e3 = Episode.ep1_functions
+      e3.permission = .subscriberOnly
+      let e4 = Episode.ep0_introduction
+      $0.episodes = unzurry(
+        [e1, e2, e3, e4]
+          .map {
+            var e = $0
+            e.image = "http://localhost:8080/images/\(e.sequence).jpg"
+            return e
+          }
+      )
+    } operation: {
+      super.invokeTest()
+    }
   }
 
   func testHomepage_LoggedOut() async throws {
