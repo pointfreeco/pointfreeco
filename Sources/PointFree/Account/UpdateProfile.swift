@@ -51,6 +51,7 @@ private let validateEmail: MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileDat
 private func updateProfileMiddlewareHandler(
   conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.siteRouter) var siteRouter
 
   let (subscription, user, data, emailChangePayload) = lower(conn.data)
@@ -61,19 +62,22 @@ private func updateProfileMiddlewareHandler(
   let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
   if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
     updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
-    Task {
-      _ = try await sendEmail(
-        to: [user.email],
-        subject: "Email change confirmation",
-        content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
-      )
-    }
   } else {
     // TODO: why is unicode ‘ not encoded correctly?
     updateFlash = flash(.notice, "We've updated your profile!")
   }
 
   return EitherIO {
+    if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
+      await fireAndForget {
+        _ = try await sendEmail(
+          to: [user.email],
+          subject: "Email change confirmation",
+          content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
+        )
+      }
+    }
+
     try await Current.database.updateUser(
       id: user.id,
       name: data.name,

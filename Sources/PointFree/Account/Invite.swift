@@ -84,6 +84,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <<< requireTeamInvite
   <<< filterMap(require2 >>> pure, or: loginAndRedirect)
   <| { conn in
+    @Dependency(\.fireAndForget) var fireAndForget
     @Dependency(\.siteRouter) var siteRouter
 
     let (teamInvite, currentUser) = lower(conn.data)
@@ -96,15 +97,15 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       guard stripeSubscription.status.isActive else { throw unit }
       try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
-      Task {
-        try await sendEmail(
+      await fireAndForget {
+        _ = try await sendEmail(
           to: [inviter.email],
           subject:
             "\(currentUser.displayName) has accepted your Point-Free team invitation!",
           content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
         )
       }
-      Task {
+      await fireAndForget {
         try await Current.database.deleteTeamInvite(teamInvite.id)
       }
     }
