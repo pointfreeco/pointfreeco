@@ -1,9 +1,10 @@
 import PointFreePrelude
+import XCTestDynamicOverlay
 
 extension Client {
   public static let failing = Self(
-    fetchAuthToken: { _ in .failing("GitHub.Client.fetchAuthToken") },
-    fetchEmails: { _ in .failing("GitHub.Client.fetchEmails") },
-    fetchUser: { _ in .failing("GitHub.Client.fetchUser") }
+    fetchAuthToken: unimplemented("GitHub.Client.fetchAuthToken"),
+    fetchEmails: unimplemented("GitHub.Client.fetchEmails"),
+    fetchUser: unimplemented("GitHub.Client.fetchUser")
   )
 }
