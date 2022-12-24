@@ -23,7 +23,7 @@ final class ChangeTests: TestCase {
 
   func testChangeRedirect() async throws {
     #if !os(Linux)
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
@@ -34,7 +34,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeIndividualPlan() async throws {
     #if !os(Linux)
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
       Current.stripe.invoiceCustomer = { _ in
         XCTFail()
         return .mock(charge: .right(.mock))
@@ -98,7 +98,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsIndividualPlan() async throws {
     #if !os(Linux)
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(
@@ -110,7 +110,7 @@ final class ChangeTests: TestCase {
 
   func testChangeUpgradeIndividualMonthlyToTeamYearly() async throws {
     #if !os(Linux)
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+      Current.stripe.fetchSubscription = { _ in .individualMonthly }
 
       let conn = connection(
         from: request(

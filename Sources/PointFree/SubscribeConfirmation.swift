@@ -131,16 +131,16 @@ private func validateReferralCode(
       either(
         const(
           conn
-          |> redirect(
-            to: .subscribeConfirmation(
-              lane: lane,
-              billing: subscribeData.billing,
-              isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-              teammates: subscribeData.teammates,
-              useRegionalDiscount: subscribeData.useRegionalDiscount
-            ),
-            headersMiddleware: flash(.error, "Invalid referral code.")
-          )
+            |> redirect(
+              to: .subscribeConfirmation(
+                lane: lane,
+                billing: subscribeData.billing,
+                isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+                teammates: subscribeData.teammates,
+                useRegionalDiscount: subscribeData.useRegionalDiscount
+              ),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
         ),
         { referrer in
           conn.map(
@@ -231,10 +231,10 @@ func redirectActiveSubscribers<A>(
           },
           { _ in
             conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.warning, "You already have an active subscription.")
-            )
+              |> redirect(
+                to: .account(),
+                headersMiddleware: flash(.warning, "You already have an active subscription.")
+              )
           }
         )
       }

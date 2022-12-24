@@ -319,10 +319,10 @@ private func validateReferrer(
           var subscribeData = subscribeData
           subscribeData.referralCode = nil
           return conn
-          |> redirect(
-            to: subscribeConfirmationWithSubscribeData(subscribeData),
-            headersMiddleware: flash(.error, "Invalid referral code.")
-          )
+            |> redirect(
+              to: subscribeConfirmationWithSubscribeData(subscribeData),
+              headersMiddleware: flash(.error, "Invalid referral code.")
+            )
         },
         { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
       )

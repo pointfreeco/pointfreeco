@@ -88,13 +88,13 @@ private func fetchInvoices<A>(
       switch $0 {
       case let .right(invoices):
         return conn.map(const(subscription .*. invoices .*. conn.data.second))
-        |> middleware
+          |> middleware
       case .left:
         return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(.error, invoiceError)
-        )
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(.error, invoiceError)
+          )
       }
     }
   }

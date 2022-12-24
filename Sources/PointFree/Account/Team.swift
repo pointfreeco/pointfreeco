@@ -52,12 +52,12 @@ private func leaveTeam<Z>(
       either(
         const(
           conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(
-              .error,
-              "Something went wrong. Please try again or contact <support@pointfree.co>.")
-          )
+            |> redirect(
+              to: .account(),
+              headersMiddleware: flash(
+                .error,
+                "Something went wrong. Please try again or contact <support@pointfree.co>.")
+            )
         ),
         const(middleware(conn))
       )
