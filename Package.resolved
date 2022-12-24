@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "combine-schedulers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/combine-schedulers",
+      "state" : {
+        "revision" : "882ac01eb7ef9e36d4467eb4b1151e74fcef85ab",
+        "version" : "0.9.1"
+      }
+    },
+    {
       "identity" : "postgres-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-kit",
@@ -70,6 +79,15 @@
       "state" : {
         "revision" : "bb436421f57269fbcfe7360735985321585a86e5",
         "version" : "0.10.1"
+      }
+    },
+    {
+      "identity" : "swift-clocks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-clocks",
+      "state" : {
+        "revision" : "20b25ca0dd88ebfb9111ec937814ddc5a8880172",
+        "version" : "0.2.0"
       }
     },
     {
@@ -181,15 +199,6 @@
       }
     },
     {
-      "identity" : "swift-prelude",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-prelude",
-      "state" : {
-        "branch" : "e275a2c",
-        "revision" : "e275a2c1ac387876e5c7e90cae67da7811172420"
-      }
-    },
-    {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
@@ -214,15 +223,6 @@
       "state" : {
         "revision" : "f54c4f74e7884f7930560c08387817ce28271770",
         "version" : "0.4.0"
-      }
-    },
-    {
-      "identity" : "swift-web",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-web",
-      "state" : {
-        "branch" : "13db455",
-        "revision" : "13db4559945b736277ad19cee5b0d59ffeaf83d2"
       }
     },
     {

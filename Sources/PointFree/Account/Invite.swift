@@ -44,7 +44,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <| { conn in
     @Dependency(\.siteRouter) var siteRouter
 
-    EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
+    return EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
       .run
       .flatMap(
         const(

@@ -122,7 +122,7 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
         try await Current.database.registerUser(
           withGitHubEnvelope: env,
           email: email.email,
-          now: Current.date
+          now: { Current.date() }
         )
       }
       .flatMap { user in
