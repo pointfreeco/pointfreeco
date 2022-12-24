@@ -91,23 +91,17 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       guard stripeSubscription.status.isActive else { throw unit }
       try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
-      let sendInviterEmailOfAcceptance = parallel(
-        sendEmail(
+      Task {
+        try await sendEmail(
           to: [inviter.email],
           subject:
             "\(currentUser.displayName) has accepted your Point-Free team invitation!",
           content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
         )
-        .run
-        .map(const(unit))
-      )
-
-      let deleteInvite = parallel(
-        EitherIO { try await Current.database.deleteTeamInvite(teamInvite.id) }.run
-      )
-
-      // fire-and-forget email of acceptance and deletion of invite
-      zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+      }
+      Task {
+        try await Current.database.deleteTeamInvite(teamInvite.id)
+      }
     }
     .run
     .flatMap { _ in
@@ -238,12 +232,13 @@ private func requireTeamInvite<A>(
 func sendInviteEmail(
   invite: TeamInvite, inviter: User
 ) -> EitherIO<Error, SendEmailResponse> {
-
-  return sendEmail(
-    to: [invite.email],
-    subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    content: inj2(teamInviteEmailView((inviter, invite)))
-  )
+  EitherIO {
+    try await sendEmail(
+      to: [invite.email],
+      subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
+      content: inj2(teamInviteEmailView((inviter, invite)))
+    )
+  }
 }
 
 private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User> {
