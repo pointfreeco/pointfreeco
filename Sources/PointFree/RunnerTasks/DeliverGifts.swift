@@ -10,10 +10,10 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
       sequence(
         gifts.map { gift in
           gift.stripePaymentIntentStatus == .succeeded
-          ? sendGiftEmail(for: gift)
-            .delay(.milliseconds(200))
-            .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-            .flatMap { _ in
+            ? sendGiftEmail(for: gift)
+              .delay(.milliseconds(200))
+              .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+              .flatMap { _ in
                 EitherIO {
                   try await Current.database.updateGiftStatus(gift.id, .succeeded, true)
                 }

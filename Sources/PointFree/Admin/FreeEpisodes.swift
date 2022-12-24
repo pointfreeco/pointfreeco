@@ -77,7 +77,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
                 zip(users, results)
                   .filter(second >>> \.isLeft)
                   .map(first),
-                
+
                 results.count
               )
             )

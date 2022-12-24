@@ -123,7 +123,7 @@ class AuthTests: TestCase {
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
     Current.gitHub.fetchAuthToken = { _ in
-        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+      .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
     }
 
     let auth = request(

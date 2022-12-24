@@ -59,7 +59,8 @@ public struct Client {
     self.appSecret = appSecret
 
     self.sendEmail = { email in
-      try await runMailgun(apiKey: apiKey, logger: logger)(mailgunSend(email: email, domain: domain))
+      try await runMailgun(apiKey: apiKey, logger: logger)(
+        mailgunSend(email: email, domain: domain))
     }
     self.validate = { emailAddress in
       try await runMailgun(apiKey: apiKey, logger: logger)(mailgunValidate(email: emailAddress))

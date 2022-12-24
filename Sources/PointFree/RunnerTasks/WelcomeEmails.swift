@@ -22,8 +22,8 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
 
   let delayedSend = { email in
     EitherIO { try await send(email: email) }
-    .delay(.milliseconds(200))
-    .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+      .delay(.milliseconds(200))
+      .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
   }
 
   return
