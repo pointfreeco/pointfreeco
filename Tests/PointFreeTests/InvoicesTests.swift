@@ -49,7 +49,7 @@ final class InvoicesTests: TestCase {
     ]
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
-    Current.stripe.fetchSubscription = const(pure(subscription))
+    Current.stripe.fetchSubscription = { _ in subscription }
 
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
@@ -75,7 +75,7 @@ final class InvoicesTests: TestCase {
     let invoice = Invoice.mock(charge: .right(charge))
 
     Current = .teamYearly
-    Current.stripe.fetchInvoice = const(pure(invoice))
+    Current.stripe.fetchInvoice = { _ in invoice }
 
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
@@ -100,7 +100,7 @@ final class InvoicesTests: TestCase {
     invoice.discount = .mock
     invoice.total = 1455
     invoice.subtotal = 1700
-    Current.stripe.fetchInvoice = const(pure(invoice))
+    Current.stripe.fetchInvoice = { _ in invoice }
 
     let conn = connection(
       from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))

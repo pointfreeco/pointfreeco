@@ -26,9 +26,7 @@ private func fetchStripeSubscription<A>(
     guard let subscription = get1(conn.data)
     else { return middleware(conn.map(over1(const(nil)))) }
 
-    return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-      .run
-      .map(\.right)
+    return IO { try? await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }
@@ -74,23 +72,16 @@ private func updateProfileMiddlewareHandler(
     updateFlash = flash(.notice, "We've updated your profile!")
   }
 
-  let customerId = subscription?.customer.either(id, \.id)
-  let updateCustomerExtraInvoiceInfo =
-    zip(
-      customerId,
-      data.extraInvoiceInfo
-    )
-    .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
-    ?? pure(unit)
-
   return EitherIO {
     try await Current.database.updateUser(
       id: user.id,
       name: data.name,
       emailSettings: emailSettings
     )
+    if let customerId = subscription?.customer.id, let extraInvoiceInfo = data.extraInvoiceInfo {
+      _ = try await Current.stripe.updateCustomerExtraInvoiceInfo(customerId, extraInvoiceInfo)
+    }
   }
-  .flatMap(const(updateCustomerExtraInvoiceInfo))
   .run
   .flatMap(
     const(

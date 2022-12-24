@@ -53,28 +53,30 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
 {
 
   let (subscription, user) = conn.data
-  return Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
-            )
-        )
-      ) { _ in
-        parallel(sendCancelEmail(to: user, for: subscription).run)
-          .run { _ in }
-
-        return conn
+  return EitherIO {
+    try await Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
+  }
+  .run
+  .flatMap(
+    either(
+      const(
+        conn
           |> redirect(
             to: .account(),
-            headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
+            headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
           )
-      }
-    )
+      )
+    ) { _ in
+      parallel(sendCancelEmail(to: user, for: subscription).run)
+        .run { _ in }
+
+      return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
+        )
+    }
+  )
 }
 
 private func reactivate(
@@ -84,34 +86,36 @@ private func reactivate(
 {
 
   let (item, subscription, user) = conn.data
-  return Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> redirect(
-              to: .account(),
-              headersMiddleware: flash(
-                .error,
-                """
-                We were unable to reactivate your subscription at this time. Please contact
-                <support@pointfree.co> or subscribe from our pricing page.
-                """
-              )
-            )
-        )
-      ) { _ in
-        parallel(sendReactivateEmail(to: user, for: subscription).run)
-          .run { _ in }
-
-        return conn
+  return EitherIO {
+    try await Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+  }
+  .run
+  .flatMap(
+    either(
+      const(
+        conn
           |> redirect(
             to: .account(),
-            headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
+            headersMiddleware: flash(
+              .error,
+              """
+              We were unable to reactivate your subscription at this time. Please contact
+              <support@pointfree.co> or subscribe from our pricing page.
+              """
+            )
           )
-      }
-    )
+      )
+    ) { _ in
+      parallel(sendReactivateEmail(to: user, for: subscription).run)
+        .run { _ in }
+
+      return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
+        )
+    }
+  )
 }
 
 // MARK: - Transformers
@@ -215,9 +219,7 @@ private func fetchStripeSubscription<A>(
 {
 
   return { conn in
-    Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
-      .run
-      .map(\.right)
+    IO { try? await Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }
