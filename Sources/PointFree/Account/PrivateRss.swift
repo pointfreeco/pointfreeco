@@ -37,7 +37,7 @@ func accountRssMiddleware(
       _ = try await sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }
         .performAsync()
-      return conn.invalidatedFeed(
+      return conn.invalidatedFeedResponse(
         errorMessage: """
           ‼️ The URL for this feed has been turned off by Point-Free due to suspicious \
           activity. You can retrieve your most up-to-date private podcast URL by visiting your \
@@ -52,7 +52,7 @@ func accountRssMiddleware(
       .fetchSubscriptionById(user.subscriptionId.unwrap())
     guard !subscription.deactivated
     else {
-      return conn.invalidatedFeed(
+      return conn.invalidatedFeedResponse(
         errorMessage: """
           ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co \
           to regain access to Point-Free.
@@ -66,7 +66,7 @@ func accountRssMiddleware(
       )
       .isActive
     else {
-      return conn.invalidatedFeed(
+      return conn.invalidatedFeedResponse(
         errorMessage: """
           ‼️ The URL for this feed has been turned off by Point-Free as the associated \
           subscription is no longer active. If you would like reactive this feed you can \
@@ -85,7 +85,7 @@ func accountRssMiddleware(
       .writeStatus(.ok)
       .respond(xml: privateEpisodesFeedView)
   } catch {
-    return conn.invalidatedFeed(
+    return conn.invalidatedFeedResponse(
       errorMessage: """
         ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription \
         is no longer active. If you would like reactive this feed you can resubscribe to \
@@ -97,7 +97,7 @@ func accountRssMiddleware(
 }
 
 extension Conn where Step == StatusLineOpen {
-  fileprivate func invalidatedFeed(errorMessage: String) -> Conn<ResponseEnded, Data> {
+  fileprivate func invalidatedFeedResponse(errorMessage: String) -> Conn<ResponseEnded, Data> {
     self
       .map { _ in errorMessage }
       .writeStatus(.ok)
