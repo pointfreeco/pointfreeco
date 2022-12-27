@@ -390,14 +390,18 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
   )
 }
 
-func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {
-  return IO {
-    // TODO: this doesn't actually work. The `conn.request.httpBody` has all the
-    // data, and that's what needs to be cleared.
-    conn.request.httpMethod == "HEAD"
-      ? conn.map(const(Data()))
-      : conn
+extension Conn where Step == ResponseEnded, A == Data {
+  func clearBodyForHeadRequests() -> Self {
+    guard self.request.httpMethod == "HEAD" else { return self }
+    var conn = self
+    conn.data = Data()
+    conn.response.body = Data()
+    return conn
   }
+}
+
+func clearHeadBody(_ conn: Conn<ResponseEnded, Data>) -> IO<Conn<ResponseEnded, Data>> {
+  IO { conn.clearBodyForHeadRequests() }
 }
 
 private func fetchUserSubscription<A>(

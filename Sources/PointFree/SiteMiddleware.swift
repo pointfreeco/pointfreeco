@@ -157,12 +157,13 @@ private func render(
   case .feed(.atom), .feed(.episodes):
     guard !Current.envVars.emergencyMode
     else {
-      return conn.map(const(unit))
-        |> writeStatus(.internalServerError)
-        >=> respond(json: "{}")
+      return pure(
+        conn
+          .writeStatus(.internalServerError)
+          .respond(json: "{}")
+      )
     }
-    return conn.map(const(unit))
-      |> episodesRssMiddleware
+    return pure(episodesRssMiddleware(conn.map { _ in }))
 
   case let .gifts(giftsRoute):
     return conn.map(
