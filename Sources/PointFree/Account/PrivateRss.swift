@@ -10,180 +10,98 @@ import Stripe
 import Syndication
 import Tuple
 
-let accountRssMiddleware =
-  fetchUserByRssSalt
-  <<< requireUser
-  <<< { trackFeedRequest(userId: \.first.id) >=> $0 }
-  <<< validateUserAgent
-  <<< fetchActiveStripeSubscription
-  <| map(lower)
-  >>> accountRssResponse
+func accountRssMiddleware(
+  _ conn: Conn<StatusLineOpen, User.RssSalt>
+) async -> Conn<ResponseEnded, Data> {
+  do {
+    let user = try await Current.database.fetchUserByRssSalt(conn.data)
 
-private let fetchActiveStripeSubscription: MT<Tuple1<User>, Tuple2<Stripe.Subscription?, User>> =
-  fetchUserSubscription
-  <<< requireSubscriptionNotDeactivated
-  <<< requireActiveSubscription
-  <<< fetchStripeSubscriptionForUser
+    // Track feed request
+    await notifyError(subject: "Create Feed Request Event Failed") {
+      try await Current.database.createFeedRequestEvent(
+        .privateEpisodesFeed,
+        conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+        user.id
+      )
+    }
 
-private func requireUser(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> {
-  return middleware
-    |> filterMap(
-      require1 >>> pure,
-      or: invalidatedFeedMiddleware(
-        errorMessage: """
-          ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
-          retrieve your most up-to-date private podcast URL by visiting your account page at \
-          \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
-          """)
-    )
-}
-
-private let requireSubscriptionNotDeactivated:
-  (
-    @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data> =
-    filter(
-      { get1($0)?.deactivated != .some(true) },
-      or: invalidatedFeedMiddleware(
-        errorMessage: """
-          ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access \
-          to Point-Free.
-          """)
-    )
-
-private let requireActiveSubscription:
-  (
-    @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data> =
-    filterMap(
-      validateActiveSubscriber,
-      or: invalidatedFeedMiddleware(
-        errorMessage: """
-          ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no longer \
-          active. If you would like reactive this feed you can resubscribe to Point-Free on your account page at \
-          \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
-          """)
-    )
-
-private let accountRssResponse:
-  Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription?, User), Data> =
-    writeStatus(.ok)
-    >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
-    >=> clearHeadBody
-
-private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusLineOpen, A>) -> IO<
-  Conn<ResponseEnded, Data>
-> {
-  return { conn in
-    conn.map(const(errorMessage))
-      |> writeStatus(.ok)
-      >=> respond(invalidatedFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
-      >=> clearHeadBody
-  }
-}
-
-private func fetchUserByRssSalt(
-  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data>)
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, Tuple1<User.RssSalt>, Data>
-{
-  return { conn in
-    IO { try? await Current.database.fetchUserByRssSalt(get1(conn.data)) }
-      .map { conn.map(const($0 .*. unit)) }
-      .flatMap(middleware)
-  }
-}
-
-private func validateActiveSubscriber<Z>(
-  data: T3<Models.Subscription?, User, Z>
-) -> IO<T2<User, Z>?> {
-
-  return IO {
-    guard let subscription = get1(data) else { return nil }
-    let user = get2(data)
-
-    return SubscriberState(user: user, subscriptionAndEnterpriseAccount: (subscription, nil))
-      .isActive
-      ? user .*. rest(data)
-      : nil
-  }
-}
-
-private func validateUserAgent<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
-  return { conn in
-    let user = get1(conn.data)
-
-    guard
+    // Validate user agent
+    if
       let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
-    else { return middleware(conn) }
-
-    return EitherIO {
+    {
       try await Current.database.updateUser(
         id: user.id,
         rssSalt: User.RssSalt(Current.uuid().uuidString.lowercased())
       )
-    }
-    .flatMap { _ in
-      sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
+      _ = try await sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }
-    }
-    .run
-    .flatMap { _ in
-      conn
-        |> invalidatedFeedMiddleware(
-          errorMessage: """
-            ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
-            retrieve your most up-to-date private podcast URL by visiting your account page at \
-            \(siteRouter.url(for: .account())). If you think this is an error, please contact support@pointfree.co.
-            """)
-    }
-  }
-}
-
-private func trackFeedRequest<A, I>(
-  userId: @escaping (A) -> User.ID
-)
-  -> (Conn<I, A>) -> IO<Conn<I, A>>
-{
-
-  return { conn in
-    EitherIO {
-      try await Current.database.createFeedRequestEvent(
-        .privateEpisodesFeed,
-        conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-        userId(conn.data)
+        .performAsync()
+      return conn.invalidatedFeed(
+        errorMessage: """
+          ‼️ The URL for this feed has been turned off by Point-Free due to suspicious \
+          activity. You can retrieve your most up-to-date private podcast URL by visiting your \
+          account page at \(siteRouter.url(for: .account())). If you think this is an error, \
+          please contact support@pointfree.co.
+          """
       )
     }
-    .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
-    .run
-    .map { _ in conn }
+
+    // Require active subscription
+    let subscription = try await Current.database
+      .fetchSubscriptionById(user.subscriptionId.unwrap())
+    guard !subscription.deactivated
+    else {
+      return conn.invalidatedFeed(
+        errorMessage: """
+          ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co \
+          to regain access to Point-Free.
+          """
+      )
+    }
+    guard
+      SubscriberState(
+        user: user,
+        subscriptionAndEnterpriseAccount: (subscription, nil)
+      )
+      .isActive
+    else {
+      return conn.invalidatedFeed(
+        errorMessage: """
+          ‼️ The URL for this feed has been turned off by Point-Free as the associated \
+          subscription is no longer active. If you would like reactive this feed you can \
+          resubscribe to Point-Free on your account page at \
+          \(siteRouter.url(for: .account())). If you think this is an error, please contact \
+          support@pointfree.co.
+          """
+      )
+    }
+
+    // Gracefully degrade when Stripe is unavailable
+    let stripeSubscription = try? await Current.stripe
+      .fetchSubscription(subscription.stripeSubscriptionId)
+
+    return conn.map { _ in (stripeSubscription, user) }
+      .writeStatus(.ok)
+      .respond(xml: privateEpisodesFeedView)
+  } catch {
+    return conn.invalidatedFeed(
+      errorMessage: """
+        ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription \
+        is no longer active. If you would like reactive this feed you can resubscribe to \
+        Point-Free on your account page at \(siteRouter.url(for: .account())). If you think this \
+        is an error, please contact support@pointfree.co.
+        """
+    )
   }
 }
 
-private func fetchStripeSubscriptionForUser<A>(
-  _ middleware: (
-    @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription?, User, A>, Data>
-  )
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
-{
-
-  return { conn in
-    conn.data.first.subscriptionId
-      .map { subscriptionId in
-        EitherIO {
-          let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
-          return try await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-        }
-        .run
-        .flatMap { conn.map(const($0.right .*. conn.data)) |> middleware }
-      }
-      ?? (conn.map(const(nil .*. conn.data)) |> middleware)
+extension Conn where Step == StatusLineOpen {
+  fileprivate func invalidatedFeed(errorMessage: String) -> Conn<ResponseEnded, Data> {
+    self
+      .map { _ in errorMessage }
+      .writeStatus(.ok)
+      .respond(xml: invalidatedFeedView)
   }
 }
 
@@ -255,8 +173,7 @@ func privateRssChannel(user: User) -> RssChannel {
 let nonYearlyMaxRssItems = 4
 
 private func items(forUser user: User, subscription: Stripe.Subscription?) -> [RssItem] {
-  return
-    Current
+  Current
     .episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(\.sequence, >))
@@ -397,28 +314,5 @@ extension Conn where Step == ResponseEnded, A == Data {
     conn.data = Data()
     conn.response.body = Data()
     return conn
-  }
-}
-
-func clearHeadBody(_ conn: Conn<ResponseEnded, Data>) -> IO<Conn<ResponseEnded, Data>> {
-  IO { conn.clearBodyForHeadRequests() }
-}
-
-private func fetchUserSubscription<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<Models.Subscription?, User, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
-{
-
-  return { conn in
-    guard let subscriptionId = get1(conn.data).subscriptionId else {
-      return conn.map(const(nil .*. conn.data)) |> middleware
-    }
-
-    let subscription = IO { try? await Current.database.fetchSubscriptionById(subscriptionId) }
-
-    return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
   }
 }
