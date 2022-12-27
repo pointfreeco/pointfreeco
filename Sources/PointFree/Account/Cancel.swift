@@ -19,28 +19,13 @@ import Tuple
 
 let cancelMiddleware =
   requireUserAndStripeSubscription
-  <<< filter(
-    get1 >>> \.isRenewing,
-    or: redirect(
-      to: .account(),
-      headersMiddleware: flash(.error, "Your subscription is already canceled!")
-    )
-  )
   <| map(lower)
   >>> { conn in IO { await cancel(conn) } }
 
 let reactivateMiddleware =
   requireUserAndStripeSubscription
-  <<< filter(
-    get1 >>> \.isCanceling,
-    or: redirect(
-      to: .account(),
-      headersMiddleware: flash(.error, "Your subscription can’t be reactivated!")
-    )
-  )
-  <<< requireSubscriptionItem
   <| map(lower)
-  >>> reactivate
+  >>> { conn in IO { await reactivate(conn) } }
 
 private let requireUserAndStripeSubscription: MT<Tuple1<User?>, Tuple2<Stripe.Subscription, User>> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -51,8 +36,14 @@ private let requireUserAndStripeSubscription: MT<Tuple1<User?>, Tuple2<Stripe.Su
 private func cancel(
   _ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>
 ) async -> Conn<ResponseEnded, Data> {
-  let (subscription, user) = conn.data
   do {
+    let (subscription, user) = conn.data
+    guard subscription.isRenewing
+    else {
+      return conn.redirect(to: .account()) {
+        $0.flash(.error, "Your subscription is already canceled!")
+      }
+    }
     _ = try await Current.stripe
       .cancelSubscription(subscription.id, subscription.status == .pastDue)
     Task { _ = try await sendCancelEmail(to: user, for: subscription).performAsync() }
@@ -67,49 +58,43 @@ private func cancel(
 }
 
 private func reactivate(
-  _ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, Stripe.Subscription, User)>
-)
-  -> IO<Conn<ResponseEnded, Data>>
-{
-
-  let (item, subscription, user) = conn.data
-  return EitherIO {
-    try await Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
-  }
-  .run
-  .flatMap(
-    either(
-      const(
-        conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(
-              .error,
-              """
-              We were unable to reactivate your subscription at this time. Please contact
-              <support@pointfree.co> or subscribe from our pricing page.
-              """
-            )
-          )
-      )
-    ) { _ in
-      parallel(sendReactivateEmail(to: user, for: subscription).run)
-        .run { _ in }
-
-      return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
-        )
+  _ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>
+) async -> Conn<ResponseEnded, Data> {
+  do {
+    let (subscription, user) = conn.data
+    guard subscription.isCanceling
+    else {
+      return conn.redirect(to: .account()) {
+        $0.flash(.error, "Your subscription can’t be reactivated!")
+      }
     }
-  )
+    guard let item = subscription.items.data.first
+    else {
+      return conn.redirect(to: .account()) { $0.flash(.error, genericSubscriptionError) }
+    }
+    _ = try await Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+    Task { _ = try await sendReactivateEmail(to: user, for: subscription).performAsync() }
+    return conn.redirect(to: .account()) {
+      $0.flash(.notice, "We’ve reactivated your subscription.")
+    }
+  } catch {
+    return conn.redirect(to: .account()) {
+      $0.flash(
+        .error,
+        """
+        We were unable to reactivate your subscription at this time. Please contact \
+        <support@pointfree.co> or subscribe from our pricing page.
+        """
+      )
+    }
+  }
 }
 
 // MARK: - Transformers
 
 let genericSubscriptionError = """
-  We were unable to locate all of your subscription information. Please contact <support@pointfree.co> and let
-  us know how we can help!
+  We were unable to locate all of your subscription information. Please contact \
+  <support@pointfree.co> and let us know how we can help!
   """
 
 func requireSubscriptionItem<A>(
