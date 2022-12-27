@@ -27,7 +27,7 @@ let cancelMiddleware =
     )
   )
   <| map(lower)
-  >>> cancel
+  >>> { conn in IO { await cancel(conn) } }
 
 let reactivateMiddleware =
   requireUserAndStripeSubscription
@@ -48,35 +48,22 @@ private let requireUserAndStripeSubscription: MT<Tuple1<User?>, Tuple2<Stripe.Su
 
 // MARK: -
 
-private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
-  -> IO<Conn<ResponseEnded, Data>>
-{
-
+private func cancel(
+  _ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>
+) async -> Conn<ResponseEnded, Data> {
   let (subscription, user) = conn.data
-  return EitherIO {
-    try await Current.stripe.cancelSubscription(subscription.id, subscription.status == .pastDue)
-  }
-  .run
-  .flatMap(
-    either(
-      const(
-        conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
-          )
-      )
-    ) { _ in
-      parallel(sendCancelEmail(to: user, for: subscription).run)
-        .run { _ in }
-
-      return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
-        )
+  do {
+    _ = try await Current.stripe
+      .cancelSubscription(subscription.id, subscription.status == .pastDue)
+    Task { _ = try await sendCancelEmail(to: user, for: subscription).performAsync() }
+    return conn.redirect(to: .account()) {
+      $0.flash(.notice, "We’ve canceled your subscription.")
     }
-  )
+  } catch {
+    return conn.redirect(to: .account()) {
+      $0.flash(.error, "We couldn’t cancel your subscription at this time.")
+    }
+  }
 }
 
 private func reactivate(

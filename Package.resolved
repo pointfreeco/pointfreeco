@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-web",
       "state" : {
-        "branch" : "a33fcff",
-        "revision" : "a33fcffb1de6dc23bcb5eeb494bbc000f2a80807"
+        "branch" : "fe0e57f",
+        "revision" : "fe0e57f3c5498c6a6310053c4f7156a870897396"
       }
     },
     {

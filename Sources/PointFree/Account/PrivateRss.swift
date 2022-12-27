@@ -14,7 +14,10 @@ func accountRssMiddleware(
   _ conn: Conn<StatusLineOpen, User.RssSalt>
 ) async -> Conn<ResponseEnded, Data> {
   do {
-    let user = try await Current.database.fetchUserByRssSalt(conn.data)
+    guard let user = try? await Current.database.fetchUserByRssSalt(conn.data)
+    else {
+      return conn.invalidatedFeedResponse(errorMessage: suspiciousError)
+    }
 
     // Track feed request
     await notifyError(subject: "Create Feed Request Event Failed") {
@@ -37,14 +40,7 @@ func accountRssMiddleware(
       _ = try await sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }
         .performAsync()
-      return conn.invalidatedFeedResponse(
-        errorMessage: """
-          ‼️ The URL for this feed has been turned off by Point-Free due to suspicious \
-          activity. You can retrieve your most up-to-date private podcast URL by visiting your \
-          account page at \(siteRouter.url(for: .account())). If you think this is an error, \
-          please contact support@pointfree.co.
-          """
-      )
+      return conn.invalidatedFeedResponse(errorMessage: suspiciousError)
     }
 
     // Require active subscription
@@ -52,12 +48,7 @@ func accountRssMiddleware(
       .fetchSubscriptionById(user.subscriptionId.unwrap())
     guard !subscription.deactivated
     else {
-      return conn.invalidatedFeedResponse(
-        errorMessage: """
-          ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co \
-          to regain access to Point-Free.
-          """
-      )
+      return conn.invalidatedFeedResponse(errorMessage: deactivatedError)
     }
     guard
       SubscriberState(
@@ -66,15 +57,7 @@ func accountRssMiddleware(
       )
       .isActive
     else {
-      return conn.invalidatedFeedResponse(
-        errorMessage: """
-          ‼️ The URL for this feed has been turned off by Point-Free as the associated \
-          subscription is no longer active. If you would like reactive this feed you can \
-          resubscribe to Point-Free on your account page at \
-          \(siteRouter.url(for: .account())). If you think this is an error, please contact \
-          support@pointfree.co.
-          """
-      )
+      return conn.invalidatedFeedResponse(errorMessage: inactiveError)
     }
 
     // Gracefully degrade when Stripe is unavailable
@@ -85,14 +68,7 @@ func accountRssMiddleware(
       .writeStatus(.ok)
       .respond(xml: privateEpisodesFeedView)
   } catch {
-    return conn.invalidatedFeedResponse(
-      errorMessage: """
-        ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription \
-        is no longer active. If you would like reactive this feed you can resubscribe to \
-        Point-Free on your account page at \(siteRouter.url(for: .account())). If you think this \
-        is an error, please contact support@pointfree.co.
-        """
-    )
+    return conn.invalidatedFeedResponse(errorMessage: inactiveError)
   }
 }
 
@@ -103,6 +79,31 @@ extension Conn where Step == StatusLineOpen {
       .writeStatus(.ok)
       .respond(xml: invalidatedFeedView)
   }
+}
+
+private var deactivatedError: String {
+  """
+  ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain \
+  access to Point-Free.
+  """
+}
+
+private var inactiveError: String {
+  """
+  ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no \
+  longer active. If you would like reactive this feed you can resubscribe to Point-Free on your \
+  account page at \(siteRouter.url(for: .account())). If you think this is an error, please \
+  contact support@pointfree.co.
+  """
+}
+
+private var suspiciousError: String {
+  """
+  ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+  retrieve your most up-to-date private podcast URL by visiting your account page at \
+  \(siteRouter.url(for: .account())). If you think this is an error, please contact \
+  support@pointfree.co.
+  """
 }
 
 private let privateEpisodesFeedView = itunesRssFeedLayout {

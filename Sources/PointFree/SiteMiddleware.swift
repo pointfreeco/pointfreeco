@@ -289,6 +289,48 @@ private func render(
   }
 }
 
+extension Conn where Step == StatusLineOpen {
+  public func redirect(
+    to route: SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
+  ) -> Conn<ResponseEnded, Data> {
+    self.redirect(
+      to: siteRouter.path(for: route),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    with route: (A) -> SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
+  ) -> Conn<ResponseEnded, Data> {
+    self.redirect(
+      to: siteRouter.path(for: route(self.data)),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    to route: SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+  ) async -> Conn<ResponseEnded, Data> {
+    await self.redirect(
+      to: siteRouter.path(for: route),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    with route: (A) -> SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+  ) async -> Conn<ResponseEnded, Data> {
+    await self.redirect(
+      to: siteRouter.path(for: route(self.data)),
+      headersMiddleware: headersMiddleware
+    )
+  }
+}
+
 public func redirect<A>(
   with route: @escaping (A) -> SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
