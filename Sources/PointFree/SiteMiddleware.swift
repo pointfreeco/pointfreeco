@@ -155,15 +155,16 @@ private func render(
       |> expressUnsubscribeReplyMiddleware
 
   case .feed(.atom), .feed(.episodes):
-    guard !Current.envVars.emergencyMode
-    else {
-      return pure(
-        conn
-          .writeStatus(.internalServerError)
-          .respond(json: "{}")
+      return IO {
+        guard !Current.envVars.emergencyMode
+        else {
+          return conn
+            .writeStatus(.internalServerError)
+            .respond(json: "{}")
+        }
+        return episodesRssMiddleware(conn.map { _ in }
       )
     }
-    return pure(episodesRssMiddleware(conn.map { _ in }))
 
   case let .gifts(giftsRoute):
     return conn.map(
