@@ -217,6 +217,15 @@
       }
     },
     {
+      "identity" : "swift-web",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-web",
+      "state" : {
+        "branch" : "a33fcff",
+        "revision" : "a33fcffb1de6dc23bcb5eeb494bbc000f2a80807"
+      }
+    },
+    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
