@@ -152,19 +152,3 @@ extension PointFreeRouter: DependencyKey {
     PointFreeRouter(baseURL: DependencyValues._current.envVars.baseUrl)
   }
 }
-
-private enum FireAndForgetKey: DependencyKey {
-  static let liveValue: (@Sendable @escaping () async throws -> Void) async -> Void = { operation in
-    Task { try? await operation() }
-  }
-  static let testValue: (@Sendable @escaping () async throws -> Void) async -> Void = { operation in
-    try? await operation()
-  }
-}
-
-extension DependencyValues {
-  public var fireAndForget: (@Sendable @escaping () async throws -> Void) async -> Void {
-    get { self[FireAndForgetKey.self] }
-    set { self[FireAndForgetKey.self] = newValue }
-  }
-}
