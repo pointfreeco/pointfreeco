@@ -15,38 +15,26 @@ import Stripe
 import Styleguide
 import Tuple
 
+let cancelMiddleware = requireUserAndStripeSubscription(cancelResponse)
+
+let reactivateMiddleware = requireUserAndStripeSubscription(reactivateResponse)
+
 // MARK: Middleware
 
-let cancelMiddleware =
-  requireUserAndStripeSubscription
-  <| map(lower)
-  >>> { conn in IO { await cancel(conn) } }
-
-let reactivateMiddleware =
-  requireUserAndStripeSubscription
-  <| map(lower)
-  >>> { conn in IO { await reactivate(conn) } }
-
-private let requireUserAndStripeSubscription: MT<Tuple1<User?>, Tuple2<Stripe.Subscription, User>> =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-  <<< requireStripeSubscription
-
-// MARK: -
-
-private func cancel(
-  _ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>
+private func cancelResponse(
+  _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
   do {
-    let (subscription, user) = conn.data
-    guard subscription.isRenewing
+    let (user, stripeSubscription) = conn.data
+    guard stripeSubscription.isRenewing
     else {
       return conn.redirect(to: .account()) {
         $0.flash(.error, "Your subscription is already canceled!")
       }
     }
     _ = try await Current.stripe
-      .cancelSubscription(subscription.id, subscription.status == .pastDue)
-    Task { _ = try await sendCancelEmail(to: user, for: subscription).performAsync() }
+      .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
+    Task { try await sendCancelEmail(to: user, for: stripeSubscription) }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve canceled your subscription.")
     }
@@ -57,23 +45,23 @@ private func cancel(
   }
 }
 
-private func reactivate(
-  _ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>
+private func reactivateResponse(
+  _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
   do {
-    let (subscription, user) = conn.data
-    guard subscription.isCanceling
+    let (user, stripeSubscription) = conn.data
+    guard stripeSubscription.isCanceling
     else {
       return conn.redirect(to: .account()) {
         $0.flash(.error, "Your subscription can’t be reactivated!")
       }
     }
-    guard let item = subscription.items.data.first
+    guard let item = stripeSubscription.items.data.first
     else {
       return conn.redirect(to: .account()) { $0.flash(.error, genericSubscriptionError) }
     }
-    _ = try await Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
-    Task { _ = try await sendReactivateEmail(to: user, for: subscription).performAsync() }
+    _ = try await Current.stripe.updateSubscription(stripeSubscription, item.plan.id, item.quantity)
+    Task { try await sendReactivateEmail(to: user, for: stripeSubscription) }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve reactivated your subscription.")
     }
@@ -90,124 +78,51 @@ private func reactivate(
   }
 }
 
-// MARK: - Transformers
+private func requireUserAndStripeSubscription(
+  _ middleware: @escaping (Conn<StatusLineOpen, (User, Stripe.Subscription)>) async -> Conn<
+    ResponseEnded, Data
+  >
+) -> (Conn<StatusLineOpen, User?>) async -> Conn<ResponseEnded, Data> {
+  return { conn in
+    guard let user = conn.data
+    else { return conn.loginAndRedirect() }
+
+    guard let subscription = try? await Current.database.fetchSubscriptionByOwnerId(user.id)
+    else {
+      return conn.redirect(to: .account()) {
+        $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
+      }
+    }
+
+    guard
+      let stripeSubscription = try? await Current.stripe
+        .fetchSubscription(subscription.stripeSubscriptionId)
+    else {
+      return conn.redirect(to: .account()) {
+        $0.flash(.error, genericSubscriptionError)
+      }
+    }
+
+    return await middleware(conn.map { _ in (user, stripeSubscription) })
+  }
+}
 
 let genericSubscriptionError = """
   We were unable to locate all of your subscription information. Please contact \
   <support@pointfree.co> and let us know how we can help!
   """
 
-func requireSubscriptionItem<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<Stripe.Subscription.Item, Stripe.Subscription, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data>
-{
-
-  return filterMap(
-    { data in pure(data.first.items.data.first.map { $0 .*. data }) },
-    or: redirect(to: .account(), headersMiddleware: flash(.error, genericSubscriptionError))
-  )
-    <| middleware
-}
-
-func requireStripeSubscription<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, User, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
-{
-
-  return requireSubscriptionAndOwner
-    <<< fetchStripeSubscription
-    <<< filterMap(
-      require1 >>> pure,
-      or: redirect(
-        to: .account(),
-        headersMiddleware: flash(.error, genericSubscriptionError)
-      )
-    )
-    <| middleware
-}
-
-private func requireSubscriptionAndOwner<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<Models.Subscription, User, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
-{
-
-  return fetchSubscription
-    <<< filterMap(
-      require1 >>> pure,
-      or: redirect(
-        to: .pricingLanding,
-        headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
-      )
-    )
-    <<< filter(
-      isSubscriptionOwner,
-      or: redirect(
-        to: .account(),
-        headersMiddleware: flash(.error, "Only subscription owners can make subscription changes.")
-      )
-    )
-    <| middleware
-}
-
-func fetchSubscription<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<Models.Subscription?, User, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
-{
-
-  return { conn in
-    let subscription = IO {
-      try? await Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
-    }
-
-    return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
-  }
-}
-
-private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Models.Subscription, User, A>)
-  -> Bool
-{
-
-  return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
-}
-
-private func fetchStripeSubscription<A>(
-  _ middleware: (
-    @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>
-  )
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription, A>, Data>
-{
-
-  return { conn in
-    IO { try? await Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
-      .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
-  }
-}
-
 // MARK: - Emails
 
-private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscription)
-  -> EitherIO<Error, SendEmailResponse>
-{
-  EitherIO {
-    try await sendEmail(
-      to: [owner.email],
-      subject: "Your subscription has been canceled",
-      content: inj2(cancelEmailView((owner, subscription)))
-    )
-  }
+@discardableResult
+private func sendCancelEmail(
+  to owner: User, for subscription: Stripe.Subscription
+) async throws -> SendEmailResponse {
+  try await sendEmail(
+    to: [owner.email],
+    subject: "Your subscription has been canceled",
+    content: inj2(cancelEmailView((owner, subscription)))
+  )
 }
 
 let cancelEmailView =
@@ -253,16 +168,15 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
   )
 }
 
-private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
-  -> EitherIO<Error, SendEmailResponse>
-{
-  EitherIO {
-    try await sendEmail(
-      to: [owner.email],
-      subject: "Your subscription has been reactivated",
-      content: inj2(reactivateEmailView((owner, subscription)))
-    )
-  }
+@discardableResult
+private func sendReactivateEmail(
+  to owner: User, for subscription: Stripe.Subscription
+) async throws -> SendEmailResponse {
+  try await sendEmail(
+    to: [owner.email],
+    subject: "Your subscription has been reactivated",
+    content: inj2(reactivateEmailView((owner, subscription)))
+  )
 }
 
 let reactivateEmailView =
