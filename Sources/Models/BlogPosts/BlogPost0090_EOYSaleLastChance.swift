@@ -59,6 +59,6 @@ public let post0090_2022EOYSaleLastChance = BlogPost(
   coverImage: nil,
   hidden: true,
   id: 90,
-  publishedAt: Date(timeIntervalSince1970: 1672246800),
+  publishedAt: Date(timeIntervalSince1970: 1_672_246_800),
   title: "Last chance to save 25% off Point-Free"
 )
