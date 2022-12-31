@@ -2629,6 +2629,34 @@ including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
                 </div>
               </div>
             </div>
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
+                        m-pl2
+                        m-pr2
+                        m-pt2
+                        m-pb2"
+                 style="background-color: #f6f6f6;
+                        border-left: 3px solid #d8d8d8">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1">
+                Note
+              </h3>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4">
+                <div class="md-ctn">
+                  <p>This is a note for those time we want to make side remarks. We can use <em>markdown</em> in this
+block, including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
+
+                </div>
+              </div>
+            </div>
             <div>
               <div id="t30"
                    class="block">

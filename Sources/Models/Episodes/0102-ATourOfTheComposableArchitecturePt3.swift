@@ -123,7 +123,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture`. You can now import `ComposableArchitecture` in your test targets to access the test store.
       """#,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: #"""

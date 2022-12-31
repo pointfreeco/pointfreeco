@@ -20,7 +20,7 @@ extension Episode {
           """,
         link:
           "https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304",
-        publishedAt: referenceDateFormatter.date(from: "2022-05-13"),
+        publishedAt: yearMonthDayFormatter.date(from: "2022-05-13"),
         title: "Reliably testing code that adopts Swift Concurrency"
       ),
     ],

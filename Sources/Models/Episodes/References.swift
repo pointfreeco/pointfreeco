@@ -34,7 +34,7 @@ extension Episode.Reference {
       BonMot is an open source library for providing a nicer API to creating attributed strings in Swift. We integrated our [snapshot testing library](http://github.com/pointfreeco/swift-snapshot-testing) into BonMot for an [episode](/episodes/ep41-a-tour-of-snapshot-testing) to show how easy it is to integrate, and how easy it is to create your own snapshot strategies from scratch.
       """,
     link: "http://github.com/raizlabs/BonMot/",
-    publishedAt: referenceDateFormatter.date(from: "2015-06-17"),
+    publishedAt: yearMonthDayFormatter.date(from: "2015-06-17"),
     title: "BonMot"
   )
 
@@ -64,7 +64,7 @@ extension Episode.Reference {
       An open source library that provides schedulers for making Combine more testable and more versatile.
       """,
     link: "http://github.com/pointfreeco/combine-schedulers",
-    publishedAt: referenceDateFormatter.date(from: "2020-06-14"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-06-14"),
     title: "combine-schedulers"
   )
 
@@ -85,7 +85,7 @@ extension Episode.Reference {
         A detailed article on the technique of "operator fusion" that Combine employs.
         """,
       link: "https://www.thomasvisser.me/2019/07/04/combine-types/",
-      publishedAt: referenceDateFormatter.date(from: "2019-07-04"),
+      publishedAt: yearMonthDayFormatter.date(from: "2019-07-04"),
       title: "Why Combine has so many Publisher types"
     )
   }
@@ -98,7 +98,7 @@ extension Episode.Reference {
       > Just as with OO, one of the keys to a functional style of programming is to write very small bits of functionality that can be combined to create powerful results. The glue that combines the small bits are called Combinators. In this talk we’ll motivate the topic with a look at Swift Sets before moving on to infinite sets, random number generators, parser combinators, and Peter Henderson’s Picture Language. Combinators allow you to provide APIs that are friendly to non-functional programmers.
       """,
     link: "https://vimeo.com/290272240",
-    publishedAt: referenceDateFormatter.date(from: "2018-09-14"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-09-14"),
     title: "Combinators"
   )
 
@@ -108,7 +108,7 @@ extension Episode.Reference {
       We made dependencies a first class concern of the [Composable Architecture](/collections/composable-architecture) by baking the notion of dependencies directly into the definition of its atomic unit: the reducer.
       """#,
     link: "https://www.pointfree.co/collections/composable-architecture/dependency-management",
-    publishedAt: referenceDateFormatter.date(from: "2020-02-17"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-02-17"),
     title: "Composable Architecture: Dependency Management"
   )
 
@@ -118,7 +118,7 @@ extension Episode.Reference {
       A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
       """,
     link: "https://www.youtube.com/watch?v=QOIigosUNGU",
-    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
+    publishedAt: yearMonthDayFormatter.date(from: "2017-10-10"),
     title: "Composable Reducers"
   )
 
@@ -151,7 +151,7 @@ extension Episode.Reference {
       In this WWDC session from 2020 Apple engineers describe how to best wield `@ObservedObject`s and `@StateObject`s. Starting at around 12:30 in the video they hint at the possibility of breaking up large observable objects into smaller "projections", but stop short of showing code on how to accomplish this and never released the [source code](https://developer.apple.com/forums/tags/wwdc20-10040) of the demo project unfortunately. Hopefully WWDC 2021 will bring some solutions 🤞.
       """,
     link: "https://developer.apple.com/videos/play/wwdc2020/10040/",
-    publishedAt: referenceDateFormatter.date(from: "2020-06-22"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-06-22"),
     title: "Data Essentials in SwiftUI"
   )
 
@@ -161,7 +161,7 @@ extension Episode.Reference {
       Combine is quite a large framework to get a handle of! When noting that its `Future` publisher is eager on Twitter, we were tipped off to the `Deferred` publisher as an easy solution.
       """#,
     link: "https://twitter.com/_lksz_/status/1183773360494383104",
-    publishedAt: referenceDateFormatter.date(from: "2019-10-19"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-10-19"),
     title: "Deferred Publishers: Tweet Tip"
   )
 
@@ -170,7 +170,7 @@ extension Episode.Reference {
     blurb:
       "An in-depth explaining on view identity, lifetime, and more, and crucial to understanding how `@State` works.",
     link: "https://developer.apple.com/videos/play/wwdc2021/10022/",
-    publishedAt: referenceDateFormatter.date(from: "2021-06-09")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2021-06-09")!,
     title: "WWDC 2021: Demystifying SwiftUI"
   )
 
@@ -182,7 +182,7 @@ extension Episode.Reference {
       > Let’s take a moment to properly define what a dependency is and understand why they add so much complexity to our code. We will begin building a moderately complex application with three dependencies, and see how it complicates development, and what we can do about it.
       """#,
     link: "https://www.pointfree.co/collections/dependencies",
-    publishedAt: referenceDateFormatter.date(from: "2020-07-27"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-07-27"),
     title: "Designing Dependencies"
   )
 
@@ -202,7 +202,7 @@ extension Episode.Reference {
       This question on the Swift forums brings up an interesting discussion on how to best handle large files (hundreds of megabytes and millions of lines) in Swift. The thread contains lots of interesting tips on how to improve performance, and contains some hope of future standard library changes that may help too.
       """,
     link: "https://forums.swift.org/t/difficulties-with-efficient-large-file-parsing/23660",
-    publishedAt: referenceDateFormatter.date(from: "2019-04-25"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-04-25"),
     title: "Difficulties With Efficient Large File Parsing"
   )
 
@@ -222,7 +222,7 @@ extension Episode.Reference {
       This short article explains how everything can be seen to be a function, even values and function application. Eitan coins the term `zurry` to describe the act of currying a zero-argument function.
       """,
     link: "https://tangledw3b.wordpress.com/2013/01/18/cartesian-closed-categories/",
-    publishedAt: referenceDateFormatter.date(from: "2013-01-18"),
+    publishedAt: yearMonthDayFormatter.date(from: "2013-01-18"),
     title: "Everything’s a Function."
   )
 
@@ -254,7 +254,7 @@ extension Episode.Reference {
       A detailed article on the technique of "operator fusion" that Combine employs.
       """,
     link: "https://jasdev.me/fusion-primer",
-    publishedAt: referenceDateFormatter.date(from: "2020-04-01"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-04-01"),
     title: "An operator fusion primer"
   )
 
@@ -273,7 +273,7 @@ extension Episode.Reference {
       This talk by Alexis Gallagher shows why protocols with associated types are so complicated, and tries to understand why Swift chose to go with that design instead of other alternatives.
       """,
     link: "https://www.youtube.com/watch?v=XWoNjiSPqI8",
-    publishedAt: referenceDateFormatter.date(from: "2015-12-15"),
+    publishedAt: yearMonthDayFormatter.date(from: "2015-12-15"),
     title: "Protocols with Associated Types"
   )
 
@@ -283,7 +283,7 @@ extension Episode.Reference {
       A Haskell article that demonstrates a pattern in the Haskell community, and why it _might_ be an anti-pattern. In a nutshell, the pattern is for libraries to express their functionality with typeclasses (i.e. protocols) and provide `Any*` wrappers around the protocol for when you do not want to refer to a particular instance of that protocol. The alternative is to replace the typeclass with a simple concrete data type. Sound familiar?
       """,
     link: "https://lukepalmer.wordpress.com/2010/01/24/haskell-antipattern-existential-typeclass/",
-    publishedAt: referenceDateFormatter.date(from: "2010-01-24"),
+    publishedAt: yearMonthDayFormatter.date(from: "2010-01-24"),
     title: "Haskell Antipattern: Existential Typeclass"
   )
 
@@ -292,7 +292,7 @@ extension Episode.Reference {
     blurb:
       "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
     link: "https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State",
-    publishedAt: referenceDateFormatter.date(from: "2019-02-27"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-02-27"),
     title: "Haskell/Understanding monads/State"
   )
 
@@ -313,7 +313,7 @@ extension Episode.Reference {
       > I’m delighted to announce Swift Atomics, a new open source package that enables direct use of low-level atomic operations in Swift code. The goal of this library is to enable intrepid systems programmers to start building synchronization constructs (such as concurrent data structures) directly in Swift.
       """,
     link: "https://www.swift.org/blog/swift-atomics/",
-    publishedAt: referenceDateFormatter.date(from: "2020-10-01"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-10-01"),
     title: "Introducing Swift Atomics"
   )
 
@@ -346,7 +346,7 @@ extension Episode.Reference {
       Not a lot is currently known how `@State` really works under the hood. Sometimes it almost seems like magic! This article explores how `@State` might be implemented internally, and it seems that most likely SwiftUI is using the rich set of metadata available to the runtime (which the author of this article has also explored deeply [here](https://kateinoigakukun.hatenablog.com/entry/2019/03/22/184356)).
       """,
     link: "https://kateinoigakukun.hatenablog.com/entry/2019/06/09/081831",
-    publishedAt: referenceDateFormatter.date(from: "2019-06-09"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-06-09"),
     title: "Inside SwiftUI (About @State)"
   )
 
@@ -371,7 +371,7 @@ extension Episode.Reference {
       This publication (from 2010!) was the initial inspiration for our parser-printer explorations, and a much less polished version of the code was employed on the Point-Free web site on day one of our launch!
       """,
     link: "https://www.informatik.uni-marburg.de/~rendel/unparse/",
-    publishedAt: referenceDateFormatter.date(from: "2010-09-30"),
+    publishedAt: yearMonthDayFormatter.date(from: "2010-09-30"),
     title: "Invertible syntax descriptions: Unifying parsing and pretty printing"
   )
 
@@ -387,7 +387,7 @@ extension Episode.Reference {
     author: "Point-Free",
     blurb: "Open source game built in SwiftUI and the Composable Architecture.",
     link: "https://github.com/pointfreeco/isowords",
-    publishedAt: referenceDateFormatter.date(from: "2021-04-17"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-04-17"),
     title: "isowords on GitHub"
   )
 
@@ -397,7 +397,7 @@ extension Episode.Reference {
       Laziness is often touted as an important attribute of functional programming (for example, in John Hughes' seminal paper, _Why Functional Programming Matters_) and is a primary feature of the Haskell programming language.
       """,
     link: "https://en.wikipedia.org/wiki/Lazy_evaluation",
-    publishedAt: referenceDateFormatter.date(from: "2021-04-17"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-04-17"),
     title: "Lazy Evaluation"
   )
 
@@ -407,7 +407,7 @@ extension Episode.Reference {
       A wonderful article that explains parser combinators from start to finish. The article assumes you are already familiar with Rust, but it is possible to look past the syntax and see that there are many shapes in the code that are similar to what we have covered in our episodes on parsers.
       """,
     link: "https://bodil.lol/parser-combinators/",
-    publishedAt: referenceDateFormatter.date(from: "2019-04-18"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-04-18"),
     title: "Learning Parser Combinators With Rust"
   )
 
@@ -417,7 +417,7 @@ extension Episode.Reference {
       In this free episode of Swift talk, Chris and Florian discuss various techniques for parsing strings as a means to process a ledger file. It contains a good overview of various parsing techniques, including parser grammars.
       """,
     link: "https://talk.objc.io/episodes/S01E13-parsing-techniques",
-    publishedAt: referenceDateFormatter.date(from: "2016-08-26"),
+    publishedAt: yearMonthDayFormatter.date(from: "2016-08-26"),
     title: "Ledger Mac App: Parsing Techniques"
   )
 
@@ -427,7 +427,7 @@ extension Episode.Reference {
       > The libdispatch is one of the most misused API due to the way it was presented to us when it was introduced and for many years after that, and due to the confusing documentation and API. This page is a compilation of important things to know if you're going to use this library. Many references are available at the end of this document pointing to comments from Apple's very own libdispatch maintainer (Pierre Habouzit).
       """,
     link: "https://gist.github.com/tclementdev/6af616354912b0347cdf6db159c37057",
-    publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-04-26"),
     title: "libdispatch efficiency tips"
   )
 
@@ -439,7 +439,7 @@ extension Episode.Reference {
       > Code formatter is one of the most important tool to write a beautiful Swift code. If you are working with the team, 'code consistency' is always a problem, and your team's guideline and code review can probably ease a little. Since Xcode doesn't fully fix our problems, now it's a time to make our own automatic style-rule! In this talk, we will look into how Swift language forms a formal grammar and AST, how it can be parsed, and we will see the power of SwiftSyntax and it's structured editing that everyone can practice.
       """#,
     link: "https://www.youtube.com/watch?v=_F9KcXSLc_s",
-    publishedAt: referenceDateFormatter.date(from: "2019-01-19"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-01-19"),
     title: "Make your own code formatter in Swift "
   )
 
@@ -449,7 +449,7 @@ extension Episode.Reference {
       Ole discusses the concept of "illegal states" in data types, and how to leverage the type-system to make those states completely impossible to construct. His article was inspired by a mistake we made in our episode on algebraic data types, which shows just how subtle this problem can be!
       """,
     link: "https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/",
-    publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-04-26"),
     title: "Making illegal states unrepresentable"
   )
 
@@ -459,7 +459,7 @@ extension Episode.Reference {
       > macOS 10.13 and iOS 11 have reinvented how Grand Central Dispatch and the Darwin kernel collaborate, enabling your applications to run concurrent workloads more efficiently. Learn how to modernize your code to take advantage of these improvements and make optimal use of hardware resources.
       """,
     link: "https://developer.apple.com/videos/play/wwdc2017/706/",
-    publishedAt: referenceDateFormatter.date(from: "2017-06-05"),
+    publishedAt: yearMonthDayFormatter.date(from: "2017-06-05"),
     title: "Modernizing Grand Central Dispatch Usage"
   )
 
@@ -471,7 +471,7 @@ extension Episode.Reference {
       > Every programming language has a set of conventions that people come to expect. Learn about the patterns that are common to Swift API design, with examples from new APIs like SwiftUI, Combine, and RealityKit. Whether you're developing an app as part of a team, or you're publishing a library for others to use, find out how to use new features of Swift to ensure clarity and correct use of your APIs.
       """,
     link: "https://developer.apple.com/videos/play/wwdc2019/415/?time=778",
-    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-01-02"),
     title: "Modern Swift API Design"
   )
 
@@ -479,7 +479,7 @@ extension Episode.Reference {
     author: "Daniel Peter",
     blurb: "",
     link: "https://twitter.com/Oh_Its_Daniel/status/1277187721304342529",
-    publishedAt: referenceDateFormatter.date(from: "2020-06-28"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-06-28"),
     title: "Child stores"
   )
 
@@ -489,7 +489,7 @@ extension Episode.Reference {
       This is one of the few articles in the community that addresses how to derive child behavior from a parent. This article focuses on how to notify the parent when child state changes, but extra work must be done if one wants to share state between child and parent.
       """,
     link: "https://rhonabwy.com/2021/02/13/nested-observable-objects-in-swiftui/",
-    publishedAt: referenceDateFormatter.date(from: "2021-02-13"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-02-13"),
     title: "Nested Observable Objects in SwiftUI"
   )
 
@@ -499,7 +499,7 @@ extension Episode.Reference {
       Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as a super charged version of the `Parallel` type we've used many times on this series. It comes with a method that has the same signature as `flatMap`, but originally it was named `then`. This pull-request renames the method to `flatMap`, which brings it inline with the naming for `Optional`, `Array` _and_ `Result` in the standard libary.
       """,
     link: "https://github.com/apple/swift-nio/pull/760",
-    publishedAt: referenceDateFormatter.date(from: "2019-01-21"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-01-21"),
     title: "rename ELF.then to ELF.flatMap"
   )
 
@@ -509,7 +509,7 @@ extension Episode.Reference {
       > In life, there’s always work to be done. Every day brings with it a steady stream of tasks and chores to fill the working hours of our existence. Productivity is, as in life as it is in programming, a matter of scheduling and prioritizing and multi-tasking work in order to keep up appearances.
       """,
     link: "https://nshipster.com/nsoperation/",
-    publishedAt: referenceDateFormatter.date(from: "2014-07-14"),
+    publishedAt: yearMonthDayFormatter.date(from: "2014-07-14"),
     title: "NSOperation"
   )
 
@@ -519,7 +519,7 @@ extension Episode.Reference {
       A nice, concise article covering the `Scanner` type, including a tip of how to extend the `Scanner` so that it is a bit more "Swifty". Take note that this article was written before `NSScanner` was renamed to just `Scanner` in Swift 3.
       """,
     link: "https://nshipster.com/nsscanner/",
-    publishedAt: referenceDateFormatter.date(from: "2015-03-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2015-03-02"),
     title: "NSScanner"
   )
 
@@ -545,7 +545,7 @@ extension Episode.Reference {
       """,
     link:
       "http://pointfree.co/blog/posts/75-open-sourcing-urlrouting-and-vaporrouting#vaporrouting",
-    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2022-05-02"),
     title: "Open Sourcing URLRouting and VaporRouting"
   )
 
@@ -565,7 +565,7 @@ extension Episode.Reference {
       This article demonstrates that parsing can be a great alternative to validating. When validating you often check for certain requirements of your values, but don't have any record of that check in your types. Whereas parsing allows you to upgrade the types to something more restrictive so that you cannot misuse the value later on.
       """,
     link: "https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/",
-    publishedAt: referenceDateFormatter.date(from: "2019-11-05"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-11-05"),
     title: "Parse, don’t validate"
   )
 
@@ -612,7 +612,7 @@ extension Episode.Reference {
       Our open source tool for generating enum properties for any enum in your code base.
       """,
     link: "https://github.com/pointfreeco/swift-enum-properties",
-    publishedAt: referenceDateFormatter.date(from: "2019-04-29"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-04-29"),
     title: "pointfreeco/swift-enum-properties"
   )
 
@@ -632,7 +632,7 @@ extension Episode.Reference {
       Promises are JavaScript's default abstraction for asynchronous work, but unlike the `Parallel` type we've defined on Point-Free, promises are eager, not lazy. In this blog post André does a great job explaining how the choice of eagerness is overly opinionated and some of the problems that come out of such a decision.
       """,
     link: "https://staltz.com/promises-are-not-neutral-enough.html",
-    publishedAt: referenceDateFormatter.date(from: "2018-02-14"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-02-14"),
     title: "Promises Are Not Neutral Enough"
   )
 
@@ -657,7 +657,7 @@ extension Episode.Reference {
       > At the heart of Swift's design are two incredibly powerful ideas: protocol-oriented programming and first class value semantics. Each of these concepts benefit predictability, performance, and productivity, but together they can change the way we think about programming. Find out how you can apply these ideas to improve the code you write.
       """,
     link: "https://developer.apple.com/videos/play/wwdc2015/408/",
-    publishedAt: referenceDateFormatter.date(from: "2015-06-16"),
+    publishedAt: yearMonthDayFormatter.date(from: "2015-06-16"),
     title: "Protocol-Oriented Programming in Swift"
   )
 
@@ -683,7 +683,7 @@ extension Episode.Reference {
       > This talk will demonstrate a common approach to this challenge, using a fun and easy-to-understand "railway oriented programming" analogy. You'll come away with insight into a powerful technique that handles errors in an elegant way using a simple, self-documenting design.
       """,
     link: "https://vimeo.com/97344498",
-    publishedAt: referenceDateFormatter.date(from: "2014-06-04"),
+    publishedAt: yearMonthDayFormatter.date(from: "2014-06-04"),
     title: "Railway Oriented Programming — error handling in functional languages"
   )
 
@@ -735,7 +735,7 @@ extension Episode.Reference {
       The Swift standard library comes with two versions of `reduce`: one that takes accumulation functions of the form `(Result, Value) -> Result`, and another that accumulates with functions of the form `(inout Result, Value) -> Void`. Both versions are equivalent, but the latter can be more efficient when reducing into large data structures.
       """,
     link: "https://forums.swift.org/t/reduce-with-inout/4897",
-    publishedAt: referenceDateFormatter.date(from: "2017-01-16"),
+    publishedAt: yearMonthDayFormatter.date(from: "2017-01-16"),
     title: "Reduce with inout"
   )
 
@@ -785,7 +785,7 @@ extension Episode.Reference {
       This library for parsing regular expression strings into a Swift data type uses many of the ideas developed in our series of episodes on parsers. It's a great example of how to break a very large, complex problem into many tiny parsers that glue back together.
       """,
     link: "https://github.com/kean/Regex",
-    publishedAt: referenceDateFormatter.date(from: "2019-08-10"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-08-10"),
     title: "Regex"
   )
 
@@ -795,7 +795,7 @@ extension Episode.Reference {
       In this article, Soroush Khanlou applies parser combinators to a real world problem: parsing notation for a music app. He found that parser combinators improved on regular expressions not only in readability, but in performance!
       """,
     link: "http://khanlou.com/2019/12/regex-vs-combinatorial-parsing/",
-    publishedAt: referenceDateFormatter.date(from: "2019-12-03"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-12-03"),
     title: "Regexes vs Combinatorial Parsing"
   )
 
@@ -859,7 +859,7 @@ extension Episode.Reference {
       """#,
     link:
       "https://github.com/apple/swift-evolution/blob/ec2028964daeda2600e49aa89fd9e59d2363433b/proposals/0215-conform-never-to-hashable-and-equatable.md",
-    publishedAt: referenceDateFormatter.date(from: "2018-05-24")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2018-05-24")!,
     title: "SE-0215: Conform Never to Equatable and Hashable"
   )
 
@@ -889,7 +889,7 @@ extension Episode.Reference {
       "The proposal that added property wrapper support to function and closure parameters, unlocking the ability to make binding transformations even more powerful.",
     link:
       "https://github.com/apple/swift-evolution/blob/79b9c8f09450cf7f38d5479e396998e3888a17e4/proposals/0293-extend-property-wrappers-to-function-and-closure-parameters.md",
-    publishedAt: referenceDateFormatter.date(from: "2020-10-06")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2020-10-06")!,
     title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
   )
 
@@ -900,7 +900,7 @@ extension Episode.Reference {
       """,
     link:
       "https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md",
-    publishedAt: referenceDateFormatter.date(from: "2021-09-29"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-09-29"),
     title: "SE-0329: Clock, Instant, and Duration"
   )
 
@@ -911,7 +911,7 @@ extension Episode.Reference {
       """#,
     link:
       "https://github.com/apple/swift-evolution/blob/9544e17966879e4a492f0924ab2e6a6e31748225/proposals/0346-light-weight-same-type-syntax.md",
-    publishedAt: referenceDateFormatter.date(from: "2022-03-11")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2022-03-11")!,
     title: "SE-0346: Lightweight same-type requirements for primary associated types"
   )
 
@@ -921,7 +921,7 @@ extension Episode.Reference {
       "The Swift Evolution proposal that introduced `buildPartialBlock` to result builders, making it possible to accumulate a result from many components. This works around the common limitation of having to define a number of `buildBlock` overloads to support larger builders.",
     link:
       "https://github.com/apple/swift-evolution/blob/4f0726385513577f25a2533f1863af4d6093e61a/proposals/0348-buildpartialblock.md",
-    publishedAt: referenceDateFormatter.date(from: "2022-03-22"),
+    publishedAt: yearMonthDayFormatter.date(from: "2022-03-22"),
     title: "SE-0348: buildPartialBlock for result builders"
   )
 
@@ -932,7 +932,7 @@ extension Episode.Reference {
       """,
     link:
       "https://github.com/apple/swift-evolution/blob/main/proposals/0374-clock-sleep-for.md",
-    publishedAt: referenceDateFormatter.date(from: "2022-09-19"),
+    publishedAt: yearMonthDayFormatter.date(from: "2022-09-19"),
     title: "SE-0374: Add `sleep(for:)` to `Clock`"
   )
 
@@ -982,7 +982,7 @@ extension Episode.Reference {
       > Sparse is a simple parser-combinator library written in Swift.
       """,
     link: "https://github.com/johnpatrickmorgan/Sparse",
-    publishedAt: referenceDateFormatter.date(from: "2017-01-12"),
+    publishedAt: yearMonthDayFormatter.date(from: "2017-01-12"),
     title: "Sparse"
   )
 
@@ -1013,7 +1013,7 @@ extension Episode.Reference {
       An in-depth article exploring the internals of `@ObservedObject` and `@StateObject` in order to understand how they are created and torn down.
       """,
     link: "https://www.mattmoriarity.com/2020-07-03-stateobject-and-observableobject-in-swiftui/",
-    publishedAt: referenceDateFormatter.date(from: "2020-07-03"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-07-03"),
     title: "@StateObject and @ObservedObject in SwiftUI"
   )
 
@@ -1024,7 +1024,7 @@ extension Episode.Reference {
         An excerpt from the [Advanced Swift](https://www.objc.io/books/advanced-swift/) that provides a deep discussion of the low-level representations of Swift strings. Although it pre-dates the transition of strings to [UTF-8](https://swift.org/blog/utf8-string/) in Swift 5 it is still a factually correct accounting of how to work with code units in strings.
         """,
       link: "https://oleb.net/blog/2017/11/swift-4-strings/",
-      publishedAt: referenceDateFormatter.date(from: "2017-11-27"),
+      publishedAt: yearMonthDayFormatter.date(from: "2017-11-27"),
       title: "Strings in Swift 4"
     )
   }
@@ -1046,7 +1046,7 @@ extension Episode.Reference {
     author: "Google",
     blurb: "A Swift library for benchmarking code snippets, similar to google/benchmark.",
     link: "http://github.com/google/swift-benchmark",
-    publishedAt: referenceDateFormatter.date(from: "2020-03-13"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-03-13"),
     title: "swift-benchmark"
   )
 
@@ -1075,7 +1075,7 @@ extension Episode.Reference {
       author: "Harshil Shah",
       blurb: blurb,
       link: "https://harshil.net/blog/swift-sequence-collection-array",
-      publishedAt: referenceDateFormatter.date(from: "2020-08-05"),
+      publishedAt: yearMonthDayFormatter.date(from: "2020-08-05"),
       title: "Swiftʼs Collection Types"
     )
   }
@@ -1129,7 +1129,7 @@ extension Episode.Reference {
       A library for turning nebulous data into well-structured data, with a focus on composition, performance, generality, and invertibility.
       """,
     link: "https://github.com/pointfreeco/swift-parsing",
-    publishedAt: referenceDateFormatter.date(from: "2021-12-21"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-12-21"),
     title: "Swift Parsing"
   )
 
@@ -1139,7 +1139,7 @@ extension Episode.Reference {
       Swift contributor [Michael Ilseman](https://twitter.com/ilseman) lays out some potential future directions for Swift's string consumption API. This could be seen as a "Swiftier" way of doing what the `Scanner` type does today, but possibly even more powerful.
       """,
     link: "https://forums.swift.org/t/string-consumption/21907",
-    publishedAt: referenceDateFormatter.date(from: "2019-03-03"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-03-03"),
     title: "Swift Pitch: String Consumption"
   )
 
@@ -1149,7 +1149,7 @@ extension Episode.Reference {
       Chris Eidhof strikes up a conversation on the Swift forums about how string parser helpers could be defined on `Substring` in the standard library. A lot of interesting ideas are shared on which is the correct type to define these helpers, and what is the correct API to expose to the user.
       """,
     link: "https://forums.swift.org/t/string-parsing/10219",
-    publishedAt: referenceDateFormatter.date(from: "2018-02-22"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-02-22"),
     title: "Swift Pitch: String Parsing"
   )
   public static let swiftSnapshotTesting = Episode.Reference(
@@ -1160,7 +1160,7 @@ extension Episode.Reference {
       allows you to define your own custom, domain-specific snapshot strategies for your types.
       """,
     link: "https://github.com/pointfreeco/swift-snapshot-testing",
-    publishedAt: referenceDateFormatter.date(from: "2018-12-03"),
+    publishedAt: yearMonthDayFormatter.date(from: "2018-12-03"),
     title: "pointfreeco/swift-snapshot-testing"
   )
 
@@ -1172,7 +1172,7 @@ extension Episode.Reference {
       > We write a simple CSV parser as an example demonstrating how to work with Swift's String and Substring types.
       """,
     link: "https://talk.objc.io/episodes/S01E78-swift-strings-and-substrings",
-    publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
+    publishedAt: yearMonthDayFormatter.date(from: "2017-12-01"),
     title: "Swift Strings and Substrings"
   )
 
@@ -1202,7 +1202,7 @@ extension Episode.Reference {
       After [9 episodes](/collections/swiftui/navigation) exploring SwiftUI navigation from the ground up, we open sourced a library with all new tools for making SwiftUI navigation simpler, more ergonomic and more precise.
       """#,
     link: "https://github.com/pointfreeco/swiftui-navigation",
-    publishedAt: referenceDateFormatter.date(from: "2021-11-16"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-11-16"),
     title: "SwiftUI Navigation"
   )
 
@@ -1256,7 +1256,7 @@ extension Episode.Reference {
       > With SwiftUI and Combine, Apple is changing its approach for how we define data flows and UI. As we move from playing with sample code to writing production apps, it’s time to start thinking about testing. Nataliya will show how to apply several learnings from her experience with declarative UIs to this new reality.
       """#,
     link: "https://www.youtube.com/watch?v=tk0HzScvW2M",
-    publishedAt: referenceDateFormatter.date(from: "2019-10-24"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-10-24"),
     title: "Testing and Declarative UI's"
   )
 
@@ -1278,7 +1278,7 @@ extension Episode.Reference {
       > Parser combinators are one of the most awesome functional techniques for parsing strings into trees, like constructing JSON. In this talk from try! Swift, Yasuhiro Inami describes how they work by combining small parsers together to form more complex and practical ones.
       """,
     link: "https://academy.realm.io/posts/tryswift-yasuhiro-inami-parser-combinator/",
-    publishedAt: referenceDateFormatter.date(from: "2016-05-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2016-05-02"),
     title: "Parser Combinators in Swift"
   )
 
@@ -1290,7 +1290,7 @@ extension Episode.Reference {
       > SwiftUI got a native way to add UIRefreshControl in iOS 15. Let's find out how to add it in the list view and even your custom view.
       """,
     link: "https://sarunw.com/posts/pull-to-refresh-in-swiftui/",
-    publishedAt: referenceDateFormatter.date(from: "2021-06-09"),
+    publishedAt: yearMonthDayFormatter.date(from: "2021-06-09"),
     title: "Pull to refresh in SwiftUI with refreshable"
   )
 
@@ -1313,7 +1313,7 @@ extension Episode.Reference {
       """,
     link:
       "https://www.pointfree.co/collections/composable-architecture/a-tour-of-the-composable-architecture",
-    publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-05-04"),
     title: "A Tour of the Composable Architecture"
   )
 
@@ -1323,7 +1323,7 @@ extension Episode.Reference {
       The Composable Architecture is a library for building applications in a consistent and understandable way, with composition, testing and ergonomics in mind.
       """,
     link: "http://github.com/pointfreeco/swift-composable-architecture",
-    publishedAt: referenceDateFormatter.date(from: "2020-05-04"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-05-04"),
     title: "Composable Architecture"
   )
 
@@ -1379,7 +1379,7 @@ extension Episode.Reference {
       The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
       """,
     link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
-    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-01-02"),
     title: "Unknown Pleasures – Artwork and packaging"
   )
 
@@ -1391,7 +1391,7 @@ extension Episode.Reference {
       Another approach to the parsing-printing problem using a construct known as a "prism" (a construct Point-Free viewers and library users may better know as a "case path").
       """,
     link: "https://skillsmatter.com/skillscasts/16594-unified-parsing-and-printing-with-prisms",
-    publishedAt: referenceDateFormatter.date(from: "2016-04-29"),
+    publishedAt: yearMonthDayFormatter.date(from: "2016-04-29"),
     title: "Unified Parsing and Printing with Prisms"
   )
 
@@ -1401,7 +1401,7 @@ extension Episode.Reference {
       A bidirectional URL router with more type safety and less fuss.
       """,
     link: "https://github.com/pointfreeco/swift-url-routing",
-    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2022-05-02"),
     title: "URL Routing"
   )
 
@@ -1424,7 +1424,7 @@ extension Episode.Reference {
       A bidirectional Vapor router with more type safety and less fuss.
       """,
     link: "https://github.com/pointfreeco/vapor-routing",
-    publishedAt: referenceDateFormatter.date(from: "2022-05-02"),
+    publishedAt: yearMonthDayFormatter.date(from: "2022-05-02"),
     title: "Vapor Routing"
   )
 
@@ -1478,7 +1478,7 @@ extension Episode.Reference {
       > Protocol-oriented programming is strongly recommended in the Swift community, and Apple has given a lot of guidance on how to use it in your everyday code. However, there has not been a lot of attention on when it is not appropriate, and what to do in that case. We will explore this idea, and show that there is a completely straightforward and mechanical way to translate any protocol into a concrete datatype. Once you do this you can still write your code much like you would with protocols, but all of the complexity inherit in protocols go away. Even more amazing, a new type of composition appears that is difficult to see when dealing with only protocols. We will also demo a real life, open source library that was originally written in the protocol-oriented way, but after running into many problems with the protocols, it was rewritten entirely in this witness-oriented way. The outcome was really surprising, and really powerful.
       """,
     link: "https://www.youtube.com/watch?v=3BVkbWXcFS4",
-    publishedAt: referenceDateFormatter.date(from: "2019-05-03"),
+    publishedAt: yearMonthDayFormatter.date(from: "2019-05-03"),
     title: "Protocol Witnesses: App Builders 2019"
   )
 
@@ -1497,7 +1497,7 @@ extension Episode.Reference {
         Swift 5 made a fundamental change to the String API, making the preferred encoding UTF-8 instead of UTF-16. This brings many usability and performance improves to Swift strings.
         """,
       link: "https://swift.org/blog/utf8-string/",
-      publishedAt: referenceDateFormatter.date(from: "2019-03-20"),
+      publishedAt: yearMonthDayFormatter.date(from: "2019-03-20"),
       title: "UTF-8"
     )
   }
@@ -1505,7 +1505,7 @@ extension Episode.Reference {
   public static let whatWentWrongWithTheLibdispatch = Self(
     author: "Thomas Clement",
     link: "https://tclementdev.com/posts/what_went_wrong_with_the_libdispatch.html",
-    publishedAt: referenceDateFormatter.date(from: "2020-11-23"),
+    publishedAt: yearMonthDayFormatter.date(from: "2020-11-23"),
     title: "What went wrong with the libdispatch. A tale of caution for the future of concurrency."
   )
 
@@ -1521,7 +1521,7 @@ extension Episode.Reference {
   )
 }
 
-let referenceDateFormatter = { () -> DateFormatter in
+let yearMonthDayFormatter = { () -> DateFormatter in
   let df = DateFormatter()
   df.dateFormat = "yyyy-MM-dd"
   return df

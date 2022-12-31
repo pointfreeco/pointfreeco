@@ -18,7 +18,7 @@ extension Episode {
           A WWDC session covering what's new in SwiftUI this year, including the `@FocusState` property wrapper.
           """#,
         link: "https://developer.apple.com/videos/play/wwdc2021/10018/",
-        publishedAt: referenceDateFormatter.date(from: "2021-06-08"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-06-08"),
         title: "What's new in SwiftUI"
       ),
       Episode.Reference(
@@ -1453,7 +1453,7 @@ extension Array where Element == Episode.TranscriptBlock {
         After recording this episode, we realized that `ReferenceWritableKeyPath` _is_ an abstraction that would work here, though there are some caveats involved in defining a `synchronize` helper using them. We'll leave that exploration as an exercise for the viewer.
         """#,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     Episode.TranscriptBlock(
       content: #"""

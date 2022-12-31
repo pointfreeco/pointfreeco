@@ -18,7 +18,7 @@ extension Episode {
           Earlier this year, one of our viewers, [Luke Redpath](http://twitter.com/lukeredpath/status/1403333865108873217), started a Composable Architecture GitHub discussion around the creation of a `SwitchStore`-like view that inspired the design introduced in this episode.
           """#,
         link: "https://github.com/pointfreeco/swift-composable-architecture/discussions/388",
-        publishedAt: referenceDateFormatter.date(from: "2021-02-18"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-02-18"),
         title: "GitHub Discussion: CaseLetStore (for example)"
       ),
       .init(
@@ -27,7 +27,7 @@ extension Episode {
           After publishing this episode we released 0.19.0 of the Composable Architecture, bringing `SwitchStore` and `CaseLet` views to all users of the library.
           """,
         link: "https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0",
-        publishedAt: referenceDateFormatter.date(from: "2021-06-14"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-06-14"),
         title: "Composable Architecture Release 0.19.0"
       ),
     ],

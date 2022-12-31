@@ -1229,7 +1229,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       [Algebraic Data Types: Exponents](/episodes/ep9-algebraic-data-types-exponents).
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
 
   .init(
