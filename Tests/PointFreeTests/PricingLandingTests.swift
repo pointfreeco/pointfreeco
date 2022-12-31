@@ -26,7 +26,7 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
     var user = User.mock
     user.subscriptionId = nil
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { _ in user }
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
@@ -57,7 +57,7 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() async throws {
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in .mock }
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }

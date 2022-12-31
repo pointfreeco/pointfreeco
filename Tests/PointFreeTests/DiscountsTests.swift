@@ -51,7 +51,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
@@ -88,7 +88,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
@@ -110,7 +110,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
@@ -132,7 +132,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
@@ -154,7 +154,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
@@ -176,7 +176,7 @@ class DiscountsTests: TestCase {
       valid: true
     )
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }

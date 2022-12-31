@@ -18,7 +18,7 @@ open class TestCase: XCTestCase {
   }
 
   open override func invokeTest() {
-    DependencyValues.withTestValues {
+    withDependencyValues {
       $0.database = .mock
       $0.date.now = .mock
       $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
@@ -63,7 +63,7 @@ open class LiveDatabaseTestCase: XCTestCase {
   }
 
   open override func invokeTest() {
-    DependencyValues.withTestValues {
+    withDependencyValues {
       $0.date.now = .mock
       $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
       $0.gitHub = .mock

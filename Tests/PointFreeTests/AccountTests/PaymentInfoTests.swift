@@ -46,7 +46,7 @@ class PaymentInfoTests: TestCase {
     var subscription = Stripe.Subscription.teamYearly
     subscription.customer = .right(customer)
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.teamYearly()
       $0.stripe.fetchSubscription = { _ in subscription }
     } operation: {

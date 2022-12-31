@@ -51,7 +51,7 @@ final class InvoicesTests: TestCase {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.stripe.fetchSubscription = { _ in subscription }
     } operation: {
       let conn = connection(
@@ -78,7 +78,7 @@ final class InvoicesTests: TestCase {
     charge.paymentMethodDetails = .init()
     let invoice = Invoice.mock(charge: .right(charge))
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.teamYearly()
       $0.stripe.fetchInvoice = { _ in invoice }
     } operation: {
@@ -107,7 +107,7 @@ final class InvoicesTests: TestCase {
     invoice.total = 1455
     invoice.subtotal = 1700
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.stripe.fetchInvoice = { _ in invoice }
     } operation: {
       let conn = connection(

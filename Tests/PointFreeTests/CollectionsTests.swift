@@ -24,7 +24,7 @@ class CollectionsTests: TestCase {
   }
 
   func testCollectionIndex() async throws {
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.collections = [
         .mock,
         .mock,

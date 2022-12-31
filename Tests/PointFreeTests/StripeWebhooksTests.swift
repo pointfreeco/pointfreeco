@@ -439,7 +439,7 @@ final class StripeWebhooksTests: TestCase {
   func testPaymentIntent_Gift() async throws {
     var delivered = false
     var didSendEmail = false
-    try await DependencyValues.withTestValues {
+    try await withDependencyValues {
       $0.date.now = .mock
       $0.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
       $0.database.updateGiftStatus = {
@@ -503,7 +503,7 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testPaymentIntent_NoGift() async throws {
-    try await DependencyValues.withTestValues {
+    try await withDependencyValues {
       $0.date.now = .mock
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
     } operation: {
@@ -556,7 +556,7 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testFailedPaymentIntent() async throws {
-    try await DependencyValues.withTestValues {
+    try await withDependencyValues {
       $0.date.now = .mock
       $0.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
     } operation: {

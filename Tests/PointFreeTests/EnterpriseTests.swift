@@ -27,7 +27,7 @@ class EnterpriseTests: TestCase {
   func testLanding_LoggedOut() async throws {
     let account = EnterpriseAccount.mock
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
     } operation: {
       let req = request(to: .enterprise(account.domain))
@@ -51,7 +51,7 @@ class EnterpriseTests: TestCase {
   func testLanding_NonExistentEnterpriseAccount() async throws {
     let account = EnterpriseAccount.mock
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
     } operation: {
       let req = request(to: .enterprise(account.domain))
@@ -67,7 +67,7 @@ class EnterpriseTests: TestCase {
     var user = User.mock
     user.subscriptionId = subscriptionId
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
     } operation: {
       let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
@@ -96,7 +96,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -119,7 +119,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -143,7 +143,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -167,7 +167,7 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -183,7 +183,7 @@ class EnterpriseTests: TestCase {
   }
 
   func testAcceptInvitation_EnterpriseAccountDoesntExist() async throws {
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
     } operation: {
@@ -215,7 +215,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }

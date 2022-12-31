@@ -26,7 +26,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { userId in
         if userId == adminUser.id {
           return adminUser
@@ -71,7 +71,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { userId in
         if userId == adminUser.id {
           return adminUser
@@ -114,7 +114,7 @@ final class GhostTests: TestCase {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { userId in
         if userId == user.id {
           return user
@@ -159,7 +159,7 @@ final class GhostTests: TestCase {
     var adminSession = Session.loggedIn
     adminSession.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
 
-    await DependencyValues.withTestValues {
+    await withDependencyValues {
       $0.database.fetchUserById = { userId in
         if userId == adminUser.id {
           return adminUser
