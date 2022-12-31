@@ -41,7 +41,6 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-dependencies", branch: "main"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
-    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.11.0"),
 //    .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "e275a2c"),
     .package(path: "../swift-prelude"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),

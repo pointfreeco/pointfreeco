@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0090_SwiftDependencies = BlogPost(
+public let post0092_SwiftDependencies = BlogPost(
   author: .pointfree,
   blurb: """
     We are open sourcing a new dependency management system for Swift. Take control of your
@@ -266,7 +266,7 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
     )
   ],
   coverImage: nil,
-  id: 90,  // TODO
+  id: 92,
   publishedAt: yearMonthDayFormatter.date(from: "2023-01-09")!,
   title: "Take control of dependencies. Don't let them control you."
 )

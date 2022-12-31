@@ -59,6 +59,6 @@ public let post0091_2022EOYSaleLastDay = BlogPost(
   coverImage: nil,
   hidden: true,
   id: 91,
-  publishedAt: referenceDateFormatter.date(from: "2022-12-31")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2022-12-31")!,
   title: "Last day to save 25% off Point-Free"
 )
