@@ -29,15 +29,15 @@ You can get really far in application development without ever thinking about de
 eventually they can cause many problems in your code base and development cycle:
 
 * Uncontrolled dependencies make it **difficult to write fast, deterministic tests** because you are
-susceptible to the vagaries of the outside world, such as file systems, network connectivity,
-internet speed, server uptime, and more.
-* Many dependencies **do not work well in SwiftUI previews**, and some **do not work even in
-simulators**, such as location managers,  motion managers, speech recognizers, and more. This
-prevents you from being able to easily  iterate on the design of features if you make use of those
-frameworks.
+  susceptible to the vagaries of the outside world, such as file systems, network connectivity,
+  internet speed, server uptime, and more.
+* Many dependencies **do not work well in SwiftUI previews**, such as location managers and speech
+  recognizers, and some **do not work even in simulators**, such as motion managers, and more. This
+  prevents you from being able to easily  iterate on the design of features if you make use of those
+  frameworks.
 * Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, websocket
-libraries, network libraries, etc.) tend to be heavyweight and take a **long time to compile**. This
-can slow down your development cycle.
+  libraries, network libraries, etc.) tend to be heavyweight and take a **long time to compile**.
+  This can slow down your development cycle.
 
 For these reasons, and a lot more, it is highly encouraged for you to take control of your
 dependencies rather than letting them control you.
@@ -46,13 +46,13 @@ But, controlling a dependency is only the beginning. Once you have controlled yo
 you are faced with a whole set of new problems:
 
 * How can you propogate dependencies throughout your entire application that is more ergonomic
-than explicitly passing them around everywhere, but safer than having a global dependency?
+  than explicitly passing them around everywhere, but safer than having a global dependency?
 * How can you override dependencies for just one portion of your application? This can be handy
-for overriding dependencies for tests and SwiftUI previews, as well as specific user flows such as
-onboarding experiences.
+  for overriding dependencies for tests and SwiftUI previews, as well as specific user flows such as
+  onboarding experiences.
 * How can you be sure you overrode _all_ dependencies a feature uses in tests? It would be
-incorrect for a test to mock out some dependencies but leave others as interacting with the
-outside world.
+  incorrect for a test to mock out some dependencies but leave others as interacting with the
+  outside world.
 
 This library addresses all of the points above, and much, _much_ more.
 
@@ -102,7 +102,7 @@ That is all it takes to start using controllable dependencies in your features. 
 bit of upfront work done you can start to take advantage of the library's powers.
 
 For example, you can easily control these dependencies in tests. If you want to test the logic
-inside the `addButtonTapped` method, you can use the [`withTestValues`][with-test-values-docs]
+inside the `addButtonTapped` method, you can use the [`withValues`][with-values-docs]
 helper to override any dependencies for the scope of one single test:
 
 ```swift
@@ -156,31 +156,6 @@ This will make it so that the preview uses an immediate clock when run, but when
 simulator or on device it will still use a live `ContinuousClock`. This makes it possible to
 override dependencies just for previews without affecting how your app will run in production.
 
-[swift-deps-gh]: http://github.com/pointfreeco/swift-dependencies
-[dep-values-docs]: todo
-[dep-pw-docs]: todo
-[with-test-values-docs]: todo
-[with-values-docs]: todo
-"""###,
-      type: .paragraph),
-    .init(
-      content: ###"""
-There are two helpers in the library for overridding dependencies that are similarly
-spelled: [`withTestValues`][with-test-values-docs] and [`withValues`][with-values-docs]. The
-former, `withTestValues`, should only be used in tests, and the  latter, `withValues`, should be
-used in all other situations. See the articles [Overriding
-dependencies][overriding-dependencies-article] and [Dependency lifetimes][lifetimes-article] for
-more information on how to override dependencies.
-
-[with-test-values-docs]: todo
-[with-values-docs]: todo
-[lifetimes-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/lifetimes
-[overriding-dependencies-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/overridingdependencies
-"""###,
-      type: .box(.note)
-    ),
-    .init(
-      content: ###"""
 That is the basics to getting started with using the library, but there is still a lot more you
 can do. You can learn more in depth in our [documentation][docs] and articles.
 
@@ -259,7 +234,6 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [registering-dependencies-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/registeringdependencies
 [dep-values-docs]: todo
 [dep-pw-docs]: todo
-[with-test-values-docs]: todo
 [with-values-docs]: todo
 """###,
       type: .paragraph
