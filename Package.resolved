@@ -195,7 +195,7 @@
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
       "state" : {
         "branch" : "async",
-        "revision" : "d6e4f82ff00bae0fc46965ef10d0391de145b884"
+        "revision" : "ba290fbfc69c5efc0589ccb279615b775dedb335"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-web",
       "state" : {
-        "branch" : "13db455",
-        "revision" : "13db4559945b736277ad19cee5b0d59ffeaf83d2"
+        "branch" : "fe0e57f",
+        "revision" : "fe0e57f3c5498c6a6310053c4f7156a870897396"
       }
     },
     {

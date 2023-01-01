@@ -41,18 +41,13 @@ func accountMiddleware(
       |> updatePaymentInfoMiddleware
 
   case let .rss(salt):
-    return conn.map(const(salt .*. unit))
-      |> accountRssMiddleware
+    return IO { await accountRssMiddleware(conn.map { _ in salt })  }
 
   case let .rssLegacy(secret1, secret2):
-    return
-      conn
-      .map(const(User.RssSalt(rawValue: "\(secret1)/\(secret2)") .*. unit))
-      |> accountRssMiddleware
+    return IO { await accountRssMiddleware(conn.map { _ in "\(secret1)/\(secret2)" })  }
 
   case .subscription(.cancel):
-    return conn.map(const(user .*. unit))
-      |> cancelMiddleware
+    return IO { await cancelMiddleware(conn.map { _ in user }) }
 
   case .subscription(.change(.show)):
     return conn
@@ -63,8 +58,7 @@ func accountMiddleware(
       |> subscriptionChangeMiddleware
 
   case .subscription(.reactivate):
-    return conn.map(const(user .*. unit))
-      |> reactivateMiddleware
+    return IO { await reactivateMiddleware(conn.map { _ in user }) }
 
   case let .update(data):
     return conn.map(const(user .*. data .*. unit))

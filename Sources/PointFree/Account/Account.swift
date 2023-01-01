@@ -130,3 +130,87 @@ private func fetchAccountData<I>(
     }
     .sequential
 }
+
+func requireStripeSubscription<A>(
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, User, A>, Data
+  >
+)
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
+{
+
+  return requireSubscriptionAndOwner
+    <<< fetchStripeSubscription
+    <<< filterMap(
+      require1 >>> pure,
+      or: redirect(
+        to: .account(),
+        headersMiddleware: flash(.error, genericSubscriptionError)
+      )
+    )
+    <| middleware
+}
+
+private func requireSubscriptionAndOwner<A>(
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, T3<Models.Subscription, User, A>, Data
+  >
+)
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
+{
+
+  return fetchSubscription
+    <<< filterMap(
+      require1 >>> pure,
+      or: redirect(
+        to: .pricingLanding,
+        headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
+      )
+    )
+    <<< filter(
+      isSubscriptionOwner,
+      or: redirect(
+        to: .account(),
+        headersMiddleware: flash(.error, "Only subscription owners can make subscription changes.")
+      )
+    )
+    <| middleware
+}
+
+func fetchSubscription<A>(
+  _ middleware: @escaping Middleware<
+    StatusLineOpen, ResponseEnded, T3<Models.Subscription?, User, A>, Data
+  >
+)
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
+{
+
+  return { conn in
+    let subscription = IO {
+      try? await Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
+    }
+
+    return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
+  }
+}
+
+private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Models.Subscription, User, A>)
+  -> Bool
+{
+
+  return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
+}
+
+private func fetchStripeSubscription<A>(
+  _ middleware: (
+    @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>
+  )
+)
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription, A>, Data>
+{
+
+  return { conn in
+    IO { try? await Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
+      .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
+  }
+}
