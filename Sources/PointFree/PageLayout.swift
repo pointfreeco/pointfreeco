@@ -22,8 +22,8 @@ extension Conn where Step == HeadersOpen {
     view: @escaping (B) -> Node,
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
-    var newLayoutData = layoutData(self.data)
     @Dependency(\.siteRouter) var siteRouter
+    var newLayoutData = layoutData(self.data)
     newLayoutData.flash = self.request.session.flash
     newLayoutData.isGhosting = self.request.session.ghosteeId != nil
 

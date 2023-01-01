@@ -296,7 +296,9 @@ extension Conn where Step == StatusLineOpen {
     to route: SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
   ) -> Conn<ResponseEnded, Data> {
-    self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return self.redirect(
       to: siteRouter.path(for: route),
       headersMiddleware: headersMiddleware
     )
@@ -306,7 +308,9 @@ extension Conn where Step == StatusLineOpen {
     with route: (A) -> SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
   ) -> Conn<ResponseEnded, Data> {
-    self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return self.redirect(
       to: siteRouter.path(for: route(self.data)),
       headersMiddleware: headersMiddleware
     )
@@ -316,7 +320,9 @@ extension Conn where Step == StatusLineOpen {
     to route: SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
   ) async -> Conn<ResponseEnded, Data> {
-    await self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return await self.redirect(
       to: siteRouter.path(for: route),
       headersMiddleware: headersMiddleware
     )
@@ -326,7 +332,9 @@ extension Conn where Step == StatusLineOpen {
     with route: (A) -> SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
   ) async -> Conn<ResponseEnded, Data> {
-    await self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+    
+    return await self.redirect(
       to: siteRouter.path(for: route(self.data)),
       headersMiddleware: headersMiddleware
     )

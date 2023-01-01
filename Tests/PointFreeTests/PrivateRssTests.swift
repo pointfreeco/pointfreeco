@@ -77,17 +77,19 @@ class PrivateRssTests: TestCase {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencyValues {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_NonSubscriber() async throws {

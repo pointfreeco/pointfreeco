@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
       "state" : {
-        "revision" : "bb436421f57269fbcfe7360735985321585a86e5",
-        "version" : "0.10.1"
+        "revision" : "c3a42e8d1a76ff557cf565ed6d8b0aee0e6e75af",
+        "version" : "0.11.0"
       }
     },
     {
@@ -223,15 +223,6 @@
       "state" : {
         "revision" : "f54c4f74e7884f7930560c08387817ce28271770",
         "version" : "0.4.0"
-      }
-    },
-    {
-      "identity" : "swift-web",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-web",
-      "state" : {
-        "branch" : "fe0e57f",
-        "revision" : "fe0e57f3c5498c6a6310053c4f7156a870897396"
       }
     },
     {
