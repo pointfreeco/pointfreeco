@@ -107,7 +107,7 @@ helper to override any dependencies for the scope of one single test:
 
 ```swift
 func testAdd() {
-  let model = DependencyValues.withTestValues {
+  let model = DependencyValues.withValues {
     $0.date.now = Date(timeIntervalSinceReferenceDate: 1234567890)
     $0.uuid = .incrementing
   } operation: {
