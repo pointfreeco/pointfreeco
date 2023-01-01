@@ -41,10 +41,10 @@ func accountMiddleware(
       |> updatePaymentInfoMiddleware
 
   case let .rss(salt):
-    return IO { await accountRssMiddleware(conn.map { _ in salt })  }
+    return IO { await accountRssMiddleware(conn.map { _ in salt }) }
 
   case let .rssLegacy(secret1, secret2):
-    return IO { await accountRssMiddleware(conn.map { _ in "\(secret1)/\(secret2)" })  }
+    return IO { await accountRssMiddleware(conn.map { _ in "\(secret1)/\(secret2)" }) }
 
   case .subscription(.cancel):
     return IO { await cancelMiddleware(conn.map { _ in user }) }

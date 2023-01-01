@@ -29,8 +29,7 @@ func accountRssMiddleware(
     }
 
     // Validate user agent
-    if
-      let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
+    if let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
       Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     {
       try await Current.database.updateUser(

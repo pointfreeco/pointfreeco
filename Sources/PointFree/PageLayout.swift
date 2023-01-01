@@ -39,7 +39,8 @@ extension Conn where Step == HeadersOpen {
       >>> metaLayout(simplePageLayout(view))
       >>> addGoogleAnalytics
 
-    return self
+    return
+      self
       .writeSessionCookie { $0.flash = nil }
       .respond(
         body: Current.renderHtml(pageLayout(newLayoutData)),
