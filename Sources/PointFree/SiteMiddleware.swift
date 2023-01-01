@@ -67,7 +67,7 @@ private func render(
 
   switch route {
   case .about:
-    return aboutResponse(conn.map(const((user, subscriberState, route))))
+    return pure(aboutResponse(conn.map { _ in (user, subscriberState, route) }))
 
   case let .account(account):
     return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))
@@ -159,14 +159,18 @@ private func render(
       |> expressUnsubscribeReplyMiddleware
 
   case .feed(.atom), .feed(.episodes):
-    guard !Current.envVars.emergencyMode
-    else {
-      return conn.map(const(unit))
-        |> writeStatus(.internalServerError)
-        >=> respond(json: "{}")
+    return IO {
+      guard !Current.envVars.emergencyMode
+      else {
+        return
+          conn
+          .writeStatus(.internalServerError)
+          .respond(json: "{}")
+      }
+      return episodesRssMiddleware(
+        conn.map { _ in }
+      )
     }
-    return conn.map(const(unit))
-      |> episodesRssMiddleware
 
   case let .gifts(giftsRoute):
     return conn.map(
@@ -284,6 +288,48 @@ private func render(
     return conn
       |> writeStatus(.internalServerError)
       >=> respond(text: "We don't support this event.")
+  }
+}
+
+extension Conn where Step == StatusLineOpen {
+  public func redirect(
+    to route: SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
+  ) -> Conn<ResponseEnded, Data> {
+    self.redirect(
+      to: siteRouter.path(for: route),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    with route: (A) -> SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
+  ) -> Conn<ResponseEnded, Data> {
+    self.redirect(
+      to: siteRouter.path(for: route(self.data)),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    to route: SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+  ) async -> Conn<ResponseEnded, Data> {
+    await self.redirect(
+      to: siteRouter.path(for: route),
+      headersMiddleware: headersMiddleware
+    )
+  }
+
+  public func redirect(
+    with route: (A) -> SiteRoute,
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+  ) async -> Conn<ResponseEnded, Data> {
+    await self.redirect(
+      to: siteRouter.path(for: route(self.data)),
+      headersMiddleware: headersMiddleware
+    )
   }
 }
 

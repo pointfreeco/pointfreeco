@@ -45,6 +45,12 @@ func logoutResponse(
   )
 }
 
+extension Conn where Step == StatusLineOpen {
+  public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
+    self.redirect(to: .login(redirect: self.request.url?.absoluteString))
+  }
+}
+
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }

@@ -17,18 +17,15 @@ import Views
   import FoundationNetworking
 #endif
 
-func respond<A, B>(
-  view: @escaping (B) -> Node,
-  layoutData: @escaping (A) -> SimplePageLayoutData<B>
-)
-  -> Middleware<HeadersOpen, ResponseEnded, A, Data>
-{
-  @Dependency(\.siteRouter) var siteRouter
-
-  return { conn in
-    var newLayoutData = layoutData(conn.data)
-    newLayoutData.flash = conn.request.session.flash
-    newLayoutData.isGhosting = conn.request.session.ghosteeId != nil
+extension Conn where Step == HeadersOpen {
+  func respond<B>(
+    view: @escaping (B) -> Node,
+    layoutData: @escaping (A) -> SimplePageLayoutData<B>
+  ) -> Conn<ResponseEnded, Data> {
+    var newLayoutData = layoutData(self.data)
+    @Dependency(\.siteRouter) var siteRouter
+    newLayoutData.flash = self.request.session.flash
+    newLayoutData.isGhosting = self.request.session.ghosteeId != nil
 
     let pageLayout =
       Metadata
@@ -44,12 +41,22 @@ func respond<A, B>(
       >>> metaLayout(simplePageLayout(view))
       >>> addGoogleAnalytics
 
-    return conn
-      |> writeSessionCookieMiddleware { $0.flash = nil }
-      >=> respond(
+    return
+      self
+      .writeSessionCookie { $0.flash = nil }
+      .respond(
         body: Current.renderHtml(pageLayout(newLayoutData)),
         contentType: .html
       )
+  }
+}
+
+func respond<A, B>(
+  view: @escaping (B) -> Node,
+  layoutData: @escaping (A) -> SimplePageLayoutData<B>
+) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+  return { conn in
+    IO { await conn.respond(view: view, layoutData: layoutData) }
   }
 }
 

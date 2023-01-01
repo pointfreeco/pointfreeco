@@ -28,15 +28,11 @@ extension DependencyValues {
 
 private let cookieExpirationDuration: TimeInterval = 315_360_000  // 60 * 60 * 24 * 365 * 10
 
-public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) -> Void)
-  -> (Conn<HeadersOpen, A>)
-  -> IO<Conn<HeadersOpen, A>>
-{
-
-  return { conn in
-    var session = conn.request.session
+extension Conn where Step == HeadersOpen {
+  public func writeSessionCookie(_ update: @escaping (inout Session) -> Void) -> Self {
+    var session = self.request.session
     update(&session)
-    guard session != conn.request.session else { return pure(conn) }
+    guard session != self.request.session else { return self }
     guard
       let header = setCookie(
         key: pointFreeUserSessionCookieName,
@@ -44,11 +40,24 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) 
         options: [
           .expires(Current.date().addingTimeInterval(cookieExpirationDuration)),
           .path("/"),
-        ])
-    else { return pure(conn) }
+        ]
+      )
+    else { return self }
 
-    return writeHeader(header)(conn)
+    return self.writeHeader(header)
   }
+
+  public func flash(_ priority: Flash.Priority, _ message: String) -> Self {
+    self.writeSessionCookie { $0.flash = Flash(priority, message) }
+  }
+}
+
+public func writeSessionCookieMiddleware<A>(_ update: @escaping (inout Session) -> Void)
+  -> (Conn<HeadersOpen, A>)
+  -> IO<Conn<HeadersOpen, A>>
+{
+
+  return { conn in pure(conn.writeSessionCookie(update)) }
 }
 
 public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<

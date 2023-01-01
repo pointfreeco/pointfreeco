@@ -7,12 +7,14 @@ import PointFreeRouter
 import Prelude
 import Syndication
 
-let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  writeStatus(.ok)
-  >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
-  >=> clearHeadBody
+func episodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
+  conn
+    .writeStatus(.ok)
+    .respond(xml: episodesFeedView)
+    .clearBodyForHeadRequests()
+}
 
-private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
+private let episodesFeedView = itunesRssFeedLayout {
   [
     node(
       rssChannel: freeEpisodeRssChannel,
@@ -182,6 +184,16 @@ private func item(episode: Episode) -> RssItem {
 // TODO: swift-web
 extension Html.Application {
   public static var atom = Html.Application(rawValue: "atom+xml")
+}
+
+extension Conn where Step == HeadersOpen {
+  public func respond(xml view: (A) -> Node) -> Conn<ResponseEnded, Data> {
+    self
+      .respond(
+        body: Current.renderXml(view(self.data)),
+        contentType: .text(.init(rawValue: "xml"), charset: .utf8)
+      )
+  }
 }
 
 public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<

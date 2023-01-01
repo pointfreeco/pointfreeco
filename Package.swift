@@ -46,7 +46,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
-//    .package(url: "https://github.com/pointfreeco/swift-web", revision: "13db455"),
+//    .package(url: "https://github.com/pointfreeco/swift-web", revision: "fe0e57f"),
     .package(path: "../swift-web"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
