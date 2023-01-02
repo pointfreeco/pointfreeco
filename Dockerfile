@@ -8,6 +8,8 @@ WORKDIR /build
 COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
+COPY .netrc /root/.netrc
+RUN chmod 600 /root/.netrc
 
 RUN git clone https://github.com/commonmark/cmark \
   && cd cmark \

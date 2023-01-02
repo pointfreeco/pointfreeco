@@ -118,6 +118,15 @@
       }
     },
     {
+      "identity" : "swift-dependencies",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-dependencies",
+      "state" : {
+        "branch" : "main",
+        "revision" : "405edd4de107c10aa975fe1c55b5686cf863b3d2"
+      }
+    },
+    {
       "identity" : "swift-html",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-html",
@@ -199,6 +208,15 @@
       }
     },
     {
+      "identity" : "swift-prelude",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-prelude",
+      "state" : {
+        "branch" : "swift-deps",
+        "revision" : "92e94748cd65c8fbde091f772b92cec066b82461"
+      }
+    },
+    {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
@@ -223,6 +241,15 @@
       "state" : {
         "revision" : "f54c4f74e7884f7930560c08387817ce28271770",
         "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-web",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-web",
+      "state" : {
+        "branch" : "swift-deps",
+        "revision" : "8d73ab1229ba671107f230b8db8e6a3913ccbf38"
       }
     },
     {
