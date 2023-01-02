@@ -37,7 +37,9 @@ private func cancelResponse(
     }
     _ = try await Current.stripe
       .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
-    await fireAndForget { try await sendCancelEmail(to: user, for: stripeSubscription) }
+    await fireAndForget {
+      try await sendCancelEmail(to: user, for: stripeSubscription)
+    }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve canceled your subscription.")
     }

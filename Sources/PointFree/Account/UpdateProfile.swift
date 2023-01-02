@@ -68,6 +68,11 @@ private func updateProfileMiddlewareHandler(
   }
 
   return EitherIO {
+    try await Current.database.updateUser(
+      id: user.id,
+      name: data.name,
+      emailSettings: emailSettings
+    )
     if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
       await fireAndForget {
         _ = try await sendEmail(
@@ -77,12 +82,6 @@ private func updateProfileMiddlewareHandler(
         )
       }
     }
-
-    try await Current.database.updateUser(
-      id: user.id,
-      name: data.name,
-      emailSettings: emailSettings
-    )
     if let customerId = subscription?.customer.id, let extraInvoiceInfo = data.extraInvoiceInfo {
       _ = try await Current.stripe.updateCustomerExtraInvoiceInfo(customerId, extraInvoiceInfo)
     }
