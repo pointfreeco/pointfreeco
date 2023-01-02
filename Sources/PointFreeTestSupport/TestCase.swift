@@ -66,9 +66,13 @@ open class LiveDatabaseTestCase: XCTestCase {
     withDependencies {
       $0.date.now = .mock
       $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-      dump(ProcessInfo.processInfo.environment)
+      var str = ""
+      dump(ProcessInfo.processInfo.environment, to: &str)
+      print(str)
       print("-------------")
-      dump($0.envVars)
+      str = ""
+      dump($0.envVars, to: &str)
+      print(str)
       fatalError()
       $0.gitHub = .mock
       $0.mailgun = .mock
