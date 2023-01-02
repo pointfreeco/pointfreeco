@@ -98,20 +98,23 @@ extension DependencyValues {
 
 extension Database.Client: DependencyKey {
   public static var liveValue: Self {
-    guard !DependencyValues._current.envVars.emergencyMode
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.mainEventLoopGroup) var mainEventLoopGroup
+
+    guard !envVars.emergencyMode
     else { return .noop }
 
     var config = PostgresConfiguration(
-      url: DependencyValues._current.envVars.postgres.databaseUrl.rawValue
+      url: envVars.postgres.databaseUrl.rawValue
     )!
-    if DependencyValues._current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
+    if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
       config.tlsConfiguration?.certificateVerification = .none
     }
 
     return .live(
       pool: EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(configuration: config),
-        on: DependencyValues._current.mainEventLoopGroup
+        on: mainEventLoopGroup
       )
     )
   }
@@ -119,17 +122,23 @@ extension Database.Client: DependencyKey {
 
 extension GitHub.Client: DependencyKey {
   public static var liveValue: Self {
-    Self(
-      clientId: DependencyValues._current.envVars.gitHub.clientId,
-      clientSecret: DependencyValues._current.envVars.gitHub.clientSecret,
-      logger: DependencyValues._current.logger
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.logger) var logger
+
+    return Self(
+      clientId: envVars.gitHub.clientId,
+      clientSecret: envVars.gitHub.clientSecret,
+      logger: logger
     )
   }
 }
 
 extension Mailgun.Client: DependencyKey {
   public static var liveValue: Self {
-    Self(
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.logger) var logger
+
+    return Self(
       apiKey: DependencyValues._current.envVars.mailgun.apiKey,
       appSecret: DependencyValues._current.envVars.appSecret,
       domain: DependencyValues._current.envVars.mailgun.domain,
@@ -140,7 +149,10 @@ extension Mailgun.Client: DependencyKey {
 
 extension Stripe.Client: DependencyKey {
   public static var liveValue: Self {
-    Self(
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.logger) var logger
+
+    return Self(
       logger: DependencyValues._current.logger,
       secretKey: DependencyValues._current.envVars.stripe.secretKey
     )
@@ -149,6 +161,8 @@ extension Stripe.Client: DependencyKey {
 
 extension PointFreeRouter: DependencyKey {
   public static var liveValue: Self {
-    PointFreeRouter(baseURL: DependencyValues._current.envVars.baseUrl)
+    @Dependency(\.envVars) var envVars
+    
+    return PointFreeRouter(baseURL: DependencyValues._current.envVars.baseUrl)
   }
 }
