@@ -4,6 +4,7 @@ import Html
 import HtmlPlainTextPrint
 import HtmlSnapshotTesting
 import HttpPipeline
+import Mailgun
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -26,6 +27,7 @@ final class CancelTests: TestCase {
 
   func testCancel() async throws {
     var immediately: Bool?
+    let expectation = self.expectation(description: "sendEmail")
 
     await withDependencyValues {
       let cancelSubscription = Current.stripe.cancelSubscription
@@ -33,11 +35,18 @@ final class CancelTests: TestCase {
         immediately = $1
         return try await cancelSubscription($0, $1)
       }
+      $0.mailgun.sendEmail = { email in
+        expectation.fulfill()
+        XCTAssertEqual(email.subject, "[testing] Your subscription has been canceled")
+        return SendEmailResponse(id: "mail-id", message: "")
+      }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
       XCTAssertEqual(false, immediately)
     }
+
+    self.wait(for: [expectation], timeout: 0)
   }
 
   func testCancelPastDue() async throws {
