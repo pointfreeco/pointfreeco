@@ -101,7 +101,7 @@ extension UUID {
 extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      await withDependencyValues {
+      await withDependencies {
         $0.renderHtml = { debugRender($0) }
       } operation: {
         await io.performAsync()
@@ -118,7 +118,7 @@ extension Snapshotting {
         let webView = WKWebView(frame: .init(origin: .zero, size: size))
         await webView.loadHTMLString(
           String(
-            decoding: withDependencyValues {
+            decoding: withDependencies {
               $0.renderHtml = { Html.render($0) }
             } operation: {
               await io.performAsync().data

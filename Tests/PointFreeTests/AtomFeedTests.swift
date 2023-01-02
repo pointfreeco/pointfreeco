@@ -40,7 +40,7 @@ class AtomFeedTests: TestCase {
     recentlyFreeEpisode.permission = .freeDuring(
       now.addingTimeInterval(-60 * 60 * 24 * 2) ..< .distantFuture)
 
-    await withDependencyValues {
+    await withDependencies {
       $0.episodes = { [recentlyFreeEpisode, freeEpisode] }
     } operation: {
       let conn = connection(from: request(to: .feed(.episodes)))

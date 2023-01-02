@@ -27,7 +27,7 @@ class GiftTests: TestCase {
 
   func testGiftCreate() async throws {
     var createGiftRequest: Database.Client.CreateGiftRequest!
-    await withDependencyValues {
+    await withDependencies {
       $0.database.createGift = { request in
         createGiftRequest = request
         return .unfulfilled
@@ -91,7 +91,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate_StripeFailure() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.stripe.createPaymentIntent = { _ in
         struct Error: Swift.Error {}
         throw Error()
@@ -141,7 +141,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate_InvalidMonths() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.stripe.createPaymentIntent = { _ in
         struct Error: Swift.Error {}
         throw Error()
@@ -196,7 +196,7 @@ class GiftTests: TestCase {
     var stripeSubscriptionId: Stripe.Subscription.ID?
     var userId: User.ID?
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.createSubscription = { _, id, _, _ in
         userId = id
         return .mock
@@ -263,7 +263,7 @@ class GiftTests: TestCase {
     var credit: Cents<Int>?
     var stripeSubscriptionId: Stripe.Subscription.ID?
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchGift = { _ in .unfulfilled }
       $0.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in .mock }
@@ -320,7 +320,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeem_Invalid_LoggedOut() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.stripe.fetchCoupon = { _ in update(.mock) { $0.rate = .amountOff(54_00) } }
     } operation: {
       let conn = connection(
@@ -359,7 +359,7 @@ class GiftTests: TestCase {
   func testGiftRedeem_Invalid_Redeemed() async throws {
     let user = User.nonSubscriber
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchGift = { _ in .fulfilled }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchUserById = { _ in user }
@@ -404,7 +404,7 @@ class GiftTests: TestCase {
   func testGiftRedeem_Invalid_Teammate() async throws {
     let user = User.teammate
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchGift = { _ in .unfulfilled }
       $0.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in .mock }
@@ -450,7 +450,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftLanding() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.date.now = .mock
       $0.episodes = { [] }
     } operation: {
@@ -473,7 +473,7 @@ class GiftTests: TestCase {
   }
 
   func testGiftRedeemLanding() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.date.now = .mock
       $0.episodes = { [] }
       $0.database.fetchGift = { _ in .unfulfilled }

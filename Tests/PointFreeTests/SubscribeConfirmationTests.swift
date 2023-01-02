@@ -24,7 +24,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -54,7 +54,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -85,7 +85,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -119,7 +119,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -152,7 +152,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -191,7 +191,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -230,7 +230,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = -1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -264,7 +264,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -303,7 +303,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_ActiveSubscriber() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in .mock }
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -321,7 +321,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -351,7 +351,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_WithDiscount() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -379,7 +379,7 @@ class SubscriptionConfirmationTests: TestCase {
     var user = User.mock
     user.gitHubUserId = 1
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
@@ -411,7 +411,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_ReferralCode() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -447,7 +447,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_ReferralCodeAndRegionalDiscount() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
     } operation: {
       let conn = connection(
@@ -479,7 +479,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InactiveReferralCode() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchUserByReferralCode = { _ in .mock }
@@ -503,7 +503,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralCode() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchUserByReferralCode = { _ in throw unit }
@@ -525,7 +525,7 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut_InvalidReferralLane() async throws {
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
@@ -553,7 +553,7 @@ class SubscriptionConfirmationTests: TestCase {
       $0.referrerId = .init(rawValue: .mock)
     }
 
-    await withDependencyValues {
+    await withDependencies {
       $0.database.fetchUserById = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }

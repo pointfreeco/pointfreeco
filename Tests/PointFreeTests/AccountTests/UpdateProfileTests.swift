@@ -111,7 +111,7 @@ class UpdateProfileTests: TestCase {
     stripeCustomer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
     stripeSubscription.customer = .right(stripeCustomer)
 
-    await withDependencyValues {
+    await withDependencies {
       $0.teamYearly()
       $0.stripe.fetchSubscription = { _ in stripeSubscription }
       $0.stripe.updateCustomerExtraInvoiceInfo = { _, info in
