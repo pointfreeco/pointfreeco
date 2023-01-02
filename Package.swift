@@ -41,11 +41,11 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-dependencies", branch: "main"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
-    .package(url: "https://github.com/pointfreeco/swift-prelude", branch: "swift-deps"),
+    .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "bef5b7e"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", branch: "swift-deps"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "80e39c6"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
   ],
   targets: [
