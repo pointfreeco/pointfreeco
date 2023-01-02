@@ -241,8 +241,8 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
   ],
   coverImage: nil,
   id: 92,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-01-09")!,
-  title: "Take control of your dependencies"
+  publishedAt: referenceDateFormatter.date(from: "2023-01-09")!,
+  title: "Take control of your dependencies, don't let them control you"
 )
 
 
