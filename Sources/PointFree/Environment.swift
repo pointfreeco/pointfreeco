@@ -104,9 +104,7 @@ extension Database.Client: DependencyKey {
     guard !envVars.emergencyMode
     else { return .noop }
 
-    var config = PostgresConfiguration(
-      url: envVars.postgres.databaseUrl.rawValue
-    )!
+    var config = PostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)!
     if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
       config.tlsConfiguration?.certificateVerification = .none
     }
@@ -162,7 +160,7 @@ extension Stripe.Client: DependencyKey {
 extension PointFreeRouter: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
-    
+
     return PointFreeRouter(baseURL: DependencyValues._current.envVars.baseUrl)
   }
 }

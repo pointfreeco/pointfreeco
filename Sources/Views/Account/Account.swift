@@ -23,7 +23,7 @@ public func accountView(
     referAFriend(accountData: accountData),
     subscriptionOverview(accountData: accountData, currentDate: currentDate),
     creditsView(accountData: accountData, allEpisodes: allEpisodes),
-    logoutView(),
+    logoutView,
   ]
 
   return .gridRow(
@@ -1316,7 +1316,7 @@ public func format(cents: Cents<Int>) -> String {
     ?? NumberFormatter.localizedString(from: dollars, number: .currency)
 }
 
-private func logoutView() -> Node {
+private var logoutView: Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .gridRow(

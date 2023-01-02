@@ -131,30 +131,6 @@ extension Snapshotting {
       }
     }
   #endif
-
-  //
-  //  #if os(macOS)
-  //    @available(OSX 10.13, *)
-  //    public static func ioConnWebView(size: CGSize) -> Snapshotting<
-  //      IO<Conn<ResponseEnded, Data>>, NSImage
-  //    > {
-  //      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
-  //        let webView = WKWebView(frame: .init(origin: .zero, size: size))
-  //        await webView.loadHTMLString(
-  //          String(
-  //            decoding: DependencyValues.withValues {
-  //              $0.renderHtml = { Html.render($0) }
-  //            } operation: {
-  //              io.perform().data
-  //            },
-  //            as: UTF8.self
-  //          ),
-  //          baseURL: nil
-  //        )
-  //        return webView
-  //      }
-  //    }
-  //  #endif
 }
 
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)

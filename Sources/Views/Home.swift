@@ -52,14 +52,14 @@ private func holidaySpecialCalloutView(
               Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]])
             ])
           ],
-          holidaySpecialContent()
+          holidaySpecialContent
         )
       )
     ),
   ]
 }
 
-func holidaySpecialContent() -> Node {
+var holidaySpecialContent: Node {
   @Dependency(\.siteRouter) var siteRouter
   
   return .div(

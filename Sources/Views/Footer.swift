@@ -14,7 +14,7 @@ public func footerView(user: User?, year: Int) -> Node {
 
 private func footerInfoColumnsView(user: User?, year: Int) -> Node {
   return [
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView()),
+    .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView),
     linksColumnsView(currentUser: user),
     .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year)),
   ]
@@ -23,7 +23,7 @@ private func footerInfoColumnsView(user: User?, year: Int) -> Node {
 private func linksColumnsView(currentUser: User?) -> Node {
   return [
     .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView()),
+    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView),
   ]
 }
 
@@ -60,7 +60,7 @@ private func legalView(year: Int) -> Node {
   )
 }
 
-private func pointFreeView() -> Node {
+private var pointFreeView: Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(
@@ -126,7 +126,7 @@ private func contentColumnView(currentUser: User?) -> Node {
   )
 }
 
-private func moreColumnView() -> Node {
+private var moreColumnView: Node {
   @Dependency(\.siteRouter) var siteRouter
   
   return .div(

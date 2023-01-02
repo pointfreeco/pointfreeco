@@ -169,7 +169,7 @@ func welcomeEmail1Content(user: User) -> Node {
       [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
-    subscribeButton(),
+    subscribeButton,
     hostSignOffView,
   ]
 }
@@ -225,7 +225,7 @@ func welcomeEmail2Content(user: User) -> Node {
       [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
-    subscribeButton(),
+    subscribeButton,
     hostSignOffView,
   ]
 }
@@ -290,12 +290,12 @@ func welcomeEmail3Content(user: User) -> Node {
       [getting a subscription](\(siteRouter.url(for: .pricingLanding))) for yourself or your team!
       """
     ),
-    subscribeButton(),
+    subscribeButton,
     hostSignOffView,
   ]
 }
 
-private func subscribeButton() -> Node {
+private var subscribeButton: Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .p(

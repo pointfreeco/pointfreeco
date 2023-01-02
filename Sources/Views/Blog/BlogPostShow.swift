@@ -142,7 +142,7 @@ private let holidaySpecialCallout: Node = .div(
       Class.margin([.mobile: [.top: 4], .desktop: [.leftRight: 4]])
     ])
   ],
-  holidaySpecialContent()
+  holidaySpecialContent
 )
 
 let episodeDateFormatter: DateFormatter = {
