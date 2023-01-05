@@ -79,17 +79,18 @@ final class FeatureModel: ObservableObject {
 }
 ```
 
-Once your dependencies are declared, rather than reaching out to the `Date()`, `UUID()`, etc.
+Once your dependencies are declared, rather than reaching out to the `Date()`, `UUID()`, `Task` etc.
 directly, you can use the dependency that is defined directly on your feature's model:
 
 ```swift
 final class FeatureModel: ObservableObject {
   // ...
 
-  func addButtonTapped() {
+  func addButtonTapped() async throws {
+    try await self.clock.sleep(for: .seconds(1))  // 👈 Don't use Task.sleep
     self.items.append(
       Item(
-        id: self.uuid(),     // 👈 Don't use UUID()
+        id: self.uuid(),  // 👈 Don't use UUID()
         name: "",
         createdAt: self.now  // 👈 Don't use Date()
       )
@@ -106,9 +107,10 @@ inside the `addButtonTapped` method, you can use the [`withDependencies`][with-d
 function to override any dependencies for the scope of one single test. It's as easy as 1-2-3:
 
 ```swift
-func testAdd() {
+func testAdd() async throws {
   let model = withDependencies {
     // 1️⃣ Override any dependencies that your feature uses.
+    $0.clock = ImmediateClock()
     $0.date.now = Date(timeIntervalSinceReferenceDate: 1234567890)
     $0.uuid = .incrementing
   } operation: {
@@ -116,9 +118,9 @@ func testAdd() {
     FeatureModel()
   }
 
-  // 3️⃣ The model now executes in a controlled environment of dependencies, and
-  //    so we can make assertions against its behavior.
-  model.addButtonTapped()
+  // 3️⃣ The model now executes in a controlled environment of dependencies,
+  //    and so we can make assertions against its behavior.
+  try await model.addButtonTapped()
   XCTAssertEqual(
     model.items,
     [
@@ -192,7 +194,10 @@ Xcode previews.
 
 Third party frameworks can integrate the library in order to provide a dependency system to the
 users of the framework. For example, this dependencies library powers the dependency management
-system for the [Composable Architecture][tca-gh].
+system for the [Composable Architecture][tca-gh]. In fact, this library originated from the
+Composable Architecture, but we soon realized it would be useful in vanilla SwiftUI and other
+frameworks, so we decided to split it out into its own library (and it's the [8th
+time][tca-deps-permalink] we've done that!).
 
 #### Server-side Swift
 
@@ -281,6 +286,7 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
+[tca-deps-permalink]: https://github.com/pointfreeco/swift-composable-architecture/blob/dc3e8dcd4ff22455291a2adf384fc7dbe51a8caf/Package.swift#L22-L29
 """###,
       type: .paragraph
     )
@@ -288,7 +294,8 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
   coverImage: nil,
   id: 92,
   publishedAt: referenceDateFormatter.date(from: "2023-01-09")!,
-  title: "Take control of your dependencies, don't let them control you"
+  //      Take control of your dependencies, don't let them control you
+  title: "A new library for controlling dependencies, to avoid letting them control you."
 )
 
 
