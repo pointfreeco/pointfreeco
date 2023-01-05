@@ -36,8 +36,8 @@ eventually they can cause many problems in your code base and development cycle:
   prevents you from being able to easily  iterate on the design of features if you make use of those
   frameworks.
 * Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, websocket
-  libraries, network libraries, etc.) tend to be heavyweight and take a **long time to compile**.
-  This can slow down your development cycle.
+  libraries, network libraries, video streaming libraries etc.) tend to be heavyweight and take a
+  **long time to compile**. This can slow down your development cycle.
 
 For these reasons, and a lot more, it is highly encouraged for you to take control of your
 dependencies rather than letting them control you.
@@ -45,12 +45,12 @@ dependencies rather than letting them control you.
 But, controlling a dependency is only the beginning. Once you have controlled your dependencies,
 you are faced with a whole set of new problems:
 
-* How can you propogate dependencies throughout your entire application that is more ergonomic
+* How can you **propogate dependencies** throughout your entire application that is more ergonomic
   than explicitly passing them around everywhere, but safer than having a global dependency?
 * How can you override dependencies for just one portion of your application? This can be handy
-  for overriding dependencies for tests and SwiftUI previews, as well as specific user flows such as
-  onboarding experiences.
-* How can you be sure you overrode _all_ dependencies a feature uses in tests? It would be
+  for **overriding dependencies** for tests and SwiftUI previews, as well as specific user flows
+  such as onboarding experiences.
+* How can you be sure you **overrode _all_ dependencies** a feature uses in tests? It would be
   incorrect for a test to mock out some dependencies but leave others as interacting with the
   outside world.
 
@@ -70,10 +70,10 @@ then [`@Dependency`][dep-pw-docs] property wrapper:
 
 ```swift
 final class FeatureModel: ObservableObject {
-  @Dependency(\.continuousClock) var clock // Controllable async sleep
-  @Dependency(\.date) var date             // Controllable current date
-  @Dependency(\.mainQueue) var mainQueue   // Controllable main queue scheduling
-  @Dependency(\.uuid) var uuid             // Controllable UUID creation
+  @Dependency(\.continuousClock) var clock  // Controllable async sleep
+  @Dependency(\.date.now) var now           // Controllable current date
+  @Dependency(\.mainQueue) var mainQueue    // Controllable main queue scheduling
+  @Dependency(\.uuid) var uuid              // Controllable UUID creation
 
   // ...
 }
@@ -89,9 +89,9 @@ final class FeatureModel: ObservableObject {
   func addButtonTapped() {
     self.items.append(
       Item(
-        id: self.uuid(),
+        id: self.uuid(),     // 👈 Don't use UUID()
         name: "",
-        createdAt: self.date.now
+        createdAt: self.now  // 👈 Don't use Date()
       )
     )
   }
@@ -102,18 +102,22 @@ That is all it takes to start using controllable dependencies in your features. 
 bit of upfront work done you can start to take advantage of the library's powers.
 
 For example, you can easily control these dependencies in tests. If you want to test the logic
-inside the `addButtonTapped` method, you can use the [`withValues`][with-values-docs]
-helper to override any dependencies for the scope of one single test:
+inside the `addButtonTapped` method, you can use the [`withDependencies`][with-deps-docs]
+function to override any dependencies for the scope of one single test. It's as easy as 1-2-3:
 
 ```swift
 func testAdd() {
-  let model = DependencyValues.withValues {
+  let model = withDependencies {
+    // 1️⃣ Override any dependencies that your feature uses.
     $0.date.now = Date(timeIntervalSinceReferenceDate: 1234567890)
     $0.uuid = .incrementing
   } operation: {
+    // 2️⃣ Construct the feature's model
     FeatureModel()
   }
 
+  // 3️⃣ The model now executes in a controlled environment of dependencies, and
+  //    so we can make assertions against its behavior.
   model.addButtonTapped()
   XCTAssertEqual(
     model.items,
@@ -136,13 +140,13 @@ But, controllable dependencies aren't only useful for tests. They can also be us
 previews. Suppose the feature above makes use of a clock to sleep for an amount of time before
 something happens in the view. If you don't want to literally wait for time to pass in order
 to see how the view changes, you can override the clock dependency to be an "immediate" clock
-using the [`withValues`][with-values-docs] helper:
+using the [`withValues`][with-deps-docs] helper:
 
 ```swift
 struct Feature_Previews: PreviewProvider {
   static var previews: some View {
     FeatureView(
-      model: DependencyValues.withValues {
+      model: withDependencies {
         $0.clock = ImmediateClock()
       } operation: {
         FeatureModel()
@@ -162,27 +166,41 @@ can do. You can learn more in depth in our [documentation][docs] and articles.
 ## Multiplatform
 
 While this dependencies library works really great for SwiftUI applications, it is useful in
-many other situations too:
+many other situations too.
 
-* It can be used with UIKit applications in exactly the same way as SwiftUI applications, except
+#### UIKit
+
+It can be used with UIKit applications in exactly the same way as SwiftUI applications, except
 instead of adding dependencies to an `ObservableObject` you can add them to your `UIViewController`
 subclasses:
-  ```swift
-  class FeatureController: UIViewController {
-    @Dependency(\.continuousClock) var clock
-    @Dependency(\.date) var date
-    @Dependency(\.mainQueue) var mainQueue
-    @Dependency(\.uuid) var uuid
 
-    // ...
-  }
-  ```
-* Third party frameworks can integrate the library in order to provide a dependency system to the
+```swift
+class FeatureController: UIViewController {
+  @Dependency(\.continuousClock) var clock
+  @Dependency(\.date) var date
+  @Dependency(\.mainQueue) var mainQueue
+  @Dependency(\.uuid) var uuid
+
+  // ...
+}
+```
+
+This makes it possible to construct this class in a controlled environment, such as in tests and
+Xcode previews.
+
+#### Third party frameworks
+
+Third party frameworks can integrate the library in order to provide a dependency system to the
 users of the framework. For example, this dependencies library powers the dependency management
 system for the [Composable Architecture][tca-gh].
-* It can even be used with server side applications. In fact, this very site is [built in
-Swift][pf-gh], and now [uses the dependencies][pf-deps-pr] library to control dependencies and make
+
+#### Server-side Swift
+
+It can even be used with server side applications. In fact, this very site is [built in
+Swift][pf-gh], and now [uses the dependencies library][pf-deps-pr] to control dependencies and make
 our server code more testable.
+
+And that's just barely scratching the surface.
 
 ## Documentation
 
@@ -259,7 +277,7 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [registering-dependencies-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/registeringdependencies
 [dep-values-docs]: todo
 [dep-pw-docs]: todo
-[with-values-docs]: todo
+[with-deps-docs]: todo
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
