@@ -159,6 +159,31 @@ override dependencies just for previews without affecting how your app will run 
 That is the basics to getting started with using the library, but there is still a lot more you
 can do. You can learn more in depth in our [documentation][docs] and articles.
 
+## Multiplatform
+
+While this dependencies library works really great for SwiftUI applications, it is useful in
+many other situations too:
+
+* It can be used with UIKit applications in exactly the same way as SwiftUI applications, except
+instead of adding dependencies to an `ObservableObject` you can add them to your `UIViewController`
+subclasses:
+  ```swift
+  class FeatureController: UIViewController {
+    @Dependency(\.continuousClock) var clock
+    @Dependency(\.date) var date
+    @Dependency(\.mainQueue) var mainQueue
+    @Dependency(\.uuid) var uuid
+
+    // ...
+  }
+  ```
+* Third party frameworks can integrate the library in order to provide a dependency system to the
+users of the framework. For example, this dependencies library powers the dependency management
+system for the [Composable Architecture][tca-gh].
+* It can even be used with server side applications. In fact, this very site is [built in
+Swift][pf-gh], and now [uses the dependencies][pf-deps-pr] library to control dependencies and make
+our server code more testable.
+
 ## Documentation
 
 We have written an extensive amount of [documentation][docs] for this library, including a
@@ -235,6 +260,9 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [dep-values-docs]: todo
 [dep-pw-docs]: todo
 [with-values-docs]: todo
+[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
+[pf-gh]: http://github.com/pointfreeco/pointfreeco
+[pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
 """###,
       type: .paragraph
     )
