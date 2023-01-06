@@ -113,11 +113,8 @@ test-oss: db
 		-Xswiftc -D -Xswiftc OSS
 
 test-linux:
-	rm -f ./.netrc
-	cp ~/.netrc ./.netrc
 	docker-compose build && docker-compose run \
 		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
-	rm ./.netrc
 
 linux-start:
 	docker compose up --build
