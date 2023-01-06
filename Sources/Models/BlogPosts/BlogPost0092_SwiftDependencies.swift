@@ -280,9 +280,9 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [what-are-dependencies-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/whataredependencies
 [quick-start-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/quickstart
 [registering-dependencies-article]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/registeringdependencies
-[dep-values-docs]: todo
-[dep-pw-docs]: todo
-[with-deps-docs]: todo
+[dep-values-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/dependencyvalues
+[dep-pw-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/dependency
+[with-deps-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/withdependencies(_:operation:)-4uz6m
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
