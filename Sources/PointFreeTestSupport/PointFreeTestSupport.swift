@@ -55,21 +55,6 @@ extension DependencyValues {
   }
 }
 
-extension Logger {
-  @available(*, deprecated)
-  public static let mock = Logger(label: "co.pointfree.PointFreeTestSupport")
-}
-
-extension EnvVars {
-  @available(*, deprecated)
-  public static var mock: EnvVars {
-    return update(EnvVars()) {
-      $0.appEnv = EnvVars.AppEnv.testing
-      $0.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
-    }
-  }
-}
-
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",

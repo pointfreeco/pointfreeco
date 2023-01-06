@@ -71,11 +71,11 @@ open class LiveDatabaseTestCase: XCTestCase {
       $0.stripe = .mock
       $0.uuid = .incrementing
 
-      precondition(!Current.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
+      precondition(!$0.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(
           configuration: PostgresConfiguration(
-            url: Current.envVars.postgres.databaseUrl.rawValue
+            url: $0.envVars.postgres.databaseUrl.rawValue
           )!
         ),
         on: MultiThreadedEventLoopGroup(numberOfThreads: 1)

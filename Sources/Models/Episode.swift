@@ -308,11 +308,6 @@ public struct Episode: Equatable, Identifiable {
         case note
       }
 
-      @available(*, deprecated)
-      public static var correction: BlockType {
-        .box(.correction)
-      }
-
       private enum CodingKeys: CodingKey {
         case lang
         case poster
