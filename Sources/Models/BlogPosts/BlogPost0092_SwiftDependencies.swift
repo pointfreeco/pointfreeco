@@ -4,16 +4,16 @@ public let post0092_SwiftDependencies = BlogPost(
   author: .pointfree,
   blurb: """
     We are open sourcing a new dependency management system for Swift. Take control of your
-    dependencies rather than letting them control you.
+    dependencies, don't let them control you.
     """,
   contentBlocks: [
     .init(
       content: ###"""
 We are excited to [open source][swift-deps-gh] a brand new dependency management system for Swift
-applications. It makes it easy to propogate dependencies deep into your application in an ergnomic,
-but also safe, manner. Once you start to control your dependencies you will instantly be able
-to write simpler tests, unlock new superpowers from Xcode previews, improve compile times, and a
-whole bunch more.
+applications. It makes it easy to propagate dependencies deep into your application in an ergonomic,
+but also safe, manner. Once you start to control your dependencies you will instantly be able to
+write simpler tests, unlock new superpowers from Xcode previews, improve compile times, and a whole
+bunch more.
 
 Join us for a quick overview, and consider adding the [library][swift-deps-gh] to your application
 today!
@@ -21,9 +21,9 @@ today!
 ## Overview
 
 Dependencies are the types and functions in your application that need to interact with outside
-systems that you do not control. Classic examples of this are API clients that make network
-requests to servers, but also seemingly innocuous things such as `UUID` and `Date` initializers,
-file access, user defaults, and even clocks and timers, can all be thought of as dependencies.
+systems that you do not control. Classic examples of this are API clients that make network requests
+to servers, but also seemingly innocuous things such as `UUID` and `Date` initializers, file access,
+user defaults, and even clocks and timers, can all be thought of as dependencies.
 
 You can get really far in application development without ever thinking about dependencies, but
 eventually they can cause many problems in your code base and development cycle:
@@ -33,25 +33,25 @@ eventually they can cause many problems in your code base and development cycle:
   internet speed, server uptime, and more.
 * Many dependencies **do not work well in SwiftUI previews**, such as location managers and speech
   recognizers, and some **do not work even in simulators**, such as motion managers, and more. This
-  prevents you from being able to easily  iterate on the design of features if you make use of those
+  prevents you from being able to easily iterate on the design of features if you make use of those
   frameworks.
-* Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, websocket
-  libraries, network libraries, video streaming libraries etc.) tend to be heavyweight and take a
+* Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, web socket
+  libraries, network libraries, video streaming libraries, etc.) tend to be heavyweight and take a
   **long time to compile**. This can slow down your development cycle.
 
 For these reasons, and a lot more, it is highly encouraged for you to take control of your
-dependencies rather than letting them control you.
+dependencies rather than let them control you.
 
-But, controlling a dependency is only the beginning. Once you have controlled your dependencies,
+But controlling a dependency is only the beginning. Once you have controlled your dependencies,
 you are faced with a whole set of new problems:
 
-* How can you **propogate dependencies** throughout your entire application that is more ergonomic
+* How can you **propagate dependencies** throughout your entire application that is more ergonomic
   than explicitly passing them around everywhere, but safer than having a global dependency?
 * How can you override dependencies for just one portion of your application? This can be handy
-  for **overriding dependencies** for tests and SwiftUI previews, as well as specific user flows
+  for **overriding dependencies** in tests and SwiftUI previews, as well as specific user flows,
   such as onboarding experiences.
 * How can you be sure you **overrode _all_ dependencies** a feature uses in tests? It would be
-  incorrect for a test to mock out some dependencies but leave others as interacting with the
+  incorrect for a test to mock out some dependencies but leave others open to interacting with the
   outside world.
 
 This library addresses all of the points above, and much, _much_ more.
@@ -66,7 +66,7 @@ this library.
 
 Any place you are using one of those dependencies directly in feature logic without passing it
 explicitly to the feature can be updated to first declare your dependency in the feature using
-then [`@Dependency`][dep-pw-docs] property wrapper:
+the [`@Dependency`][dep-pw-docs] property wrapper:
 
 ```swift
 final class FeatureModel: ObservableObject {
@@ -79,20 +79,20 @@ final class FeatureModel: ObservableObject {
 }
 ```
 
-Once your dependencies are declared, rather than reaching out to the `Date()`, `UUID()`, `Task` etc.
-directly, you can use the dependency that is defined directly on your feature's model:
+Once your dependencies are declared, rather than reaching out to the `Date()`, `UUID()`, `Task`,
+etc., directly, you can use the dependency that is defined on your feature's model:
 
 ```swift
 final class FeatureModel: ObservableObject {
   // ...
 
   func addButtonTapped() async throws {
-    try await self.clock.sleep(for: .seconds(1))  // 👈 Don't use Task.sleep
+    try await self.clock.sleep(for: .seconds(1))  // 👈 Don't use 'Task.sleep'
     self.items.append(
       Item(
-        id: self.uuid(),  // 👈 Don't use UUID()
+        id: self.uuid(),  // 👈 Don't use 'UUID()'
         name: "",
-        createdAt: self.now  // 👈 Don't use Date()
+        createdAt: self.now  // 👈 Don't use 'Date()'
       )
     )
   }
@@ -128,6 +128,7 @@ func testAdd() async throws {
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
         name: "",
         createdAt: Date(timeIntervalSinceReferenceDate: 1234567890)
+      )
     ]
   )
 }
@@ -135,14 +136,14 @@ func testAdd() async throws {
 
 Here we controlled the `date` dependency to always return the same date, and we controlled the
 `uuid` dependency to return an auto-incrementing UUID every time it is invoked. If we did not
-control these dependencies this test would be very diffcult to write since there is no way to
+control these dependencies this test would be very difficult to write since there is no way to
 accurately predict what will be returned by `Date()` and `UUID()`.
 
 But, controllable dependencies aren't only useful for tests. They can also be used in Xcode
 previews. Suppose the feature above makes use of a clock to sleep for an amount of time before
 something happens in the view. If you don't want to literally wait for time to pass in order
 to see how the view changes, you can override the clock dependency to be an "immediate" clock
-using the [`withValues`][with-deps-docs] helper:
+using the [`withDependencies`][with-deps-docs] helper:
 
 ```swift
 struct Feature_Previews: PreviewProvider {
@@ -293,9 +294,7 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
   ],
   coverImage: nil,
   id: 92,
-  publishedAt: referenceDateFormatter.date(from: "2023-01-09")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2023-01-09")!,
   //      Take control of your dependencies, don't let them control you
-  title: "A new library for controlling dependencies, to avoid letting them control you."
+  title: "A new library to control dependencies and avoid letting them control you"
 )
-
-
