@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -24,6 +25,8 @@ let reactivateMiddleware = requireUserAndStripeSubscription(reactivateResponse)
 private func cancelResponse(
   _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.fireAndForget) var fireAndForget
+
   do {
     let (user, stripeSubscription) = conn.data
     guard stripeSubscription.isRenewing
@@ -34,7 +37,9 @@ private func cancelResponse(
     }
     _ = try await Current.stripe
       .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
-    Task { try await sendCancelEmail(to: user, for: stripeSubscription) }
+    await fireAndForget {
+      try await sendCancelEmail(to: user, for: stripeSubscription)
+    }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve canceled your subscription.")
     }
@@ -141,6 +146,8 @@ let cancelEmailView =
   }
 
 private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

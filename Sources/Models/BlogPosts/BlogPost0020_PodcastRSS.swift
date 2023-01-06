@@ -42,7 +42,7 @@ public let post0020_PodcastRSS = BlogPost(
         Since the time we launched this feature we have changed this slightly. Only yearly subscribers get access to the entire catalogue of episodes in their podcast RSS feed, and monthly subscribers get access to the last 4 episodes.
         """,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     .init(
       content: """

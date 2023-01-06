@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -31,6 +32,8 @@ let newBlogPostEmail =
   }
 
 func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -49,14 +50,16 @@ final class InvoicesTests: TestCase {
     ]
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
-    Current.stripe.fetchSubscription = { _ in subscription }
 
-    let conn = connection(
-      from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
+    await withDependencies {
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -66,7 +69,8 @@ final class InvoicesTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testInvoice_InvoiceBilling() async throws {
@@ -74,15 +78,16 @@ final class InvoicesTests: TestCase {
     charge.paymentMethodDetails = .init()
     let invoice = Invoice.mock(charge: .right(charge))
 
-    Current = .teamYearly
-    Current.stripe.fetchInvoice = { _ in invoice }
+    await withDependencies {
+      $0.teamYearly()
+      $0.stripe.fetchInvoice = { _ in invoice }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    let conn = connection(
-      from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -92,7 +97,8 @@ final class InvoicesTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testInvoiceWithDiscount() async throws {
@@ -100,14 +106,16 @@ final class InvoicesTests: TestCase {
     invoice.discount = .mock
     invoice.total = 1455
     invoice.subtotal = 1700
-    Current.stripe.fetchInvoice = { _ in invoice }
 
-    let conn = connection(
-      from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+    await withDependencies {
+      $0.stripe.fetchInvoice = { _ in invoice }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
+      
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -117,6 +125,7 @@ final class InvoicesTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 }

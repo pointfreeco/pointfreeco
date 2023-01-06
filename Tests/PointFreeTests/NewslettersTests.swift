@@ -99,8 +99,6 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() async throws {
     #if !os(Linux)
-      Current.renderHtml = { debugRender($0) }
-
       let user = try await Current.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )

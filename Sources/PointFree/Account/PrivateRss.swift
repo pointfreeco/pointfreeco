@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import Html
@@ -88,7 +89,8 @@ private var deactivatedError: String {
 }
 
 private var inactiveError: String {
-  """
+  @Dependency(\.siteRouter) var siteRouter
+  return """
   ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no \
   longer active. If you would like reactive this feed you can resubscribe to Point-Free on your \
   account page at \(siteRouter.url(for: .account())). If you think this is an error, please \
@@ -97,7 +99,8 @@ private var inactiveError: String {
 }
 
 private var suspiciousError: String {
-  """
+  @Dependency(\.siteRouter) var siteRouter
+  return """
   ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
   retrieve your most up-to-date private podcast URL by visiting your account page at \
   \(siteRouter.url(for: .account())). If you think this is an error, please contact \
@@ -114,6 +117,8 @@ private let privateEpisodesFeedView = itunesRssFeedLayout {
 }
 
 func privateRssChannel(user: User) -> RssChannel {
+  @Dependency(\.siteRouter) var siteRouter
+
   let description = """
     Point-Free is a video series about functional programming and the Swift programming language. Each episode
     covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
@@ -182,6 +187,8 @@ private func items(forUser user: User, subscription: Stripe.Subscription?) -> [R
 }
 
 private func item(forUser user: User, episode: Episode) -> RssItem {
+  @Dependency(\.siteRouter) var siteRouter
+
   return RssItem(
     description: episode.blurb,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
@@ -226,6 +233,8 @@ private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
 }
 
 private func invalidatedChannel(errorMessage: String) -> RssChannel {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .init(
     copyright:
       "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
@@ -270,6 +279,8 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
 }
 
 private func invalidatedItem(errorMessage: String) -> RssItem {
+  @Dependency(\.siteRouter) var siteRouter
+  
   let episode = Current.episodes()[0]
   return RssItem(
     description: errorMessage,

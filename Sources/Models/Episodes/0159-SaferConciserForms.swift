@@ -18,7 +18,7 @@ extension Episode {
           June Bash first suggested using a protocol like `BindableAction` in this GitHub discussion.
           """#,
         link: "https://github.com/pointfreeco/swift-composable-architecture/discussions/370",
-        publishedAt: referenceDateFormatter.date(from: "2021-02-01"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-02-01"),
         title: "Further reducing boilerplate with... a protocol...?"
       ),
       Episode.Reference(
@@ -28,7 +28,7 @@ extension Episode {
           """#,
         link:
           "https://github.com/apple/swift-evolution/blob/main/proposals/0280-enum-cases-as-protocol-witnesses.md",
-        publishedAt: referenceDateFormatter.date(from: "2020-01-18"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-01-18"),
         title: "Enum cases as protocol witnesses"
       ),
     ],

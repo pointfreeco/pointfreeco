@@ -2178,9 +2178,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
             <div class="bg-white">
               <div>
                 <div class="md-ctn">
-                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-should be broken out into separate content blocks so that we can use the JS syntax highlighting
-library. For example, here is some code:</p>
+                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets should be broken out into separate content blocks so that we can use the JS syntax highlighting library. For example, here is some code:</p>
 
                 </div>
               </div>
@@ -2272,9 +2270,7 @@ library. For example, here is some code:</p>
             <div class="bg-white">
               <div>
                 <div class="md-ctn">
-                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-should be broken out into separate content blocks so that we can use the JS syntax highlighting
-library. For example, here is some code:</p>
+                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets should be broken out into separate content blocks so that we can use the JS syntax highlighting library. For example, here is some code:</p>
 
                 </div>
               </div>
@@ -2366,9 +2362,7 @@ library. For example, here is some code:</p>
             <div class="bg-white">
               <div>
                 <div class="md-ctn">
-                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-should be broken out into separate content blocks so that we can use the JS syntax highlighting
-library. For example, here is some code:</p>
+                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets should be broken out into separate content blocks so that we can use the JS syntax highlighting library. For example, here is some code:</p>
 
                 </div>
               </div>
@@ -2418,8 +2412,7 @@ library. For example, here is some code:</p>
                         normal
                         h5
                         lh-4">
-                This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.
+                This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </div>
           </div>
@@ -2448,8 +2441,7 @@ text, no markdown.
                         normal
                         h5
                         lh-4">
-                This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.
+                This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </div>
           </div>
@@ -2478,8 +2470,7 @@ text, no markdown.
                         normal
                         h5
                         lh-4">
-                This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-text, no markdown.
+                This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </div>
           </div>

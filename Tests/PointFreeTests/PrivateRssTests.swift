@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import ModelsTestSupport
@@ -25,76 +26,88 @@ private let episodes: [Episode] = [
 class PrivateRssTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    Current.episodes = { episodes }
     //SnapshotTesting.isRecording = true
+  }
+
+  override func invokeTest() {
+    withDependencies {
+      $0.episodes = { episodes }
+    } operation: {
+      super.invokeTest()
+    }
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in .individualYearly }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in .individualYearly }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_Subscriber_Yearly_StripeDown() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_InActiveSubscriber() async throws {
@@ -104,17 +117,18 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_Authenticated_DeactivatedSubscriber() async throws {
@@ -124,144 +138,153 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in subscription }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in subscription }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_BadSalt() async throws {
-    Current.database.fetchUserByRssSalt = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rss(salt: "deadbeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rss(salt: "deadbeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.createFeedRequestEvent = { _, _, _ in
-      feedRequestEventCreated = true
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.createFeedRequestEvent = { _, _, _ in feedRequestEventCreated = true }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertTrue(feedRequestEventCreated)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
-
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    XCTAssertTrue(feedRequestEventCreated)
   }
 
   func testFeed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
 
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+      let conn = connection(from: req)
 
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testFeed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
 
-    Current.database.fetchUserByRssSalt = { _ in throw unit }
-    Current.database.updateUser = { _, _, _, _, _ in
-      XCTFail("The user should not be updated.")
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in throw unit }
+      $0.database.updateUser = { _, _, _, _, _ in XCTFail("The user should not be updated.") }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var req = request(
+        to: .account(.rss(salt: "deadbeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-
-    var req = request(
-      to: .account(.rss(salt: "deadbeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLegacy_Feed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.stripe.fetchSubscription = { _ in .individualYearly }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.stripe.fetchSubscription = { _ in .individualYearly }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_Authenticated_InActiveSubscriber() async throws {
@@ -271,17 +294,18 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in subscription }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in subscription }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_Authenticated_DeactivatedSubscriber() async throws {
@@ -291,93 +315,101 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.fetchSubscriptionById = { _ in subscription }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.fetchSubscriptionById = { _ in subscription }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_BadSalt() async throws {
-    Current.database.fetchUserByRssSalt = { _ in throw unit }
-
-    let conn = connection(
-      from: request(
-        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-        session: .loggedOut
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in throw unit }
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+          session: .loggedOut
+        )
       )
-    )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.database.createFeedRequestEvent = { _, _, _ in
-      feedRequestEventCreated = true
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.database.createFeedRequestEvent = { _, _, _ in
+        feedRequestEventCreated = true
+      }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      XCTAssertTrue(feedRequestEventCreated)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
-
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-    XCTAssertTrue(feedRequestEventCreated)
   }
 
   func testLegacy_Feed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = { _ in user }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-    Current.stripe.fetchSubscription = { _ in .individualMonthly }
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in user }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+    } operation: {
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
 
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"
+      let conn = connection(from: req)
 
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testLegacy_Feed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
 
-    Current.database.fetchUserByRssSalt = { _ in throw unit }
-    Current.database.updateUser = { _, _, _, _, _ in
-      XCTFail("The user should not be updated.")
+    await withDependencies {
+      $0.database.fetchUserByRssSalt = { _ in throw unit }
+      $0.database.updateUser = { _, _, _, _, _ in
+        XCTFail("The user should not be updated.")
+      }
+      $0.envVars.rssUserAgentWatchlist = ["blob"]
+    } operation: {
+      var req = request(
+        to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
+        session: .loggedOut
+      )
+      req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+      let conn = connection(from: req)
+
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
-    Current.envVars.rssUserAgentWatchlist = ["blob"]
-
-    var req = request(
-      to: .account(.rssLegacy(secret1: "deadbeef", secret2: "cafebeef")),
-      session: .loggedOut
-    )
-    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
-
-    let conn = connection(from: req)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
-
 }

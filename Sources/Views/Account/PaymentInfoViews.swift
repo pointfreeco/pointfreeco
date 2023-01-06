@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import PointFreeRouter
@@ -47,6 +48,8 @@ private func currentPaymentInfoRowView(card: PaymentMethod.Card) -> Node {
 }
 
 private func updatePaymentInfoRowView(publishableKey: String, stripeJsSrc: String) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     attributes: [.class([Class.padding([.mobile: [.bottom: 4]])])],
     .gridColumn(

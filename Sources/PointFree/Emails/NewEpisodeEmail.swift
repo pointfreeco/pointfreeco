@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -32,6 +33,8 @@ public let newEpisodeEmail =
   }
 
 func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bool) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(
@@ -83,6 +86,8 @@ private func announcementView(announcement: String?) -> Node {
 private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard !isSubscriber else { return [] }
 
+  @Dependency(\.siteRouter) var siteRouter
+
   let blurb =
     ep.subscriberOnly
     ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
@@ -119,6 +124,8 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
 
 private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard isSubscriber else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return [
     .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),

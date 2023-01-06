@@ -2192,9 +2192,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               </div>
               <div>
                 <div class="md-ctn">
-                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-should be broken out into separate content blocks so that we can use the JS syntax highlighting
-library. For example, here is some code:</p>
+                  <p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets should be broken out into separate content blocks so that we can use the JS syntax highlighting library. For example, here is some code:</p>
 
                 </div>
               </div>

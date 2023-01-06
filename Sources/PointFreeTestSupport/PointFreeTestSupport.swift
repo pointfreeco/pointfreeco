@@ -1,6 +1,7 @@
 import Cryptor
 import Database
 import DatabaseTestSupport
+import Dependencies
 import Either
 import Foundation
 import GitHub
@@ -34,86 +35,23 @@ import XCTestDynamicOverlay
   import WebKit
 #endif
 
-extension Environment {
-  public static let mock = Environment(
-    assets: .mock,
-    blogPosts: { [.mock] },
-    cookieTransform: .plaintext,
-    collections: [.mock],
-    database: .some(.mock),
-    date: unzurry(.mock),
-    envVars: .mock,
-    episodes: unzurry(.mock),
-    features: Feature.allFeatures,
-    gitHub: .some(.mock),
-    logger: .mock,
-    mailgun: .mock,
-    renderHtml: { Html.render($0) },
-    renderXml: Html._xmlRender,
-    stripe: .some(.mock),
-    uuid: unzurry(.mock)
-  )
-
-  public static let failing = Self(
-    assets: .mock,
-    blogPosts: unimplemented("Current.blogPosts", placeholder: []),
-    cookieTransform: .plaintext,
-    collections: [.mock],
-    database: .failing,
-    date: unimplemented("Current.date", placeholder: Date()),
-    envVars: .mock,
-    episodes: unimplemented("Current.episodes", placeholder: []),
-    features: Feature.allFeatures,
-    gitHub: .failing,
-    logger: .mock,
-    mailgun: .failing,
-    renderHtml: { Html.render($0) },
-    renderXml: Html._xmlRender,
-    stripe: .failing,
-    uuid: unimplemented("Current.uuid", placeholder: UUID())
-  )
-
-  public static let teamYearly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
-    $0.database.fetchTeamInvites = { _ in [.mock] }
-    $0.stripe.fetchSubscription = { _ in .teamYearly }
-    $0.stripe.fetchUpcomingInvoice = { _ in update(.upcoming) { $0.amountDue = 640_00 } }
-    $0.stripe.fetchPaymentMethod = { _ in .mock }
+extension DependencyValues {
+  public mutating func teamYearly() {
+    self.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
+    self.database.fetchTeamInvites = { _ in [.mock] }
+    self.stripe.fetchSubscription = { _ in .teamYearly }
+    self.stripe.fetchUpcomingInvoice = { _ in update(.upcoming) { $0.amountDue = 640_00 } }
+    self.stripe.fetchPaymentMethod = { _ in .mock }
   }
 
-  public static let teamYearlyTeammate = update(teamYearly) {
-    $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+  public mutating func teamYearlyTeammate() {
+    self.teamYearly()
+    self.database.fetchSubscriptionByOwnerId = { _ in throw unit }
   }
 
-  public static let individualMonthly = update(mock) {
-    $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
-    $0.stripe.fetchSubscription = { _ in .individualMonthly }
-  }
-}
-
-extension Array where Element == Episode {
-  static let mock: [Element] = [.subscriberOnly, .free]
-}
-
-extension Assets {
-  static let mock = Assets(
-    brandonImgSrc: "",
-    stephenImgSrc: "",
-    emailHeaderImgSrc: "",
-    pointersEmailHeaderImgSrc: ""
-  )
-}
-
-extension Logger {
-  public static let mock = Logger(label: "co.pointfree.PointFreeTestSupport")
-}
-
-extension EnvVars {
-  public static var mock: EnvVars {
-    return update(EnvVars()) {
-      $0.appEnv = EnvVars.AppEnv.testing
-      $0.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
-    }
+  public mutating func individualMonthly() {
+    self.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
+    self.stripe.fetchSubscription = { _ in .individualMonthly }
   }
 }
 
@@ -148,14 +86,11 @@ extension UUID {
 extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      let renderHtml = Current.renderHtml
-      let renderXml = Current.renderXml
-      Current.renderHtml = { debugRender($0) }
-      Current.renderXml = { _debugXmlRender($0) }
-      let conn = await io.performAsync()
-      Current.renderHtml = renderHtml
-      Current.renderXml = renderXml
-      return conn
+      await withDependencies {
+        $0.renderHtml = { debugRender($0) }
+      } operation: {
+        await io.performAsync()
+      }
     }
   }
 
@@ -167,7 +102,14 @@ extension Snapshotting {
       return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
         let webView = WKWebView(frame: .init(origin: .zero, size: size))
         await webView.loadHTMLString(
-          String(decoding: io.performAsync().data, as: UTF8.self),
+          String(
+            decoding: withDependencies {
+              $0.renderHtml = { Html.render($0) }
+            } operation: {
+              await io.performAsync().data
+            },
+            as: UTF8.self
+          ),
           baseURL: nil
         )
         return webView
@@ -179,6 +121,8 @@ extension Snapshotting {
 public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)
   -> URLRequest
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   var headers: OrderedDictionary<String, [String?]> = [:]
 
   if basicAuth {

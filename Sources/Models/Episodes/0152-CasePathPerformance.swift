@@ -25,7 +25,7 @@ extension Episode {
           A post on the official Swift Blog explaining how Swift's reflection APIs work, including calls to functions that live on the runtime metadata, like the enum tag code we use in this week's episode.
           """#,
         link: "https://swift.org/blog/how-mirror-works/",
-        publishedAt: referenceDateFormatter.date(from: "2018-09-26"),
+        publishedAt: yearMonthDayFormatter.date(from: "2018-09-26"),
         title: "How Mirror Works"
       ),
       .init(
@@ -34,7 +34,7 @@ extension Episode {
           A series of posts on the Swift runtime.
           """#,
         link: "https://belkadan.com/blog/tags/swift-runtime/",
-        publishedAt: referenceDateFormatter.date(from: "2020-08-31"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-08-31"),
         title: "The Swift Runtime"
       ),
       .init(

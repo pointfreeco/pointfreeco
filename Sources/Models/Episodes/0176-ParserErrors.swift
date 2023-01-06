@@ -16,7 +16,7 @@ extension Episode {
         author: "Federico Zanetello",
         blurb: "A journey into Swift overloading thanks to this private attribute.",
         link: "https://www.fivestars.blog/articles/disfavoredOverload/",
-        publishedAt: referenceDateFormatter.date(from: "2020-11-10"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-11-10"),
         title: "What is @_disfavoredOverload in Swift?"
       )
     ],

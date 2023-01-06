@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -34,6 +35,8 @@ let youHaveBeenRemovedEmailView =
   }
 
 private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(
@@ -82,6 +85,8 @@ let teammateRemovedEmailView =
   }
 
 private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

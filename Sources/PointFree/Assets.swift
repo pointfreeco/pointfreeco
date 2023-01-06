@@ -1,3 +1,5 @@
+import Dependencies
+
 public struct Assets {
   public var brandonImgSrc: String
   public var stephenImgSrc: String
@@ -16,5 +18,22 @@ public struct Assets {
     self.stephenImgSrc = stephenImgSrc
     self.emailHeaderImgSrc = emailHeaderImgSrc
     self.pointersEmailHeaderImgSrc = pointersEmailHeaderImgSrc
+  }
+}
+
+extension Assets: DependencyKey {
+  public static let liveValue = Assets()
+  public static let testValue = Assets(
+    brandonImgSrc: "",
+    stephenImgSrc: "",
+    emailHeaderImgSrc: "",
+    pointersEmailHeaderImgSrc: ""
+  )
+}
+
+extension DependencyValues {
+  public var assets: Assets {
+    get { self[Assets.self] }
+    set { self[Assets.self] = newValue }
   }
 }

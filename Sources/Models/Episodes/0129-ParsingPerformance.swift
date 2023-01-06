@@ -23,7 +23,7 @@ extension Episode {
           While researching the string APIs for this episode we stumbled upon a massive inefficiency in how Swift implements `removeFirst` on certain collections. This PR fixes the problem and turns the method from an `O(n)` operation (where `n` is the length of the array) to an `O(k)` operation (where `k` is the number of elements being removed).
           """,
         link: "https://github.com/apple/swift/pull/32451",
-        publishedAt: referenceDateFormatter.date(from: "2020-07-28"),
+        publishedAt: yearMonthDayFormatter.date(from: "2020-07-28"),
         title: "Improve performance of Collection.removeFirst(_:) where Self == SubSequence"
       ),
     ],

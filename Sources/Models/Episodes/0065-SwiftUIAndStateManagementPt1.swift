@@ -84,7 +84,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: "Introduction",
@@ -756,7 +756,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       This boilerplate is also not necessary, as the `ObservableObject` protocol will synthesize a default publisher for you automatically.
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -816,7 +816,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ```
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -837,7 +837,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       With Xcode 11 beta 5 and later, SwiftUI's `@ObjectBinding` property wrapper was deprecated in favor of the `@ObservedObject` wrapper introduced to the Combine framework.
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """

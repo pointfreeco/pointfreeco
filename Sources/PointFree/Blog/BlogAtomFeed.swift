@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Html
 import HttpPipeline
@@ -13,6 +14,8 @@ let blogAtomFeedResponse =
   >=> respond(feedView, contentType: .application(.atom))
 
 private func feedView(posts: [BlogPost]) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return atomLayout(
     atomFeed: AtomFeed(
       atomUrl: siteRouter.url(for: .feed(.atom)),
@@ -28,6 +31,8 @@ private func feedView(posts: [BlogPost]) -> Node {
 }
 
 private func atomEntry(for post: BlogPost) -> AtomEntry {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return AtomEntry(
     content: blogPostContentView(post),
     siteUrl: siteRouter.url(for: .blog(.show(slug: post.slug))),

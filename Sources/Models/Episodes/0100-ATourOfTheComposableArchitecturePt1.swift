@@ -207,7 +207,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture` and is no longer needed. You can now link your app target to `ComposableArchitecture` and will have access to test helpers in your test target.
       """#,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: #"Setting up basic infrastructure"#,

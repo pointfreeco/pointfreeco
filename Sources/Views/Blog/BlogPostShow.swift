@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -40,6 +41,8 @@ public func blogPostShowView(
 }
 
 public func blogPostContentView(_ post: BlogPost) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return [
     .h1(
       attributes: [.class([Class.pf.type.responsiveTitle3])],
@@ -88,6 +91,8 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
 
 private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   guard !subscriberState.isActive else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   return [
     .hr(attributes: [

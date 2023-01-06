@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import GitHub
@@ -33,11 +34,16 @@ let loginResponse: M<Tuple2<Models.User?, String?>> =
   requireLoggedOutUser
   <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
 
-let logoutResponse: M<Prelude.Unit> =
-  redirect(
+func logoutResponse(
+  _ conn: Conn<StatusLineOpen, Prelude.Unit>
+) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return conn |> redirect(
     to: siteRouter.path(for: .home),
     headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
   )
+}
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
@@ -122,7 +128,7 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
         try await Current.database.registerUser(
           withGitHubEnvelope: env,
           email: email.email,
-          now: Current.date
+          now: { Current.date() }
         )
       }
       .flatMap { user in
@@ -150,6 +156,8 @@ private func gitHubAuthTokenMiddleware(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   let (token, redirect) = lower(conn.data)
 
   return EitherIO { try await Current.gitHub.fetchUser(token) }
@@ -229,7 +237,9 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
-  gitHubRouter.url(
+  @Dependency(\.siteRouter) var siteRouter
+  
+  return gitHubRouter.url(
     for: .authorize(
       clientId: Current.envVars.gitHub.clientId,
       redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),

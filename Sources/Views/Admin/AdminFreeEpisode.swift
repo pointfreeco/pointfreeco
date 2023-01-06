@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Html
 import Models
@@ -19,6 +20,7 @@ public func freeEpisodeView(episodes: [Episode], today: Date, emergencyMode: Boo
 }
 
 private func row(episode: Episode) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
   return .p(
     .text(episode.fullTitle),
     .form(

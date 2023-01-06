@@ -217,7 +217,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       [We now support Xcode 10](https://github.com/pointfreeco/pointfreeco/pull/262), but be sure to have `xcode-select` pointed to the right Xcode when you run `make`!
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -988,7 +988,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       We [recently](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09) made our snapshots [a little prettier](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09#diff-322217894a1f0a55d5b4dd97aab3b5b1).
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """

@@ -1,5 +1,4 @@
 import Foundation
-import Models
 
 extension Episode {
   public static let mock = subscriberOnlyEpisode
@@ -96,7 +95,15 @@ private let subscriberOnlyEpisode = Episode(
         including code snippets: `map(f >>> g)`.
         """,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
+    ),
+    Episode.TranscriptBlock(
+      content: """
+        This is a note for those time we want to make side remarks. We can use _markdown_ in this
+        block, including code snippets: `map(f >>> g)`.
+        """,
+      timestamp: nil,
+      type: .box(.note)
     ),
     Episode.TranscriptBlock(
       content: """
@@ -344,3 +351,95 @@ private let freeEpisode = Episode(
     ),
   ]
 )
+
+extension Episode.Collection {
+  public static let mock = Episode.Collection(
+    blurb: #"""
+      This is the blurb for the collection. It can be as long as you want, and it _can_ contain `markdown`.
+      """#,
+    sections: [
+      .init(
+        blurb: #"""
+          This is the blurb for the section of the collection.
+          """#,
+        coreLessons: [
+          .init(episode: .mock),
+          .init(episode: .free),
+        ],
+        related: [
+          .init(
+            blurb: #"""
+              This is a blurb for some related grouping of episodes.
+              """#,
+            content: .episodes([.mock, .mock])
+          ),
+          .init(
+            blurb: #"""
+              This is a blurb for a single related episode
+              """#,
+            content: .episode(.mock)
+          ),
+        ],
+        title: "Functions that begin with A",
+        whereToGoFromHere: #"""
+          Here are some closing remarks for the collection.
+          """#
+      ),
+      .init(
+        blurb: #"""
+          This is the blurb for the section of the collection.
+          """#,
+        coreLessons: [
+          .init(episode: .mock),
+          .init(episode: .free),
+        ],
+        related: [
+          .init(
+            blurb: #"""
+              This is a blurb for some related grouping of episodes.
+              """#,
+            content: .episodes([.mock, .mock])
+          ),
+          .init(
+            blurb: #"""
+              This is a blurb for a single related episode
+              """#,
+            content: .episode(.mock)
+          ),
+        ],
+        title: "Functions that begin with B",
+        whereToGoFromHere: #"""
+          Here are some closing remarks for the collection.
+          """#
+      ),
+      .init(
+        blurb: #"""
+          This is the blurb for the section of the collection.
+          """#,
+        coreLessons: [
+          .init(episode: .mock),
+          .init(episode: .free),
+        ],
+        related: [
+          .init(
+            blurb: #"""
+              This is a blurb for some related grouping of episodes.
+              """#,
+            content: .episodes([.mock, .mock])
+          ),
+          .init(
+            blurb: #"""
+              This is a blurb for a single related episode
+              """#,
+            content: .episode(.mock)
+          ),
+        ],
+        title: "Functions that begin with C",
+        whereToGoFromHere: #"""
+          Here are some closing remarks for the collection.
+          """#
+      ),
+    ],
+    title: "Functions"
+  )
+}

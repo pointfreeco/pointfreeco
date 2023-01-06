@@ -28,7 +28,7 @@ extension Episode {
           The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
           """,
         link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
-        publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+        publishedAt: yearMonthDayFormatter.date(from: "2019-01-02"),
         title: "Unknown Pleasures – Artwork and packaging"
       ),
     ],

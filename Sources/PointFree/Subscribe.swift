@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -193,6 +194,7 @@ private func loginAndRedirectToPricing<A>(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.siteRouter) var siteRouter
 
   return conn
     |> redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))

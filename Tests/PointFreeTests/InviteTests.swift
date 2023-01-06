@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import Dependencies
 import Either
 import EmailAddress
 import GitHub
@@ -30,14 +31,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     _ = try await Current.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
 
-    Current.stripe.fetchSubscription = { _ in .teamYearly }
-
-    let sendInvite = request(
-      to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
-    )
-    let conn = connection(from: sendInvite)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await withDependencies {
+      $0.stripe.fetchSubscription = { _ in .teamYearly }
+    } operation: {
+      let sendInvite = request(
+        to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
+      )
+      let conn = connection(from: sendInvite)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testSendInvite_UnhappyPath_NoSeats() async throws {
@@ -48,16 +50,18 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
     _ = try await Current.database.createSubscription(sub, inviterUser.id, true, nil)
 
-    Current.stripe.fetchSubscription = { _ in sub }
+    try await withDependencies {
+      $0.stripe.fetchSubscription = { _ in sub }
+    } operation: {
+      _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-    _ = try await Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
+      let sendInvite = request(
+        to: .invite(.send("blobber2@pointfree.co")),
+        session: .init(flash: nil, userId: inviterUser.id))
+      let conn = connection(from: sendInvite)
 
-    let sendInvite = request(
-      to: .invite(.send("blobber2@pointfree.co")),
-      session: .init(flash: nil, userId: inviterUser.id))
-    let conn = connection(from: sendInvite)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 
   func testResendInvite_HappyPath() async throws {
@@ -203,18 +207,20 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-    Current.stripe.fetchSubscription = { _ in .canceled }
+    try await withDependencies {
+      $0.stripe.fetchSubscription = { _ in .canceled }
+    } operation: {
+      let acceptInvite = request(
+        to: .invite(.invitation(teamInvite.id, .accept)),
+        session: .init(flash: nil, userId: currentUser.id)
+      )
+      let conn = connection(from: acceptInvite)
 
-    let acceptInvite = request(
-      to: .invite(.invitation(teamInvite.id, .accept)),
-      session: .init(flash: nil, userId: currentUser.id)
-    )
-    let conn = connection(from: acceptInvite)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
-    XCTAssertNil(subscriptionId, "Current user now has a subscription")
+      let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
+      XCTAssertNil(subscriptionId, "Current user now has a subscription")
+    }
   }
 
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() async throws {
@@ -236,55 +242,61 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     let teamInvite = try await Current.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
 
-    Current.stripe.fetchSubscription = { _ in .canceled }
+    try await withDependencies {
+      $0.stripe.fetchSubscription = { _ in .canceled }
+    } operation: {
+      let acceptInvite = request(
+        to: .invite(.invitation(teamInvite.id, .accept)),
+        session: .init(flash: nil, userId: currentUser.id)
+      )
+      let conn = connection(from: acceptInvite)
 
-    let acceptInvite = request(
-      to: .invite(.invitation(teamInvite.id, .accept)),
-      session: .init(flash: nil, userId: currentUser.id)
-    )
-    let conn = connection(from: acceptInvite)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
-    XCTAssertNil(subscriptionId, "Current user now has a subscription")
+      let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
+      XCTAssertNil(subscriptionId, "Current user now has a subscription")
+    }
   }
 
   func testAddTeammate() async throws {
-    Current.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
+    try await withDependencies {
+      $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
+    } operation: {
+      let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
 
-    let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+      var stripeSubscription = Stripe.Subscription.teamYearly
+      stripeSubscription.quantity = 2
+      let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
-    var stripeSubscription = Stripe.Subscription.teamYearly
-    stripeSubscription.quantity = 2
-    let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
+      _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
 
-    _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
+      var session = Session.loggedIn
+      session.user = .standard(currentUser.id)
 
-    var session = Session.loggedIn
-    session.user = .standard(currentUser.id)
+      stripeSubscription.quantity += 3
+      try await withDependencies {
+        $0.stripe.fetchSubscription = { _ in stripeSubscription }
+      } operation: {
+        let conn = connection(
+          from: request(
+            to: .invite(.addTeammate(teammateEmailAddress)),
+            session: session
+          )
+        )
 
-    stripeSubscription.quantity += 3
-    Current.stripe.fetchSubscription = { _ in stripeSubscription }
+        await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
 
-    let conn = connection(
-      from: request(
-        to: .invite(.addTeammate(teammateEmailAddress)),
-        session: session
-      )
-    )
-
-    await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
-
-    let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
-    XCTAssertEqual(
-      [teammateEmailAddress],
-      teamInvites.map(\.email)
-    )
-    XCTAssertEqual(
-      [currentUser.id],
-      teamInvites.map(\.inviterUserId)
-    )
+        let teamInvites = try await Current.database.fetchTeamInvites(currentUser.id)
+        XCTAssertEqual(
+          [teammateEmailAddress],
+          teamInvites.map(\.email)
+        )
+        XCTAssertEqual(
+          [currentUser.id],
+          teamInvites.map(\.inviterUserId)
+        )
+      }
+    }
   }
 
   func testResendInvite_CurrentUserIsNotInviter() async throws {
@@ -346,16 +358,16 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    Current.database.fetchUserById = { _ in currentUser }
-    Current.database.fetchTeamInvite = { _ in invite }
-    Current.database.fetchSubscriptionById = { _ in throw unit }
+    await withDependencies {
+      $0.database.fetchUserById = { _ in currentUser }
+      $0.database.fetchTeamInvite = { _ in invite }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
+      let conn = connection(from: showInvite)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
-    let conn = connection(from: showInvite)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -365,7 +377,8 @@ class InviteTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testShowInvite_LoggedIn_Subscriber() async throws {
@@ -376,15 +389,15 @@ class InviteTests: TestCase {
     invite.inviterUserId = .init(
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    Current.database.fetchUserById = { _ in currentUser }
-    Current.database.fetchTeamInvite = { _ in invite }
-    Current.database.fetchSubscriptionById = { _ in .mock }
-
-    Current.stripe.fetchSubscription = { _ in .mock }
-
-    let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
-    let conn = connection(from: showInvite)
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await withDependencies {
+      $0.database.fetchUserById = { _ in currentUser }
+      $0.database.fetchTeamInvite = { _ in invite }
+      $0.database.fetchSubscriptionById = { _ in .mock }
+      $0.stripe.fetchSubscription = { _ in .mock }
+    } operation: {
+      let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
+      let conn = connection(from: showInvite)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    }
   }
 }

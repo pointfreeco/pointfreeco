@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
@@ -295,12 +296,17 @@ public struct Episode: Equatable, Identifiable {
     }
 
     public enum BlockType: Codable, Equatable {
+      case box(Box)
       case code(lang: CodeLang)
-      case correction
       case image(src: String, sizing: ImageSizing)
       case paragraph
       case title
       case video(poster: String, sources: [String])
+
+      public enum Box: Codable {
+        case correction
+        case note
+      }
 
       private enum CodingKeys: CodingKey {
         case lang
@@ -312,27 +318,22 @@ public struct Episode: Equatable, Identifiable {
       }
 
       public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
+        case let .box(box):
+          try container.encode(box, forKey: .type)
         case let .code(lang):
-          var container = encoder.container(keyedBy: CodingKeys.self)
           try container.encode("code", forKey: .type)
           try container.encode(lang, forKey: .lang)
-        case .correction:
-          var container = encoder.container(keyedBy: CodingKeys.self)
-          try container.encode("correction", forKey: .type)
         case let .image(src, sizing):
-          var container = encoder.container(keyedBy: CodingKeys.self)
           try container.encode("image", forKey: .type)
           try container.encode(sizing, forKey: .sizing)
           try container.encode(src, forKey: .src)
         case .paragraph:
-          var container = encoder.container(keyedBy: CodingKeys.self)
           try container.encode("paragraph", forKey: .type)
         case .title:
-          var container = encoder.container(keyedBy: CodingKeys.self)
           try container.encode("title", forKey: .type)
         case let .video(poster, sources):
-          var container = encoder.container(keyedBy: CodingKeys.self)
           try container.encode("video", forKey: .type)
           try container.encode(poster, forKey: .poster)
           try container.encode(sources, forKey: .sources)
@@ -470,4 +471,27 @@ func reference(
     publishedAt: section.coreLessons.first?.episode.publishedAt,
     title: "Collection: \(section.title)"
   )
+}
+
+extension Episode.Collection: DependencyKey {
+  public static let liveValue = Episode.Collection.all
+  public static let testValue = [Episode.Collection.mock]
+}
+
+extension DependencyValues {
+  public var collections: [Episode.Collection] {
+    get { self[Episode.Collection.self] }
+    set { self[Episode.Collection.self] = newValue }
+  }
+}
+
+extension Episode: TestDependencyKey {
+  public static let testValue: () -> [Episode] = { [.subscriberOnly, .free] }
+}
+
+extension DependencyValues {
+  public var episodes: () -> [Episode] {
+    get { self[Episode.self] }
+    set { self[Episode .self] = newValue }
+  }
 }
