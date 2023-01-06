@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -40,7 +41,9 @@ private let titleRowView = Node.gridRow(
 
 private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoice>) -> Node {
   func invoiceRow(_ invoice: Stripe.Invoice) -> Node {
-    Node.gridRow(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return Node.gridRow(
       attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
       .gridColumn(
         sizes: [.mobile: 4],

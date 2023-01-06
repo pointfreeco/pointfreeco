@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -21,7 +22,9 @@ let teamInviteEmailView =
   }
 
 private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node {
-  .emailTable(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(
       .td(
@@ -69,6 +72,8 @@ let inviteeAcceptedEmailView =
   }
 
 private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

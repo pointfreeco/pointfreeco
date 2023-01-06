@@ -20,7 +20,7 @@ extension Episode {
           > How an emerging architecture pattern inspired by microservices can invigorate feature development and amplify developer velocity.
           """,
         link: "https://increment.com/mobile/microapps-architecture/",
-        publishedAt: referenceDateFormatter.date(from: "2021-08-01"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-08-01"),
         title: "Meet the microapps architecture"
       ),
       .init(
@@ -29,7 +29,7 @@ extension Episode {
           A detailed post touching code base structure, modularity, UI, architecture and more.
           """,
         link: "https://alejandromp.com/blog/ios-app-architecture-in-2022/",
-        publishedAt: referenceDateFormatter.date(from: "2021-12-15"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-12-15"),
         title: "iOS App Architecture in 2022"
       ),
       .init(
@@ -41,7 +41,7 @@ extension Episode {
           """,
         link:
           "https://engineering.atspotify.com/2021/11/16/introducing-xcremotecache-the-ios-remote-caching-tool-that-cut-our-clean-build-times-by-70/",
-        publishedAt: referenceDateFormatter.date(from: "2021-11-16"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-11-16"),
         title:
           "Introducing XCRemoteCache: The iOS Remote Caching Tool that Cut Our Clean Build Times by 70%"
       ),

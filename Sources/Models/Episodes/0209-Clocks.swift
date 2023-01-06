@@ -20,7 +20,7 @@ extension Episode {
           """,
         link:
           "https://forums.swift.org/t/pitch-primary-associated-types-in-the-standard-library/56426/30",
-        publishedAt: referenceDateFormatter.date(from: "2022-04-06"),
+        publishedAt: yearMonthDayFormatter.date(from: "2022-04-06"),
         title: "Reply to Pitch: 'Primary Associated Types in the Standard Library'"
       ),
       .se_0374_clockSleepFor,

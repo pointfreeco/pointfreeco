@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -21,6 +22,7 @@ extension Conn where Step == HeadersOpen {
     view: @escaping (B) -> Node,
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
+    @Dependency(\.siteRouter) var siteRouter
     var newLayoutData = layoutData(self.data)
     newLayoutData.flash = self.request.session.flash
     newLayoutData.isGhosting = self.request.session.ghosteeId != nil
@@ -63,7 +65,7 @@ func simplePageLayout<A>(
 ) -> (SimplePageLayoutData<A>) -> Node {
   simplePageLayout(
     cssConfig: Current.envVars.appEnv == .testing ? .pretty : .compact,
-    date: Current.date,
+    date: { Current.date() },
     emergencyMode: Current.envVars.emergencyMode,
     contentView
   )

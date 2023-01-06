@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import Models
@@ -20,6 +21,8 @@ public func showInviteView(teamInvite: TeamInvite, inviter: User, currentUser: U
 }
 
 private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     attributes: [.class([Class.padding([.mobile: [.topBottom: 4]])])],
     .gridColumn(
@@ -54,6 +57,8 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
 private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, inviter: User)
   -> Node
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     attributes: [.class([Class.padding([.mobile: [.topBottom: 4]])])],
     .gridColumn(
@@ -87,29 +92,33 @@ private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, i
   )
 }
 
-public let inviteNotFoundView = Node.gridRow(
-  .gridColumn(
-    sizes: [.mobile: 12, .desktop: 8],
-    attributes: [.style(margin(leftRight: .auto))],
-    .div(
-      attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-      .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Invite not found"),
-      .p(
+public func inviteNotFoundView() -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
+  return .gridRow(
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 8],
+      attributes: [.style(margin(leftRight: .auto))],
+      .div(
+        attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Invite not found"),
+        .p(
         """
         Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
         the sender. To see subscription plans available, click the link below:
         """
-      ),
-      .p(
-        attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
-        .a(
-          attributes: [
-            .href(siteRouter.path(for: .pricingLanding)),
-            .class([Class.pf.components.button(color: .purple)]),
-          ],
-          "Subscribe"
+        ),
+        .p(
+          attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
+          .a(
+            attributes: [
+              .href(siteRouter.path(for: .pricingLanding)),
+              .class([Class.pf.components.button(color: .purple)]),
+            ],
+            "Subscribe"
+          )
         )
       )
     )
   )
-)
+}

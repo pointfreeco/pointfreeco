@@ -49,7 +49,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: "What’s the point?",
@@ -222,7 +222,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ```
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -337,7 +337,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ```
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: "Scattered state mutation",
@@ -389,7 +389,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -763,7 +763,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       ```
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """

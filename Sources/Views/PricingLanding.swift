@@ -1,5 +1,6 @@
 import Ccmark
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -56,6 +57,8 @@ public func pricingLanding(
 
 func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   guard currentUser == nil || subscriberState.isActive else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   let title =
     subscriberState.isActive
@@ -379,6 +382,7 @@ private func pricingPlanCta(
   subscriberState: SubscriberState,
   plan: PricingPlan
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   if plan.cost == nil {
     return .a(
@@ -664,6 +668,7 @@ private func footer(
   currentUser: User?,
   subscriberState: SubscriberState
 ) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
 
   guard !subscriberState.isActive else { return [] }
 
@@ -757,6 +762,8 @@ struct PricingPlan {
     episodeHourCount: EpisodeStats.EpisodeHourCount,
     showDiscountOptions: Bool = true
   ) -> PricingPlan {
+    @Dependency(\.siteRouter) var siteRouter
+    
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
       lane: .personal,
@@ -806,45 +813,48 @@ struct PricingPlan {
 }
 
 extension Array where Element == Faq {
-  fileprivate static let allFaqs = [
-    Faq(
-      question: "Can I upgrade my subscription from monthly to yearly?",
-      answer: """
+  fileprivate static var allFaqs: [Faq] {
+    @Dependency(\.siteRouter) var siteRouter
+    return [
+      Faq(
+        question: "Can I upgrade my subscription from monthly to yearly?",
+        answer: """
         Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
         time you have left in your current billing period.
         """),
-    Faq(
-      question: "How do team subscriptions work?",
-      answer: """
+      Faq(
+        question: "How do team subscriptions work?",
+        answer: """
         A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
         and reassigned at any time. Colleagues are invited to your team over email.
         """),
-    Faq(
-      question: "Do you offer student discounts?",
-      answer: """
+      Faq(
+        question: "Do you offer student discounts?",
+        answer: """
         We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
         student status (e.g. scan of ID card) we will give you a <strong>50% discount</strong> off of the Personal plan.
         """
-    ),
-    Faq(
-      question: "Do you offer referral discounts?",
-      answer: """
-        We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free! 
+      ),
+      Faq(
+        question: "Do you offer referral discounts?",
+        answer: """
+        We do! If you know someone that has a Point-Free subscription, ask them to share their referral link (available on their account page) with you. If you subscribe with that link you will both receive a month free!
         """
-    ),
-    Faq(
-      question: "Do you offer country-based discounts?",
-      answer: """
+      ),
+      Faq(
+        question: "Do you offer country-based discounts?",
+        answer: """
         Yes! We understand that paying for a subscription in US dollars can be difficult for certain currencies. So we offer [regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) discounts of <strong>50% off</strong> every billing cycle when your credit card has been issued from certain countries. For more information, [see here](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
         """
-    ),
-    Faq(
-      question: "Can I give a subscription as a gift?",
-      answer: """
+      ),
+      Faq(
+        question: "Can I give a subscription as a gift?",
+        answer: """
         You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts()))) page for more information.
         """
-    ),
-  ]
+      ),
+    ]
+  }
 }
 
 private struct WhatToExpectItem {

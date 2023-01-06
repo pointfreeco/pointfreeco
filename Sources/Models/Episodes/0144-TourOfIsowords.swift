@@ -321,7 +321,7 @@ extension Array where Element == Episode.TranscriptBlock {
         One of our viewers [pointed out](https://github.com/pointfreeco/isowords/discussions/106) that `Package` is a class in SPM and so the `var` is not necessary. We can use `let` and still make these mutations just fine.
         """,
       timestamp: nil,
-      type: .correction
+      type: .box(.correction)
     ),
     Episode.TranscriptBlock(
       content: #"""

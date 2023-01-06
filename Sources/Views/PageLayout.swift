@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Foundation
 import FunctionalCss
 import Html
@@ -76,6 +77,8 @@ public func simplePageLayout<A>(
 ) -> (SimplePageLayoutData<A>) -> Node {
 
   return { layoutData -> Node in
+    @Dependency(\.siteRouter) var siteRouter
+    
     return [
       .doctype,
       .html(
@@ -137,6 +140,8 @@ func announcementBanner<A>(
     (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
       by: 1_209_600)).contains(date())
   else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
 
   let announcementClass =
     Class.type.align.center
@@ -324,6 +329,8 @@ private var prismJsHead: ChildOf<Tag.Head> {
 func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard data.isGhosting else { return [] }
 
+  @Dependency(\.siteRouter) var siteRouter
+
   return .gridRow(
     attributes: [
       .style(safe: "background: linear-gradient(to bottom, #FFF080, #79F2B0);"),
@@ -355,6 +362,8 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 }
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+  
   switch data.currentSubscriberState {
   case .nonSubscriber:
     return []

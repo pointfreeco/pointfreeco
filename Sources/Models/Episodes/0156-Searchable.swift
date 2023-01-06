@@ -18,7 +18,7 @@ extension Episode {
           A WWDC session exploring the `.searchable` view modifier.
           """#,
         link: "https://developer.apple.com/videos/play/wwdc2021/10176/",
-        publishedAt: referenceDateFormatter.date(from: "2021-06-09"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-06-09"),
         title: "Craft search experiences in SwiftUI"
       ),
       .init(
@@ -29,7 +29,7 @@ extension Episode {
           > SwiftUI finally got native search support in iOS 15. We can add search functionality to any navigation view with the new searchable modifier. Let's explore its capability and limitation.
           """,
         link: "https://sarunw.com/posts/searchable-in-swiftui/",
-        publishedAt: referenceDateFormatter.date(from: "2021-07-07"),
+        publishedAt: yearMonthDayFormatter.date(from: "2021-07-07"),
         title: "Searchable modifier in SwiftUI"
       ),
       Episode.Reference(

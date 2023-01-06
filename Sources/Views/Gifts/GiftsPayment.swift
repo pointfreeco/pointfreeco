@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import FunctionalCss
 import Html
 import HtmlCssSupport
@@ -163,7 +164,9 @@ private func formView(
   currentUser: User?,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
-  .form(
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .form(
     attributes: [
       .action(siteRouter.path(for: .gifts(.create(.empty)))),
       .id("gift-form"),

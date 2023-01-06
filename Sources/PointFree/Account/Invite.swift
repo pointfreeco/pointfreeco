@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -41,7 +42,9 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     or: redirect(to: .account(), headersMiddleware: flash(.error, genericInviteError))
   )
   <| { conn in
-    EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
+    @Dependency(\.siteRouter) var siteRouter
+
+    return EitherIO { try await Current.database.deleteTeamInvite(get1(conn.data).id) }
       .run
       .flatMap(
         const(
@@ -81,6 +84,9 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
   <<< requireTeamInvite
   <<< filterMap(require2 >>> pure, or: loginAndRedirect)
   <| { conn in
+    @Dependency(\.fireAndForget) var fireAndForget
+    @Dependency(\.siteRouter) var siteRouter
+
     let (teamInvite, currentUser) = lower(conn.data)
 
     return EitherIO {
@@ -91,15 +97,15 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       guard stripeSubscription.status.isActive else { throw unit }
       try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
-      Task {
-        try await sendEmail(
+      await fireAndForget {
+        _ = try await sendEmail(
           to: [inviter.email],
           subject:
             "\(currentUser.displayName) has accepted your Point-Free team invitation!",
           content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
         )
       }
-      Task {
+      await fireAndForget {
         try await Current.database.deleteTeamInvite(teamInvite.id)
       }
     }
@@ -211,7 +217,7 @@ private func requireTeamInvite<A>(
           return conn.map(const(unit))
             |> writeStatus(.notFound)
             >=> respond(
-              view: { _ in inviteNotFoundView },
+              view: { _ in inviteNotFoundView() },
               layoutData: { data in
                 SimplePageLayoutData(
                   currentUser: nil,

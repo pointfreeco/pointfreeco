@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Html
 import HtmlPlainTextPrint
@@ -436,35 +437,35 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testPaymentIntent_Gift() async throws {
-    Current = .failing
-    Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
     var delivered = false
-    Current.database.updateGiftStatus = {
-      delivered = $2
-      return .unfulfilled
-    }
     var didSendEmail = false
-    Current.mailgun.sendEmail = { _ in
-      didSendEmail = true
-      return SendEmailResponse(id: "", message: "")
-    }
+    try await withDependencies {
+      $0.date.now = .mock
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in .unfulfilled }
+      $0.database.updateGiftStatus = {
+        delivered = $2
+        return .unfulfilled
+      }
+      $0.mailgun.sendEmail = { _ in
+        didSendEmail = true
+        return SendEmailResponse(id: "", message: "")
+      }
+    } operation: {
+      let event = Event(
+        data: .init(object: PaymentIntent.succeeded),
+        id: "evt_test",
+        type: .paymentIntentSucceeded
+      )
 
-    let event = Event(
-      data: .init(object: PaymentIntent.succeeded),
-      id: "evt_test",
-      type: .paymentIntentSucceeded
-    )
+      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+      try hook.addStripeSignature(
+        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+      )
 
-    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-    try hook.addStripeSignature(
-      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-    )
-
-    let conn = connection(from: hook)
-    await _assertInlineSnapshot(
-      matching: conn |> siteMiddleware, as: .ioConn,
-      with: """
+      let conn = connection(from: hook)
+      await _assertInlineSnapshot(
+        matching: conn |> siteMiddleware, as: .ioConn,
+        with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
@@ -496,30 +497,31 @@ final class StripeWebhooksTests: TestCase {
         OK
         """)
 
-    XCTAssertEqual(delivered, true)
-    XCTAssertEqual(didSendEmail, true)
+      XCTAssertEqual(delivered, true)
+      XCTAssertEqual(didSendEmail, true)
+    }
   }
 
   func testPaymentIntent_NoGift() async throws {
-    Current = .failing
-    Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
+    try await withDependencies {
+      $0.date.now = .mock
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
+    } operation: {
+      let event = Event(
+        data: .init(object: PaymentIntent.succeeded),
+        id: "evt_test",
+        type: .paymentIntentSucceeded
+      )
 
-    let event = Event(
-      data: .init(object: PaymentIntent.succeeded),
-      id: "evt_test",
-      type: .paymentIntentSucceeded
-    )
+      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+      try hook.addStripeSignature(
+        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+      )
 
-    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-    try hook.addStripeSignature(
-      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-    )
-
-    let conn = connection(from: hook)
-    await _assertInlineSnapshot(
-      matching: conn |> siteMiddleware, as: .ioConn,
-      with: """
+      let conn = connection(from: hook)
+      await _assertInlineSnapshot(
+        matching: conn |> siteMiddleware, as: .ioConn,
+        with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
@@ -550,32 +552,33 @@ final class StripeWebhooksTests: TestCase {
 
         OK
         """)
+    }
   }
 
   func testFailedPaymentIntent() async throws {
-    Current = .failing
-    Current.date = { .mock }
-    Current.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
-
-    let event = Event(
-      data: .init(object: PaymentIntent.requiresConfirmation),
-      id: "evt_test",
-      type: .paymentIntentPaymentFailed
-    )
-
-    var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-    try hook.addStripeSignature(
-      payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
-    )
-
-    let conn = connection(from: hook)
-    await _assertInlineSnapshot(
-      matching: conn |> siteMiddleware, as: .ioConn,
-      with: """
+    try await withDependencies {
+      $0.date.now = .mock
+      $0.database.fetchGiftByStripePaymentIntentId = { _ in throw unit }
+    } operation: {
+      let event = Event(
+        data: .init(object: PaymentIntent.requiresConfirmation),
+        id: "evt_test",
+        type: .paymentIntentPaymentFailed
+      )
+      
+      var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
+      try hook.addStripeSignature(
+        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+      )
+      
+      let conn = connection(from: hook)
+      await _assertInlineSnapshot(
+        matching: conn |> siteMiddleware, as: .ioConn,
+        with: """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
         Stripe-Signature: t=1517356800,v1=0abe38e2637c25a8e99ea0cb9028534c41e240a3ca48fe7347ba23dd31f805a4
-
+        
         {
           "data" : {
             "object" : {
@@ -589,7 +592,7 @@ final class StripeWebhooksTests: TestCase {
           "id" : "evt_test",
           "type" : "payment_intent.payment_failed"
         }
-
+        
         200 OK
         Content-Length: 2
         Content-Type: text/plain
@@ -599,9 +602,10 @@ final class StripeWebhooksTests: TestCase {
         X-Frame-Options: SAMEORIGIN
         X-Permitted-Cross-Domain-Policies: none
         X-XSS-Protection: 1; mode=block
-
+        
         OK
         """)
+    }
   }
 }
 

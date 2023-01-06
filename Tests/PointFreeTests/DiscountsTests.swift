@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -49,30 +50,33 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: connection(
             from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn)
           )
-            |> siteMiddleware,
+          |> siteMiddleware,
           as: [
             "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
             "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Forever() async throws {
@@ -83,15 +87,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_PercentOff_Repeating() async throws {
@@ -102,15 +109,18 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Repeating() async throws {
@@ -121,15 +131,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_PercentOff_Once() async throws {
@@ -140,15 +153,18 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Once() async throws {
@@ -159,15 +175,18 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    Current.database.fetchSubscriptionById = { _ in throw unit }
-    Current.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-    Current.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
 
-    await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
+    } operation: {
+      await assertSnapshot(
+        matching: connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
         |> siteMiddleware,
-      as: .ioConn
-    )
+        as: .ioConn
+      )
+    }
   }
 
   func testDiscounts_UsingRegionalCouponId() async throws {

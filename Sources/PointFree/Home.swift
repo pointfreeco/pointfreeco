@@ -10,7 +10,7 @@ let homeMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>> =
   writeStatus(.ok)
   >=> map(lower)
   >>> respond(
-    view: homeView(currentDate:currentUser:subscriberState:episodes:date:emergencyMode:),
+    view: homeView(currentDate:currentUser:subscriberState:episodes:emergencyMode:),
     layoutData: {
       (currentUser: User?, subscriberState: SubscriberState, currentRoute: SiteRoute?) in
       SimplePageLayoutData(
@@ -18,7 +18,7 @@ let homeMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>> =
         currentSubscriberState: subscriberState,
         currentUser: currentUser,
         data: (
-          Current.date(), currentUser, subscriberState, Current.episodes(), Current.date,
+          Current.date(), currentUser, subscriberState, Current.episodes(),
           Current.envVars.emergencyMode
         ),
         extraStyles: markdownBlockStyles,

@@ -6,16 +6,9 @@ import Prelude
 
 // Bootstrap
 
-#if DEBUG
-  let numberOfThreads = 1
-#else
-  let numberOfThreads = System.coreCount
-#endif
-let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
-
 _ =
   try await PointFree
-  .bootstrap(eventLoopGroup: eventLoopGroup)
+  .bootstrap()
   .performAsync()
 
 _ = try await EitherIO.debug(prefix: "📧 Sending welcome emails...")

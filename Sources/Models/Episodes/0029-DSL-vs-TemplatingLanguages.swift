@@ -165,7 +165,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       We autocompleted the `init(stringLiteral:)` initializer, which probably shouldn't be invoked directly. `Template` comes with a more suitable `init(templateString:)` initializer.
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -571,7 +571,7 @@ private let _transcriptBlocks: [Episode.TranscriptBlock] = [
       just a few days later.
       """,
     timestamp: nil,
-    type: .correction
+    type: .box(.correction)
   ),
   Episode.TranscriptBlock(
     content: """

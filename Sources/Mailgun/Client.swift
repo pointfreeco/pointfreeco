@@ -1,4 +1,5 @@
 import DecodableRequest
+import Dependencies
 import Either
 import EmailAddress
 import Foundation
@@ -214,3 +215,14 @@ private let jsonDecoder: JSONDecoder = {
   decoder.dateDecodingStrategy = .secondsSince1970
   return decoder
 }()
+
+extension Client: TestDependencyKey {
+  public static let testValue: Client = .failing
+}
+
+extension DependencyValues {
+  public var mailgun: Client {
+    get { self[Client.self] }
+    set { self[Client.self] = newValue }
+  }
+}

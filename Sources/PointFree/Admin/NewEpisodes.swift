@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import Html
@@ -26,6 +27,8 @@ private let showNewEpisodeView = Node.ul(
 )
 
 private func newEpisodeEmailRowView(ep: Episode) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .p(
     .text("Episode #\(ep.sequence): \(ep.fullTitle)"),
     .form(

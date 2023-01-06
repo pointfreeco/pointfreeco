@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -28,6 +29,8 @@ private func router<A>(
 {
 
   return { middleware in
+    @Dependency(\.siteRouter) var siteRouter
+
     return { conn in
       let route: SiteRoute?
       do {
@@ -51,6 +54,7 @@ private func render(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.siteRouter) var siteRouter
 
   let (subscriptionAndEnterpriseAccount, user, route) = (
     conn.data.first, conn.data.second.first, conn.data.second.second
@@ -170,13 +174,9 @@ private func render(
 
   case let .gifts(giftsRoute):
     return conn.map(
-      const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit))
-      |> (basicAuth(
-        user: Current.envVars.basicAuth.username,
-        password: Current.envVars.basicAuth.password,
-        protect: { _ in !Current.features.hasAccess(to: .gifts, for: user) }
-      )
-        <| giftsMiddleware)
+      const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit)
+    )
+      |> giftsMiddleware
 
   case let .gitHubCallback(code, redirect):
     return conn.map(const(user .*. code .*. redirect .*. unit))
@@ -296,7 +296,9 @@ extension Conn where Step == StatusLineOpen {
     to route: SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
   ) -> Conn<ResponseEnded, Data> {
-    self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return self.redirect(
       to: siteRouter.path(for: route),
       headersMiddleware: headersMiddleware
     )
@@ -306,7 +308,9 @@ extension Conn where Step == StatusLineOpen {
     with route: (A) -> SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) -> Conn<HeadersOpen, A> = { $0 }
   ) -> Conn<ResponseEnded, Data> {
-    self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return self.redirect(
       to: siteRouter.path(for: route(self.data)),
       headersMiddleware: headersMiddleware
     )
@@ -316,7 +320,9 @@ extension Conn where Step == StatusLineOpen {
     to route: SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
   ) async -> Conn<ResponseEnded, Data> {
-    await self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+
+    return await self.redirect(
       to: siteRouter.path(for: route),
       headersMiddleware: headersMiddleware
     )
@@ -326,7 +332,9 @@ extension Conn where Step == StatusLineOpen {
     with route: (A) -> SiteRoute,
     headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
   ) async -> Conn<ResponseEnded, Data> {
-    await self.redirect(
+    @Dependency(\.siteRouter) var siteRouter
+    
+    return await self.redirect(
       to: siteRouter.path(for: route(self.data)),
       headersMiddleware: headersMiddleware
     )
@@ -339,6 +347,8 @@ public func redirect<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
 {
+  @Dependency(\.siteRouter) var siteRouter
+
   return { conn in
     conn
       |> redirect(
@@ -352,7 +362,9 @@ public func redirect<A>(
   to route: SiteRoute,
   headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
 ) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-  redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
+  @Dependency(\.siteRouter) var siteRouter
+
+  return redirect(to: siteRouter.path(for: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

@@ -1,3 +1,4 @@
+import Dependencies
 import FunctionalCss
 import GitHub
 import Html
@@ -19,6 +20,8 @@ let registrationEmailView =
   }
 
 private func registrationEmailBody(user: GitHubUser) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

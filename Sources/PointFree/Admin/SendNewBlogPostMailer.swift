@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import Html
@@ -26,6 +27,8 @@ private let showNewBlogPostView = Node.ul(
 )
 
 private func newBlogPostEmailRowView(post: BlogPost) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
   return .p(
     .text("Blog Post: \(post.title)"),
     .form(

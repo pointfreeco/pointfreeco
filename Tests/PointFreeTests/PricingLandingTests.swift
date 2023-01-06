@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import Models
@@ -25,14 +26,15 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
     var user = User.mock
     user.subscriptionId = nil
 
-    Current.database.fetchUserById = { _ in user }
-
-    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-    let result = conn |> siteMiddleware
-
-    await assertSnapshot(matching: result, as: .ioConn)
-
-    #if !os(Linux)
+    await withDependencies {
+      $0.database.fetchUserById = { _ in user }
+    } operation: {
+      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+      let result = conn |> siteMiddleware
+      
+      await assertSnapshot(matching: result, as: .ioConn)
+      
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -42,7 +44,8 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 }
 
@@ -54,16 +57,16 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() async throws {
-    Current.database.fetchUserById = { _ in .mock }
-    Current.database.fetchSubscriptionById = { _ in .mock }
-    Current.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    await withDependencies {
+      $0.database.fetchUserById = { _ in .mock }
+      $0.database.fetchSubscriptionById = { _ in .mock }
+      $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
+    } operation: {
+      let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+      let result = conn |> siteMiddleware
+      await assertSnapshot(matching: result, as: .ioConn)
 
-    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-    let result = conn |> siteMiddleware
-
-    await assertSnapshot(matching: result, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -73,7 +76,8 @@ class PricingLandingTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testLanding_LoggedOut() async throws {

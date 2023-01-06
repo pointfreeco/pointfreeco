@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -11,6 +12,18 @@ import Tuple
 public enum CookieTransform: String, Codable {
   case plaintext
   case encrypted
+}
+
+extension CookieTransform: DependencyKey {
+  public static let liveValue = Self.encrypted
+  public static let testValue = Self.plaintext
+}
+
+extension DependencyValues {
+  public var cookieTransform: CookieTransform {
+    get { self[CookieTransform.self] }
+    set { self[CookieTransform.self] = newValue }
+  }
 }
 
 private let cookieExpirationDuration: TimeInterval = 315_360_000  // 60 * 60 * 24 * 365 * 10

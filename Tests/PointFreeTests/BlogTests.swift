@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import ModelsTestSupport
@@ -41,8 +42,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex_WithLotsOfPosts() async throws {
-    var shortMock = BlogPost.mock
-    shortMock.contentBlocks = [BlogPost.mock.contentBlocks[1]]
+    var shortMock = BlogPost.testValue()[0]
+    shortMock.contentBlocks = [shortMock.contentBlocks[1]]
     var hiddenMock = shortMock
     hiddenMock.hidden = true
     let posts = [
@@ -55,13 +56,13 @@ class BlogTests: TestCase {
       shortMock,
     ]
 
-    Current.blogPosts = unzurry(posts)
+    await withDependencies {
+      $0.blogPosts = unzurry(posts)
+    } operation: {
+      let conn = connection(from: request(to: .blog()))
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let conn = connection(from: request(to: .blog()))
-
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -71,7 +72,8 @@ class BlogTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testBlogShow() async throws {
@@ -102,13 +104,11 @@ class BlogTests: TestCase {
 
   func testBlogAtomFeed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testBlogAtomFeed_Unauthed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

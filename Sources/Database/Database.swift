@@ -1,3 +1,4 @@
+import Dependencies
 import EmailAddress
 import Foundation
 import GitHub
@@ -264,4 +265,15 @@ public struct Client {
       )
     }
   #endif
+}
+
+extension Client: TestDependencyKey {
+  public static let testValue = Self.failing
+}
+
+extension DependencyValues {
+  public var database: Client {
+    get { self[Client.self] }
+    set { self[Client.self] = newValue }
+  }
 }
