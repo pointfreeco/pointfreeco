@@ -35,7 +35,8 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       $0.stripe.fetchSubscription = { _ in .teamYearly }
     } operation: {
       let sendInvite = request(
-        to: .invite(.send("blobber@pointfree.co")), session: .init(flash: nil, userId: inviterUser.id)
+        to: .invite(.send("blobber@pointfree.co")),
+        session: .init(flash: nil, userId: inviterUser.id)
       )
       let conn = connection(from: sendInvite)
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -262,13 +263,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     } operation: {
-      let currentUser = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+      let currentUser = try await Current.database.upsertUser(
+        .mock, "hello@pointfree.co", { .mock })
 
       var stripeSubscription = Stripe.Subscription.teamYearly
       stripeSubscription.quantity = 2
       let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
-      _ = try await Current.database.createSubscription(stripeSubscription, currentUser.id, true, nil)
+      _ = try await Current.database.createSubscription(
+        stripeSubscription, currentUser.id, true, nil)
 
       var session = Session.loggedIn
       session.user = .standard(currentUser.id)
@@ -367,17 +370,17 @@ class InviteTests: TestCase {
       let conn = connection(from: showInvite)
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 

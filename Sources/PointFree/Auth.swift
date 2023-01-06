@@ -39,10 +39,11 @@ func logoutResponse(
 ) -> IO<Conn<ResponseEnded, Data>> {
   @Dependency(\.siteRouter) var siteRouter
 
-  return conn |> redirect(
-    to: siteRouter.path(for: .home),
-    headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
-  )
+  return conn
+    |> redirect(
+      to: siteRouter.path(for: .home),
+      headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
+    )
 }
 
 extension Conn where Step == StatusLineOpen {
@@ -238,7 +239,7 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return gitHubRouter.url(
     for: .authorize(
       clientId: Current.envVars.gitHub.clientId,

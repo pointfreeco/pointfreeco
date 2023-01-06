@@ -26,7 +26,7 @@ public func subscriptionConfirmation(
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .form(
     attributes: [
       .action(siteRouter.path(for: .subscribe())),
@@ -816,7 +816,7 @@ private func total(
   useRegionalDiscount: Bool
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   let discount = coupon?.discount(for:) ?? { $0 }
   let referralDiscount = referrer == nil ? 0 : 18
 

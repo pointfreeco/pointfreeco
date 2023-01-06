@@ -66,7 +66,9 @@ private var pointFreeView: Node {
   return .div(
     attributes: [.class([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])],
     .h4(
-      attributes: [.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])],
+      attributes: [
+        .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])
+      ],
       .a(
         attributes: [.href(siteRouter.path(for: .home)), .class([Class.pf.colors.link.white])],
         "Point-Free"
@@ -128,13 +130,14 @@ private func contentColumnView(currentUser: User?) -> Node {
 
 private var moreColumnView: Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .div(
     .h5(attributes: [.class([columnTitleClass])], "More"),
     .ol(
       attributes: [.class([Class.type.list.reset])],
       .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
       ),
       .li(
         .a(

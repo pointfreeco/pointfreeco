@@ -61,7 +61,7 @@ private func holidaySpecialCalloutView(
 
 var holidaySpecialContent: Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .div(
     attributes: [
       .style(backgroundColor(.other("#D6FFE1"))),
@@ -167,7 +167,9 @@ private func episodesListView(episodes: ArraySlice<Episode>, currentDate: Date, 
   -> Node
 {
   return .fragment(
-    episodes.map { episodeRowView(episode: $0, currentDate: currentDate, emergencyMode: emergencyMode) })
+    episodes.map {
+      episodeRowView(episode: $0, currentDate: currentDate, emergencyMode: emergencyMode)
+    })
 }
 
 private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node {
@@ -178,7 +180,8 @@ private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: 
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        episodeInfoColumnView(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode)),
+        episodeInfoColumnView(
+          episode: episode, currentDate: currentDate, emergencyMode: emergencyMode)),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
@@ -212,7 +215,8 @@ private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergenc
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
     ],
-    topLevelEpisodeInfoView(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode),
+    topLevelEpisodeInfoView(
+      episode: episode, currentDate: currentDate, emergencyMode: emergencyMode),
     .div(
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
@@ -235,14 +239,17 @@ private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergenc
   )
 }
 
-public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
+public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergencyMode: Bool)
+  -> Node
 {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],
-      .text(topLevelEpisodeMetadata(episode: episode, currentDate: currentDate, emergencyMode: emergencyMode))
+      .text(
+        topLevelEpisodeMetadata(
+          episode: episode, currentDate: currentDate, emergencyMode: emergencyMode))
     ),
     .h1(
       attributes: [

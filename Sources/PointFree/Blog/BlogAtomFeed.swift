@@ -32,7 +32,7 @@ private func feedView(posts: [BlogPost]) -> Node {
 
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return AtomEntry(
     content: blogPostContentView(post),
     siteUrl: siteRouter.url(for: .blog(.show(slug: post.slug))),

@@ -9,7 +9,7 @@ import PointFreePrelude
 import PointFreeRouter
 import PostgresKit
 import Prelude
- 
+
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
   Backtrace.install()
 
@@ -27,4 +27,3 @@ private let connectToPostgres =
   .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
   .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
   .flatMap(const(stepDivider))
- 

@@ -64,7 +64,7 @@ public func transcriptBlockView(
         .text(block.content)
       )
     )
- 
+
   case let .image(src, sizing):
     let imageClasses =
       sizing == .inset

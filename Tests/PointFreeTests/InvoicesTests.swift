@@ -59,17 +59,17 @@ final class InvoicesTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -87,17 +87,17 @@ final class InvoicesTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -112,20 +112,20 @@ final class InvoicesTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
-      
+
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-      
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
-          ]
-        )
-      }
-#endif
+
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 }

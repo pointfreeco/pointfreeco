@@ -333,7 +333,7 @@ extension Conn where Step == StatusLineOpen {
     headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
   ) async -> Conn<ResponseEnded, Data> {
     @Dependency(\.siteRouter) var siteRouter
-    
+
     return await self.redirect(
       to: siteRouter.path(for: route(self.data)),
       headersMiddleware: headersMiddleware

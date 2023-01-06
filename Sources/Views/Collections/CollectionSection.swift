@@ -284,7 +284,7 @@ private func sectionNavigation(
   guard previousSection != nil || nextSection != nil else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
-  
+
   let previousLink = previousSection.map { section in
     Node.a(
       attributes: [

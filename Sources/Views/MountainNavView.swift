@@ -149,7 +149,7 @@ private func headerLinks(
   currentRoute: SiteRoute?
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return [
     subscriberState.isNonSubscriber
       ? .a(

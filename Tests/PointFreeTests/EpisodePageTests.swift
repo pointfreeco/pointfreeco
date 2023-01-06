@@ -170,17 +170,17 @@ class EpisodePageTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -281,17 +281,17 @@ class EpisodePageTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2600)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -308,17 +308,17 @@ class EpisodePageTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -335,17 +335,17 @@ class EpisodePageTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2100)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -386,17 +386,17 @@ class EpisodePageTests: TestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -415,22 +415,23 @@ class EpisodePageTests: TestCase {
       $0.episodes = { [episode] }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -449,22 +450,23 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -483,22 +485,23 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -538,30 +541,31 @@ class EpisodePageTests: TestCase {
       $0.renderHtml = { Html.render($0) }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        from: request(
+          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
       )
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-        let html = await String(
-          decoding: siteMiddleware(conn).performAsync().data, as: UTF8.self
-        )
-        webView.loadHTMLString(html, baseURL: nil)
-        await assertSnapshot(matching: webView, as: .image, named: "desktop")
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+          let html = await String(
+            decoding: siteMiddleware(conn).performAsync().data, as: UTF8.self
+          )
+          webView.loadHTMLString(html, baseURL: nil)
+          await assertSnapshot(matching: webView, as: .image, named: "desktop")
 
-        webView.frame.size.width = 500
-        webView.frame.size.height = 1700
-        await assertSnapshot(matching: webView, as: .image, named: "mobile")
+          webView.frame.size.width = 500
+          webView.frame.size.height = 1700
+          await assertSnapshot(matching: webView, as: .image, named: "mobile")
 
-        try await webView.evaluateJavaScript(
-          """
-          document.getElementsByTagName('details')[0].open = true
-          """
-        )
-        await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-      }
-#endif
+          try await webView.evaluateJavaScript(
+            """
+            document.getElementsByTagName('details')[0].open = true
+            """
+          )
+          await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+        }
+      #endif
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }

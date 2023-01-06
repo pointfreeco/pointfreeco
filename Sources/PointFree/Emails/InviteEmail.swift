@@ -73,7 +73,7 @@ let inviteeAcceptedEmailView =
 
 private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .emailTable(
     attributes: [.style(contentTableStyles)],
     .tr(

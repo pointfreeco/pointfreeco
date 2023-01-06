@@ -808,11 +808,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -825,11 +825,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -852,11 +852,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -879,11 +879,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -896,11 +896,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -923,11 +923,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -949,11 +949,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -976,11 +976,11 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-        .performAsync()
+      .performAsync()
 
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 
@@ -1003,15 +1003,15 @@ final class SubscribeTests: TestCase {
         teammates: [],
         useRegionalDiscount: false
       )
-      
+
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user)))
       )
-        .performAsync()
-      
-#if !os(Linux)
-      await assertSnapshot(matching: conn, as: .conn)
-#endif
+      .performAsync()
+
+      #if !os(Linux)
+        await assertSnapshot(matching: conn, as: .conn)
+      #endif
     }
   }
 }

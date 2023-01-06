@@ -94,7 +94,7 @@ private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, i
 
 public func inviteNotFoundView() -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
@@ -103,10 +103,10 @@ public func inviteNotFoundView() -> Node {
         attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Invite not found"),
         .p(
-        """
-        Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
-        the sender. To see subscription plans available, click the link below:
-        """
+          """
+          Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
+          the sender. To see subscription plans available, click the link below:
+          """
         ),
         .p(
           attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
