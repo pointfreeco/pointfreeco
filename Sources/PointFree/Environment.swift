@@ -9,7 +9,7 @@ import Models
 import PointFreeRouter
 import PostgresKit
 import Prelude
-import Stripe 
+import Stripe
 
 // NB: Deprecate remove soon: @available(*, deprecated)
 public var Current: DependencyValues {
@@ -34,9 +34,9 @@ extension BlogPost: DependencyKey {
 
 extension Episode: DependencyKey {
   public static var liveValue: () -> [Episode] {
-#if !OSS
-    Episode.bootstrapPrivateEpisodes()
-#endif
+    #if !OSS
+      Episode.bootstrapPrivateEpisodes()
+    #endif
     assert(Episode.all.count == Set(Episode.all.map(\.id)).count)
     assert(Episode.all.count == Set(Episode.all.map(\.sequence)).count)
 
@@ -46,8 +46,8 @@ extension Episode: DependencyKey {
       return Episode.all
         .filter {
           appEnv == .production
-          ? $0.publishedAt <= now
-          : true
+            ? $0.publishedAt <= now
+            : true
         }
         .sorted(by: their(\.sequence))
     }
@@ -80,11 +80,11 @@ extension DependencyValues {
 
 private enum MainEventLoopGroupKey: DependencyKey {
   static var liveValue: MultiThreadedEventLoopGroup {
-#if DEBUG
-    let numberOfThreads = 1
-#else
-    let numberOfThreads = System.coreCount
-#endif
+    #if DEBUG
+      let numberOfThreads = 1
+    #else
+      let numberOfThreads = System.coreCount
+    #endif
     return MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
   }
 }
@@ -106,6 +106,7 @@ extension Database.Client: DependencyKey {
 
     var config = PostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)!
     if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
+      config.tlsConfiguration = .clientDefault
       config.tlsConfiguration?.certificateVerification = .none
     }
 

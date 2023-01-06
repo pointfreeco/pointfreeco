@@ -467,8 +467,8 @@ let isOss = !FileManager.default.fileExists(
 extension SwiftSetting {
   static let warnLongExpressionTypeChecking = unsafeFlags(
     [
-//      "-Xfrontend", "-warn-long-expression-type-checking=200",
-//      "-Xfrontend", "-warn-long-function-bodies=200",
+      //      "-Xfrontend", "-warn-long-expression-type-checking=200",
+      //      "-Xfrontend", "-warn-long-function-bodies=200",
     ],
     .when(configuration: .debug)
   )

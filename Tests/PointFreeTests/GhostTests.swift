@@ -40,26 +40,26 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
-        .performAsync()
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
         with: """
-        POST http://localhost:8080/admin/ghost/start
-        Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
+          POST http://localhost:8080/admin/ghost/start
+          Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
-        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+          user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-        302 Found
-        Location: /
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
-        """)
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
     }
   }
 
@@ -83,26 +83,26 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
-        .performAsync()
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
         with: """
-        POST http://localhost:8080/admin/ghost/start
-        Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
+          POST http://localhost:8080/admin/ghost/start
+          Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
-        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+          user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-        302 Found
-        Location: /admin/ghost
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Couldn't find user with that id","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
-        """)
+          302 Found
+          Location: /admin/ghost
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"Couldn't find user with that id","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
     }
   }
 
@@ -128,26 +128,26 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
       )
-        .performAsync()
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
         with: """
-        POST http://localhost:8080/admin/ghost/start
-        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+          POST http://localhost:8080/admin/ghost/start
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-        user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
+          user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
 
-        302 Found
-        Location: /
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You don't have access to that.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
-        """)
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"You don't have access to that.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
     }
   }
 
@@ -173,24 +173,24 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .endGhosting, session: adminSession))
       )
-        .performAsync()
-      
+      .performAsync()
+
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
         with: """
-        POST http://localhost:8080/ghosting/end
-        Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
-        
-        302 Found
-        Location: /
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
-        """)
+          POST http://localhost:8080/ghosting/end
+          Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
     }
   }
 }

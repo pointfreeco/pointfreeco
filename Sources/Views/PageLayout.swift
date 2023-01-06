@@ -78,7 +78,7 @@ public func simplePageLayout<A>(
 
   return { layoutData -> Node in
     @Dependency(\.siteRouter) var siteRouter
-    
+
     return [
       .doctype,
       .html(
@@ -363,7 +363,7 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   switch data.currentSubscriberState {
   case .nonSubscriber:
     return []

@@ -172,7 +172,7 @@ private func accountLinkView(style: NavStyle.MinimalStyle) -> Node {
 
 private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   return .gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),

@@ -37,7 +37,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
         )
       )
-        .performAsync()
+      .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
       let registeredUser = try await Current.database
@@ -69,7 +69,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
         )
       )
-        .performAsync()
+      .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
       let registeredUser = try await Current.database
@@ -121,7 +121,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCode() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in
-          .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
       }
     } operation: {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))

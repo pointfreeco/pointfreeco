@@ -62,17 +62,17 @@ class BlogTests: TestCase {
       let conn = connection(from: request(to: .blog()))
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+            ]
+          )
+        }
+      #endif
     }
   }
 

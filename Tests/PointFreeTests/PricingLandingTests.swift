@@ -31,20 +31,20 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
       let result = conn |> siteMiddleware
-      
+
       await assertSnapshot(matching: result, as: .ioConn)
-      
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 4700)),
-          ]
-        )
-      }
-#endif
+
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 4700)),
+            ]
+          )
+        }
+      #endif
     }
   }
 }
@@ -66,17 +66,17 @@ class PricingLandingTests: TestCase {
       let result = conn |> siteMiddleware
       await assertSnapshot(matching: result, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 4000)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 4600)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 4000)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 4600)),
+            ]
+          )
+        }
+      #endif
     }
   }
 

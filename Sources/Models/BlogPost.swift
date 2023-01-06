@@ -53,9 +53,9 @@ extension BlogPost: TestDependencyKey {
       BlogPost(
         author: nil,
         blurb: """
-        This is the blurb to a mock blog post. This should just be short and to the point, using \
-        only plain text, no markdown.
-        """,
+          This is the blurb to a mock blog post. This should just be short and to the point, using \
+          only plain text, no markdown.
+          """,
         contentBlocks: [
           .init(
             content: "",
@@ -64,23 +64,23 @@ extension BlogPost: TestDependencyKey {
           ),
           .init(
             content: """
-            This is the main content of the blog post. Each paragraph can use markdown, but titles \
-            code snippets should be broken out into separate content blocks so that we can use the \
-            JS syntax highlighting library. For example, here is some code:
-            """,
+              This is the main content of the blog post. Each paragraph can use markdown, but titles \
+              code snippets should be broken out into separate content blocks so that we can use the \
+              JS syntax highlighting library. For example, here is some code:
+              """,
             timestamp: nil,
             type: .paragraph
           ),
           .init(
             content: """
-            struct PredicateSet<A> {
-              let contains: (A) -> Bool
-            }
-            
-            func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateSet<B> {
-              return { set in PredicateSet(contains: f >>> set.contains) }
-            }
-            """,
+              struct PredicateSet<A> {
+                let contains: (A) -> Bool
+              }
+
+              func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateSet<B> {
+                return { set in PredicateSet(contains: f >>> set.contains) }
+              }
+              """,
             timestamp: nil,
             type: .code(lang: .swift)
           ),

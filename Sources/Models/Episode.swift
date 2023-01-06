@@ -492,6 +492,6 @@ extension Episode: TestDependencyKey {
 extension DependencyValues {
   public var episodes: () -> [Episode] {
     get { self[Episode.self] }
-    set { self[Episode .self] = newValue }
+    set { self[Episode.self] = newValue }
   }
 }

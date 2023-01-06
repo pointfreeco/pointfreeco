@@ -91,21 +91,21 @@ private var deactivatedError: String {
 private var inactiveError: String {
   @Dependency(\.siteRouter) var siteRouter
   return """
-  ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no \
-  longer active. If you would like reactive this feed you can resubscribe to Point-Free on your \
-  account page at \(siteRouter.url(for: .account())). If you think this is an error, please \
-  contact support@pointfree.co.
-  """
+    ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no \
+    longer active. If you would like reactive this feed you can resubscribe to Point-Free on your \
+    account page at \(siteRouter.url(for: .account())). If you think this is an error, please \
+    contact support@pointfree.co.
+    """
 }
 
 private var suspiciousError: String {
   @Dependency(\.siteRouter) var siteRouter
   return """
-  ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
-  retrieve your most up-to-date private podcast URL by visiting your account page at \
-  \(siteRouter.url(for: .account())). If you think this is an error, please contact \
-  support@pointfree.co.
-  """
+    ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+    retrieve your most up-to-date private podcast URL by visiting your account page at \
+    \(siteRouter.url(for: .account())). If you think this is an error, please contact \
+    support@pointfree.co.
+    """
 }
 
 private let privateEpisodesFeedView = itunesRssFeedLayout {
@@ -280,7 +280,7 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
 
 private func invalidatedItem(errorMessage: String) -> RssItem {
   @Dependency(\.siteRouter) var siteRouter
-  
+
   let episode = Current.episodes()[0]
   return RssItem(
     description: errorMessage,

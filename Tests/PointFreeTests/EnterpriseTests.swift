@@ -34,17 +34,17 @@ class EnterpriseTests: TestCase {
       let conn = connection(from: req)
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: conn |> siteMiddleware,
-          as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 700)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 700)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: conn |> siteMiddleware,
+            as: [
+              "desktop": .ioConnWebView(size: .init(width: 1100, height: 700)),
+              "mobile": .ioConnWebView(size: .init(width: 500, height: 700)),
+            ]
+          )
+        }
+      #endif
     }
   }
 
@@ -194,7 +194,7 @@ class EnterpriseTests: TestCase {
       let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
       var loggedInUser = User.mock
       loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
-      
+
       let req = request(
         to: .enterprise(
           account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
