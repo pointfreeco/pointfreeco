@@ -288,7 +288,7 @@ Add [Dependencies 0.1.0][0_1_0] to your project today to start exploring these i
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
-[tca-deps-permalink]: https://github.com/pointfreeco/swift-composable-architecture/blob/dc3e8dcd4ff22455291a2adf384fc7dbe51a8caf/Package.swift#L22-L29
+[tca-deps-permalink]: https://github.com/pointfreeco/swift-composable-architecture/blob/cbf8a45fa97ca4afb858f6cd99730bb67952813a/Package.swift#L26-L32
 """###,
       type: .paragraph
     )
