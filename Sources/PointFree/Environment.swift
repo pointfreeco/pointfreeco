@@ -106,6 +106,7 @@ extension Database.Client: DependencyKey {
 
     var config = PostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)!
     if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
+      config.tlsConfiguration = .clientDefault
       config.tlsConfiguration?.certificateVerification = .none
     }
 
