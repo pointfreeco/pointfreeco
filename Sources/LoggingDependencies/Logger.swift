@@ -10,7 +10,6 @@ extension DependencyValues {
 }
 
 private enum LoggerKey: DependencyKey {
-  static var liveValue: Logger {
-    Logger(label: ProcessInfo.processInfo.processName)
-  }
+  static let testValue = Logger(label: ProcessInfo.processInfo.processName)
+  static let liveValue = Logger(label: ProcessInfo.processInfo.processName)
 }
