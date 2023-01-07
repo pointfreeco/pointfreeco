@@ -46,7 +46,7 @@ public func dataTask(
 
       let session = URLSession.shared
       var request = request
-      request.timeoutInterval = timeoutInterval
+      request.timeoutInterval = TimeInterval(timeoutInterval)
 
       session
         .dataTask(with: request) { data, response, error in
@@ -107,7 +107,7 @@ public enum JSONError: Error {
   case error(String, Error)
 }
 
-private let timeoutInterval: TimeInterval = 25
+let timeoutInterval = 25
 
 public enum Method {
   case get([String: Any])

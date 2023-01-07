@@ -1,3 +1,4 @@
+import AsyncHTTPClient
 import DecodableRequest
 import Dependencies
 import Either
@@ -37,9 +38,11 @@ extension Client {
 
   public init(clientId: ID, clientSecret: Secret, logger: Logger?) {
     self.init(
-      fetchAuthToken: {
-        try await runGitHub(logger)(
-          fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)($0))
+      fetchAuthToken: { code in
+        return try await jsonDataTask(
+          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code),
+          logger: logger
+        )
       },
       fetchEmails: { try await runGitHub(logger)(fetchGitHubEmails(token: $0)) },
       fetchUser: { try await runGitHub(logger)(fetchGitHubUser(with: $0)) }
@@ -50,26 +53,26 @@ extension Client {
 func fetchGitHubAuthToken(
   clientId: Client.ID, clientSecret: Client.Secret
 )
-  -> (String)
-  -> DecodableRequest<Either<OAuthError, AccessToken>>
+  -> (String) throws
+  -> DecodableHTTPClientRequest<Either<OAuthError, AccessToken>>
 {
 
   return { code in
-    var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
-    request.httpMethod = "POST"
-    request.httpBody = try? gitHubJsonEncoder.encode(
-      [
-        "client_id": clientId.rawValue,
-        "client_secret": clientSecret.rawValue,
-        "code": code,
-        "accept": "json",
-      ])
-    request.allHTTPHeaderFields = [
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    ]
-
-    return DecodableRequest(rawValue: request)
+    var request = HTTPClientRequest(url: "https://github.com/login/oauth/access_token")
+    request.method = .POST
+    request.headers.add(name: "accept", value: "application/json")
+    request.headers.add(name: "content-type", value: "application/json")
+    request.body = .bytes(
+      .init(
+        data: try gitHubJsonEncoder.encode([
+          "client_id": clientId.rawValue,
+          "client_secret": clientSecret.rawValue,
+          "code": code,
+          "accept": "json",
+        ])
+      )
+    )
+    return DecodableHTTPClientRequest(request)
   }
 }
 

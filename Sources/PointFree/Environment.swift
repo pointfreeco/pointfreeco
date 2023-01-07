@@ -6,6 +6,7 @@ import Html
 import Logging
 import Mailgun
 import Models
+import NIODependencies
 import PointFreeRouter
 import PostgresKit
 import Prelude
@@ -54,6 +55,16 @@ extension Episode: DependencyKey {
   }
 }
 
+extension MainEventLoopGroupKey: DependencyKey {
+  public static var liveValue: any EventLoopGroup {
+    #if DEBUG
+      return MultiThreadedEventLoopGroup(numberOfThreads: 1)
+    #else
+      return MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
+    #endif
+  }
+}
+
 private enum RenderHTML: DependencyKey {
   static let liveValue: (Node) -> String = { Html.render($0) }
   static let testValue: (Node) -> String = { debugRender($0) }
@@ -75,24 +86,6 @@ extension DependencyValues {
   public var renderXml: (Node) -> String {
     get { self[RenderXML.self] }
     set { self[RenderXML.self] = newValue }
-  }
-}
-
-private enum MainEventLoopGroupKey: DependencyKey {
-  static var liveValue: MultiThreadedEventLoopGroup {
-    #if DEBUG
-      let numberOfThreads = 1
-    #else
-      let numberOfThreads = System.coreCount
-    #endif
-    return MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
-  }
-}
-
-extension DependencyValues {
-  public var mainEventLoopGroup: MultiThreadedEventLoopGroup {
-    get { self[MainEventLoopGroupKey.self] }
-    set { self[MainEventLoopGroupKey.self] = newValue }
   }
 }
 
