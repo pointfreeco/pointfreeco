@@ -17,18 +17,6 @@ public var Current: DependencyValues {
   DependencyValues._current
 }
 
-extension Logger: DependencyKey {
-  public static let liveValue = Logger(label: "co.pointfree")
-  public static let testValue = Logger(label: "co.pointfree.PointFreeTestSupport")
-}
-
-extension DependencyValues {
-  public var logger: Logger {
-    get { self[Logger.self] }
-    set { self[Logger.self] = newValue }
-  }
-}
-
 extension BlogPost: DependencyKey {
   public static let liveValue: () -> [BlogPost] = allBlogPosts
 }
@@ -115,12 +103,10 @@ extension Database.Client: DependencyKey {
 extension GitHub.Client: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
-    @Dependency(\.logger) var logger
 
     return Self(
       clientId: envVars.gitHub.clientId,
-      clientSecret: envVars.gitHub.clientSecret,
-      logger: logger
+      clientSecret: envVars.gitHub.clientSecret
     )
   }
 }
@@ -133,8 +119,7 @@ extension Mailgun.Client: DependencyKey {
     return Self(
       apiKey: DependencyValues._current.envVars.mailgun.apiKey,
       appSecret: DependencyValues._current.envVars.appSecret,
-      domain: DependencyValues._current.envVars.mailgun.domain,
-      logger: DependencyValues._current.logger
+      domain: DependencyValues._current.envVars.mailgun.domain
     )
   }
 }
@@ -142,12 +127,8 @@ extension Mailgun.Client: DependencyKey {
 extension Stripe.Client: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
-    @Dependency(\.logger) var logger
 
-    return Self(
-      logger: DependencyValues._current.logger,
-      secretKey: DependencyValues._current.envVars.stripe.secretKey
-    )
+    return Self(secretKey: DependencyValues._current.envVars.stripe.secretKey)
   }
 }
 

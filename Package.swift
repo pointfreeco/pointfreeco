@@ -19,6 +19,7 @@ var package = Package(
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
+    .library(name: "LoggingDependencies", targets: ["LoggingDependencies"]),
     .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
@@ -108,6 +109,7 @@ var package = Package(
     .target(
       name: "FoundationPrelude",
       dependencies: [
+        "LoggingDependencies",
         "NIODependencies",
         .product(name: "AsyncHTTPClient", package: "async-http-client"),
         .product(name: "Dependencies", package: "swift-dependencies"),
@@ -178,11 +180,20 @@ var package = Package(
     ),
 
     .target(
+      name: "LoggingDependencies",
+      dependencies: [
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "Logging", package: "swift-log"),
+      ]
+    ),
+
+    .target(
       name: "Mailgun",
       dependencies: [
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "LoggingDependencies",
         "Models",
         "PointFreePrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
@@ -378,6 +389,7 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "LoggingDependencies",
         "PointFreePrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Either", package: "swift-prelude"),

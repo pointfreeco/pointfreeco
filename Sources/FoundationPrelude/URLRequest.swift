@@ -1,6 +1,8 @@
 import Either
+import Dependencies
 import Foundation
 import Logging
+import LoggingDependencies
 import UrlFormEncoding
 
 #if canImport(FoundationNetworking)
@@ -29,18 +31,13 @@ extension URLRequest {
 
 }
 
-public func dataTask(
-  with request: URLRequest,
-  logger: Logger?
-)
-  -> EitherIO<Error, (Data, URLResponse)>
-{
+public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
+  @Dependency(\.logger) var logger
   return .init(
     run: .init { callback in
-
       let startTime = Date().timeIntervalSince1970
       let uuid = UUID().uuidString
-      logger?.debug(
+      logger.debug(
         "[Data Task] \(uuid) \(request.url?.absoluteString ?? "nil") \(request.httpMethod ?? "UNKNOWN")"
       )
 
@@ -57,7 +54,7 @@ public func dataTask(
           let responseMsg = response.map { _ in "some" } ?? "none"
           let errorMsg = error.map(String.init(describing:)) ?? "none"
 
-          logger?.debug(
+          logger.debug(
             """
             [Data Task] \(uuid) \(delta)ms, \
             \(request.url?.absoluteString ?? "nil"), \
@@ -80,15 +77,11 @@ public func dataTask(
   )
 }
 
-public func jsonDataTask<A>(
+public func jsonDataTask<A: Decodable>(
   with request: URLRequest,
-  decoder: JSONDecoder? = nil,
-  logger: Logger?
-)
-  -> EitherIO<Error, A>
-where A: Decodable {
-
-  return dataTask(with: request, logger: logger)
+  decoder: JSONDecoder? = nil
+) -> EitherIO<Error, A> {
+  dataTask(with: request)
     .map { data, _ in data }
     .flatMap { data in
       .wrap {

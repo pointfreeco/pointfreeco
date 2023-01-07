@@ -36,12 +36,12 @@ extension Client {
   public typealias ID = Tagged<(Self, id: ()), String>
   public typealias Secret = Tagged<(Self, secret: ()), String>
 
-  public init(clientId: ID, clientSecret: Secret, logger: Logger?) {
+  public init(clientId: ID, clientSecret: Secret) {
+    @Dependency(\.logger) var logger
     self.init(
       fetchAuthToken: { code in
         return try await jsonDataTask(
-          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code),
-          logger: logger
+          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code)
         )
       },
       fetchEmails: { try await runGitHub(logger)(fetchGitHubEmails(token: $0)) },
@@ -95,7 +95,7 @@ private func runGitHub<A>(
   _ logger: Logger?
 ) -> (DecodableRequest<A>) async throws -> A {
   return { gitHubRequest in
-    try await jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder, logger: logger)
+    try await jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder)
       .performAsync()
   }
 }
