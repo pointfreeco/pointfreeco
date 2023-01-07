@@ -114,12 +114,11 @@ extension GitHub.Client: DependencyKey {
 extension Mailgun.Client: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
-    @Dependency(\.logger) var logger
 
     return Self(
-      apiKey: DependencyValues._current.envVars.mailgun.apiKey,
-      appSecret: DependencyValues._current.envVars.appSecret,
-      domain: DependencyValues._current.envVars.mailgun.domain
+      apiKey: envVars.mailgun.apiKey,
+      appSecret: envVars.appSecret,
+      domain: envVars.mailgun.domain
     )
   }
 }
@@ -128,7 +127,7 @@ extension Stripe.Client: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
 
-    return Self(secretKey: DependencyValues._current.envVars.stripe.secretKey)
+    return Self(secretKey: envVars.stripe.secretKey)
   }
 }
 
@@ -136,6 +135,6 @@ extension PointFreeRouter: DependencyKey {
   public static var liveValue: Self {
     @Dependency(\.envVars) var envVars
 
-    return PointFreeRouter(baseURL: DependencyValues._current.envVars.baseUrl)
+    return PointFreeRouter(baseURL: envVars.baseUrl)
   }
 }
