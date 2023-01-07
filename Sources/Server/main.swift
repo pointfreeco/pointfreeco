@@ -17,8 +17,8 @@ _ =
 
 run(
   siteMiddleware,
-  on: Current.envVars.port,
+  on: DependencyValues._current.envVars.port,
   eventLoopGroup: DependencyValues._current.mainEventLoopGroup,
   gzip: true,
-  baseUrl: Current.envVars.baseUrl
+  baseUrl: DependencyValues._current.envVars.baseUrl
 )

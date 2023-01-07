@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -39,12 +40,13 @@ func changeSubscription(
 ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.stripe) var stripe
 
   return { conn in
     let (currentSubscription, newPricing) = conn.data
 
     return EitherIO {
-      try await Current.stripe
+      try await stripe
         .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
     }
     .run
@@ -132,13 +134,14 @@ private func fetchSeatsTaken<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
 {
+  @Dependency(\.database) var database
 
   return { conn -> IO<Conn<ResponseEnded, Data>> in
     let user = conn.data.first
 
     let invitesAndTeammates = IO {
-      async let invites = Current.database.fetchTeamInvites(user.id).count
-      async let teammates = Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).count
+      async let invites = database.fetchTeamInvites(user.id).count
+      async let teammates = database.fetchSubscriptionTeammatesByOwnerId(user.id).count
       return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
     }
 

@@ -59,10 +59,12 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
+  @Dependency(\.database) var database
+
   let user = IO<Models.User?> {
     guard let userId = conn.request.session.userId else { return nil }
-    Task { try await Current.database.sawUser(userId) }
-    return try? await Current.database.fetchUserById(userId)
+    Task { try await database.sawUser(userId) }
+    return try? await database.fetchUserById(userId)
   }
 
   return user.map { conn.map(const($0 .*. conn.data)) }
@@ -83,13 +85,14 @@ public func requireLoggedOutUser<A>(
 public func currentSubscriptionMiddleware<A, I>(
   _ conn: Conn<I, T2<Models.User?, A>>
 ) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
+  @Dependency(\.database) var database
 
   let user = conn.data.first
 
   return EitherIO {
-    let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
+    let subscription = try await database.fetchSubscription(user: user.unwrap())
 
-    let enterpriseAccount = try? await Current.database
+    let enterpriseAccount = try? await database
       .fetchEnterpriseAccountForSubscription(subscription.id)
 
     return (subscription, enterpriseAccount)
@@ -102,16 +105,18 @@ public func currentSubscriptionMiddleware<A, I>(
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
+  @Dependency(\.database) var database
 
-  return IO { try? await Current.database.fetchUserById(get1(conn.data)) }
+  return IO { try? await database.fetchUserById(get1(conn.data)) }
     .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
 private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
+  @Dependency(\.database) var database
 
   return EitherIO {
     do {
-      return try await Current.database.fetchUserByGitHub(env.gitHubUser.id)
+      return try await database.fetchUserByGitHub(env.gitHubUser.id)
     } catch {
       return try await registerUser(env: env).performAsync()
     }
@@ -119,17 +124,20 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Mod
 }
 
 private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.date.now) var now
 
-  return EitherIO { try await Current.gitHub.fetchEmails(env.accessToken) }
+  return EitherIO { try await gitHub.fetchEmails(env.accessToken) }
     .map { emails in emails.first(where: \.primary) }
     .mapExcept(requireSome)  // todo: better error messaging
     .flatMap { email in
 
       EitherIO {
-        try await Current.database.registerUser(
+        try await database.registerUser(
           withGitHubEnvelope: env,
           email: email.email,
-          now: { Current.date() }
+          now: { now }
         )
       }
       .flatMap { user in
@@ -157,11 +165,12 @@ private func gitHubAuthTokenMiddleware(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
   let (token, redirect) = lower(conn.data)
 
-  return EitherIO { try await Current.gitHub.fetchUser(token) }
+  return EitherIO { try await gitHub.fetchUser(token) }
     .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
     .flatMap(fetchOrRegisterUser(env:))
     .flatMap { user in
@@ -199,11 +208,12 @@ private func requireAccessToken<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T3<String, String?, A>, Data>
 {
+  @Dependency(\.gitHub) var gitHub
 
   return { conn in
     let (code, redirect) = (get1(conn.data), get2(conn.data))
 
-    return EitherIO { try await Current.gitHub.fetchAuthToken(code) }
+    return EitherIO { try await gitHub.fetchAuthToken(code) }
       .run
       .flatMap { errorOrToken in
         switch errorOrToken {
@@ -226,23 +236,27 @@ private func requireAccessToken<A>(
 }
 
 private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
   return EitherIO {
-    let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
-    let stripeSubscription = try await Current.stripe
+    let subscription = try await database.fetchSubscriptionById(subscriptionId)
+    let stripeSubscription = try await stripe
       .fetchSubscription(subscription.stripeSubscriptionId)
-    _ = try await Current.database.updateStripeSubscription(stripeSubscription)
+    _ = try await database.updateStripeSubscription(stripeSubscription)
     return unit
   }
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
 
   return gitHubRouter.url(
     for: .authorize(
-      clientId: Current.envVars.gitHub.clientId,
+      clientId: gitHubClientId,
       redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),
       scope: "user:email"
     )

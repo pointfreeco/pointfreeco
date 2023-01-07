@@ -1,4 +1,5 @@
 import Backtrace
+import Dependencies
 import Either
 import Foundation
 import GitHub
@@ -21,8 +22,8 @@ public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
 private let stepDivider = EitherIO.debug(prefix: "  -----------------------------")
 
 private let connectToPostgres =
-  EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
-  .flatMap { _ in EitherIO { try await Current.database.migrate() } }
+  EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(DependencyValues._current.envVars.postgres.databaseUrl)")
+  .flatMap { _ in EitherIO { try await DependencyValues._current.database.migrate() } }
   .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
   .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
   .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))

@@ -1,3 +1,4 @@
+import Dependencies
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -12,11 +13,12 @@ let collectionsIndexMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>> =
   >=> respond(
     view: collectionIndex(collections:),
     layoutData: { currentUser, subscriberState, route in
-      SimplePageLayoutData(
+      @Dependency(\.collections) var collections
+      return SimplePageLayoutData(
         currentRoute: route,
         currentSubscriberState: subscriberState,
         currentUser: currentUser,
-        data: Current.collections,
+        data: collections,
         extraStyles: collectionIndexStyles,
         style: .base(.some(.minimal(.black))),
         title: "Point-Free Collections"

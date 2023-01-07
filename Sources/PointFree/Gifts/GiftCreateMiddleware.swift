@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -19,6 +20,10 @@ struct GiftCreateError: Encodable {
 func giftCreateMiddleware(
   _ conn: Conn<StatusLineOpen, GiftFormData>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.calendar) var calendar
+  @Dependency(\.database) var database
+  @Dependency(\.date.now) var now
+  @Dependency(\.stripe) var stripe
 
   let giftFormData = conn.data
   guard let plan = Gifts.Plan.init(monthCount: giftFormData.monthsFree)
@@ -29,13 +34,13 @@ func giftCreateMiddleware(
 
   let deliverAt = giftFormData.deliverAt
     .flatMap {
-      Current.calendar.startOfDay(for: $0) <= Current.calendar.startOfDay(for: Current.date())
+      calendar.startOfDay(for: $0) <= calendar.startOfDay(for: now)
         ? nil
         : $0
     }
 
   return EitherIO<_, PaymentIntent> {
-    var paymentIntent = try await Current.stripe.createPaymentIntent(
+    var paymentIntent = try await stripe.createPaymentIntent(
       .init(
         amount: plan.amount,
         currency: .usd,
@@ -45,8 +50,8 @@ func giftCreateMiddleware(
         statementDescriptorSuffix: "Gift Subscription"
       )
     )
-    paymentIntent = try await Current.stripe.confirmPaymentIntent(paymentIntent.id)
-    _ = try await Current.database.createGift(
+    paymentIntent = try await stripe.confirmPaymentIntent(paymentIntent.id)
+    _ = try await database.createGift(
       .init(
         deliverAt: deliverAt,
         fromEmail: giftFormData.fromEmail,

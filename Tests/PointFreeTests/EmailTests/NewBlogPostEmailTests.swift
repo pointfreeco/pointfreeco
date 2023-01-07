@@ -22,6 +22,7 @@ import XCTest
 
 @MainActor
 class NewBlogPostEmailTests: TestCase {
+  @Dependency(\.blogPosts) var blogPosts
   @Dependency(\.siteRouter) var siteRouter
 
   override func setUp() async throws {
@@ -108,7 +109,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostRoute() async throws {
-    let blogPost = Current.blogPosts().first!
+    let blogPost = self.blogPosts().first!
 
     var req = URLRequest(
       url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!

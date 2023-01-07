@@ -4,8 +4,8 @@ import Foundation
 import Logging
 import LoggingDependencies
 import NIOCore
-import NIOFoundationCompat
 import NIODependencies
+import NIOFoundationCompat
 import Tagged
 
 extension DependencyValues {

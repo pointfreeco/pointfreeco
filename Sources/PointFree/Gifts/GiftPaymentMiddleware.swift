@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -19,11 +20,14 @@ public let giftPaymentMiddleware:
     >>> respond(
       view: giftsPayment(plan:currentUser:stripeJs:stripePublishableKey:),
       layoutData: { giftPlan, currentUser, currentRoute, subscriberState in
-        SimplePageLayoutData(
+        @Dependency(\.stripe.js) var js
+        @Dependency(\.envVars.stripe.publishableKey) var stripeKey
+
+        return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (giftPlan, currentUser, Current.stripe.js, Current.envVars.stripe.publishableKey),
+          data: (giftPlan, currentUser, js, stripeKey),
           description: """
             Give the gift of Point-Free! Purchase a \(giftPlan.monthCount) month subscription for a \
             friend or loved one.
