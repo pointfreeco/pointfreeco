@@ -84,7 +84,6 @@ private func _siteMiddleware(
 
   return await withDependencies {
     $0.currentUser = currentUser
-    $0.enterpriseAccount = enterpriseAccount
     $0.requestID = requestID
     $0.currentRoute = siteRoute ?? .home
     $0.subscriberState = SubscriberState(
