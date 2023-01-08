@@ -34,7 +34,7 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    currentRoute: SiteRoute? = DependencyValues._current.siteRoute, // TODO: remove
+    currentRoute: SiteRoute? = DependencyValues._current.currentRoute, // TODO: remove
     currentSubscriberState: SubscriberState = DependencyValues._current.subscriberState, // TODO: remove
     currentUser: User? = DependencyValues._current.currentUser, // TODO: remove
     data: A,

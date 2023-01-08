@@ -22,7 +22,7 @@ extension Conn where Step == HeadersOpen {
     view: @escaping (B) -> Node,
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
-    @Dependency(\.siteRoute) var siteRoute
+    @Dependency(\.currentRoute) var siteRoute
     @Dependency(\.siteRouter) var siteRouter
 
     var newLayoutData = layoutData(self.data)

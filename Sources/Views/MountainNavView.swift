@@ -14,7 +14,7 @@ import Styleguide
 public func mountainNavView(mountainsStyle: NavStyle.MountainsStyle) -> Node {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRoute) var siteRoute
+  @Dependency(\.currentRoute) var siteRoute
 
   return [
     menuAndLogoHeaderView(mountainsStyle: mountainsStyle),
@@ -75,7 +75,7 @@ private func menuAndLogoHeaderView(
 ) -> Node {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRoute) var siteRoute
+  @Dependency(\.currentRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
   return .gridRow(

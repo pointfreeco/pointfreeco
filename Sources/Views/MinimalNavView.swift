@@ -39,7 +39,7 @@ public enum NavStyle {
 public func minimalNavView(style: NavStyle.MinimalStyle) -> Node {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRoute) var siteRoute
+  @Dependency(\.currentRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(

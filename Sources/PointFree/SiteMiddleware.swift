@@ -86,7 +86,7 @@ private func _siteMiddleware(
     $0.currentUser = currentUser
     $0.enterpriseAccount = enterpriseAccount
     $0.requestID = requestID
-    $0.siteRoute = siteRoute ?? .home
+    $0.currentRoute = siteRoute ?? .home
     $0.subscriberState = SubscriberState(
       user: currentUser,
       subscription: subscription,
@@ -104,7 +104,7 @@ private func _siteMiddleware(
 
 private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.siteRoute) var route
+  @Dependency(\.currentRoute) var route
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 

@@ -85,7 +85,7 @@ private func testDocView(
   withDependencies {
     $0.currentUser = data.currentUser
     $0.subscriberState = data.subscriberState
-    $0.siteRoute = data.currentRoute ?? .home
+    $0.currentRoute = data.currentRoute ?? .home
   } operation: {
     [
       .doctype,
