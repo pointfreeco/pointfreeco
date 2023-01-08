@@ -11,20 +11,13 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func mountainNavView(
-  mountainsStyle: NavStyle.MountainsStyle,
-  currentUser: User?,
-  subscriberState: SubscriberState,
-  currentRoute: SiteRoute?
-) -> Node {
+public func mountainNavView(mountainsStyle: NavStyle.MountainsStyle) -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRoute) var siteRoute
 
   return [
-    menuAndLogoHeaderView(
-      mountainsStyle: mountainsStyle,
-      currentUser: currentUser,
-      subscriberState: subscriberState,
-      currentRoute: currentRoute
-    ),
+    menuAndLogoHeaderView(mountainsStyle: mountainsStyle),
     .gridRow(
       attributes: [
         .class([
@@ -78,11 +71,11 @@ public func mountainNavView(
 }
 
 private func menuAndLogoHeaderView(
-  mountainsStyle: NavStyle.MountainsStyle,
-  currentUser: User?,
-  subscriberState: SubscriberState,
-  currentRoute: SiteRoute?
+  mountainsStyle: NavStyle.MountainsStyle
 ) -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
   return .gridRow(
@@ -113,7 +106,7 @@ private func menuAndLogoHeaderView(
               mountainsStyle: mountainsStyle,
               currentUser: currentUser,
               subscriberState: subscriberState,
-              currentRoute: currentRoute
+              currentRoute: siteRoute
             )
           )
         )

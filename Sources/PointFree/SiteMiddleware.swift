@@ -3,6 +3,7 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -49,61 +50,6 @@ private func router<A>(
   }
 }
 
-private enum CurrentUserKey: DependencyKey {
-  static let liveValue: User? = nil
-  static let testValue: User? = nil
-}
-extension DependencyValues {
-  public var currentUser: User? {
-    get { self[CurrentUserKey.self] }
-    set { self[CurrentUserKey.self] = newValue }
-  }
-}
-
-private enum SiteRouteKey: DependencyKey {
-  static let liveValue: SiteRoute = .home
-  static let testValue: SiteRoute = .home
-}
-extension DependencyValues {
-  public var siteRoute: SiteRoute {
-    get { self[SiteRouteKey.self] }
-    set { self[SiteRouteKey.self] = newValue }
-  }
-}
-
-private enum SubscriberStateKey: DependencyKey {
-  static let liveValue: SubscriberState = .nonSubscriber
-  static let testValue: SubscriberState = .nonSubscriber
-}
-extension DependencyValues {
-  public var subscriberState: SubscriberState {
-    get { self[SubscriberStateKey.self] }
-    set { self[SubscriberStateKey.self] = newValue }
-  }
-}
-
-private enum SubscriptionKey: DependencyKey {
-  static let liveValue: Models.Subscription? = nil
-  static let testValue: Models.Subscription? = nil
-}
-extension DependencyValues {
-  public var subscription: Models.Subscription? {
-    get { self[SubscriptionKey.self] }
-    set { self[SubscriptionKey.self] = newValue }
-  }
-}
-
-private enum EnterpriseAccountKey: DependencyKey {
-  static let liveValue: EnterpriseAccount? = nil
-  static let testValue: EnterpriseAccount? = nil
-}
-extension DependencyValues {
-  public var enterpriseAccount: EnterpriseAccount? {
-    get { self[EnterpriseAccountKey.self] }
-    set { self[EnterpriseAccountKey.self] = newValue }
-  }
-}
-
 private func render(
   conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, SiteRoute>>
 )
@@ -129,14 +75,14 @@ private func render(
   } operation: {
     switch route {
     case .about:
-      return pure(aboutResponse(conn.map { _ in (user, subscriberState, route) }))
+      return pure(aboutResponse(conn.map { _ in () }))
 
     case let .account(account):
-      return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))
+      return conn.map(const(account))
       |> accountMiddleware
 
     case let .admin(route):
-      return conn.map(const(user .*. route .*. unit))
+      return conn.map(const(route))
       |> adminMiddleware
 
     case let .api(apiRoute):
@@ -148,27 +94,25 @@ private func render(
       |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
     case let .blog(subRoute):
-      return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
+      return conn.map(const(subRoute))
       |> blogMiddleware
 
     case .collections(.index):
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(()))
       |> collectionsIndexMiddleware
 
     case let .collections(.collection(slug, .show)):
-      return conn.map(const(user .*. subscriberState .*. route .*. slug .*. unit))
+      return conn.map(const(slug))
       |> collectionMiddleware
 
     case let .collections(.collection(collectionSlug, .section(sectionSlug, .show))):
-      return
-      conn
-        .map(const(user .*. subscriberState .*. route .*. collectionSlug .*. sectionSlug .*. unit))
+      return conn.map(const(collectionSlug .*. sectionSlug .*. unit))
       |> collectionSectionMiddleware
 
     case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
       return
       conn
-        .map(const(episodeParam .*. user .*. subscriberState .*. route .*. collectionSlug .*. unit))
+        .map(const(episodeParam .*. collectionSlug .*. unit))
       |> episodeResponse
 
     case let .discounts(couponId, billing):
@@ -179,9 +123,7 @@ private func render(
         teammates: [],
         useRegionalDiscount: false
       )
-      return conn.map(
-        const(
-          user .*. route .*. subscriberState .*. .personal .*. subscribeData .*. couponId .*. unit))
+      return conn.map(const(.personal .*. subscribeData .*. couponId .*. unit))
       |> discountSubscribeConfirmation
 
     case .endGhosting:
@@ -193,11 +135,11 @@ private func render(
       |> redirect(to: siteRouter.path(for: .home))
 
     case let .episode(.progress(param: param, percent: percent)):
-      return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
+      return conn.map(const(param .*. percent .*. unit))
       |> progressResponse
 
     case let .episode(.show(param)):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. nil .*. unit))
+      return conn.map(const(param .*. nil .*. unit))
       |> episodeResponse
 
     case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
@@ -205,11 +147,11 @@ private func render(
       |> enterpriseAcceptInviteMiddleware
 
     case let .enterprise(domain, .landing):
-      return conn.map(const(user .*. subscriberState .*. domain .*. unit))
+      return conn.map(const(domain))
       |> enterpriseLandingResponse
 
     case let .enterprise(domain, .requestInvite(request)):
-      return conn.map(const(user .*. domain .*. request .*. unit))
+      return conn.map(const(domain .*. request .*. unit))
       |> enterpriseRequestMiddleware
 
     case let .expressUnsubscribe(payload):
@@ -235,17 +177,15 @@ private func render(
       }
 
     case let .gifts(giftsRoute):
-      return conn.map(
-        const(user .*. subscription .*. subscriberState .*. route .*. giftsRoute .*. unit)
-      )
+      return conn.map(const(giftsRoute))
       |> giftsMiddleware
 
     case let .gitHubCallback(code, redirect):
-      return conn.map(const(user .*. code .*. redirect .*. unit))
+      return conn.map(const(code .*. redirect .*. unit))
       |> gitHubCallbackResponse
 
     case .home:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(()))
       |> homeMiddleware
 
     case let .invite(.addTeammate(email)):
@@ -273,7 +213,7 @@ private func render(
       |> sendInviteMiddleware
 
     case let .login(redirect):
-      return conn.map(const(user .*. redirect .*. unit))
+      return conn.map(const(redirect))
       |> loginResponse
 
     case .logout:
@@ -281,16 +221,11 @@ private func render(
       |> logoutResponse
 
     case .pricingLanding:
-      return conn.map(
-        const(
-          user
-            .*. route
-            .*. subscriberState
-            .*. unit))
+      return conn.map(const(()))
       |> pricingLanding
 
     case .privacy:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(()))
       |> privacyResponse
 
     case let .subscribe(data):
@@ -309,15 +244,15 @@ private func render(
         useRegionalDiscount: useRegionalDiscount ?? false
       )
       return conn.map(
-        const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
+        const(lane .*. subscribeData .*. nil .*. unit))
       |> subscribeConfirmation
 
     case let .team(.join(teamInviteCode, .landing)):
-      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+      return conn.map(const(subscriberState .*. teamInviteCode .*. unit))
       |> joinTeamLandingMiddleware
 
     case let .team(.join(teamInviteCode, .confirm)):
-      return conn.map(const(user .*. subscriberState .*. teamInviteCode .*. unit))
+      return conn.map(const(subscriberState .*. teamInviteCode .*. unit))
       |> joinTeamMiddleware
 
     case .team(.leave):

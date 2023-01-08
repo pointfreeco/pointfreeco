@@ -4,6 +4,7 @@ import Foundation
 import Html
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -18,35 +19,39 @@ public let adminEmails: [EmailAddress] = [
 func requireAdmin<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
 )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, A>, Data>
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
 {
+  return { conn in
+    @Dependency(\.currentUser) var currentUser
 
-  return filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filter(
-      get1 >>> \.isAdmin,
-      or: redirect(
+    guard let currentUser = currentUser
+    else { return loginAndRedirect(conn) }
+
+    guard currentUser.isAdmin
+    else {
+      return conn |> redirect(
         to: .home,
         headersMiddleware: flash(.error, "You don't have access to that.")
       )
-    )
-    <| middleware
+    }
+
+    return middleware(conn.map(const(currentUser .*. conn.data)))
+  }
 }
 
 let adminIndex =
   writeStatus(.ok)
-  >=> map(lower)
-  >>> respond(
-    view: adminIndexView(currentUser:),
-    layoutData: { currentUser in
+  >=> respond(
+    view: adminIndexView,
+    layoutData: {
       SimplePageLayoutData(
-        currentUser: currentUser,
-        data: currentUser,
+        data: (),
         title: "Admin"
       )
     }
   )
 
-private func adminIndexView(currentUser: User) -> Node {
+private func adminIndexView() -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .ul(

@@ -8,10 +8,10 @@ import Styleguide
 import Tuple
 
 func blogMiddleware(
-  conn: Conn<StatusLineOpen, Tuple4<User?, SubscriberState, SiteRoute, SiteRoute.Blog>>
+  conn: Conn<StatusLineOpen, SiteRoute.Blog>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
-  let (user, subscriberState, route, subRoute) = lower(conn.data)
+  let subRoute = conn.data
 
   switch subRoute {
   case .feed:
@@ -19,11 +19,11 @@ func blogMiddleware(
       |> blogAtomFeedResponse
 
   case .index:
-    return conn.map(const(Current.blogPosts() .*. user .*. subscriberState .*. route .*. unit))
+    return conn.map(const(Current.blogPosts()))
       |> blogIndexMiddleware
 
   case let .show(postParam):
-    return conn.map(const(postParam .*. user .*. subscriberState .*. route .*. unit))
+    return conn.map(const(postParam))
       |> blogPostShowMiddleware
   }
 }

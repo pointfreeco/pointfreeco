@@ -4,9 +4,11 @@ import Foundation
 import FunctionalCss
 import Html
 import Models
+import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
 
+// TODO: should all of this be in @Dependency?
 public struct SimplePageLayoutData<A> {
   public enum Style {
     case minimal
@@ -18,16 +20,13 @@ public struct SimplePageLayoutData<A> {
     }
   }
 
-  public var currentRoute: SiteRoute?
-  public var currentSubscriberState: SubscriberState
-  public var currentUser: User?
   public var data: A
   public var description: String?
   public var extraHead: ChildOf<Tag.Head>
   public var extraStyles: Stylesheet
   public var flash: Flash?
   public var image: String?
-  public var isGhosting: Bool
+  public var isGhosting: Bool // TODO: move to @Dependency
   public var openGraphType: OpenGraphType
   public var style: Style
   public var title: String
@@ -35,9 +34,9 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    currentRoute: SiteRoute? = nil,
-    currentSubscriberState: SubscriberState = .nonSubscriber,
-    currentUser: User?,
+    currentRoute: SiteRoute? = DependencyValues._current.siteRoute, // TODO: remove
+    currentSubscriberState: SubscriberState = DependencyValues._current.subscriberState, // TODO: remove
+    currentUser: User? = DependencyValues._current.currentUser, // TODO: remove
     data: A,
     description: String? =
       "Point-Free is a video series exploring functional programming and Swift.",
@@ -51,9 +50,6 @@ public struct SimplePageLayoutData<A> {
     twitterCard: TwitterCard = .summaryLargeImage,
     usePrismJs: Bool = false
   ) {
-    self.currentRoute = currentRoute
-    self.currentSubscriberState = currentSubscriberState
-    self.currentUser = currentUser
     self.data = data
     self.description = description
     self.extraHead = extraHead
@@ -71,12 +67,13 @@ public struct SimplePageLayoutData<A> {
 
 public func simplePageLayout<A>(
   cssConfig: Css.Config = .pretty,
-  date: @escaping () -> Date = Date.init,
-  emergencyMode: Bool = false,
+  emergencyMode: Bool = false, // TODO: move to @Dependency
   _ contentView: @escaping (A) -> Node
 ) -> (SimplePageLayoutData<A>) -> Node {
+  @Dependency(\.date.now) var now
 
   return { layoutData -> Node in
+    @Dependency(\.currentUser) var currentUser
     @Dependency(\.siteRouter) var siteRouter
 
     return [
@@ -112,18 +109,18 @@ public func simplePageLayout<A>(
           layoutData.extraHead
         ),
         .body(
-          ghosterBanner(layoutData),
-          pastDueBanner(layoutData),
+          ghosterBanner(isGhosting: layoutData.isGhosting),
+          pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(layoutData, date: date),
+          announcementBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
           contentView(layoutData.data),
           layoutData.style.isMinimal
             ? []
             : footerView(
-              user: layoutData.currentUser,
-              year: Calendar(identifier: .gregorian).component(.year, from: date())
+              user: currentUser,
+              year: Calendar(identifier: .gregorian).component(.year, from: now)
             )
         )
       ),
@@ -131,14 +128,14 @@ public func simplePageLayout<A>(
   }
 }
 
-func announcementBanner<A>(
-  _ data: SimplePageLayoutData<A>,
-  date: () -> Date
-) -> Node {
+var announcementBanner: Node {
+  @Dependency(\.date.now) var now
+  @Dependency(\.subscriberState) var subscriberState
+
   guard
-    case .nonSubscriber = data.currentSubscriberState,
+    case .nonSubscriber = subscriberState,
     (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
-      by: 1_209_600)).contains(date())
+      by: 1_209_600)).contains(now)
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -214,20 +211,10 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
 func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
   switch data.style {
   case let .base(.some(.mountains(style))):
-    return mountainNavView(
-      mountainsStyle: style,
-      currentUser: data.currentUser,
-      subscriberState: data.currentSubscriberState,
-      currentRoute: data.currentRoute
-    )
+    return mountainNavView(mountainsStyle: style)
 
   case let .base(.some(.minimal(minimalStyle))):
-    return minimalNavView(
-      style: minimalStyle,
-      currentUser: data.currentUser,
-      subscriberState: data.currentSubscriberState,
-      currentRoute: data.currentRoute
-    )
+    return minimalNavView(style: minimalStyle)
 
   case .base(.none), .minimal:
     return []
@@ -326,8 +313,8 @@ private var prismJsHead: ChildOf<Tag.Head> {
   ])
 }
 
-func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
-  guard data.isGhosting else { return [] }
+func ghosterBanner(isGhosting: Bool) -> Node {
+  guard isGhosting else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
 
@@ -361,10 +348,11 @@ func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   )
 }
 
-func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
+var pastDueBanner: Node {
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
-  switch data.currentSubscriberState {
+  switch subscriberState {
   case .nonSubscriber:
     return []
 

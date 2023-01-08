@@ -11,25 +11,17 @@ public let pricingLanding:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple3<User?, SiteRoute, SubscriberState>,
+    Void,
     Data
   > =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
+    >=> respond(
       view: Views.pricingLanding,
-      layoutData: { currentUser, currentRoute, subscriberState in
+      layoutData: {
         let episodeStats = stats(forEpisodes: Current.episodes())
 
         return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: (
-            currentUser,
-            episodeStats,
-            subscriberState
-          ),
+          data: episodeStats,
           description: """
             Get full access to all \(episodeStats.allEpisodeCount) videos on Point-Free. Choose from a variety of plans, including
             personal, team and enterprise subscriptions.

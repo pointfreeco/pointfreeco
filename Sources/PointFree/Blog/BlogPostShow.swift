@@ -11,19 +11,11 @@ import Views
 let blogPostShowMiddleware =
   fetchBlogPostForParam
   <| writeStatus(.ok)
-  >=> map(lower)
-  >>> respond(
+  >=> respond(
     view: blogPostShowView,
-    layoutData: {
-      (
-        post: BlogPost, currentUser: User?, subscriberState: SubscriberState,
-        currentRoute: SiteRoute?
-      ) in
+    layoutData: { post in
       SimplePageLayoutData(
-        currentRoute: currentRoute,
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
-        data: (Current.date(), post, subscriberState),
+        data: post,
         description: post.blurb,
         extraStyles: markdownBlockStyles,
         image: post.coverImage ?? Current.assets.emailHeaderImgSrc,
@@ -36,14 +28,18 @@ let blogPostShowMiddleware =
     }
   )
 
-private let fetchBlogPostForParam:
-  MT<
-    Tuple4<Either<String, BlogPost.ID>, User?, SubscriberState, SiteRoute?>,
-    Tuple4<BlogPost, User?, SubscriberState, SiteRoute?>
-  > = filterMap(
-    over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),
-    or: redirect(to: .home)
-  )
+private func fetchBlogPostForParam(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, BlogPost, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Either<String, BlogPost.ID>, Data> {
+  return { conn in
+    guard let post = fetchBlogPost(forParam: conn.data)
+    else {
+      return conn |> redirect(to: .home)
+    }
+
+    return middleware(conn.map(const(post)))
+  }
+}
 
 func fetchBlogPost(forParam param: Either<String, BlogPost.ID>) -> BlogPost? {
   return Current.blogPosts()

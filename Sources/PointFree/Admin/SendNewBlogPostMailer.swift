@@ -73,7 +73,7 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
 let sendNewBlogPostEmailMiddleware =
   fetchBlogPostForId
   <<< filterMap(
-    require4 >>> pure,
+    require3 >>> pure,
     or: redirect(to: .admin(.newBlogPostEmail(.index)))
   )
   <| sendNewBlogPostEmails
@@ -81,10 +81,10 @@ let sendNewBlogPostEmailMiddleware =
 
 private let fetchBlogPostForId:
   MT<
-    Tuple4<User, BlogPost.ID, NewBlogPostFormData?, Bool?>,
-    Tuple4<User, BlogPost, NewBlogPostFormData?, Bool?>
+    Tuple3<BlogPost.ID, NewBlogPostFormData?, Bool?>,
+    Tuple3<BlogPost, NewBlogPostFormData?, Bool?>
   > = filterMap(
-    over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
+    over1(fetchBlogPost(forId:) >>> pure) >>> sequence1 >>> map(require1),
     or: redirect(to: .admin(.newBlogPostEmail(.index)))
   )
 
@@ -94,10 +94,10 @@ func fetchBlogPost(forId id: BlogPost.ID) -> BlogPost? {
 }
 
 private func sendNewBlogPostEmails<I>(
-  _ conn: Conn<I, Tuple4<User, BlogPost, NewBlogPostFormData?, Bool>>
+  _ conn: Conn<I, Tuple3<BlogPost, NewBlogPostFormData?, Bool>>
 ) -> IO<Conn<I, Prelude.Unit>> {
 
-  let (_, post, optionalFormData, isTest) = lower(conn.data)
+  let (post, optionalFormData, isTest) = lower(conn.data)
 
   guard let formData = optionalFormData else {
     return pure(conn.map(const(unit)))

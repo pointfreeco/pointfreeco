@@ -36,12 +36,10 @@ public enum NavStyle {
   }
 }
 
-public func minimalNavView(
-  style: NavStyle.MinimalStyle,
-  currentUser: User?,
-  subscriberState: SubscriberState,
-  currentRoute: SiteRoute?
-) -> Node {
+public func minimalNavView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(
@@ -85,7 +83,7 @@ public func minimalNavView(
             .map {
               loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState)
             }
-            ?? loggedOutNavItemsView(style: style, currentRoute: currentRoute)
+            ?? loggedOutNavItemsView(style: style, currentRoute: siteRoute)
         )
       )
     )

@@ -4,6 +4,7 @@ import Foundation
 import GitHub
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -30,9 +31,9 @@ private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =
   >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: M<Tuple2<Models.User?, String?>> =
+let loginResponse: M<String?> =
   requireLoggedOutUser
-  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
+  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
 
 func logoutResponse(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
@@ -68,15 +69,18 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   return user.map { conn.map(const($0 .*. conn.data)) }
 }
 
-public func requireLoggedOutUser<A>(
+private func requireLoggedOutUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.User?, A>, Data> {
+) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
   return { conn in
-    return conn.map(const(conn.data.second))
-      |> (get1(conn.data) == nil
-        ? middleware
-        : redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in.")))
+    @Dependency(\.currentUser) var currentUser
+    guard currentUser == nil
+    else {
+      return conn
+        |> redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
+    }
+    return middleware(conn)
   }
 }
 

@@ -23,6 +23,7 @@ var package = Package(
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreeDependencies", targets: ["PointFreeDependencies"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
@@ -234,8 +235,9 @@ var package = Package(
         "GitHub",
         "Mailgun",
         "Models",
-        "PointFreeRouter",
+        "PointFreeDependencies",
         "PointFreePrelude",
+        "PointFreeRouter",
         "Stripe",
         "Styleguide",
         "Syndication",
@@ -258,6 +260,15 @@ var package = Package(
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
+      ]
+    ),
+
+    .target(
+      name: "PointFreeDependencies",
+      dependencies: [
+        "Models",
+        "PointFreeRouter",
+        .product(name: "Dependencies", package: "swift-dependencies"),
       ]
     ),
 
@@ -434,6 +445,7 @@ var package = Package(
         "Ccmark",
         "EmailAddress",
         "FunctionalCss",
+        "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
         "WebPreview",

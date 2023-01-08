@@ -1,7 +1,9 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -10,44 +12,36 @@ import TaggedMoney
 import Tuple
 import Views
 
-let giftRedemptionLandingMiddleware:
-  Middleware<
-    StatusLineOpen, ResponseEnded,
-    Tuple5<Gift.ID, User?, Models.Subscription?, SubscriberState, SiteRoute>, Data
-  > =
-    fetchAndValidateGiftAndDiscount
-    <| writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: giftRedeemLanding(gift:subscriberState:currentUser:episodeStats:),
-      layoutData: { gift, amount, user, subscription, subscriberState, route in
-        SimplePageLayoutData(
-          currentRoute: route,
-          currentSubscriberState: subscriberState,
-          currentUser: user,
-          data: (gift, subscriberState, user, stats(forEpisodes: Current.episodes())),
-          extraStyles: extraGiftLandingStyles <> testimonialStyle,
-          style: .base(.some(.minimal(.black))),
-          title: "Redeem your Point-Free gift"
-        )
-      }
-    )
+let giftRedemptionLandingMiddleware: Middleware<StatusLineOpen, ResponseEnded, Gift.ID, Data> =
+  fetchAndValidateGiftAndDiscount
+  <| writeStatus(.ok)
+  >=> respond(
+    view: giftRedeemLanding(gift:episodeStats:),
+    layoutData: { gift, amount in
+      SimplePageLayoutData(
+        data: (gift, stats(forEpisodes: Current.episodes())),
+        extraStyles: extraGiftLandingStyles <> testimonialStyle,
+        style: .base(.some(.minimal(.black))),
+        title: "Redeem your Point-Free gift"
+      )
+    }
+  )
 
-let giftRedemptionMiddleware:
-  Middleware<
-    StatusLineOpen, ResponseEnded, Tuple4<Gift.ID, User?, Models.Subscription?, SubscriberState>,
-    Data
-  > =
-    fetchAndValidateGiftAndDiscount
-    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
-    <| redeemGift
+let giftRedemptionMiddleware: Middleware<StatusLineOpen, ResponseEnded, Gift.ID, Data> =
+  fetchAndValidateGiftAndDiscount
+  <| redeemGift
 
 private func redeemGift(
-  _ conn: Conn<
-    StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?, SubscriberState>
-  >
+  _ conn: Conn<StatusLineOpen, (Gift, Cents<Int>)>
 ) -> IO<Conn<ResponseEnded, Data>> {
-  let (gift, discount, user, subscription, subscriberState) = lower(conn.data)
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.subscription) var subscription
+
+  guard let currentUser = currentUser
+  else { return loginAndRedirect(conn) }
+
+  let (gift, discount) = conn.data
 
   if let subscription = subscription, subscription.stripeSubscriptionStatus.isActive {
     guard subscriberState.isOwner
@@ -108,15 +102,15 @@ private func redeemGift(
     return EitherIO {
       let customer = try await Current.stripe.createCustomer(
         nil,
-        user.id.rawValue.uuidString,
-        user.email,
+        currentUser.id.rawValue.uuidString,
+        currentUser.email,
         nil,
         -discount
       )
       let stripeSubscription = try await Current.stripe
         .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
       _ = try await Current.database
-        .createSubscription(stripeSubscription, user.id, true, nil)
+        .createSubscription(stripeSubscription, currentUser.id, true, nil)
       _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
     }
     .run
@@ -146,12 +140,12 @@ private func redeemGift(
   }
 }
 
-private func fetchAndValidateGiftAndDiscount<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Gift, Cents<Int>, A>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<Gift.ID, A>, Data> {
+private func fetchAndValidateGiftAndDiscount(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (Gift, Cents<Int>), Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Gift.ID, Data> {
 
   return { conn in
-    let (giftId, rest) = (conn.data.first, conn.data.second)
+    let giftId = conn.data
     return EitherIO<_, (Gift, PaymentIntent)> {
       let gift = try await Current.database.fetchGift(giftId)
       let paymentIntent = try await Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
@@ -173,7 +167,7 @@ private func fetchAndValidateGiftAndDiscount<A>(
           )
         }
 
-        return conn.map(const(gift .*. paymentIntent.amount .*. rest)) |> middleware
+        return conn.map(const((gift, paymentIntent.amount))) |> middleware
       }
     }
   }

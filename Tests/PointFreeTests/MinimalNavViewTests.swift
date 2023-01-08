@@ -89,12 +89,7 @@ private func testDocView(
         .meta(viewport: .width(.deviceWidth), .initialScale(1))
       ),
       .body(
-        minimalNavView(
-          style: data.style,
-          currentUser: data.currentUser,
-          subscriberState: data.subscriberState,
-          currentRoute: data.currentRoute
-        )
+        minimalNavView(style: data.style)
       )
     ),
   ]

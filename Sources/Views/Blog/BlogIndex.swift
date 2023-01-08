@@ -8,11 +8,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func blogIndexView(
-  blogPosts: [BlogPost],
-  currentUser: User?,
-  subscriberState: SubscriberState
-) -> Node {
+public func blogIndexView(blogPosts: [BlogPost]) -> Node {
 
   let allPosts =
     blogPosts

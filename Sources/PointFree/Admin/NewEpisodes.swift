@@ -48,7 +48,7 @@ private func newEpisodeEmailRowView(ep: Episode) -> Node {
   )
 }
 
-let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.ID, String?, String?, Bool?>> =
+let sendNewEpisodeEmailMiddleware: M<Tuple4<Episode.ID, String?, String?, Bool?>> =
   requireEpisode
   <<< requireIsTest
   <| sendNewEpisodeEmails
@@ -56,27 +56,27 @@ let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.ID, String?, String?, 
 
 private let requireEpisode:
   MT<
-    Tuple5<User, Episode.ID, String?, String?, Bool?>,
-    Tuple5<User, Episode, String?, String?, Bool?>
+    Tuple4<Episode.ID, String?, String?, Bool?>,
+    Tuple4<Episode, String?, String?, Bool?>
   > = filterMap(
-    over2(fetchEpisode) >>> require2 >>> pure,
+    over1(fetchEpisode) >>> require1 >>> pure,
     or: redirect(to: .admin(.newEpisodeEmail(.show)))
   )
 
 private let requireIsTest:
   MT<
-    Tuple5<User, Episode, String?, String?, Bool?>,
-    Tuple5<User, Episode, String?, String?, Bool>
+    Tuple4<Episode, String?, String?, Bool?>,
+    Tuple4<Episode, String?, String?, Bool>
   > = filterMap(
-    require5 >>> pure,
+    require4 >>> pure,
     or: redirect(to: .admin(.newEpisodeEmail(.show)))
   )
 
 private func sendNewEpisodeEmails<I>(
-  _ conn: Conn<I, Tuple5<User, Episode, String?, String?, Bool>>
+  _ conn: Conn<I, Tuple4<Episode, String?, String?, Bool>>
 ) -> IO<Conn<I, Prelude.Unit>> {
 
-  let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
+  let (episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
   let users = EitherIO {
     try await isTest

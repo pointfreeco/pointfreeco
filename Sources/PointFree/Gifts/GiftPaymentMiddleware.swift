@@ -11,19 +11,15 @@ public let giftPaymentMiddleware:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple4<Gifts.Plan, User?, SiteRoute, SubscriberState>,
+    Gifts.Plan,
     Data
   > =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: giftsPayment(plan:currentUser:stripeJs:stripePublishableKey:),
-      layoutData: { giftPlan, currentUser, currentRoute, subscriberState in
+    >=> respond(
+      view: giftsPayment(plan:stripeJs:stripePublishableKey:),
+      layoutData: { giftPlan in
         SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: (giftPlan, currentUser, Current.stripe.js, Current.envVars.stripe.publishableKey),
+          data: (giftPlan, Current.stripe.js, Current.envVars.stripe.publishableKey),
           description: """
             Give the gift of Point-Free! Purchase a \(giftPlan.monthCount) month subscription for a \
             friend or loved one.

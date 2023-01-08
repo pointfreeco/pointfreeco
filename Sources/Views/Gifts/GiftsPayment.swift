@@ -9,11 +9,12 @@ import Stripe
 
 public func giftsPayment(
   plan: Gifts.Plan,
-  currentUser: User?,
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
-  [
+  @Dependency(\.currentUser) var currentUser
+  
+  return [
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 8],

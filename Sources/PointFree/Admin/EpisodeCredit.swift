@@ -15,21 +15,21 @@ let showEpisodeCreditsMiddleware:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple1<User>,
+    Void,
     Data
   > =
     writeStatus(.ok)
-    >=> respond({ _ in showEpisodeCreditsView() })
+    >=> respond({ showEpisodeCreditsView() })
 
 let redeemEpisodeCreditMiddleware =
   filterMap(
-    over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
+    over1(fetchUser(id:)) >>> sequence1 >>> map(require1),
     or: redirect(
       to: .admin(.episodeCredits(.show)),
       headersMiddleware: flash(.error, "Could not find that user."))
   )
   <<< filterMap(
-    over3(fetchEpisode(bySequence:)) >>> require3 >>> pure,
+    over2(fetchEpisode(bySequence:)) >>> require2 >>> pure,
     or: redirect(
       to: .admin(.episodeCredits(.show)),
       headersMiddleware: flash(.error, "Could not find that episode."))
@@ -37,10 +37,10 @@ let redeemEpisodeCreditMiddleware =
   <| creditUserMiddleware
 
 private func creditUserMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple3<User, User, Episode>>
+  _ conn: Conn<StatusLineOpen, Tuple2<User, Episode>>
 ) -> IO<Conn<ResponseEnded, Data>> {
 
-  let (user, episode) = (get2(conn.data), get3(conn.data))
+  let (user, episode) = lower(conn.data)
 
   return EitherIO { try await Current.database.redeemEpisodeCredit(episode.sequence, user.id) }
     .run

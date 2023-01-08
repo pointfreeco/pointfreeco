@@ -11,20 +11,16 @@ public let giftsIndexMiddleware:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple3<User?, SiteRoute, SubscriberState>,
+    Void,
     Data
   > =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
+    >=> respond(
       view: giftsLanding(episodeStats:),
-      layoutData: { currentUser, currentRoute, subscriberState in
+      layoutData: {
         let episodeStats = stats(forEpisodes: Current.episodes())
 
         return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
           data: episodeStats,
           description: """
             Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend, colleague or loved one.
