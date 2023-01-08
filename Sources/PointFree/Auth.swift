@@ -57,18 +57,6 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
   conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
-public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
-{
-  let user = IO<Models.User?> {
-    guard let userId = conn.request.session.userId else { return nil }
-    Task { try await Current.database.sawUser(userId) } // TODO: fireAndForget
-    return try? await Current.database.fetchUserById(userId)
-  }
-
-  return user.map { conn.map(const($0 .*. conn.data)) }
-}
-
 private func requireLoggedOutUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -82,25 +70,6 @@ private func requireLoggedOutUser<A>(
     }
     return middleware(conn)
   }
-}
-
-public func currentSubscriptionMiddleware<A, I>(
-  _ conn: Conn<I, T2<Models.User?, A>>
-) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
-
-  let user = conn.data.first
-
-  return EitherIO {
-    let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
-
-    let enterpriseAccount = try? await Current.database
-      .fetchEnterpriseAccountForSubscription(subscription.id)
-
-    return (subscription, enterpriseAccount)
-  }
-  .run
-  .map(\.right)
-  .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
