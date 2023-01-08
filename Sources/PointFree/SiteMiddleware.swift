@@ -282,11 +282,11 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> subscribeConfirmation
 
   case let .team(.join(teamInviteCode, .landing)):
-    return conn.map(const(subscriberState .*. teamInviteCode .*. unit))
+    return conn.map(const(teamInviteCode))
     |> joinTeamLandingMiddleware
 
   case let .team(.join(teamInviteCode, .confirm)):
-    return conn.map(const(subscriberState .*. teamInviteCode .*. unit))
+    return conn.map(const(teamInviteCode))
     |> joinTeamMiddleware
 
   case .team(.leave):
