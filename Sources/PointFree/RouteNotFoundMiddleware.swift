@@ -13,14 +13,12 @@ func routeNotFoundMiddleware<A>(
 ) -> IO<Conn<ResponseEnded, Data>> {
   return
     conn.map { $0 .*. unit }
-    |> currentUserMiddleware
-    >=> writeStatus(.notFound)
+    |> writeStatus(.notFound)
     >=> map(lower)
     >>> respond(
       view: { _ in routeNotFoundView },
-      layoutData: { currentUser, _ in
+      layoutData: { _ in
         SimplePageLayoutData(
-          currentUser: currentUser,
           data: unit,
           title: "Page not found"
         )

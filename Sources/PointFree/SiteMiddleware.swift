@@ -42,10 +42,16 @@ private func router<A>(
           print(error)
         #endif
       }
-      return
-        route
-        .map(const >>> conn.map >>> middleware)
-        ?? notFound(conn)
+      return IO {
+        await withDependencies {
+          // TODO: gotta get currentUser, subscriberState, etc... set up by this point.
+          $0.siteRoute = route ?? .home
+        } operation: {
+          guard let route = route
+          else { return await notFound(conn).performAsync() }
+          return await middleware(conn.map(const(route))).performAsync()
+        }
+      }
     }
   }
 }

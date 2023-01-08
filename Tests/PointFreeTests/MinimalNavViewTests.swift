@@ -1,7 +1,9 @@
+import Dependencies
 import Html
 import HtmlCssSupport
 import Models
 import ModelsTestSupport
+import PointFreeDependencies
 import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
@@ -80,17 +82,23 @@ private func testDocView(
     currentRoute: SiteRoute?
   )
 ) -> Node {
-  return [
-    .doctype,
-    .html(
-      .head(
-        .style(safe: renderedNormalizeCss),
-        .style(styleguide),
-        .meta(viewport: .width(.deviceWidth), .initialScale(1))
+  withDependencies {
+    $0.currentUser = data.currentUser
+    $0.subscriberState = data.subscriberState
+    $0.siteRoute = data.currentRoute ?? .home
+  } operation: {
+    [
+      .doctype,
+      .html(
+        .head(
+          .style(safe: renderedNormalizeCss),
+          .style(styleguide),
+          .meta(viewport: .width(.deviceWidth), .initialScale(1))
+        ),
+        .body(
+          minimalNavView(style: data.style)
+        )
       ),
-      .body(
-        minimalNavView(style: data.style)
-      )
-    ),
-  ]
+    ]
+  }
 }

@@ -62,7 +62,7 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
 {
   let user = IO<Models.User?> {
     guard let userId = conn.request.session.userId else { return nil }
-    Task { try await Current.database.sawUser(userId) }
+    Task { try await Current.database.sawUser(userId) } // TODO: fireAndForget
     return try? await Current.database.fetchUserById(userId)
   }
 
