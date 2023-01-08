@@ -17,10 +17,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) -> IO<Conn<Respon
   guard currentUser.isAdmin
   else {
     return conn
-      |> redirect(
-        to: .home,
-        headersMiddleware: flash(.error, "You don't have access to that.")
-      )
+      |> redirect(to: .home, headersMiddleware: flash(.error, "You don't have access to that."))
   }
 
   switch route {

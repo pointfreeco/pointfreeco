@@ -35,32 +35,6 @@ public enum SubscriberState {
     }
   }
 
-  @available(*, deprecated)
-  public init(
-    user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?
-  ) {
-    switch (user, subscriptionAndEnterpriseAccount) {
-    case let (.some(user), .some((subscription, enterpriseAccount))):
-      if subscription.userId == user.id {
-        self = .owner(
-          hasSeat: user.subscriptionId != nil,
-          status: subscription.stripeSubscriptionStatus,
-          enterpriseAccount: enterpriseAccount,
-          deactivated: subscription.deactivated
-        )
-      } else {
-        self = .teammate(
-          status: subscription.stripeSubscriptionStatus,
-          enterpriseAccount: enterpriseAccount,
-          deactivated: subscription.deactivated
-        )
-      }
-
-    case (.none, _), (.some, _):
-      self = .nonSubscriber
-    }
-  }
-
   public var status: Stripe.Subscription.Status? {
     switch self {
     case .nonSubscriber:

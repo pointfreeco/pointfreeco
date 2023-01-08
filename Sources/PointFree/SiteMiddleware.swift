@@ -103,7 +103,7 @@ private func _siteMiddleware(
 }
 
 private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> {
-  @Dependency(\.currentUser) var user
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRoute) var route
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
@@ -121,7 +121,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> adminMiddleware
 
   case let .api(apiRoute):
-    return conn.map(const(user .*. apiRoute .*. unit))
+    return conn.map(const(apiRoute))
     |> apiMiddleware
 
   case .appleDeveloperMerchantIdDomainAssociation:
@@ -178,7 +178,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> episodeResponse
 
   case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
-    return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
+    return conn.map(const(currentUser .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
     |> enterpriseAcceptInviteMiddleware
 
   case let .enterprise(domain, .landing):
@@ -224,27 +224,27 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> homeMiddleware
 
   case let .invite(.addTeammate(email)):
-    return conn.map(const(user .*. email .*. unit))
+    return conn.map(const(currentUser .*. email .*. unit))
     |> addTeammateViaInviteMiddleware
 
   case let .invite(.invitation(inviteId, .accept)):
-    return conn.map(const(inviteId .*. user .*. unit))
+    return conn.map(const(inviteId .*. currentUser .*. unit))
     |> acceptInviteMiddleware
 
   case let .invite(.invitation(inviteId, .resend)):
-    return conn.map(const(inviteId .*. user .*. unit))
+    return conn.map(const(inviteId .*. currentUser .*. unit))
     |> resendInviteMiddleware
 
   case let .invite(.invitation(inviteId, .revoke)):
-    return conn.map(const(inviteId .*. user .*. unit))
+    return conn.map(const(inviteId .*. currentUser .*. unit))
     |> revokeInviteMiddleware
 
   case let .invite(.invitation(inviteId, .show)):
-    return conn.map(const(inviteId .*. user .*. unit))
+    return conn.map(const(inviteId .*. currentUser .*. unit))
     |> showInviteMiddleware
 
   case let .invite(.send(email)):
-    return conn.map(const(email .*. user .*. unit))
+    return conn.map(const(email .*. currentUser .*. unit))
     |> sendInviteMiddleware
 
   case let .login(redirect):
@@ -264,7 +264,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> privacyResponse
 
   case let .subscribe(data):
-    return conn.map(const(user .*. data .*. unit))
+    return conn.map(const(currentUser .*. data .*. unit))
     |> subscribeMiddleware
 
   case let .subscribeConfirmation(
@@ -291,15 +291,15 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> joinTeamMiddleware
 
   case .team(.leave):
-    return conn.map(const(user .*. subscriberState .*. unit))
+    return conn.map(const(currentUser .*. subscriberState .*. unit))
     |> leaveTeamMiddleware
 
   case let .team(.remove(teammateId)):
-    return conn.map(const(teammateId .*. user .*. unit))
+    return conn.map(const(teammateId .*. currentUser .*. unit))
     |> removeTeammateMiddleware
 
   case let .useEpisodeCredit(episodeId):
-    return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
+    return conn.map(const(Either.right(episodeId) .*. currentUser .*. subscriberState .*. route .*. unit))
     |> useCreditResponse
 
   case let .webhooks(.stripe(.paymentIntents(event))):
