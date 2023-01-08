@@ -362,6 +362,9 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     await withDependencies {
+      $0.database = .testValue
+      $0.database.sawUser = { _ in }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchUserById = { _ in currentUser }
       $0.database.fetchTeamInvite = { _ in invite }
       $0.database.fetchSubscriptionById = { _ in throw unit }
