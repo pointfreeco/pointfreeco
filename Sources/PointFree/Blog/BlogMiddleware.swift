@@ -21,7 +21,8 @@ func blogMiddleware(
       |> blogAtomFeedResponse
 
   case .index:
-    return conn.map(const(Current.blogPosts()))
+    @Dependency(\.blogPosts) var blogPosts
+    return conn.map(const(blogPosts()))
       |> blogIndexMiddleware
 
   case let .show(postParam):

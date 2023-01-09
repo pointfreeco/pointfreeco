@@ -2,6 +2,8 @@ import Dependencies
 import Either
 import Foundation
 import HttpPipeline
+import Logging
+import LoggingDependencies
 import Models
 import PointFreeDependencies
 import PointFreePrelude
@@ -19,6 +21,7 @@ public let siteMiddleware = { conn in
 private func _siteMiddleware(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.logger) var logger
   @Dependency(\.siteRouter) var siteRouter
@@ -62,14 +65,14 @@ private func _siteMiddleware(
 
   let currentUser: Models.User?
   if let userID = conn.request.session.userId {
-    await fireAndForget { try await Current.database.sawUser(userID) }
-    currentUser = try? await Current.database.fetchUserById(userID)
+    await fireAndForget { try await database.sawUser(userID) }
+    currentUser = try? await database.fetchUserById(userID)
   } else {
     currentUser = nil
   }
 
-  let subscription = try? await Current.database.fetchSubscription(user: currentUser.unwrap())
-  let enterpriseAccount = try? await Current.database
+  let subscription = try? await database.fetchSubscription(user: currentUser.unwrap())
+  let enterpriseAccount = try? await database
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
   let siteRoute: SiteRoute?
@@ -144,9 +147,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> collectionSectionMiddleware
 
   case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
-    return
-    conn
-      .map(const(episodeParam .*. collectionSlug .*. unit))
+    return conn .map(const(episodeParam .*. collectionSlug .*. unit))
     |> episodeResponse
 
   case let .discounts(couponId, billing):
@@ -197,11 +198,12 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> expressUnsubscribeReplyMiddleware
 
   case .feed(.atom), .feed(.episodes):
+    @Dependency(\.envVars.emergencyMode) var emergencyMode
+
     return IO {
-      guard !Current.envVars.emergencyMode
+      guard !emergencyMode
       else {
-        return
-        conn
+        return conn
           .writeStatus(.internalServerError)
           .respond(json: "{}")
       }
@@ -310,7 +312,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Respons
     |> stripeSubscriptionsWebhookMiddleware
 
   case let .webhooks(.stripe(.unknown(event))):
-    Current.logger.log(.error, "Received invalid webhook \(event.type)")
+    @Dependency(\.logger) var logger: Logger
+    logger.log(.error, "Received invalid webhook \(event.type)")
     return conn
     |> writeStatus(.internalServerError)
     >=> respond(text: "We don't support this event.")
@@ -399,13 +402,17 @@ public func redirect<A>(
 }
 
 private let canonicalHost = "www.pointfree.co"
-private let allowedHosts: [String] = [
-  canonicalHost,
-  Current.envVars.baseUrl.host ?? canonicalHost,
-  "127.0.0.1",
-  "0.0.0.0",
-  "localhost",
-]
+private let allowedHosts: [String] = {
+  @Dependency(\.envVars.baseUrl.host) var host
+  return [
+    canonicalHost,
+    host,
+    "127.0.0.1",
+    "0.0.0.0",
+    "localhost",
+  ]
+    .compactMap { $0 }
+}()
 
 private func isAllowed(host: String) -> Bool {
   return allowedHosts.contains(host)

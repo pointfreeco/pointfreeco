@@ -16,7 +16,7 @@ let homeMiddleware: M<Void> =
       @Dependency(\.episodes) var episodes
 
       return SimplePageLayoutData(
-        data: (episodes, emergencyMode),
+        data: (episodes(), emergencyMode),
         extraStyles: markdownBlockStyles,
         openGraphType: .website,
         style: .base(.mountains(.main)),

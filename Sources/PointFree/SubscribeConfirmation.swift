@@ -51,7 +51,6 @@ public let subscribeConfirmation: M<Tuple3<Pricing.Lane, SubscribeConfirmationDa
 private func validateReferralCode(
   middleware: @escaping M<Tuple4<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
 ) -> M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
-> {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
