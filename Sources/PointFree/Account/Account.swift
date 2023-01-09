@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -16,8 +17,11 @@ let accountResponse =
   >=> respond(
     view: Views.accountView(accountData:allEpisodes:currentDate:),
     layoutData: { accountData in
-      SimplePageLayoutData(
-        data: (accountData, Current.episodes(), Current.date()),
+      @Dependency(\.date.now) var now
+      @Dependency(\.episodes) var episodes
+
+      return SimplePageLayoutData(
+        data: (accountData, episodes(), now),
         extraStyles: markdownBlockStyles,
         title: "Account"
       )
@@ -27,30 +31,32 @@ let accountResponse =
 private func fetchAccountData<I>(
   _ conn: Conn<I, Tuple2<User, SubscriberState>>
 ) -> IO<Conn<I, AccountData>> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
 
   let (user, subscriberState) = lower(conn.data)
 
   let subscription = EitherIO {
-    try await Current.database.fetchSubscription(user: user)
+    try await database.fetchSubscription(user: user)
   }
 
   let owner =
     subscription
     .flatMap { subscription in
-      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
+      EitherIO { try await database.fetchUserById(subscription.userId) }
     }
 
   let stripeSubscription =
     subscription
     .map(\.stripeSubscriptionId)
-    .flatMap { id in EitherIO { try await Current.stripe.fetchSubscription(id) } }
+    .flatMap { id in EitherIO { try await stripe.fetchSubscription(id) } }
 
   let upcomingInvoice =
     stripeSubscription
     .flatMap { stripeSubscription in
       EitherIO {
         guard stripeSubscription.isRenewing else { throw unit }
-        return try await Current.stripe.fetchUpcomingInvoice(stripeSubscription.customer.id)
+        return try await stripe.fetchUpcomingInvoice(stripeSubscription.customer.id)
       }
     }
 
@@ -62,7 +68,7 @@ private func fetchAccountData<I>(
         if let card = customer.defaultSource?.right {
           return .left(card)
         } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
-          return try await .right(Current.stripe.fetchPaymentMethod(paymentMethod))
+          return try await .right(stripe.fetchPaymentMethod(paymentMethod))
         } else {
           return nil
         }
@@ -83,10 +89,10 @@ private func fetchAccountData<I>(
         Invoice?
       )
     > = zip9(
-      IO { (try? await Current.database.fetchEmailSettingsForUserId(user.id)) ?? [] }
+      IO { (try? await database.fetchEmailSettingsForUserId(user.id)) ?? [] }
         .parallel,
 
-      IO { (try? await Current.database.fetchEpisodeCredits(user.id)) ?? [] }
+      IO { (try? await database.fetchEpisodeCredits(user.id)) ?? [] }
         .parallel,
 
       paymentMethod.run.map { $0.right ?? nil }.parallel,
@@ -97,9 +103,9 @@ private func fetchAccountData<I>(
 
       owner.run.map(\.right).parallel,
 
-      IO { (try? await Current.database.fetchTeamInvites(user.id)) ?? [] }.parallel,
+      IO { (try? await database.fetchTeamInvites(user.id)) ?? [] }.parallel,
 
-      IO { (try? await Current.database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
+      IO { (try? await database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
         .parallel,
 
       upcomingInvoice.run.map(\.right).parallel
@@ -182,10 +188,11 @@ func fetchSubscription<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
 {
+  @Dependency(\.database) var database
 
   return { conn in
     let subscription = IO {
-      try? await Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
+      try? await database.fetchSubscriptionByOwnerId(get1(conn.data).id)
     }
 
     return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
@@ -206,9 +213,10 @@ private func fetchStripeSubscription<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription, A>, Data>
 {
+  @Dependency(\.stripe) var stripe
 
   return { conn in
-    IO { try? await Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
+    IO { try? await stripe.fetchSubscription(conn.data.first.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }

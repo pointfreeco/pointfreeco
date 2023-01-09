@@ -33,6 +33,9 @@ public func prepareEmail(
 )
   -> Email
 {
+  @Dependency(\.envVars) var envVars
+  @Dependency(\.logger) var logger
+  @Dependency(\.mailgun) var mailgun
   @Dependency(\.siteRouter) var siteRouter
 
   let (plain, html): (String, String?) =
@@ -47,13 +50,13 @@ public func prepareEmail(
     unsubscribeData
     .map { userId, newsletter in
       guard
-        let unsubEmail = Current.mailgun.unsubscribeEmail(
+        let unsubEmail = mailgun.unsubscribeEmail(
           fromUserId: userId, andNewsletter: newsletter),
         let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
-          .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
+          .flatMap({ Encrypted(String($0), with: envVars.appSecret) })
           .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
       else {
-        Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
+        logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
         return []
       }
 
@@ -71,9 +74,9 @@ public func prepareEmail(
     to: to,
     cc: cc,
     bcc: bcc,
-    subject: Current.envVars.appEnv == .production
+    subject: envVars.appEnv == .production
       ? subject
-      : "[\(Current.envVars.appEnv)] " + subject,
+      : "[\(envVars.appEnv)] " + subject,
     text: plain,
     html: html,
     testMode: nil,
@@ -86,7 +89,9 @@ public func prepareEmail(
 }
 
 public func send(email: Email) async throws -> SendEmailResponse {
-  try await Current.mailgun.sendEmail(email)
+  @Dependency(\.mailgun) var mailgun
+
+  return try await mailgun.sendEmail(email)
 }
 
 public func sendEmail(
@@ -99,7 +104,9 @@ public func sendEmail(
   content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
 ) async throws -> SendEmailResponse {
-  try await Current.mailgun.sendEmail(
+  @Dependency(\.mailgun) var mailgun
+
+  return try await mailgun.sendEmail(
     prepareEmail(
       from: from,
       to: to,

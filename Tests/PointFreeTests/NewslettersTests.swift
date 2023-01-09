@@ -1,3 +1,4 @@
+import Dependencies
 import EmailAddress
 import Html
 import HtmlSnapshotTesting
@@ -17,19 +18,24 @@ import XCTest
 
 @MainActor
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.database) var database
+  @Dependency(\.mailgun) var mailgun
+  @Dependency(\.date.now) var now
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
   func testExpressUnsubscribe() async throws {
-    let user = try await Current.database.registerUser(
+      let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     let payload = try XCTUnwrap(
       Encrypted(
-        String(expressUnsubscribe.print((user.id, .announcements))), with: Current.envVars.appSecret
+        String(expressUnsubscribe.print((user.id, .announcements))), with: self.appSecret
       )
     )
 
@@ -38,7 +44,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       session: .loggedIn
     )
 
-    var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,
@@ -48,7 +54,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
     await assertSnapshot(matching: output, as: .conn)
 
-    settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,
@@ -58,18 +64,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply() async throws {
     #if !os(Linux)
-      let user = try await Current.database.registerUser(
+      let user = try await self.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
-      let unsubEmail = Current.mailgun.unsubscribeEmail(
+      let unsubEmail = self.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
 
       let unsubscribe = request(
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(Current.date().timeIntervalSince1970),
+            timestamp: Int(self.now.timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
@@ -78,7 +84,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -88,7 +94,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -99,18 +105,18 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() async throws {
     #if !os(Linux)
-      let user = try await Current.database.registerUser(
+      let user = try await self.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
-      let unsubEmail = Current.mailgun.unsubscribeEmail(
+      let unsubEmail = self.mailgun.unsubscribeEmail(
         fromUserId: user.id, andNewsletter: .announcements)!
 
       let unsubscribe = request(
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(Current.date().timeIntervalSince1970),
+            timestamp: Int(self.now.timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "this is an invalid signature"
@@ -119,7 +125,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -129,7 +135,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -140,13 +146,13 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   func testExpressUnsubscribeReply_UnknownNewsletter() async throws {
     #if !os(Linux)
-      let user = try await Current.database.registerUser(
+      let user = try await self.database.registerUser(
         withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
       let payload = encrypted(
         text: "\(user.id.rawValue.uuidString)--unknown",
-        secret: Current.envVars.appSecret.rawValue,
+        secret: self.appSecret.rawValue,
         nonce: [0x30, 0x9D, 0xF8, 0xA2, 0x72, 0xA7, 0x4D, 0x37, 0xB9, 0x02, 0xDF, 0x4F]
       )!
       let unsubEmail = EmailAddress(rawValue: "unsub-\(payload)@pointfree.co")
@@ -155,7 +161,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(Current.date().timeIntervalSince1970),
+            timestamp: Int(self.now.timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
@@ -164,7 +170,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         session: .loggedOut
       )
 
-      var settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,
@@ -174,7 +180,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+      settings = try await self.database.fetchEmailSettingsForUserId(user.id)
       await assertSnapshot(
         matching: settings,
         as: .customDump,

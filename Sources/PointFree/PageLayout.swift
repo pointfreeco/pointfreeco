@@ -23,6 +23,7 @@ extension Conn where Step == HeadersOpen {
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
     @Dependency(\.currentRoute) var siteRoute
+    @Dependency(\.renderHtml) var renderHtml
     @Dependency(\.siteRouter) var siteRouter
 
     var newLayoutData = layoutData(self.data)
@@ -47,7 +48,7 @@ extension Conn where Step == HeadersOpen {
       self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: Current.renderHtml(pageLayout(newLayoutData)),
+        body: renderHtml(pageLayout(newLayoutData)),
         contentType: .html
       )
   }
@@ -65,9 +66,11 @@ func respond<A, B>(
 func simplePageLayout<A>(
   _ contentView: @escaping (A) -> Node
 ) -> (SimplePageLayoutData<A>) -> Node {
-  simplePageLayout(
-    cssConfig: Current.envVars.appEnv == .testing ? .pretty : .compact,
-    emergencyMode: Current.envVars.emergencyMode,
+  @Dependency(\.envVars) var envVars
+
+  return simplePageLayout(
+    cssConfig: envVars.appEnv == .testing ? .pretty : .compact,
+    emergencyMode: envVars.emergencyMode,
     contentView
   )
 }

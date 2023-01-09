@@ -59,7 +59,8 @@ open class LiveDatabaseTestCase: XCTestCase {
     try await super.setUp()
     diffTool = "ksdiff"
     //SnapshotTesting.isRecording = true
-    try await DependencyValues._current.database.resetForTesting(pool: self.pool)
+    @Dependency(\.database) var database
+    try await database.resetForTesting(pool: self.pool)
   }
 
   open override func invokeTest() {

@@ -19,9 +19,11 @@ var package = Package(
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
+    .library(name: "LoggingDependencies", targets: ["LoggingDependencies"]),
     .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
+    .library(name: "NIODependencies", targets: ["NIODependencies"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreeDependencies", targets: ["PointFreeDependencies"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
@@ -36,7 +38,9 @@ var package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log", from: "1.0.0"),
+    .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
+    .package(url: "https://github.com/swift-server/async-http-client", from: "1.9.0"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.0"),
@@ -106,6 +110,10 @@ var package = Package(
     .target(
       name: "FoundationPrelude",
       dependencies: [
+        "LoggingDependencies",
+        "NIODependencies",
+        .product(name: "AsyncHTTPClient", package: "async-http-client"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
@@ -173,11 +181,20 @@ var package = Package(
     ),
 
     .target(
+      name: "LoggingDependencies",
+      dependencies: [
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "Logging", package: "swift-log"),
+      ]
+    ),
+
+    .target(
       name: "Mailgun",
       dependencies: [
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "LoggingDependencies",
         "Models",
         "PointFreePrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
@@ -228,6 +245,15 @@ var package = Package(
     ),
 
     .target(
+      name: "NIODependencies",
+      dependencies: [
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "NIOCore", package: "swift-nio"),
+        .product(name: "NIOEmbedded", package: "swift-nio"),
+      ]
+    ),
+
+    .target(
       name: "PointFree",
       dependencies: [
         "Database",
@@ -235,9 +261,10 @@ var package = Package(
         "GitHub",
         "Mailgun",
         "Models",
+        "NIODependencies",
         "PointFreeDependencies",
-        "PointFreePrelude",
         "PointFreeRouter",
+        "PointFreePrelude",
         "Stripe",
         "Styleguide",
         "Syndication",
@@ -291,6 +318,20 @@ var package = Package(
     ),
 
     .target(
+      name: "PointFreePrelude",
+      dependencies: [
+        "FoundationPrelude",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tuple", package: "swift-prelude"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
+      ]
+    ),
+
+    .target(
       name: "PointFreeRouter",
       dependencies: [
         "EmailAddress",
@@ -314,20 +355,6 @@ var package = Package(
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
-    ),
-
-    .target(
-      name: "PointFreePrelude",
-      dependencies: [
-        "FoundationPrelude",
-        .product(name: "Either", package: "swift-prelude"),
-        .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "swift-prelude"),
-        .product(name: "Tagged", package: "swift-tagged"),
-        .product(name: "Tuple", package: "swift-prelude"),
-        .product(name: "UrlFormEncoding", package: "swift-web"),
-        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
 
@@ -373,6 +400,7 @@ var package = Package(
         "DecodableRequest",
         "EmailAddress",
         "FoundationPrelude",
+        "LoggingDependencies",
         "PointFreePrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Either", package: "swift-prelude"),

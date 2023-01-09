@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -18,7 +19,9 @@ public let pricingLanding:
     >=> respond(
       view: Views.pricingLanding,
       layoutData: {
-        let episodeStats = stats(forEpisodes: Current.episodes())
+        @Dependency(\.episodes) var episodes
+
+        let episodeStats = stats(forEpisodes: episodes())
 
         return SimplePageLayoutData(
           data: episodeStats,

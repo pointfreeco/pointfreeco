@@ -126,9 +126,10 @@ private func requireEnterpriseAccount<A, Z>(
 private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>
 ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>?> {
+  @Dependency(\.database) var database
 
   return IO {
-    guard (try? await Current.database.createEnterpriseEmail(get3(data), get4(data))) != nil
+    guard (try? await database.createEnterpriseEmail(get3(data), get4(data))) != nil
     else { return nil }
     return data
   }
@@ -137,9 +138,10 @@ private func createEnterpriseEmail(
 private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
 ) -> IO<T3<User, EnterpriseAccount, Z>?> {
+  @Dependency(\.database) var database
 
   return EitherIO {
-    try await Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+    try await database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
   }
   .map(const(data))
   .run
@@ -200,12 +202,13 @@ private func validateMembership<Z>(
 private func validateInvitation(
   _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
 ) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>? {
+  @Dependency(\.envVars.appSecret) var appSecret
 
   let (user, account, encryptedEmail, encryptedUserId) = lower(data)
 
   // Make sure email decrypts correctly
   guard
-    let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
+    let email = encryptedEmail.decrypt(with: appSecret)
       .map(EmailAddress.init(rawValue:))
   else { return nil }
 
@@ -215,7 +218,7 @@ private func validateInvitation(
 
   // Make sure user id decrypts correctly.
   guard
-    let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
+    let userId = encryptedUserId.decrypt(with: appSecret)
       .flatMap(UUID.init(uuidString:))
       .map(User.ID.init(rawValue:))
   else { return nil }
@@ -235,6 +238,7 @@ private func validateInvitation(
 private func sendEnterpriseInvitation<Z>(
   _ middleware: @escaping M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>>
 ) -> M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>> {
+  @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
@@ -254,8 +258,8 @@ private func sendEnterpriseInvitation<Z>(
           )
         )
     } else if let encryptedEmail = Encrypted(
-      request.email.rawValue, with: Current.envVars.appSecret),
-      let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: Current.envVars.appSecret)
+      request.email.rawValue, with: appSecret),
+      let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: appSecret)
     {
       Task {
         _ = try await sendEmail(
@@ -280,7 +284,9 @@ private func sendEnterpriseInvitation<Z>(
 }
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
-  IO { try? await Current.database.fetchEnterpriseAccountForDomain(domain) }
+  @Dependency(\.database) var database
+
+  return IO { try? await database.fetchEnterpriseAccountForDomain(domain) }
 }
 
 let enterpriseInviteEmailView =
@@ -350,6 +356,8 @@ extension EmailAddress {
 private func redirectCurrentSubscribers<Z>(
   _ middleware: @escaping M<T2<User, Z>>
 ) -> M<T2<User, Z>> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
 
   return { conn in
     let user = get1(conn.data)
@@ -357,8 +365,8 @@ private func redirectCurrentSubscribers<Z>(
     else { return middleware(conn) }
 
     return EitherIO {
-      let subscription = try await Current.database.fetchSubscriptionById(subscriptionId)
-      let stripeSubscription = try await Current.stripe
+      let subscription = try await database.fetchSubscriptionById(subscriptionId)
+      let stripeSubscription = try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       return stripeSubscription.isRenewing
     }

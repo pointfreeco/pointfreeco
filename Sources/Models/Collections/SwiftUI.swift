@@ -81,6 +81,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep216_modernSwiftUI),
       .init(episode: .ep217_modernSwiftUI),
       .init(episode: .ep218_modernSwiftUI),
+      .init(episode: .ep219_modernSwiftUI),
     ],
     isFinished: false,
     related: [],

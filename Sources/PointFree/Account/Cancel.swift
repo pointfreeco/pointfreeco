@@ -26,6 +26,7 @@ private func cancelResponse(
   _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.fireAndForget) var fireAndForget
+  @Dependency(\.stripe) var stripe
 
   do {
     let (user, stripeSubscription) = conn.data
@@ -35,7 +36,7 @@ private func cancelResponse(
         $0.flash(.error, "Your subscription is already canceled!")
       }
     }
-    _ = try await Current.stripe
+    _ = try await stripe
       .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
     await fireAndForget {
       try await sendCancelEmail(to: user, for: stripeSubscription)
@@ -53,6 +54,8 @@ private func cancelResponse(
 private func reactivateResponse(
   _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.stripe) var stripe
+
   do {
     let (user, stripeSubscription) = conn.data
     guard stripeSubscription.isCanceling
@@ -65,7 +68,7 @@ private func reactivateResponse(
     else {
       return conn.redirect(to: .account()) { $0.flash(.error, genericSubscriptionError) }
     }
-    _ = try await Current.stripe.updateSubscription(stripeSubscription, item.plan.id, item.quantity)
+    _ = try await stripe.updateSubscription(stripeSubscription, item.plan.id, item.quantity)
     Task { try await sendReactivateEmail(to: user, for: stripeSubscription) }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve reactivated your subscription.")
@@ -88,11 +91,14 @@ private func requireUserAndStripeSubscription(
     ResponseEnded, Data
   >
 ) -> (Conn<StatusLineOpen, User?>) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+
   return { conn in
     guard let user = conn.data
     else { return conn.loginAndRedirect() }
 
-    guard let subscription = try? await Current.database.fetchSubscriptionByOwnerId(user.id)
+    guard let subscription = try? await database.fetchSubscriptionByOwnerId(user.id)
     else {
       return conn.redirect(to: .account()) {
         $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
@@ -100,7 +106,7 @@ private func requireUserAndStripeSubscription(
     }
 
     guard
-      let stripeSubscription = try? await Current.stripe
+      let stripeSubscription = try? await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
     else {
       return conn.redirect(to: .account()) {

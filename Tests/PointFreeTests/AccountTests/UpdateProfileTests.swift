@@ -16,13 +16,15 @@ import XCTest
 
 @MainActor
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
   func testUpdateNameAndEmail() async throws {
-    var user = try await Current.database.registerUser(
+    var user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
     user.referralCode = "deadbeef"
@@ -45,7 +47,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    user = try await Current.database.fetchUserById(user.id)
+    user = try await self.database.fetchUserById(user.id)
     user.referralCode = "deadbeef"
 
     await assertSnapshot(
@@ -60,10 +62,10 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testUpdateEmailSettings() async throws {
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    let emailSettings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+    let emailSettings = try await self.database.fetchEmailSettingsForUserId(user.id)
 
     await assertSnapshot(
       matching: emailSettings,
@@ -83,7 +85,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update)).performAsync()
 
-    let settings = try await Current.database.fetchEmailSettingsForUserId(user.id)
+    let settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,

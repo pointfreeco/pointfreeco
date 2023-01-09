@@ -1,3 +1,4 @@
+import Dependencies
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -42,5 +43,6 @@ private let fetchCollectionMiddleware: MT<Episode.Collection.Slug, Episode.Colle
 }
 
 private func fetchCollection(_ slug: Episode.Collection.Slug) -> Episode.Collection? {
-  Current.collections.first(where: { $0.slug == slug })
+  @Dependency(\.collections) var collections
+  return collections.first(where: { $0.slug == slug })
 }

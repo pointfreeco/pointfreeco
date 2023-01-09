@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import Dependencies
 import GitHub
 import GitHubTestSupport
 import Logging
@@ -14,26 +15,28 @@ import XCTest
 
 @MainActor
 final class DatabaseTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   func testUpsertUser_FetchUserById() async throws {
-    let userA = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
-    let userB = try await Current.database.fetchUserById(userA.id)
+    let userA = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let userB = try await self.database.fetchUserById(userA.id)
     XCTAssertEqual(userA.id, userB.id)
     XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)
   }
 
   func testFetchEnterpriseAccount() async throws {
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
+    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
 
-    let createdAccount = try await Current.database.createEnterpriseAccount(
+    let createdAccount = try await self.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
     )
 
-    let fetchedAccount = try await Current.database
+    let fetchedAccount = try await self.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)
 
     XCTAssertEqual(createdAccount, fetchedAccount)
@@ -43,37 +46,37 @@ final class DatabaseTests: LiveDatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsNotTakingSeat() async throws {
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await Current.database.createSubscription(.mock, user.id, false, nil)
+    _ = try await self.database.createSubscription(.mock, user.id, false, nil)
 
-    let freshUser = try await Current.database.fetchUserById(user.id)
+    let freshUser = try await self.database.fetchUserById(user.id)
 
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
   func testCreateSubscription_OwnerIsTakingSeat() async throws {
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    let subscription = try await Current.database.createSubscription(.mock, user.id, true, nil)
+    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
 
-    let freshUser = try await Current.database.fetchUserById(user.id)
+    let freshUser = try await self.database.fetchUserById(user.id)
 
     XCTAssertEqual(subscription.id, freshUser.subscriptionId)
   }
 
   func testUpdateEpisodeProgress() async throws {
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await Current.database.updateEpisodeProgress(1, 20, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 20, user.id)
 
-    var count = try await Current.database.execute(
+    var count = try await self.database.execute(
       """
       SELECT *
       FROM "episode_progresses"
@@ -84,9 +87,9 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 10, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 10, user.id)
 
-    count = try await Current.database.execute(
+    count = try await self.database.execute(
       """
       SELECT *
       FROM "episode_progresses"
@@ -97,9 +100,9 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await Current.database.updateEpisodeProgress(1, 30, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 30, user.id)
 
-    count = try await Current.database.execute(
+    count = try await self.database.execute(
       """
       SELECT *
       FROM "episode_progresses"
@@ -115,13 +118,13 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1
 
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await Current.database.updateEpisodeProgress(episodeSequence, progress, user.id)
+    _ = try await self.database.updateEpisodeProgress(episodeSequence, progress, user.id)
 
-    let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
+    let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
 
     XCTAssertEqual(fetchedProgress, .some(20))
   }
@@ -129,11 +132,11 @@ final class DatabaseTests: LiveDatabaseTestCase {
   func testFetchEpisodeProgress_NoProgress() async throws {
     let episodeSequence: Episode.Sequence = 1
 
-    let user = try await Current.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    let fetchedProgress = try await Current.database.fetchEpisodeProgress(user.id, episodeSequence)
+    let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
 
     XCTAssertEqual(fetchedProgress, .none)
   }

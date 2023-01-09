@@ -14,15 +14,20 @@ import Tuple
 func accountRssMiddleware(
   _ conn: Conn<StatusLineOpen, User.RssSalt>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars.rssUserAgentWatchlist) var rssUserAgentWatchlist
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+  @Dependency(\.uuid) var uuid
+
   do {
-    guard let user = try? await Current.database.fetchUserByRssSalt(conn.data)
+    guard let user = try? await database.fetchUserByRssSalt(conn.data)
     else {
       return conn.invalidatedFeedResponse(errorMessage: suspiciousError)
     }
 
     // Track feed request
     await notifyError(subject: "Create Feed Request Event Failed") {
-      try await Current.database.createFeedRequestEvent(
+      try await database.createFeedRequestEvent(
         .privateEpisodesFeed,
         conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
         user.id
@@ -31,11 +36,11 @@ func accountRssMiddleware(
 
     // Validate user agent
     if let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
-      Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
+       rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     {
-      try await Current.database.updateUser(
+      try await database.updateUser(
         id: user.id,
-        rssSalt: User.RssSalt(Current.uuid().uuidString.lowercased())
+        rssSalt: User.RssSalt(uuid().uuidString.lowercased())
       )
       _ = try await sendInvalidRssFeedEmail(user: user, userAgent: userAgent)
         .withExcept { $0 as Error }
@@ -44,7 +49,7 @@ func accountRssMiddleware(
     }
 
     // Require active subscription
-    let subscription = try await Current.database
+    let subscription = try await database
       .fetchSubscriptionById(user.subscriptionId.unwrap())
     guard !subscription.deactivated
     else {
@@ -62,7 +67,7 @@ func accountRssMiddleware(
     }
 
     // Gracefully degrade when Stripe is unavailable
-    let stripeSubscription = try? await Current.stripe
+    let stripeSubscription = try? await stripe
       .fetchSubscription(subscription.stripeSubscriptionId)
 
     return conn.map { _ in (stripeSubscription, user) }
@@ -118,6 +123,8 @@ private let privateEpisodesFeedView = itunesRssFeedLayout {
 }
 
 func privateRssChannel(user: User) -> RssChannel {
+  @Dependency(\.calendar) var calendar
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   let description = """
@@ -135,7 +142,7 @@ func privateRssChannel(user: User) -> RssChannel {
 
   return RssChannel(
     copyright:
-      "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+      "Copyright Point-Free, Inc. \(calendar.component(.year, from: now))",
     description: description,
     image: .init(
       link: siteRouter.url(for: .home),
@@ -179,8 +186,9 @@ func privateRssChannel(user: User) -> RssChannel {
 let nonYearlyMaxRssItems = 4
 
 private func items(forUser user: User, subscription: Stripe.Subscription?) -> [RssItem] {
-  Current
-    .episodes()
+  @Dependency(\.episodes) var episodes
+
+  return episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(\.sequence, >))
     .prefix(subscription?.plan.interval == .some(.year) ? 99999 : nonYearlyMaxRssItems)
@@ -234,11 +242,13 @@ private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
 }
 
 private func invalidatedChannel(errorMessage: String) -> RssChannel {
+  @Dependency(\.calendar) var calendar
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   return .init(
     copyright:
-      "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+      "Copyright Point-Free, Inc. \(calendar.component(.year, from: now))",
     description: errorMessage,
     image: .init(
       link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
@@ -280,9 +290,11 @@ private func invalidatedChannel(errorMessage: String) -> RssChannel {
 }
 
 private func invalidatedItem(errorMessage: String) -> RssItem {
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
-  let episode = Current.episodes()[0]
+  let episode = episodes()[0]
   return RssItem(
     description: errorMessage,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
@@ -291,7 +303,7 @@ private func invalidatedItem(errorMessage: String) -> RssItem {
       type: "video/mp4",
       url: episode.fullVideo.downloadUrl(.sd540)
     ),
-    guid: String(Current.date().timeIntervalSince1970),
+    guid: String(now.timeIntervalSince1970),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: 0,

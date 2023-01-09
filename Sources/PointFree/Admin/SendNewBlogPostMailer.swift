@@ -15,16 +15,20 @@ import Tuple
 
 let showNewBlogPostEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-  >=> respond(const(showNewBlogPostView))
+  >=> respond(showNewBlogPostView())
 
-private let showNewBlogPostView = Node.ul(
-  .fragment(
-    Current.blogPosts()
-      .sorted(by: their(\.id, >))
-      .prefix(upTo: 3)
-      .map { .li(newBlogPostEmailRowView(post: $0)) }
+private func showNewBlogPostView() -> Node {
+  @Dependency(\.blogPosts) var blogPosts
+
+  return .ul(
+    .fragment(
+      blogPosts()
+        .sorted(by: their(\.id, >))
+        .prefix(upTo: 3)
+        .map { .li(newBlogPostEmailRowView(post: $0)) }
+    )
   )
-)
+}
 
 private func newBlogPostEmailRowView(post: BlogPost) -> Node {
   @Dependency(\.siteRouter) var siteRouter
@@ -89,13 +93,16 @@ private let fetchBlogPostForId:
   )
 
 func fetchBlogPost(forId id: BlogPost.ID) -> BlogPost? {
-  return Current.blogPosts()
+  @Dependency(\.blogPosts) var blogPosts
+
+  return blogPosts()
     .first(where: { id == $0.id })
 }
 
 private func sendNewBlogPostEmails<I>(
   _ conn: Conn<I, Tuple3<BlogPost, NewBlogPostFormData?, Bool>>
 ) -> IO<Conn<I, Prelude.Unit>> {
+  @Dependency(\.database) var database
 
   let (post, optionalFormData, isTest) = lower(conn.data)
 
@@ -117,8 +124,8 @@ private func sendNewBlogPostEmails<I>(
 
   let users = EitherIO {
     try await isTest
-      ? Current.database.fetchAdmins()
-      : Current.database
+      ? database.fetchAdmins()
+      : database
         .fetchUsersSubscribedToNewsletter(.newBlogPost, nonsubscriberOrSubscribersOnly)
   }
 

@@ -22,6 +22,8 @@ import XCTest
 
 @MainActor
 final class StripeWebhooksTests: TestCase {
+  @Dependency(\.date.now) var now
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -317,7 +319,8 @@ final class StripeWebhooksTests: TestCase {
   func testValidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(Event.invoice), as: UTF8.self)
       )
 
@@ -330,8 +333,9 @@ final class StripeWebhooksTests: TestCase {
   func testStaleHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-      try hook.addStripeSignature(
-        timestamp: Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970),
+      try self.addStripeSignature(
+        to: &hook,
+        timestamp: Int(self.now.addingTimeInterval(-600).timeIntervalSince1970),
         payload: .init(decoding: Stripe.jsonEncoder.encode(Event.invoice), as: UTF8.self)
       )
 
@@ -344,7 +348,7 @@ final class StripeWebhooksTests: TestCase {
   func testInvalidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
-      try hook.addStripeSignature(payload: "deadbeef")
+      try self.addStripeSignature(to: &hook, payload: "deadbeef")
 
       let conn = connection(from: hook)
 
@@ -363,7 +367,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -387,7 +392,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -408,7 +414,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -458,7 +465,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -514,7 +522,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -567,7 +576,8 @@ final class StripeWebhooksTests: TestCase {
       )
 
       var hook = request(to: .webhooks(.stripe(.paymentIntents(event))))
-      try hook.addStripeSignature(
+      try self.addStripeSignature(
+        to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
 
@@ -607,17 +617,21 @@ final class StripeWebhooksTests: TestCase {
           """)
     }
   }
-}
 
-extension URLRequest {
-  mutating func addStripeSignature(
-    timestamp: Int = Int(Current.date().timeIntervalSince1970),
+  private func addStripeSignature(
+    to request: inout URLRequest,
+    timestamp: Int? = nil,
     payload: String
   ) throws {
-    let signature = try XCTUnwrap(generateStripeSignature(timestamp: timestamp, payload: payload))
+    let signature = try XCTUnwrap(
+      generateStripeSignature(
+        timestamp: timestamp ?? Int(self.now.timeIntervalSince1970),
+        payload: payload
+      )
+    )
 
-    self.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=\(signature)",
+    request.addValue(
+      "t=\(Int(self.now.timeIntervalSince1970)),v1=\(signature)",
       forHTTPHeaderField: "Stripe-Signature"
     )
   }

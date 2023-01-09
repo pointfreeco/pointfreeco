@@ -15,16 +15,20 @@ import Tuple
 
 let showNewEpisodeEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-  >=> respond({ _ in showNewEpisodeView })
+  >=> respond({ _ in showNewEpisodeView() })
 
-private let showNewEpisodeView = Node.ul(
-  .fragment(
-    Current.episodes()
-      .sorted(by: their(\.sequence, >))
-      .prefix(upTo: 1)
-      .map { .li(newEpisodeEmailRowView(ep: $0)) }
+private func showNewEpisodeView() -> Node {
+  @Dependency(\.episodes) var episodes
+
+  return .ul(
+    .fragment(
+      episodes()
+        .sorted(by: their(\.sequence, >))
+        .prefix(upTo: 1)
+        .map { .li(newEpisodeEmailRowView(ep: $0)) }
+    )
   )
-)
+}
 
 private func newEpisodeEmailRowView(ep: Episode) -> Node {
   @Dependency(\.siteRouter) var siteRouter
@@ -75,13 +79,14 @@ private let requireIsTest:
 private func sendNewEpisodeEmails<I>(
   _ conn: Conn<I, Tuple4<Episode, String?, String?, Bool>>
 ) -> IO<Conn<I, Prelude.Unit>> {
+  @Dependency(\.database) var database
 
   let (episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
   let users = EitherIO {
     try await isTest
-      ? Current.database.fetchAdmins()
-      : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
+      ? database.fetchAdmins()
+      : database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
   }
 
   return

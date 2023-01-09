@@ -19,6 +19,8 @@ import XCTest
 
 @MainActor
 class EnterpriseTests: TestCase {
+  @Dependency(\.envVars) var envVars
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -91,7 +93,7 @@ class EnterpriseTests: TestCase {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
@@ -113,7 +115,7 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_BadUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+    let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     var loggedInUser = User.mock
     loggedInUser.id = userId
@@ -136,9 +138,9 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_EmailDoesntMatchEnterpriseDomain() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.biz", with: Current.envVars.appSecret)!
+    let encryptedEmail = Encrypted("blob@pointfree.biz", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
@@ -161,9 +163,9 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_RequesterUserDoesntMatchAccepterUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+    let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
@@ -189,9 +191,9 @@ class EnterpriseTests: TestCase {
     } operation: {
       var account = EnterpriseAccount.mock
       account.domain = "pointfree.co"
-      let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+      let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
       let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-      let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+      let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
       var loggedInUser = User.mock
       loggedInUser.id = User.ID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!
 
@@ -208,9 +210,9 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_HappyPath() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
-    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+    let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
-    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil

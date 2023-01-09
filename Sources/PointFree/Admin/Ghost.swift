@@ -51,7 +51,9 @@ private func startGhosting(
 }
 
 private func fetchGhostee(userId: User.ID?) -> IO<User?> {
-  IO { try? await Current.database.fetchUserById(userId.unwrap()) }
+  @Dependency(\.database) var database
+
+  return IO { try? await database.fetchUserById(userId.unwrap()) }
 }
 
 private func indexView() -> Node {

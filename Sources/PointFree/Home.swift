@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -11,8 +12,11 @@ let homeMiddleware: M<Void> =
   >=> respond(
     view: homeView(episodes:emergencyMode:),
     layoutData: {
-      SimplePageLayoutData(
-        data: (Current.episodes(), Current.envVars.emergencyMode),
+      @Dependency(\.envVars.emergencyMode) var emergencyMode
+      @Dependency(\.episodes) var episodes
+
+      return SimplePageLayoutData(
+        data: (episodes, emergencyMode),
         extraStyles: markdownBlockStyles,
         openGraphType: .website,
         style: .base(.mountains(.main)),

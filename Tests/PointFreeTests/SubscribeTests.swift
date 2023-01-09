@@ -18,6 +18,9 @@ import XCTest
 
 @MainActor
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+  @Dependency(\.envVars.regionalDiscountCouponId) var regionalDiscountCouponId
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -27,7 +30,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
 
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -42,7 +45,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       await assertSnapshot(matching: conn, as: .conn)
     #endif
 
-    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+    let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
       await assertSnapshot(matching: subscription, as: .customDump)
@@ -53,7 +56,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.teamYearly(quantity: 4)
     subscribeData.coupon = "deadbeef"
 
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -68,12 +71,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       await assertSnapshot(matching: conn, as: .conn)
     #endif
 
-    let subscription = try? await Current.database.fetchSubscriptionByOwnerId(user.id)
+    let subscription = try? await self.database.fetchSubscriptionByOwnerId(user.id)
     XCTAssertNil(subscription)
   }
 
   func testHappyPath() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -101,7 +104,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+      let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
       #if !os(Linux)
         await assertSnapshot(matching: subscription, as: .customDump)
@@ -112,7 +115,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Yearly() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -140,7 +143,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+      let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
       #if !os(Linux)
         await assertSnapshot(matching: subscription, as: .customDump)
@@ -151,7 +154,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Team() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -174,18 +177,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
     #endif
-    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+    let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
       await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
-    let invites = try await Current.database.fetchTeamInvites(user.id)
+    let invites = try await self.database.fetchTeamInvites(user.id)
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
   }
 
   func testHappyPath_Team_OwnerIsNotTakingSeat() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -210,29 +213,29 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
     #endif
-    let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+    let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
     #if !os(Linux)
       await assertSnapshot(matching: subscription, as: .customDump)
     #endif
 
-    let invites = try await Current.database.fetchTeamInvites(user.id)
+    let invites = try await self.database.fetchTeamInvites(user.id)
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
 
-    let freshUser = try await Current.database.fetchUserById(user.id)
+    let freshUser = try await self.database.fetchUserById(user.id)
     // Confirm that owner of subscription is not taking up a seat on the sub.
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
   func testHappyPath_Referral_Monthly() async throws {
-    let referrer = try await Current.database
+    let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
 
-    /*let referrerSubscription*/_ = try await Current.database.createSubscription(
+    /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
-    let referred = try await Current.database
+    let referred = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
@@ -289,7 +292,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+      let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -18_00])
@@ -298,14 +301,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_Referral_Yearly() async throws {
-    let referrer = try await Current.database
+    let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ =
-      try await Current
-      .database.createSubscription(.mock, referrer.id, true, nil)
+      try await self.database.createSubscription(.mock, referrer.id, true, nil)
 
-    let referred = try await Current.database
+    let referred = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
@@ -354,7 +356,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+      let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertEqual(balance, -18_00)
       XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
@@ -363,7 +365,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testHappyPath_RegionalDiscount() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -413,19 +415,19 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(user.id)
+      let subscription = try await self.database.fetchSubscriptionByOwnerId(user.id)
 
       #if !os(Linux)
         await assertSnapshot(matching: subscription, as: .customDump)
       #endif
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+      XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, [:])
     }
   }
 
   func testUnhappyPath_RegionalDiscount() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -435,7 +437,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var balance: Cents<Int>?
     var balanceUpdates: [Customer.ID: Cents<Int>] = [:]
 
-    try await withDependencies {
+    await withDependencies {
       $0.stripe.createSubscription = { _, _, _, coupon in
         subscriptionCoupon = coupon
         return .mock
@@ -482,14 +484,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRegionalDiscountWithReferral_Monthly() async throws {
-    let referrer = try await Current.database
+    let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
 
-    /*let referrerSubscription*/_ = try await Current.database.createSubscription(
+    /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
-    let referred = try await Current.database
+    let referred = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
@@ -563,24 +565,24 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+      let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+      XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
     }
   }
 
   func testRegionalDiscountWithReferral_Yearly() async throws {
-    let referrer = try await Current.database
+    let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
 
-    /*let referrerSubscription*/_ = try await Current.database.createSubscription(
+    /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
-    let referred = try await Current.database
+    let referred = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
@@ -654,17 +656,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
 
-      let referredSubscription = try await Current.database.fetchSubscriptionByOwnerId(referred.id)
+      let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertEqual(balance, -9_00)
       XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
-      XCTAssertEqual(subscriptionCoupon, Current.envVars.regionalDiscountCouponId)
+      XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
     }
   }
 
   func testSubscribingWithRegionalDiscountAndCoupon() async throws {
-    let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -699,6 +701,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
 @MainActor
 final class SubscribeTests: TestCase {
+  @Dependency(\.database) var database
+  
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -724,7 +728,7 @@ final class SubscribeTests: TestCase {
       var subscribeData = SubscribeData.individualMonthly
       subscribeData.coupon = "deadbeef"
 
-      let user = try await Current.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+      let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
       var session = Session.loggedIn
       session.user = .standard(user.id)
 

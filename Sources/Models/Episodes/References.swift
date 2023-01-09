@@ -1090,6 +1090,16 @@ extension Episode.Reference {
     title: "CasePaths"
   )
 
+  public static let swiftDependencies = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      An open source library of ours. A dependency management library inspired by SwiftUI's "environment."
+      """,
+    link: "https://github.com/pointfreeco/swift-clocks",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-01-09"),
+    title: "Dependencies"
+  )
+
   public static let swiftIdentifiedCollections = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """

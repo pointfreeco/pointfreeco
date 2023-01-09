@@ -31,9 +31,12 @@ private let validateSubscribeData:
 private func subscribe(
   _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.envVars) var envVars
+  @Dependency(\.stripe) var stripe
+
   let (user, subscribeData, referrer) = lower(conn.data)
   let referrerDiscount: Cents<Int> =
-    referrer?.stripeSubscription.discount?.coupon.id == Current.envVars.regionalDiscountCouponId
+    referrer?.stripeSubscription.discount?.coupon.id == envVars.regionalDiscountCouponId
     ? -9_00
     : -18_00
   let referredDiscount: Cents<Int> =
@@ -42,14 +45,14 @@ private func subscribe(
     : -18_00
 
   let stripeSubscription = EitherIO {
-    let customer = try await Current.stripe.createCustomer(
+    let customer = try await stripe.createCustomer(
       subscribeData.paymentMethodID,
       user.id.rawValue.uuidString,
       user.email,
       nil,
       subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
     )
-    let paymentMethod = try await Current.stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+    let paymentMethod = try await stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
     let country = paymentMethod.card?.country
     guard country != nil || !subscribeData.useRegionalDiscount else {
       throw StripeErrorEnvelope(
@@ -78,10 +81,10 @@ private func subscribe(
 
     let regionalDiscountCouponId =
       subscribeData.useRegionalDiscount
-      ? Current.envVars.regionalDiscountCouponId
+      ? envVars.regionalDiscountCouponId
       : nil
 
-    return try await Current.stripe.createSubscription(
+    return try await stripe.createSubscription(
       customer.id,
       subscribeData.pricing.billing.plan,
       subscribeData.pricing.quantity,
@@ -90,12 +93,14 @@ private func subscribe(
   }
 
   func runTasksFor(stripeSubscription: Stripe.Subscription) async throws {
+    @Dependency(\.stripe) var stripe
+
     async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
       .performAsync()
     guard let referrer else { return }
 
     async let updateReferrerBalance: Void = {
-      _ = try await Current.stripe.updateCustomerBalance(
+      _ = try await stripe.updateCustomerBalance(
         referrer.stripeSubscription.customer.id,
         (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
       )
@@ -105,8 +110,7 @@ private func subscribe(
     async let updateReferredBalance: Void = {
       guard subscribeData.pricing.interval == .month
       else { return }
-      _ = try await Current.stripe
-        .updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
+      _ = try await stripe.updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
     }()
 
     // TODO: Log errors?
@@ -116,8 +120,10 @@ private func subscribe(
   let databaseSubscription =
     stripeSubscription
     .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
-      EitherIO {
-        let subscription = try await Current.database.createSubscription(
+      @Dependency(\.database) var database
+
+      return EitherIO {
+        let subscription = try await database.createSubscription(
           stripeSubscription,
           user.id,
           subscribeData.isOwnerTakingSeat,
@@ -157,13 +163,15 @@ private func subscribe(
 private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> EitherIO<
   Error, Prelude.Unit
 > {
+  @Dependency(\.database) var database
+
   return lift(
     sequence(
       subscribeData.teammates
         .filter { email in email.rawValue.contains("@") && email != inviter.email }
         .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
         .map { email in
-          EitherIO { try await Current.database.insertTeamInvite(email, inviter.id) }
+          EitherIO { try await database.insertTeamInvite(email, inviter.id) }
             .flatMap { invite in sendInviteEmail(invite: invite, inviter: inviter) }
             .run
             .parallel
@@ -201,11 +209,13 @@ private func loginAndRedirectToPricing<A>(
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
-  subscribeData.coupon == nil
+  @Dependency(\.envVars) var envVars
+
+  return subscribeData.coupon == nil
     // Do not allow using coupons on team subscriptions
     || subscribeData.pricing.quantity == 1
       // Do not allow using regional discount coupon id directly
-      && subscribeData.coupon != Current.envVars.regionalDiscountCouponId
+      && subscribeData.coupon != envVars.regionalDiscountCouponId
 }
 
 private func validateCouponAndRegionalDiscount(
@@ -297,6 +307,9 @@ private func validateReferrer(
   >
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, SubscribeData>, Data> {
   return { conn in
+    @Dependency(\.database) var database
+    @Dependency(\.stripe) var stripe
+
     let (user, subscribeData) = lower(conn.data)
 
     guard let referralCode = subscribeData.referralCode else {
@@ -309,9 +322,9 @@ private func validateReferrer(
 
     return EitherIO {
       guard isSubscribeDataValidForReferral else { throw unit }
-      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
-      let stripeSubscription = try await Current.stripe
+      let referrer = try await database.fetchUserByReferralCode(referralCode)
+      let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)
     }

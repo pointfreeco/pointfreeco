@@ -25,15 +25,19 @@ public let subscribeConfirmation: M<Tuple3<Pricing.Lane, SubscribeConfirmationDa
         coupon: Stripe.Coupon?,
         referrer: User?
       ) in
-      SimplePageLayoutData(
+        @Dependency(\.episodes) var episodes
+        @Dependency(\.envVars) var envVars
+        @Dependency(\.stripe.js) var js
+
+      return SimplePageLayoutData(
         data: (
           lane,
           subscribeData,
           coupon,
-          referrer,
-          stats(forEpisodes: Current.episodes()),
-          Current.stripe.js,
-          Current.envVars.stripe.publishableKey
+            referrer,
+            stats(forEpisodes: episodes()),
+            js,
+            envVars.stripe.publishableKey
         ),
         extraStyles: extraSubscriptionLandingStyles,
         style: .base(.some(.minimal(.black))),
@@ -47,6 +51,10 @@ public let subscribeConfirmation: M<Tuple3<Pricing.Lane, SubscribeConfirmationDa
 private func validateReferralCode(
   middleware: @escaping M<Tuple4<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
 ) -> M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
+> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+
   return { conn in
     @Dependency(\.currentUser) var currentUser
 
@@ -94,9 +102,9 @@ private func validateReferralCode(
     }
 
     return EitherIO {
-      let referrer = try await Current.database.fetchUserByReferralCode(referralCode)
-      let subscription = try await Current.database.fetchSubscriptionByOwnerId(referrer.id)
-      let stripeSubscription = try await Current.stripe
+      let referrer = try await database.fetchUserByReferralCode(referralCode)
+      let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
+      let stripeSubscription = try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       guard stripeSubscription.isCancellable else { throw unit }
       return referrer
@@ -163,8 +171,10 @@ private let couponError = "That coupon code is invalid or has expired."
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.ID?) -> IO<Stripe.Coupon?> {
   return IO {
-    guard let couponId, couponId != Current.envVars.regionalDiscountCouponId else { return nil }
-    return try? await Current.stripe.fetchCoupon(couponId)
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.stripe) var stripe
+    guard let couponId, couponId != envVars.regionalDiscountCouponId else { return nil }
+    return try? await stripe.fetchCoupon(couponId)
   }
 }
 
@@ -174,13 +184,14 @@ func redirectActiveSubscribers<A>(
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
 {
+  @Dependency(\.database) var database
 
   return { middleware in
     return { conn in
       let user = user(conn.data)
 
       return EitherIO {
-        let subscription = try await Current.database.fetchSubscription(user: user.unwrap())
+        let subscription = try await database.fetchSubscription(user: user.unwrap())
         guard subscription.stripeSubscriptionStatus != .canceled
         else { throw unit }
         return subscription

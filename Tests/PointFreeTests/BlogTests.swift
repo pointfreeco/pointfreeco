@@ -18,6 +18,8 @@ import XCTest
 
 @MainActor
 class BlogTests: TestCase {
+  @Dependency(\.blogPosts) var blogPosts
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record = true
@@ -77,7 +79,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() async throws {
-    let slug = Current.blogPosts().first!.slug
+    let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -96,7 +98,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow_Unauthed() async throws {
-    let slug = Current.blogPosts().first!.slug
+    let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

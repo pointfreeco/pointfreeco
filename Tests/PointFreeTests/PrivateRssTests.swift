@@ -42,6 +42,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
     } operation: {
@@ -60,6 +61,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.stripe.fetchSubscription = { _ in .individualYearly }
     } operation: {
@@ -78,6 +80,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.stripe.fetchSubscription = { _ in throw unit }
     } operation: {
@@ -97,6 +100,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
     } operation: {
@@ -118,6 +122,7 @@ class PrivateRssTests: TestCase {
     subscription.stripeSubscriptionStatus = .pastDue
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
     } operation: {
@@ -139,6 +144,7 @@ class PrivateRssTests: TestCase {
     subscription.deactivated = true
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in subscription }
     } operation: {
@@ -154,6 +160,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_BadSalt() async throws {
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
     } operation: {
       let conn = connection(
@@ -171,6 +178,7 @@ class PrivateRssTests: TestCase {
     var feedRequestEventCreated = false
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.createFeedRequestEvent = { _, _, _ in feedRequestEventCreated = true }
       $0.envVars.rssUserAgentWatchlist = ["blob"]
@@ -194,6 +202,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
@@ -215,6 +224,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
       $0.database.updateUser = { _, _, _, _, _ in XCTFail("The user should not be updated.") }
       $0.envVars.rssUserAgentWatchlist = ["blob"]
@@ -236,6 +246,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
     } operation: {
@@ -255,6 +266,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.stripe.fetchSubscription = { _ in .individualYearly }
     } operation: {
@@ -274,6 +286,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in throw unit }
     } operation: {
@@ -295,6 +308,7 @@ class PrivateRssTests: TestCase {
     subscription.stripeSubscriptionStatus = .pastDue
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in subscription }
     } operation: {
@@ -316,6 +330,7 @@ class PrivateRssTests: TestCase {
     subscription.deactivated = true
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.fetchSubscriptionById = { _ in subscription }
     } operation: {
@@ -331,6 +346,7 @@ class PrivateRssTests: TestCase {
 
   func testLegacy_Feed_BadSalt() async throws {
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
     } operation: {
       let conn = connection(
@@ -349,6 +365,7 @@ class PrivateRssTests: TestCase {
     var feedRequestEventCreated = false
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.database.createFeedRequestEvent = { _, _, _ in
         feedRequestEventCreated = true
@@ -374,6 +391,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in user }
       $0.envVars.rssUserAgentWatchlist = ["blob"]
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
@@ -395,6 +413,7 @@ class PrivateRssTests: TestCase {
     user.rssSalt = "deadbeef/cafebeef"
 
     await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
       $0.database.updateUser = { _, _, _, _, _ in
         XCTFail("The user should not be updated.")

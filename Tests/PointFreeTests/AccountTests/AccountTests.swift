@@ -22,8 +22,10 @@ import XCTest
 
 @MainActor
 final class AccountIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   func testLeaveTeam() async throws {
-    let currentUser = try await Current.database.registerUser(
+    let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
         gitHubUser: .init(
@@ -33,9 +35,9 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       now: { .mock }
     )
 
-    _ = try await Current.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
+    _ = try await self.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
 
-    let owner = try await Current.database.registerUser(
+    let owner = try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
         gitHubUser: .init(
@@ -45,23 +47,23 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       now: { .mock }
     )
 
-    let subscription = try await Current.database.createSubscription(
+    let subscription = try await self.database.createSubscription(
       Stripe.Subscription.mock,
       owner.id,
       false,
       nil
     )
 
-    _ = try await Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+    _ = try await self.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
     let conn = connection(from: request(to: .team(.leave), session: .loggedIn(as: currentUser)))
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    let subscriptionId = try await Current.database.fetchUserById(currentUser.id).subscriptionId
+    let subscriptionId = try await self.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertEqual(subscriptionId, nil)
 
-    let emails = try await Current.database.fetchEnterpriseEmails()
+    let emails = try await self.database.fetchEnterpriseEmails()
     XCTAssertEqual(emails, [])
   }
 }

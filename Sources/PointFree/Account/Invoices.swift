@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -72,12 +73,13 @@ private func fetchInvoices<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data>
 {
+  @Dependency(\.stripe) var stripe
 
   return { conn in
     let subscription = conn.data.first
 
     return EitherIO {
-      try await Current.stripe.fetchInvoices(subscription.customer.id)
+      try await stripe.fetchInvoices(subscription.customer.id)
     }
     .withExcept(notifyError(subject: "Couldn't load invoices"))
     .run
@@ -98,7 +100,9 @@ private func fetchInvoices<A>(
 }
 
 private func fetchInvoice(id: Stripe.Invoice.ID) -> IO<Stripe.Invoice?> {
-  IO { try? await Current.stripe.fetchInvoice(id) }
+  @Dependency(\.stripe) var stripe
+
+  return IO { try? await stripe.fetchInvoice(id) }
 }
 
 private let invoiceError = """
