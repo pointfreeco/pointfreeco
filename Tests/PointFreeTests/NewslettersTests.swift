@@ -29,7 +29,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testExpressUnsubscribe() async throws {
-      let user = try await self.database.registerUser(
+    let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
@@ -44,7 +44,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       session: .loggedIn
     )
 
-      var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
+    var settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,
@@ -54,7 +54,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
     await assertSnapshot(matching: output, as: .conn)
 
-      settings = try await self.database.fetchEmailSettingsForUserId(user.id)
+    settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,

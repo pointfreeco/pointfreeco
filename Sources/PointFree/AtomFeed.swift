@@ -195,7 +195,8 @@ extension Conn where Step == HeadersOpen {
   public func respond(xml view: (A) -> Node) -> Conn<ResponseEnded, Data> {
     @Dependency(\.renderXml) var renderXml
 
-    return self
+    return
+      self
       .respond(
         body: renderXml(view(self.data)),
         contentType: .text(.init(rawValue: "xml"), charset: .utf8)

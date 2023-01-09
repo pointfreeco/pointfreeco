@@ -68,6 +68,11 @@ private func requireLoggedOutUser<A>(
       return conn
         |> redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
     }
+
+    let enterpriseAccount =
+      try? await database
+      .fetchEnterpriseAccountForSubscription(subscription.id)
+
     return middleware(conn)
   }
 }
@@ -213,7 +218,8 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 
   return EitherIO {
     let subscription = try await database.fetchSubscriptionById(subscriptionId)
-    let stripeSubscription = try await stripe
+    let stripeSubscription =
+      try await stripe
       .fetchSubscription(subscription.stripeSubscriptionId)
     _ = try await database.updateStripeSubscription(stripeSubscription)
     return unit

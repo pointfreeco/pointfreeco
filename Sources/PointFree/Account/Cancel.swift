@@ -36,7 +36,8 @@ private func cancelResponse(
         $0.flash(.error, "Your subscription is already canceled!")
       }
     }
-    _ = try await stripe
+    _ =
+      try await stripe
       .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
     await fireAndForget {
       try await sendCancelEmail(to: user, for: stripeSubscription)
@@ -106,7 +107,8 @@ private func requireUserAndStripeSubscription(
     }
 
     guard
-      let stripeSubscription = try? await stripe
+      let stripeSubscription =
+        try? await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
     else {
       return conn.redirect(to: .account()) {

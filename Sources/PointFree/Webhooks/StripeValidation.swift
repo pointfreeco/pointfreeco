@@ -70,7 +70,7 @@ public func generateStripeSignature(
   payload: String
 ) -> String? {
   @Dependency(\.envVars.stripe.endpointSecret) var stripeEndpointSecret
-  
+
   return hexDigest(
     value: "\(timestamp).\(payload)",
     asciiSecret: stripeEndpointSecret.rawValue

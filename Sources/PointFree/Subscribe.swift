@@ -324,7 +324,8 @@ private func validateReferrer(
       guard isSubscribeDataValidForReferral else { throw unit }
       let referrer = try await database.fetchUserByReferralCode(referralCode)
       let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)
     }
