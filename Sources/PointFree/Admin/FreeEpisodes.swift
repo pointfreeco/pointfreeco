@@ -11,7 +11,7 @@ import Styleguide
 import Tuple
 import Views
 
-let indexFreeEpisodeEmailMiddleware: M<Tuple1<User>> =
+let indexFreeEpisodeEmailMiddleware: M<Void> =
   writeStatus(.ok)
   >=> respond({ _ in
     @Dependency(\.date.now) var now
@@ -29,12 +29,15 @@ let sendFreeEpisodeEmailMiddleware:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple2<User, Episode.ID>,
+    Episode.ID,
     Data
-  > =
-    filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail())))
-    <| sendFreeEpisodeEmails
-    >=> redirect(to: .admin())
+> = { conn in
+  guard let episode = fetchEpisode(conn.data)
+  else { return conn |> redirect(to: .admin(.freeEpisodeEmail())) }
+
+  return sendFreeEpisodeEmails(conn.map(const(episode)))
+    .flatMap { $0 |> redirect(to: .admin()) }
+}
 
 func fetchEpisode(_ id: Episode.ID) -> Episode? {
   @Dependency(\.episodes) var episodes

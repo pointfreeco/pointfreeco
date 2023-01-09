@@ -12,13 +12,10 @@ import Styleguide
 
 public struct EpisodePageData {
   var context: Context
-  var date: () -> Date
   var emergencyMode: Bool
   var episode: Episode
   var episodeProgress: Int?
   var permission: EpisodePermission
-  var subscriberState: SubscriberState
-  var user: User?
 
   public enum Context {
     case collection(Episode.Collection)
@@ -27,22 +24,16 @@ public struct EpisodePageData {
 
   public init(
     context: Context,
-    date: @escaping () -> Date,
     emergencyMode: Bool,
     episode: Episode,
     episodeProgress: Int?,
-    permission: EpisodePermission,
-    subscriberState: SubscriberState,
-    user: User?
+    permission: EpisodePermission
   ) {
     self.context = context
-    self.date = date
     self.emergencyMode = emergencyMode
     self.episode = episode
     self.episodeProgress = episodeProgress
     self.permission = permission
-    self.subscriberState = subscriberState
-    self.user = user
   }
 
   public var collection: Episode.Collection? {
@@ -107,7 +98,6 @@ public func episodePageView(
       ?? [],
     episodeHeader(
       episode: data.episode,
-      date: data.date,
       emergencyMode: data.emergencyMode
     ),
     video(
@@ -1046,6 +1036,7 @@ private func creditSubscribeCallout(data: EpisodePageData) -> Node {
 }
 
 private func subscribeCallout(data: EpisodePageData) -> Node {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   return callout(
@@ -1061,7 +1052,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
       ],
       "See plans and pricing"
     ),
-    data.user == nil
+    currentUser == nil
       ? .p(
         attributes: [
           .class([
@@ -1086,6 +1077,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
 }
 
 private func subscribeFreeCallout(data: EpisodePageData) -> Node {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   return callout(
@@ -1101,7 +1093,7 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
       ],
       "See plans and pricing"
     ),
-    data.user == nil
+    currentUser == nil
       ? .p(
         attributes: [
           .class([
@@ -1219,10 +1211,11 @@ private func video(
 
 private func episodeHeader(
   episode: Episode,
-  date: () -> Date,
   emergencyMode: Bool
 ) -> Node {
-  .div(
+  @Dependency(\.date.now) var now
+
+  return .div(
     attributes: [
       .class([
         Class.pf.colors.bg.black,
@@ -1268,7 +1261,7 @@ private func episodeHeader(
             """
             Episode #\(episode.sequence) • \
             \(newEpisodeDateFormatter.string(from: episode.publishedAt)) \
-            • \(episode.isSubscriberOnly(currentDate: date(), emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
+            • \(episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
             """)
         ),
         .div(

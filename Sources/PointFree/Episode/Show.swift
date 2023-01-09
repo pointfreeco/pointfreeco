@@ -8,6 +8,7 @@ import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -17,7 +18,7 @@ import Views
 
 let episodeResponse:
   M<
-    Tuple5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Episode.Collection.Slug?>
+    Tuple2<Either<String, Episode.ID>, Episode.Collection.Slug?>
   > =
     fetchEpisodeForParam
     <| writeStatus(.ok)
@@ -26,21 +27,13 @@ let episodeResponse:
     >=> map(lower)
     >>> respond(
       view: episodePageView(episodePageData:),
-      layoutData: {
-        permission, episode, episodeProgress, currentUser, subscriberState, currentRoute,
-        collectionSlug in
-
-        return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
+      layoutData: { permission, episode, episodeProgress, collectionSlug in
+        SimplePageLayoutData(
           data: episodePageData(
-            currentUser: currentUser,
             collectionSlug: collectionSlug,
             episode: episode,
             episodeProgress: episodeProgress,
-            permission: permission,
-            subscriberState: subscriberState
+            permission: permission
           ),
           description: episode.blurb,
           extraStyles: extraEpisodePageStyles,
@@ -53,12 +46,10 @@ let episodeResponse:
     )
 
 private func episodePageData(
-  currentUser: User?,
   collectionSlug: Episode.Collection.Slug?,
   episode: Episode,
   episodeProgress: Int?,
-  permission: EpisodePermission,
-  subscriberState: SubscriberState
+  permission: EpisodePermission
 ) -> EpisodePageData {
   @Dependency(\.collections) var collections
   @Dependency(\.envVars.emergencyMode) var emergencyMode
@@ -77,13 +68,10 @@ private func episodePageData(
 
   return EpisodePageData(
     context: context,
-    date: { now },
     emergencyMode: emergencyMode,
     episode: episode,
     episodeProgress: episodeProgress,
-    permission: permission,
-    subscriberState: subscriberState,
-    user: currentUser
+    permission: permission
   )
 }
 
@@ -97,8 +85,8 @@ func useCreditResponse<Z>(
 }
 
 private func fetchEpisodeForParam<Z>(
-  middleware: @escaping M<T5<Episode, User?, SubscriberState, SiteRoute?, Z>>
-) -> M<T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>> {
+  middleware: @escaping M<T2<Episode, Z>>
+) -> M<T2<Either<String, Episode.ID>, Z>> {
   middleware
     |> filterMap(
       over1(episode(forParam:)) >>> require1 >>> pure,
@@ -107,11 +95,11 @@ private func fetchEpisodeForParam<Z>(
 }
 
 private func episodeNotFoundResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>>
+  conn: Conn<StatusLineOpen, T2<Either<String, Episode.ID>, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
   conn
     |> writeStatus(.notFound)
-    >=> respond { episodeNotFoundView(user: get2($0), subscriberState: get3($0), route: get4($0)) }
+    >=> respond { _ in episodeNotFoundView() }
 }
 
 private func validateUserEpisodePermission<Z>(
@@ -124,14 +112,7 @@ private func validateUserEpisodePermission<Z>(
 }
 
 let progressResponse:
-  M<
-    Tuple4<
-      Either<String, Episode.ID>,
-      Models.User?,
-      SubscriberState,
-      Int
-    >
-  > =
+  M<Tuple2<Either<String, Episode.ID>, Int>> =
     filterMap(
       over1(episode(forParam:)) >>> require1 >>> pure,
       or: writeStatus(.notFound) >=> end
@@ -140,12 +121,11 @@ let progressResponse:
     >=> updateProgress
 
 private let updateProgress:
-  M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
-    guard
-      // NB: `lower` crashes on Linux 5.2. https://bugs.swift.org/browse/SR-12437
-      case let (permission, episode, .some(user), subscriberState, percent) = (
-        get1(conn.data), get2(conn.data), get3(conn.data), get4(conn.data), get5(conn.data)
-      )
+  M<Tuple3<EpisodePermission, Episode, Int>> = { conn in
+    @Dependency(\.currentUser) var currentUser
+    // NB: `lower` crashes on Linux 5.2. https://bugs.swift.org/browse/SR-12437
+    let (permission, episode, percent) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    guard let currentUser = currentUser
     else {
       return conn
         |> writeStatus(.ok)
@@ -156,7 +136,7 @@ private let updateProgress:
       @Dependency(\.database) var database
 
       return EitherIO {
-        try await database.updateEpisodeProgress(episode.sequence, percent, user.id)
+        try await database.updateEpisodeProgress(episode.sequence, percent, currentUser.id)
       }
       .run
       .flatMap { _ in
@@ -241,12 +221,13 @@ private func validateCreditRequest<Z>(
   }
 }
 
-func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, User?, Z>>)
-  -> IO<Conn<I, T5<EpisodePermission, Episode, Int?, User?, Z>>>
+func fetchEpisodeProgress<I, Z>(conn: Conn<I, T3<EpisodePermission, Episode, Z>>)
+  -> IO<Conn<I, T4<EpisodePermission, Episode, Int?, Z>>>
 {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
 
-  let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
+  let (permission, episode) = (get1(conn.data), get2(conn.data))
 
   return EitherIO {
     guard let currentUser else { return nil }
@@ -255,18 +236,19 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, Use
   .run
   .map {
     conn.map(
-      const(permission .*. episode .*. ($0.right ?? nil) .*. currentUser .*. rest(conn.data)))
+      const(permission .*. episode .*. ($0.right ?? nil) .*. rest(conn.data)))
   }
 }
 
 func userEpisodePermission<I, Z>(
-  _ conn: Conn<I, T4<Episode, User?, SubscriberState, Z>>
+  _ conn: Conn<I, T2<Episode, Z>>
 )
-  -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>>
+  -> IO<Conn<I, T3<EpisodePermission, Episode, Z>>>
 {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
-
-  let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
+  @Dependency(\.subscriberState) var subscriberState
+  let episode = get1(conn.data)
 
   guard let user = currentUser else {
     let permission: EpisodePermission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
@@ -303,14 +285,8 @@ func userEpisodePermission<I, Z>(
     .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private func episodeNotFoundView(
-  user: User?,
-  subscriberState: SubscriberState,
-  route: SiteRoute?
-) -> Node {
+private func episodeNotFoundView() -> Node {
   SimplePageLayoutData(
-    currentSubscriberState: subscriberState,
-    currentUser: user,
     data: (),
     title: "Episode not found :("
   )

@@ -7,30 +7,29 @@ import Prelude
 import Tuple
 
 public func giftsMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple5<User?, Subscription?, SubscriberState, SiteRoute, Gifts>>
+  _ conn: Conn<StatusLineOpen, Gifts>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  let giftRoute = conn.data
 
-  let (user, subscription, subscriberState, route, gift) = lower(conn.data)
-
-  switch gift {
+  switch giftRoute {
   case let .create(formData):
     return conn.map(const(formData))
       |> giftCreateMiddleware
 
   case .index:
-    return conn.map(const(user .*. route .*. subscriberState .*. unit))
+    return conn.map(const(()))
       |> giftsIndexMiddleware
 
   case let .plan(plan):
-    return conn.map(const(plan .*. user .*. route .*. subscriberState .*. unit))
+    return conn.map(const(plan))
       |> giftPaymentMiddleware
 
   case let .redeem(giftId, .confirm):
-    return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. unit))
+    return conn.map(const(giftId))
       |> giftRedemptionMiddleware
 
   case let .redeem(giftId, .landing):
-    return conn.map(const(giftId .*. user .*. subscription .*. subscriberState .*. route .*. unit))
+    return conn.map(const(giftId))
       |> giftRedemptionLandingMiddleware
   }
 }

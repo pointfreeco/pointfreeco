@@ -21,8 +21,6 @@ let paymentInfoResponse =
       @Dependency(\.stripe.js) var stripeJs
 
       return SimplePageLayoutData(
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
         data: (paymentMethod, publishableKey, stripeJs),
         title: "Update Payment Info"
       )

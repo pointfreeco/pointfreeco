@@ -80,14 +80,14 @@ extension Api {
 }
 
 func apiMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<User?, SiteRoute.Api>>
+  _ conn: Conn<StatusLineOpen, SiteRoute.Api>
 ) -> IO<Conn<ResponseEnded, Data>> {
   @Dependency(\.episodes) var episodes
   @Dependency(\.date.now) var now
 
-  let (_ /* user */, route) = lower(conn.data)
+  let apiRoute = conn.data
 
-  switch route {
+  switch apiRoute {
   case .episodes:
     let episodes = episodes()
       .map { Api.EpisodeListItem(episode: $0, currentDate: now) }

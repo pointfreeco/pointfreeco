@@ -22,14 +22,11 @@ import Views
 let enterpriseLandingResponse =
   requireEnterpriseAccount
   <| writeStatus(.ok)
-  >=> map(lower)
-  >>> respond(
+  >=> respond(
     view: enterpriseView,
-    layoutData: { user, subscriberState, enterpriseAccount in
+    layoutData: { enterpriseAccount in
       SimplePageLayoutData(
-        currentSubscriberState: subscriberState,
-        currentUser: user,
-        data: (user, enterpriseAccount),
+        data: enterpriseAccount,
         style: .base(.minimal(.dark)),
         title: "Point-Free 🤝 \(enterpriseAccount.companyName)"
       )
@@ -38,36 +35,43 @@ let enterpriseLandingResponse =
 
 private let requireEnterpriseAccount:
   MT<
-    Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>,
-    Tuple3<User?, SubscriberState, EnterpriseAccount>
-  > = filterMap(
-    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
-    or: redirect(
-      to: .home,
-      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
-    )
-  )
+    EnterpriseAccount.Domain,
+    EnterpriseAccount
+> = { middleware in
+  return { conn in
+    return IO {
+      guard let account = await fetchEnterpriseAccount(conn.data).performAsync()
+      else {
+        return await (conn |> redirect(
+          to: .home,
+          headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+        )).performAsync()
+      }
+
+      return await middleware(conn.map(const(account))).performAsync()
+    }
+  }
+}
 
 let enterpriseRequestMiddleware =
   requireEnterpriseAccountWithFormData
   <<< validateMembership
-  <<< filterMap(require1 >>> pure, or: loginAndRedirect)
   <<< sendEnterpriseInvitation
   <| { conn in
     conn
       |> redirect(
-        to: .enterprise(get2(conn.data).domain),
+        to: .enterprise(get1(conn.data).domain),
         headersMiddleware: flash(
-          .notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
+          .notice, "We've sent an invite to \(get2(conn.data).email.rawValue)!")
       )
   }
 
 private let requireEnterpriseAccountWithFormData:
   MT<
-    Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
-    Tuple3<User?, EnterpriseAccount, EnterpriseRequestFormData>
+    Tuple2<EnterpriseAccount.Domain, EnterpriseRequestFormData>,
+    Tuple2<EnterpriseAccount, EnterpriseRequestFormData>
   > = filterMap(
-    over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home)
+    over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1), or: redirect(to: .home)
   )
 
 let enterpriseAcceptInviteMiddleware =
@@ -174,13 +178,13 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
 }
 
 private func validateMembership<Z>(
-  _ middleware: @escaping M<T3<User?, EnterpriseAccount, Z>>
-) -> M<T3<User?, EnterpriseAccount, Z>> {
-
+  _ middleware: @escaping M<T2<EnterpriseAccount, Z>>
+) -> M<T2<EnterpriseAccount, Z>> {
   return { conn in
-    let (user, account) = (get1(conn.data), get2(conn.data))
+    @Dependency(\.currentUser) var currentUser
+    let account = get1(conn.data)
 
-    if user?.subscriptionId == account.subscriptionId {
+    if currentUser?.subscriptionId == account.subscriptionId {
       return conn
         |> redirect(
           to: .account(),
@@ -232,13 +236,17 @@ private func validateInvitation(
 }
 
 private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
-) -> M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
+  _ middleware: @escaping M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>>
+) -> M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>> {
   @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   return { conn in
-    let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    guard let currentUser = currentUser
+    else { return loginAndRedirect(conn) }
+
+    let (account, request) = (get1(conn.data), get2(conn.data))
 
     if !request.email.hasDomain(account.domain) {
       return conn
@@ -251,7 +259,7 @@ private func sendEnterpriseInvitation<Z>(
         )
     } else if let encryptedEmail = Encrypted(
       request.email.rawValue, with: appSecret),
-      let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: appSecret)
+      let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: appSecret)
     {
       Task {
         _ = try await sendEmail(

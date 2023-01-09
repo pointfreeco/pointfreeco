@@ -4,6 +4,7 @@ import EmailAddress
 import Foundation
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -11,85 +12,58 @@ import Stripe
 import Tuple
 import Views
 
-public let subscribeConfirmation:
-  M<
-    Tuple6<
-      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?
-    >
-  > =
-    validateReferralCode
-    <| writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: Views.subscriptionConfirmation,
-      layoutData: {
-        (
-          currentUser: User?,
-          currentRoute: SiteRoute,
-          subscriberState: SubscriberState,
-          lane: Pricing.Lane,
-          subscribeData: SubscribeConfirmationData,
-          coupon: Stripe.Coupon?,
-          referrer: User?
-        ) in
+public let subscribeConfirmation: M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> =
+  validateReferralCode
+  <| writeStatus(.ok)
+  >=> map(lower)
+  >>> respond(
+    view: Views.subscriptionConfirmation,
+    layoutData: {
+      (
+        lane: Pricing.Lane,
+        subscribeData: SubscribeConfirmationData,
+        coupon: Stripe.Coupon?,
+        referrer: User?
+      ) in
         @Dependency(\.episodes) var episodes
         @Dependency(\.envVars) var envVars
         @Dependency(\.stripe.js) var js
 
-        return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: (
-            lane,
-            subscribeData,
-            coupon,
-            currentUser,
-            subscriberState,
+      return SimplePageLayoutData(
+        data: (
+          lane,
+          subscribeData,
+          coupon,
             referrer,
             stats(forEpisodes: episodes()),
             js,
             envVars.stripe.publishableKey
-          ),
-          extraStyles: extraSubscriptionLandingStyles,
-          style: .base(.some(.minimal(.black))),
-          title: referrer == nil
-            ? "Subscribe to Point-Free"
-            : "Subscribe and get a free month of Point-Free"
-        )
-      }
-    )
+        ),
+        extraStyles: extraSubscriptionLandingStyles,
+        style: .base(.some(.minimal(.black))),
+        title: referrer == nil
+          ? "Subscribe to Point-Free"
+          : "Subscribe and get a free month of Point-Free"
+      )
+    }
+  )
 
 private func validateReferralCode(
-  middleware: @escaping M<
-    Tuple7<
-      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?,
-      User?
-    >
-  >
-) -> M<
-  Tuple6<User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>
-> {
+  middleware: @escaping M<Tuple4<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>
+) -> M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
   return { conn in
-    let (currentUser, currentRoute, subscriberState, lane, subscribeData, coupon) = lower(conn.data)
+    @Dependency(\.currentUser) var currentUser
+
+    let (lane, subscribeData, coupon) = lower(conn.data)
     guard
       let referralCode = subscribeData.referralCode
     else {
       return middleware(
         conn.map(
-          const(
-            currentUser
-              .*. currentRoute
-              .*. subscriberState
-              .*. lane
-              .*. subscribeData
-              .*. coupon
-              .*. nil
-              .*. unit
-          )
+          const(lane .*. subscribeData .*. coupon .*. nil .*. unit)
         )
       )
     }
@@ -153,16 +127,7 @@ private func validateReferralCode(
         ),
         { referrer in
           conn.map(
-            const(
-              currentUser
-                .*. currentRoute
-                .*. subscriberState
-                .*. lane
-                .*. subscribeData
-                .*. coupon
-                .*. referrer
-                .*. unit
-            )
+            const(lane .*. subscribeData .*. coupon .*. referrer .*. unit)
           ) |> middleware
         }
       )
@@ -172,21 +137,17 @@ private func validateReferralCode(
 
 public let discountSubscribeConfirmation =
   fetchAndValidateCoupon
-  <| map(over6(Optional.some))
+  <| map(over3(Optional.some))
   >>> pure
   >=> subscribeConfirmation
 
 private let fetchAndValidateCoupon:
   MT<
-    Tuple6<
-      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.ID?
-    >,
-    Tuple6<
-      User?, SiteRoute, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon
-    >
+    Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.ID?>,
+    Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   > =
     filterMap(
-      over6(fetchCoupon) >>> sequence6 >>> map(require6),
+      over3(fetchCoupon) >>> sequence3 >>> map(require3),
       or: redirect(
         to: .subscribeConfirmation(
           lane: .personal,
@@ -196,7 +157,7 @@ private let fetchAndValidateCoupon:
       )
     )
     <<< filter(
-      get6 >>> \.valid,
+      get3 >>> \.valid,
       or: redirect(
         to: .subscribeConfirmation(
           lane: .personal,

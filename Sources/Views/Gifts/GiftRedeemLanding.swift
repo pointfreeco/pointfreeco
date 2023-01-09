@@ -4,6 +4,7 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -11,16 +12,12 @@ import Styleguide
 
 public func giftRedeemLanding(
   gift: Gift,
-  subscriberState: SubscriberState,
-  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> Node {
   [
     landingHero(title: "Explore the wonderful world of&nbsp;functional programming in Swift."),
     mainContent(
       gift: gift,
-      subscriberState: subscriberState,
-      currentUser: currentUser,
       episodeStats: episodeStats
     ),
     whatToExpect,
@@ -32,8 +29,6 @@ public func giftRedeemLanding(
 
 private func mainContent(
   gift: Gift,
-  subscriberState: SubscriberState,
-  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> Node {
   [
@@ -77,8 +72,6 @@ private func mainContent(
       ],
       giftOption(
         gift: gift,
-        subscriberState: subscriberState,
-        currentUser: currentUser,
         episodeStats: episodeStats
       )
     ),
@@ -87,11 +80,8 @@ private func mainContent(
 
 func giftOption(
   gift: Gift,
-  subscriberState: SubscriberState,
-  currentUser: User?,
   episodeStats: EpisodeStats
 ) -> ChildOf<Tag.Ul> {
-
   guard let plan = Gifts.Plan(monthCount: gift.monthsFree)
   else { return [] }
   let title: Node
@@ -156,18 +146,15 @@ func giftOption(
             }
         )
       ),
-      existingSubscriberNotice(subscriberState: subscriberState),
-      loginOrRedeem(
-        gift: gift,
-        currentUser: currentUser
-      )
+      existingSubscriberNotice(),
+      loginOrRedeem(gift: gift)
     )
   )
 }
 
-private func existingSubscriberNotice(
-  subscriberState: SubscriberState
-) -> Node {
+private func existingSubscriberNotice() -> Node {
+  @Dependency(\.subscriberState) var subscriberState
+
   if subscriberState.isActive {
     return .div(
       attributes: [
@@ -186,10 +173,8 @@ private func existingSubscriberNotice(
   }
 }
 
-private func loginOrRedeem(
-  gift: Gift,
-  currentUser: User?
-) -> Node {
+private func loginOrRedeem(gift: Gift) -> Node {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   if currentUser == nil {

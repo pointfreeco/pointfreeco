@@ -5,6 +5,7 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -32,30 +33,22 @@ public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
   )
 }
 
-public func pricingLanding(
-  currentUser: User?,
-  stats: EpisodeStats,
-  subscriberState: SubscriberState
-) -> Node {
-
-  return [
-    hero(currentUser: currentUser, subscriberState: subscriberState),
-    plansAndPricing(
-      currentUser: currentUser,
-      stats: stats,
-      subscriberState: subscriberState
-    ),
+public func pricingLanding(stats: EpisodeStats) -> Node {
+  [
+    hero(),
+    plansAndPricing(stats: stats),
     whatToExpect,
     faq(faqs: .allFaqs),
     whatPeopleAreSaying,
     featuredTeams,
-    footer(
-      allEpisodeCount: stats.allEpisodeCount, currentUser: currentUser,
-      subscriberState: subscriberState),
+    footer(allEpisodeCount: stats.allEpisodeCount),
   ]
 }
 
-func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
+func ctaColumn() -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+
   guard currentUser == nil || subscriberState.isActive else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -104,7 +97,10 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   )
 }
 
-private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
+private func titleColumn() -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+
   let isTwoColumnHero = currentUser == nil || subscriberState.isActive
   let titleColumnCount = isTwoColumnHero ? 8 : 12
 
@@ -130,7 +126,10 @@ private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -
     )
 }
 
-private func hero(currentUser: User?, subscriberState: SubscriberState) -> Node {
+private func hero() -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+
   return .div(
     attributes: [
       .class([
@@ -148,8 +147,8 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> Node 
         ]),
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
-      titleColumn(currentUser: currentUser, subscriberState: subscriberState),
-      ctaColumn(currentUser: currentUser, subscriberState: subscriberState)
+      titleColumn(),
+      ctaColumn()
     )
   )
 }
@@ -176,11 +175,7 @@ private let contactusButtonClasses =
   | Class.border.all
   | Class.pf.colors.border.gray800
 
-private func plansAndPricing(
-  currentUser: User?,
-  stats: EpisodeStats,
-  subscriberState: SubscriberState
-) -> Node {
+private func plansAndPricing(stats: EpisodeStats) -> Node {
   return [
     .gridRow(
       attributes: [
@@ -218,26 +213,18 @@ private func plansAndPricing(
         .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
       ],
       pricingPlan(
-        currentUser: currentUser,
-        subscriberState: subscriberState,
         plan: .free(freeEpisodeCount: stats.freeEpisodeCount)
       ),
       pricingPlan(
-        currentUser: currentUser,
-        subscriberState: subscriberState,
         plan: .personal(
           allEpisodeCount: stats.allEpisodeCount,
           episodeHourCount: stats.episodeHourCount
         )
       ),
       pricingPlan(
-        currentUser: currentUser,
-        subscriberState: subscriberState,
         plan: .team
       ),
       pricingPlan(
-        currentUser: currentUser,
-        subscriberState: subscriberState,
         plan: .enterprise
       )
     ),
@@ -317,8 +304,6 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
 }
 
 func pricingPlan(
-  currentUser: User?,
-  subscriberState: SubscriberState,
   plan: PricingPlan
 ) -> ChildOf<Tag.Ul> {
 
@@ -372,16 +357,16 @@ func pricingPlan(
           }
         )
       ),
-      pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
+      pricingPlanCta(plan: plan)
     )
   )
 }
 
 private func pricingPlanCta(
-  currentUser: User?,
-  subscriberState: SubscriberState,
   plan: PricingPlan
 ) -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
   if plan.cost == nil {
@@ -664,10 +649,10 @@ let featuredTeams = Node.gridRow(
 )
 
 private func footer(
-  allEpisodeCount: EpisodeStats.AllEpisodeCount,
-  currentUser: User?,
-  subscriberState: SubscriberState
+  allEpisodeCount: EpisodeStats.AllEpisodeCount
 ) -> Node {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
   guard !subscriberState.isActive else { return [] }

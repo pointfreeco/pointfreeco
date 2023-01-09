@@ -22,6 +22,7 @@ extension Conn where Step == HeadersOpen {
     view: @escaping (B) -> Node,
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
+    @Dependency(\.currentRoute) var siteRoute
     @Dependency(\.renderHtml) var renderHtml
     @Dependency(\.siteRouter) var siteRouter
 
@@ -38,7 +39,7 @@ extension Conn where Step == HeadersOpen {
         twitterCard: newLayoutData.twitterCard,
         twitterSite: "@pointfreeco",
         type: newLayoutData.openGraphType,
-        url: newLayoutData.currentRoute.map(siteRouter.url(for:))
+        url: siteRouter.url(for: siteRoute) // TODO: should we have @Dependency(\.currentURL)?
       )
       >>> metaLayout(simplePageLayout(view))
       >>> addGoogleAnalytics
@@ -66,11 +67,9 @@ func simplePageLayout<A>(
   _ contentView: @escaping (A) -> Node
 ) -> (SimplePageLayoutData<A>) -> Node {
   @Dependency(\.envVars) var envVars
-  @Dependency(\.date.now) var now
 
   return simplePageLayout(
     cssConfig: envVars.appEnv == .testing ? .pretty : .compact,
-    date: { now },
     emergencyMode: envVars.emergencyMode,
     contentView
   )

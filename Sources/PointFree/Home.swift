@@ -7,22 +7,16 @@ import Prelude
 import Tuple
 import Views
 
-let homeMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>> =
+let homeMiddleware: M<Void> =
   writeStatus(.ok)
-  >=> map(lower)
-  >>> respond(
-    view: homeView(currentDate:currentUser:subscriberState:episodes:emergencyMode:),
+  >=> respond(
+    view: homeView(episodes:emergencyMode:),
     layoutData: {
-      (currentUser: User?, subscriberState: SubscriberState, currentRoute: SiteRoute?) in
       @Dependency(\.envVars.emergencyMode) var emergencyMode
       @Dependency(\.episodes) var episodes
-      @Dependency(\.date.now) var now
 
       return SimplePageLayoutData(
-        currentRoute: currentRoute,
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
-        data: (now, currentUser, subscriberState, episodes(), emergencyMode),
+        data: (episodes(), emergencyMode),
         extraStyles: markdownBlockStyles,
         openGraphType: .website,
         style: .base(.mountains(.main)),

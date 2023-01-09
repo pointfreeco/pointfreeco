@@ -19,10 +19,8 @@ let invoicesResponse =
   >=> map(lower)
   >>> respond(
     view: Views.invoicesView(subscription:invoicesEnvelope:currentUser:),
-    layoutData: { subscription, invoicesEnvelope, currentUser, subscriberState in
+    layoutData: { subscription, invoicesEnvelope, currentUser in
       SimplePageLayoutData(
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
         data: (subscription, invoicesEnvelope, currentUser),
         title: "Payment history"
       )
@@ -38,7 +36,6 @@ let invoiceResponse =
     view: Views.invoiceView(subscription:currentUser:invoice:),
     layoutData: { subscription, currentUser, invoice in
       SimplePageLayoutData(
-        currentUser: currentUser,
         data: (subscription, currentUser, invoice),
         style: .minimal,
         title: "Invoice"

@@ -8,16 +8,12 @@ import Tuple
 import Views
 
 let privacyResponse:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, SiteRoute?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Void, Data> =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
+    >=> respond(
       view: { _ in privacyView },
-      layoutData: { currentUser, subscriberState, currentRoute in
+      layoutData: {
         SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
           data: unit,
           title: "Privacy Policy"
         )

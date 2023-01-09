@@ -25,6 +25,7 @@ var package = Package(
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "NIODependencies", targets: ["NIODependencies"]),
     .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreeDependencies", targets: ["PointFreeDependencies"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
@@ -261,6 +262,7 @@ var package = Package(
         "Mailgun",
         "Models",
         "NIODependencies",
+        "PointFreeDependencies",
         "PointFreeRouter",
         "PointFreePrelude",
         "Stripe",
@@ -285,6 +287,15 @@ var package = Package(
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
+      ]
+    ),
+
+    .target(
+      name: "PointFreeDependencies",
+      dependencies: [
+        "Models",
+        "PointFreeRouter",
+        .product(name: "Dependencies", package: "swift-dependencies"),
       ]
     ),
 
@@ -462,6 +473,7 @@ var package = Package(
         "Ccmark",
         "EmailAddress",
         "FunctionalCss",
+        "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
         "WebPreview",

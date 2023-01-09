@@ -21,8 +21,6 @@ let accountResponse =
       @Dependency(\.episodes) var episodes
 
       return SimplePageLayoutData(
-        currentSubscriberState: accountData.subscriberState,
-        currentUser: accountData.currentUser,
         data: (accountData, episodes(), now),
         extraStyles: markdownBlockStyles,
         title: "Account"

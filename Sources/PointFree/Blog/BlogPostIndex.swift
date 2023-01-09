@@ -10,19 +10,15 @@ let blogIndexMiddleware:
   Middleware<
     StatusLineOpen,
     ResponseEnded,
-    Tuple4<[BlogPost], User?, SubscriberState, SiteRoute?>,
+    [BlogPost],
     Data
   > =
     writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: blogIndexView,
-      layoutData: { blogPosts, currentUser, subscriberState, currentRoute in
+    >=> respond(
+      view: blogIndexView(blogPosts:),
+      layoutData: { blogPosts in
         SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: (blogPosts, currentUser, subscriberState),
+          data: blogPosts,
           description:
             "A companion blog to Point-Free, exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles,

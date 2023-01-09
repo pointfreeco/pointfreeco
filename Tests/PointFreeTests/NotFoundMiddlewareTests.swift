@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import HttpPipeline
 import PointFreePrelude
@@ -40,13 +41,22 @@ final class NotFoundMiddlewareTests: TestCase {
   }
 
   func testNotFound_LoggedIn() async throws {
-    var req = request(to: .home, session: .loggedIn)
-    req.url?.appendPathComponent("404")
-    let conn = connection(from: req)
+    await withDependencies {
+      $0 = .test
+      $0.date.now = .mock
+      $0.uuid = .incrementing
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      $0.database.fetchUserById = { _ in .mock }
+      $0.database.sawUser = { _ in }
+    } operation: {
+      var req = request(to: .home, session: .loggedIn(as: .mock))
+      req.url?.appendPathComponent("404")
+      let conn = connection(from: req)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: conn |> siteMiddleware,
@@ -56,6 +66,7 @@ final class NotFoundMiddlewareTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 }

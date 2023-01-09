@@ -9,13 +9,12 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func blogPostShowView(
-  currentDate: Date,
-  post: BlogPost,
-  subscriberState: SubscriberState
-) -> Node {
+public func blogPostShowView(post: BlogPost) -> Node {
+  @Dependency(\.date.now) var now
+  @Dependency(\.subscriberState) var subscriberState
+
   let showHolidaySpecialCallout =
-    holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
+    holidayDiscount2019Interval.contains(now.timeIntervalSince1970)
     && subscriberState.isNonSubscriber
     && post.id != 36
 

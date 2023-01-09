@@ -59,7 +59,8 @@ func accountRssMiddleware(
     guard
       SubscriberState(
         user: user,
-        subscriptionAndEnterpriseAccount: (subscription, nil)
+        subscription: subscription,
+        enterpriseAccount: nil
       )
       .isActive
     else {

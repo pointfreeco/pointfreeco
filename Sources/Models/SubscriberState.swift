@@ -9,10 +9,12 @@ public enum SubscriberState {
     status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?, deactivated: Bool)
 
   public init(
-    user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?
+    user: User?,
+    subscription: Models.Subscription?,
+    enterpriseAccount: EnterpriseAccount?
   ) {
-    switch (user, subscriptionAndEnterpriseAccount) {
-    case let (.some(user), .some((subscription, enterpriseAccount))):
+    switch (user, subscription) {
+    case let (.some(user), .some(subscription)):
       if subscription.userId == user.id {
         self = .owner(
           hasSeat: user.subscriptionId != nil,

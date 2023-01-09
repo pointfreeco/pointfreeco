@@ -8,15 +8,12 @@ import Tuple
 import Views
 
 func aboutResponse(
-  _ conn: Conn<StatusLineOpen, (User?, SubscriberState, SiteRoute?)>
+  _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
-    .respond(view: aboutView) { currentUser, subscriberState, currentRoute in
+    .respond(view: aboutView) { 
       SimplePageLayoutData(
-        currentRoute: currentRoute,
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
         data: [.brandon, .stephen],
         extraStyles: aboutExtraStyles,
         title: "About"

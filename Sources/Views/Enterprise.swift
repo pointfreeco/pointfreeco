@@ -7,7 +7,8 @@ import PointFreeRouter
 import Styleguide
 import UrlFormEncoding
 
-public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> Node {
+public func enterpriseView(_ account: EnterpriseAccount) -> Node {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   let loggedOutView: Node = [

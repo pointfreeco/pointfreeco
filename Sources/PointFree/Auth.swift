@@ -4,6 +4,7 @@ import Foundation
 import GitHub
 import HttpPipeline
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -30,9 +31,9 @@ private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =
   >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: M<Tuple2<Models.User?, String?>> =
+let loginResponse: M<String?> =
   requireLoggedOutUser
-  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
+  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
 
 func logoutResponse(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
@@ -56,51 +57,20 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
   conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
-public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
-{
-  @Dependency(\.database) var database
-
-  let user = IO<Models.User?> {
-    guard let userId = conn.request.session.userId else { return nil }
-    Task { try await database.sawUser(userId) }
-    return try? await database.fetchUserById(userId)
-  }
-
-  return user.map { conn.map(const($0 .*. conn.data)) }
-}
-
-public func requireLoggedOutUser<A>(
+private func requireLoggedOutUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.User?, A>, Data> {
+) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
   return { conn in
-    return conn.map(const(conn.data.second))
-      |> (get1(conn.data) == nil
-        ? middleware
-        : redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in.")))
+    @Dependency(\.currentUser) var currentUser
+    @Dependency(\.database) var database
+    guard currentUser == nil
+    else {
+      return conn
+        |> redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
+    }
+    return middleware(conn)
   }
-}
-
-public func currentSubscriptionMiddleware<A, I>(
-  _ conn: Conn<I, T2<Models.User?, A>>
-) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
-  @Dependency(\.database) var database
-
-  let user = conn.data.first
-
-  return EitherIO {
-    let subscription = try await database.fetchSubscription(user: user.unwrap())
-
-    let enterpriseAccount =
-      try? await database
-      .fetchEnterpriseAccountForSubscription(subscription.id)
-
-    return (subscription, enterpriseAccount)
-  }
-  .run
-  .map(\.right)
-  .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)

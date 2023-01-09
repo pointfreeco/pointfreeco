@@ -18,11 +18,11 @@ let leaveTeamMiddleware: M<Tuple2<User?, SubscriberState>> =
     headersMiddleware: flash(.notice, "You are no longer a part of that team.")
   )
 
-let joinTeamLandingMiddleware: M<Tuple3<User?, SubscriberState, Subscription.TeamInviteCode>> =
+let joinTeamLandingMiddleware: M<Subscription.TeamInviteCode> =
   writeStatus(.ok)
   >=> end
 
-let joinTeamMiddleware: M<Tuple3<User?, SubscriberState, Subscription.TeamInviteCode>> =
+let joinTeamMiddleware: M<Subscription.TeamInviteCode> =
   writeStatus(.ok)
   >=> end
 

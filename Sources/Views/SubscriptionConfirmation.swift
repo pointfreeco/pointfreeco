@@ -18,13 +18,12 @@ public func subscriptionConfirmation(
   lane: Pricing.Lane,
   subscribeData: SubscribeConfirmationData,
   coupon: Stripe.Coupon?,
-  currentUser: User?,
-  subscriberState: SubscriberState = .nonSubscriber,
   referrer: User?,
   episodeStats: EpisodeStats,
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   return .form(
@@ -36,8 +35,6 @@ public func subscriptionConfirmation(
       .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
     ],
     header(
-      currentUser: currentUser,
-      subscriberState: subscriberState,
       referrer: referrer,
       episodeStats: episodeStats,
       lane: lane,
@@ -201,8 +198,6 @@ private func additionalDiscountInfo(
 }
 
 private func header(
-  currentUser: User? = nil,
-  subscriberState: SubscriberState = .nonSubscriber,
   referrer: User?,
   episodeStats: EpisodeStats,
   lane: Pricing.Lane,
@@ -232,7 +227,6 @@ private func header(
       )
     ),
     planFeatures(
-      currentUser: currentUser,
       episodeStats: episodeStats,
       lane: lane
     ),
@@ -258,7 +252,6 @@ private func header(
 }
 
 func planFeatures(
-  currentUser: User?,
   episodeStats: EpisodeStats,
   lane: Pricing.Lane,
   showDiscountOptions: Bool = true

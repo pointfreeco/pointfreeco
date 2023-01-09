@@ -7,24 +7,20 @@ import Prelude
 import Tuple
 import Views
 
-let collectionMiddleware: M<Tuple4<User?, SubscriberState, SiteRoute, Episode.Collection.Slug>> =
+let collectionMiddleware: M<Episode.Collection.Slug> =
   fetchCollectionMiddleware
-  <| map(lower)
-  >>> { conn in
-    let (user, subscriberState, route, collection) = conn.data
+  <| { conn in
+    let collection = conn.data
     if collection.sections.count == 1 {
-      return conn.map(const((user, subscriberState, route, collection, collection.sections[0])))
+      return conn.map(const(collection .*. collection.sections[0] .*. unit))
         |> collectionSectionEndpoint
     } else {
       return conn
         |> writeStatus(.ok)
         >=> respond(
           view: collectionShow,
-          layoutData: { currentUser, currentSubscriberState, currentRoute, collection in
+          layoutData: { collection in
             SimplePageLayoutData(
-              currentRoute: currentRoute,
-              currentSubscriberState: currentSubscriberState,
-              currentUser: currentUser,
               data: collection,
               description: collection.blurb,
               extraStyles: collectionsStylesheet,
@@ -36,14 +32,15 @@ let collectionMiddleware: M<Tuple4<User?, SubscriberState, SiteRoute, Episode.Co
     }
   }
 
-private let fetchCollectionMiddleware:
-  MT<
-    Tuple4<User?, SubscriberState, SiteRoute, Episode.Collection.Slug>,
-    Tuple4<User?, SubscriberState, SiteRoute, Episode.Collection>
-  > = filterMap(
-    over4(fetchCollection >>> pure) >>> sequence4 >>> map(require4),
-    or: routeNotFoundMiddleware
-  )
+private let fetchCollectionMiddleware: MT<Episode.Collection.Slug, Episode.Collection> = {
+  middleware in
+  return { conn in
+    guard let collection = fetchCollection(conn.data)
+    else { return routeNotFoundMiddleware(conn) }
+
+    return middleware(conn.map(const(collection)))
+  }
+}
 
 private func fetchCollection(_ slug: Episode.Collection.Slug) -> Episode.Collection? {
   @Dependency(\.collections) var collections

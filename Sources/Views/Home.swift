@@ -5,17 +5,13 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import Dependencies
 import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func homeView(
-  currentDate: Date,
-  currentUser: User?,
-  subscriberState: SubscriberState,
-  episodes: [Episode],
-  emergencyMode: Bool
-) -> Node {
+public func homeView(episodes: [Episode], emergencyMode: Bool) -> Node {
+  @Dependency(\.subscriberState) var subscriberState
 
   let episodes = episodes.sorted(by: their(\.sequence, >))
 
@@ -24,20 +20,20 @@ public func homeView(
   let secondBatch = episodes[ctaInsertionIndex...]
 
   return [
-    holidaySpecialCalloutView(currentDate: currentDate, subscriberState: subscriberState),
-    episodesListView(episodes: firstBatch, currentDate: currentDate, emergencyMode: emergencyMode),
-    subscriberCalloutView(currentDate: currentDate, subscriberState: subscriberState),
-    episodesListView(episodes: secondBatch, currentDate: currentDate, emergencyMode: emergencyMode),
+    holidaySpecialCalloutView(),
+    episodesListView(episodes: firstBatch, emergencyMode: emergencyMode),
+    subscriberCalloutView(),
+    episodesListView(episodes: secondBatch, emergencyMode: emergencyMode),
   ]
 }
 
 let holidayDiscount2019Interval: ClosedRange<Double> = 1_577_080_800...1_577_854_800
 
-private func holidaySpecialCalloutView(
-  currentDate: Date,
-  subscriberState: SubscriberState
-) -> Node {
-  guard holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970) else { return [] }
+private func holidaySpecialCalloutView() -> Node {
+  @Dependency(\.date.now) var now
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard holidayDiscount2019Interval.contains(now.timeIntervalSince1970) else { return [] }
   guard subscriberState.isNonSubscriber else { return [] }
 
   return [
@@ -111,13 +107,11 @@ var holidaySpecialContent: Node {
   )
 }
 
-private func subscriberCalloutView(
-  currentDate: Date,
-  subscriberState: SubscriberState
-) -> Node {
-  guard subscriberState.isNonSubscriber else { return [] }
-
+private func subscriberCalloutView() -> Node {
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard subscriberState.isNonSubscriber else { return [] }
 
   return [
     divider,
@@ -163,16 +157,17 @@ private func subscriberCalloutView(
   ]
 }
 
-private func episodesListView(episodes: ArraySlice<Episode>, currentDate: Date, emergencyMode: Bool)
+private func episodesListView(episodes: ArraySlice<Episode>, emergencyMode: Bool)
   -> Node
 {
   return .fragment(
     episodes.map {
-      episodeRowView(episode: $0, currentDate: currentDate, emergencyMode: emergencyMode)
+      episodeRowView(episode: $0, emergencyMode: emergencyMode)
     })
 }
 
-private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node {
+private func episodeRowView(episode: Episode, emergencyMode: Bool) -> Node {
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   return [
@@ -180,8 +175,7 @@ private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: 
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        episodeInfoColumnView(
-          episode: episode, currentDate: currentDate, emergencyMode: emergencyMode)),
+        episodeInfoColumnView(episode: episode, emergencyMode: emergencyMode)),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
@@ -207,8 +201,7 @@ private func episodeRowView(episode: Episode, currentDate: Date, emergencyMode: 
   ]
 }
 
-private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergencyMode: Bool) -> Node
-{
+private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(
@@ -216,7 +209,7 @@ private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergenc
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
     ],
     topLevelEpisodeInfoView(
-      episode: episode, currentDate: currentDate, emergencyMode: emergencyMode),
+      episode: episode, emergencyMode: emergencyMode),
     .div(
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
@@ -239,17 +232,14 @@ private func episodeInfoColumnView(episode: Episode, currentDate: Date, emergenc
   )
 }
 
-public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergencyMode: Bool)
-  -> Node
-{
+public func topLevelEpisodeInfoView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],
       .text(
-        topLevelEpisodeMetadata(
-          episode: episode, currentDate: currentDate, emergencyMode: emergencyMode))
+        topLevelEpisodeMetadata(episode: episode, emergencyMode: emergencyMode))
     ),
     .h1(
       attributes: [
@@ -267,11 +257,12 @@ public func topLevelEpisodeInfoView(episode: Episode, currentDate: Date, emergen
   ]
 }
 
-func topLevelEpisodeMetadata(episode: Episode, currentDate: Date, emergencyMode: Bool) -> String {
+func topLevelEpisodeMetadata(episode: Episode, emergencyMode: Bool) -> String {
+  @Dependency(\.date.now) var now
   let components: [String?] = [
     "#\(episode.sequence)",
     episodeDateFormatter.string(from: episode.publishedAt),
-    episode.isSubscriberOnly(currentDate: currentDate, emergencyMode: emergencyMode)
+    episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
       ? "Subscriber-only" : "Free Episode",
   ]
 
