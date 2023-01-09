@@ -3,7 +3,7 @@ import Views
 
 extension Host {
   static var brandon: Host {
-    @Dependency(\..assets.brandonImgSrc) var brandonImgSrc
+    @Dependency(\.assets.brandonImgSrc) var brandonImgSrc
     return Host(
       bio: """
         Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
