@@ -40,12 +40,12 @@ extension Client {
     @Dependency(\.logger) var logger
     self.init(
       fetchAuthToken: { code in
-        return try await jsonDataTask(
+        try await jsonDataTask(
           with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code)
         )
       },
-      fetchEmails: { try await runGitHub(logger)(fetchGitHubEmails(token: $0)) },
-      fetchUser: { try await runGitHub(logger)(fetchGitHubUser(with: $0)) }
+      fetchEmails: { try await jsonDataTask(with: fetchGitHubEmails(token: $0)) },
+      fetchUser: { try await jsonDataTask(with: fetchGitHubUser(with: $0)) }
     )
   }
 }
@@ -76,28 +76,21 @@ func fetchGitHubAuthToken(
   }
 }
 
-func fetchGitHubEmails(token: AccessToken) -> DecodableRequest<[GitHubUser.Email]> {
-  return apiDataTask("user/emails", token: token)
+func fetchGitHubEmails(token: AccessToken) -> DecodableHTTPClientRequest<[GitHubUser.Email]> {
+  apiDataTask("user/emails", token: token)
 }
 
-internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<GitHubUser> {
-  return apiDataTask("user", token: token)
+func fetchGitHubUser(
+  with token: AccessToken
+) -> DecodableHTTPClientRequest<GitHubUser> {
+  apiDataTask("user", token: token)
 }
 
-private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableRequest<A> {
-  var request = URLRequest(url: URL(string: "https://api.github.com/" + path)!)
-  request.addValue("token \(token.accessToken)", forHTTPHeaderField: "Authorization")
-  request.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
-  return DecodableRequest(rawValue: request)
-}
-
-private func runGitHub<A>(
-  _ logger: Logger?
-) -> (DecodableRequest<A>) async throws -> A {
-  return { gitHubRequest in
-    try await jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder)
-      .performAsync()
-  }
+private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableHTTPClientRequest<A> {
+  var request = HTTPClientRequest(url: "https://api.github.com/\(path)")
+  request.headers.add(name: "accept", value: "application/vnd.github.v3+json")
+  request.headers.add(name: "authorization", value: "token \(token.accessToken)")
+  return DecodableHTTPClientRequest(rawValue: request)
 }
 
 private let gitHubJsonEncoder: JSONEncoder = {

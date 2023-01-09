@@ -46,7 +46,7 @@ public let post0092_SwiftDependencies = BlogPost(
         But controlling a dependency is only the beginning. Once you have controlled your dependencies,
         you are faced with a whole set of new problems:
 
-        * How can you **propagate dependencies** throughout your entire application that is more ergonomic
+        * How can you **propagate dependencies** throughout your entire application in a way that is more ergonomic
           than explicitly passing them around everywhere, but safer than having a global dependency?
         * How can you override dependencies for just one portion of your application? This can be handy
           for **overriding dependencies** in tests and SwiftUI previews, as well as specific user flows,
