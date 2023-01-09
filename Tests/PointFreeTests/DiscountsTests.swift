@@ -196,10 +196,12 @@ class DiscountsTests: TestCase {
   }
 
   func testDiscounts_UsingRegionalCouponId() async throws {
+    @Dependency(\.envVars.regionalDiscountCouponId) var regionalDiscountCouponId: Coupon.ID
+
     await assertSnapshot(
       matching: siteMiddleware(
         connection(
-          from: request(to: .discounts(code: Current.envVars.regionalDiscountCouponId, nil))
+          from: request(to: .discounts(code: regionalDiscountCouponId, nil))
         )
       ),
       as: .ioConn

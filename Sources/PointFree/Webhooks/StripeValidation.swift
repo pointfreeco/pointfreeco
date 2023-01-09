@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -37,11 +38,12 @@ func stripeHookFailure<A>(
   -> (Conn<StatusLineOpen, A>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.date.now) var now
 
   return { conn in
     Task {
       var requestDump = body + "\n\n"
-      print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
+      print("Current timestamp: \(now.timeIntervalSince1970)", to: &requestDump)
       print(
         "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
         to: &requestDump
@@ -67,9 +69,11 @@ public func generateStripeSignature(
   timestamp: Int,
   payload: String
 ) -> String? {
-  hexDigest(
+  @Dependency(\.envVars.stripe.endpointSecret) var stripeEndpointSecret
+  
+  return hexDigest(
     value: "\(timestamp).\(payload)",
-    asciiSecret: Current.envVars.stripe.endpointSecret.rawValue
+    asciiSecret: stripeEndpointSecret.rawValue
   )
 }
 
@@ -89,8 +93,9 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
 }
 
 private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
-  return Date(timeIntervalSince1970: timestamp)
-    > Current.date().addingTimeInterval(-tolerance)
+  @Dependency(\.date.now) var now
+
+  return Date(timeIntervalSince1970: timestamp) > now.addingTimeInterval(-tolerance)
 }
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {

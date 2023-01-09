@@ -13,10 +13,12 @@ import Styleguide
 import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
+  @Dependency(\.database) var database
+
   let emails = EitherIO {
-    async let emails1 = Current.database.fetchUsersToWelcome(1).map(welcomeEmail1)
-    async let emails2 = Current.database.fetchUsersToWelcome(2).map(welcomeEmail2)
-    async let emails3 = Current.database.fetchUsersToWelcome(3).map(welcomeEmail3)
+    async let emails1 = database.fetchUsersToWelcome(1).map(welcomeEmail1)
+    async let emails2 = database.fetchUsersToWelcome(2).map(welcomeEmail2)
+    async let emails3 = database.fetchUsersToWelcome(3).map(welcomeEmail3)
     return try await emails1 + emails2 + emails3
   }
   .debug { "📧: Sending \($0.count) welcome emails..." }
@@ -184,9 +186,10 @@ func welcomeEmail2(_ user: User) -> Email {
 }
 
 func welcomeEmail2Content(user: User) -> Node {
+  @Dependency(\.episodes) var episodes
   @Dependency(\.siteRouter) var siteRouter
 
-  let freeEpisodeLinks = Current.episodes()
+  let freeEpisodeLinks = episodes()
     .sorted(by: their(\.sequence, >))
     .filter { !$0.subscriberOnly }
     .map {

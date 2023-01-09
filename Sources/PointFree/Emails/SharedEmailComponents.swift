@@ -63,14 +63,16 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
     let newsletter = newsletter
   else { return [] }
 
+  @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.logger) var logger
 
   guard
     let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))
-      .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
+      .flatMap({ Encrypted(String($0), with: appSecret) })
       .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
   else {
-    Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
+    logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
     return []
   }
 

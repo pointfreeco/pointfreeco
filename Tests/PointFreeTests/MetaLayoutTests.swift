@@ -22,7 +22,7 @@ class MetaLayoutTests: TestCase {
       ]
     }
 
-    let layoutView = metaLayout(view)
+    let layoutView = metaLayout { view($0) }
 
     await assertSnapshot(
       matching: layoutView(

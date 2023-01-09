@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -13,10 +14,14 @@ import Views
 let indexFreeEpisodeEmailMiddleware: M<Tuple1<User>> =
   writeStatus(.ok)
   >=> respond({ _ in
-    freeEpisodeView(
-      episodes: Current.episodes(),
-      today: Current.date(),
-      emergencyMode: Current.envVars.emergencyMode
+    @Dependency(\.date.now) var now
+    @Dependency(\.episodes) var episodes
+    @Dependency(\.envVars.emergencyMode) var emergencyMode
+
+    return freeEpisodeView(
+      episodes: episodes(),
+      today: now,
+      emergencyMode: emergencyMode
     )
   })
 
@@ -32,12 +37,14 @@ let sendFreeEpisodeEmailMiddleware:
     >=> redirect(to: .admin())
 
 func fetchEpisode(_ id: Episode.ID) -> Episode? {
-  return Current.episodes().first(where: { $0.id == id })
+  @Dependency(\.episodes) var episodes
+  return episodes().first(where: { $0.id == id })
 }
 
 private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
+  @Dependency(\.database) var database
 
-  return EitherIO { try await Current.database.fetchFreeEpisodeUsers() }
+  return EitherIO { try await database.fetchFreeEpisodeUsers() }
     .flatMap { users in sendEmail(forFreeEpisode: conn.data, toUsers: users) }
     .run
     .map { _ in conn.map(const(unit)) }

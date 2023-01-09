@@ -1,11 +1,14 @@
+import Dependencies
 import Models
 
 public func allBlogPosts() -> [BlogPost] {
-  let now = Current.date()
+  @Dependency(\.envVars.appEnv) var appEnv
+  @Dependency(\.date.now) var now
+
   return
     _allBlogPosts
     .filter {
-      Current.envVars.appEnv == .production
+      appEnv == .production
         ? $0.publishedAt <= now
         : true
     }

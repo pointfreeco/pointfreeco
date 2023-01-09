@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Mailgun
 import Models
@@ -5,7 +6,9 @@ import PointFreePrelude
 import Prelude
 
 public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
-  EitherIO { try await Current.database.fetchGiftsToDeliver() }
+  @Dependency(\.database) var database
+
+  return EitherIO { try await database.fetchGiftsToDeliver() }
     .flatMap { gifts in
       sequence(
         gifts.map { gift in
@@ -15,7 +18,7 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
               .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
               .flatMap { _ in
                 EitherIO {
-                  try await Current.database.updateGiftStatus(gift.id, .succeeded, true)
+                  try await database.updateGiftStatus(gift.id, .succeeded, true)
                 }
               }
             : pure(gift)

@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -38,14 +39,15 @@ private let requireOwner: MT<Tuple2<User?, SubscriberState>, Tuple2<User, Subscr
 private func leaveTeam<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
+  @Dependency(\.database) var database
 
   return { conn in
     let user = get1(conn.data)
 
     return EitherIO {
       guard let subscriptionId = user.subscriptionId else { return }
-      try await Current.database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
-      try await Current.database.deleteEnterpriseEmail(user.id)
+      try await database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
+      try await database.deleteEnterpriseEmail(user.id)
     }
     .run
     .flatMap(
@@ -69,18 +71,20 @@ let removeTeammateMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
   <<< requireTeammate
   <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+    @Dependency(\.database) var database
+
     let (teammate, currentUser) = lower(conn.data)
     guard let teammateSubscriptionId = teammate.subscriptionId
     else { return pure(conn.map(const(unit))) }
 
     return EitherIO {
-      let subscription = try await Current.database.fetchSubscriptionById(teammateSubscriptionId)
+      let subscription = try await database.fetchSubscriptionById(teammateSubscriptionId)
       // Validate the current user is the subscription owner,
       // and the fetched user is in fact the current user's teammate.
       guard subscription.userId == currentUser.id && subscription.id == teammate.subscriptionId
       else { throw unit }
 
-      try await Current.database
+      try await database
         .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
 
       if currentUser.id != teammate.id {
@@ -107,7 +111,8 @@ let removeTeammateMiddleware =
 
 private let requireTeammate: MT<Tuple2<User.ID, User>, Tuple2<User, User>> = filterMap(
   over1 { id in
-    IO { try? await Current.database.fetchUserById(id) }
+    @Dependency(\.database) var database
+    return IO { try? await database.fetchUserById(id) }
   }
     >>> sequence1
     >>> map(require1),

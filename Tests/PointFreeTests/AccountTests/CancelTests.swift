@@ -20,6 +20,8 @@ import XCTest
 
 @MainActor
 final class CancelTests: TestCase {
+  @Dependency(\.stripe) var stripe
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
@@ -30,7 +32,7 @@ final class CancelTests: TestCase {
     let expectation = self.expectation(description: "sendEmail")
 
     await withDependencies {
-      let cancelSubscription = Current.stripe.cancelSubscription
+      let cancelSubscription = self.stripe.cancelSubscription
       $0.stripe.cancelSubscription = {
         immediately = $1
         return try await cancelSubscription($0, $1)
@@ -54,7 +56,7 @@ final class CancelTests: TestCase {
 
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in update(.mock) { $0.status = .pastDue } }
-      let cancelSubscription = Current.stripe.cancelSubscription
+      let cancelSubscription = self.stripe.cancelSubscription
       $0.stripe.cancelSubscription = {
         immediately = $1
         return try await cancelSubscription($0, $1)

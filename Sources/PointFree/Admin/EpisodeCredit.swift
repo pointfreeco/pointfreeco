@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -39,10 +40,11 @@ let redeemEpisodeCreditMiddleware =
 private func creditUserMiddleware(
   _ conn: Conn<StatusLineOpen, Tuple3<User, User, Episode>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.database) var database
 
   let (user, episode) = (get2(conn.data), get3(conn.data))
 
-  return EitherIO { try await Current.database.redeemEpisodeCredit(episode.sequence, user.id) }
+  return EitherIO { try await database.redeemEpisodeCredit(episode.sequence, user.id) }
     .run
     .flatMap(
       const(
@@ -53,11 +55,15 @@ private func creditUserMiddleware(
 }
 
 private func fetchUser(id: User.ID?) -> IO<User?> {
-  IO { try? await Current.database.fetchUserById(id.unwrap()) }
+  @Dependency(\.database) var database
+
+  return IO { try? await database.fetchUserById(id.unwrap()) }
 }
 
 private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {
+  @Dependency(\.episodes) var episodes
+
   guard let sequence = sequence else { return nil }
-  return Current.episodes()
+  return episodes()
     .first(where: { $0.sequence == sequence })
 }

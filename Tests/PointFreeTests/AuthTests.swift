@@ -13,6 +13,8 @@ import XCTest
 
 @MainActor
 class AuthIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record = true
@@ -40,7 +42,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
-      let registeredUser = try await Current.database
+      let registeredUser = try await self.database
         .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
 
       XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
@@ -72,7 +74,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
-      let registeredUser = try await Current.database
+      let registeredUser = try await self.database
         .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
 
       XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)

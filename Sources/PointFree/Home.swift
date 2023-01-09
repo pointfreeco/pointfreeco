@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -13,14 +14,15 @@ let homeMiddleware: M<Tuple3<User?, SubscriberState, SiteRoute?>> =
     view: homeView(currentDate:currentUser:subscriberState:episodes:emergencyMode:),
     layoutData: {
       (currentUser: User?, subscriberState: SubscriberState, currentRoute: SiteRoute?) in
-      SimplePageLayoutData(
+      @Dependency(\.envVars.emergencyMode) var emergencyMode
+      @Dependency(\.episodes) var episodes
+      @Dependency(\.date.now) var now
+
+      return SimplePageLayoutData(
         currentRoute: currentRoute,
         currentSubscriberState: subscriberState,
         currentUser: currentUser,
-        data: (
-          Current.date(), currentUser, subscriberState, Current.episodes(),
-          Current.envVars.emergencyMode
-        ),
+        data: (now, currentUser, subscriberState, episodes(), emergencyMode),
         extraStyles: markdownBlockStyles,
         openGraphType: .website,
         style: .base(.mountains(.main)),

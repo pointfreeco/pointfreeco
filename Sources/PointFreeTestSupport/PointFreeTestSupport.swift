@@ -118,15 +118,17 @@ extension Snapshotting {
   #endif
 }
 
-public func request(to route: SiteRoute, session: Session = .loggedOut, basicAuth: Bool = false)
+public func request(
+  to route: SiteRoute, session: Session = .loggedOut, basicAuth addBasicAuth: Bool = false)
   -> URLRequest
 {
+  @Dependency(\.envVars.basicAuth) var basicAuth
   @Dependency(\.siteRouter) var siteRouter
 
   var headers: OrderedDictionary<String, [String?]> = [:]
 
-  if basicAuth {
-    let authString = "\(Current.envVars.basicAuth.username):\(Current.envVars.basicAuth.password)"
+  if addBasicAuth {
+    let authString = "\(basicAuth.username):\(basicAuth.password)"
     headers["Authorization"] = ["Basic \(Data(authString.utf8).base64EncodedString())"]
   }
 

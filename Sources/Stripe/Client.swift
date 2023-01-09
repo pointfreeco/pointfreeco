@@ -136,89 +136,89 @@ extension Client {
   public typealias PublishableKey = Tagged<(Self, publishableKey: ()), String>
   public typealias SecretKey = Tagged<(Self, secretKey: ()), String>
 
-  public init(logger: Logger?, secretKey: SecretKey) {
+  public init(secretKey: SecretKey) {
     self.init(
       attachPaymentMethod: {
-        try await runStripe(secretKey, logger)(Stripe.attach(paymentMethod: $0, customer: $1))
+        try await runStripe(secretKey)(Stripe.attach(paymentMethod: $0, customer: $1))
       },
       cancelSubscription: {
-        try await runStripe(secretKey, logger)(Stripe.cancelSubscription(id: $0, immediately: $1))
+        try await runStripe(secretKey)(Stripe.cancelSubscription(id: $0, immediately: $1))
       },
       confirmPaymentIntent: {
-        try await runStripe(secretKey, logger)(Stripe.confirmPaymentIntent(id: $0))
+        try await runStripe(secretKey)(Stripe.confirmPaymentIntent(id: $0))
       },
       createCoupon: {
-        try await runStripe(secretKey, logger)(
+        try await runStripe(secretKey)(
           Stripe.createCoupon(duration: $0, maxRedemptions: $1, name: $2, rate: $3)
         )
       },
       createCustomer: {
-        try await runStripe(secretKey, logger)(
+        try await runStripe(secretKey)(
           Stripe.createCustomer(
             paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4
           )
         )
       },
       createPaymentIntent: {
-        try await runStripe(secretKey, logger)(Stripe.createPaymentIntent($0))
+        try await runStripe(secretKey)(Stripe.createPaymentIntent($0))
       },
       createSubscription: {
-        try await runStripe(secretKey, logger)(
+        try await runStripe(secretKey)(
           Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3)
         )
       },
       deleteCoupon: {
-        _ = try await runStripe(secretKey, logger)(Stripe.deleteCoupon(id: $0))
+        _ = try await runStripe(secretKey)(Stripe.deleteCoupon(id: $0))
       },
       fetchCoupon: {
-        try await runStripe(secretKey, logger)(Stripe.fetchCoupon(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchCoupon(id: $0))
       },
       fetchCustomer: {
-        try await runStripe(secretKey, logger)(Stripe.fetchCustomer(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchCustomer(id: $0))
       },
       fetchCustomerPaymentMethods: {
-        try await runStripe(secretKey, logger)(Stripe.fetchCustomerPaymentMethods(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchCustomerPaymentMethods(id: $0))
       },
       fetchInvoice: {
-        try await runStripe(secretKey, logger)(Stripe.fetchInvoice(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchInvoice(id: $0))
       },
       fetchInvoices: {
-        try await runStripe(secretKey, logger)(Stripe.fetchInvoices(for: $0))
+        try await runStripe(secretKey)(Stripe.fetchInvoices(for: $0))
       },
       fetchPaymentIntent: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPaymentIntent(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchPaymentIntent(id: $0))
       },
       fetchPaymentMethod: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPaymentMethod(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchPaymentMethod(id: $0))
       },
       fetchPlans: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPlans())
+        try await runStripe(secretKey)(Stripe.fetchPlans())
       },
       fetchPlan: {
-        try await runStripe(secretKey, logger)(Stripe.fetchPlan(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchPlan(id: $0))
       },
       fetchSubscription: {
-        try await runStripe(secretKey, logger)(Stripe.fetchSubscription(id: $0))
+        try await runStripe(secretKey)(Stripe.fetchSubscription(id: $0))
       },
       fetchUpcomingInvoice: {
-        try await runStripe(secretKey, logger)(Stripe.fetchUpcomingInvoice($0))
+        try await runStripe(secretKey)(Stripe.fetchUpcomingInvoice($0))
       },
       invoiceCustomer: {
-        try await runStripe(secretKey, logger)(Stripe.invoiceCustomer($0))
+        try await runStripe(secretKey)(Stripe.invoiceCustomer($0))
       },
       updateCustomer: {
-        try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
+        try await runStripe(secretKey)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
       },
       updateCustomerBalance: {
-        try await runStripe(secretKey, logger)(Stripe.updateCustomer(id: $0, balance: $1))
+        try await runStripe(secretKey)(Stripe.updateCustomer(id: $0, balance: $1))
       },
       updateCustomerExtraInvoiceInfo: {
-        try await runStripe(secretKey, logger)(
+        try await runStripe(secretKey)(
           Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1)
         )
       },
       updateSubscription: {
-        try await runStripe(secretKey, logger)(
+        try await runStripe(secretKey)(
           Stripe.updateSubscription($0, $1, $2)
         )
       },
@@ -505,7 +505,7 @@ func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get(
   return DecodableRequest(rawValue: request)
 }
 
-private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
+private func runStripe<A>(_ secretKey: Client.SecretKey) -> (
   DecodableRequest<A>?
 ) async throws -> A {
   return { stripeRequest in
@@ -517,7 +517,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
 
     let task: EitherIO<Error, A> = pure(stripeRequest)
       .flatMap {
-        dataTask(with: $0, logger: logger)
+        dataTask(with: $0)
           .map { data, _ in data }
           .flatMap { data in
             EitherIO.wrap {

@@ -6,6 +6,7 @@ import Foundation
 import FoundationPrelude
 import HttpPipeline
 import Logging
+import LoggingDependencies
 import Models
 import Tagged
 import UrlFormEncoding
@@ -54,17 +55,16 @@ public struct Client {
   public init(
     apiKey: ApiKey,
     appSecret: AppSecret,
-    domain: Client.Domain,
-    logger: Logger
+    domain: Client.Domain
   ) {
     self.appSecret = appSecret
 
     self.sendEmail = { email in
-      try await runMailgun(apiKey: apiKey, logger: logger)(
+      try await runMailgun(apiKey: apiKey)(
         mailgunSend(email: email, domain: domain))
     }
     self.validate = { emailAddress in
-      try await runMailgun(apiKey: apiKey, logger: logger)(mailgunValidate(email: emailAddress))
+      try await runMailgun(apiKey: apiKey)(mailgunValidate(email: emailAddress))
     }
   }
 
@@ -130,8 +130,7 @@ extension URLRequest {
 }
 
 private func runMailgun<A>(
-  apiKey: Client.ApiKey,
-  logger: Logger
+  apiKey: Client.ApiKey
 ) async throws -> (DecodableRequest<A>?) async throws -> A {
 
   return { mailgunRequest in
@@ -143,7 +142,7 @@ private func runMailgun<A>(
     mailgunRequest.rawValue.set(baseUrl: baseUrl)
     mailgunRequest.rawValue.attachBasicAuth(username: "api", password: apiKey.rawValue)
 
-    return try await dataTask(with: mailgunRequest.rawValue, logger: logger)
+    return try await dataTask(with: mailgunRequest.rawValue)
       .map { data, _ in data }
       .flatMap { data in
         .wrap {

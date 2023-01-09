@@ -18,6 +18,8 @@ import XCTest
 
 @MainActor
 class CollectionsTests: TestCase {
+  @Dependency(\.collections) var collections
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -54,7 +56,7 @@ class CollectionsTests: TestCase {
 
   func testCollectionShow() async throws {
     let conn = connection(
-      from: request(to: .collections(.collection(Current.collections[0].slug)), basicAuth: true)
+      from: request(to: .collections(.collection(self.collections[0].slug)), basicAuth: true)
     )
 
     await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -77,8 +79,8 @@ class CollectionsTests: TestCase {
       from: request(
         to: .collections(
           .collection(
-            Current.collections[0].slug,
-            .section(Current.collections[0].sections[1].slug)
+            self.collections[0].slug,
+            .section(self.collections[0].sections[1].slug)
           )
         ),
         basicAuth: true
