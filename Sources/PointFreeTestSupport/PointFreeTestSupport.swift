@@ -119,7 +119,8 @@ extension Snapshotting {
 }
 
 public func request(
-  to route: SiteRoute, session: Session = .loggedOut, basicAuth addBasicAuth: Bool = false)
+  to route: SiteRoute, session: Session = .loggedOut, basicAuth addBasicAuth: Bool = false
+)
   -> URLRequest
 {
   @Dependency(\.envVars.basicAuth) var basicAuth

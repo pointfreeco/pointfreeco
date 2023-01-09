@@ -36,7 +36,7 @@ func accountRssMiddleware(
 
     // Validate user agent
     if let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
-       rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
+      rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
     {
       try await database.updateUser(
         id: user.id,
@@ -49,7 +49,8 @@ func accountRssMiddleware(
     }
 
     // Require active subscription
-    let subscription = try await database
+    let subscription =
+      try await database
       .fetchSubscriptionById(user.subscriptionId.unwrap())
     guard !subscription.deactivated
     else {
@@ -66,7 +67,8 @@ func accountRssMiddleware(
     }
 
     // Gracefully degrade when Stripe is unavailable
-    let stripeSubscription = try? await stripe
+    let stripeSubscription =
+      try? await stripe
       .fetchSubscription(subscription.stripeSubscriptionId)
 
     return conn.map { _ in (stripeSubscription, user) }

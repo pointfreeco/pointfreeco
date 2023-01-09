@@ -358,7 +358,8 @@ private func redirectCurrentSubscribers<Z>(
 
     return EitherIO {
       let subscription = try await database.fetchSubscriptionById(subscriptionId)
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       return stripeSubscription.isRenewing
     }

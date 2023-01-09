@@ -92,7 +92,8 @@ public func currentSubscriptionMiddleware<A, I>(
   return EitherIO {
     let subscription = try await database.fetchSubscription(user: user.unwrap())
 
-    let enterpriseAccount = try? await database
+    let enterpriseAccount =
+      try? await database
       .fetchEnterpriseAccountForSubscription(subscription.id)
 
     return (subscription, enterpriseAccount)
@@ -243,7 +244,8 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 
   return EitherIO {
     let subscription = try await database.fetchSubscriptionById(subscriptionId)
-    let stripeSubscription = try await stripe
+    let stripeSubscription =
+      try await stripe
       .fetchSubscription(subscription.stripeSubscriptionId)
     _ = try await database.updateStripeSubscription(stripeSubscription)
     return unit

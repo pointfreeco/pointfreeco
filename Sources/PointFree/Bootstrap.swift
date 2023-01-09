@@ -26,9 +26,9 @@ private func connectToPostgres() -> EitherIO<Error, Prelude.Unit> {
   @Dependency(\.database.migrate) var migrate
 
   return EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(databaseUrl)")
-  .flatMap { _ in EitherIO { try await migrate() } }
-  .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
-  .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
-  .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
-  .flatMap(const(stepDivider))
+    .flatMap { _ in EitherIO { try await migrate() } }
+    .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
+    .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
+    .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
+    .flatMap(const(stepDivider))
 }

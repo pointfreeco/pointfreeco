@@ -129,7 +129,8 @@ private func validateReferralCode(
     return EitherIO {
       let referrer = try await database.fetchUserByReferralCode(referralCode)
       let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       guard stripeSubscription.isCancellable else { throw unit }
       return referrer

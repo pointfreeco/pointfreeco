@@ -49,9 +49,11 @@ public func dataTask(
 ) async throws -> (ByteBuffer, HTTPClientResponse) {
   @Dependency(\.httpClient) var client
   @Dependency(\.logger) var logger
-  let response = try await client
+  let response =
+    try await client
     .execute(request, timeout: .seconds(Int64(timeoutInterval)), logger: logger)
-  let contentLength = response.headers.first(name: "content-length").flatMap(Int.init)
+  let contentLength =
+    response.headers.first(name: "content-length").flatMap(Int.init)
     ?? 5 * 1024 * 1024  // 5MB
   let bytes = try await response.body.collect(upTo: contentLength)
   return (bytes, response)
