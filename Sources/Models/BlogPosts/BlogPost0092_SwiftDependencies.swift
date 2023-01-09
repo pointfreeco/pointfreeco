@@ -46,7 +46,7 @@ public let post0092_SwiftDependencies = BlogPost(
         But controlling a dependency is only the beginning. Once you have controlled your dependencies,
         you are faced with a whole set of new problems:
 
-        * How can you **propagate dependencies** throughout your entire application that is more ergonomic
+        * How can you **propagate dependencies** throughout your entire application in a way that is more ergonomic
           than explicitly passing them around everywhere, but safer than having a global dependency?
         * How can you override dependencies for just one portion of your application? This can be handy
           for **overriding dependencies** in tests and SwiftUI previews, as well as specific user flows,
@@ -165,7 +165,10 @@ public let post0092_SwiftDependencies = BlogPost(
         override dependencies just for previews without affecting how your app will run in production.
 
         That is the basics to getting started with using the library, but there is still a lot more you
-        can do. You can learn more in depth in our [documentation][docs] and articles.
+        can do. You can learn more in depth in our [documentation][docs] and articles, and we also
+        rebuilt Apple's [Scrumdinger][scrumdinger] to demonstrate how to build a large application
+        with lots of dependencies using this library. It can be [found here][standups-demo], in our
+        [SwiftUINavigation][swiftui-nav-gh] library.
 
         ## Multiplatform
 
@@ -289,6 +292,9 @@ public let post0092_SwiftDependencies = BlogPost(
         [pf-gh]: http://github.com/pointfreeco/pointfreeco
         [pf-deps-pr]: https://github.com/pointfreeco/pointfreeco/pull/809
         [tca-deps-permalink]: https://github.com/pointfreeco/swift-composable-architecture/blob/cbf8a45fa97ca4afb858f6cd99730bb67952813a/Package.swift#L26-L32
+        [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
+        [standups-demo]: https://github.com/pointfreeco/swiftui-navigation/tree/main/Examples/Standups
+        [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         """###,
       type: .paragraph
     )
