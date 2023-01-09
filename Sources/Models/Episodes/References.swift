@@ -1095,7 +1095,7 @@ extension Episode.Reference {
     blurb: """
       An open source library of ours. A dependency management library inspired by SwiftUI's "environment."
       """,
-    link: "https://github.com/pointfreeco/swift-clocks",
+    link: "https://github.com/pointfreeco/swift-dependencies",
     publishedAt: yearMonthDayFormatter.date(from: "2022-01-09"),
     title: "Dependencies"
   )
