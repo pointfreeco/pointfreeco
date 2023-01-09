@@ -17,8 +17,6 @@ let paymentInfoResponse =
     view: Views.paymentInfoView(paymentMethod:publishableKey:stripeJsSrc:),
     layoutData: { paymentMethod, currentUser, subscriberState in
       SimplePageLayoutData(
-        currentSubscriberState: subscriberState,
-        currentUser: currentUser,
         data: (paymentMethod, Current.envVars.stripe.publishableKey.rawValue, Current.stripe.js),
         title: "Update Payment Info"
       )

@@ -20,7 +20,6 @@ let showInviteMiddleware =
     view: Views.showInviteView,
     layoutData: { teamInvite, inviter, currentUser in
       SimplePageLayoutData(
-        currentUser: currentUser,
         data: (teamInvite, inviter, currentUser),
         title: "Accept Team Invite?"
       )
@@ -220,7 +219,6 @@ private func requireTeamInvite<A>(
               view: { _ in inviteNotFoundView() },
               layoutData: { data in
                 SimplePageLayoutData(
-                  currentUser: nil,
                   data: data,
                   title: "Invite not found"
                 )

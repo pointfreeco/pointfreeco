@@ -17,8 +17,6 @@ let accountResponse =
     view: Views.accountView(accountData:allEpisodes:currentDate:),
     layoutData: { accountData in
       SimplePageLayoutData(
-        currentSubscriberState: accountData.subscriberState,
-        currentUser: accountData.currentUser,
         data: (accountData, Current.episodes(), Current.date()),
         extraStyles: markdownBlockStyles,
         title: "Account"

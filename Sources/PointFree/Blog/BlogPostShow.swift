@@ -33,9 +33,7 @@ private func fetchBlogPostForParam(
 ) -> Middleware<StatusLineOpen, ResponseEnded, Either<String, BlogPost.ID>, Data> {
   return { conn in
     guard let post = fetchBlogPost(forParam: conn.data)
-    else {
-      return conn |> redirect(to: .home)
-    }
+    else { return conn |> redirect(to: .home) }
 
     return middleware(conn.map(const(post)))
   }

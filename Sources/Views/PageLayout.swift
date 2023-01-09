@@ -34,9 +34,6 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    currentRoute: SiteRoute? = DependencyValues._current.currentRoute, // TODO: remove
-    currentSubscriberState: SubscriberState = DependencyValues._current.subscriberState, // TODO: remove
-    currentUser: User? = DependencyValues._current.currentUser, // TODO: remove
     data: A,
     description: String? =
       "Point-Free is a video series exploring functional programming and Swift.",

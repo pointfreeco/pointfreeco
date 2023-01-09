@@ -29,7 +29,7 @@ func accountMiddleware(
       |> accountResponse
 
   case .invoices(.index):
-    return conn.map(const(currentUser .*. subscriberState .*. unit))
+    return conn.map(const(currentUser .*. unit))
       |> invoicesResponse
 
   case let .invoices(.show(invoiceId)):
