@@ -63,16 +63,12 @@ private func requireLoggedOutUser<A>(
 
   return { conn in
     @Dependency(\.currentUser) var currentUser
+    @Dependency(\.database) var database
     guard currentUser == nil
     else {
       return conn
         |> redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
     }
-
-    let enterpriseAccount =
-      try? await database
-      .fetchEnterpriseAccountForSubscription(subscription.id)
-
     return middleware(conn)
   }
 }
