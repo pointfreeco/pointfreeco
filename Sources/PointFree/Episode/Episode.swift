@@ -4,8 +4,10 @@ import PointFreeRouter
 
 extension Episode {
   public var subscriberOnly: Bool {
-    return self.isSubscriberOnly(
-      currentDate: Current.date(), emergencyMode: Current.envVars.emergencyMode)
+    @Dependency(\.envVars.emergencyMode) var emergencyMode
+    @Dependency(\.date.now) var now
+
+    return self.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
   }
 }
 

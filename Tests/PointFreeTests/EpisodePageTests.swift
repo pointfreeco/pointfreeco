@@ -22,6 +22,8 @@ import XCTest
 
 @MainActor
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -34,9 +36,9 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.episodes = { [episode] }
     } operation: {
-      let user = try await Current.database
+      let user = try await self.database
         .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      try await Current.database.updateUser(id: user.id, episodeCreditCount: 1)
+      try await self.database.updateUser(id: user.id, episodeCreditCount: 1)
 
       let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -48,10 +50,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id)
+      let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+      let count = try await self.database.fetchUserById(user.id).episodeCreditCount
       XCTAssertEqual(0, count)
     }
   }
@@ -76,10 +78,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id)
+      let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+      let count = try await self.database.fetchUserById(user.id).episodeCreditCount
       XCTAssertEqual(0, count)
     }
   }
@@ -104,10 +106,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id)
+      let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+      let count = try await self.database.fetchUserById(user.id).episodeCreditCount
       XCTAssertEqual(1, count)
     }
   }
@@ -119,10 +121,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.episodes = { [episode] }
     } operation: {
-      let user = try await Current.database
+      let user = try await self.database
         .registerUser(withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock })
-      _ = try await Current.database.updateUser(id: user.id, episodeCreditCount: 1)
-      try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
+      _ = try await self.database.updateUser(id: user.id, episodeCreditCount: 1)
+      try await self.database.redeemEpisodeCredit(episode.sequence, user.id)
 
       let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -134,10 +136,10 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
-      let credits = try await Current.database.fetchEpisodeCredits(user.id)
+      let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([credit], credits)
 
-      let count = try await Current.database.fetchUserById(user.id).episodeCreditCount
+      let count = try await self.database.fetchUserById(user.id).episodeCreditCount
       XCTAssertEqual(1, count)
     }
   }
@@ -145,6 +147,9 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
 
 @MainActor
 class EpisodePageTests: TestCase {
+  @Dependency(\.collections) var collections
+  @Dependency(\.episodes) var episodes
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
@@ -164,7 +169,7 @@ class EpisodePageTests: TestCase {
       $0.episodes = { episodes }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedOut)
+        to: .episode(.show(.left(self.episodes()[1].slug))), session: .loggedOut)
 
       let conn = connection(from: episode)
 
@@ -188,10 +193,10 @@ class EpisodePageTests: TestCase {
     let episode = request(
       to: .collections(
         .collection(
-          Current.collections[0].slug,
+          self.collections[0].slug,
           .section(
-            Current.collections[0].sections[0].slug,
-            .episode(.left(Current.episodes()[0].slug))
+            self.collections[0].sections[0].slug,
+            .episode(.left(self.episodes()[0].slug))
           )
         )
       ),
@@ -219,10 +224,10 @@ class EpisodePageTests: TestCase {
     let episode = request(
       to: .collections(
         .collection(
-          Current.collections[0].slug,
+          self.collections[0].slug,
           .section(
-            Current.collections[0].sections[0].slug,
-            .episode(.left(Current.episodes()[1].slug))
+            self.collections[0].sections[0].slug,
+            .episode(.left(self.episodes()[1].slug))
           )
         )
       ),
@@ -248,7 +253,7 @@ class EpisodePageTests: TestCase {
 
   func testEpisodePageSubscriber() async throws {
     let episode = request(
-      to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+      to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
@@ -275,7 +280,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in deactivated }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+        to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
 
       let conn = connection(from: episode)
 
@@ -296,7 +301,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testFreeEpisodePage() async throws {
-    var freeEpisode = Current.episodes()[0]
+    var freeEpisode = self.episodes()[0]
     freeEpisode.permission = .free
 
     await withDependencies {
@@ -323,7 +328,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testFreeEpisodePageSubscriber() async throws {
-    var freeEpisode = Current.episodes()[0]
+    var freeEpisode = self.episodes()[0]
     freeEpisode.permission = .free
 
     await withDependencies {
@@ -371,7 +376,7 @@ class EpisodePageTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    var episode = Current.episodes()[1]
+    var episode = self.episodes()[1]
     episode.permission = .free
 
     await withDependencies {
@@ -405,7 +410,7 @@ class EpisodePageTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    var episode = Current.episodes()[1]
+    var episode = self.episodes()[1]
     episode.permission = .subscriberOnly
 
     await withDependencies {
@@ -416,7 +421,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -440,7 +445,7 @@ class EpisodePageTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 1
 
-    var episode = Current.episodes().first!
+    var episode = self.episodes().first!
     episode.permission = .subscriberOnly
 
     await withDependencies {
@@ -451,7 +456,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -475,7 +480,7 @@ class EpisodePageTests: TestCase {
     user.subscriptionId = nil
     user.episodeCreditCount = 0
 
-    var episode = Current.episodes().first!
+    var episode = self.episodes().first!
     episode.permission = .subscriberOnly
 
     await withDependencies {
@@ -486,7 +491,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -531,7 +536,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePage_ExercisesAndReferences() async throws {
-    var episode = Current.episodes()[0]
+    var episode = self.episodes()[0]
     episode.exercises = [.mock, .mock]
     episode.references = [.mock]
     episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
@@ -542,7 +547,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
+          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       #if !os(Linux)
@@ -579,7 +584,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionById = { _ in subscription }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: .mock))
+        to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn(as: .mock))
 
       let conn = connection(from: episode)
 
@@ -593,7 +598,7 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
     } operation: {
-      let episode = Current.episodes().first!
+      let episode = self.episodes().first!
       let percent = 20
       let progressRequest = request(
         to: .episode(.progress(param: .left(episode.slug), percent: percent)),
@@ -611,7 +616,7 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
     } operation: {
-      let episode = Current.episodes().first!
+      let episode = self.episodes().first!
       let percent = 20
       let progressRequest = request(
         to: .episode(.progress(param: .left(episode.slug), percent: percent)),
@@ -629,7 +634,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchEpisodeProgress = { _, _ in pure(20) }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(Current.episodes()[1].slug))), session: .loggedIn)
+        to: .episode(.show(.left(self.episodes()[1].slug))), session: .loggedIn)
 
       let conn = connection(from: episode)
 

@@ -22,12 +22,13 @@ private func fetchStripeSubscription<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription?, A>, Data>
 {
+  @Dependency(\.stripe) var stripe
 
   return { conn -> IO<Conn<ResponseEnded, Data>> in
     guard let subscription = get1(conn.data)
     else { return middleware(conn.map(over1(const(nil)))) }
 
-    return IO { try? await Current.stripe.fetchSubscription(subscription.stripeSubscriptionId) }
+    return IO { try? await stripe.fetchSubscription(subscription.stripeSubscriptionId) }
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }
@@ -51,8 +52,10 @@ private let validateEmail: MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileDat
 private func updateProfileMiddlewareHandler(
   conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.stripe) var stripe
 
   let (subscription, user, data, emailChangePayload) = lower(conn.data)
 
@@ -68,7 +71,7 @@ private func updateProfileMiddlewareHandler(
   }
 
   return EitherIO {
-    try await Current.database.updateUser(
+    try await database.updateUser(
       id: user.id,
       name: data.name,
       emailSettings: emailSettings
@@ -83,7 +86,7 @@ private func updateProfileMiddlewareHandler(
       }
     }
     if let customerId = subscription?.customer.id, let extraInvoiceInfo = data.extraInvoiceInfo {
-      _ = try await Current.stripe.updateCustomerExtraInvoiceInfo(customerId, extraInvoiceInfo)
+      _ = try await stripe.updateCustomerExtraInvoiceInfo(customerId, extraInvoiceInfo)
     }
   }
   .run
@@ -110,15 +113,17 @@ func encryptPayload<A>(
 )
   -> Middleware<StatusLineOpen, ResponseEnded, T3<User, ProfileData, A>, Data>
 {
+  @Dependency(\.envVars) var envVars
+  @Dependency(\.logger) var logger
 
   return { conn in
     let (user, data) = (get1(conn.data), get2(conn.data))
 
     guard
       let emailChangePayload = (try? emailChange.print((user.id, data.email)))
-        .flatMap({ Encrypted(String($0), with: Current.envVars.appSecret) })
+        .flatMap({ Encrypted(String($0), with: envVars.appSecret) })
     else {
-      Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
+      logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
       return conn
         |> redirect(
@@ -140,12 +145,15 @@ let emailChange = ParsePrint {
 
 let confirmEmailChangeMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> = { conn in
+    @Dependency(\.database) var database
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.logger) var logger
 
     guard
-      let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
+      let decrypted = conn.data.decrypt(with: envVars.appSecret),
       let (userId, newEmailAddress) = try? emailChange.parse(decrypted)
     else {
-      Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
+      logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 
       return conn
         |> redirect(
@@ -155,7 +163,7 @@ let confirmEmailChangeMiddleware:
     }
 
     parallel(
-      EitherIO { try await Current.database.fetchUserById(userId) }
+      EitherIO { try await database.fetchUserById(userId) }
         .flatMap { user in
           EitherIO {
             try await sendEmail(
@@ -169,7 +177,7 @@ let confirmEmailChangeMiddleware:
     )
     .run({ _ in })
 
-    return EitherIO { try await Current.database.updateUser(id: userId, email: newEmailAddress) }
+    return EitherIO { try await database.updateUser(id: userId, email: newEmailAddress) }
       .run
       .flatMap(const(conn |> redirect(to: .account())))
   }

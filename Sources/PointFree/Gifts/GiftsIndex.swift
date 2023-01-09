@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -19,7 +20,9 @@ public let giftsIndexMiddleware:
     >>> respond(
       view: giftsLanding(episodeStats:),
       layoutData: { currentUser, currentRoute, subscriberState in
-        let episodeStats = stats(forEpisodes: Current.episodes())
+        @Dependency(\.episodes) var episodes
+
+        let episodeStats = stats(forEpisodes: episodes())
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,

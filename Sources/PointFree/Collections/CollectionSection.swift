@@ -1,3 +1,4 @@
+import Dependencies
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -43,9 +44,10 @@ private let fetchCollectionSectionMiddleware:
     Tuple5<User?, SubscriberState, SiteRoute, Episode.Collection, Episode.Collection.Section>
   > = filterMap(
     {
+      @Dependency(\.collections) var collections
       let (user, subscriberState, route, collectionSlug, sectionSlug) = lower($0)
       return pure(
-        Current.collections.first(where: { $0.slug == collectionSlug }).flatMap { collection in
+        collections.first(where: { $0.slug == collectionSlug }).flatMap { collection in
           collection.sections.first(where: { $0.slug == sectionSlug }).map { section in
             lift((user, subscriberState, route, collection, section))
           }

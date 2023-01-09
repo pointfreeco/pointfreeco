@@ -1,3 +1,4 @@
+import Dependencies
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
@@ -14,13 +15,15 @@ import XCTest
 
 @MainActor
 class FreeEpisodeEmailTests: TestCase {
+  @Dependency(\.episodes) var episodes
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
   func testFreeEpisodeEmail() async throws {
-    let doc = freeEpisodeEmail((Current.episodes().first!, .mock))
+    let doc = freeEpisodeEmail((self.episodes().first!, .mock))
 
     await assertSnapshot(matching: doc, as: .html)
     await assertSnapshot(matching: plainText(for: doc), as: .lines)

@@ -1,3 +1,4 @@
+import Dependencies
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
@@ -14,13 +15,15 @@ import XCTest
 
 @MainActor
 class NewEpisodeEmailTests: TestCase {
+  @Dependency(\.episodes) var episodes
+
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
   }
 
   func testNewEpisodeEmail_Subscriber() async throws {
-    let doc = newEpisodeEmail((Current.episodes().first!, "", "", .mock))
+    let doc = newEpisodeEmail((self.episodes().first!, "", "", .mock))
 
     await assertSnapshot(matching: doc, as: .html)
     await assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -38,7 +41,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_FreeEpisode_NonSubscriber() async throws {
-    var episode = Current.episodes().first!
+    var episode = self.episodes().first!
     episode.permission = .free
 
     let doc = newEpisodeEmail((episode, "", "", .nonSubscriber))
@@ -59,7 +62,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_Announcement_NonSubscriber() async throws {
-    let episode = Current.episodes().first!
+    let episode = self.episodes().first!
 
     let doc = newEpisodeEmail(
       (
@@ -85,7 +88,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_Announcement_Subscriber() async throws {
-    let episode = Current.episodes().first!
+    let episode = self.episodes().first!
 
     let doc = newEpisodeEmail(
       (
@@ -111,7 +114,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_Markdown() async throws {
-    var episode = Current.episodes().first!
+    var episode = self.episodes().first!
     episode.blurb = """
       Crafting better test dependencies for our code bases come with additional benefits outside of testing. We show how SwiftUI previews can be strengthened from better dependencies, and we show how we employ these techniques in our newly released game, [isowords](https://www.isowords.xyz).
       """

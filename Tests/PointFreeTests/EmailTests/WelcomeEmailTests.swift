@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Html
 import HttpPipeline
@@ -17,23 +18,25 @@ import XCTest
 
 @MainActor
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
+  @Dependency(\.database) var database
+
   func testIncrementEpisodeCredits() async throws {
     var users: [User] = []
     for id in [1, 2, 3] {
       var env = GitHubUserEnvelope.mock
       env.gitHubUser.id = .init(rawValue: id)
       try await users.append(
-        Current.database.registerUser(
+        self.database.registerUser(
           withGitHubEnvelope: env, email: .init(rawValue: "\(id)@pointfree.co"), now: { .mock }
         )
       )
     }
 
-    _ = try await Current.database.incrementEpisodeCredits(users.map(\.id))
+    _ = try await self.database.incrementEpisodeCredits(users.map(\.id))
 
     var updatedUsers: [User] = []
     for user in users {
-      try await updatedUsers.append(Current.database.fetchUserById(user.id))
+      try await updatedUsers.append(self.database.fetchUserById(user.id))
     }
 
     zip(users, updatedUsers).forEach {

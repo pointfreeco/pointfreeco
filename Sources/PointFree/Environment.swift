@@ -12,11 +12,6 @@ import PostgresKit
 import Prelude
 import Stripe
 
-// NB: Deprecate remove soon: @available(*, deprecated)
-public var Current: DependencyValues {
-  DependencyValues._current
-}
-
 extension BlogPost: DependencyKey {
   public static let liveValue: () -> [BlogPost] = allBlogPosts
 }

@@ -22,7 +22,9 @@ extension Conn where Step == HeadersOpen {
     view: @escaping (B) -> Node,
     layoutData: @escaping (A) -> SimplePageLayoutData<B>
   ) -> Conn<ResponseEnded, Data> {
+    @Dependency(\.renderHtml) var renderHtml
     @Dependency(\.siteRouter) var siteRouter
+
     var newLayoutData = layoutData(self.data)
     newLayoutData.flash = self.request.session.flash
     newLayoutData.isGhosting = self.request.session.ghosteeId != nil
@@ -45,7 +47,7 @@ extension Conn where Step == HeadersOpen {
       self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: Current.renderHtml(pageLayout(newLayoutData)),
+        body: renderHtml(pageLayout(newLayoutData)),
         contentType: .html
       )
   }
@@ -56,17 +58,20 @@ func respond<A, B>(
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
-    IO { await conn.respond(view: view, layoutData: layoutData) }
+    IO { conn.respond(view: view, layoutData: layoutData) }
   }
 }
 
 func simplePageLayout<A>(
   _ contentView: @escaping (A) -> Node
 ) -> (SimplePageLayoutData<A>) -> Node {
-  simplePageLayout(
-    cssConfig: Current.envVars.appEnv == .testing ? .pretty : .compact,
-    date: { Current.date() },
-    emergencyMode: Current.envVars.emergencyMode,
+  @Dependency(\.envVars) var envVars
+  @Dependency(\.date.now) var now
+
+  return simplePageLayout(
+    cssConfig: envVars.appEnv == .testing ? .pretty : .compact,
+    date: { now },
+    emergencyMode: envVars.emergencyMode,
     contentView
   )
 }

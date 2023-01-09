@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import HttpPipeline
 import Models
@@ -21,6 +22,8 @@ extension Api {
     var title: String
 
     init(episode: Episode, currentDate: Date) {
+      @Dependency(\.envVars.emergencyMode) var emergencyMode
+
       self.blurb = episode.blurb
       self.id = episode.id
       self.image = episode.image
@@ -28,7 +31,7 @@ extension Api {
       self.publishedAt = episode.publishedAt
       self.sequence = episode.sequence
       self.subscriberOnly = episode.isSubscriberOnly(
-        currentDate: currentDate, emergencyMode: Current.envVars.emergencyMode)
+        currentDate: currentDate, emergencyMode: emergencyMode)
       self.title = episode.fullTitle
     }
   }
@@ -49,9 +52,11 @@ extension Api {
     var video: Episode.Video
 
     init(episode: Episode, currentDate: Date) {
+      @Dependency(\.envVars.emergencyMode) var emergencyMode
+
       let subscriberOnly = episode.isSubscriberOnly(
         currentDate: currentDate,
-        emergencyMode: Current.envVars.emergencyMode
+        emergencyMode: emergencyMode
       )
 
       self.blurb = episode.blurb
@@ -77,25 +82,27 @@ extension Api {
 func apiMiddleware(
   _ conn: Conn<StatusLineOpen, Tuple2<User?, SiteRoute.Api>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
 
   let (_ /* user */, route) = lower(conn.data)
 
   switch route {
   case .episodes:
-    let episodes = Current.episodes()
-      .map { Api.EpisodeListItem(episode: $0, currentDate: Current.date()) }
+    let episodes = episodes()
+      .map { Api.EpisodeListItem(episode: $0, currentDate: now) }
       .sorted(by: { $0.sequence > $1.sequence })
     return conn.map(const(episodes))
       |> writeStatus(.ok)
       >=> respondJson
 
   case let .episode(id):
-    let episode = Current.episodes()
+    let episode = episodes()
       .first { $0.id == id }
       .map {
         Api.EpisodeDetail(
           episode: $0,
-          currentDate: Current.date()
+          currentDate: now
         )
       }
 
@@ -109,9 +116,10 @@ func apiMiddleware(
 public func respondJson<A: Encodable>(
   _ conn: Conn<HeadersOpen, A>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.envVars.appEnv) var appEnv
 
   let encoder = JSONEncoder()
-  if Current.envVars.appEnv == .testing {
+  if appEnv == .testing {
     encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
   }
   let data = try! encoder.encode(conn.data)  // TODO: 400 on badly formed data

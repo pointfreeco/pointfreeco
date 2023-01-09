@@ -24,6 +24,8 @@ private let episodesFeedView = itunesRssFeedLayout {
 }
 
 var freeEpisodeRssChannel: RssChannel {
+  @Dependency(\.calendar) var calendar
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   let description = """
@@ -36,7 +38,7 @@ var freeEpisodeRssChannel: RssChannel {
 
   return RssChannel(
     copyright:
-      "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+      "Copyright Point-Free, Inc. \(calendar.component(.year, from: now))",
     description: description,
     image: .init(
       link: siteRouter.url(for: .home),
@@ -78,9 +80,10 @@ var freeEpisodeRssChannel: RssChannel {
 }
 
 private func items() -> [RssItem] {
+  @Dependency(\.episodes) var episodes
+
   return
-    Current
-    .episodes()
+    episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
     .prefix(4)
     .map { item(episode: $0) }
@@ -102,6 +105,8 @@ private func item(episode: Episode) -> RssItem {
   }
 
   func description(episode: Episode) -> String {
+    @Dependency(\.date.now) var now
+
     switch episode.permission {
     case .free:
       return """
@@ -113,7 +118,7 @@ private func item(episode: Episode) -> RssItem {
 
         \(episode.blurb)
         """
-    case let .freeDuring(range) where range.contains(Current.date()):
+    case let .freeDuring(range) where range.contains(now):
       return """
         Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
         that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
@@ -188,9 +193,11 @@ extension Html.Application {
 
 extension Conn where Step == HeadersOpen {
   public func respond(xml view: (A) -> Node) -> Conn<ResponseEnded, Data> {
-    self
+    @Dependency(\.renderXml) var renderXml
+
+    return self
       .respond(
-        body: Current.renderXml(view(self.data)),
+        body: renderXml(view(self.data)),
         contentType: .text(.init(rawValue: "xml"), charset: .utf8)
       )
   }
@@ -199,10 +206,12 @@ extension Conn where Step == HeadersOpen {
 public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<
   HeadersOpen, ResponseEnded, A, Data
 > {
+  @Dependency(\.renderXml) var renderXml
+
   return { conn in
     return conn
       |> respond(
-        body: Current.renderXml(view(conn.data)),
+        body: renderXml(view(conn.data)),
         contentType: contentType
       )
   }
@@ -211,10 +220,12 @@ public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .
 public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middleware<
   HeadersOpen, ResponseEnded, A, Data
 > {
+  @Dependency(\.renderXml) var renderXml
+
   return { conn in
     conn
       |> respond(
-        body: Current.renderXml(node),
+        body: renderXml(node),
         contentType: contentType
       )
   }

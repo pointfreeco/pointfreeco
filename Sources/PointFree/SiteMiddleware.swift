@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import Foundation
 import HttpPipeline
+import Logging
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -12,7 +13,13 @@ import Tuple
 import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger(logger: { Current.logger.log(.info, "\($0)") }, uuid: UUID.init)
+  requestLogger(
+    logger: {
+      @Dependency(\.logger) var logger: Logger
+      logger.log(.info, "\($0)")
+    },
+    uuid: UUID.init
+  )
   <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
   <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
   <<< router(notFound: routeNotFoundMiddleware)
@@ -159,8 +166,10 @@ private func render(
       |> expressUnsubscribeReplyMiddleware
 
   case .feed(.atom), .feed(.episodes):
+    @Dependency(\.envVars.emergencyMode) var emergencyMode
+
     return IO {
-      guard !Current.envVars.emergencyMode
+      guard !emergencyMode
       else {
         return
           conn
@@ -279,7 +288,9 @@ private func render(
       |> stripeSubscriptionsWebhookMiddleware
 
   case let .webhooks(.stripe(.unknown(event))):
-    Current.logger.log(.error, "Received invalid webhook \(event.type)")
+    @Dependency(\.logger) var logger: Logger
+
+    logger.log(.error, "Received invalid webhook \(event.type)")
     return conn
       |> writeStatus(.internalServerError)
       >=> respond(text: "We don't support this event.")
@@ -368,13 +379,18 @@ public func redirect<A>(
 }
 
 private let canonicalHost = "www.pointfree.co"
-private let allowedHosts: [String] = [
-  canonicalHost,
-  Current.envVars.baseUrl.host ?? canonicalHost,
-  "127.0.0.1",
-  "0.0.0.0",
-  "localhost",
-]
+private let allowedHosts: [String] = {
+  @Dependency(\.envVars.baseUrl.host) var host
+
+  return [
+    canonicalHost,
+    host,
+    "127.0.0.1",
+    "0.0.0.0",
+    "localhost",
+  ]
+  .compactMap { $0 }
+}()
 
 private func isAllowed(host: String) -> Bool {
   return allowedHosts.contains(host)

@@ -45,15 +45,17 @@ private func handleFailedPayment(
 )
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
 
-  return EitherIO { try await Current.stripe.fetchSubscription(conn.data) }
+  return EitherIO { try await stripe.fetchSubscription(conn.data) }
     .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
     .flatMap { stripeSubscription in
-      EitherIO { try await Current.database.updateStripeSubscription(stripeSubscription) }
+      EitherIO { try await database.updateStripeSubscription(stripeSubscription) }
     }
     .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
     .flatMap { subscription in
-      EitherIO { try await Current.database.fetchUserById(subscription.userId) }
+      EitherIO { try await database.fetchUserById(subscription.userId) }
         .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
         .map { ($0, subscription) }
     }

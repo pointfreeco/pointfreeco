@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Html
 import HtmlCssSupport
 import Models
@@ -10,11 +11,13 @@ enum EmailLayoutTemplate {
   case `default`(includeHeaderImage: Bool = true)
 
   var headerImgSrc: String? {
+    @Dependency(\.assets) var assets
+
     switch self {
     case .blog:
-      return Current.assets.pointersEmailHeaderImgSrc
+      return assets.pointersEmailHeaderImgSrc
     case .default(includeHeaderImage: true):
-      return Current.assets.emailHeaderImgSrc
+      return assets.emailHeaderImgSrc
     case .default(includeHeaderImage: false):
       return nil
     }

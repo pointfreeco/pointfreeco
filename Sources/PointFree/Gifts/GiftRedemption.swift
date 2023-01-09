@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -21,11 +22,12 @@ let giftRedemptionLandingMiddleware:
     >>> respond(
       view: giftRedeemLanding(gift:subscriberState:currentUser:episodeStats:),
       layoutData: { gift, amount, user, subscription, subscriberState, route in
-        SimplePageLayoutData(
+        @Dependency(\.episodes) var episodes
+        return SimplePageLayoutData(
           currentRoute: route,
           currentSubscriberState: subscriberState,
           currentUser: user,
-          data: (gift, subscriberState, user, stats(forEpisodes: Current.episodes())),
+          data: (gift, subscriberState, user, stats(forEpisodes: episodes())),
           extraStyles: extraGiftLandingStyles <> testimonialStyle,
           style: .base(.some(.minimal(.black))),
           title: "Redeem your Point-Free gift"
@@ -47,6 +49,9 @@ private func redeemGift(
     StatusLineOpen, Tuple5<Gift, Cents<Int>, User, Models.Subscription?, SubscriberState>
   >
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+
   let (gift, discount, user, subscription, subscriberState) = lower(conn.data)
 
   if let subscription = subscription, subscription.stripeSubscriptionStatus.isActive {
@@ -63,18 +68,18 @@ private func redeemGift(
     }
 
     return EitherIO {
-      let stripeSubscription = try await Current.stripe
+      let stripeSubscription = try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       // TODO: Should we disallow gifts from applying to team subscriptions?
       //guard stripeSubscription.quantity == 1
       //else {
       //  throw unit
       //}
-      async let customer = Current.stripe.updateCustomerBalance(
+      async let customer = stripe.updateCustomerBalance(
         stripeSubscription.customer.id,
         (stripeSubscription.customer.right?.balance ?? 0) - discount
       )
-      async let gift = Current.database.updateGift(gift.id, stripeSubscription.id)
+      async let gift = database.updateGift(gift.id, stripeSubscription.id)
       _ = try await (customer, gift)
     }
     .run
@@ -106,18 +111,18 @@ private func redeemGift(
     }
   } else {
     return EitherIO {
-      let customer = try await Current.stripe.createCustomer(
+      let customer = try await stripe.createCustomer(
         nil,
         user.id.rawValue.uuidString,
         user.email,
         nil,
         -discount
       )
-      let stripeSubscription = try await Current.stripe
+      let stripeSubscription = try await stripe
         .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
-      _ = try await Current.database
+      _ = try await database
         .createSubscription(stripeSubscription, user.id, true, nil)
-      _ = try await Current.database.updateGift(gift.id, stripeSubscription.id)
+      _ = try await database.updateGift(gift.id, stripeSubscription.id)
     }
     .run
     .flatMap { errorOrNot in
@@ -149,12 +154,14 @@ private func redeemGift(
 private func fetchAndValidateGiftAndDiscount<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Gift, Cents<Int>, A>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Gift.ID, A>, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
 
   return { conn in
     let (giftId, rest) = (conn.data.first, conn.data.second)
     return EitherIO<_, (Gift, PaymentIntent)> {
-      let gift = try await Current.database.fetchGift(giftId)
-      let paymentIntent = try await Current.stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
+      let gift = try await database.fetchGift(giftId)
+      let paymentIntent = try await stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
       return (gift, paymentIntent)
     }
     .run

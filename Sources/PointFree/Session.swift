@@ -30,6 +30,8 @@ private let cookieExpirationDuration: TimeInterval = 315_360_000  // 60 * 60 * 2
 
 extension Conn where Step == HeadersOpen {
   public func writeSessionCookie(_ update: @escaping (inout Session) -> Void) -> Self {
+    @Dependency(\.date.now) var now
+
     var session = self.request.session
     update(&session)
     guard session != self.request.session else { return self }
@@ -38,7 +40,7 @@ extension Conn where Step == HeadersOpen {
         key: pointFreeUserSessionCookieName,
         value: session,
         options: [
-          .expires(Current.date().addingTimeInterval(cookieExpirationDuration)),
+          .expires(now.addingTimeInterval(cookieExpirationDuration)),
           .path("/"),
         ]
       )
@@ -68,14 +70,17 @@ public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middlewar
 
 extension URLRequest {
   var session: Session {
+    @Dependency(\.envVars.appSecret) var appSecret
+    @Dependency(\.cookieTransform) var cookieTransform
+
     return self.cookies[pointFreeUserSessionCookieName]
       .flatMap { value in
-        switch Current.cookieTransform {
+        switch cookieTransform {
         case .plaintext:
           return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
         case .encrypted:
           return Response.Header
-            .verifiedValue(signedCookieValue: value, secret: Current.envVars.appSecret.rawValue)
+            .verifiedValue(signedCookieValue: value, secret: appSecret.rawValue)
         }
       }
       ?? .empty
@@ -197,7 +202,10 @@ private let pointFreeUserSessionCookieName = "pf_session"
 private func setCookie<A: Encodable>(
   key: String, value: A, options: Set<Response.Header.CookieOption> = []
 ) -> Response.Header? {
-  switch Current.cookieTransform {
+  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.cookieTransform) var cookieTransform
+
+  switch cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))
       .map { String(decoding: $0, as: UTF8.self) }
@@ -209,7 +217,7 @@ private func setCookie<A: Encodable>(
         key: key,
         value: value,
         options: options,
-        secret: Current.envVars.appSecret.rawValue,
+        secret: appSecret.rawValue,
         encrypt: true
       )
   }

@@ -1,5 +1,6 @@
 import Cryptor
 import Css
+import Dependencies
 import Dispatch
 import Either
 import Foundation
@@ -81,10 +82,12 @@ public func responseTimeout(_ interval: TimeInterval)
 public func respond<A>(
   _ view: @escaping (A) -> Node
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+  @Dependency(\.renderHtml) var renderHtml
+
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(view(conn.data)),
+        body: renderHtml(view(conn.data)),
         contentType: .html
       )
   }

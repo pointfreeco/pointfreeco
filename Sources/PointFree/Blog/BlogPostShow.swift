@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -19,14 +20,17 @@ let blogPostShowMiddleware =
         post: BlogPost, currentUser: User?, subscriberState: SubscriberState,
         currentRoute: SiteRoute?
       ) in
-      SimplePageLayoutData(
+      @Dependency(\.date.now) var now
+      @Dependency(\.assets) var assets
+
+      return SimplePageLayoutData(
         currentRoute: currentRoute,
         currentSubscriberState: subscriberState,
         currentUser: currentUser,
-        data: (Current.date(), post, subscriberState),
+        data: (now, post, subscriberState),
         description: post.blurb,
         extraStyles: markdownBlockStyles,
-        image: post.coverImage ?? Current.assets.emailHeaderImgSrc,
+        image: post.coverImage ?? assets.emailHeaderImgSrc,
         openGraphType: .website,
         style: .base(.mountains(.blog)),
         title: post.title,
@@ -46,7 +50,9 @@ private let fetchBlogPostForParam:
   )
 
 func fetchBlogPost(forParam param: Either<String, BlogPost.ID>) -> BlogPost? {
-  return Current.blogPosts()
+  @Dependency(\.blogPosts) var blogPosts
+
+  return blogPosts()
     .first(where: {
       param.right == .some($0.id)
         || param.left == .some($0.slug)

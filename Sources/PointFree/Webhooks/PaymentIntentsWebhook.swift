@@ -1,3 +1,4 @@
+import Dependencies
 import Either
 import Foundation
 import HttpPipeline
@@ -39,11 +40,12 @@ private func validateEvent(
 private func fetchGift(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (PaymentIntent, Gift), Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, PaymentIntent, Data> {
+  @Dependency(\.database) var database
 
   return { conn in
     let paymentIntent = conn.data
     return EitherIO {
-      try await Current.database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+      try await database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
     }
     .run
     .flatMap { errorOrGift in
@@ -61,6 +63,8 @@ private func fetchGift(
 private func handlePaymentIntent(
   conn: Conn<StatusLineOpen, (PaymentIntent, Gift)>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.database) var database
+
   let (paymentIntent, gift) = conn.data
 
   guard paymentIntent.status == .succeeded
@@ -71,7 +75,7 @@ private func handlePaymentIntent(
     if deliverNow {
       _ = try await sendGiftEmail(for: gift).performAsync()
     }
-    _ = try await Current.database.updateGiftStatus(gift.id, paymentIntent.status, deliverNow)
+    _ = try await database.updateGiftStatus(gift.id, paymentIntent.status, deliverNow)
   }
   .run
   .flatMap {

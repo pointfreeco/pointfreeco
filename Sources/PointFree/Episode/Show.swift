@@ -1,4 +1,5 @@
 import Css
+import Dependencies
 import Either
 import Foundation
 import FunctionalCss
@@ -59,20 +60,25 @@ private func episodePageData(
   permission: EpisodePermission,
   subscriberState: SubscriberState
 ) -> EpisodePageData {
+  @Dependency(\.collections) var collections
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
+
   let context: EpisodePageData.Context
-  if let collection = Current.collections.first(where: { $0.slug == collectionSlug }) {
+  if let collection = collections.first(where: { $0.slug == collectionSlug }) {
     context = .collection(collection)
   } else {
     context = .direct(
-      previousEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence - 1 }),
-      nextEpisode: Current.episodes().first(where: { $0.sequence == episode.sequence + 1 })
+      previousEpisode: episodes().first(where: { $0.sequence == episode.sequence - 1 }),
+      nextEpisode: episodes().first(where: { $0.sequence == episode.sequence + 1 })
     )
   }
 
   return EpisodePageData(
     context: context,
-    date: { Current.date() },
-    emergencyMode: Current.envVars.emergencyMode,
+    date: { now },
+    emergencyMode: emergencyMode,
     episode: episode,
     episodeProgress: episodeProgress,
     permission: permission,
@@ -147,8 +153,10 @@ private let updateProgress:
     }
 
     if isEpisodeViewable(for: permission) {
+      @Dependency(\.database) var database
+
       return EitherIO {
-        try await Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+        try await database.updateEpisodeProgress(episode.sequence, percent, user.id)
       }
       .run
       .flatMap { _ in
@@ -166,6 +174,7 @@ private let updateProgress:
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
 ) -> IO<Conn<ResponseEnded, Data>> {
+  @Dependency(\.database) var database
 
   let (episode, user) = (get2(conn.data), get3(conn.data))
 
@@ -178,8 +187,8 @@ private func applyCreditMiddleware<Z>(
   }
 
   return EitherIO {
-    try await Current.database.redeemEpisodeCredit(episode.sequence, user.id)
-    try await Current.database
+    try await database.redeemEpisodeCredit(episode.sequence, user.id)
+    try await database
       .updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
   }
   .run
@@ -235,12 +244,13 @@ private func validateCreditRequest<Z>(
 func fetchEpisodeProgress<I, Z>(conn: Conn<I, T4<EpisodePermission, Episode, User?, Z>>)
   -> IO<Conn<I, T5<EpisodePermission, Episode, Int?, User?, Z>>>
 {
+  @Dependency(\.database) var database
 
   let (permission, episode, currentUser) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
   return EitherIO {
     guard let currentUser else { return nil }
-    return try await Current.database.fetchEpisodeProgress(currentUser.id, episode.sequence)
+    return try await database.fetchEpisodeProgress(currentUser.id, episode.sequence)
   }
   .run
   .map {
@@ -254,6 +264,7 @@ func userEpisodePermission<I, Z>(
 )
   -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>>
 {
+  @Dependency(\.database) var database
 
   let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
@@ -263,7 +274,7 @@ func userEpisodePermission<I, Z>(
   }
 
   let hasCredit = IO {
-    guard let credits = try? await Current.database.fetchEpisodeCredits(user.id)
+    guard let credits = try? await database.fetchEpisodeCredits(user.id)
     else { return false }
     return credits.contains { $0.episodeSequence == episode.sequence }
   }
@@ -327,7 +338,9 @@ private func episodeNotFoundView(
 }
 
 private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {
-  return Current.episodes()
+  @Dependency(\.episodes) var episodes
+
+  return episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id)
     })
