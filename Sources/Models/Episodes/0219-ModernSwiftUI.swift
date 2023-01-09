@@ -12,10 +12,10 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_673_244_000),
     references: [
+      .swiftDependencies,
       .scrumdinger,
       .swiftClocks,
       .se_0374_clockSleepFor,
-      //      .swiftDependencies,
       .pointfreecoPackageCollection,
     ],
     sequence: 219,
