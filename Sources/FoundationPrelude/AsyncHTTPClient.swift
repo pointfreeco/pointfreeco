@@ -52,7 +52,7 @@ public func dataTask(
   let response = try await client
     .execute(request, timeout: .seconds(Int64(timeoutInterval)), logger: logger)
   let contentLength = response.headers.first(name: "content-length").flatMap(Int.init)
-    ?? 1024 * 1024  // 1MB
+    ?? 5 * 1024 * 1024  // 5MB
   let bytes = try await response.body.collect(upTo: contentLength)
   return (bytes, response)
 }
