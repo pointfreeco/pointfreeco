@@ -35,7 +35,6 @@ public func jsonDataTask<A: Decodable>(
   with request: HTTPClientRequest,
   decoder: JSONDecoder = JSONDecoder()
 ) async throws -> A {
-  @Dependency(\.logger) var logger
   let (bytes, _) = try await dataTask(with: request)
   do {
     return try decoder.decode(A.self, from: bytes)
@@ -47,6 +46,11 @@ public func jsonDataTask<A: Decodable>(
 public func dataTask(
   with request: HTTPClientRequest
 ) async throws -> (ByteBuffer, HTTPClientResponse) {
+  var request = request
+  if !request.headers.contains(name: "user-agent") {
+    request.headers.add(name: "user-agent", value: "pointfree.co")
+  }
+
   @Dependency(\.httpClient) var client
   @Dependency(\.logger) var logger
   let response =

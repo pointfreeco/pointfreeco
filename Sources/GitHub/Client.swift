@@ -41,11 +41,16 @@ extension Client {
     self.init(
       fetchAuthToken: { code in
         try await jsonDataTask(
-          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code)
+          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code),
+          decoder: gitHubJsonDecoder
         )
       },
-      fetchEmails: { try await jsonDataTask(with: fetchGitHubEmails(token: $0)) },
-      fetchUser: { try await jsonDataTask(with: fetchGitHubUser(with: $0)) }
+      fetchEmails: {
+        try await jsonDataTask(with: fetchGitHubEmails(token: $0), decoder: gitHubJsonDecoder)
+      },
+      fetchUser: {
+        try await jsonDataTask(with: fetchGitHubUser(with: $0), decoder: gitHubJsonDecoder)
+      }
     )
   }
 }
