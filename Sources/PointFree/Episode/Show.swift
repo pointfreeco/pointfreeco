@@ -111,45 +111,43 @@ private func validateUserEpisodePermission<Z>(
     <<< validateCreditRequest
 }
 
-let progressResponse:
-  M<Tuple2<Either<String, Episode.ID>, Int>> =
-    filterMap(
-      over1(episode(forParam:)) >>> require1 >>> pure,
-      or: writeStatus(.notFound) >=> end
-    )
-    <| userEpisodePermission
-    >=> updateProgress
+let progressResponse: M<Tuple2<Either<String, Episode.ID>, Int>> =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >=> end
+  )
+  <| userEpisodePermission
+  >=> updateProgress
 
-private let updateProgress:
-  M<Tuple3<EpisodePermission, Episode, Int>> = { conn in
-    @Dependency(\.currentUser) var currentUser
-    // NB: `lower` crashes on Linux 5.2. https://bugs.swift.org/browse/SR-12437
-    let (permission, episode, percent) = (get1(conn.data), get2(conn.data), get3(conn.data))
-    guard let currentUser = currentUser
-    else {
-      return conn
-        |> writeStatus(.ok)
-        >=> end
-    }
-
-    if isEpisodeViewable(for: permission) {
-      @Dependency(\.database) var database
-
-      return EitherIO {
-        try await database.updateEpisodeProgress(episode.sequence, percent, currentUser.id)
-      }
-      .run
-      .flatMap { _ in
-        conn
-          |> writeStatus(.ok)
-          >=> end
-      }
-    } else {
-      return conn
-        |> writeStatus(.ok)
-        >=> end
-    }
+private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn in
+  @Dependency(\.currentUser) var currentUser
+  // NB: `lower` crashes on Linux 5.2. https://bugs.swift.org/browse/SR-12437
+  let (permission, episode, percent) = (get1(conn.data), get2(conn.data), get3(conn.data))
+  guard let currentUser = currentUser
+  else {
+    return conn
+      |> writeStatus(.ok)
+      >=> end
   }
+
+  if isEpisodeViewable(for: permission) {
+    @Dependency(\.database) var database
+
+    return EitherIO {
+      try await database.updateEpisodeProgress(episode.sequence, percent, currentUser.id)
+    }
+    .run
+    .flatMap { _ in
+      conn
+        |> writeStatus(.ok)
+        >=> end
+    }
+  } else {
+    return conn
+      |> writeStatus(.ok)
+      >=> end
+  }
+}
 
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>

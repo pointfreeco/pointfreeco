@@ -26,7 +26,7 @@ public struct SimplePageLayoutData<A> {
   public var extraStyles: Stylesheet
   public var flash: Flash?
   public var image: String?
-  public var isGhosting: Bool // TODO: move to @Dependency
+  public var isGhosting: Bool  // TODO: move to @Dependency
   public var openGraphType: OpenGraphType
   public var style: Style
   public var title: String
@@ -64,7 +64,7 @@ public struct SimplePageLayoutData<A> {
 
 public func simplePageLayout<A>(
   cssConfig: Css.Config = .pretty,
-  emergencyMode: Bool = false, // TODO: move to @Dependency
+  emergencyMode: Bool = false,  // TODO: move to @Dependency
   _ contentView: @escaping (A) -> Node
 ) -> (SimplePageLayoutData<A>) -> Node {
   @Dependency(\.date.now) var now

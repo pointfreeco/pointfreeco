@@ -5,7 +5,6 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
-import Dependencies
 import PointFreeRouter
 import Prelude
 import Styleguide

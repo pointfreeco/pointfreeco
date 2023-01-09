@@ -39,7 +39,7 @@ extension Conn where Step == HeadersOpen {
         twitterCard: newLayoutData.twitterCard,
         twitterSite: "@pointfreeco",
         type: newLayoutData.openGraphType,
-        url: siteRouter.url(for: siteRoute) // TODO: should we have @Dependency(\.currentURL)?
+        url: siteRouter.url(for: siteRoute)  // TODO: should we have @Dependency(\.currentURL)?
       )
       >>> metaLayout(simplePageLayout(view))
       >>> addGoogleAnalytics

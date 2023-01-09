@@ -31,13 +31,13 @@ let sendFreeEpisodeEmailMiddleware:
     ResponseEnded,
     Episode.ID,
     Data
-> = { conn in
-  guard let episode = fetchEpisode(conn.data)
-  else { return conn |> redirect(to: .admin(.freeEpisodeEmail())) }
+  > = { conn in
+    guard let episode = fetchEpisode(conn.data)
+    else { return conn |> redirect(to: .admin(.freeEpisodeEmail())) }
 
-  return sendFreeEpisodeEmails(conn.map(const(episode)))
-    .flatMap { $0 |> redirect(to: .admin()) }
-}
+    return sendFreeEpisodeEmails(conn.map(const(episode)))
+      .flatMap { $0 |> redirect(to: .admin()) }
+  }
 
 func fetchEpisode(_ id: Episode.ID) -> Episode? {
   @Dependency(\.episodes) var episodes

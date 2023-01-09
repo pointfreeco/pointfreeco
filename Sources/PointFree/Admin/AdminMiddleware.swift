@@ -58,7 +58,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) -> IO<Conn<Respon
       |> showNewBlogPostEmailMiddleware
 
   case let
-      .newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest)):
+    .newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest)):
     return conn.map(
       const(episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
       |> sendNewEpisodeEmailMiddleware

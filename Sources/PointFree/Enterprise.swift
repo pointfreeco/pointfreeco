@@ -37,21 +37,23 @@ private let requireEnterpriseAccount:
   MT<
     EnterpriseAccount.Domain,
     EnterpriseAccount
-> = { middleware in
-  return { conn in
-    return IO {
-      guard let account = await fetchEnterpriseAccount(conn.data).performAsync()
-      else {
-        return await (conn |> redirect(
-          to: .home,
-          headersMiddleware: flash(.warning, "That enterprise account does not exist.")
-        )).performAsync()
-      }
+  > = { middleware in
+    return { conn in
+      return IO {
+        guard let account = await fetchEnterpriseAccount(conn.data).performAsync()
+        else {
+          return await
+            (conn
+            |> redirect(
+              to: .home,
+              headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+            )).performAsync()
+        }
 
-      return await middleware(conn.map(const(account))).performAsync()
+        return await middleware(conn.map(const(account))).performAsync()
+      }
     }
   }
-}
 
 let enterpriseRequestMiddleware =
   requireEnterpriseAccountWithFormData

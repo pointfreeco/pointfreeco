@@ -12,7 +12,7 @@ func aboutResponse(
 ) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
-    .respond(view: aboutView) { 
+    .respond(view: aboutView) {
       SimplePageLayoutData(
         data: [.brandon, .stephen],
         extraStyles: aboutExtraStyles,

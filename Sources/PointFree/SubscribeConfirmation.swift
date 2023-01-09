@@ -12,41 +12,42 @@ import Stripe
 import Tuple
 import Views
 
-public let subscribeConfirmation: M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> =
-  validateReferralCode
-  <| writeStatus(.ok)
-  >=> map(lower)
-  >>> respond(
-    view: Views.subscriptionConfirmation,
-    layoutData: {
-      (
-        lane: Pricing.Lane,
-        subscribeData: SubscribeConfirmationData,
-        coupon: Stripe.Coupon?,
-        referrer: User?
-      ) in
+public let subscribeConfirmation:
+  M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> =
+    validateReferralCode
+    <| writeStatus(.ok)
+    >=> map(lower)
+    >>> respond(
+      view: Views.subscriptionConfirmation,
+      layoutData: {
+        (
+          lane: Pricing.Lane,
+          subscribeData: SubscribeConfirmationData,
+          coupon: Stripe.Coupon?,
+          referrer: User?
+        ) in
         @Dependency(\.episodes) var episodes
         @Dependency(\.envVars) var envVars
         @Dependency(\.stripe.js) var js
 
-      return SimplePageLayoutData(
-        data: (
-          lane,
-          subscribeData,
-          coupon,
+        return SimplePageLayoutData(
+          data: (
+            lane,
+            subscribeData,
+            coupon,
             referrer,
             stats(forEpisodes: episodes()),
             js,
             envVars.stripe.publishableKey
-        ),
-        extraStyles: extraSubscriptionLandingStyles,
-        style: .base(.some(.minimal(.black))),
-        title: referrer == nil
-          ? "Subscribe to Point-Free"
-          : "Subscribe and get a free month of Point-Free"
-      )
-    }
-  )
+          ),
+          extraStyles: extraSubscriptionLandingStyles,
+          style: .base(.some(.minimal(.black))),
+          title: referrer == nil
+            ? "Subscribe to Point-Free"
+            : "Subscribe and get a free month of Point-Free"
+        )
+      }
+    )
 
 private func validateReferralCode(
   middleware: @escaping M<Tuple4<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?, User?>>

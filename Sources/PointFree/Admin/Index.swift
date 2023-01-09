@@ -29,10 +29,11 @@ func requireAdmin<A>(
 
     guard currentUser.isAdmin
     else {
-      return conn |> redirect(
-        to: .home,
-        headersMiddleware: flash(.error, "You don't have access to that.")
-      )
+      return conn
+        |> redirect(
+          to: .home,
+          headersMiddleware: flash(.error, "You don't have access to that.")
+        )
     }
 
     return middleware(conn.map(const(currentUser .*. conn.data)))

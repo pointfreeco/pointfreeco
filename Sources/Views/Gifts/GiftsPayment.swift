@@ -13,7 +13,7 @@ public func giftsPayment(
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   @Dependency(\.currentUser) var currentUser
-  
+
   return [
     .gridRow(
       .gridColumn(
