@@ -17,7 +17,7 @@ extension Host {
   }
 
   static var stephen: Host {
-    @Dependency(\..assets.stephenImgSrc) var stephenImgSrc
+    @Dependency(\.assets.stephenImgSrc) var stephenImgSrc
     return Host(
       bio: """
         Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a
