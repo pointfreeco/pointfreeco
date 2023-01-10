@@ -16,7 +16,7 @@ class AboutTests: TestCase {
     //SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {

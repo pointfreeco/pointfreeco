@@ -23,9 +23,10 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedOut() async throws {
     await assertSnapshot(
-      matching: connection(from: request(to: .discounts(code: "blobfest", nil)))
-        |> siteMiddleware,
-      as: .ioConn
+      matching: await _siteMiddleware(
+        connection(from: request(to: .discounts(code: "blobfest", nil)))
+      ),
+      as: .conn
     )
 
     #if !os(Linux)
@@ -57,10 +58,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
 
       #if !os(Linux)
@@ -95,10 +96,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
     }
   }
@@ -118,10 +119,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
     }
   }
@@ -141,10 +142,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
     }
   }
@@ -164,10 +165,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
     }
   }
@@ -187,10 +188,10 @@ class DiscountsTests: TestCase {
       $0.stripe.fetchCoupon = { _ in fiftyPercentOffForever }
     } operation: {
       await assertSnapshot(
-        matching: connection(
-          from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
-          |> siteMiddleware,
-        as: .ioConn
+        matching: await _siteMiddleware(
+          connection(from: request(to: .discounts(code: "blobfest", nil), session: .loggedIn))
+        ),
+        as: .conn
       )
     }
   }
@@ -199,12 +200,12 @@ class DiscountsTests: TestCase {
     @Dependency(\.envVars.regionalDiscountCouponId) var regionalDiscountCouponId: Coupon.ID
 
     await assertSnapshot(
-      matching: siteMiddleware(
+      matching: await _siteMiddleware(
         connection(
           from: request(to: .discounts(code: regionalDiscountCouponId, nil))
         )
       ),
-      as: .ioConn
+      as: .conn
     )
   }
 }

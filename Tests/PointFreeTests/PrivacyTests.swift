@@ -20,7 +20,7 @@ class PrivacyTests: TestCase {
   func testPrivacy() async throws {
     let conn = connection(from: request(to: .privacy))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {

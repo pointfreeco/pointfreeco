@@ -48,7 +48,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
         )
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([credit], credits)
@@ -76,7 +76,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
         )
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([], credits)
@@ -104,7 +104,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
         )
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([], credits)
@@ -134,7 +134,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
         )
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       let credits = try await self.database.fetchEpisodeCredits(user.id)
       XCTAssertEqual([credit], credits)
@@ -173,7 +173,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -205,7 +205,7 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -236,7 +236,7 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -257,7 +257,7 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -284,7 +284,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -311,7 +311,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -338,7 +338,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -359,7 +359,7 @@ class EpisodePageTests: TestCase {
 
     let conn = connection(from: episode)
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -389,7 +389,7 @@ class EpisodePageTests: TestCase {
         from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -424,7 +424,7 @@ class EpisodePageTests: TestCase {
           to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -459,7 +459,7 @@ class EpisodePageTests: TestCase {
           to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -494,7 +494,7 @@ class EpisodePageTests: TestCase {
           to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -572,7 +572,7 @@ class EpisodePageTests: TestCase {
         }
       #endif
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -588,7 +588,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -606,7 +606,7 @@ class EpisodePageTests: TestCase {
       )
       let conn = connection(from: progressRequest)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
       XCTAssertEqual(didUpdate, true)
     }
   }
@@ -624,7 +624,7 @@ class EpisodePageTests: TestCase {
       )
       let conn = connection(from: progressRequest)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
       XCTAssertEqual(didUpdate, false)
     }
   }
@@ -638,7 +638,7 @@ class EpisodePageTests: TestCase {
 
       let conn = connection(from: episode)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 }

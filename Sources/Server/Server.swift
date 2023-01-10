@@ -22,7 +22,9 @@ struct Server {
     // Server
 
     run(
-      siteMiddleware,
+      { conn in
+        IO { await _siteMiddleware(conn) }
+      },
       on: envVars.port,
       eventLoopGroup: eventLoopGroup,
       gzip: true,

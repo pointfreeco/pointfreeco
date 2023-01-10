@@ -25,7 +25,7 @@ final class NotFoundMiddlewareTests: TestCase {
   func testNotFound() async throws {
     let conn = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -54,7 +54,7 @@ final class NotFoundMiddlewareTests: TestCase {
       req.url?.appendPathComponent("404")
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {

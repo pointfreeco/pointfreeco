@@ -18,7 +18,7 @@ public let siteMiddleware = { conn in
   IO { await _siteMiddleware(conn) }
 }
 
-private func _siteMiddleware(
+public func _siteMiddleware(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database

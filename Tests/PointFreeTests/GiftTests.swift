@@ -51,10 +51,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -115,10 +115,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -165,10 +165,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -231,10 +231,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -293,10 +293,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -334,10 +334,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -378,10 +378,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -426,10 +426,10 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
       await _assertInlineSnapshot(
-        matching: result, as: .ioConn,
+        matching: result, as: .conn,
         with: """
           POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
           Authorization: Basic aGVsbG86d29ybGQ=
@@ -468,7 +468,7 @@ class GiftTests: TestCase {
         }
       #endif
 
-      await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -493,7 +493,7 @@ class GiftTests: TestCase {
         }
       #endif
 
-      await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 }

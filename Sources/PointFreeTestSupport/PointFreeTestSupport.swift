@@ -96,6 +96,27 @@ extension Snapshotting {
 
   #if os(macOS)
     @available(OSX 10.13, *)
+    public static func connWebView(
+      size: CGSize
+    ) -> Snapshotting<Conn<ResponseEnded, Data>, NSImage> {
+      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor conn in
+        let webView = WKWebView(frame: .init(origin: .zero, size: size))
+        webView.loadHTMLString(
+          String(
+            decoding: withDependencies {
+              $0.renderHtml = { Html.render($0) }
+            } operation: {
+              conn.data
+            },
+            as: UTF8.self
+          ),
+          baseURL: nil
+        )
+        return webView
+      }
+    }
+
+    @available(OSX 10.13, *)
     public static func ioConnWebView(size: CGSize) -> Snapshotting<
       IO<Conn<ResponseEnded, Data>>, NSImage
     > {

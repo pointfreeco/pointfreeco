@@ -28,7 +28,7 @@ class BlogTests: TestCase {
   func testBlogIndex() async throws {
     let conn = connection(from: request(to: .blog()))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -62,7 +62,7 @@ class BlogTests: TestCase {
       $0.blogPosts = unzurry(posts)
     } operation: {
       let conn = connection(from: request(to: .blog()))
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -82,7 +82,7 @@ class BlogTests: TestCase {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -101,16 +101,16 @@ class BlogTests: TestCase {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
   }
 
   func testBlogAtomFeed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
   }
 
   func testBlogAtomFeed_Unauthed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
   }
 }

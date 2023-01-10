@@ -34,7 +34,7 @@ class EnterpriseTests: TestCase {
     } operation: {
       let req = request(to: .enterprise(account.domain))
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -58,7 +58,7 @@ class EnterpriseTests: TestCase {
     } operation: {
       let req = request(to: .enterprise(account.domain))
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -74,7 +74,7 @@ class EnterpriseTests: TestCase {
     } operation: {
       let req = request(to: .enterprise(account.domain), session: .loggedIn(as: user))
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -86,7 +86,7 @@ class EnterpriseTests: TestCase {
       session: .loggedOut
     )
     let conn = connection(from: req)
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
   }
 
   func testAcceptInvitation_BadEmail() async throws {
@@ -108,7 +108,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -131,7 +131,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -156,7 +156,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -180,7 +180,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -203,7 +203,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -228,7 +228,7 @@ class EnterpriseTests: TestCase {
         session: .loggedIn(as: loggedInUser)
       )
       let conn = connection(from: req)
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
 
     // todo: more verifications that subscription was linked

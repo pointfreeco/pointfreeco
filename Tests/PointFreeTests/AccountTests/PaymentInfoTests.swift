@@ -25,7 +25,7 @@ class PaymentInfoTests: TestCase {
   func testRender() async throws {
     let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -51,7 +51,7 @@ class PaymentInfoTests: TestCase {
       $0.stripe.fetchSubscription = { _ in subscription }
     } operation: {
       let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
     }
   }
 }

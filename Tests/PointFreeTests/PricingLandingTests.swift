@@ -30,9 +30,9 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
       $0.database.fetchUserById = { _ in user }
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = conn |> siteMiddleware
+      let result = await _siteMiddleware(conn)
 
-      await assertSnapshot(matching: result, as: .ioConn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -63,8 +63,8 @@ class PricingLandingTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = conn |> siteMiddleware
-      await assertSnapshot(matching: result, as: .ioConn)
+      let result = await _siteMiddleware(conn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -82,9 +82,9 @@ class PricingLandingTests: TestCase {
 
   func testLanding_LoggedOut() async throws {
     let conn = connection(from: request(to: .pricingLanding, session: .loggedOut))
-    let result = conn |> siteMiddleware
+    let result = await _siteMiddleware(conn)
 
-    await assertSnapshot(matching: result, as: .ioConn)
+    await assertSnapshot(matching: result, as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {

@@ -23,7 +23,7 @@ final class InvoicesTests: TestCase {
   func testInvoices() async throws {
     let conn = connection(from: request(to: .account(.invoices()), session: .loggedIn))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -57,7 +57,7 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -85,7 +85,7 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -113,7 +113,7 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {

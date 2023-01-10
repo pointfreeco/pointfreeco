@@ -38,7 +38,7 @@ class CollectionsTests: TestCase {
         from: request(to: .collections(), basicAuth: true)
       )
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -59,7 +59,7 @@ class CollectionsTests: TestCase {
       from: request(to: .collections(.collection(self.collections[0].slug)), basicAuth: true)
     )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -87,7 +87,7 @@ class CollectionsTests: TestCase {
       )
     )
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
