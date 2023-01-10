@@ -23,7 +23,7 @@ class AtomFeedTests: TestCase {
     } operation: {
       let conn = connection(from: request(to: .feed(.atom)))
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -33,7 +33,7 @@ class AtomFeedTests: TestCase {
     } operation: {
       let conn = connection(from: request(to: .feed(.episodes)))
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -55,7 +55,7 @@ class AtomFeedTests: TestCase {
         $0.episodes = { [recentlyFreeEpisode, freeEpisode] }
       } operation: {
         let conn = connection(from: request(to: .feed(.episodes)))
-        await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     }
   }

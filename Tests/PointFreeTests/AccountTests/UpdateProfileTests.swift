@@ -45,7 +45,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output = await siteMiddleware(connection(from: update)).performAsync()
+    let output = await siteMiddleware(connection(from: update))
 
     user = try await self.database.fetchUserById(user.id)
     user.referralCode = "deadbeef"
@@ -83,7 +83,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
       session: .init(flash: nil, userId: user.id)
     )
 
-    let output = await siteMiddleware(connection(from: update)).performAsync()
+    let output = await siteMiddleware(connection(from: update))
 
     let settings = try await self.database.fetchEmailSettingsForUserId(user.id)
     await assertSnapshot(
@@ -137,7 +137,7 @@ class UpdateProfileTests: TestCase {
           userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
       )
 
-      let output = await siteMiddleware(connection(from: update)).performAsync()
+      let output = await siteMiddleware(connection(from: update))
 
       #if !os(Linux)
         await assertSnapshot(matching: output, as: .conn)
