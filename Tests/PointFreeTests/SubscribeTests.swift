@@ -39,7 +39,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -65,7 +64,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         from: request(to: .subscribe(.some(subscribeData)), session: session)
       )
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -98,7 +96,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(.some(.individualMonthly)), session: session)
         )
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -137,7 +134,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(.some(.individualYearly)), session: session)
         )
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -172,7 +168,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       to: .subscribe(.some(subscribeData)),
       session: session
     )
-    let conn = await siteMiddleware(connection(from: req)).performAsync()
+    let conn = await siteMiddleware(connection(from: req))
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -208,7 +204,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       to: .subscribe(.some(subscribeData)),
       session: session
     )
-    let conn = await siteMiddleware(connection(from: req)).performAsync()
+    let conn = await siteMiddleware(connection(from: req))
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -287,7 +283,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .subscribe(subscribeData), session: session)
         )
       )
-      .performAsync()
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
       #endif
@@ -351,7 +346,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-      .performAsync()
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
       #endif
@@ -409,7 +403,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -471,7 +464,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -560,7 +552,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-      .performAsync()
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
       #endif
@@ -651,7 +642,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: session))
       )
-      .performAsync()
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
       #endif
@@ -690,7 +680,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -712,7 +701,6 @@ final class SubscribeTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly))))
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -735,7 +723,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -747,7 +734,6 @@ final class SubscribeTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualYearly))))
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -758,7 +744,6 @@ final class SubscribeTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -769,7 +754,6 @@ final class SubscribeTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
     )
-    .performAsync()
 
     #if !os(Linux)
       await assertSnapshot(matching: conn, as: .conn)
@@ -787,7 +771,6 @@ final class SubscribeTests: TestCase {
             from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
           )
         )
-        .performAsync()
 
         await assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
@@ -796,7 +779,6 @@ final class SubscribeTests: TestCase {
             from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
           )
         )
-        .performAsync()
 
         await assertSnapshot(matching: conn2, as: .conn, named: "too_low")
       }
@@ -812,7 +794,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -829,7 +810,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -856,7 +836,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -883,7 +862,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -900,7 +878,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -927,7 +904,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -953,7 +929,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -980,7 +955,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)
@@ -1011,7 +985,6 @@ final class SubscribeTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .subscribe(subscribeData), session: .loggedIn(as: user)))
       )
-      .performAsync()
 
       #if !os(Linux)
         await assertSnapshot(matching: conn, as: .conn)

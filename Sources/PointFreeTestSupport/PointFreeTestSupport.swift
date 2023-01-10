@@ -84,16 +84,6 @@ extension UUID {
 }
 
 extension Snapshotting {
-  public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
-    return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      await withDependencies {
-        $0.renderHtml = { debugRender($0) }
-      } operation: {
-        await io.performAsync()
-      }
-    }
-  }
-
   #if os(macOS)
     @available(OSX 10.13, *)
     public static func connWebView(
@@ -107,27 +97,6 @@ extension Snapshotting {
               $0.renderHtml = { Html.render($0) }
             } operation: {
               conn.data
-            },
-            as: UTF8.self
-          ),
-          baseURL: nil
-        )
-        return webView
-      }
-    }
-
-    @available(OSX 10.13, *)
-    public static func ioConnWebView(size: CGSize) -> Snapshotting<
-      IO<Conn<ResponseEnded, Data>>, NSImage
-    > {
-      return Snapshotting<NSView, NSImage>.image.pullback { @MainActor io in
-        let webView = WKWebView(frame: .init(origin: .zero, size: size))
-        await webView.loadHTMLString(
-          String(
-            decoding: withDependencies {
-              $0.renderHtml = { Html.render($0) }
-            } operation: {
-              await io.performAsync().data
             },
             as: UTF8.self
           ),

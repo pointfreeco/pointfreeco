@@ -51,7 +51,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -115,7 +115,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -165,7 +165,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -231,7 +231,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -293,7 +293,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -334,7 +334,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -378,7 +378,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -426,7 +426,7 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await _assertInlineSnapshot(
         matching: result, as: .conn,
@@ -459,16 +459,16 @@ class GiftTests: TestCase {
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: siteMiddleware(conn),
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+              "desktop": .connWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .connWebView(size: .init(width: 500, height: 2300)),
             ]
           )
         }
       #endif
 
-      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -484,16 +484,16 @@ class GiftTests: TestCase {
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: siteMiddleware(conn),
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2300)),
+              "desktop": .connWebView(size: .init(width: 1100, height: 2300)),
+              "mobile": .connWebView(size: .init(width: 500, height: 2300)),
             ]
           )
         }
       #endif
 
-      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 }

@@ -20,15 +20,15 @@ class PrivacyTests: TestCase {
   func testPrivacy() async throws {
     let conn = connection(from: request(to: .privacy))
 
-    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
+            "desktop": .connWebView(size: .init(width: 1080, height: 1000)),
+            "mobile": .connWebView(size: .init(width: 400, height: 1000)),
           ]
         )
       }

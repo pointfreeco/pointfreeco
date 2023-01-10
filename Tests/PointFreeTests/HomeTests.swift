@@ -44,17 +44,17 @@ class HomeTests: TestCase {
 
   func testHomepage_LoggedOut() async throws {
     let conn = connection(from: request(to: .home))
-    let result = await _siteMiddleware(conn)
+    let result = await siteMiddleware(conn)
 
     await assertSnapshot(matching: result, as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: siteMiddleware(conn),
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 3000)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 3500)),
+            "desktop": .connWebView(size: .init(width: 1080, height: 3000)),
+            "mobile": .connWebView(size: .init(width: 400, height: 3500)),
           ]
         )
       }
@@ -64,15 +64,15 @@ class HomeTests: TestCase {
   func testHomepage_Subscriber() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 2800)),
+            "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
+            "mobile": .connWebView(size: .init(width: 400, height: 2800)),
           ]
         )
       }
@@ -82,6 +82,6 @@ class HomeTests: TestCase {
   func testEpisodesIndex() async throws {
     let conn = connection(from: request(to: .episode(.index)))
 
-    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 }

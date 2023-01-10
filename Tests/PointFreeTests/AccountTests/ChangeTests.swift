@@ -29,7 +29,7 @@ final class ChangeTests: TestCase {
       } operation: {
         let conn = connection(
           from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -46,7 +46,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -63,7 +63,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -80,7 +80,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -97,7 +97,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -110,7 +110,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -123,7 +123,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(
             to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -138,10 +138,8 @@ final class ChangeTests: TestCase {
 
         let conn = connection(
           from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
-        let result = conn |> siteMiddleware
-
-        let performed = await result.performAsync()
-        await assertSnapshot(matching: performed, as: .conn)
+        let result = await siteMiddleware(conn)
+        await assertSnapshot(matching: result, as: .conn)
       }
     #endif
   }
@@ -161,7 +159,7 @@ final class ChangeTests: TestCase {
         let conn = connection(
           from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
 
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }
@@ -184,7 +182,7 @@ final class ChangeTests: TestCase {
           from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn)
         )
 
-        await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
   }

@@ -38,15 +38,15 @@ class CollectionsTests: TestCase {
         from: request(to: .collections(), basicAuth: true)
       )
 
-      await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: conn |> siteMiddleware,
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 1500)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 1900)),
+              "desktop": .connWebView(size: .init(width: 1100, height: 1500)),
+              "mobile": .connWebView(size: .init(width: 500, height: 1900)),
             ]
           )
         }
@@ -59,15 +59,15 @@ class CollectionsTests: TestCase {
       from: request(to: .collections(.collection(self.collections[0].slug)), basicAuth: true)
     )
 
-    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1100)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1100)),
+            "desktop": .connWebView(size: .init(width: 1100, height: 1100)),
+            "mobile": .connWebView(size: .init(width: 500, height: 1100)),
           ]
         )
       }
@@ -87,15 +87,15 @@ class CollectionsTests: TestCase {
       )
     )
 
-    await assertSnapshot(matching: await _siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 1800)),
+            "desktop": .connWebView(size: .init(width: 1100, height: 1800)),
+            "mobile": .connWebView(size: .init(width: 500, height: 1800)),
           ]
         )
       }

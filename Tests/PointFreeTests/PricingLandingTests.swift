@@ -30,17 +30,17 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
       $0.database.fetchUserById = { _ in user }
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
 
       await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: conn |> siteMiddleware,
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 4700)),
+              "desktop": .connWebView(size: .init(width: 1080, height: 4200)),
+              "mobile": .connWebView(size: .init(width: 400, height: 4700)),
             ]
           )
         }
@@ -63,16 +63,16 @@ class PricingLandingTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
     } operation: {
       let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
-      let result = await _siteMiddleware(conn)
+      let result = await siteMiddleware(conn)
       await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: conn |> siteMiddleware,
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1080, height: 4000)),
-              "mobile": .ioConnWebView(size: .init(width: 400, height: 4600)),
+              "desktop": .connWebView(size: .init(width: 1080, height: 4000)),
+              "mobile": .connWebView(size: .init(width: 400, height: 4600)),
             ]
           )
         }
@@ -82,17 +82,17 @@ class PricingLandingTests: TestCase {
 
   func testLanding_LoggedOut() async throws {
     let conn = connection(from: request(to: .pricingLanding, session: .loggedOut))
-    let result = await _siteMiddleware(conn)
+    let result = await siteMiddleware(conn)
 
     await assertSnapshot(matching: result, as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
-            "mobile": .ioConnWebView(size: .init(width: 400, height: 4700)),
+            "desktop": .connWebView(size: .init(width: 1080, height: 4200)),
+            "mobile": .connWebView(size: .init(width: 400, height: 4700)),
           ]
         )
       }
