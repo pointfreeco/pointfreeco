@@ -572,7 +572,12 @@ class EpisodePageTests: TestCase {
         }
       #endif
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await withDependencies {
+        $0.episodes = { [episode] }
+        $0.renderHtml = { Html.debugRender($0) }
+      } operation: {
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      }
     }
   }
 
