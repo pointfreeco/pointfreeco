@@ -4,7 +4,6 @@ import NIO
 import PointFree
 import Prelude
 
-@main
 struct Server {
   static func main() async throws {
     @Dependency(\.envVars) var envVars
@@ -23,7 +22,11 @@ struct Server {
 
     run(
       { conn in
-        IO { await siteMiddleware(conn) }
+        //        IO {
+        await siteMiddleware(conn)
+
+//      }
+//        conn.writeStatus(.ok).respond(text: "Hi")
       },
       on: envVars.port,
       eventLoopGroup: eventLoopGroup,
@@ -32,3 +35,12 @@ struct Server {
     )
   }
 }
+
+import Dispatch
+let group = DispatchGroup()
+group.enter()
+Task {
+  try await Server.main()
+  group.leave()
+}
+group.wait()
