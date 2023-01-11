@@ -140,7 +140,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await collectionSectionMiddleware(
       conn.map(const(collectionSlug .*. sectionSlug .*. unit))
     )
-    .performAsync()
+      .performAsync()
 
   case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
     return await episodeResponse(conn.map(const(episodeParam .*. collectionSlug .*. unit)))
@@ -201,8 +201,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     @Dependency(\.envVars.emergencyMode) var emergencyMode
     guard !emergencyMode
     else {
-      return
-        conn
+      return conn
         .writeStatus(.internalServerError)
         .respond(json: "{}")
     }
@@ -315,14 +314,12 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .webhooks(.stripe(.unknown(event))):
     @Dependency(\.logger) var logger: Logger
     logger.log(.error, "Received invalid webhook \(event.type)")
-    return
-      conn
+    return conn
       .writeStatus(.internalServerError)
       .respond(text: "We don't support this event.")
 
   case .webhooks(.stripe(.fatal)):
-    return
-      conn
+    return conn
       .writeStatus(.internalServerError)
       .respond(text: "We don't support this event.")
   }

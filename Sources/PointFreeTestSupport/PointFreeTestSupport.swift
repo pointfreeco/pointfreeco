@@ -84,31 +84,31 @@ extension UUID {
 }
 
 extension Snapshotting {
-  #if os(macOS)
-    @available(OSX 10.13, *)
-    public static func connWebView(
-      size: CGSize
-    ) -> Snapshotting<Conn<ResponseEnded, Data>, NSImage> {
-      var snapshotting = Snapshotting<NSView, NSImage>.image
-        .pullback { @MainActor (conn: Conn<ResponseEnded, Data>) -> NSView in
-          @Dependency(\.renderHtml) var renderHtml
+#if os(macOS)
+  @available(OSX 10.13, *)
+  public static func connWebView(
+    size: CGSize
+  ) -> Snapshotting<Conn<ResponseEnded, Data>, NSImage> {
+    var snapshotting = Snapshotting<NSView, NSImage>.image
+      .pullback { @MainActor (conn: Conn<ResponseEnded, Data>) -> NSView in
+        @Dependency(\.renderHtml) var renderHtml;
 
-          let webView = WKWebView(frame: .init(origin: .zero, size: size))
-          webView.loadHTMLString(String(decoding: conn.data, as: UTF8.self), baseURL: nil)
-          return webView
-        }
-
-      snapshotting.snapshot = { [snapshot = snapshotting.snapshot] value in
-        try await withDependencies {
-          $0.renderHtml = { Html.render($0) }
-        } operation: {
-          try await snapshot { try await value() }
-        }
+        let webView = WKWebView(frame: .init(origin: .zero, size: size))
+        webView.loadHTMLString(String(decoding: conn.data, as: UTF8.self), baseURL: nil)
+        return webView
       }
 
-      return snapshotting
+    snapshotting.snapshot = { [snapshot = snapshotting.snapshot] value in
+      try await withDependencies {
+        $0.renderHtml = { Html.render($0) }
+      } operation: {
+        try await snapshot { try await value() }
+      }
     }
-  #endif
+
+    return snapshotting
+  }
+#endif
 }
 
 public func request(
