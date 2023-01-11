@@ -134,7 +134,12 @@ private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn 
     @Dependency(\.database) var database
 
     return EitherIO {
-      try await database.updateEpisodeProgress(episode.sequence, percent, currentUser.id)
+      try await database.updateEpisodeProgress(
+        episode.sequence,
+        percent,
+        percent >= 90,
+        currentUser.id
+      )
     }
     .run
     .flatMap { _ in

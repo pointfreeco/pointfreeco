@@ -3,7 +3,7 @@
     {
       "identity" : "async-http-client",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server/async-http-client.git",
+      "location" : "https://github.com/swift-server/async-http-client",
       "state" : {
         "revision" : "5bee16a79922e3efcb5cea06ecd27e6f8048b56b",
         "version" : "1.13.1"
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/async-kit.git",
       "state" : {
-        "revision" : "3be4b6418d1e8b835b0b1a1bee06b249faa4da5f",
-        "version" : "1.14.0"
+        "revision" : "c3329e444bafbb12d1d312af9191be95348a8175",
+        "version" : "1.13.0"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-nio.git",
       "state" : {
-        "revision" : "7daf026e145de2c07d6e37f4171b1acb4b5f22b1",
-        "version" : "1.12.1"
+        "revision" : "382b0e10c077bd579d85934b255b33b7dd0220f0",
+        "version" : "1.11.1"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/sql-kit.git",
       "state" : {
-        "revision" : "dcf10a00d7d5df987b7948e6fd5596fb65f6d0c2",
-        "version" : "3.23.0"
+        "revision" : "3c5413a229bc2abc962dab17ea66d25e448ad344",
+        "version" : "3.21.0"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
       "state" : {
-        "revision" : "bb436421f57269fbcfe7360735985321585a86e5",
-        "version" : "0.10.1"
+        "revision" : "7346701ea29da0a85d4403cf3d7a589a58ae3dee",
+        "version" : "0.9.2"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-custom-dump",
       "state" : {
-        "revision" : "ead7d30cc224c3642c150b546f4f1080d1c411a8",
-        "version" : "0.6.1"
+        "revision" : "c9b6b940d95c0a925c63f6858943415714d8a981",
+        "version" : "0.5.2"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "e855380cb5234e96b760d93e0bfdc403e381e928",
-        "version" : "2.45.0"
+        "revision" : "a16e2f54a25b2af217044e5168997009a505930f",
+        "version" : "2.42.0"
       }
     },
     {
@@ -176,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-extras.git",
       "state" : {
-        "revision" : "91dd2d61fb772e1311bb5f13b59266b579d77e42",
-        "version" : "1.15.0"
+        "revision" : "6c84d247754ad77487a6f0694273b89b83efd056",
+        "version" : "1.14.0"
       }
     },
     {
@@ -194,8 +194,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-ssl.git",
       "state" : {
-        "revision" : "4fb7ead803e38949eb1d6fabb849206a72c580f3",
-        "version" : "2.23.0"
+        "revision" : "ba7c0d7f82affc518147ea61d240330bf7f7ea9b",
+        "version" : "2.22.1"
       }
     },
     {
@@ -203,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-transport-services.git",
       "state" : {
-        "revision" : "c0d9a144cfaec8d3d596aadde3039286a266c15c",
-        "version" : "1.15.0"
+        "revision" : "b6e37a0d442745760d6ed0195d8f283d3ce0414a",
+        "version" : "1.14.1"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-parsing",
       "state" : {
-        "revision" : "4bb9192468c1a8be57f46b7d6fd4f561c88b2195",
-        "version" : "0.11.0"
+        "revision" : "bc92e84968990b41640214b636667f35b6e5d44c",
+        "version" : "0.10.0"
       }
     },
     {
@@ -257,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-url-routing",
       "state" : {
-        "revision" : "f54c4f74e7884f7930560c08387817ce28271770",
-        "version" : "0.4.0"
+        "revision" : "80e8a0257ccdd639e31f709954ceca6b690fdc67",
+        "version" : "0.3.1"
       }
     },
     {
@@ -275,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "a9daebf0bf65981fd159c885d504481a65a75f02",
-        "version" : "0.8.0"
+        "revision" : "16b23a295fa322eb957af98037f86791449de60f",
+        "version" : "0.8.1"
       }
     }
   ],

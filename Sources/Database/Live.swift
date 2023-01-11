@@ -778,6 +778,13 @@ extension Client {
           "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(raw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "episode_progresses"
+          ADD COLUMN IF NOT EXISTS
+          "is_finished" boolean NOT NULL DEFAULT FALSE
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -823,13 +830,15 @@ extension Client {
           )
         }
       },
-      updateEpisodeProgress: { episodeSequence, percent, userId in
+      updateEpisodeProgress: { episodeSequence, percent, isFinished, userId in
         try await pool.sqlDatabase.run(
           """
           INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
-          VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId))
+          VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId), \(bind: isFinished))
           ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
-          SET "percent" = \(bind: percent)
+          SET
+            "percent" = \(bind: percent),
+            "is_finished" = "episode_progresses"."is_finished" OR \(bind: isFinished)
           """
         )
       },

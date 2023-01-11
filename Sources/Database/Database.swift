@@ -56,7 +56,7 @@ public struct Client {
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) async throws -> Void
   public var updateEmailSettings: ([EmailSetting.Newsletter]?, Models.User.ID) async throws -> Void
-  public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.ID) async throws -> Void
+  public var updateEpisodeProgress: (Episode.Sequence, Int, Bool, Models.User.ID) async throws -> Void
   public var updateGift: (Gift.ID, Stripe.Subscription.ID) async throws -> Gift
   public var updateGiftStatus:
     (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
@@ -115,7 +115,7 @@ public struct Client {
     sawUser: @escaping (Models.User.ID) async throws -> Void,
     updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws ->
       Void,
-    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.ID) async throws -> Void,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Bool, Models.User.ID) async throws -> Void,
     updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
     updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
       throws -> Gift,
