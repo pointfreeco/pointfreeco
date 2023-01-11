@@ -12,7 +12,7 @@ struct Server {
 
     // Bootstrap
     _ =
-    try await PointFree
+      try await PointFree
       .bootstrap()
       .run
       .performAsync()
