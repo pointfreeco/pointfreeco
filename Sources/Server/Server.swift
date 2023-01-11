@@ -11,20 +11,16 @@ struct Server {
     @Dependency(\.mainEventLoopGroup) var eventLoopGroup: any EventLoopGroup
 
     // Bootstrap
-
     _ =
-      try await PointFree
+    try await PointFree
       .bootstrap()
       .run
       .performAsync()
       .unwrap()
 
     // Server
-
     run(
-      { conn in
-        IO { await siteMiddleware(conn) }
-      },
+      siteMiddleware,
       on: envVars.port,
       eventLoopGroup: eventLoopGroup,
       gzip: true,

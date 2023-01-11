@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "e49dfe4d9e4c5c06f3334361360b801aef41631c",
-        "version" : "0.1.1"
+        "revision" : "7a094fcc6a4fcb34fbe625ecd3acd81b881a6dfb",
+        "version" : "0.1.3"
       }
     },
     {
@@ -266,8 +266,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-web",
       "state" : {
-        "branch" : "c754f0e",
-        "revision" : "c754f0e58e559b61e2b3fdbbe250c1c195b5a72f"
+        "branch" : "3fa0e16",
+        "revision" : "3fa0e161815f7a05187842fbe84583f82c938604"
       }
     },
     {
