@@ -833,7 +833,7 @@ extension Client {
       updateEpisodeProgress: { episodeSequence, percent, isFinished, userId in
         try await pool.sqlDatabase.run(
           """
-          INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
+          INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id", "is_finished")
           VALUES (\(bind: episodeSequence), \(bind: percent), \(bind: userId), \(bind: isFinished))
           ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
           SET

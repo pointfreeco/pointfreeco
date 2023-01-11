@@ -47,7 +47,7 @@ extension Client {
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
     sawUser: { _ in },
     updateEmailSettings: { _, _ in },
-    updateEpisodeProgress: { _, _, _ in },
+    updateEpisodeProgress: { _, _, _, _ in },
     updateGift: { _, _ in .fulfilled },
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },

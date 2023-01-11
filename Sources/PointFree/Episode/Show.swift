@@ -142,7 +142,7 @@ private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn 
       )
     }
     .run
-    .flatMap { _ in
+    .flatMap { error in
       conn
         |> writeStatus(.ok)
         >=> end
