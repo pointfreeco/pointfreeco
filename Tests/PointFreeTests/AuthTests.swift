@@ -39,6 +39,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
         )
       )
+      .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
       let registeredUser = try await self.database
@@ -70,6 +71,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
           from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
         )
       )
+      .performAsync()
       await assertSnapshot(matching: result, as: .conn)
 
       let registeredUser = try await self.database
@@ -86,7 +88,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLoginWithRedirect() async throws {
@@ -96,7 +98,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       to: .login(redirect: siteRouter.url(for: .episode(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
 
@@ -114,7 +116,7 @@ class AuthTests: TestCase {
     } operation: {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
       let conn = connection(from: auth)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -126,7 +128,7 @@ class AuthTests: TestCase {
     } operation: {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
       let conn = connection(from: auth)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -142,7 +144,7 @@ class AuthTests: TestCase {
         to: .gitHubCallback(
           code: "deadbeef", redirect: siteRouter.url(for: .episode(.show(.right(42))))))
       let conn = connection(from: auth)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -152,7 +154,7 @@ class AuthTests: TestCase {
     } operation: {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
       let conn = connection(from: auth)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -160,31 +162,31 @@ class AuthTests: TestCase {
     let login = request(to: .login(redirect: nil))
     let conn = connection(from: login)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLogin_AlreadyLoggedIn() async throws {
     let login = request(to: .login(redirect: nil), session: .loggedIn)
     let conn = connection(from: login)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testLogout() async throws {
     let conn = connection(from: request(to: .logout))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testHome_LoggedOut() async throws {
     let conn = connection(from: request(to: .home, session: .loggedOut))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testHome_LoggedIn() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

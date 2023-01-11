@@ -14,7 +14,11 @@ import Styleguide
 import Tuple
 import Views
 
-public func siteMiddleware(
+public let siteMiddleware = { conn in
+  IO { await _siteMiddleware(conn) }
+}
+
+private func _siteMiddleware(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
@@ -94,11 +98,12 @@ public func siteMiddleware(
     // Early out if route cannot be matched
     guard siteRoute != nil
     else { return await routeNotFoundMiddleware(conn).performAsync() }
-    return await render(conn: conn)
+
+    return await render(conn: conn).performAsync()
   }
 }
 
-private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<ResponseEnded, Data> {
+private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.currentRoute) var route
   @Dependency(\.siteRouter) var siteRouter
@@ -106,45 +111,43 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
   switch route {
   case .about:
-    return aboutResponse(conn.map { _ in () })
+    return pure(aboutResponse(conn.map { _ in () }))
 
   case let .account(account):
-    return await accountMiddleware(conn: conn.map(const(account)))
-      .performAsync()
+    return conn.map(const(account))
+      |> accountMiddleware
 
   case let .admin(route):
-    return await adminMiddleware(conn: conn.map(const(route)))
-      .performAsync()
+    return conn.map(const(route))
+      |> adminMiddleware
 
   case let .api(apiRoute):
-    return await apiMiddleware(conn.map(const(apiRoute)))
-      .performAsync()
+    return conn.map(const(apiRoute))
+      |> apiMiddleware
 
   case .appleDeveloperMerchantIdDomainAssociation:
-    return await appleDeveloperMerchantIdDomainAssociationMiddleware(conn.map(const(unit)))
-      .performAsync()
+    return conn.map(const(unit))
+      |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
   case let .blog(subRoute):
-    return await blogMiddleware(conn: conn.map(const(subRoute)))
-      .performAsync()
+    return conn.map(const(subRoute))
+      |> blogMiddleware
 
   case .collections(.index):
-    return await collectionsIndexMiddleware(conn.map(const(())))
-      .performAsync()
+    return conn.map(const(()))
+      |> collectionsIndexMiddleware
 
   case let .collections(.collection(slug, .show)):
-    return await collectionMiddleware(conn.map(const(slug)))
-      .performAsync()
+    return conn.map(const(slug))
+      |> collectionMiddleware
 
   case let .collections(.collection(collectionSlug, .section(sectionSlug, .show))):
-    return await collectionSectionMiddleware(
-      conn.map(const(collectionSlug .*. sectionSlug .*. unit))
-    )
-      .performAsync()
+    return conn.map(const(collectionSlug .*. sectionSlug .*. unit))
+      |> collectionSectionMiddleware
 
   case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
-    return await episodeResponse(conn.map(const(episodeParam .*. collectionSlug .*. unit)))
-      .performAsync()
+    return conn.map(const(episodeParam .*. collectionSlug .*. unit))
+      |> episodeResponse
 
   case let .discounts(couponId, billing):
     let subscribeData = SubscribeConfirmationData(
@@ -154,114 +157,116 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       teammates: [],
       useRegionalDiscount: false
     )
-    return await discountSubscribeConfirmation(
-      conn.map(const(.personal .*. subscribeData .*. couponId .*. unit))
-    )
-    .performAsync()
+    return conn.map(const(.personal .*. subscribeData .*. couponId .*. unit))
+      |> discountSubscribeConfirmation
 
   case .endGhosting:
-    return await endGhostingMiddleware(conn.map(const(unit)))
-      .performAsync()
+    return conn.map(const(unit))
+      |> endGhostingMiddleware
 
   case .episode(.index):
-    return await redirect(to: siteRouter.path(for: .home))(conn)
-      .performAsync()
+    return conn
+      |> redirect(to: siteRouter.path(for: .home))
 
   case let .episode(.progress(param: param, percent: percent)):
-    return await progressResponse(conn.map(const(param .*. percent .*. unit)))
-      .performAsync()
+    return conn.map(const(param .*. percent .*. unit))
+      |> progressResponse
 
   case let .episode(.show(param)):
-    return await episodeResponse(conn.map(const(param .*. nil .*. unit)))
-      .performAsync()
+    return conn.map(const(param .*. nil .*. unit))
+      |> episodeResponse
 
   case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
-    return await enterpriseAcceptInviteMiddleware(
-      conn.map(const(currentUser .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
-    )
-    .performAsync()
+    return conn.map(const(currentUser .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
+      |> enterpriseAcceptInviteMiddleware
 
   case let .enterprise(domain, .landing):
-    return await enterpriseLandingResponse(conn.map(const(domain)))
-      .performAsync()
+    return conn.map(const(domain))
+      |> enterpriseLandingResponse
 
   case let .enterprise(domain, .requestInvite(request)):
-    return await enterpriseRequestMiddleware(conn.map(const(domain .*. request .*. unit)))
-      .performAsync()
+    return conn.map(const(domain .*. request .*. unit))
+      |> enterpriseRequestMiddleware
 
   case let .expressUnsubscribe(payload):
-    return await expressUnsubscribeMiddleware(conn.map(const(payload)))
-      .performAsync()
+    return conn.map(const(payload))
+      |> expressUnsubscribeMiddleware
 
   case let .expressUnsubscribeReply(payload):
-    return await expressUnsubscribeReplyMiddleware(conn.map(const(payload)))
-      .performAsync()
+    return conn.map(const(payload))
+      |> expressUnsubscribeReplyMiddleware
 
   case .feed(.atom), .feed(.episodes):
     @Dependency(\.envVars.emergencyMode) var emergencyMode
-    guard !emergencyMode
-    else {
-      return conn
-        .writeStatus(.internalServerError)
-        .respond(json: "{}")
+
+    return IO {
+      guard !emergencyMode
+      else {
+        return
+          conn
+          .writeStatus(.internalServerError)
+          .respond(json: "{}")
+      }
+      return episodesRssMiddleware(
+        conn.map { _ in }
+      )
     }
-    return episodesRssMiddleware(conn.map { _ in })
 
   case let .gifts(giftsRoute):
-    return await giftsMiddleware(conn.map(const(giftsRoute)))
-      .performAsync()
+    return conn.map(const(giftsRoute))
+      |> giftsMiddleware
 
   case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
-      .performAsync()
+    return conn.map(const(code .*. redirect .*. unit))
+      |> gitHubCallbackResponse
 
   case .home:
-    return await homeMiddleware(conn.map(const(())))
-      .performAsync()
+    return conn.map(const(()))
+      |> homeMiddleware
 
   case let .invite(.addTeammate(email)):
-    return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))
-      .performAsync()
+    return conn.map(const(currentUser .*. email .*. unit))
+      |> addTeammateViaInviteMiddleware
 
   case let .invite(.invitation(inviteId, .accept)):
-    return await acceptInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(inviteId .*. currentUser .*. unit))
+      |> acceptInviteMiddleware
 
   case let .invite(.invitation(inviteId, .resend)):
-    return await resendInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(inviteId .*. currentUser .*. unit))
+      |> resendInviteMiddleware
 
   case let .invite(.invitation(inviteId, .revoke)):
-    return await revokeInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(inviteId .*. currentUser .*. unit))
+      |> revokeInviteMiddleware
 
   case let .invite(.invitation(inviteId, .show)):
-    return await showInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(inviteId .*. currentUser .*. unit))
+      |> showInviteMiddleware
 
   case let .invite(.send(email)):
-    return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(email .*. currentUser .*. unit))
+      |> sendInviteMiddleware
 
   case let .login(redirect):
-    return await loginResponse(conn.map(const(redirect)))
-      .performAsync()
+    return conn.map(const(redirect))
+      |> loginResponse
 
   case .logout:
-    return await logoutResponse(conn.map(const(unit)))
-      .performAsync()
+    return conn.map(const(unit))
+      |> logoutResponse
 
   case .pricingLanding:
-    return await pricingLanding(conn.map(const(())))
-      .performAsync()
+    return conn.map(const(()))
+      |> pricingLanding
 
   case .privacy:
-    return await privacyResponse(conn.map(const(())))
-      .performAsync()
+    return conn.map(const(()))
+      |> privacyResponse
 
   case let .subscribe(data):
-    return await subscribeMiddleware(conn.map(const(currentUser .*. data .*. unit)))
-      .performAsync()
+    return conn.map(const(currentUser .*. data .*. unit))
+      |> subscribeMiddleware
 
   case let .subscribeConfirmation(
     lane, billing, isOwnerTakingSeat, teammates, referralCode, useRegionalDiscount
@@ -274,54 +279,50 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       teammates: teammates,
       useRegionalDiscount: useRegionalDiscount ?? false
     )
-    return await subscribeConfirmation(
-      conn.map(const(lane .*. subscribeData .*. nil .*. unit))
-    )
-    .performAsync()
+    return conn.map(
+      const(lane .*. subscribeData .*. nil .*. unit))
+      |> subscribeConfirmation
 
   case let .team(.join(teamInviteCode, .landing)):
-    return await joinTeamLandingMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+    return conn.map(const(teamInviteCode))
+      |> joinTeamLandingMiddleware
 
   case let .team(.join(teamInviteCode, .confirm)):
-    return await joinTeamMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+    return conn.map(const(teamInviteCode))
+      |> joinTeamMiddleware
 
   case .team(.leave):
-    return await leaveTeamMiddleware(conn.map(const(currentUser .*. subscriberState .*. unit)))
-      .performAsync()
+    return conn.map(const(currentUser .*. subscriberState .*. unit))
+      |> leaveTeamMiddleware
 
   case let .team(.remove(teammateId)):
-    return await removeTeammateMiddleware(conn.map(const(teammateId .*. currentUser .*. unit)))
-      .performAsync()
+    return conn.map(const(teammateId .*. currentUser .*. unit))
+      |> removeTeammateMiddleware
 
   case let .useEpisodeCredit(episodeId):
-    return await useCreditResponse(
-      conn: conn.map(
-        const(Either.right(episodeId) .*. currentUser .*. subscriberState .*. route .*. unit)
-      )
-    )
-    .performAsync()
+    return conn.map(
+      const(Either.right(episodeId) .*. currentUser .*. subscriberState .*. route .*. unit))
+      |> useCreditResponse
 
   case let .webhooks(.stripe(.paymentIntents(event))):
-    return await stripePaymentIntentsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+    return conn.map(const(event))
+      |> stripePaymentIntentsWebhookMiddleware
 
   case let .webhooks(.stripe(.subscriptions(event))):
-    return await stripeSubscriptionsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+    return conn.map(const(event))
+      |> stripeSubscriptionsWebhookMiddleware
 
   case let .webhooks(.stripe(.unknown(event))):
     @Dependency(\.logger) var logger: Logger
     logger.log(.error, "Received invalid webhook \(event.type)")
     return conn
-      .writeStatus(.internalServerError)
-      .respond(text: "We don't support this event.")
+      |> writeStatus(.internalServerError)
+      >=> respond(text: "We don't support this event.")
 
   case .webhooks(.stripe(.fatal)):
     return conn
-      .writeStatus(.internalServerError)
-      .respond(text: "We don't support this event.")
+      |> writeStatus(.internalServerError)
+      >=> respond(text: "We don't support this event.")
   }
 }
 

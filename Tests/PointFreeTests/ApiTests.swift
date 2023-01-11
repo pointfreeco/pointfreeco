@@ -14,12 +14,12 @@ final class ApiTests: TestCase {
   }
 
   func testEpisodes() async throws {
-    let conn = await siteMiddleware(connection(from: request(to: .api(.episodes))))
+    let conn = await siteMiddleware(connection(from: request(to: .api(.episodes)))).performAsync()
     await assertSnapshot(matching: conn, as: .conn)
   }
 
   func testEpisode() async throws {
-    let conn = await siteMiddleware(connection(from: request(to: .api(.episode(1)))))
+    let conn = await siteMiddleware(connection(from: request(to: .api(.episode(1))))).performAsync()
     #if !os(Linux)
       // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
       await assertSnapshot(matching: conn, as: .conn)
@@ -28,6 +28,7 @@ final class ApiTests: TestCase {
 
   func testEpisode_NotFound() async throws {
     let conn = await siteMiddleware(connection(from: request(to: .api(.episode(424242)))))
+      .performAsync()
     await assertSnapshot(matching: conn, as: .conn)
   }
 }

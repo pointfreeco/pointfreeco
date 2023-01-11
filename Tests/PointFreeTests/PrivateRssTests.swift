@@ -52,7 +52,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -71,7 +71,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -91,7 +91,7 @@ class PrivateRssTests: TestCase {
         )
       )
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -110,7 +110,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -132,7 +132,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -154,7 +154,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -169,7 +169,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -192,7 +192,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
       XCTAssertTrue(feedRequestEventCreated)
     }
   }
@@ -215,7 +215,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -237,7 +237,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -257,7 +257,7 @@ class PrivateRssTests: TestCase {
         )
       )
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -277,7 +277,7 @@ class PrivateRssTests: TestCase {
         )
       )
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -296,7 +296,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -318,7 +318,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -340,7 +340,7 @@ class PrivateRssTests: TestCase {
           session: .loggedOut
         )
       )
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -356,7 +356,7 @@ class PrivateRssTests: TestCase {
         )
       )
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -381,7 +381,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
       XCTAssertTrue(feedRequestEventCreated)
     }
   }
@@ -404,7 +404,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -428,7 +428,7 @@ class PrivateRssTests: TestCase {
 
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 }

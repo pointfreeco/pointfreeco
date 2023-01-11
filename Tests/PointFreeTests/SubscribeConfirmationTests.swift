@@ -35,17 +35,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1200)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
             ]
           )
         }
@@ -66,12 +66,12 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(decoding: siteMiddleware(conn).data, as: UTF8.self)
+          let html = await String(decoding: result.performAsync().data, as: UTF8.self)
           webView.loadHTMLString(html, baseURL: nil)
 
           await assertSnapshot(
@@ -97,12 +97,12 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(decoding: siteMiddleware(conn).data, as: UTF8.self)
+          let html = await String(decoding: result.performAsync().data, as: UTF8.self)
           webView.loadHTMLString(html, baseURL: nil)
 
           await assertSnapshot(
@@ -130,17 +130,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1400)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
             ]
           )
         }
@@ -169,17 +169,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1400)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
             ]
           )
         }
@@ -208,17 +208,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1400)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1400)),
             ]
           )
         }
@@ -242,12 +242,12 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(decoding: siteMiddleware(conn).data, as: UTF8.self)
+          let html = await String(decoding: result.performAsync().data, as: UTF8.self)
           webView.loadHTMLString(html, baseURL: nil)
 
           await assertSnapshot(
@@ -283,13 +283,12 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
-      await assertSnapshot(matching: result, as: .conn)
+      let result = conn |> siteMiddleware
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(decoding: siteMiddleware(conn).data, as: UTF8.self)
+          let html = await String(decoding: result.performAsync().data, as: UTF8.self)
           webView.loadHTMLString(html, baseURL: nil)
 
           await assertSnapshot(
@@ -316,9 +315,9 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
     }
   }
 
@@ -334,17 +333,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedOut
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1200)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
             ]
           )
         }
@@ -360,17 +359,17 @@ class SubscriptionConfirmationTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1200)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
             ]
           )
         }
@@ -394,12 +393,12 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(decoding: siteMiddleware(conn).data, as: UTF8.self)
+          let html = await String(decoding: result.performAsync().data, as: UTF8.self)
           webView.loadHTMLString(html, baseURL: nil)
 
           await assertSnapshot(
@@ -432,17 +431,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedOut
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1200)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
             ]
           )
         }
@@ -464,17 +463,17 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1400)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1200)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1200)),
             ]
           )
         }
@@ -500,9 +499,9 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedOut
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
     }
   }
 
@@ -522,9 +521,9 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedOut
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
     }
   }
 
@@ -546,9 +545,9 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedOut
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
     }
   }
 
@@ -574,9 +573,9 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn(as: user)
         )
       )
-      let result = await siteMiddleware(conn)
+      let result = conn |> siteMiddleware
 
-      await assertSnapshot(matching: result, as: .conn)
+      await assertSnapshot(matching: result, as: .ioConn)
     }
   }
 }

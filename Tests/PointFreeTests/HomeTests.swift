@@ -44,17 +44,17 @@ class HomeTests: TestCase {
 
   func testHomepage_LoggedOut() async throws {
     let conn = connection(from: request(to: .home))
-    let result = await siteMiddleware(conn)
+    let result = conn |> siteMiddleware
 
-    await assertSnapshot(matching: result, as: .conn)
+    await assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: result,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 3000)),
-            "mobile": .connWebView(size: .init(width: 400, height: 3500)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 3000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 3500)),
           ]
         )
       }
@@ -64,15 +64,15 @@ class HomeTests: TestCase {
   func testHomepage_Subscriber() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: conn |> siteMiddleware,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
-            "mobile": .connWebView(size: .init(width: 400, height: 2800)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2800)),
           ]
         )
       }
@@ -82,6 +82,6 @@ class HomeTests: TestCase {
   func testEpisodesIndex() async throws {
     let conn = connection(from: request(to: .episode(.index)))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

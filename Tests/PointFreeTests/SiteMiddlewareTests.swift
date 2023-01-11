@@ -28,90 +28,79 @@ class SiteMiddlewareTests: TestCase {
 
   func testWithoutWWW() async throws {
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://pointfree.co"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://pointfree.co"))
+        |> siteMiddleware,
+      as: .ioConn
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://pointfree.co/episodes"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://pointfree.co/episodes"))
+        |> siteMiddleware,
+      as: .ioConn
     )
   }
 
   func testWithoutHeroku() async throws {
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://pointfreeco.herokuapp.com"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com"))
+        |> siteMiddleware,
+      as: .ioConn
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://pointfreeco.herokuapp.com/episodes"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com/episodes"))
+        |> siteMiddleware,
+      as: .ioConn
     )
   }
 
   func testWithWWW() async throws {
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://www.pointfree.co"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://www.pointfree.co"))
+        |> siteMiddleware,
+      as: .ioConn
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: secureRequest("https://www.pointfree.co"))
-      ),
-      as: .conn
+      matching: connection(from: secureRequest("https://www.pointfree.co"))
+        |> siteMiddleware,
+      as: .ioConn
     )
   }
 
   func testWithHttps() async throws {
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
-      ),
-      as: .conn,
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
+        |> siteMiddleware,
+      as: .ioConn,
       named: "1.redirects_to_https"
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!))
-      ),
-      as: .conn,
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!))
+        |> siteMiddleware,
+      as: .ioConn,
       named: "2.redirects_to_https"
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
-      ),
-      as: .conn,
+      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
+        |> siteMiddleware,
+      as: .ioConn,
       named: "0.0.0.0_allowed"
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
-      ),
-      as: .conn,
+      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
+        |> siteMiddleware,
+      as: .ioConn,
       named: "127.0.0.0_allowed"
     )
 
     await assertSnapshot(
-      matching: await siteMiddleware(
-        connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!))
-      ),
-      as: .conn,
+      matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!))
+        |> siteMiddleware,
+      as: .ioConn,
       named: "localhost_allowed"
     )
   }

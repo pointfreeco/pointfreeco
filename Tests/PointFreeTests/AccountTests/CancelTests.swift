@@ -44,7 +44,7 @@ final class CancelTests: TestCase {
       }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
       XCTAssertEqual(false, immediately)
     }
 
@@ -63,7 +63,7 @@ final class CancelTests: TestCase {
       }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
       XCTAssertEqual(true, immediately)
     }
   }
@@ -71,7 +71,7 @@ final class CancelTests: TestCase {
   func testCancelLoggedOut() async throws {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelNoSubscription() async throws {
@@ -79,7 +79,7 @@ final class CancelTests: TestCase {
       $0.stripe.fetchSubscription = { _ in throw unit }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -88,7 +88,7 @@ final class CancelTests: TestCase {
       $0.stripe.fetchSubscription = { _ in .canceling }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -97,7 +97,7 @@ final class CancelTests: TestCase {
       $0.stripe.fetchSubscription = { _ in .canceled }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -106,7 +106,7 @@ final class CancelTests: TestCase {
       $0.stripe.cancelSubscription = { _, _ in throw unit }
     } operation: {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -134,14 +134,14 @@ final class CancelTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
   func testReactivateLoggedOut() async throws {
     let conn = connection(from: request(to: .account(.subscription(.reactivate))))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateNoSubscription() async throws {
@@ -150,7 +150,7 @@ final class CancelTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -158,7 +158,7 @@ final class CancelTests: TestCase {
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateCanceledSubscription() async throws {
@@ -167,7 +167,7 @@ final class CancelTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -177,7 +177,7 @@ final class CancelTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 

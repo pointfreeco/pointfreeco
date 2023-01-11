@@ -16,15 +16,15 @@ class AboutTests: TestCase {
     //SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: conn |> siteMiddleware,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
-            "mobile": .connWebView(size: .init(width: 400, height: 2300)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 2300)),
           ]
         )
       }

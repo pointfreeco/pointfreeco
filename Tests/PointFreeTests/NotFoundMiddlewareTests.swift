@@ -25,15 +25,15 @@ final class NotFoundMiddlewareTests: TestCase {
   func testNotFound() async throws {
     let conn = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: conn |> siteMiddleware,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 1000)),
-            "mobile": .connWebView(size: .init(width: 400, height: 1000)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
           ]
         )
       }
@@ -54,15 +54,15 @@ final class NotFoundMiddlewareTests: TestCase {
       req.url?.appendPathComponent("404")
       let conn = connection(from: req)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 1000)),
-              "mobile": .connWebView(size: .init(width: 400, height: 1000)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 1000)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 1000)),
             ]
           )
         }

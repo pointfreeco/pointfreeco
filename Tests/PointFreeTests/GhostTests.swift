@@ -40,6 +40,7 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
@@ -82,6 +83,7 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
       )
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
@@ -126,6 +128,7 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
       )
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,
@@ -170,6 +173,7 @@ final class GhostTests: TestCase {
       let conn = await siteMiddleware(
         connection(from: request(to: .endGhosting, session: adminSession))
       )
+      .performAsync()
 
       await _assertInlineSnapshot(
         matching: conn, as: .conn,

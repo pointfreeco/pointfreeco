@@ -51,7 +51,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
       named: "email_settings_before_unsubscribe"
     )
 
-    let output = await siteMiddleware(connection(from: unsubscribe))
+    let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
     await assertSnapshot(matching: output, as: .conn)
 
     settings = try await self.database.fetchEmailSettingsForUserId(user.id)
@@ -91,7 +91,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         named: "email_settings_before_unsubscribe"
       )
 
-      let output = await siteMiddleware(connection(from: unsubscribe))
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
       settings = try await self.database.fetchEmailSettingsForUserId(user.id)
@@ -132,7 +132,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         named: "email_settings_before_unsubscribe"
       )
 
-      let output = await siteMiddleware(connection(from: unsubscribe))
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
       settings = try await self.database.fetchEmailSettingsForUserId(user.id)
@@ -177,7 +177,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
         named: "email_settings_before_unsubscribe"
       )
 
-      let output = await siteMiddleware(connection(from: unsubscribe))
+      let output = await siteMiddleware(connection(from: unsubscribe)).performAsync()
       await assertSnapshot(matching: output, as: .conn)
 
       settings = try await self.database.fetchEmailSettingsForUserId(user.id)

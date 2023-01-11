@@ -23,15 +23,15 @@ final class InvoicesTests: TestCase {
   func testInvoices() async throws {
     let conn = connection(from: request(to: .account(.invoices()), session: .loggedIn))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: conn |> siteMiddleware,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .connWebView(size: .init(width: 400, height: 800)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
           ]
         )
       }
@@ -57,15 +57,15 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 800)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
             ]
           )
         }
@@ -85,15 +85,15 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 800)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
             ]
           )
         }
@@ -113,15 +113,15 @@ final class InvoicesTests: TestCase {
       let conn = connection(
         from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 800)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
             ]
           )
         }

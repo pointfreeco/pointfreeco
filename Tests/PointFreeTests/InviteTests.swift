@@ -41,7 +41,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
         session: .init(flash: nil, userId: inviterUser.id)
       )
       let conn = connection(from: sendInvite)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -63,7 +63,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
         session: .init(flash: nil, userId: inviterUser.id))
       let conn = connection(from: sendInvite)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 
@@ -81,7 +81,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testRevokeInvite_HappyPath() async throws {
@@ -98,7 +98,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let invite = try? await self.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNil(invite)
@@ -125,7 +125,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: revokeInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let invite = try? await self.database.fetchTeamInvite(teamInvite.id)
     XCTAssertNotNil(invite)
@@ -155,7 +155,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
     // let invite = try? await self.database.fetchTeamInvite(teamInvite.id)
@@ -186,7 +186,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: acceptInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     let subscriptionId = try await self.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNil(subscriptionId, "Current user does not have a subscription")
@@ -219,7 +219,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       )
       let conn = connection(from: acceptInvite)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       let subscriptionId = try await self.database.fetchUserById(currentUser.id).subscriptionId
       XCTAssertNil(subscriptionId, "Current user now has a subscription")
@@ -254,7 +254,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       )
       let conn = connection(from: acceptInvite)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       let subscriptionId = try await self.database.fetchUserById(currentUser.id).subscriptionId
       XCTAssertNil(subscriptionId, "Current user now has a subscription")
@@ -289,7 +289,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
           )
         )
 
-        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+        await assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
 
         let teamInvites = try await self.database.fetchTeamInvites(currentUser.id)
         XCTAssertEqual(
@@ -325,7 +325,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
     let conn = connection(from: resendInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
 
@@ -340,15 +340,15 @@ class InviteTests: TestCase {
     let showInvite = request(to: .invite(.invitation(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: conn |> siteMiddleware,
           as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-            "mobile": .connWebView(size: .init(width: 400, height: 800)),
+            "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+            "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
           ]
         )
       }
@@ -375,15 +375,15 @@ class InviteTests: TestCase {
     } operation: {
       let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
       let conn = connection(from: showInvite)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: conn |> siteMiddleware,
             as: [
-              "desktop": .connWebView(size: .init(width: 1080, height: 800)),
-              "mobile": .connWebView(size: .init(width: 400, height: 800)),
+              "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+              "mobile": .ioConnWebView(size: .init(width: 400, height: 800)),
             ]
           )
         }
@@ -407,7 +407,7 @@ class InviteTests: TestCase {
     } operation: {
       let showInvite = request(to: .invite(.invitation(invite.id)), session: .loggedIn)
       let conn = connection(from: showInvite)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     }
   }
 }
