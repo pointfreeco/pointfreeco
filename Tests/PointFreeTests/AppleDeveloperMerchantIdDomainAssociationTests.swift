@@ -13,7 +13,6 @@ final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
     let conn = await siteMiddleware(
       connection(from: request(to: .appleDeveloperMerchantIdDomainAssociation))
     )
-    .performAsync()
 
     await assertSnapshot(matching: conn, as: .conn)
   }

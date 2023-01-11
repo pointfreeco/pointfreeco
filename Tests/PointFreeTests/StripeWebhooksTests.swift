@@ -326,7 +326,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -341,7 +341,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -352,7 +352,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -374,7 +374,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -399,7 +399,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -421,7 +421,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
 
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     #endif
   }
 
@@ -472,7 +472,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
       await _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
+        matching: await siteMiddleware(conn), as: .conn,
         with: """
           POST http://localhost:8080/webhooks/stripe
           Cookie: pf_session={}
@@ -529,7 +529,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
       await _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
+        matching: await siteMiddleware(conn), as: .conn,
         with: """
           POST http://localhost:8080/webhooks/stripe
           Cookie: pf_session={}
@@ -583,7 +583,7 @@ final class StripeWebhooksTests: TestCase {
 
       let conn = connection(from: hook)
       await _assertInlineSnapshot(
-        matching: conn |> siteMiddleware, as: .ioConn,
+        matching: await siteMiddleware(conn), as: .conn,
         with: """
           POST http://localhost:8080/webhooks/stripe
           Cookie: pf_session={}
