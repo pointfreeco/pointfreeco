@@ -28,15 +28,15 @@ class BlogTests: TestCase {
   func testBlogIndex() async throws {
     let conn = connection(from: request(to: .blog()))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+            "desktop": .connWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .connWebView(size: .init(width: 500, height: 2000)),
           ]
         )
       }
@@ -62,15 +62,15 @@ class BlogTests: TestCase {
       $0.blogPosts = unzurry(posts)
     } operation: {
       let conn = connection(from: request(to: .blog()))
-      await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: conn |> siteMiddleware,
+            matching: await siteMiddleware(conn),
             as: [
-              "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
-              "mobile": .ioConnWebView(size: .init(width: 500, height: 2400)),
+              "desktop": .connWebView(size: .init(width: 1100, height: 2400)),
+              "mobile": .connWebView(size: .init(width: 500, height: 2400)),
             ]
           )
         }
@@ -82,15 +82,15 @@ class BlogTests: TestCase {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: conn |> siteMiddleware,
+          matching: await siteMiddleware(conn),
           as: [
-            "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
-            "mobile": .ioConnWebView(size: .init(width: 500, height: 2000)),
+            "desktop": .connWebView(size: .init(width: 1100, height: 2000)),
+            "mobile": .connWebView(size: .init(width: 500, height: 2000)),
           ]
         )
       }
@@ -101,16 +101,16 @@ class BlogTests: TestCase {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
   func testBlogAtomFeed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
   func testBlogAtomFeed_Unauthed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
-    await assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 }
