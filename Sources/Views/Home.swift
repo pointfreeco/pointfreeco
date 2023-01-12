@@ -188,13 +188,13 @@ private func episodeImageColumnView(episode: Episode) -> Node {
   @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.siteRouter) var siteRouter;
 
-  let brightness: Stylesheet
+  let filter: Stylesheet
   let watched: Node
   if episodeProgresses[episode.sequence]?.isFinished == true {
     if episode.sequence.rawValue.quotientAndRemainder(dividingBy: 4).remainder == 3 {
-      brightness = key("filter", "grayscale(1) brightness(175%)")
+      filter = key("filter", "grayscale(1) brightness(175%)")
     } else {
-      brightness = key("filter", "grayscale(1)")
+      filter = key("filter", "grayscale(1)")
     }
     watched = .div(
       attributes: [
@@ -227,7 +227,7 @@ private func episodeImageColumnView(episode: Episode) -> Node {
       "Watched"
     )
   } else {
-    brightness = .empty
+    filter = .empty
     watched = []
   }
 
@@ -253,10 +253,7 @@ private func episodeImageColumnView(episode: Episode) -> Node {
             Class.size.width100pct,
             Class.size.height100pct,
           ]),
-          .style(
-            objectFit(.cover)
-            <> brightness
-          ),
+          .style(objectFit(.cover) <> filter),
         ]
       )
     ),
