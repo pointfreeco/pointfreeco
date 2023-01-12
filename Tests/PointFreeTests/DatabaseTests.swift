@@ -74,7 +74,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await self.database.updateEpisodeProgress(1, 20, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 20, false, user.id)
 
     var count = try await self.database.execute(
       """
@@ -87,7 +87,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await self.database.updateEpisodeProgress(1, 10, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 10, false, user.id)
 
     count = try await self.database.execute(
       """
@@ -100,7 +100,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     .count
     XCTAssertEqual(count, 1)
 
-    _ = try await self.database.updateEpisodeProgress(1, 30, user.id)
+    _ = try await self.database.updateEpisodeProgress(1, 30, false, user.id)
 
     count = try await self.database.execute(
       """
@@ -122,7 +122,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await self.database.updateEpisodeProgress(episodeSequence, progress, user.id)
+    _ = try await self.database.updateEpisodeProgress(episodeSequence, progress, false, user.id)
 
     let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
 

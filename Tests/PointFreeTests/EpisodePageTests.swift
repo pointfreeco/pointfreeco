@@ -601,7 +601,7 @@ class EpisodePageTests: TestCase {
     var didUpdate = false
 
     await withDependencies {
-      $0.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
+      $0.database.updateEpisodeProgress = { _, _, _, _ in didUpdate = true }
     } operation: {
       let episode = self.episodes().first!
       let percent = 20
@@ -619,7 +619,7 @@ class EpisodePageTests: TestCase {
   func testProgress_LoggedOut() async throws {
     var didUpdate = false
     await withDependencies {
-      $0.database.updateEpisodeProgress = { _, _, _ in didUpdate = true }
+      $0.database.updateEpisodeProgress = { _, _, _, _ in didUpdate = true }
     } operation: {
       let episode = self.episodes().first!
       let percent = 20
