@@ -173,16 +173,14 @@ extension Client {
         )
       },
       fetchEpisodeProgress: { userId, sequence in
-        try await pool.sqlDatabase.raw(
+        try await pool.sqlDatabase.first(
           """
-          SELECT "percent"
+          SELECT *
           FROM "episode_progresses"
           WHERE "user_id" = \(bind: userId)
           AND "episode_sequence" = \(bind: sequence)
           """
         )
-        .first()?
-        .decode(column: "percent")
       },
       fetchFreeEpisodeUsers: {
         try await pool.sqlDatabase.all(

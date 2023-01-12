@@ -114,6 +114,39 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertEqual(count, 1)
   }
 
+  func testUpdateEpisodeProgress_IsFinished() async throws {
+    let episodeSequence: Episode.Sequence = 1
+    let user = try await self.database.registerUser(
+      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+    )
+
+    _ = try await self.database.updateEpisodeProgress(episodeSequence, 99, true, user.id)
+
+    var progress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
+    XCTAssertEqual(
+      progress,
+      EpisodeProgress(
+        episodeSequence: 1,
+        isFinished: true,
+        percent: 99,
+        userID: user.id
+      )
+    )
+
+    _ = try await self.database.updateEpisodeProgress(episodeSequence, 20, false, user.id)
+
+    progress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
+    XCTAssertEqual(
+      progress,
+      EpisodeProgress(
+        episodeSequence: 1,
+        isFinished: true,
+        percent: 20,
+        userID: user.id
+      )
+    )
+  }
+
   func testFetchEpisodeProgress() async throws {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1
@@ -126,7 +159,15 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
 
-    XCTAssertEqual(fetchedProgress, .some(20))
+    XCTAssertEqual(
+      fetchedProgress,
+      EpisodeProgress(
+        episodeSequence: 1,
+        isFinished: false,
+        percent: 20,
+        userID: user.id
+      )
+    )
   }
 
   func testFetchEpisodeProgress_NoProgress() async throws {
@@ -136,8 +177,9 @@ final class DatabaseTests: LiveDatabaseTestCase {
       withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
-
-    XCTAssertEqual(fetchedProgress, .none)
+    do {
+      _ = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
+      XCTFail("fetchEpisodeProgress should throw")
+    } catch {}
   }
 }

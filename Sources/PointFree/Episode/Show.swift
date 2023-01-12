@@ -235,6 +235,7 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T3<EpisodePermission, Episode, Z>>
   return EitherIO {
     guard let currentUser else { return nil }
     return try await database.fetchEpisodeProgress(currentUser.id, episode.sequence)
+      .percent
   }
   .run
   .map {
