@@ -27,7 +27,6 @@ extension Class {
     public enum colors {
       public enum bg {
         public static let black = CssSelector.class("bg-black")
-        public static let blue = CssSelector.class("bg-blue")
         public static let blue900 = CssSelector.class("bg-blue900")
         public static let dark = CssSelector.class("bg-dark")
         public static let gray150 = CssSelector.class("bg-gray150")
@@ -364,7 +363,6 @@ private let resets =
 
 private let colorStyles: Stylesheet = concat([
   Class.pf.colors.bg.black % backgroundColor(Colors.black),
-  Class.pf.colors.bg.blue % backgroundColor(Colors.blue),
   Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900),
   Class.pf.colors.bg.dark % backgroundColor(Colors.black),
   Class.pf.colors.bg.gray150 % backgroundColor(Colors.gray150),
