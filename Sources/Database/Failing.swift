@@ -23,6 +23,7 @@ extension Client {
     fetchEnterpriseEmails: unimplemented("Database.Client.fetchEnterpriseEmails"),
     fetchEpisodeCredits: unimplemented("Database.Client.fetchEpisodeCredits"),
     fetchEpisodeProgress: unimplemented("Database.Client.fetchEpisodeProgress"),
+    fetchEpisodeProgresses: unimplemented("Database.Client.fetchEpisodeProgresses"),
     fetchFreeEpisodeUsers: unimplemented("Database.Client.fetchFreeEpisodeUsers"),
     fetchGift: unimplemented("Database.Client.fetchGift"),
     fetchGiftByStripePaymentIntentId: unimplemented(

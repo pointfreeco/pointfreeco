@@ -5,6 +5,17 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
+public let _checkmarkSvgBase64 = base64EncodedString(
+  #"""
+  <svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="checkmark" transform="translate(-2741.000000, -907.000000)" fill="#ffffff">
+            <path d="M2747.82514,923.69487 C2748.5603,923.69487 2749.13262,923.419387 2749.52415,922.827793 L2757.87122,910.039207 C2758.15058,909.61927 2758.2661,909.200048 2758.2661,908.821898 C2758.2661,907.779076 2757.47061,907 2756.4097,907 C2755.69174,907 2755.23318,907.260056 2754.79359,907.961902 L2747.78834,919.136837 L2744.27562,914.867315 C2743.88911,914.407737 2743.44872,914.193872 2742.8444,914.193872 C2741.78301,914.193872 2741,914.978689 2741,916.032805 C2741,916.510339 2741.13316,916.903755 2741.53417,917.367963 L2746.18843,922.936568 C2746.63133,923.461298 2747.15417,923.69487 2747.82514,923.69487 Z" id="Path"></path>
+        </g>
+    </g>
+  </svg>
+  """#)
+
 public let collectionIconSvgBase64 = base64EncodedString(
   #"""
   <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M10 .017L19.983 10 10 19.983.017 10 10 .017zM8.336 11.664c.876.875 2.39.938 3.328 0 .95-.951.875-2.452 0-3.328-.876-.875-2.377-.95-3.328 0-.938.938-.875 2.452 0 3.328z" fill="#121212" fill-rule="evenodd"/></svg>

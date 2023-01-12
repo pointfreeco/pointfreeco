@@ -182,6 +182,15 @@ extension Client {
           """
         )
       },
+      fetchEpisodeProgresses: { userId -> [EpisodeProgress] in
+        try await pool.sqlDatabase.all(
+          """
+          SELECT *
+          FROM "episode_progresses"
+          WHERE "user_id" = \(bind: userId)
+          """
+        )
+      },
       fetchFreeEpisodeUsers: {
         try await pool.sqlDatabase.all(
           """

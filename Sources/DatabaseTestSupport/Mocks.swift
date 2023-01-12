@@ -23,6 +23,7 @@ extension Client {
     fetchEnterpriseEmails: { [.mock] },
     fetchEpisodeCredits: { _ in [] },
     fetchEpisodeProgress: { _, _ in throw unit },
+    fetchEpisodeProgresses: { _ in throw unit },
     fetchFreeEpisodeUsers: { [.mock] },
     fetchGift: { _ in .unfulfilled },
     fetchGiftByStripePaymentIntentId: { _ in .unfulfilled },

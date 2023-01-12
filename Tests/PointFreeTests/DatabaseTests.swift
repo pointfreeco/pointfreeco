@@ -147,6 +147,26 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
   }
 
+  func testUpdateEpisodeProgresses() async throws {
+    let user = try await self.database.registerUser(
+      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+    )
+
+    _ = try await self.database.updateEpisodeProgress(1, 90, true, user.id)
+    _ = try await self.database.updateEpisodeProgress(2, 20, true, user.id)
+    _ = try await self.database.updateEpisodeProgress(3, 40, false, user.id)
+
+    let progresses = try await self.database.fetchEpisodeProgresses(user.id)
+    XCTAssertEqual(
+      progresses,
+      [
+        EpisodeProgress(episodeSequence: 1, isFinished: true, percent: 90, userID: user.id),
+        EpisodeProgress(episodeSequence: 2, isFinished: true, percent: 20, userID: user.id),
+        EpisodeProgress(episodeSequence: 3, isFinished: false, percent: 40, userID: user.id),
+      ]
+    )
+  }
+
   func testFetchEpisodeProgress() async throws {
     let progress = 20
     let episodeSequence: Episode.Sequence = 1

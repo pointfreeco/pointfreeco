@@ -1,4 +1,4 @@
-public struct EpisodeProgress: Equatable, Codable {
+public struct EpisodeProgress: Codable, Equatable, Identifiable {
   public let episodeSequence: Episode.Sequence
   public let isFinished: Bool
   public let percent: Int
@@ -14,5 +14,9 @@ public struct EpisodeProgress: Equatable, Codable {
     self.isFinished = isFinished
     self.percent = percent
     self.userID = userID
+  }
+
+  public var id: Episode.Sequence {
+    self.episodeSequence
   }
 }
