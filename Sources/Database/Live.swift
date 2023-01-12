@@ -792,6 +792,17 @@ extension Client {
           "is_finished" boolean NOT NULL DEFAULT FALSE
           """
         )
+        try await database.run(
+          """
+          DROP INDEX IF EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_user_id_episode_sequence"
+          ON "episode_progresses" ("user_id", "episode_sequence")
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(

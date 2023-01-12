@@ -142,7 +142,7 @@ private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn 
       )
     }
     .run
-    .flatMap { error in
+    .flatMap { _ in
       conn
         |> writeStatus(.ok)
         >=> end
@@ -234,8 +234,7 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T3<EpisodePermission, Episode, Z>>
 
   return EitherIO {
     guard let currentUser else { return nil }
-    return try await database.fetchEpisodeProgress(currentUser.id, episode.sequence)
-      .percent
+    return try await database.fetchEpisodeProgress(currentUser.id, episode.sequence).percent
   }
   .run
   .map {

@@ -70,7 +70,6 @@ public func siteMiddleware(
     try? await database
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
-  // TODO: migrate to flip index to be user id then sequence
   let progresses = (try? await database.fetchEpisodeProgresses(currentUser.unwrap().id)) ?? []
 
   let siteRoute: SiteRoute?
