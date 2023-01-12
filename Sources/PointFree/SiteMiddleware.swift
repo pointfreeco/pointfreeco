@@ -85,7 +85,7 @@ public func siteMiddleware(
   return await withDependencies {
     $0.currentUser = currentUser
     $0.currentRoute = siteRoute ?? .home
-    $0.episodeProgresses = [Episode.Sequence: EpisodeProgress](
+    $0.episodeProgresses = .init(
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
