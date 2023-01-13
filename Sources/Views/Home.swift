@@ -212,7 +212,7 @@ private func episodeImageColumnView(episode: Episode) -> Node {
         ])
       ],
       .img(
-        base64: _checkmarkSvgBase64,
+        base64: checkmarkSvgBase64,
         type: .image(.svg),
         alt: "",
         attributes: [
