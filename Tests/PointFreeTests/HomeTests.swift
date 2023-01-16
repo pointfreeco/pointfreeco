@@ -62,11 +62,38 @@ class HomeTests: TestCase {
   }
 
   func testHomepage_Subscriber() async throws {
-    let conn = connection(from: request(to: .home, session: .loggedIn))
+    await withDependencies {
+      $0.database.fetchEpisodeProgresses = { [dependencies = $0] userID in
+        [
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[0].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: true,
+            percent: 100,
+            userID: userID
+          ),
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[1].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: false,
+            percent: 30,
+            userID: userID
+          ),
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[2].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: true,
+            percent: 20,
+            userID: userID
+          ),
+        ]
+      }
+    } operation: {
+      let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
-    #if !os(Linux)
+#if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
           matching: await siteMiddleware(conn),
@@ -76,7 +103,8 @@ class HomeTests: TestCase {
           ]
         )
       }
-    #endif
+#endif
+    }
   }
 
   func testEpisodesIndex() async throws {

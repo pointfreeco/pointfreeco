@@ -167,37 +167,98 @@ private func episodesListView(episodes: ArraySlice<Episode>, emergencyMode: Bool
 
 private func episodeRowView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.date.now) var now
-  @Dependency(\.siteRouter) var siteRouter
 
   return [
     divider,
     .gridRow(
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        episodeInfoColumnView(episode: episode, emergencyMode: emergencyMode)),
+        episodeInfoColumnView(episode: episode, emergencyMode: emergencyMode)
+      ),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
-        .div(
-          attributes: [
-            .class([Class.size.height100pct]),
-            .style(lineHeight(0) <> gradient <> minHeight(.px(300))),
-          ],
-          .a(
-            attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
-            .img(
-              attributes: [
-                .src(episode.image),
-                .alt(""),
-                .class([Class.size.width100pct, Class.size.height100pct]),
-                .style(objectFit(.cover)),
-              ]
-            )
-          )
-        )
+        episodeImageColumnView(episode: episode)
       )
     ),
   ]
+}
+
+private func episodeImageColumnView(episode: Episode) -> Node {
+  @Dependency(\.episodeProgresses) var episodeProgresses
+  @Dependency(\.siteRouter) var siteRouter;
+
+  let filter: Stylesheet
+  let watched: Node
+  if episodeProgresses[episode.sequence]?.isFinished == true {
+    if episode.sequence.rawValue.quotientAndRemainder(dividingBy: 4).remainder == 3 {
+      filter = key("filter", "grayscale(1) brightness(175%)")
+    } else {
+      filter = key("filter", "grayscale(1)")
+    }
+    watched = .div(
+      attributes: [
+        .class([
+          Class.position.absolute,
+          Class.position.left0,
+          Class.position.top0,
+          Class.pf.type.body.leading,
+          Class.pf.colors.fg.white,
+          Class.pf.colors.bg.gray150,
+          Class.padding([.mobile: [.leftRight: 2]]),
+          Class.padding([.mobile: [.topBottom: 2]]),
+          Class.margin([.mobile: [.leftRight: 2]]),
+          Class.margin([.mobile: [.topBottom: 2]]),
+        ])
+      ],
+      .img(
+        base64: checkmarkSvgBase64,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([
+            Class.align.middle,
+          ]),
+          .style(
+            margin(right: .rem(0.5), bottom: .rem(0.25))
+          )
+        ]
+      ),
+      "Watched"
+    )
+  } else {
+    filter = .empty
+    watched = []
+  }
+
+  return .div(
+    attributes: [
+      .class([
+        Class.size.height100pct,
+        Class.position.relative
+      ]),
+      .style(
+        lineHeight(0)
+        <> gradient
+        <> minHeight(.px(300))
+      ),
+    ],
+    .a(
+      attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
+      .img(
+        attributes: [
+          .src(episode.image),
+          .alt(""),
+          .class([
+            Class.size.width100pct,
+            Class.size.height100pct,
+          ]),
+          .style(objectFit(.cover) <> filter),
+        ]
+      )
+    ),
+    watched
+  )
 }
 
 private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Node {

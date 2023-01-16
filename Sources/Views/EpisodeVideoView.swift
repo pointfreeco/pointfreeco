@@ -70,8 +70,7 @@ private func progressPollingScript(isEpisodeViewable: Bool) -> Node {
 
           var lastSeenPercent = 0
           player.on('timeupdate', function(data) {
-            console.log(data.percent - lastSeenPercent)
-            if (data.percent - lastSeenPercent >= 0.01) {
+            if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
               lastSeenPercent = data.percent;
 
               var httpRequest = new XMLHttpRequest();

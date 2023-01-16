@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 70288
+Content-Length: 70404
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2109,7 +2109,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2193,7 +2194,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2277,7 +2279,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2402,7 +2405,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
