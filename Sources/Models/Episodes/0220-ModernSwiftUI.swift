@@ -3,9 +3,9 @@ import Foundation
 extension Episode {
   public static let ep220_modernSwiftUI = Episode(
     blurb: """
-      We conclude the series by taking control of two more dependencies: persistence and speech \
-      recognition. We'll take even more features of our Dependencies library for a spin and see \
-      immediate benefits.
+      We conclude the series by taking control of the last two dependencies: persistence and \
+      speech recognition. We'll make use of even more features of our new Dependencies library \
+      and we'll write tests for our features that would have been impossible before.
       """,
     codeSampleDirectory: "0220-modern-swiftui-pt7",
     exercises: _exercises,
