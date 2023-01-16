@@ -186,7 +186,7 @@ private func episodeRowView(episode: Episode, emergencyMode: Bool) -> Node {
 
 private func episodeImageColumnView(episode: Episode) -> Node {
   @Dependency(\.episodeProgresses) var episodeProgresses
-  @Dependency(\.siteRouter) var siteRouter;
+  @Dependency(\.siteRouter) var siteRouter
 
   let filter: Stylesheet
   let watched: Node
@@ -217,11 +217,11 @@ private func episodeImageColumnView(episode: Episode) -> Node {
         alt: "",
         attributes: [
           .class([
-            Class.align.middle,
+            Class.align.middle
           ]),
           .style(
             margin(right: .rem(0.5), bottom: .rem(0.25))
-          )
+          ),
         ]
       ),
       "Watched"
@@ -235,12 +235,12 @@ private func episodeImageColumnView(episode: Episode) -> Node {
     attributes: [
       .class([
         Class.size.height100pct,
-        Class.position.relative
+        Class.position.relative,
       ]),
       .style(
         lineHeight(0)
-        <> gradient
-        <> minHeight(.px(300))
+          <> gradient
+          <> minHeight(.px(300))
       ),
     ],
     .a(
