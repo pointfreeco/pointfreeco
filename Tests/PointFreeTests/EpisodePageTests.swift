@@ -639,6 +639,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchEpisodeProgress = { _, _ in
         EpisodeProgress(
           episodeSequence: 1,
+          id: EpisodeProgress.ID(),
           isFinished: false,
           percent: 20,
           userID: User.ID()
