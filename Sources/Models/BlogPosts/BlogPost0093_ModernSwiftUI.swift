@@ -299,17 +299,100 @@ application in Xcode previews, simulators and devices, make it difficult to writ
 make your code base harder to understand.
 
 So, we made use of our new [Dependencies][dependencies-gh] library to take control of our
-dependencies rather than letting them control us. With very little work we were able to make use of
+dependencies rather than letting them control us. With very little work we were able to use
 some of the dependencies that ship with the library, such as the `continuousClock` dependency to
 stop reaching out to `Task.sleep` and instead use `clock.sleep`. That made it possible to write
 a test for our timer feature without having to literally wait for real world time to pass.
 
+But, to unlock extra superpowers from our application, we modeled our dependence on Apple's Speech
+framework and the file system as dedicated clients, and registered them with our
+[Dependencies][dependencies-gh] library. This gave us instant access to those dependencies every
+where in the code base, and the ability to override them with controlled behavior for tests and
+even Xcode previews.
 
+For example, not only does Apple's Speech framework not work in Xcode previews, but the act of
+asking for speech permissions suspends forever, preventing our feature's logic from ever executing.
+This effectively made previews useless for testing our feature.
 
+But, by controlling the dependency we were able to fake a speech recognition client that acts as if
+authorization was granted, allow our feature to function normally.
 
 <div id="test-suite"></div>
 
 ## Test suite
+
+And last, but not least, the Standups application comes with a [full test
+suite][standups-test-suite], exercising many nuanced user flows that execute effects and complex
+logic.
+
+For example, [we have a test][bad-data-test] that determines what happens when the application
+starts up and the previously saved data on disk can't be loaded. We can do this by overriding our
+`dataManager` dependency and forcing it to load non-sense data:
+
+```swift
+func testLoadingDataDecodingFailed() throws {
+  let model = withDependencies {
+    $0.mainQueue = .immediate
+    $0.dataManager = .mock(
+      initialData: Data("!@#$ BAD DATA %^&*()".utf8)
+    )
+  } operation: {
+    StandupsListModel()
+  }
+
+  let alert = try XCTUnwrap(model.destination, case: /StandupsListModel.Destination.alert)
+
+  XCTAssertNoDifference(alert, .dataFailedToLoad)
+
+  model.alertButtonTapped(.confirmLoadMockData)
+
+  XCTAssertNoDifference(model.standups, [.mock, .designMock, .engineeringMock])
+}
+```
+
+This shows that when the data cannot be loaded an alert will be shown to the user.
+
+For a more complicated example, the following test exercises the flow of drilling down to a standup,
+tapping its delete button, confirming an alert is shown, and then confirming deletion. The
+test will confirm that we are popped back to the root _and_ the standup is deleted from the root
+list:
+
+```swift
+func testDelete() async throws {
+  let model = try withDependencies { dependencies in
+    dependencies.dataManager = .mock(
+      initialData: try JSONEncoder().encode([Standup.mock])
+    )
+    dependencies.mainQueue = mainQueue.eraseToAnyScheduler()
+  } operation: {
+    StandupsListModel()
+  }
+
+  model.standupTapped(standup: model.standups[0])
+
+  let detailModel = try XCTUnwrap(model.destination, case: /StandupsListModel.Destination.detail)
+
+  detailModel.deleteButtonTapped()
+
+  let alert = try XCTUnwrap(detailModel.destination, case: /StandupDetailModel.Destination.alert)
+
+  XCTAssertNoDifference(alert, .deleteStandup)
+
+  await detailModel.alertButtonTapped(.confirmDeletion)
+
+  XCTAssertNil(model.destination)
+  XCTAssertEqual(model.standups, [])
+  XCTAssertEqual(detailModel.isDismissed, true)
+}
+```
+
+These tests run in a fraction of a second (usually less than 0.01 seconds!) and typically you can
+run hundreds (if not thousands) of these kinds of tests in the time it takes to run a single UI
+test.
+
+Speaking of UI tests, [we also have one of those][standup-list-ui-test]. We don't recommend focusing
+all of your attention on UI tests, since they are slow and flakey, but it can be good to have a bit
+of full integration testing, and so we wanted to show how it is possible.
 
 <div id="a-call-for-help"></div>
 
@@ -345,6 +428,9 @@ different approaches for building the same application.
 [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L98-L102
 [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
 [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
+[standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests
+[bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
+[standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsUITests/StandupsListUITests.swift
 """###,
       type: .paragraph
     )
