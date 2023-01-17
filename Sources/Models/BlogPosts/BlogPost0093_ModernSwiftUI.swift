@@ -68,11 +68,12 @@ in your domain modeling. That's precisely the gap that [IdentifiedArray][identif
 aims to fill.
 
 This is why the first improvement we made to the Standups app over the Scrumdinger app is to scrap
-plain arrays when modeling data for lists. Instead, we made use of our IdentifiedArray] data type,
+plain arrays when modeling data for lists. Instead, we made use of our [IdentifiedArray] data type,
 which allows referencing elements by their stable ID rather than their unstable positional index.
 
 For example, because SwiftUI deals primarily with `Identifable` types, it is common that we have
-the stable ID of an element and then we have to perform work to compute its positional index:
+the stable ID of an element and then we have to perform work to compute its positional index, say,
+for removing the element:
 
 ```swift
 func deleteStandup(id: Standup.ID) {
@@ -89,9 +90,8 @@ It is a potential performance problem because you are linearly scanning an array
 by its ID. If your collection has thousands or hundreds of thousands of elements, this can be a
 serious problem.
 
-Further, this code is not safe. Suppose that we want that we have an API service to communicate
-with when deleting the standup. If we do this naively:
-
+Further, this code is not safe. Suppose that we have an API service to communicate with when
+deleting the standup. If we do this naively:
 
 ```swift
 func deleteStandup(id: Standup.ID) async throws {
@@ -171,7 +171,7 @@ all of that state as optionals:
 @Published var record: RecordMeetingModel?
 ```
 
-…we have 2^4=16 states to contend with, of which only 5 are actually valid (either exactly 1 is
+…we have 2⁴=16 states to contend with, of which only 5 are actually valid (either exactly 1 is
 non-`nil` or all or `nil`).
 
 That kind of imprecision in the domain starts to leak complexity throughout the entire code base.
