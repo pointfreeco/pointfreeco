@@ -70,8 +70,9 @@ public let post0093_ModernSwiftUI = BlogPost(
         aims to fill.
 
         This is why the first improvement we made to the Standups app over the Scrumdinger app is to scrap
-        plain arrays when modeling data for lists. Instead, we made use of our [IdentifiedArray] data type,
-        which allows referencing elements by their stable ID rather than their unstable positional index.
+        plain arrays when modeling data for lists. Instead, we made use of our 
+        [IdentifiedArray][identified-collections-gh] data type, which allows referencing elements by their 
+        stable ID rather than their unstable positional index.
 
         For example, because SwiftUI deals primarily with `Identifiable` types, it is common that we have
         the stable ID of an element and then we have to perform work to compute its positional index, say,
