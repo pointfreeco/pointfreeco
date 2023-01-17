@@ -15,6 +15,6 @@ public let postXYZW_TODO = BlogPost(
   ],
   coverImage: nil,  // TODO
   id: 0,  // TODO
-  publishedAt: .distantFuture,  // TODO
+  publishedAt: yearMonthDayFormatter.date(from: "2099-01-01")!,  // TODO
   title: "TODO"
 )

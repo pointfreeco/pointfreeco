@@ -107,4 +107,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0090_2022EOYSaleLastChance,
   post0091_2022EOYSaleLastDay,
   post0092_SwiftDependencies,
+  post0093_ModernSwiftUI,
 ]
