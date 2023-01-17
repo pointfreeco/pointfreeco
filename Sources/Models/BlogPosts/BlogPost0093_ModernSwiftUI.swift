@@ -10,11 +10,11 @@ TODO
       content: ###"""
 This week we finished our ambituous, [7-part series][modern-swiftui-collection] exploring modern,
 best practices for SwiftUI development. In those episodes we re-built Apple’s
-[”Scrumdinger”][scrumdinger] application, which is a great showcase for many of the problems one
+”[Scrumdinger][scrumdinger]” application, which is a great showcase for many of the problems one
 encounters in a real life application. Every step of the way we challenged ourselves to write the
 code in the most scalable and future-proof way possible, including:
 
-1. We eschew plain arrays for lists of data and instead embrace [identified
+1. We eschew plain arrays for lists and instead embrace [identified
 arrays][identified-collections-gh].
 1. All of navigation is state-driven and concisely modeled.
 1. All side effects and dependencies are controlled.
@@ -41,7 +41,7 @@ an app for creating and managing daily standup meetings. Once a standup is creat
 the meeting, which shows a helpful UI for how much time is left in the standup, whose turn it is,
 and it will even transcribe the audio from the meeting so that it can be later referenced.
 
-This app is a port of Apple’s [“Scrumdinger”][scrumdinger] application. The Scrumdinger app is a
+This app is a port of Apple’s “[Scrumdinger][scrumdinger]” application. The Scrumdinger app is a
 wonderful example of a real world app that needs to deal with many complex scenarious, for example
 lots of navigation flows and complex effects (timers, speech recognizers, and data persistence).
 
