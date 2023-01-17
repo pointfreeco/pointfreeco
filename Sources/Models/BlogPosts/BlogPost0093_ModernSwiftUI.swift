@@ -3,7 +3,8 @@ import Foundation
 public let post0093_ModernSwiftUI = BlogPost(
   author: .pointfree,  
   blurb: """
-TODO
+What does it take to develop a SwiftUI application using modern, best practices? We'll show you by
+taking a look a the Standups app we have been building in episodes and recently open sourced.
 """,
   contentBlocks: [
     .init(
