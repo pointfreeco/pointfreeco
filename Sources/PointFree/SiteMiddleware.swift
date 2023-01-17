@@ -70,6 +70,8 @@ public func siteMiddleware(
     try? await database
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
+  let progresses = (try? await database.fetchEpisodeProgresses(currentUser.unwrap().id)) ?? []
+
   let siteRoute: SiteRoute?
   do {
     siteRoute = try siteRouter.match(request: conn.request)
@@ -82,8 +84,12 @@ public func siteMiddleware(
 
   return await withDependencies {
     $0.currentUser = currentUser
-    $0.requestID = requestID
     $0.currentRoute = siteRoute ?? .home
+    $0.episodeProgresses = .init(
+      progresses.map { ($0.episodeSequence, $0) },
+      uniquingKeysWith: { $1 }
+    )
+    $0.requestID = requestID
     $0.subscriberState = SubscriberState(
       user: currentUser,
       subscription: subscription,

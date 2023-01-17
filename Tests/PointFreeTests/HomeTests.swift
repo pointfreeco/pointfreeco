@@ -62,21 +62,49 @@ class HomeTests: TestCase {
   }
 
   func testHomepage_Subscriber() async throws {
-    let conn = connection(from: request(to: .home, session: .loggedIn))
-
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
-
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: await siteMiddleware(conn),
-          as: [
-            "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
-            "mobile": .connWebView(size: .init(width: 400, height: 2800)),
-          ]
-        )
+    await withDependencies {
+      $0.database.fetchEpisodeProgresses = { [dependencies = $0] userID in
+        [
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[0].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: true,
+            percent: 100,
+            userID: userID
+          ),
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[1].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: false,
+            percent: 30,
+            userID: userID
+          ),
+          EpisodeProgress(
+            episodeSequence: dependencies.episodes()[2].sequence,
+            id: EpisodeProgress.ID(),
+            isFinished: true,
+            percent: 20,
+            userID: userID
+          ),
+        ]
       }
-    #endif
+    } operation: {
+      let conn = connection(from: request(to: .home, session: .loggedIn))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: await siteMiddleware(conn),
+            as: [
+              "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
+              "mobile": .connWebView(size: .init(width: 400, height: 2800)),
+            ]
+          )
+        }
+      #endif
+    }
   }
 
   func testEpisodesIndex() async throws {

@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67085
+Content-Length: 70345
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2084,7 +2084,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2093,8 +2094,33 @@ html {
                  alt
                  class="w-100p
                         h-100p"
-                 style="object-fit:cover">
+                 style="object-fit:cover;
+                        filter:grayscale(1)">
           </a>
+          <div class="absolute
+                      left-0
+                      top-0
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4
+                      fg-white
+                      bg-gray150
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      m-ml2
+                      m-mr2
+                      m-mt2
+                      m-mb2">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE3IiB2aWV3Qm94PSIwIDAgMTggMTciIHdpZHRoPSIxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMjc0Ny44MjUxNCA5MjMuNjk0ODdjLjczNTE2IDAgMS4zMDc0OC0uMjc1NDgzIDEuNjk5MDEtLjg2NzA3N2w4LjM0NzA3LTEyLjc4ODU4NmMuMjc5MzYtLjQxOTkzNy4zOTQ4OC0uODM5MTU5LjM5NDg4LTEuMjE3MzA5IDAtMS4wNDI4MjItLjc5NTQ5LTEuODIxODk4LTEuODU2NC0xLjgyMTg5OC0uNzE3OTYgMC0xLjE3NjUyLjI2MDA1Ni0xLjYxNjExLjk2MTkwMmwtNy4wMDUyNSAxMS4xNzQ5MzUtMy41MTI3Mi00LjI2OTUyMmMtLjM4NjUxLS40NTk1NzgtLjgyNjktLjY3MzQ0My0xLjQzMTIyLS42NzM0NDMtMS4wNjEzOSAwLTEuODQ0NC43ODQ4MTctMS44NDQ0IDEuODM4OTMzIDAgLjQ3NzUzNC4xMzMxNi44NzA5NS41MzQxNyAxLjMzNTE1OGw0LjY1NDI2IDUuNTY4NjA1Yy40NDI5LjUyNDczLjk2NTc0Ljc1ODMwMiAxLjYzNjcxLjc1ODMwMnoiIGZpbGw9IiNmZmYiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI3NDEgLTkwNykiLz48L3N2Zz4="
+                 alt
+                 class="align-middle"
+                 style="margin-right:0.5rem;
+                        margin-bottom:0.25rem">
+            Watched
+          </div>
         </div>
       </div>
     </div>
@@ -2168,7 +2194,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2252,7 +2279,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
@@ -2261,8 +2289,33 @@ html {
                  alt
                  class="w-100p
                         h-100p"
-                 style="object-fit:cover">
+                 style="object-fit:cover;
+                        filter:grayscale(1)">
           </a>
+          <div class="absolute
+                      left-0
+                      top-0
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4
+                      fg-white
+                      bg-gray150
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      m-ml2
+                      m-mr2
+                      m-mt2
+                      m-mb2">
+            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE3IiB2aWV3Qm94PSIwIDAgMTggMTciIHdpZHRoPSIxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMjc0Ny44MjUxNCA5MjMuNjk0ODdjLjczNTE2IDAgMS4zMDc0OC0uMjc1NDgzIDEuNjk5MDEtLjg2NzA3N2w4LjM0NzA3LTEyLjc4ODU4NmMuMjc5MzYtLjQxOTkzNy4zOTQ4OC0uODM5MTU5LjM5NDg4LTEuMjE3MzA5IDAtMS4wNDI4MjItLjc5NTQ5LTEuODIxODk4LTEuODU2NC0xLjgyMTg5OC0uNzE3OTYgMC0xLjE3NjUyLjI2MDA1Ni0xLjYxNjExLjk2MTkwMmwtNy4wMDUyNSAxMS4xNzQ5MzUtMy41MTI3Mi00LjI2OTUyMmMtLjM4NjUxLS40NTk1NzgtLjgyNjktLjY3MzQ0My0xLjQzMTIyLS42NzM0NDMtMS4wNjEzOSAwLTEuODQ0NC43ODQ4MTctMS44NDQ0IDEuODM4OTMzIDAgLjQ3NzUzNC4xMzMxNi44NzA5NS41MzQxNyAxLjMzNTE1OGw0LjY1NDI2IDUuNTY4NjA1Yy40NDI5LjUyNDczLjk2NTc0Ljc1ODMwMiAxLjYzNjcxLjc1ODMwMnoiIGZpbGw9IiNmZmYiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI3NDEgLTkwNykiLz48L3N2Zz4="
+                 alt
+                 class="align-middle"
+                 style="margin-right:0.5rem;
+                        margin-bottom:0.25rem">
+            Watched
+          </div>
         </div>
       </div>
     </div>
@@ -2336,7 +2389,8 @@ html {
                   col-m
                   col-d-5
                   col-m-12">
-        <div class="h-100p"
+        <div class="h-100p
+                    relative"
              style="line-height:0;
                     background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
                     min-height:300px">
