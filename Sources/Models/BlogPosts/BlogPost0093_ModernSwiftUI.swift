@@ -308,9 +308,9 @@ for our timer feature without having to literally wait for real world time to pa
 
 But, to unlock extra superpowers from our application, we modeled our dependence on Apple's Speech
 framework and the file system as dedicated clients, and registered them with our
-[Dependencies][dependencies-gh] library. That gave us instant access to those dependencies every
-where in the code base, and the ability to override them with controlled behavior for tests and
-even Xcode previews.
+[Dependencies][dependencies-gh] library. That gave us instant access to those dependencies
+everywhere in the code base, and the ability to override them with controlled behavior for tests
+and even Xcode previews.
 
 For example, not only does Apple's Speech framework not work in Xcode previews, but the act of
 asking for speech permissions suspends forever, preventing our feature's logic from ever executing.
