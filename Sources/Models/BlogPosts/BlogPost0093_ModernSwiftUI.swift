@@ -9,7 +9,7 @@ taking a look a the Standups app we have been building in episodes and recently 
   contentBlocks: [
     .init(
       content: ###"""
-This week we finished our ambituous, [7-part series][modern-swiftui-collection] exploring modern,
+This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring modern,
 best practices for SwiftUI development. In those episodes we re-built Apple’s
 ”[Scrumdinger][scrumdinger]” application, which is a great showcase for many of the problems one
 encounters in a real life application. Every step of the way we challenged ourselves to write the
@@ -37,20 +37,21 @@ to the [full series][modern-swiftui-collection]!
 
 ## The Standups app
 
-During the course of 7 episodes we built Standups ([full source here][standups-source]), which is
-an app for creating and managing daily standup meetings. Once a standup is created you can start
-the meeting, which shows a helpful UI for how much time is left in the standup, whose turn it is,
-and it will even transcribe the audio from the meeting so that it can be later referenced.
+During the course of [7 episodes][modern-swiftui-collection] we built Standups
+([full source here][standups-source]), which is an app for creating and managing daily standup
+meetings. Once a standup is created you can start the meeting, which shows a helpful UI for how much
+time is left in the standup, whose turn it is, and it will even transcribe the audio from the
+meeting so that it can be later referenced.
 
 This app is a port of Apple’s “[Scrumdinger][scrumdinger]” application. The Scrumdinger app is a
-wonderful example of a real world app that needs to deal with many complex scenarious, for example
+wonderful example of a real world app that needs to deal with many complex scenarios, for example
 lots of navigation flows and complex effects (timers, speech recognizers, and data persistence).
 
-However, while Srumdinger is a great demonstration of a real world app, it is not necessarily built
+However, while Scrumdinger is a great demonstration of a real world app, it is not necessarily built
 in the most ideal way. It uses mostly fire-and-forget style navigation, which means you can't easily
 deep link into any screen of the app, which is handy for push notifications and opening URLs. It
-also uses uncontrolled dependencies, including file system access, timers and a speech recognizer,
-which makes it nearly impossible to write automated tests and even hinders the ability to preview
+also uses uncontrolled dependencies, including file system access, timers, and a speech recognizer,
+which makes it nearly impossible to write automated tests, and even hinders the ability to preview
 the app in Xcode previews.
 
 But, the simplicity of Apple's Scrumdinger codebase is not a defect. In fact, it's a feature!
@@ -63,7 +64,7 @@ mean there isn't room for improvement.
 ## Identified arrays
 
 SwiftUI is well aware of the problems of using positional indices in lists of data, and that's
-why `ForEach` forces data types to have a stable identifier via the `Identifable` protocol.
+why `ForEach` forces data types to have a stable identifier via the `Identifiable` protocol.
 Unfortunately, there is no type that ships with the Swift standard library to embrace this pattern
 in your domain modeling. That's precisely the gap that [IdentifiedArray][identified-collections-gh]
 aims to fill.
@@ -72,7 +73,7 @@ This is why the first improvement we made to the Standups app over the Scrumding
 plain arrays when modeling data for lists. Instead, we made use of our [IdentifiedArray] data type,
 which allows referencing elements by their stable ID rather than their unstable positional index.
 
-For example, because SwiftUI deals primarily with `Identifable` types, it is common that we have
+For example, because SwiftUI deals primarily with `Identifiable` types, it is common that we have
 the stable ID of an element and then we have to perform work to compute its positional index, say,
 for removing the element:
 
@@ -107,8 +108,8 @@ func deleteStandup(id: Standup.ID) async throws {
 
 …then we can accidentally update the wrong standup or even crash. While the `apiClient.delete(id:)`
 endpoint is suspending, it is possible for the `standups` array to shuffle its elements or even
-remove some elements. So, when the suspension the `index` may no longer correspond to the correct
-element, or may even fall outside the bounds of the array.
+remove some elements when the API request is in flight. So, after the suspension the `index` may no
+longer correspond to the correct element, or may even fall outside the bounds of the array.
 
 To fix this you must always compute indices _after_ suspension points, and if there are multiple
 suspension points then you must compute the index multiple times. Or… you can use our
@@ -136,7 +137,7 @@ reading and modifying of elements by their ID. Such as removing an element by it
 self.standups.remove(id: id)
 ```
 
-…or udpating an element by its ID:
+…or updating an element by its ID:
 
 ```swift
 self.standups[id: standup.id] = standup
@@ -173,11 +174,11 @@ all of that state as optionals:
 ```
 
 …we have 2⁴=16 states to contend with, of which only 5 are actually valid (either exactly 1 is
-non-`nil` or all or `nil`).
+non-`nil` or all are `nil`).
 
 That kind of imprecision in the domain starts to leak complexity throughout the entire code base.
 You can never be sure of what screen is actually visible because you must check multiple pieces of
-state to see if they are `nil`, and if new destinations are added then existing code can all the
+state to see if they are `nil`, and if new destinations are added then existing code can all of a
 sudden become incorrect.
 
 For this reason we prefer to model this kind of state as an enum, which automatically bakes in
@@ -201,7 +202,7 @@ class StandupDetailModel: ObservableObject {
 
 And then, [in the view][standup-detail-destinations-view], we can make use of the tools that ship
 in our [SwiftUINavigation][swiftui-nav-gh] library, which allows you to perform all styles of
-navigation (alerts, sheets, popovers, drill-downs, etc.) with a single, unified style of API:
+navigation (alerts, sheets, popovers, drill-downs, _etc._) with a single, unified style of API:
 
 ```swift
 .navigationDestination(
@@ -268,7 +269,7 @@ performing the animations and displaying the new UI.
 
 But the best part is that deep linking, whether it be from push notifications or URLs or something
 else, can be implemented by simply constructing a deeply nested piece of state, handing it to
-SwiftUI, and letting it do it's thing.
+SwiftUI, and letting it do its thing.
 
 For example, if we wanted to deep link into the app so that we are drilled down to the standup
 detail screen, and then further drill down to a new meeting, it is as easy as this:
@@ -296,18 +297,18 @@ It is incredibly powerful!
 
 It doesn't matter how much time you spend writing "clean" code with precisely modeled domains if
 you don't also control your dependencies. Uncontrolled dependencies make it difficult to run your
-application in Xcode previews, simulators and devices, make it difficult to write tests, and just
-make your code base harder to understand.
+application in Xcode previews, simulators and devices, make it difficult to write tests, and make
+your code base just harder to understand.
 
 So, we made use of our new [Dependencies][dependencies-gh] library to take control of our
-dependencies rather than letting them control us. With very little work we were able to use
-some of the dependencies that ship with the library, such as the `continuousClock` dependency to
-stop reaching out to `Task.sleep` and instead use `clock.sleep`. That made it possible to write
-a test for our timer feature without having to literally wait for real world time to pass.
+dependencies rather than let them control us. With very little work we were able to use some of
+the dependencies that ship with the library, such as the `continuousClock` dependency to stop
+reaching out to `Task.sleep` and instead use `clock.sleep`. That made it possible to write a test
+for our timer feature without having to literally wait for real world time to pass.
 
 But, to unlock extra superpowers from our application, we modeled our dependence on Apple's Speech
 framework and the file system as dedicated clients, and registered them with our
-[Dependencies][dependencies-gh] library. This gave us instant access to those dependencies every
+[Dependencies][dependencies-gh] library. That gave us instant access to those dependencies every
 where in the code base, and the ability to override them with controlled behavior for tests and
 even Xcode previews.
 
@@ -316,7 +317,7 @@ asking for speech permissions suspends forever, preventing our feature's logic f
 This effectively made previews useless for testing our feature.
 
 But, by controlling the dependency we were able to fake a speech recognition client that acts as if
-authorization was granted, allow our feature to function normally.
+authorization was granted and allows our feature to function normally.
 
 <div id="test-suite"></div>
 
@@ -328,7 +329,7 @@ logic.
 
 For example, [we have a test][bad-data-test] that determines what happens when the application
 starts up and the previously saved data on disk can't be loaded. We can do this by overriding our
-`dataManager` dependency and forcing it to load non-sense data:
+`dataManager` dependency and forcing it to load nonsensical data:
 
 ```swift
 func testLoadingDataDecodingFailed() throws {
@@ -404,7 +405,7 @@ be sure to check out our [7-part series][modern-swiftui-collection] on “Modern
 
 We do have a favor to ask you. While we have built the Standups application in the style that makes
 the most sense to us, we know that some of these ideas aren't for everyone. We would love if others
-would fork the Standups code base and re-build it in the style of their choice.
+fork the Standups code base and re-build it in the style of their choice.
 
 Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject` instead of
 `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a different way
