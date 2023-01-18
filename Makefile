@@ -153,6 +153,9 @@ format:
 		--recursive \
 		./Package.swift ./Sources ./Tests
 
+ngrok-brandon:
+	ngrok http --subdomain pf-brandon 8080
+
 .PHONY: bootstrap \
 	uninstall-colortheme \
 	check-cmark \
