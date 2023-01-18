@@ -3,7 +3,8 @@ import Foundation
 public let post0095_ModernSwiftUIPart2 = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    Learn how to make lists of data in your SwiftUI applications safer and more performant by
+    scrapping plain arrays and embracing "identified arrays".
     """,
   contentBlocks: [
     .init(
@@ -12,7 +13,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         "Modern SwiftUI", exploring modern, best practices for SwiftUI development, we are releasing
         a blog post each day this week. [Last
         week](/blog/posts/94-modern-swiftui-parent-child-communication) we uncovered a safe and
-        ergonomic way to model parent-child communication between observable objects, and this week
+        ergonomic way to model parent-child communication between observable objects, and today
         we will make modeling lists of data safer and more performant.
         """#,
       type: .box(.preamble)
@@ -144,7 +145,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
 
         …and more.
 
-        ## Until next time
+        ## Until next time…
 
         That's it for now. We hope you have learned how to better model lists of data in your
         SwiftUI application. By embracing our [`IdentifiedArray`][identified-collections-gh]
@@ -161,7 +162,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         [runtime-warn-blog]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups
+        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         """###,
       type: .paragraph
     )

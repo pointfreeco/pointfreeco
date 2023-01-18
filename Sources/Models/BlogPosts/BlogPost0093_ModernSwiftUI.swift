@@ -419,21 +419,21 @@ public let post0093_ModernSwiftUI = BlogPost(
         [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
         [swiftui-collection]: https://www.pointfree.co/collections/swiftui
         [swiftui-nav-collection]: https://www.pointfree.co/collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups
+        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
-        [standup-detail-destination-enum]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L24-L29
-        [standup-detail-destinations-view]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L217-L255
-        [standup-detail-edit-button-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L75-L81
-        [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L98-L102
-        [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
-        [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
-        [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests
-        [bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
-        [standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsUITests/StandupsListUITests.swift
+        [standup-detail-destination-enum]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L24-L29
+        [standup-detail-destinations-view]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L217-L255
+        [standup-detail-edit-button-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L75-L81
+        [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L98-L102
+        [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
+        [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
+        [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
+        [bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
+        [standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsUITests/StandupsListUITests.swift
         """###,
       type: .paragraph
     )

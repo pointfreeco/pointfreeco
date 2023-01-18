@@ -14,6 +14,7 @@ public let post0099_ModernSwiftUIConclusion = BlogPost(
     )
   ],
   coverImage: nil,
+  hidden: true,
   id: 99,
   publishedAt: yearMonthDayFormatter.date(from: "2023-01-27")!,
   title: "Modern SwiftUI"

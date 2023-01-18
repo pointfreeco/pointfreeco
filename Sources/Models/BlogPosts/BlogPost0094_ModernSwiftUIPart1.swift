@@ -4,7 +4,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
   author: .pointfree,
   blurb: """
     We are celebrating the conclusion of our 7-part series on Modern SwiftUI by releasing a blog
-    post every day, detailing an area of SwiftUI development that can be modernized.
+    post every day, detailing an area of SwiftUI development that can be modernized. We begin
+    by exploring ways to facilitate parent-child communication in SwiftUI in a safe and ergonomic
+    manner.
     """,
   contentBlocks: [
     .init(
@@ -382,7 +384,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         From this it is obvious to see that the `EditStandupModel` has a `onDeleteButtonTapped`
         closure that we need to override.
 
-        ## Until next time
+        ## Until next time…
 
         That's it for now. We hope you learned something about parent-child communication with
         `ObservableObject`s, and hope that you try our making such communication safer and more
