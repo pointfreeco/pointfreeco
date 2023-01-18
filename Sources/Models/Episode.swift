@@ -303,11 +303,37 @@ public struct Episode: Equatable, Identifiable {
       case title
       case video(poster: String, sources: [String])
 
-      public enum Box: Codable {
-        case correction
-        case note
-        case preamble
-        case tip
+      public struct Box: Codable, Equatable {
+        public let backgroundColor: String
+        public let borderColor: String
+        public let title: String?
+
+        public init(backgroundColor: String, borderColor: String, title: String?) {
+          self.backgroundColor = backgroundColor
+          self.borderColor = borderColor
+          self.title = title
+        }
+
+        public static let correction = Self(
+          backgroundColor: "ffdbdd",
+          borderColor: "eb1c26",
+          title: "Correction"
+        )
+        public static let note = Self(
+          backgroundColor: "f6f6f6",
+          borderColor: "d8d8d8",
+          title: "Note"
+        )
+        public static let preamble = Self(
+          backgroundColor: "eee2ff",
+          borderColor: "974dff",
+          title: "Preamble"
+        )
+        public static let tip = Self(
+          backgroundColor: "dcf4e7", 
+          borderColor: "79f2b0",
+          title: "Tip"
+        )
       }
 
       private enum CodingKeys: CodingKey {
