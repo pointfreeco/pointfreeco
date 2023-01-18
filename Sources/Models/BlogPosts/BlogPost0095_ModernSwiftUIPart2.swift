@@ -15,7 +15,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         ergonomic way to model parent-child communication between observable objects, and this week
         we will make modeling lists of data safer and more performant.
         """#,
-      type: .box(.note)
+      type: .box(.preamble)
     ),
     .init(
       content: ###"""
@@ -50,7 +50,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         index. Doing this can be precarious, leading to corrupt data and even crashes.
 
         For example, because `ForEach` deals primarily with `Identifiable` types, it is common that
-        we have the stable ID of an element that we need to convert to a position index so that we
+        we have the stable ID of an element that we need to convert to a positional index so that we
         can perform some work, say, removing the element:
 
         ```swift
@@ -83,11 +83,11 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         }
         ```
 
-        …then we can accidentally update the wrong standup or even crash. While the
-        `apiClient.delete(id:)` endpoint is suspending, it is possible for the `standups` array to
-        shuffle its elements or even remove some elements when the API request is in flight. So,
-        after the suspension the `index` may no longer correspond to the correct element, or may
-        even fall outside the bounds of the array.
+        …then we can accidentally update the wrong standup or even crash. While the API client is
+        suspending, it is possible for the `standups` array to shuffle its elements or even remove
+        some elements when the API request is in flight. So, after the suspension the `index` may
+        no longer correspond to the correct element, or may even fall outside the bounds of the
+        array.
 
         To fix this you must always recompute indices after _every_ suspension point, and if there
         are multiple suspension points then you must compute the index multiple times.

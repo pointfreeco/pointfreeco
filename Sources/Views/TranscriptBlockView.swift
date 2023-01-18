@@ -26,6 +26,10 @@ public func transcriptBlockView(
       backgroundColor = "f6f6f6"
       borderColor = "d8d8d8"
       title = "Note"
+    case .preamble:
+      backgroundColor = "eee2ff"
+      borderColor = "974dff"
+      title = "Preamble"
     case .tip:
       backgroundColor = "dcf4e7"
       borderColor = "79f2b0"

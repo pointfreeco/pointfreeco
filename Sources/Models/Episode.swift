@@ -306,6 +306,7 @@ public struct Episode: Equatable, Identifiable {
       public enum Box: Codable {
         case correction
         case note
+        case preamble
         case tip
       }
 
