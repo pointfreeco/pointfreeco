@@ -13,7 +13,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         practice for SwiftUI development. In the final installment we will show how when the advice
         is followed from the preview 4 posts you get the ability to write deep, nuanced tests.
 
-        * [Modern SwiftUI: Parent-child communication](#)
+        * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
         * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
         * [Modern SwiftUI: State-driven
         navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)

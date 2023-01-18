@@ -13,7 +13,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         practice for SwiftUI development. Today we show how to more concisely model your domains
         for navigation in SwiftUI, but be sure to catch up on the other weeks:
 
-        * [Modern SwiftUI: Parent-child communication](#)
+        * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
         * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
         * **[Modern SwiftUI: State-driven
         navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)**
