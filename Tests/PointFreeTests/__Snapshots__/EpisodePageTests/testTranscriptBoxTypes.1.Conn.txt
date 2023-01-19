@@ -1,8 +1,8 @@
-GET http://localhost:8080/episodes/ep2-proof-in-functions
-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+GET http://localhost:8080/episodes/ep1-composable-architecture
+Cookie: pf_session={}
 
 200 OK
-Content-Length: 76650
+Content-Length: 67302
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -16,7 +16,7 @@ X-XSS-Protection: 1; mode=block
   <head>
     <meta charset="utf-8">
     <title>
-      Episode #2: Proof in Functions
+      Episode #1: Composable Architecture
     </title>
     <style>
       /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
@@ -1929,24 +1929,21 @@ Prism.languages.insertBefore('swift', 'other-directive', {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.">
+          content>
     <meta property="og:description"
-          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.">
+          content>
     <meta name="twitter:description"
-          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.">
+          content>
     <meta name="twitter:image"
-          content>
+          content="https://d3rccdn33rt8ze.cloudfront.net/episodes/0001.jpeg">
     <meta property="og:image"
-          content>
+          content="https://d3rccdn33rt8ze.cloudfront.net/episodes/0001.jpeg">
     <meta name="title"
-          content="Episode #2: Proof in Functions">
+          content="Episode #1: Composable Architecture">
     <meta property="og:title"
-          content="Episode #2: Proof in Functions">
+          content="Episode #1: Composable Architecture">
     <meta name="twitter:title"
-          content="Episode #2: Proof in Functions">
+          content="Episode #1: Composable Architecture">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1954,9 +1951,9 @@ text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/episodes/ep2-proof-in-functions">
+          content="http://localhost:8080/episodes/ep1-composable-architecture">
     <meta name="twitter:url"
-          content="http://localhost:8080/episodes/ep2-proof-in-functions">
+          content="http://localhost:8080/episodes/ep1-composable-architecture">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -2002,6 +1999,13 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                        lh-4">
               <li class="m-pl2
                          inline">
+                <a href="/pricing"
+                   class="pf-link-gray650">
+                  Pricing
+                </a>
+              </li>
+              <li class="m-pl2
+                         inline">
                 <a class="pf-link-gray650"
                    href="/collections">
                   Collections
@@ -2023,9 +2027,30 @@ text, no markdown allowed. Here is some more text just to have some filler.">
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/account"
-                   class="pf-link-gray650">
-                  Account
+                <a href="/login?redirect=http://localhost:8080/episodes/ep1-composable-architecture"
+                   class="medium
+                          cursor-pointer
+                          nowrap
+                          btn-normal
+                          border-none
+                          text-decoration-none
+                          pf-link-black
+                          fg-black
+                          bg-white
+                          h6
+                          m-pl1
+                          m-pr1
+                          m-pt1
+                          m-pb1">
+                  <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
+                       alt
+                       class="m-mr1"
+                       style="margin-bottom:-4px"
+                       width="20"
+                       height="20">
+                  <span>
+                    Log in
+                  </span>
                 </a>
               </li>
             </ul>
@@ -2057,7 +2082,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                      lh-2
                      center"
               style="line-height:1.2">
-            Proof in Functions
+            Composable Architecture
           </h1>
           <div class="m-pb2
                       fg-gray650
@@ -2066,7 +2091,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                       h6
                       lh-4
                       center">
-            Episode #2 • Dec 20, 2016 • Subscriber-Only
+            Episode #1 • Jan 31, 2018 • Subscriber-Only
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2080,9 +2105,6 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                       lh-4"
                id="episode-header-blurb">
             <div class="md-ctn">
-              <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
             </div>
           </div>
         </div>
@@ -2114,7 +2136,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             <iframe class="h-100p
                            w-100p
                            absolute"
-                    src="https://player.vimeo.com/video/1234567890?pip=1"
+                    src="https://player.vimeo.com/video/1?pip=1"
                     frameborder="0"
                     allow="autoplay; fullscreen"
                     allowfullscreen>
@@ -2141,25 +2163,6 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
-});
-            </script>
-            <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
-
-  var lastSeenPercent = 0
-  player.on('timeupdate', function(data) {
-    if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
-      lastSeenPercent = data.percent;
-
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open(
-        "POST",
-        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-      );
-      httpRequest.send();
-    }
-  });
 });
             </script>
           </div>
@@ -2197,67 +2200,6 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         m-pr2
                         m-pt2
                         m-pb2
-                        border-gray-850
-                        middle-m
-                        row">
-              <div class="col-m
-                          col-m-12">
-                <h6 class="fg-gray650
-                           ts-m-r0_75
-                           lh-1
-                           caps
-                           bold
-                           m-pl0
-                           m-pr0
-                           m-pt0
-                           m-pb0
-                           m-mb1
-                           m-mt0
-                           m-ml0
-                           m-mr0">
-                  Previous episode
-                </h6>
-              </div>
-              <div class="center
-                          col-m
-                          col-m-1">
-                <a href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
-                       alt
-                       class="align-middle"
-                       style="margin-top:-2px">
-                </a>
-              </div>
-              <div class="m-pl1
-                          col-m
-                          col-m-11"
-                   style="white-space: nowrap;
-                          
-overflow: hidden;
-                          
-text-overflow: ellipsis">
-                <a class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          lh-1
-                          m-pl0
-                          m-pr0
-                          m-pt0
-                          m-pb0
-                          m-ml0
-                          m-mr0
-                          m-mt0
-                          m-mb0"
-                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
-                  Type-Safe HTML in Swift
-                </a>
-              </div>
-            </div>
-            <div class="m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2
                         border-top
                         border-gray-850"
                  style="background-color:#fafafa">
@@ -2280,220 +2222,10 @@ text-overflow: ellipsis">
                             lh-1
                             col-m
                             col-m-11">
-                  Proof in Functions
+                  Composable Architecture
                 </div>
               </div>
               <div class="m-mb1">
-                <div class="row">
-                  <div class="center
-                              col-m
-                              col-m-1">
-                    <div class="bg-gray850
-                                inline-block"
-                         style="width:2px;
-                                height:100%">
-                    </div>
-                  </div>
-                  <div class="m-pl1
-                              m-pr1
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              col-m
-                              col-m-9">
-                    <a href="#t0">
-                      Introduction
-                    </a>
-                  </div>
-                  <div class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              fg-gray650
-                              end-align
-                              col-m
-                              col-m-2">
-                    <a href="#t0"
-                       class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              pf-link-gray650"
-                       style="font-variant-numeric: tabular-nums">
-                      00:00
-                    </a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="center
-                              col-m
-                              col-m-1">
-                    <div class="bg-gray850
-                                inline-block"
-                         style="width:2px;
-                                height:100%">
-                    </div>
-                  </div>
-                  <div class="m-pl1
-                              m-pr1
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              col-m
-                              col-m-9">
-                    <a href="#t0">
-                      Title
-                    </a>
-                  </div>
-                  <div class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              fg-gray650
-                              end-align
-                              col-m
-                              col-m-2">
-                    <a href="#t0"
-                       class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              pf-link-gray650"
-                       style="font-variant-numeric: tabular-nums">
-                      00:00
-                    </a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="center
-                              col-m
-                              col-m-1">
-                    <div class="bg-gray850
-                                inline-block"
-                         style="width:2px;
-                                height:100%">
-                    </div>
-                  </div>
-                  <div class="m-pl1
-                              m-pr1
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              col-m
-                              col-m-9">
-                    <a href="#t60">
-                      Title Block
-                    </a>
-                  </div>
-                  <div class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              fg-gray650
-                              end-align
-                              col-m
-                              col-m-2">
-                    <a href="#t60"
-                       class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              pf-link-gray650"
-                       style="font-variant-numeric: tabular-nums">
-                      01:00
-                    </a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="center
-                              col-m
-                              col-m-1">
-                    <div class="bg-gray850
-                                inline-block"
-                         style="width:2px;
-                                height:100%">
-                    </div>
-                  </div>
-                  <div class="m-pl1
-                              m-pr1
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              col-m
-                              col-m-9">
-                    <a href="#t120">
-                      Another Title
-                    </a>
-                  </div>
-                  <div class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              fg-gray650
-                              end-align
-                              col-m
-                              col-m-2">
-                    <a href="#t120"
-                       class="fg-black
-                              normal
-                              h6
-                              lh-4
-                              pf-link-gray650"
-                       style="font-variant-numeric: tabular-nums">
-                      02:00
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="m-pt1
-                          middle-m
-                          row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0tNzUtMTMyOUg5NDl2MzU4M0gtNzV6Ii8+CiAgICA8cGF0aCBkPSJNMTMuODMzMyAyLjVIMTAuMzVDMTAgMS41MzMzIDkuMDgzMy44MzMzIDggLjgzMzNjLTEuMDgzMyAwLTIgLjctMi4zNSAxLjY2NjdIMi4xNjY3QzEuMjUgMi41LjUgMy4yNS41IDQuMTY2N3YxMS42NjY2Qy41IDE2Ljc1IDEuMjUgMTcuNSAyLjE2NjcgMTcuNWgxMS42NjY2Yy45MTY3IDAgMS42NjY3LS43NSAxLjY2NjctMS42NjY3VjQuMTY2N0MxNS41IDMuMjUgMTQuNzUgMi41IDEzLjgzMzMgMi41ek04IDIuNWMuNDU4MyAwIC44MzMzLjM3NS44MzMzLjgzMzMgMCAuNDU4NC0uMzc1LjgzMzQtLjgzMzMuODMzNC0uNDU4MyAwLS44MzMzLS4zNzUtLjgzMzMtLjgzMzQgMC0uNDU4My4zNzUtLjgzMzMuODMzMy0uODMzM3ptMS42NjY3IDExLjY2NjdIMy44MzMzVjEyLjVoNS44MzM0djEuNjY2N3ptMi41LTMuMzMzNEgzLjgzMzNWOS4xNjY3aDguMzMzNHYxLjY2NjZ6bTAtMy4zMzMzSDMuODMzM1Y1LjgzMzNoOC4zMzM0VjcuNXoiIGZpbGw9IiMwMDAiLz4KICA8L2c+Cjwvc3ZnPg=="
-                       alt
-                       class="align-middle"
-                       style="margin-top:-4px">
-                </div>
-                <div class="fg-black
-                            normal
-                            h5
-                            lh-4
-                            m-pl1
-                            col-m
-                            col-m-11">
-                  <a href="#exercises">
-                    Exercises
-                  </a>
-                </div>
-              </div>
-              <div class="m-pt1
-                          middle-m
-                          row">
-                <div class="center
-                            col-m
-                            col-m-1">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRkZGIiBkPSJNLTc3LTE0MDNIOTQ3djM1ODNILTc3eiIvPjxwYXRoIGQ9Ik0xMS44MzMzIDUuNUg4LjV2LTVoLTV2NUguMTY2N0w2IDExLjMzMzMgMTEuODMzMyA1LjV6TS4xNjY3IDEzdjEuNjY2N2gxMS42NjY2VjEzSC4xNjY3eiIgZmlsbD0iIzAwMCIvPjwvZz48L3N2Zz4="
-                       alt
-                       class="align-middle"
-                       style="margin-top:-2px">
-                </div>
-                <div class="fg-black
-                            normal
-                            h5
-                            lh-4
-                            m-pl1
-                            col-m
-                            col-m-11">
-                  <a href="#downloads">
-                    Downloads
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -2501,6 +2233,62 @@ text-overflow: ellipsis">
         <div class="col-m
                     col-d-8
                     col-m-12">
+          <div class="d-pl4
+                      d-pr3
+                      m-pt3
+                      m-pl3
+                      m-pr3">
+            <div class="border
+                        rounded
+                        border-gray-850">
+              <div class="d-pl4
+                          d-pr4
+                          m-pl3
+                          m-pr3
+                          m-pt3
+                          m-pb3
+                          center">
+                <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxMjEyMTIiIHI9IjI0Ii8+PHBhdGggZD0ibTEyIDE3YzEuMSAwIDItLjkgMi0ycy0uOS0yLTItMi0yIC45LTIgMiAuOSAyIDIgMnptNi05aC0xdi0yYzAtMi43Ni0yLjI0LTUtNS01cy01IDIuMjQtNSA1aDEuOWMwLTEuNzEgMS4zOS0zLjEgMy4xLTMuMXMzLjEgMS4zOSAzLjEgMy4xdjJoLTkuMWMtMS4xIDAtMiAuOS0yIDJ2MTBjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMnYtMTBjMC0xLjEtLjktMi0yLTJ6bTAgMTJoLTEydi0xMGgxMnoiIGZpbGw9IiNmZmYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyIDEyKSIvPjwvZz48L3N2Zz4="
+                     alt>
+                <h3 class="fg-black
+                           bold
+                           ts-d-r1_25
+                           ts-m-r1
+                           lh-1">
+                  Unlock This Episode
+                </h3>
+                <p class="m-pb3
+                          fg-gray650">
+                  Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter.
+                </p>
+                <div class="m-mb2">
+                  <a href="/login?redirect=http://localhost:8080/episodes/ep1-composable-architecture"
+                     class="medium
+                            cursor-pointer
+                            nowrap
+                            btn-normal
+                            border-none
+                            text-decoration-none
+                            pf-link-white
+                            fg-white
+                            bg-black
+                            h5
+                            m-pl2
+                            m-pr2">
+                    <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
+                         alt
+                         class="m-mr1"
+                         style="margin-bottom:-4px"
+                         width="20"
+                         height="20">
+                    <span>
+                      Sign in with GitHub
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
           <div id="transcript"
                class="d-pl4
                       d-pr3
@@ -2508,53 +2296,6 @@ text-overflow: ellipsis">
                       m-pr3
                       m-pt3
                       m-pb3">
-            <h3 class="h3"
-                id="t0">
-              <a href="#t0">
-                Introduction
-              </a>
-            </h3>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#t0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
-also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
-that timestamp jumps the video to that spot.</p>
-
-              </div>
-            </div>
-            <h3 class="h3"
-                id="t0">
-              <a href="#t0">
-                Title
-              </a>
-            </h3>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#t0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
-However, you cannot associate a timestamp with this paragraph.</p>
-
-              </div>
-            </div>
             <div class="m-ml2
                         m-mr2
                         m-mt3
@@ -2577,213 +2318,172 @@ However, you cannot associate a timestamp with this paragraph.</p>
                           h5
                           lh-4">
                 <div class="md-ctn">
-                  <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
-including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
+                  <p>This is a note for those time we want to make side remarks. We can use <em>markdown</em> in this
+block, including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
 
                 </div>
               </div>
             </div>
-            <div>
-              <div id="t30"
-                   class="block">
-                <a href="#t30"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
-
-              </div>
-            </div>
-            <div>
-              <div class="md-ctn">
-                <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
-time at the beginning of the text. That’s what we have done here.</p>
-
-              </div>
-            </div>
-            <h3 class="h3"
-                id="t60">
-              <a href="#t60">
-                Title Block
-              </a>
-            </h3>
-            <div>
-              <div id="t60"
-                   class="block">
-                <a href="#t60"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
-chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
-episode video.</p>
-<p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
-highlighted snippet of code:</p>
-
-              </div>
-            </div>
-            <pre>
-              <code class="code
-                           rounded
-                           block
-                           d-mt1
-                           d-mb1
-                           m-mb3
-                           m-mt2
-                           m-mb2
-                           d-pl3
-                           d-pr3
-                           m-pl2
-                           m-pr2
-                           m-pt1
-                           m-pb1
-                           overflow-auto-x
-                           overflow-hidden
-                           language-swift">
-                infix operator |>
-
-func |> <A, B>(x: A, f: (A) -> B) -> B {
-  return f(x)
-}
-              </code>
-            </pre>
-            <div>
-              <div id="t90"
-                   class="block">
-                <a href="#t90"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can write as much code as you want in that block, and you can specify the language of the code
-so that its syntax is highlighted nicely.</p>
-
-              </div>
-            </div>
-            <h3 class="h3"
-                id="t120">
-              <a href="#t120">
-                Another Title
-              </a>
-            </h3>
-            <div>
-              <div id="t120"
-                   class="block">
-                <a href="#t120"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  02:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That was another title. See how the title create the “table of contents” under the video?</p>
-<p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
-working how we expect:</p>
-<blockquote>
-<p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
-</blockquote>
-
-              </div>
-            </div>
-          </div>
-          <div class="d-pb2
-                      d-pl4
-                      d-pr3
-                      d-pt2
-                      m-pt3
-                      m-pl3
-                      m-pr3
-                      bg-white">
-            <h3 id="exercises"
-                class="h3">
-              Exercises
-            </h3>
-            <ol style="padding-left: 1.5rem">
-              <li id="exercise-1"
-                  class="m-pb2">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
-<pre><code>pi_1(X) = 0
-</code></pre>
-
-                  </div>
-                  <details>
-                    <summary class="cursor-pointer">
-                      Solution
-                    </summary>
-                    <div class="border-left
-                                border-gray-850
-                                bg-white
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
-
-                      </div>
-                    </div>
-                  </details>
-                </div>
-              </li>
-            </ol>
-          </div>
-          <div class="d-pb4
-                      d-pl4
-                      d-pr3
-                      d-pt2
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3">
-            <h3 id="downloads"
-                class="h3">
-              Downloads
-            </h3>
-            <div class="border
-                        rounded
-                        border-gray-850
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
                         m-pl2
                         m-pr2
                         m-pt2
-                        m-pb2">
+                        m-pb2"
+                 style="background-color: #f6f6f6;
+                        border-left: 3px solid #d8d8d8">
               <h3 class="fg-black
                          bold
-                         ts-d-r1_25
-                         ts-m-r1
+                         ts-d-r1
+                         ts-m-r0_875
                          lh-1">
-                Sample Code
+                Note
               </h3>
-              <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjOTc0ZGZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
-                   alt
-                   class="align-middle"
-                   width="20"
-                   height="20">
-              <a href="https://github.com/pointfreeco/episode-code-samples/tree/main/ep2-proof-in-functions"
-                 class="pf-link-purple
-                        m-ml1
-                        align-middle">
-                ep2-proof-in-functions
-              </a>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4">
+                <div class="md-ctn">
+                  <p>This is a note for those time we want to make side remarks. We can use <em>markdown</em> in this
+block, including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
+                        m-pl2
+                        m-pr2
+                        m-pt2
+                        m-pb2"
+                 style="background-color: #eee2ff;
+                        border-left: 3px solid #974dff">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1">
+                Preamble
+              </h3>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4">
+                <div class="md-ctn">
+                  <p>This is a preamble for those time we want to preface an episode/blog post with some
+information.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
+                        m-pl2
+                        m-pr2
+                        m-pt2
+                        m-pb2"
+                 style="background-color: #dcf4e7;
+                        border-left: 3px solid #79f2b0">
+              <h3 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1">
+                Tip
+              </h3>
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4">
+                <div class="md-ctn">
+                  <p>This is a tip for those time we want to make side remarks. We can use <em>markdown</em> in this
+block, including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="d-pt3
+                        d-pb3
+                        m-pt2
+                        m-pb2">
+              <div class="border
+                          rounded
+                          border-gray-850">
+                <div class="border-bottom
+                            items-center
+                            justify-center
+                            h6
+                            m-pl2
+                            m-pr2
+                            m-pt1
+                            m-pb1
+                            bg-gray900
+                            border-gray-850
+                            fg-gray650
+                            center
+                            lh-4
+                            semi-bold
+                            row">
+                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTIgNS4zMzMzMzMzM2gtLjY2NjY2Njd2LTEuMzMzMzMzMzNjMC0xLjg0LTEuNDkzMzMzMy0zLjMzMzMzMzMzLTMuMzMzMzMzMy0zLjMzMzMzMzMzcy0zLjMzMzMzMzMzIDEuNDkzMzMzMzMtMy4zMzMzMzMzMyAzLjMzMzMzMzMzdjEuMzMzMzMzMzNoLS42NjY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bS00IDUuOTk5OTk5OTdjLS43MzMzMzMzMyAwLTEuMzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzMtMS4zMzMzMzMzM3MxLjMzMzMzMzMzLjYgMS4zMzMzMzMzMyAxLjMzMzMzMzMzYzAgLjczMzMzMzMtLjYgMS4zMzMzMzMzLTEuMzMzMzMzMzMgMS4zMzMzMzMzem0yLjA2NjY2NjctNS45OTk5OTk5N2gtNC4xMzMzMzMzN3YtMS4zMzMzMzMzM2MwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4="
+                       alt
+                       class="m-pr1">
+                  This episode is for subscribers only.
+                </div>
+                <div class="d-pl4
+                            d-pr4
+                            m-pl3
+                            m-pr3
+                            m-pt3
+                            m-pb3
+                            center">
+                  <h3 class="fg-black
+                             bold
+                             ts-d-r1_25
+                             ts-m-r1
+                             lh-1">
+                    Subscribe to Point-Free
+                  </h3>
+                  <p class="m-pb3
+                            fg-gray650">
+                    Access this episode, plus all past and future episodes when you become a subscriber.
+                  </p>
+                  <div class="m-mb2">
+                    <a class="medium
+                              cursor-pointer
+                              nowrap
+                              btn-normal
+                              border-none
+                              text-decoration-none
+                              pf-link-white
+                              fg-white
+                              bg-purple
+                              h5
+                              m-pl2
+                              m-pr2"
+                       href="/pricing">
+                      See plans and pricing
+                    </a>
+                    <p class="m-mt2
+                              fg-gray650
+                              fg-black
+                              normal
+                              h6
+                              lh-4">
+                      Already a subscriber? 
+                      <a class="pf-link-purple"
+                         href="/login?redirect=http://localhost:8080/episodes/ep1-composable-architecture">
+                        Log in
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
