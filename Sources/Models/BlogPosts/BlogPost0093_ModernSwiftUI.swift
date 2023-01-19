@@ -410,7 +410,7 @@ public let post0093_ModernSwiftUI = BlogPost(
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject` instead of
         `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a different way
-        of handling dependencies? **Please show us!**
+        of handling dependencies? [**Please show us!**](http://twitter.com/pointfreeco)
 
         We will collect links to the other ports so that there can be a single place to reference many
         different approaches for building the same application.

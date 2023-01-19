@@ -132,8 +132,8 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         possible.
 
         To run a UI test with controlled dependencies you need to somehow communicate to the app
-        host that the UI test runs in since it runs in a fully separate process. One way to do this
-        is to set an environment variable in the `setUp` of the UI test:
+        host, which unfortunately runs in a fully separate process. One way to do this is to set an
+        environment variable in the `setUp` of the UI test:
 
         ```swift
         override func setUpWithError() throws {
@@ -182,7 +182,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject` instead of
         `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a different way
-        of handling dependencies? **Please show us!**
+        of handling dependencies? [**Please show us!**](http://twitter.com/pointfreeco)
 
         We will collect links to the other ports so that there can be a single place to reference many
         different approaches for building the same application.
