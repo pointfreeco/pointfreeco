@@ -52,6 +52,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         ```swift
         struct FeatureView: View {
           @State var isPresented = false
+
           var body: some View {
             Button("Show sheet") {
               self.isPresented = true
@@ -80,6 +81,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         ```swift
         struct FeatureView: View {
           @State var presentedValue: String?
+
           var body: some View {
             Button("Show sheet") {
               self.presentedValue = ""
@@ -103,6 +105,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
          ```swift
         struct FeatureView: View {
           @State var presentedValue: String?
+
           var body: some View {
             Button("Show sheet") {
               self.presentedValue = ""
@@ -125,7 +128,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         features of Swift, allowing you to statically describe the mutually exclusive choice of a
         finite set of cases, and they are a great tool for modeling navigation state.
 
-        For example, our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" we
+        For example, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" we
         rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
         and in doing so we modeled navigation state as concisely as possible, using enums.
 

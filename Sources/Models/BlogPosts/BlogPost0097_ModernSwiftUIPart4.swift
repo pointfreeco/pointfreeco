@@ -28,7 +28,7 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         It doesn't matter how much time you spend writing "clean" code with precisely modeled
         domains if you don't also control your dependencies. Uncontrolled dependencies make it
         difficult to run your application in Xcode previews, simulators and devices, make it
-        difficult to write tests, and make your code base just harder to understand.
+        difficult to write tests, and make your code base just harder to deal with.
 
         ## What is a dependency?
 

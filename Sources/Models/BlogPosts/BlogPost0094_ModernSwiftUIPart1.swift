@@ -13,9 +13,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
       content: ###"""
         This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
         modern, best practices for SwiftUI development. In those episodes we re-built Apple’s
-        ”[Scrumdinger][scrumdinger]” application, which is a great showcase for many of the problems
-        one encounters in a real life application. Every step of the way we challenged ourselves to
-        write the code in the most scalable and future-proof way possible, including:
+        ”[Scrumdinger][scrumdinger]” application ([source code here][standups-source]), which is a
+        great showcase for many of the problems one encounters in a real life application. Every
+        step of the way we challenged ourselves to write the code in the most scalable and
+        future-proof way possible, including:
 
         1. We eschew plain arrays for lists and instead embrace [identified
         arrays][identified-collections-gh].
@@ -32,14 +33,12 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         If you find this interesting, then consider [subscribing][pricing] today to get access
         to the [full series][modern-swiftui-collection]!
 
-        <!-- todo: mention the app we built -->
-
         ## Parent-child view communication
 
         It is common to break up a complex view into smaller pieces. Even something as simple as
-        showing a sheet is done by having a dedicated view for the present*ing* view and present*ed*
-        view. For example, a list of rows such that when one is tapped it brings up a sheet
-        for editing:
+        showing a sheet is typically done by having a dedicated view for the present*ing* view and
+        present*ed* view. For example, a list of rows such that when one is tapped it brings up a
+        sheet for editing:
 
         ```swift
         struct StandupsList: View {
@@ -102,6 +101,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         }
         ```
 
+        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [pricing]: /pricing
         [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
@@ -393,6 +393,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         Check back in tomorrow for the 2nd part of our "Modern SwiftUI" blog series, where we show
         how to make collections safer and more performant to use in SwiftUI lists.
 
+        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [pricing]: /pricing
         [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
