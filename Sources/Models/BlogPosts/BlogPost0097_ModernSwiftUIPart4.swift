@@ -63,9 +63,9 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         rebuild Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
         we came face-to-face with this lesson as soon as we introduced code that called out to
         Apple's Speech framework. We found that directly accessing Speech APIs from our feature
-        completely broken the preview, making it difficult to iterate on functionality. We were
-        forced to run the full app in the simulator, which completely destroyed the fast iteration
-        cycle that previews give us.
+        completely broke the preview, making it difficult to iterate on functionality. We were
+        forced to run the full app in the simulator, which destroyed the fast iteration cycle that
+        previews give us.
 
         So, we decided to take control over our dependence on Speech (and a lot of other
         dependencies too!) by putting an [interface][speech-client-source] that we own in front of

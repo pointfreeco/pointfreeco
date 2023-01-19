@@ -67,7 +67,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         [case paths][case-paths-gh] comes with a test tool for extracting a specific case from an
         enum:
 
-        ```
+        ```swift
         let alert = try XCTUnwrap(model.destination, case: /StandupsListModel.Destination.alert)
         XCTAssertNoDifference(alert, .dataFailedToLoad)
         ```
@@ -78,7 +78,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         Further, that alert gives the user an option to load some mock data just to get something
         back on the screen, and we can confirm that functions properly too:
 
-        ```
+        ```swift
         model.alertButtonTapped(.confirmLoadMockData)
         XCTAssertNoDifference(model.standups, [.mock, .designMock, .engineeringMock])
         ```
