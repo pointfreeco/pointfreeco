@@ -83,10 +83,10 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         XCTAssertNoDifference(model.standups, [.mock, .designMock, .engineeringMock])
         ```
 
-        For a more complicated example, the following test exercises the flow of drilling down to a
-        standup, tapping its delete button, confirming an alert is shown, and then confirming
-        deletion. The test will confirm that we are popped back to the root _and_ the standup is
-        deleted from the root list:
+        For a [more complicated example][testdelete-source], the following test exercises the flow
+        of drilling down to a standup, tapping its delete button, confirming an alert is shown, and
+        then confirming deletion. The test will confirm that we are popped back to the root _and_
+        the standup is deleted from the root list:
 
         ```swift
         func testDelete() async throws {
@@ -197,6 +197,8 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         And if you want even _more_ in-depth coverage of these topics, then consider
         [subscribing][pricing] today to get access to the [full series][modern-swiftui-collection]!
 
+
+        [testdelete-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/StandupsTests/StandupsListTests.swift#L106-L131
         [datafailedtoload-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/Standups/StandupsList.swift#L127-L143
         [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
         [pricing]: /pricing
