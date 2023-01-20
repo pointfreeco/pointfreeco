@@ -211,9 +211,9 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         [datafailedtoload-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/Standups/StandupsList.swift#L127-L143
         [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
-        [swiftui-collection]: https://www.pointfree.co/collections/swiftui
-        [swiftui-nav-collection]: https://www.pointfree.co/collections/swiftui/navigation
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
+        [swiftui-collection]: /collections/swiftui
+        [swiftui-nav-collection]: /collections/swiftui/navigation
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged

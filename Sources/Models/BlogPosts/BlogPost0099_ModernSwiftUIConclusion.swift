@@ -3,9 +3,11 @@ import Foundation
 public let post0099_ModernSwiftUIConclusion = BlogPost(
   author: .pointfree,
   blurb: """
-    A call to action: we rebuilt Apple's "Scrumdinger" application in a modern way that we felt is
-    the most scalable and future-proof way possible, but it's not the only way. Show us how *you*
-    would tackle the same problems in your own rewrite, and share the results with us!
+    A call to action: how would *you* rebuild Apple's "Scrumdinger" application? We've shown our
+    take on modern SwiftUI, but we would love to see how you tackle the same problems. Don't like
+    to use a observable objects for each screen? Prefer to use @StateObject instead of
+    @ObservedObject? Want to use an architectural pattern such as VIPER? Have a different way of
+    handling dependencies? Please show us!
     """,
   contentBlocks: [
     .init(
@@ -18,9 +20,10 @@ public let post0099_ModernSwiftUIConclusion = BlogPost(
 
         1. We eschew plain arrays for lists and instead embrace [identified
         arrays][identified-collections-gh].
-        1. All of navigation is state-driven and concisely modeled.
-        1. All side effects and dependencies are controlled.
-        1. A full test suite is provided to test many complex and nuanced user flows.
+        1. All of navigation is [state-driven][swiftui-nav-gh] and concisely modeled.
+        1. All side effects and [dependencies][dependencies-gh] are controlled.
+        1. A [full test suite][standups-test-suite] is provided to test many complex and nuanced
+        user flows.
 
         …and a whole bunch more.
 
@@ -35,7 +38,7 @@ public let post0099_ModernSwiftUIConclusion = BlogPost(
         * [Modern SwiftUI: Dependencies](/blog/posts/97-modern-swiftui-dependencies)
         * [Modern SwiftUI: Testing](/blog/posts/98-modern-swiftui-testing)
 
-        ## A call for help!
+        ## A call to action!
 
         We hope that you find some of the topics discussed above exciting, and if you want to learn
         more, be sure to check out our [7-part series][modern-swiftui-collection] on “Modern
@@ -54,27 +57,14 @@ public let post0099_ModernSwiftUIConclusion = BlogPost(
         We will collect links to the other ports so that there can be a single place to reference
         many different approaches for building the same application.
 
-        [datafailedtoload-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/Standups/StandupsList.swift#L127-L143
-        [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
-        [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
-        [swiftui-collection]: https://www.pointfree.co/collections/swiftui
-        [swiftui-nav-collection]: https://www.pointfree.co/collections/swiftui/navigation
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
+        [swiftui-nav-collection]: /collections/swiftui/navigation
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
-        [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
-        [standup-detail-destination-enum]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L24-L29
-        [standup-detail-destinations-view]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L217-L255
-        [standup-detail-edit-button-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L75-L81
-        [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L98-L102
-        [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
-        [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
         [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
-        [bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
-        [standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsUITests/StandupsListUITests.swift
         """###,
       type: .paragraph
     )

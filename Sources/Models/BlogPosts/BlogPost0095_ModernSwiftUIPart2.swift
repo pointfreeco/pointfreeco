@@ -155,10 +155,10 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         how to more concisely model your domains for navigation in SwiftUI.
 
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
-        [runtime-warn-blog]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
+        [runtime-warn-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups

@@ -18,12 +18,12 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         step of the way we challenged ourselves to write the code in the most scalable and
         future-proof way possible, including:
 
-         1. We eschewed plain arrays for lists and instead embraced [identified
-            arrays][identified-collections-gh].
-         1. All of navigation is state-driven and concisely modeled.
-         1. All side effects and dependencies are controlled.
-         1. We built a full test suite to exercise and get coverage on many complex and nuanced user
-            flows.
+        1. We eschew plain arrays for lists and instead embrace [identified
+        arrays][identified-collections-gh].
+        1. All of navigation is [state-driven][swiftui-nav-gh] and concisely modeled.
+        1. All side effects and [dependencies][dependencies-gh] are controlled.
+        1. A [full test suite][standups-test-suite] is provided to test many complex and nuanced
+        user flows.
 
         …and a whole bunch more.
 
@@ -38,8 +38,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         ## Parent-child view communication
 
         It is common to break up a complex view into smaller pieces. Even something as simple as
-        showing a sheet is typically done by having a dedicated view for the present*ing* view and
-        present*ed* view. For example, a list of rows such that when one is tapped it brings up a
+        showing a sheet is typically done by having a dedicated view for the present**ing** view and
+        present**ed** view. For example, a list of rows such that when one is tapped it brings up a
         sheet for editing:
 
         ```swift
@@ -105,10 +105,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
-        [runtime-warn-blog]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
+        [runtime-warn-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
         """###,
@@ -117,10 +117,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
     .init(
       content: ###"""
         We prefer to name these closures in the style of beginning with `on*` and then describing
-        exactly what action the user performed, rather than being named after what the child
-        _thinks_ the parent should do (_e.g._, `deleteStandup`). This makes it easy for the parent
-        domain to know what exactly happened inside the view, and it's free to implement whatever
-        logic it wants.
+        exactly what action the user performed (_e.g._, `onDeleteButtonTapped`), rather than being
+        named after what the child _thinks_ the parent should do (_e.g._, `deleteStandup`). This
+        makes it easy for the parent domain to know what exactly happened inside the view, and it's
+        free to implement whatever logic it wants.
         """###,
       type: .box(.tip)
     ),
@@ -172,6 +172,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
           func deleteButtonTapped() {
           }
+
+          …
         }
         ```
 
@@ -186,6 +188,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
           func standupTapped(standup: Standup) {
             self.editStandup = EditStandupModel(standup: standup)
           }
+
+          …
         }
         ```
 
@@ -201,6 +205,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
             // Let the parent know that the delete button was tapped.
             self.onDeleteButtonTapped()
           }
+
+          …
         }
         ```
 
@@ -371,10 +377,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         to trace back to the problematic line of code:
 
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
-        [runtime-warn-blog]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
+        [runtime-warn-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
         """###,
@@ -405,10 +411,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
-        [runtime-warn-blog]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
+        [runtime-warn-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
         """###,

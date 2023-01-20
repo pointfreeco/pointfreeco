@@ -317,9 +317,9 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         how to take control of dependencies in your code base, rather than let them control you.
 
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
-        [swiftui-collection]: https://www.pointfree.co/collections/swiftui
-        [swiftui-nav-collection]: https://www.pointfree.co/collections/swiftui/navigation
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
+        [swiftui-collection]: /collections/swiftui
+        [swiftui-nav-collection]: /collections/swiftui/navigation
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
