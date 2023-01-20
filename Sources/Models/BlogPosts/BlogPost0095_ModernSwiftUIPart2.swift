@@ -11,8 +11,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
       content: #"""
         To celebrate the conclusion of our [7-part series](/collections/swiftui/modern-swiftui) on
         "Modern SwiftUI", exploring modern, best practices for SwiftUI development, we are releasing
-        a blog post each day this week. [Last
-        week](/blog/posts/94-modern-swiftui-parent-child-communication) we uncovered a safe and
+        a blog post each day this week. [Yesterday](/blog/posts/94-modern-swiftui-parent-child-communication) we uncovered a safe and
         ergonomic way to model parent-child communication between observable objects, and today
         we will make modeling lists of data safer and more performant.
         """#,
@@ -23,9 +22,9 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         The `List` and `ForEach` views in SwiftUI are foundational and incredibly easy to get
         started with. Compared to the days of UIKit, lists have never been easier. However, if used
         naively, in particular using plain arrays, it is possible to introduce subtle bugs and
-        crashes into your applications.
+        crashes to your applications.
 
-        We will describe how to avoid those problems by using our
+        We will describe how to avoid those problems by using the
         [`IdentifiedArray`][identified-collections-gh] type, which allows you to read and modify
         elements of a collection by their stable ID rather than positional index.
 
@@ -35,7 +34,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
 
         ```swift
         struct StandupsList: View {
-          @State var standups: [Standup] = [/*...*/]
+          @State var standups: [Standup] = […]
 
           var body: some View {
             List {
@@ -67,8 +66,8 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         yourself. Unfortunately, this code is both inefficient _and_ dangerous.
 
         It is a potential performance problem because you are linearly scanning an array to find an
-        element by its ID. If your collection has thousands, or hundreds of thousands, of elements,
-        this can be a serious problem.
+        element by its ID. If your collection has thousands of elements (or hundreds of thousands of
+        elements!), this can be a serious problem.
 
         Further, this code is not safe. Suppose that we have an API service to communicate with when
         deleting the standup. If we do this naively:
@@ -86,12 +85,12 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
 
         …then we can accidentally update the wrong standup or even crash. While the API client is
         suspending, it is possible for the `standups` array to shuffle its elements or even remove
-        some elements when the API request is in flight. So, after the suspension the `index` may
-        no longer correspond to the correct element, or may even fall outside the bounds of the
-        array.
+        some elements when the API request is in flight. So, after the suspension resumes, the
+        `index` may no longer correspond to the correct element, or may even fall outside the bounds
+        of the array.
 
-        To fix this you must always recompute indices after _every_ suspension point, and if there
-        are multiple suspension points then you must compute the index multiple times.
+        To fix this you must always recompute indices you use after _every_ suspension point, and if
+        there are multiple suspension points then you may need to compute the index multiple times.
 
         ## Using identified arrays
 
@@ -123,7 +122,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         ```
 
         Even with that change, all code should continue to compile because identified arrays mostly
-        behave like regular arrays. However, they come with additional API that allow for the safe
+        behave like regular arrays. However, they come with additional APIs that allow for the safe
         and efficient reading and modifying of elements by their ID. Such as removing an element by
         its ID:
 
@@ -148,7 +147,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         ## Until next time…
 
         That's it for now. We hope you have learned how to better model lists of data in your
-        SwiftUI application. By embracing our [`IdentifiedArray`][identified-collections-gh]
+        SwiftUI applications. By embracing our [`IdentifiedArray`][identified-collections-gh]
         data type you can more efficiently read and modify elements in your lists, _and_ do so
         more safely.
 

@@ -12,26 +12,28 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
     .init(
       content: ###"""
         This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
-        modern, best practices for SwiftUI development. In those episodes we re-built Apple’s
+        modern, best practices for SwiftUI development. In those episodes we rebuilt Apple’s
         ”[Scrumdinger][scrumdinger]” application ([source code here][standups-source]), which is a
         great showcase for many of the problems one encounters in a real life application. Every
         step of the way we challenged ourselves to write the code in the most scalable and
         future-proof way possible, including:
 
-        1. We eschew plain arrays for lists and instead embrace [identified
-        arrays][identified-collections-gh].
-        1. All of navigation is state-driven and concisely modeled.
-        1. All side effects and dependencies are controlled.
-        1. A full test suite is provided to test many complex and nuanced user flows.
+         1. We eschewed plain arrays for lists and instead embraced [identified
+            arrays][identified-collections-gh].
+         1. All of navigation is state-driven and concisely modeled.
+         1. All side effects and dependencies are controlled.
+         1. We built a full test suite to exercise and get coverage on many complex and nuanced user
+            flows.
 
         …and a whole bunch more.
 
         To celebrate the conclusion of the series we are going to release one new blog post every
         day this week detailing an area of SwiftUI development that can be modernized, starting
-        with parent-child communication.
+        today with parent-child communication.
 
-        If you find this interesting, then consider [subscribing][pricing] today to get access
-        to the [full series][modern-swiftui-collection]!
+        If you find any of this interesting, then consider [subscribing][pricing] today to get
+        access to the [full series][modern-swiftui-collection], as well as our entire back catalog
+        of episodes!
 
         ## Parent-child view communication
 
@@ -62,7 +64,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
           var body: some View {
             Form {
-              // …
+              …
             }
           }
         }
@@ -72,10 +74,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         have to think carefully about how the two separate views can communicate with each other.
         This isn't an issue when the entirety of the UI is in a single view.
 
-        The easiest way to accomplish this is to use "delegate closures". That is, the child view,
+        The easiest way to accomplish this is to use "delegate closures." That is, the child view,
         `EditStandup` in this case, can expose a closure that is invoked whenever some event occurs
         inside the child view, and the parent can override that closure. We are calling it a
-        "delegate closure" because it is reminescent of the delegate pattern that is popular in
+        "delegate closure" because it is reminiscent of the delegate pattern that is popular in
         UIKit.
 
         For example, suppose the `EditStandup` has a delete button, and when tapped that row should
@@ -85,14 +87,14 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         So, the view can hold onto a closure that it will invoke whenever it wants to tell the
         parent to perform the actual deletion logic:
 
-         ```swift
+        ```swift
         struct EditStandup: View {
           let standup: Standup
           let onDeleteButtonTapped: () -> Void
 
           var body: some View {
             Form {
-              // ...
+              …
               Button("Delete") {
                 self.onDeleteButtonTapped()
               }
@@ -114,9 +116,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
     ),
     .init(
       content: ###"""
-        We prefer to name these closures in the style of beginning with "on…" and then describing
+        We prefer to name these closures in the style of beginning with `on*` and then describing
         exactly what action the user performed, rather than being named after what the child
-        _thinks_ the parent should do (e.g. _deleteStandup_). This makes it easy for the parent
+        _thinks_ the parent should do (_e.g._, `deleteStandup`). This makes it easy for the parent
         domain to know what exactly happened inside the view, and it's free to implement whatever
         logic it wants.
         """###,
@@ -124,9 +126,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
     ),
     .init(
       content: ###"""
-        Then, when the parent view (`StandupsList`) constructs the child view (`EditStandup`)
-        it will provide a closure for `onDeleteButtonTapped`, and in that closure it is appropriate
-        for the parent domain to implement the deletion logic:
+        Then, when the parent view (`StandupsList`) constructs the child view (`EditStandup`) it
+        will provide a closure for `onDeleteButtonTapped`, and in that closure it is appropriate for
+        the parent domain to implement the deletion logic:
 
         ```swift
         struct StandupsList: View {
@@ -135,7 +137,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
           var body: some View {
             List {
-              // ...
+              …
             }
             .sheet(item: self.$editStandup) { standup in
               EditStandup(standup: standup) {
@@ -155,7 +157,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         delete (such as tracking analytics or performing API requests), and so we may want to move
         the behavior to an `ObservableObject` for each of the child and parent domains.
 
-        ## Parent-child ObservableObject communication
+        ## Parent-child `ObservableObject` communication
 
         But things get more complicated when needing to express a parent-child relationship between
         `ObservableObject`s rather than views. You may want to do this if the logic and behavior
@@ -203,8 +205,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         ```
 
         And then when constructing the `EditStandupModel` we can provide a closure in order to
-        implement the logic for when the delete button is tapped, noting to take care to not
-        create a retain cycle since we are now dealing with reference types:
+        implement the logic for when the delete button is tapped, taking great care to not create a
+        retain cycle since we are now dealing with reference types:
 
         ```swift
         func standupTapped(standup: Standup) {
@@ -233,11 +235,12 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
               StandupsList(
                 model: StandupsListModel(
                   standups: [
-                    // ...
+                    …
                   ],
-                  editStandup: EditStandupModel(standup: standup) {
-                    // ???
-                  }
+                  editStandup: EditStandupModel(
+                    standup: standup,
+                    onDeleteButtonTapped: <#() -> Void#>  // ???
+                  )
                 )
               )
             }
@@ -247,8 +250,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         However, it's not possible to implement this logic here. Only the `StandupsListModel`
         can implement this logic. And this is only the tip of the iceberg. There are going to be
-        many times we want to construct `EditStandupModel` for which it is not possible to provide the
-        deletion closure immediately.
+        many times we want to construct a `EditStandupModel` for which it is not possible to provide
+        the deletion closure immediately.
 
         An alternative approach is to provide a default for the closure so that you can create
         a `EditStandupModel` without the closure:
@@ -258,7 +261,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
           @Published var standup: Standup
           var onDeleteButtonTapped: () -> Void = {}
 
-          // ....
+          …
         }
         ```
 
@@ -292,8 +295,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         }
         ```
 
-        With that you are free to construct `EditStandupModel` objects without providing the closure,
-        yet the closure will still be properly bound inside the parent domain.
+        With that you are free to construct `EditStandupModel` objects without providing the
+        closure, yet the closure will still be properly bound from inside the parent domain.
 
         So, sounds like a win-win!
 
@@ -301,10 +304,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         Well, not so fast. We have actually lost some safety with this approach.
 
-        When we were requiring the closure at initialization of `EditStandupModel` we could guarantee
-        that the closure would be provided, it just wasn't very ergnomic to do so. But now that we
-        have provided a default, it's possible for you to construct a `EditStandupModel` and be
-        blissfully unaware that you need to provide this extra bit of functionality.
+        When we were requiring the closure at initialization of `EditStandupModel` we could
+        guarantee that the closure would be provided, it just wasn't very ergonomic to do so. But
+        now that we have provided a default, it's possible for you to construct a `EditStandupModel`
+        and be blissfully unaware that you need to provide this extra bit of functionality.
 
         So, if in the future the "edit standup" domain gains a new feature for duplicating the
         standup, and it needs to communicate that to the parent:
@@ -313,7 +316,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         class EditStandupModel: ObservableObject {
           var onDeleteButtonTapped: () -> Void = {}
           var onDuplicateButtonTapped: () -> Void = {}
-          // ...
+          …
         }
         ```
 
@@ -324,7 +327,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         So, there's a choice to be made: do we want the safety of a required delegate closure while
         not having the best ergonomics, or do we want ergonomics at the cost of losing some safety?
 
-        ## Unimplemented delegate closures
+        ## "Unimplemented" delegate closures
 
         Well, fortunately for us there's a middle ground. We can have safety _and_ ergonomics by
         using what we like to call "unimplemented delegate closures". The idea is to provide a
@@ -340,7 +343,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         A better approach is to show a purple, runtime warning in Xcode, much like what is shown
         when the thread sanitizer detects a problem, or when you update UI on a non-main thread.
         We've [written about this approach][runtime-warn-blog] in the past, and we even have an
-        [open source library][xctest-dynamic-overlay] that has a tool to make this super ergnomic.
+        [open source library][xctest-dynamic-overlay] that has a tool to make this super ergonomic.
 
         The tool is called [`unimplemented`][unimplemented-docs], and it is capable of generating a
         closure of virtually any signature, and if ever invoked it will cause a runtime warning in
@@ -350,9 +353,13 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         import XCTestDynamicOverlay
 
         class EditStandupModel: ObservableObject {
-          var onDeleteButtonTapped: () -> Void = unimplemented("EditStandupModel.onDeleteButtonTapped")
-          var onDuplicateButtonTapped: () -> Void = unimplemented("EditStandupModel.onDuplicateButtonTapped")
-          // ...
+          var onDeleteButtonTapped: () -> Void = unimplemented(
+            "EditStandupModel.onDeleteButtonTapped"
+          )
+          var onDuplicateButtonTapped: () -> Void = unimplemented(
+            "EditStandupModel.onDuplicateButtonTapped"
+          )
+          …
         }
         ```
 
@@ -360,7 +367,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         `EditStandupModel`, but also if you forget to do so you will get a loud, yet unobtrusive,
         runtime warning or test failure.
 
-        The warning even gives you a stacktrace of how things went wrong, which acts as breadcrumbs
+        The warning even gives you a stack trace of how things went wrong, which acts as breadcrumbs
         to trace back to the problematic line of code:
 
         [pricing]: /pricing
@@ -377,7 +384,10 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
       content: ###"""
         Foo bar
         """###,
-      type: .image(src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png", sizing: .fullWidth)
+      type: .image(
+        src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png",
+        sizing: .fullWidth
+      )
     ),
     .init(
       content: ###"""
@@ -388,9 +398,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         That's it for now. We hope you learned something about parent-child communication with
         `ObservableObject`s, and hope that you try our making such communication safer and more
-        ergonomic by making use of "[unimplemented delegate closure][xctest-dynamic-overlay]."
+        ergonomic by making use of "[unimplemented delegate closures][xctest-dynamic-overlay]."
 
-        Check back in tomorrow for the 2nd part of our "Modern SwiftUI" blog series, where we show
+        Check back tomorrow for the 2nd part of our "Modern SwiftUI" blog series, where we will show
         how to make collections safer and more performant to use in SwiftUI lists.
 
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups

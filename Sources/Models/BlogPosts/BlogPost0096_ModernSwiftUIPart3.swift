@@ -9,14 +9,14 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
     .init(
       content: #"""
         To celebrate the conclusion of our [7-part series](/collections/swiftui/modern-swiftui) on
-        "Modern SwiftUI", we are releasing a blog post each day this week exploring a modern, best
+        "Modern SwiftUI," we are releasing a blog post each day this week exploring a modern, best
         practice for SwiftUI development. Today we show how to more concisely model your domains
-        for navigation in SwiftUI, but be sure to catch up on the other weeks:
+        for navigation in SwiftUI, but be sure to catch up on the other posts:
 
-        * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
-        * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
-        * **[Modern SwiftUI: State-driven
-        navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)**
+          * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
+          * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+          * **[Modern SwiftUI: State-driven
+            navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)**
         """#,
       type: .box(.preamble)
     ),
@@ -24,8 +24,8 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
       content: ###"""
         Navigation is one of the most difficult aspects of SwiftUI, and it's why we have a [big
         series of episodes][swiftui-nav-collection] dedicated to the topic. But it doesn't have
-        to be that way. It's possible to model navigation in state using concise tools (e.g.
-        optionals and enums), making it easy to deep link into any state imaginable in your
+        to be that way. It's possible to model navigation in state using concise tools (_e.g._,
+        optionals and enums), which makes it easy to deep link into any state imaginable in your
         application.
 
         ## What is "state-driven navigation"?
@@ -65,8 +65,8 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         ```
 
         It is possible to show this sheet by simply flipping a boolean to `true`. This can happen
-        with user action, such as the above, but it can also happen without any user intervention,
-        such as if a push notification was received.
+        with a user action, such as the above button tap, but it can also happen without any user
+        intervention, such as if a push notification was received.
 
         State-driven navigation offers a lot more flexibility and power than its "fire-and-forget"
         counterpart, but it can also be more difficult to implement correctly.
@@ -84,7 +84,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
 
           var body: some View {
             Button("Show sheet") {
-              self.presentedValue = ""
+              self.presentedValue = "Hello!"
             }
             .sheet(item: self.$presentedValue) { value in
               Text(value)
@@ -108,7 +108,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
 
           var body: some View {
             Button("Show sheet") {
-              self.presentedValue = ""
+              self.presentedValue = "Hello!"
             }
             .sheet(unwrapping: self.$presentedValue) { $value in
               TextField("Value", text: $value)
@@ -122,18 +122,18 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
 
         ## Enum-driven navigation
 
-        SwiftUI ships lots of tools for dealing with state modeled on structs (e.g. dynamic
-        member lookup for deriving bindings) and optionals (e.g. optional-drive navigation like in
-        `.sheet(item:)`), but sadly there are no tools for enums. Enums are one of the most powerful
-        features of Swift, allowing you to statically describe the mutually exclusive choice of a
-        finite set of cases, and they are a great tool for modeling navigation state.
+        SwiftUI ships lots of tools for dealing with state modeled on structs (_e.g._, dynamic
+        member lookup for deriving bindings) and optionals (_e.g._, optional-drive navigation like
+        in `.sheet(item:)`), but sadly there are no tools for enums. Enums are one of the most
+        powerful features of Swift. They allow you to statically describe the mutually exclusive
+        choice of a finite set of cases, and they are a great tool for modeling navigation state.
 
         For example, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" we
         rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
-        and in doing so we modeled navigation state as concisely as possible, using enums.
+        and in doing so we modeled navigation state as concisely as possible using enums.
 
         One screen, the ["standup detail" screen][standup-detail-source], has 4 possible
-        places it can navigate to: an alert for deleting the standup, a sheet for editing the
+        destinations it can navigate to: an alert for deleting the standup, a sheet for editing the
         standup, a drill-down to a previously recorded meeting, and a drill-down to record a new
         meeting. If we use only the tools that SwiftUI gives us, then we would be forced to model
         all of these destinations as optionals:
@@ -146,8 +146,8 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         ```
 
         We now have 2⁴=16 states to contend with, of which only 5 are actually valid (either exactly
-        1 is non-`nil` or all are `nil`). It doesn't make sense to have the delete alert _and_
-        edit screen open at the same time, as well as 10 other combinations that are non-sensical.
+        1 is non-`nil`, or all are `nil`). It doesn't make sense to have the delete alert _and_
+        edit screen open at the same time, as well as 10 other combinations that are nonsensical.
 
         That kind of imprecision in the domain starts to leak complexity throughout the entire code
         base. You can never be sure of what screen is actually visible because you must check
@@ -236,9 +236,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         sheet by simply `nil`-ing out the `destination` state:
 
         ```swift
-        func cancelEditButtonTapped() {
-          self.destination = nil
-        }
+        self.destination = nil
         ```
 
         This makes navigation incredibly simple, and we can let SwiftUI handle the hard part of
@@ -268,12 +266,12 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
 
         It is incredibly powerful!
 
-        ## @StateObject versus @ObservedObject
+        ## `@StateObject` versus `@ObservedObject`
 
         So, state-driven navigation can be powerful, but you also must be care where you keep the
-        state. To unlock the most power from state-driven navigation it must be modeled in an
-        `ObservableObject` instead of put directly in a view as `@State`, and _further_, that object
-        must be installed in the view as an `@ObservedObject` rather than `@StateObject`.
+        state. To unlock the most power from state-driven navigation it must be modeled in
+        `ObservableObject`s instead of directly in views as `@State`, and _further_, objects
+        must be installed in the view as `@ObservedObject`s rather than `@StateObject`s.
 
         The `@State` and `@StateObject` property wrappers are incredibly powerful, but it's
         important to know that they are local to the view and cannot be influenced from the outside.
@@ -310,13 +308,13 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
 
         ## Until next time…
 
-        That's it for now. We hope you have learned how to better leverage enums and optionals
-        for making your navigation state in SwiftUI as concise as possible. Be sure to check
-        out our [SwiftUINavigation][swiftui-nav-gh] library to unlock the full power of enums
-        in navigation state.
+        That's it for now. We hope you have learned how to better leverage enums and optionals for
+        making your navigation state in SwiftUI as concise as possible. Be sure to check out our
+        [SwiftUINavigation][swiftui-nav-gh] library to unlock the full power of enums in navigation
+        state.
 
         Check back in tomorrow for the 4th part of our "Modern SwiftUI" blog series, where we show
-        how to take control of dependencies in your code base, rather than letting them control you.
+        how to take control of dependencies in your code base, rather than let them control you.
 
         [pricing]: /pricing
         [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui

@@ -3,23 +3,22 @@ import Foundation
 public let post0097_ModernSwiftUIPart4 = BlogPost(
   author: .pointfree,
   blurb: """
-    Learn about what dependencies are and why they cause so much havor in a code base, and then
-    see what can be done to take back control over dependencies rather than letting them control
-    you.
+    Learn about what dependencies are and why they wreak so much havoc in a code base, and then see
+    what can be done to take back control over dependencies rather than let them control you.
     """,
   contentBlocks: [
     .init(
       content: #"""
         To celebrate the conclusion of our [7-part series](/collections/swiftui/modern-swiftui) on
-        "Modern SwiftUI", we are releasing a blog post each day this week exploring a modern, best
+        "Modern SwiftUI," we are releasing a blog post each day this week exploring a modern, best
         practice for SwiftUI development. Today we show how to control dependencies in your
-        application rather than letting them control you.
+        application rather than let them control you.
 
-        * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
-        * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
-        * [Modern SwiftUI: State-driven
-        navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)
-        * **[Modern SwiftUI: Dependencies](/blog/posts/97-modern-swiftui-dependencies)**
+          * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
+          * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+          * [Modern SwiftUI: State-driven
+          navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)
+          * **[Modern SwiftUI: Dependencies](/blog/posts/97-modern-swiftui-dependencies)**
         """#,
       type: .box(.preamble)
     ),
@@ -27,70 +26,75 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
       content: ###"""
         It doesn't matter how much time you spend writing "clean" code with precisely modeled
         domains if you don't also control your dependencies. Uncontrolled dependencies make it
-        difficult to run your application in Xcode previews, simulators and devices, make it
-        difficult to write tests, and make your code base just harder to deal with.
+        difficult to run your application in Xcode previews, simulators, and devices; make it
+        difficult to write tests; and make your code base just harder to deal with.
 
         ## What is a dependency?
 
         Dependencies are the types and functions in your application that need to interact with
         outside systems that you do not control. Classic examples of this are API clients that make
-        network requests to servers, but also seemingly innocuous things such as `UUID` and `Date`
-        initializers, file access, user defaults, and even clocks and timers, can all be thought of
-        as dependencies.
+        network requests to servers, but also seemingly innocuous things such as the `UUID` and
+        `Date` initializers, file access, user defaults, and even clocks and timers, can all be
+        thought of as dependencies.
 
         You can get really far in application development without ever thinking about dependency
-        management (or, as some like to call it, "dependency injection”), but eventually
+        management (or, as some like to call it, "dependency injection”), but eventually,
         uncontrolled dependencies can cause many problems in your code base and development cycle:
 
-        * Uncontrolled dependencies make it **difficult to write fast, deterministic tests** because
-          you are susceptible to the vagaries of the outside world, such as file systems, network
-          connectivity, internet speed, server uptime, and more.
-        * Many dependencies **do not work well in SwiftUI previews**, such as location managers and
-          speech recognizers, and some **do not work even in simulators**, such as motion managers,
-          and more. This prevents you from being able to easily iterate on the design of features if
-          you make use of those frameworks.
-        * Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, web
-          socket libraries, network libraries, video streaming libraries, etc.) tend to be
-          heavyweight and take a **long time to compile**. This can slow down your development
-          cycle.
+          * Uncontrolled dependencies make it **difficult to write fast, deterministic tests**
+            because you are susceptible to the vagaries of the outside world, such as file systems,
+            network connectivity, internet speed, server uptime, and more.
+          * Many dependencies **do not work well in SwiftUI previews**, such as location managers
+            and speech recognizers, and some **do not work even in simulators**, such as motion
+            managers, and more. This prevents you from being able to easily iterate on the design of
+            features if you make use of those frameworks.
+          * Dependencies that interact with 3rd party, non-Apple libraries (such as Firebase, web
+            socket libraries, network libraries, video streaming libraries, _etc._) tend to be
+            heavyweight and take a **long time to compile**. This can slow down your development
+            cycle.
 
         ## Controlling dependencies
 
-        For the reasons above, and a lot more, it is highly encouraged for you to take control of
+        For the reasons above, and a lot more, it is highly encouraged that you to take control of
         your dependencies rather than let them control you.
 
-        In fact, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" where we
+        In fact, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)," where we
         rebuild Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
         we came face-to-face with this lesson as soon as we introduced code that called out to
         Apple's Speech framework. We found that directly accessing Speech APIs from our feature
-        completely broke the preview, making it difficult to iterate on functionality. We were
-        forced to run the full app in the simulator, which destroyed the fast iteration cycle that
-        previews give us.
+        completely broke the preview, making it difficult to iterate on the UI and functionality. We
+        were forced to run the full app in the simulator, which destroyed the fast iteration cycle
+        that previews give us.
 
-        So, we decided to take control over our dependence on Speech (and a lot of other
+        So, we decided to take control of our dependence on Speech (and a lot of other
         dependencies too!) by putting an [interface][speech-client-source] that we own in front of
         the framework:
 
         ```swift
         struct SpeechClient {
-          var authorizationStatus: @Sendable () -> SFSpeechRecognizerAuthorizationStatus
-          var requestAuthorization: @Sendable () async -> SFSpeechRecognizerAuthorizationStatus
-          var startTask: @Sendable (SFSpeechAudioBufferRecognitionRequest) async -> AsyncThrowingStream<SpeechRecognitionResult, Error>
+          var authorizationStatus:
+            @Sendable () -> SFSpeechRecognizerAuthorizationStatus
+          var requestAuthorization:
+            @Sendable () async -> SFSpeechRecognizerAuthorizationStatus
+          var startTask:
+            @Sendable (SFSpeechAudioBufferRecognitionRequest) async -> AsyncThrowingStream<
+              SpeechRecognitionResult, Error
+            >
         }
         ```
 
-        Then we made use of our new [Dependencies][dependencies-gh] to inject the dependency into
-        the [feature][record-model-source] that needs to interact with the Speech framework:
+        Then we made use of our new [Dependencies][dependencies-gh] library to inject the dependency
+        into the [feature][record-model-source] that needs to interact with the Speech framework:
 
         ```swift
         class RecordMeetingModel: ObservableObject {
           @Dependency(\.speechClient) var speechClient
-          // ...
+          …
         }
         ```
 
-        With that done we no longer reach for Speech APIs directly, and instead we only go through
-        the `speechClient` interface. For example, when asking for [speech recognition
+        So we no longer reach for Speech APIs directly, and instead we only go through the
+        `speechClient` interface. For example, when asking for [speech recognition
         authorization][speech-rec-auth-source]:
 
         ```swift
@@ -120,7 +124,7 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         ```
 
         The Speech framework isn't the only dependency we controlled in our
-        [Standups][standups-source] application. We also controlled our dependence on `Date` and
+        [Standups][standups-source] application. We also controlled our dependence on the `Date` and
         `UUID` initializers, our dependence on clocks for time-based asynchrony, our dependence
         on the file system for persisting application data, and even our dependence on an
         `AVAudioEngine` for playing sound effects in the app.

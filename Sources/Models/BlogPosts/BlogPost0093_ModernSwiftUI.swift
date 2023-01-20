@@ -10,7 +10,7 @@ public let post0093_ModernSwiftUI = BlogPost(
     .init(
       content: ###"""
         This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring modern,
-        best practices for SwiftUI development. In those episodes we re-built Apple’s
+        best practices for SwiftUI development. In those episodes we rebuilt Apple’s
         ”[Scrumdinger][scrumdinger]” application, which is a great showcase for many of the problems one
         encounters in a real life application. Every step of the way we challenged ourselves to write the
         code in the most scalable and future-proof way possible, including:
@@ -406,7 +406,7 @@ public let post0093_ModernSwiftUI = BlogPost(
 
         We do have a favor to ask you. While we have built the Standups application in the style that makes
         the most sense to us, we know that some of these ideas aren't for everyone. We would love if others
-        fork the Standups code base and re-build it in the style of their choice.
+        fork the Standups code base and rebuild it in the style of their choice.
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject` instead of
         `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a different way
