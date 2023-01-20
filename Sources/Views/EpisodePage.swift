@@ -1555,7 +1555,11 @@ private func nonBreaking(title: String) -> String {
     let subTitle = parts.last
   else { return title }
 
-  return mainTitle + ": " + subTitle.replacingOccurrences(of: " ", with: "&nbsp;")
+  let nonBreakingSubtitle = subTitle.components(separatedBy: ", ")
+    .map { $0.replacingOccurrences(of: " ", with: "&nbsp;") }
+    .joined(separator: ", ")
+
+  return mainTitle + ": " + nonBreakingSubtitle
 }
 
 private let newEpisodeDateFormatter: DateFormatter = {
