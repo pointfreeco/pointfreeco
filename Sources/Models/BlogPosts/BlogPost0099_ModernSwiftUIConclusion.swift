@@ -3,7 +3,9 @@ import Foundation
 public let post0099_ModernSwiftUIConclusion = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    A call to action: we rebuilt Apple's "Scrumdinger" application in a modern way that we felt is
+    the most scalable and future-proof way possible, but it's not the only way. Show us how *you*
+    would tackle the same problems in your own rewrite, and share the results with us!
     """,
   contentBlocks: [
     .init(

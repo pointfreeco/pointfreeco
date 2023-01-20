@@ -3,7 +3,9 @@ import Foundation
 public let post0098_ModernSwiftUIPart5 = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We show how the investments we made in the first 4 parts of this series of posts pays off when
+    it comes to testing. Each decision helps make it possible to write incredibly nuanced tests that
+    exercise many different user flows in the application.
     """,
   contentBlocks: [
     .init(
