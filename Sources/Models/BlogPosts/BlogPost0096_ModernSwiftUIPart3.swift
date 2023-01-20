@@ -43,7 +43,8 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         The only way to navigate to the settings view is for the user to literally tap the link.
         It is not possible to programmatically construct a piece of state, hand it to SwiftUI,
         and let SwiftUI do the rest. This means we can't deep link into the settings screen, whether
-        that be from a push notification, URL link, or even state restoration.
+        that be from a push notification, URL link, state restoration, or even after performing
+        some asynchronous work.
 
         This is why it's best to use SwiftUI's "state-driven" navigation APIs, where the
         presentation and dismissal of a view is represented as state in your actual domain. The
@@ -179,7 +180,8 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         And then, [in the view][standup-detail-destinations-view], we can make use of the tools that
         ship in our [SwiftUINavigation][swiftui-nav-gh] library, which allows you to perform all
         styles of navigation (alerts, sheets, popovers, drill-downs, _etc._) with a single, unified
-        style of API:
+        API that allows you to choose which case of an enum should drive the navigation for that
+        destination:
 
         ```swift
         .navigationDestination(

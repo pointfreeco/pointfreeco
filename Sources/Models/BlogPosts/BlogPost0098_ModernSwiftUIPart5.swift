@@ -101,22 +101,28 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
             StandupsListModel()
           }
 
+          // 1️⃣ Simulate the user tapping on a row in the standups list
           model.standupTapped(standup: model.standups[0])
 
+          // 🗣️ Assert the detail screen for the standup appears
           let detailModel = try XCTUnwrap(
             model.destination, case: /StandupsListModel.Destination.detail
           )
 
+          // 2️⃣ Simulate the user tapping the delete button
           detailModel.deleteButtonTapped()
 
+          // 🗣️ Assert an alert shows asking the user to confirm deleting the standup
           let alert = try XCTUnwrap(
             detailModel.destination, case: /StandupDetailModel.Destination.alert
           )
-
           XCTAssertNoDifference(alert, .deleteStandup)
 
+          // 3️⃣ Simulate the user confirming deletion
           await detailModel.alertButtonTapped(.confirmDeletion)
 
+          // 🗣️ Assert the detail screen is popped off the stack and that the standup
+          //    is removed from the list.
           XCTAssertNil(model.destination)
           XCTAssertEqual(model.standups, [])
           XCTAssertEqual(detailModel.isDismissed, true)
@@ -177,7 +183,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         corresponding unit is about 400 times faster at just 0.025 seconds. But, having some test
         coverage on the true integration layer of SwiftUI can help round out your suite.
 
-        ## A call for help!
+        ## A call to action!
 
         We hope that you find some of the topics discussed above exciting, and if you want to learn
         more, be sure to check out our [7-part series][modern-swiftui-collection] on
