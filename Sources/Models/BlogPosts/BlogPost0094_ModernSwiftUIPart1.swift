@@ -104,7 +104,6 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         ```
 
         [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
-        [standups-test-suite]:
         [dependencies-gh]: http://github.com/pointfreeco/swiftui-dependencies
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
