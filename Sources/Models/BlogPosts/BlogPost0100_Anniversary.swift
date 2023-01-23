@@ -3,7 +3,7 @@ import Foundation
 public let post0100_Anniversary = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We launched Point-Free 5 years ago today, and there's still so much more we want to cover.
     """,
   contentBlocks: [
     .init(
@@ -12,7 +12,11 @@ public let post0100_Anniversary = BlogPost(
 
         """###,
       type: .paragraph
-    )
+    ),
+    .init(
+      content: "Watch at 9AM PST / 5PM GMT",
+      type: .button(href: "/live/2809055")
+    ),
   ],
   coverImage: nil,
   id: 100,  
