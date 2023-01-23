@@ -29,12 +29,16 @@ func liveMiddleware(
 
 func liveView(id: Int) -> Node {
   .gridRow(
+    attributes: [
+      .class([
+        Class.pf.colors.bg.black,
+      ])
+    ],
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
       attributes: [
         .class([
           Class.grid.center(.desktop),
-//          Class.padding([.desktop: [.left: 2]]),
         ])
       ],
       .raw(
@@ -54,7 +58,6 @@ func liveView(id: Int) -> Node {
       attributes: [
         .class([
           Class.grid.center(.desktop),
-          Class.padding([.desktop: [.left: 2]]),
         ])
       ],
       .raw(
@@ -62,7 +65,8 @@ func liveView(id: Int) -> Node {
         <iframe src="https://vimeo.com/event/\(id)/chat/"
                 width="100%"
                 height="100%"
-                frameborder="0">
+                frameborder="0"
+                style="min-height: 30rem;">
         </iframe>
         """)
     )
