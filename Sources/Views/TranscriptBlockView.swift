@@ -21,7 +21,8 @@ public func transcriptBlockView(
           Class.padding([.mobile: [.all: 2]]),
         ]),
         .style(
-          unsafe: "background-color: #\(box.backgroundColor);border-left: 3px solid #\(box.borderColor);"
+          unsafe:
+            "background-color: #\(box.backgroundColor);border-left: 3px solid #\(box.borderColor);"
         ),
       ],
       box.title.map { title in

@@ -330,7 +330,7 @@ public struct Episode: Equatable, Identifiable {
           title: "Preamble"
         )
         public static let tip = Self(
-          backgroundColor: "dcf4e7", 
+          backgroundColor: "dcf4e7",
           borderColor: "79f2b0",
           title: "Tip"
         )

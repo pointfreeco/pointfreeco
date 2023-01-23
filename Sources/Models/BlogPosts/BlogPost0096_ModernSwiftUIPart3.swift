@@ -340,7 +340,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         [sheet-unwrapping-source]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Sources/SwiftUINavigation/Sheet.swift#L9-L61
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
   id: 96,

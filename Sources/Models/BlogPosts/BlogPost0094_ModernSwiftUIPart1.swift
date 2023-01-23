@@ -391,7 +391,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         Foo bar
         """###,
       type: .image(
-        src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png",
+        src:
+          "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png",
         sizing: .fullWidth
       )
     ),

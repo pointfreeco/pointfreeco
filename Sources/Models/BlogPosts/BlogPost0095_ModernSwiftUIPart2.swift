@@ -164,7 +164,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
   id: 95,
