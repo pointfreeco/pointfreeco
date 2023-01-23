@@ -1741,7 +1741,7 @@ extension Array where Element == Episode.TranscriptBlock {
     ),
     Episode.TranscriptBlock(
       content: #"""
-        Now, with feature modules, we have a lot more control over what gets built and what doesn't. If you are deep in focus mode on just the item view, then you can choose to build only the "ItemFeature". Then you should feel free to merge main into your branch as often as you want because, at worse, you will only trigger a re-build of the "ItemFeature" module, which is a lot smaller than the full application. This can be a huge boon to productivity.
+        Now, with feature modules, we have a lot more control over what gets built and what doesn't. If you are deep in focus mode on just the item view, then you can choose to build only the "ItemFeature". Then you should feel free to merge main into your branch as often as you want because, at worse, you will only trigger a rebuild of the "ItemFeature" module, which is a lot smaller than the full application. This can be a huge boon to productivity.
         """#,
       timestamp: (42 * 60 + 29),
       type: .paragraph
