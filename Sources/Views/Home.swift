@@ -249,6 +249,7 @@ private func episodeImageColumnView(episode: Episode) -> Node {
         attributes: [
           .src(episode.image),
           .alt(""),
+          .init("loading", "lazy"),
           .class([
             Class.size.width100pct,
             Class.size.height100pct,

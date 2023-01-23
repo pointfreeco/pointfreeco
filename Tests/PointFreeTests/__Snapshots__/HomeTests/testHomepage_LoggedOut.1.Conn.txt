@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 70404
+Content-Length: 70650
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1849,6 +1849,13 @@ html {
 
 
     </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
+    </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
@@ -2117,6 +2124,7 @@ html {
           <a href="/episodes/ep10-a-tale-of-two-flat-maps">
             <img src="http://localhost:8080/images/10.jpg"
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
@@ -2202,6 +2210,7 @@ html {
           <a href="/episodes/ep2-side-effects">
             <img src="http://localhost:8080/images/2.jpg"
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
@@ -2287,6 +2296,7 @@ html {
           <a href="/episodes/ep1-functions">
             <img src="http://localhost:8080/images/1.jpg"
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
@@ -2413,6 +2423,7 @@ html {
           <a href="/episodes/ep0-we-launched">
             <img src="http://localhost:8080/images/0.jpg"
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
