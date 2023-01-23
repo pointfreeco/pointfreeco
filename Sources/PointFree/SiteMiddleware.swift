@@ -250,6 +250,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
       .performAsync()
 
+  case let .live(id: id):
+    return await liveMiddleware(conn.map(const(id)))
+
   case let .login(redirect):
     return await loginResponse(conn.map(const(redirect)))
       .performAsync()

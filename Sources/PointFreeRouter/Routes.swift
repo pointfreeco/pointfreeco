@@ -30,6 +30,7 @@ public enum SiteRoute: Equatable {
   case gitHubCallback(code: String?, redirect: String?)
   case home
   case invite(Invite)
+  case live(id: Int)
   case login(redirect: String?)
   case logout
   case pricingLanding
@@ -470,6 +471,10 @@ let router = OneOf {
   Route(.case(SiteRoute.invite)) {
     Path { "invites" }
     inviteRouter
+  }
+
+  Route(.case(SiteRoute.live(id:))) {
+    Path { "live"; Int.parser() }
   }
 
   Route(.case(SiteRoute.login)) {
