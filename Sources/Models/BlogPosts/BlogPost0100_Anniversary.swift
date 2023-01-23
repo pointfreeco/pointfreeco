@@ -9,8 +9,8 @@ public let post0100_Anniversary = BlogPost(
   contentBlocks: [
     .init(
       content: ###"""
-        Five years ago, to the day, we launched Point-Free with a pair of episodes (
-        [functions](/episodes/ep1-functions) and [side-effects](/episodes/ep2-side-effects)),
+        Five years ago, to the day, we launched Point-Free with a pair of episodes
+        ([functions](/episodes/ep1-functions) and [side-effects](/episodes/ep2-side-effects)),
         and since then have released 220 episodes, 132 hours of video, and have had nearly half a
         million visitors to the site.
 
@@ -19,15 +19,15 @@ public let post0100_Anniversary = BlogPost(
         (the deep connection between math and programming), and there's still so much more to say
         about Swift concurrency.
 
-        All of that will come in due time, but in the meantime there's something happening later
-        this week that people have been asking for a long time:
+        All of that will come in due time, but in the meantime there's two things happening this
+        week that people have been asking for a long time: livestreams and a Point-Free Slack
+        community!
 
         ## Livestreams
 
         We are extremely excited to announce our first ever livestream. Everyone can access this
         livestream, whether you are a [subscriber](/pricing) or not, and it will begin at 9am PST
         (5pm GMT) this Wednesday, Feburary 1st:
-
         """###,
       type: .paragraph
     ),
