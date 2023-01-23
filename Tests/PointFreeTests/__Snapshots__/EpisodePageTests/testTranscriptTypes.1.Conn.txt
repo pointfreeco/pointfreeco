@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-composable-architecture
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 67302
+Content-Length: 68321
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2406,6 +2406,37 @@ information.</p>
 block, including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
 
                 </div>
+              </div>
+            </div>
+            <div class="m-ml2
+                        m-mr2
+                        m-mt3
+                        m-mb3
+                        m-pl3
+                        m-pr3
+                        m-pt3
+                        m-pb3"
+                 style="background-color: #f6f6f6">
+              <div class="fg-black
+                          normal
+                          h5
+                          lh-4
+                          center">
+                <a class="medium
+                          cursor-pointer
+                          nowrap
+                          btn-normal
+                          border-none
+                          text-decoration-none
+                          pf-link-white
+                          fg-white
+                          bg-purple
+                          h5
+                          m-pl2
+                          m-pr2"
+                   href="/hello">
+                  Call to action!
+                </a>
               </div>
             </div>
             <div class="d-pt3

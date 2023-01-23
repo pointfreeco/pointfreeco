@@ -655,7 +655,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
-  func testTranscriptBoxTypes() async {
+  func testTranscriptTypes() async {
     let titles = ["Composable Architecture"]
     var episode = Episode(
       blurb: """
@@ -703,6 +703,13 @@ class EpisodePageTests: TestCase {
             """,
           timestamp: nil,
           type: .box(.tip)
+        ),
+        Episode.TranscriptBlock(
+          content: """
+            Call to action!
+            """,
+          timestamp: nil,
+          type: .button(href: "/hello")
         ),
       ]
     )
