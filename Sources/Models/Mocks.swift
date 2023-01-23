@@ -99,14 +99,6 @@ private let subscriberOnlyEpisode = Episode(
     ),
     Episode.TranscriptBlock(
       content: """
-        This is a note for those time we want to make side remarks. We can use _markdown_ in this
-        block, including code snippets: `map(f >>> g)`.
-        """,
-      timestamp: nil,
-      type: .box(.note)
-    ),
-    Episode.TranscriptBlock(
-      content: """
         Here we have created a whole new transcript block so that we can associate a timestamp with it.
         """,
       timestamp: 30,

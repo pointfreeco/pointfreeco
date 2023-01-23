@@ -10,7 +10,7 @@ public let post0093_ModernSwiftUI = BlogPost(
     .init(
       content: ###"""
         This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring modern,
-        best practices for SwiftUI development. In those episodes we re-built Apple’s
+        best practices for SwiftUI development. In those episodes we rebuilt Apple’s
         ”[Scrumdinger][scrumdinger]” application, which is a great showcase for many of the problems one
         encounters in a real life application. Every step of the way we challenged ourselves to write the
         code in the most scalable and future-proof way possible, including:
@@ -406,34 +406,34 @@ public let post0093_ModernSwiftUI = BlogPost(
 
         We do have a favor to ask you. While we have built the Standups application in the style that makes
         the most sense to us, we know that some of these ideas aren't for everyone. We would love if others
-        fork the Standups code base and re-build it in the style of their choice.
+        fork the Standups code base and rebuild it in the style of their choice.
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject` instead of
         `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a different way
-        of handling dependencies? **Please show us!**
+        of handling dependencies? [**Please show us!**](http://twitter.com/pointfreeco)
 
         We will collect links to the other ports so that there can be a single place to reference many
         different approaches for building the same application.
 
         [pricing]: /pricing
-        [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
-        [swiftui-collection]: https://www.pointfree.co/collections/swiftui
-        [swiftui-nav-collection]: https://www.pointfree.co/collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups
+        [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
+        [swiftui-collection]: /collections/swiftui
+        [swiftui-nav-collection]: /collections/swiftui/navigation
+        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
-        [standup-detail-destination-enum]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L24-L29
-        [standup-detail-destinations-view]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L217-L255
-        [standup-detail-edit-button-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L75-L81
-        [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L98-L102
-        [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
-        [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/Standups/StandupDetail.swift#L83-L85
-        [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests
-        [bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
-        [standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/f3ccc0b3a104d4afc911d8e7f41c009e3187c45d/Examples/Standups/StandupsUITests/StandupsListUITests.swift
+        [standup-detail-destination-enum]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L24-L29
+        [standup-detail-destinations-view]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L217-L255
+        [standup-detail-edit-button-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L75-L81
+        [standup-detail-start-meeting-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L98-L102
+        [standup-detail-cancel-tapped]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
+        [standup-detail-source]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/Standups/StandupDetail.swift#L83-L85
+        [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
+        [bad-data-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests/StandupsListTests.swift#L184-L201
+        [standup-list-ui-test]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsUITests/StandupsListUITests.swift
         """###,
       type: .paragraph
     )

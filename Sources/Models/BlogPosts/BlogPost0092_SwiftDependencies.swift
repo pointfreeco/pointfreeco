@@ -302,6 +302,5 @@ public let post0092_SwiftDependencies = BlogPost(
   coverImage: nil,
   id: 92,
   publishedAt: yearMonthDayFormatter.date(from: "2023-01-09")!,
-  //      Take control of your dependencies, don't let them control you
   title: "A new library to control dependencies and avoid letting them control you"
 )

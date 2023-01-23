@@ -654,4 +654,87 @@ class EpisodePageTests: TestCase {
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
+
+  func testTranscriptBoxTypes() async {
+    let titles = ["Composable Architecture"]
+    var episode = Episode(
+      blurb: """
+        """,
+      id: 1,
+      length: 60 * 45,
+      permission: .subscriberOnly,
+      publishedAt: .mock,
+      sequence: 1,
+      title: "Composable Architecture",
+      trailerVideo: Episode.Video(
+        bytesLength: 1,
+        downloadUrls: Episode.Video.DownloadUrls.s3(hd1080: "", hd720: "", sd540: ""),
+        vimeoId: 1
+      ),
+      transcriptBlocks: [
+        Episode.TranscriptBlock(
+          content: """
+            This is a note for those time we want to make side remarks. We can use _markdown_ in this
+            block, including code snippets: `map(f >>> g)`.
+            """,
+          timestamp: nil,
+          type: .box(.correction)
+        ),
+        Episode.TranscriptBlock(
+          content: """
+            This is a note for those time we want to make side remarks. We can use _markdown_ in this
+            block, including code snippets: `map(f >>> g)`.
+            """,
+          timestamp: nil,
+          type: .box(.note)
+        ),
+        Episode.TranscriptBlock(
+          content: """
+            This is a preamble for those time we want to preface an episode/blog post with some
+            information.
+            """,
+          timestamp: nil,
+          type: .box(.preamble)
+        ),
+        Episode.TranscriptBlock(
+          content: """
+            This is a tip for those time we want to make side remarks. We can use _markdown_ in this
+            block, including code snippets: `map(f >>> g)`.
+            """,
+          timestamp: nil,
+          type: .box(.tip)
+        ),
+      ]
+    )
+
+    let episodes = titles.enumerated().map { idx, title -> Episode in
+      var episode = Episode.mock
+      episode.id = .init(rawValue: idx)
+      episode.sequence = .init(rawValue: idx)
+      episode.title = title
+      return episode
+    }
+
+    await withDependencies {
+      $0.episodes = { [episode] }
+    } operation: {
+      let episode = request(to: .episode(.show(.left(episode.slug))), session: .loggedOut)
+
+      let conn = connection(from: episode)
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: await siteMiddleware(conn),
+            as: [
+              "desktop": .connWebView(size: .init(width: 1100, height: 2400)),
+              "mobile": .connWebView(size: .init(width: 500, height: 2400)),
+            ]
+          )
+        }
+      #endif
+    }
+  }
 }

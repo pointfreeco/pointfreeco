@@ -14,20 +14,6 @@ public func transcriptBlockView(
 ) -> Node {
   switch block.type {
   case let .box(box):
-    let backgroundColor: String
-    let borderColor: String
-    let title: String
-    switch box {
-    case .correction:
-      backgroundColor = "ffdbdd"
-      borderColor = "eb1c26"
-      title = "Correction"
-    case .note:
-      backgroundColor = "f6f6f6"
-      borderColor = "d8d8d8"
-      title = "Note"
-    }
-
     return .div(
       attributes: [
         .class([
@@ -35,10 +21,12 @@ public func transcriptBlockView(
           Class.padding([.mobile: [.all: 2]]),
         ]),
         .style(
-          unsafe: "background-color: #\(backgroundColor);border-left: 3px solid #\(borderColor);"
+          unsafe: "background-color: #\(box.backgroundColor);border-left: 3px solid #\(box.borderColor);"
         ),
       ],
-      .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], .text(title)),
+      box.title.map { title in
+        .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], .text(title))
+      } ?? [],
       .div(
         attributes: [.class([Class.pf.type.body.regular])],
         .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
