@@ -37,6 +37,7 @@ public struct Client {
   public var fetchGift: (Gift.ID) async throws -> Gift
   public var fetchGiftByStripePaymentIntentId: (PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
+  public var fetchLivestreams: () async throws -> [Livestream]
   public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
@@ -97,6 +98,7 @@ public struct Client {
     fetchGift: @escaping (Gift.ID) async throws -> Gift,
     fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.ID) async throws -> Gift,
     fetchGiftsToDeliver: @escaping () async throws -> [Gift],
+    fetchLivestreams: @escaping () async throws -> [Livestream],
     fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription,
     fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
@@ -150,6 +152,7 @@ public struct Client {
     self.fetchGift = fetchGift
     self.fetchGiftByStripePaymentIntentId = fetchGiftByStripePaymentIntentId
     self.fetchGiftsToDeliver = fetchGiftsToDeliver
+    self.fetchLivestreams = fetchLivestreams
     self.fetchSubscriptionById = fetchSubscriptionById
     self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
     self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId

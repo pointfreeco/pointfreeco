@@ -71,6 +71,7 @@ public func siteMiddleware(
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
   let progresses = (try? await database.fetchEpisodeProgresses(currentUser.unwrap().id)) ?? []
+  let livestreams = (try? await database.fetchLivestreams()) ?? []
 
   let siteRoute: SiteRoute?
   do {
@@ -89,6 +90,7 @@ public func siteMiddleware(
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
+    $0.livestreams = livestreams
     $0.requestID = requestID
     $0.subscriberState = SubscriberState(
       user: currentUser,

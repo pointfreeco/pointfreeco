@@ -1,3 +1,4 @@
+import CasePaths
 import Css
 import Dependencies
 import Foundation
@@ -83,6 +84,13 @@ public func simplePageLayout<A>(
           .style(safe: renderedNormalizeCss),
           .style(styleguide, config: cssConfig),
           .style(layoutData.extraStyles, config: cssConfig),
+          .style(safe: """
+            @keyframes Pulse {
+              from { opacity: 1; }
+              50% { opacity: 0; }
+              to { opacity: 1; }
+            }
+            """),
           .meta(viewport: .width(.deviceWidth), .initialScale(1)),
           .link(
             attributes: [
@@ -126,52 +134,46 @@ public func simplePageLayout<A>(
   }
 }
 
-var liveStreamBanner: Node {
-  @Dependency(\.date.now) var now
-  @Dependency(\.subscriberState) var subscriberState
+private var liveStreamBanner: Node {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.livestreams) var livestreams
 
   guard
-    case .nonSubscriber = subscriberState,
-    (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
-      by: 1_209_600)).contains(now)
+    !(/SiteRoute.live ~= currentRoute),
+    let liveLivestream = livestreams.first(where: \.isLive)
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
 
   let announcementClass =
-  Class.type.align.center
-  | Class.padding([.mobile: [.topBottom: 3]])
-  | Class.pf.colors.bg.purple
-  | Class.pf.colors.fg.gray850
-  | Class.pf.colors.link.white
-  | Class.pf.type.body.leading
+    Class.type.align.center
+    | Class.padding([.mobile: [.topBottom: 4]])
+    | Class.pf.colors.bg.gray150
+    | Class.pf.colors.fg.gray850
+    | Class.pf.colors.link.white
+    | Class.pf.type.body.leading
 
   return .gridRow(
     attributes: [.class([announcementClass])],
     .gridColumn(
       sizes: [.mobile: 12],
+      .span(
+        attributes: [
+          .style(safe: "animation: Pulse 3s linear infinite;")
+        ],
+        "🔴 "
+      ),
       .a(
         attributes: [
           .class([
             Class.pf.colors.link.white
-            | Class.pf.type.underlineLink
+              | Class.pf.type.underlineLink
           ]),
-          .href("/discounts/eoy-2022"),
+          .href(siteRouter.path(for: .live(id: liveLivestream.eventID))),
         ],
-        .strong("🎁 Holiday sale")
+        .strong("Point-Free Live")
       ),
-      ": save 25% when you subscribe! ",
-      .a(
-        attributes: [
-          .class([
-            Class.pf.colors.link.white
-            | Class.pf.type.underlineLink
-          ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0090_2022EOYSaleLastChance.slug)))),
-        ],
-        "Read more"
-      ),
-      " about our sale."
+      ": we are live right now!"
     )
   )
 }

@@ -23,6 +23,7 @@ extension Client {
     fetchGift: { _ in throw NoopError() },
     fetchGiftByStripePaymentIntentId: { _ in throw NoopError() },
     fetchGiftsToDeliver: { throw NoopError() },
+    fetchLivestreams: { throw NoopError() },
     fetchSubscriptionById: { _ in throw NoopError() },
     fetchSubscriptionByOwnerId: { _ in throw NoopError() },
     fetchSubscriptionTeammatesByOwnerId: { _ in throw NoopError() },
