@@ -10,13 +10,23 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
     """,
   contentBlocks: [
     .init(
+      content: #"""
+        This blog post is one of a series. Be sure to read all parts!
+
+        * **[Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)**
+        * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+        * _More coming soon_
+        """#,
+      type: .box(.preamble)
+    ),
+    .init(
       content: ###"""
-        This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
+        Last week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
         modern, best practices for SwiftUI development. In those episodes we rebuilt Apple’s
-        ”[Scrumdinger][scrumdinger]” application ([source code here][standups-source]), which is a
-        great showcase for many of the problems one encounters in a real life application. Every
-        step of the way we challenged ourselves to write the code in the most scalable and
-        future-proof way possible, including:
+        ”[Scrumdinger][scrumdinger]” application from scratch ([source code here][standups-source]),
+        which is a great showcase for many of the problems one encounters in a real life
+        application. Every step of the way we challenged ourselves to write the code in the most
+        scalable and future-proof way possible, including:
 
         1. We eschew plain arrays for lists and instead embrace [identified
         arrays][identified-collections-gh].
