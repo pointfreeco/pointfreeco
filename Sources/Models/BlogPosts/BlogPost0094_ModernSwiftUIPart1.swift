@@ -4,9 +4,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
   author: .pointfree,
   blurb: """
     We are celebrating the conclusion of our 7-part series on Modern SwiftUI by releasing a blog
-    post every day, detailing an area of SwiftUI development that can be modernized. We begin
-    by exploring ways to facilitate parent-child communication in SwiftUI in a safe and ergonomic
-    manner.
+    post every day this week, detailing an area of SwiftUI development that can be modernized. We
+    begin by exploring ways to facilitate parent-child communication in SwiftUI in a safe and
+    ergonomic manner.
     """,
   contentBlocks: [
     .init(
@@ -15,6 +15,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
         * **[Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)**
         * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+        * [Modern SwiftUI: State-driven
+        navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)
         * _More coming soon_
         """#,
       type: .box(.preamble)
