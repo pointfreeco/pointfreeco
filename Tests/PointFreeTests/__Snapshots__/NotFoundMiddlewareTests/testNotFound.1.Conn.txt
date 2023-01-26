@@ -1,7 +1,7 @@
 GET http://localhost:8080/404
 
 404 Not Found
-Content-Length: 47336
+Content-Length: 47454
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1763,6 +1763,13 @@ html {
     <style>
       
 
+    </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
     </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">

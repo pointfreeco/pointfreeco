@@ -1,8 +1,8 @@
-GET http://localhost:8080/discounts/dead-beef
-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+GET http://localhost:8080/
+Cookie: pf_session={}
 
 200 OK
-Content-Length: 63410
+Content-Length: 64340
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -16,7 +16,7 @@ X-XSS-Protection: 1; mode=block
   <head>
     <meta charset="utf-8">
     <title>
-      Subscribe to Point-Free
+      Point-Free: A video series on functional programming and the Swift programming language.
     </title>
     <style>
       /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
@@ -1847,64 +1847,6 @@ html {
   font-family : ui-monospace,monospace;
 }
 
-.pricing-plan-feature > p {
-  margin-top    : 0;
-  margin-right  : 0;
-  margin-bottom : 0;
-  margin-left   : 0;
-}
-
-.plan-item {
-  width : 100%;
-}
-
-.testimonial-container {
-  height                     : 380px;
-  -webkit-overflow-scrolling : touch;
-}
-
-.testimonial-item {
-  flex-grow   : 0;
-  flex-shrink : 0;
-  flex-basis  : auto;
-  width       : 260px;
-  height      : 380px;
-}
-
-@media only screen and (min-width: 832px) {
-
-.dark-right-border-d {
-  border-right : 1px solid #333;
-}
-
-.light-right-border-d {
-  border-right : 1px solid #e8e8e8;
-}
-
-.light-bottom-border-d {
-  border-bottom : 1px solid #e8e8e8;
-}
-
-.plan-item {
-  width : 25%;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.testimonial-container {
-  height : 400px;
-}
-
-.testimonial-item {
-  width : 340px;
-}
-
-.testimonial-item {
-  height : 380px;
-}
-
-}
 
     </style>
     <style>
@@ -1950,11 +1892,11 @@ html {
     <meta property="og:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
-          content="Subscribe to Point-Free">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta property="og:title"
-          content="Subscribe to Point-Free">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta name="twitter:title"
-          content="Subscribe to Point-Free">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1962,639 +1904,388 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/discounts/dead-beef">
+          content="http://localhost:8080/">
     <meta name="twitter:url"
-          content="http://localhost:8080/discounts/dead-beef">
+          content="http://localhost:8080/">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
   </head>
   <body>
-    <div class="bg-black
-                d-pt2
-                d-pb2
-                m-pl2
-                m-pr2
-                m-pt2
-                m-pb2
+    <div class="center
+                m-pt4
+                m-pb4
+                bg-gray150
+                fg-gray850
+                pf-link-white
+                body-leading
+                fg-black
+                normal
+                lh-4
+                row">
+      <div class="col-m
+                  col-m-12">
+        <span style="animation: Pulse 3s linear infinite">
+          🔴 
+        </span>
+        <a class="pf-link-white
+                  underline-link"
+           href="/live">
+          <strong>
+            Point-Free Live
+          </strong>
+        </a>
+        : we are live right now!
+      </div>
+    </div>
+    <div class="d-pb4
+                d-pt4
+                d-pl4
+                d-pr4
+                m-pb1
+                m-pt3
+                m-pl3
+                m-pr3
+                top-d
                 middle-m
-                between-m">
-      <div style="max-width:1080px;
-                  margin-right:auto;
-                  margin-left:auto">
-        <div class="items-center
-                    row">
-          <div class="hide-d
-                      col-m">
-            <a class="start-m"
-               href="/">
-              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzJweCIgaGVpZ2h0PSI3MnB4IiB2aWV3Qm94PSIwIDAgNzIgNzIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iR3JvdXAiIGZpbGw9IiNmZmZmZmYiPgogICAgICAgICAgICA8cGF0aCBkPSJNNTQuMzM2MzI4Niw1My42NjM2NzE0IEwzNiw3MiBMMTcuNjYzNjcxNCw1My42NjM2NzE0IEwxOC4xMTkxMTg2LDUzLjY2MzY3MTQgTDE4LjExOTExODYsNDkuNjkxMjY2MSBMMjIuNjM3NDkzLDQ5LjY5MTI2NjEgTDIyLjYzNzQ5Myw0Ni44Nzc0Nzg5IEwxOC4xMTkxMTg2LDQ2Ljg3NzQ3ODkgTDE4LjExOTExODYsNDMuOTcxNzM4IEwyMy4yNDExNjI1LDQzLjk3MTczOCBMMjMuMjQxMTYyNSw0MS4xNTc5NTA5IEwxNC43ODk3OTAxLDQxLjE1Nzk1MDkgTDE0Ljc4OTc5MDEsNTAuNzg5NzkwMSBMMi4xMzE2MjgyMWUtMTQsMzYgTDcuNzk3Mjg1NTksMjguMjAyNzE0NCBMNy43OTcyODU1OSwzNS4yNzI5MDU5IEwxMS4xMjY2MTQxLDM1LjI3MjkwNTkgTDExLjEyNjYxNDEsMzIuNTY5NDYzNCBMMTIuNTE2ODgzMSwzMi41Njk0NjM0IEMxNS44NjQ1MDQ3LDMyLjU2OTQ2MzQgMTcuNzQ4Njg1MSwzMC40NTQ1MjU0IDE3Ljc0ODY4NTEsMjcuNjc3NTE5OCBDMTcuNzQ4Njg1MSwyNS4wOTU5MTI5IDE2LjEyMDMyOTcsMjMuMDcwNTg3NSAxMy4yMDE2NDc0LDIyLjc5ODM1MjYgTDM2LDIuMTMxNjI4MjFlLTE0IEw1OC43NjcxODU0LDIyLjc2NzE4NTQgTDU0LjI5ODEyNjcsMjIuNzY3MTg1NCBMNTQuMjk4MTI2NywyNS41ODA5NzI1IEw1Ny41OTA4NjkxLDI1LjU4MDk3MjUgTDU3LjU5MDg2OTEsMzUuMjcyOTA1OSBMNjAuOTIwMTk3NiwzNS4yNzI5MDU5IEw2MC45MjAxOTc2LDI1LjU4MDk3MjUgTDYxLjU4MDk3MjUsMjUuNTgwOTcyNSBMNzIsMzYgTDU3LjE1MDExNTcsNTAuODQ5ODg0MyBMNTIuMDI5NzkyOSw1MC44NDk4ODQzIEw1Mi4wMjk3OTI5LDQ5LjU0NDEzOTkgTDU2LjUyOTg3NDMsNDkuNTQ0MTM5OSBMNTYuNTI5ODc0Myw0Ni44Nzc0Nzg5IEw1Mi4wMjk3OTI5LDQ2Ljg3NzQ3ODkgTDUyLjAyOTc5MjksNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDEuMTU3OTUwOSBMNDguNzAwNDY0NCw0MS4xNTc5NTA5IEw0OC43MDA0NjQ0LDUzLjY2MzY3MTQgTDU0LjMzNjMyODYsNTMuNjYzNjcxNCBaIE0xMS4xMjY2MTQxLDI5LjczNzI4NTUgTDExLjEyNjYxNDEsMjUuNTk5MzYzMyBMMTIuMzUyMjQ2LDI1LjU5OTM2MzMgQzEzLjg1MjI3MzIsMjUuNTk5MzYzMyAxNC40MDEwNjM2LDI2LjQ2MzcyOTMgMTQuNDAxMDYzNiwyNy42Nzc1MTk4IEMxNC40MDEwNjM2LDI4Ljg5MTMxMDMgMTMuODUyMjczMiwyOS43MzcyODU1IDEyLjM1MjI0NiwyOS43MzcyODU1IEwxMS4xMjY2MTQxLDI5LjczNzI4NTUgWiBNMjYuMDIxNzAwNiwzNS40Mzg0MjI4IEMyOS42MDcxMzEzLDM1LjQzODQyMjggMzIuNjk4NjUwNiwzMi43OTAxNTI2IDMyLjY5ODY1MDYsMjkuMDIwMDQ1NyBDMzIuNjk4NjUwNiwyNS4yNDk5Mzg3IDI5LjYwNzEzMTMsMjIuNjIwMDU5MyAyNi4wMjE3MDA2LDIyLjYyMDA1OTMgQzIyLjQzNjI2OTksMjIuNjIwMDU5MyAxOS4zNDQ3NTA1LDI1LjI0OTkzODcgMTkuMzQ0NzUwNSwyOS4wMjAwNDU3IEMxOS4zNDQ3NTA1LDMyLjc5MDE1MjYgMjIuNDM2MjY5OSwzNS40Mzg0MjI4IDI2LjAyMTcwMDYsMzUuNDM4NDIyOCBaIE0yNi4wMjE3MDA2LDMyLjUzMjY4MTkgQzIzLjkzNjI5NywzMi41MzI2ODE5IDIyLjc0NzI1MTEsMzAuOTg3ODU3NiAyMi43NDcyNTExLDI5LjAyMDA0NTcgQzIyLjc0NzI1MTEsMjcuMDUyMjMzOCAyMy45MzYyOTcsMjUuNTI1ODAwMiAyNi4wMjE3MDA2LDI1LjUyNTgwMDIgQzI4LjEwNzEwNDIsMjUuNTI1ODAwMiAyOS4yOTYxNSwyNy4wNTIyMzM4IDI5LjI5NjE1LDI5LjAyMDA0NTcgQzI5LjI5NjE1LDMwLjk4Nzg1NzYgMjguMTA3MTA0MiwzMi41MzI2ODE5IDI2LjAyMTcwMDYsMzIuNTMyNjgxOSBaIE0zNC44OTgzODU1LDM1LjI3MjkwNTkgTDM4LjIyNzcxNCwzNS4yNzI5MDU5IEwzOC4yMjc3MTQsMjIuNzY3MTg1NCBMMzQuODk4Mzg1NSwyMi43NjcxODU0IEwzNC44OTgzODU1LDM1LjI3MjkwNTkgWiBNNTEuOTcwMzQwNiwzNS40OTM1OTUxIEM1Mi4xNzE1NjM4LDM1LjY1OTExMiA1Mi4yMjY0NDI4LDM1LjYwMzkzOTcgNTIuMjI2NDQyOCwzNS40NTY4MTM2IEw1Mi4yMjY0NDI4LDIyLjc2NzE4NTQgTDQ5LjA5ODMzNzUsMjIuNzY3MTg1NCBMNDkuMDk4MzM3NSwyOS4wMzg0MzY0IEw0MS4yODcyMjA2LDIyLjU2NDg4NyBDNDEuMDg1OTk3NCwyMi4zOTkzNzAxIDQxLjAzMTExODQsMjIuNDkxMzIzOSA0MS4wMzExMTg0LDIyLjYwMTY2ODUgTDQxLjAzMTExODQsMzUuMjcyOTA1OSBMNDQuMTU5MjIzOCwzNS4yNzI5MDU5IEw0NC4xNTkyMjM4LDI5LjAzODQzNjQgTDUxLjk3MDM0MDYsMzUuNDkzNTk1MSBaIE0zMy4xNjA1NDkyLDUwLjExNDI1MzcgQzM0LjYyMzk5MDMsNDkuMzA1MDYgMzUuNDEwNTg5OSw0Ny44NzA1ODAzIDM1LjQxMDU4OTksNDYuMDY4Mjg1MyBDMzUuNDEwNTg5OSw0My4yOTEyNzk3IDMzLjUyNjQwOTUsNDEuMTU3OTUwOSAzMC4xNzg3ODgsNDEuMTU3OTUwOSBMMjUuNDU5MTkwNCw0MS4xNTc5NTA5IEwyNS40NTkxOTA0LDUzLjY2MzY3MTQgTDI4Ljc4ODUxODksNTMuNjYzNjcxNCBMMjguNzg4NTE4OSw1MC43OTQ3MTIgTDMwLjAzMjQ0MzksNTAuNzk0NzEyIEwzMS43NzAyODAyLDUzLjY2MzY3MTQgTDM1LjM3NDAwMzksNTMuNjYzNjcxNCBMMzMuMTYwNTQ5Miw1MC4xMTQyNTM3IFogTTI4Ljc4ODUxODksNDguMTI4MDUxIEwyOC43ODg1MTg5LDQzLjk5MDEyODggTDMwLjAxNDE1MDgsNDMuOTkwMTI4OCBDMzEuNTE0MTc4LDQzLjk5MDEyODggMzIuMDYyOTY4NCw0NC44NTQ0OTQ3IDMyLjA2Mjk2ODQsNDYuMDY4Mjg1MyBDMzIuMDYyOTY4NCw0Ny4yODIwNzU4IDMxLjUxNDE3OCw0OC4xMjgwNTEgMzAuMDE0MTUwOCw0OC4xMjgwNTEgTDI4Ljc4ODUxODksNDguMTI4MDUxIFogTTM3LjUzNzE1MjgsNTMuNjYzNjcxNCBMNDYuNTE5MDIyNSw1My42NjM2NzE0IEw0Ni41MTkwMjI1LDUwLjg0OTg4NDMgTDQwLjg2NjQ4MTMsNTAuODQ5ODg0MyBMNDAuODY2NDgxMyw0OS41NDQxMzk5IEw0NS4zNjY1NjI3LDQ5LjU0NDEzOTkgTDQ1LjM2NjU2MjcsNDYuODc3NDc4OSBMNDAuODY2NDgxMyw0Ni44Nzc0Nzg5IEw0MC44NjY0ODEzLDQzLjk3MTczOCBMNDYuMjYyOTIwMyw0My45NzE3MzggTDQ2LjI2MjkyMDMsNDEuMTU3OTUwOSBMMzcuNTM3MTUyOCw0MS4xNTc5NTA5IEwzNy41MzcxNTI4LDUzLjY2MzY3MTQgWiIgaWQ9ImdseXBoIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
-                   alt="Point-Free">
-            </a>
-          </div>
-          <div class="hide-m
-                      col-m
-                      col-d-3">
-            <a href="/">
-              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"
-                   alt="Point-Free">
-            </a>
+                between-m
+                blue-gradient
+                row">
+      <div class="col-m
+                  col-m-12">
+        <div class="row">
+          <div class="col-m
+                      col-d-6
+                      col-m-0">
+            <div>
+            </div>
           </div>
           <div class="col-m
-                      col-d-9">
-            <ul class="list-reset
-                       end-m
-                       fg-black
-                       normal
-                       h6
-                       lh-4">
-              <li class="m-pl2
-                         inline">
-                <a href="/pricing"
-                   class="pf-link-gray650">
-                  Pricing
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a class="pf-link-gray650"
-                   href="/collections">
-                  Collections
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/blog"
-                   class="pf-link-gray650">
-                  Blog
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/gifts"
-                   class="pf-link-gray650">
-                  Gifts
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/account"
-                   class="pf-link-gray650">
-                  Account
-                </a>
-              </li>
-            </ul>
+                      col-d-6
+                      col-m-12">
+            <div class="end-m">
+              <a href="/pricing"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Pricing
+              </a>
+              <a href="/collections"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Collections
+              </a>
+              <a href="/blog"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Blog
+              </a>
+              <a href="/gifts"
+                 class="medium
+                        pf-link-black
+                        d-mr3
+                        m-mr2">
+                Gifts
+              </a>
+              <a href="/login?redirect=http://localhost:8080/"
+                 class="medium
+                        cursor-pointer
+                        nowrap
+                        btn-normal
+                        border-none
+                        text-decoration-none
+                        pf-link-white
+                        fg-white
+                        bg-black
+                        h5
+                        m-pl2
+                        m-pr2">
+                <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
+                     alt
+                     class="m-mr1"
+                     style="margin-bottom:-4px"
+                     width="20"
+                     height="20">
+                <span>
+                  Login
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="center-m
+                    d-pt0
+                    d-pb0
+                    m-pt2
+                    m-pb2
+                    row">
+          <div class="col-m">
+            <a href="/">
+              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDI0cHgiIGhlaWdodD0iMTEycHgiIHZpZXdCb3g9IjAgMCA0MjQgMTEyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9InBmLWxvZ28taGVybyI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0yMDAuOTg4NjI3LDEwNC43MTcxMTQgTDIwMC45ODg2MjcsMTA0LjczOTg2IEMyMDAuOTg4NjI3LDEwOC43NTYwODYgMTk3LjczMjgzMiwxMTIuMDExODgxIDE5My43MTY2MDYsMTEyLjAxMTg4MSBDMTg5LjcwMDM3OSwxMTIuMDExODgxIDE4Ni40NDQ1ODQsMTA4Ljc1NjA4NiAxODYuNDQ0NTg0LDEwNC43Mzk4NiBMMTg2LjQ0NDU4NCwxMDQuNzE3MTE0IEMxODYuNDQ0NTg0LDEwMC43MDA4ODggMTg5LjcwMDM3OSw5Ny40NDUwOTI2IDE5My43MTY2MDYsOTcuNDQ1MDkyNiBDMTk3LjczMjgzMiw5Ny40NDUwOTI2IDIwMC45ODg2MjcsMTAwLjcwMDg4OCAyMDAuOTg4NjI3LDEwNC43MTcxMTQgWiBNMTMxLjA2ODA0MSw3LjI3MjAyMTgzIEwxMzEuMDY4MDQxLDcuMjk0NzY3MDkgQzEzMS4wNjgwNDEsMTEuMzEwOTkzOSAxMjcuODEyMjQ1LDE0LjU2Njc4ODkgMTIzLjc5NjAxOSwxNC41NjY3ODg5IEMxMTkuNzc5NzkyLDE0LjU2Njc4ODkgMTE2LjUyMzk5NywxMS4zMTA5OTM5IDExNi41MjM5OTcsNy4yOTQ3NjcwOSBMMTE2LjUyMzk5Nyw3LjI3MjAyMTgzIEMxMTYuNTIzOTk3LDMuMjU1Nzk1MDcgMTE5Ljc3OTc5Miw1Ljc5MjYxODI0ZS0xNCAxMjMuNzk2MDE5LDUuODE3MjEwNTRlLTE0IEMxMjcuODEyMjQ1LDUuODQxODAyODNlLTE0IDEzMS4wNjgwNDEsMy4yNTU3OTUwNyAxMzEuMDY4MDQxLDcuMjcyMDIxODMgWiBNNjMuMzM1ODgzOCw2NS40NTk1NjkxIEwxOTUuOTA5NTg1LDY1LjQ1OTU2OTEgQzE5OC43MjA5NDMsNjUuNDU5NTY5MSAyMDEsNjcuNzM4NjI1NyAyMDEsNzAuNTQ5OTg0NCBDMjAxLDczLjM2MTM0MzEgMTk4LjcyMDk0Myw3NS42NDAzOTk3IDE5NS45MDk1ODUsNzUuNjQwMzk5NyBMNjMuMzM1ODgzOCw3NS42NDAzOTk3IEM2MC41MjQ1MjUxLDc1LjY0MDM5OTcgNTguMjQ1NDY4NSw3My4zNjEzNDMxIDU4LjI0NTQ2ODUsNzAuNTQ5OTg0NCBDNTguMjQ1NDY4NSw2Ny43Mzg2MjU3IDYwLjUyNDUyNTEsNjUuNDU5NTY5MSA2My4zMzU4ODM4LDY1LjQ1OTU2OTEgWiBNNS40NjIyMzI1OCwxMDAuMzY1Mjc0IEwxMzguMDM1OTM0LDEwMC4zNjUyNzQgQzE0MC44NDcyOTIsMTAwLjM2NTI3NCAxNDMuMTI2MzQ5LDEwMi42NDQzMyAxNDMuMTI2MzQ5LDEwNS40NTU2ODkgQzE0My4xMjYzNDksMTA4LjI2NzA0OCAxNDAuODQ3MjkyLDExMC41NDYxMDQgMTM4LjAzNTkzNCwxMTAuNTQ2MTA0IEw1LjQ2MjIzMjU4LDExMC41NDYxMDQgQzIuNjUwODczODUsMTEwLjU0NjEwNCAwLjM3MTgxNzI5OCwxMDguMjY3MDQ4IDAuMzcxODE3Mjk4LDEwNS40NTU2ODkgQzAuMzcxODE3Mjk4LDEwMi42NDQzMyAyLjY1MDg3Mzg1LDEwMC4zNjUyNzQgNS40NjIyMzI1OCwxMDAuMzY1Mjc0IFogTTYuOTk4NjE3NTQsMzAuNTUzODY0MyBMMTM5LjU3MjMxOCwzMC41NTM4NjQzIEMxNDIuMzgzNjc3LDMwLjU1Mzg2NDMgMTQ0LjY2MjczNCwzMi44MzI5MjA5IDE0NC42NjI3MzQsMzUuNjQ0Mjc5NiBDMTQ0LjY2MjczNCwzOC40NTU2MzgzIDE0Mi4zODM2NzcsNDAuNzM0Njk0OSAxMzkuNTcyMzE4LDQwLjczNDY5NDkgTDYuOTk4NjE3NTQsNDAuNzM0Njk0OSBDNC4xODcyNTg4MSw0MC43MzQ2OTQ5IDEuOTA4MjAyMjYsMzguNDU1NjM4MyAxLjkwODIwMjI2LDM1LjY0NDI3OTYgQzEuOTA4MjAyMjYsMzIuODMyOTIwOSA0LjE4NzI1ODgxLDMwLjU1Mzg2NDMgNi45OTg2MTc1NCwzMC41NTM4NjQzIFoiIGlkPSJsaW5lcyIgZmlsbD0iI0ZGRkZGRiI+PC9wYXRoPgogICAgICAgICAgICA8ZyBpZD0iR3JvdXAtMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTE1LjAwMDAwMCwgNTUuMDAwMDAwKSIgZmlsbD0iIzEyMTIxMiI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNy4yMzEyMTMxOCwyMS41NDM0MDU2IEw3LjIzMTIxMzE4LDI3LjMxMjc3MDQgTDAsMjcuMzEyNzcwNCBMMCwwLjYyNDU1MjMwOSBMMTAuMjUwODQwNywwLjYyNDU1MjMwOSBDMTcuNTIxNzg1OCwwLjYyNDU1MjMwOSAyMS42MTQxNzU3LDUuMTc3MjQ4MzMgMjEuNjE0MTc1NywxMS4xMDM2MDI2IEMyMS42MTQxNzU3LDE3LjAyOTk1NjkgMTcuNTIxNzg1OCwyMS41NDM0MDU2IDEwLjI1MDg0MDcsMjEuNTQzNDA1NiBMNy4yMzEyMTMxOCwyMS41NDM0MDU2IFogTTcuMjMxMjEzMTgsMTUuNDk5MzA5MSBMOS44OTMyNTMyLDE1LjQ5OTMwOTEgQzEzLjE1MTI3MjMsMTUuNDk5MzA5MSAxNC4zNDMyMzA1LDEzLjY5MzkyOTcgMTQuMzQzMjMwNSwxMS4xMDM2MDI2IEMxNC4zNDMyMzA1LDguNTEzMjc1NTkgMTMuMTUxMjcyMyw2LjY2ODY0ODc1IDkuODkzMjUzMiw2LjY2ODY0ODc1IEw3LjIzMTIxMzE4LDYuNjY4NjQ4NzUgTDcuMjMxMjEzMTgsMTUuNDk5MzA5MSBaIE00MC40Njk4MTk1LDI3LjY2NTk5NjggQzMyLjY4MjM1OTEsMjcuNjY1OTk2OCAyNS45Njc2NjEyLDIyLjAxNDM3NDEgMjUuOTY3NjYxMiwxMy45Njg2NjEzIEMyNS45Njc2NjEyLDUuOTIyOTQ4NTQgMzIuNjgyMzU5MSwwLjMxMDU3MzI3MyA0MC40Njk4MTk1LDAuMzEwNTczMjczIEM0OC4yNTcyNzk4LDAuMzEwNTczMjczIDU0Ljk3MTk3NzgsNS45MjI5NDg1NCA1NC45NzE5Nzc4LDEzLjk2ODY2MTMgQzU0Ljk3MTk3NzgsMjIuMDE0Mzc0MSA0OC4yNTcyNzk4LDI3LjY2NTk5NjggNDAuNDY5ODE5NSwyNy42NjU5OTY4IFogTTQwLjQ2OTgxOTUsMjEuNDY0OTEwOCBDNDQuOTk5MjYwNywyMS40NjQ5MTA4IDQ3LjU4MTgzNjgsMTguMTY4MTMwOSA0Ny41ODE4MzY4LDEzLjk2ODY2MTMgQzQ3LjU4MTgzNjgsOS43NjkxOTE3MyA0NC45OTkyNjA3LDYuNTExNjU5MjQgNDAuNDY5ODE5NSw2LjUxMTY1OTI0IEMzNS45NDAzNzgyLDYuNTExNjU5MjQgMzMuMzU3ODAyMSw5Ljc2OTE5MTczIDMzLjM1NzgwMjEsMTMuOTY4NjYxMyBDMzMuMzU3ODAyMSwxOC4xNjgxMzA5IDM1Ljk0MDM3ODIsMjEuNDY0OTEwOCA0MC40Njk4MTk1LDIxLjQ2NDkxMDggWiBNNjAuNjM2NjE3MywyNy4zMTI3NzA0IEw2Ny44Njc4MzA1LDI3LjMxMjc3MDQgTDY3Ljg2NzgzMDUsMC42MjQ1NTIzMDkgTDYwLjYzNjYxNzMsMC42MjQ1NTIzMDkgTDYwLjYzNjYxNzMsMjcuMzEyNzcwNCBaIE05OC42MDMzMjQ1LDI3Ljc4MzczODkgQzk5LjA0MDM3NTksMjguMTM2OTY1MyA5OS4xNTk1NzE3LDI4LjAxOTIyMzIgOTkuMTU5NTcxNywyNy43MDUyNDQyIEw5OS4xNTk1NzE3LDAuNjI0NTUyMzA5IEw5Mi4zNjU0MDk4LDAuNjI0NTUyMzA5IEw5Mi4zNjU0MDk4LDE0LjAwNzkwODcgTDc1LjM5OTg3MTIsMC4xOTI4MzExMzUgQzc0Ljk2MjgxOTksLTAuMTYwMzk1MjgxIDc0Ljg0MzYyNCwwLjAzNTg0MTYxNjggNzQuODQzNjI0LDAuMjcxMzI1ODk0IEw3NC44NDM2MjQsMjcuMzEyNzcwNCBMODEuNjM3Nzg1OSwyNy4zMTI3NzA0IEw4MS42Mzc3ODU5LDE0LjAwNzkwODcgTDk4LjYwMzMyNDUsMjcuNzgzNzM4OSBaIE0xMTEuNjk3ODM3LDI3LjMxMjc3MDQgTDExOC45MjkwNSwyNy4zMTI3NzA0IEwxMTguOTI5MDUsNi42Mjk0MDEzNyBMMTI2LjA4MDc5OSw2LjYyOTQwMTM3IEwxMjYuMDgwNzk5LDAuNjI0NTUyMzA5IEwxMDQuNTQ2MDg4LDAuNjI0NTUyMzA5IEwxMDQuNTQ2MDg4LDYuNjI5NDAxMzcgTDExMS42OTc4MzcsNi42Mjk0MDEzNyBMMTExLjY5NzgzNywyNy4zMTI3NzA0IFogTTEzMS40Mjc1ODMsMjAuNzU4NDU4IEMxMzQuMjA4ODE5LDIwLjc1ODQ1OCAxMzYuNzExOTMyLDE4LjQ4MjExIDEzNi43MTE5MzIsMTUuNTM4NTU2NSBDMTM2LjcxMTkzMiwxMi41NTU3NTU3IDEzNC4yMDg4MTksMTAuMzE4NjU1IDEzMS40Mjc1ODMsMTAuMzE4NjU1IEMxMjguNjQ2MzQ4LDEwLjMxODY1NSAxMjYuMTQzMjM1LDEyLjU1NTc1NTcgMTI2LjE0MzIzNSwxNS41Mzg1NTY1IEMxMjYuMTQzMjM1LDE4LjQ4MjExIDEyOC42NDYzNDgsMjAuNzU4NDU4IDEzMS40Mjc1ODMsMjAuNzU4NDU4IFogTTE0Mi4xNzc5MTEsMjcuMzEyNzcwNCBMMTQ5LjQwOTEyNSwyNy4zMTI3NzA0IEwxNDkuNDA5MTI1LDE4LjgzNTMzNjQgTDE1OS4yMjI5MTQsMTguODM1MzM2NCBMMTU5LjIyMjkxNCwxMi44MzA0ODczIEwxNDkuNDA5MTI1LDEyLjgzMDQ4NzMgTDE0OS40MDkxMjUsNi42Mjk0MDEzNyBMMTYwLjUzNDA2OCw2LjYyOTQwMTM3IEwxNjAuNTM0MDY4LDAuNjI0NTUyMzA5IEwxNDIuMTc3OTExLDAuNjI0NTUyMzA5IEwxNDIuMTc3OTExLDI3LjMxMjc3MDQgWiBNMTgyLjk2NTU4NiwxOS43MzgwMjYxIEwxODcuNzczMTUxLDI3LjMxMjc3MDQgTDE3OS45NDU5NTksMjcuMzEyNzcwNCBMMTc2LjE3MTQyNCwyMS4xOTAxNzkyIEwxNzMuNDY5NjUzLDIxLjE5MDE3OTIgTDE3My40Njk2NTMsMjcuMzEyNzcwNCBMMTY2LjIzODQzOSwyNy4zMTI3NzA0IEwxNjYuMjM4NDM5LDAuNjI0NTUyMzA5IEwxNzYuNDg5MjgsMC42MjQ1NTIzMDkgQzE4My43NjAyMjUsMC42MjQ1NTIzMDkgMTg3Ljg1MjYxNSw1LjE3NzI0ODMzIDE4Ny44NTI2MTUsMTEuMTAzNjAyNiBDMTg3Ljg1MjYxNSwxNC45NDk4NDU4IDE4Ni4xNDQxNDIsMTguMDExMTQxNCAxODIuOTY1NTg2LDE5LjczODAyNjEgWiBNMTczLjQ2OTY1MywxNS40OTkzMDkxIEwxNzYuMTMxNjkzLDE1LjQ5OTMwOTEgQzE3OS4zODk3MTIsMTUuNDk5MzA5MSAxODAuNTgxNjcsMTMuNjkzOTI5NyAxODAuNTgxNjcsMTEuMTAzNjAyNiBDMTgwLjU4MTY3LDguNTEzMjc1NTkgMTc5LjM4OTcxMiw2LjY2ODY0ODc1IDE3Ni4xMzE2OTMsNi42Njg2NDg3NSBMMTczLjQ2OTY1Myw2LjY2ODY0ODc1IEwxNzMuNDY5NjUzLDE1LjQ5OTMwOTEgWiBNMTkzLjM1ODMyNywyNy4zMTI3NzA0IEwyMTIuODY2NzEsMjcuMzEyNzcwNCBMMjEyLjg2NjcxLDIxLjMwNzkyMTMgTDIwMC41ODk1NCwyMS4zMDc5MjEzIEwyMDAuNTg5NTQsMTguNTIxMzU3NCBMMjEwLjM2MzU5NywxOC41MjEzNTc0IEwyMTAuMzYzNTk3LDEyLjgzMDQ4NzMgTDIwMC41ODk1NCwxMi44MzA0ODczIEwyMDAuNTg5NTQsNi42Mjk0MDEzNyBMMjEyLjMxMDQ2Miw2LjYyOTQwMTM3IEwyMTIuMzEwNDYyLDAuNjI0NTUyMzA5IEwxOTMuMzU4MzI3LDAuNjI0NTUyMzA5IEwxOTMuMzU4MzI3LDI3LjMxMjc3MDQgWiBNMjE4LjQ5MTYxNywyNy4zMTI3NzA0IEwyMzgsMjcuMzEyNzcwNCBMMjM4LDIxLjMwNzkyMTMgTDIyNS43MjI4MywyMS4zMDc5MjEzIEwyMjUuNzIyODMsMTguNTIxMzU3NCBMMjM1LjQ5Njg4OCwxOC41MjEzNTc0IEwyMzUuNDk2ODg4LDEyLjgzMDQ4NzMgTDIyNS43MjI4MywxMi44MzA0ODczIEwyMjUuNzIyODMsNi42Mjk0MDEzNyBMMjM3LjQ0Mzc1Myw2LjYyOTQwMTM3IEwyMzcuNDQzNzUzLDAuNjI0NTUyMzA5IEwyMTguNDkxNjE3LDAuNjI0NTUyMzA5IEwyMTguNDkxNjE3LDI3LjMxMjc3MDQgWiIgaWQ9ImxvZ28iPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8cmVjdCBpZD0iYm91bmRzIiBmaWxsLW9wYWNpdHk9IjAiIGZpbGw9IiNGRkZGRkYiIHg9IjAiIHk9IjAiIHdpZHRoPSI0OTUiIGhlaWdodD0iMTEzIj48L3JlY3Q+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
+                   alt
+                   class="hero-logo">
+            </a>
           </div>
         </div>
       </div>
     </div>
-    <form action="/subscribe"
-          id="subscribe-form"
-          method="post"
-          onsubmit="event.preventDefault()"
-          style="max-width:900px;
-                 margin-right:auto;
-                 margin-left:auto">
-      <input name="pricing[lane]"
-             type="hidden"
-             value="personal">
-      <div class="d-ml4
-                  d-mr4
-                  m-ml2
-                  m-mr2
-                  m-pt3
-                  m-pb3
-                  border-bottom
-                  border-gray-850
-                  row">
-        <div class="col-m
-                    col-m-12">
-          <h1 class="fg-black
-                     bold
-                     ts-d-r3
-                     ts-m-r2
-                     lh-2">
-            Subscribe
-          </h1>
+    <div class="top-m
+                between-m
+                d-pt0
+                m-pt3
+                row">
+      <div class="d-pt0
+                  m-pt4
+                  col-m
+                  col-m-5"
+           style="line-height:0">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjE1cHgiIGhlaWdodD0iMjMxcHgiIHZpZXdCb3g9IjAgMCA2MTUgMjMxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPGRlZnM+CiAgICAgICAgPHJlY3QgaWQ9InBhdGgtMSIgeD0iNzMuNzI2OTM0NCIgeT0iNzMuNzI2OTM0NCIgd2lkdGg9IjM1NS45ODUxMyIgaGVpZ2h0PSIzNTUuOTg1MTMiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0icGF0aC0zIiB4PSI3My43MjY5MzQ0IiB5PSI3My43MjY5MzQ0IiB3aWR0aD0iMzU1Ljk4NTEzIiBoZWlnaHQ9IjM1NS45ODUxMyI+PC9yZWN0PgogICAgPC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Im1vdW50YWlucy1jb3B5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTkuMDAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICA8cmVjdCBpZD0iTWFzayIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTY4LjAwMDAwMCwgMjMxLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTU2OC4wMDAwMDAsIC0yMzEuMDAwMDAwKSAiIHg9IjQ2NSIgeT0iMTI4IiB3aWR0aD0iMjA2IiBoZWlnaHQ9IjIwNiI+PC9yZWN0PgogICAgICAgICAgICA8cmVjdCBpZD0icmVjdCIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjIzLjUwMDAwMCwgMjIxLjUwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTIyMy41MDAwMDAsIC0yMjEuNTAwMDAwKSAiIHg9IjY3IiB5PSI2NSIgd2lkdGg9IjMxMyIgaGVpZ2h0PSIzMTMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weS0yIiBmaWxsPSIjNENDQ0ZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNDYuNTAwMDAwLCAxODYuNTAwMDAwKSByb3RhdGUoLTMxNS4wMDAwMDApIHRyYW5zbGF0ZSgtMzQ2LjUwMDAwMCwgLTE4Ni41MDAwMDApICIgeD0iMjM1IiB5PSI3NSIgd2lkdGg9IjIyMyIgaGVpZ2h0PSIyMjMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weSIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgzLjAwMDAwMCwgMjIzLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTE4My4wMDAwMDAsIC0yMjMuMDAwMDAwKSAiIHg9IjU0IiB5PSI5NCIgd2lkdGg9IjI1OCIgaGVpZ2h0PSIyNTgiPjwvcmVjdD4KICAgICAgICAgICAgPGcgaWQ9ImJnLXNxdWFyZS0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDMuMDAwMDAwLCA2MS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTIiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDguMDAwMDAwLCA3Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTQiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzk3NERGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIGZpbGw9IiNGRkZGRkYiIG1hc2s9InVybCgjbWFzay00KSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIyLjA0OTEyMywgMTk0LjYyODM2Mikgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTMyMi4wNDkxMjMsIC0xOTQuNjI4MzYyKSAiIHg9IjIzMy41MjU3NjYiIHk9IjEwNi4xMDUwMDUiIHdpZHRoPSIxNzcuMDQ2NzE0IiBoZWlnaHQ9IjE3Ny4wNDY3MTQiPjwvcmVjdD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
+             alt
+             class="w-100p">
+      </div>
+      <div class="z1
+                  col-m
+                  col-m-2">
+        <div class="center
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="margin-right:-6rem;
+                    margin-left:-6rem">
+          A video series exploring functional programming and Swift.
         </div>
-        <div class="start-m
-                    col-m">
-          You selected the 
-          <strong>
-            Personal
+      </div>
+      <div class="d-pt0
+                  m-pt4
+                  col-m
+                  col-m-5"
+           style="line-height:0">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjE1cHgiIGhlaWdodD0iMjMxcHgiIHZpZXdCb3g9IjAgMCA2MTUgMjMxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPGRlZnM+CiAgICAgICAgPHJlY3QgaWQ9InBhdGgtMSIgeD0iNzMuNzI2OTM0NCIgeT0iNzMuNzI2OTM0NCIgd2lkdGg9IjM1NS45ODUxMyIgaGVpZ2h0PSIzNTUuOTg1MTMiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0icGF0aC0zIiB4PSI3My43MjY5MzQ0IiB5PSI3My43MjY5MzQ0IiB3aWR0aD0iMzU1Ljk4NTEzIiBoZWlnaHQ9IjM1NS45ODUxMyI+PC9yZWN0PgogICAgPC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Im1vdW50YWlucy1jb3B5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTkuMDAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICA8cmVjdCBpZD0iTWFzayIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTY4LjAwMDAwMCwgMjMxLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTU2OC4wMDAwMDAsIC0yMzEuMDAwMDAwKSAiIHg9IjQ2NSIgeT0iMTI4IiB3aWR0aD0iMjA2IiBoZWlnaHQ9IjIwNiI+PC9yZWN0PgogICAgICAgICAgICA8cmVjdCBpZD0icmVjdCIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjIzLjUwMDAwMCwgMjIxLjUwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTIyMy41MDAwMDAsIC0yMjEuNTAwMDAwKSAiIHg9IjY3IiB5PSI2NSIgd2lkdGg9IjMxMyIgaGVpZ2h0PSIzMTMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weS0yIiBmaWxsPSIjNENDQ0ZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNDYuNTAwMDAwLCAxODYuNTAwMDAwKSByb3RhdGUoLTMxNS4wMDAwMDApIHRyYW5zbGF0ZSgtMzQ2LjUwMDAwMCwgLTE4Ni41MDAwMDApICIgeD0iMjM1IiB5PSI3NSIgd2lkdGg9IjIyMyIgaGVpZ2h0PSIyMjMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weSIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgzLjAwMDAwMCwgMjIzLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTE4My4wMDAwMDAsIC0yMjMuMDAwMDAwKSAiIHg9IjU0IiB5PSI5NCIgd2lkdGg9IjI1OCIgaGVpZ2h0PSIyNTgiPjwvcmVjdD4KICAgICAgICAgICAgPGcgaWQ9ImJnLXNxdWFyZS0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDMuMDAwMDAwLCA2MS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTIiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDguMDAwMDAwLCA3Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTQiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzk3NERGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIGZpbGw9IiNGRkZGRkYiIG1hc2s9InVybCgjbWFzay00KSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIyLjA0OTEyMywgMTk0LjYyODM2Mikgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTMyMi4wNDkxMjMsIC0xOTQuNjI4MzYyKSAiIHg9IjIzMy41MjU3NjYiIHk9IjEwNi4xMDUwMDUiIHdpZHRoPSIxNzcuMDQ2NzE0IiBoZWlnaHQ9IjE3Ny4wNDY3MTQiPjwvcmVjdD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
+             alt
+             class="reflect-x
+                    w-100p">
+      </div>
+    </div>
+    <hr class="pf-divider
+               border-top
+               m-ml0
+               m-mr0
+               m-mt0
+               m-mb0
+               bg-white">
+    <div class="row">
+      <div class="col-m
+                  col-d-7
+                  col-m-12">
+        <div class="d-pl4
+                    d-pr4
+                    d-pt4
+                    d-pb4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <strong class="fg-black
+                         bold
+                         ts-m-r0_75
+                         lh-1
+                         caps">
+            #2 • Tuesday Dec 20, 2016 • Subscriber-only
           </strong>
-           plan
-        </div>
-        <div class="end-m
-                    col-m">
-          <a class="pf-link-gray650
-                    underline-link"
-             href="http://localhost:8080/pricing">
-            Change plan
-          </a>
-        </div>
-        <div class="col-m
-                    col-m-12">
-          <ul class="m-pl0
-                     m-pr0
-                     m-pt0
-                     m-pb0
-                     m-ml3
-                     fg-gray400
-                     fg-black
-                     normal
-                     h5
-                     lh-4
-                     ts-d-r0_875
-                     ts-m-r1
-                     fg-gray400"
-              style="flex-grow:1;
-                     flex-shrink:0;
-                     flex-basis:auto">
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p>All 2 episodes with transcripts</p>
-
-              </div>
-            </li>
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p>Over 0 hours of video</p>
-
-              </div>
-            </li>
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p>Private RSS feed for offline viewing in podcast apps</p>
-
-              </div>
-            </li>
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p>Download all episode playgrounds</p>
-
-              </div>
-            </li>
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
-and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
-available</p>
-
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div style="margin-right:auto;
-                    margin-left:auto"
-             class="col-m
-                    col-m-12">
-          <div style="background-color:#ffffdd"
-               class="m-mt2
-                      m-pl2
-                      m-pr2
-                      m-pt2
-                      m-pb2">
-            <h4 class="fg-black
-                       bold
-                       ts-d-r1
-                       ts-m-r0_875
-                       lh-1
-                       m-pb1">
-              Coupon applied
-            </h4>
-            <p>
-               You are using the coupon <strong>Student Discount</strong>
-              , which gives you 
-              50% off every billing period
-              .
-              <input class="none"
-                     disabled
-                     name="coupon"
-                     placeholder="Coupon Code"
-                     type="hidden"
-                     value="coupon-deadbeef">
-            </p>
-          </div>
-        </div>
-      </div>
-      <input name="isOwnerTakingSeat"
-             type="hidden"
-             value="true">
-      <div class="d-ml4
-                  d-mr4
-                  m-ml2
-                  m-mr2
-                  m-pt3
-                  m-pb3
-                  border-bottom
-                  border-gray-850
-                  row">
-        <div class="d-pb2
-                    m-pb1
-                    col-m
-                    col-m-12">
           <h1 class="fg-black
                      bold
-                     ts-d-r2
-                     ts-m-r1_5
+                     ts-d-r1_5
+                     ts-m-r1_25
                      lh-2
-                     m-mt0">
-            Billing interval
+                     m-mt2">
+            <a href="/episodes/ep2-proof-in-functions">
+              Proof in Functions
+            </a>
           </h1>
-        </div>
-        <div class="border
-                    border-gray-850
-                    m-pl2
-                    m-pr2
-                    m-pt2
-                    m-pb2
-                    col-m
-                    col-m-12"
-             style="line-height:0">
-          <label class="cursor-pointer
-                        flex
-                        items-baseline">
-            <div>
-              <input checked
-                     id="yearly"
-                     type="radio"
-                     name="pricing[billing]"
-                     value="yearly">
-            </div>
-            <div class="m-ml2">
-              <h5 class="fg-black
-                         bold
-                         ts-d-r1
-                         ts-m-r0_875
-                         lh-1
-                         m-ml0
-                         m-mr0
-                         m-mt0
-                         m-mb0">
-                Yearly — Save 22% off monthly billing!
-              </h5>
-              <p class="m-pt1
-                        fg-black
-                        normal
-                        h6
-                        lh-4
-                        fg-gray650">
-                $84 per year
-              </p>
-            </div>
-          </label>
-        </div>
-        <div class="border-left
-                    border-right
-                    border-bottom
-                    border-gray-850
-                    m-pl2
-                    m-pr2
-                    m-pt2
-                    m-pb2
-                    col-m
-                    col-m-12"
-             style="line-height:0">
-          <label class="cursor-pointer
-                        flex
-                        items-baseline">
-            <div>
-              <input id="monthly"
-                     type="radio"
-                     name="pricing[billing]"
-                     value="monthly">
-            </div>
-            <div class="m-ml2">
-              <h5 class="fg-black
-                         bold
-                         ts-d-r1
-                         ts-m-r0_875
-                         lh-1
-                         m-ml0
-                         m-mr0
-                         m-mt0
-                         m-mb0">
-                Monthly
-              </h5>
-              <p class="m-pt1
-                        fg-black
-                        normal
-                        h6
-                        lh-4
-                        fg-gray650">
-                $9 per month
-              </p>
-            </div>
-          </label>
-        </div>
-      </div>
-      <div class="d-ml4
-                  d-mr4
-                  m-ml2
-                  m-mr2
-                  m-pt3
-                  m-pb3
-                  border-bottom
-                  border-gray-850
-                  row">
-        <div class="d-pb2
-                    m-pb1
-                    col-m
-                    col-m-12">
-          <h1 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2
-                     m-mt0">
-            Payment info
-          </h1>
-        </div>
-        <label for="card"
-               class="nowrap
-                      fg-black
-                      bg-white
-                      fg-black
-                      bold
-                      ts-d-r1
-                      ts-m-r0_875
-                      lh-1">
-          Credit or debit card
-        </label>
-        <div class="border
-                    border-gray-850
-                    m-pl2
-                    m-pr2
-                    m-pt2
-                    m-pb2
-                    m-mt1
-                    col-m
-                    col-m-12"
-             style="line-height:0">
-          <div class="flex
-                      middle-m">
-            <div class="w-100p"
-                 data-stripe-key="pk_test"
-                 id="card-element">
-            </div>
-          </div>
-        </div>
-        <div class="col-m
-                    col-m-12">
-          <div class="fg-red
+          <div class="body-leading
                       fg-black
                       normal
-                      h6
-                      lh-4"
-               id="card-errors">
+                      lh-4">
+            <div class="md-ctn">
+              <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+            </div>
           </div>
-          <input name="paymentMethodID"
-                 type="hidden">
-          <script src>
-          </script>
-          <script>
-            window.addEventListener("load", function() {
-  var form = document.getElementById("subscribe-form")
-  var displayError = document.getElementById("card-errors")
-
-  var apiKey = document.getElementById("card-element").dataset.stripeKey
-  var stripe = Stripe(apiKey, { apiVersion: "2020-08-27" })
-  var elements = stripe.elements()
-  var style = {
-    base: {
-      fontSize: "16px",
-    }
-  }
-
-  window.paymentRequest = stripe.paymentRequest({
-    country: 'US',
-    currency: 'usd',
-    total: { label: '', amount: 100, }
-  });
-  const paymentRequestButton = elements.create('paymentRequestButton', {
-    paymentRequest: window.paymentRequest,
-  });
-
-  var card = elements.create("card", { style: style })
-  card.mount("#card-element")
-  card.addEventListener("change", function(event) {
-    if (event.error) {
-      displayError.textContent = event.error.message
-    } else {
-      displayError.textContent = ""
-    }
-  });
-
-  window.paymentRequest.on('paymentmethod', async (ev) => {
-    setFormEnabled(false, function() { return true })
-    ev.complete('success')
-    form.paymentMethodID.value = ev.paymentMethod.id
-    setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-    form.submit()
-  });
-
-  function setFormEnabled(isEnabled, elementsMatching) {
-    for (var idx = 0; idx < form.length; idx++) {
-      var formElement = form[idx]
-      if (elementsMatching(formElement)) {
-        formElement.disabled = !isEnabled
-        if (formElement.tagName == "BUTTON") {
-          formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
-        }
-      }
-    }
-  }
-
-  var submitting = false
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault()
-    if (submitting) { return }
-
-    displayError.textContent = ""
-    submitting = true
-    setFormEnabled(false, function() { return true })
-
-    try {
-      const result = await stripe.createPaymentMethod({
-        type: 'card',
-        card: card,
-      })
-      if (result.error) {
-        displayError.textContent = result.error.message
-      } else {
-        form.paymentMethodID.value = result.paymentMethod.id
-        setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-        form.submit()
-        return // NB: Early out so to not re-enable form.
-      }
-    } catch {
-      displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
-    }
-
-    submitting = false
-    setFormEnabled(true, function(el) { return true })
-  });
-
-  (async () => {
-    const result = await window.paymentRequest.canMakePayment();
-    if (result) {
-      paymentRequestButton.mount('#payment-request-button');
-      document.getElementById("apple-pay-container").style.display = 'block'
-      updateSeats()
-    } else {
-      document.getElementById('payment-request-button').style.display = 'none';
-    }
-  })();
-})
-          </script>
+          <div class="m-mt3">
+            <a href="/episodes/ep2-proof-in-functions"
+               class="align-middle
+                      pf-link-purple
+                      fg-black
+                      normal
+                      h5
+                      lh-4">
+              Watch episode (23 min)
+              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4="
+                   alt
+                   class="align-middle
+                          m-ml1"
+                   width="16"
+                   height="16">
+            </a>
+          </div>
         </div>
-        <div id="apple-pay-container"
-             class="m-ml0
+      </div>
+      <div class="first-m
+                  last-d
+                  col-m
+                  col-d-5
+                  col-m-12">
+        <div class="h-100p
+                    relative"
+             style="line-height:0;
+                    background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
+                    min-height:300px">
+          <a href="/episodes/ep2-proof-in-functions">
+            <img src
+                 alt
+                 loading="lazy"
+                 class="w-100p
+                        h-100p"
+                 style="object-fit:cover">
+          </a>
+        </div>
+      </div>
+    </div>
+    <hr class="pf-divider
+               border-top
+               m-ml0
+               m-mr0
+               m-mt0
+               m-mb0
+               bg-white">
+    <div class="row">
+      <div class="col-m
+                  col-d-7
+                  col-m-12">
+        <div class="d-pl4
+                    d-pr4
+                    d-pt4
+                    d-pb4
+                    m-pl3
+                    m-pr3
                     m-pt3
-                    none
-                    col-m
-                    col-m-12"
-             style="line-height:0">
-          <label for="apple-pay"
-                 class="nowrap
-                        fg-black
-                        bg-white
-                        fg-black
-                        bold
-                        ts-d-r1
-                        ts-m-r0_875
-                        lh-1">
-            or Apple Pay
-          </label>
-          <div id="payment-request-button"
-               class="col-m-12
-                      col-d-4
-                      m-mt2">
-          </div>
-        </div>
-      </div>
-      <div class="d-ml4
-                  d-mr4
-                  m-ml2
-                  m-mr2
-                  d-pb4
-                  d-pt3
-                  m-pb4
-                  m-pt3
-                  middle-m
-                  row">
-        <div class="m-pb4
-                    col-m
-                    col-m-12">
-          <span class="fg-black
-                       normal
-                       h6
-                       lh-4
-                       fg-gray400"
-                id="pricing-preview">
-          </span>
-        </div>
-        <div class="start-m
-                    col-m">
-          <div class="flex
-                      align-center
-                      middle-m">
-            <h3 class="fg-black
-                       bold
-                       ts-d-r3
-                       ts-m-r2
-                       lh-2
-                       normal
-                       m-mt0
-                       m-mb0"
-                id="total">
-            </h3>
-            <input name="pricing[quantity]"
-                   type="hidden">
-            <script>
-              function format(money) {
-  return "$" + money.toFixed(2).replace(/\.00$/, "")
-}
-function updateSeats() {
-  var teamMembers = document.getElementById("team-members")
-  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
-  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
-    teamMemberInputs[idx].name = "teammate"
-  }
-  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
-  var seats = teamMembers
-    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
-    : 1
-  var form = document.getElementById("subscribe-form")
-  form["pricing[quantity]"].value = seats
-  var regionalDiscount = 1.0
-  var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPricePerSeat = (
-    monthly
-      ? 900 * 0.01 * regionalDiscount
-      : 700 * 0.01 * regionalDiscount
-  )
-  const monthlyPrice = seats * monthlyPricePerSeat
-  const total = monthly
-    ? monthlyPrice
-    : (monthlyPrice * 12 - 0 * regionalDiscount)
-  document.getElementById("total").textContent = format(total)
-  document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
-      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
-      + "."
-  )
-  if (window.paymentRequest) {
-    window.paymentRequest.update({
-      total: {
-        label: monthly ? "Monthly subscription" : "Yearly subscription",
-        amount: total * 100
-      }
-    })
-  }
-}
-window.addEventListener("load", function() {
-  updateSeats()
-  var form = document.getElementById("subscribe-form")
-  form.addEventListener("change", updateSeats)
-})
-            </script>
-            <span class="fg-black
-                         normal
-                         h6
-                         lh-4
-                         fg-gray400
-                         m-ml1
-                         m-pb1">
-              Total
-            </span>
-          </div>
-        </div>
-        <div class="end-m
-                    col-m">
-          <button class="border-none
-                         text-decoration-none
-                         cursor-pointer
+                    m-pb3
+                    bg-white">
+          <strong class="fg-black
                          bold
-                         ts-d-r1
-                         ts-m-r1
-                         m-pl2
-                         m-pr2
-                         m-pt2
-                         m-pb2
-                         center
-                         bg-black
-                         fg-white
-                         pf-link-white">
-            Subscribe
-          </button>
+                         ts-m-r0_75
+                         lh-1
+                         caps">
+            #1 • Tuesday Jun 20, 2017 • Free Episode
+          </strong>
+          <h1 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2
+                     m-mt2">
+            <a href="/episodes/ep1-type-safe-html-in-swift">
+              Type-Safe HTML in Swift
+            </a>
+          </h1>
+          <div class="body-leading
+                      fg-black
+                      normal
+                      lh-4">
+            <div class="md-ctn">
+              <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
+
+            </div>
+          </div>
+          <div class="m-mt3">
+            <a href="/episodes/ep1-type-safe-html-in-swift"
+               class="align-middle
+                      pf-link-purple
+                      fg-black
+                      normal
+                      h5
+                      lh-4">
+              Watch episode (23 min)
+              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4="
+                   alt
+                   class="align-middle
+                          m-ml1"
+                   width="16"
+                   height="16">
+            </a>
+          </div>
         </div>
       </div>
-    </form>
+      <div class="first-m
+                  last-d
+                  col-m
+                  col-d-5
+                  col-m-12">
+        <div class="h-100p
+                    relative"
+             style="line-height:0;
+                    background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);
+                    min-height:300px">
+          <a href="/episodes/ep1-type-safe-html-in-swift">
+            <img src
+                 alt
+                 loading="lazy"
+                 class="w-100p
+                        h-100p"
+                 style="object-fit:cover">
+          </a>
+        </div>
+      </div>
+    </div>
+    <hr class="pf-divider
+               border-top
+               m-ml0
+               m-mr0
+               m-mt0
+               m-mb0
+               bg-white">
+    <div class="row">
+      <div style="margin-right:auto;
+                  margin-left:auto"
+           class="col-m
+                  col-d-9
+                  col-m-12">
+        <div class="m-ml4
+                    m-mr4
+                    m-mt4
+                    m-mb4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-gray900">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2
+                     m-pb2">
+            Subscribe to Point-Free
+          </h4>
+          <p>
+            👋 Hey there! See anything you like? You may be interested in 
+            <a href="/pricing"
+               class="underline-link">
+              subscribing
+            </a>
+             so that you get access to these episodes and all future ones.
+          </p>
+        </div>
+      </div>
+    </div>
     <footer class="row
                    d-pl4
                    d-pr4

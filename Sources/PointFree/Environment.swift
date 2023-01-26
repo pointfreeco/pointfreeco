@@ -133,3 +133,12 @@ extension PointFreeRouter: DependencyKey {
     return PointFreeRouter(baseURL: envVars.baseUrl)
   }
 }
+
+import VimeoClient
+
+extension VimeoClient: DependencyKey {
+  public static var liveValue: VimeoClient {
+    @Dependency(\.envVars) var envVars
+    return .live(bearer: envVars.vimeoBearer)
+  }
+}

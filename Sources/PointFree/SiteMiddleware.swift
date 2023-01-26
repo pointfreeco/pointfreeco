@@ -99,7 +99,6 @@ public func siteMiddleware(
       enterpriseAccount: enterpriseAccount
     )
     $0.subscription = subscription
-    $0.vimeoClient = .live(bearer: envVars.vimeoBearer)
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil

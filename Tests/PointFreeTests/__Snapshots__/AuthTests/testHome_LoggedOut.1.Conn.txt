@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 63515
+Content-Length: 63697
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1849,6 +1849,13 @@ html {
 
 
     </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
+    </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
@@ -2118,6 +2125,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
           <a href="/episodes/ep2-proof-in-functions">
             <img src
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
@@ -2203,6 +2211,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
           <a href="/episodes/ep1-type-safe-html-in-swift">
             <img src
                  alt
+                 loading="lazy"
                  class="w-100p
                         h-100p"
                  style="object-fit:cover">
