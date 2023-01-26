@@ -17,7 +17,6 @@ let homeMiddleware: M<Void> =
 
       return SimplePageLayoutData(
         data: (episodes(), emergencyMode),
-        extraStyles: markdownBlockStyles,
         openGraphType: .website,
         style: .base(.mountains(.main)),
         title:

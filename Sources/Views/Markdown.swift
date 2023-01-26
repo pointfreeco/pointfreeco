@@ -32,14 +32,20 @@ public func unsafeMark(from markdown: String, options: Int32 = 0) -> String {
 }
 
 private let markdownContainerClass = CssSelector.class("md-ctn")
-public let markdownBlockStyles: Stylesheet =
+public let markdownBlockStyles: Stylesheet = .concat(
   markdownContainerClass
-  % (hrMarkdownStyles
-    <> aMarkdownStyles
-    <> ulMarkdownStyles
-    <> blockquoteMarkdownStyles
-    <> pMarkdownStyles
-    <> codeMarkdownStyles)
+    % (hrMarkdownStyles
+      <> aMarkdownStyles
+      <> ulMarkdownStyles
+      <> blockquoteMarkdownStyles
+      <> pMarkdownStyles
+      <> codeMarkdownStyles),
+
+  (Class.pf.colors.bg.black ** markdownContainerClass ** a) % color(Colors.white),
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.link))) % color(Colors.white),
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.visited))) % color(Colors.white),
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.hover))) % color(Colors.white)
+)
 
 private let ulMarkdownStyles: Stylesheet =
   ul % margin(bottom: .rem(1.5))
@@ -86,3 +92,4 @@ private let hrMarkdownStyles: Stylesheet =
     <> backgroundColor(.white)
     <> borderColor(top: Color.other("#ddd"))
     <> height(.px(0)))
+

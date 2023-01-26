@@ -44,7 +44,7 @@ private func currentLivestream(
             our open source libraries, and take questions from our viewers.
             """,
           style: .base(.minimal(.black)),
-          title: "Point-Free Live"
+          title: "🔴 Point-Free Live"
         )
       }
     )
@@ -65,8 +65,8 @@ private func stream(
           SimplePageLayoutData(
             data: (video, videoID),
             description: video.description,
-            style: .base(.minimal(.dark)),
-            title: "Point-Free Live: \(video.name)"
+            style: .base(.minimal(.black)),
+            title: "\(video.name)"
           )
         }
       )

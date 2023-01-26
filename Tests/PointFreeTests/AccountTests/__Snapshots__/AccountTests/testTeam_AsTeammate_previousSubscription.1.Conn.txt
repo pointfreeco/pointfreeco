@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 54715
+Content-Length: 54931
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1847,6 +1847,26 @@ html {
   font-family : ui-monospace,monospace;
 }
 
+.bg-black .md-ctn a {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:link {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:visited {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:hover {
+  color : #fff;
+}
+
+
+    </style>
+    <style>
+      
 
     </style>
     <style>

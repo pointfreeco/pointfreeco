@@ -20,7 +20,6 @@ let blogPostShowMiddleware =
       return SimplePageLayoutData(
         data: post,
         description: post.blurb,
-        extraStyles: markdownBlockStyles,
         image: post.coverImage ?? assets.emailHeaderImgSrc,
         openGraphType: .website,
         style: .base(.mountains(.blog)),

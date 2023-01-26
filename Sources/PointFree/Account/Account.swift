@@ -22,7 +22,6 @@ let accountResponse =
 
       return SimplePageLayoutData(
         data: (accountData, episodes(), now),
-        extraStyles: markdownBlockStyles,
         title: "Account"
       )
     }

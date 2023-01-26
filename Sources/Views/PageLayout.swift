@@ -83,6 +83,7 @@ public func simplePageLayout<A>(
           .title(layoutData.title),
           .style(safe: renderedNormalizeCss),
           .style(styleguide, config: cssConfig),
+          .style(markdownBlockStyles, config: cssConfig),
           .style(layoutData.extraStyles, config: cssConfig),
           .style(safe: """
             @keyframes Pulse {

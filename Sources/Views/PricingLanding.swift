@@ -887,7 +887,6 @@ public let extraSubscriptionLandingStyles =
   Breakpoint.desktop.query(only: screen) {
     extraSubscriptionLandingDesktopStyles
   }
-  <> markdownBlockStyles
   <> pricingPlanFeatureStyle
   <> planItem % width(.pct(100))
   <> testimonialStyle
