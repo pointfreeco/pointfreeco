@@ -17,6 +17,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
           * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
           * **[Modern SwiftUI: State-driven
             navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)**
+          * [Modern SwiftUI: Dependencies](/blog/posts/97-modern-swiftui-dependencies)
           * _More coming soon_
         """#,
       type: .box(.preamble)
