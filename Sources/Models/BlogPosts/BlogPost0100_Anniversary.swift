@@ -38,8 +38,9 @@ public let post0100_Anniversary = BlogPost(
     .init(
       content: ###"""
         We will be discussing [modern SwiftUI](/collections/swiftui-modern-swiftui) techniques,
-        our new [Dependencies library](http://github.com/pointfreeco/swift-dependencies), as well
-        as taking questions from our viewers. Please join us, and bring any questions you might have.
+        our new [Dependencies library](http://github.com/pointfreeco/swift-dependencies),
+        [non-exhaustive testing][non-exhaustive-testing-blog], as well as taking questions from our
+        viewers. Please join us, and bring any questions you might have.
 
         We have plans for a lot more livestreams in the future, especially in tandem with new
         library releases and new episodic releases. Some will be free for all, and some will be
@@ -48,16 +49,17 @@ public let post0100_Anniversary = BlogPost(
         ## Point-Free community slack
 
         We currently field questions and comments from many different places: emails sent to us
-        personally, [Twitter](http://twitter.com/pointfreeco), [discussions][tca-discussions] on our
-        GitHub repos, the [Swift forums][tca-forums], and there's a [popular
-        Slack](http://iosdevelopers.slack.com) with an active #ComposableArchitecture channel. We
-        really enjoy interacting with the community, but it can be difficult to keep track of
-        conversations in so many places.
+        personally, [Twitter](http://twitter.com/pointfreeco) messages,
+        [discussions][tca-discussions] on our GitHub repos, the [Swift forums][tca-forums], and
+        there's a [popular Slack](http://iosdevelopers.slack.com) with an active
+        #ComposableArchitecture channel. We really enjoy interacting with the community, but it can
+        be difficult to keep track of conversations in so many places.
 
         That is why we are excited to announce a new Slack just for the Point-Free community:
 
         [tca-discussions]: https://github.com/pointfreeco/swift-composable-architecture/discussions
         [tca-forums]: https://forums.swift.org/c/related-projects/swift-composable-architecture/61
+        [non-exhaustive-testing-blog]: /blog/posts/83-non-exhaustive-testing-in-the-composable-architecture
         """###,
       type: .paragraph
     ),

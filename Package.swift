@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v13)
+    .macOS(.v12)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
