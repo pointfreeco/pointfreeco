@@ -37,7 +37,7 @@ class LivestreamTests: TestCase {
       }
     } operation: {
       let episode = request(to: .live(.current))
-
+      
       let conn = connection(from: episode)
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)

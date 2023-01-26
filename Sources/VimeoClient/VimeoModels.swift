@@ -1,7 +1,6 @@
 import Foundation
 import Tagged
 
-// TODO: move to Models, or split VimeoClient into VimeoClient+VimeoClientLive
 public struct VimeoVideo: Decodable, Equatable {
   public let created: Date
   public let description: String?

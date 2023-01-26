@@ -40,7 +40,7 @@ private func currentLivestream(
             explore our open source libraries, and take questions from our viewers.
             """
             : """
-            Point-Free live is a periodic livestream where we discuss topics from episodes, explore
+            Point-Free Live is a periodic livestream where we discuss topics from episodes, explore
             our open source libraries, and take questions from our viewers.
             """,
           style: .base(.minimal(.black)),
