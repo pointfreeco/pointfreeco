@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52017
+Content-Length: 52996
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2064,7 +2064,7 @@ html {
                       h6
                       lh-4
                       center">
-            Livestream • Jan 31, 2018
+            Livestream • Free • Jan 31, 2018
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2075,8 +2075,7 @@ html {
                       fg-black
                       normal
                       h5
-                      lh-4"
-               id="episode-header-blurb">
+                      lh-4">
             <div class="md-ctn">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
@@ -2099,13 +2098,14 @@ html {
                   margin-right:auto;
                   margin-left:auto;
                   margin-top:-4rem">
-        <div style="-webkit-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
+        <div class="m-mb4
+                    col-m
+                    col-m-12"
+             style="-webkit-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
                     -moz-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
                     -ms-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
                     -o-box-shadow:0rem 1rem 20px rgba(0,0,0,0.2);
-                    box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)"
-             class="col-m
-                    col-m-12">
+                    box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)">
           <div class="w-100p
                       relative"
                style="padding-bottom:56.25%">
@@ -2120,6 +2120,37 @@ html {
             <script async
                     src="https://player.vimeo.com/api/player.js">
             </script>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white
+                   m-mt4
+                   m-mb4">
+        <div class="m-ml3
+                    m-mr3
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-gray900">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2
+                     m-pb2">
+            Subscribe to Point-Free
+          </h4>
+          <div class="md-ctn">
+            <p>👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to
+also check out <a href="/">Point-Free</a>, a video series covering advanced programming topics in
+Swift. Consider <a href="/pricing">subscribing</a> today!</p>
+
           </div>
         </div>
       </div>

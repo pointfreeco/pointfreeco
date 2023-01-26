@@ -275,6 +275,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await privacyResponse(conn.map(const(())))
       .performAsync()
 
+  case .resume:
+    return await resumeMiddleware(conn.map(const(())))
+
   case let .subscribe(data):
     return await subscribeMiddleware(conn.map(const(currentUser .*. data .*. unit)))
       .performAsync()

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-composable-architecture
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 68606
+Content-Length: 68565
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2124,8 +2124,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                       fg-black
                       normal
                       h5
-                      lh-4"
-               id="episode-header-blurb">
+                      lh-4">
             <div class="md-ctn">
             </div>
           </div>

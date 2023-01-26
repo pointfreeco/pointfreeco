@@ -638,11 +638,13 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.database.fetchEpisodeProgress = { _, _ in
         EpisodeProgress(
+          createdAt: .mock,
           episodeSequence: 1,
           id: EpisodeProgress.ID(),
           isFinished: false,
           percent: 20,
-          userID: User.ID()
+          userID: User.ID(),
+          updatedAt: .mock
         )
       }
     } operation: {

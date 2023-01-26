@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 82548
+Content-Length: 82507
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2127,8 +2127,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                       fg-black
                       normal
                       h5
-                      lh-4"
-               id="episode-header-blurb">
+                      lh-4">
             <div class="md-ctn">
               <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.</p>

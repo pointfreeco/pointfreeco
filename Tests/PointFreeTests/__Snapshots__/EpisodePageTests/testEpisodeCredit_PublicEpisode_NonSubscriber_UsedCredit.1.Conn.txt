@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 89596
+Content-Length: 89555
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2103,8 +2103,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                       fg-black
                       normal
                       h5
-                      lh-4"
-               id="episode-header-blurb">
+                      lh-4">
             <div class="md-ctn">
               <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
