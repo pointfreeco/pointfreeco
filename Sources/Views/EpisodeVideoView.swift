@@ -4,6 +4,7 @@ import Html
 import HtmlCssSupport
 import Models
 import Styleguide
+import VimeoClient
 
 public func videoView(
   forEpisode episode: Episode,

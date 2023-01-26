@@ -1,8 +1,15 @@
+import Dependencies
 import FunctionalCss
 import Html
+import PointFreeDependencies
 
-public func liveView(id: Int) -> Node {
-  .gridRow(
+public func liveView() -> Node {
+  @Dependency(\.livestreams) var livestreams
+
+  guard let activeLivestream = livestreams.first(where: { $0.isActive })
+  else { return [] }
+
+  return .gridRow(
     attributes: [
       .class([
         Class.pf.colors.bg.black,
@@ -18,7 +25,7 @@ public func liveView(id: Int) -> Node {
       .raw(
         """
         <div style="padding:56.25% 0 0 0;position:relative;">
-          <iframe src="https://vimeo.com/event/\(id)/embed"
+          <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/embed"
                   frameborder="0"
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowfullscreen
@@ -36,7 +43,7 @@ public func liveView(id: Int) -> Node {
       ],
       .raw(
         """
-        <iframe src="https://vimeo.com/event/\(id)/chat/"
+        <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/chat/"
                 width="100%"
                 height="100%"
                 frameborder="0"

@@ -815,6 +815,7 @@ extension Client {
           CREATE TABLE IF NOT EXISTS "livestreams" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "event_id" integer NOT NULL,
+            "is_active" boolean NOT NULL DEFAULT FALSE,
             "is_live" boolean NOT NULL DEFAULT FALSE,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "updated_at" timestamp without time zone

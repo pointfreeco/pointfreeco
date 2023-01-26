@@ -17,6 +17,7 @@ import Views
 public func siteMiddleware(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars) var envVars
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.logger) var logger
@@ -98,6 +99,7 @@ public func siteMiddleware(
       enterpriseAccount: enterpriseAccount
     )
     $0.subscription = subscription
+    $0.vimeoClient = .live(bearer: envVars.vimeoBearer)
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil
@@ -252,8 +254,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .live(id: id):
-    return await liveMiddleware(conn.map(const(id)))
+  case let .live(liveRoute):
+    return await liveMiddleware(conn.map(const(liveRoute)))
 
   case let .login(redirect):
     return await loginResponse(conn.map(const(redirect)))

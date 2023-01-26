@@ -140,7 +140,7 @@ private var liveStreamBanner: Node {
 
   guard
     !(/SiteRoute.live ~= currentRoute),
-    let liveLivestream = livestreams.first(where: \.isLive)
+    livestreams.first(where: \.isLive) != nil
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -169,7 +169,7 @@ private var liveStreamBanner: Node {
             Class.pf.colors.link.white
               | Class.pf.type.underlineLink
           ]),
-          .href(siteRouter.path(for: .live(id: liveLivestream.eventID))),
+          .href(siteRouter.path(for: .live(.current))),
         ],
         .strong("Point-Free Live")
       ),
