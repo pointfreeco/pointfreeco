@@ -46,6 +46,7 @@ final class NotFoundMiddlewareTests: TestCase {
       $0.date.now = .mock
       $0.uuid = .incrementing
       $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchUserById = { _ in .mock }
