@@ -12,7 +12,7 @@ let liveRouter = OneOf {
 
   Route(.case(Live.stream(id:))) {
     Path {
-      "stream"
+      "streams"
       Digits().map(.representing(VimeoVideo.ID.self))
     }
   }
