@@ -4,19 +4,31 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
   author: .pointfree,
   blurb: """
     We are celebrating the conclusion of our 7-part series on Modern SwiftUI by releasing a blog
-    post every day, detailing an area of SwiftUI development that can be modernized. We begin
-    by exploring ways to facilitate parent-child communication in SwiftUI in a safe and ergonomic
-    manner.
+    post every day this week, detailing an area of SwiftUI development that can be modernized. We
+    begin by exploring ways to facilitate parent-child communication in SwiftUI in a safe and
+    ergonomic manner.
     """,
   contentBlocks: [
     .init(
+      content: #"""
+        This blog post is one of a series. Be sure to read all parts!
+
+        * **[Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)**
+        * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+        * [Modern SwiftUI: State-driven
+        navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)
+        * _More coming soon_
+        """#,
+      type: .box(.preamble)
+    ),
+    .init(
       content: ###"""
-        This week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
+        Last week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
         modern, best practices for SwiftUI development. In those episodes we rebuilt Apple’s
-        ”[Scrumdinger][scrumdinger]” application ([source code here][standups-source]), which is a
-        great showcase for many of the problems one encounters in a real life application. Every
-        step of the way we challenged ourselves to write the code in the most scalable and
-        future-proof way possible, including:
+        ”[Scrumdinger][scrumdinger]” application from scratch ([source code here][standups-source]),
+        which is a great showcase for many of the problems one encounters in a real life
+        application. Every step of the way we challenged ourselves to write the code in the most
+        scalable and future-proof way possible, including:
 
         1. We eschew plain arrays for lists and instead embrace [identified
         arrays][identified-collections-gh].
@@ -103,6 +115,9 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         }
         ```
 
+        [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
+        [dependencies-gh]: http://github.com/pointfreeco/swiftui-dependencies
+        [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
         [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [pricing]: /pricing
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
@@ -391,7 +406,8 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         Foo bar
         """###,
       type: .image(
-        src: "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png",
+        src:
+          "https://pointfreeco-blog.s3.amazonaws.com/posts/0094-modern-swiftui-delegate-closures/on-delete-unimplemented.png",
         sizing: .fullWidth
       )
     ),

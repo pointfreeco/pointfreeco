@@ -238,7 +238,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
 
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
   id: 98,

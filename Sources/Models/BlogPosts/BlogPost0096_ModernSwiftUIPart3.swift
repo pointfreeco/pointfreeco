@@ -17,6 +17,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
           * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
           * **[Modern SwiftUI: State-driven
             navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)**
+          * _More coming soon_
         """#,
       type: .box(.preamble)
     ),
@@ -340,7 +341,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         [sheet-unwrapping-source]: https://github.com/pointfreeco/swiftui-navigation/blob/5e97ce756293f941c2c336693283493a965458f6/Sources/SwiftUINavigation/Sheet.swift#L9-L61
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
   id: 96,
