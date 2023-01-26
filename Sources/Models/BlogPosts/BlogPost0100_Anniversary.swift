@@ -33,7 +33,7 @@ public let post0100_Anniversary = BlogPost(
     ),
     .init(
       content: "Watch Feb 1 @ 9am PST / 5pm GMT",
-      type: .button(href: "/live/2809055")
+      type: .button(href: "/live")
     ),
     .init(
       content: ###"""
@@ -75,6 +75,13 @@ public let post0100_Anniversary = BlogPost(
         [episode code samples][episode-code-samples]?). While we will casually puruse the Swift
         forums and iOS developers slack, we will not actively monitor them as much as we do our own
         Slack and repo discussions.
+
+        ## One more thing
+
+        We have also added a little easter egg feature that makes it easy for you to resume your
+        most recently watched episode, or start up the next one. Just point your browser to
+        [pointfree.co/resume](/resume) and it will do the rest. We plan on adding more features
+        like this to the site soon.
 
         ## To 5 more years!
 
