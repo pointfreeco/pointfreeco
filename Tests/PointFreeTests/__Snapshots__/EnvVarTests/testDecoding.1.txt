@@ -66,5 +66,9 @@
   [16]: (
     key: "STRIPE_SECRET_KEY",
     value: "sk_test"
+  ),
+  [17]: (
+    key: "VIMEO_BEARER",
+    value: "deadbeef"
   )
 ]
