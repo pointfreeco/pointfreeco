@@ -21,7 +21,7 @@ public func homeView(episodes: [Episode], emergencyMode: Bool) -> Node {
   return [
     holidaySpecialCalloutView(),
     episodesListView(episodes: firstBatch, emergencyMode: emergencyMode),
-    subscriberCalloutView(),
+    homeSubscriberCalloutView,
     episodesListView(episodes: secondBatch, emergencyMode: emergencyMode),
   ]
 }
@@ -106,7 +106,7 @@ var holidaySpecialContent: Node {
   )
 }
 
-private func subscriberCalloutView() -> Node {
+private var homeSubscriberCalloutView: Node {
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 

@@ -18,6 +18,7 @@ public enum SiteRoute: Equatable {
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog = .index)
+  case clips(ClipsRoute)
   case collections(Collections = .index)
   case discounts(code: Stripe.Coupon.ID, Pricing.Billing?)
   case gifts(Gifts = .index)
@@ -387,6 +388,11 @@ let router = OneOf {
   Route(.case(SiteRoute.blog)) {
     Path { "blog" }
     blogRouter
+  }
+
+  Route(.case(SiteRoute.clips)) {
+    Path { "clips" }
+    clipsRouter
   }
 
   Route(.case(SiteRoute.collections)) {

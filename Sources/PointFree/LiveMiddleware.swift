@@ -56,11 +56,17 @@ private func stream(
   @Dependency(\.vimeoClient) var vimeoClient
   do {
     let video = try await vimeoClient.video(conn.data)
+    guard video.type == .live
+    else {
+      return await routeNotFoundMiddleware(conn).performAsync()
+      
+    }
+
     return
       conn
       .writeStatus(.ok)
       .respond(
-        view: streamView(video:videoID:),
+        view: vimeoVideoView(video:videoID:),
         layoutData: { videoID in
           SimplePageLayoutData(
             data: (video, videoID),

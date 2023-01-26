@@ -10,8 +10,11 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import VimeoClient
+import PointFreeDependencies
 
-public func streamView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
+public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
+  @Dependency(\.subscriberState) var subscriberState
+
   return [
     .div(
       attributes: [
@@ -57,7 +60,7 @@ public func streamView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
             ],
             .text(
               """
-              Livestream • \
+              \(video.type == .live ? "Livestream" : "Episode Clip") • Free • \
               \(headerDateFormatter.string(from: video.created))
               """)
           ),
@@ -67,10 +70,9 @@ public func streamView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
                 Class.padding([.mobile: [.top: 1, .leftRight: 0], .desktop: [.leftRight: 4]]),
                 Class.pf.colors.fg.gray850,
                 Class.pf.type.body.regular,
-              ]),
-              .id("episode-header-blurb"),
+              ])
             ],
-            .markdownBlock(video.description)
+            video.description.map { .markdownBlock($0) } ?? []
           )
         )
       )
@@ -101,6 +103,9 @@ public func streamView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
         .gridColumn(
           sizes: [.mobile: 12],
           attributes: [
+            .class([
+              Class.margin([.mobile: [.bottom: 4]])
+            ]),
             .style(
               boxShadow(
                 hShadow: .rem(0),
@@ -110,14 +115,16 @@ public func streamView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
               )
             )
           ],
-          vimeoVideoView(videoID: videoID)
-        )
+          videoView(videoID: videoID)
+        ),
+
+        subscriberCalloutView
       )
     )
   ]
 }
 
-private func vimeoVideoView(
+private func videoView(
   videoID: VimeoVideo.ID
 ) -> Node {
   return .div(

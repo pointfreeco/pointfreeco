@@ -1270,8 +1270,7 @@ private func episodeHeader(
               Class.padding([.mobile: [.top: 1, .leftRight: 0], .desktop: [.leftRight: 4]]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
-            ]),
-            .id("episode-header-blurb"),
+            ])
           ],
           .markdownBlock(episode.blurb)
         )
