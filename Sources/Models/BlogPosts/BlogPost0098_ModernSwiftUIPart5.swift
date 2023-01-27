@@ -191,8 +191,8 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
 
         We do have a favor to ask you. While we have built the Standups application in the style
         that makes the most sense to us, we know that some of these ideas aren't for everyone. We
-        would love if others fork the Standups code base and rebuild it in the style of their
-        choice.
+        would love if others [fork the Standups][standups-source] code base and rebuild it in the
+        style of their choice.
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject`
         instead of `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a
