@@ -316,7 +316,7 @@ private func episodeNotFoundView() -> Node {
 }
 
 private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {
-  @Dependency(\.episodes) var episodes;
+  @Dependency(\.episodes) var episodes: () -> [Episode]
 
   return episodes()
     .first(where: {
