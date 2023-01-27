@@ -15,7 +15,8 @@ public let post0100_Anniversary = BlogPost(
         million visitors to the site.
 
         In some ways we are only just getting started. We still haven't released the 1.0 of
-        the Composable Architecture, we still haven't talked about one of our favorite subjects
+        [the Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture),
+        we still haven't talked about one of our favorite subjects
         (the deep connection between math and programming), and there's still so much more to say
         about Swift concurrency.
 
@@ -72,8 +73,8 @@ public let post0100_Anniversary = BlogPost(
         This is the best place for chat about our open source repos, about our episode content,
         and anything else Point-Free related. For more long form conversations we recommend opening
         a discussion on the appropriate GitHub repo (did you know we have one for all of our
-        [episode code samples][episode-code-samples]?). While we will casually puruse the Swift
-        forums and iOS developers slack, we will not actively monitor them as much as we do our own
+        [episode code samples][episode-code-samples]?). While we will casually check the Swift
+        forums and iOS developers Slack, we will not actively monitor them as much as we do our own
         Slack and repo discussions.
 
         ## One more thing
