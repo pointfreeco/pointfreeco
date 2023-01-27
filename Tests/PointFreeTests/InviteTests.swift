@@ -366,6 +366,7 @@ class InviteTests: TestCase {
     await withDependencies {
       $0 = .test
       $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchUserById = { _ in currentUser }
       $0.database.fetchTeamInvite = { _ in invite }
@@ -401,6 +402,7 @@ class InviteTests: TestCase {
       UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     await withDependencies {
+      $0.database.fetchLivestreams = { [] }
       $0.database.fetchUserById = { _ in currentUser }
       $0.database.fetchTeamInvite = { _ in invite }
       $0.database.fetchSubscriptionById = { _ in .mock }

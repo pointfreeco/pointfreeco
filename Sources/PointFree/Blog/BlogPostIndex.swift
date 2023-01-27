@@ -21,7 +21,6 @@ let blogIndexMiddleware:
           data: blogPosts,
           description:
             "A companion blog to Point-Free, exploring functional programming and Swift.",
-          extraStyles: markdownBlockStyles,
           image: "https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg",
           openGraphType: .website,
           style: .base(.mountains(.blog)),

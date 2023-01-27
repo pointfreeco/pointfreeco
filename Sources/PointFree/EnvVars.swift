@@ -30,6 +30,7 @@ public struct EnvVars: Codable {
   public var regionalDiscountCouponId: Coupon.ID
   public var rssUserAgentWatchlist: [String]
   public var stripe: Stripe
+  public var vimeoBearer: String
 
   public init(
     appEnv: AppEnv = .development,
@@ -43,7 +44,8 @@ public struct EnvVars: Codable {
     postgres: Postgres = Postgres(),
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
-    stripe: Stripe = Stripe()
+    stripe: Stripe = Stripe(),
+    vimeoBearer: String = ""
   ) {
     self.appEnv = appEnv
     self.appSecret = appSecret
@@ -57,6 +59,7 @@ public struct EnvVars: Codable {
     self.regionalDiscountCouponId = regionalDiscountCouponId
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.stripe = stripe
+    self.vimeoBearer = vimeoBearer
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -67,6 +70,7 @@ public struct EnvVars: Codable {
     case port = "PORT"
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
+    case vimeoBearer = "VIMEO_BEARER"
   }
 
   public enum AppEnv: String, Codable {
@@ -188,6 +192,7 @@ extension EnvVars {
       .split(separator: ",")
       .map(String.init)
     self.stripe = try .init(from: decoder)
+    self.vimeoBearer = try container.decode(String.self, forKey: .vimeoBearer)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -207,6 +212,7 @@ extension EnvVars {
     )
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try self.stripe.encode(to: encoder)
+    try container.encode(self.vimeoBearer, forKey: .vimeoBearer)
   }
 }
 

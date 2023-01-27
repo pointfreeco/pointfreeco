@@ -18,6 +18,7 @@ public enum SiteRoute: Equatable {
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog = .index)
+  case clips(ClipsRoute)
   case collections(Collections = .index)
   case discounts(code: Stripe.Coupon.ID, Pricing.Billing?)
   case gifts(Gifts = .index)
@@ -30,10 +31,12 @@ public enum SiteRoute: Equatable {
   case gitHubCallback(code: String?, redirect: String?)
   case home
   case invite(Invite)
+  case live(Live)
   case login(redirect: String?)
   case logout
   case pricingLanding
   case privacy
+  case resume
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
     lane: Pricing.Lane,
@@ -150,10 +153,10 @@ private let blogRouter = OneOf {
 }
 
 private let episodeSlugOrId = OneOf {
-  Parse(.string.map(.case(Either<String, Episode.ID>.left)))
-
   Int.parser(of: Substring.self)
     .map(.representing(Episode.ID.self).map(.case(Either<String, Episode.ID>.right)))
+
+  Parse(.string.map(.case(Either<String, Episode.ID>.left)))
 }
 
 private let collectionsRouter = OneOf {
@@ -388,6 +391,15 @@ let router = OneOf {
     blogRouter
   }
 
+  Route(.case(SiteRoute.resume)) {
+    Path { "resume" }
+  }
+
+  Route(.case(SiteRoute.clips)) {
+    Path { "clips" }
+    clipsRouter
+  }
+
   Route(.case(SiteRoute.collections)) {
     Path { "collections" }
     collectionsRouter
@@ -472,6 +484,11 @@ let router = OneOf {
     inviteRouter
   }
 
+  Route(.case(SiteRoute.live)) {
+    Path { "live" }
+    liveRouter
+  }
+
   Route(.case(SiteRoute.login)) {
     Path { "login" }
     Query {
@@ -491,6 +508,10 @@ let router = OneOf {
 
   Route(.case(SiteRoute.privacy)) {
     Path { "privacy" }
+  }
+
+  Route(.case(SiteRoute.resume)) {
+    Path { "resume" }
   }
 
   Route(.case(SiteRoute.subscribe)) {

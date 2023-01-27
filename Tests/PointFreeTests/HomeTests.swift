@@ -17,7 +17,7 @@ import XCTest
 class HomeTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.isRecording=true
+//    SnapshotTesting.isRecording=true
   }
 
   override func invokeTest() {
@@ -66,25 +66,31 @@ class HomeTests: TestCase {
       $0.database.fetchEpisodeProgresses = { [dependencies = $0] userID in
         [
           EpisodeProgress(
+            createdAt: .mock,
             episodeSequence: dependencies.episodes()[0].sequence,
             id: EpisodeProgress.ID(),
             isFinished: true,
             percent: 100,
-            userID: userID
+            userID: userID,
+            updatedAt: .mock
           ),
           EpisodeProgress(
+            createdAt: .mock,
             episodeSequence: dependencies.episodes()[1].sequence,
             id: EpisodeProgress.ID(),
             isFinished: false,
             percent: 30,
-            userID: userID
+            userID: userID,
+            updatedAt: .mock
           ),
           EpisodeProgress(
+            createdAt: .mock,
             episodeSequence: dependencies.episodes()[2].sequence,
             id: EpisodeProgress.ID(),
             isFinished: true,
             percent: 20,
-            userID: userID
+            userID: userID,
+            updatedAt: .mock
           ),
         ]
       }

@@ -139,7 +139,6 @@ func collectionHeader(
 // MARK: - Stylesheet
 
 public let collectionsStylesheet = Stylesheet.concat(
-  markdownBlockStyles,
   (Class.pf.collections.hoverBackground & .pseudo(.hover)) % backgroundColor(.white(0.9)),
   (Class.pf.collections.hoverLink & .pseudo(.hover)) % key("text-decoration", "none")
 )

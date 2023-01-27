@@ -17,6 +17,7 @@ import Views
 public func siteMiddleware(
   _ conn: Conn<StatusLineOpen, Prelude.Unit>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars) var envVars
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.logger) var logger
@@ -71,6 +72,7 @@ public func siteMiddleware(
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
   let progresses = (try? await database.fetchEpisodeProgresses(currentUser.unwrap().id)) ?? []
+  let livestreams = (try? await database.fetchLivestreams()) ?? []
 
   let siteRoute: SiteRoute?
   do {
@@ -89,6 +91,7 @@ public func siteMiddleware(
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
+    $0.livestreams = livestreams
     $0.requestID = requestID
     $0.subscriberState = SubscriberState(
       user: currentUser,
@@ -133,6 +136,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .blog(subRoute):
     return await blogMiddleware(conn: conn.map(const(subRoute)))
       .performAsync()
+
+  case let .clips(clipsRoute):
+    return await clipsMiddleware(conn.map(const(clipsRoute)))
 
   case .collections(.index):
     return await collectionsIndexMiddleware(conn.map(const(())))
@@ -250,6 +256,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
       .performAsync()
 
+  case let .live(liveRoute):
+    return await liveMiddleware(conn.map(const(liveRoute)))
+
   case let .login(redirect):
     return await loginResponse(conn.map(const(redirect)))
       .performAsync()
@@ -265,6 +274,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case .privacy:
     return await privacyResponse(conn.map(const(())))
       .performAsync()
+
+  case .resume:
+    return await resumeMiddleware(conn.map(const(())))
 
   case let .subscribe(data):
     return await subscribeMiddleware(conn.map(const(currentUser .*. data .*. unit)))

@@ -31,7 +31,7 @@ public func blogPostShowView(post: BlogPost) -> Node {
               .class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])
             ],
             blogPostContentView(post),
-            subscriberCalloutView(subscriberState)
+            subscriberCalloutView
           )
         )
       ]
@@ -88,7 +88,8 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
   ]
 }
 
-private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
+var subscriberCalloutView: Node {
+  @Dependency(\.subscriberState) var subscriberState
   guard !subscriberState.isActive else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -119,18 +120,11 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
         ],
         "Subscribe to Point-Free"
       ),
-      .p(
-        "👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to also",
-        " check out ",
-        .a(
-          attributes: [
-            .href(siteRouter.path(for: .home)),
-            .class([Class.pf.type.underlineLink]),
-          ],
-          "Point-Free"
-        ),
-        ", a video series on functional programming and Swift."
-      )
+      .markdownBlock("""
+        👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to
+        also check out [Point-Free](/), a video series covering advanced programming topics in
+        Swift. Consider [subscribing](/pricing) today!
+        """)
     ),
   ]
 }

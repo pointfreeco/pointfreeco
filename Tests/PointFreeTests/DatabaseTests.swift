@@ -127,11 +127,13 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertNoDifference(
       progress,
       EpisodeProgress(
+        createdAt: progress.createdAt,
         episodeSequence: 1,
         id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000007")!,
         isFinished: true,
         percent: 99,
-        userID: user.id
+        userID: user.id,
+        updatedAt: progress.updatedAt
       )
     )
 
@@ -141,11 +143,13 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertNoDifference(
       progress,
       EpisodeProgress(
+        createdAt: progress.createdAt,
         episodeSequence: 1,
         id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000007")!,
         isFinished: true,
         percent: 20,
-        userID: user.id
+        userID: user.id,
+        updatedAt: progress.updatedAt
       )
     )
   }
@@ -164,25 +168,31 @@ final class DatabaseTests: LiveDatabaseTestCase {
       progresses,
       [
         EpisodeProgress(
+          createdAt: progresses[0].createdAt,
           episodeSequence: 1,
           id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000007")!,
           isFinished: true,
           percent: 90,
-          userID: user.id
+          userID: user.id,
+          updatedAt: progresses[0].updatedAt
         ),
         EpisodeProgress(
+          createdAt: progresses[1].createdAt,
           episodeSequence: 2,
           id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000008")!,
           isFinished: true,
           percent: 20,
-          userID: user.id
+          userID: user.id,
+          updatedAt: progresses[1].updatedAt
         ),
         EpisodeProgress(
+          createdAt: progresses[2].createdAt,
           episodeSequence: 3,
           id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000009")!,
           isFinished: false,
           percent: 40,
-          userID: user.id
+          userID: user.id,
+          updatedAt: progresses[2].updatedAt
         ),
       ]
     )
@@ -203,11 +213,13 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertNoDifference(
       fetchedProgress,
       EpisodeProgress(
+        createdAt: fetchedProgress.createdAt,
         episodeSequence: 1,
         id: EpisodeProgress.ID(uuidString: "00000000-0000-0000-0000-000000000007")!,
         isFinished: false,
         percent: 20,
-        userID: user.id
+        userID: user.id,
+        updatedAt: fetchedProgress.updatedAt
       )
     )
   }

@@ -30,6 +30,7 @@ extension Client {
       "Database.Client.fetchGiftByStripePaymentIntentId"
     ),
     fetchGiftsToDeliver: unimplemented("Database.Client.fetchGiftsToDeliver"),
+    fetchLivestreams: unimplemented("Database.Client.fetchLivestreams"),
     fetchSubscriptionById: unimplemented("Database.Client.fetchSubscriptionById"),
     fetchSubscriptionByOwnerId: unimplemented("Database.Client.fetchSubscriptionByOwnerId"),
     fetchSubscriptionTeammatesByOwnerId: unimplemented(

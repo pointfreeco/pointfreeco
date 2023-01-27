@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 121094
+Content-Length: 121399
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1847,7 +1847,34 @@ html {
   font-family : ui-monospace,monospace;
 }
 
+.bg-black .md-ctn a {
+  color : #fff;
+}
 
+.bg-black .md-ctn a:link {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:visited {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:hover {
+  color : #fff;
+}
+
+
+    </style>
+    <style>
+      
+
+    </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
     </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">
@@ -2264,15 +2291,12 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                        m-pb2">
               Subscribe to Point-Free
             </h4>
-            <p>
-              👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to also
-               check out 
-              <a href="/"
-                 class="underline-link">
-                Point-Free
-              </a>
-              , a video series on functional programming and Swift.
-            </p>
+            <div class="md-ctn">
+              <p>👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to
+also check out <a href="/">Point-Free</a>, a video series covering advanced programming topics in
+Swift. Consider <a href="/pricing">subscribing</a> today!</p>
+
+            </div>
           </div>
         </div>
       </div>

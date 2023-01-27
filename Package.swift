@@ -34,6 +34,7 @@ var package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Views", targets: ["Views"]),
+    .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
@@ -269,6 +270,7 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
+        "VimeoClient",
         .product(name: "Backtrace", package: "swift-backtrace"),
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
@@ -336,6 +338,7 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
+        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -468,6 +471,15 @@ var package = Package(
     ),
 
     .target(
+      name: "VimeoClient",
+      dependencies: [
+        "DecodableRequest",
+        "FoundationPrelude",
+        .product(name: "Tagged", package: "swift-tagged"),
+      ]
+    ),
+
+    .target(
       name: "Views",
       dependencies: [
         "Ccmark",
@@ -477,6 +489,7 @@ var package = Package(
         "PointFreeRouter",
         "Styleguide",
         "WebPreview",
+        "VimeoClient",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Html", package: "swift-html"),

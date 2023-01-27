@@ -1,3 +1,4 @@
+import CasePaths
 import Css
 import Dependencies
 import Foundation
@@ -82,7 +83,15 @@ public func simplePageLayout<A>(
           .title(layoutData.title),
           .style(safe: renderedNormalizeCss),
           .style(styleguide, config: cssConfig),
+          .style(markdownBlockStyles, config: cssConfig),
           .style(layoutData.extraStyles, config: cssConfig),
+          .style(safe: """
+            @keyframes Pulse {
+              from { opacity: 1; }
+              50% { opacity: 0; }
+              to { opacity: 1; }
+            }
+            """),
           .meta(viewport: .width(.deviceWidth), .initialScale(1)),
           .link(
             attributes: [
@@ -110,6 +119,7 @@ public func simplePageLayout<A>(
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
           announcementBanner,
+          liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
           contentView(layoutData.data),
@@ -123,6 +133,52 @@ public func simplePageLayout<A>(
       ),
     ]
   }
+}
+
+private var liveStreamBanner: Node {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.livestreams) var livestreams
+
+  // NB: Can't do the negation of a `if case` so can't do this as a guard.
+  if case .live(.current) = currentRoute {
+    return []
+  }
+  guard livestreams.first(where: \.isLive) != nil
+  else { return [] }
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  let announcementClass =
+    Class.type.align.center
+    | Class.padding([.mobile: [.topBottom: 4]])
+    | Class.pf.colors.bg.gray150
+    | Class.pf.colors.fg.gray850
+    | Class.pf.colors.link.white
+    | Class.pf.type.body.leading
+
+  return .gridRow(
+    attributes: [.class([announcementClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      .span(
+        attributes: [
+          .style(safe: "animation: Pulse 3s linear infinite;")
+        ],
+        "🔴 "
+      ),
+      .a(
+        attributes: [
+          .class([
+            Class.pf.colors.link.white
+              | Class.pf.type.underlineLink
+          ]),
+          .href(siteRouter.path(for: .live(.current))),
+        ],
+        .strong("Point-Free Live")
+      ),
+      ": we are live right now!"
+    )
+  )
 }
 
 var announcementBanner: Node {

@@ -1260,7 +1260,7 @@ private func episodeHeader(
           .text(
             """
             Episode #\(episode.sequence) • \
-            \(newEpisodeDateFormatter.string(from: episode.publishedAt)) \
+            \(headerDateFormatter.string(from: episode.publishedAt)) \
             • \(episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
             """)
         ),
@@ -1270,8 +1270,7 @@ private func episodeHeader(
               Class.padding([.mobile: [.top: 1, .leftRight: 0], .desktop: [.leftRight: 4]]),
               Class.pf.colors.fg.gray850,
               Class.pf.type.body.regular,
-            ]),
-            .id("episode-header-blurb"),
+            ])
           ],
           .markdownBlock(episode.blurb)
         )
@@ -1547,7 +1546,7 @@ public enum EpisodePermission: Equatable {
   }
 }
 
-private func nonBreaking(title: String) -> String {
+func nonBreaking(title: String) -> String {
   let parts = title.components(separatedBy: ": ")
   guard
     parts.count == 2,
@@ -1562,7 +1561,7 @@ private func nonBreaking(title: String) -> String {
   return mainTitle + ": " + nonBreakingSubtitle
 }
 
-private let newEpisodeDateFormatter: DateFormatter = {
+let headerDateFormatter: DateFormatter = {
   let df = DateFormatter()
   df.dateFormat = "MMM d, yyyy"
   df.timeZone = TimeZone(secondsFromGMT: 0)

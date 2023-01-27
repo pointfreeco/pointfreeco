@@ -2,7 +2,7 @@ GET http://localhost:8080/api/episodes/424242
 Cookie: pf_session={}
 
 404 Not Found
-Content-Length: 47393
+Content-Length: 49539
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1764,6 +1764,117 @@ html {
     <style>
       
 
+.md-ctn hr {
+  margin-top       : 2rem;
+  margin-right     : 30%;
+  margin-bottom    : 2rem;
+  margin-left      : 30%;
+  border-top-style : solid;
+  border-top-width : 1px;
+  background-color : #ffffff;
+  border-top-color : #ddd;
+  height           : 0px;
+}
+
+.md-ctn a {
+  text-decoration : underline;
+}
+
+.md-ctn a:link {
+  color : #291a40;
+}
+
+.md-ctn a:visited {
+  color : #291a40;
+}
+
+.md-ctn a:hover {
+  color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
+}
+
+.md-ctn blockquote {
+  color                      : #555555;
+  border-left-color          : #d8d8d8;
+  border-top-left-radius     : 2px;
+  border-top-right-radius    : 2px;
+  border-bottom-right-radius : 2px;
+  border-bottom-left-radius  : 2px;
+  border-left-style          : solid;
+  border-left-width          : 3px;
+  margin-right               : 0rem;
+  margin-bottom              : 2rem;
+  margin-left                : 0rem;
+  padding-right              : 2rem;
+  padding-left               : 2rem;
+}
+
+.md-ctn p {
+  word-wrap : break-word;
+}
+
+.md-ctn p:not(:last-child) {
+  margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top                : 0.5rem;
+  padding-bottom             : 0.5rem;
+  padding-right              : 2rem;
+  padding-left               : 2rem;
+  background-color           : rgba(0,0,0,0.02);
+  border-top-color           : rgba(0,0,0,0.15);
+  border-right-color         : rgba(0,0,0,0.15);
+  border-bottom-color        : rgba(0,0,0,0.15);
+  border-left-color          : rgba(0,0,0,0.15);
+  border-top-left-radius     : 6px;
+  border-top-right-radius    : 6px;
+  border-bottom-right-radius : 6px;
+  border-bottom-left-radius  : 6px;
+  display                    : block;
+  margin-bottom              : 1.5rem;
+}
+
+.md-ctn pre {
+  overflow-x : auto;
+}
+
+.md-ctn code {
+  font-family : ui-monospace,monospace;
+}
+
+.bg-black .md-ctn a {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:link {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:visited {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:hover {
+  color : #fff;
+}
+
+
+    </style>
+    <style>
+      
+
+    </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
     </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">

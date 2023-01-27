@@ -36,7 +36,6 @@ let episodeResponse:
             permission: permission
           ),
           description: episode.blurb,
-          extraStyles: extraEpisodePageStyles,
           image: episode.image,
           style: .base(.minimal(.black)),
           title: "Episode #\(episode.sequence): \(episode.fullTitle)",
@@ -317,13 +316,10 @@ private func episodeNotFoundView() -> Node {
 }
 
 private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {
-  @Dependency(\.episodes) var episodes
+  @Dependency(\.episodes) var episodes: () -> [Episode]
 
   return episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id)
     })
 }
-
-private let extraEpisodePageStyles =
-  markdownBlockStyles <> .id("episode-header-blurb") % (a % color(Colors.gray850))

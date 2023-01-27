@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63284
+Content-Length: 63618
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1847,6 +1847,26 @@ html {
   font-family : ui-monospace,monospace;
 }
 
+.bg-black .md-ctn a {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:link {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:visited {
+  color : #fff;
+}
+
+.bg-black .md-ctn a:hover {
+  color : #fff;
+}
+
+
+    </style>
+    <style>
+      
 .pricing-plan-feature > p {
   margin-top    : 0;
   margin-right  : 0;
@@ -1906,6 +1926,13 @@ html {
 
 }
 
+    </style>
+    <style>
+      @keyframes Pulse {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
     </style>
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0">

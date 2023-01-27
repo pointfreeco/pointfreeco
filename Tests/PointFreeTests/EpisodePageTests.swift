@@ -638,11 +638,13 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.database.fetchEpisodeProgress = { _, _ in
         EpisodeProgress(
+          createdAt: .mock,
           episodeSequence: 1,
           id: EpisodeProgress.ID(),
           isFinished: false,
           percent: 20,
-          userID: User.ID()
+          userID: User.ID(),
+          updatedAt: .mock
         )
       }
     } operation: {
@@ -655,7 +657,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
-  func testTranscriptBoxTypes() async {
+  func testTranscriptTypes() async {
     let titles = ["Composable Architecture"]
     var episode = Episode(
       blurb: """
@@ -703,6 +705,13 @@ class EpisodePageTests: TestCase {
             """,
           timestamp: nil,
           type: .box(.tip)
+        ),
+        Episode.TranscriptBlock(
+          content: """
+            Call to action!
+            """,
+          timestamp: nil,
+          type: .button(href: "/hello")
         ),
       ]
     )

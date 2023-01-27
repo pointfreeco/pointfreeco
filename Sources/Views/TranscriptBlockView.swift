@@ -34,6 +34,34 @@ public func transcriptBlockView(
       )
     )
 
+  case let .button(href: href):
+    return .div(
+      attributes: [
+        .class([
+          Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
+          Class.padding([.mobile: [.all: 3]]),
+        ]),
+        .style(unsafe: "background-color: #f6f6f6;"),
+      ],
+      .div(
+        attributes: [
+          .class([
+            Class.pf.type.body.regular,
+            Class.type.align.center,
+          ])
+        ],
+        .a(
+          attributes: [
+            .class([
+              Class.pf.components.button(color: .purple)
+            ]),
+            .href(href),
+          ],
+          .text(block.content)
+        )
+      )
+    )
+
   case .code(.plainText):
     return .div(
       attributes: [

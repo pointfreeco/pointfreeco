@@ -240,6 +240,13 @@ extension Client {
           """
         )
       },
+      fetchLivestreams: {
+        try await pool.sqlDatabase.all(
+          """
+          SELECT * FROM "livestreams"
+          """
+        )
+      },
       fetchSubscriptionById: { id in
         try await pool.sqlDatabase.first(
           """
@@ -801,6 +808,18 @@ extension Client {
           """
           CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_user_id_episode_sequence"
           ON "episode_progresses" ("user_id", "episode_sequence")
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "livestreams" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "event_id" integer NOT NULL,
+            "is_active" boolean NOT NULL DEFAULT FALSE,
+            "is_live" boolean NOT NULL DEFAULT FALSE,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          )
           """
         )
       },
