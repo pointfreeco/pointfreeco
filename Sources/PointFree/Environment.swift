@@ -11,6 +11,7 @@ import PointFreeRouter
 import PostgresKit
 import Prelude
 import Stripe
+import VimeoClient
 
 extension BlogPost: DependencyKey {
   public static let liveValue: () -> [BlogPost] = allBlogPosts
@@ -133,8 +134,6 @@ extension PointFreeRouter: DependencyKey {
     return PointFreeRouter(baseURL: envVars.baseUrl)
   }
 }
-
-import VimeoClient
 
 extension VimeoClient: DependencyKey {
   public static var liveValue: VimeoClient {
