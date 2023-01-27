@@ -53,7 +53,7 @@ public let post0100_Anniversary = BlogPost(
         personally, [Twitter](http://twitter.com/pointfreeco) messages,
         [discussions][tca-discussions] on our GitHub repos, the [Swift forums][tca-forums], and
         there's a [popular Slack](http://iosdevelopers.slack.com) with an active
-        #ComposableArchitecture channel. We really enjoy interacting with the community, but it can
+        "#composable-architecture" channel. We really enjoy interacting with the community, but it can
         be difficult to keep track of conversations in so many places.
 
         That is why we are excited to announce a new Slack just for the Point-Free community:
