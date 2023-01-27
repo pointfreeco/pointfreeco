@@ -59,7 +59,6 @@ private func stream(
     guard video.type == .live
     else {
       return await routeNotFoundMiddleware(conn).performAsync()
-      
     }
 
     return
