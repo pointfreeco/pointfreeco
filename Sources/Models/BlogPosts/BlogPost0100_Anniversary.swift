@@ -41,7 +41,9 @@ public let post0100_Anniversary = BlogPost(
         We will be discussing [modern SwiftUI](/collections/swiftui-modern-swiftui) techniques,
         our new [Dependencies library](http://github.com/pointfreeco/swift-dependencies),
         [non-exhaustive testing][non-exhaustive-testing-blog], as well as taking questions from our
-        viewers. Please join us, and bring any questions you might have.
+        viewers. Please join us, and bring any questions you might have. In fact, you can already
+        start asking questions and vote on other people's questions. Just click the "Ask" button
+        at the bottom of chat.
 
         We have plans for a lot more livestreams in the future, especially in tandem with new
         library releases and new episodic releases. Some will be free for all, and some will be
@@ -101,5 +103,5 @@ public let post0100_Anniversary = BlogPost(
   coverImage: nil,
   id: 100,
   publishedAt: yearMonthDayFormatter.date(from: "2023-01-29")!,
-  title: "5 years of Point-Free"
+  title: "Point-Free turns 5"
 )
