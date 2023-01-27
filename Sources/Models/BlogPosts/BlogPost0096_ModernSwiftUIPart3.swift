@@ -132,7 +132,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         choice of a finite set of cases, and they are a great tool for modeling navigation state.
 
         For example, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" we
-        rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
+        rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-gh],
         and in doing so we modeled navigation state as concisely as possible using enums.
 
         One screen, the ["standup detail" screen][standup-detail-source], has 4 possible
@@ -286,7 +286,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         conducive to deep linking. Because the view owns the state it is not easy to construct
         all of the views in a particular state.
 
-        For example, if all of the views in our [Standups][standups-source] application used
+        For example, if all of the views in our [Standups][standups-gh] application used
         `@StateObject` instead of `@ObservedObject` we would have no ability to launch the app
         in a very specific state, such as drilled down to the detail screen and then the record
         screen. But with `@ObservedObject`, since the models can be passed to the view at each
@@ -324,7 +324,7 @@ public let post0096_ModernSwiftUIPart3 = BlogPost(
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swiftui-collection]: /collections/swiftui
         [swiftui-nav-collection]: /collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections

@@ -44,22 +44,25 @@ public let post0099_ModernSwiftUIConclusion = BlogPost(
         more, be sure to check out our [7-part series][modern-swiftui-collection] on “Modern
         SwiftUI.”
 
-        We do have a favor to ask you. While we have built the [Standups][standups-source]
+        We do have a favor to ask you. While we have built the [Standups][standups-gh]
         application in the style that makes the most sense to us, we know that some of these ideas
-        aren't for everyone. We would love if others fork the Standups code base and rebuild it in
-        the style of their choice.
+        aren't for everyone. We would love if others fork the Standups code base
+        and rebuild it in the style of their choice. We even have a [dedicated repo][standups-gh]
+        with the codebase ready to go. 😁
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject`
         instead of `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a
         different way of handling dependencies? [**Please show
-        us!**](http://twitter.com/pointfreeco)
+        us!**][standups-gh-fork]
 
         We will collect links to the other ports so that there can be a single place to reference
         many different approaches for building the same application.
 
+        [standups-gh]: https://github.com/pointfreeco/standups
+        [standups-gh-fork]: https://github.com/pointfreeco/standups/fork
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swiftui-nav-collection]: /collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation

@@ -38,7 +38,7 @@ public let post0093_ModernSwiftUI = BlogPost(
         ## The Standups app
 
         During the course of [7 episodes][modern-swiftui-collection] we built Standups
-        ([full source here][standups-source]), which is an app for creating and managing daily standup
+        ([full source here][standups-gh]), which is an app for creating and managing daily standup
         meetings. Once a standup is created you can start the meeting, which shows a helpful UI for how much
         time is left in the standup, whose turn it is, and it will even transcribe the audio from the
         meeting so that it can be later referenced.
@@ -419,7 +419,7 @@ public let post0093_ModernSwiftUI = BlogPost(
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swiftui-collection]: /collections/swiftui
         [swiftui-nav-collection]: /collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections

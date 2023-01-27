@@ -60,7 +60,7 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         your dependencies rather than let them control you.
 
         In fact, in our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)," where we
-        rebuild Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
+        rebuild Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-gh],
         we came face-to-face with this lesson as soon as we introduced code that called out to
         Apple's Speech framework. We found that directly accessing Speech APIs from our feature
         completely broke the preview, making it difficult to iterate on the UI and functionality. We
@@ -125,7 +125,7 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         ```
 
         The Speech framework isn't the only dependency we controlled in our
-        [Standups][standups-source] application. We also controlled our dependence on the `Date` and
+        [Standups][standups-gh] application. We also controlled our dependence on the `Date` and
         `UUID` initializers, our dependence on clocks for time-based asynchrony, our dependence
         on the file system for persisting application data, and even our dependence on an
         `AVAudioEngine` for playing sound effects in the app.
@@ -144,7 +144,7 @@ public let post0097_ModernSwiftUIPart4 = BlogPost(
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swiftui-collection]: /collections/swiftui
         [swiftui-nav-collection]: /collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections

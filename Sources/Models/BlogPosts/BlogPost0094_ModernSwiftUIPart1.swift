@@ -26,7 +26,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
       content: ###"""
         Last week we finished our ambitious, [7-part series][modern-swiftui-collection] exploring
         modern, best practices for SwiftUI development. In those episodes we rebuilt Apple’s
-        ”[Scrumdinger][scrumdinger]” application from scratch ([source code here][standups-source]),
+        ”[Scrumdinger][scrumdinger]” application from scratch ([source code here][standups-gh]),
         which is a great showcase for many of the problems one encounters in a real life
         application. Every step of the way we challenged ourselves to write the code in the most
         scalable and future-proof way possible, including:
@@ -119,7 +119,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         [standups-test-suite]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups/StandupsTests
         [dependencies-gh]: http://github.com/pointfreeco/swiftui-dependencies
         [swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [pricing]: /pricing
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
@@ -426,7 +426,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
         Check back tomorrow for the 2nd part of our "Modern SwiftUI" blog series, where we will show
         how to make collections safer and more performant to use in SwiftUI lists.
 
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         [pricing]: /pricing
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger

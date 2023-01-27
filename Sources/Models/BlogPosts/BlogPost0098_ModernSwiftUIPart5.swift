@@ -34,7 +34,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         ## Unit tests
 
         In our series on "[Modern SwiftUI](/collections/swiftui/modern-swiftui)" we
-        rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-source],
+        rebuilt Apple's "[Scrumdinger][scrumdinger]" application from [scratch][standups-gh],
         and we made sure to write an [extensive suite of unit tests][standups-test-suite],
         exercising many nuanced user flows that execute effects and complex logic.
 
@@ -186,18 +186,19 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         ## A call to action!
 
         We hope that you find some of the topics discussed above exciting, and if you want to learn
-        more, be sure to check out our [7-part series][modern-swiftui-collection] on
-        “Modern SwiftUI.”
+        more, be sure to check out our [7-part series][modern-swiftui-collection] on “Modern
+        SwiftUI.”
 
-        We do have a favor to ask you. While we have built the Standups application in the style
-        that makes the most sense to us, we know that some of these ideas aren't for everyone. We
-        would love if others [fork the Standups][standups-source] code base and rebuild it in the
-        style of their choice.
+        We do have a favor to ask you. While we have built the [Standups][standups-gh]
+        application in the style that makes the most sense to us, we know that some of these ideas
+        aren't for everyone. We would love if others fork the Standups code base
+        and rebuild it in the style of their choice. We even have a [dedicated repo][standups-gh]
+        with the codebase ready to go. 😁
 
         Don't like to use an `ObservableObject` for each screen? Prefer to use `@StateObject`
         instead of `@ObservedObject`? Want to use an architectural pattern such as VIPER? Have a
-        different way of handling dependencies?
-        [**Please show us!**](http://twitter.com/pointfreeco)
+        different way of handling dependencies? [**Please show
+        us!**][standups-gh-fork]
 
         We will collect links to the other ports so that there can be a single place to reference
         many different approaches for building the same application.
@@ -205,7 +206,7 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         ## That's all folks!
 
         Well, that's the end of our blog-post-a-day covering modern, best practices in SwiftUI
-        application development. We highly recommend checking out our [Standups][standups-source]
+        application development. We highly recommend checking out our [Standups][standups-gh]
         open source application to see how all of the ideas can be put to use in a real world,
         complex application.
 
@@ -213,6 +214,8 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         [subscribing][pricing] today to get access to the [full series][modern-swiftui-collection],
         as well as our entire back catalog of episodes!
 
+        [standups-gh]: https://github.com/pointfreeco/standups
+        [standups-gh-fork]: https://github.com/pointfreeco/standups/fork
         [testdelete-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/StandupsTests/StandupsListTests.swift#L106-L131
         [datafailedtoload-source]: https://github.com/pointfreeco/swiftui-navigation/blob/1db1bcfd1e9f533a17074b7e95613d0d9a78262c/Examples/Standups/Standups/StandupsList.swift#L127-L143
         [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
@@ -220,7 +223,6 @@ public let post0098_ModernSwiftUIPart5 = BlogPost(
         [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
         [swiftui-collection]: /collections/swiftui
         [swiftui-nav-collection]: /collections/swiftui/navigation
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
         [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
         [tagged-gh]: http://github.com/pointfreeco/swift-tagged
         [identified-collections-gh]: http://github.com/pointfreeco/swift-identified-collections

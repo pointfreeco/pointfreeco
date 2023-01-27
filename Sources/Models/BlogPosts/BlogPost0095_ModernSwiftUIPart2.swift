@@ -107,7 +107,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         [IdentifiedArray][identified-collections-gh] aims to fill.
 
         In our series on "[Modern SwiftUI][modern-swiftui-collection]" we rebuilt Apple's
-        "[Scrumdinger][scrumdinger]" application from [scratch][standups-source] to showcase modern,
+        "[Scrumdinger][scrumdinger]" application from [scratch][standups-gh] to showcase modern,
         best practices, and the first change we made was to scrap plain arrays when modeling data
         for lists. Instead, we made use of our [IdentifiedArray][identified-collections-gh] data
         type, which allows referencing elements by their stable ID rather than their unstable
@@ -167,7 +167,7 @@ public let post0095_ModernSwiftUIPart2 = BlogPost(
         [runtime-warn-blog]: /blog/posts/70-unobtrusive-runtime-warnings-for-libraries
         [xctest-dynamic-overlay]: http://github.com/pointfreeco/xctest-dynamic-overlay
         [unimplemented-docs]: https://pointfreeco.github.io/xctest-dynamic-overlay/main/documentation/xctestdynamicoverlay/unimplemented(_:fileid:line:)-5098a
-        [standups-source]: https://github.com/pointfreeco/swiftui-navigation/tree/5e97ce756293f941c2c336693283493a965458f6/Examples/Standups
+        [standups-gh]: https://github.com/pointfreeco/standups
         """###,
       type: .paragraph
     ),
