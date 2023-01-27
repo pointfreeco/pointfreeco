@@ -66,7 +66,10 @@ public let post0100_Anniversary = BlogPost(
     ),
     .init(
       content: "Join the Point-Free Community Slack",
-      type: .button(href: "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1i57vvilg-wKl1WcPhDLPb1LawbHjQCw")
+      type: .button(
+        href:
+          "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1i57vvilg-wKl1WcPhDLPb1LawbHjQCw"
+      )
     ),
     .init(
       content: ###"""
@@ -93,10 +96,10 @@ public let post0100_Anniversary = BlogPost(
         [episode-code-samples]: https://github.com/pointfreeco/episode-code-samples/discussions
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
-  id: 100,  
+  id: 100,
   publishedAt: yearMonthDayFormatter.date(from: "2023-01-29")!,
   title: "5 years of Point-Free"
 )

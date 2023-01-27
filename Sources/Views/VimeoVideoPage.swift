@@ -5,12 +5,12 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
 import VimeoClient
-import PointFreeDependencies
 
 public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
   @Dependency(\.subscriberState) var subscriberState
@@ -96,8 +96,8 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
           ]),
           .style(
             maxWidth(.px(1080))
-            <> margin(topBottom: nil, leftRight: .auto)
-            <> margin(top: .rem(-4))
+              <> margin(topBottom: nil, leftRight: .auto)
+              <> margin(top: .rem(-4))
           ),
         ],
         .gridColumn(
@@ -113,14 +113,14 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
                 blurRadius: .px(20),
                 color: .rgba(0, 0, 0, 0.2)
               )
-            )
+            ),
           ],
           videoView(videoID: videoID)
         ),
 
         subscriberCalloutView
       )
-    )
+    ),
   ]
 }
 

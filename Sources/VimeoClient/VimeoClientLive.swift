@@ -35,4 +35,3 @@ private let jsonDecoder = {
   decoder.dateDecodingStrategy = .iso8601
   return decoder
 }()
-

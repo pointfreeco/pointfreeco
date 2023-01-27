@@ -120,7 +120,8 @@ var subscriberCalloutView: Node {
         ],
         "Subscribe to Point-Free"
       ),
-      .markdownBlock("""
+      .markdownBlock(
+        """
         👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to
         also check out [Point-Free](/), a video series covering advanced programming topics in
         Swift. Consider [subscribing](/pricing) today!

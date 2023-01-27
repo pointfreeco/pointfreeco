@@ -23,15 +23,16 @@ func resumeMiddleware(
       .performAsync()
   }
 
-  guard let latestProgress = episodeProgresses.values
-    .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
-    .first
+  guard
+    let latestProgress = episodeProgresses.values
+      .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
+      .first
   else {
     return await redirect(
       to: .home,
       headersMiddleware: flash(.warning, "You are not currently watching any episodes.")
     )(conn)
-      .performAsync()
+    .performAsync()
   }
 
   guard latestProgress.isFinished
@@ -46,7 +47,7 @@ func resumeMiddleware(
       ),
       headersMiddleware: flash(.notice, "Resuming your last watched episode.")
     )(conn)
-      .performAsync()
+    .performAsync()
   }
 
   guard
@@ -56,12 +57,12 @@ func resumeMiddleware(
       to: .home,
       headersMiddleware: flash(.notice, "You‘re all caught up!")
     )(conn)
-      .performAsync()
+    .performAsync()
   }
 
   return await redirect(
     to: .episode(.show(.left(nextEpisode.slug))),
     headersMiddleware: flash(.notice, "Starting the next episode.")
   )(conn)
-    .performAsync()
+  .performAsync()
 }

@@ -27,7 +27,7 @@ private func clipMiddleware(
     else { return await routeNotFoundMiddleware(conn).performAsync() }
 
     return
-    conn
+      conn
       .writeStatus(.ok)
       .respond(
         view: vimeoVideoView(video:videoID:),

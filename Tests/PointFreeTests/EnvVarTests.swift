@@ -8,7 +8,7 @@ import XCTest
 class EnvVarTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-//    SnapshotTesting.isRecording=true
+    //    SnapshotTesting.isRecording=true
   }
 
   func testDecoding() async throws {
@@ -29,7 +29,7 @@ class EnvVarTests: TestCase {
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
-      "VIMEO_BEARER": "deadbeef"
+      "VIMEO_BEARER": "deadbeef",
     ]
 
     let envVars = try JSONDecoder()

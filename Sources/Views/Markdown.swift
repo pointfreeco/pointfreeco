@@ -42,9 +42,12 @@ public let markdownBlockStyles: Stylesheet = .concat(
       <> codeMarkdownStyles),
 
   (Class.pf.colors.bg.black ** markdownContainerClass ** a) % color(Colors.white),
-  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.link))) % color(Colors.white),
-  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.visited))) % color(Colors.white),
-  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.hover))) % color(Colors.white)
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.link)))
+    % color(Colors.white),
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.visited)))
+    % color(Colors.white),
+  (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.hover)))
+    % color(Colors.white)
 )
 
 private let ulMarkdownStyles: Stylesheet =
@@ -92,4 +95,3 @@ private let hrMarkdownStyles: Stylesheet =
     <> backgroundColor(.white)
     <> borderColor(top: Color.other("#ddd"))
     <> height(.px(0)))
-

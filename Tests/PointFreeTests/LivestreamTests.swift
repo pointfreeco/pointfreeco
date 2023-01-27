@@ -12,8 +12,8 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-import XCTest
 import VimeoClient
+import XCTest
 
 @testable import PointFree
 
@@ -37,7 +37,7 @@ class LivestreamTests: TestCase {
       }
     } operation: {
       let episode = request(to: .live(.current))
-      
+
       let conn = connection(from: episode)
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -110,17 +110,17 @@ class LivestreamTests: TestCase {
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
-#if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: await siteMiddleware(conn),
-          as: [
-            "desktop": .connWebView(size: .init(width: 1100, height: 400)),
-            "mobile": .connWebView(size: .init(width: 500, height: 400)),
-          ]
-        )
-      }
-#endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: await siteMiddleware(conn),
+            as: [
+              "desktop": .connWebView(size: .init(width: 1100, height: 400)),
+              "mobile": .connWebView(size: .init(width: 500, height: 400)),
+            ]
+          )
+        }
+      #endif
     }
   }
 }

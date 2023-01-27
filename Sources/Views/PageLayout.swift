@@ -85,13 +85,14 @@ public func simplePageLayout<A>(
           .style(styleguide, config: cssConfig),
           .style(markdownBlockStyles, config: cssConfig),
           .style(layoutData.extraStyles, config: cssConfig),
-          .style(safe: """
-            @keyframes Pulse {
-              from { opacity: 1; }
-              50% { opacity: 0; }
-              to { opacity: 1; }
-            }
-            """),
+          .style(
+            safe: """
+              @keyframes Pulse {
+                from { opacity: 1; }
+                50% { opacity: 0; }
+                to { opacity: 1; }
+              }
+              """),
           .meta(viewport: .width(.deviceWidth), .initialScale(1)),
           .link(
             attributes: [

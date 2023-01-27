@@ -12,14 +12,14 @@ public func liveView() -> Node {
   return .gridRow(
     attributes: [
       .class([
-        Class.pf.colors.bg.black,
+        Class.pf.colors.bg.black
       ])
     ],
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
       attributes: [
         .class([
-          Class.grid.center(.desktop),
+          Class.grid.center(.desktop)
         ])
       ],
       .raw(
@@ -38,7 +38,7 @@ public func liveView() -> Node {
       sizes: [.mobile: 12, .desktop: 4],
       attributes: [
         .class([
-          Class.grid.center(.desktop),
+          Class.grid.center(.desktop)
         ])
       ],
       .raw(
