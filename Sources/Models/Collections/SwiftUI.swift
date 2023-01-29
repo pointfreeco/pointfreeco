@@ -73,7 +73,7 @@ extension Episode.Collection.Section {
 
   public static let modernSwiftUI = Self(
     blurb: #"""
-      What does it take to build a vanilla SwiftUI application with best, modern practices? We rebuild Apple's Scrumdinger code sample, a decently complex application that tackles real world problems, in a way that can be tested, modularized, and uses all of Swift's powerful domain modeling tools.
+      What does it take to build a vanilla SwiftUI application with best, modern practices? We rebuild Apple's [Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger) code sample, a decently complex application that tackles real world problems, in a way that can be tested, modularized, and uses all of Swift's powerful domain modeling tools.
       """#,
     coreLessons: [
       .init(episode: .ep214_modernSwiftUI),
