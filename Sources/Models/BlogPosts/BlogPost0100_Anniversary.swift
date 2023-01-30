@@ -70,7 +70,7 @@ public let post0100_Anniversary = BlogPost(
       content: "Join the Point-Free Community Slack",
       type: .button(
         href:
-          "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1i57vvilg-wKl1WcPhDLPb1LawbHjQCw"
+          "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q"
       )
     ),
     .init(
