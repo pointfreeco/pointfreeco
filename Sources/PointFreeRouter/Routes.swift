@@ -37,6 +37,7 @@ public enum SiteRoute: Equatable {
   case pricingLanding
   case privacy
   case resume
+  case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
     lane: Pricing.Lane,
@@ -393,6 +394,10 @@ let router = OneOf {
 
   Route(.case(SiteRoute.resume)) {
     Path { "resume" }
+  }
+
+  Route(.case(SiteRoute.slackInvite)) {
+    Path { "slack-invite" }
   }
 
   Route(.case(SiteRoute.clips)) {

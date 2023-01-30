@@ -29,6 +29,7 @@ public struct EnvVars: Codable {
   public var postgres: Postgres
   public var regionalDiscountCouponId: Coupon.ID
   public var rssUserAgentWatchlist: [String]
+  public var slackInviteURL: String
   public var stripe: Stripe
   public var vimeoBearer: String
 
@@ -44,6 +45,7 @@ public struct EnvVars: Codable {
     postgres: Postgres = Postgres(),
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
+    slackInviteURL: String = "http://slack.com",
     stripe: Stripe = Stripe(),
     vimeoBearer: String = ""
   ) {
@@ -58,6 +60,7 @@ public struct EnvVars: Codable {
     self.postgres = postgres
     self.regionalDiscountCouponId = regionalDiscountCouponId
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
+    self.slackInviteURL = slackInviteURL
     self.stripe = stripe
     self.vimeoBearer = vimeoBearer
   }
@@ -70,6 +73,7 @@ public struct EnvVars: Codable {
     case port = "PORT"
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
+    case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
     case vimeoBearer = "VIMEO_BEARER"
   }
 
@@ -191,6 +195,7 @@ extension EnvVars {
     self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
       .split(separator: ",")
       .map(String.init)
+    self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
     self.vimeoBearer = try container.decode(String.self, forKey: .vimeoBearer)
   }
@@ -211,6 +216,7 @@ extension EnvVars {
       String(self.rssUserAgentWatchlist.joined(separator: ",")), forKey: .rssUserAgentWatchlist
     )
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
+    try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
     try container.encode(self.vimeoBearer, forKey: .vimeoBearer)
   }

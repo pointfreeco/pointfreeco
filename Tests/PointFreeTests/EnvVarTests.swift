@@ -8,7 +8,7 @@ import XCTest
 class EnvVarTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //    SnapshotTesting.isRecording=true
+    //SnapshotTesting.isRecording=true
   }
 
   func testDecoding() async throws {
@@ -26,6 +26,7 @@ class EnvVarTests: TestCase {
       "PORT": "8080",
       "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
       "RSS_USER_AGENT_WATCHLIST": "blob,gob",
+      "PF_COMMUNITY_SLACK_INVITE_URL": "http://slack.com",
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
