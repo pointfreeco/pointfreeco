@@ -1534,5 +1534,6 @@ extension Episode.Reference {
 let yearMonthDayFormatter = { () -> DateFormatter in
   let df = DateFormatter()
   df.dateFormat = "yyyy-MM-dd"
+  df.timeZone = TimeZone(abbreviation: "GMT")
   return df
 }()
