@@ -44,30 +44,34 @@
     value: "deadbeef-mg-api-key"
   ),
   [11]: (
+    key: "PF_COMMUNITY_SLACK_INVITE_URL",
+    value: "http://slack.com"
+  ),
+  [12]: (
     key: "PORT",
     value: "8080"
   ),
-  [12]: (
+  [13]: (
     key: "REGIONAL_DISCOUNT_COUPON_ID",
     value: "regional-discount"
   ),
-  [13]: (
+  [14]: (
     key: "RSS_USER_AGENT_WATCHLIST",
     value: "blob,gob"
   ),
-  [14]: (
+  [15]: (
     key: "STRIPE_ENDPOINT_SECRET",
     value: "whsec_test"
   ),
-  [15]: (
+  [16]: (
     key: "STRIPE_PUBLISHABLE_KEY",
     value: "pk_test"
   ),
-  [16]: (
+  [17]: (
     key: "STRIPE_SECRET_KEY",
     value: "sk_test"
   ),
-  [17]: (
+  [18]: (
     key: "VIMEO_BEARER",
     value: "deadbeef"
   )
