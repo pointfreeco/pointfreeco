@@ -26,6 +26,7 @@ public let post0101_Anniversary = BlogPost(
     ),
   ],
   coverImage: nil,
+  hidden: true,
   id: 101,
   publishedAt: yearMonthDayFormatter.date(from: "2023-02-01")!
     .addingTimeInterval(60 * 60 * 17 - 60 * 40),  // 4:20pm GMT
