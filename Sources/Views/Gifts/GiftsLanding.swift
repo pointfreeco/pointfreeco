@@ -94,7 +94,7 @@ extension Gifts.Plan {
         name: "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p"
       ),
       .init(name: "Private RSS feed for offline viewing"),
-      .init(name: "Download all episode playgrounds"),
+      .init(name: "Download all episode code samples"),
     ]
 
     switch self {

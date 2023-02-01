@@ -736,7 +736,7 @@ struct PricingPlan {
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
         "1 free credit to redeem any subscriber-only episode",
-        "Download all episode playgrounds",
+        "Download all episode code samples",
       ],
       title: "Free"
     )
@@ -755,9 +755,8 @@ struct PricingPlan {
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
-        "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
+        "Watch past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
         "Private RSS feed for offline viewing in podcast apps",
-        "Download all episode playgrounds",
       ]
         + (showDiscountOptions
           ? [
