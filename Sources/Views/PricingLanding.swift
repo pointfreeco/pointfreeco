@@ -755,6 +755,7 @@ struct PricingPlan {
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
+        "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
         "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
       ]
