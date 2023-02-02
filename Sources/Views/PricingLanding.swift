@@ -838,6 +838,14 @@ extension Array where Element == Faq {
           You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts()))) page for more information.
           """
       ),
+      Faq(
+        question: "Are livestreams subscriber-only?",
+        answer: """
+          Anyone can watch our livestreams _live_, but to watch a past livestream you will need
+          to be a subscriber. Past livestreams are available in 1080p, have chapter markers,
+          transcripts and a detailed Q&A section.
+          """
+      ),
     ]
   }
 }

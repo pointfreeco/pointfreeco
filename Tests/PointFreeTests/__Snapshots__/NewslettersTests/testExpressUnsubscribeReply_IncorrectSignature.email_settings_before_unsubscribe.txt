@@ -1,18 +1,18 @@
 [
   [0]: EmailSetting(
-    newsletter: EmailSetting.Newsletter.announcements,
+    newsletter: .announcements,
     userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
   ),
   [1]: EmailSetting(
-    newsletter: EmailSetting.Newsletter.newBlogPost,
+    newsletter: .newBlogPost,
     userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
   ),
   [2]: EmailSetting(
-    newsletter: EmailSetting.Newsletter.newEpisode,
+    newsletter: .newEpisode,
     userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
   ),
   [3]: EmailSetting(
-    newsletter: EmailSetting.Newsletter.welcomeEmails,
+    newsletter: .welcomeEmails,
     userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
   )
 ]

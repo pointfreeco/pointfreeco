@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 207415
+Content-Length: 207880
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2845,6 +2845,18 @@ student status (e.g. scan of ID card) we will give you a <strong>50% discount</s
                       m-pb2
                       md-ctn">
             <p>You can! Check out our dedicated <a href="/gifts">gifts</a> page for more information.</p>
+
+          </div>
+          <p class="bold
+                    fg-black">
+            Are livestreams subscriber-only?
+          </p>
+          <div class="fg-gray400
+                      m-pb2
+                      md-ctn">
+            <p>Anyone can watch our livestreams <em>live</em>, but to watch a past livestream you will need
+to be a subscriber. Past livestreams are available in 1080p, have chapter markers,
+transcripts and a detailed Q&amp;A section.</p>
 
           </div>
         </div>

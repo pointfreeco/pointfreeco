@@ -67,6 +67,7 @@ class LivestreamTests: TestCase {
             exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             """,
           name: "Video Title",
+          privacy: VimeoVideo.Privacy(view: .anybody),
           type: .live
         )
       }
