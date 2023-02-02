@@ -8,6 +8,7 @@ public struct Episode: Equatable, Identifiable {
   public var blurb: String
   public var codeSampleDirectory: String?
   public var exercises: [Exercise]
+  public var format: Format
   private var _fullVideo: Video?
   public var id: Tagged<Self, Int>
   public var image: String
@@ -20,6 +21,11 @@ public struct Episode: Equatable, Identifiable {
   public var title: String
   public var trailerVideo: Video
   private var _transcriptBlocks: [TranscriptBlock]?
+
+  public enum Format {
+    case prerecorded
+    case livestream
+  }
 
   public init(
     alternateSlug: String? = nil,
@@ -301,6 +307,7 @@ public struct Episode: Equatable, Identifiable {
       case code(lang: CodeLang)
       case image(src: String, sizing: ImageSizing)
       case paragraph
+      case question(String)
       case title
       case video(poster: String, sources: [String])
 
