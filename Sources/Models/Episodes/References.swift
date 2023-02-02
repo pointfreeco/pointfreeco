@@ -523,6 +523,18 @@ extension Episode.Reference {
     title: "NSScanner"
   )
 
+  public static let onTheNewPointFreeDependenciesLibrary = Self(
+    author: "Alejandro Martinez",
+    blurb: """
+      A first impression accounting of exploring our
+      [Dependencies](http://github.com/pointfreeco/swift-dependencies) library in a non-Composable
+      Architecture context.
+      """,
+    link: "https://alejandromp.com/blog/on-the-new-pointfree-swift-dependencies/",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-01-10")!,
+    title: "On the new Point-Free swift-dependencies library"
+  )
+
   public static let openSourcingSwiftHtml = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
