@@ -23,8 +23,12 @@ private func clipMiddleware(
   @Dependency(\.vimeoClient) var vimeoClient
   do {
     let video = try await vimeoClient.video(conn.data)
-    guard video.type == .video
-    else { return await routeNotFoundMiddleware(conn).performAsync() }
+    guard
+      video.type == .video,
+      video.privacy.view == .anybody
+    else {
+      return await routeNotFoundMiddleware(conn).performAsync()
+    }
 
     return
       conn
