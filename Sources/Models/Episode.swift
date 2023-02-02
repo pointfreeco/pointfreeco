@@ -294,11 +294,18 @@ public struct Episode: Equatable, Identifiable {
 
   public struct TranscriptBlock: Codable, Equatable {
     public var content: String
+    public var speaker: String?
     public var timestamp: Int?
     public var type: BlockType
 
-    public init(content: String, timestamp: Int? = nil, type: BlockType) {
+    public init(
+      content: String,
+      speaker: String? = nil,
+      timestamp: Int? = nil,
+      type: BlockType
+    ) {
       self.content = content
+      self.speaker = speaker
       self.timestamp = timestamp
       self.type = type
     }
