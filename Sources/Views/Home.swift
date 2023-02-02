@@ -262,8 +262,26 @@ private func episodeImageColumnView(episode: Episode) -> Node {
   )
 }
 
+private let dateComponentsFormatter: DateComponentsFormatter = {
+  let formatter = DateComponentsFormatter()
+  formatter.allowedUnits = [.hour, .minute]
+  formatter.unitsStyle = .brief
+  return formatter
+}()
+
 private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
+
+  let length = dateComponentsFormatter.string(from: DateComponents(second: episode.length.rawValue))
+    ?? "\(episode.length.rawValue / 60)min"
+
+  let text: String
+  switch episode.format {
+  case .prerecorded:
+    text = "Watch episode (\(length))"
+  case .livestream:
+    text = "Watch livestream (\(length))"
+  }
 
   return .div(
     attributes: [
@@ -278,7 +296,7 @@ private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Nod
           .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular]),
         ],
-        .text("Watch episode (\(episode.length.rawValue / 60) min)"),
+        .text(text),
         .img(
           base64: rightArrowSvgBase64(fill: "#974DFF"),
           type: .image(.svg),

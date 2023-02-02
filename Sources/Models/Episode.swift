@@ -22,16 +22,12 @@ public struct Episode: Equatable, Identifiable {
   public var trailerVideo: Video
   private var _transcriptBlocks: [TranscriptBlock]?
 
-  public enum Format {
-    case prerecorded
-    case livestream
-  }
-
   public init(
     alternateSlug: String? = nil,
     blurb: String,
     codeSampleDirectory: String? = nil,
     exercises: [Exercise] = [],
+    format: Format = .prerecorded,
     fullVideo: Video? = nil,
     id: ID,
     image: String? = nil,
@@ -49,6 +45,7 @@ public struct Episode: Equatable, Identifiable {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
+    self.format = format
     self._fullVideo = fullVideo
     self.id = id
     self.image =
@@ -262,6 +259,11 @@ public struct Episode: Equatable, Identifiable {
     }
   }
 
+  public enum Format {
+    case prerecorded
+    case livestream
+  }
+
   public enum Permission: Equatable {
     case free
     case freeDuring(Range<Date>)
@@ -348,6 +350,7 @@ public struct Episode: Equatable, Identifiable {
         case href
         case lang
         case poster
+        case question
         case sizing
         case sources
         case src
@@ -372,6 +375,9 @@ public struct Episode: Equatable, Identifiable {
           try container.encode(src, forKey: .src)
         case .paragraph:
           try container.encode("paragraph", forKey: .type)
+        case let .question(question):
+          try container.encode("question", forKey: .type)
+          try container.encode(question, forKey: .question)
         case .title:
           try container.encode("title", forKey: .type)
         case let .video(poster, sources):

@@ -117,6 +117,14 @@ public func transcriptBlockView(
       .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
     )
 
+  case let .question(question):
+    return .div(
+      attributes: [.class([Class.pf.type.body.regular])],
+      timestampLinkView(block.timestamp),
+      .blockquote([.text(question)]),
+      .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
+    )
+
   case .title:
     return .h3(
       attributes: [
