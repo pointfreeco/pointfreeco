@@ -1,3 +1,4 @@
+import CasePaths
 import Css
 import Dependencies
 import Foundation
@@ -503,6 +504,7 @@ private func currentEpisodeInfoRow(
       )
     ),
     chaptersRow(data: data),
+    questionsAndAnswersRow(episode: data.episode),
     exercisesRow(episode: data.episode),
     referencesRow(episode: data.episode),
     downloadRow(episode: data.episode)
@@ -759,6 +761,52 @@ private func downloadRow(episode: Episode) -> Node {
   )
 }
 
+private func questionsAndAnswersRow(episode: Episode) -> Node {
+  guard
+    episode.transcriptBlocks
+      .contains(where: { /Episode.TranscriptBlock.BlockType.question ~= $0.type })
+  else { return [] }
+
+  return .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile),
+      ])
+    ],
+    .gridColumn(
+      sizes: [.mobile: 1],
+      attributes: [
+        .class([Class.type.align.center])
+      ],
+      .img(
+        base64: questionIconSvgBase64,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-4))),
+        ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 11],
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.left: 1]]),
+        ])
+      ],
+      .a(
+        attributes: [
+          .href("#questions-and-answers")
+        ],
+        "Questions & Answers"
+      )
+    )
+  )
+}
+
 private func mainContent(
   data: EpisodePageData,
   isEpisodeViewable: Bool
@@ -793,6 +841,7 @@ private func mainContent(
         sizes: [.mobile: 12, .desktop: 8],
         topCallout(data: data),
         transcriptView(data: data),
+        questionsAndAnswersView(episode: data.episode, isEpisodeViewable: isEpisodeViewable),
         exercisesView(exercises: data.episode.exercises),
         referencesView(references: data.episode.references),
         downloadsView(episode: data.episode)
@@ -1361,6 +1410,101 @@ private func referencesView(references: [Episode.Reference]) -> Node {
       ),
       .gridRow(
         .fragment(zip(1..., references).map(referenceView(index:reference:)))
+      )
+    )
+  ]
+}
+
+private func questionsAndAnswersView(
+  episode: Episode,
+  isEpisodeViewable: Bool
+) -> Node {
+  guard
+    episode.transcriptBlocks
+      .contains(where: { /Episode.TranscriptBlock.BlockType.question ~= $0.type })
+  else { return [] }
+
+  return [
+    .div(
+      attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.leftRight: 3, .top: 3],
+            .desktop: [.left: 4, .right: 3, .top: 2],
+          ]
+          ),
+          Class.pf.colors.bg.white,
+        ])
+      ],
+      .h3(
+        attributes: [
+          .id("questions-and-answers"),
+          .class([
+            Class.h3,
+            Class.padding([.mobile: [.bottom: 1]])
+          ]),
+        ],
+        "Questions & Answers"
+      ),
+      .gridRow(
+        .fragment(
+          episode.transcriptBlocks.compactMap {
+            questionAndAnswerView(block: $0, isEpisodeViewable: isEpisodeViewable)
+          }
+        )
+      )
+    )
+  ]
+}
+
+private func questionAndAnswerView(
+  block: Episode.TranscriptBlock,
+  isEpisodeViewable: Bool
+) -> Node {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.siteRouter) var siteRouter
+
+  guard case let .question(question) = block.type
+  else { return [] }
+  let answer = block.content
+
+  return [
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.bottom: 3]]),
+        ])
+      ],
+      block.timestamp
+        .map {
+          timestampLink(
+            isEpisodeViewable: isEpisodeViewable,
+            timestamp: $0
+          )
+        }
+      ?? [],
+      .details(
+        .summary(
+          attributes: [
+            .class([
+              Class.cursor.pointer,
+              Class.type.medium,
+              Class.h5,
+              Class.pf.colors.fg.black,
+              Class.type.lineHeight(4),
+            ])
+          ],
+          .text(question)
+        ),
+        isEpisodeViewable
+        ? .markdownBlock(answer)
+        : .markdownBlock(
+          """
+          _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
+          you already are, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+          """
+        )
       )
     )
   ]

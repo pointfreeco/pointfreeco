@@ -14,7 +14,7 @@ extension Episode {
     format: .livestream,
     id: 221,
     length: 94 * 60 + 34,
-    permission: .free,
+    permission: .subscriberOnly, // .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-02-06")!,
     references: [
       .onTheNewPointFreeDependenciesLibrary,
