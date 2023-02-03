@@ -43,7 +43,6 @@ public func videoView(
           jump(window.location.hash, false);
 
           document.addEventListener("click", function (event) {
-            debugger;
             const target = event.target
             if (target.tagName != "A") { return }
             if (target.dataset.timestamp == undefined) { return }
