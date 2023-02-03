@@ -15,6 +15,7 @@ public struct Episode: Equatable, Identifiable {
   public var length: Seconds<Int>
   public var permission: Permission
   public var publishedAt: Date
+  public var questions: [Question]
   public var references: [Reference]
   public var sequence: Sequence
   public var subtitle: String?
@@ -34,6 +35,7 @@ public struct Episode: Equatable, Identifiable {
     length: Seconds<Int>,
     permission: Permission,
     publishedAt: Date,
+    questions: [Question] = [],
     references: [Reference] = [],
     sequence: Sequence,
     subtitle: String? = nil,
@@ -56,12 +58,19 @@ public struct Episode: Equatable, Identifiable {
     self.length = length
     self.permission = permission
     self.publishedAt = publishedAt
+    self.questions = questions
     self.references = references
     self.sequence = sequence
     self.subtitle = subtitle
     self.title = title
     self.trailerVideo = trailerVideo
     self._transcriptBlocks = transcriptBlocks
+  }
+
+  public struct Question: Equatable {
+    public var answer: String
+    public var question: String
+    public var timestamp: Int
   }
 
   public var fullTitle: String {

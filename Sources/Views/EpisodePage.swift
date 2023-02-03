@@ -762,9 +762,7 @@ private func downloadRow(episode: Episode) -> Node {
 }
 
 private func questionsAndAnswersRow(episode: Episode) -> Node {
-  guard
-    episode.transcriptBlocks
-      .contains(where: { /Episode.TranscriptBlock.BlockType.question ~= $0.type })
+  guard !episode.questions.isEmpty
   else { return [] }
 
   return .gridRow(
@@ -1419,10 +1417,10 @@ private func questionsAndAnswersView(
   episode: Episode,
   isEpisodeViewable: Bool
 ) -> Node {
-  guard
-    episode.transcriptBlocks
-      .contains(where: { /Episode.TranscriptBlock.BlockType.question ~= $0.type })
+  guard !episode.questions.isEmpty
   else { return [] }
+
+  let questions = episode.questions.sorted(by: { $0.timestamp < $1.timestamp })
 
   return [
     .div(
@@ -1431,8 +1429,7 @@ private func questionsAndAnswersView(
           Class.padding([
             .mobile: [.leftRight: 3, .top: 3],
             .desktop: [.left: 4, .right: 3, .top: 2],
-          ]
-          ),
+          ]),
           Class.pf.colors.bg.white,
         ])
       ],
@@ -1448,8 +1445,8 @@ private func questionsAndAnswersView(
       ),
       .gridRow(
         .fragment(
-          episode.transcriptBlocks.compactMap {
-            questionAndAnswerView(block: $0, isEpisodeViewable: isEpisodeViewable)
+          questions.map {
+            questionAndAnswerView(question: $0, isEpisodeViewable: isEpisodeViewable)
           }
         )
       )
@@ -1458,15 +1455,11 @@ private func questionsAndAnswersView(
 }
 
 private func questionAndAnswerView(
-  block: Episode.TranscriptBlock,
+  question: Episode.Question,
   isEpisodeViewable: Bool
 ) -> Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.siteRouter) var siteRouter
-
-  guard case let .question(question) = block.type
-  else { return [] }
-  let answer = block.content
 
   return [
     .gridColumn(
@@ -1476,29 +1469,25 @@ private func questionAndAnswerView(
           Class.padding([.mobile: [.bottom: 3]]),
         ])
       ],
-      block.timestamp
-        .map {
-          timestampLink(
-            isEpisodeViewable: isEpisodeViewable,
-            timestamp: $0
-          )
-        }
-      ?? [],
+      timestampLink(
+        isEpisodeViewable: isEpisodeViewable,
+        timestamp: question.timestamp
+      ),
       .details(
         .summary(
           attributes: [
             .class([
               Class.cursor.pointer,
-              Class.type.medium,
+              Class.type.bold,
               Class.h5,
               Class.pf.colors.fg.black,
               Class.type.lineHeight(4),
-            ])
+            ]),
           ],
-          .text(question)
+          .text(question.question)
         ),
         isEpisodeViewable
-        ? .markdownBlock(answer)
+        ? .markdownBlock(question.answer)
         : .markdownBlock(
           """
           _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if

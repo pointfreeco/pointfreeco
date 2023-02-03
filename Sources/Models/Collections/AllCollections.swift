@@ -1,11 +1,12 @@
 extension Episode.Collection {
   public static let all: [Self] = [
-    .concurrency,
-    .composableArchitecture,
     .swiftUI,
-    .caseStudies,
+    .composableArchitecture,
+    .concurrency,
+    .livestreams,
     .dependencies,
     .parsing,
+    .caseStudies,
     .wwdc,
     .tours,
     .combine,

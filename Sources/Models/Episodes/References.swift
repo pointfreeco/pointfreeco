@@ -174,6 +174,16 @@ extension Episode.Reference {
     title: "WWDC 2021: Demystifying SwiftUI"
   )
 
+  public static let dependenciesSeparatingInterfaceAndImplementation = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      An article from our [Dependencies](http://github.com/pointfreeco/swift-dependencies) library
+      that shows how to separate the interface and implementation of your dependencies.
+      """,
+    link: "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation",
+    title: "Separating interface and implementation"
+  )
+
   public static let designingDependencies = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: #"""
