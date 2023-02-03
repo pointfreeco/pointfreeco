@@ -1496,7 +1496,7 @@ private func questionAndAnswerView(
         : .markdownBlock(
           """
           _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
-          you already are, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+          you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
           """
         )
       )
