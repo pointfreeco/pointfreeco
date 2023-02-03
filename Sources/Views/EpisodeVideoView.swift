@@ -23,6 +23,7 @@ public func videoView(
     attributes: [
       .class([outerVideoContainerClass]),
       .style(outerVideoContainerStyle),
+      .id("episode-video"),
     ],
     .iframe(
       attributes: [
@@ -37,22 +38,26 @@ public func videoView(
     .script(
       safe: """
         window.addEventListener("load", function (event) {
-          var player = new Vimeo.Player(document.querySelector("iframe"));
+          const player = new Vimeo.Player(document.querySelector("iframe"))
 
           jump(window.location.hash, false);
 
           document.addEventListener("click", function (event) {
-            var target = event.target;
-            if (target.tagName != "A") { return; }
-            var hash = new URL(target.href).hash;
-            jump(hash, true);
+            debugger;
+            const target = event.target
+            if (target.tagName != "A") { return }
+            if (target.dataset.timestamp == undefined) { return }
+            const time = Number(target.dataset.timestamp)
+            if (time <= 0) { return }
+            player.setCurrentTime(time)
+            player.play()
           });
 
           function jump(hash, play) {
-            var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "");
-            if (time <= 0) { return; }
-            player.setCurrentTime(time);
-            if (play) { player.play(); }
+            var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "")
+            if (time <= 0) { return }
+            player.setCurrentTime(time)
+            if (play) { player.play() }
           }
         });
         """

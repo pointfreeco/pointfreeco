@@ -593,7 +593,8 @@ private func timestampChapterLink(
   if isEpisodeViewable {
     return .a(
       attributes: [
-        .href("#t\(timestamp)")
+        .href("#t\(timestamp)"),
+        .data("timestamp", timestamp.description),
       ],
       .text(title)
     )
@@ -610,6 +611,7 @@ private func timestampLink(
     return .a(
       attributes: [
         .href("#t\(timestamp)"),
+        .data("timestamp", timestamp.description),
         .class([
           Class.pf.type.body.small,
           Class.pf.colors.link.gray650,
@@ -1369,13 +1371,16 @@ private func transcript(data: EpisodePageData) -> Node {
           isLastParagraphInFirstChapter = false
         }
 
+        let previousSpeaker = idx > 0 ? data.episode.transcriptBlocks[idx - 1].speaker : nil
+
         state.nodes +=
           state.titleCount <= 1 || isEpisodeViewable(for: data.permission)
           ? [
             transcriptBlockView(
               block,
               fadeOutBlock: isLastParagraphInFirstChapter
-                && !isEpisodeViewable(for: data.permission)
+                && !isEpisodeViewable(for: data.permission),
+              previousSpeaker: previousSpeaker
             )
           ]
           : []
