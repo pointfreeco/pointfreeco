@@ -533,6 +533,17 @@ extension Episode.Reference {
     title: "NSScanner"
   )
 
+  public static let observationPitch = Self(
+    author: "Philippe Hausler",
+    blurb: """
+          A Swift evolution pitch showing how some of `ObservableObject`'s functionality could be
+          provided as a pure Swift language feature.
+          """,
+    link: "https://forums.swift.org/t/pitch-observation/62051",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-12-14")!,
+    title: "[Pitch] Observation"
+  )
+
   public static let onTheNewPointFreeDependenciesLibrary = Self(
     author: "Alejandro Martinez",
     blurb: """
@@ -1027,6 +1038,17 @@ extension Episode.Reference {
     link: "https://www.pointfree.co/blog/posts/22-some-news-about-contramap",
     publishedAt: Date(timeIntervalSince1970: 1_540_785_600),
     title: "Some news about contramap"
+  )
+
+  public static let standupsApp = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+          This project demonstrates how to build a complex, real world application that deals with
+          many forms of navigation (e.g., sheets, drill-downs, alerts), many side effects (timers,
+          speech recognizer, data persistence), and do so in a way that is testable and modular.
+          """,
+    link: "https://github.com/pointfreeco/standups",
+    title: "Standups App"
   )
 
   public static let stateObjectAndObservableObjectInSwiftUI = Self(

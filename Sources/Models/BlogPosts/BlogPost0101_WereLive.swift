@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0101_Anniversary = BlogPost(
+public let post0101_WereLive = BlogPost(
   author: .pointfree,
   blurb: """
     We are officially live with our first ever livestream. We will be discussing SwiftUI navigation,
