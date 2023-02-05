@@ -43,7 +43,7 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.13.2"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
-    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.2.0"),
+    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.7.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.3"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
@@ -52,7 +52,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-web", revision: "3fa0e16"),
-    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.2.0"),
+    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "0.8.1"),
   ],
   targets: [
 

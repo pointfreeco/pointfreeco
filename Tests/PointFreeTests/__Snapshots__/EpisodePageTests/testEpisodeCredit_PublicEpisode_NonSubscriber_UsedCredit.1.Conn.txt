@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 89555
+Content-Length: 91000
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2134,7 +2134,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                     col-m-12">
           <div class="w-100p
                       relative"
-               style="padding-bottom:56.25%">
+               style="padding-bottom:56.25%"
+               id="episode-video">
             <iframe class="h-100p
                            w-100p
                            absolute"
@@ -2147,23 +2148,34 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                     src="https://player.vimeo.com/api/player.js">
             </script>
             <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
+              function isElementVisible(element) {
+  var rect = element.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return rect.bottom >= 0 && rect.top - viewHeight < 0;
+}
+
+window.addEventListener("load", function (event) {
+  const iframe = document.querySelector("iframe")
+  const player = new Vimeo.Player(iframe)
 
   jump(window.location.hash, false);
 
   document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.tagName != "A") { return; }
-    var hash = new URL(target.href).hash;
-    jump(hash, true);
+    const target = event.target
+    const time = Number(target.dataset.timestamp)
+    if (target.tagName != "A") { return }
+    if (target.dataset.timestamp == undefined) { return }
+    if (time <= 0) { return }
+    if (isElementVisible(iframe)) { event.preventDefault() }
+    player.setCurrentTime(time)
+    player.play()
   });
 
   function jump(hash, play) {
-    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
-    if (time <= 0) { return; }
-    player.setCurrentTime(time);
-    if (play) { player.play(); }
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+    if (time <= 0) { return }
+    player.setCurrentTime(time)
+    if (play) { player.play() }
   }
 });
             </script>
@@ -2265,7 +2277,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t0">
+                    <a href="#t0"
+                       data-timestamp="0">
                       Template Languages
                     </a>
                   </div>
@@ -2278,6 +2291,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               col-m
                               col-m-2">
                     <a href="#t0"
+                       data-timestamp="0"
                        class="fg-black
                               normal
                               h6
@@ -2306,7 +2320,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t3">
+                    <a href="#t3"
+                       data-timestamp="3">
                       Embedded Domain Specific Language
                     </a>
                   </div>
@@ -2319,6 +2334,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               col-m
                               col-m-2">
                     <a href="#t3"
+                       data-timestamp="3"
                        class="fg-black
                               normal
                               h6
@@ -2347,7 +2363,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t7">
+                    <a href="#t7"
+                       data-timestamp="7">
                       Making the EDSL easier to use
                     </a>
                   </div>
@@ -2360,6 +2377,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               col-m
                               col-m-2">
                     <a href="#t7"
+                       data-timestamp="7"
                        class="fg-black
                               normal
                               h6
@@ -2388,7 +2406,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t9">
+                    <a href="#t9"
+                       data-timestamp="9">
                       Safer Attributes
                     </a>
                   </div>
@@ -2401,6 +2420,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                               col-m
                               col-m-2">
                     <a href="#t9"
+                       data-timestamp="9"
                        class="fg-black
                               normal
                               h6
@@ -2544,7 +2564,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="1">
                   00:01
                 </a>
               </div>
@@ -2554,7 +2575,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               </div>
             </div>
             <h3 class="h3"
-                id="t0">
+                id="t0"
+                data-timestamp="0">
               <a href="#t0">
                 Template Languages
               </a>
@@ -2566,7 +2588,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="2">
                   00:02
                 </a>
               </div>
@@ -2603,7 +2626,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="4">
                   00:04
                 </a>
               </div>
@@ -2640,7 +2664,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="6">
                   00:06
                 </a>
               </div>
@@ -2677,7 +2702,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="8">
                   00:08
                 </a>
               </div>
@@ -2739,7 +2765,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="11">
                   00:11
                 </a>
               </div>
@@ -2755,7 +2782,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="12">
                   00:12
                 </a>
               </div>
@@ -2771,7 +2799,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="13">
                   00:13
                 </a>
               </div>
@@ -2787,7 +2816,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="14">
                   00:14
                 </a>
               </div>
@@ -2797,7 +2827,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               </div>
             </div>
             <h3 class="h3"
-                id="t3">
+                id="t3"
+                data-timestamp="3">
               <a href="#t3">
                 Embedded Domain Specific Language
               </a>
@@ -2809,7 +2840,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="15">
                   00:15
                 </a>
               </div>
@@ -2845,7 +2877,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               </code>
             </pre>
             <h3 class="h3"
-                id="t7">
+                id="t7"
+                data-timestamp="7">
               <a href="#t7">
                 Making the EDSL easier to use
               </a>
@@ -2857,7 +2890,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="3">
                   00:03
                 </a>
               </div>
@@ -2867,7 +2901,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               </div>
             </div>
             <h3 class="h3"
-                id="t9">
+                id="t9"
+                data-timestamp="9">
               <a href="#t9">
                 Safer Attributes
               </a>
@@ -2879,7 +2914,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="4">
                   00:04
                 </a>
               </div>
@@ -2895,7 +2931,8 @@ Prism.languages.insertBefore('swift', 'other-directive', {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="6">
                   00:06
                 </a>
               </div>

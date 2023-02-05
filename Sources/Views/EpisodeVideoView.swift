@@ -37,17 +37,25 @@ public func videoView(
     .script(attributes: [.async(true), .src("https://player.vimeo.com/api/player.js")]),
     .script(
       safe: """
+        function isElementVisible(element) {
+          var rect = element.getBoundingClientRect();
+          var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+          return rect.bottom >= 0 && rect.top - viewHeight < 0;
+        }
+
         window.addEventListener("load", function (event) {
-          const player = new Vimeo.Player(document.querySelector("iframe"))
+          const iframe = document.querySelector("iframe")
+          const player = new Vimeo.Player(iframe)
 
           jump(window.location.hash, false);
 
           document.addEventListener("click", function (event) {
             const target = event.target
+            const time = Number(target.dataset.timestamp)
             if (target.tagName != "A") { return }
             if (target.dataset.timestamp == undefined) { return }
-            const time = Number(target.dataset.timestamp)
             if (time <= 0) { return }
+            if (isElementVisible(iframe)) { event.preventDefault() }
             player.setCurrentTime(time)
             player.play()
           });

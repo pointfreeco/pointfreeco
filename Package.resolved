@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/sql-kit.git",
       "state" : {
-        "revision" : "dcf10a00d7d5df987b7948e6fd5596fb65f6d0c2",
-        "version" : "3.23.0"
+        "revision" : "fcc29f543b3de7b661cbe7540805974234cb9740",
+        "version" : "3.24.0"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-custom-dump",
       "state" : {
-        "revision" : "87dd388a193569b288d03cb4060db54f90d1a66f",
-        "version" : "0.7.0"
+        "revision" : "dd86159e25c749873f144577e5d18309bf57534f",
+        "version" : "0.8.0"
       }
     },
     {
@@ -158,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-metrics.git",
       "state" : {
-        "revision" : "9b39d811a83cf18b79d7d5513b06f8b290198b10",
-        "version" : "2.3.3"
+        "revision" : "e8bced74bc6d747745935e469f45d03f048d6cbd",
+        "version" : "2.3.4"
       }
     },
     {
