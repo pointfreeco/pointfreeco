@@ -21,7 +21,7 @@ public let post0102_OurFirstLivestream = BlogPost(
 
         * **1080p video**: The event was streamed live at 720p, but the recorded version can be
         watched at 1080p.
-        * **Chapter markers:** Most of the big, important transitions of the livestream have been
+        * **Chapter markers:** Most of the big, important topics of the livestream have been
         made available and you can start the video at any chapter.
         * **Fully searchable transcript:** We cleaned up a machine-generated transcript by hand,
         complete with speaker annotations and timestamps.
