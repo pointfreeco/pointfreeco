@@ -40,7 +40,7 @@ public func videoView(
         function isElementVisible(element) {
           var rect = element.getBoundingClientRect();
           var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-          return rect.bottom >= 0 && rect.top - viewHeight < 0;
+          return rect.bottom >= 0 && rect.top < viewHeight;
         }
 
         window.addEventListener("load", function (event) {
@@ -54,7 +54,7 @@ public func videoView(
             const time = Number(target.dataset.timestamp)
             if (target.tagName != "A") { return }
             if (target.dataset.timestamp == undefined) { return }
-            if (time <= 0) { return }
+            if (time < 0) { return }
             if (isElementVisible(iframe)) { event.preventDefault() }
             player.setCurrentTime(time)
             player.play()

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 86229
+Content-Length: 86224
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2144,7 +2144,7 @@ Prism.languages.insertBefore('swift', 'other-directive', {
               function isElementVisible(element) {
   var rect = element.getBoundingClientRect();
   var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-  return rect.bottom >= 0 && rect.top - viewHeight < 0;
+  return rect.bottom >= 0 && rect.top < viewHeight;
 }
 
 window.addEventListener("load", function (event) {
@@ -2158,7 +2158,7 @@ window.addEventListener("load", function (event) {
     const time = Number(target.dataset.timestamp)
     if (target.tagName != "A") { return }
     if (target.dataset.timestamp == undefined) { return }
-    if (time <= 0) { return }
+    if (time < 0) { return }
     if (isElementVisible(iframe)) { event.preventDefault() }
     player.setCurrentTime(time)
     player.play()
