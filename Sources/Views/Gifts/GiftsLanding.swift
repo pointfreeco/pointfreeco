@@ -3,6 +3,7 @@ import Css
 import Dependencies
 import FunctionalCss
 import Html
+import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 
@@ -84,32 +85,32 @@ extension Gifts.Plan {
   }
 
   func features(episodeStats: EpisodeStats) -> [Feature] {
+    @Dependency(\.siteRouter) var siteRouter
+
+    let base: [Feature] = [
+      .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
+      .init(name: "Over \(episodeStats.episodeHourCount) hours of video"),
+      .init(
+        name: "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p"
+      ),
+      .init(name: "Private RSS feed for offline viewing"),
+      .init(name: "Download all episode code samples"),
+    ]
+
     switch self {
     case .threeMonths:
       return [
         .init(name: "Full access for 3 months"),
-        .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
-        .init(name: "Over \(episodeStats.episodeHourCount) hours of video"),
-        .init(name: "Private RSS feed for offline viewing"),
-        .init(name: "Download all episode playgrounds"),
-      ]
+      ] + base
     case .sixMonths:
       return [
         .init(name: "Full access for 6 months"),
-        .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
-        .init(name: "Over \(episodeStats.episodeHourCount) hours of video"),
-        .init(name: "Private RSS feed for offline viewing"),
-        .init(name: "Download all episode playgrounds"),
-      ]
+      ] + base
     case .year:
       return [
         .init(isHighlighted: true, name: "22% off the 3 and 6 month gift options"),
         .init(name: "Full access for 1 year"),
-        .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
-        .init(name: "Over \(episodeStats.episodeHourCount) hours of video"),
-        .init(name: "Private RSS feed for offline viewing"),
-        .init(name: "Download all episode playgrounds"),
-      ]
+      ] + base
     }
   }
 }

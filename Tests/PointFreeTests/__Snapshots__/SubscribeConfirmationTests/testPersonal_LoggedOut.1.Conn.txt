@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 60613
+Content-Length: 60632
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2166,13 +2166,13 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Private RSS feed for offline viewing in podcast apps</p>
+                <p>Watch past <a href="/live">livestreams</a> at 1080p</p>
 
               </div>
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Download all episode playgrounds</p>
+                <p>Private RSS feed for offline viewing in podcast apps</p>
 
               </div>
             </li>
