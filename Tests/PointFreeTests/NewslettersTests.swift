@@ -25,7 +25,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   func testExpressUnsubscribe() async throws {

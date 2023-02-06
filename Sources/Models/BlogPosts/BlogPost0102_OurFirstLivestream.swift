@@ -42,7 +42,7 @@ public let post0102_OurFirstLivestream = BlogPost(
         be sure to [subscribe today](/pricing)!
         """,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: "https://d3rccdn33rt8ze.cloudfront.net/episodes/0221.jpeg",
   id: 102,

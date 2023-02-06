@@ -1443,7 +1443,7 @@ private func questionsAndAnswersView(
           .id("questions-and-answers"),
           .class([
             Class.h3,
-            Class.padding([.mobile: [.bottom: 1]])
+            Class.padding([.mobile: [.bottom: 1]]),
           ]),
         ],
         "Questions & Answers"
@@ -1471,7 +1471,7 @@ private func questionAndAnswerView(
       sizes: [.mobile: 12],
       attributes: [
         .class([
-          Class.padding([.mobile: [.bottom: 3]]),
+          Class.padding([.mobile: [.bottom: 3]])
         ])
       ],
       timestampLink(
@@ -1487,18 +1487,18 @@ private func questionAndAnswerView(
               Class.h5,
               Class.pf.colors.fg.black,
               Class.type.lineHeight(4),
-            ]),
+            ])
           ],
           .text(question.question)
         ),
         isEpisodeViewable
-        ? .markdownBlock(question.answer)
-        : .markdownBlock(
-          """
-          _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
-          you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
-          """
-        )
+          ? .markdownBlock(question.answer)
+          : .markdownBlock(
+            """
+            _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
+            you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+            """
+          )
       )
     )
   ]

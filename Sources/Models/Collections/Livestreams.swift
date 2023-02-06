@@ -19,7 +19,7 @@ extension Episode.Collection {
 }
 
 private let livesteramBlurb = """
-All of our livestreams, in one place. Watch us cover topics that we didn't have time for in our
-episodes, and perform live coding sessions on real world problems, and along the wya we answer
-_lots_ of viewer questions.
-"""
+  All of our livestreams, in one place. Watch us cover topics that we didn't have time for in our
+  episodes, and perform live coding sessions on real world problems, and along the wya we answer
+  _lots_ of viewer questions.
+  """

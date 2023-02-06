@@ -100,11 +100,11 @@ extension Gifts.Plan {
     switch self {
     case .threeMonths:
       return [
-        .init(name: "Full access for 3 months"),
+        .init(name: "Full access for 3 months")
       ] + base
     case .sixMonths:
       return [
-        .init(name: "Full access for 6 months"),
+        .init(name: "Full access for 6 months")
       ] + base
     case .year:
       return [

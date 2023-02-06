@@ -117,8 +117,8 @@ public func transcriptBlockView(
       timestampLinkView(block.timestamp),
       .markdownBlock(
         previousSpeaker != block.speaker
-        ? (block.speaker.map { "**\($0):** " } ?? "") + block.content
-        : block.content,
+          ? (block.speaker.map { "**\($0):** " } ?? "") + block.content
+          : block.content,
         options: CMARK_OPT_UNSAFE
       )
     )

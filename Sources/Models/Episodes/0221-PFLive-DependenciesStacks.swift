@@ -250,7 +250,7 @@ extension Episode {
           where the view doesn't know anything about the other destinations?
           """,
         timestamp: .timestamp(hours: 1, minutes: 25, seconds: 19)
-      )
+      ),
     ],
     references: [
       .onTheNewPointFreeDependenciesLibrary,
@@ -290,7 +290,7 @@ private let _exercises: [Episode.Exercise] = [
 
 extension Int {
   static func timestamp(hours: Int = 0, minutes: Int = 0, seconds: Int) -> Int {
-    hours * 60*60 + minutes * 60 + seconds
+    hours * 60 * 60 + minutes * 60 + seconds
   }
 }
 
@@ -302,7 +302,7 @@ extension Episode.Video {
       hd720: "0221-720p-8449bf17411249aa8dc3f31272f779cc",
       sd540: "0221-540p-b7bbf287996d41e384a31377c633d67d"
     ),
-    vimeoId: 795040266
+    vimeoId: 795_040_266
   )
 }
 
@@ -332,7 +332,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: #"Dependencies"#,
-      timestamp: 2*60 + 11,
+      timestamp: 2 * 60 + 11,
       type: .title
     )
     paragraphs(
@@ -398,7 +398,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "New dependency tools",
-      timestamp: (10*60 + 29),
+      timestamp: (10 * 60 + 29),
       type: .title
     )
     paragraphs(
@@ -430,7 +430,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "withDependencies(from:)",
-      timestamp: (14*60 + 23),
+      timestamp: (14 * 60 + 23),
       type: .title
     )
     paragraphs(
@@ -494,7 +494,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "withEscapedDependencies",
-      timestamp: (21*60 + 5),
+      timestamp: (21 * 60 + 5),
       type: .title
     )
     paragraphs(
@@ -538,7 +538,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "pointfree.co",
-      timestamp: (25*60 + 35),
+      timestamp: (25 * 60 + 35),
       type: .title
     )
     paragraphs(
@@ -566,7 +566,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Navigation stacks",
-      timestamp: (28*60 + 26),
+      timestamp: (28 * 60 + 26),
       type: .title
     )
     paragraphs(
@@ -592,7 +592,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Tree vs. stack navigation",
-      timestamp: (31*60 + 19),
+      timestamp: (31 * 60 + 19),
       type: .title
     )
     paragraphs(
@@ -624,7 +624,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Tree/stack pros/cons",
-      timestamp: (35*60 + 55),
+      timestamp: (35 * 60 + 55),
       type: .title
     )
     paragraphs(
@@ -678,7 +678,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Refactoring tree to stack",
-      timestamp: (43*60 + 29),
+      timestamp: (43 * 60 + 29),
       type: .title
     )
     paragraphs(
@@ -962,7 +962,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Refactor pros/cons",
-      timestamp: (1*60*60 + 19*60 + 20),
+      timestamp: (1 * 60 * 60 + 19 * 60 + 20),
       type: .title
     )
     paragraphs(
@@ -1016,7 +1016,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Final Q&A",
-      timestamp: (1*60*60 + 23*60 + 59),
+      timestamp: (1 * 60 * 60 + 23 * 60 + 59),
       type: .title
     )
     paragraphs(
@@ -1108,7 +1108,7 @@ extension Array where Element == Episode.TranscriptBlock {
     )
     Episode.TranscriptBlock(
       content: "Conclusion",
-      timestamp: (1*60*60 + 33*60 + 26),
+      timestamp: (1 * 60 * 60 + 33 * 60 + 26),
       type: .title
     )
     paragraphs(

@@ -180,7 +180,8 @@ extension Episode.Reference {
       An article from our [Dependencies](http://github.com/pointfreeco/swift-dependencies) library
       that shows how to separate the interface and implementation of your dependencies.
       """,
-    link: "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation",
+    link:
+      "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation",
     title: "Separating interface and implementation"
   )
 
@@ -536,9 +537,9 @@ extension Episode.Reference {
   public static let observationPitch = Self(
     author: "Philippe Hausler",
     blurb: """
-          A Swift evolution pitch showing how some of `ObservableObject`'s functionality could be
-          provided as a pure Swift language feature.
-          """,
+      A Swift evolution pitch showing how some of `ObservableObject`'s functionality could be
+      provided as a pure Swift language feature.
+      """,
     link: "https://forums.swift.org/t/pitch-observation/62051",
     publishedAt: yearMonthDayFormatter.date(from: "2022-12-14")!,
     title: "[Pitch] Observation"

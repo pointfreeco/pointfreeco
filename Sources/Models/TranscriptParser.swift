@@ -2,7 +2,7 @@ import Parsing
 
 struct Timestamp: Conversion {
   func apply(_ input: (Int, Int, Int)) throws -> Int {
-    input.0*60*60 + input.1*60 + input.2
+    input.0 * 60 * 60 + input.1 * 60 + input.2
   }
 
   func unapply(_ output: Int) throws -> (Int, Int, Int) {

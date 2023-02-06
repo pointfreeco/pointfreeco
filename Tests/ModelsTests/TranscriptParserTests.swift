@@ -48,7 +48,7 @@ class TranscriptParserTests: XCTestCase {
         speaker: "Brandon",
         timestamp: 5447,
         type: .paragraph
-      )
+      ),
     ]
 
     XCTAssertNoDifference(
