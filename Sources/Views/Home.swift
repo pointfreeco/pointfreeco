@@ -262,18 +262,12 @@ private func episodeImageColumnView(episode: Episode) -> Node {
   )
 }
 
-private let dateComponentsFormatter: DateComponentsFormatter = {
-  let formatter = DateComponentsFormatter()
-  formatter.allowedUnits = [.hour, .minute]
-  formatter.unitsStyle = .brief
-  return formatter
-}()
-
 private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
-  let length = dateComponentsFormatter.string(from: DateComponents(second: episode.length.rawValue))
-    ?? "\(episode.length.rawValue / 60)min"
+  let minutes = (episode.length.rawValue / 60) % 60
+  let hours = (episode.length.rawValue / 60 / 60) % 60
+  let length = hours == 0 ? "\(minutes)min" : "\(hours)hr \(minutes)min"
 
   let text: String
   switch episode.format {
