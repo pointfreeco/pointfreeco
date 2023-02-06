@@ -12,7 +12,8 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_672_639_200),
     references: [
-      .scrumdinger
+      .scrumdinger,
+      .standupsApp,
     ],
     sequence: 218,
     subtitle: "Effects, Part 2",

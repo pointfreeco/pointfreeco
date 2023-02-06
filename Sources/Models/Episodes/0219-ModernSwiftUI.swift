@@ -12,6 +12,8 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: Date(timeIntervalSince1970: 1_673_244_000),
     references: [
+      .scrumdinger,
+      .standupsApp,
       .swiftDependencies,
       .scrumdinger,
       .swiftClocks,

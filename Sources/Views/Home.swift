@@ -265,6 +265,18 @@ private func episodeImageColumnView(episode: Episode) -> Node {
 private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
+  let minutes = (episode.length.rawValue / 60) % 60
+  let hours = (episode.length.rawValue / 60 / 60) % 60
+  let length = hours == 0 ? "\(minutes)min" : "\(hours)hr \(minutes)min"
+
+  let text: String
+  switch episode.format {
+  case .prerecorded:
+    text = "Watch episode (\(length))"
+  case .livestream:
+    text = "Watch livestream (\(length))"
+  }
+
   return .div(
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
@@ -278,7 +290,7 @@ private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Nod
           .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular]),
         ],
-        .text("Watch episode (\(episode.length.rawValue / 60) min)"),
+        .text(text),
         .img(
           base64: rightArrowSvgBase64(fill: "#974DFF"),
           type: .image(.svg),

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 74711
+Content-Length: 75249
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2138,7 +2138,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     col-m-12">
           <div class="w-100p
                       relative"
-               style="padding-bottom:56.25%">
+               style="padding-bottom:56.25%"
+               id="episode-video">
             <iframe class="h-100p
                            w-100p
                            absolute"
@@ -2151,23 +2152,34 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     src="https://player.vimeo.com/api/player.js">
             </script>
             <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
+              function isElementVisible(element) {
+  var rect = element.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return rect.bottom >= 0 && rect.top < viewHeight;
+}
+
+window.addEventListener("load", function (event) {
+  const iframe = document.querySelector("iframe")
+  const player = new Vimeo.Player(iframe)
 
   jump(window.location.hash, false);
 
   document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.tagName != "A") { return; }
-    var hash = new URL(target.href).hash;
-    jump(hash, true);
+    const target = event.target
+    const time = Number(target.dataset.timestamp)
+    if (target.tagName != "A") { return }
+    if (target.dataset.timestamp == undefined) { return }
+    if (time < 0) { return }
+    if (isElementVisible(iframe)) { event.preventDefault() }
+    player.setCurrentTime(time)
+    player.play()
   });
 
   function jump(hash, play) {
-    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
-    if (time <= 0) { return; }
-    player.setCurrentTime(time);
-    if (play) { player.play(); }
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+    if (time <= 0) { return }
+    player.setCurrentTime(time)
+    if (play) { player.play() }
   }
 });
             </script>
@@ -2511,7 +2523,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                       m-pt3
                       m-pb3">
             <h3 class="h3"
-                id="t0">
+                id="t0"
+                data-timestamp="0">
               <a href="#t0">
                 Introduction
               </a>
@@ -2525,7 +2538,8 @@ mask-image: linear-gradient(to bottom, black 20%, transparent 100%)">
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="0">
                   00:00
                 </a>
               </div>

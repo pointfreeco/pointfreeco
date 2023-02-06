@@ -1,3 +1,4 @@
+import CasePaths
 import Css
 import Dependencies
 import Foundation
@@ -503,6 +504,7 @@ private func currentEpisodeInfoRow(
       )
     ),
     chaptersRow(data: data),
+    questionsAndAnswersRow(episode: data.episode),
     exercisesRow(episode: data.episode),
     referencesRow(episode: data.episode),
     downloadRow(episode: data.episode)
@@ -591,7 +593,8 @@ private func timestampChapterLink(
   if isEpisodeViewable {
     return .a(
       attributes: [
-        .href("#t\(timestamp)")
+        .href("#t\(timestamp)"),
+        .data("timestamp", timestamp.description),
       ],
       .text(title)
     )
@@ -608,6 +611,7 @@ private func timestampLink(
     return .a(
       attributes: [
         .href("#t\(timestamp)"),
+        .data("timestamp", timestamp.description),
         .class([
           Class.pf.type.body.small,
           Class.pf.colors.link.gray650,
@@ -759,6 +763,50 @@ private func downloadRow(episode: Episode) -> Node {
   )
 }
 
+private func questionsAndAnswersRow(episode: Episode) -> Node {
+  guard !episode.questions.isEmpty
+  else { return [] }
+
+  return .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.top: 1]]),
+        Class.grid.middle(.mobile),
+      ])
+    ],
+    .gridColumn(
+      sizes: [.mobile: 1],
+      attributes: [
+        .class([Class.type.align.center])
+      ],
+      .img(
+        base64: questionIconSvgBase64,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([Class.align.middle]),
+          .style(margin(top: .px(-4))),
+        ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 11],
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.left: 1]]),
+        ])
+      ],
+      .a(
+        attributes: [
+          .href("#questions-and-answers")
+        ],
+        "Questions & Answers"
+      )
+    )
+  )
+}
+
 private func mainContent(
   data: EpisodePageData,
   isEpisodeViewable: Bool
@@ -793,6 +841,7 @@ private func mainContent(
         sizes: [.mobile: 12, .desktop: 8],
         topCallout(data: data),
         transcriptView(data: data),
+        questionsAndAnswersView(episode: data.episode, isEpisodeViewable: isEpisodeViewable),
         exercisesView(exercises: data.episode.exercises),
         referencesView(references: data.episode.references),
         downloadsView(episode: data.episode)
@@ -1322,13 +1371,16 @@ private func transcript(data: EpisodePageData) -> Node {
           isLastParagraphInFirstChapter = false
         }
 
+        let previousSpeaker = idx > 0 ? data.episode.transcriptBlocks[idx - 1].speaker : nil
+
         state.nodes +=
           state.titleCount <= 1 || isEpisodeViewable(for: data.permission)
           ? [
             transcriptBlockView(
               block,
               fadeOutBlock: isLastParagraphInFirstChapter
-                && !isEpisodeViewable(for: data.permission)
+                && !isEpisodeViewable(for: data.permission),
+              previousSpeaker: previousSpeaker
             )
           ]
           : []
@@ -1361,6 +1413,92 @@ private func referencesView(references: [Episode.Reference]) -> Node {
       ),
       .gridRow(
         .fragment(zip(1..., references).map(referenceView(index:reference:)))
+      )
+    )
+  ]
+}
+
+private func questionsAndAnswersView(
+  episode: Episode,
+  isEpisodeViewable: Bool
+) -> Node {
+  guard !episode.questions.isEmpty
+  else { return [] }
+
+  let questions = episode.questions.sorted(by: { $0.timestamp < $1.timestamp })
+
+  return [
+    .div(
+      attributes: [
+        .class([
+          Class.padding([
+            .mobile: [.leftRight: 3, .top: 3],
+            .desktop: [.left: 4, .right: 3, .top: 2],
+          ]),
+          Class.pf.colors.bg.white,
+        ])
+      ],
+      .h3(
+        attributes: [
+          .id("questions-and-answers"),
+          .class([
+            Class.h3,
+            Class.padding([.mobile: [.bottom: 1]])
+          ]),
+        ],
+        "Questions & Answers"
+      ),
+      .gridRow(
+        .fragment(
+          questions.map {
+            questionAndAnswerView(question: $0, isEpisodeViewable: isEpisodeViewable)
+          }
+        )
+      )
+    )
+  ]
+}
+
+private func questionAndAnswerView(
+  question: Episode.Question,
+  isEpisodeViewable: Bool
+) -> Node {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.siteRouter) var siteRouter
+
+  return [
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.bottom: 3]]),
+        ])
+      ],
+      timestampLink(
+        isEpisodeViewable: isEpisodeViewable,
+        timestamp: question.timestamp
+      ),
+      .details(
+        .summary(
+          attributes: [
+            .class([
+              Class.cursor.pointer,
+              Class.type.bold,
+              Class.h5,
+              Class.pf.colors.fg.black,
+              Class.type.lineHeight(4),
+            ]),
+          ],
+          .text(question.question)
+        ),
+        isEpisodeViewable
+        ? .markdownBlock(question.answer)
+        : .markdownBlock(
+          """
+          _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
+          you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+          """
+        )
       )
     )
   ]

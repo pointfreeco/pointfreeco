@@ -23,6 +23,7 @@ public func videoView(
     attributes: [
       .class([outerVideoContainerClass]),
       .style(outerVideoContainerStyle),
+      .id("episode-video"),
     ],
     .iframe(
       attributes: [
@@ -36,23 +37,34 @@ public func videoView(
     .script(attributes: [.async(true), .src("https://player.vimeo.com/api/player.js")]),
     .script(
       safe: """
+        function isElementVisible(element) {
+          var rect = element.getBoundingClientRect();
+          var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+          return rect.bottom >= 0 && rect.top < viewHeight;
+        }
+
         window.addEventListener("load", function (event) {
-          var player = new Vimeo.Player(document.querySelector("iframe"));
+          const iframe = document.querySelector("iframe")
+          const player = new Vimeo.Player(iframe)
 
           jump(window.location.hash, false);
 
           document.addEventListener("click", function (event) {
-            var target = event.target;
-            if (target.tagName != "A") { return; }
-            var hash = new URL(target.href).hash;
-            jump(hash, true);
+            const target = event.target
+            const time = Number(target.dataset.timestamp)
+            if (target.tagName != "A") { return }
+            if (target.dataset.timestamp == undefined) { return }
+            if (time < 0) { return }
+            if (isElementVisible(iframe)) { event.preventDefault() }
+            player.setCurrentTime(time)
+            player.play()
           });
 
           function jump(hash, play) {
-            var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "");
-            if (time <= 0) { return; }
-            player.setCurrentTime(time);
-            if (play) { player.play(); }
+            var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "")
+            if (time <= 0) { return }
+            player.setCurrentTime(time)
+            if (play) { player.play() }
           }
         });
         """

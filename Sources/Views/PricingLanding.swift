@@ -736,7 +736,7 @@ struct PricingPlan {
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
         "1 free credit to redeem any subscriber-only episode",
-        "Download all episode playgrounds",
+        "Download all episode code samples",
       ],
       title: "Free"
     )
@@ -755,8 +755,8 @@ struct PricingPlan {
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
+        "Watch past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
         "Private RSS feed for offline viewing in podcast apps",
-        "Download all episode playgrounds",
       ]
         + (showDiscountOptions
           ? [
@@ -836,6 +836,14 @@ extension Array where Element == Faq {
         question: "Can I give a subscription as a gift?",
         answer: """
           You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts()))) page for more information.
+          """
+      ),
+      Faq(
+        question: "Are livestreams subscriber-only?",
+        answer: """
+          Anyone can watch our livestreams _live_, but to watch a past livestream you will need
+          to be a subscriber. Past livestreams are available in 1080p, have chapter markers,
+          transcripts and a detailed Q&A section.
           """
       ),
     ]

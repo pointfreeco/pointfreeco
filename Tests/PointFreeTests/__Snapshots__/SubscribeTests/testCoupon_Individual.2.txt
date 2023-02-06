@@ -2,7 +2,7 @@ Subscription(
   deactivated: false,
   id: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000003)),
   stripeSubscriptionId: Tagged(rawValue: "sub_test"),
-  stripeSubscriptionStatus: Subscription.Status.active,
+  stripeSubscriptionStatus: .active,
   teamInviteCode: Tagged(rawValue: "subscriptions-team_invite_code2"),
   userId: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001))
 )

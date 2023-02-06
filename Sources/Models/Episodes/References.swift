@@ -174,6 +174,16 @@ extension Episode.Reference {
     title: "WWDC 2021: Demystifying SwiftUI"
   )
 
+  public static let dependenciesSeparatingInterfaceAndImplementation = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      An article from our [Dependencies](http://github.com/pointfreeco/swift-dependencies) library
+      that shows how to separate the interface and implementation of your dependencies.
+      """,
+    link: "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation",
+    title: "Separating interface and implementation"
+  )
+
   public static let designingDependencies = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: #"""
@@ -521,6 +531,29 @@ extension Episode.Reference {
     link: "https://nshipster.com/nsscanner/",
     publishedAt: yearMonthDayFormatter.date(from: "2015-03-02"),
     title: "NSScanner"
+  )
+
+  public static let observationPitch = Self(
+    author: "Philippe Hausler",
+    blurb: """
+          A Swift evolution pitch showing how some of `ObservableObject`'s functionality could be
+          provided as a pure Swift language feature.
+          """,
+    link: "https://forums.swift.org/t/pitch-observation/62051",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-12-14")!,
+    title: "[Pitch] Observation"
+  )
+
+  public static let onTheNewPointFreeDependenciesLibrary = Self(
+    author: "Alejandro Martinez",
+    blurb: """
+      A first impression accounting of exploring our
+      [Dependencies](http://github.com/pointfreeco/swift-dependencies) library in a non-Composable
+      Architecture context.
+      """,
+    link: "https://alejandromp.com/blog/on-the-new-pointfree-swift-dependencies/",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-01-10")!,
+    title: "On the new Point-Free swift-dependencies library"
   )
 
   public static let openSourcingSwiftHtml = Episode.Reference(
@@ -1005,6 +1038,18 @@ extension Episode.Reference {
     link: "https://www.pointfree.co/blog/posts/22-some-news-about-contramap",
     publishedAt: Date(timeIntervalSince1970: 1_540_785_600),
     title: "Some news about contramap"
+  )
+
+  public static let standupsApp = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      A rebuild of Apple's ["Scrumdinger"](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
+      application that demosntrates how to build a complex, real world application that deals with
+      many forms of navigation (e.g., sheets, drill-downs, alerts), many side effects (timers,
+      speech recognizer, data persistence), and do so in a way that is testable and modular.
+      """,
+    link: "https://github.com/pointfreeco/standups",
+    title: "Standups App"
   )
 
   public static let stateObjectAndObservableObjectInSwiftUI = Self(

@@ -8,12 +8,14 @@ public struct Episode: Equatable, Identifiable {
   public var blurb: String
   public var codeSampleDirectory: String?
   public var exercises: [Exercise]
+  public var format: Format
   private var _fullVideo: Video?
   public var id: Tagged<Self, Int>
   public var image: String
   public var length: Seconds<Int>
   public var permission: Permission
   public var publishedAt: Date
+  public var questions: [Question]
   public var references: [Reference]
   public var sequence: Sequence
   public var subtitle: String?
@@ -26,12 +28,14 @@ public struct Episode: Equatable, Identifiable {
     blurb: String,
     codeSampleDirectory: String? = nil,
     exercises: [Exercise] = [],
+    format: Format = .prerecorded,
     fullVideo: Video? = nil,
     id: ID,
     image: String? = nil,
     length: Seconds<Int>,
     permission: Permission,
     publishedAt: Date,
+    questions: [Question] = [],
     references: [Reference] = [],
     sequence: Sequence,
     subtitle: String? = nil,
@@ -43,6 +47,7 @@ public struct Episode: Equatable, Identifiable {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
+    self.format = format
     self._fullVideo = fullVideo
     self.id = id
     self.image =
@@ -53,12 +58,19 @@ public struct Episode: Equatable, Identifiable {
     self.length = length
     self.permission = permission
     self.publishedAt = publishedAt
+    self.questions = questions
     self.references = references
     self.sequence = sequence
     self.subtitle = subtitle
     self.title = title
     self.trailerVideo = trailerVideo
     self._transcriptBlocks = transcriptBlocks
+  }
+
+  public struct Question: Equatable {
+    public var answer: String
+    public var question: String
+    public var timestamp: Int
   }
 
   public var fullTitle: String {
@@ -256,6 +268,11 @@ public struct Episode: Equatable, Identifiable {
     }
   }
 
+  public enum Format {
+    case prerecorded
+    case livestream
+  }
+
   public enum Permission: Equatable {
     case free
     case freeDuring(Range<Date>)
@@ -286,11 +303,18 @@ public struct Episode: Equatable, Identifiable {
 
   public struct TranscriptBlock: Codable, Equatable {
     public var content: String
+    public var speaker: String?
     public var timestamp: Int?
     public var type: BlockType
 
-    public init(content: String, timestamp: Int? = nil, type: BlockType) {
+    public init(
+      content: String,
+      speaker: String? = nil,
+      timestamp: Int? = nil,
+      type: BlockType
+    ) {
       self.content = content
+      self.speaker = speaker
       self.timestamp = timestamp
       self.type = type
     }
@@ -301,6 +325,7 @@ public struct Episode: Equatable, Identifiable {
       case code(lang: CodeLang)
       case image(src: String, sizing: ImageSizing)
       case paragraph
+      case question(String)
       case title
       case video(poster: String, sources: [String])
 
@@ -341,6 +366,7 @@ public struct Episode: Equatable, Identifiable {
         case href
         case lang
         case poster
+        case question
         case sizing
         case sources
         case src
@@ -365,6 +391,9 @@ public struct Episode: Equatable, Identifiable {
           try container.encode(src, forKey: .src)
         case .paragraph:
           try container.encode("paragraph", forKey: .type)
+        case let .question(question):
+          try container.encode("question", forKey: .type)
+          try container.encode(question, forKey: .question)
         case .title:
           try container.encode("title", forKey: .type)
         case let .video(poster, sources):

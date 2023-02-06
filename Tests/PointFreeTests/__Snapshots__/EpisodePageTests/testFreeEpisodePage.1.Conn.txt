@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 84557
+Content-Length: 85740
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2159,7 +2159,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     col-m-12">
           <div class="w-100p
                       relative"
-               style="padding-bottom:56.25%">
+               style="padding-bottom:56.25%"
+               id="episode-video">
             <iframe class="h-100p
                            w-100p
                            absolute"
@@ -2172,23 +2173,34 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                     src="https://player.vimeo.com/api/player.js">
             </script>
             <script>
-              window.addEventListener("load", function (event) {
-  var player = new Vimeo.Player(document.querySelector("iframe"));
+              function isElementVisible(element) {
+  var rect = element.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return rect.bottom >= 0 && rect.top < viewHeight;
+}
+
+window.addEventListener("load", function (event) {
+  const iframe = document.querySelector("iframe")
+  const player = new Vimeo.Player(iframe)
 
   jump(window.location.hash, false);
 
   document.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.tagName != "A") { return; }
-    var hash = new URL(target.href).hash;
-    jump(hash, true);
+    const target = event.target
+    const time = Number(target.dataset.timestamp)
+    if (target.tagName != "A") { return }
+    if (target.dataset.timestamp == undefined) { return }
+    if (time < 0) { return }
+    if (isElementVisible(iframe)) { event.preventDefault() }
+    player.setCurrentTime(time)
+    player.play()
   });
 
   function jump(hash, play) {
-    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
-    if (time <= 0) { return; }
-    player.setCurrentTime(time);
-    if (play) { player.play(); }
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+    if (time <= 0) { return }
+    player.setCurrentTime(time)
+    if (play) { player.play() }
   }
 });
             </script>
@@ -2290,7 +2302,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t0">
+                    <a href="#t0"
+                       data-timestamp="0">
                       Introduction
                     </a>
                   </div>
@@ -2303,6 +2316,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               col-m
                               col-m-2">
                     <a href="#t0"
+                       data-timestamp="0"
                        class="fg-black
                               normal
                               h6
@@ -2331,7 +2345,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t0">
+                    <a href="#t0"
+                       data-timestamp="0">
                       Title
                     </a>
                   </div>
@@ -2344,6 +2359,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               col-m
                               col-m-2">
                     <a href="#t0"
+                       data-timestamp="0"
                        class="fg-black
                               normal
                               h6
@@ -2372,7 +2388,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t60">
+                    <a href="#t60"
+                       data-timestamp="60">
                       Title Block
                     </a>
                   </div>
@@ -2385,6 +2402,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               col-m
                               col-m-2">
                     <a href="#t60"
+                       data-timestamp="60"
                        class="fg-black
                               normal
                               h6
@@ -2413,7 +2431,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               lh-4
                               col-m
                               col-m-9">
-                    <a href="#t120">
+                    <a href="#t120"
+                       data-timestamp="120">
                       Another Title
                     </a>
                   </div>
@@ -2426,6 +2445,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                               col-m
                               col-m-2">
                     <a href="#t120"
+                       data-timestamp="120"
                        class="fg-black
                               normal
                               h6
@@ -2575,7 +2595,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                       m-pt3
                       m-pb3">
             <h3 class="h3"
-                id="t0">
+                id="t0"
+                data-timestamp="0">
               <a href="#t0">
                 Introduction
               </a>
@@ -2587,7 +2608,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="0">
                   00:00
                 </a>
               </div>
@@ -2599,7 +2621,8 @@ that timestamp jumps the video to that spot.</p>
               </div>
             </div>
             <h3 class="h3"
-                id="t0">
+                id="t0"
+                data-timestamp="0">
               <a href="#t0">
                 Title
               </a>
@@ -2611,7 +2634,8 @@ that timestamp jumps the video to that spot.</p>
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="0">
                   00:00
                 </a>
               </div>
@@ -2656,7 +2680,8 @@ including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="30">
                   00:30
                 </a>
               </div>
@@ -2673,7 +2698,8 @@ time at the beginning of the text. That’s what we have done here.</p>
               </div>
             </div>
             <h3 class="h3"
-                id="t60">
+                id="t60"
+                data-timestamp="60">
               <a href="#t60">
                 Title Block
               </a>
@@ -2685,7 +2711,8 @@ time at the beginning of the text. That’s what we have done here.</p>
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="60">
                   01:00
                 </a>
               </div>
@@ -2730,7 +2757,8 @@ func |> <A, B>(x: A, f: (A) -> B) -> B {
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="90">
                   01:30
                 </a>
               </div>
@@ -2741,7 +2769,8 @@ so that its syntax is highlighted nicely.</p>
               </div>
             </div>
             <h3 class="h3"
-                id="t120">
+                id="t120"
+                data-timestamp="120">
               <a href="#t120">
                 Another Title
               </a>
@@ -2753,7 +2782,8 @@ so that its syntax is highlighted nicely.</p>
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
-                          h6">
+                          h6"
+                   data-timestamp="120">
                   02:00
                 </a>
               </div>

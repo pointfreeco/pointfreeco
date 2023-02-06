@@ -13,6 +13,7 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1_670_824_800),
     references: [
       .scrumdinger,
+      .standupsApp,
       .swiftUINavigation,
       .xctestDynamicOverlay,
       .pointfreecoPackageCollection,

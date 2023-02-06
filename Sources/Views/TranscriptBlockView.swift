@@ -10,7 +10,8 @@ import Styleguide
 
 public func transcriptBlockView(
   _ block: Episode.TranscriptBlock,
-  fadeOutBlock: Bool = false
+  fadeOutBlock: Bool = false,
+  previousSpeaker: String? = nil
 ) -> Node {
   switch block.type {
   case let .box(box):
@@ -114,6 +115,19 @@ public func transcriptBlockView(
               """#)
         ] : [],
       timestampLinkView(block.timestamp),
+      .markdownBlock(
+        previousSpeaker != block.speaker
+        ? (block.speaker.map { "**\($0):** " } ?? "") + block.content
+        : block.content,
+        options: CMARK_OPT_UNSAFE
+      )
+    )
+
+  case let .question(question):
+    return .div(
+      attributes: [.class([Class.pf.type.body.regular])],
+      timestampLinkView(block.timestamp),
+      .blockquote([.text(question)]),
       .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
     )
 
@@ -122,6 +136,7 @@ public func transcriptBlockView(
       attributes: [
         .class([Class.h3]),
         block.timestamp.map { .id("t\($0)") },
+        block.timestamp.map { .data("timestamp", $0.description) },
       ]
       .compactMap(id),
       .a(
@@ -155,10 +170,14 @@ private func timestampLinkView(_ timestamp: Int?) -> Node {
   guard let timestamp = timestamp else { return [] }
 
   return .div(
-    attributes: [.id("t\(timestamp)"), .class([Class.display.block])],
+    attributes: [
+      .id("t\(timestamp)"),
+      .class([Class.display.block]),
+    ],
     .a(
       attributes: timestampLinkAttributes(timestamp: timestamp) + [
-        .class([Class.pf.components.videoTimeLink])
+        .class([Class.pf.components.videoTimeLink]),
+        .data("timestamp", timestamp.description),
       ],
       .text(timestampLabel(for: timestamp))
     )

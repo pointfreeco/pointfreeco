@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 205124
+Content-Length: 205811
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2250,6 +2250,13 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
+                <p>Access to all past <a href="/live">livestreams</a> at 1080p</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature"
+                   style>
                 <p>Private RSS feed for offline viewing</p>
 
               </div>
@@ -2257,7 +2264,7 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
-                <p>Download all episode playgrounds</p>
+                <p>Download all episode code samples</p>
 
               </div>
             </li>
@@ -2379,6 +2386,13 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
+                <p>Access to all past <a href="/live">livestreams</a> at 1080p</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature"
+                   style>
                 <p>Private RSS feed for offline viewing</p>
 
               </div>
@@ -2386,7 +2400,7 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
-                <p>Download all episode playgrounds</p>
+                <p>Download all episode code samples</p>
 
               </div>
             </li>
@@ -2515,6 +2529,13 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
+                <p>Access to all past <a href="/live">livestreams</a> at 1080p</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature"
+                   style>
                 <p>Private RSS feed for offline viewing</p>
 
               </div>
@@ -2522,7 +2543,7 @@ html {
             <li class="m-pt1">
               <div class="pricing-plan-feature"
                    style>
-                <p>Download all episode playgrounds</p>
+                <p>Download all episode code samples</p>
 
               </div>
             </li>

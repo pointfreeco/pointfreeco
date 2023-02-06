@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 198083
+Content-Length: 198287
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2217,13 +2217,19 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
+                <p>Access to all past <a href="/live">livestreams</a> at 1080p</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
                 <p>Private RSS feed for offline viewing</p>
 
               </div>
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Download all episode playgrounds</p>
+                <p>Download all episode code samples</p>
 
               </div>
             </li>
