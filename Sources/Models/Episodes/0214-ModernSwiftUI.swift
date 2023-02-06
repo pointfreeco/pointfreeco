@@ -15,6 +15,7 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1_669_615_200),
     references: [
       .scrumdinger,
+      .standupsApp,
       .swiftTagged,
       .pointfreecoPackageCollection,
       .foodTruck,

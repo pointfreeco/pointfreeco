@@ -1043,10 +1043,11 @@ extension Episode.Reference {
   public static let standupsApp = Self(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-          This project demonstrates how to build a complex, real world application that deals with
-          many forms of navigation (e.g., sheets, drill-downs, alerts), many side effects (timers,
-          speech recognizer, data persistence), and do so in a way that is testable and modular.
-          """,
+      A rebuild of Apple's ["Scrumdinger"](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
+      application that demosntrates how to build a complex, real world application that deals with
+      many forms of navigation (e.g., sheets, drill-downs, alerts), many side effects (timers,
+      speech recognizer, data persistence), and do so in a way that is testable and modular.
+      """,
     link: "https://github.com/pointfreeco/standups",
     title: "Standups App"
   )
