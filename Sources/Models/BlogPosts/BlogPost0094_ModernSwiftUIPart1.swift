@@ -62,7 +62,7 @@ public let post0094_ModernSwiftUIPart1 = BlogPost(
 
           var body: some View {
             List {
-              ForEach(self.standup) { standup in
+              ForEach(self.standups) { standup in
                 Button(standup.title) { self.editStandup = standup }
               }
             }
