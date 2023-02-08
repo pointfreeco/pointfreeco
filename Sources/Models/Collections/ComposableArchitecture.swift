@@ -1,7 +1,7 @@
 extension Episode.Collection {
   public static let composableArchitecture = Self(
     blurb: #"""
-      Architecture is a tough problem and there's no shortage of articles, videos and open source projects attempting to solve the problem once and for all. In this collection we systematically develop an architecture from first principles, with an eye on building something that is composable, modular, testable, and more.
+      Architecture is a tough problem and there's no shortage of articles, videos and open source projects attempting to solve the problem once and for all. In this collection we systematically develop an [architecture](http://github.com/pointfreeco/swift-composable-architecture) from first principles, with an eye on building something that is composable, modular, testable, and more.
       """#,
     sections: [
       .init(
@@ -216,7 +216,7 @@ extension Episode.Collection {
 
       .init(
         blurb: #"""
-          After 9 long months of developing the Composable Architecture from first principles, we _finally_ open sourced a library that you can drop into your application today. To celebrate we have a 4-part series on giving a tour of the library where we build a new app from scratch and explore some advanced aspects of the library that we didn't have time to cover in episodes.
+          After 9 long months of developing the Composable Architecture from first principles, we _finally_ [open sourced a library](http://github.com/pointfreeco/swift-composable-architecture) that you can drop into your application today. To celebrate we have a 4-part series on giving a tour of the library where we build a new app from scratch and explore some advanced aspects of the library that we didn't have time to cover in episodes.
           """#,
         coreLessons: [
           .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
