@@ -615,7 +615,7 @@ extension Array where Element == Episode.TranscriptBlock {
 
       [00:34:17] **Brandon:** So this is like tree based navigation. It's extremely powerful. I can just start this up and I'll be immediately, let's see. Oh, where's my simulator? So here, let me run that one more time. So here we go. I just started immediately right in the record screen. I'll just drill down two layers deep. So it's extremely powerful.
 
-      [00:34:37] **Brandon:** We really like it. And then there's stack based navigation to contrast it with tree based. All right. And stack based is what the Iowa 16 navigation stack API brought to us. And what that brought was the ability.
+      [00:34:37] **Brandon:** We really like it. And then there's stack based navigation to contrast it with tree based. All right. And stack based is what the iOS 16 navigation stack API brought to us. And what that brought was the ability.
 
       [00:34:56] **Brandon:** To initialize this navigation stack stack wrapper thing with something with a binding. All right? And there's the navigation path binding. We won't talk about that. But there's this binding, which is a binding of a collection, and it allows you to provide like a flat array values that are interpreted as all the drill down layers of the navigation stack.
 
