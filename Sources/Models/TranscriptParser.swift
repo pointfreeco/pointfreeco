@@ -59,25 +59,30 @@ where
   }
 }
 
-let toBlock = AnyConversion<(Int, String, String), Episode.TranscriptBlock>(
+let toBlock = AnyConversion<(Int, String?, Episode.TranscriptBlock.BlockType, String), Episode.TranscriptBlock>(
   apply: {
     Episode.TranscriptBlock(
-      content: $2,
+      content: $3,
       speaker: $1,
       timestamp: $0,
-      type: .paragraph
+      type: $2
     )
   },
   unapply: {
-    ($0.timestamp!, $0.speaker!, $0.content)
+    ($0.timestamp!, $0.speaker, $0.type, $0.content)
   }
 )
 
 let paragraph = Parse(toBlock) {
   timestamp
-  " **".utf8
-  PrefixUpTo(":** ".utf8).map(.string)
-  ":** ".utf8
+  Optionally {
+    " **".utf8
+    PrefixUpTo(":** ".utf8).map(.string)
+    ":**".utf8
+  }
+  " ".utf8
+  "# ".utf8.map { Episode.TranscriptBlock.BlockType.title }
+    .replaceError(with: .paragraph)
   OneOf {
     _PrefixUpTo {
       "\n\n".utf8

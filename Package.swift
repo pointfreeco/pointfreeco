@@ -220,6 +220,9 @@ var package = Package(
       ],
       exclude: [
         "Transcripts/README.md"
+      ],
+      resources: [
+        .copy("Transcripts/Resources")
       ]
     ),
 

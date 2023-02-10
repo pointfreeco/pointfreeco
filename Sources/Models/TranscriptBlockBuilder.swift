@@ -12,6 +12,12 @@ extension Array where Element == Episode.TranscriptBlock {
   ) -> Self {
     try! Models.paragraphs.parse(input)
   }
+
+  public static func paragraphs(from file: String) -> Self {
+    try! Self.paragraphs(
+      String(contentsOf: Bundle.module.url(forResource: "Resources/\(file)", withExtension: "md")!)
+    )
+  }
 }
 
 @resultBuilder
