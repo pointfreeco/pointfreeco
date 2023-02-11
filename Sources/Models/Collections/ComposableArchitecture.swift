@@ -226,11 +226,14 @@ extension Episode.Collection {
         ],
         related: [],
         title: "A Tour of the Composable Architecture",
-        whereToGoFromHere: nil
+        whereToGoFromHere: """
+          TODO
+          """
       ),
 
       .asyncComposableArchitecture,
       .reducerProtocol,
+      .composableNavigation,
     ],
     title: "Composable Architecture"
   )
@@ -272,6 +275,24 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "Reducer Protocol",
+    whereToGoFromHere: """
+      The library has been modernized with the protocolization of the core type of the library, the
+      reducer, and prior to that effects were modernized with Swift's new concurrency tools. The
+      biggest thing missing from the libray before it's ready for 1.0 is navigation tools.
+      """
+  )
+
+  static let composableNavigation = Self(
+    blurb: """
+
+      """,
+    coreLessons: [
+      .init(episode: .ep222_composableNavigation),
+    ],
+    isFinished: false,
+    related: [
+    ],
+    title: "Navigation",
     whereToGoFromHere: nil
   )
 }

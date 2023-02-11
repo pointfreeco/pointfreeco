@@ -222,6 +222,7 @@ extension Episode {
     .ep219_modernSwiftUI,
     .ep220_modernSwiftUI,
     .ep221_pfLive_dependenciesStacks,
-    .ep222_composableNavigation_pt1,
+    .ep222_composableNavigation,
+    .ep223_composableNavigation,
   ]
 }

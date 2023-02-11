@@ -1,14 +1,17 @@
 import Foundation
 
 extension Episode {
-  public static let ep222_composableNavigation_pt1 = Episode(
+  public static let ep222_composableNavigation = Episode(
     blurb: """
-      It's finally time to tackle navigation in the Composable Architecture. We'll port the Inventory app we first built to understand SwiftUI navigation, which will push us to understand what makes the architecture "composable," how it facilitates communication between features, and testing.
+      It's finally time to tackle navigation in the Composable Architecture. We'll port the
+      Inventory app we first built to understand SwiftUI navigation, which will push us to
+      understand what makes the architecture "composable," how it facilitates communication between
+      features, and testing.
       """,
     codeSampleDirectory: "0222-composable-navigation-pt1",
     exercises: _exercises,
     id: 222,
-    length: 63 * 60 + 59,
+    length: .init(.timestamp(hours: 1, minutes: 3, seconds: 59)),
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-02-13")!,
     references: [
@@ -22,9 +25,11 @@ extension Episode {
       .init(
         author: "Krzysztof Zabłocki",
         blurb: """
-          > To maintain our codebases for years, we must create boundaries across modules. Here's my approach to doing that with The Composable Architecture.
+          Krzysztof shows off a few patterns in the Composable Architecture, including "delegate"
+          actions:
 
-          Krzysztof shows off a few patterns in the Composable Architecture, including "delegate" actions.
+          > To maintain our codebases for years, we must create boundaries across modules. Here's
+          > my approach to doing that with The Composable Architecture.
           """,
         link: "https://www.merowing.info/boundries-in-tca/",
         publishedAt: yearMonthDayFormatter.date(from: "2022-08-15"),
