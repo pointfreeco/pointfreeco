@@ -227,7 +227,10 @@ extension Episode.Collection {
         related: [],
         title: "A Tour of the Composable Architecture",
         whereToGoFromHere: """
-          TODO
+          You have now completed a tour of the library from when it was first released, but there
+          have been many improvements and modernizations since then. The first big modernization
+          we performed was updating the `Effect` type to be better integrated with Swift's
+          concurrency tools.
           """
       ),
 
@@ -284,7 +287,9 @@ extension Episode.Collection.Section {
 
   static let composableNavigation = Self(
     blurb: """
-
+      We add brand new navigation tools to the library that allow us to better model our domains,
+      make our applications more correct, and more tightly integrate features together. By the
+      end we will unlock some true super powers from the library.
       """,
     coreLessons: [
       .init(episode: .ep222_composableNavigation),
