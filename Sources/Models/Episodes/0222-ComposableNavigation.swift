@@ -20,7 +20,8 @@ extension Episode {
         additionalBlurb: #"""
           Our favorite way of managing parent-child communication in "modern" SwiftUI.
           """#,
-        episodeUrl: "https://www.pointfree.co/collections/swiftui/modern-swiftui/ep216-modern-swiftui-navigation-part-2#t1471"
+        episodeUrl:
+          "https://www.pointfree.co/collections/swiftui/modern-swiftui/ep216-modern-swiftui-navigation-part-2#t1471"
       ),
       .init(
         author: "Krzysztof Zabłocki",
@@ -48,9 +49,10 @@ extension Episode {
         blurb: #"""
           > There is a common pattern of using actions to share logic across multiple parts of a reducer. This is an inefficient way to share logic. Sending actions is not as lightweight of an operation as, say, calling a method on a class. Actions travel through multiple layers of an application, and at each layer a reducer can intercept and reinterpret the action.
           """#,
-        link: "https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance/#Sharing-logic-with-actions",
+        link:
+          "https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance/#Sharing-logic-with-actions",
         title: "Sharing logic with actions"
-      )
+      ),
     ],
     sequence: 222,
     subtitle: "Tabs",
@@ -62,7 +64,7 @@ extension Episode {
         hd720: "0222-trailer-720p-87e636d7dd7d4e588560bb25923adc14",
         sd540: "0222-trailer-540p-081a50b9d27f487595c103a42cf12cc5"
       ),
-      vimeoId: 797785232
+      vimeoId: 797_785_232
     )
   )
 }

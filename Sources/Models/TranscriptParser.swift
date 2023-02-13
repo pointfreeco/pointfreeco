@@ -59,7 +59,9 @@ where
   }
 }
 
-let toBlock = AnyConversion<(Int, String?, Episode.TranscriptBlock.BlockType, String), Episode.TranscriptBlock>(
+let toBlock = AnyConversion<
+  (Int, String?, Episode.TranscriptBlock.BlockType, String), Episode.TranscriptBlock
+>(
   apply: {
     Episode.TranscriptBlock(
       content: $3,

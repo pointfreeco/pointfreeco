@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0223-composable-navigation-pt2",
     exercises: _exercises,
     id: 223,
-    length: .init(.timestamp(hours: 1, minutes: 2, seconds: 8)), 
+    length: .init(.timestamp(hours: 1, minutes: 2, seconds: 8)),
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-02-20")!,
     references: [
@@ -21,7 +21,8 @@ extension Episode {
           [dependencies library](http://github.com/pointfreeco/swift-dependencies), although it is
           possible to use the library with non-single entry point systems.
           """,
-        link: "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/singleentrypointsystems",
+        link:
+          "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/singleentrypointsystems",
         title: "Single entry point systems"
       )
     ],
@@ -29,13 +30,13 @@ extension Episode {
     subtitle: "Alerts & Dialogs",
     title: "Composable Navigation",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
+      bytesLength: 0,  // TODO
       downloadUrls: .s3(
-        hd1080: "0223-trailer-1080p-deadbeef", // todo
-        hd720: "0223-trailer-720p-deadbeef", // todo
+        hd1080: "0223-trailer-1080p-deadbeef",  // todo
+        hd720: "0223-trailer-720p-deadbeef",  // todo
         sd540: "0223-trailer-540p-deadbeef"
       ),
-      vimeoId: 797895435
+      vimeoId: 797_895_435
     )
   )
 }
