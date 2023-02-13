@@ -1,7 +1,7 @@
 import Foundation
 
 public let post0103_TCA1_0Preview = BlogPost(
-  author: .pointfree,  
+  author: .pointfree,
   blurb: """
     We are very excited to officially share a preview of what 1.0 will bring to the Composable
     Architecture.
@@ -92,7 +92,7 @@ public let post0103_TCA1_0Preview = BlogPost(
         We are excited to finally bring the Composable Architecture to 1.0, though, and we have more big announcements coming soon.
         """###,
       type: .paragraph
-    )
+    ),
   ],
   coverImage: nil,
   id: 103,
