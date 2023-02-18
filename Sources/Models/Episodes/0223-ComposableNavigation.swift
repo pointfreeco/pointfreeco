@@ -30,11 +30,11 @@ extension Episode {
     subtitle: "Alerts & Dialogs",
     title: "Composable Navigation",
     trailerVideo: .init(
-      bytesLength: 0,  // TODO
+      bytesLength: 90_600_000,
       downloadUrls: .s3(
-        hd1080: "0223-trailer-1080p-deadbeef",  // todo
-        hd720: "0223-trailer-720p-deadbeef",  // todo
-        sd540: "0223-trailer-540p-deadbeef"
+        hd1080: "0223-trailer-1080p-7164ba22b9a34e56999420bda8e94e41",
+        hd720: "0223-trailer-720p-386321530f5d4c55bcf5a2727ba41497",
+        sd540: "0223-trailer-540p-772dd301a804428789094562001838e1"
       ),
       vimeoId: 797_895_435
     )
