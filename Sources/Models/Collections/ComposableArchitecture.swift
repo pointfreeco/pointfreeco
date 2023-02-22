@@ -292,7 +292,8 @@ extension Episode.Collection.Section {
       end we will unlock some true super powers from the library.
       """,
     coreLessons: [
-      .init(episode: .ep222_composableNavigation)
+      .init(episode: .ep222_composableNavigation),
+      .init(episode: .ep223_composableNavigation),
     ],
     isFinished: false,
     related: [],
