@@ -35,7 +35,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
 
     let payload = try XCTUnwrap(
       Encrypted(
-        String(expressUnsubscribe.print((user.id, .announcements))), with: self.appSecret
+        String(ExpressUnsubscribe().print((user.id, .announcements))), with: self.appSecret
       )
     )
 

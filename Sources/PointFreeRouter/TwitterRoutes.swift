@@ -7,7 +7,13 @@ public enum TwitterRoute: String, CaseIterable {
   case stephencelis
 }
 
-public let twitterRouter = Path {
-  TwitterRoute.parser()
+public struct TwitterRouter: ParserPrinter {
+  public init() {}
+
+  public var body: some Router<TwitterRoute> {
+    Path {
+      TwitterRoute.parser()
+    }
+    .baseURL("https://www.twitter.com")
+  }
 }
-.baseURL("https://www.twitter.com")

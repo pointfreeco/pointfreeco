@@ -8,14 +8,16 @@ extension SiteRoute {
   }
 }
 
-let apiRouter = Parse {
-  Path { "episodes" }
+struct ApiRouter: ParserPrinter {
+  var body: some Router<SiteRoute.Api> {
+    Path { "episodes" }
 
-  OneOf {
-    Route(.case(SiteRoute.Api.episodes))
+    OneOf {
+      Route(.case(SiteRoute.Api.episodes))
 
-    Route(.case(SiteRoute.Api.episode)) {
-      Path { Digits().map(.representing(Episode.ID.self)) }
+      Route(.case(SiteRoute.Api.episode)) {
+        Path { Digits().map(.representing(Episode.ID.self)) }
+      }
     }
   }
 }

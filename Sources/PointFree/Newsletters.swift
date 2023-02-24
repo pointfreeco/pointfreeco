@@ -66,7 +66,7 @@ private func decryptUserAndNewsletter(
   return { conn in
     guard
       let string = conn.data.decrypt(with: appSecret),
-      let (userId, newsletter) = try? expressUnsubscribe.parse(string)
+      let (userId, newsletter) = try? ExpressUnsubscribe().parse(string)
     else {
       return conn.map(const(unit))
         |> redirect(

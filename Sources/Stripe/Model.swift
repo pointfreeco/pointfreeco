@@ -695,7 +695,7 @@ extension Coupon: Codable {
   }
 }
 
-extension Plan.ID {
+extension Tagged<Plan, String> {
   public static let monthly: Self = "monthly-2019"
   public static var yearly: Self = "yearly-2019"
 }

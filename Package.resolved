@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-parsing",
       "state" : {
-        "revision" : "4bb9192468c1a8be57f46b7d6fd4f561c88b2195",
-        "version" : "0.11.0"
+        "branch" : "swift-5-8",
+        "revision" : "1bd042f734071e0c3e968f46b0fc0fee999a7dd5"
       }
     },
     {
@@ -257,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-url-routing",
       "state" : {
-        "revision" : "f54c4f74e7884f7930560c08387817ce28271770",
-        "version" : "0.4.0"
+        "branch" : "swift-5-8",
+        "revision" : "62b444ec677243dff173b0b399c7cdd4f7ecd210"
       }
     },
     {

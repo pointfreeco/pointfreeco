@@ -120,7 +120,7 @@ func encryptPayload<A>(
     let (user, data) = (get1(conn.data), get2(conn.data))
 
     guard
-      let emailChangePayload = (try? emailChange.print((user.id, data.email)))
+      let emailChangePayload = (try? EmailChange().print((user.id, data.email)))
         .flatMap({ Encrypted(String($0), with: envVars.appSecret) })
     else {
       logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
@@ -137,10 +137,12 @@ func encryptPayload<A>(
   }
 }
 
-let emailChange = ParsePrint {
-  UUID.parser().map(.representing(User.ID.self))
-  "--POINT-FREE-BOUNDARY--"
-  Rest().map(.string.representing(EmailAddress.self))
+struct EmailChange: ParserPrinter {
+  var body: some ParserPrinter<Substring, (User.ID, EmailAddress)> {
+    UUID.parser().map(.representing(User.ID.self))
+    "--POINT-FREE-BOUNDARY--"
+    Rest().map(.string.representing(EmailAddress.self))
+  }
 }
 
 let confirmEmailChangeMiddleware:
@@ -151,7 +153,7 @@ let confirmEmailChangeMiddleware:
 
     guard
       let decrypted = conn.data.decrypt(with: envVars.appSecret),
-      let (userId, newEmailAddress) = try? emailChange.parse(decrypted)
+      let (userId, newEmailAddress) = try? EmailChange().parse(decrypted)
     else {
       logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 

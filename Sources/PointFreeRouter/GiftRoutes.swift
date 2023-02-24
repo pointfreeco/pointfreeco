@@ -53,26 +53,30 @@ public enum Gifts: Equatable {
   }
 }
 
-let giftsRouter = OneOf {
-  Route(.case(Gifts.index))
-
-  Route(.case(Gifts.create)) {
-    Method.post
-    Body(.form(GiftFormData.self, decoder: formDecoder))
-  }
-
-  Route(.case(Gifts.plan)) {
-    Path { Gifts.Plan.parser() }
-  }
-
-  Route(.case(Gifts.redeem)) {
-    Path { UUID.parser().map(.representing(Gift.ID.self)) }
-
+struct GiftsRouter: ParserPrinter {
+  var body: some Router<Gifts> {
     OneOf {
-      Route(.case(Gifts.Redeem.landing))
+      Route(.case(Gifts.index))
 
-      Route(.case(Gifts.Redeem.confirm)) {
+      Route(.case(Gifts.create)) {
         Method.post
+        URLRouting.Body(.form(GiftFormData.self, decoder: formDecoder))
+      }
+
+      Route(.case(Gifts.plan)) {
+        Path { Gifts.Plan.parser() }
+      }
+
+      Route(.case(Gifts.redeem)) {
+        Path { UUID.parser().map(.representing(Gift.ID.self)) }
+
+        OneOf {
+          Route(.case(Gifts.Redeem.landing))
+
+          Route(.case(Gifts.Redeem.confirm)) {
+            Method.post
+          }
+        }
       }
     }
   }

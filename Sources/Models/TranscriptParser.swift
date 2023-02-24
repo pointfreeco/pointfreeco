@@ -20,16 +20,16 @@ let timestamp = Parse(Timestamp()) {
   "]".utf8
 }
 
-struct _PrefixUpTo<Upstream: Parser>: Parser
+struct _PrefixUpTo<Input: Collection, Upstream: Parser>: Parser
 where
-  Upstream.Input: Collection,
-  Upstream.Input == Upstream.Input.SubSequence
+  Input == Input.SubSequence,
+  Upstream.Input == Input
 {
   struct SuffixNotFound: Error {}
 
   let upstream: Upstream
 
-  init(@ParserBuilder _ upstream: () -> Upstream) {
+  init(@ParserBuilder<Input> _ upstream: () -> Upstream) {
     self.upstream = upstream()
   }
 

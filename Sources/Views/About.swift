@@ -127,7 +127,7 @@ private func hostView(host: Host) -> Node {
 
       .a(
         attributes: [
-          .href(twitterRouter.url(for: host.twitterRoute).absoluteString),
+          .href(TwitterRouter().url(for: host.twitterRoute).absoluteString),
           .class([
             Class.pf.colors.link.white,
             Class.padding([.mobile: [.top: 2]]),
@@ -299,10 +299,10 @@ private let openSourceSection: Node = [
     "You can view the entire source code to this site on our GitHub organization, ",
     .a(
       attributes: [
-        .href(gitHubRouter.url(for: .organization).absoluteString),
+        .href(GitHubRouter().url(for: .organization).absoluteString),
         .class([Class.pf.colors.link.purple]),
       ],
-      .text(gitHubRouter.url(for: .organization).absoluteString)
+      .text(GitHubRouter().url(for: .organization).absoluteString)
     ),
     "."
   ),
