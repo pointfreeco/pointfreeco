@@ -1,4 +1,5 @@
 import Models
+import Tagged
 import URLRouting
 
 extension SiteRoute {
