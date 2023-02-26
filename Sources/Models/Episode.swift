@@ -330,35 +330,78 @@ public struct Episode: Equatable, Identifiable {
       case video(poster: String, sources: [String])
 
       public struct Box: Codable, Equatable {
+        public let title: String?
         public let backgroundColor: String
         public let borderColor: String
-        public let title: String?
 
-        public init(backgroundColor: String, borderColor: String, title: String?) {
+        public init(
+          title: String?,
+          backgroundColor: String,
+          borderColor: String
+        ) {
           self.backgroundColor = backgroundColor
           self.borderColor = borderColor
           self.title = title
         }
 
+        public init?(name: String) {
+          switch name.lowercased() {
+          case "correction":
+            self = .correction
+          case "note":
+            self = .note
+          case "preamble":
+            self = .preamble
+          case "tip":
+            self = .tip
+          case "warning":
+            self = .warning
+          default:
+            return nil
+          }
+        }
+
+        public var name: String? {
+          switch self {
+          case .correction:
+            return "correction"
+          case .note:
+            return "note"
+          case .preamble:
+            return "preamble"
+          case .tip:
+            return "tip"
+          case .warning:
+            return "warning"
+          default:
+            return nil
+          }
+        }
+
         public static let correction = Self(
+          title: "Correction",
           backgroundColor: "ffdbdd",
-          borderColor: "eb1c26",
-          title: "Correction"
+          borderColor: "eb1c26"
         )
         public static let note = Self(
+          title: "Note",
           backgroundColor: "f6f6f6",
-          borderColor: "d8d8d8",
-          title: "Note"
+          borderColor: "d8d8d8"
         )
         public static let preamble = Self(
+          title: "Preamble",
           backgroundColor: "eee2ff",
-          borderColor: "974dff",
-          title: "Preamble"
+          borderColor: "974dff"
         )
         public static let tip = Self(
+          title: "Tip",
           backgroundColor: "dcf4e7",
-          borderColor: "79f2b0",
-          title: "Tip"
+          borderColor: "79f2b0"
+        )
+        public static let warning = Self(
+          title: "⚠️ Warning",
+          backgroundColor: "fcf9db",
+          borderColor: "FCF18F"
         )
       }
 

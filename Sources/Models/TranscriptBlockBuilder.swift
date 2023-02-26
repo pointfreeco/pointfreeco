@@ -10,7 +10,7 @@ extension Array where Element == Episode.TranscriptBlock {
   public static func paragraphs(
     _ input: String
   ) -> Self {
-    try! Models.paragraphs.parse(input)
+    try! Models.blocksParser.parse(input)
   }
 }
 

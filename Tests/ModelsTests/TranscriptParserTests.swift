@@ -60,13 +60,45 @@ class TranscriptParserTests: XCTestCase {
     ]
 
     XCTAssertNoDifference(
-      try paragraphs.parse(input),
+      try blocksParser.parse(input),
       output
     )
 
     XCTAssertEqual(
-      try String(Substring(paragraphs.print(output))),
+      try String(Substring(blocksParser.print(output))),
       input
+    )
+  }
+
+  func testBox() throws {
+    let transcriptFragment = """
+      [00:00:00] # Title
+
+      [00:00:01] Paragraph.
+      With new lines.
+
+      And double new lines.
+
+      !> [correction]: This is a
+      > special announcement!
+
+      More paragraph.
+
+      # Title without timestamp
+      """
+    let blocks: [Episode.TranscriptBlock] = [
+      .init(content: "Title", timestamp: 0, type: .title),
+      .init(content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", timestamp: 1, type: .paragraph),
+      .init(content: "This is a\nspecial announcement!", type: .box(.correction)),
+      .init(content: "More paragraph.\n\n# Title without timestamp", type: .paragraph),
+    ]
+    XCTAssertNoDifference(
+      try blocksParser.parse(transcriptFragment),
+      blocks
+    )
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      transcriptFragment
     )
   }
 }

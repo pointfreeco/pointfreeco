@@ -117,4 +117,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0101_WereLive,
   post0102_OurFirstLivestream,
   post0103_TCA1_0Preview,
+  post0104_TCANavBeta,
 ]
