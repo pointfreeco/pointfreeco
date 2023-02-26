@@ -35,7 +35,7 @@ extension Episode {
       ),
       vimeoId: 348_469_619
     ),
-    transcriptBlocks: _transcriptBlocks1
+    transcriptBlocks: _privateTranscriptBlocks
   )
 }
 
@@ -49,7 +49,7 @@ private let _exercises: [Episode.Exercise] = [
   )
 ]
 
-private let _transcriptBlocks1: [Episode.TranscriptBlock] = [
+private let _privateTranscriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
       This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).

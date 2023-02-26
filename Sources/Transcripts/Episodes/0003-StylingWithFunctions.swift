@@ -31,11 +31,11 @@ extension Episode {
       ),
       vimeoId: 354_215_006
     ),
-    transcriptBlocks: _transcriptBlocks1
+    transcriptBlocks: _privateTranscriptBlocks
   )
 }
 
-private let _transcriptBlocks1: [Episode.TranscriptBlock] = [
+private let _privateTranscriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: 30,
