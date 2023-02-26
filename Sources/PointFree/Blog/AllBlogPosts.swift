@@ -1,5 +1,6 @@
 import Dependencies
 import Models
+import Transcripts
 
 public func allBlogPosts() -> [BlogPost] {
   @Dependency(\.envVars.appEnv) var appEnv

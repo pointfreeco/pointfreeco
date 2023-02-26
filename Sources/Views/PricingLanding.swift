@@ -10,6 +10,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tagged
+import Transcripts
 
 public struct EpisodeStats {
   public let allEpisodeCount: AllEpisodeCount

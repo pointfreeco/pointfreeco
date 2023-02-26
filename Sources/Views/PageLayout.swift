@@ -8,6 +8,7 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
+import Transcripts
 
 // TODO: should all of this be in @Dependency?
 public struct SimplePageLayoutData<A> {
