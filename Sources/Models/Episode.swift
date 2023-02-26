@@ -304,6 +304,7 @@ public struct Episode: Equatable, Identifiable {
       case button(href: String)
       case code(lang: CodeLang)
       case image(src: String, sizing: ImageSizing)
+      // TODO: rename to markdown
       case paragraph
       case question(String)
       case title
