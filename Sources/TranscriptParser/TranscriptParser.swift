@@ -156,44 +156,53 @@ let title = Parse {
     unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
   ))
 
-let paragraphWithMetadata = Parse {
-  timestamp
-  Not { " # ".utf8 }
+let paragraph = Parse {
+  OneOf {
+    _PrefixUpTo { preamble }
+    Rest()
+  }
+}
+  .map(.string)
+  .map(MarkdownBlockConversion())
+
+let markdownBlockParser = Parse {
   Optionally {
-    " **".utf8
+    timestamp
+    " ".utf8
+  }
+  Not { "#".utf8 }
+  Optionally {
+    "**".utf8
     PrefixUpTo(":** ".utf8).map(.string)
-    ":**".utf8
+    ":** ".utf8
   }
-  " ".utf8
-  OneOf {
-    _PrefixUpTo { preamble }
-    Rest()
-  }
-  .map(.string)
+  Rest().map(.string)
 }
-  .map(AnyConversion(
-    apply: {
-      Episode.TranscriptBlock(content: $2, speaker: $1, timestamp: $0, type: .paragraph)
-    },
-    unapply: {
-      $0.type == .paragraph ? ($0.timestamp!, $0.speaker, $0.content) : nil
+
+struct MarkdownBlockConversion: Conversion {
+  func apply(_ input: String) throws -> Episode.TranscriptBlock {
+    let output = try markdownBlockParser.parse(input)
+    return Episode.TranscriptBlock(
+      content: output.2,
+      speaker: output.1,
+      timestamp: output.0,
+      type: .paragraph
+    )
+  }
+  func unapply(_ output: Episode.TranscriptBlock) throws -> String {
+    guard output.type == .paragraph
+    else {
+      struct NonParagraphBlockError: Error {}
+      throw NonParagraphBlockError()
     }
-  ))
-let rawParagraph = Parse {
-  Not { timestamp }
-  OneOf {
-    _PrefixUpTo { preamble }
-    Rest()
+    return try String(
+      Substring(
+        markdownBlockParser.print(
+          (output.timestamp, output.speaker, output.content)
+        )
+      )
+    )
   }
-}
-  .map(.string)
-  .map(AnyConversion(
-    apply: { Episode.TranscriptBlock(content: $0, type: .paragraph) },
-    unapply: { $0.type == .paragraph && $0.timestamp == nil ? $0.content : nil }
-  ))
-let paragraph = OneOf {
-  paragraphWithMetadata
-  rawParagraph
 }
 
 let blocksParser = Many {

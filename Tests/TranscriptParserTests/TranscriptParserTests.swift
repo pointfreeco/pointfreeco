@@ -20,7 +20,9 @@ class TranscriptParserTests: XCTestCase {
     let input = """
       [01:30:34] # Introduction
 
-      [01:30:34] **Stephen:** And so that's why we have our own like, kind of thinking about it from the bottom up. And we'll be revisiting a lot of the topics from the vanilla episodes, but it's gonna be dedicated to just the Composable Architecture.
+      [01:30:34] **Stephen:** And so that's why we have our own like, kind of thinking about it \
+      from the bottom up. And we'll be revisiting a lot of the topics from the vanilla episodes, \
+      but it's gonna be dedicated to just the Composable Architecture.
 
       ```swift
       let x = 42
@@ -40,7 +42,9 @@ class TranscriptParserTests: XCTestCase {
       ),
       Episode.TranscriptBlock(
         content: """
-          And so that's why we have our own like, kind of thinking about it from the bottom up. And we'll be revisiting a lot of the topics from the vanilla episodes, but it's gonna be dedicated to just the Composable Architecture.
+          And so that's why we have our own like, kind of thinking about it from the bottom up. \
+          And we'll be revisiting a lot of the topics from the vanilla episodes, but it's gonna be \
+          dedicated to just the Composable Architecture.
 
           ```swift
           let x = 42
@@ -75,7 +79,7 @@ class TranscriptParserTests: XCTestCase {
     let transcriptFragment = """
       [00:00:00] # Title
 
-      [00:00:01] Paragraph.
+      [00:00:01] **Stephen:** Paragraph.
       With new lines.
 
       And double new lines.
@@ -89,7 +93,7 @@ class TranscriptParserTests: XCTestCase {
       """
     let blocks: [Episode.TranscriptBlock] = [
       .init(content: "Title", timestamp: 0, type: .title),
-      .init(content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", timestamp: 1, type: .paragraph),
+      .init(content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", speaker: "Stephen", timestamp: 1, type: .paragraph),
       .init(content: "This is a\nspecial announcement!", type: .box(.correction)),
       .init(content: "More paragraph.\n\n# Title without timestamp", type: .paragraph),
     ]
