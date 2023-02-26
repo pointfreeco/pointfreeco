@@ -9,7 +9,7 @@ public struct Episode: Equatable, Identifiable {
   public var codeSampleDirectory: String?
   public var exercises: [Exercise]
   public var format: Format
-  private var _fullVideo: Video?
+  public private(set) var _fullVideo: Video?
   public var id: Tagged<Self, Int>
   public var image: String
   public var length: Seconds<Int>
@@ -21,7 +21,7 @@ public struct Episode: Equatable, Identifiable {
   public var subtitle: String?
   public var title: String
   public var trailerVideo: Video
-  private var _transcriptBlocks: [TranscriptBlock]?
+  public var _transcriptBlocks: [TranscriptBlock]?
 
   public init(
     alternateSlug: String? = nil,
@@ -71,36 +71,16 @@ public struct Episode: Equatable, Identifiable {
     public var answer: String
     public var question: String
     public var timestamp: Int
+
+    public init(answer: String, question: String, timestamp: Int) {
+      self.answer = answer
+      self.question = question
+      self.timestamp = timestamp
+    }
   }
 
   public var fullTitle: String {
     self.subtitle.map { "\(self.title): \($0)" } ?? self.title
-  }
-
-  public var fullVideo: Video {
-    #if OSS
-      return self._fullVideo ?? self.trailerVideo
-    #else
-      let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
-      assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
-      return video!
-    #endif
-  }
-
-  public var transcriptBlocks: [TranscriptBlock] {
-    get {
-      #if OSS
-        return self._transcriptBlocks ?? []
-      #else
-        let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
-        assert(
-          transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
-        return transcripts!
-      #endif
-    }
-    set {
-      self._transcriptBlocks = newValue
-    }
   }
 
   public var slug: String {
@@ -525,7 +505,7 @@ func slug(for string: String) -> String {
     .replacingOccurrences(of: #"\A-|-\z"#, with: "", options: .regularExpression)
 }
 
-func reference(
+public func reference(
   forEpisode episode: Episode,
   additionalBlurb: String,
   episodeUrl: String
@@ -543,7 +523,7 @@ func reference(
   )
 }
 
-func reference(
+public func reference(
   forCollection collection: Episode.Collection,
   additionalBlurb: String,
   collectionUrl: String
@@ -561,7 +541,7 @@ func reference(
   )
 }
 
-func reference(
+public func reference(
   forSection section: Episode.Collection.Section,
   additionalBlurb: String,
   sectionUrl: String
@@ -579,17 +559,6 @@ func reference(
   )
 }
 
-extension Episode.Collection: DependencyKey {
-  public static let liveValue = Episode.Collection.all
-  public static let testValue = [Episode.Collection.mock]
-}
-
-extension DependencyValues {
-  public var collections: [Episode.Collection] {
-    get { self[Episode.Collection.self] }
-    set { self[Episode.Collection.self] = newValue }
-  }
-}
 
 extension Episode: TestDependencyKey {
   public static let testValue: () -> [Episode] = { [.subscriberOnly, .free] }

@@ -33,6 +33,8 @@ var package = Package(
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
+    .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
+    .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -468,6 +470,29 @@ var package = Package(
       dependencies: [
         "Models",
         .product(name: "Html", package: "swift-html"),
+      ]
+    ),
+
+    .target(
+      name: "TranscriptParser",
+      dependencies: [
+        "Models",
+        .product(name: "Parsing", package: "swift-parsing"),
+      ]
+    ),
+
+    .testTarget(
+      name: "TranscriptParserTests",
+      dependencies: [
+        "TranscriptParser",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
+      ]
+    ),
+
+    .target(
+      name: "Transcripts",
+      dependencies: [
+        "TranscriptParser",
       ]
     ),
 

@@ -174,7 +174,15 @@ private let freeEpisode = Episode(
     """,
   codeSampleDirectory: "ep1-type-safe-html",
   exercises: [.mock],
-  fullVideo: Episode.mock.fullVideo,
+  fullVideo: .init(
+    bytesLength: 500_000_000,
+    downloadUrls: .s3(
+      hd1080: "TODO",
+      hd720: "TODO",
+      sd540: "TODO"
+    ),
+    vimeoId: 1_234_567_890
+  ),
   id: 1,
   image: "",
   length: 1380,
