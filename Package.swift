@@ -33,6 +33,8 @@ var package = Package(
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
+    .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
+    .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -47,6 +49,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.3"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
+    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "55969fa"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
@@ -471,6 +474,29 @@ var package = Package(
     ),
 
     .target(
+      name: "TranscriptParser",
+      dependencies: [
+        "Models",
+        .product(name: "Parsing", package: "swift-parsing"),
+      ]
+    ),
+
+    .testTarget(
+      name: "TranscriptParserTests",
+      dependencies: [
+        "TranscriptParser",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
+      ]
+    ),
+
+    .target(
+      name: "Transcripts",
+      dependencies: [
+        "TranscriptParser",
+      ]
+    ),
+
+    .target(
       name: "VimeoClient",
       dependencies: [
         "DecodableRequest",
@@ -488,8 +514,9 @@ var package = Package(
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
-        "WebPreview",
+        "Transcripts",
         "VimeoClient",
+        "WebPreview",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Html", package: "swift-html"),
@@ -511,7 +538,7 @@ let isOss = !FileManager.default.fileExists(
   atPath: URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
-    .appendingPathComponent("Models")
+    .appendingPathComponent("Transcripts")
     .appendingPathComponent("Transcripts")
     .appendingPathComponent(".git")
     .path

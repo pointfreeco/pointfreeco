@@ -9,7 +9,7 @@ public struct Episode: Equatable, Identifiable {
   public var codeSampleDirectory: String?
   public var exercises: [Exercise]
   public var format: Format
-  private var _fullVideo: Video?
+  public private(set) var _fullVideo: Video?
   public var id: Tagged<Self, Int>
   public var image: String
   public var length: Seconds<Int>
@@ -21,7 +21,7 @@ public struct Episode: Equatable, Identifiable {
   public var subtitle: String?
   public var title: String
   public var trailerVideo: Video
-  private var _transcriptBlocks: [TranscriptBlock]?
+  public var _transcriptBlocks: [TranscriptBlock]?
 
   public init(
     alternateSlug: String? = nil,
@@ -71,36 +71,16 @@ public struct Episode: Equatable, Identifiable {
     public var answer: String
     public var question: String
     public var timestamp: Int
+
+    public init(answer: String, question: String, timestamp: Int) {
+      self.answer = answer
+      self.question = question
+      self.timestamp = timestamp
+    }
   }
 
   public var fullTitle: String {
     self.subtitle.map { "\(self.title): \($0)" } ?? self.title
-  }
-
-  public var fullVideo: Video {
-    #if OSS
-      return self._fullVideo ?? self.trailerVideo
-    #else
-      let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
-      assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
-      return video!
-    #endif
-  }
-
-  public var transcriptBlocks: [TranscriptBlock] {
-    get {
-      #if OSS
-        return self._transcriptBlocks ?? []
-      #else
-        let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
-        assert(
-          transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
-        return transcripts!
-      #endif
-    }
-    set {
-      self._transcriptBlocks = newValue
-    }
   }
 
   public var slug: String {
@@ -324,41 +304,85 @@ public struct Episode: Equatable, Identifiable {
       case button(href: String)
       case code(lang: CodeLang)
       case image(src: String, sizing: ImageSizing)
+      // TODO: rename to markdown
       case paragraph
       case question(String)
       case title
       case video(poster: String, sources: [String])
 
       public struct Box: Codable, Equatable {
+        public let title: String?
         public let backgroundColor: String
         public let borderColor: String
-        public let title: String?
 
-        public init(backgroundColor: String, borderColor: String, title: String?) {
+        public init(
+          title: String?,
+          backgroundColor: String,
+          borderColor: String
+        ) {
           self.backgroundColor = backgroundColor
           self.borderColor = borderColor
           self.title = title
         }
 
+        public init?(name: String) {
+          switch name.lowercased() {
+          case "correction":
+            self = .correction
+          case "note":
+            self = .note
+          case "preamble":
+            self = .preamble
+          case "tip":
+            self = .tip
+          case "warning":
+            self = .warning
+          default:
+            return nil
+          }
+        }
+
+        public var name: String? {
+          switch self {
+          case .correction:
+            return "correction"
+          case .note:
+            return "note"
+          case .preamble:
+            return "preamble"
+          case .tip:
+            return "tip"
+          case .warning:
+            return "warning"
+          default:
+            return nil
+          }
+        }
+
         public static let correction = Self(
+          title: "Correction",
           backgroundColor: "ffdbdd",
-          borderColor: "eb1c26",
-          title: "Correction"
+          borderColor: "eb1c26"
         )
         public static let note = Self(
+          title: "Note",
           backgroundColor: "f6f6f6",
-          borderColor: "d8d8d8",
-          title: "Note"
+          borderColor: "d8d8d8"
         )
         public static let preamble = Self(
+          title: "Preamble",
           backgroundColor: "eee2ff",
-          borderColor: "974dff",
-          title: "Preamble"
+          borderColor: "974dff"
         )
         public static let tip = Self(
+          title: "Tip",
           backgroundColor: "dcf4e7",
-          borderColor: "79f2b0",
-          title: "Tip"
+          borderColor: "79f2b0"
+        )
+        public static let warning = Self(
+          title: "⚠️ Warning",
+          backgroundColor: "fcf9db",
+          borderColor: "FCF18F"
         )
       }
 
@@ -482,7 +506,7 @@ func slug(for string: String) -> String {
     .replacingOccurrences(of: #"\A-|-\z"#, with: "", options: .regularExpression)
 }
 
-func reference(
+public func reference(
   forEpisode episode: Episode,
   additionalBlurb: String,
   episodeUrl: String
@@ -500,7 +524,7 @@ func reference(
   )
 }
 
-func reference(
+public func reference(
   forCollection collection: Episode.Collection,
   additionalBlurb: String,
   collectionUrl: String
@@ -518,7 +542,7 @@ func reference(
   )
 }
 
-func reference(
+public func reference(
   forSection section: Episode.Collection.Section,
   additionalBlurb: String,
   sectionUrl: String
@@ -536,17 +560,6 @@ func reference(
   )
 }
 
-extension Episode.Collection: DependencyKey {
-  public static let liveValue = Episode.Collection.all
-  public static let testValue = [Episode.Collection.mock]
-}
-
-extension DependencyValues {
-  public var collections: [Episode.Collection] {
-    get { self[Episode.Collection.self] }
-    set { self[Episode.Collection.self] = newValue }
-  }
-}
 
 extension Episode: TestDependencyKey {
   public static let testValue: () -> [Episode] = { [.subscriberOnly, .free] }
