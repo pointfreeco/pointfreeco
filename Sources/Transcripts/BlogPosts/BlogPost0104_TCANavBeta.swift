@@ -3,7 +3,8 @@ import Foundation
 public let post0104_TCANavBeta = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    Alongside our series on navigation in the Composable Architecture we are kicking off a beta so
+    that you can start testing these tools today,
     """,
   contentBlocks: .transcript {
     Array.paragraphs(
