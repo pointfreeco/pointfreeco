@@ -90,6 +90,7 @@ public enum SiteRoute: Equatable {
   public enum Feed: Equatable {
     case atom
     case episodes
+    case slack
   }
 
   public enum Invite: Equatable {
@@ -228,6 +229,10 @@ private let feedRouter = OneOf {
 
   Route(.case(SiteRoute.Feed.episodes)) {
     Path { "episodes.xml" }
+  }
+
+  Route(.case(SiteRoute.Feed.slack)) {
+    Path { "slack.xml" }
   }
 }
 

@@ -37,6 +37,16 @@ class AtomFeedTests: TestCase {
     }
   }
 
+  func testSlackFeed() async throws {
+    await withDependencies {
+      $0.calendar = .init(identifier: .gregorian)
+    } operation: {
+      let conn = connection(from: request(to: .feed(.slack)))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
   func testEpisodeFeed_WithRecentlyFreeEpisode() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
