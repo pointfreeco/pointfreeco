@@ -33,10 +33,11 @@ public let post0104_TCANavBeta = BlogPost(
 
       ## The basics
 
-      We aren’t going to give a detailed overview of the tools in this announcement (that’s what
-      the episodes are for 😀), but most of the case studies and demos in the repo have been
-      updated to use the new tools and there is an _extensive_ test suite. There hasn’t been much
-      documentation written yet, but that will be coming soon as the episode series plays out.
+      We aren’t going to give a detailed overview of the tools in this announcement and how we
+      motivated and designed them (that’s what the episodes are for 😀), but most of the case
+      studies and demos in the repo have been updated to use the new tools and there is an
+      _extensive_ test suite. There hasn’t been much documentation written yet, but that will be
+      coming soon as the episode series plays out.
 
       Here is a very quick overview of what you can look forward to:
 
