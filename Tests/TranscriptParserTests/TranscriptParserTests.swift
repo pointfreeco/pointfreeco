@@ -93,7 +93,9 @@ class TranscriptParserTests: XCTestCase {
       """
     let blocks: [Episode.TranscriptBlock] = [
       .init(content: "Title", timestamp: 0, type: .title),
-      .init(content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", speaker: "Stephen", timestamp: 1, type: .paragraph),
+      .init(
+        content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", speaker: "Stephen",
+        timestamp: 1, type: .paragraph),
       .init(content: "This is a\nspecial announcement!", type: .box(.correction)),
       .init(content: "More paragraph.\n\n# Title without timestamp", type: .paragraph),
     ]

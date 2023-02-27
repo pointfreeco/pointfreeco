@@ -492,7 +492,7 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
-        "TranscriptParser",
+        "TranscriptParser"
       ]
     ),
 

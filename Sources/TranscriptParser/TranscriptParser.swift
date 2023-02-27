@@ -63,7 +63,8 @@ where
 let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: Episode.TranscriptBlock.BlockType.Box.init(name:),
     unapply: \.name
   ))
@@ -98,7 +99,8 @@ let boxMessage = Many {
 } separator: {
   "\n> ".utf8
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: { $0.joined(separator: "\n") },
     unapply: { $0.split(separator: "\n").map(String.init) }
   ))
@@ -107,7 +109,8 @@ let box = Parse {
   boxType
   boxMessage
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: { boxType, message in
       Episode.TranscriptBlock(
         content: message,
@@ -151,7 +154,8 @@ let title = Parse {
   }
   .map(.string)
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: { Episode.TranscriptBlock(content: $1, timestamp: $0, type: .title) },
     unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
   ))
@@ -162,8 +166,8 @@ let paragraph = Parse {
     Rest()
   }
 }
-  .map(.string)
-  .map(MarkdownBlockConversion())
+.map(.string)
+.map(MarkdownBlockConversion())
 
 let markdownBlockParser = Parse {
   Optionally {
@@ -218,7 +222,7 @@ let blocksParser = Many {
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
-    || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
-    || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
+      || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
+      || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
 }
