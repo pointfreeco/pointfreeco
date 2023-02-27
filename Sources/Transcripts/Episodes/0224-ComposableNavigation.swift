@@ -14,7 +14,7 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-02-27")!,
     references: [
-      // TODO
+      .composableNavigationBetaDiscussion,
     ],
     sequence: 224,
     subtitle: "Sheets",

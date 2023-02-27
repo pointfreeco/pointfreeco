@@ -53,6 +53,7 @@ extension Episode {
           "https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance/#Sharing-logic-with-actions",
         title: "Sharing logic with actions"
       ),
+      .composableNavigationBetaDiscussion,
     ],
     sequence: 222,
     subtitle: "Tabs",

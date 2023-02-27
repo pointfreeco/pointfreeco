@@ -112,6 +112,18 @@ extension Episode.Reference {
     title: "Composable Architecture: Dependency Management"
   )
 
+  public static let composableNavigationBetaDiscussion = Self(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+      In conjunction with the release of episode
+      [#224](https://www.pointfree.co/episodes/ep224-composable-navigation-sheets) we also released
+      a beta preview of the navigation tools coming to the Composable Architecture.
+      """#,
+    link: "https://github.com/pointfreeco/swift-composable-architecture/discussions/1944",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-02-27"),
+    title: "Composable navigation beta GitHub discussion"
+  )
+
   public static let composableReducers = Episode.Reference(
     author: "Brandon Williams",
     blurb: """

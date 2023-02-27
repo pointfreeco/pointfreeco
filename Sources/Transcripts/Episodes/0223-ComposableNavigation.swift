@@ -24,7 +24,8 @@ extension Episode {
         link:
           "https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/singleentrypointsystems",
         title: "Single entry point systems"
-      )
+      ),
+      .composableNavigationBetaDiscussion,
     ],
     sequence: 223,
     subtitle: "Alerts & Dialogs",

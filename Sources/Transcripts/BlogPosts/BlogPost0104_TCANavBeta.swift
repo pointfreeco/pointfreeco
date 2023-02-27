@@ -96,7 +96,7 @@ public let post0104_TCANavBeta = BlogPost(
             .sheet(
               store: self.store.scope(state: \.$child, action: Parent.Action.child)
             ) { store in
-              ChildView(store: child)
+              ChildView(store: store)
             }
           }
         }
