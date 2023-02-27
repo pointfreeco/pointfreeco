@@ -12,6 +12,7 @@ import XCTest
 
 @testable import Models
 @testable import PointFree
+@testable import Transcripts
 
 private let episodes: [Episode] = [
   .ep0_introduction,

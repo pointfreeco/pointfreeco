@@ -8,6 +8,7 @@ import XCTest
 
 @testable import Models
 @testable import PointFree
+@testable import Transcripts
 
 #if !os(Linux)
   import WebKit

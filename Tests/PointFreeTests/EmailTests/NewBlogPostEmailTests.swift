@@ -12,6 +12,7 @@ import UrlFormEncoding
 import XCTest
 
 @testable import PointFree
+@testable import Transcripts
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
