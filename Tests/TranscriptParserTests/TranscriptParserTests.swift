@@ -108,4 +108,22 @@ class TranscriptParserTests: XCTestCase {
       transcriptFragment
     )
   }
+
+  func testLegacy_Code() throws {
+    let blocks: [Episode.TranscriptBlock] = [
+      .init(
+        content: "let x = 1",
+        type: .code(lang: .swift)
+      )
+    ]
+
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      """
+      ```swift
+      let x = 1
+      ```
+      """
+    )
+  }
 }
