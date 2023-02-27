@@ -15,7 +15,8 @@ func episodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseE
 }
 
 func slackEpisodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respond(xml: slackEpisodesFeedView)
     .clearBodyForHeadRequests()
@@ -99,7 +100,7 @@ private func items() -> [RssItem] {
   @Dependency(\.episodes) var episodes
 
   return
-  episodes()
+    episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
     .prefix(4)
     .map { item(episode: $0) }

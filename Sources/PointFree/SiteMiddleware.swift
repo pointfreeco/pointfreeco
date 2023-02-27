@@ -214,7 +214,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     guard !emergencyMode
     else {
       return
-      conn
+        conn
         .writeStatus(.internalServerError)
         .respond(json: "{}")
     }
