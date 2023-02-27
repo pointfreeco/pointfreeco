@@ -538,7 +538,7 @@ let isOss = !FileManager.default.fileExists(
   atPath: URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
-    .appendingPathComponent("Models")
+    .appendingPathComponent("Transcripts")
     .appendingPathComponent("Transcripts")
     .appendingPathComponent(".git")
     .path
