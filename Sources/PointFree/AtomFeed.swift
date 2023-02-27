@@ -14,11 +14,27 @@ func episodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseE
     .clearBodyForHeadRequests()
 }
 
+func slackEpisodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
+  return conn
+    .writeStatus(.ok)
+    .respond(xml: slackEpisodesFeedView)
+    .clearBodyForHeadRequests()
+}
+
 private let episodesFeedView = itunesRssFeedLayout {
   [
     node(
       rssChannel: freeEpisodeRssChannel,
       items: items()
+    )
+  ]
+}
+
+private let slackEpisodesFeedView = itunesRssFeedLayout {
+  [
+    node(
+      rssChannel: freeEpisodeRssChannel,
+      items: slackEpisodes()
     )
   ]
 }
@@ -83,10 +99,18 @@ private func items() -> [RssItem] {
   @Dependency(\.episodes) var episodes
 
   return
-    episodes()
+  episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
     .prefix(4)
     .map { item(episode: $0) }
+}
+
+private func slackEpisodes() -> [RssItem] {
+  @Dependency(\.episodes) var episodes
+
+  return episodes()
+    .sorted(by: { $0.sequence > $1.sequence })
+    .map(slackItem(episode:))
 }
 
 private func item(episode: Episode) -> RssItem {
@@ -183,6 +207,32 @@ private func item(episode: Episode) -> RssItem {
     ),
     pubDate: episode.freeSince ?? episode.publishedAt,
     title: title(episode: episode)
+  )
+}
+
+private func slackItem(episode: Episode) -> RssItem {
+  @Dependency(\.siteRouter) var siteRouter
+  return RssItem(
+    description: episode.blurb,
+    dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
+    enclosure: nil,
+    guid: String(Int((episode.freeSince ?? episode.publishedAt).timeIntervalSince1970)),
+    itunes: RssItem.Itunes(
+      author: "Brandon Williams & Stephen Celis",
+      duration: episode.length.rawValue,
+      episode: episode.sequence,
+      episodeType: episode.subscriberOnly ? .trailer : .full,
+      explicit: false,
+      image: episode.image,
+      subtitle: episode.blurb,
+      summary: episode.blurb,
+      season: 1,
+      title: episode.title
+    ),
+    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    media: nil,
+    pubDate: episode.freeSince ?? episode.publishedAt,
+    title: episode.title
   )
 }
 
