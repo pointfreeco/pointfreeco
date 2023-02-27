@@ -41,7 +41,7 @@ public let post0104_TCANavBeta = BlogPost(
 
       Here is a very quick overview of what you can look forward to:
 
-      - When a parent feature needs to navigate to a child feature it will enhenace its domain
+      - When a parent feature needs to navigate to a child feature you will enhance its domain
         using the new `@PresentationState` property wrapper and `PresentationAction` wrapper type:
 
         ```swift
