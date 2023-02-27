@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v12)
+    .macOS(.v13)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -493,6 +493,15 @@ var package = Package(
       name: "Transcripts",
       dependencies: [
         "TranscriptParser"
+      ],
+      resources: transcripts()
+    ),
+
+    .testTarget(
+      name: "TranscriptsTests",
+      dependencies: [
+        "Transcripts",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
     ),
 
@@ -564,5 +573,11 @@ extension Array where Element == SwiftSetting {
 for index in package.targets.indices {
   if package.targets[index].type != .system {
     package.targets[index].swiftSettings = .pointFreeSettings
+  }
+}
+
+func transcripts() -> [Resource] {
+  Array(0...1).map { index in
+    .copy("Resources/\(String(format: "%04d", index)).md")
   }
 }

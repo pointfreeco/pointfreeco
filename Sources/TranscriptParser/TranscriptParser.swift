@@ -1,17 +1,17 @@
 import Models
 import Parsing
 
-struct Timestamp: Conversion {
-  func apply(_ input: (Int, Int, Int)) throws -> Int {
+public struct Timestamp: Conversion {
+  public func apply(_ input: (Int, Int, Int)) throws -> Int {
     input.0 * 60 * 60 + input.1 * 60 + input.2
   }
 
-  func unapply(_ output: Int) throws -> (Int, Int, Int) {
+  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
     (output / 60 / 60, (output / 60) % 60, output % 60)
   }
 }
 
-let timestamp = Parse(Timestamp()) {
+public let timestamp = Parse(Timestamp()) {
   "[".utf8
   Digits(2)
   ":".utf8
@@ -21,7 +21,7 @@ let timestamp = Parse(Timestamp()) {
   "]".utf8
 }
 
-struct _PrefixUpTo<Upstream: Parser>: Parser
+public struct _PrefixUpTo<Upstream: Parser>: Parser
 where
   Upstream.Input: Collection,
   Upstream.Input == Upstream.Input.SubSequence
@@ -34,7 +34,7 @@ where
     self.upstream = upstream()
   }
 
-  func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
+  public func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
     let original = input
     var copy = input
     while (try? self.upstream.parse(&copy)) == nil {
@@ -53,14 +53,14 @@ where
   Upstream: ParserPrinter,
   Upstream.Input: PrependableCollection
 {
-  func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
+  public func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
     input.prepend(contentsOf: output)
     var copy = input
     _ = try self.parse(&copy)
   }
 }
 
-let boxTypeByName = Parse {
+public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
 .map(
@@ -69,7 +69,7 @@ let boxTypeByName = Parse {
     unapply: \.name
   ))
 
-let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.Box.init)) {
+public let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.Box.init)) {
   Optionally {
     Not { "#".utf8 }
     PrefixUpTo(", ".utf8).map(.string)
@@ -81,7 +81,7 @@ let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.B
   Prefix(6) { $0.isHexDigit }.map(.string)
 }
 
-let boxType = Parse {
+public let boxType = Parse {
   "!> [".utf8
   OneOf {
     boxTypeByFullDetails
@@ -90,7 +90,7 @@ let boxType = Parse {
   "]: ".utf8
 }
 
-let boxMessage = Many {
+public let boxMessage = Many {
   OneOf {
     PrefixUpTo("\n".utf8)
     Rest()
@@ -105,7 +105,7 @@ let boxMessage = Many {
     unapply: { $0.split(separator: "\n").map(String.init) }
   ))
 
-let box = Parse {
+public let box = Parse {
   boxType
   boxMessage
 }
@@ -124,19 +124,19 @@ let box = Parse {
     }
   ))
 
-let titlePreamble = Peek {
+public let titlePreamble = Peek {
   timestamp
   " # ".utf8
 }
-let paragraphPreamble = Peek {
+public let paragraphPreamble = Peek {
   timestamp
   " ".utf8
 }
-let boxPreamble = Peek {
+public let boxPreamble = Peek {
   "!> [".utf8
 }
 
-let preamble = Parse {
+public let preamble = Parse {
   "\n\n".utf8
   OneOf {
     boxPreamble
@@ -145,7 +145,7 @@ let preamble = Parse {
   }
 }
 
-let title = Parse {
+public let title = Parse {
   timestamp
   " # ".utf8
   OneOf {
@@ -160,7 +160,7 @@ let title = Parse {
     unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
   ))
 
-let paragraph = Parse {
+public let paragraph = Parse {
   OneOf {
     _PrefixUpTo { preamble }
     Rest()
@@ -169,7 +169,7 @@ let paragraph = Parse {
 .map(.string)
 .map(MarkdownBlockConversion())
 
-let markdownBlockParser = Parse {
+public let markdownBlockParser = Parse {
   Optionally {
     timestamp
     " ".utf8
@@ -183,8 +183,8 @@ let markdownBlockParser = Parse {
   Rest().map(.string)
 }
 
-struct MarkdownBlockConversion: Conversion {
-  func apply(_ input: String) throws -> Episode.TranscriptBlock {
+public struct MarkdownBlockConversion: Conversion {
+  public func apply(_ input: String) throws -> Episode.TranscriptBlock {
     let output = try markdownBlockParser.parse(input)
     return Episode.TranscriptBlock(
       content: output.2,
@@ -193,7 +193,7 @@ struct MarkdownBlockConversion: Conversion {
       type: .paragraph
     )
   }
-  func unapply(_ output: Episode.TranscriptBlock) throws -> String {
+  public func unapply(_ output: Episode.TranscriptBlock) throws -> String {
     guard output.type == .paragraph
     else {
       struct NonParagraphBlockError: Error {}
@@ -209,7 +209,7 @@ struct MarkdownBlockConversion: Conversion {
   }
 }
 
-let blocksParser = Many {
+public let blocksParser = Many {
   OneOf {
     box
     title
