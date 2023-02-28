@@ -60,6 +60,23 @@ where
   }
 }
 
+public let image = Parse {
+  "![".utf8
+  Episode.TranscriptBlock.BlockType.ImageSizing.parser()
+  "](".utf8
+  PrefixUpTo(")".utf8).map(.string)
+  ")".utf8
+}
+  .map(AnyConversion(
+    apply: { sizing, url in
+      Episode.TranscriptBlock(content: "", type: .image(src: url, sizing: sizing))
+    },
+    unapply: {
+      guard case let .image(src: url, sizing: sizing) = $0.type
+      else { return nil }
+      return (sizing, url)
+    }))
+
 public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
@@ -128,12 +145,15 @@ public let titlePreamble = Peek {
   timestamp
   " # ".utf8
 }
+public let boxPreamble = Peek {
+  "!> [".utf8
+}
+public let imagePreamble = Peek {
+  "![".utf8
+}
 public let paragraphPreamble = Peek {
   timestamp
   " ".utf8
-}
-public let boxPreamble = Peek {
-  "!> [".utf8
 }
 
 public let preamble = Parse {
@@ -141,6 +161,7 @@ public let preamble = Parse {
   OneOf {
     boxPreamble
     titlePreamble
+    imagePreamble
     paragraphPreamble
   }
 }
@@ -163,7 +184,7 @@ public let title = Parse {
 public let paragraph = Parse {
   OneOf {
     _PrefixUpTo { preamble }
-    Rest()
+    _Rest(strict: false)
   }
 }
 .map(.string)
@@ -174,7 +195,7 @@ public let markdownBlockParser = Parse {
     timestamp
     " ".utf8
   }
-  Not { "#".utf8 }
+  Not { "# ".utf8 }
   Optionally {
     "**".utf8
     PrefixUpTo(":** ".utf8).map(.string)
@@ -231,6 +252,7 @@ public let blocksParser = Many {
   OneOf {
     CodeParserPrinter()
     box
+    image
     title
     paragraph
   }
@@ -244,4 +266,38 @@ extension UTF8.CodeUnit {
       || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
       || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
+}
+
+public struct _Rest<Input: Collection>: Parser where Input.SubSequence == Input {
+  public let strict: Bool
+  public init(strict: Bool = true) {
+    self.strict = strict
+  }
+  public func parse(_ input: inout Input) throws -> Input {
+    guard !self.strict || !input.isEmpty
+    else { throw SomeError() }
+    let output = input
+    input.removeFirst(input.count)
+    return output
+  }
+}
+struct SomeError: Error {}
+extension _Rest: ParserPrinter where Input: PrependableCollection {
+  public func print(_ output: Input, into input: inout Input) throws {
+    guard !self.strict || input.isEmpty
+    else {
+      throw SomeError()
+    }
+
+    guard !self.strict || !output.isEmpty
+    else {
+      throw SomeError()
+    }
+    input.prepend(contentsOf: output)
+  }
+}
+
+extension _Rest where Input == Substring.UTF8View {
+  @_disfavoredOverload
+  public init(strict: Bool) { self.strict = strict }
 }

@@ -79,6 +79,8 @@ class TranscriptParserTests: XCTestCase {
     let transcriptFragment = """
       [00:00:00] # Title
 
+      ![inset](/path/to/image.png)
+
       [00:00:01] **Stephen:** Paragraph.
       With new lines.
 
@@ -93,6 +95,7 @@ class TranscriptParserTests: XCTestCase {
       """
     let blocks: [Episode.TranscriptBlock] = [
       .init(content: "Title", timestamp: 0, type: .title),
+      .init(content: "", type: .image(src: "/path/to/image.png", sizing: .inset)),
       .init(
         content: "Paragraph.\nWith new lines.\n\nAnd double new lines.", speaker: "Stephen",
         timestamp: 1, type: .paragraph),
@@ -123,6 +126,53 @@ class TranscriptParserTests: XCTestCase {
       ```swift
       let x = 1
       ```
+      """
+    )
+  }
+
+  func testLegacy_Paragraph() throws {
+    let blocks = [
+      //....
+      Episode.TranscriptBlock(
+        content: """
+          A
+          """,
+        timestamp: nil,
+        type: .paragraph
+      ),
+      Episode.TranscriptBlock(
+        content: """
+          B
+          """,
+        timestamp: nil,
+        type: .paragraph
+      ),
+    ]
+
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      """
+      A
+      
+      B
+      """
+    )
+  }
+
+  func testLegacy_DuobleHash() throws {
+    let blocks = [
+      Episode.TranscriptBlock(
+        content: """
+        ## Subtitle
+        """,
+        type: .paragraph
+      )
+    ]
+
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      """
+      ## Subtitle
       """
     )
   }
