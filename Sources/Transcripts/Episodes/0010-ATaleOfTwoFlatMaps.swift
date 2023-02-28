@@ -37,3 +37,41 @@ extension Episode {
     transcriptBlocks: loadTranscriptBlocks(forSequence: 10)
   )
 }
+
+private let _exercises: [Episode.Exercise] = [
+  Episode.Exercise(
+    problem:
+      """
+      Define `filtered` as a function from `[A?]` to `[A]`.
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Define `partitioned` as a function from `[Either<A, B>]` to `(left: [A], right: [B])`. What does this function have in common with `filtered`?
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Define `partitionMap` on `Optional`.
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Dictionary has `mapValues`, which takes a transform function from `(Value) -> B` to produce a new dictionary of type `[Key: B]`. Define `filterMapValues` on `Dictionary`.
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Define `partitionMapValues` on `Dictionary`.
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Rewrite `filterMap` and `filter` in terms of `partitionMap`.
+      """),
+  Episode.Exercise(
+    problem:
+      """
+      Is it possible to define `partitionMap` on `Either`?
+      """),
+]
