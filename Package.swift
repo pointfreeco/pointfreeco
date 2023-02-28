@@ -577,7 +577,7 @@ for index in package.targets.indices {
 }
 
 func transcripts() -> [Resource] {
-  Array(0...1).map { index in
+  Array(0...224).map { index in
     .copy("Resources/\(String(format: "%04d", index)).md")
   }
 }
