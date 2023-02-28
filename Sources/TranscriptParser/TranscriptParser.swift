@@ -1,17 +1,17 @@
 import Models
 import Parsing
 
-struct Timestamp: Conversion {
-  func apply(_ input: (Int, Int, Int)) throws -> Int {
+public struct Timestamp: Conversion {
+  public func apply(_ input: (Int, Int, Int)) throws -> Int {
     input.0 * 60 * 60 + input.1 * 60 + input.2
   }
 
-  func unapply(_ output: Int) throws -> (Int, Int, Int) {
+  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
     (output / 60 / 60, (output / 60) % 60, output % 60)
   }
 }
 
-let timestamp = Parse(Timestamp()) {
+public let timestamp = Parse(Timestamp()) {
   "[".utf8
   Digits(2)
   ":".utf8
@@ -21,10 +21,10 @@ let timestamp = Parse(Timestamp()) {
   "]".utf8
 }
 
-struct _PrefixUpTo<Upstream: Parser>: Parser
+public struct _PrefixUpTo<Upstream: Parser>: Parser
 where
-  Upstream.Input: Collection,
-  Upstream.Input == Upstream.Input.SubSequence
+Upstream.Input: Collection,
+Upstream.Input == Upstream.Input.SubSequence
 {
   struct SuffixNotFound: Error {}
 
@@ -34,7 +34,7 @@ where
     self.upstream = upstream()
   }
 
-  func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
+  public func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
     let original = input
     var copy = input
     while (try? self.upstream.parse(&copy)) == nil {
@@ -50,26 +50,43 @@ where
 
 extension _PrefixUpTo: ParserPrinter
 where
-  Upstream: ParserPrinter,
-  Upstream.Input: PrependableCollection
+Upstream: ParserPrinter,
+Upstream.Input: PrependableCollection
 {
-  func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
+  public func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
     input.prepend(contentsOf: output)
     var copy = input
     _ = try self.parse(&copy)
   }
 }
 
-let boxTypeByName = Parse {
+public let image = Parse {
+  "![".utf8
+  Episode.TranscriptBlock.BlockType.ImageSizing.parser()
+  "](".utf8
+  PrefixUpTo(")".utf8).map(.string)
+  ")".utf8
+}
+  .map(AnyConversion(
+    apply: { sizing, url in
+      Episode.TranscriptBlock(content: "", type: .image(src: url, sizing: sizing))
+    },
+    unapply: {
+      guard case let .image(src: url, sizing: sizing) = $0.type
+      else { return nil }
+      return (sizing, url)
+    }))
+
+public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
-.map(
-  AnyConversion(
-    apply: Episode.TranscriptBlock.BlockType.Box.init(name:),
-    unapply: \.name
-  ))
+  .map(
+    AnyConversion(
+      apply: Episode.TranscriptBlock.BlockType.Box.init(name:),
+      unapply: \.name
+    ))
 
-let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.Box.init)) {
+public let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.Box.init)) {
   Optionally {
     Not { "#".utf8 }
     PrefixUpTo(", ".utf8).map(.string)
@@ -81,7 +98,7 @@ let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.B
   Prefix(6) { $0.isHexDigit }.map(.string)
 }
 
-let boxType = Parse {
+public let boxType = Parse {
   "!> [".utf8
   OneOf {
     boxTypeByFullDetails
@@ -90,7 +107,7 @@ let boxType = Parse {
   "]: ".utf8
 }
 
-let boxMessage = Many {
+public let boxMessage = Many {
   OneOf {
     PrefixUpTo("\n".utf8)
     Rest()
@@ -99,53 +116,57 @@ let boxMessage = Many {
 } separator: {
   "\n> ".utf8
 }
-.map(
-  AnyConversion(
-    apply: { $0.joined(separator: "\n") },
-    unapply: { $0.split(separator: "\n").map(String.init) }
-  ))
+  .map(
+    AnyConversion(
+      apply: { $0.joined(separator: "\n") },
+      unapply: { $0.split(separator: "\n").map(String.init) }
+    ))
 
-let box = Parse {
+public let box = Parse {
   boxType
   boxMessage
 }
-.map(
-  AnyConversion(
-    apply: { boxType, message in
-      Episode.TranscriptBlock(
-        content: message,
-        type: .box(boxType)
-      )
-    },
-    unapply: {
-      guard case let .box(boxType) = $0.type
-      else { return nil }
-      return (boxType, $0.content)
-    }
-  ))
+  .map(
+    AnyConversion(
+      apply: { boxType, message in
+        Episode.TranscriptBlock(
+          content: message,
+          type: .box(boxType)
+        )
+      },
+      unapply: {
+        guard case let .box(boxType) = $0.type
+        else { return nil }
+        return (boxType, $0.content)
+      }
+    ))
 
-let titlePreamble = Peek {
+public let titlePreamble = Peek {
   timestamp
   " # ".utf8
 }
-let paragraphPreamble = Peek {
+public let boxPreamble = Peek {
+  "!> [".utf8
+}
+public let imagePreamble = Peek {
+  "![".utf8
+}
+public let paragraphPreamble = Peek {
   timestamp
   " ".utf8
 }
-let boxPreamble = Peek {
-  "!> [".utf8
-}
 
-let preamble = Parse {
+public let preamble = Parse {
   "\n\n".utf8
   OneOf {
     boxPreamble
     titlePreamble
+    imagePreamble
     paragraphPreamble
   }
 }
 
-let title = Parse {
+public let title = Parse {
   timestamp
   " # ".utf8
   OneOf {
@@ -154,27 +175,27 @@ let title = Parse {
   }
   .map(.string)
 }
-.map(
-  AnyConversion(
-    apply: { Episode.TranscriptBlock(content: $1, timestamp: $0, type: .title) },
-    unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
-  ))
+  .map(
+    AnyConversion(
+      apply: { Episode.TranscriptBlock(content: $1, timestamp: $0, type: .title) },
+      unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
+    ))
 
-let paragraph = Parse {
+public let paragraph = Parse {
   OneOf {
     _PrefixUpTo { preamble }
-    Rest()
+    _Rest(strict: false)
   }
 }
-.map(.string)
-.map(MarkdownBlockConversion())
+  .map(.string)
+  .map(MarkdownBlockConversion())
 
-let markdownBlockParser = Parse {
+public let markdownBlockParser = Parse {
   Optionally {
     timestamp
     " ".utf8
   }
-  Not { "#".utf8 }
+  Not { "# ".utf8 }
   Optionally {
     "**".utf8
     PrefixUpTo(":** ".utf8).map(.string)
@@ -183,8 +204,8 @@ let markdownBlockParser = Parse {
   Rest().map(.string)
 }
 
-struct MarkdownBlockConversion: Conversion {
-  func apply(_ input: String) throws -> Episode.TranscriptBlock {
+public struct MarkdownBlockConversion: Conversion {
+  public func apply(_ input: String) throws -> Episode.TranscriptBlock {
     let output = try markdownBlockParser.parse(input)
     return Episode.TranscriptBlock(
       content: output.2,
@@ -193,7 +214,7 @@ struct MarkdownBlockConversion: Conversion {
       type: .paragraph
     )
   }
-  func unapply(_ output: Episode.TranscriptBlock) throws -> String {
+  public func unapply(_ output: Episode.TranscriptBlock) throws -> String {
     guard output.type == .paragraph
     else {
       struct NonParagraphBlockError: Error {}
@@ -209,9 +230,29 @@ struct MarkdownBlockConversion: Conversion {
   }
 }
 
-let blocksParser = Many {
+public struct CodeParserPrinter: ParserPrinter {
+  private struct SomeError: Error {}
+
+  public func parse(_ input: inout Substring.UTF8View) throws -> Episode.TranscriptBlock {
+    throw SomeError()
+  }
+  public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws {
+    guard case let .code(lang: lang) = output.type
+    else { throw SomeError() }
+
+    input.prepend(contentsOf: """
+      ```\(lang.identifier)
+      \(output.content)
+      ```
+      """.utf8)
+  }
+}
+
+public let blocksParser = Many {
   OneOf {
+    CodeParserPrinter()
     box
+    image
     title
     paragraph
   }
@@ -222,7 +263,41 @@ let blocksParser = Many {
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
-      || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
-      || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
+    || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
+    || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
+}
+
+public struct _Rest<Input: Collection>: Parser where Input.SubSequence == Input {
+  public let strict: Bool
+  public init(strict: Bool = true) {
+    self.strict = strict
+  }
+  public func parse(_ input: inout Input) throws -> Input {
+    guard !self.strict || !input.isEmpty
+    else { throw SomeError() }
+    let output = input
+    input.removeFirst(input.count)
+    return output
+  }
+}
+struct SomeError: Error {}
+extension _Rest: ParserPrinter where Input: PrependableCollection {
+  public func print(_ output: Input, into input: inout Input) throws {
+    guard !self.strict || input.isEmpty
+    else {
+      throw SomeError()
+    }
+
+    guard !self.strict || !output.isEmpty
+    else {
+      throw SomeError()
+    }
+    input.prepend(contentsOf: output)
+  }
+}
+
+extension _Rest where Input == Substring.UTF8View {
+  @_disfavoredOverload
+  public init(strict: Bool) { self.strict = strict }
 }
