@@ -1,3 +1,3 @@
-[submodule "Sources/Models/Transcripts"]
+[submodule "Sources/Transcripts/Transcripts"]
 	path = Sources/Transcripts/Transcripts
 	url = https://github.com/pointfreeco/episode-transcripts
