@@ -23,8 +23,8 @@ public let timestamp = Parse(Timestamp()) {
 
 public struct _PrefixUpTo<Upstream: Parser>: Parser
 where
-Upstream.Input: Collection,
-Upstream.Input == Upstream.Input.SubSequence
+  Upstream.Input: Collection,
+  Upstream.Input == Upstream.Input.SubSequence
 {
   struct SuffixNotFound: Error {}
 
@@ -50,8 +50,8 @@ Upstream.Input == Upstream.Input.SubSequence
 
 extension _PrefixUpTo: ParserPrinter
 where
-Upstream: ParserPrinter,
-Upstream.Input: PrependableCollection
+  Upstream: ParserPrinter,
+  Upstream.Input: PrependableCollection
 {
   public func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
     input.prepend(contentsOf: output)
@@ -67,7 +67,8 @@ public let image = Parse {
   PrefixUpTo(")".utf8).map(.string)
   ")".utf8
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: { sizing, url in
       Episode.TranscriptBlock(content: "", type: .image(src: url, sizing: sizing))
     },
@@ -80,11 +81,11 @@ public let image = Parse {
 public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
-  .map(
-    AnyConversion(
-      apply: Episode.TranscriptBlock.BlockType.Box.init(name:),
-      unapply: \.name
-    ))
+.map(
+  AnyConversion(
+    apply: Episode.TranscriptBlock.BlockType.Box.init(name:),
+    unapply: \.name
+  ))
 
 public let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.BlockType.Box.init)) {
   Optionally {
@@ -116,30 +117,30 @@ public let boxMessage = Many {
 } separator: {
   "\n> ".utf8
 }
-  .map(
-    AnyConversion(
-      apply: { $0.joined(separator: "\n") },
-      unapply: { $0.split(separator: "\n").map(String.init) }
-    ))
+.map(
+  AnyConversion(
+    apply: { $0.joined(separator: "\n") },
+    unapply: { $0.split(separator: "\n").map(String.init) }
+  ))
 
 public let box = Parse {
   boxType
   boxMessage
 }
-  .map(
-    AnyConversion(
-      apply: { boxType, message in
-        Episode.TranscriptBlock(
-          content: message,
-          type: .box(boxType)
-        )
-      },
-      unapply: {
-        guard case let .box(boxType) = $0.type
-        else { return nil }
-        return (boxType, $0.content)
-      }
-    ))
+.map(
+  AnyConversion(
+    apply: { boxType, message in
+      Episode.TranscriptBlock(
+        content: message,
+        type: .box(boxType)
+      )
+    },
+    unapply: {
+      guard case let .box(boxType) = $0.type
+      else { return nil }
+      return (boxType, $0.content)
+    }
+  ))
 
 public let titlePreamble = Peek {
   timestamp
@@ -175,11 +176,11 @@ public let title = Parse {
   }
   .map(.string)
 }
-  .map(
-    AnyConversion(
-      apply: { Episode.TranscriptBlock(content: $1, timestamp: $0, type: .title) },
-      unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
-    ))
+.map(
+  AnyConversion(
+    apply: { Episode.TranscriptBlock(content: $1, timestamp: $0, type: .title) },
+    unapply: { $0.type == .title ? ($0.timestamp!, $0.content) : nil }
+  ))
 
 public let paragraph = Parse {
   OneOf {
@@ -187,8 +188,8 @@ public let paragraph = Parse {
     _Rest(strict: false)
   }
 }
-  .map(.string)
-  .map(MarkdownBlockConversion())
+.map(.string)
+.map(MarkdownBlockConversion())
 
 public let markdownBlockParser = Parse {
   Optionally {
@@ -236,15 +237,17 @@ public struct CodeParserPrinter: ParserPrinter {
   public func parse(_ input: inout Substring.UTF8View) throws -> Episode.TranscriptBlock {
     throw SomeError()
   }
-  public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws {
+  public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws
+  {
     guard case let .code(lang: lang) = output.type
     else { throw SomeError() }
 
-    input.prepend(contentsOf: """
-      ```\(lang.identifier)
-      \(output.content)
-      ```
-      """.utf8)
+    input.prepend(
+      contentsOf: """
+        ```\(lang.identifier)
+        \(output.content)
+        ```
+        """.utf8)
   }
 }
 
@@ -263,8 +266,8 @@ public let blocksParser = Many {
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
-    || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
-    || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
+      || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
+      || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
 }
 
