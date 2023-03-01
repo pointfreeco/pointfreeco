@@ -1,10 +1,12 @@
-import Transcripts
 import CustomDump
+import Transcripts
 import XCTest
 
 final class TranscriptsTests: XCTestCase {
   func testBasics() throws {
-    Episode.bootstrapPrivateEpisodes()
+    #if !OSS
+      Episode.bootstrapPrivateEpisodes()
+    #endif
     for episode in Episode.all where episode.permission == .free {
       print("Episode #", episode.sequence)
       let text = String(Substring(try blocksParser.print(Array(episode.transcriptBlocks))))
