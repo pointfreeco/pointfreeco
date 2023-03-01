@@ -209,7 +209,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await expressUnsubscribeReplyMiddleware(conn.map(const(payload)))
       .performAsync()
 
-  case .feed(.atom), .feed(.episodes):
+  case let .feed(feedRoute):
     @Dependency(\.envVars.emergencyMode) var emergencyMode
     guard !emergencyMode
     else {
@@ -218,7 +218,13 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
         .writeStatus(.internalServerError)
         .respond(json: "{}")
     }
-    return episodesRssMiddleware(conn.map { _ in })
+
+    switch feedRoute {
+    case .atom, .episodes:
+      return episodesRssMiddleware(conn.map { _ in })
+    case .slack:
+      return slackEpisodesRssMiddleware(conn.map { _ in })
+    }
 
   case let .gifts(giftsRoute):
     return await giftsMiddleware(conn.map(const(giftsRoute)))
