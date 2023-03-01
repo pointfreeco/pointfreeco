@@ -7,10 +7,7 @@ final class TranscriptsTests: XCTestCase {
     Episode.bootstrapPrivateEpisodes()
     for episode in Episode.all where episode.permission == .free {
       print("Episode #", episode.sequence)
-
       let text = String(Substring(try blocksParser.print(Array(episode.transcriptBlocks))))
-      //dump(text)
-
       try! Data(text.utf8).write(
         to: URL(fileURLWithPath: #filePath)
           .deletingLastPathComponent()
