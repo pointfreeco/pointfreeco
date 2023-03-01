@@ -582,7 +582,5 @@ func transcripts() -> [Resource] {
     .path
 
   return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
-    .map { file in
-      .copy("Resources/\(file)")
-    }
+    .map { .copy("Resources/\($0)") }
 }
