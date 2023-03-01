@@ -220,9 +220,6 @@ var package = Package(
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
-      ],
-      exclude: [
-        "Transcripts/README.md"
       ]
     ),
 
@@ -577,7 +574,15 @@ for index in package.targets.indices {
 }
 
 func transcripts() -> [Resource] {
-  Array(0...224).map { index in
-    .copy("Resources/\(String(format: "%04d", index)).md")
-  }
+  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources")
+    .appendingPathComponent("Transcripts")
+    .appendingPathComponent("Resources")
+    .path
+
+  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+    .map { file in
+      .copy("Resources/\(file)")
+    }
 }
