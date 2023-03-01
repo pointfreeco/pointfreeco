@@ -112,6 +112,32 @@ class TranscriptParserTests: XCTestCase {
     )
   }
 
+  func testImages() throws {
+    let transcriptFragment = """
+      Hello
+
+      ![fullWidth](/path/to/image.png)
+
+      ![inset](/path/to/image.png)
+
+      Goodbye
+      """
+    let blocks: [Episode.TranscriptBlock] = [
+      .init(content: "Hello", type: .paragraph),
+      .init(content: "", type: .image(src: "/path/to/image.png", sizing: .fullWidth)),
+      .init(content: "", type: .image(src: "/path/to/image.png", sizing: .inset)),
+      .init(content: "Goodbye", type: .paragraph),
+    ]
+    XCTAssertNoDifference(
+      try blocksParser.parse(transcriptFragment),
+      blocks
+    )
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      transcriptFragment
+    )
+  }
+
   func testLegacy_Code() throws {
     let blocks: [Episode.TranscriptBlock] = [
       .init(
@@ -153,7 +179,7 @@ class TranscriptParserTests: XCTestCase {
       String(Substring(try blocksParser.print(blocks))),
       """
       A
-      
+
       B
       """
     )

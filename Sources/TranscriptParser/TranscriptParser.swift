@@ -67,7 +67,8 @@ public let image = Parse {
   PrefixUpTo(")".utf8).map(.string)
   ")".utf8
 }
-  .map(AnyConversion(
+.map(
+  AnyConversion(
     apply: { sizing, url in
       Episode.TranscriptBlock(content: "", type: .image(src: url, sizing: sizing))
     },
@@ -236,15 +237,17 @@ public struct CodeParserPrinter: ParserPrinter {
   public func parse(_ input: inout Substring.UTF8View) throws -> Episode.TranscriptBlock {
     throw SomeError()
   }
-  public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws {
+  public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws
+  {
     guard case let .code(lang: lang) = output.type
     else { throw SomeError() }
 
-    input.prepend(contentsOf: """
-      ```\(lang.identifier)
-      \(output.content)
-      ```
-      """.utf8)
+    input.prepend(
+      contentsOf: """
+        ```\(lang.identifier)
+        \(output.content)
+        ```
+        """.utf8)
   }
 }
 
