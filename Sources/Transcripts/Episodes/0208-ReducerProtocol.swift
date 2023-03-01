@@ -7,6 +7,15 @@ extension Episode {
       """,
     codeSampleDirectory: "0208-reducer-protocol-in-practice",
     exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 412_600_000,
+      downloadUrls: .s3(
+        hd1080: "0208-1080p-e157f69cd7f245d4b8697c84dc078a00",
+        hd720: "0208-720p-94e25b3726c64de882aa183fdf749658",
+        sd540: "0208-540p-9d58d1dc750640f9abe130bd4a46a407"
+      ),
+      vimeoId: 754947460
+    ),
     id: 208,
     length: 45 * 60 + 36,
     permission: .free,

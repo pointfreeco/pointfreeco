@@ -5,8 +5,6 @@ import NIO
 import PointFree
 import Prelude
 
-import Transcripts
-
 @main
 struct Server {
   static func main() async throws {

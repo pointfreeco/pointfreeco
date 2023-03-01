@@ -7,6 +7,15 @@ extension Episode {
       """,
     codeSampleDirectory: "0150-derived-behavior-pt5",
     exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 281_521_072,
+      downloadUrls: .s3(
+        hd1080: "0150-1080p-ad706c3dcec342d5b8251e1cb592bf0c",
+        hd720: "0150-720p-8787cf7fabce45e4981350082f4d7d09",
+        sd540: "0150-540p-595a809711ed4474bfa3936324aa9aa0"
+      ),
+      vimeoId: 561_903_110
+    ),
     id: 150,
     length: 60 * 60 + 10,
     permission: .free,
