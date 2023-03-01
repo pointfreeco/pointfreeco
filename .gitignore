@@ -46,4 +46,5 @@ Packages/
 .pf-env
 .ssl/*
 Sources/Models/Transcripts
+Sources/Transcripts/Transcripts
 bin/*
