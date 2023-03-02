@@ -1,16 +1,6 @@
 import Models
 import Parsing
 
-public struct Timestamp: Conversion {
-  public func apply(_ input: (Int, Int, Int)) throws -> Int {
-    input.0 * 60 * 60 + input.1 * 60 + input.2
-  }
-
-  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
-    (output / 60 / 60, (output / 60) % 60, output % 60)
-  }
-}
-
 public let timestamp = Parse(Timestamp()) {
   "[".utf8
   Digits(2)
@@ -19,45 +9,6 @@ public let timestamp = Parse(Timestamp()) {
   ":".utf8
   Digits(2)
   "]".utf8
-}
-
-public struct _PrefixUpTo<Upstream: Parser>: Parser
-where
-  Upstream.Input: Collection,
-  Upstream.Input == Upstream.Input.SubSequence
-{
-  struct SuffixNotFound: Error {}
-
-  let upstream: Upstream
-
-  init(@ParserBuilder _ upstream: () -> Upstream) {
-    self.upstream = upstream()
-  }
-
-  public func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
-    let original = input
-    var copy = input
-    while (try? self.upstream.parse(&copy)) == nil {
-      guard !input.isEmpty else {
-        throw SuffixNotFound()
-      }
-      input.removeFirst()
-      copy = input
-    }
-    return original[..<input.startIndex]
-  }
-}
-
-extension _PrefixUpTo: ParserPrinter
-where
-  Upstream: ParserPrinter,
-  Upstream.Input: PrependableCollection
-{
-  public func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
-    input.prepend(contentsOf: output)
-    var copy = input
-    _ = try self.parse(&copy)
-  }
 }
 
 public let image = Parse {
@@ -78,6 +29,15 @@ public let image = Parse {
       return (sizing, url)
     }))
 
+public let boxType = Parse {
+  "!> [".utf8
+  OneOf {
+    boxTypeByFullDetails
+    boxTypeByName
+  }
+  "]: ".utf8
+}
+
 public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
@@ -97,15 +57,6 @@ public let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.Bloc
   Prefix(6) { $0.isHexDigit }.map(.string)
   ", #".utf8
   Prefix(6) { $0.isHexDigit }.map(.string)
-}
-
-public let boxType = Parse {
-  "!> [".utf8
-  OneOf {
-    boxTypeByFullDetails
-    boxTypeByName
-  }
-  "]: ".utf8
 }
 
 public let boxMessage = Many {
@@ -231,29 +182,30 @@ public struct MarkdownBlockConversion: Conversion {
   }
 }
 
-public struct CodeParserPrinter: ParserPrinter {
-  private struct SomeError: Error {}
+public struct CodeBlock: ParserPrinter {
+  private struct CodeBlockError: Error {}
 
   public func parse(_ input: inout Substring.UTF8View) throws -> Episode.TranscriptBlock {
-    throw SomeError()
+    throw CodeBlockError()
   }
   public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws
   {
     guard case let .code(lang: lang) = output.type
-    else { throw SomeError() }
+    else { throw CodeBlockError() }
 
     input.prepend(
       contentsOf: """
         ```\(lang.identifier)
         \(output.content)
         ```
-        """.utf8)
+        """.utf8
+    )
   }
 }
 
 public let blocksParser = Many {
   OneOf {
-    CodeParserPrinter()
+    CodeBlock()
     box
     image
     title
@@ -263,10 +215,20 @@ public let blocksParser = Many {
   "\n\n".utf8
 }
 
+public struct Timestamp: Conversion {
+  public func apply(_ input: (Int, Int, Int)) throws -> Int {
+    input.0 * 60 * 60 + input.1 * 60 + input.2
+  }
+
+  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
+    (output / 60 / 60, (output / 60) % 60, output % 60)
+  }
+}
+
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
-      || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
-      || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
+    || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
+    || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
 }
