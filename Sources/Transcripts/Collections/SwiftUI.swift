@@ -110,6 +110,17 @@ extension Episode.Collection.Section {
     related: [
       .init(
         blurb: #"""
+          After building a demo application for showing off the various SwiftUI navigation APIs
+          we completely modularized it so that features could be built in isolation without
+          building the entire application.
+          """#,
+        content: .episodes([
+          .ep171_modularization,
+          .ep172_modularization,
+        ])
+      ),
+      .init(
+        blurb: #"""
           A central theme of our series of episodes on SwiftUI navigation is "derived behavior." This is what one needs to do to peel off a small bit of behavior from a parent domain to hand down to a child domain. SwiftUI gives us some tools to accomplish this, but we can go further.
           """#,
         content: .section(.caseStudies, index: 3)
