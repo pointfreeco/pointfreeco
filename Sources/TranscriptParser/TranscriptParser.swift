@@ -185,7 +185,7 @@ public let title = Parse {
 public let paragraph = Parse {
   OneOf {
     _PrefixUpTo { preamble }
-    _Rest(strict: false)
+    _Rest()
   }
 }
 .map(.string)
@@ -269,38 +269,4 @@ extension UTF8.CodeUnit {
       || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
       || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
-}
-
-public struct _Rest<Input: Collection>: Parser where Input.SubSequence == Input {
-  public let strict: Bool
-  public init(strict: Bool = true) {
-    self.strict = strict
-  }
-  public func parse(_ input: inout Input) throws -> Input {
-    guard !self.strict || !input.isEmpty
-    else { throw SomeError() }
-    let output = input
-    input.removeFirst(input.count)
-    return output
-  }
-}
-struct SomeError: Error {}
-extension _Rest: ParserPrinter where Input: PrependableCollection {
-  public func print(_ output: Input, into input: inout Input) throws {
-    guard !self.strict || input.isEmpty
-    else {
-      throw SomeError()
-    }
-
-    guard !self.strict || !output.isEmpty
-    else {
-      throw SomeError()
-    }
-    input.prepend(contentsOf: output)
-  }
-}
-
-extension _Rest where Input == Substring.UTF8View {
-  @_disfavoredOverload
-  public init(strict: Bool) { self.strict = strict }
 }
