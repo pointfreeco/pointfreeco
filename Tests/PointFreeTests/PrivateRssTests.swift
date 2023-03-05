@@ -40,7 +40,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -49,7 +49,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -59,7 +59,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -68,7 +68,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -78,7 +78,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Yearly_StripeDown() async throws {
     var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -87,7 +87,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -98,7 +98,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -107,7 +107,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -117,7 +117,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_InActiveSubscriber() async throws {
     var user = Models.User.nonSubscriber
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
@@ -129,7 +129,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -139,7 +139,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_DeactivatedSubscriber() async throws {
     var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     var subscription = Models.Subscription.mock
     subscription.deactivated = true
@@ -151,7 +151,7 @@ class PrivateRssTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .account(.rss(salt: "deadbeef")),
+          to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
           session: .loggedOut
         )
       )
@@ -186,7 +186,7 @@ class PrivateRssTests: TestCase {
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
     } operation: {
       var req = request(
-        to: .account(.rss(salt: "deadbeef")),
+        to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
         session: .loggedOut
       )
       req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
@@ -200,7 +200,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_ValidUserAgent() async throws {
     var user = Models.User.mock
-    user.rssSalt = "deadbeef"
+    user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
 
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -209,7 +209,7 @@ class PrivateRssTests: TestCase {
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
     } operation: {
       var req = request(
-        to: .account(.rss(salt: "deadbeef")),
+        to: .account(.rss(salt: "deadbeef-dead-beef-dead-beefdeadbeef")),
         session: .loggedOut
       )
       req.allHTTPHeaderFields?["User-Agent"] = "Safari 1.0"

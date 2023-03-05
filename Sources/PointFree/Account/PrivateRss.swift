@@ -19,6 +19,11 @@ func accountRssMiddleware(
   @Dependency(\.stripe) var stripe
   @Dependency(\.uuid) var uuid
 
+  guard conn.data.rawValue.contains("/") || UUID(uuidString: conn.data.rawValue) != nil
+  else {
+    return conn.invalidatedFeedResponse(errorMessage: notFoundError)
+  }
+
   do {
     guard let user = try? await database.fetchUserByRssSalt(conn.data)
     else {
@@ -87,6 +92,16 @@ extension Conn where Step == StatusLineOpen {
       .writeStatus(.ok)
       .respond(xml: invalidatedFeedView)
   }
+}
+
+private var notFoundError: String {
+  @Dependency(\.siteRouter) var siteRouter
+  return """
+    ‼️ An RSS feed was not found at this URL. Please try again by going to your acount page at
+    \(siteRouter.url(for: .account())), right click the private RSS URL, click "Copy Link", and
+    paste that into your RSS application. If you think this is an error, please contact
+    support@pointfree.co.
+    """
 }
 
 private var deactivatedError: String {
