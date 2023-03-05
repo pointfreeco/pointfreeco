@@ -66,7 +66,6 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -97,7 +96,6 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -242,7 +240,6 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -394,7 +391,6 @@ class SubscriptionConfirmationTests: TestCase {
           session: .loggedIn
         )
       )
-      let result = await siteMiddleware(conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
