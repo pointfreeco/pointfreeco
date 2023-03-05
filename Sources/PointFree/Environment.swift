@@ -11,6 +11,7 @@ import PointFreeRouter
 import PostgresKit
 import Prelude
 import Stripe
+import Transcripts
 import VimeoClient
 
 extension BlogPost: DependencyKey {

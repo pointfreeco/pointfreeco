@@ -658,8 +658,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testTranscriptTypes() async {
-    let titles = ["Composable Architecture"]
-    var episode = Episode(
+    let episode = Episode(
       blurb: """
         """,
       id: 1,
@@ -715,14 +714,6 @@ class EpisodePageTests: TestCase {
         ),
       ]
     )
-
-    let episodes = titles.enumerated().map { idx, title -> Episode in
-      var episode = Episode.mock
-      episode.id = .init(rawValue: idx)
-      episode.sequence = .init(rawValue: idx)
-      episode.title = title
-      return episode
-    }
 
     await withDependencies {
       $0.episodes = { [episode] }

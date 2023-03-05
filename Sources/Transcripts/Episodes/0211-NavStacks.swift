@@ -9,6 +9,15 @@ extension Episode {
       """,
     codeSampleDirectory: "0211-navigation-stacks-pt1",
     exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 229_400_000,
+      downloadUrls: .s3(
+        hd1080: "0211-1080p-066b551bc7ca4e249bfb9c01ba31712c",
+        hd720: "0211-720p-5fdeadc372234cb68378b7b80db5bddc",
+        sd540: "0211-540p-467e4dfee59a485f9ad55fea179fc404"
+      ),
+      vimeoId: 767_636_852
+    ),
     id: 211,
     length: 49 * 60 + 58,
     permission: .free,
@@ -27,7 +36,8 @@ extension Episode {
         sd540: "0211-trailer-540p-753a0c197f3740fe93d767bd902ce9c7"
       ),
       vimeoId: 767_694_109
-    )
+    ),
+    transcriptBlocks: loadTranscriptBlocks(forSequence: 221)
   )
 }
 

@@ -185,7 +185,7 @@ class TranscriptParserTests: XCTestCase {
     )
   }
 
-  func testLegacy_DuobleHash() throws {
+  func testLegacy_DoubleHash() throws {
     let blocks = [
       Episode.TranscriptBlock(
         content: """

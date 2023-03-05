@@ -1,4 +1,5 @@
 import Dependencies
+import Foundation
 import HttpPipeline
 import NIO
 import PointFree

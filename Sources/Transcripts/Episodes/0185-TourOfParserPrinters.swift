@@ -7,6 +7,15 @@ extension Episode {
       """,
     codeSampleDirectory: "0185-parser-printers-tour-pt1",
     exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 345_900_000,
+      downloadUrls: .s3(
+        hd1080: "0185-1080p-849e5dbf04de463ba37cf2e858cdc3a8",
+        hd720: "0185-720p-5eaee19b6f0a4d62a6cc554831ec2272",
+        sd540: "0185-540p-8ac8e74324ec494ca496c1bb412cea78"
+      ),
+      vimeoId: 697_130_371
+    ),
     id: 185,
     length: 40 * 60 + 37,
     permission: .free,
@@ -26,7 +35,8 @@ extension Episode {
         sd540: "0185-trailer-540p-fcb1777aa23446f99b65b75021979bef"
       ),
       vimeoId: 697_129_966
-    )
+    ),
+    transcriptBlocks: loadTranscriptBlocks(forSequence: 185)
   )
 }
 

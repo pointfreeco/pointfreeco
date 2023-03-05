@@ -29,15 +29,6 @@ public let image = Parse {
       return (sizing, url)
     }))
 
-public let boxType = Parse {
-  "!> [".utf8
-  OneOf {
-    boxTypeByFullDetails
-    boxTypeByName
-  }
-  "]: ".utf8
-}
-
 public let boxTypeByName = Parse {
   PrefixUpTo("]".utf8).map(.string)
 }
@@ -59,6 +50,15 @@ public let boxTypeByFullDetails = Parse(.memberwise(Episode.TranscriptBlock.Bloc
   Prefix(6) { $0.isHexDigit }.map(.string)
 }
 
+public let boxType = Parse {
+  "!> [".utf8
+  OneOf {
+    boxTypeByFullDetails
+    boxTypeByName
+  }
+  "]: ".utf8
+}
+
 public let boxMessage = Many {
   OneOf {
     PrefixUpTo("\n".utf8)
@@ -72,7 +72,8 @@ public let boxMessage = Many {
   AnyConversion(
     apply: { $0.joined(separator: "\n") },
     unapply: { $0.split(separator: "\n").map(String.init) }
-  ))
+  )
+)
 
 public let box = Parse {
   boxType
@@ -91,7 +92,8 @@ public let box = Parse {
       else { return nil }
       return (boxType, $0.content)
     }
-  ))
+  )
+)
 
 public let titlePreamble = Peek {
   timestamp

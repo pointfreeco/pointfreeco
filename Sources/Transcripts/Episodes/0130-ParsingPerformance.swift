@@ -7,6 +7,15 @@ extension Episode {
       """,
     codeSampleDirectory: "0130-parsing-performance-pt3",
     exercises: _exercises,
+    fullVideo: .init(
+      bytesLength: 669_202_779,
+      downloadUrls: .s3(
+        hd1080: "0130-1080p-cd19e779684f415da33ff53c102247f2",
+        hd720: "0130-720p-56e963e7f6f540a58344c452138f9c3f",
+        sd540: "0130-540p-9b7ae744c9494f58b05323927d79eac3"
+      ),
+      vimeoId: 492_807_499
+    ),
     id: 130,
     length: 58 * 60 + 46,
     permission: .free,
@@ -38,7 +47,8 @@ extension Episode {
         sd540: "0130-trailer-540p-388bab40b2fd452b91d59d68de52f524"
       ),
       vimeoId: 492_807_428
-    )
+    ),
+    transcriptBlocks: loadTranscriptBlocks(forSequence: 130)
   )
 }
 

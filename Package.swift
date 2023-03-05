@@ -220,9 +220,6 @@ var package = Package(
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
-      ],
-      exclude: [
-        "Transcripts/README.md"
       ]
     ),
 
@@ -493,6 +490,15 @@ var package = Package(
       name: "Transcripts",
       dependencies: [
         "TranscriptParser"
+      ],
+      resources: transcripts()
+    ),
+
+    .testTarget(
+      name: "TranscriptsTests",
+      dependencies: [
+        "Transcripts",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
     ),
 
@@ -565,4 +571,16 @@ for index in package.targets.indices {
   if package.targets[index].type != .system {
     package.targets[index].swiftSettings = .pointFreeSettings
   }
+}
+
+func transcripts() -> [Resource] {
+  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources")
+    .appendingPathComponent("Transcripts")
+    .appendingPathComponent("Resources")
+    .path
+
+  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+    .map { .copy("Resources/\($0)") }
 }
