@@ -258,13 +258,6 @@ private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
   )
 }
 
-private let notFoundFeedView = itunesRssFeedLayout { errorMessage in
-  node(
-    rssChannel: invalidatedChannel(errorMessage: errorMessage),
-    items: [invalidatedItem(errorMessage: errorMessage)]
-  )
-}
-
 private func invalidatedChannel(errorMessage: String) -> RssChannel {
   @Dependency(\.calendar) var calendar
   @Dependency(\.date.now) var now
