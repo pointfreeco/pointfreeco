@@ -34,7 +34,7 @@ extension Episode {
         publishedAt: yearMonthDayFormatter.date(from: "2022-09-20"),
         title: "Composable Architecture @ Scale"
       ),
-      .composableNavigationBetaDiscussion
+      .composableNavigationBetaDiscussion,
     ],
     sequence: 225,
     subtitle: "Behavior",
