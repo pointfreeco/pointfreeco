@@ -27,6 +27,7 @@ WORKDIR /app
 
 COPY --from=build /usr/include/cmark* /usr/include/
 COPY --from=build /usr/lib/libcmark* /usr/lib/
-COPY --from=build /build/.build/release/Server /usr/bin
-COPY --from=build /build/.build/release/Runner /usr/bin
+COPY --from=build /build .
+RUN ln -s /app/.build/release/Server /usr/bin
+RUN ln -s /app/.build/release/Runner /usr/bin
 CMD Server
