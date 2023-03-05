@@ -228,7 +228,7 @@ public struct Timestamp: Conversion {
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
-    || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
-    || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
+      || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
+      || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
 }

@@ -189,8 +189,8 @@ class TranscriptParserTests: XCTestCase {
     let blocks = [
       Episode.TranscriptBlock(
         content: """
-        ## Subtitle
-        """,
+          ## Subtitle
+          """,
         type: .paragraph
       )
     ]

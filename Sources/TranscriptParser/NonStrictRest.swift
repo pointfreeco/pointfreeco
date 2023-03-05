@@ -16,5 +16,5 @@ extension _Rest: ParserPrinter where Input: PrependableCollection {
 
 extension _Rest where Input == Substring.UTF8View {
   @_disfavoredOverload
-  public init() { }
+  public init() {}
 }
