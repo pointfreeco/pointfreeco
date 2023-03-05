@@ -659,7 +659,7 @@ class EpisodePageTests: TestCase {
 
   func testTranscriptTypes() async {
     let titles = ["Composable Architecture"]
-    var episode = Episode(
+    let episode = Episode(
       blurb: """
         """,
       id: 1,

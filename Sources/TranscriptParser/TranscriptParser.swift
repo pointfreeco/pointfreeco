@@ -1,16 +1,6 @@
 import Models
 import Parsing
 
-public struct Timestamp: Conversion {
-  public func apply(_ input: (Int, Int, Int)) throws -> Int {
-    input.0 * 60 * 60 + input.1 * 60 + input.2
-  }
-
-  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
-    (output / 60 / 60, (output / 60) % 60, output % 60)
-  }
-}
-
 public let timestamp = Parse(Timestamp()) {
   "[".utf8
   Digits(2)
@@ -19,45 +9,6 @@ public let timestamp = Parse(Timestamp()) {
   ":".utf8
   Digits(2)
   "]".utf8
-}
-
-public struct _PrefixUpTo<Upstream: Parser>: Parser
-where
-  Upstream.Input: Collection,
-  Upstream.Input == Upstream.Input.SubSequence
-{
-  struct SuffixNotFound: Error {}
-
-  let upstream: Upstream
-
-  init(@ParserBuilder _ upstream: () -> Upstream) {
-    self.upstream = upstream()
-  }
-
-  public func parse(_ input: inout Upstream.Input) throws -> Upstream.Input {
-    let original = input
-    var copy = input
-    while (try? self.upstream.parse(&copy)) == nil {
-      guard !input.isEmpty else {
-        throw SuffixNotFound()
-      }
-      input.removeFirst()
-      copy = input
-    }
-    return original[..<input.startIndex]
-  }
-}
-
-extension _PrefixUpTo: ParserPrinter
-where
-  Upstream: ParserPrinter,
-  Upstream.Input: PrependableCollection
-{
-  public func print(_ output: Upstream.Input, into input: inout Upstream.Input) throws {
-    input.prepend(contentsOf: output)
-    var copy = input
-    _ = try self.parse(&copy)
-  }
 }
 
 public let image = Parse {
@@ -121,7 +72,8 @@ public let boxMessage = Many {
   AnyConversion(
     apply: { $0.joined(separator: "\n") },
     unapply: { $0.split(separator: "\n").map(String.init) }
-  ))
+  )
+)
 
 public let box = Parse {
   boxType
@@ -140,7 +92,8 @@ public let box = Parse {
       else { return nil }
       return (boxType, $0.content)
     }
-  ))
+  )
+)
 
 public let titlePreamble = Peek {
   timestamp
@@ -185,7 +138,7 @@ public let title = Parse {
 public let paragraph = Parse {
   OneOf {
     _PrefixUpTo { preamble }
-    _Rest(strict: false)
+    _Rest()
   }
 }
 .map(.string)
@@ -263,44 +216,20 @@ public let blocksParser = Many {
   "\n\n".utf8
 }
 
+public struct Timestamp: Conversion {
+  public func apply(_ input: (Int, Int, Int)) throws -> Int {
+    input.0 * 60 * 60 + input.1 * 60 + input.2
+  }
+
+  public func unapply(_ output: Int) throws -> (Int, Int, Int) {
+    (output / 60 / 60, (output / 60) % 60, output % 60)
+  }
+}
+
 extension UTF8.CodeUnit {
   fileprivate var isHexDigit: Bool {
     (.init(ascii: "0") ... .init(ascii: "9")).contains(self)
       || (.init(ascii: "A") ... .init(ascii: "F")).contains(self)
       || (.init(ascii: "a") ... .init(ascii: "f")).contains(self)
   }
-}
-
-public struct _Rest<Input: Collection>: Parser where Input.SubSequence == Input {
-  public let strict: Bool
-  public init(strict: Bool = true) {
-    self.strict = strict
-  }
-  public func parse(_ input: inout Input) throws -> Input {
-    guard !self.strict || !input.isEmpty
-    else { throw SomeError() }
-    let output = input
-    input.removeFirst(input.count)
-    return output
-  }
-}
-struct SomeError: Error {}
-extension _Rest: ParserPrinter where Input: PrependableCollection {
-  public func print(_ output: Input, into input: inout Input) throws {
-    guard !self.strict || input.isEmpty
-    else {
-      throw SomeError()
-    }
-
-    guard !self.strict || !output.isEmpty
-    else {
-      throw SomeError()
-    }
-    input.prepend(contentsOf: output)
-  }
-}
-
-extension _Rest where Input == Substring.UTF8View {
-  @_disfavoredOverload
-  public init(strict: Bool) { self.strict = strict }
 }
