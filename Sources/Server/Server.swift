@@ -1,6 +1,6 @@
 import Dependencies
-import HttpPipeline
 import Foundation
+import HttpPipeline
 import NIO
 import PointFree
 import Prelude

@@ -23,7 +23,7 @@ extension Episode {
     sequence: 0,
     title: "We launched!",
     // NB: Same as full video
-    trailerVideo: .init( 
+    trailerVideo: .init(
       bytesLength: 90_533_615,
       downloadUrls: .s3(
         hd1080: "0000-1080p-cccfbb7934ff42a8964d0e0393b72cf1",

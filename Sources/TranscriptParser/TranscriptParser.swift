@@ -184,29 +184,30 @@ public struct MarkdownBlockConversion: Conversion {
   }
 }
 
-public struct CodeParserPrinter: ParserPrinter {
-  private struct SomeError: Error {}
+public struct CodeBlock: ParserPrinter {
+  private struct CodeBlockError: Error {}
 
   public func parse(_ input: inout Substring.UTF8View) throws -> Episode.TranscriptBlock {
-    throw SomeError()
+    throw CodeBlockError()
   }
   public func print(_ output: Episode.TranscriptBlock, into input: inout Substring.UTF8View) throws
   {
     guard case let .code(lang: lang) = output.type
-    else { throw SomeError() }
+    else { throw CodeBlockError() }
 
     input.prepend(
       contentsOf: """
         ```\(lang.identifier)
         \(output.content)
         ```
-        """.utf8)
+        """.utf8
+    )
   }
 }
 
 public let blocksParser = Many {
   OneOf {
-    CodeParserPrinter()
+    CodeBlock()
     box
     image
     title
