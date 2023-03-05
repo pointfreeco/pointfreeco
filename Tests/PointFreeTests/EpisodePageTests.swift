@@ -716,14 +716,6 @@ class EpisodePageTests: TestCase {
       ]
     )
 
-    let episodes = titles.enumerated().map { idx, title -> Episode in
-      var episode = Episode.mock
-      episode.id = .init(rawValue: idx)
-      episode.sequence = .init(rawValue: idx)
-      episode.title = title
-      return episode
-    }
-
     await withDependencies {
       $0.episodes = { [episode] }
     } operation: {
