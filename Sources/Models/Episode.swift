@@ -440,7 +440,7 @@ public struct Episode: Equatable, Identifiable {
         return .image(src: src, sizing: .fullWidth)
       }
 
-      public enum ImageSizing: String, Codable {
+      public enum ImageSizing: String, Codable, CaseIterable {
         case fullWidth
         case inset
       }
