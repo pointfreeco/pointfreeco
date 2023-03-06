@@ -2,10 +2,14 @@ import Foundation
 
 extension Episode {
   public static let ep225_composableNavigation = Episode(
+    alternateSlug: "composable-navigation-behavior",
     blurb: """
-      We add superpowers to sheet-powered navigation, including automatically cancelling a child
-      feature's effects upon dismissal, and even letting child features dismiss themselves! Plus, we
-      look at how "non-exhaustive" testing simplifies navigation-based tests.
+      We add superpowers to the navigation tools of the [Composable Architecture][tca-gh], including
+      automatically cancelling a child feature's effects upon dismissal, and even letting child
+      features dismiss themselves! Plus, we look at how "non-exhaustive" testing simplifies
+      navigation-based tests.
+
+      [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
       """,
     codeSampleDirectory: "0225-composable-navigation-pt4",
     exercises: _exercises,
@@ -37,7 +41,7 @@ extension Episode {
       .composableNavigationBetaDiscussion,
     ],
     sequence: 225,
-    subtitle: "Behavior",
+    subtitle: "Effect cancellation",
     title: "Composable Navigation",
     trailerVideo: .init(
       bytesLength: 60_300_000,
