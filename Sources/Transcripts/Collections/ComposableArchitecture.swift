@@ -298,6 +298,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep225_composableNavigation),
       .init(episode: .ep226_composableNavigation),
       .init(episode: .ep227_composableNavigation),
+      .init(episode: .ep228_composableNavigation),
     ],
     isFinished: false,
     related: [],
