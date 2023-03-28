@@ -268,6 +268,7 @@ public struct Invoice: Codable, Equatable {
   public var number: Number?
   public var periodStart: Date
   public var periodEnd: Date
+  public var status: Status
   public var subscription: Subscription.ID?
   public var subtotal: Cents<Int>
   public var total: Cents<Int>
@@ -285,6 +286,7 @@ public struct Invoice: Codable, Equatable {
     number: Number?,
     periodStart: Date,
     periodEnd: Date,
+    status: Status,
     subscription: Subscription.ID?,
     subtotal: Cents<Int>,
     total: Cents<Int>
@@ -301,12 +303,21 @@ public struct Invoice: Codable, Equatable {
     self.number = number
     self.periodStart = periodStart
     self.periodEnd = periodEnd
+    self.status = status
     self.subscription = subscription
     self.subtotal = subtotal
     self.total = total
   }
 
   public typealias Number = Tagged<(Self, number: ()), String>
+
+  public enum Status: String, Codable {
+    case draft
+    case open
+    case void
+    case paid
+    case uncollectible
+  }
 }
 
 public struct LineItem: Codable, Equatable, Identifiable {

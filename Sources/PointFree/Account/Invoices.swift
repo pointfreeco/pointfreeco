@@ -79,7 +79,7 @@ private func fetchInvoices<A>(
     let subscription = conn.data.first
 
     return EitherIO {
-      try await stripe.fetchInvoices(subscription.customer.id)
+      try await stripe.fetchInvoices(subscription.customer.id, .paid)
     }
     .withExcept(notifyError(subject: "Couldn't load invoices"))
     .run

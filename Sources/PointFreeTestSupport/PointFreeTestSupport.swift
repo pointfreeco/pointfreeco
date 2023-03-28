@@ -53,6 +53,13 @@ extension DependencyValues {
     self.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock] }
     self.stripe.fetchSubscription = { _ in .individualMonthly }
   }
+
+  public mutating func failing() {
+    self.database = .failing
+    self.gitHub = .failing
+    self.mailgun = .failing
+    self.stripe = .failing
+  }
 }
 
 extension Mailgun.Client {

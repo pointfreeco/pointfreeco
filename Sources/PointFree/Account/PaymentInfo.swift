@@ -57,6 +57,7 @@ let updatePaymentInfoMiddleware =
   requireUserAndPaymentMethod
   <<< requireStripeSubscription
   <| { conn in
+    @Dependency(\.database) var database
     @Dependency(\.stripe) var stripe
 
     let (subscription, _, paymentMethodID) = lower(conn.data)
@@ -66,6 +67,15 @@ let updatePaymentInfoMiddleware =
     return EitherIO {
       let paymentMethod = try await stripe.attachPaymentMethod(paymentMethodID, customer)
       _ = try await stripe.updateCustomer(customer, paymentMethod.id)
+      if subscription.status == .pastDue {
+        for invoice in try await stripe.fetchInvoices(customer, .open).data {
+          if let id = invoice.id {
+            _ = try await stripe.payInvoice(id)
+          }
+        }
+        let subscription = try await stripe.fetchSubscription(subscription.id)
+        _ = try await database.updateStripeSubscription(subscription)
+      }
     }
     .run
     .flatMap {

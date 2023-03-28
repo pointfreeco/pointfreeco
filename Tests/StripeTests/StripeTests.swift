@@ -498,7 +498,7 @@ final class StripeTests: TestCase {
       named: "fetch-invoice"
     )
     await assertSnapshot(
-      matching: Stripe.fetchInvoices(for: "cus_test").rawValue,
+      matching: Stripe.fetchInvoices(for: "cus_test", status: .paid).rawValue,
       as: .raw,
       named: "fetch-invoices"
     )
