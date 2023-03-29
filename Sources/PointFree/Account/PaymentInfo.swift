@@ -73,9 +73,11 @@ let updatePaymentInfoMiddleware =
             _ = try await stripe.payInvoice(id)
           }
         }
-        let subscription = try await stripe.fetchSubscription(subscription.id)
-        _ = try await database.updateStripeSubscription(subscription)
       }
+      // NB: Let's always eagerly fetch/update subscription info when updating payment info.
+      //     We don't want the subscription state to get out of sync on failure.
+      let subscription = try await stripe.fetchSubscription(subscription.id)
+      _ = try await database.updateStripeSubscription(subscription)
     }
     .run
     .flatMap {

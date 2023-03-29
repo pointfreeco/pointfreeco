@@ -65,6 +65,7 @@ class PaymentInfoTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in .mock }
       $0.database.fetchUserById = { _ in .mock }
+      $0.database.updateStripeSubscription = { _ in .mock }
       $0.stripe.attachPaymentMethod = { _, _ in .mock }
       $0.stripe.fetchInvoices = { _, _ in .mock([]) }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
