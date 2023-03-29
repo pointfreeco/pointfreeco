@@ -36,6 +36,7 @@ Stripe-Signature: t=1517356800,v1=2ef2fc972988f9516f533ebea58cedd7862d7e9e961dfe
       "number" : "0000000-0000",
       "period_end" : 1519948800,
       "period_start" : 1517356800,
+      "status" : "paid",
       "subscription" : "sub_test",
       "subtotal" : 1700,
       "total" : 1700

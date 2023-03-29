@@ -54,4 +54,53 @@ class PaymentInfoTests: TestCase {
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
+
+  func testUpdate() async throws {
+    await withDependencies {
+      $0.failing()
+      $0.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
+      $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
+      $0.database.sawUser = { _ in }
+      $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
+      $0.database.fetchSubscriptionById = { _ in .mock }
+      $0.database.fetchUserById = { _ in .mock }
+      $0.database.updateStripeSubscription = { _ in .mock }
+      $0.stripe.attachPaymentMethod = { _, _ in .mock }
+      $0.stripe.fetchInvoices = { _, _ in .mock([]) }
+      $0.stripe.fetchSubscription = { _ in .individualMonthly }
+      $0.stripe.updateCustomer = { _, _ in .mock }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.paymentInfo(.update("pm_test"))), session: .loggedIn)
+      )
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  func testUpdate_pastDue() async throws {
+    await withDependencies {
+      $0.failing()
+      $0.database.fetchEnterpriseAccountForSubscription = { _ in throw unit }
+      $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
+      $0.database.sawUser = { _ in }
+      $0.database.fetchSubscriptionByOwnerId = { _ in .pastDue }
+      $0.database.fetchSubscriptionById = { _ in .pastDue }
+      $0.database.fetchUserById = { _ in .mock }
+      $0.database.updateStripeSubscription = { _ in .mock }
+      $0.stripe.attachPaymentMethod = { _, _ in .mock }
+      $0.stripe.fetchInvoices = { _, _ in .mock([.pastDue]) }
+      $0.stripe.payInvoice = { _ in .mock(charge: .right(.mock)) }
+      $0.stripe.fetchSubscription = { _ in
+        update(.individualMonthly) { $0.status = .pastDue }
+      }
+      $0.stripe.updateCustomer = { _, _ in .mock }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.paymentInfo(.update("pm_test"))), session: .loggedIn)
+      )
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
 }

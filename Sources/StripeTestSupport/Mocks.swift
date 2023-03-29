@@ -18,7 +18,7 @@ extension Client {
     fetchCustomer: { _ in .mock },
     fetchCustomerPaymentMethods: { _ in .mock([]) },
     fetchInvoice: { _ in .mock(charge: .right(.mock)) },
-    fetchInvoices: { _ in .mock([.mock(charge: .right(.mock))]) },
+    fetchInvoices: { _, _ in .mock([.mock(charge: .right(.mock))]) },
     fetchPaymentIntent: { _ in .succeeded },
     fetchPaymentMethod: { _ in .mock },
     fetchPlans: { .mock([.mock]) },
@@ -26,6 +26,7 @@ extension Client {
     fetchSubscription: { _ in .mock },
     fetchUpcomingInvoice: { _ in .upcoming },
     invoiceCustomer: { _ in .mock(charge: .right(.mock)) },
+    payInvoice: { _ in .mock(charge: .right(.mock)) },
     updateCustomer: { _, _ in .mock },
     updateCustomerBalance: { _, cents in update(.mock) { $0.balance = cents } },
     updateCustomerExtraInvoiceInfo: { _, _ in .mock },
@@ -141,10 +142,17 @@ extension Invoice {
       number: "0000000-0000",
       periodStart: .mock,
       periodEnd: Date.mock.addingTimeInterval(60 * 60 * 24 * 30),
+      status: .paid,
       subscription: "sub_test",
       subtotal: 17_00,
       total: 17_00
     )
+  }
+
+  public static let pastDue = update(mock(charge: .right(.mock))) {
+    $0.amountDue = 17_00
+    $0.amountPaid = 0
+    $0.status = .open
   }
 
   public static let upcoming = update(mock(charge: .right(.mock))) {

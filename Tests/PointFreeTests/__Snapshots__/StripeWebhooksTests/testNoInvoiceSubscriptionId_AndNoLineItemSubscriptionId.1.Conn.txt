@@ -1,6 +1,6 @@
 POST http://localhost:8080/webhooks/stripe
 Cookie: pf_session={}
-Stripe-Signature: t=1517356800,v1=d631e049c4c0701421f20b07dc017220594a3b89440782ee21ff764ff39635d4
+Stripe-Signature: t=1517356800,v1=5913834553d5a345dee95a11dccf13a397319091b20c48cf185af9fc9a46ac87
 
 {
   "data" : {
@@ -35,6 +35,7 @@ Stripe-Signature: t=1517356800,v1=d631e049c4c0701421f20b07dc017220594a3b89440782
       "number" : "0000000-0000",
       "period_end" : 1519948800,
       "period_start" : 1517356800,
+      "status" : "paid",
       "subtotal" : 1700,
       "total" : 1700
     }

@@ -30,7 +30,7 @@ public struct Client {
   public var fetchCustomer: (Customer.ID) async throws -> Customer
   public var fetchCustomerPaymentMethods: (Customer.ID) async throws -> ListEnvelope<PaymentMethod>
   public var fetchInvoice: (Invoice.ID) async throws -> Invoice
-  public var fetchInvoices: (Customer.ID) async throws -> ListEnvelope<Invoice>
+  public var fetchInvoices: (Customer.ID, Invoice.Status) async throws -> ListEnvelope<Invoice>
   public var fetchPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
   public var fetchPaymentMethod: (PaymentMethod.ID) async throws -> PaymentMethod
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
@@ -38,6 +38,7 @@ public struct Client {
   public var fetchSubscription: (Subscription.ID) async throws -> Subscription
   public var fetchUpcomingInvoice: (Customer.ID) async throws -> Invoice
   public var invoiceCustomer: (Customer.ID) async throws -> Invoice
+  public var payInvoice: (Invoice.ID) async throws -> Invoice
   public var updateCustomer: (Customer.ID, PaymentMethod.ID) async throws -> Customer
   public var updateCustomerBalance: (Customer.ID, Cents<Int>) async throws -> Customer
   public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) async throws -> Customer
@@ -64,7 +65,7 @@ public struct Client {
       PaymentMethod
     >,
     fetchInvoice: @escaping (Invoice.ID) async throws -> Invoice,
-    fetchInvoices: @escaping (Customer.ID) async throws -> ListEnvelope<Invoice>,
+    fetchInvoices: @escaping (Customer.ID, Invoice.Status) async throws -> ListEnvelope<Invoice>,
     fetchPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
     fetchPaymentMethod: @escaping (PaymentMethod.ID) async throws -> PaymentMethod,
     fetchPlans: @escaping () async throws -> ListEnvelope<Plan>,
@@ -72,6 +73,7 @@ public struct Client {
     fetchSubscription: @escaping (Subscription.ID) async throws -> Subscription,
     fetchUpcomingInvoice: @escaping (Customer.ID) async throws -> Invoice,
     invoiceCustomer: @escaping (Customer.ID) async throws -> Invoice,
+    payInvoice: @escaping (Invoice.ID) async throws -> Invoice,
     updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) async throws -> Customer,
     updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) async throws -> Customer,
     updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) async throws -> Customer,
@@ -97,6 +99,7 @@ public struct Client {
     self.fetchPlan = fetchPlan
     self.fetchSubscription = fetchSubscription
     self.fetchUpcomingInvoice = fetchUpcomingInvoice
+    self.payInvoice = payInvoice
     self.invoiceCustomer = invoiceCustomer
     self.updateCustomer = updateCustomer
     self.updateCustomerBalance = updateCustomerBalance
@@ -183,7 +186,7 @@ extension Client {
         try await runStripe(secretKey)(Stripe.fetchInvoice(id: $0))
       },
       fetchInvoices: {
-        try await runStripe(secretKey)(Stripe.fetchInvoices(for: $0))
+        try await runStripe(secretKey)(Stripe.fetchInvoices(for: $0, status: $1))
       },
       fetchPaymentIntent: {
         try await runStripe(secretKey)(Stripe.fetchPaymentIntent(id: $0))
@@ -205,6 +208,9 @@ extension Client {
       },
       invoiceCustomer: {
         try await runStripe(secretKey)(Stripe.invoiceCustomer($0))
+      },
+      payInvoice: {
+        try await runStripe(secretKey)(Stripe.payInvoice($0))
       },
       updateCustomer: {
         try await runStripe(secretKey)(Stripe.updateCustomer(id: $0, paymentMethodID: $1))
@@ -383,9 +389,15 @@ func fetchInvoice(id: Invoice.ID) -> DecodableRequest<Invoice> {
   stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-func fetchInvoices(for customer: Customer.ID) -> DecodableRequest<ListEnvelope<Invoice>> {
+func fetchInvoices(
+  for customer: Customer.ID, status: Invoice.Status
+) -> DecodableRequest<ListEnvelope<Invoice>> {
   stripeRequest(
-    "invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100&status=paid")
+    "invoices?customer="
+      + customer.rawValue
+      + "&expand[]=data.charge&limit=100&status="
+      + status.rawValue
+  )
 }
 
 func fetchPaymentIntent(id: PaymentIntent.ID) -> DecodableRequest<PaymentIntent> {
@@ -421,6 +433,16 @@ func invoiceCustomer(_ customer: Customer.ID)
     .post([
       "customer": customer.rawValue
     ]))
+}
+
+func payInvoice(_ invoice: Invoice.ID)
+  -> DecodableRequest<Invoice>
+{
+
+  stripeRequest(
+    "invoices/" + invoice.rawValue + "/pay",
+    .post([:])
+  )
 }
 
 func updateCustomer(id: Customer.ID, paymentMethodID: PaymentMethod.ID)
