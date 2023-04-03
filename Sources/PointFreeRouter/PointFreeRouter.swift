@@ -14,11 +14,11 @@ public struct PointFreeRouter: ParserPrinter {
   }
 
   public func parse(_ input: inout URLRequestData) throws -> SiteRoute {
-    try router.parse(&input)
+    try SiteRouter().parse(&input)
   }
 
   public func print(_ output: SiteRoute, into input: inout URLRequestData) throws {
-    try router
+    try SiteRouter()
       .baseURL(self._baseURL)
       .print(output, into: &input)
   }

@@ -15,10 +15,12 @@ import Styleguide
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
 
-let expressUnsubscribe = ParsePrint {
-  UUID.parser().map(.representing(User.ID.self))
-  "--POINT-FREE-BOUNDARY--"
-  Rest().map(.string.representing(EmailSetting.Newsletter.self))
+struct ExpressUnsubscribe: ParserPrinter {
+  var body: some ParserPrinter<Substring, (User.ID, EmailSetting.Newsletter)> {
+    UUID.parser().map(.representing(User.ID.self))
+    "--POINT-FREE-BOUNDARY--"
+    Rest().map(.string.representing(EmailSetting.Newsletter.self))
+  }
 }
 
 public func prepareEmail(
@@ -52,7 +54,7 @@ public func prepareEmail(
       guard
         let unsubEmail = mailgun.unsubscribeEmail(
           fromUserId: userId, andNewsletter: newsletter),
-        let unsubUrl = (try? expressUnsubscribe.print((userId, newsletter)))
+        let unsubUrl = (try? ExpressUnsubscribe().print((userId, newsletter)))
           .flatMap({ Encrypted(String($0), with: envVars.appSecret) })
           .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
       else {
