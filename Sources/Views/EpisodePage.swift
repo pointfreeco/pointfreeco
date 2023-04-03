@@ -1051,7 +1051,7 @@ private func downloadsView(episode: Episode) -> Node {
       .a(
         attributes: [
           .href(
-            gitHubRouter
+            GitHubRouter()
               .url(for: .episodeCodeSample(directory: codeSampleDirectory))
               .absoluteString
           ),

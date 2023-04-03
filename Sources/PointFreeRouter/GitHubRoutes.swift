@@ -1,4 +1,5 @@
 import GitHub
+import Tagged
 import URLRouting
 
 public enum GitHubRoute {
@@ -24,50 +25,56 @@ public enum GitHubRoute {
   }
 }
 
-public let gitHubRouter = OneOf {
-  Route(.case(GitHubRoute.authorize)) {
-    Path {
-      "login"
-      "oauth"
-      "authorize"
-    }
-    Query {
-      Field("client_id", .string.representing(GitHub.Client.ID.self))
-      Optionally {
-        Field("redirect_uri")
-      }
-      Field("scope")
-    }
-  }
-
-  Parse {
-    Path { "pointfreeco" }
-
+public struct GitHubRouter: ParserPrinter {
+  public init() {}
+  
+  public var body: some Router<GitHubRoute> {
     OneOf {
-      Route(.case(GitHubRoute.organization))
-
-      Route(.case(GitHubRoute.episodeCodeSample)) {
+      Route(.case(GitHubRoute.authorize)) {
         Path {
-          "episode-code-samples"
-          "tree"
-          "main"
-          Parse(.string)
+          "login"
+          "oauth"
+          "authorize"
+        }
+        Query {
+          Field("client_id", .string.representing(GitHub.Client.ID.self))
+          Optionally {
+            Field("redirect_uri")
+          }
+          Field("scope")
         }
       }
 
-      Route(.case(GitHubRoute.license)) {
-        Path {
-          "pointfreeco"
-          "blob"
-          "main"
-          "LICENSE"
-        }
-      }
+      Parse {
+        Path { "pointfreeco" }
 
-      Route(.case(GitHubRoute.repo)) {
-        Path { GitHubRoute.Repo.parser() }
+        OneOf {
+          Route(.case(GitHubRoute.organization))
+
+          Route(.case(GitHubRoute.episodeCodeSample)) {
+            Path {
+              "episode-code-samples"
+              "tree"
+              "main"
+              Parse(.string)
+            }
+          }
+
+          Route(.case(GitHubRoute.license)) {
+            Path {
+              "pointfreeco"
+              "blob"
+              "main"
+              "LICENSE"
+            }
+          }
+
+          Route(.case(GitHubRoute.repo)) {
+            Path { GitHubRoute.Repo.parser() }
+          }
+        }
       }
     }
+    .baseURL("https://github.com")
   }
 }
-.baseURL("https://github.com")

@@ -226,7 +226,7 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
 
-  return gitHubRouter.url(
+  return GitHubRouter().url(
     for: .authorize(
       clientId: gitHubClientId,
       redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),

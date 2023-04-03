@@ -45,7 +45,7 @@ private func legalView(year: Int) -> Node {
     .a(
       attributes: [
         .class([Class.pf.colors.link.gray650]),
-        .href(gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString),
+        .href(GitHubRouter().url(for: .repo(.pointfreeco)).absoluteString),
       ],
       "source code"
     ),
@@ -53,7 +53,7 @@ private func legalView(year: Int) -> Node {
     .a(
       attributes: [
         .class([Class.pf.colors.link.gray650]),
-        .href(gitHubRouter.url(for: .license).absoluteString),
+        .href(GitHubRouter().url(for: .license).absoluteString),
       ],
       "MIT license"
     )
@@ -79,7 +79,7 @@ private var pointFreeView: Node {
       "A video series on functional programming and the Swift programming language. Hosted by ",
       .a(
         attributes: [
-          .href(twitterRouter.url(for: .mbrandonw).absoluteString),
+          .href(TwitterRouter().url(for: .mbrandonw).absoluteString),
           .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
         ],
         .raw("Brandon&nbsp;Williams")
@@ -87,7 +87,7 @@ private var pointFreeView: Node {
       " and ",
       .a(
         attributes: [
-          .href(twitterRouter.url(for: .stephencelis).absoluteString),
+          .href(TwitterRouter().url(for: .stephencelis).absoluteString),
           .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
         ],
         .raw("Stephen&nbsp;Celis")
@@ -168,13 +168,13 @@ private var moreColumnView: Node {
       .li(
         .a(
           attributes: [
-            .class([footerLinkClass]), .href(twitterRouter.url(for: .pointfreeco).absoluteString),
+            .class([footerLinkClass]), .href(TwitterRouter().url(for: .pointfreeco).absoluteString),
           ], "Twitter")
       ),
       .li(
         .a(
           attributes: [
-            .class([footerLinkClass]), .href(gitHubRouter.url(for: .organization).absoluteString),
+            .class([footerLinkClass]), .href(GitHubRouter().url(for: .organization).absoluteString),
           ], "GitHub")
       ),
       .li(
