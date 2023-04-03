@@ -129,11 +129,13 @@ public enum SiteRoute: Equatable {
   }
 }
 
-private let blogSlugOrId = OneOf {
-  Parse(.string.map(.case(Either<String, BlogPost.ID>.left)))
-
-  Int.parser(of: Substring.self)
-    .map(.representing(BlogPost.ID.self).map(.case(Either<String, BlogPost.ID>.right)))
+struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
+  var body: some ParserPrinter<Substring, Either<String, ID>> {
+    OneOf {
+      Parse(.string.map(.case(Either<String, ID>.left)))
+      Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
+    }
+  }
 }
 
 private let blogRouter = OneOf {
@@ -149,16 +151,9 @@ private let blogRouter = OneOf {
   Route(.case(SiteRoute.Blog.show)) {
     Path {
       "posts"
-      blogSlugOrId
+      SlugOrID<BlogPost.ID>()
     }
   }
-}
-
-private let episodeSlugOrId = OneOf {
-  Int.parser(of: Substring.self)
-    .map(.representing(Episode.ID.self).map(.case(Either<String, Episode.ID>.right)))
-
-  Parse(.string.map(.case(Either<String, Episode.ID>.left)))
 }
 
 private let collectionsRouter = OneOf {
@@ -177,7 +172,7 @@ private let collectionsRouter = OneOf {
           Route(.case(SiteRoute.Collections.Section.show))
 
           Route(.case(SiteRoute.Collections.Section.episode)) {
-            Path { episodeSlugOrId }
+            Path { SlugOrID<Episode.ID>() }
           }
         }
       }
@@ -189,13 +184,13 @@ private let episodeRouter = OneOf {
   Route(.case(SiteRoute.EpisodeRoute.index))
 
   Route(.case(SiteRoute.EpisodeRoute.show)) {
-    Path { episodeSlugOrId }
+    Path { SlugOrID<Episode.ID>() }
   }
 
   Route(.case(SiteRoute.EpisodeRoute.progress)) {
     Method.post
     Path {
-      episodeSlugOrId
+      SlugOrID<Episode.ID>()
       "progress"
     }
     Query {

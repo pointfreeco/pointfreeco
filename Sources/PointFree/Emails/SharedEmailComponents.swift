@@ -68,7 +68,7 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
   @Dependency(\.logger) var logger
 
   guard
-    let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))
+    let unsubUrl = (try? ExpressUnsubscribe().print((user.id, newsletter)))
       .flatMap({ Encrypted(String($0), with: appSecret) })
       .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
   else {
