@@ -21,6 +21,9 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) -> IO<Conn<Respon
   }
 
   switch route {
+  case let .emailPreview(id: id):
+    return IO { await emailPreview(conn.map(const(id))) }
+
   case let .episodeCredits(.add(userId: userId, episodeSequence: episodeSequence)):
     return conn.map(const(userId .*. episodeSequence .*. unit))
       |> redeemEpisodeCreditMiddleware

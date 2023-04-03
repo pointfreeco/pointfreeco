@@ -3,6 +3,7 @@ import Models
 import URLRouting
 
 public enum Admin: Equatable {
+  case emailPreview(id: String?)
   case episodeCredits(EpisodeCredit = .show)
   case freeEpisodeEmail(FreeEpisodeEmail = .index)
   case ghost(Ghost = .index)
@@ -43,6 +44,18 @@ public enum Admin: Equatable {
 
 let adminRouter = OneOf {
   Route(.case(Admin.index))
+
+  Route(.case(Admin.emailPreview(id:))) {
+    Path { "email-preview" }
+    Optionally {
+      Method.post
+      Body {
+        FormData {
+          Field("email", .string)
+        }
+      }
+    }
+  }
 
   Route(.case(Admin.episodeCredits)) {
     Path { "episode-credits" }
