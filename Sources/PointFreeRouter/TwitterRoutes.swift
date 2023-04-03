@@ -9,7 +9,7 @@ public enum TwitterRoute: String, CaseIterable {
 
 public struct TwitterRouter: ParserPrinter {
   public init() {}
-  
+
   public var body: some Router<TwitterRoute> {
     Path {
       TwitterRoute.parser()

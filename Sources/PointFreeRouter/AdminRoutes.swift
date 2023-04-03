@@ -139,7 +139,9 @@ struct AdminRouter: ParserPrinter {
                         NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue,
                         default: ""
                       )
-                      Field(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue, default: false) {
+                      Field(
+                        NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue, default: false
+                      ) {
                         Bool.parser()
                       }
                     }

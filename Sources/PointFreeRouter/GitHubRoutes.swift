@@ -27,7 +27,7 @@ public enum GitHubRoute {
 
 public struct GitHubRouter: ParserPrinter {
   public init() {}
-  
+
   public var body: some Router<GitHubRoute> {
     OneOf {
       Route(.case(GitHubRoute.authorize)) {
