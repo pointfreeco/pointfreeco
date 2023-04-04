@@ -377,7 +377,9 @@ extension Conn {
 extension Conn where Step == HeadersOpen {
   public func respond(json: [String: Any]) throws -> Conn<ResponseEnded, Data> {
     try self.respond(
-      json: String(decoding: JSONSerialization.data(withJSONObject: json), as: UTF8.self)
+      json: String(
+        decoding: JSONSerialization.data(withJSONObject: json, options: .sortedKeys), as: UTF8.self
+      )
     )
   }
 }

@@ -14,4 +14,4 @@ X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
-{"clientSecret":"pi_test_secret_test","subscriptionID":"sub_test","requiresAction":true}
+{"clientSecret":"pi_test_secret_test","requiresAction":true,"subscriptionID":"sub_test"}
