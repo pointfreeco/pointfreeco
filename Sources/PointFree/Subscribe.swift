@@ -126,7 +126,6 @@ private func subscribe(
         referrer?.user.id
       )
 
-      // TODO: Should this happen only when subscriptions are complete
       if let referrer {
         async let updateReferrerBalance: Void = {
           _ = try await stripe.updateCustomerBalance(
