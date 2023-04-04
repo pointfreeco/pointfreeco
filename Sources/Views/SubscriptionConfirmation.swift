@@ -752,6 +752,12 @@ private func payment(
           .type(.hidden),
         ]
       ),
+      .input(
+        attributes: [
+          .name(SubscribeData.CodingKeys.subscriptionID.rawValue),
+          .type(.hidden),
+        ]
+      ),
       .script(attributes: [.src(stripeJs)]),
       .script(
         unsafe: checkoutJS(
@@ -1161,6 +1167,8 @@ private func checkoutJS(
 
       var submitting = false
       form.addEventListener("submit", async (event) => {
+        const defaultError = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+
         event.preventDefault()
         if (submitting) { return }
 
@@ -1178,11 +1186,31 @@ private func checkoutJS(
           } else {
             form.\(SubscribeData.CodingKeys.paymentMethodID.rawValue).value = result.paymentMethod.id
             setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-            form.submit()
-            return // NB: Early out so to not re-enable form.
+            const response = await fetch(form.action, {
+              method: 'POST',
+              headers: { Accept: 'application/json' },
+              body: new URLSearchParams(new FormData(form))
+            })
+            const json = await response.json()
+            if (json.error) {
+              displayError.innerHTML = json.error || defaultError
+              setFormEnabled(true)
+            } else if (json.requiresAction) {
+              const { paymentIntent, error } = await stripe.confirmCardPayment(json.clientSecret)
+              if (error) {
+                displayError.innerHTML = error.message || defaultError
+                setFormEnabled(true)
+              } else if (paymentIntent.status === "succeeded") {
+                form.\(SubscribeData.CodingKeys.subscriptionID.rawValue).value = json.subscriptionID
+                form.submit()
+              }
+            } else {
+              form.submit()
+            }
+            return
           }
         } catch {
-          displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+          displayError.innerHTML = defaultError
         }
 
         submitting = false

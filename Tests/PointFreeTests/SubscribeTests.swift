@@ -243,6 +243,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: false
     )
@@ -314,6 +315,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: false
     )
@@ -498,6 +500,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: true
     )
@@ -588,6 +591,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: true
     )
@@ -829,6 +833,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .init(billing: .monthly, quantity: 3),
         referralCode: nil,
+        subscriptionID: nil,
         teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
         useRegionalDiscount: false
       )
@@ -855,6 +860,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .init(billing: .monthly, quantity: 3),
         referralCode: nil,
+        subscriptionID: nil,
         teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
         useRegionalDiscount: false
       )
@@ -897,6 +903,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -922,6 +929,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .teamYearly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -948,6 +956,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -978,6 +987,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )

@@ -361,7 +361,10 @@ func createSubscription(
   params["items[0][quantity]"] = String(quantity)
   params["coupon"] = coupon?.rawValue
 
-  return stripeRequest("subscriptions?expand[]=customer.default_source", .post(params))
+  return stripeRequest(
+    "subscriptions?expand[]=customer.default_source&expand[]=latest_invoice.payment_intent",
+    .post(params)
+  )
 }
 
 func deleteCoupon(id: Coupon.ID) -> DecodableRequest<Prelude.Unit> {
@@ -417,7 +420,11 @@ func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
 }
 
 func fetchSubscription(id: Subscription.ID) -> DecodableRequest<Subscription> {
-  stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer.default_source")
+  stripeRequest(
+    "subscriptions/"
+      + id.rawValue
+      + "?expand[]=customer.default_source"
+  )
 }
 
 func fetchUpcomingInvoice(_ customer: Customer.ID) -> DecodableRequest<Invoice> {

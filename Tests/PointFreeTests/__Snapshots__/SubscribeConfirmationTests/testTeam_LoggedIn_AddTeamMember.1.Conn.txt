@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 55235
+Content-Length: 56079
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1931,7 +1931,7 @@ teamMemberRow.parentNode.removeChild(teamMemberRow)
 updateSeats()">Remove</a></div></div></template><template id="team-member-template-without-remove"><div class="border border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 m-mt1 col-m col-m-12" style="line-height:0"><div class="flex middle-m"><img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMjAgMTYiIHdpZHRoPSIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yIC00KSI+PHBhdGggZD0ibTAgMGgyNHYyNGgtMjR6Ii8+PHBhdGggZD0ibTIwIDRoLTE2Yy0xLjEgMC0xLjk5LjktMS45OSAybC0uMDEgMTJjMCAxLjEuOSAyIDIgMmgxNmMxLjEgMCAyLS45IDItMnYtMTJjMC0xLjEtLjktMi0yLTJ6bTAgMTRoLTE2di0xMGw4IDUgOC01em0tOC03LTgtNWgxNnoiIGZpbGw9IiMxMjEyMTIiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L3N2Zz4=" alt class="m-mr1" style="width:24px;height:24px"><input type="email" placeholder="blob@pointfree.co" class="w-100p" name="teammate" style="border-top-width:0;border-right-width:0;border-bottom-width:0;border-left-width:0;outline:none" value></div></div></template><a id="add-team-member-button" class="medium cursor-pointer nowrap pf-link-black fg-black bg-white h5 m-pl2 m-pr2 m-pt2 m-pb2 border border-gray-850" onclick="var teamMember = document.getElementById(&quot;team-member-template&quot;).content.cloneNode(true)
 document.getElementById(&quot;team-members&quot;).appendChild(teamMember)
 updateSeats()">Add team member</a></div></div><p class="fg-black normal h6 lh-4 fg-gray400 m-pt3">You must have at least two seats for your team subscription. You can add additional team members at any time
-from your account page.</p></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3 border-bottom border-gray-850 row"><div class="d-pb2 m-pb1 col-m col-m-12"><h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2 m-mt0">Billing interval</h1></div><div class="border border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 col-m col-m-12" style="line-height:0"><label class="cursor-pointer flex items-baseline"><div><input checked id="yearly" type="radio" name="pricing[billing]" value="yearly"></div><div class="m-ml2"><h5 class="fg-black bold ts-d-r1 ts-m-r0_875 lh-1 m-ml0 m-mr0 m-mt0 m-mb0">Yearly — Save 25% off monthly billing!</h5><p class="m-pt1 fg-black normal h6 lh-4 fg-gray650">$144 per member per year</p></div></label></div><div class="border-left border-right border-bottom border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 col-m col-m-12" style="line-height:0"><label class="cursor-pointer flex items-baseline"><div><input id="monthly" type="radio" name="pricing[billing]" value="monthly"></div><div class="m-ml2"><h5 class="fg-black bold ts-d-r1 ts-m-r0_875 lh-1 m-ml0 m-mr0 m-mt0 m-mb0">Monthly</h5><p class="m-pt1 fg-black normal h6 lh-4 fg-gray650">$16 per member, per month</p></div></label></div></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3 border-bottom border-gray-850 row"><div class="d-pb2 m-pb1 col-m col-m-12"><h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2 m-mt0">Payment info</h1></div><label for="card" class="nowrap fg-black bg-white fg-black bold ts-d-r1 ts-m-r0_875 lh-1">Credit or debit card</label><div class="border border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 m-mt1 col-m col-m-12" style="line-height:0"><div class="flex middle-m"><div class="w-100p" data-stripe-key="pk_test" id="card-element"></div></div></div><div class=" col-m col-m-12"><div class="fg-red fg-black normal h6 lh-4" id="card-errors"></div><input name="paymentMethodID" type="hidden"><script src></script><script>window.addEventListener("load", function() {
+from your account page.</p></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3 border-bottom border-gray-850 row"><div class="d-pb2 m-pb1 col-m col-m-12"><h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2 m-mt0">Billing interval</h1></div><div class="border border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 col-m col-m-12" style="line-height:0"><label class="cursor-pointer flex items-baseline"><div><input checked id="yearly" type="radio" name="pricing[billing]" value="yearly"></div><div class="m-ml2"><h5 class="fg-black bold ts-d-r1 ts-m-r0_875 lh-1 m-ml0 m-mr0 m-mt0 m-mb0">Yearly — Save 25% off monthly billing!</h5><p class="m-pt1 fg-black normal h6 lh-4 fg-gray650">$144 per member per year</p></div></label></div><div class="border-left border-right border-bottom border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 col-m col-m-12" style="line-height:0"><label class="cursor-pointer flex items-baseline"><div><input id="monthly" type="radio" name="pricing[billing]" value="monthly"></div><div class="m-ml2"><h5 class="fg-black bold ts-d-r1 ts-m-r0_875 lh-1 m-ml0 m-mr0 m-mt0 m-mb0">Monthly</h5><p class="m-pt1 fg-black normal h6 lh-4 fg-gray650">$16 per member, per month</p></div></label></div></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3 border-bottom border-gray-850 row"><div class="d-pb2 m-pb1 col-m col-m-12"><h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2 m-mt0">Payment info</h1></div><label for="card" class="nowrap fg-black bg-white fg-black bold ts-d-r1 ts-m-r0_875 lh-1">Credit or debit card</label><div class="border border-gray-850 m-pl2 m-pr2 m-pt2 m-pb2 m-mt1 col-m col-m-12" style="line-height:0"><div class="flex middle-m"><div class="w-100p" data-stripe-key="pk_test" id="card-element"></div></div></div><div class=" col-m col-m-12"><div class="fg-red fg-black normal h6 lh-4" id="card-errors"></div><input name="paymentMethodID" type="hidden"><input name="subscriptionID" type="hidden"><script src></script><script>window.addEventListener("load", function() {
   var form = document.getElementById("subscribe-form")
   var displayError = document.getElementById("card-errors")
 
@@ -1985,6 +1985,8 @@ from your account page.</p></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3
 
   var submitting = false
   form.addEventListener("submit", async (event) => {
+    const defaultError = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+
     event.preventDefault()
     if (submitting) { return }
 
@@ -2002,11 +2004,31 @@ from your account page.</p></div><div class="d-ml4 d-mr4 m-ml2 m-mr2 m-pt3 m-pb3
       } else {
         form.paymentMethodID.value = result.paymentMethod.id
         setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
-        form.submit()
-        return // NB: Early out so to not re-enable form.
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new URLSearchParams(new FormData(form))
+        })
+        const json = await response.json()
+        if (json.error) {
+          displayError.innerHTML = json.error || defaultError
+          setFormEnabled(true)
+        } else if (json.requiresAction) {
+          const { paymentIntent, error } = await stripe.confirmCardPayment(json.clientSecret)
+          if (error) {
+            displayError.innerHTML = error.message || defaultError
+            setFormEnabled(true)
+          } else if (paymentIntent.status === "succeeded") {
+            form.subscriptionID.value = json.subscriptionID
+            form.submit()
+          }
+        } else {
+          form.submit()
+        }
+        return
       }
     } catch {
-      displayError.innerHTML = "An error occurred. Please try again or contact <a href='mailto:support@pointfree.co'>support@pointfree.co</a>."
+      displayError.innerHTML = defaultError
     }
 
     submitting = false

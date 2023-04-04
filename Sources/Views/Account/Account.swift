@@ -650,7 +650,9 @@ public func status(for subscription: Stripe.Subscription) -> String {
     return "Canceled"
   case .pastDue:
     return "Past due"
-  case .unpaid:
+  case .paused:
+    return "Paused"
+  case .incomplete, .incompleteExpiring, .unpaid:
     return "Unpaid"
   case .trialing:
     return "In trial"
@@ -671,7 +673,13 @@ public func nextBilling(
     return subscription.currentPeriodEnd > currentDate
       ? "Cancels " + dateFormatter.string(from: subscription.currentPeriodEnd)
       : "Canceled"
-  case (.active, .none), (.pastDue, _), (.unpaid, _), (.trialing, _):
+  case (.active, .none),
+    (.incomplete, _),
+    (.incompleteExpiring, _),
+    (.pastDue, _),
+    (.paused, _),
+    (.unpaid, _),
+    (.trialing, _):
     return ""  // FIXME
   }
 }

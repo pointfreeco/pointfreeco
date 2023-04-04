@@ -15,7 +15,8 @@ import Views
 let subscribeMiddleware =
   validateUser
   <<< validateSubscribeData
-  <| subscribe
+  <| map(lower)
+  >>> { conn in IO { await subscribe(conn) } }
 
 private let validateUser: MT<Tuple2<User?, SubscribeData?>, Tuple2<User, SubscribeData?>> =
   redirectActiveSubscribers(user: get1)
@@ -29,12 +30,13 @@ private let validateSubscribeData:
     <<< validateReferrer
 
 private func subscribe(
-  _ conn: Conn<StatusLineOpen, Tuple3<User, SubscribeData, Referrer?>>
-) -> IO<Conn<ResponseEnded, Data>> {
+  _ conn: Conn<StatusLineOpen, (User, SubscribeData, Referrer?)>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
   @Dependency(\.envVars) var envVars
   @Dependency(\.stripe) var stripe
 
-  let (user, subscribeData, referrer) = lower(conn.data)
+  let (user, subscribeData, referrer) = conn.data
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == envVars.regionalDiscountCouponId
     ? -9_00
@@ -44,120 +46,135 @@ private func subscribe(
     ? -9_00
     : -18_00
 
-  let stripeSubscription = EitherIO {
-    let customer = try await stripe.createCustomer(
-      subscribeData.paymentMethodID,
-      user.id.rawValue.uuidString,
-      user.email,
-      nil,
-      subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
-    )
-    let paymentMethod = try await stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
-    let country = paymentMethod.card?.country
-    guard country != nil || !subscribeData.useRegionalDiscount else {
-      throw StripeErrorEnvelope(
-        error: .init(
-          message: """
-            Couldn't verify issue country on credit card. Please try another credit card.
-            """
+  do {
+    let customer: Stripe.Customer
+    let stripeSubscription: Stripe.Subscription
+
+    if let stripeSubscriptionID = subscribeData.subscriptionID, !stripeSubscriptionID.isEmpty {
+      stripeSubscription = try await stripe.fetchSubscription(stripeSubscriptionID)
+      // FIXME: Expand this call instead?
+      customer = try await stripe.fetchCustomer(stripeSubscription.customer.id)
+    } else {
+      customer = try await stripe.createCustomer(
+        subscribeData.paymentMethodID,
+        user.id.rawValue.uuidString,
+        user.email,
+        nil,
+        subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
+      )
+
+      let paymentMethod = try await stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+      let country = paymentMethod.card?.country
+      guard country != nil || !subscribeData.useRegionalDiscount else {
+        throw StripeErrorEnvelope(
+          error: .init(
+            message: """
+              Couldn't verify issue country on credit card. Please try another credit card.
+              """
+          )
         )
+      }
+
+      guard
+        !subscribeData.useRegionalDiscount
+          || DiscountCountry.all.contains(where: { $0.countryCode == country })
+      else {
+        throw StripeErrorEnvelope(
+          error: .init(
+            message: """
+              The issuing country of your credit card is not on the list of countries that
+              qualify for a regional discount. Please use a different credit card, or subscribe
+              without the discount.
+              """
+          )
+        )
+      }
+
+      let regionalDiscountCouponId =
+        subscribeData.useRegionalDiscount
+        ? envVars.regionalDiscountCouponId
+        : nil
+
+      stripeSubscription = try await stripe.createSubscription(
+        customer.id,
+        subscribeData.pricing.billing.plan,
+        subscribeData.pricing.quantity,
+        subscribeData.coupon ?? regionalDiscountCouponId
       )
     }
-
-    guard
-      !subscribeData.useRegionalDiscount
-        || DiscountCountry.all.contains(where: { $0.countryCode == country })
-    else {
-      throw StripeErrorEnvelope(
-        error: .init(
-          message: """
-            The issuing country of your credit card is not on the list of countries that
-            qualify for a regional discount. Please use a different credit card, or subscribe
-            without the discount.
-            """
-        )
-      )
-    }
-
-    let regionalDiscountCouponId =
-      subscribeData.useRegionalDiscount
-      ? envVars.regionalDiscountCouponId
-      : nil
-
-    return try await stripe.createSubscription(
-      customer.id,
-      subscribeData.pricing.billing.plan,
-      subscribeData.pricing.quantity,
-      subscribeData.coupon ?? regionalDiscountCouponId
-    )
-  }
-
-  func runTasksFor(stripeSubscription: Stripe.Subscription) async throws {
-    @Dependency(\.stripe) var stripe
 
     async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
       .performAsync()
-    guard let referrer else { return }
 
-    async let updateReferrerBalance: Void = {
-      _ = try await stripe.updateCustomerBalance(
-        referrer.stripeSubscription.customer.id,
-        (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
+    if
+      stripeSubscription.status == .incomplete,
+      let paymentIntent = stripeSubscription.latestInvoice?.right?.paymentIntent?.right,
+      paymentIntent.status == .requiresAction
+    {
+      return try conn.writeStatus(.ok).respond(
+        json: [
+          "clientSecret": paymentIntent.clientSecret.rawValue,
+          "subscriptionID": stripeSubscription.id.rawValue,
+          "requiresAction": true,
+        ]
       )
-      Task { try await sendReferralEmail(to: referrer.user).performAsync() }
-    }()
+    } else {
+      _ = try await database.createSubscription(
+        stripeSubscription,
+        user.id,
+        subscribeData.isOwnerTakingSeat,
+        referrer?.user.id
+      )
 
-    async let updateReferredBalance: Void = {
-      guard subscribeData.pricing.interval == .month
-      else { return }
-      _ = try await stripe.updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
-    }()
+      // TODO: Should this happen only when subscriptions are complete
+      if let referrer {
+        async let updateReferrerBalance: Void = {
+          _ = try await stripe.updateCustomerBalance(
+            referrer.stripeSubscription.customer.id,
+            (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
+          )
+          // TODO: \.fireAndForget
+          Task { try await sendReferralEmail(to: referrer.user).performAsync() }
+        }()
 
-    // TODO: Log errors?
-    _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
-  }
+        async let updateReferredBalance: Void = {
+          guard subscribeData.pricing.interval == .month
+          else { return }
+          _ = try await stripe.updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
+        }()
 
-  let databaseSubscription =
-    stripeSubscription
-    .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription> in
-      @Dependency(\.database) var database
+        // TODO: Log errors?
+        _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
+      }
 
-      return EitherIO {
-        let subscription = try await database.createSubscription(
-          stripeSubscription,
-          user.id,
-          subscribeData.isOwnerTakingSeat,
-          referrer?.user.id
+      if conn.acceptJSON {
+        return try conn.writeStatus(.ok).respond(
+          json: ["success": true]
         )
-        try await runTasksFor(stripeSubscription: stripeSubscription)
-        return subscription
+      } else {
+        return conn.redirect(to: .account()) {
+          $0.flash(.notice, "You are now subscribed to Point-Free!")
+        }
       }
     }
+  } catch {
+    let errorMessage =
+      (error as? StripeErrorEnvelope)?.error.message
+      ?? """
+      Error creating subscription! If you believe you have been charged in error, please contact \
+      <support@pointfree.co>.
+      """
 
-  return databaseSubscription.run.flatMap(
-    either(
-      { error in
-        let errorMessage =
-          (error as? StripeErrorEnvelope)?.error.message
-          ?? """
-          Error creating subscription! If you believe you have been charged in error, please contact \
-          <support@pointfree.co>.
-          """
-        return conn
-          |> redirect(
-            to: subscribeConfirmationWithSubscribeData(subscribeData),
-            headersMiddleware: flash(.error, errorMessage)
-          )
-      },
-      { _ in
-        conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-          )
+    if conn.acceptJSON {
+      return try! conn.writeStatus(.ok).respond(
+        json: ["error": errorMessage]
+      )
+    } else {
+      return conn.redirect(to: subscribeConfirmationWithSubscribeData(subscribeData)) {
+        $0.flash(.error, errorMessage)
       }
-    )
-  )
+    }
+  }
 }
 
 private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> EitherIO<
@@ -350,4 +367,18 @@ private func validateReferrer(
 struct Referrer {
   var user: Models.User
   var stripeSubscription: Stripe.Subscription
+}
+
+extension Conn {
+  var acceptJSON: Bool {
+    self.request.value(forHTTPHeaderField: "Accept") == "application/json"
+  }
+}
+
+extension Conn where Step == HeadersOpen {
+  public func respond(json: [String: Any]) throws -> Conn<ResponseEnded, Data> {
+    try self.respond(
+      json: String(decoding: JSONSerialization.data(withJSONObject: json), as: UTF8.self)
+    )
+  }
 }
