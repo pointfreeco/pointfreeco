@@ -49,6 +49,14 @@ extension Card {
 }
 
 extension PaymentIntent {
+  public static let requiresAction = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .requiresAction
+  )
+
   public static let requiresConfirmation = Self(
     amount: 54_00,
     clientSecret: "pi_test_secret_test",
