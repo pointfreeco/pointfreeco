@@ -186,4 +186,17 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
+
+  func testCollectionEpisodeProgress() throws {
+    var request = URLRequest(
+      url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!
+    )
+    request.httpMethod = "POST"
+    let route = SiteRoute.collections(
+      .collection("tca", .section("basics", .progress(param: .left("1"), percent: 50)))
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route),  request)
+  }
 }

@@ -70,8 +70,9 @@ public enum SiteRoute: Equatable {
     }
 
     public enum Section: Equatable {
-      case show
       case episode(Either<String, Episode.ID>)
+      case progress(param: Either<String, Episode.ID>, percent: Int)
+      case show
     }
   }
 
@@ -179,6 +180,14 @@ struct CollectionsRouter: ParserPrinter {
 
               Route(.case(SiteRoute.Collections.Section.episode)) {
                 Path { SlugOrID<Episode.ID>() }
+              }
+              Route(.case(SiteRoute.Collections.Section.progress(param:percent:))) {
+                Method.post
+                Path {
+                  SlugOrID<Episode.ID>()
+                  "progress"
+                }
+                Query { Field("percent") { Digits() } }
               }
             }
           }

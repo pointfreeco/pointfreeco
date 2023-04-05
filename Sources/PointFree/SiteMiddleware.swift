@@ -158,6 +158,12 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await episodeResponse(conn.map(const(episodeParam .*. collectionSlug .*. unit)))
       .performAsync()
 
+  case let .collections(
+    .collection(_, .section(_, .progress(param: param, percent: percent)))
+  ):
+    return await progressResponse(conn.map(const(param .*. percent .*. unit)))
+      .performAsync()
+
   case let .discounts(couponId, billing):
     let subscribeData = SubscribeConfirmationData(
       billing: billing ?? .yearly,
