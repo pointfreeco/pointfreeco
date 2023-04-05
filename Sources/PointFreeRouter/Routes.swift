@@ -616,38 +616,82 @@ struct SubscribeDataParser: ParserPrinter {
     Body {
       Optionally {
         FormData {
-          Optionally {
-            Field(
-              SubscribeData.CodingKeys.coupon.rawValue,
-              .string.representing(Coupon.ID.self)
+          Parse(
+            .memberwise(
+              SubscribeData.init(
+                coupon:
+                isOwnerTakingSeat:
+                paymentMethodID:
+                pricing:
+                referralCode:
+                subscriptionID:
+                teammates:
+                useRegionalDiscount:
+              )
             )
-          }
-          Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
-            Bool.parser()
-          }
-          Field(
-            SubscribeData.CodingKeys.paymentMethodID.rawValue,
-            .string.representing(PaymentMethod.ID.self)
-          )
-          Parse(.memberwise(Pricing.init(billing:quantity:))) {
-            Field("pricing[billing]") { Pricing.Billing.parser() }
-            Field("pricing[quantity]") { Digits() }
-          }
-          Optionally {
+          ) {
+            Optionally {
+              Field(
+                SubscribeData.CodingKeys.coupon.rawValue,
+                .string.representing(Coupon.ID.self)
+              )
+            }
+            Field(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue, default: false) {
+              Bool.parser()
+            }
             Field(
-              SubscribeData.CodingKeys.referralCode.rawValue,
-              .string.representing(User.ReferralCode.self)
+              SubscribeData.CodingKeys.paymentMethodID.rawValue,
+              .string.representing(PaymentMethod.ID.self)
             )
-          }
-          Many {
-            Field("teammate", .string.representing(EmailAddress.self))
-          }
-          Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
-            Bool.parser()
+            Parse(.memberwise(Pricing.init(billing:quantity:))) {
+              Field("pricing[billing]") { Pricing.Billing.parser() }
+              Field("pricing[quantity]") { Digits() }
+            }
+            Optionally {
+              Field(
+                SubscribeData.CodingKeys.referralCode.rawValue,
+                .string.representing(User.ReferralCode.self)
+              )
+            }
+            Optionally {
+              Field(
+                SubscribeData.CodingKeys.subscriptionID.rawValue,
+                .string.filter { !$0.isEmpty }.representing(Stripe.Subscription.ID.self)
+              )
+            }
+            Many {
+              Field("teammate", .string.representing(EmailAddress.self))
+            }
+            Field(SubscribeData.CodingKeys.useRegionalDiscount.rawValue, default: false) {
+              Bool.parser()
+            }
           }
         }
-        .map(.memberwise(SubscribeData.init))
       }
     }
+  }
+}
+
+extension Conversion {
+  func filter(_ predicate: @escaping (Output) throws -> Bool) -> FilterConversion<Self> {
+    FilterConversion(base: self, predicate: predicate)
+  }
+}
+
+struct FilterConversion<Base: Conversion>: Conversion {
+  struct False: Error {}
+
+  let base: Base
+  let predicate: (Output) throws -> Bool
+
+  func apply(_ input: Base.Input) throws -> Base.Output {
+    let output = try self.base.apply(input)
+    guard try self.predicate(output) else { throw False() }
+    return output
+  }
+
+  func unapply(_ output: Base.Output) throws -> Base.Input {
+    guard try self.predicate(output) else { throw False() }
+    return try self.base.unapply(output)
   }
 }

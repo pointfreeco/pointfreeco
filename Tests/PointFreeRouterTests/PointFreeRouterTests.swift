@@ -44,6 +44,7 @@ class PointFreeRouterTests: TestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .init(billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
+      subscriptionID: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
       useRegionalDiscount: true
     )
