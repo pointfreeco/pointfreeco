@@ -197,6 +197,6 @@ class PointFreeRouterTests: TestCase {
     )
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
-    XCTAssertEqual(try siteRouter.request(for: route),  request)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 }
