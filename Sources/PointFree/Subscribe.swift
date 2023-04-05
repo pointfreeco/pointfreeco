@@ -105,8 +105,7 @@ private func subscribe(
     async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
       .performAsync()
 
-    if
-      stripeSubscription.status == .incomplete,
+    if stripeSubscription.status == .incomplete,
       let paymentIntent = stripeSubscription.latestInvoice?.right?.paymentIntent?.right,
       paymentIntent.status == .requiresAction
     {
@@ -137,7 +136,8 @@ private func subscribe(
         async let updateReferredBalance: Void = {
           guard subscribeData.pricing.interval == .month
           else { return }
-          _ = try await stripe.updateCustomerBalance(stripeSubscription.customer.id, referredDiscount)
+          _ = try await stripe.updateCustomerBalance(
+            stripeSubscription.customer.id, referredDiscount)
         }()
 
         // TODO: Log errors?
