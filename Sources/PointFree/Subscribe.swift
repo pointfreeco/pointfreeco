@@ -50,9 +50,8 @@ private func subscribe(
     let customer: Stripe.Customer
     let stripeSubscription: Stripe.Subscription
 
-    if let stripeSubscriptionID = subscribeData.subscriptionID, !stripeSubscriptionID.isEmpty {
+    if let stripeSubscriptionID = subscribeData.subscriptionID {
       stripeSubscription = try await stripe.fetchSubscription(stripeSubscriptionID)
-      // FIXME: Expand this call instead?
       customer = try await stripe.fetchCustomer(stripeSubscription.customer.id)
     } else {
       customer = try await stripe.createCustomer(
@@ -132,7 +131,6 @@ private func subscribe(
             referrer.stripeSubscription.customer.id,
             (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
           )
-          // TODO: \.fireAndForget
           Task { try await sendReferralEmail(to: referrer.user).performAsync() }
         }()
 

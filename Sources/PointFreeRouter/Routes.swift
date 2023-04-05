@@ -656,7 +656,7 @@ struct SubscribeDataParser: ParserPrinter {
             Optionally {
               Field(
                 SubscribeData.CodingKeys.subscriptionID.rawValue,
-                .string.representing(Stripe.Subscription.ID.self) // TODO: `presence` conversion?
+                .string.filter { !$0.isEmpty }.representing(Stripe.Subscription.ID.self)
               )
             }
             Many {
@@ -669,5 +669,29 @@ struct SubscribeDataParser: ParserPrinter {
         }
       }
     }
+  }
+}
+
+extension Conversion {
+  func filter(_ predicate: @escaping (Output) throws -> Bool) -> FilterConversion<Self> {
+    FilterConversion(base: self, predicate: predicate)
+  }
+}
+
+struct FilterConversion<Base: Conversion>: Conversion {
+  struct False: Error {}
+
+  let base: Base
+  let predicate: (Output) throws -> Bool
+
+  func apply(_ input: Base.Input) throws -> Base.Output {
+    let output = try self.base.apply(input)
+    guard try self.predicate(output) else { throw False() }
+    return output
+  }
+
+  func unapply(_ output: Base.Output) throws -> Base.Input {
+    guard try self.predicate(output) else { throw False() }
+    return try self.base.unapply(output)
   }
 }
