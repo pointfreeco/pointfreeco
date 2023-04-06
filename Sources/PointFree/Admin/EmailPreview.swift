@@ -81,7 +81,7 @@ private func options(selectedTemplate: EmailTemplate?) -> [ChildOf<Tag.Select>] 
     ChildOf<Tag.Select>.option(
       attributes: [
         .selected(template == selectedTemplate),
-        .value(template.rawValue)
+        .value(template.rawValue),
       ],
       template.displayName
     )
