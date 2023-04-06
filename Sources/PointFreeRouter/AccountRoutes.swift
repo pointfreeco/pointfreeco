@@ -35,99 +35,103 @@ public enum Account: Equatable {
   }
 }
 
-let accountRouter = OneOf {
-  Route(.case(Account.index))
-
-  Route(.case(Account.confirmEmailChange)) {
-    Path { "confirm-email-change" }
-    Query {
-      Field("payload", .string.representing(Encrypted.self))
-    }
-  }
-
-  Route(.case(Account.invoices)) {
-    Path { "invoices" }
-
+struct AccountRouter: ParserPrinter {
+  var body: some Router<Account> {
     OneOf {
-      Route(.case(Account.Invoices.index))
+      Route(.case(Account.index))
 
-      Route(.case(Account.Invoices.show)) {
-        Path { Parse(.string.representing(Invoice.ID.self)) }
-      }
-    }
-  }
-
-  Route(.case(Account.paymentInfo)) {
-    Path { "payment-info" }
-
-    OneOf {
-      Route(.case(Account.PaymentInfo.show))
-
-      Route(.case(Account.PaymentInfo.update)) {
-        Method.post
-        Optionally {
-          Body {
-            FormData {
-              Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
-            }
-          }
+      Route(.case(Account.confirmEmailChange)) {
+        Path { "confirm-email-change" }
+        Query {
+          Field("payload", .string.representing(Encrypted.self))
         }
       }
-    }
-  }
 
-  Parse {
-    Path { "rss" }
-
-    OneOf {
-      Route(.case(Account.rss)) {
-        Path { Parse(.string.representing(User.RssSalt.self)) }
-      }
-
-      Route(.case(Account.rssLegacy)) {
-        Path {
-          Parse(.string)
-          Parse(.string)
-        }
-      }
-    }
-  }
-
-  Route(.case(Account.subscription)) {
-    Path { "subscription" }
-
-    OneOf {
-      Route(.case(Account.Subscription.cancel)) {
-        Method.post
-        Path { "cancel" }
-      }
-
-      Route(.case(Account.Subscription.change)) {
-        Path { "change" }
+      Route(.case(Account.invoices)) {
+        Path { "invoices" }
 
         OneOf {
-          Route(.case(Account.Subscription.Change.show))
+          Route(.case(Account.Invoices.index))
 
-          Route(.case(Account.Subscription.Change.update)) {
+          Route(.case(Account.Invoices.show)) {
+            Path { Parse(.string.representing(Invoice.ID.self)) }
+          }
+        }
+      }
+
+      Route(.case(Account.paymentInfo)) {
+        Path { "payment-info" }
+
+        OneOf {
+          Route(.case(Account.PaymentInfo.show))
+
+          Route(.case(Account.PaymentInfo.update)) {
             Method.post
             Optionally {
-              Body(.form(Pricing.self, decoder: formDecoder))
+              Body {
+                FormData {
+                  Field("paymentMethodID", .string.representing(PaymentMethod.ID.self))
+                }
+              }
             }
           }
         }
       }
 
-      Route(.case(Account.Subscription.reactivate)) {
-        Method.post
-        Path { "reactivate" }
-      }
-    }
-  }
+      Parse {
+        Path { "rss" }
 
-  Route(.case(Account.update)) {
-    Method.post
-    Optionally {
-      Body(.form(ProfileData.self, decoder: formDecoder))
+        OneOf {
+          Route(.case(Account.rss)) {
+            Path { Parse(.string.representing(User.RssSalt.self)) }
+          }
+
+          Route(.case(Account.rssLegacy)) {
+            Path {
+              Parse(.string)
+              Parse(.string)
+            }
+          }
+        }
+      }
+
+      Route(.case(Account.subscription)) {
+        Path { "subscription" }
+
+        OneOf {
+          Route(.case(Account.Subscription.cancel)) {
+            Method.post
+            Path { "cancel" }
+          }
+
+          Route(.case(Account.Subscription.change)) {
+            Path { "change" }
+
+            OneOf {
+              Route(.case(Account.Subscription.Change.show))
+
+              Route(.case(Account.Subscription.Change.update)) {
+                Method.post
+                Optionally {
+                  Body(.form(Pricing.self, decoder: formDecoder))
+                }
+              }
+            }
+          }
+
+          Route(.case(Account.Subscription.reactivate)) {
+            Method.post
+            Path { "reactivate" }
+          }
+        }
+      }
+
+      Route(.case(Account.update)) {
+        Method.post
+        Optionally {
+          Body(.form(ProfileData.self, decoder: formDecoder))
+        }
+      }
     }
   }
 }

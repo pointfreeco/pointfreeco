@@ -243,6 +243,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: false
     )
@@ -314,6 +315,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: false
     )
@@ -498,6 +500,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualMonthly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: true
     )
@@ -588,6 +591,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .individualYearly,
       referralCode: referrer.referralCode,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: true
     )
@@ -829,6 +833,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .init(billing: .monthly, quantity: 3),
         referralCode: nil,
+        subscriptionID: nil,
         teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
         useRegionalDiscount: false
       )
@@ -855,6 +860,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .init(billing: .monthly, quantity: 3),
         referralCode: nil,
+        subscriptionID: nil,
         teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
         useRegionalDiscount: false
       )
@@ -897,6 +903,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -922,6 +929,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .teamYearly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -948,6 +956,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -978,6 +987,7 @@ final class SubscribeTests: TestCase {
         paymentMethodID: "pm_deadbeef",
         pricing: .individualMonthly,
         referralCode: "cafed00d",
+        subscriptionID: nil,
         teammates: [],
         useRegionalDiscount: false
       )
@@ -990,5 +1000,97 @@ final class SubscribeTests: TestCase {
         await assertSnapshot(matching: conn, as: .conn)
       #endif
     }
+  }
+
+  func testJSON_success() async throws {
+    #if !os(Linux)
+      let user = User.nonSubscriber
+      await withDependencies {
+        $0.database.fetchUserById = { _ in user }
+        $0.database.fetchSubscriptionById = { _ in throw unit }
+        $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+      } operation: {
+        let subscribeData = SubscribeData(
+          coupon: nil,
+          isOwnerTakingSeat: true,
+          paymentMethodID: "pm_deadbeef",
+          pricing: .individualYearly,
+          referralCode: nil,
+          subscriptionID: nil,
+          teammates: [],
+          useRegionalDiscount: false
+        )
+        var request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let conn = await siteMiddleware(connection(from: request))
+        await assertSnapshot(matching: conn, as: .conn)
+      }
+    #endif
+  }
+
+  func testJSON_3DSecureRequired() async throws {
+    #if !os(Linux)
+      let user = User.nonSubscriber
+      await withDependencies {
+        $0.database.fetchUserById = { _ in user }
+        $0.database.fetchSubscriptionById = { _ in throw unit }
+        $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+        $0.stripe.createSubscription = { _, _, _, _ in
+          update(.individualYearly) {
+            $0.status = .incomplete
+            $0.latestInvoice = .right(
+              update(Invoice.mock(charge: .right(.mock))) {
+                $0.paymentIntent = .right(.requiresAction)
+              }
+            )
+          }
+        }
+      } operation: {
+        let subscribeData = SubscribeData(
+          coupon: nil,
+          isOwnerTakingSeat: true,
+          paymentMethodID: "pm_deadbeef",
+          pricing: .individualYearly,
+          referralCode: nil,
+          subscriptionID: nil,
+          teammates: [],
+          useRegionalDiscount: false
+        )
+        var request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let conn = await siteMiddleware(connection(from: request))
+        await assertSnapshot(matching: conn, as: .conn)
+      }
+    #endif
+  }
+
+  func testJSON_3DSecureConfirmed() async throws {
+    #if !os(Linux)
+      let user = User.nonSubscriber
+      await withDependencies {
+        $0.database.fetchUserById = { _ in user }
+        $0.database.fetchSubscriptionById = { _ in throw unit }
+        $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+        $0.stripe.fetchSubscription = { id in
+          update(.individualYearly) {
+            $0.id = id
+          }
+        }
+      } operation: {
+        let subscribeData = SubscribeData(
+          coupon: nil,
+          isOwnerTakingSeat: true,
+          paymentMethodID: "pm_deadbeef",
+          pricing: .individualYearly,
+          referralCode: nil,
+          subscriptionID: "sub_deadbeef",
+          teammates: [],
+          useRegionalDiscount: false
+        )
+        var request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+        let conn = await siteMiddleware(connection(from: request))
+        await assertSnapshot(matching: conn, as: .conn)
+      }
+    #endif
   }
 }

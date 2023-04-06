@@ -7,13 +7,17 @@ public enum Live: Equatable {
   case stream(id: VimeoVideo.ID)
 }
 
-let liveRouter = OneOf {
-  Route(.case(Live.current))
+struct LiveRouter: ParserPrinter {
+  var body: some Router<Live> {
+    OneOf {
+      Route(.case(Live.current))
 
-  Route(.case(Live.stream(id:))) {
-    Path {
-      "streams"
-      Digits().map(.representing(VimeoVideo.ID.self))
+      Route(.case(Live.stream(id:))) {
+        Path {
+          "streams"
+          Digits().map(.representing(VimeoVideo.ID.self))
+        }
+      }
     }
   }
 }

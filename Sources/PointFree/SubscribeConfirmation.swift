@@ -207,7 +207,7 @@ func redirectActiveSubscribers<A>(
             conn
               |> redirect(
                 to: .account(),
-                headersMiddleware: flash(.warning, "You already have an active subscription.")
+                headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
               )
           }
         )

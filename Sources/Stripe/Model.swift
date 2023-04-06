@@ -266,6 +266,7 @@ public struct Invoice: Codable, Equatable {
   public var invoicePdf: String?
   public var lines: ListEnvelope<LineItem>
   public var number: Number?
+  public var paymentIntent: Expandable<PaymentIntent>?
   public var periodStart: Date
   public var periodEnd: Date
   public var status: Status
@@ -284,6 +285,7 @@ public struct Invoice: Codable, Equatable {
     invoicePdf: String?,
     lines: ListEnvelope<LineItem>,
     number: Number?,
+    paymentIntent: Expandable<PaymentIntent>?,
     periodStart: Date,
     periodEnd: Date,
     status: Status,
@@ -301,6 +303,7 @@ public struct Invoice: Codable, Equatable {
     self.invoicePdf = invoicePdf
     self.lines = lines
     self.number = number
+    self.paymentIntent = paymentIntent
     self.periodStart = periodStart
     self.periodEnd = periodEnd
     self.status = status
@@ -514,6 +517,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
   public var endedAt: Date?
   public var id: StripeID<Self>
   public var items: ListEnvelope<Item>
+  public var latestInvoice: Either<Invoice.ID, Invoice>?
   public var plan: Plan
   public var quantity: Int
   public var startDate: Date
@@ -530,6 +534,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
     endedAt: Date?,
     id: ID,
     items: ListEnvelope<Item>,
+    latestInvoice: Either<Invoice.ID, Invoice>?,
     plan: Plan,
     quantity: Int,
     startDate: Date,
@@ -545,6 +550,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
     self.endedAt = endedAt
     self.id = id
     self.items = items
+    self.latestInvoice = latestInvoice
     self.plan = plan
     self.quantity = quantity
     self.startDate = startDate
@@ -587,7 +593,10 @@ public struct Subscription: Codable, Equatable, Identifiable {
   public enum Status: String, Codable {
     case active
     case canceled
+    case incomplete
+    case incompleteExpiring = "incomplete_expiring"
     case pastDue = "past_due"
+    case paused
     case trialing
     case unpaid
 
@@ -595,7 +604,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
       switch self {
       case .active, .trialing:
         return true
-      case .canceled, .pastDue, .unpaid:
+      case .canceled, .incomplete, .incompleteExpiring, .pastDue, .paused, .unpaid:
         return false
       }
     }
@@ -706,7 +715,7 @@ extension Coupon: Codable {
   }
 }
 
-extension Plan.ID {
+extension Tagged<Plan, String> {
   public static let monthly: Self = "monthly-2019"
   public static var yearly: Self = "yearly-2019"
 }

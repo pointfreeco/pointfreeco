@@ -49,6 +49,14 @@ extension Card {
 }
 
 extension PaymentIntent {
+  public static let requiresAction = Self(
+    amount: 54_00,
+    clientSecret: "pi_test_secret_test",
+    currency: .usd,
+    id: "pi_test",
+    status: .requiresAction
+  )
+
   public static let requiresConfirmation = Self(
     amount: 54_00,
     clientSecret: "pi_test_secret_test",
@@ -140,6 +148,7 @@ extension Invoice {
       invoicePdf: "https://pay.stripe.com/invoice/invst_test/pdf",
       lines: .mock([.mock]),
       number: "0000000-0000",
+      paymentIntent: nil,
       periodStart: .mock,
       periodEnd: Date.mock.addingTimeInterval(60 * 60 * 24 * 30),
       status: .paid,
@@ -251,6 +260,7 @@ extension Subscription {
     endedAt: nil,
     id: "sub_test",
     items: .mock([.mock]),
+    latestInvoice: .left("in_test"),
     plan: .mock,
     quantity: 1,
     startDate: .mock,

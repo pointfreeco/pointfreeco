@@ -7,6 +7,7 @@ extension SubscribeData {
     paymentMethodID: "pm_stripe-deadbeef",
     pricing: .init(billing: .monthly, quantity: 1),
     referralCode: nil,
+    subscriptionID: nil,
     teammates: [],
     useRegionalDiscount: false
   )
@@ -17,6 +18,7 @@ extension SubscribeData {
     paymentMethodID: "pm_stripe-deadbeef",
     pricing: .init(billing: .yearly, quantity: 1),
     referralCode: nil,
+    subscriptionID: nil,
     teammates: [],
     useRegionalDiscount: false
   )
@@ -28,6 +30,7 @@ extension SubscribeData {
       paymentMethodID: "pm_stripe-deadbeef",
       pricing: .init(billing: .yearly, quantity: quantity),
       referralCode: nil,
+      subscriptionID: nil,
       teammates: [],
       useRegionalDiscount: false
     )

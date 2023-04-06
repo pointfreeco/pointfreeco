@@ -1,15 +1,15 @@
 import Parsing
 
-public struct _PrefixUpTo<Upstream: Parser>: Parser
+public struct _PrefixUpTo<Input: Collection, Upstream: Parser>: Parser
 where
-  Upstream.Input: Collection,
-  Upstream.Input == Upstream.Input.SubSequence
+  Input.SubSequence == Input,
+  Upstream.Input == Input
 {
   struct SuffixNotFound: Error {}
 
   let upstream: Upstream
 
-  init(@ParserBuilder _ upstream: () -> Upstream) {
+  init(@ParserBuilder<Input> _ upstream: () -> Upstream) {
     self.upstream = upstream()
   }
 

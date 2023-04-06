@@ -15,11 +15,11 @@ let hostSignOffView: Node = [
   ),
   .p(
     .a(
-      attributes: [.href(twitterRouter.url(for: .mbrandonw).absoluteString)],
+      attributes: [.href(TwitterRouter().url(for: .mbrandonw).absoluteString)],
       .raw("Brandon&nbsp;Williams")),
     " & ",
     .a(
-      attributes: [.href(twitterRouter.url(for: .stephencelis).absoluteString)],
+      attributes: [.href(TwitterRouter().url(for: .stephencelis).absoluteString)],
       .raw("Stephen&nbsp;Celis"))
   ),
 ]
@@ -42,7 +42,7 @@ func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node 
               "@pointfreeco"),
             ", or on Twitter ",
             .a(
-              attributes: [.href(twitterRouter.url(for: .pointfreeco).absoluteString)],
+              attributes: [.href(TwitterRouter().url(for: .pointfreeco).absoluteString)],
               "@pointfreeco"),
             "."
           ),
@@ -68,7 +68,7 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
   @Dependency(\.logger) var logger
 
   guard
-    let unsubUrl = (try? expressUnsubscribe.print((user.id, newsletter)))
+    let unsubUrl = (try? ExpressUnsubscribe().print((user.id, newsletter)))
       .flatMap({ Encrypted(String($0), with: appSecret) })
       .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
   else {

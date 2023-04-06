@@ -44,6 +44,7 @@ class PointFreeRouterTests: TestCase {
       paymentMethodID: "pm_deadbeef",
       pricing: .init(billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
+      subscriptionID: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
       useRegionalDiscount: true
     )
@@ -182,6 +183,19 @@ class PointFreeRouterTests: TestCase {
     request = URLRequest.init(
       url: .init(string: "http://localhost:8080/live/streams/1")!)
     route = SiteRoute.live(.stream(id: 1))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  func testCollectionEpisodeProgress() throws {
+    var request = URLRequest(
+      url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!
+    )
+    request.httpMethod = "POST"
+    let route = SiteRoute.collections(
+      .collection("tca", .section("basics", .progress(param: .left("1"), percent: 50)))
+    )
+
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }

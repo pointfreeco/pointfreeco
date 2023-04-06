@@ -5,10 +5,14 @@ public enum ClipsRoute: Equatable {
   case clip(videoID: VimeoVideo.ID)
 }
 
-let clipsRouter = OneOf {
-  Route(.case(ClipsRoute.clip(videoID:))) {
-    Path {
-      Digits().map(.representing(VimeoVideo.ID.self))
+struct ClipsRouter: ParserPrinter {
+  var body: some Router<ClipsRoute> {
+    OneOf {
+      Route(.case(ClipsRoute.clip(videoID:))) {
+        Path {
+          Digits().map(.representing(VimeoVideo.ID.self))
+        }
+      }
     }
   }
 }
