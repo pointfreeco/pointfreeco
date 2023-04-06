@@ -16,26 +16,12 @@ func emailPreview(
   conn
     .writeStatus(.ok)
     .respond(
-      view: view,
-      layoutData: {
-        .init(
-          data: $0,
-          //            description: <#T##String?#>,
-          //            extraHead: <#T##ChildOf<Tag.Head>#>,
-          //            extraStyles: <#T##Stylesheet#>,
-          //            image: <#T##String?#>,
-          //            isGhosting: <#T##Bool#>,
-          //            openGraphType: <#T##OpenGraphType#>,
-          //            style: <#T##SimplePageLayoutData<String?>.Style#>,
-          title: "Email preview"  //,
-            //            twitterCard: <#T##TwitterCard#>,
-            //            usePrismJs: <#T##Bool#>
-        )
-      }
+      view: emailPreviewView,
+      layoutData: { .init(data: $0, title: "Email preview") }
     )
 }
 
-private func view(template: EmailTemplate?) -> Node {
+private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return [
@@ -53,14 +39,14 @@ private func view(template: EmailTemplate?) -> Node {
               document.getElementById("email-form").submit();
               """),
         ],
-        .fragment(options(selectedTemplate: template))
+        .fragment(options(selectedTemplate: selectedTemplate))
       )
     ),
     .div(
       attributes: [
         .class([Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])])
       ],
-      template
+      selectedTemplate
         .map(email(selectedTemplate:))
         ?? []
     ),
