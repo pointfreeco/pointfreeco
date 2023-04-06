@@ -652,7 +652,7 @@ public func status(for subscription: Stripe.Subscription) -> String {
     return "Past due"
   case .paused:
     return "Paused"
-  case .incomplete, .incompleteExpiring, .unpaid:
+  case .incomplete, .incompleteExpired, .unpaid:
     return "Unpaid"
   case .trialing:
     return "In trial"
@@ -675,7 +675,7 @@ public func nextBilling(
       : "Canceled"
   case (.active, .none),
     (.incomplete, _),
-    (.incompleteExpiring, _),
+    (.incompleteExpired, _),
     (.pastDue, _),
     (.paused, _),
     (.unpaid, _),

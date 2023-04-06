@@ -594,7 +594,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
     case active
     case canceled
     case incomplete
-    case incompleteExpiring = "incomplete_expiring"
+    case incompleteExpired = "incomplete_expired"
     case pastDue = "past_due"
     case paused
     case trialing
@@ -604,7 +604,7 @@ public struct Subscription: Codable, Equatable, Identifiable {
       switch self {
       case .active, .trialing:
         return true
-      case .canceled, .incomplete, .incompleteExpiring, .pastDue, .paused, .unpaid:
+      case .canceled, .incomplete, .incompleteExpired, .pastDue, .paused, .unpaid:
         return false
       }
     }
