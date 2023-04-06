@@ -127,48 +127,56 @@ func welcomeEmail1Content(user: User) -> Node {
       """
       👋 Howdy!
 
-      It's been a week since you signed up for [Point-Free](\(siteRouter.url(for: .home))). We hope you've learned
-      something new about functional programming, and maybe even introduced it into your codebase!
+      It's been a week since you signed up for [Point-Free](\(siteRouter.url(for: .home))). We hope
+      you've learned something new about functional programming, and maybe even introduced it into
+      your codebase!
 
-      We'd love to [have you as a subscriber](\(siteRouter.url(for: .pricingLanding))), so please let us know if
-      you have any questions. Just reply to this email!
+      We'd love to [have you as a subscriber](\(siteRouter.url(for: .pricingLanding))), so please
+      let us know if you have any questions. Just reply to this email!
       """
     ),
     user.episodeCreditCount > 0
       ? .markdownBlock(
         """
-        In the meantime, it looks like you have a **free episode credit**! You can use this to see *any*
-        subscriber-only episode, completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to an
-        episode, and click the "\(useCreditCTA)" button!
+        In the meantime, it looks like you have a **free episode credit**! You can use this to see
+        *any* subscriber-only episode, completely for free! Just visit [our
+        site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)"
+        button!
 
         Here are some of our most popular collections of episodes:
 
-        * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
+        * **[Composable
+        Architecture](https://www.pointfree.co/collections/composable-architecture):** Learn how to
+        build an architecture from the ground up, with a focus on ergnomics, composition, testing,
+        and more.
 
-          Learn how to build an architecture from the ground up, with a focus on ergnomics, composition,
-        testing, and more.
+        * **[SwiftUI](https://www.pointfree.co/collections/swiftui):** We dive deep into some of the
+        subtler, more complex topics of SwiftUI, such as bindings, animation and navigation. We even
+        have a series called [Modern
+        SwiftUI](https://www.pointfree.co/collections/swiftui/modern-swiftui) where we demonstrate
+        how to build a large, complex application from scratch using best, modern practices.
 
-        * [SwiftUI](https://www.pointfree.co/collections/swiftui)
+        * **[Dependencies](https://www.pointfree.co/collections/dependencies):** Dependencies can
+        wreak havoc on a codebase. We take the time to properly define what a dependency is, why
+        they are so complex, and how we can take control of them rather than letting them control
+        us.
 
-          We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings, animation
-        and navigation.
+        * **[Parsing](https://www.pointfree.co/collections/parsing):** Parsing is the process of
+        turning nebulous input data into well-structured output data. It's a surprisingly ubiquitous
+        topic, and our episodes are the perfect place to get started.
 
-        * [Dependencies](https://www.pointfree.co/collections/dependencies)
-
-          Dependencies can wreak havoc on a codebase. We take the time to properly define what a dependency is,
-        why they are so complex, and how we can take control of them rather than letting them control us.
-
-        * [Parsing](https://www.pointfree.co/collections/parsing)
-
-          Parsing is the process of turning nebulous input data into well-structured output data. It's a
-        surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
+        * **[And a whole lot more](https://www.pointfree.co/collections)…**
         """
       )
       : [],
     .markdownBlock(
       """
-      When you're ready to subscribe for yourself _or_ your team, visit
-      [our subscribe page](\(siteRouter.url(for: .pricingLanding)))!
+      We also have a vibrart [Point-Free Slack community](http://pointfree.co/slack-invite). Join
+      today to discuss episodes with other community members, ask questions about our episodes
+      or open source projects, and more!
+
+      When you're ready to subscribe for yourself _or_ your team, visit [our subscribe
+      page](\(siteRouter.url(for: .pricingLanding)))!
       """
     ),
     subscribeButton,
@@ -204,10 +212,11 @@ func welcomeEmail2Content(user: User) -> Node {
       """
       👋 Hey there!
 
-      You signed up for a [Point-Free](\(siteRouter.url(for: .home))) account a couple weeks ago but still haven't subscribed!
+      You signed up for a [Point-Free](\(siteRouter.url(for: .home))) account a couple weeks ago but
+      still haven't subscribed!
 
-      If you're still on the fence and want to see a little more of what we have to offer, we have a number
-      of free episodes for you to check out!
+      If you're still on the fence and want to see a little more of what we have to offer, we have a
+      number of free episodes for you to check out!
 
       \(freeEpisodeLinks)
       """
@@ -215,8 +224,9 @@ func welcomeEmail2Content(user: User) -> Node {
     user.episodeCreditCount > 0
       ? .markdownBlock(
         """
-        You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
-        completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)" button.
+        You *also* have a **free episode credit** you can use to see *any* _subscriber-only_
+        episode, completely for free! Just visit [our site](\(siteRouter.url(for: .home))), go to
+        an episode, and click the "\(useCreditCTA)" button.
         """
       )
       : [],
@@ -250,8 +260,8 @@ func welcomeEmail3Content(user: User) -> Node {
       """
       👋 Hiya!
 
-      We just wanted to reach out one last time in the hope that we might make a subscriber out of you yet,
-      so we've given you another **free episode credit**.
+      We just wanted to reach out one last time in the hope that we might make a subscriber out of
+      you yet, so we've given you another **free episode credit**.
       """
     ),
     user.episodeCreditCount > 1
@@ -265,29 +275,27 @@ func welcomeEmail3Content(user: User) -> Node {
     .markdownBlock(
       """
       Please use it to check out _any_ subscriber-only episode, completely free! Just visit
-      [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)" button.
+      [our site](\(siteRouter.url(for: .home))), go to an episode, and click the "\(useCreditCTA)"
+      button.
 
       If you're having trouble deciding on an episode, here are a few of our favorites:
 
-      * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
+      * **[Composable Architecture](https://www.pointfree.co/collections/composable-architecture):**
+        Learn how to build an architecture from the ground up, with a focus on ergnomics,
+      composition, testing, and more.
 
-        Learn how to build an architecture from the ground up, with a focus on ergnomics, composition,
-      testing, and more.
+      * **[SwiftUI](https://www.pointfree.co/collections/swiftui)** We dive deep into some of the
+      subtler, more complex topics of SwiftUI, such as bindings, animation and navigation.
 
-      * [SwiftUI](https://www.pointfree.co/collections/swiftui)
+      * **[Dependencies](https://www.pointfree.co/collections/dependencies):** Dependencies can
+      wreak havoc on a codebase. We take the time to properly define what a dependency is, why they
+      are so complex, and how we can take control of them rather than letting them control us.
 
-        We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings, animation
-      and navigation.
+      * **[Parsing](https://www.pointfree.co/collections/parsing):** Parsing is the process of
+      turning nebulous input data into well-structured output data. It's a surprisingly ubiquitous
+      topic, and our episodes are the perfect place to get started.
 
-      * [Dependencies](https://www.pointfree.co/collections/dependencies)
-
-        Dependencies can wreak havoc on a codebase. We take the time to properly define what a dependency is,
-      why they are so complex, and how we can take control of them rather than letting them control us.
-
-      * [Parsing](https://www.pointfree.co/collections/parsing)
-
-        Parsing is the process of turning nebulous input data into well-structured output data. It's a
-      surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
+      * **[And a whole lot more](https://www.pointfree.co/collections)…**
 
       We hope you'll find it interesting enough to consider
       [getting a subscription](\(siteRouter.url(for: .pricingLanding))) for yourself or your team!
