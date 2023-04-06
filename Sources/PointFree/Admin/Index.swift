@@ -75,7 +75,7 @@ private func adminIndexView() -> Node {
     .li(.a(attributes: [.href(siteRouter.path(for: .admin(.ghost())))], "Ghost a user")),
     .li(
       .a(
-        attributes: [.href(siteRouter.path(for: .admin(.emailPreview(id: nil))))],
+        attributes: [.href(siteRouter.path(for: .admin(.emailPreview(template: nil))))],
         "Preview an email"
       )
     )

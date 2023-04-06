@@ -2,7 +2,14 @@ import Foundation
 import Models
 import URLRouting
 
+public enum EmailTemplate: String, CaseIterable {
+  case welcomeEmail1
+  case welcomeEmail2
+  case welcomeEmail3
+}
+
 public enum Admin: Equatable {
+  case emailPreview(template: EmailTemplate?)
   case episodeCredits(EpisodeCredit = .show)
   case freeEpisodeEmail(FreeEpisodeEmail = .index)
   case ghost(Ghost = .index)
@@ -44,6 +51,18 @@ public enum Admin: Equatable {
 struct AdminRouter: ParserPrinter {
   var body: some Router<Admin> {
     OneOf {
+      Route(.case(Admin.emailPreview(template:))) {
+        Path { "email-preview" }
+        Optionally {
+          Method.post
+          Body {
+            FormData {
+              Field("template", .string.map(.representing(EmailTemplate.self)))
+            }
+          }
+        }
+      }
+
       Route(.case(Admin.index))
 
       Route(.case(Admin.episodeCredits)) {

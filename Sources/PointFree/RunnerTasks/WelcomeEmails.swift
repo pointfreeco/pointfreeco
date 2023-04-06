@@ -280,26 +280,22 @@ func welcomeEmail3Content(user: User) -> Node {
 
       If you're having trouble deciding on an episode, here are a few of our favorites:
 
-      * [Composable Architecture](https://www.pointfree.co/collections/composable-architecture)
-
+      * **[Composable Architecture](https://www.pointfree.co/collections/composable-architecture):**
         Learn how to build an architecture from the ground up, with a focus on ergnomics,
       composition, testing, and more.
 
-      * [SwiftUI](https://www.pointfree.co/collections/swiftui)
+      * **[SwiftUI](https://www.pointfree.co/collections/swiftui)** We dive deep into some of the
+      subtler, more complex topics of SwiftUI, such as bindings, animation and navigation.
 
-        We dive deep into some of the subtler, more complex topics of SwiftUI, such as bindings,
-      animation and navigation.
+      * **[Dependencies](https://www.pointfree.co/collections/dependencies):** Dependencies can
+      wreak havoc on a codebase. We take the time to properly define what a dependency is, why they
+      are so complex, and how we can take control of them rather than letting them control us.
 
-      * [Dependencies](https://www.pointfree.co/collections/dependencies)
+      * **[Parsing](https://www.pointfree.co/collections/parsing):** Parsing is the process of
+      turning nebulous input data into well-structured output data. It's a surprisingly ubiquitous
+      topic, and our episodes are the perfect place to get started.
 
-        Dependencies can wreak havoc on a codebase. We take the time to properly define what a
-      dependency is, why they are so complex, and how we can take control of them rather than
-      letting them control us.
-
-      * [Parsing](https://www.pointfree.co/collections/parsing)
-
-        Parsing is the process of turning nebulous input data into well-structured output data.
-      It's a surprisingly ubiquitous topic, and our episodes are the perfect place to get started.
+      * **[And a whole lot more](https://www.pointfree.co/collections)…**
 
       We hope you'll find it interesting enough to consider
       [getting a subscription](\(siteRouter.url(for: .pricingLanding))) for yourself or your team!
