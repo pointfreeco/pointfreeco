@@ -12,7 +12,23 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-04-10")!,
     references: [
-      .composableNavigationBetaDiscussion
+      .init(
+        author: "Johannes Weiss",
+        blurb: """
+          For more information on copy-on-write, be sure to check out this detailed video from
+          [Johannes Weiss](https://jweiss.io):
+
+          > Languages that have a rather low barrier to entry often struggle when it comes to performance because too much is abstracted from the programmer to make things simple. Therefore in those languages, the key to unlock performance is often to write some of the code in C, collaterally abandoning the safety of the higher-level language.
+          >
+          > Swift on the other hand lets you unlock best of both worlds: performance and safety. Naturally not all Swift code is magically fast and just like everything else in programming performance requires constant learning.
+          >
+          > Johannes discusses one aspect of what was learned during SwiftNIO development. He debunks one particular performance-related myth that has been in the Swift community ever since, namely that classes are faster to pass to functions than structs.
+          """,
+        link: "https://www.youtube.com/watch?v=iLDldae64xE",
+        publishedAt: yearMonthDayFormatter.date(from: "2019-02-22")!,
+        title: "High-performance systems in Swift"
+      ),
+      .composableNavigationBetaDiscussion,
     ],
     sequence: 230,
     subtitle: "Stack vs Heap",
