@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
       We take a detour to learn about the stack, the heap, copy-on-write, and how we can use this knowledge to further improve our navigation tools by introducing of a property wrapper.
       """,
-    codeSampleDirectory: "0230-composable-navigation-pt8",
+    codeSampleDirectory: "0230-composable-navigation-pt9",
     exercises: _exercises,
     id: 230,
     length: .init(.timestamp(minutes: 50, seconds: 29)),
