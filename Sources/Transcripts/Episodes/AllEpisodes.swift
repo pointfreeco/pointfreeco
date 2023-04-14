@@ -233,5 +233,6 @@ extension Episode {
     .ep228_composableNavigation,
     .ep229_composableNavigation,
     .ep230_composableNavigation,
+    .ep231_composableStacks,
   ]
 }
