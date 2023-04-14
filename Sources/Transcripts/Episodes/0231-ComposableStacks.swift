@@ -12,7 +12,7 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-04-17")!,
     references: [
-      .composableNavigationBetaDiscussion,
+      .composableNavigationBetaDiscussion
     ],
     sequence: 231,
     subtitle: "vs Trees",
