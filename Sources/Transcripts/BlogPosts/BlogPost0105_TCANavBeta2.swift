@@ -15,15 +15,15 @@ public let post0105_TCANavBeta2 = BlogPost(
       which we released an assortment of tools to manage presentation in the Composable
       Architecture. This included tools for dealing with alerts, confirmation dialogs, sheets,
       popovers, fullscreen covers, pre-iOS 16 navigation links, and the tree-based
-      `navigationDestination` view modifier. The beta notably did **not** provide tools for iOS 16's
-      `NavigationStack`, but that changes today.
+      [`navigationDestination`][nav-dest-tree] view modifier. The beta notably did **not** provide
+      tools for iOS 16's `NavigationStack`, but that changes today.
 
       ## Composable Stack Navigation Basics
 
       Like last time, we're not going to give a detailed overview of these new tools and how we
-      motivated or designed them (see the forthcoming episodes for that 😉), and documentation is
-      still in-progress, but here is a very quick overview of the stack-based tools and how to use
-      them.
+      motivated or designed them (see the forthcoming [episodes][stacks-ep] for that 😉), and
+      documentation is still in-progress, but here is a very quick overview of the stack-based tools
+      and how to use them.
 
         * When a root feature contains a navigation stack of elements to be presented, you will
           enhance its domain using the new `StackState` and `StackAction` types:
@@ -43,9 +43,9 @@ public let post0105_TCANavBeta2 = BlogPost(
 
           `StackState` is a collection type that is specialized for navigation operations in the
           Composable Architecture, where each element represents a screen in the stack that is
-          powered by its own reducer. It is similar to SwiftUI's `NavigationPath`, and has many of
-          the same operations like `append` and `removeLast`, but it is not type-erased: you can
-          freely inspect and mutate the data inside.
+          powered by its own reducer. It is similar to SwiftUI's [`NavigationPath`][nav-path-docs],
+          and has many of the same operations like `append` and `removeLast`, but it is not
+          type-erased: you can freely inspect and mutate the data inside.
 
         * Then you will make use of the new, special `forEach` reducer operator that can single out
           the stack state and action, and run the child feature on that element when it is active:
@@ -113,11 +113,15 @@ public let post0105_TCANavBeta2 = BlogPost(
       discussions](https://github.com/pointfreeco/swift-composable-architecture/discussions), or our
       new [Slack](http://pointfree.co/slack-invite) community) if you have questions, comments,
       concerns, or suggestions!
+
+      [stacks-ep]: /episodes/ep231-composable-stacks-vs-trees
+      [nav-dest-tree]: https://developer.apple.com/documentation/swiftui/view/navigationdestination(ispresented:destination:)
+      [nav-path-docs]: https://developer.apple.com/documentation/swiftui/navigationpath
       """###
     )
   },
   coverImage: nil,
   id: 105,
   publishedAt: yearMonthDayFormatter.date(from: "2023-04-17")!,
-  title: "Composable navigation beta 2"
+  title: "Composable navigation beta, part 2"
 )
