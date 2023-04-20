@@ -21,7 +21,7 @@ By far the most powerful tool provided by this library is
 such that all async tasks spawned will be run in a serial queue on the main thread.
 
 This can be incredibly useful in tests since testing async code is [notoriously
-difficult][reliably-testing-swift-concurrency] to test due to how suspension points are processed
+difficult][reliably-testing-swift-concurrency] due to how suspension points are processed
 by the runtime. Using `withMainSerialExecutor` can help make your tests deterministic, less flakey
 and massively speed them up.
 
