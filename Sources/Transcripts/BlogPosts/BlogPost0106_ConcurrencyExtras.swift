@@ -18,11 +18,11 @@ provided:
 
 By far the most powerful tool provided by this library is
 [`withMainSerialExecutor`][withMainSerialExecutor-docs]. It allows you to execute a block of code
-such that all async tasks spawned will be run in a serial queue on the main thread.
+such that all async tasks spawned within it will be run serially on the main thread.
 
 This can be incredibly useful in tests since testing async code is [notoriously
 difficult][reliably-testing-swift-concurrency] due to how suspension points are processed
-by the runtime. Using `withMainSerialExecutor` can help make your tests deterministic, less flakey
+by the runtime. Using `withMainSerialExecutor` can help make your tests deterministic, less flakey,
 and massively speed them up.
 
 Note that running async tasks serially does not mean that multiple concurrent tasks are not able to
@@ -118,8 +118,8 @@ the single `Task.yield()` is not enough for the subscription to the stream of no
 actually start. In that case we will post the notification before we have actually subscribed,
 causing a test failure.
 
-If we wrap the entire test in ``withMainSerialExecutor``, then it will pass
-deterministically, 100% of the time:
+If we wrap the entire test in ``withMainSerialExecutor``, then it will pass deterministically,
+100% of the time:
 
 ```swift
 func testBasics() async {
@@ -129,12 +129,13 @@ func testBasics() async {
 }
 ```
 
-This is because now all tasks are enqueued on the serial, main executor, and so when we `Task.yield`
-we can be sure that the `onAppear` method will execute until it reaches a suspension point. This
-guarantees that the subscription to the stream of notifications will start when we expect it to.
+This is because now all tasks are enqueued serially on the main executor, and so when we
+`Task.yield` we can be sure that the `onAppear` method will execute until it reaches a suspension
+point. This guarantees that the subscription to the stream of notifications will start when we
+expect it to.
 
-You can also use ``withMainSerialExecutor(operation:)-3uv4u`` to wrap an entire test case by
-overriding the `invokeTest` method:
+You can also use ``withMainSerialExecutor`` to wrap an entire test case by overriding the
+`invokeTest` method:
 
 ```swift
 final class FeatureModelTests: XCTestCase {
@@ -149,21 +150,17 @@ final class FeatureModelTests: XCTestCase {
 
 Now the entire `FeatureModelTests` test case will be run on the main, serial executor.
 
-Note that by using ``withMainSerialExecutor`` you are technically making your
-tests behave in a manner that is different from how they would run in production. However, many
-tests written on a day-to-day basis due not invole the full-blown vagaries of concurrency. Instead
-the tests want to assert that some user action happens, an async unit of work is executed, and
-that causes some state to change. Such tests should be written in a way that is 100% deterministic.
+Note that by using `withMainSerialExecutor` you are technically making your tests behave in a manner
+that is different from how they would run in production. However, many tests written on a day-to-day
+basis due not invole the full-blown vagaries of concurrency. Instead the tests want to assert that
+some user action happens, an async unit of work is executed, and that causes some state to change.
+Such tests should be written in a way that is 100% deterministic.
 
 If your code has truly complex asynchronous and concurrent operations, then it may be handy to write
-two sets of tests: one set that targets the main executor (using
-``withMainSerialExecutor``) so that you can deterministically assert how the core
-system behaves, and then another set that targets the default, global executor that will probably
-need to make weaker assertions due to non-determinism, but can still assert on some things.
-
-
-
-
+two sets of tests: one set that targets the main executor (using `withMainSerialExecutor`) so that
+you can deterministically assert how the core system behaves, and then another set that targets the
+default, global executor that will probably need to make weaker assertions due to non-determinism,
+but can still assert on some things.
 
 
 
