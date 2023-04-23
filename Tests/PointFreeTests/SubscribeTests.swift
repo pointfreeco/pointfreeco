@@ -1087,7 +1087,7 @@ final class SubscribeTests: TestCase {
           teammates: [],
           useRegionalDiscount: false
         )
-        var request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+        let request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
         let conn = await siteMiddleware(connection(from: request))
         await assertSnapshot(matching: conn, as: .conn)
       }

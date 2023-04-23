@@ -119,12 +119,20 @@ public struct BoxMessageParser: ParserPrinter {
     } separator: {
       "\n> ".utf8
     }
-    .map(
-      AnyConversion(
-        apply: { $0.joined(separator: "\n") },
-        unapply: { $0.split(separator: "\n").map(String.init) }
-      )
-    )
+    .map(.box)
+  }
+}
+
+extension Conversion where Self == BoxConversion {
+  fileprivate static var box: Self { BoxConversion() }
+}
+
+private struct BoxConversion: Conversion {
+  func apply(_ input: [String]) -> String {
+    input.joined(separator: "\n")
+  }
+  func unapply(_ output: String) -> [String] {
+    output.split(separator: "\n").map(String.init)
   }
 }
 
