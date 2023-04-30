@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep233_composableStacks = Episode(
     blurb: """
-      TODO
+      Let's insert a new feature into the navigation stack. We'll take things step-by-step, \
+      employing an enum to hold multiple features in a single package, and making small changes to \
+      how we use our existing APIs before sketching out all-new tools dedicated to stack navigation.
       """,
     codeSampleDirectory: "0233-composable-navigation-pt12",
     exercises: _exercises,
