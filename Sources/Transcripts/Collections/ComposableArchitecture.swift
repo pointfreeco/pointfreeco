@@ -303,6 +303,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep230_composableNavigation),
       .init(episode: .ep231_composableStacks),
       .init(episode: .ep232_composableStacks),
+      .init(episode: .ep233_composableStacks),
     ],
     isFinished: false,
     related: [],
