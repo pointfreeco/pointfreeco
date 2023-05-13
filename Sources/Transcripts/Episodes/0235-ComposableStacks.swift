@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep235_composableStacks = Episode(
     blurb: """
-      TODO
+      We introduce a complementary `StackState` wrapper to our navigation tools to solve a few
+      issues that came from repurposing the identified array type. Once implemented and integrated,
+      we will put these tools' superpowers to work by implementing two new features.
       """,
     codeSampleDirectory: "0235-composable-navigation-pt14",
     exercises: _exercises,
