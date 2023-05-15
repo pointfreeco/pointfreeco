@@ -305,6 +305,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep232_composableStacks),
       .init(episode: .ep233_composableStacks),
       .init(episode: .ep234_composableStacks),
+      .init(episode: .ep235_composableStacks),
     ],
     isFinished: false,
     related: [],
