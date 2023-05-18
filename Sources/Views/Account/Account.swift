@@ -687,7 +687,7 @@ public func nextBilling(
 private func subscriptionPlanRows(
   subscription: Stripe.Subscription,
   upcomingInvoice: Stripe.Invoice?,
-  paymentMethod: Either<Card, PaymentMethod>?,
+  paymentMethod: Either<any CardProtocol, PaymentMethod>?,
   currentDate: Date
 ) -> Node {
 
@@ -854,7 +854,7 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
 
 private func mainAction(
   for subscription: Stripe.Subscription,
-  paymentMethod: Either<Card, PaymentMethod>?
+  paymentMethod: Either<any CardProtocol, PaymentMethod>?
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -1246,14 +1246,14 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 
 private func subscriptionPaymentInfoView(
   _ subscription: Stripe.Subscription,
-  paymentMethod: Either<Card, PaymentMethod>?
+  paymentMethod: Either<any CardProtocol, PaymentMethod>?
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   let paymentInfo: Node
   if let card = paymentMethod?.left {
     paymentInfo = [
-      .p(.text("\(card.brand.rawValue) ending in \(card.last4)")),
+      .p(.text("\(card.cardBrand.rawValue) ending in \(card.last4)")),
       .p(.text("Expires \(card.expMonth)/\(card.expYear)")),
     ]
   } else if let card = paymentMethod?.right?.card {
@@ -1369,7 +1369,7 @@ public struct AccountData {
   public let currentUser: User
   public let emailSettings: [EmailSetting]
   public let episodeCredits: [EpisodeCredit]
-  public let paymentMethod: Either<Card, PaymentMethod>?
+  public let paymentMethod: Either<any CardProtocol, PaymentMethod>?
   public let stripeSubscription: Stripe.Subscription?
   public let subscriberState: SubscriberState
   public let subscription: Models.Subscription?
@@ -1382,7 +1382,7 @@ public struct AccountData {
     currentUser: User,
     emailSettings: [EmailSetting],
     episodeCredits: [EpisodeCredit],
-    paymentMethod: Either<Card, PaymentMethod>?,
+    paymentMethod: Either<any CardProtocol, PaymentMethod>?,
     stripeSubscription: Stripe.Subscription?,
     subscriberState: SubscriberState,
     subscription: Models.Subscription?,

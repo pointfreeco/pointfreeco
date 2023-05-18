@@ -59,12 +59,12 @@ private func fetchAccountData<I>(
       }
     }
 
-  let paymentMethod: EitherIO<Error, Either<Card, PaymentMethod>?> =
+  let paymentMethod: EitherIO<Error, Either<any CardProtocol, PaymentMethod>?> =
     stripeSubscription
     .flatMap { subscription in
-      EitherIO<Error, Either<Card, PaymentMethod>?> {
+      EitherIO<Error, Either<any CardProtocol, PaymentMethod>?> {
         guard let customer = subscription.customer.right else { return nil }
-        if let card = customer.defaultSource?.right {
+        if let card = customer.defaultCard {
           return .left(card)
         } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
           return try await .right(stripe.fetchPaymentMethod(paymentMethod))
@@ -79,7 +79,7 @@ private func fetchAccountData<I>(
       (
         [EmailSetting],
         [EpisodeCredit],
-        Either<Card, PaymentMethod>?,
+        Either<any CardProtocol, PaymentMethod>?,
         Stripe.Subscription?,
         Models.Subscription?,
         User?,

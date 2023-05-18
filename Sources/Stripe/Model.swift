@@ -11,10 +11,43 @@ extension Either where R: Identifiable, L == R.ID {
 
 public typealias StripeID<Field> = Tagged<Field, String>
 
+public protocol CardProtocol {
+  var cardBrand: Card.Brand { get }
+  var expMonth: Int { get }
+  var expYear: Int { get }
+  var last4: String { get }
+}
+extension Card: CardProtocol {
+  public var cardBrand: Brand { self.brand }
+}
+extension PaymentMethod.Card: CardProtocol {
+  public var cardBrand: Card.Brand {
+    switch self.brand {
+    case .amex:
+      return .americanExpress
+    case .diners:
+      return .dinersClub
+    case .discover:
+      return .discover
+    case .jcb:
+      return .jcb
+    case .mastercard:
+      return .masterCard
+    case .unionpay:
+      return .unionPay
+    case .visa:
+      return .visa
+    }
+  }
+}
+extension Source.Card: CardProtocol {
+  public var cardBrand: Card.Brand { self.brand }
+  public var cardCountry: Country? { self.country }
+}
+
 public struct Card: Codable, Equatable, Identifiable {
   public var brand: Brand
   public var country: Country?
-  public var customer: Customer.ID
   public var expMonth: Int
   public var expYear: Int
   public var id: StripeID<Self>
@@ -24,7 +57,6 @@ public struct Card: Codable, Equatable, Identifiable {
   public init(
     brand: Brand,
     country: Country,
-    customer: Customer.ID,
     expMonth: Int,
     expYear: Int,
     id: ID,
@@ -33,7 +65,6 @@ public struct Card: Codable, Equatable, Identifiable {
   ) {
     self.brand = brand
     self.country = country
-    self.customer = customer
     self.expMonth = expMonth
     self.expYear = expYear
     self.id = id
@@ -51,6 +82,7 @@ public struct Card: Codable, Equatable, Identifiable {
     case jcb = "JCB"
     case dinersClub = "Diners Club"
     case unknown = "Unknown"
+    case unionPay = "UnionPay"
   }
 
   public enum Funding: String, Codable {
@@ -142,13 +174,37 @@ public struct Coupon: Equatable, Identifiable {
 
 public struct Source: Codable, Equatable, Identifiable {
   public var id: StripeID<Self>
+  public var card: Card?
   public var object: Object
 
   public enum Object: String, Codable { case source }
 
-  public init(id: ID, object: Object) {
+  public init(id: ID, card: Card? = nil, object: Object) {
     self.id = id
+    self.card = card
     self.object = object
+  }
+
+  public struct Card: Codable, Equatable {
+    public var brand: Stripe.Card.Brand
+    public var country: Country?
+    public var expMonth: Int
+    public var expYear: Int
+    public var last4: String
+
+    public init(
+      brand: Stripe.Card.Brand,
+      country: Country,
+      expMonth: Int,
+      expYear: Int,
+      last4: String
+    ) {
+      self.brand = brand
+      self.country = country
+      self.expMonth = expMonth
+      self.expYear = expYear
+      self.last4 = last4
+    }
   }
 }
 
@@ -159,15 +215,19 @@ public enum Currency: String, Codable {
 public struct Customer: Codable, Equatable, Identifiable {
   public var balance: Cents<Int>
   public var businessVatId: Vat?
-  public var defaultSource: Expandable<Card>?
+  public var defaultSource: Either<Expandable<Card>, Expandable<Source>>?
   public var id: StripeID<Self>
   public var invoiceSettings: InvoiceSettings
   public var metadata: [String: String]
 
+  public var defaultCard: (any CardProtocol)? {
+    self.defaultSource?.either({ $0.right }, { $0.right?.card })
+  }
+
   public init(
     balance: Cents<Int>,
     businessVatId: Vat?,
-    defaultSource: Expandable<Card>?,
+    defaultSource: Either<Expandable<Card>, Expandable<Source>>?,
     id: ID,
     invoiceSettings: InvoiceSettings,
     metadata: [String: String]
