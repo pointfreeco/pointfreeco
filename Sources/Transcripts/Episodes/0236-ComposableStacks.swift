@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep236_composableStacks = Episode(
     blurb: """
-      TODO
+      We round out the functionality of the Composable Architecture's stack navigation tools. This includes automatic cancellation of a child feature's effects when it's popped off the stack, and the ability for a child feature to pop itself. Along the way we will clean up the domain modeling and user experience of working with these tools.
       """,
     codeSampleDirectory: "0236-composable-navigation-pt15",
     exercises: _exercises,

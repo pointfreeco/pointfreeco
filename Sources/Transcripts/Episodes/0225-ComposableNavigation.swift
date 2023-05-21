@@ -41,7 +41,7 @@ extension Episode {
       .composableNavigationBetaDiscussion,
     ],
     sequence: 225,
-    subtitle: "Effect cancellation",
+    subtitle: "Effect Cancellation",
     title: "Composable Navigation",
     trailerVideo: .init(
       bytesLength: 60_300_000,
