@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep237_composableStacks = Episode(
     blurb: """
-      TODO
+      We complete the series by writing a comprehensive test suite for our stack navigation-based
+      app. We will uncover some shortcomings of the tools we've built and address each one,
+      resulting in a set of tools that are a joy to test with.
       """,
     codeSampleDirectory: "0237-composable-navigation-pt16",
     exercises: _exercises,
