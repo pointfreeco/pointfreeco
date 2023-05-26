@@ -306,8 +306,9 @@ extension Episode.Collection.Section {
       .init(episode: .ep233_composableStacks),
       .init(episode: .ep234_composableStacks),
       .init(episode: .ep235_composableStacks),
+      .init(episode: .ep236_composableStacks),
+      .init(episode: .ep237_composableStacks),
     ],
-    isFinished: false,
     related: [],
     title: "Navigation",
     whereToGoFromHere: nil
