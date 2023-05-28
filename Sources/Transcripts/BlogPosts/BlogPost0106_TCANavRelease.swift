@@ -8,10 +8,11 @@ public let post0106_TCANavRelease = BlogPost(
     """,
   contentBlocks: .paragraphs(###"""
     Over 3 months ago we released the [first beta preview][nav-beta-gh-discussion] of our
-    navigation tools for the Composable Architecture. In that time we have released 16 episodes
+    navigation tools for the [Composable Architecture][tca-gh]. In that time we have released 16 episodes
     building all of the tools [from scratch][tca-nav-collection], and the community has put the
     new APIs through the wringer to help make them the best they can be.
 
+    [tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
     [nav-beta-gh-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1944
     [tca-nav-collection]: todo
 
