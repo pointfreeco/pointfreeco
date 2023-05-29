@@ -12,7 +12,7 @@ extension Episode {
     id: 237,
     length: .init(.timestamp(hours: 1, minutes: 6, seconds: 29)),
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2023-05-30")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2023-05-29")!,
     references: [
       .composableNavigationBetaDiscussion
     ],
