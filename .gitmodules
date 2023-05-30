@@ -1,0 +1,3 @@
+[submodule "Sources/PrivateTranscripts"]
+	path = Sources/PrivateTranscripts
+	url = https://github.com/pointfreeco/episode-transcripts

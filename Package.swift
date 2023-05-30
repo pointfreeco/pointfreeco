@@ -267,6 +267,7 @@ var package = Package(
         "PointFreeDependencies",
         "PointFreeRouter",
         "PointFreePrelude",
+        "PrivateTranscripts",
         "Stripe",
         "Styleguide",
         "Syndication",
@@ -490,17 +491,10 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
+        "PrivateTranscripts",
         "TranscriptParser"
       ],
       resources: transcripts()
-    ),
-
-    .target(
-      name: "PrivateTranscripts",
-      dependencies: [
-        "TranscriptParser"
-      ],
-      resources: privateTranscripts()
     ),
 
     .testTarget(
@@ -509,6 +503,15 @@ var package = Package(
         "Transcripts",
         .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
+    ),
+
+    .target(
+      name: "PrivateTranscripts",
+      dependencies: [
+        "Models",
+        "TranscriptParser"
+      ],
+      resources: privateTranscripts()
     ),
 
     .target(
@@ -553,8 +556,7 @@ let isOss = !FileManager.default.fileExists(
   atPath: URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("Transcripts")
+    .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent(".git")
     .path
 )

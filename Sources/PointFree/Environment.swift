@@ -13,6 +13,7 @@ import Prelude
 import Stripe
 import Transcripts
 import VimeoClient
+import PrivateTranscripts
 
 extension BlogPost: DependencyKey {
   public static let liveValue: () -> [BlogPost] = allBlogPosts
