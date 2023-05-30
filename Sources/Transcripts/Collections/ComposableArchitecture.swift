@@ -309,7 +309,6 @@ extension Episode.Collection.Section {
       .init(episode: .ep236_composableStacks),
       .init(episode: .ep237_composableStacks),
     ],
-    isFinished: false,
     related: [],
     title: "Navigation",
     whereToGoFromHere: nil

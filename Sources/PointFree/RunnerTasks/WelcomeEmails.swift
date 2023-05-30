@@ -171,7 +171,7 @@ func welcomeEmail1Content(user: User) -> Node {
       : [],
     .markdownBlock(
       """
-      We also have a vibrart [Point-Free Slack community](http://pointfree.co/slack-invite). Join
+      We also have a vibrant [Point-Free Slack community](http://pointfree.co/slack-invite). Join
       today to discuss episodes with other community members, ask questions about our episodes
       or open source projects, and more!
 
