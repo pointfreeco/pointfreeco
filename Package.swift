@@ -511,6 +511,7 @@ var package = Package(
         "Models",
         "TranscriptParser"
       ],
+      exclude: [".git", ".gitignore"],
       resources: privateTranscripts()
     ),
 
