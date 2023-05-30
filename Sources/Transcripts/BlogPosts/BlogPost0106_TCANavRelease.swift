@@ -18,12 +18,12 @@ public let post0106_TCANavRelease = BlogPost(
 
     We are excited to officially release the tools, making it available to everyone who updates
     the library to version [0.54.0][tca-release]. This release brings all the tools you need
-    to concisely model your domains and drive state off of optionals, enums and collections.
+    to concisely model your domains and drive state off of optionals, enums, and collections.
 
     [tca-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.54.0
 
     Join us for a quick tour of the tools, and we also have a [brand new tutorial][tca-tute]
-    and [new articles][tca-nav-article] covering the tools in depth.
+    and [articles][tca-nav-article] covering the tools in depth.
 
     [tca-nav-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigation
     [tca-tute]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/meetcomposablearchitecture/#navigation
@@ -148,14 +148,14 @@ public let post0106_TCANavRelease = BlogPost(
 
     While the tree-based style of navigation described above is powerful, it also has some
     limitations. It is difficult to model complex, deeply nested navigation, and this is where
-    ["stack-based"][stack-based-article] navigation really shines. This is where drive multi-level
-    navigation with a collection of state, where adding an element to the collection represents
+    ["stack-based"][stack-based-article] navigation really shines. This multi-level navigation is
+    driven by a collection of state, where adding an element to the collection represents
     drilling down to a feature, and remove the element represents popping the feature off.
 
     [stack-based-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 
     The tools for this style of navigation include [``StackState``][stack-state-docs],
-    [``StackAction``][stack-action-docs] and the [``forEach``][foreach-docs] operator, as well as a
+    [``StackAction``][stack-action-docs], and the [``forEach``][foreach-docs] operator, as well as a
     new [``NavigationStackStore``][nav-stack-store-docs] view that behaves like `NavigationStack`
     but is tuned specifically for the Composable Architecture.
 
@@ -200,7 +200,7 @@ public let post0106_TCANavRelease = BlogPost(
     }
     ```
 
-    !> [note]: The `Path` reducer is identical to the `Destination` reducer that one creates for tree-based navigation when using enums. See the ["Tree-based navigation"](todo) for more information.
+    !> [note]: The `Path` reducer is identical to the `Destination` reducer that one creates for tree-based navigation when using enums. See the ["Tree-based navigation"][tree-based-article] for more information.
 
     Once the `Path` reducer is defined we can then hold onto ``StackState`` and ``StackAction`` in the
     feature that manages the navigation stack:
