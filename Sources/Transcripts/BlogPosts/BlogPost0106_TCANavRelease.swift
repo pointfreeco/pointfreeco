@@ -330,7 +330,10 @@ public let post0106_TCANavRelease = BlogPost(
     and done so with concisely modeled domains. Once those steps are taken you can easily add
     additional features to the stack by adding a new case to the `Path` reducer state and action enums,
     and you get complete introspection into what is happening in each child feature from the parent.
-    Continue reading into <doc:StackBasedNavigation#Integration> for more information on that.
+    Read our article on ["integration in stack-based navigation"][stack-integration-article]
+    for more information on that.
+
+    [stack-integration-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation#Integration
 
     ## Get started today!
 
