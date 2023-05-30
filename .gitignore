@@ -47,4 +47,5 @@ Packages/
 .ssl/*
 Sources/Models/Transcripts
 Sources/Transcripts/Transcripts
+Sources/PrivateTranscripts
 bin/*
