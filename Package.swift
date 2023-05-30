@@ -492,7 +492,7 @@ var package = Package(
       name: "Transcripts",
       dependencies: [
         "PrivateTranscripts",
-        "TranscriptParser"
+        "TranscriptParser",
       ],
       resources: transcripts()
     ),
@@ -509,7 +509,7 @@ var package = Package(
       name: "PrivateTranscripts",
       dependencies: [
         "Models",
-        "TranscriptParser"
+        "TranscriptParser",
       ],
       exclude: [".git", ".gitignore"],
       resources: privateTranscripts()

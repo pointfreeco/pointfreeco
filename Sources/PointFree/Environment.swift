@@ -10,10 +10,10 @@ import NIODependencies
 import PointFreeRouter
 import PostgresKit
 import Prelude
+import PrivateTranscripts
 import Stripe
 import Transcripts
 import VimeoClient
-import PrivateTranscripts
 
 extension BlogPost: DependencyKey {
   public static let liveValue: () -> [BlogPost] = allBlogPosts
