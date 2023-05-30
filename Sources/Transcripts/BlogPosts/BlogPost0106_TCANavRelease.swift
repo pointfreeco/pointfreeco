@@ -6,7 +6,8 @@ public let post0106_TCANavRelease = BlogPost(
     We are finally releasing first-class navigation tools for the Composable Architecture after
     16 episodes and 3 months of beta testing.
     """,
-  contentBlocks: .paragraphs(###"""
+  contentBlocks: .paragraphs(
+    ###"""
     Over 3 months ago we released the [first beta preview][nav-beta-gh-discussion] of our
     navigation tools for the [Composable Architecture][tca-gh]. In that time we have released 16 episodes
     building all of the tools [from scratch][tca-nav-collection], and the community has put the
