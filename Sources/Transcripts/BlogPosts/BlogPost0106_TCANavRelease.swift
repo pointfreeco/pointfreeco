@@ -14,19 +14,19 @@ public let post0106_TCANavRelease = BlogPost(
 
     [tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
     [nav-beta-gh-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1944
-    [tca-nav-collection]: todo
+    [tca-nav-collection]: https://www.pointfree.co/collections/composable-architecture/navigation
 
     We are excited to officially release the tools, making it available to everyone who updates
     the library to version [0.54.0][tca-release]. This release brings all the tools you need
     to concisely model your domains and drive state off of optionals, enums and collections.
 
-    [tca-release]: todo
+    [tca-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.54.0
 
     Join us for a quick tour of the tools, and we also have a [brand new tutorial][tca-tute]
     and [new articles][tca-nav-article] covering the tools in depth.
 
-    [tca-nav-article]: todo
-    [tca-tute]: todo
+    [tca-nav-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigation
+    [tca-tute]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/meetcomposablearchitecture/#navigation
 
     ## Presentation tools
 
@@ -36,7 +36,7 @@ public let post0106_TCANavRelease = BlogPost(
     nest inside each other to describe a path through your application, and that forms a
     tree-like structure.
 
-    [tree-based-article]: todo
+    [tree-based-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
 
     The Composable Architecture gives you the tools to model you domains concisely using
     optionals and enums. For example, suppose you have a list of items and you want to be able
@@ -44,8 +44,8 @@ public let post0106_TCANavRelease = BlogPost(
     together by utilizing the [`PresentationState`][presentation-state-docs] and
     [`PresentationAction`][presentation-action-docs] types:
 
-    [presentation-action-docs]: todo
-    [presentation-state-docs]: todo
+    [presentation-action-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/presentationaction
+    [presentation-state-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/presentationstate
 
     ```swift
     struct InventoryFeature: ReducerProtocol {
@@ -70,7 +70,7 @@ public let post0106_TCANavRelease = BlogPost(
     [``ifLet``][iflet-docs] reducer operator, as well as having an action
     in the parent domain for populating the child's state to drive navigation:
 
-    [iflet-docs]: todo
+    [iflet-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducerprotocol/iflet(_:action:destination:fileid:line:)
 
     ```swift
     struct InventoryFeature: ReducerProtocol {
@@ -139,7 +139,7 @@ public let post0106_TCANavRelease = BlogPost(
       * `navigationDestination(store:)`
       * [``NavigationLinkStore``][nav-link-store-docs]
 
-    [nav-link-store-docs]: todo
+    [nav-link-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigationlinkstore
 
     This should make it possible to use optional state to drive any kind of navigation in a SwiftUI
     application.
@@ -152,17 +152,17 @@ public let post0106_TCANavRelease = BlogPost(
     navigation with a collection of state, where adding an element to the collection represents
     drilling down to a feature, and remove the element represents popping the feature off.
 
-    [stack-based-article]: todo
+    [stack-based-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 
     The tools for this style of navigation include [``StackState``][stack-state-docs],
     [``StackAction``][stack-action-docs] and the [``forEach``][foreach-docs] operator, as well as a
     new [``NavigationStackStore``][nav-stack-store-docs] view that behaves like `NavigationStack`
     but is tuned specifically for the Composable Architecture.
 
-    [stack-state-docs]: todo
-    [stack-action-docs]: todo
-    [foreach-docs]: todo
-    [nav-stack-store-docs]: todo
+    [stack-state-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackstate
+    [stack-action-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackaction
+    [foreach-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducerprotocol/foreach(_:action:destination:fileid:line:)
+    [nav-stack-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigationstackstore
 
     The process of integrating features into a navigation stack largely consists of 2 steps:
     integrating the features' domains together, and constructing a ``NavigationStackStore`` for
@@ -337,16 +337,6 @@ public let post0106_TCANavRelease = BlogPost(
     To make use of these tools be sure to update to the newest version of the
     Composable Architecture, 0.54.0. Also check out the [brand new tutorial][tca-tute]
     and [new articles][tca-nav-article] covering these tools, and a lot more, in much more depth.
-
-    [tca-nav-article]: todo
-    [tca-tute]: todo
-    [stack-based-article]: todo
-    [tree-based-article]: todo
-    [tca-nav-article]: todo
-    [tca-tute]: todo
-    [tca-release]: todo
-    [tca-nav-collection]: todo
-    [nav-beta-gh-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1944
     """###),
   coverImage: nil,
   id: 106,
