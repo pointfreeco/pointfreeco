@@ -35,6 +35,7 @@ var package = Package(
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
+    .library(name: "PrivateTranscripts", targets: ["PrivateTranscripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -494,6 +495,14 @@ var package = Package(
       resources: transcripts()
     ),
 
+    .target(
+      name: "PrivateTranscripts",
+      dependencies: [
+        "TranscriptParser"
+      ],
+      resources: privateTranscripts()
+    ),
+
     .testTarget(
       name: "TranscriptsTests",
       dependencies: [
@@ -578,6 +587,18 @@ func transcripts() -> [Resource] {
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
     .appendingPathComponent("Transcripts")
+    .appendingPathComponent("Resources")
+    .path
+
+  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+    .map { .copy("Resources/\($0)") }
+}
+
+func privateTranscripts() -> [Resource] {
+  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources")
+    .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent("Resources")
     .path
 
