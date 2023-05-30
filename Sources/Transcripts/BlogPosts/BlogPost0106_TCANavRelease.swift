@@ -344,6 +344,6 @@ public let post0106_TCANavRelease = BlogPost(
     """###),
   coverImage: nil,
   id: 106,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-05-31")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2023-05-30")!,
   title: "Navigation tools come to the Composable Architecture"
 )
