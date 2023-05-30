@@ -341,7 +341,7 @@ public let post0106_TCANavRelease = BlogPost(
     To make use of these tools be sure to update to the newest version of the
     Composable Architecture, 0.54.0. Also check out the [brand new tutorial][tca-tute]
     and [new articles][tca-nav-article] covering these tools, and a lot more, in much more depth.
-    
+
     [tca-nav-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigation
     [tca-tute]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/meetcomposablearchitecture/#navigation
     """###),
