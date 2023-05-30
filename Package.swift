@@ -35,6 +35,7 @@ var package = Package(
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
+    .library(name: "PrivateTranscripts", targets: ["PrivateTranscripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -266,6 +267,7 @@ var package = Package(
         "PointFreeDependencies",
         "PointFreeRouter",
         "PointFreePrelude",
+        "PrivateTranscripts",
         "Stripe",
         "Styleguide",
         "Syndication",
@@ -489,6 +491,7 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
+        "PrivateTranscripts",
         "TranscriptParser"
       ],
       resources: transcripts()
@@ -500,6 +503,16 @@ var package = Package(
         "Transcripts",
         .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
+    ),
+
+    .target(
+      name: "PrivateTranscripts",
+      dependencies: [
+        "Models",
+        "TranscriptParser"
+      ],
+      exclude: [".git", ".gitignore"],
+      resources: privateTranscripts()
     ),
 
     .target(
@@ -544,8 +557,7 @@ let isOss = !FileManager.default.fileExists(
   atPath: URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("Transcripts")
+    .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent(".git")
     .path
 )
@@ -578,6 +590,18 @@ func transcripts() -> [Resource] {
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
     .appendingPathComponent("Transcripts")
+    .appendingPathComponent("Resources")
+    .path
+
+  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+    .map { .copy("Resources/\($0)") }
+}
+
+func privateTranscripts() -> [Resource] {
+  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources")
+    .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent("Resources")
     .path
 
