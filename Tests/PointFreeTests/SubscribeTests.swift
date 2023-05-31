@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import EmailAddress
 import HttpPipeline
+import Mailgun
 import Models
 import ModelsTestSupport
 import PointFreePrelude
@@ -1097,10 +1098,16 @@ final class SubscribeTests: TestCase {
   func testJSON_IncompleteSubscription() async throws {
     #if !os(Linux)
       let user = User.nonSubscriber
+      let email = LockIsolated<Email?>(nil)
       await withDependencies {
         $0.database.fetchUserById = { _ in user }
         $0.database.fetchSubscriptionById = { _ in throw unit }
         $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+        $0.mailgun.sendEmail = {
+          XCTAssertNil(email.value)
+          email.setValue($0)
+          throw unit
+        }
         $0.stripe.createSubscription = { _, _, _, _ in
           update(.individualYearly) {
             $0.status = .incomplete
@@ -1121,6 +1128,7 @@ final class SubscribeTests: TestCase {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let conn = await siteMiddleware(connection(from: request))
         await assertSnapshot(matching: conn, as: .conn)
+        XCTAssertEqual(email.value?.subject, "[testing] [PointFree Error] Incomplete Subscription")
       }
     #endif
   }

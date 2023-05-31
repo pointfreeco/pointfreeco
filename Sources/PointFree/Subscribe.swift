@@ -35,6 +35,7 @@ private func subscribe(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.envVars) var envVars
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.stripe) var stripe
 
   let (user, subscribeData, referrer) = conn.data
@@ -115,8 +116,8 @@ private func subscribe(
         ]
       )
     } else if [.incomplete, .incompleteExpired].contains(stripeSubscription.status) {
-      Task {
-        try await sendEmail(
+      await fireAndForget {
+        _ = try await sendEmail(
           to: adminEmails,
           subject: "[PointFree Error] Incomplete Subscription",
           content: inj1(
