@@ -10,7 +10,6 @@ import NIODependencies
 import PointFreeRouter
 import PostgresKit
 import Prelude
-import PrivateTranscripts
 import Stripe
 import Transcripts
 import VimeoClient
