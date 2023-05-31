@@ -1,5 +1,7 @@
+import CustomDump
 import Dependencies
 import Either
+import EmailAddress
 import Foundation
 import GitHub
 import HttpPipeline
@@ -7,6 +9,7 @@ import Models
 import PointFreeDependencies
 import PointFreePrelude
 import PointFreeRouter
+import PostgresNIO
 import Prelude
 import Tuple
 import UrlFormEncoding
@@ -18,7 +21,7 @@ import UrlFormEncoding
 let gitHubCallbackResponse =
   requireLoggedOutUser
   <<< requireAuthCodeAndAccessToken
-  <| gitHubAuthTokenMiddleware
+  <| { conn in IO { await gitHubAuthTokenMiddleware(conn) } }
 
 private let requireAuthCodeAndAccessToken:
   MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>> =
@@ -82,94 +85,91 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
     .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
+private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models.User {
   @Dependency(\.database) var database
 
-  return EitherIO {
-    do {
-      return try await database.fetchUserByGitHub(env.gitHubUser.id)
-    } catch {
-      return try await registerUser(env: env).performAsync()
-    }
+  do {
+    return try await database.fetchUserByGitHub(env.gitHubUser.id)
+  } catch {
+    return try await registerUser(env: env)
   }
 }
 
-private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
+extension GitHubUser {
+  public struct AlreadyRegistered: Error {
+    let email: EmailAddress
+  }
+}
+
+private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
   @Dependency(\.database) var database
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.date.now) var now
 
-  return EitherIO { try await gitHub.fetchEmails(env.accessToken) }
-    .map { emails in emails.first(where: \.primary) }
-    .mapExcept(requireSome)  // todo: better error messaging
-    .flatMap { email in
-
-      EitherIO {
-        try await database.registerUser(
-          withGitHubEnvelope: env,
-          email: email.email,
-          now: { now }
-        )
-      }
-      .flatMap { user in
-        EitherIO(
-          run: IO { () -> Either<Error, Models.User> in
-
-            // Fire-and-forget notify user that they signed up
-            Task {
-              _ = try await sendEmail(
-                to: [email.email],
-                subject: "Point-Free Registration",
-                content: inj2(registrationEmailView(env.gitHubUser))
-              )
-            }
-
-            return .right(user)
-          })
-      }
+  let email = try await gitHub.fetchEmails(env.accessToken).first(where: \.primary).unwrap().email
+  do {
+    let user = try await database.registerUser(
+      withGitHubEnvelope: env,
+      email: email,
+      now: { now }
+    )
+    await fireAndForget {
+      try await sendEmail(
+        to: [email],
+        subject: "Point-Free Registration",
+        content: inj2(registrationEmailView(env.gitHubUser))
+      )
     }
+    return user
+  } catch let PostgresError.server(error) where error.fields[.constraintName] == "users_email_key" {
+    throw GitHubUser.AlreadyRegistered(email: email)
+  }
 }
 
-/// Exchanges a github code for an access token and loads the user's data.
+/// Exchanges a GitHub code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
   _ conn: Conn<StatusLineOpen, Tuple2<GitHub.AccessToken, String?>>
-)
-  -> IO<Conn<ResponseEnded, Data>>
-{
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
   let (token, redirect) = lower(conn.data)
 
-  return EitherIO { try await gitHub.fetchUser(token) }
-    .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
-    .flatMap(fetchOrRegisterUser(env:))
-    .flatMap { user in
-      refreshStripeSubscription(for: user)
-        .map(const(user))
+  do {
+    let gitHubUser = try await gitHub.fetchUser(token)
+    let env = GitHubUserEnvelope(accessToken: token, gitHubUser: gitHubUser)
+    let user = try await fetchOrRegisterUser(env: env)
+    try await refreshStripeSubscription(for: user)
+    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+      $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
-    .withExcept(notifyError(subject: "GitHub Auth Failed"))
-    .run
-    .flatMap(
-      either(
-        const(
-          conn
-            |> PointFree.redirect(
-              to: .home,
-              headersMiddleware: flash(
-                .error,
-                "We were not able to log you in with GitHub. Please try again."
-              )
-            )
-        )
-      ) { user in
-        conn
-          |> HttpPipeline.redirect(
-            to: redirect ?? siteRouter.path(for: .home),
-            headersMiddleware: writeSessionCookieMiddleware { $0.user = .standard(user.id) }
-          )
-      }
-    )
+  } catch let error as GitHubUser.AlreadyRegistered {
+    return conn.redirect(to: .home) {
+      $0.flash(
+        .error, """
+        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
+        already registered with Point-Free under a different \
+        [GitHub account](https://github.com/settings) account.
+
+        Log into the GitHub account associated with your Point-Free account before trying again, \
+        or contact <support@pointfree.co>.
+        """
+      )
+    }
+  } catch {
+    await fireAndForget {
+      try await sendEmail(
+        to: adminEmails,
+        subject: "GitHub Auth Failed",
+        content: inj1(String(customDumping: error))
+      )
+    }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
+  }
 }
 
 private func requireAccessToken<A>(
@@ -206,20 +206,17 @@ private func requireAccessToken<A>(
   }
 }
 
-private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error, Prelude.Unit> {
+private func refreshStripeSubscription(for user: Models.User) async throws {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
-  guard let subscriptionId = user.subscriptionId else { return pure(unit) }
+  guard let subscriptionId = user.subscriptionId else { return }
 
-  return EitherIO {
-    let subscription = try await database.fetchSubscriptionById(subscriptionId)
-    let stripeSubscription =
-      try await stripe
-      .fetchSubscription(subscription.stripeSubscriptionId)
-    _ = try await database.updateStripeSubscription(stripeSubscription)
-    return unit
-  }
+  let subscription = try await database.fetchSubscriptionById(subscriptionId)
+  let stripeSubscription =
+    try await stripe
+    .fetchSubscription(subscription.stripeSubscriptionId)
+  _ = try await database.updateStripeSubscription(stripeSubscription)
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
