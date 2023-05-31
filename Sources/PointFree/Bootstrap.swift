@@ -1,34 +1,36 @@
 import Backtrace
 import Dependencies
-import Either
-import Foundation
-import GitHub
-import Mailgun
 import Models
-import NIO
-import PointFreePrelude
-import PointFreeRouter
-import PostgresKit
-import Prelude
 
-public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
+public func bootstrap() async {
+  print("⚠️ Bootstrapping PointFree...")
+  defer { print("✅ PointFree Bootstrapped!") }
+
   Backtrace.install()
 
-  return EitherIO.debug(prefix: "⚠️ Bootstrapping PointFree...")
-    .flatMap(const(connectToPostgres()))
-    .flatMap(const(.debug(prefix: "✅ PointFree Bootstrapped!")))
+  #if !OSS
+    print("  ⚠️ Bootstrapping transcripts")
+    Episode.bootstrapPrivateEpisodes()
+    print("  ✅ \(Episode.all.count) transcripts loaded")
+  #endif
+
+  await connectToPostgres()
 }
 
-private let stepDivider = EitherIO.debug(prefix: "  -----------------------------")
-
-private func connectToPostgres() -> EitherIO<Error, Prelude.Unit> {
+private func connectToPostgres() async {
   @Dependency(\.envVars.postgres.databaseUrl) var databaseUrl
   @Dependency(\.database.migrate) var migrate
 
-  return EitherIO.debug(prefix: "  ⚠️ Connecting to PostgreSQL at \(databaseUrl)")
-    .flatMap { _ in EitherIO { try await migrate() } }
-    .catch { EitherIO.debug(prefix: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
-    .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
-    .flatMap(const(.debug(prefix: "  ✅ Connected to PostgreSQL!")))
-    .flatMap(const(stepDivider))
+  while true {
+    print("  ⚠️ Connecting to PostgreSQL at \(databaseUrl)")
+    defer { print("  ✅ Connected to PostgreSQL!") }
+
+    do {
+      try await migrate()
+      return
+    } catch {
+      print("  ❌ Error! \(error)")
+      try? await Task.sleep(for: .seconds(1))
+    }
+  }
 }

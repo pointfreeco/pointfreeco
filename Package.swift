@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v12)
+    .macOS(.v13)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -35,7 +35,6 @@ var package = Package(
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
-    .library(name: "PrivateTranscripts", targets: ["PrivateTranscripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -267,7 +266,6 @@ var package = Package(
         "PointFreeDependencies",
         "PointFreeRouter",
         "PointFreePrelude",
-        "PrivateTranscripts",
         "Stripe",
         "Styleguide",
         "Syndication",
@@ -491,7 +489,6 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
-        "PrivateTranscripts",
         "TranscriptParser",
       ],
       resources: transcripts()
@@ -503,16 +500,6 @@ var package = Package(
         "Transcripts",
         .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
-    ),
-
-    .target(
-      name: "PrivateTranscripts",
-      dependencies: [
-        "Models",
-        "TranscriptParser",
-      ],
-      exclude: [".git", ".gitignore"],
-      resources: privateTranscripts()
     ),
 
     .target(
@@ -557,6 +544,7 @@ let isOss = !FileManager.default.fileExists(
   atPath: URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
+    .appendingPathComponent("Transcripts")
     .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent(".git")
     .path
@@ -586,25 +574,44 @@ for index in package.targets.indices {
 }
 
 func transcripts() -> [Resource] {
-  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("Resources")
-    .path
-
-  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+  let publicTranscripts: [Resource] = try! FileManager.default
+    .contentsOfDirectory(
+      atPath: URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent()
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("Transcripts")
+        .appendingPathComponent("Resources")
+        .path
+    )
+    .filter { $0.hasSuffix(".md") }
     .map { .copy("Resources/\($0)") }
+
+  let privateTranscripts: [Resource] = (try? FileManager.default
+    .contentsOfDirectory(
+      atPath: URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent()
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("Transcripts")
+        .appendingPathComponent("PrivateTranscripts")
+        .path
+    )
+    .filter { $0.hasSuffix(".md") }
+    .map { .copy("PrivateTranscripts/\($0)") })
+  ?? []
+
+  let blogPostTranscripts: [Resource] = (try? FileManager.default
+    .contentsOfDirectory(
+      atPath: URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent()
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("Transcripts")
+        .appendingPathComponent("BlogPosts")
+        .path
+    )
+      .filter { $0.hasSuffix(".md") }
+    .map { .copy("BlogPosts/\($0)") })
+  ?? []
+
+  return publicTranscripts + privateTranscripts + blogPostTranscripts
 }
 
-func privateTranscripts() -> [Resource] {
-  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("PrivateTranscripts")
-    .appendingPathComponent("Resources")
-    .path
-
-  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
-    .map { .copy("Resources/\($0)") }
-}

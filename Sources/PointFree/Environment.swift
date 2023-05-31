@@ -10,7 +10,6 @@ import NIODependencies
 import PointFreeRouter
 import PostgresKit
 import Prelude
-import PrivateTranscripts
 import Stripe
 import Transcripts
 import VimeoClient
@@ -21,9 +20,6 @@ extension BlogPost: DependencyKey {
 
 extension Episode: DependencyKey {
   public static var liveValue: () -> [Episode] {
-    #if !OSS
-      Episode.bootstrapPrivateEpisodes()
-    #endif
     assert(Episode.all.count == Set(Episode.all.map(\.id)).count)
     assert(Episode.all.count == Set(Episode.all.map(\.sequence)).count)
 
