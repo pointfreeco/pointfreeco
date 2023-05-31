@@ -489,7 +489,7 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
-        "TranscriptParser",
+        "TranscriptParser"
       ],
       resources: transcripts()
     ),
@@ -586,32 +586,33 @@ func transcripts() -> [Resource] {
     .filter { $0.hasSuffix(".md") }
     .map { .copy("Resources/\($0)") }
 
-  let privateTranscripts: [Resource] = (try? FileManager.default
-    .contentsOfDirectory(
-      atPath: URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .appendingPathComponent("Sources")
-        .appendingPathComponent("Transcripts")
-        .appendingPathComponent("PrivateTranscripts")
-        .path
-    )
-    .filter { $0.hasSuffix(".md") }
-    .map { .copy("PrivateTranscripts/\($0)") })
-  ?? []
-
-  let blogPostTranscripts: [Resource] = (try? FileManager.default
-    .contentsOfDirectory(
-      atPath: URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .appendingPathComponent("Sources")
-        .appendingPathComponent("Transcripts")
-        .appendingPathComponent("BlogPosts")
-        .path
-    )
+  let privateTranscripts: [Resource] =
+    (try? FileManager.default
+      .contentsOfDirectory(
+        atPath: URL(fileURLWithPath: #filePath)
+          .deletingLastPathComponent()
+          .appendingPathComponent("Sources")
+          .appendingPathComponent("Transcripts")
+          .appendingPathComponent("PrivateTranscripts")
+          .path
+      )
       .filter { $0.hasSuffix(".md") }
-    .map { .copy("BlogPosts/\($0)") })
-  ?? []
+      .map { .copy("PrivateTranscripts/\($0)") })
+    ?? []
+
+  let blogPostTranscripts: [Resource] =
+    (try? FileManager.default
+      .contentsOfDirectory(
+        atPath: URL(fileURLWithPath: #filePath)
+          .deletingLastPathComponent()
+          .appendingPathComponent("Sources")
+          .appendingPathComponent("Transcripts")
+          .appendingPathComponent("BlogPosts")
+          .path
+      )
+      .filter { $0.hasSuffix(".md") }
+      .map { .copy("BlogPosts/\($0)") })
+    ?? []
 
   return publicTranscripts + privateTranscripts + blogPostTranscripts
 }
-
