@@ -292,7 +292,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars
-    return await (conn |> redirect(to: envVars.slackInviteURL)).performAsync()
+    return await conn.redirect(to: envVars.slackInviteURL)
 
   case let .subscribe(data):
     return await subscribeMiddleware(conn.map(const(currentUser .*. data .*. unit)))

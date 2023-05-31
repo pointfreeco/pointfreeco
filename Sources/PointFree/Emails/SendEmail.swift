@@ -96,6 +96,7 @@ public func send(email: Email) async throws -> SendEmailResponse {
   return try await mailgun.sendEmail(email)
 }
 
+@discardableResult
 public func sendEmail(
   from: EmailAddress = supportEmail,
   to: [EmailAddress],
