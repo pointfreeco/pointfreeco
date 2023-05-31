@@ -53,15 +53,15 @@ public let post0106_TCANavRelease = BlogPost(
       struct State: Equatable {
         @PresentationState var addItem: ItemFormFeature.State?
         var items: IdentifiedArrayOf<Item> = []
-        // ...
+        …
       }
 
       enum Action: Equatable {
         case addItem(PresentationAction<ItemFormFeature.Action>)
-        // ...
+        …
       }
 
-      // ...
+      …
     }
     ```
 
@@ -75,8 +75,8 @@ public let post0106_TCANavRelease = BlogPost(
 
     ```swift
     struct InventoryFeature: ReducerProtocol {
-      struct State: Equatable { /* ... */ }
-      enum Action: Equatable { /* ... */ }
+      struct State: Equatable { … }
+      enum Action: Equatable { … }
 
       var body: some ReducerProtocolOf<Self> {
         Reduce<State, Action> { state, action in
@@ -85,8 +85,7 @@ public let post0106_TCANavRelease = BlogPost(
             // Populating this state performs the navigation
             state.addItem = ItemFormFeature.State()
             return .none
-
-          // ...
+          …
           }
         }
         .ifLet(\.$addItem, action: /Action.addItem) {
@@ -112,7 +111,7 @@ public let post0106_TCANavRelease = BlogPost(
 
       var body: some View {
         List {
-          // ...
+          …
         }
         .sheet(
           store: self.store.scope(state: \.$addItem, action: { .addItem($0) })
@@ -173,8 +172,7 @@ public let post0106_TCANavRelease = BlogPost(
 
     ```swift
     struct RootFeature: ReducerProtocol {
-      // ...
-
+      …
       struct Path: ReducerProtocol {
         enum State {
           case addItem(AddFeature.State)
@@ -210,11 +208,11 @@ public let post0106_TCANavRelease = BlogPost(
     struct RootFeature: ReducerProtocol {
       struct State {
         var path = StackState<Path.State>()
-        // ...
+        …
       }
       enum Action {
         case path(StackAction<Path.State, Path.Action>)
-        // ...
+        …
       }
     }
     ```
@@ -227,8 +225,7 @@ public let post0106_TCANavRelease = BlogPost(
 
     ```swift
     struct RootFeature: ReducerProtocol {
-      // ...
-
+      …
       var body: some ReducerProtocolOf<Self> {
         Reduce { state, action in
           // Core logic for root feature
@@ -255,7 +252,7 @@ public let post0106_TCANavRelease = BlogPost(
       // Root view of the navigation stack
     } destination: { state in
       switch state {
-        // A view for each case of the Path.State enum
+      // A view for each case of the Path.State enum
       }
     }
     ```
@@ -273,7 +270,9 @@ public let post0106_TCANavRelease = BlogPost(
         ) {
           // Root view of the navigation stack
         } destination: { state in
+          switch state {
           // A view for each case of the Path.State enum
+          }
         }
       }
     }
