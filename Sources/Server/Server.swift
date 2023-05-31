@@ -12,12 +12,7 @@ struct Server {
     @Dependency(\.mainEventLoopGroup) var eventLoopGroup: any EventLoopGroup
 
     // Bootstrap
-    _ =
-      try await PointFree
-      .bootstrap()
-      .run
-      .performAsync()
-      .unwrap()
+    try await PointFree.bootstrap()
 
     // Server
     run(
