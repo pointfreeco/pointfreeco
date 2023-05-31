@@ -1093,4 +1093,35 @@ final class SubscribeTests: TestCase {
       }
     #endif
   }
+
+  func testJSON_IncompleteSubscription() async throws {
+    #if !os(Linux)
+      let user = User.nonSubscriber
+      await withDependencies {
+        $0.database.fetchUserById = { _ in user }
+        $0.database.fetchSubscriptionById = { _ in throw unit }
+        $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
+        $0.stripe.createSubscription = { _, _, _, _ in
+          update(.individualYearly) {
+            $0.status = .incomplete
+          }
+        }
+      } operation: {
+        let subscribeData = SubscribeData(
+          coupon: nil,
+          isOwnerTakingSeat: true,
+          paymentMethodID: "pm_deadbeef",
+          pricing: .individualYearly,
+          referralCode: nil,
+          subscriptionID: nil,
+          teammates: [],
+          useRegionalDiscount: false
+        )
+        var request = request(to: .subscribe(subscribeData), session: .loggedIn(as: user))
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let conn = await siteMiddleware(connection(from: request))
+        await assertSnapshot(matching: conn, as: .conn)
+      }
+    #endif
+  }
 }
