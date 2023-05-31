@@ -148,7 +148,8 @@ private func gitHubAuthTokenMiddleware(
   } catch let error as GitHubUser.AlreadyRegistered {
     return conn.redirect(to: .home) {
       $0.flash(
-        .error, """
+        .error,
+        """
         The primary email address associated with your GitHub account, \(error.email.rawValue), is \
         already registered with Point-Free under a different \
         [GitHub account](https://github.com/settings) account.
