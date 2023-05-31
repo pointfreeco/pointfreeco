@@ -1,6 +1,7 @@
 import CustomDump
 import Dependencies
 import Either
+import EmailAddress
 import Foundation
 import GitHub
 import HttpPipeline
@@ -94,8 +95,10 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models
   }
 }
 
-private struct AlreadyExists: Error {
-  let email: GitHubUser.Email
+extension GitHubUser {
+  public struct AlreadyRegistered: Error {
+    let email: EmailAddress
+  }
 }
 
 private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
@@ -104,23 +107,23 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.date.now) var now
 
-  let email = try await gitHub.fetchEmails(env.accessToken).first(where: \.primary).unwrap()
+  let email = try await gitHub.fetchEmails(env.accessToken).first(where: \.primary).unwrap().email
   do {
     let user = try await database.registerUser(
       withGitHubEnvelope: env,
-      email: email.email,
+      email: email,
       now: { now }
     )
     await fireAndForget {
       try await sendEmail(
-        to: [email.email],
+        to: [email],
         subject: "Point-Free Registration",
         content: inj2(registrationEmailView(env.gitHubUser))
       )
     }
     return user
   } catch let PostgresError.server(error) where error.fields[.constraintName] == "users_email_key" {
-    throw AlreadyExists(email: email)
+    throw GitHubUser.AlreadyRegistered(email: email)
   }
 }
 
@@ -142,12 +145,12 @@ private func gitHubAuthTokenMiddleware(
     return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
-  } catch let error as AlreadyExists {
+  } catch let error as GitHubUser.AlreadyRegistered {
     return conn.redirect(to: .home) {
       $0.flash(
         .error, """
-        The primary email address associated with your GitHub account, \
-        \(error.email.email.rawValue), is already registered with Point-Free under a different \
+        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
+        already registered with Point-Free under a different \
         [GitHub account](https://github.com/settings) account.
 
         Log into the GitHub account associated with your Point-Free account before trying again, \
