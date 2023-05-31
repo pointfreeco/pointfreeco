@@ -599,6 +599,19 @@ func transcripts() -> [Resource] {
     .map { .copy("PrivateTranscripts/\($0)") })
   ?? []
 
-  return publicTranscripts + privateTranscripts
+  let blogPostTranscripts: [Resource] = (try? FileManager.default
+    .contentsOfDirectory(
+      atPath: URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent()
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("Transcripts")
+        .appendingPathComponent("BlogPosts")
+        .path
+    )
+      .filter { $0.hasSuffix(".md") }
+    .map { .copy("BlogPosts/\($0)") })
+  ?? []
+
+  return publicTranscripts + privateTranscripts + blogPostTranscripts
 }
 
