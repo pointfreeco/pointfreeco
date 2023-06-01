@@ -120,7 +120,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner,
+          announcementBanner(.wwdc2023),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -183,52 +183,45 @@ private var liveStreamBanner: Node {
   )
 }
 
-var announcementBanner: Node {
+struct Banner {
+  let endAt: Date
+  let markdownContent: String
+  let startAt: Date
+
+  static let wwdc2023 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2023-06-11")!,
+    markdownContent: ###"""
+      🍎 [**WWDC Sale!** Save 25% when you subscribe.](/blog/posts/107-wwdc-2023-sale)
+      """###,
+    startAt: yearMonthDayFormatter.date(from: "2023-06-01")!
+  )
+}
+
+private func announcementBanner(_ banner: Banner? = nil) -> Node {
   @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
+  guard let banner = banner
+  else { return [] }
   guard
     case .nonSubscriber = subscriberState,
-    (post0088_YIR2022.publishedAt...post0088_YIR2022.publishedAt.advanced(
-      by: 1_209_600)).contains(now)
+    (banner.startAt...banner.endAt).contains(now)
   else { return [] }
 
-  @Dependency(\.siteRouter) var siteRouter
-
   let announcementClass =
-    Class.type.align.center
-    | Class.padding([.mobile: [.topBottom: 3]])
-    | Class.pf.colors.bg.purple
-    | Class.pf.colors.fg.gray850
-    | Class.pf.colors.link.white
-    | Class.pf.type.body.leading
+  Class.type.align.center
+  | Class.padding([.mobile: [.topBottom: 3]])
+  | Class.pf.colors.bg.purple
+  | Class.pf.colors.fg.white
+  | Class.pf.colors.link.white
+  | Class.pf.type.body.leading
 
   return .gridRow(
     attributes: [.class([announcementClass])],
     .gridColumn(
       sizes: [.mobile: 12],
-      .a(
-        attributes: [
-          .class([
-            Class.pf.colors.link.white
-              | Class.pf.type.underlineLink
-          ]),
-          .href("/discounts/eoy-2022"),
-        ],
-        .strong("🎁 Holiday sale")
-      ),
-      ": save 25% when you subscribe! ",
-      .a(
-        attributes: [
-          .class([
-            Class.pf.colors.link.white
-              | Class.pf.type.underlineLink
-          ]),
-          .href(siteRouter.url(for: .blog(.show(slug: post0090_2022EOYSaleLastChance.slug)))),
-        ],
-        "Read more"
-      ),
-      " about our sale."
+      .markdownBlock(banner.markdownContent, darkBackground: true)
     )
   )
 }
@@ -537,3 +530,10 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
       | Class.pf.colors.bg.red
   }
 }
+
+private let yearMonthDayFormatter = { () -> DateFormatter in
+  let df = DateFormatter()
+  df.dateFormat = "yyyy-MM-dd"
+  df.timeZone = TimeZone(abbreviation: "GMT")
+  return df
+}()

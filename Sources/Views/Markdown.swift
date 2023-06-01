@@ -12,10 +12,14 @@ extension Node {
   public static func markdownBlock(
     attributes: [Attribute<Tag.Div>] = [],
     _ markdown: String,
-    options: Int32 = 0
+    options: Int32 = 0,
+    darkBackground: Bool = false
   ) -> Node {
     return .div(
-      attributes: _addClasses([markdownContainerClass], to: attributes),
+      attributes: _addClasses(
+        [darkBackground ? darkMarkdownContainerClass : markdownContainerClass],
+        to: attributes
+      ),
       .raw(unsafeMark(from: markdown, options: options))
     )
   }
@@ -32,22 +36,27 @@ public func unsafeMark(from markdown: String, options: Int32 = 0) -> String {
 }
 
 private let markdownContainerClass = CssSelector.class("md-ctn")
-public let markdownBlockStyles: Stylesheet = .concat(
-  markdownContainerClass
-    % (hrMarkdownStyles
-      <> aMarkdownStyles
-      <> ulMarkdownStyles
-      <> blockquoteMarkdownStyles
-      <> pMarkdownStyles
-      <> codeMarkdownStyles),
+private let darkMarkdownContainerClass = CssSelector.class("md-ctn-dark")
+private let baseMarkdownBlockStyles: Stylesheet = markdownContainerClass
+% (
+  hrMarkdownStyles
+   <> ulMarkdownStyles
+   <> blockquoteMarkdownStyles
+   <> pMarkdownStyles
+   <> codeMarkdownStyles
+)
 
+public let markdownBlockStyles: Stylesheet = .concat(
+  baseMarkdownBlockStyles,
+  markdownContainerClass % aMarkdownStyles,
+  darkMarkdownContainerClass % darkAnchorMarkdownStyles,
   (Class.pf.colors.bg.black ** markdownContainerClass ** a) % color(Colors.white),
   (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.link)))
-    % color(Colors.white),
+  % color(Colors.white),
   (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.visited)))
-    % color(Colors.white),
+  % color(Colors.white),
   (Class.pf.colors.bg.black ** markdownContainerClass ** (a & .pseudo(.hover)))
-    % color(Colors.white)
+  % color(Colors.white)
 )
 
 private let ulMarkdownStyles: Stylesheet =
@@ -85,6 +94,12 @@ private let aMarkdownStyles = Stylesheet.concat(
   (a & CssSelector.pseudo(.link)) % color(Colors.purple150),
   (a & CssSelector.pseudo(.visited)) % color(Colors.purple150),
   (a & CssSelector.pseudo(.hover)) % color(Colors.black)
+)
+private let darkAnchorMarkdownStyles = Stylesheet.concat(
+  a % key("text-decoration", "underline"),
+  (a & CssSelector.pseudo(.link)) % color(Colors.white),
+  (a & CssSelector.pseudo(.visited)) % color(Colors.white),
+  (a & CssSelector.pseudo(.hover)) % color(Colors.white)
 )
 
 private let hrMarkdownStyles: Stylesheet =

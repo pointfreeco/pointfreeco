@@ -239,7 +239,7 @@ public struct ButtonParser: ParserPrinter {
     Parse(
       AnyConversion(
         apply: { title, href in
-          Episode.TranscriptBlock.init(content: title, type: .button(href: href))
+          Episode.TranscriptBlock(content: title, type: .button(href: href))
         },
         unapply: { block in
           guard case let .button(href: href) = block.type
