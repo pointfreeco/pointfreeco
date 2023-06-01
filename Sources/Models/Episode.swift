@@ -298,7 +298,7 @@ public struct Episode: Equatable, Identifiable {
       self.timestamp = timestamp
       self.type = type
     }
-
+ 
     public enum BlockType: Codable, Equatable {
       case box(Box)
       case button(href: String)
