@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63346
+Content-Length: 63526
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1776,22 +1776,6 @@ html {
   height           : 0px;
 }
 
-.md-ctn a {
-  text-decoration : underline;
-}
-
-.md-ctn a:link {
-  color : #291a40;
-}
-
-.md-ctn a:visited {
-  color : #291a40;
-}
-
-.md-ctn a:hover {
-  color : #121212;
-}
-
 .md-ctn ul {
   margin-bottom : 1.5rem;
 }
@@ -1845,6 +1829,40 @@ html {
 
 .md-ctn code {
   font-family : ui-monospace,monospace;
+}
+
+
+.md-ctn a {
+  text-decoration : underline;
+}
+
+.md-ctn a:link {
+  color : #291a40;
+}
+
+.md-ctn a:visited {
+  color : #291a40;
+}
+
+.md-ctn a:hover {
+  color : #121212;
+}
+
+
+.md-ctn-dark a {
+  text-decoration : underline;
+}
+
+.md-ctn-dark a:link {
+  color : #fff;
+}
+
+.md-ctn-dark a:visited {
+  color : #fff;
+}
+
+.md-ctn-dark a:hover {
+  color : #fff;
 }
 
 .bg-black .md-ctn a {
