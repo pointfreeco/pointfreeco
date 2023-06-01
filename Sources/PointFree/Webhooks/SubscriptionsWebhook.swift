@@ -19,7 +19,7 @@ let stripeSubscriptionsWebhookMiddleware =
   validateStripeSignature
   <<< filterInvalidInvoices
   <<< requireSubscriptionId
-  <| handleFailedPayment
+  <| { conn in IO { await handleFailedPayment(conn) } }
 
 private let filterInvalidInvoices:
   MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>> =
@@ -42,47 +42,43 @@ private let requireSubscriptionId:
 
 private func handleFailedPayment(
   _ conn: Conn<StatusLineOpen, Stripe.Subscription.ID>
-)
-  -> IO<Conn<ResponseEnded, Data>>
-{
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.stripe) var stripe
 
-  return EitherIO { try await stripe.fetchSubscription(conn.data) }
-    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
-    .flatMap { stripeSubscription in
-      EitherIO { try await database.updateStripeSubscription(stripeSubscription) }
-    }
-    .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
-    .flatMap { subscription in
-      EitherIO { try await database.fetchUserById(subscription.userId) }
-        .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
-        .map { ($0, subscription) }
-    }
-    .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
-    .run
-    .flatMap(
-      either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
-        if subscription.stripeSubscriptionStatus == .pastDue {
-          parallel(sendPastDueEmail(to: user).run)
-            .run { _ in }
-        }
+  do {
+    let stripeSubscription = try await stripe.fetchSubscription(conn.data)
+    guard !stripeSubscription.status.isIncomplete else { return conn.head(.ok) }
 
-        return conn |> writeStatus(.ok) >=> end
+    let subscription = try await database.updateStripeSubscription(stripeSubscription)
+
+    if subscription.stripeSubscriptionStatus == .pastDue {
+      let user = try await database.fetchUserById(subscription.userId)
+
+      await fireAndForget {
+        try await sendPastDueEmail(to: user)
       }
-    )
+    }
+    return conn.head(.ok)
+  } catch {
+    await fireAndForget {
+      try await sendEmail(
+        to: adminEmails,
+        subject: "[PointFree Error] Stripe Hook failed",
+        content: inj1(String(customDumping: error))
+      )
+    }
+    return conn.writeStatus(.badRequest).empty()
+  }
 }
 
-private func sendPastDueEmail(to owner: User)
-  -> EitherIO<Error, SendEmailResponse>
-{
-  EitherIO {
-    try await sendEmail(
-      to: [owner.email],
-      subject: "Your subscription is past-due",
-      content: inj2(pastDueEmailView(unit))
-    )
-  }
+private func sendPastDueEmail(to owner: User) async throws {
+  try await sendEmail(
+    to: [owner.email],
+    subject: "Your subscription is past-due",
+    content: inj2(pastDueEmailView(unit))
+  )
 }
 
 let pastDueEmailView =
