@@ -191,7 +191,7 @@ struct Banner {
   static let wwdc2023 = Self(
     endAt: yearMonthDayFormatter.date(from: "2023-06-11")!,
     markdownContent: ###"""
-      🍎 [**WWDC Sale!** Save 25% when you subscribe.](/blog/posts/107-wwdc-2023-sale)
+      🍎 [**WWDC Sale!** Save 25% when you subscribe.](/discounts/wwdc-2023)
       """###,
     startAt: yearMonthDayFormatter.date(from: "2023-06-01")!
   )
