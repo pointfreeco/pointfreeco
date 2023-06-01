@@ -115,7 +115,7 @@ private func subscribe(
           "requiresAction": true,
         ]
       )
-    } else if [.incomplete, .incompleteExpired].contains(stripeSubscription.status) {
+    } else if stripeSubscription.status.isIncomplete {
       await fireAndForget {
         _ = try await sendEmail(
           to: adminEmails,
