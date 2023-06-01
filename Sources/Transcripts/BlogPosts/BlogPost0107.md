@@ -49,7 +49,7 @@ presented onto a stack.
 
 ### [**Composable Architecture Navigation**][tca-nav]
 
-And last, but not least, or most recently finished series (and most ambitious) [builds all new
+And last, but not least, our most recently finished series (and most ambitious) [builds all new
 navigation tools][tca-nav], from scratch, for the [Composable Architecture][tca-gh]. We were able
 to unify all forms of navigation, from alerts and sheets to drill-downs and stacks, under a few
 very simple APIs. We also improved the correctness and power of these tools by making sure that
