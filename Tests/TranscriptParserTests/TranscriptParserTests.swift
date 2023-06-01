@@ -214,7 +214,6 @@ class TranscriptParserTests: XCTestCase {
       Hello
 
       [[Here's a button]](/subscribe)
-
       """
     let blocks: [Episode.TranscriptBlock] = [
       .init(content: "Hello", type: .paragraph),

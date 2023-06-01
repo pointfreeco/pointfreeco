@@ -343,7 +343,7 @@ public let blocksParser = Many {
 } separator: {
   "\n\n".utf8
 } terminator: {
-  Whitespace().printing("\n".utf8)
+  Whitespace()
 }
 
 extension UTF8.CodeUnit {
