@@ -225,12 +225,12 @@ private func announcementBanner(_ banner: Banner? = nil) -> Node {
   else { return [] }
 
   let announcementClass =
-  Class.type.align.center
-  | Class.padding([.mobile: [.topBottom: 3]])
-  | Class.pf.colors.bg.purple
-  | Class.pf.colors.fg.white
-  | Class.pf.colors.link.white
-  | Class.pf.type.body.leading
+    Class.type.align.center
+    | Class.padding([.mobile: [.topBottom: 3]])
+    | Class.pf.colors.bg.purple
+    | Class.pf.colors.fg.white
+    | Class.pf.colors.link.white
+    | Class.pf.type.body.leading
 
   return .gridRow(
     attributes: [.class([announcementClass])],
