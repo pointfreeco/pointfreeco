@@ -31,6 +31,8 @@ class TranscriptParserTests: XCTestCase {
       ```
 
       [01:30:47] **Brandon:** Yep.
+
+      [[Here's a button]](/subscribe)
       """
 
     let output = [
@@ -62,6 +64,10 @@ class TranscriptParserTests: XCTestCase {
         timestamp: 5447,
         type: .paragraph
       ),
+      Episode.TranscriptBlock(
+        content: "Here's a button",
+        type: .button(href: "/subscribe")
+      ),
     ]
 
     XCTAssertNoDifference(
@@ -69,7 +75,7 @@ class TranscriptParserTests: XCTestCase {
       output
     )
 
-    XCTAssertEqual(
+    XCTAssertNoDifference(
       try String(Substring(blocksParser.print(output))),
       input
     )
