@@ -233,7 +233,6 @@ public struct TitleParser: ParserPrinter {
   }
 }
 
-
 public struct ButtonParser: ParserPrinter {
   public var body: some ParserPrinter<Substring.UTF8View, Episode.TranscriptBlock> {
     Parse(
@@ -343,6 +342,8 @@ public let blocksParser = Many {
   }
 } separator: {
   "\n\n".utf8
+} terminator: {
+  Whitespace().printing("\n".utf8)
 }
 
 extension UTF8.CodeUnit {

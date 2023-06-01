@@ -208,4 +208,25 @@ class TranscriptParserTests: XCTestCase {
       """
     )
   }
+
+  func testNonParagraphEOF() throws {
+    let transcriptFragment = """
+      Hello
+
+      [[Here's a button]](/subscribe)
+
+      """
+    let blocks: [Episode.TranscriptBlock] = [
+      .init(content: "Hello", type: .paragraph),
+      .init(content: "Here's a button", type: .button(href: "/subscribe")),
+    ]
+    XCTAssertNoDifference(
+      try blocksParser.parse(transcriptFragment),
+      blocks
+    )
+    XCTAssertNoDifference(
+      String(Substring(try blocksParser.print(blocks))),
+      transcriptFragment
+    )
+  }
 }

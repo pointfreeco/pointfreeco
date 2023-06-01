@@ -186,6 +186,7 @@ private var liveStreamBanner: Node {
 struct Banner {
   let endAt: Date
   let markdownContent: String
+  let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
   static let wwdc2023 = Self(
@@ -193,20 +194,34 @@ struct Banner {
     markdownContent: ###"""
       🍎 [**WWDC Sale!** Save 25% when you subscribe.](/discounts/wwdc-2023)
       """###,
+    shouldShow: { subscriberState, route in
+      if subscriberState.isActiveSubscriber {
+        return false
+      } else if case .subscribeConfirmation = route {
+        return false
+      } else if case .blog(.show(.left("107-wwdc-2023-sale"))) = route {
+        return false
+      } else if case .blog(.show(.right(107))) = route {
+        return false
+      } else {
+        return true
+      }
+    },
     startAt: yearMonthDayFormatter.date(from: "2023-06-01")!
   )
 }
 
 private func announcementBanner(_ banner: Banner? = nil) -> Node {
+  @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   guard let banner = banner
   else { return [] }
-  guard
-    case .nonSubscriber = subscriberState,
-    (banner.startAt...banner.endAt).contains(now)
+  guard banner.shouldShow(subscriberState, currentRoute)
+  else { return [] }
+  guard (banner.startAt...banner.endAt).contains(now)
   else { return [] }
 
   let announcementClass =

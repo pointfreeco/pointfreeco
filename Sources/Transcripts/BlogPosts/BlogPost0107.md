@@ -72,5 +72,3 @@ And that is just barely scratching the surface of what we offer on [Point-Free](
 year!
 
 [[Subscribe for 25% off!]](/discounts/wwdc-2023)
-
----
