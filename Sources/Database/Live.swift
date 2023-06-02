@@ -268,6 +268,15 @@ extension Client {
           """
         )
       },
+      fetchSubscriptionByTeamInviteCode: { teamInviteCode in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT "subscriptions".*
+          FROM "subscriptions"
+          WHERE "subscriptions"."team_invite_code" = \(bind: teamInviteCode)
+          """
+        )
+      },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
         try await pool.sqlDatabase.all(
           """

@@ -31,6 +31,7 @@ public enum SiteRoute: Equatable {
   case gitHubCallback(code: String?, redirect: String?)
   case home
   case invite(Invite)
+  case join(Join)
   case live(Live)
   case login(redirect: String?)
   case logout
@@ -530,6 +531,11 @@ struct SiteRouter: ParserPrinter {
       Route(.case(SiteRoute.invite)) {
         Path { "invites" }
         InviteRouter()
+      }
+
+      Route(.case(SiteRoute.join)) {
+        Path { "join" }
+        JoinRouter()
       }
 
       Route(.case(SiteRoute.live)) {

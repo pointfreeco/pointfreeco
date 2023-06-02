@@ -33,6 +33,9 @@ extension Client {
     fetchLivestreams: { [] },
     fetchSubscriptionById: { id in update(.mock) { $0.id = id } },
     fetchSubscriptionByOwnerId: { userId in update(.mock) { $0.userId = userId } },
+    fetchSubscriptionByTeamInviteCode: { teamInviteCode in
+      update(.mock) { $0.teamInviteCode = teamInviteCode }
+    },
     fetchSubscriptionTeammatesByOwnerId: { _ in [.mock] },
     fetchTeamInvite: { _ in .mock },
     fetchTeamInvites: { _ in [] },

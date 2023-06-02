@@ -26,6 +26,7 @@ extension Client {
     fetchLivestreams: { throw NoopError() },
     fetchSubscriptionById: { _ in throw NoopError() },
     fetchSubscriptionByOwnerId: { _ in throw NoopError() },
+    fetchSubscriptionByTeamInviteCode: { _ in throw NoopError() },
     fetchSubscriptionTeammatesByOwnerId: { _ in throw NoopError() },
     fetchTeamInvite: { _ in throw NoopError() },
     fetchTeamInvites: { _ in throw NoopError() },
