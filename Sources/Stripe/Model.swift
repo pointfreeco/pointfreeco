@@ -668,6 +668,15 @@ public struct Subscription: Codable, Equatable, Identifiable {
         return false
       }
     }
+
+    public var isIncomplete: Bool {
+      switch self {
+      case .incomplete, .incompleteExpired:
+        return true
+      case .active, .canceled, .pastDue, .paused, .trialing, .unpaid:
+        return false
+      }
+    }
   }
 }
 

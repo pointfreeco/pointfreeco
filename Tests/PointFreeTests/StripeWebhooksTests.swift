@@ -425,6 +425,34 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  func testIncompleteSubscription() async throws {
+    #if !os(Linux)
+      try await withDependencies {
+        $0.stripe.fetchSubscription = { _ in
+          update(.mock) { $0.status = .incomplete }
+        }
+      } operation: {
+        var invoice = Invoice.mock(charge: .left("ch_test"))
+        invoice.number = nil
+        let event = Event<Either<Invoice, Subscription>>(
+          data: .init(object: .left(invoice)),
+          id: "evt_test",
+          type: .invoicePaymentFailed
+        )
+
+        var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
+        try self.addStripeSignature(
+          to: &hook,
+          payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+        )
+
+        let conn = connection(from: hook)
+
+        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      }
+    #endif
+  }
+
   func testPastDueEmail() async throws {
     let doc = pastDueEmailView(unit)
 
