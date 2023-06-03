@@ -5,11 +5,30 @@ import HttpPipeline
 import PointFreeRouter
 
 func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
 
   switch conn.data {
+  case let .confirm(code: code, secret: secret):
+    guard
+      let parts = secret.decrypt(with: appSecret)?.split(separator: "-"),
+      parts.count == 2,
+      let decryptedCode = parts.first,
+      decryptedCode == code.rawValue,
+      let decryptedUserID = parts.last.flatMap({ UUID(uuidString: String($0)) }),
+      decryptedUserID == currentUser?.id.rawValue
+    else {
+      return conn
+        .redirect(to: .home) {
+          $0.flash(.warning, "TODO")
+        }
+    }
+    
+
+    fatalError()
+
   case let .join(code: code, email: email):
     guard let currentUser = currentUser
     else {
@@ -33,7 +52,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     else {
       do {
         try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-        fireAndForget {
+        await fireAndForget {
           // TODO: send emails to new subscriber and owner
         }
         return conn
