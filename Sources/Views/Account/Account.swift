@@ -300,18 +300,6 @@ private func privateRssFeed(accountData: AccountData) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   let user = accountData.currentUser
-  let rssUrl = siteRouter.url(for: .account(.rss(salt: user.rssSalt)))
-  let rssLink: Node = [
-    .ul(
-      .li(
-        .a(
-          attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
-          .text(String(rssUrl.prefix(40)) + "...")
-        )
-      )
-    ),
-    rssTerms(stripeSubscription: accountData.stripeSubscription),
-  ]
 
   return .gridRow(
     .gridColumn(
@@ -341,7 +329,7 @@ private func privateRssFeed(accountData: AccountData) -> Node {
         .p(
           """
           Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
-          to consume our videos: an RSS feed that can be used with podcast apps!
+          to consume our videos: an RSS feed that can be used with most podcast apps!
           """),
         .p(
           "The link below should work with most podcast apps out there today (please ",
@@ -355,7 +343,33 @@ private func privateRssFeed(accountData: AccountData) -> Node {
           " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
           " monitored, so please do not share with others."
         ),
-        rssLink
+        .div(
+          attributes: [
+            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+          ],
+          .input(
+            attributes: [
+              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+              .name("email"),
+              .value(siteRouter.url(for: .account(.rss(salt: user.rssSalt)))),
+              .type(.text),
+              .readonly(true),
+              .onclick(safe: "this.select();"),
+            ]
+          ),
+          .input(
+            attributes: [
+              .type(.button),
+              .class([
+                Class.pf.components.button(color: .black, size: .small),
+                Class.align.middle,
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+              ]),
+              // TODO: hook up javascript to copy
+              .value("Copy"),
+            ]
+          )
+        )
       )
     )
   )
@@ -426,15 +440,31 @@ private func referAFriend(
           """
           Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
           """),
-        .ul(
-          .li(
-            .a(
-              attributes: [
-                .class([Class.pf.type.underlineLink]),
-                .href(referralUrl),
-              ],
-              .text(referralUrl)
-            )
+        .div(
+          attributes: [
+            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+          ],
+          .input(
+            attributes: [
+              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+              .name("email"),
+              .value(referralUrl),
+              .type(.text),
+              .readonly(true),
+              .onclick(safe: "this.select();")
+            ]
+          ),
+          .input(
+            attributes: [
+              .type(.button),
+              .class([
+                Class.pf.components.button(color: .black, size: .small),
+                Class.align.middle,
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+              ]),
+              // TODO: hook up javascript to copy
+              .value("Copy"),
+            ]
           )
         )
       )
@@ -1078,9 +1108,10 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 
 private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
-  guard let subscription = data.stripeSubscription else { return [] }
-  guard subscription.isRenewing else { return [] }
-  let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
+  guard let stripeSubscription = data.stripeSubscription else { return [] }
+  guard let subscription = data.subscription else { return [] }
+  guard stripeSubscription.isRenewing else { return [] }
+  let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -1095,8 +1126,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.desktop: 9],
-        Node.gridRow(
-          Node.gridColumn(
+        .gridRow(
+          .gridColumn(
             sizes: [.mobile: 12, .desktop: 6],
             .div(
               attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
@@ -1126,19 +1157,33 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   }
 
   let amount =
-    subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
-  let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
+    stripeSubscription.plan.interval == .some(.year)
+    ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+  let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
 
-  return .gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Add teammate"))
-    ),
-    .gridColumn(
-      sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+  return [
+    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Teammates"]),
+
+    .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Invite via email"))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 9],
+        .p(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular
+            ])
+          ],
+          .text(
+            """
+            Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
+            per \(interval). Your first invoice will be prorated based on your current billing cycle.
+            """)
+        ),
         .form(
           attributes: [
             .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
@@ -1165,24 +1210,61 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
               .value("Add"),
             ]
           )
-        ),
+        )
+      )
+    ),
+
+    .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Invite via link"))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 9],
         .p(
           attributes: [
             .class([
-              Class.pf.type.body.small,
-              Class.pf.colors.fg.gray400,
-              Class.padding([.mobile: [.top: 1]]),
+              Class.pf.type.body.regular
             ])
           ],
           .text(
             """
-            Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
-            per \(interval). Your first invoice will be prorated based on your current billing cycle.
+            Invite your colleages to your subscription by sharing the following URL.
             """)
+        ),
+        .form(
+          attributes: [
+            .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
+            .method(.post),
+            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+          ],
+          .input(
+            attributes: [
+              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+              .name("email"),
+              .value(siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode)))),
+              .type(.text),
+              .readonly(true),
+              .onclick(safe: "this.select();"),
+            ]
+          ),
+          .input(
+            attributes: [
+              .type(.button),
+              .class([
+                Class.pf.components.button(color: .white, size: .small),
+                Class.align.middle,
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+              ]),
+              // TODO: hook up javascript to copy
+              .value("Copy"),
+            ]
+          )
         )
       )
-    )
-  )
+    ),
+  ]
 }
 
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
@@ -1267,55 +1349,58 @@ private func subscriptionPaymentInfoView(
     ]
   }
 
-  return Node.gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Payment"))
-    ),
-    Node.gridColumn(
-      sizes: [.desktop: 9],
-      Node.gridRow(
-        Node.gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          .div(
-            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            paymentInfo
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          .div(
-            attributes: [
-              .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
-            ],
-            .p(
-              .a(
-                attributes: [
-                  .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(siteRouter.path(for: .account(.paymentInfo()))),
-                ],
-                subscription.customer.right?.hasPaymentInfo == true
-                  ? "Update payment info"
-                  : "Add payment info"
-              )
-            ),
-            .p(
-              .a(
-                attributes: [
-                  .class([
-                    Class.pf.components.button(color: .black, size: .small, style: .underline)
-                  ]),
-                  .href(siteRouter.path(for: .account(.invoices()))),
-                ],
-                "Payment history"
+  return [
+    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Payment info"]),
+    .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Payment"))
+      ),
+      Node.gridColumn(
+        sizes: [.desktop: 9],
+        Node.gridRow(
+          Node.gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+              paymentInfo
+            )
+          ),
+          .gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [
+                .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+              ],
+              .p(
+                .a(
+                  attributes: [
+                    .class([Class.pf.components.button(color: .purple, size: .small)]),
+                    .href(siteRouter.path(for: .account(.paymentInfo()))),
+                  ],
+                  subscription.customer.right?.hasPaymentInfo == true
+                    ? "Update payment info"
+                    : "Add payment info"
+                )
+              ),
+              .p(
+                .a(
+                  attributes: [
+                    .class([
+                      Class.pf.components.button(color: .black, size: .small, style: .underline)
+                    ]),
+                    .href(siteRouter.path(for: .account(.invoices()))),
+                  ],
+                  "Payment history"
+                )
               )
             )
           )
         )
       )
-    )
-  )
+    ),
+  ]
 }
 
 public func format(cents: Cents<Int>) -> String {
