@@ -343,32 +343,9 @@ private func privateRssFeed(accountData: AccountData) -> Node {
           " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
           " monitored, so please do not share with others."
         ),
-        .div(
-          attributes: [
-            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
-          .input(
-            attributes: [
-              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
-              .name("email"),
-              .value(siteRouter.url(for: .account(.rss(salt: user.rssSalt)))),
-              .type(.text),
-              .readonly(true),
-              .onclick(safe: "this.select();"),
-            ]
-          ),
-          .input(
-            attributes: [
-              .type(.button),
-              .class([
-                Class.pf.components.button(color: .black, size: .small),
-                Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
-              ]),
-              // TODO: hook up javascript to copy
-              .value("Copy"),
-            ]
-          )
+        copyToPasteboard(
+          text: siteRouter.url(for: .account(.rss(salt: user.rssSalt))),
+          buttonColor: .black
         )
       )
     )
@@ -440,33 +417,7 @@ private func referAFriend(
           """
           Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
           """),
-        .div(
-          attributes: [
-            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
-          .input(
-            attributes: [
-              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
-              .name("email"),
-              .value(referralUrl),
-              .type(.text),
-              .readonly(true),
-              .onclick(safe: "this.select();")
-            ]
-          ),
-          .input(
-            attributes: [
-              .type(.button),
-              .class([
-                Class.pf.components.button(color: .black, size: .small),
-                Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
-              ]),
-              // TODO: hook up javascript to copy
-              .value("Copy"),
-            ]
-          )
-        )
+        copyToPasteboard(text: referralUrl, buttonColor: .black)
       )
     )
   )
@@ -1233,34 +1184,9 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
             Invite your colleages to your subscription by sharing the following URL.
             """)
         ),
-        .form(
-          attributes: [
-            .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
-            .method(.post),
-            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
-          .input(
-            attributes: [
-              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
-              .name("email"),
-              .value(siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode)))),
-              .type(.text),
-              .readonly(true),
-              .onclick(safe: "this.select();"),
-            ]
-          ),
-          .input(
-            attributes: [
-              .type(.button),
-              .class([
-                Class.pf.components.button(color: .white, size: .small),
-                Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
-              ]),
-              // TODO: hook up javascript to copy
-              .value("Copy"),
-            ]
-          )
+        copyToPasteboard(
+          text: siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode))),
+          buttonColor: .white
         )
       )
     ),
@@ -1422,6 +1348,40 @@ private var logoutView: Node {
         ],
         "Logout"
       )
+    )
+  )
+}
+
+private func copyToPasteboard(
+  text: String,
+  buttonColor: Class.pf.components.Color
+) -> Node {
+  .div(
+    attributes: [
+      .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+    ],
+    .input(
+      attributes: [
+        .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+        .value(text),
+        .type(.text),
+        .readonly(true),
+        .onclick(safe: "this.select();"),
+      ]
+    ),
+    .input(
+      attributes: [
+        .type(.button),
+        .class([
+          Class.pf.components.button(color: .white, size: .small),
+          Class.align.middle,
+          Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+        ]),
+        .value("Copy"),
+        .onclick(unsafe: """
+          navigator.clipboard.writeText("\(text)");
+          """)
+      ]
     )
   )
 }
