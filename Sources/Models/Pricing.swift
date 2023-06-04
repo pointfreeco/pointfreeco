@@ -60,7 +60,22 @@ public struct Pricing: Equatable {
       ? .personal
       : .team
   }
+
+  public var defaultPricing: Cents<Int> {
+    switch (self.lane, self.billing) {
+    case (.personal, .monthly):
+      return 18_00
+    case (.personal, .yearly):
+      return 168_00
+    case (.team, .monthly):
+      return 16_00
+    case (.team, .yearly):
+      return 144_00
+    }
+  }
 }
+
+import TaggedMoney
 
 extension Pricing: Codable {
   public init(from decoder: Decoder) throws {

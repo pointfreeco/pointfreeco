@@ -3,6 +3,9 @@ import Models
 import URLRouting
 
 public enum EmailTemplate: String, CaseIterable {
+  case joinTeamConfirmation
+  case newTeammateJoined
+  case ownerNewTeammateJoined
   case welcomeEmail1
   case welcomeEmail2
   case welcomeEmail3

@@ -8,6 +8,7 @@ import Html
 import HttpPipeline
 import Models
 import PointFreeRouter
+import Prelude
 import Stripe
 import Styleguide
 import Tagged
@@ -77,17 +78,11 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     }
 
     await fireAndForget {
-      let url = siteRouter.url(
-        for: .join(
-          .confirm(
-            code: code,
-            secret: try JoinSecretConversion().unapply(
-              (code, currentUser.id, Int(now.timeIntervalSince1970))
-            )
-          )
-        )
+      try await sendEmail(
+        to: [email],
+        subject: "Confirm your email to join the Point-Free team subscription.",
+        content: inj2(confirmationEmail(email: email, code: code, currentUser: currentUser))
       )
-      try await sendConfirmationEmail(email: email, code: code, currentUser: currentUser)
     }
     return
       conn
@@ -195,12 +190,15 @@ private func add<A>(
     billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
     quantity: stripeSubscription.quantity + 1
   )
+  var didAddSubscriptionSeat: Bool
   do {
-    let teammatesCount = try await database.fetchSubscriptionTeammatesByOwnerId(owner.id).count
-    let invitesCount = try await database.fetchTeamInvites(owner.id).count
-    let ownerSeatCount = owner.subscriptionId == subscription.id ? 1 : 0
+    let currentTotalSeatCount =
+      try await database.fetchSubscriptionTeammatesByOwnerId(owner.id).count
+      + database.fetchTeamInvites(owner.id).count
+      + (owner.subscriptionId == subscription.id ? 1 : 0)
+    didAddSubscriptionSeat = currentTotalSeatCount >= stripeSubscription.quantity
     // TODO: send admin email if this condition is strictly greater than?
-    if teammatesCount + invitesCount + ownerSeatCount >= stripeSubscription.quantity {
+    if didAddSubscriptionSeat {
       _ = try await stripe.updateSubscription(
         stripeSubscription,
         newPricing.billing.plan,
@@ -218,20 +216,32 @@ private func add<A>(
         )
       }
   }
-  await fireAndForget {
-    _ = try? await sendEmail(
+  await fireAndForget { [didAddSubscriptionSeat] in
+    try await sendEmail(
       to: [owner.email],
       subject: """
-        \(currentUser.name ?? currentUser.email.rawValue) has joined your Point-Free subscription
+        \(currentUser.displayName) has joined your Point-Free subscription
         """,
-      content: .left("Hello")  // TODO: real email
+      content: inj2(
+        ownerNewTeammateJoinedEmail(
+          currentUser: currentUser,
+          owner: owner,
+          newPricing: didAddSubscriptionSeat
+            ? newPricing
+            : nil
+        )
+      )
     )
-    _ = try? await sendEmail(
+    let ownerName =
+      code.isDomain
+      ? code.rawValue
+      : owner.displayName
+    try await sendEmail(
       to: [currentUser.email],
       subject: """
-        You have joined \(owner.name ?? owner.email.rawValue)'s Point-Free subscription
+        You have joined \(ownerName)'s Point-Free subscription
         """,
-      content: .left("Hello")  // TODO: real email
+      content: inj2(newTeammateEmail(currentUser: currentUser, owner: owner, code: code))
     )
   }
 
@@ -241,6 +251,8 @@ private func add<A>(
       $0.flash(.notice, "You now have access to Point-Free!")
     }
 }
+
+// TODO: show teammate options for every sub owner
 
 struct JoinSecretConversion: Conversion {
   private static let separator = "--{SEPARATOR}--"
@@ -282,11 +294,11 @@ struct JoinSecretConversion: Conversion {
   }
 }
 
-private func sendConfirmationEmail(
+func confirmationEmail(
   email: EmailAddress,
   code: Models.Subscription.TeamInviteCode,
   currentUser: User
-) async throws {
+) throws -> Node {
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
@@ -301,55 +313,193 @@ private func sendConfirmationEmail(
     )
   )
 
-  try await sendEmail(
-    to: [email],
-    subject: "Confirm your email to join the Point-Free team subscription.",
-    content: inj2(
-      _simpleEmailLayout(
-        SimpleEmailLayoutData(
-          user: currentUser,
-          newsletter: nil,
-          title: "Confirm your email",
-          preheader: "Confirm your email to join the Point-Free team subscription.",
-          template: .default(includeHeaderImage: false),
-          data: ()
-        )
-      ) {
-        .emailTable(
-          attributes: [.style(contentTableStyles)],
-          .tr(
-            .td(
-              attributes: [.valign(.top)],
-              .div(
-                attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
-                .h3(
-                  attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
-                .markdownBlock(
-                  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-                  """
-                  You’re invited to join the \(code.rawValue) team on [Point-Free](http://pointfree.co), a video
-                  series about advanced concepts in the Swift programming language. To accept,
-                  simply click the link below!
-                  """),
-                .p(
-                  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-                  .a(
-                    attributes: [
-                      .href(confirmURL),
-                      .class([Class.pf.components.button(color: .purple)]),
-                    ],
-                    "Click here to accept!"
-                  )
-                )
+  return _simpleEmailLayout(
+    user: currentUser,
+    newsletter: nil,
+    title: "Confirm your email",
+    preheader: "Confirm your email to join the Point-Free team subscription.",
+    template: .default(includeHeaderImage: false),
+    hideFooter: true
+  ) {
+    .emailTable(
+      attributes: [.style(contentTableStyles)],
+      .tr(
+        .td(
+          attributes: [.valign(.top)],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+            .h3(
+              attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
+            .markdownBlock(
+              attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+              """
+              You’re invited to join the \(code.rawValue) team on
+              [Point-Free](http://pointfree.co), a video series about advanced concepts in the
+              Swift programming language. To accept, simply click the link below!
+              """),
+            .p(
+              attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+              .a(
+                attributes: [
+                  .href(confirmURL),
+                  .class([Class.pf.components.button(color: .purple)]),
+                ],
+                "Click here to accept!"
               )
             )
           )
         )
-      }
+      )
     )
-  )
+  }
 }
 
-func _simpleEmailLayout(_ data: SimpleEmailLayoutData<Void>, body: @escaping () -> Node) -> Node {
-  simpleEmailLayout(body)(data)
+func newTeammateEmail(
+  currentUser: User,
+  owner: User,
+  code: Models.Subscription.TeamInviteCode
+) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  let ownerName =
+    code.isDomain
+    ? code.rawValue
+    : owner.displayName
+
+  return _simpleEmailLayout(
+    user: currentUser,
+    newsletter: nil,
+    title: "You’ve got full access",
+    preheader: "You now have full access to everything we have to offer on Point-Free.",
+    template: .default(includeHeaderImage: false),
+    hideFooter: true
+  ) {
+    .emailTable(
+      attributes: [.style(contentTableStyles)],
+      .tr(
+        .td(
+          attributes: [.valign(.top)],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+            .h3(
+              attributes: [.class([Class.pf.type.responsiveTitle3])], "You've got full access!"),
+            .markdownBlock(
+              attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+              """
+              You have joined \(ownerName)'s [Point-Free](http://pointfree.co) subscription and now
+              have access to all videos and transcripts. Be sure to check out our
+              [collections](\(siteRouter.url(for: .collections()))) to find a series that
+              interests you!
+              """)
+          )
+        )
+      )
+    )
+  }
+}
+
+func ownerNewTeammateJoinedEmail(
+  currentUser: User,
+  owner: User,
+  newPricing: Pricing?
+) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  let colleagueName =
+    currentUser.name.map { "\($0) ([\(currentUser.email)](mailto:\(currentUser.email)))" }
+    ?? currentUser.email.rawValue
+
+  let newPricingFooter: Node
+  if let newPricing = newPricing {
+    let newPricePerInterval = wholeCurrencyFormatter.string(
+      from: NSNumber(value: newPricing.defaultPricing.rawValue / 100 * newPricing.quantity)
+    )!
+    newPricingFooter = .emailTable(
+      attributes: [
+        .class([
+          Class.pf.colors.bg.yellow
+        ]),
+        .style(contentTableStyles),
+      ],
+      .tr(
+        .td(
+          attributes: [.valign(.top)],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+            .markdownBlock(
+              attributes: [.class([Class.pf.type.body.regular])],
+              """
+              Note that a new seat was added to your subscription to accomodate
+              **\(currentUser.displayName)**, and your credit card has been charged a pro-rated
+              amount based on your billing cycle. You now have **\(newPricing.quantity) seats**
+              and your new billing rate is
+              **\(newPricePerInterval)/\
+              \(newPricing.interval.rawValue).**
+              """
+            )
+          )
+        )
+      )
+    )
+  } else {
+    newPricingFooter = []
+  }
+
+  return _simpleEmailLayout(
+    user: owner,
+    newsletter: nil,
+    title: "New teammate added",
+    preheader: """
+      A colleague has joined your Point-Free subscription.
+      """,
+    template: .default(includeHeaderImage: false),
+    hideFooter: true
+  ) {
+    [
+      .emailTable(
+        attributes: [.style(contentTableStyles)],
+        .tr(
+          .td(
+            attributes: [.valign(.top)],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+              .h3(
+                attributes: [.class([Class.pf.type.responsiveTitle3])], "New teammate added"),
+              .markdownBlock(
+                attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+                """
+                Your colleage \(colleagueName) has joined your Point-Free subscription. They
+                now have full access to all videos and transcripts of every Point-Free video.
+                You can manage your team by visiting your [account
+                page](\(siteRouter.url(for: .account()))).
+                """)
+            )
+          )
+        )
+      ),
+      newPricingFooter,
+    ]
+  }
+}
+
+func _simpleEmailLayout(
+  user: User?,
+  newsletter: EmailSetting.Newsletter?,
+  title: String,
+  preheader: String,
+  template: EmailLayoutTemplate,
+  hideFooter: Bool = false,
+  body: @escaping () -> Node
+) -> Node {
+  simpleEmailLayout(body)(
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: newsletter,
+      title: title,
+      preheader: preheader,
+      template: template,
+      hideFooter: hideFooter,
+      data: ()
+    )
+  )
 }
