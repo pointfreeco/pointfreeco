@@ -436,10 +436,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
         paymentMethod: accountData.paymentMethod,
         currentDate: currentDate
       ),
-      subscriptionTeamRow(accountData),
-      subscriptionInvitesRowView(accountData.teamInvites),
-      subscriptionInviteMoreRowView(accountData),
-      addTeammateToSubscriptionRow(accountData),
+      teammatesSection(accountData: accountData),
       subscriptionPaymentInfoView(subscription, paymentMethod: accountData.paymentMethod),
     ]
 
@@ -453,6 +450,18 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       )
     )
   )
+}
+
+private func teammatesSection(
+  accountData: AccountData
+) -> Node {
+  [
+    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Teammates"]),
+    subscriptionTeamRow(accountData),
+    subscriptionInvitesRowView(accountData.teamInvites),
+    subscriptionInviteMoreRowView(accountData),
+    addTeammateToSubscriptionRow(accountData),
+  ]
 }
 
 private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
@@ -941,7 +950,7 @@ private func mainAction(
 private func subscriptionTeamRow(_ data: AccountData) -> Node {
   guard
     !data.teammates.isEmpty,
-    data.isTeamSubscription,
+    data.isSubscriptionOwner,
     !data.subscriberState.isEnterpriseSubscriber
   else { return [] }
 
@@ -988,7 +997,9 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
 }
 
 private func subscriptionInvitesRowView(_ invites: [TeamInvite]) -> Node {
-  guard !invites.isEmpty else { return [] }
+  guard
+    !invites.isEmpty
+  else { return [] }
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -1061,6 +1072,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let stripeSubscription = data.stripeSubscription else { return [] }
   guard let subscription = data.subscription else { return [] }
+  guard data.isSubscriptionOwner else { return [] }
   guard stripeSubscription.isRenewing else { return [] }
   let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
@@ -1113,8 +1125,6 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
 
   return [
-    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Teammates"]),
-
     .gridRow(
       attributes: [.class([subscriptionInfoRowClass])],
       .gridColumn(
@@ -1208,7 +1218,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
-  guard subscription.quantity > 1 else { return [] }
+  guard data.isSubscriptionOwner else { return [] }
   let invites = data.teamInvites
   let teammates = data.teammates
   let invitesRemaining = subscription.quantity - invites.count - teammates.count
