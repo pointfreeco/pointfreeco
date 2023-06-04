@@ -7,9 +7,7 @@ import Prelude
 import Tuple
 import Views
 
-func aboutResponse(
-  _ conn: Conn<StatusLineOpen, Void>
-) -> Conn<ResponseEnded, Data> {
+func aboutResponse(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
     .respond(view: aboutView) {

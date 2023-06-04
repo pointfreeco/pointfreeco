@@ -127,7 +127,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
   case let .api(apiRoute):
     return await apiMiddleware(conn.map(const(apiRoute)))
-      .performAsync()
 
   case .appleDeveloperMerchantIdDomainAssociation:
     return await appleDeveloperMerchantIdDomainAssociationMiddleware(conn.map(const(unit)))

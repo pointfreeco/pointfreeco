@@ -79,9 +79,7 @@ extension Api {
   }
 }
 
-func apiMiddleware(
-  _ conn: Conn<StatusLineOpen, SiteRoute.Api>
-) -> IO<Conn<ResponseEnded, Data>> {
+func apiMiddleware(_ conn: Conn<StatusLineOpen, SiteRoute.Api>) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.episodes) var episodes
   @Dependency(\.date.now) var now
 
@@ -92,9 +90,8 @@ func apiMiddleware(
     let episodes = episodes()
       .map { Api.EpisodeListItem(episode: $0, currentDate: now) }
       .sorted(by: { $0.sequence > $1.sequence })
-    return conn.map(const(episodes))
-      |> writeStatus(.ok)
-      >=> respondJson
+    return conn.map { _ in episodes }
+      .respondJSON()
 
   case let .episode(id):
     let episode = episodes()
@@ -106,27 +103,36 @@ func apiMiddleware(
         )
       }
 
-    return conn.map(const(episode))
-      |> (filterMap(pure, or: routeNotFoundMiddleware)  // TODO: make a JSON 404 payload?
-        <| writeStatus(.ok)
-        >=> respondJson)
+    guard let episode = episode else {
+      return try! conn
+        .writeStatus(.notFound)
+        .respond(json: ["status": 404])
+    }
+
+    return conn.map { _ in episode }
+      .respondJSON()
   }
 }
 
-public func respondJson<A: Encodable>(
-  _ conn: Conn<HeadersOpen, A>
-) -> IO<Conn<ResponseEnded, Data>> {
-  @Dependency(\.envVars.appEnv) var appEnv
+extension Conn where Step == StatusLineOpen, A: Encodable {
+  public func respondJSON() -> Conn<ResponseEnded, Data> {
+    @Dependency(\.envVars.appEnv) var appEnv
 
-  let encoder = JSONEncoder()
-  if appEnv == .testing {
-    encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+    let encoder = JSONEncoder()
+    if appEnv == .testing {
+      encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    }
+    do {
+      let data = try encoder.encode(self.data)
+
+      return self.map { _ in data }
+        .writeStatus(.ok)
+        .writeHeader(.contentLength(data.count))
+        .writeHeader(.contentType(.json))
+        .closeHeaders()
+        .end()
+    } catch {
+      return self.head(.badRequest)
+    }
   }
-  let data = try! encoder.encode(conn.data)  // TODO: 400 on badly formed data
-
-  return conn.map(const(data))
-    |> writeHeader(.contentType(.json))
-    >=> writeHeader(.contentLength(data.count))
-    >=> closeHeaders
-    >=> end
 }
