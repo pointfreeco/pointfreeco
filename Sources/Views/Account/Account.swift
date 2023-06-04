@@ -1198,7 +1198,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           ],
           """
           [Click here](\(siteRouter.path(for: .account(.regenerateTeamInviteCode)))) to invalidate
-          the current team invite link and generate a new one.
+          the current invite link and generate a new one.
           """)
       )
     ),
