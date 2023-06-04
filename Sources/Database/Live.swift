@@ -831,6 +831,13 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ADD COLUMN IF NOT EXISTS
+          "is_team_invite_code_enabled" boolean NOT NULL DEFAULT TRUE
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
