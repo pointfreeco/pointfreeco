@@ -2,6 +2,7 @@ import EmailAddress
 import Models
 import URLRouting
 
+// TODO: rename to Team
 public enum Join: Equatable {
   case confirm(code: Subscription.TeamInviteCode, secret: Encrypted<String>)
   case join(code: Subscription.TeamInviteCode, email: EmailAddress?)
