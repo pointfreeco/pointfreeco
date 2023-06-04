@@ -129,8 +129,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await apiMiddleware(conn.map(const(apiRoute)))
 
   case .appleDeveloperMerchantIdDomainAssociation:
-    return await appleDeveloperMerchantIdDomainAssociationMiddleware(conn.map(const(unit)))
-      .performAsync()
+    return conn.map { _ in }
+      .appleDeveloperMerchantIdDomainAssociationMiddleware()
 
   case let .blog(subRoute):
     return await blogMiddleware(conn: conn.map(const(subRoute)))
