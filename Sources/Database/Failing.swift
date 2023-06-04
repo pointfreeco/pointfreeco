@@ -51,6 +51,7 @@ extension Client {
     insertTeamInvite: unimplemented("Database.Client.insertTeamInvite"),
     migrate: unimplemented("Database.Client.migrate"),
     redeemEpisodeCredit: unimplemented("Database.Client.redeemEpisodeCredit"),
+    regenerateTeamInviteCode: unimplemented("Database.Client.regenerateTeamInviteCode"),
     removeTeammateUserIdFromSubscriptionId: unimplemented(
       "Database.Client.removeTeammateUserIdFromSubscriptionId"
     ),

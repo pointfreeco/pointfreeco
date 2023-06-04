@@ -847,6 +847,15 @@ extension Client {
           """
         )
       },
+      regenerateTeamInviteCode: { subscriptionID in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "subscriptions"
+          SET "team_invite_code" = gen_shortid('subscriptions', 'team_invite_code')
+          where "subscriptions"."id" = \(bind: subscriptionID)
+          """
+        )
+      },
       removeTeammateUserIdFromSubscriptionId: { teammateUserId, subscriptionId in
         try await pool.sqlDatabase.run(
           """

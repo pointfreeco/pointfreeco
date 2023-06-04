@@ -17,7 +17,6 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
 
   switch conn.data {
   case let .confirm(code: code, secret: secret):
-    // TODO: validate active subscription
     guard let currentUser = currentUser
     else {
       return

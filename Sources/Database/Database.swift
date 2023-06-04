@@ -55,6 +55,7 @@ public struct Client {
   public var insertTeamInvite: (EmailAddress, Models.User.ID) async throws -> TeamInvite
   public var migrate: () async throws -> Void
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
+  public var regenerateTeamInviteCode: (Models.Subscription.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) async throws -> Void
@@ -117,6 +118,7 @@ public struct Client {
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
     migrate: @escaping () async throws -> Void,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
+    regenerateTeamInviteCode: @escaping (Models.Subscription.ID) async throws -> Void,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
       throws -> Void,
     sawUser: @escaping (Models.User.ID) async throws -> Void,
@@ -171,6 +173,7 @@ public struct Client {
     self.insertTeamInvite = insertTeamInvite
     self.migrate = migrate
     self.redeemEpisodeCredit = redeemEpisodeCredit
+    self.regenerateTeamInviteCode = regenerateTeamInviteCode
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
     self.sawUser = sawUser
     self.updateEmailSettings = updateEmailSettings

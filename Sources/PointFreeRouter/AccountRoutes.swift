@@ -8,6 +8,7 @@ public enum Account: Equatable {
   case index
   case invoices(Invoices = .index)
   case paymentInfo(PaymentInfo = .show)
+  case regenerateTeamInviteCode
   case rss(salt: User.RssSalt)
   case rssLegacy(secret1: String, secret2: String)
   case subscription(Subscription)
@@ -76,6 +77,10 @@ struct AccountRouter: ParserPrinter {
             }
           }
         }
+      }
+
+      Route(.case(Account.regenerateTeamInviteCode)) {
+        Path { "regenerate-team-invite-code"}
       }
 
       Parse {

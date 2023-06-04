@@ -44,6 +44,9 @@ func accountMiddleware(
     return conn.map(const(currentUser .*. paymentMethodID .*. unit))
       |> updatePaymentInfoMiddleware
 
+  case .regenerateTeamInviteCode:
+    return IO { await regenerateTeamInviteCode(conn.map(const(()))) }
+
   case let .rss(salt):
     return IO { await accountRssMiddleware(conn.map { _ in salt }) }
 

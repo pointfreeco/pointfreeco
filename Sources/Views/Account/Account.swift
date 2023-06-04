@@ -1187,7 +1187,19 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
         copyToPasteboard(
           text: siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode))),
           buttonColor: .white
-        )
+        ),
+        .markdownBlock(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+              Class.pf.colors.fg.gray400,
+              Class.padding([.mobile: [.top: 1]]),
+            ])
+          ],
+          """
+          [Click here](\(siteRouter.path(for: .account(.regenerateTeamInviteCode)))) to invalidate
+          the current team invite link and generate a new one.
+          """)
       )
     ),
   ]
@@ -1358,7 +1370,7 @@ private func copyToPasteboard(
 ) -> Node {
   .div(
     attributes: [
-      .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+      .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
     ],
     .input(
       attributes: [
@@ -1378,9 +1390,10 @@ private func copyToPasteboard(
           Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
         ]),
         .value("Copy"),
-        .onclick(unsafe: """
-          navigator.clipboard.writeText("\(text)");
-          """)
+        .onclick(
+          unsafe: """
+            navigator.clipboard.writeText("\(text)");
+            """),
       ]
     )
   )

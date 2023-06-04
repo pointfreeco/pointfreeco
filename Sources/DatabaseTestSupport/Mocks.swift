@@ -49,6 +49,7 @@ extension Client {
     insertTeamInvite: { _, _ in .mock },
     migrate: {},
     redeemEpisodeCredit: { _, _ in },
+    regenerateTeamInviteCode: { _ in },
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
     sawUser: { _ in },
     updateEmailSettings: { _, _ in },
