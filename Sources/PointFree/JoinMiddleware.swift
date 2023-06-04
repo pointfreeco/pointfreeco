@@ -24,25 +24,15 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
         .redirect(to: siteRouter.loginPath(redirect: .join(.confirm(code: code, secret: secret))))
     }
 
-    let decryptedCode: Models.Subscription.TeamInviteCode
-    let decryptedUserID: User.ID
-    do {
-      (decryptedCode, decryptedUserID) = try JoinSecretConversion().apply(secret)
-    } catch {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(.warning, "TODO")  // TODO: invalid URL
-        }
-    }
     guard
+      let (decryptedCode, decryptedUserID) = try? JoinSecretConversion().apply(secret),
       decryptedCode == code,
       decryptedUserID == currentUser.id
     else {
       return
         conn
         .redirect(to: .home) {
-          $0.flash(.warning, "TODO")  // TODO: invalid URL
+          $0.flash(.warning, "The invite link provided is no longer valid")
         }
     }
 
@@ -93,7 +83,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
         content: .left(
           """
           \(url)
-          """)
+          """)  // TODO: real email
       )
     }
     return
@@ -229,14 +219,17 @@ private func add<A>(
   await fireAndForget {
     _ = try? await sendEmail(
       to: [owner.email],
-      subject:
-        "\(currentUser.name ?? currentUser.email.rawValue) has joined your Point-Free subscription",
-      content: .left("Hello")  // TODO
+      subject: """
+        \(currentUser.name ?? currentUser.email.rawValue) has joined your Point-Free subscription
+        """,
+      content: .left("Hello")  // TODO: real email
     )
     _ = try? await sendEmail(
       to: [currentUser.email],
-      subject: "You have joined \(owner.name ?? owner.email.rawValue)'s Point-Free subscription",
-      content: .left("Hello")  // TODO
+      subject: """
+        You have joined \(owner.name ?? owner.email.rawValue)'s Point-Free subscription
+        """,
+      content: .left("Hello")  // TODO: real email
     )
   }
 
