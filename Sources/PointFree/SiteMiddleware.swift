@@ -181,8 +181,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case .episode(.index):
-    return await redirect(to: siteRouter.path(for: .home))(conn)
-      .performAsync()
+    return await conn.redirect(to: siteRouter.path(for: .home))
 
   case let .episode(.progress(param: param, percent: percent)):
     return await progressResponse(conn.map(const(param .*. percent .*. unit)))
@@ -240,8 +239,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case .home:
-    return await homeMiddleware(conn.map(const(())))
-      .performAsync()
+    return conn.map { _ in }.home()
 
   case let .invite(.addTeammate(email)):
     return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))
