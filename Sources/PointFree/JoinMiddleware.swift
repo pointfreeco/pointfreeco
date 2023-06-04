@@ -1,9 +1,15 @@
+import Css
 import Dependencies
+import Either
+import EmailAddress
 import Foundation
+import FunctionalCss
+import Html
 import HttpPipeline
 import Models
 import PointFreeRouter
 import Stripe
+import Styleguide
 import Tagged
 import URLRouting
 import Views
@@ -13,6 +19,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   switch conn.data {
@@ -25,14 +32,15 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     }
 
     guard
-      let (decryptedCode, decryptedUserID) = try? JoinSecretConversion().apply(secret),
+      let (decryptedCode, decryptedUserID, timestamp) = try? JoinSecretConversion().apply(secret),
+      Int(now.timeIntervalSince1970) <= timestamp + 604_800,
       decryptedCode == code,
       decryptedUserID == currentUser.id
     else {
       return
         conn
         .redirect(to: .home) {
-          $0.flash(.warning, "The invite link provided is no longer valid")
+          $0.flash(.error, "This invite link is no longer valid")
         }
     }
 
@@ -73,18 +81,13 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
         for: .join(
           .confirm(
             code: code,
-            secret: try JoinSecretConversion().unapply((code, currentUser.id))
+            secret: try JoinSecretConversion().unapply(
+              (code, currentUser.id, Int(now.timeIntervalSince1970))
+            )
           )
         )
       )
-      try await sendEmail(
-        to: [email],
-        subject: "Confirm your email to join the Point-Free team subscription.",
-        content: .left(
-          """
-          \(url)
-          """)  // TODO: real email
-      )
+      try await sendConfirmationEmail(email: email, code: code, currentUser: currentUser)
     }
     return
       conn
@@ -124,7 +127,6 @@ private func add<A>(
   code: Models.Subscription.TeamInviteCode,
   conn: Conn<StatusLineOpen, A>
 ) async -> Conn<ResponseEnded, Data> {
-  // TODO: validate isTeamInviteCodeEnabled
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.siteRouter) var siteRouter
@@ -245,25 +247,31 @@ struct JoinSecretConversion: Conversion {
   struct ValidationError: Error {}
   @Dependency(\.envVars.appSecret) var appSecret
 
-  func apply(_ input: Encrypted<String>) throws -> (Models.Subscription.TeamInviteCode, User.ID) {
+  func apply(
+    _ input: Encrypted<String>
+  ) throws -> (Models.Subscription.TeamInviteCode, User.ID, Int) {
     guard
       let parts = input.decrypt(with: appSecret)?.components(separatedBy: Self.separator),
-      parts.count == 2,
-      let decryptedCode = parts.first.map({ Models.Subscription.TeamInviteCode(String($0)) }),
-      let decryptedUserID = parts.last.flatMap({ UUID(uuidString: String($0)) })
+      parts.count == 3,
+      let timestamp = Int(parts[2]),
+      let decryptedUserID = UUID(uuidString: String(parts[1]))
     else {
       throw ValidationError()
     }
-    return (decryptedCode, User.ID(decryptedUserID))
+    return (
+      Models.Subscription.TeamInviteCode(String(parts[0])),
+      User.ID(decryptedUserID),
+      timestamp
+    )
   }
 
   func unapply(
-    _ output: (Models.Subscription.TeamInviteCode, User.ID)
+    _ output: (Models.Subscription.TeamInviteCode, User.ID, Int)
   ) throws -> Encrypted<String> {
     guard
       let encrypted = Encrypted(
         """
-        \(output.0.rawValue)\(Self.separator)\(output.1.uuidString)
+        \(output.0.rawValue)\(Self.separator)\(output.1.uuidString)\(Self.separator)\(output.2)
         """,
         with: appSecret
       )
@@ -272,4 +280,76 @@ struct JoinSecretConversion: Conversion {
     }
     return encrypted
   }
+}
+
+private func sendConfirmationEmail(
+  email: EmailAddress,
+  code: Models.Subscription.TeamInviteCode,
+  currentUser: User
+) async throws {
+  @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
+
+  let confirmURL = siteRouter.url(
+    for: .join(
+      .confirm(
+        code: code,
+        secret: try JoinSecretConversion().unapply(
+          (code, currentUser.id, Int(now.timeIntervalSince1970))
+        )
+      )
+    )
+  )
+
+  try await sendEmail(
+    to: [email],
+    subject: "Confirm your email to join the Point-Free team subscription.",
+    content: inj2(
+      _simpleEmailLayout(
+        SimpleEmailLayoutData(
+          user: currentUser,
+          newsletter: nil,
+          title: "Confirm your email",
+          preheader: "Confirm your email to join the Point-Free team subscription.",
+          template: .default(includeHeaderImage: false),
+          data: ()
+        )
+      ) {
+        .emailTable(
+          attributes: [.style(contentTableStyles)],
+          .tr(
+            .td(
+              attributes: [.valign(.top)],
+              .div(
+                attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+                .h3(
+                  attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
+                .markdownBlock(
+                  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+                  """
+                  You’re invited to join the \(code.rawValue) team on [Point-Free](http://pointfree.co), a video
+                  series about advanced concepts in the Swift programming language. To accept,
+                  simply click the link below!
+                  """),
+                .p(
+                  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+                  .a(
+                    attributes: [
+                      .href(confirmURL),
+                      .class([Class.pf.components.button(color: .purple)]),
+                    ],
+                    "Click here to accept!"
+                  )
+                )
+              )
+            )
+          )
+        )
+      }
+    )
+  )
+}
+
+func _simpleEmailLayout(_ data: SimpleEmailLayoutData<Void>, body: @escaping () -> Node) -> Node {
+  simpleEmailLayout(body)(data)
 }

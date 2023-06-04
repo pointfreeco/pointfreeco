@@ -113,7 +113,9 @@ class JoinMiddlewareTests: TestCase {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
-      let secret = try JoinSecretConversion().unapply(("deadbeef", user.id))
+      let secret = try JoinSecretConversion().unapply(
+        ("deadbeef", user.id, Int(Date.mock.timeIntervalSince1970))
+      )
       let conn = connection(from: request(to: .join(.confirm(code: "deadbeef", secret: secret))))
       await _assertInlineSnapshot(
         matching: await siteMiddleware(conn), as: .conn,
@@ -308,6 +310,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   // TODO: test join: invalid team code
   // TODO: test join: unused team seats (with and without owner taking seat)
   // TODO: test join: current user has active subscription
+  // TODO: test join: expired link
 
   func testConfirm_LoggedIn_Domain() async throws {
     let currentUser = try await self.database.registerUser(
@@ -355,16 +358,17 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       }
       $0.uuid = .incrementing
     } operation: {
-      let secret = try JoinSecretConversion().unapply((subscription.teamInviteCode, currentUser.id))
+      let secret = try JoinSecretConversion().unapply(
+        (subscription.teamInviteCode, currentUser.id, Int(Date.mock.timeIntervalSince1970))
+      )
       let conn = connection(
         from: request(
           to: .join(.confirm(code: subscription.teamInviteCode, secret: secret)),
           session: .loggedIn(as: currentUser)
         )
       )
-      isRecording = true
       await _assertInlineSnapshot(matching: await siteMiddleware(conn), as: .conn, with: """
-      GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f9a74a4c84d055b5f2e9654c34c47287979c94be2886fca8769f7e0cb08a1b831003867c41507255e2d55d8431dabc25aee13bc4bfe6b087194189553a2ae204f1ef3d2db192b100853d0d8a5a72f64
+      GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f9a74a4c84d055b5f2e9654c34c47287979c94be2886fca8769f7e0cb08a1b831003867c41507255e2d55d8431dabc25aee13bc4bfe6b087194189553a2ae207cb4f63d445e1a2a482c516b922e9aa92cabf7da5b9abcddac5efd9c919037cfd12b0931c289eb6a98
       Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
       
       302 Found

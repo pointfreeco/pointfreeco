@@ -63,7 +63,6 @@ extension Models.Subscription {
   public static let mock = Subscription(
     deactivated: false,
     id: .init(uuidString: "00000000-0000-0000-0000-000000000000")!,
-    isTeamInviteCodeEnabled: true,
     stripeSubscriptionId: Stripe.Subscription.mock.id,
     stripeSubscriptionStatus: .active,
     teamInviteCode: "cafed00d",
