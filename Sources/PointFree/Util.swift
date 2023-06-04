@@ -1,4 +1,5 @@
 import Foundation
+import HttpPipeline
 import Prelude
 
 public let currencyFormatter: NumberFormatter = {
@@ -22,3 +23,9 @@ public let episodeDateFormatter: DateFormatter = {
   formatter.timeZone = TimeZone(secondsFromGMT: 0)
   return formatter
 }()
+
+public func toMiddleware<I, J, A, B>(
+  _ body: @escaping (Conn<I, A>) async -> Conn<J, B>
+) -> Middleware<I, J, A, B> {
+  return { conn in IO { await body(conn) } }
+}

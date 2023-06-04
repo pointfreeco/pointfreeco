@@ -17,11 +17,11 @@ let subscribeMiddleware =
   validateUser
   <<< validateSubscribeData
   <| map(lower)
-  >>> { conn in IO { await subscribe(conn) } }
+  >>> toMiddleware(subscribe)
 
 private let validateUser: MT<Tuple2<User?, SubscribeData?>, Tuple2<User, SubscribeData?>> =
   redirectActiveSubscribers(user: get1)
-  <<< filterMap(require1 >>> pure, or: loginAndRedirectToPricing)
+  <<< filterMap(require1 >>> pure, or: toMiddleware(loginAndRedirectToPricing))
 
 private let validateSubscribeData:
   MT<Tuple2<User, SubscribeData?>, Tuple3<User, SubscribeData, Referrer?>> =
@@ -223,18 +223,15 @@ private func sendReferralEmail(to referrer: User) -> EitherIO<Error, SendEmailRe
 }
 
 private func validateQuantity(_ pricing: Pricing) -> Bool {
-  return !pricing.isTeam || Pricing.validTeamQuantities.contains(pricing.quantity)
+  !pricing.isTeam || Pricing.validTeamQuantities.contains(pricing.quantity)
 }
 
 private func loginAndRedirectToPricing<A>(
   _ conn: Conn<StatusLineOpen, A>
-)
-  -> IO<Conn<ResponseEnded, Data>>
-{
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.siteRouter) var siteRouter
 
-  return conn
-    |> redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
+  return await conn.redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
