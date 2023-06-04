@@ -12,7 +12,7 @@ import XCTest
 @testable import PointFree
 
 open class TestCase: XCTestCase {
-  public var mockBaseDependencies = true
+  public var useMockBaseDependencies = true
 
   open override class func setUp() {
     super.setUp()
@@ -21,7 +21,7 @@ open class TestCase: XCTestCase {
 
   open override func invokeTest() {
     withDependencies {
-      if self.mockBaseDependencies {
+      if self.useMockBaseDependencies {
         $0.database = .mock
         $0.date.now = .mock
         $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
@@ -52,7 +52,7 @@ open class TestCase: XCTestCase {
 }
 
 open class LiveDatabaseTestCase: XCTestCase {
-  public var mockBaseDependencies = true
+  public var useMockBaseDependencies = true
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
 
   open override class func setUp() {
@@ -70,7 +70,7 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   open override func invokeTest() {
     withDependencies {
-      if self.mockBaseDependencies {
+      if self.useMockBaseDependencies {
         $0.date.now = .mock
         $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
         $0.gitHub = .mock

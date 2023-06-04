@@ -23,7 +23,7 @@ class JoinMiddlewareTests: TestCase {
   }
 
   override func invokeTest() {
-    self.mockBaseDependencies = false
+    self.useMockBaseDependencies = false
     super.invokeTest()
   }
 
@@ -152,7 +152,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   }
 
   override func invokeTest() {
-    self.mockBaseDependencies = false
+    self.useMockBaseDependencies = false
     super.invokeTest()
   }
 

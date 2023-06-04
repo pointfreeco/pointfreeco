@@ -316,7 +316,7 @@ func confirmationEmail(
     )
   )
 
-  return _simpleEmailLayout(
+  return simpleEmailLayout(
     user: currentUser,
     newsletter: nil,
     title: "Confirm your email",
@@ -369,7 +369,7 @@ func newTeammateEmail(
     ? code.rawValue
     : owner.displayName
 
-  return _simpleEmailLayout(
+  return simpleEmailLayout(
     user: currentUser,
     newsletter: nil,
     title: "You’ve got full access",
@@ -448,7 +448,7 @@ func ownerNewTeammateJoinedEmail(
     newPricingFooter = []
   }
 
-  return _simpleEmailLayout(
+  return simpleEmailLayout(
     user: owner,
     newsletter: nil,
     title: "New teammate added",
@@ -483,26 +483,4 @@ func ownerNewTeammateJoinedEmail(
       newPricingFooter,
     ]
   }
-}
-
-func _simpleEmailLayout(
-  user: User?,
-  newsletter: EmailSetting.Newsletter?,
-  title: String,
-  preheader: String,
-  template: EmailLayoutTemplate,
-  hideFooter: Bool = false,
-  body: @escaping () -> Node
-) -> Node {
-  simpleEmailLayout(body)(
-    SimpleEmailLayoutData(
-      user: user,
-      newsletter: newsletter,
-      title: title,
-      preheader: preheader,
-      template: template,
-      hideFooter: hideFooter,
-      data: ()
-    )
-  )
 }

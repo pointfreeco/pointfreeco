@@ -95,6 +95,28 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
     >>> { applyInlineStyles(node: $0, stylesheet: emailStylesheet) }
 }
 
+func simpleEmailLayout(
+  user: User?,
+  newsletter: EmailSetting.Newsletter?,
+  title: String,
+  preheader: String,
+  template: EmailLayoutTemplate,
+  hideFooter: Bool = false,
+  body: @escaping () -> Node
+) -> Node {
+  simpleEmailLayout(body)(
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: newsletter,
+      title: title,
+      preheader: preheader,
+      template: template,
+      hideFooter: hideFooter,
+      data: ()
+    )
+  )
+}
+
 let bodyTableStyles =
   display(.block)
   <> width(.pct(100))
