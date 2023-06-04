@@ -156,7 +156,7 @@ private func add<A>(
   {
     return
       conn
-      .redirect(to: siteRouter.loginPath(redirect: .home)) {
+      .redirect(to: .account()) {
         $0.flash(
           .warning,
           "You cannot join this team as you already have an active subscription."
@@ -217,7 +217,7 @@ private func add<A>(
       }
   }
   await fireAndForget { [didAddSubscriptionSeat] in
-    try await sendEmail(
+    _ = try? await sendEmail(
       to: [owner.email],
       subject: """
         \(currentUser.displayName) has joined your Point-Free subscription
@@ -236,12 +236,17 @@ private func add<A>(
       code.isDomain
       ? code.rawValue
       : owner.displayName
-    try await sendEmail(
+    _ = try? await sendEmail(
       to: [currentUser.email],
       subject: """
         You have joined \(ownerName)'s Point-Free subscription
         """,
       content: inj2(newTeammateEmail(currentUser: currentUser, owner: owner, code: code))
+    )
+    _ = try? await sendEmail(
+      to: ["support@pointfree.co"],
+      subject: "Team invite link used",
+      content: .left("")
     )
   }
 
@@ -251,8 +256,6 @@ private func add<A>(
       $0.flash(.notice, "You now have access to Point-Free!")
     }
 }
-
-// TODO: show teammate options for every sub owner
 
 struct JoinSecretConversion: Conversion {
   private static let separator = "--{SEPARATOR}--"
@@ -430,7 +433,7 @@ func ownerNewTeammateJoinedEmail(
               attributes: [.class([Class.pf.type.body.regular])],
               """
               Note that a new seat was added to your subscription to accomodate
-              **\(currentUser.displayName)**, and your credit card has been charged a pro-rated
+              **\(currentUser.displayName)**, and your credit card has been charged a prorated
               amount based on your billing cycle. You now have **\(newPricing.quantity) seats**
               and your new billing rate is
               **\(newPricePerInterval)/\

@@ -1123,17 +1123,16 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .p(
+        .markdownBlock(
           attributes: [
             .class([
               Class.pf.type.body.regular
             ])
           ],
-          .text(
-            """
-            Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
-            per \(interval). Your first invoice will be prorated based on your current billing cycle.
-            """)
+          """
+          Add a teammate to your subscription for a discounted rate of **$\(amount.rawValue / 100)/\
+          \(interval)**. Your first invoice will be prorated based on your current billing cycle.
+          """
         ),
         .form(
           attributes: [
@@ -1173,16 +1172,17 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .p(
+        .markdownBlock(
           attributes: [
             .class([
               Class.pf.type.body.regular
             ])
           ],
-          .text(
-            """
-            Invite your colleages to your subscription by sharing the following URL:
-            """)
+          """
+          Invite your colleages to your subscription by sharing the following URL. Your credit
+          card will be charged a prorated amount of **$\(amount.rawValue / 100)/\(interval)**
+          when a teammate joins.
+          """
         ),
         copyToPasteboard(
           text: siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode))),
