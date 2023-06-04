@@ -71,30 +71,7 @@ class JoinMiddlewareTests: TestCase {
       $0.uuid = .incrementing
     } operation: {
       let conn = connection(from: request(to: .join(.landing(code: "pointfree.co"))))
-      await _assertInlineSnapshot(
-        matching: await siteMiddleware(conn), as: .conn,
-        with: """
-          GET http://localhost:8080/join/pointfree.co
-          Cookie: pf_session={}
-
-          200 OK
-          Content-Length: 214
-          Content-Type: text/html; charset=utf-8
-          Referrer-Policy: strict-origin-when-cross-origin
-          X-Content-Type-Options: nosniff
-          X-Download-Options: noopen
-          X-Frame-Options: SAMEORIGIN
-          X-Permitted-Cross-Domain-Policies: none
-          X-XSS-Protection: 1; mode=block
-
-          Do you want to join Blob's subscription?
-
-          <form action="/join/pointfree.co" method="post">
-            <input type="text" name="email">
-            <input type="hidden" name="code" value="pointfree.co">
-            <input type="submit">
-          </form>
-          """)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 
@@ -119,7 +96,7 @@ class JoinMiddlewareTests: TestCase {
           302 Found
           Location: /
           Referrer-Policy: strict-origin-when-cross-origin
-          Set-Cookie: pf_session={"flash":{"message":"We could not find that team.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
           X-Content-Type-Options: nosniff
           X-Download-Options: noopen
           X-Frame-Options: SAMEORIGIN
@@ -330,6 +307,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   // TODO: test join: logged out
   // TODO: test join: invalid team code
   // TODO: test join: unused team seats (with and without owner taking seat)
+  // TODO: test join: current user has active subscription
 
   func testConfirm_LoggedIn_Domain() async throws {
     let currentUser = try await self.database.registerUser(
@@ -423,6 +401,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   // TODO: test confirm: mismatch user id
   // TODO: test confirm: cannot find team
   // TODO: test confirm: non-active team
+  // TODO: test confirm: current user has active subscription
 }
 
 import CustomDump

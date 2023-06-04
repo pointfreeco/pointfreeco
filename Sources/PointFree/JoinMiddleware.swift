@@ -47,18 +47,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
         }
     }
 
-    let subscription: Models.Subscription
-    do {
-      subscription = try await database.fetchSubscriptionByTeamInviteCode(code)
-    } catch {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(.error, "Could not find that team.")
-        }
-    }
-
-    return await add(user: currentUser, to: subscription, code: code, conn: conn)
+    return await add(currentUser: currentUser, code: code, conn: conn)
 
   case let .join(code: code, email: email):
     guard let currentUser = currentUser
@@ -70,20 +59,9 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
         }
     }
 
-    let subscription: Models.Subscription
-    do {
-      subscription = try await database.fetchSubscriptionByTeamInviteCode(code)
-    } catch {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(.error, "Could not find that team.")
-        }
-    }
-
     guard let email = email
     else {
-      return await add(user: currentUser, to: subscription, code: code, conn: conn)
+      return await add(currentUser: currentUser, code: code, conn: conn)
     }
 
     guard
@@ -126,18 +104,9 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
       }
 
   case let .landing(code):
-    let subscription: Models.Subscription
-    do {
-      subscription = try await database.fetchSubscriptionByTeamInviteCode(code)
-    } catch {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(.error, "We could not find that team.")
-        }
-    }
-
-    guard subscription.stripeSubscriptionStatus.isActive
+    guard
+      let subscription = try? await database.fetchSubscriptionByTeamInviteCode(code),
+      subscription.stripeSubscriptionStatus.isActive
     else {
       return
         conn
@@ -152,7 +121,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     return
       conn
       .writeStatus(.ok)
-      .respond(view: joinTeamLanding(code:)) { _ in 
+      .respond(view: joinTeamLanding(code:)) { _ in
         SimplePageLayoutData(
           data: code,
           title: "Join team subscription"
@@ -162,16 +131,26 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
 }
 
 private func add<A>(
-  user: User,
-  to subscription: Models.Subscription,
+  currentUser: User,
   code: Models.Subscription.TeamInviteCode,
   conn: Conn<StatusLineOpen, A>
 ) async -> Conn<ResponseEnded, Data> {
   // TODO: validate isTeamInviteCodeEnabled
-  
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
+  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.stripe) var stripe
+
+  let subscription: Models.Subscription
+  do {
+    subscription = try await database.fetchSubscriptionByTeamInviteCode(code)
+  } catch {
+    return
+      conn
+      .redirect(to: .home) {
+        $0.flash(.error, "Could not find that team.")
+      }
+  }
 
   guard subscription.stripeSubscriptionStatus.isActive
   else {
@@ -181,6 +160,20 @@ private func add<A>(
         $0.flash(
           .error,
           "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
+        )
+      }
+  }
+
+  if let subscriptionID = currentUser.subscriptionId,
+    let currentUserSubscription = try? await database.fetchSubscriptionById(subscriptionID),
+    currentUserSubscription.stripeSubscriptionStatus.isActive
+  {
+    return
+      conn
+      .redirect(to: siteRouter.loginPath(redirect: .home)) {
+        $0.flash(
+          .warning,
+          "You cannot join this team as you already have an active subscription."
         )
       }
   }
@@ -223,7 +216,7 @@ private func add<A>(
         newPricing.quantity
       )
     }
-    try await database.addUserIdToSubscriptionId(user.id, subscription.id)
+    try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
   } catch {
     return
       conn
@@ -237,11 +230,12 @@ private func add<A>(
   await fireAndForget {
     _ = try? await sendEmail(
       to: [owner.email],
-      subject: "\(user.name ?? user.email.rawValue) has joined your Point-Free subscription",
+      subject:
+        "\(currentUser.name ?? currentUser.email.rawValue) has joined your Point-Free subscription",
       content: .left("Hello")  // TODO
     )
     _ = try? await sendEmail(
-      to: [user.email],
+      to: [currentUser.email],
       subject: "You have joined \(owner.name ?? owner.email.rawValue)'s Point-Free subscription",
       content: .left("Hello")  // TODO
     )

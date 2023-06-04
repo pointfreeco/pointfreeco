@@ -1181,7 +1181,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           ],
           .text(
             """
-            Invite your colleages to your subscription by sharing the following URL.
+            Invite your colleages to your subscription by sharing the following URL:
             """)
         ),
         copyToPasteboard(
