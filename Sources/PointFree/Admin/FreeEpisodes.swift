@@ -11,19 +11,17 @@ import Styleguide
 import Tuple
 import Views
 
-let indexFreeEpisodeEmailMiddleware: M<Void> =
-  writeStatus(.ok)
-  >=> respond({ _ in
+extension Conn<StatusLineOpen, Void> {
+  func indexFreeEpisodeEmail() -> Conn<ResponseEnded, Data> {
     @Dependency(\.date.now) var now
     @Dependency(\.episodes) var episodes
     @Dependency(\.envVars.emergencyMode) var emergencyMode
 
-    return freeEpisodeView(
-      episodes: episodes(),
-      today: now,
-      emergencyMode: emergencyMode
-    )
-  })
+    return self.writeStatus(.ok).respond {
+      freeEpisodeView(episodes: episodes(), today: now, emergencyMode: emergencyMode)
+    }
+  }
+}
 
 let sendFreeEpisodeEmailMiddleware:
   Middleware<

@@ -35,7 +35,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     return conn.adminIndex()
 
   case .freeEpisodeEmail(.index):
-    return await indexFreeEpisodeEmailMiddleware(conn).performAsync()
+    return conn.indexFreeEpisodeEmail()
 
   case let .freeEpisodeEmail(.send(episodeId)):
     return await sendFreeEpisodeEmailMiddleware(conn.map { episodeId }).performAsync()
