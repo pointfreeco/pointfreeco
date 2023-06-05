@@ -26,7 +26,7 @@ let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
   )
   <| redirect(to: .home, headersMiddleware: startGhosting)
 
-let endGhostingMiddleware: M<Prelude.Unit> = redirect(to: .home, headersMiddleware: endGhosting)
+let endGhostingMiddleware: M<Void> = redirect(to: .home, headersMiddleware: endGhosting)
 
 private func endGhosting<A>(
   conn: Conn<HeadersOpen, A>

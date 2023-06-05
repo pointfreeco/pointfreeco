@@ -38,16 +38,15 @@ let loginResponse: M<String?> =
   requireLoggedOutUser
   <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
 
+
 func logoutResponse(
-  _ conn: Conn<StatusLineOpen, Prelude.Unit>
-) -> IO<Conn<ResponseEnded, Data>> {
+  _ conn: Conn<StatusLineOpen, Void>
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.siteRouter) var siteRouter
 
-  return conn
-    |> redirect(
-      to: siteRouter.path(for: .home),
-      headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
-    )
+  return conn.redirect(to: siteRouter.path(for: .home)) {
+    $0.writeSessionCookie { $0.user = nil }
+  }
 }
 
 extension Conn where Step == StatusLineOpen {
