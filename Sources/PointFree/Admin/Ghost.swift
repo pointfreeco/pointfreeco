@@ -16,46 +16,27 @@ extension Conn where Step == StatusLineOpen, A == Void {
   func ghostIndex() -> Conn<ResponseEnded, Data> {
     self.writeStatus(.ok).respond { indexView() }
   }
-}
 
-let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
-  filterMap(
-    over2(fetchGhostee) >>> sequence2 >>> map(require2),
-    or: redirect(
-      to: .admin(.ghost(.index)),
-      headersMiddleware: flash(.error, "Couldn't find user with that id")
-    )
-  )
-  <| redirect(to: .home, headersMiddleware: startGhosting)
+  func ghostStart(adminUser: User, userID: User.ID?) async -> Conn<ResponseEnded, Data> {
+    @Dependency(\.database) var database
 
-let endGhostingMiddleware: M<Void> = redirect(to: .home, headersMiddleware: endGhosting)
-
-private func endGhosting<A>(
-  conn: Conn<HeadersOpen, A>
-) -> IO<Conn<HeadersOpen, A>> {
-
-  return conn
-    |> writeSessionCookieMiddleware {
-      $0.user = conn.request.session.ghosterId.map(Session.User.standard)
+    do {
+      let ghostee = try await database.fetchUserById(userID.unwrap())
+      return self.redirect(to: .home) {
+        $0.writeSessionCookie {
+          $0.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
+        }
+      }
+    } catch {
+      return self.redirect(to: .home) { $0.flash(.error, "Couldn't find user with that id" ) }
     }
-}
+  }
 
-private func startGhosting(
-  conn: Conn<HeadersOpen, Tuple2<User, User>>
-) -> IO<Conn<HeadersOpen, Tuple2<User, User>>> {
-
-  let (adminUser, ghostee) = lower(conn.data)
-
-  return conn
-    |> writeSessionCookieMiddleware {
-      $0.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
+  func endGhosting() -> Conn<ResponseEnded, Data> {
+    self.redirect(to: .home) {
+      $0.writeSessionCookie { $0.user = self.request.session.ghosterId.map(Session.User.standard) }
     }
-}
-
-private func fetchGhostee(userId: User.ID?) -> IO<User?> {
-  @Dependency(\.database) var database
-
-  return IO { try? await database.fetchUserById(userId.unwrap()) }
+  }
 }
 
 private func indexView() -> Node {

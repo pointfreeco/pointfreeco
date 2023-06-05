@@ -228,10 +228,10 @@ private func validateQuantity(_ pricing: Pricing) -> Bool {
 
 private func loginAndRedirectToPricing<A>(
   _ conn: Conn<StatusLineOpen, A>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.siteRouter) var siteRouter
 
-  return await conn.redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
+  return conn.redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {

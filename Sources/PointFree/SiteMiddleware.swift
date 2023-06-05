@@ -173,8 +173,7 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     .performAsync()
 
   case .endGhosting:
-    return await endGhostingMiddleware(conn)
-      .performAsync()
+    return conn.endGhosting()
 
   case .episode(.index):
     return await conn.redirect(to: siteRouter.path(for: .home))
