@@ -22,11 +22,10 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
 
   switch route {
   case let .emailPreview(template: template):
-    return await emailPreview(conn.map { template })
+    return conn.emailPreview(template: template)
 
-  case let .episodeCredits(.add(userId: userId, episodeSequence: episodeSequence)):
-    return await redeemEpisodeCreditMiddleware(conn.map(const(userId .*. episodeSequence .*. unit)))
-      .performAsync()
+  case let .episodeCredits(.add(userId: userID, episodeSequence: episodeSequence)):
+    return await conn.redeemEpisodeCredit(episodeSequence, to: userID)
 
   case .episodeCredits(.show):
     return conn.showEpisodeCredits()

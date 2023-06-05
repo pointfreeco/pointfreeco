@@ -8,17 +8,16 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
+import Views
 
-func emailPreview(
-  _ conn: Conn<StatusLineOpen, EmailTemplate?>
-) async -> Conn<ResponseEnded, Data> {
-
-  conn
-    .writeStatus(.ok)
-    .respond(
-      view: emailPreviewView,
-      layoutData: { .init(data: $0, title: "Email preview") }
-    )
+extension Conn<StatusLineOpen, Void> {
+  func emailPreview(template: EmailTemplate?) -> Conn<ResponseEnded, Data> {
+    self
+      .writeStatus(.ok)
+      .respond(view: emailPreviewView) {
+        SimplePageLayoutData(data: template, title: "Email preview")
+      }
+  }
 }
 
 private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
