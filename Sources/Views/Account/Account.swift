@@ -458,7 +458,6 @@ private func teammatesSection(
   [
     .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Teammates"]),
     subscriptionTeamRow(accountData),
-    subscriptionInvitesRowView(accountData.teamInvites),
     subscriptionInviteMoreRowView(accountData),
     addTeammateToSubscriptionRow(accountData),
   ]
@@ -948,11 +947,35 @@ private func mainAction(
 }
 
 private func subscriptionTeamRow(_ data: AccountData) -> Node {
-  guard
-    !data.teammates.isEmpty,
-    data.isSubscriptionOwner,
-    !data.subscriberState.isEnterpriseSubscriber
-  else { return [] }
+  let currentTeamNode: Node
+  if !data.teammates.isEmpty,
+     data.isSubscriptionOwner,
+     !data.subscriberState.isEnterpriseSubscriber {
+    currentTeamNode = .div(
+      attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+      .h4(
+        attributes: [.class([Class.padding([.mobile: [.bottom: 0]])])],
+        "Your current team:"
+      ),
+      .fragment(data.teammates.map { teammateRowView(data.currentUser, $0) })
+    )
+  } else {
+    currentTeamNode = []
+  }
+
+  let invitesNode: Node
+  if !data.teamInvites.isEmpty {
+    invitesNode = .div(
+      attributes: [.class([Class.padding([.mobile: [.leftRight: 1, .top: 1]])])],
+      .h4(
+        attributes: [.class([Class.padding([.mobile: [.bottom: 0]])])],
+        "These teammates have been invited, but have not yet accepted."
+      ),
+      .fragment(data.teamInvites.map(inviteRowView))
+    )
+  } else {
+    invitesNode = []
+  }
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -962,11 +985,8 @@ private func subscriptionTeamRow(_ data: AccountData) -> Node {
     ),
     .gridColumn(
       sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        .p("Your current team:"),
-        .fragment(data.teammates.map { teammateRowView(data.currentUser, $0) })
-      )
+      currentTeamNode,
+      invitesNode
     )
   )
 }
@@ -991,28 +1011,6 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
             .value("Remove"),
           ])
         )
-      )
-    )
-  )
-}
-
-private func subscriptionInvitesRowView(_ invites: [TeamInvite]) -> Node {
-  guard
-    !invites.isEmpty
-  else { return [] }
-
-  return .gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Invites"))
-    ),
-    .gridColumn(
-      sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        .p("These teammates have been invited, but have not yet accepted."),
-        .fragment(invites.map(inviteRowView))
       )
     )
   )
@@ -1074,58 +1072,18 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   guard let subscription = data.subscription else { return [] }
   guard data.isSubscriptionOwner else { return [] }
   guard stripeSubscription.isRenewing else { return [] }
-  let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
-  guard invitesRemaining == 0 else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
 
-  guard data.paymentMethod != nil
-  else {
-    return .gridRow(
-      attributes: [.class([subscriptionInfoRowClass])],
-      .gridColumn(
-        sizes: [.mobile: 3],
-        .div(.p("Add teammate"))
-      ),
-      .gridColumn(
-        sizes: [.desktop: 9],
-        .gridRow(
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            .div(
-              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-              .p("Payment info required to add seats")
-            )
-          ),
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            .div(
-              attributes: [
-                .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
-              ],
-              .p(
-                .a(
-                  attributes: [
-                    .class([Class.pf.components.button(color: .purple, size: .small)]),
-                    .href(siteRouter.path(for: .account(.paymentInfo()))),
-                  ],
-                  "Add payment info"
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  }
-
   let amount =
-    stripeSubscription.plan.interval == .some(.year)
-    ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+  stripeSubscription.plan.interval == .some(.year)
+  ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
   let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
 
-  return [
-    .gridRow(
+  let inviteViaEmail: Node
+  let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
+  if invitesRemaining <= 0 {
+    inviteViaEmail = .gridRow(
       attributes: [.class([subscriptionInfoRowClass])],
       .gridColumn(
         sizes: [.mobile: 3],
@@ -1172,7 +1130,54 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           )
         )
       )
-    ),
+    )
+  } else  {
+    inviteViaEmail = []
+  }
+
+
+  guard data.paymentMethod != nil
+  else {
+    return .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Add teammate"))
+      ),
+      .gridColumn(
+        sizes: [.desktop: 9],
+        .gridRow(
+          .gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+              .p("Payment info required to add seats")
+            )
+          ),
+          .gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [
+                .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+              ],
+              .p(
+                .a(
+                  attributes: [
+                    .class([Class.pf.components.button(color: .purple, size: .small)]),
+                    .href(siteRouter.path(for: .account(.paymentInfo()))),
+                  ],
+                  "Add payment info"
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  }
+
+  return [
+    inviteViaEmail,
 
     .gridRow(
       attributes: [.class([subscriptionInfoRowClass])],
