@@ -121,7 +121,6 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
 
   case let .admin(route):
     return await adminMiddleware(conn: conn.map { route })
-      .performAsync()
 
   case let .api(apiRoute):
     return await apiMiddleware(conn.map { apiRoute })

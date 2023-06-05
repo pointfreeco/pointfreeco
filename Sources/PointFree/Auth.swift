@@ -56,7 +56,7 @@ extension Conn where Step == StatusLineOpen {
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
+  IO { conn.loginAndRedirect() }
 }
 
 private func requireLoggedOutUser<A>(
