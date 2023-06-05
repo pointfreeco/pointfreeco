@@ -32,7 +32,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     return await showEpisodeCreditsMiddleware(conn).performAsync()
 
   case .index:
-    return await adminIndex(conn).performAsync()
+    return conn.adminIndex()
 
   case .freeEpisodeEmail(.index):
     return await indexFreeEpisodeEmailMiddleware(conn).performAsync()

@@ -40,17 +40,13 @@ func requireAdmin<A>(
   }
 }
 
-let adminIndex =
-  writeStatus(.ok)
-  >=> respond(
-    view: adminIndexView,
-    layoutData: {
-      SimplePageLayoutData(
-        data: (),
-        title: "Admin"
-      )
+extension Conn where Step == StatusLineOpen, A == Void {
+  func adminIndex() -> Conn<ResponseEnded, Data> {
+    self.writeStatus(.ok).respond(view: adminIndexView) {
+      SimplePageLayoutData(title: "Admin")
     }
-  )
+  }
+}
 
 private func adminIndexView() -> Node {
   @Dependency(\.siteRouter) var siteRouter
