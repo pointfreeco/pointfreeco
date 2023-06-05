@@ -66,6 +66,6 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     .performAsync()
 
   case .newEpisodeEmail(.show):
-    return await showNewEpisodeEmailMiddleware(conn.map { unit }).performAsync()
+    return conn.showNewEpisodeEmail()
   }
 }

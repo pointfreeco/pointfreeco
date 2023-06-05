@@ -13,9 +13,11 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showNewEpisodeEmailMiddleware: M<Prelude.Unit> =
-  writeStatus(.ok)
-  >=> respond({ _ in showNewEpisodeView() })
+extension Conn where Step == StatusLineOpen, A == Void {
+  func showNewEpisodeEmail() -> Conn<ResponseEnded, Data> {
+    self.writeStatus(.ok).respond { showNewEpisodeView() }
+  }
+}
 
 private func showNewEpisodeView() -> Node {
   @Dependency(\.episodes) var episodes
