@@ -12,15 +12,11 @@ import Styleguide
 import Tuple
 import Views
 
-let showEpisodeCreditsMiddleware:
-  Middleware<
-    StatusLineOpen,
-    ResponseEnded,
-    Void,
-    Data
-  > =
-    writeStatus(.ok)
-    >=> respond({ showEpisodeCreditsView() })
+extension Conn<StatusLineOpen, Void> {
+  func showEpisodeCredits() -> Conn<ResponseEnded, Data> {
+    self.writeStatus(.ok).respond { showEpisodeCreditsView() }
+  }
+}
 
 let redeemEpisodeCreditMiddleware =
   filterMap(
