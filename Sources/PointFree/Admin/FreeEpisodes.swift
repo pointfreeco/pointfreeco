@@ -23,37 +23,33 @@ extension Conn<StatusLineOpen, Void> {
   }
 }
 
-let sendFreeEpisodeEmailMiddleware:
-  Middleware<
-    StatusLineOpen,
-    ResponseEnded,
-    Episode.ID,
-    Data
-  > = { conn in
-    guard let episode = fetchEpisode(conn.data)
-    else { return conn |> redirect(to: .admin(.freeEpisodeEmail())) }
+extension Conn<StatusLineOpen, Void> {
+  func sendFreeEpisodeEmail(id: Episode.ID) async -> Conn<ResponseEnded, Data> {
+    @Dependency(\.database) var database
 
-    return sendFreeEpisodeEmails(conn.map(const(episode)))
-      .flatMap { $0 |> redirect(to: .admin()) }
+    guard let episode = fetchEpisode(id)
+    else { return self.redirect(to: .admin(.freeEpisodeEmail())) }
+
+    do {
+      let users = try await database.fetchFreeEpisodeUsers()
+      try await sendEmail(forFreeEpisode: episode, toUsers: users).performAsync()
+      return self.redirect(to: .admin())
+    } catch {
+      return self.redirect(to: .admin()) {
+        $0.flash(.error, "Could not send free episode email.")
+      }
+    }
   }
+}
 
 func fetchEpisode(_ id: Episode.ID) -> Episode? {
   @Dependency(\.episodes) var episodes
   return episodes().first(where: { $0.id == id })
 }
 
-private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
-  @Dependency(\.database) var database
-
-  return EitherIO { try await database.fetchFreeEpisodeUsers() }
-    .flatMap { users in sendEmail(forFreeEpisode: conn.data, toUsers: users) }
-    .run
-    .map { _ in conn.map(const(unit)) }
-}
-
-private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -> EitherIO<
-  Error, Prelude.Unit
-> {
+private func sendEmail(
+  forFreeEpisode episode: Episode, toUsers users: [User]
+) -> EitherIO<Error, Void> {
 
   // A personalized email to send to each user.
   let freeEpisodeEmails = users.map { user in
@@ -95,12 +91,12 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
       .run
     }
 
-  let fireAndForget = IO { () -> Prelude.Unit in
+  let fireAndForget = IO {
     freeEpisodeEmailReport
       .map(const(unit))
       .parallel
       .run({ _ in })
-    return unit
+    return
   }
 
   return lift(fireAndForget)
