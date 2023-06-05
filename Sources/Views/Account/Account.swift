@@ -1408,6 +1408,8 @@ private func copyToPasteboard(
         .onclick(
           unsafe: """
             navigator.clipboard.writeText("\(text)");
+            this.value = "Copied!";
+            setTimeout(() => { this.value = "Copy"; }, 3000);
             """),
       ]
     )
