@@ -12,9 +12,11 @@ import Tuple
   import FoundationNetworking
 #endif
 
-let ghostIndexMiddleware: M<Prelude.Unit> =
-  writeStatus(.ok)
-  >=> respond({ _ in indexView() })
+extension Conn where Step == StatusLineOpen, A == Void {
+  func ghostIndex() -> Conn<ResponseEnded, Data> {
+    self.writeStatus(.ok).respond { indexView() }
+  }
+}
 
 let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
   filterMap(

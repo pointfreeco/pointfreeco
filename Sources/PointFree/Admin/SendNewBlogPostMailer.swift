@@ -13,9 +13,11 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showNewBlogPostEmailMiddleware: M<Prelude.Unit> =
-  writeStatus(.ok)
-  >=> respond(showNewBlogPostView())
+extension Conn where Step == StatusLineOpen, A == Void {
+  func showNewBlogPostEmail() -> Conn<ResponseEnded, Data> {
+    self.writeStatus(.ok).respond { showNewBlogPostView() }
+  }
+}
 
 private func showNewBlogPostView() -> Node {
   @Dependency(\.blogPosts) var blogPosts

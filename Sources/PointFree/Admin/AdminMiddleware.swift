@@ -41,7 +41,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     return await sendFreeEpisodeEmailMiddleware(conn.map { episodeId }).performAsync()
 
   case .ghost(.index):
-    return await ghostIndexMiddleware(conn.map { unit }).performAsync()
+    return conn.ghostIndex()
 
   case let .ghost(.start(userId)):
     return await ghostStartMiddleware(conn.map(const(currentUser .*. userId .*. unit)))
@@ -54,7 +54,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     .performAsync()
 
   case .newBlogPostEmail(.index):
-    return await showNewBlogPostEmailMiddleware(conn.map { unit }).performAsync()
+    return conn.showNewBlogPostEmail()
 
   case let
     .newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest)):
