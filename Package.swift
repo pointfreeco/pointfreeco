@@ -7,7 +7,7 @@ var package = Package(
   name: "PointFree",
   platforms: [
     .macOS(.v13)
-  ], 
+  ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
