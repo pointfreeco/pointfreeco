@@ -17,6 +17,22 @@ extension Conn where Step == StatusLineOpen, A == Void {
   func showNewBlogPostEmail() -> Conn<ResponseEnded, Data> {
     self.writeStatus(.ok).respond { showNewBlogPostView() }
   }
+
+  func sendNewBlogPostEmail(
+    _ id: BlogPost.ID, formData: NewBlogPostFormData?, isTest: Bool?
+  ) async -> Conn<ResponseEnded, Data> {
+    @Dependency(\.blogPosts) var blogPosts
+
+    do {
+      let blogPost = try blogPosts().first(where: { id == $0.id }).unwrap()
+      try await sendNewBlogPostEmails(blogPost, formData: formData, isTest: isTest.unwrap())
+      return self.redirect(to: .admin())
+    } catch {
+      return self.redirect(to: .admin(.newBlogPostEmail(.index))) {
+        $0.flash(.error, "Could not send new blog post email.")
+      }
+    }
+  }
 }
 
 private func showNewBlogPostView() -> Node {
@@ -76,15 +92,6 @@ private func newBlogPostEmailRowView(post: BlogPost) -> Node {
   )
 }
 
-let sendNewBlogPostEmailMiddleware =
-  fetchBlogPostForId
-  <<< filterMap(
-    require3 >>> pure,
-    or: redirect(to: .admin(.newBlogPostEmail(.index)))
-  )
-  <| sendNewBlogPostEmails
-  >=> redirect(to: .admin())
-
 private let fetchBlogPostForId:
   MT<
     Tuple3<BlogPost.ID, NewBlogPostFormData?, Bool?>,
@@ -101,15 +108,13 @@ func fetchBlogPost(forId id: BlogPost.ID) -> BlogPost? {
     .first(where: { id == $0.id })
 }
 
-private func sendNewBlogPostEmails<I>(
-  _ conn: Conn<I, Tuple3<BlogPost, NewBlogPostFormData?, Bool>>
-) -> IO<Conn<I, Prelude.Unit>> {
+private func sendNewBlogPostEmails(
+  _ post: BlogPost, formData optionalFormData: NewBlogPostFormData?, isTest: Bool
+) async {
   @Dependency(\.database) var database
 
-  let (post, optionalFormData, isTest) = lower(conn.data)
-
   guard let formData = optionalFormData else {
-    return pure(conn.map(const(unit)))
+    return
   }
 
   let nonsubscriberOrSubscribersOnly: Models.User.SubscriberState?
@@ -121,7 +126,7 @@ private func sendNewBlogPostEmails<I>(
   case (_, true):
     nonsubscriberOrSubscribersOnly = .subscriber
   case (_, _):
-    return pure(conn.map(const(unit)))
+    return
   }
 
   let users = EitherIO {
@@ -131,8 +136,7 @@ private func sendNewBlogPostEmails<I>(
         .fetchUsersSubscribedToNewsletter(.newBlogPost, nonsubscriberOrSubscribersOnly)
   }
 
-  return
-    users
+  _ = await users
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in
       sendEmail(
@@ -146,7 +150,7 @@ private func sendNewBlogPostEmails<I>(
       )
     }
     .run
-    .map { _ in conn.map(const(unit)) }
+    .performAsync()
 }
 
 private func sendEmail(

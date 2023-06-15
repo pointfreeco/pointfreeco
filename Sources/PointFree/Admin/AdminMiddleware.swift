@@ -46,10 +46,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) async -> Conn<Res
     return await conn.ghostStart(adminUser: currentUser, userID: userID)
 
   case let .newBlogPostEmail(.send(blogPostId, formData, isTest)):
-    return await sendNewBlogPostEmailMiddleware(
-      conn.map { blogPostId .*. formData .*. isTest .*. unit }
-    )
-    .performAsync()
+    return await conn.sendNewBlogPostEmail(blogPostId, formData: formData, isTest: isTest)
 
   case .newBlogPostEmail(.index):
     return conn.showNewBlogPostEmail()

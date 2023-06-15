@@ -28,7 +28,9 @@ extension Conn where Step == StatusLineOpen, A == Void {
         }
       }
     } catch {
-      return self.redirect(to: .home) { $0.flash(.error, "Couldn't find user with that id" ) }
+      return self.redirect(to: .admin(.ghost(.index))) {
+        $0.flash(.error, "Couldn't find user with that id" )
+      }
     }
   }
 
