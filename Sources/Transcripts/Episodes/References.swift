@@ -845,6 +845,14 @@ extension Episode.Reference {
     title: "Regexes vs Combinatorial Parsing"
   )
 
+  public static let reliablyTestingAsync = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: "A Swift Forums post from yours truly about the difficulty of testing async code in Swift.",
+    link: "https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-05-13"),
+    title: "Reliably testing code that adopts Swift Concurrency?"
+  )
+
   public static let reSwift = Episode.Reference(
     author: nil,
     blurb: #"""

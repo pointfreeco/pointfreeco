@@ -240,7 +240,7 @@
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
       "state" : {
         "branch" : "async",
-        "revision" : "28c1ed939b86e878f09b8b2203f5e4da91fb738d"
+        "revision" : "5e8025ce20b60ca2d3d087037249940db01ffd9d"
       }
     },
     {
