@@ -12,7 +12,7 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-06-19")!,
     references: [
-      .reliablyTestingAsync,
+      .reliablyTestingAsync
     ],
     sequence: 238,
     subtitle: "The Problem",
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0238-trailer-720p-6fe43f05ceca45d1a7fb0d2bb8e42213",
         sd540: "0238-trailer-540p-9d885ef09d494d97a6306987e1576df5"
       ),
-      vimeoId: 836713177
+      vimeoId: 836_713_177
     )
   )
 }
