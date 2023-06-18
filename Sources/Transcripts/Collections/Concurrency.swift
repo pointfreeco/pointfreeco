@@ -66,14 +66,13 @@ extension Episode.Collection {
           more real world code, and so it is on us to create all new tools.
           """,
         coreLessons: [
-          .init(episode: .ep238_reliablyTestingAsync),
+          .init(episode: .ep238_reliablyTestingAsync)
         ],
         isFinished: false,
-        related: [
-        ],
+        related: [],
         title: "Testing async code",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Concurrency"
   )
