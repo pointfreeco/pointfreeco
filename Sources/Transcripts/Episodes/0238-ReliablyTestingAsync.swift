@@ -3,13 +3,15 @@ import Foundation
 extension Episode {
   public static let ep238_reliablyTestingAsync = Episode(
     blurb: """
-      While Swift provides wonderful tools to writing async code, there are gaps in its tools for testing it. Let's explore the tools it *does* provide to show where they succeed, and where they fall short.
+      While Swift provides wonderful tools for writing async code, there are gaps in its tools for
+      testing it. Let's explore the tools it *does* provide to show where they succeed, and where
+      they fall short.
       """,
     codeSampleDirectory: "0238-reliably-testing-async-pt1",
     exercises: _exercises,
     id: 238,
-    length: .init(.timestamp(hours: 0, minutes: 47, seconds: 48)),
-    permission: .subscriberOnly,
+    length: .init(.timestamp(minutes: 47, seconds: 48)),
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-06-19")!,
     references: [
       .reliablyTestingAsync
