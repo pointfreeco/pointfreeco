@@ -205,7 +205,7 @@ extension Episode {
           other than views, such as observable objects.
 
           Further, our dependencies library supports platforms beyond just SwiftUI, such as UIKit,
-          AppKit, server applications, Linux, SwiftWASM and more.
+          AppKit, server applications, Linux, SwiftWasm and more.
           """,
         question: """
           What is the difference between @Dependency and @Environment.
@@ -217,7 +217,7 @@ extension Episode {
           We are excited about the new [observation
           pitch](https://forums.swift.org/t/pitch-observation/62051) as it should allow us to
           simplify the Composable Architecture and make it possible to support non-Apple platforms,
-          such as Windows and SwiftWASM.
+          such as Windows and SwiftWasm.
 
           We are also excited for the new macro system, as it may help us clean up some boilerplate
           problems in our libraries.
