@@ -10,7 +10,7 @@ extension Episode {
     exercises: _exercises,
     id: 239,
     length: .init(.timestamp(minutes: 27, seconds: 34)),
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-06-26")!,
     references: [
       .reliablyTestingAsync
