@@ -242,5 +242,7 @@ extension Episode {
     .ep237_composableStacks,
     .ep238_reliablyTestingAsync,
     .ep239_reliablyTestingAsync,
+    .ep240_reliablyTestingAsync,
+    .ep241_reliablyTestingAsync,
   ]
 }

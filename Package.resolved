@@ -75,7 +75,7 @@
     {
       "identity" : "swift-backtrace",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ianpartridge/swift-backtrace",
+      "location" : "https://github.com/ianpartridge/swift-backtrace.git",
       "state" : {
         "revision" : "d3e04a9d4b3833363fb6192065b763310b156d54",
         "version" : "1.3.1"
