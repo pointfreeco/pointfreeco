@@ -1109,6 +1109,17 @@ extension Episode.Reference {
     title: "Structure and Interpretation of Swift Programs"
   )
 
+  public static let swiftAsyncAlgorithms = Self(
+    author: "Apple",
+    blurb: """
+      A package of asynchronous sequence and advanced algorithms that involve concurrency, along \
+      with their related types.
+      """,
+    link: "http://github.com/google/swift-benchmark",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-01-12"),
+    title: "swift-async-algorithms"
+  )
+
   public static let swiftBenchmark = Self(
     author: "Google",
     blurb: "A Swift library for benchmarking code snippets, similar to google/benchmark.",

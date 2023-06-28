@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep240_reliablyTestingAsync = Episode(
     blurb: """
-      TODO
+      We dive into Apple's Async Algorithms package to explore some advanced usages of Swift's concurrency runtime, including a particular tool we can leverage to bend the will of async code to our advantage in tests.
       """,
     codeSampleDirectory: "0240-reliably-testing-async-pt3",
     exercises: _exercises,
@@ -12,10 +12,11 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-07-03")!,
     references: [
-      .reliablyTestingAsync
+      .swiftAsyncAlgorithms,
+      .reliablyTestingAsync,
     ],
     sequence: 240,
-    subtitle: "TODO",
+    subtitle: "😳",
     title: "Reliable Async Tests",
     trailerVideo: .init(
       bytesLength: 87_200_000,

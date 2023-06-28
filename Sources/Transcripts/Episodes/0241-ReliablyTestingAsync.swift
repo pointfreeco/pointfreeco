@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep241_reliablyTestingAsync = Episode(
     blurb: """
-      TODO
+      We continue our deep dive into advanced Swift concurrency by exploring the concept of "executors" to better understand its global enqueue hook. We will then put this hook to work and finally have reliable, 100% deterministic async tests.
       """,
     codeSampleDirectory: "0241-reliably-testing-async-pt4",
     exercises: _exercises,
@@ -15,7 +15,7 @@ extension Episode {
       .reliablyTestingAsync
     ],
     sequence: 241,
-    subtitle: "TODO",
+    subtitle: "🥹",
     title: "Reliable Async Tests",
     trailerVideo: .init(
       bytesLength: 31_400_000,
