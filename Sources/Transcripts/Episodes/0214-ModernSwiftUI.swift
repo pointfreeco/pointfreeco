@@ -11,7 +11,7 @@ extension Episode {
     exercises: _exercises,
     id: 214,
     length: 32 * 60 + 43,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: Date(timeIntervalSince1970: 1_669_615_200),
     references: [
       .scrumdinger,

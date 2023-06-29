@@ -1,3 +1,4 @@
+import CustomDump
 import Dependencies
 import Either
 import Foundation
@@ -34,6 +35,7 @@ private func subscribe(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.envVars) var envVars
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.stripe) var stripe
 
   let (user, subscribeData, referrer) = conn.data
@@ -102,9 +104,6 @@ private func subscribe(
       )
     }
 
-    async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
-      .performAsync()
-
     if stripeSubscription.status == .incomplete,
       let paymentIntent = stripeSubscription.latestInvoice?.right?.paymentIntent?.right,
       paymentIntent.status == .requiresAction
@@ -116,7 +115,23 @@ private func subscribe(
           "requiresAction": true,
         ]
       )
+    } else if stripeSubscription.status.isIncomplete {
+      await fireAndForget {
+        _ = try await sendEmail(
+          to: adminEmails,
+          subject: "[PointFree Error] Incomplete Subscription",
+          content: inj1(
+            String(customDumping: stripeSubscription)
+          )
+        )
+      }
+
+      struct InvalidSubscription: Error {}
+      throw InvalidSubscription()
     } else {
+      async let sendEmails = sendInviteEmails(inviter: user, subscribeData: subscribeData)
+        .performAsync()
+
       _ = try await database.createSubscription(
         stripeSubscription,
         user.id,

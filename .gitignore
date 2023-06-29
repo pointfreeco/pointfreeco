@@ -45,6 +45,5 @@ Packages/
 .DS_Store
 .pf-env
 .ssl/*
-Sources/Models/Transcripts
-Sources/Transcripts/Transcripts
+Sources/Transcripts/PrivateTranscripts
 bin/*

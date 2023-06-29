@@ -6,10 +6,7 @@ import Prelude
 
 // Bootstrap
 
-_ =
-  try await PointFree
-  .bootstrap()
-  .performAsync()
+await PointFree.bootstrap()
 
 _ = try await EitherIO.debug(prefix: "📧 Sending welcome emails...")
   .flatMap(const(sendWelcomeEmails()))

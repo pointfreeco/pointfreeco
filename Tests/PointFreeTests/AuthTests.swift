@@ -156,6 +156,19 @@ class AuthTests: TestCase {
     }
   }
 
+  func testAuth_WithRegisterUserFailure() async throws {
+    await withDependencies {
+      $0.database.fetchUserByGitHub = { _ in throw unit }
+      $0.database.upsertUser = { _, _, _ in
+        throw GitHubUser.AlreadyRegistered(email: "blob@example.org")
+      }
+    } operation: {
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+      let conn = connection(from: auth)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
   func testLogin() async throws {
     let login = request(to: .login(redirect: nil))
     let conn = connection(from: login)

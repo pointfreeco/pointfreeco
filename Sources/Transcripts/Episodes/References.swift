@@ -845,6 +845,15 @@ extension Episode.Reference {
     title: "Regexes vs Combinatorial Parsing"
   )
 
+  public static let reliablyTestingAsync = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb:
+      "A Swift Forums post from yours truly about the difficulty of testing async code in Swift.",
+    link: "https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-05-13"),
+    title: "Reliably testing code that adopts Swift Concurrency?"
+  )
+
   public static let reSwift = Episode.Reference(
     author: nil,
     blurb: #"""
@@ -1098,6 +1107,17 @@ extension Episode.Reference {
     link: "https://www.youtube.com/watch?v=V-YvI83QdMs",
     publishedAt: Date(timeIntervalSince1970: 1_450_155_600),
     title: "Structure and Interpretation of Swift Programs"
+  )
+
+  public static let swiftAsyncAlgorithms = Self(
+    author: "Apple",
+    blurb: """
+      A package of asynchronous sequence and advanced algorithms that involve concurrency, along \
+      with their related types.
+      """,
+    link: "http://github.com/google/swift-benchmark",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-01-12"),
+    title: "swift-async-algorithms"
   )
 
   public static let swiftBenchmark = Self(

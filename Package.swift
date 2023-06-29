@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v12)
+    .macOS(.v13)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -41,11 +41,11 @@ var package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log", from: "1.0.0"),
-    .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
+    .package(url: "https://github.com/apple/swift-nio", from: "2.54.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.13.2"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
-    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.7.0"),
+    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.10.3"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.3"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
@@ -274,6 +274,7 @@ var package = Package(
         .product(name: "Backtrace", package: "swift-backtrace"),
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
+        .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Html", package: "swift-html"),
@@ -545,7 +546,7 @@ let isOss = !FileManager.default.fileExists(
     .deletingLastPathComponent()
     .appendingPathComponent("Sources")
     .appendingPathComponent("Transcripts")
-    .appendingPathComponent("Transcripts")
+    .appendingPathComponent("PrivateTranscripts")
     .appendingPathComponent(".git")
     .path
 )
@@ -574,13 +575,45 @@ for index in package.targets.indices {
 }
 
 func transcripts() -> [Resource] {
-  let transcriptsDirectoryPath = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("Resources")
-    .path
-
-  return try! FileManager.default.contentsOfDirectory(atPath: transcriptsDirectoryPath)
+  let publicTranscripts: [Resource] = try! FileManager.default
+    .contentsOfDirectory(
+      atPath: URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent()
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("Transcripts")
+        .appendingPathComponent("Resources")
+        .path
+    )
+    .filter { $0.hasSuffix(".md") }
     .map { .copy("Resources/\($0)") }
+
+  let privateTranscripts: [Resource] =
+    (try? FileManager.default
+      .contentsOfDirectory(
+        atPath: URL(fileURLWithPath: #filePath)
+          .deletingLastPathComponent()
+          .appendingPathComponent("Sources")
+          .appendingPathComponent("Transcripts")
+          .appendingPathComponent("PrivateTranscripts")
+          .path
+      )
+      .filter { $0.hasSuffix(".md") }
+      .map { .copy("PrivateTranscripts/\($0)") })
+    ?? []
+
+  let blogPostTranscripts: [Resource] =
+    (try? FileManager.default
+      .contentsOfDirectory(
+        atPath: URL(fileURLWithPath: #filePath)
+          .deletingLastPathComponent()
+          .appendingPathComponent("Sources")
+          .appendingPathComponent("Transcripts")
+          .appendingPathComponent("BlogPosts")
+          .path
+      )
+      .filter { $0.hasSuffix(".md") }
+      .map { .copy("BlogPosts/\($0)") })
+    ?? []
+
+  return publicTranscripts + privateTranscripts + blogPostTranscripts
 }

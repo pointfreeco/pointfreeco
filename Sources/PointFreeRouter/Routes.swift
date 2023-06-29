@@ -312,41 +312,45 @@ struct InviteRouter: ParserPrinter {
   }
 }
 
-private let teamRouter = OneOf {
-  Route(.case(SiteRoute.Team.join)) {
-    Path {
-      "team"
-      Parse(.string.representing(Subscription.TeamInviteCode.self))
-      "join"
-    }
-
+struct TeamRouter: ParserPrinter {
+  var body: some Router<SiteRoute.Team> {
     OneOf {
-      Route(.case(SiteRoute.Team.Join.landing))
-
-      Route(.case(SiteRoute.Team.Join.confirm)) {
-        Method.post
-      }
-    }
-  }
-
-  Parse {
-    Path {
-      "account"
-      "team"
-    }
-
-    OneOf {
-      Route(.case(SiteRoute.Team.leave)) {
-        Method.post
-        Path { "leave" }
-      }
-
-      Route(.case(SiteRoute.Team.remove)) {
-        Method.post
+      Route(.case(SiteRoute.Team.join)) {
         Path {
-          "members"
-          UUID.parser().map(.representing(User.ID.self))
-          "remove"
+          "team"
+          Parse(.string.representing(Subscription.TeamInviteCode.self))
+          "join"
+        }
+
+        OneOf {
+          Route(.case(SiteRoute.Team.Join.landing))
+
+          Route(.case(SiteRoute.Team.Join.confirm)) {
+            Method.post
+          }
+        }
+      }
+
+      Parse {
+        Path {
+          "account"
+          "team"
+        }
+
+        OneOf {
+          Route(.case(SiteRoute.Team.leave)) {
+            Method.post
+            Path { "leave" }
+          }
+
+          Route(.case(SiteRoute.Team.remove)) {
+            Method.post
+            Path {
+              "members"
+              UUID.parser().map(.representing(User.ID.self))
+              "remove"
+            }
+          }
         }
       }
     }
@@ -601,7 +605,7 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.team)) { teamRouter }
+      Route(.case(SiteRoute.team)) { TeamRouter() }
 
       Route(.case(SiteRoute.useEpisodeCredit)) {
         Method.post

@@ -48,7 +48,7 @@ final class CancelTests: TestCase {
       XCTAssertEqual(false, immediately)
     }
 
-    self.wait(for: [expectation], timeout: 0)
+    _ = { self.wait(for: [expectation], timeout: 0) }()
   }
 
   func testCancelPastDue() async throws {

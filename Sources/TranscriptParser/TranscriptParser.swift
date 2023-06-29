@@ -119,12 +119,20 @@ public struct BoxMessageParser: ParserPrinter {
     } separator: {
       "\n> ".utf8
     }
-    .map(
-      AnyConversion(
-        apply: { $0.joined(separator: "\n") },
-        unapply: { $0.split(separator: "\n").map(String.init) }
-      )
-    )
+    .map(.box)
+  }
+}
+
+extension Conversion where Self == BoxConversion {
+  fileprivate static var box: Self { BoxConversion() }
+}
+
+private struct BoxConversion: Conversion {
+  func apply(_ input: [String]) -> String {
+    input.joined(separator: "\n")
+  }
+  func unapply(_ output: String) -> [String] {
+    output.split(separator: "\n").map(String.init)
   }
 }
 
@@ -185,10 +193,19 @@ public struct ParagraphPreambleParser: ParserPrinter {
   }
 }
 
+public struct ButtonPreambleParser: ParserPrinter {
+  public var body: some ParserPrinter<Substring.UTF8View, Void> {
+    Peek {
+      "[[".utf8
+    }
+  }
+}
+
 public struct PreambleParser: ParserPrinter {
   public var body: some ParserPrinter<Substring.UTF8View, Void> {
     "\n\n".utf8
     OneOf {
+      ButtonPreambleParser()
       BoxPreambleParser()
       TitlePreambleParser()
       ImagePreambleParser()
@@ -212,6 +229,29 @@ public struct TitleParser: ParserPrinter {
         Rest()
       }
       .map(.string)
+    }
+  }
+}
+
+public struct ButtonParser: ParserPrinter {
+  public var body: some ParserPrinter<Substring.UTF8View, Episode.TranscriptBlock> {
+    Parse(
+      AnyConversion(
+        apply: { title, href in
+          Episode.TranscriptBlock(content: title, type: .button(href: href))
+        },
+        unapply: { block in
+          guard case let .button(href: href) = block.type
+          else { return nil }
+          return (block.content, href)
+        }
+      )
+    ) {
+      "[[".utf8
+      PrefixUpTo("]".utf8).map(.string)
+      "]](".utf8
+      PrefixUpTo(")".utf8).map(.string)
+      ")".utf8
     }
   }
 }
@@ -294,6 +334,7 @@ public struct CodeBlockParser: ParserPrinter {
 public let blocksParser = Many {
   OneOf {
     CodeBlockParser()
+    ButtonParser()
     BoxParser()
     ImageParser()
     TitleParser()
@@ -301,6 +342,8 @@ public let blocksParser = Many {
   }
 } separator: {
   "\n\n".utf8
+} terminator: {
+  Whitespace()
 }
 
 extension UTF8.CodeUnit {

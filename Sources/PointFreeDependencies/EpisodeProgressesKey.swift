@@ -1,5 +1,6 @@
 import Dependencies
 import Models
+import Tagged
 
 private enum EpisodeProgressesKey: DependencyKey {
   static let liveValue: [Episode.Sequence: EpisodeProgress] = [:]
