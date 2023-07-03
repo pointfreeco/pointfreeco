@@ -24,7 +24,10 @@ extension Episode.Collection {
           )
         ],
         title: "Threads, queues and tasks",
-        whereToGoFromHere: nil
+        whereToGoFromHere: """
+          Now that we understand the basics of Swift's native concurrency tools, let's dive into
+          a more advanced topic: time-based asynchrony.
+          """
       ),
       .init(
         blurb: """
@@ -49,6 +52,27 @@ extension Episode.Collection {
           )
         ],
         title: "Clocks",
+        whereToGoFromHere: """
+          We now know a lot about concurrency and time-based asynchrony in Swift, but what does
+          it takes to test any of the code we written? Well, sadly it's a lot harder than we
+          think it should be.
+          """
+      ),
+      .init(
+        blurb: """
+          Tests are an important tool to exercise the various subtleties and edge cases of your
+          code, and doubly so for async code which tends to have a lot more complexity. Swift
+          provides some basic tools for testing async code, but unfortunately they fall short for
+          more real world code, and so it is on us to create all new tools.
+          """,
+        coreLessons: [
+          .init(episode: .ep238_reliablyTestingAsync),
+          .init(episode: .ep239_reliablyTestingAsync),
+          .init(episode: .ep240_reliablyTestingAsync),
+        ],
+        isFinished: false,
+        related: [],
+        title: "Testing async code",
         whereToGoFromHere: nil
       ),
     ],

@@ -23,13 +23,13 @@ private func connectToPostgres() async {
 
   while true {
     print("  ⚠️ Connecting to PostgreSQL at \(databaseUrl)")
-    defer { print("  ✅ Connected to PostgreSQL!") }
-
     do {
       try await migrate()
-      return
+      print("  ✅ Connected to PostgreSQL!")
+      break
     } catch {
       print("  ❌ Error! \(error)")
+      print("     Make sure you are running postgres: pg_ctl -D /usr/local/var/postgres start")
       try? await Task.sleep(for: .seconds(1))
     }
   }
