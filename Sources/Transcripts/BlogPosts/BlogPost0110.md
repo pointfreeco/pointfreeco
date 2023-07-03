@@ -1,13 +1,3 @@
-import Foundation
-
-public let post0160_WritingReliableAsyncTests = BlogPost(
-  author: .pointfree,
-  blurb: """
-    TODO
-    """,
-  contentBlocks: [
-    .init(
-      content: ###"""
 Swift 5.5 brought first class support for concurrency to the language, including lightweight syntax
 for describing when functions and methods need to perform async work, a new data type for
 isolating mutable data, and all new APIs for performing non-block asynchronous work. This made it
@@ -123,13 +113,3 @@ class FeatureTests: XCTestCase {
 ## Testing reality
 
 ## Try it yourself
-
-"""###,
-      type: .paragraph
-    )
-  ],
-  coverImage: nil,  
-  id: 106,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-04-26")!,
-  title: "Reliably testing async code in Swift"
-)

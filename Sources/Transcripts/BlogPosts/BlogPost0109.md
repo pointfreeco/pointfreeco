@@ -1,14 +1,3 @@
-import Foundation
-
-public let post0106_ConcurrencyExtras = BlogPost(
-  author: .pointfree,
-  blurb: """
-    Today we are excited to announce a brand new open source library: Concurrency Extras. It
-    includes tools to help make your concurrent Swift code more versatile and more testable.
-    """,
-  contentBlocks: [
-    .init(
-      content: ###"""
 Today we are excited to announce a brand new open source library: [Concurrency
 Extras][concurrency-extras-gh]. It includes tools to help make your concurrent Swift code
 more versatile and more testable. Join us for a quick overview of some of the tools
@@ -308,7 +297,8 @@ purpose, it has not landed in Swift.
 
 ## Get started today
 
-
+If any of this sounds useful to you, be sure to check the [Concurrency 
+Extras][concurrency-extras-gh] library today, and start writing tests for your async code today.
 
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
 [withMainSerialExecutor-docs]: todo
@@ -325,12 +315,3 @@ purpose, it has not landed in Swift.
 [task-never-source]: todo
 [se-0302]: https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
 [se-0302-unsafetransfer]: https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md#adaptor-types-for-legacy-codebases
-"""###,
-      type: .paragraph
-    )
-  ],
-  coverImage: nil,
-  id: 106,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-04-26")!,
-  title: "Announcing Concurrency Extras: Useful, testable Swift concurrency."
-)
