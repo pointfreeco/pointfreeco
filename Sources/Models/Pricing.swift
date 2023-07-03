@@ -1,4 +1,5 @@
 import Stripe
+import TaggedMoney
 
 public struct Pricing: Equatable {
   public var billing: Billing
@@ -74,8 +75,6 @@ public struct Pricing: Equatable {
     }
   }
 }
-
-import TaggedMoney
 
 extension Pricing: Codable {
   public init(from decoder: Decoder) throws {

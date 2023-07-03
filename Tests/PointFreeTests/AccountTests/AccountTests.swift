@@ -66,6 +66,36 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let emails = try await self.database.fetchEnterpriseEmails()
     XCTAssertEqual(emails, [])
   }
+
+  func testRegenerateTeamInviteCode() async throws {
+    let currentUser = try await self.database.registerUser(
+      withGitHubEnvelope: .init(
+        accessToken: .init(accessToken: "deadbeef-currentUser"),
+        gitHubUser: .init(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 1, name: "Blob")
+      ),
+      email: "blob@pointfree.co",
+      now: { .mock }
+    )
+    let subscription = try await self.database.createSubscription(
+      Stripe.Subscription.mock,
+      currentUser.id,
+      false,
+      nil
+    )
+    try await self.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+
+    let conn = connection(
+      from: request(to: .account(.regenerateTeamInviteCode), session: .loggedIn(as: currentUser))
+    )
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    let newTeamInviteCode = try await self.database.fetchSubscriptionById(subscription.id)
+      .teamInviteCode
+    XCTAssertNotEqual(
+      subscription.teamInviteCode,
+      newTeamInviteCode
+    )
+  }
 }
 
 @MainActor
