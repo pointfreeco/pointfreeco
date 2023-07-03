@@ -68,6 +68,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep238_reliablyTestingAsync),
           .init(episode: .ep239_reliablyTestingAsync),
+          .init(episode: .ep240_reliablyTestingAsync),
         ],
         isFinished: false,
         related: [],
