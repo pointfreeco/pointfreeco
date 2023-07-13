@@ -1,7 +1,6 @@
 Today we are excited to announce a brand new open source library: [Concurrency
-Extras][concurrency-extras-gh]. It includes tools to help make your concurrent Swift code
-more versatile and more testable. Join us for a quick overview of some of the tools
-provided:
+Extras][concurrency-extras-gh]. It includes tools to help make your concurrent Swift code more
+versatile and more testable. Join us for a quick overview of some of the tools provided:
 
 * [Serial execution](#SerialExecution)
 * [`ActorIsolated` and `LockIsolated`](#ActorIsolatedAndLockIsolated)
@@ -14,8 +13,9 @@ provided:
 ## Serial execution
 
 By far the most powerful tool provided by this library is
-[`withMainSerialExecutor`][withMainSerialExecutor-docs]. It allows you to execute a block of code
-in such a way that all async tasks spawned within it will be run serially on the main thread.
+[`withMainSerialExecutor`][withMainSerialExecutor-docs]. This function allows you to execute a block
+of code in such a way that all async tasks spawned within it will be run serially on the main
+thread.
 
 This can be incredibly useful in tests since testing async code is [notoriously
 difficult][reliably-testing-swift-concurrency] due to how suspension points are processed
@@ -45,11 +45,11 @@ class FeatureModel: ObservableObject {
 }
 ```
 
-This is quite a simple feature, but in the future it could start doing more complicated things,
-such as performing a network request when it detects a screenshot being taken.
+This is quite a simple feature, but in the future it could start doing more complicated things, such
+as performing a network request when it detects a screenshot being taken.
 
-So, it would be great if we could get some test coverage on this feature. To do this we can create
-a model, and spin up a new task to invoke the `onAppear` method:
+So, it would be great if we could get some test coverage on this feature. To do this we can create a
+model, and spin up a new task to invoke the `onAppear` method:
 
 ```swift
 func testBasics() async {
@@ -110,14 +110,13 @@ func testBasics() async {
 }
 ```
 
-This seems like a perfectly reasonable test, and it does pass… sometimes. If you run it enough
-times you will eventually get a failure (about 6% of the time). This is happening because sometimes
-the single `Task.yield()` is not enough for the subscription to the notifications to
-actually start. In that case we will post the notification before we have actually subscribed,
-causing a test failure.
+This seems like a perfectly reasonable test, and it does pass…sometimes. If you run it enough times
+you will eventually get a failure (about 6% of the time). This is happening because sometimes the
+single `Task.yield()` is not enough for the subscription to the notifications to actually start. In
+that case we will post the notification before we have actually subscribed, causing a test failure.
 
-If we wrap the entire test in ``withMainSerialExecutor``, then it will pass deterministically,
-100% of the time:
+If we wrap the entire test in `withMainSerialExecutor`, then it will pass deterministically, 100% of
+the time:
 
 ```swift
 func testBasics() async {
@@ -127,13 +126,13 @@ func testBasics() async {
 }
 ```
 
-This is because now all tasks are enqueued serially on the main executor, and so when we
+This is because now all tasks are enqueued serially by the main executor, and so when we
 `Task.yield` we can be sure that the `onAppear` method will execute until it reaches a suspension
 point. This guarantees that the subscription to the stream of notifications will start when we
 expect it to.
 
-You can also use ``withMainSerialExecutor`` to wrap an entire test case by overriding the
-`invokeTest` method:
+You can also use `withMainSerialExecutor` to wrap an entire test case by overriding the `invokeTest`
+method:
 
 ```swift
 final class FeatureModelTests: XCTestCase {
@@ -148,32 +147,29 @@ final class FeatureModelTests: XCTestCase {
 
 Now the entire `FeatureModelTests` test case will be run on the main, serial executor.
 
-Note that by using ``withMainSerialExecutor`` you are technically making your
-tests behave in a manner that is different from how they would run in production. However, many
-tests written on a day-to-day basis do not invole the full-blown vagaries of concurrency. Instead,
-tests often what to assertion that when some user action happens, an async unit of work is executed,
-and that causes some state to change. Such tests should be written in a way that is 100%
-deterministic.
+Note that by using `withMainSerialExecutor` you are technically making your tests behave in a manner
+that is different from how they would run in production. However, many tests written on a day-to-day
+basis do not invoke the full-blown vagaries of concurrency. Instead, tests often want to assert that
+when some user action happens, an async unit of work is executed, and that causes some state to
+change. Such tests should be written in a way that is 100% deterministic.
 
 If your code has truly complex asynchronous and concurrent operations, then it may be handy to write
-two sets of tests: one set that targets the main executor (using
-``withMainSerialExecutor``) so that you can deterministically assert how the core
-system behaves, and then another set that targets the default, global executor. The latter tests
-will probably need to make weaker assertions due to non-determinism, but can still assert on some
-things.
+two sets of tests: one set that targets the main executor (using `withMainSerialExecutor`) so that
+you can deterministically assert how the core system behaves, and then another set that targets the
+default, global executor. The latter tests will probably need to make weaker assertions due to
+non-determinism, but can still assert on some things.
 
 <div id="ActorIsolatedAndLockIsolated"></div>
 
 ## ActorIsolated and LockIsolated
 
-The ``ActorIsolated`` and ``LockIsolated`` types help wrap other values in an isolated context.
+The `ActorIsolated` and `LockIsolated` types help wrap other values in an isolated context.
 `ActorIsolated` wraps the value in an actor so that the only way to access and mutate the value is
-through an async/await interface. ``LockIsolated`` wraps the value in a class with a lock, which
+through an async/await interface. `LockIsolated` wraps the value in a class with a lock, which
 allows you to read and write the value with a synchronous interface. You should prefer to use
 [`ActorIsolated`][actor-isolated-docs] when you have access to an asynchronous context.
 
-For example, suppose you have a feature such that when a button is tapped you track some
-analytics:
+For example, suppose you have a feature such that when a button is tapped you track some analytics:
 
 ```swift
 struct AnalyticsClient {
@@ -182,17 +178,17 @@ struct AnalyticsClient {
 
 class FeatureModel: ObservableObject {
   let analytics: AnalyticsClient
-  // ...
+  …
   func buttonTapped() {
-    // ...
+    …
     await self.analytics.track("Button tapped")
   }
 }
 ```
 
-Then, in tests we can construct an analytics client that appends events to a mutable array
-rather than actually sending events to an analytics server. However, in order to do this a
-concurrency-safe way we should use an actor, and `ActorIsolated` makes this easy:
+Then, in tests we can construct an analytics client that appends events to a mutable array rather
+than actually sending events to an analytics server. However, in order to do this a concurrency-safe
+way we should use an actor, and `ActorIsolated` makes this easy:
 
 ```swift
 func testAnalytics() async {
@@ -251,7 +247,7 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     be handy in tests when overriding a dependency endpoint that returns a stream:
 
     ```swift
-    let screenshots = AsyncStream<Void>.streamWithContinuation()
+    let screenshots = AsyncStream.makeStream(of: Void.self)
     let model = FeatureModel(screenshots: screenshots.stream)
 
     XCTAssertEqual(model.screenshotCount, 0)
@@ -259,8 +255,8 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     XCTAssertEqual(model.screenshotCount, 1)
     ```
 
-    Note that this method will be superceded by the official method coming to Swift 5.9 thanks
-    to this [accepted proposal][stream-proposal].
+    Note that this method will be superseded by the official method coming to Swift 5.9 thanks to
+    this [accepted proposal][stream-proposal].
 
   * Static [`AsyncStream.never`][stream-never-source] and
     [`AsyncThrowingStream.never`][throwing-stream-never-source] helpers are provided that represent
@@ -288,8 +284,8 @@ that endpoint.
 
 A wrapper type that can make any type `Sendable`, but in an unsafe and unchecked way. This type
 should only be used as an alternative to `@preconcurrency import`, which turns off concurrency
-checks for everything in the library. Whereas ``UncheckedSendable`` allows you to turn off
-concurrency warnings for just one single usage of a particular type.
+checks for everything in the library. Whereas `UncheckedSendable` allows you to turn off concurrency
+warnings for just one single usage of a particular type.
 
 While [SE-0302][se-0302] mentions future work of ["Adaptor Types for Legacy
 Codebases"][se-0302-unsafetransfer], including an `UnsafeTransfer` type that serves the same

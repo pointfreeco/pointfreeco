@@ -9,8 +9,8 @@ well as examples of how these tools can fall short and how to fix them.
 
 ## Async testing tools of today
 
-The primary tool for testing async code today is XCTest's support for async test cases. Simply
-mark you test method as `async` and then you are free to perform any async work you want:
+The primary tool for testing async code today is XCTest's support for async test cases. Simply mark
+your test method as `async` and then you are free to perform any async work you want:
 
 ```swift
 class FeatureTests: XCTestCase {
@@ -21,10 +21,11 @@ class FeatureTests: XCTestCase {
 ```
 
 This makes it easy to invoke an async function or method and then assert on what changed after.
-For example, suppose you have a feature that shows a list of useres, and when the view appears
-you load the users first from a local database, which is quite fast, and then you load the users
-from a networ API, which is fresher data but also considerably slower. Further, once the fresh
-users are loaded it will save that fresh data back to the local database:
+
+For example, suppose you have a feature that shows a list of users, and when the view appears you
+load the users first from a local database, which is quite fast, and then from a network API, which
+provides fresher data but is also considerably slower. Further, once the fresh users are loaded it
+will save that fresh data back to the local database:
 
 ```swift
 class UsersModel: ObservableObject {
@@ -41,14 +42,14 @@ class UsersModel: ObservableObject {
 }
 ```
 
-That's quite simple behavior for right now, but in the future it can become a lot more complex.
-We may start to track analytics events in this method, we may perform custom error handling,
-or we may open a socket connection to get a live stream of user updates from the server.
+That's quite simple behavior for right now, but in the future it can become a lot more complex. We
+may start to track analytics events in this method, we may perform custom error handling, or we may
+open a socket connection to get a live stream of user updates from the server.
 
-So, we are going to want to get some test coverage on this method so that we can get a better
-understanding of its complexities in the future. Luckily it is quite straightforward to test.
-We can simply create the model with some mock dependencies, invoke the `onAppear` method, and then
-assert on how the model changed after:
+So, we are going to want to get some test coverage on this method in order to get a better
+understanding of its complexities in the future. Luckily it is quite straightforward to test. We can
+simply create the model with some mock dependencies, invoke the `onAppear` method, and then assert
+on how the model changed after:
 
 ```swift
 class FeatureTests: XCTestCase {
@@ -85,7 +86,7 @@ which is common with async sequences. Let's look at each of these problems indiv
 ```swift
 class FeatureTests: XCTestCase {
   func testBasics() async {
-    let (stream, continuation) = AsyncStream<[User]>.streamWithContinuation()
+    let (stream, continuation) = AsyncStream.makeStream(of: [User].self)
 
     let model = UsersModel(
       api: MockAPIClient(
@@ -104,9 +105,6 @@ class FeatureTests: XCTestCase {
   }
 }
 ```
-
-
-
 
 ## Serial execution for tests
 
