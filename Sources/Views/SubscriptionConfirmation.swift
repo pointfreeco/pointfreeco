@@ -668,17 +668,39 @@ private func discountedBillingIntervalSubtitle(
 ) -> Node {
   let regionalFactor = useRegionalDiscount ? 0.5 : 1.0
 
+  print("!!!")
+
   switch interval {
   case .month:
-    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
-      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
-    return .text("\(formattedAmount) per month")
+    switch coupon?.duration {
+    case .forever, .once, .none:
+      let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
+      let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+        .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+      return .text("\(formattedAmount) per month")
+
+    case let .repeating(months: months):
+      let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
+      let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+        .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+      let pluralizedMonth = months == 1 ? "month" : "\(months) months"
+      return .text("\(formattedAmount) for the first \(pluralizedMonth), $18 per month after that.")
+    }
   case .year:
-    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
-      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
-    return .text("\(formattedAmount) per year")
+    switch coupon?.duration {
+    case .forever, .once, .none:
+      let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
+      let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+        .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+      return .text("\(formattedAmount) per year")
+
+    case let .repeating(months: months):
+      let amount = Double(coupon?.discount(for: 14_00).rawValue ?? 168_00) / 100 * regionalFactor * Double(months)
+      + (14 * (12 - Double(months)))
+      let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
+        .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+      return .text("\(formattedAmount) for the first year, $168 per year after that.")
+    }
   }
 }
 
@@ -894,6 +916,7 @@ private func total(
                 ? monthlyPrice
                 : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
               document.getElementById("total").textContent = format(total)
+              // TODO: update
               document.getElementById("pricing-preview").innerHTML = (
                 "You will be charged <strong>"
                   + format(monthlyPricePerSeat)

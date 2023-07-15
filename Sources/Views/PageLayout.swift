@@ -1,12 +1,14 @@
 import CasePaths
 import Css
 import Dependencies
+import EnvVars
 import Foundation
 import FunctionalCss
 import Html
 import Models
 import PointFreeDependencies
 import PointFreeRouter
+import Stripe
 import Styleguide
 import Transcripts
 
@@ -120,7 +122,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.wwdc2023),
+          announcementBanner(.spiPromo),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -189,26 +191,47 @@ struct Banner {
   let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
-  static let wwdc2023 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2023-06-11")!,
-    markdownContent: ###"""
-      🍎 [**WWDC Sale!** Save 25% when you subscribe.](/discounts/wwdc-2023)
-      """###,
-    shouldShow: { subscriberState, route in
-      if subscriberState.isActiveSubscriber {
-        return false
-      } else if case .subscribeConfirmation = route {
-        return false
-      } else if case .blog(.show(.left("107-wwdc-2023-sale"))) = route {
-        return false
-      } else if case .blog(.show(.right(107))) = route {
-        return false
-      } else {
-        return true
-      }
-    },
-    startAt: yearMonthDayFormatter.date(from: "2023-06-01")!
-  )
+  static var spiPromo: Self {
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.siteRouter) var siteRouter
+    let path = siteRouter.path(
+      for: SiteRoute.discounts(
+        code: Stripe.Coupon.ID.init(envVars.spiPromo),
+        nil
+      )
+    )
+
+    return Self(
+      endAt: yearMonthDayFormatter.date(from: "2024-01-16")!,
+      markdownContent: """
+      [**SPI Promo!** Save 50% on your first month when you subscribe.](\(path))
+      """,
+      shouldShow: { subscriberState, route in
+        @Dependency(\.isSpiPromo) var isSpiPromo
+        guard isSpiPromo
+        else { return false }
+        if subscriberState.isActiveSubscriber {
+          return false
+        } else if case .subscribeConfirmation = route {
+          return false
+        } else {
+          return true
+        }
+//        if subscriberState.isActiveSubscriber {
+//          return false
+//        } else if case .subscribeConfirmation = route {
+//          return false
+//        } else if case .blog(.show(.left("107-wwdc-2023-sale"))) = route {
+//          return false
+//        } else if case .blog(.show(.right(107))) = route {
+//          return false
+//        } else {
+//          return true
+//        }
+      },
+      startAt: yearMonthDayFormatter.date(from: "2023-07-14")!
+    )
+  }
 }
 
 private func announcementBanner(_ banner: Banner? = nil) -> Node {

@@ -30,6 +30,7 @@ public struct EnvVars: Codable {
   public var regionalDiscountCouponId: Coupon.ID
   public var rssUserAgentWatchlist: [String]
   public var slackInviteURL: String
+  public var spiPromo: String
   public var stripe: Stripe
   public var vimeoBearer: String
 
@@ -46,6 +47,7 @@ public struct EnvVars: Codable {
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
     slackInviteURL: String = "http://slack.com",
+    spiPromo: String = "",
     stripe: Stripe = Stripe(),
     vimeoBearer: String = ""
   ) {
@@ -61,6 +63,7 @@ public struct EnvVars: Codable {
     self.regionalDiscountCouponId = regionalDiscountCouponId
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.slackInviteURL = slackInviteURL
+    self.spiPromo = spiPromo
     self.stripe = stripe
     self.vimeoBearer = vimeoBearer
   }
@@ -74,6 +77,7 @@ public struct EnvVars: Codable {
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
     case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
+    case spiPromo = "SPI_PROMO"
     case vimeoBearer = "VIMEO_BEARER"
   }
 
@@ -196,6 +200,7 @@ extension EnvVars {
       .split(separator: ",")
       .map(String.init)
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
+    self.spiPromo = try container.decode(String.self, forKey: .spiPromo)
     self.stripe = try .init(from: decoder)
     self.vimeoBearer = try container.decode(String.self, forKey: .vimeoBearer)
   }
@@ -217,6 +222,7 @@ extension EnvVars {
     )
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
+    try container.encode(self.spiPromo, forKey: .spiPromo)
     try self.stripe.encode(to: encoder)
     try container.encode(self.vimeoBearer, forKey: .vimeoBearer)
   }

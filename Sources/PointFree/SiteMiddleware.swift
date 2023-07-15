@@ -84,6 +84,12 @@ public func siteMiddleware(
     siteRoute = nil
   }
 
+  var conn = conn
+  let isSpiPromo = conn.request.url?.absoluteString.lowercased().contains("spi-promo") == true
+  if isSpiPromo {
+    conn.response.headers.append(.setCookie("spi-promo", "1"))
+  }
+
   return await withDependencies {
     $0.currentUser = currentUser
     $0.currentRoute = siteRoute ?? .home
@@ -99,6 +105,8 @@ public func siteMiddleware(
       enterpriseAccount: enterpriseAccount
     )
     $0.subscription = subscription
+    $0.isSpiPromo = !$0.subscriberState.isActiveSubscriber
+      && (isSpiPromo || conn.request.cookies["spi-promo"] == "1")
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil

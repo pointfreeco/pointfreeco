@@ -1,5 +1,6 @@
 import Dependencies
 import Either
+import EnvVars
 import Foundation
 import HttpPipeline
 import Models

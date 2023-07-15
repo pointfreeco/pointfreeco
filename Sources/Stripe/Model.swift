@@ -146,6 +146,8 @@ public struct Coupon: Equatable, Identifiable {
       return "\(self.rate.formattedDescription) every billing period"
     case .once:
       return "\(self.rate.formattedDescription) the first billing period"
+    case .repeating(months: 1):
+      return "\(self.rate.formattedDescription) the first month"
     case let .repeating(months: months):
       return "\(self.rate.formattedDescription) every billing period for the first \(months) months"
     }
