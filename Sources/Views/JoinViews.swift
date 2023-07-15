@@ -49,7 +49,7 @@ private func joinTeamLandingLoggedOut(
           .gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            href: siteRouter.loginPath(redirect: .join(.landing(code: code)))
+            href: siteRouter.loginPath(redirect: .teamInviteCode(.landing(code: code)))
           )
         )
       )
@@ -73,7 +73,7 @@ private func joinTeamLandingLoggedIn(
       ),
       .form(
         attributes: [
-          .action(siteRouter.path(for: .join(.join(code: code, email: nil)))),
+          .action(siteRouter.path(for: .teamInviteCode(.join(code: code, email: nil)))),
           .method(.post),
         ],
         .input(
@@ -96,7 +96,7 @@ private func joinTeamLandingLoggedIn(
   } else {
     confirmation = .form(
       attributes: [
-        .action(siteRouter.path(for: .join(.join(code: code, email: nil)))),
+        .action(siteRouter.path(for: .teamInviteCode(.join(code: code, email: nil)))),
         .method(.post),
       ],
       .input(

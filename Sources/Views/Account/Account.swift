@@ -1200,7 +1200,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           """
         ),
         copyToPasteboard(
-          text: siteRouter.url(for: .join(.landing(code: subscription.teamInviteCode))),
+          text: siteRouter.url(for: .teamInviteCode(.landing(code: subscription.teamInviteCode))),
           buttonColor: .white
         ),
         .markdownBlock(

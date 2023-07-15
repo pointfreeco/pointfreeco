@@ -2,17 +2,16 @@ import EmailAddress
 import Models
 import URLRouting
 
-// TODO: rename to Team
-public enum Join: Equatable {
+public enum TeamInviteCode: Equatable {
   case confirm(code: Subscription.TeamInviteCode, secret: Encrypted<String>)
   case join(code: Subscription.TeamInviteCode, email: EmailAddress?)
   case landing(code: Subscription.TeamInviteCode)
 }
 
 struct JoinRouter: ParserPrinter {
-  var body: some Router<Join> {
+  var body: some Router<TeamInviteCode> {
     OneOf {
-      Route(.case(Join.confirm)) {
+      Route(.case(TeamInviteCode.confirm)) {
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
           "confirm"
@@ -20,7 +19,7 @@ struct JoinRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Join.join)) {
+      Route(.case(TeamInviteCode.join)) {
         Method.post
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
@@ -34,7 +33,7 @@ struct JoinRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Join.landing)) {
+      Route(.case(TeamInviteCode.landing)) {
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
         }

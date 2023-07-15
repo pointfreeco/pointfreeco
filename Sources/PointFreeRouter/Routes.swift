@@ -31,7 +31,6 @@ public enum SiteRoute: Equatable {
   case gitHubCallback(code: String?, redirect: String?)
   case home
   case invite(Invite)
-  case join(Join)
   case live(Live)
   case login(redirect: String?)
   case logout
@@ -49,6 +48,7 @@ public enum SiteRoute: Equatable {
     useRegionalDiscount: Bool? = nil
   )
   case team(Team)
+  case teamInviteCode(TeamInviteCode)
   case useEpisodeCredit(Episode.ID)
   case webhooks(Webhooks)
 
@@ -533,11 +533,6 @@ struct SiteRouter: ParserPrinter {
         InviteRouter()
       }
 
-      Route(.case(SiteRoute.join)) {
-        Path { "join" }
-        JoinRouter()
-      }
-
       Route(.case(SiteRoute.live)) {
         Path { "live" }
         LiveRouter()
@@ -612,6 +607,11 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.team)) { TeamRouter() }
+
+      Route(.case(SiteRoute.teamInviteCode)) {
+        Path { "join" }
+        JoinRouter()
+      }
 
       Route(.case(SiteRoute.useEpisodeCredit)) {
         Method.post

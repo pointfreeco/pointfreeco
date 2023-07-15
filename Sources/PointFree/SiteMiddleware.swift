@@ -268,7 +268,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .join(joinRoute):
+  case let .teamInviteCode(joinRoute):
     return await joinMiddleware(conn.map(const(joinRoute)))
 
   case let .live(liveRoute):

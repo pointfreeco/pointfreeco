@@ -15,7 +15,7 @@ import Tagged
 import URLRouting
 import Views
 
-func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEnded, Data> {
+func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
@@ -29,7 +29,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     else {
       return
         await conn
-        .redirect(to: siteRouter.loginPath(redirect: .join(.confirm(code: code, secret: secret))))
+        .redirect(to: siteRouter.loginPath(redirect: .teamInviteCode(.confirm(code: code, secret: secret))))
     }
 
     guard
@@ -52,7 +52,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     else {
       return
         conn
-        .redirect(to: .join(.landing(code: code))) {
+        .redirect(to: .teamInviteCode(.landing(code: code))) {
           $0.flash(.notice, "You must be logged in to complete that action.")
         }
     }
@@ -69,7 +69,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, Join>) async -> Conn<ResponseEn
     else {
       return
         conn
-        .redirect(to: .join(.landing(code: code))) {
+        .redirect(to: .teamInviteCode(.landing(code: code))) {
           $0.flash(
             .error,
             "Your email address must be from the @\(code) domain."
@@ -142,7 +142,7 @@ private func add<A>(
   else {
     return
       conn
-      .redirect(to: .join(.landing(code: code))) {
+      .redirect(to: .teamInviteCode(.landing(code: code))) {
         $0.flash(
           .error,
           "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
@@ -170,7 +170,7 @@ private func add<A>(
   } catch {
     return
       conn
-      .redirect(to: .join(.landing(code: code))) {
+      .redirect(to: .teamInviteCode(.landing(code: code))) {
         $0.flash(.error, "Cannot join team.")
       }
   }
@@ -181,7 +181,7 @@ private func add<A>(
   } catch {
     return
       conn
-      .redirect(to: .join(.landing(code: code))) {
+      .redirect(to: .teamInviteCode(.landing(code: code))) {
         $0.flash(.error, "Could not find subscription. Try again or contact support@pointfree.co.")
       }
   }
@@ -209,7 +209,7 @@ private func add<A>(
   } catch {
     return
       conn
-      .redirect(to: .join(.landing(code: code))) {
+      .redirect(to: .teamInviteCode(.landing(code: code))) {
         $0.flash(
           .error,
           "Could not add you to the team. Try again or contact support@pointfree.co."
@@ -306,7 +306,7 @@ func confirmationEmail(
   @Dependency(\.siteRouter) var siteRouter
 
   let confirmURL = siteRouter.url(
-    for: .join(
+    for: .teamInviteCode(
       .confirm(
         code: code,
         secret: try JoinSecretConversion().unapply(
