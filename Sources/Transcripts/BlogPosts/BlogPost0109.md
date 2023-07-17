@@ -46,10 +46,9 @@ class FeatureModel: ObservableObject {
 ```
 
 This is quite a simple feature, but in the future it could start doing more complicated things, such
-as performing a network request when it detects a screenshot being taken.
-
-So, it would be great if we could get some test coverage on this feature. To do this we can create a
-model, and spin up a new task to invoke the `onAppear` method:
+as performing a network request when it detects a screenshot being taken. So, it would be great if 
+we could get some test coverage on this feature. To do this we can create a model, and spin up a 
+new task to invoke the `onAppear` method so that it runs in parallel to the rest of the test:
 
 ```swift
 func testBasics() async {
@@ -111,9 +110,10 @@ func testBasics() async {
 ```
 
 This seems like a perfectly reasonable test, and it does pass…sometimes. If you run it enough times
-you will eventually get a failure (about 6% of the time). This is happening because sometimes the
-single `Task.yield()` is not enough for the subscription to the notifications to actually start. In
-that case we will post the notification before we have actually subscribed, causing a test failure.
+you will eventually get a failure (about 6% of the time as of Xcode 14.3). This is happening because 
+sometimes the single `Task.yield()` is not enough for the subscription to the notifications to 
+actually start. In that case we will post the notification before we have actually subscribed, 
+causing a test failure.
 
 If we wrap the entire test in `withMainSerialExecutor`, then it will pass deterministically, 100% of
 the time:
@@ -242,6 +242,13 @@ The library comes with numerous helper APIs spread across the two Swift stream t
 
     Use [`eraseToThrowingStream()`][erase-to-throwing-stream-source] to propagate failures from
     throwing async sequences.
+    
+    Note that care must be taken when "erasing" async sequences to streams. The `AsyncStream` and 
+    `AsyncThrowingStream` types do not support multiple subscribe/Users/brandon/projects/pointfreeco/Sources/Transcripts/BlogPosts/BlogPost0110_WritingReliableAsyncTests.swift
+/Users/brandon/projects/pointfreeco/Sources/Transcripts/BlogPosts/BlogPost0110.mdrs, and so you may need to create 
+    multiple streams from a single sequence to support that behavior. This is unfortunately the best
+    we can do until Swift gets the features necessary to support something like 
+    `any AsyncSequence<Element>`.
 
   * There is an API for simultaneously constructing a stream and its backing continuation. This can
     be handy in tests when overriding a dependency endpoint that returns a stream:
@@ -268,7 +275,7 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     provided that represents streams that complete immediately without emitting. They can be handy
     in tests that need to override a dependency endpoint with a stream that completes/fails
     immediately.
-
+    
 <div id="Tasks"></div>
 
 ## Tasks
@@ -297,17 +304,17 @@ If any of this sounds useful to you, be sure to check the [Concurrency
 Extras][concurrency-extras-gh] library today, and start writing tests for your async code today.
 
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
-[withMainSerialExecutor-docs]: todo
+[withMainSerialExecutor-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/withmainserialexecutor(operation:)-7fqt1
 [reliably-testing-swift-concurrency]: https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304
-[lock-isolated-docs]: todo
-[actor-isolated-docs]: todo
-[erase-to-stream-source]: todo
-[erase-to-throwing-stream-source]: todo
+[lock-isolated-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/lockisolated
+[actor-isolated-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/actorisolated
+[erase-to-stream-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncStream.swift#L137
+[erase-to-throwing-stream-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncThrowingStream.swift#L94
 [stream-proposal]: https://github.com/apple/swift-evolution/blob/ee39d319cf9bcdc8447c44b3fcc0afde809246d3/proposals/0388-async-stream-factory.md
-[stream-never-source]: todo
-[throwing-stream-never-source]: todo
-[stream-finished-source]: todo
-[throwing-stream-finished-source]: todo
-[task-never-source]: todo
+[stream-never-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncStream.swift#L124-L126
+[throwing-stream-never-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncThrowingStream.swift#L79-L81
+[stream-finished-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncStream.swift#L129-L131
+[throwing-stream-finished-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/AsyncThrowingStream.swift#L86-L88
+[task-never-source]: https://github.com/pointfreeco/swift-concurrency-extras/blob/ecb065a41bbdd7f64ab2695ffc755ed37c9ff4dc/Sources/ConcurrencyExtras/Task.swift#L40-L45
 [se-0302]: https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
 [se-0302-unsafetransfer]: https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md#adaptor-types-for-legacy-codebases

@@ -9,6 +9,6 @@ public let post0109_ConcurrencyExtras = BlogPost(
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 109),
   coverImage: nil,
   id: 109,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-07-17")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2023-07-18")!,
   title: "Announcing Concurrency Extras: Useful, testable Swift concurrency."
 )
