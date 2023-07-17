@@ -151,13 +151,34 @@ Note that by using `withMainSerialExecutor` you are technically making your test
 that is different from how they would run in production. However, many tests written on a day-to-day
 basis do not invoke the full-blown vagaries of concurrency. Instead, tests often want to assert that
 when some user action happens, an async unit of work is executed, and that causes some state to
-change. Such tests should be written in a way that is 100% deterministic.
+change. Such tests should be written in a way that is 100% deterministic. 
 
-If your code has truly complex asynchronous and concurrent operations, then it may be handy to write
-two sets of tests: one set that targets the main executor (using `withMainSerialExecutor`) so that
-you can deterministically assert how the core system behaves, and then another set that targets the
-default, global executor. The latter tests will probably need to make weaker assertions due to
-non-determinism, but can still assert on some things.
+And even Apple agrees. They use a similar technique in their Async Algorithms package, and
+in the [documentation of one of their test helpers][async-validation-md] they justify
+why they think their manner of testing async sequences truly does test reality even though they are
+altering the runtime that schedules async work (emphasis ours):
+
+> Testing is a critical area of focus for any package to make it robust, catch bugs, and explain the 
+expected behaviors in a documented manner. Testing things that are asynchronous can be difficult, 
+testing things that are asynchronous multiple times can be even more difficult.
+> 
+> Types that implement AsyncSequence **can often be described in deterministic actions given 
+particular inputs**. For the inputs, the events can be described as a discrete set: values, errors 
+being thrown, the terminal state of returning a nil value from the iterator, or advancing in time 
+and not doing anything. Likewise, the expected output has a discrete set of events: values, errors 
+being caught, the terminal state of receiving a nil value from the iterator, or advancing in time 
+and not doing anything.
+
+Just as async sequences can often be described with a determinstic sequences of inputs that lead to
+a deterministic sequence of outputs, the same is true of user actions in an application. And so we
+too feel that many of the tests we write on a daily basis can be run inside `withMainSerialExecutor`
+and that we are not weakening the strength of those tests in the least.
+
+However, if your code has truly complex asynchronous and concurrent operations, then it may be handy 
+to write two sets of tests: one set that targets the main executor (using `withMainSerialExecutor`) 
+so that you can deterministically assert how the core system behaves, and then another set that 
+targets the default, global executor. The latter tests will probably need to make weaker assertions 
+due to non-determinism, but can still assert on some things.
 
 <div id="ActorIsolatedAndLockIsolated"></div>
 
@@ -303,6 +324,7 @@ purpose, it has not landed in Swift.
 If any of this sounds useful to you, be sure to check the [Concurrency 
 Extras][concurrency-extras-gh] library today, and start writing tests for your async code today.
 
+[async-validation-md]: https://github.com/apple/swift-async-algorithms/blob/07a0c1ee08e90dd15b05d45a3ead10929c0b7ec5/Sources/AsyncSequenceValidation/AsyncSequenceValidation.docc/AsyncSequenceValidation.md
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
 [withMainSerialExecutor-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/withmainserialexecutor(operation:)-7fqt1
 [reliably-testing-swift-concurrency]: https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304
