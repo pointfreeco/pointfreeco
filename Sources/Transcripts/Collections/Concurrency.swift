@@ -72,7 +72,6 @@ extension Episode.Collection {
           .init(episode: .ep241_reliablyTestingAsync),
           .init(episode: .ep242_reliablyTestingAsync),
         ],
-        isFinished: false,
         related: [],
         title: "Testing async code",
         whereToGoFromHere: nil
