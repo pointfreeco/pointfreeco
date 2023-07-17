@@ -70,6 +70,7 @@ extension Episode.Collection {
           .init(episode: .ep239_reliablyTestingAsync),
           .init(episode: .ep240_reliablyTestingAsync),
           .init(episode: .ep241_reliablyTestingAsync),
+          .init(episode: .ep242_reliablyTestingAsync),
         ],
         isFinished: false,
         related: [],
