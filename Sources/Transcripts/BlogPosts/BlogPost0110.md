@@ -7,7 +7,7 @@ a bit more complicated.
 Join us for a quick overview of what tools Swift gives us today for testing asynchronous code, as
 well as examples of how these tools can fall short, and then how to fix them.
 
-!> [note]: This blog post is a brief re-cap of a [series of episodes](https://www.pointfree.co/collections/concurrency/testing-async-code) on Point-Free that goes very deep into how to reliably test async code in Swift.  
+!> [note]: This blog post is a brief recap of a [series of episodes](https://www.pointfree.co/collections/concurrency/testing-async-code) on Point-Free that goes very deep into how to reliably test async code in Swift.  
 
 ## Async testing tools of today
 
@@ -25,7 +25,7 @@ class FeatureTests: XCTestCase {
 This makes it easy to invoke an async function or method and then assert on what changed after
 the work finished.
 
-For example, suppose we had a very simple observable object for a encapsulating a number that could
+For example, suppose we had a very simple observable object for encapsulating a number that could
 be incremented and decremented from the UI, as well as the ability to fetch a fact about the 
 number. The mechanism for fetching the fact should be hidden behind some kind of interface, like
 a protocol, but for now we will pass it as an explicit closure to the model.
@@ -141,7 +141,7 @@ The problem with testing this kind of async code in Swift is that we have no way
 the runtime will schedule and execute work. And that is fine when running the code in production,
 but we don't need that complexity for tests. Most tests are verifying a very simple state machine
 of actions: the user performs a few actions, one after another, and we assert at each step of the
-way out the state of our feature changes.
+way how the state of our feature changes.
 
 In such situations we don't need the full power of a complex scheduling machine that manages a small
 pool of threads. It would be completely sufficient to serialize all async work to a single thread.
@@ -152,7 +152,7 @@ And interestingly, there is even a precendent for this in one of Apple's open so
 libraries! The [Async Algorithms][async-algos-gh] package comes with an 
 [`AsyncSequenceValidation`][async-algos-validate-library] library with tools specifically designed
 to make testing async code a deterministic process. It needs this tool in order to write reliable,
-deterministic tests for its various operators, such as `debounce`, `throttle` and more.
+deterministic tests for its various operators, such as `debounce`, `throttle`, and more.
 
 The way it accomplishes this is by [overriding the global enqueue hook][async-algos-hook-override] 
 that Swift uses when new asynchronous tasks are created. And that hook is publicly exposed to us
@@ -203,7 +203,7 @@ override func invokeTest() {
 }
 ```
 
-This tools allows you to finally write tests against complex and subtle async code that you can be
+This tool allows you to finally write tests against complex and subtle async code that you can be
 confident in. No more seeing mysterious test failures on CI and wasting hours of CI time re-running
 tests or hours of developer time investigating if they are true errors or simply flakiness in the
 async scheduling.
