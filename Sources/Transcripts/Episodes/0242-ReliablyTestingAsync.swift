@@ -14,7 +14,9 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-07-17")!,
     references: [
-      .reliablyTestingAsync
+      .reliablyTestingAsync,
+      .concurrencyExtras,
+      .announcingConcurrencyExtras,
     ],
     sequence: 242,
     subtitle: "The Point",

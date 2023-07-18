@@ -14,6 +14,8 @@ extension Episode {
     references: [
       .swiftAsyncAlgorithms,
       .reliablyTestingAsync,
+      .concurrencyExtras,
+      .announcingConcurrencyExtras,
     ],
     sequence: 240,
     subtitle: "😳",

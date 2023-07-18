@@ -28,6 +28,19 @@ extension Episode.Reference {
     title: "Allow Error to conform to itself"
   )
 
+  public static let announcingConcurrencyExtras = Episode.Reference(
+    author: "Brandon Williams and Stephen Celis",
+    blurb:
+      """
+      The announcement of our new [Concurrency
+      Extras](https://github.com/pointfreeco/swift-concurrency-extras) library, which provides
+      powerful tools for making async code easier to test.
+      """,
+    link: "https://www.pointfree.co/blog/posts/109-announcing-concurrency-extras-useful-testable-swift-concurrency",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-07-18"),
+    title: "Announcing Concurrency Extras: Useful, testable Swift concurrency."
+  )
+
   public static let bonMot = Episode.Reference(
     author: "Zev Eisenberg @ Raizlabs",
     blurb: """
@@ -143,6 +156,18 @@ extension Episode.Reference {
     link: "https://www.youtube.com/watch?v=I23AC09YnHo",
     publishedAt: Date(timeIntervalSince1970: 1_506_744_000),
     title: "Composable Setters"
+  )
+
+  public static let concurrencyExtras = Episode.Reference(
+    author: "Brandon Williams and Stephen Celis",
+    blurb:
+      """
+      An open source Swift package that provides powerful tools for making async code easier to
+      test.
+      """,
+    link: "https://github.com/pointfreeco/swift-concurrency-extras",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-07-18"),
+    title: "Concurrency Extras"
   )
 
   public static let contravariance = Episode.Reference(
