@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-composable-architecture
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 68799
+Content-Length: 69210
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1994,6 +1994,9 @@ Prism.languages.insertBefore('swift', 'other-directive', {
           content="http://localhost:8080/episodes/ep1-composable-architecture">
     <meta name="twitter:url"
           content="http://localhost:8080/episodes/ep1-composable-architecture">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
+    </script>
   </head>
   <body>
     <div class="bg-black
