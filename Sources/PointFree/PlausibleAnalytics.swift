@@ -24,6 +24,6 @@ private let plausibleAnalytics = Node.script(
   attributes: [
     .defer(true),
     .data("domain", "pointfree.co"),
-    .src("https://plausible.io/js/script.js")
+    .src("https://plausible.io/js/script.js"),
   ]
 )
