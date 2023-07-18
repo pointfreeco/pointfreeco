@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 60891
+Content-Length: 61015
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1970,6 +1970,10 @@ html {
           content="http://localhost:8080/about">
     <meta name="twitter:url"
           content="http://localhost:8080/about">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-blue900

@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56542
+Content-Length: 56666
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1954,6 +1954,10 @@ html {
           content="http://localhost:8080/collections/functions">
     <meta name="twitter:url"
           content="http://localhost:8080/collections/functions">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-black

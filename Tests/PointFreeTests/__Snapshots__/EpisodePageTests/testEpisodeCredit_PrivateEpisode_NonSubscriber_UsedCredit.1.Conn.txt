@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 90767
+Content-Length: 90891
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1994,6 +1994,10 @@ Prism.languages.insertBefore('swift', 'other-directive', {
           content="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
     <meta name="twitter:url"
           content="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-black

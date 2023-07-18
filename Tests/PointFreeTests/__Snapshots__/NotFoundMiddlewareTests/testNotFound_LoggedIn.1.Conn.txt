@@ -2,7 +2,7 @@ GET http://localhost:8080/404
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 404 Not Found
-Content-Length: 47257
+Content-Length: 47381
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1945,6 +1945,10 @@ html {
           content="http://localhost:8080/">
     <meta name="twitter:url"
           content="http://localhost:8080/">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-blue900

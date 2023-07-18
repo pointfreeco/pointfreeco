@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61544
+Content-Length: 61668
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2003,6 +2003,10 @@ html {
           content="http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=false">
     <meta name="twitter:url"
           content="http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=false">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-black

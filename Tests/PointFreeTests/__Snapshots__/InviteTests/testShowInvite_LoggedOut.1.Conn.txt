@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52040
+Content-Length: 52164
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1945,6 +1945,10 @@ html {
           content="http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF">
     <meta name="twitter:url"
           content="http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-blue900

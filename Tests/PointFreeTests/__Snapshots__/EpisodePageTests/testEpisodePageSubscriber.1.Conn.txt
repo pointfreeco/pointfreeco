@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 77846
+Content-Length: 77970
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1997,6 +1997,10 @@ text, no markdown allowed. Here is some more text just to have some filler.">
           content="http://localhost:8080/episodes/ep2-proof-in-functions">
     <meta name="twitter:url"
           content="http://localhost:8080/episodes/ep2-proof-in-functions">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="bg-black

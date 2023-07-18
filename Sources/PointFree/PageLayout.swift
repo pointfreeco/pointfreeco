@@ -42,6 +42,7 @@ extension Conn where Step == HeadersOpen {
         url: siteRouter.url(for: siteRoute)  // TODO: should we have @Dependency(\.currentURL)?
       )
       >>> metaLayout(simplePageLayout(view))
+      >>> addPlausibleAnalytics
 
     return
       self

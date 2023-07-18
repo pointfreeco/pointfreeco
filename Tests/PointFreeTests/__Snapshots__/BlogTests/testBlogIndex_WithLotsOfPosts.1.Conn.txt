@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 131396
+Content-Length: 131520
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1994,6 +1994,10 @@ Prism.languages.insertBefore('swift', 'other-directive', {
           content="http://localhost:8080/blog">
     <meta name="twitter:url"
           content="http://localhost:8080/blog">
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
+    </script>
   </head>
   <body>
     <div class="d-pb4
