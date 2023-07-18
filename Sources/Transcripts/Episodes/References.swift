@@ -36,7 +36,8 @@ extension Episode.Reference {
       Extras](https://github.com/pointfreeco/swift-concurrency-extras) library, which provides
       powerful tools for making async code easier to test.
       """,
-    link: "https://www.pointfree.co/blog/posts/109-announcing-concurrency-extras-useful-testable-swift-concurrency",
+    link:
+      "https://www.pointfree.co/blog/posts/109-announcing-concurrency-extras-useful-testable-swift-concurrency",
     publishedAt: yearMonthDayFormatter.date(from: "2023-07-18"),
     title: "Announcing Concurrency Extras: Useful, testable Swift concurrency."
   )
