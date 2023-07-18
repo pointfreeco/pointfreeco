@@ -265,8 +265,7 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     throwing async sequences.
     
     Note that care must be taken when "erasing" async sequences to streams. The `AsyncStream` and 
-    `AsyncThrowingStream` types do not support multiple subscribe/Users/brandon/projects/pointfreeco/Sources/Transcripts/BlogPosts/BlogPost0110_WritingReliableAsyncTests.swift
-/Users/brandon/projects/pointfreeco/Sources/Transcripts/BlogPosts/BlogPost0110.mdrs, and so you may need to create 
+    `AsyncThrowingStream` types do not support multiple subscribers, and so you may need to create 
     multiple streams from a single sequence to support that behavior. This is unfortunately the best
     we can do until Swift gets the features necessary to support something like 
     `any AsyncSequence<Element>`.
