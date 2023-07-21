@@ -248,7 +248,7 @@ it is such a pain, be sure to check out our [Concurrency Extras][concurrency-ext
 today!
 
 [wmse-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/withmainserialexecutor(operation:)-79jpc
-[concurrency-extras-blog]: todo
+[concurrency-extras-blog]: /blog/posts/110-reliably-testing-async-code-in-swift
 [concurrency-extras-gh]: http://github.com/pointfreeco/swift-concurrency-extras
 [async-algos-gh]: https://github.com/apple/swift-async-algorithms
 [async-algos-validate-library]: https://github.com/apple/swift-async-algorithms/tree/07a0c1ee08e90dd15b05d45a3ead10929c0b7ec5/Sources/AsyncSequenceValidation
