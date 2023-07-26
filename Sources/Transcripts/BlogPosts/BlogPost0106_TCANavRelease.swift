@@ -199,7 +199,7 @@ public let post0106_TCANavRelease = BlogPost(
     }
     ```
 
-    !> [note]: The `Path` reducer is identical to the `Destination` reducer that one creates for tree-based navigation when using enums. See the ["Tree-based navigation"][tree-based-article] for more information.
+    !> [note]: The `Path` reducer is identical to the `Destination` reducer that one creates for tree-based navigation when using enums. See the ["Tree-based navigation"](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation) for more information.
 
     Once the `Path` reducer is defined we can then hold onto ``StackState`` and ``StackAction`` in the
     feature that manages the navigation stack:

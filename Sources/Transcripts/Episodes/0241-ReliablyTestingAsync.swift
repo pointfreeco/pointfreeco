@@ -12,7 +12,9 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-07-10")!,
     references: [
-      .reliablyTestingAsync
+      .reliablyTestingAsync,
+      .concurrencyExtras,
+      .announcingConcurrencyExtras,
     ],
     sequence: 241,
     subtitle: "🥹",
