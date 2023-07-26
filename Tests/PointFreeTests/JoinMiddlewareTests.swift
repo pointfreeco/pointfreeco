@@ -3,6 +3,7 @@ import Dependencies
 import EmailAddress
 import Mailgun
 import Models
+import Overture
 import PointFreeTestSupport
 import SnapshotTesting
 import Stripe
@@ -80,7 +81,8 @@ class JoinMiddlewareTests: TestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -108,7 +110,8 @@ class JoinMiddlewareTests: TestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -122,7 +125,8 @@ class JoinMiddlewareTests: TestCase {
       let secret = try JoinSecretConversion().unapply(
         ("deadbeef", user.id, Int(Date.mock.timeIntervalSince1970))
       )
-      let conn = connection(from: request(to: .teamInviteCode(.confirm(code: "deadbeef", secret: secret))))
+      let conn = connection(
+        from: request(to: .teamInviteCode(.confirm(code: "deadbeef", secret: secret))))
       await _assertInlineSnapshot(
         matching: await siteMiddleware(conn), as: .conn,
         with: """
@@ -137,7 +141,48 @@ class JoinMiddlewareTests: TestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
+    }
+  }
+
+  func testConfirm_InvalidCode() async throws {
+    let user = User.nonSubscriber
+    await withDependencies {
+      $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
+      $0.database.fetchSubscriptionByOwnerId = { _ in
+        struct SomeError: Error {}
+        throw SomeError()
+      }
+      $0.database.fetchUserById = { _ in user }
+      $0.database.sawUser = { _ in }
+      $0.date = .constant(.mock)
+      $0.uuid = .incrementing
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.confirm(code: "deadbeef", secret: "deadbeef")),
+          session: .loggedIn(as: user)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          GET http://localhost:8080/join/deadbeef/confirm/deadbeef
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"This invite link is no longer valid","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """
+      )
     }
   }
 }
@@ -202,7 +247,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
 
       XCTAssertNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
@@ -271,7 +317,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
 
       XCTAssertEqual(sentEmails.value.flatMap(\.to), [currentUser.email])
       XCTAssertNoDifference(
@@ -299,22 +346,25 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: currentUser.email))
         )
       )
-      await _assertInlineSnapshot(matching: await siteMiddleware(conn), as: .conn, with: """
-      POST http://localhost:8080/join/pointfree.co
-      Cookie: pf_session={}
-      
-      email=blob%40pointfree.co
-      
-      302 Found
-      Location: /join/pointfree.co
-      Referrer-Policy: strict-origin-when-cross-origin
-      Set-Cookie: pf_session={"flash":{"message":"You must be logged in to complete that action.","priority":"notice"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-      X-Content-Type-Options: nosniff
-      X-Download-Options: noopen
-      X-Frame-Options: SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies: none
-      X-XSS-Protection: 1; mode=block
-      """)
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          POST http://localhost:8080/join/pointfree.co
+          Cookie: pf_session={}
+
+          email=blob%40pointfree.co
+
+          302 Found
+          Location: /join/pointfree.co
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"You must be logged in to complete that action.","priority":"notice"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """
+      )
     }
   }
 
@@ -335,24 +385,26 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           session: .loggedIn(as: currentUser)
         )
       )
-      await _assertInlineSnapshot(matching: await siteMiddleware(conn), as: .conn, with: """
-      POST http://localhost:8080/join/xyz
-      Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
-      
-      302 Found
-      Location: /account
-      Referrer-Policy: strict-origin-when-cross-origin
-      Set-Cookie: pf_session={"flash":{"message":"You cannot join this team as you already have an active subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-      X-Content-Type-Options: nosniff
-      X-Download-Options: noopen
-      X-Frame-Options: SAMEORIGIN
-      X-Permitted-Cross-Domain-Policies: none
-      X-XSS-Protection: 1; mode=block
-      """)
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          POST http://localhost:8080/join/xyz
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /account
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"You cannot join this team as you already have an active subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """
+      )
     }
   }
   // TODO: test join: inactive subscription
-  // TODO: test join: invalid team code
   // TODO: test join: unused team seats (with and without owner taking seat)
 
   func testConfirm_LoggedIn_Domain() async throws {
@@ -404,7 +456,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
 
       XCTAssertNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
@@ -474,15 +527,13 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     if let code = code {
       subscription.teamInviteCode = code
       _ = try await self.database.execute(
-      """
-      UPDATE "subscriptions"
-      SET "team_invite_code" = \(bind: code)
-      WHERE "id" = \(bind: subscription.id)
-      """
+        """
+        UPDATE "subscriptions"
+        SET "team_invite_code" = \(bind: code)
+        WHERE "id" = \(bind: subscription.id)
+        """
       )
     }
     return subscription
   }
 }
-
-import Overture

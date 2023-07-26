@@ -1203,18 +1203,36 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           text: siteRouter.url(for: .teamInviteCode(.landing(code: subscription.teamInviteCode))),
           buttonColor: .white
         ),
-        .markdownBlock(
+        .form(
           attributes: [
+            .action(siteRouter.path(for: .account(.regenerateTeamInviteCode))),
             .class([
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray400,
               Class.padding([.mobile: [.top: 1]]),
-            ])
+            ]),
+            .method(.post),
+            .onsubmit(
+              unsafe: """
+                if (!confirm("Really invalidate the current invite link? Team mates will need an updated link to join.")) {
+                  return false
+                }
+                """),
           ],
-          """
-          [Click here](\(siteRouter.path(for: .account(.regenerateTeamInviteCode)))) to invalidate
-          the current invite link and generate a new one.
-          """)
+          .button(
+            attributes: [
+              .class([
+                Class.border.none,
+                Class.cursor.pointer,
+                Class.padding([.mobile: [.all: 0]]),
+                Class.pf.colors.bg.white,
+                Class.type.underline,
+              ])
+            ],
+            "Click here"
+          ),
+          " to invalidate the current invite link and generate a new one."
+        )
       )
     ),
   ]

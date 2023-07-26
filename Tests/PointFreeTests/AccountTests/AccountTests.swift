@@ -102,7 +102,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
 final class AccountTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.isRecording = true
+    // SnapshotTesting.isRecording = true
   }
 
   func testAccount() async throws {

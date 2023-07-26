@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 61367
+Content-Length: 64282
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2321,6 +2321,76 @@ html {
                       </div>
                     </div>
                   </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Teammates
+                  </h2>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Team
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="m-pl1
+                                  m-pr1">
+                        <h4 class="m-pb0">
+                          Your current team:
+                        </h4>
+                        <div class="row">
+                          <div class="col-m
+                                      col-m-8">
+                            <p>
+                              Blob (you)
+                            </p>
+                          </div>
+                          <div class="end-d
+                                      col-m
+                                      col-m-4">
+                            <form action="/account/team/members/00000000-0000-0000-0000-000000000000/remove"
+                                  method="post">
+                              <p>
+                                <input type="submit"
+                                       class="medium
+                                              cursor-pointer
+                                              nowrap
+                                              btn-normal
+                                              border-none
+                                              text-decoration-none
+                                              pf-link-white
+                                              fg-white
+                                              bg-purple
+                                              h6
+                                              m-pl1
+                                              m-pr1
+                                              m-pt1
+                                              m-pb1"
+                                       value="Remove">
+                              </p>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Payment info
+                  </h2>
                   <div class="border-top
                               border-gray-800
                               m-pb3
