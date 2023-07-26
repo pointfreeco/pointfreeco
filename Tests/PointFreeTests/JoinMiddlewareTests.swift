@@ -19,7 +19,7 @@ import XCTest
 class JoinMiddlewareTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //isRecording = true
+    // isRecording = true
   }
 
   override func invokeTest() {
@@ -148,7 +148,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-    //isRecording = true
+    // isRecording = true
   }
 
   override func invokeTest() {
