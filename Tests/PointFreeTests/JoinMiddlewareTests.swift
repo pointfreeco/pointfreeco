@@ -35,7 +35,7 @@ class JoinMiddlewareTests: TestCase {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
-      let conn = connection(from: request(to: .join(.landing(code: "deadbeef"))))
+      let conn = connection(from: request(to: .teamInviteCode(.landing(code: "deadbeef"))))
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
@@ -48,7 +48,7 @@ class JoinMiddlewareTests: TestCase {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
-      let conn = connection(from: request(to: .join(.landing(code: "pointfree.co"))))
+      let conn = connection(from: request(to: .teamInviteCode(.landing(code: "pointfree.co"))))
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
@@ -64,7 +64,7 @@ class JoinMiddlewareTests: TestCase {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
-      let conn = connection(from: request(to: .join(.landing(code: "deadbeef"))))
+      let conn = connection(from: request(to: .teamInviteCode(.landing(code: "deadbeef"))))
       await _assertInlineSnapshot(
         matching: await siteMiddleware(conn), as: .conn,
         with: """
@@ -92,7 +92,7 @@ class JoinMiddlewareTests: TestCase {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
-      let conn = connection(from: request(to: .join(.landing(code: "deadbeef"))))
+      let conn = connection(from: request(to: .teamInviteCode(.landing(code: "deadbeef"))))
       await _assertInlineSnapshot(
         matching: await siteMiddleware(conn), as: .conn,
         with: """
@@ -122,7 +122,7 @@ class JoinMiddlewareTests: TestCase {
       let secret = try JoinSecretConversion().unapply(
         ("deadbeef", user.id, Int(Date.mock.timeIntervalSince1970))
       )
-      let conn = connection(from: request(to: .join(.confirm(code: "deadbeef", secret: secret))))
+      let conn = connection(from: request(to: .teamInviteCode(.confirm(code: "deadbeef", secret: secret))))
       await _assertInlineSnapshot(
         matching: await siteMiddleware(conn), as: .conn,
         with: """
@@ -183,7 +183,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .join(.join(code: subscription.teamInviteCode, email: nil)),
+          to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
           session: .loggedIn(as: currentUser)
         )
       )
@@ -250,7 +250,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .join(.join(code: subscription.teamInviteCode, email: currentUser.email)),
+          to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: currentUser.email)),
           session: .loggedIn(as: currentUser)
         )
       )
@@ -296,7 +296,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .join(.join(code: subscription.teamInviteCode, email: currentUser.email))
+          to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: currentUser.email))
         )
       )
       await _assertInlineSnapshot(matching: await siteMiddleware(conn), as: .conn, with: """
@@ -331,7 +331,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .join(.join(code: subscription.teamInviteCode, email: nil)),
+          to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
           session: .loggedIn(as: currentUser)
         )
       )
@@ -385,7 +385,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
       let conn = connection(
         from: request(
-          to: .join(.confirm(code: subscription.teamInviteCode, secret: secret)),
+          to: .teamInviteCode(.confirm(code: subscription.teamInviteCode, secret: secret)),
           session: .loggedIn(as: currentUser)
         )
       )

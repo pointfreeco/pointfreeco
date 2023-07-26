@@ -45,7 +45,7 @@ func accountMiddleware(
       |> updatePaymentInfoMiddleware
 
   case .regenerateTeamInviteCode:
-    return IO { await regenerateTeamInviteCode(conn.map(const(()))) }
+    return IO { await regenerateTeamInviteCode(conn.map { _ in }) }
 
   case let .rss(salt):
     return IO { await accountRssMiddleware(conn.map { _ in salt }) }
@@ -57,8 +57,7 @@ func accountMiddleware(
     return IO { await cancelMiddleware(conn.map { _ in currentUser }) }
 
   case .subscription(.change(.show)):
-    return conn
-      |> redirect(to: .account())
+    return IO { conn.redirect(to: .account()) }
 
   case let .subscription(.change(.update(pricing))):
     return conn.map(const(currentUser .*. pricing .*. unit))
