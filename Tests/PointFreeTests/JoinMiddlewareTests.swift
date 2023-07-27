@@ -371,6 +371,38 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  func testJoin_LoggedIn_InvalidDomain() async throws {
+    let currentUser = try await self.registerBlob()
+
+    await withDependencies {
+      $0.date = .constant(.mock)
+      $0.uuid = .incrementing
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.join(code: "pointfree.co", email: nil)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          POST http://localhost:8080/join/pointfree.co
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"Could not find that team.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
+    }
+  }
+
   func testJoin_LoggedOut() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -644,7 +676,6 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  // TODO: test confirm: cannot find team
   // TODO: test confirm: non-active team
   // TODO: test confirm: current user has active subscription
 
