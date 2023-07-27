@@ -947,8 +947,6 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  // TODO: test confirm: current user has active subscription
-
   private func registerBlob() async throws -> User {
     try await self.database.registerUser(
       withGitHubEnvelope: .init(
