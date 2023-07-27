@@ -197,7 +197,22 @@ private func add<A>(
       + database.fetchTeamInvites(owner.id).count
       + (owner.subscriptionId == subscription.id ? 1 : 0)
     didAddSubscriptionSeat = currentTotalSeatCount >= stripeSubscription.quantity
-    // TODO: send admin email if this condition is strictly greater than?
+    if currentTotalSeatCount > stripeSubscription.quantity {
+      await fireAndForget {
+        try await sendEmail(
+          to: adminEmails,
+          subject: "[PointFree Error] Stripe quantity mismatch detected",
+          content: inj1(
+            """
+            Database ID: \(subscription.id)
+            Database Quantity: \(currentTotalSeatCount)
+            Stripe Subscription ID: \(stripeSubscription.id)
+            Stripe Quantity: \(stripeSubscription.quantity)
+            """
+          )
+        )
+      }
+    }
     if didAddSubscriptionSeat {
       _ = try await stripe.updateSubscription(
         stripeSubscription,
