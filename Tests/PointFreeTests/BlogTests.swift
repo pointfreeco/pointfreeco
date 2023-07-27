@@ -22,7 +22,7 @@ class BlogTests: TestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.record = true
+    // SnapshotTesting.isRecording = true
   }
 
   func testBlogIndex() async throws {

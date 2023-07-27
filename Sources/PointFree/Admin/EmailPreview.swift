@@ -55,24 +55,30 @@ private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
 
 private func email(selectedTemplate: EmailTemplate) -> Node {
   switch selectedTemplate {
+  case .joinTeamConfirmation:
+    return try! confirmationEmail(
+      email: "blob@pointfree.co",
+      code: "pointfree.co",
+      currentUser: blob
+    )
+  case .newTeammateJoined:
+    return newTeammateEmail(
+      currentUser: blob,
+      owner: blobJr,
+      code: "pointfree.co"
+    )
+  case .ownerNewTeammateJoined:
+    return ownerNewTeammateJoinedEmail(
+      currentUser: blob,
+      owner: blobJr,
+      newPricing: Pricing(billing: .yearly, quantity: 7)
+    )
   case .welcomeEmail1:
-    return welcomeEmail1Content(
-      user: .init(
-        email: "", episodeCreditCount: 1, gitHubUserId: 1, gitHubAccessToken: "", id: User.ID(),
-        isAdmin: false, name: "Blob", referralCode: "", referrerId: User.ID(), rssSalt: "",
-        subscriptionId: Subscription.ID()))
+    return welcomeEmail1Content(user: blob)
   case .welcomeEmail2:
-    return welcomeEmail2Content(
-      user: .init(
-        email: "", episodeCreditCount: 1, gitHubUserId: 1, gitHubAccessToken: "", id: User.ID(),
-        isAdmin: false, name: "Blob", referralCode: "", referrerId: User.ID(), rssSalt: "",
-        subscriptionId: Subscription.ID()))
+    return welcomeEmail2Content(user: blob)
   case .welcomeEmail3:
-    return welcomeEmail3Content(
-      user: .init(
-        email: "", episodeCreditCount: 1, gitHubUserId: 1, gitHubAccessToken: "", id: User.ID(),
-        isAdmin: false, name: "Blob", referralCode: "", referrerId: User.ID(), rssSalt: "",
-        subscriptionId: Subscription.ID()))
+    return welcomeEmail3Content(user: blob)
   }
 }
 
@@ -93,6 +99,12 @@ private func options(selectedTemplate: EmailTemplate?) -> [ChildOf<Tag.Select>] 
 extension EmailTemplate {
   var displayName: String {
     switch self {
+    case .joinTeamConfirmation:
+      return "Join team confirmation"
+    case .newTeammateJoined:
+      return "New teammate joined"
+    case .ownerNewTeammateJoined:
+      return "Notify owner new teammate joined"
     case .welcomeEmail1:
       return "Welcome Email #1"
     case .welcomeEmail2:
@@ -102,3 +114,31 @@ extension EmailTemplate {
     }
   }
 }
+
+private let blob = User(
+  email: "blob@pointfree.co",
+  episodeCreditCount: 1,
+  gitHubUserId: 1,
+  gitHubAccessToken: "",
+  id: User.ID(),
+  isAdmin: false,
+  name: "Blob",
+  referralCode: "",
+  referrerId: User.ID(),
+  rssSalt: "",
+  subscriptionId: Subscription.ID()
+)
+
+private let blobJr = User(
+  email: "blob.jr@pointfree.co",
+  episodeCreditCount: 1,
+  gitHubUserId: 1,
+  gitHubAccessToken: "",
+  id: User.ID(),
+  isAdmin: false,
+  name: "Blob Jr.",
+  referralCode: "",
+  referrerId: User.ID(),
+  rssSalt: "",
+  subscriptionId: Subscription.ID()
+)

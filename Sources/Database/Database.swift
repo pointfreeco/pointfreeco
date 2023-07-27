@@ -40,6 +40,7 @@ public struct Client {
   public var fetchLivestreams: () async throws -> [Livestream]
   public var fetchSubscriptionById: (Models.Subscription.ID) async throws -> Models.Subscription
   public var fetchSubscriptionByOwnerId: (Models.User.ID) async throws -> Models.Subscription
+  public var fetchSubscriptionByTeamInviteCode: (Models.Subscription.TeamInviteCode) async throws -> Models.Subscription
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (TeamInvite.ID) async throws -> TeamInvite
   public var fetchTeamInvites: (Models.User.ID) async throws -> [TeamInvite]
@@ -54,6 +55,7 @@ public struct Client {
   public var insertTeamInvite: (EmailAddress, Models.User.ID) async throws -> TeamInvite
   public var migrate: () async throws -> Void
   public var redeemEpisodeCredit: (Episode.Sequence, Models.User.ID) async throws -> Void
+  public var regenerateTeamInviteCode: (Models.Subscription.ID) async throws -> Void
   public var removeTeammateUserIdFromSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
   public var sawUser: (Models.User.ID) async throws -> Void
@@ -101,6 +103,7 @@ public struct Client {
     fetchLivestreams: @escaping () async throws -> [Livestream],
     fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription,
     fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription,
+    fetchSubscriptionByTeamInviteCode: @escaping (Models.Subscription.TeamInviteCode) async throws -> Models.Subscription,
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
     fetchTeamInvite: @escaping (TeamInvite.ID) async throws -> TeamInvite,
     fetchTeamInvites: @escaping (Models.User.ID) async throws -> [TeamInvite],
@@ -115,6 +118,7 @@ public struct Client {
     insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
     migrate: @escaping () async throws -> Void,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
+    regenerateTeamInviteCode: @escaping (Models.Subscription.ID) async throws -> Void,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
       throws -> Void,
     sawUser: @escaping (Models.User.ID) async throws -> Void,
@@ -155,6 +159,7 @@ public struct Client {
     self.fetchLivestreams = fetchLivestreams
     self.fetchSubscriptionById = fetchSubscriptionById
     self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
+    self.fetchSubscriptionByTeamInviteCode = fetchSubscriptionByTeamInviteCode
     self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId
     self.fetchTeamInvite = fetchTeamInvite
     self.fetchTeamInvites = fetchTeamInvites
@@ -168,6 +173,7 @@ public struct Client {
     self.insertTeamInvite = insertTeamInvite
     self.migrate = migrate
     self.redeemEpisodeCredit = redeemEpisodeCredit
+    self.regenerateTeamInviteCode = regenerateTeamInviteCode
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
     self.sawUser = sawUser
     self.updateEmailSettings = updateEmailSettings

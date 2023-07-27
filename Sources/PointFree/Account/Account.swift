@@ -219,3 +219,26 @@ private func fetchStripeSubscription<A>(
       .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
   }
 }
+
+func regenerateTeamInviteCode(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+
+  guard
+    let currentUser = currentUser,
+    let subscriptionID = currentUser.subscriptionId,
+    let _ = try? await database.regenerateTeamInviteCode(subscriptionID)
+  else {
+    return conn
+      .redirect(to: .account()) {
+        $0.flash(.error, "Something went wrong")
+      }
+  }
+
+  return conn
+    .redirect(to: .account()) {
+      $0.flash(.notice, "A new team invite link has been generated.")
+    }
+}

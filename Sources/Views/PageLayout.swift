@@ -203,6 +203,8 @@ struct Banner {
         return false
       } else if case .blog(.show(.right(107))) = route {
         return false
+      } else if case .teamInviteCode = route {
+        return false
       } else {
         return true
       }

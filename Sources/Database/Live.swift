@@ -268,6 +268,15 @@ extension Client {
           """
         )
       },
+      fetchSubscriptionByTeamInviteCode: { teamInviteCode in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT "subscriptions".*
+          FROM "subscriptions"
+          WHERE "subscriptions"."team_invite_code" = \(bind: teamInviteCode)
+          """
+        )
+      },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
         try await pool.sqlDatabase.all(
           """
@@ -828,6 +837,15 @@ extension Client {
           """
           INSERT INTO "episode_credits" ("episode_sequence", "user_id")
           VALUES (\(bind: episodeSequence), \(bind: userId))
+          """
+        )
+      },
+      regenerateTeamInviteCode: { subscriptionID in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "subscriptions"
+          SET "team_invite_code" = gen_shortid('subscriptions', 'team_invite_code')
+          where "subscriptions"."id" = \(bind: subscriptionID)
           """
         )
       },

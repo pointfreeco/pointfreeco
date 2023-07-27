@@ -6,7 +6,7 @@ import Models
 import PointFreeRouter
 
 public func showInviteView(teamInvite: TeamInvite, inviter: User, currentUser: User?) -> Node {
-  return .gridRow(
+  .gridRow(
     .gridColumn(
       sizes: [.mobile: 12, .desktop: 8],
       attributes: [.style(margin(leftRight: .auto))],

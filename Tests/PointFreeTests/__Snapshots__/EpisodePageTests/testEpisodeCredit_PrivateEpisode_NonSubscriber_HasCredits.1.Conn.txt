@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 74136
+Content-Length: 74135
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1939,7 +1939,7 @@ Prism.languages.insertBefore('swift', 'operator', {
     pattern: /…/
   },
 });
-Prism.languages.insertBefore('swift', 'other-directive', {
+Prism.languages.insertBefore('swift', 'string-literal', {
   'placeholder': {
     pattern: /<#.+?#>/,
     inside: {

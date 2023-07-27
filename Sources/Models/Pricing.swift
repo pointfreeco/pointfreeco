@@ -1,4 +1,5 @@
 import Stripe
+import TaggedMoney
 
 public struct Pricing: Equatable {
   public var billing: Billing
@@ -59,6 +60,19 @@ public struct Pricing: Equatable {
     return self.quantity == 1
       ? .personal
       : .team
+  }
+
+  public var defaultPricing: Cents<Int> {
+    switch (self.lane, self.billing) {
+    case (.personal, .monthly):
+      return 18_00
+    case (.personal, .yearly):
+      return 168_00
+    case (.team, .monthly):
+      return 16_00
+    case (.team, .yearly):
+      return 144_00
+    }
   }
 }
 

@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 121292
+Content-Length: 121291
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1939,7 +1939,7 @@ Prism.languages.insertBefore('swift', 'operator', {
     pattern: /…/
   },
 });
-Prism.languages.insertBefore('swift', 'other-directive', {
+Prism.languages.insertBefore('swift', 'string-literal', {
   'placeholder': {
     pattern: /<#.+?#>/,
     inside: {
