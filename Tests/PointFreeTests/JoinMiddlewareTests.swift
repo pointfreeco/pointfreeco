@@ -512,7 +512,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
     }
   }
-  // TODO: test join: inactive subscription
+
   // TODO: test join: unused team seats (with and without owner taking seat)
 
   func testConfirm_LoggedIn_Domain() async throws {
@@ -712,7 +712,6 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  // TODO: test confirm: non-active team
   // TODO: test confirm: current user has active subscription
 
   private func registerBlob() async throws -> User {
