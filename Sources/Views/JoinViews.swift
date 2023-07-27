@@ -91,7 +91,7 @@ private func joinTeamLandingLoggedIn(
             .class([Class.pf.components.button(color: .black)]),
           ]
         )
-      )
+      ),
     ]
   } else {
     confirmation = .form(

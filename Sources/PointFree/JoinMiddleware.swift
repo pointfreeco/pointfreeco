@@ -15,7 +15,8 @@ import Tagged
 import URLRouting
 import Views
 
-func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<ResponseEnded, Data> {
+func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<ResponseEnded, Data>
+{
   @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
@@ -29,12 +30,13 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
     else {
       return
         await conn
-        .redirect(to: siteRouter.loginPath(redirect: .teamInviteCode(.confirm(code: code, secret: secret))))
+        .redirect(
+          to: siteRouter.loginPath(redirect: .teamInviteCode(.confirm(code: code, secret: secret))))
     }
 
     guard
       let (decryptedCode, decryptedUserID, timestamp) = try? JoinSecretConversion().apply(secret),
-      Int(now.timeIntervalSince1970) <= timestamp + 604_800/* 1 week */,
+      Int(now.timeIntervalSince1970) <= timestamp + 604_800 /* 1 week */,
       decryptedCode == code,
       decryptedUserID == currentUser.id
     else {

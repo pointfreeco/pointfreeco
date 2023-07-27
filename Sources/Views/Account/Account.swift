@@ -949,8 +949,9 @@ private func mainAction(
 private func subscriptionTeamRow(_ data: AccountData) -> Node {
   let currentTeamNode: Node
   if !data.teammates.isEmpty,
-     data.isSubscriptionOwner,
-     !data.subscriberState.isEnterpriseSubscriber {
+    data.isSubscriptionOwner,
+    !data.subscriberState.isEnterpriseSubscriber
+  {
     currentTeamNode = .div(
       attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
       .h4(
@@ -1076,8 +1077,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   let amount =
-  stripeSubscription.plan.interval == .some(.year)
-  ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+    stripeSubscription.plan.interval == .some(.year)
+    ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
   let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
 
   let inviteViaEmail: Node
@@ -1131,10 +1132,9 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
         )
       )
     )
-  } else  {
+  } else {
     inviteViaEmail = []
   }
-
 
   guard data.paymentMethod != nil
   else {

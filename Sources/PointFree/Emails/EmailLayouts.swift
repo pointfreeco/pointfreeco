@@ -83,8 +83,8 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
                 attributes: [.align(.center), .valign(.top)],
                 bodyView(layoutData.data),
                 layoutData.hideFooter
-                ? []
-                : emailFooterView(user: layoutData.user, newsletter: layoutData.newsletter)
+                  ? []
+                  : emailFooterView(user: layoutData.user, newsletter: layoutData.newsletter)
               )
             )
           )

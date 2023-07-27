@@ -33,7 +33,8 @@ extension Client {
     fetchLivestreams: unimplemented("Database.Client.fetchLivestreams"),
     fetchSubscriptionById: unimplemented("Database.Client.fetchSubscriptionById"),
     fetchSubscriptionByOwnerId: unimplemented("Database.Client.fetchSubscriptionByOwnerId"),
-    fetchSubscriptionByTeamInviteCode: unimplemented("Database.Client.fetchSubscriptionByTeamInviteCode"),
+    fetchSubscriptionByTeamInviteCode: unimplemented(
+      "Database.Client.fetchSubscriptionByTeamInviteCode"),
     fetchSubscriptionTeammatesByOwnerId: unimplemented(
       "Database.Client.fetchSubscriptionTeammatesByOwnerId"
     ),

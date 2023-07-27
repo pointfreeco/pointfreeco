@@ -80,7 +80,7 @@ struct AccountRouter: ParserPrinter {
       }
 
       Route(.case(Account.regenerateTeamInviteCode)) {
-        Path { "regenerate-team-invite-code"}
+        Path { "regenerate-team-invite-code" }
       }
 
       Parse {

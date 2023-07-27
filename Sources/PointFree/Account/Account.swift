@@ -231,13 +231,15 @@ func regenerateTeamInviteCode(
     let subscriptionID = currentUser.subscriptionId,
     let _ = try? await database.regenerateTeamInviteCode(subscriptionID)
   else {
-    return conn
+    return
+      conn
       .redirect(to: .account()) {
         $0.flash(.error, "Something went wrong")
       }
   }
 
-  return conn
+  return
+    conn
     .redirect(to: .account()) {
       $0.flash(.notice, "A new team invite link has been generated.")
     }
