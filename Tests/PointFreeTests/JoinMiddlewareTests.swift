@@ -256,7 +256,11 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         sentEmails.withValue { $0.append(email) }
         return SendEmailResponse(id: "", message: "")
       }
-      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.stripe.fetchSubscription = { _ in
+        var stripeSubscription = Stripe.Subscription.mock
+        stripeSubscription.quantity = 2
+        return stripeSubscription
+      }
       $0.stripe.updateSubscription = { stripeSubscription, plan, quantity in
         var stripeSubscription = stripeSubscription
         stripeSubscription.id = .init(subscription.stripeSubscriptionId.rawValue)
@@ -309,7 +313,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
       XCTAssertEqual(updatedSubscription.value?.0.id, subscription.stripeSubscriptionId)
       XCTAssertEqual(updatedSubscription.value?.1, .monthly)
-      XCTAssertEqual(updatedSubscription.value?.2, 2)
+      XCTAssertEqual(updatedSubscription.value?.2, 3)
       let teammateIDs = Set(
         try await self.database.fetchSubscriptionTeammatesByOwnerId(owner.id).map(\.id))
       XCTAssertEqual(
@@ -568,7 +572,11 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         sentEmails.withValue { $0.append(email) }
         return SendEmailResponse(id: "", message: "")
       }
-      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.stripe.fetchSubscription = { _ in
+        var stripeSubscription = Stripe.Subscription.mock
+        stripeSubscription.quantity = 2
+        return stripeSubscription
+      }
       $0.stripe.updateSubscription = { stripeSubscription, plan, quantity in
         var stripeSubscription = stripeSubscription
         stripeSubscription.id = .init(subscription.stripeSubscriptionId.rawValue)
@@ -624,7 +632,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
       XCTAssertEqual(updatedSubscription.value?.0.id, subscription.stripeSubscriptionId)
       XCTAssertEqual(updatedSubscription.value?.1, .monthly)
-      XCTAssertEqual(updatedSubscription.value?.2, 2)
+      XCTAssertEqual(updatedSubscription.value?.2, 3)
     }
   }
 
@@ -775,7 +783,11 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
 
     try await withDependencies {
       $0.date = .constant(.mock)
-      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.stripe.fetchSubscription = { _ in
+        var stripeSubscription = Stripe.Subscription.mock
+        stripeSubscription.quantity = 2
+        return stripeSubscription
+      }
       $0.stripe.updateSubscription = { _, _, _ in
         struct SomeError: Error {}
         throw SomeError()
