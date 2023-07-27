@@ -196,10 +196,12 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     // isRecording = true
   }
 
-  override func invokeTest() {
-    self.useMockBaseDependencies = false
-    super.invokeTest()
-  }
+  #if !os(Linux)
+    override func invokeTest() {
+      self.useMockBaseDependencies = false
+      super.invokeTest()
+    }
+  #endif
 
   func testJoin_LoggedIn_Code() async throws {
     let currentUser = try await self.registerBlob()
