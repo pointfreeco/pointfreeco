@@ -372,7 +372,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  func testJoin_LoggedIn_Domain_StripeError() async throws {
+  func testJoin_LoggedIn_Domain_StripeFetchError() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
     let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
@@ -627,6 +627,48 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       XCTAssertEqual(updatedSubscription.value?.0.id, subscription.stripeSubscriptionId)
       XCTAssertEqual(updatedSubscription.value?.1, .monthly)
       XCTAssertEqual(updatedSubscription.value?.2, 2)
+    }
+  }
+
+  func testConfirm_LoggedIn_Domain_StripeFailure() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
+
+    try await withDependencies {
+      $0.date = .constant(.mock)
+      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.stripe.updateSubscription = { _, _, _ in
+        struct SomeError: Error {}
+        throw SomeError()
+      }
+      $0.uuid = .incrementing
+    } operation: {
+      let secret = try JoinSecretConversion().unapply(
+        (subscription.teamInviteCode, currentUser.id, Int(Date.mock.timeIntervalSince1970))
+      )
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.confirm(code: subscription.teamInviteCode, secret: secret)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f9a74a4c84d055b5f2e9654c34c47287979c94be2886fca8769f7e0cb08a1b831003867c41507255e2d55d8431dabc25aee13bc4bfe6b087194189553a2ae207cb4f63d445e1a2a482c516b922e9aa92cabf7da5b9abcddac5efd9c919037cfd12b0931c289eb6a98
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /join/pointfree.co
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"Could not add you to the team. Try again or contact support@pointfree.co.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
     }
   }
 
