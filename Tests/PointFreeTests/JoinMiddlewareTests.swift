@@ -149,7 +149,8 @@ class JoinMiddlewareTests: TestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -403,7 +404,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -435,7 +437,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -670,7 +673,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
@@ -708,7 +712,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           X-Frame-Options: SAMEORIGIN
           X-Permitted-Cross-Domain-Policies: none
           X-XSS-Protection: 1; mode=block
-          """)
+          """
+      )
     }
   }
 
