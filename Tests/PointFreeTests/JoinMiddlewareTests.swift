@@ -526,9 +526,6 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     let owner = try await self.registerBlobSr()
     let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
 
-    let sentEmails = LockIsolated<[Email]>([])
-    let updatedSubscription = LockIsolated<(Stripe.Subscription, Plan.ID, Int)?>(nil)
-
     try await withDependencies {
       $0.date = .constant(.mock)
       $0.stripe.fetchSubscription = { _ in .mock }
@@ -567,9 +564,86 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  // TODO: test confirm: invalid secret
-  // TODO: test confirm: mismatch code
-  // TODO: test confirm: mismatch user id
+  func testConfirm_LoggedIn_UserIDMismatch() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
+
+    try await withDependencies {
+      $0.date = .constant(.mock)
+      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.uuid = .incrementing
+    } operation: {
+      let secret = try JoinSecretConversion().unapply(
+        (
+          subscription.teamInviteCode,
+          User.ID(UUID(uuidString: "99999999-9999-9999-9999-999999999999")!),
+          Int(Date.mock.timeIntervalSince1970)
+        )
+      )
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.confirm(code: subscription.teamInviteCode, secret: secret)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f9a74a4c84d055b5f2e9654c34c47287979c94be2886fca8769f7e0c201a8b13809316ec41c0e2c572d5cd14a14abcb53e71abc42f76201789d119c5aaba7287cb4f63d445e1a2a482c516b922e9aa92cabf7da5b9abcddacc773d82cfa5af5d389a5eb7528190134
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"This invite link is no longer valid","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
+    }
+  }
+
+  func testConfirm_LoggedIn_CodeMismatch() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
+
+    try await withDependencies {
+      $0.date = .constant(.mock)
+      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.uuid = .incrementing
+    } operation: {
+      let secret = try JoinSecretConversion().unapply(
+        ("deadbeef", currentUser.id, Int(Date.mock.timeIntervalSince1970))
+      )
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.confirm(code: subscription.teamInviteCode, secret: secret)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f8e7eacc25b064c5c66954cff243a12787dcd45e2b416a8e524eafdcb08a1b82c003867d90807255e3048d8431db6df5aee13a14bfe6b08719418944ebfe54214c9cc3c405a142a74553308da3280ab2cacf8d95e98c815747a45ce3cfba86d353c333009
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"This invite link is no longer valid","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
+    }
+  }
+
   // TODO: test confirm: cannot find team
   // TODO: test confirm: non-active team
   // TODO: test confirm: current user has active subscription
