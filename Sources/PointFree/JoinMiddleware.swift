@@ -34,7 +34,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
 
     guard
       let (decryptedCode, decryptedUserID, timestamp) = try? JoinSecretConversion().apply(secret),
-      Int(now.timeIntervalSince1970) <= timestamp + 604_800,
+      Int(now.timeIntervalSince1970) <= timestamp + 604_800/* 1 week */,
       decryptedCode == code,
       decryptedUserID == currentUser.id
     else {

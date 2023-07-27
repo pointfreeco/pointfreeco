@@ -115,6 +115,44 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  func testJoin_InvalidEmail() async throws {
+    await withDependencies {
+      struct SomeError: Error {}
+      $0.database.fetchEpisodeProgresses = { _ in [] }
+      $0.database.fetchLivestreams = { [] }
+      $0.database.fetchSubscriptionById = { _ in throw SomeError() }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw SomeError() }
+      $0.database.fetchSubscriptionByTeamInviteCode = { _ in .mock }
+      $0.database.fetchUserById = { _ in .mock }
+      $0.database.sawUser = { _ in }
+      $0.date = .constant(.mock)
+      $0.uuid = .incrementing
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.join(code: "pointfree.co", email: "admin@blob.biz")),
+          session: .loggedIn(as: .nonSubscriber)))
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          POST http://localhost:8080/join/pointfree.co
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+          email=admin%40blob.biz
+
+          302 Found
+          Location: /join/pointfree.co
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"Your email address must be from the @pointfree.co domain.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
+    }
+  }
+
   func testConfirm_LoggedOut() async throws {
     let user = User.mock
     try await withDependencies {
@@ -483,14 +521,58 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
-  // TODO: test confirm: logged out
+  func testConfirm_LoggedIn_ExpiredCode() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
+
+    let sentEmails = LockIsolated<[Email]>([])
+    let updatedSubscription = LockIsolated<(Stripe.Subscription, Plan.ID, Int)?>(nil)
+
+    try await withDependencies {
+      $0.date = .constant(.mock)
+      $0.stripe.fetchSubscription = { _ in .mock }
+      $0.uuid = .incrementing
+    } operation: {
+      let secret = try JoinSecretConversion().unapply(
+        (
+          subscription.teamInviteCode,
+          currentUser.id,
+          Int(Date.mock.addingTimeInterval(-700_000).timeIntervalSince1970)
+        )
+      )
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.confirm(code: subscription.teamInviteCode, secret: secret)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          GET http://localhost:8080/join/pointfree.co/confirm/309df8a272a74d37b902df4f9a74a4c84d055b5f2e9654c34c47287979c94be2886fca8769f7e0cb08a1b831003867c41507255e2d55d8431dabc25aee13bc4bfe6b087194189553a2ae207cb4f63d445e1a2a482c516b922e9aa92cabf6df5b9abcddaca84acabd9594437b4126b2df20a5593c
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"This invite link is no longer valid","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """
+      )
+    }
+  }
+
   // TODO: test confirm: invalid secret
   // TODO: test confirm: mismatch code
   // TODO: test confirm: mismatch user id
   // TODO: test confirm: cannot find team
   // TODO: test confirm: non-active team
   // TODO: test confirm: current user has active subscription
-  // TODO: test confirm: expired link
 
   private func registerBlob() async throws -> User {
     try await self.database.registerUser(
