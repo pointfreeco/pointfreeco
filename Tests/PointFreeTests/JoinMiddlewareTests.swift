@@ -372,6 +372,44 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  func testJoin_LoggedIn_Domain_StripeError() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
+
+    await withDependencies {
+      $0.date = .constant(.mock)
+      $0.stripe.fetchSubscription = { _ in
+        struct SomeError: Error {}
+        throw SomeError()
+      }
+      $0.uuid = .incrementing
+    } operation: {
+      let conn = connection(
+        from: request(
+          to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
+          session: .loggedIn(as: currentUser)
+        )
+      )
+      await _assertInlineSnapshot(
+        matching: await siteMiddleware(conn), as: .conn,
+        with: """
+          POST http://localhost:8080/join/pointfree.co
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          302 Found
+          Location: /join/pointfree.co
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"Could not find subscription. Try again or contact support@pointfree.co.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """)
+    }
+  }
+
   func testJoin_LoggedIn_InactiveSubscription() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()

@@ -432,7 +432,7 @@ func ownerNewTeammateJoinedEmail(
             .markdownBlock(
               attributes: [.class([Class.pf.type.body.regular])],
               """
-              Note that a new seat was added to your subscription to accomodate
+              Note that a new seat was added to your subscription to accommodate
               **\(currentUser.displayName)**, and your credit card has been charged a prorated
               amount based on your billing cycle. You now have **\(newPricing.quantity) seats**
               and your new billing rate is
