@@ -14,7 +14,7 @@ extension Episode {
         hd720: "0243-720p-e49ed573eadd451fa6aab24b0d1c6c4f",
         sd540: "0243-540p-0ad1b0dcd6824dd5ba5e87491021f389"
       ),
-      vimeoId: 848855056
+      vimeoId: 848_855_056
     ),
     id: 243,
     length: .init(.timestamp(minutes: 57, seconds: 10)),
@@ -34,7 +34,7 @@ extension Episode {
         hd720: "0243-trailer-720p-87638ff78f0048beae52359ff3fe0e81",
         sd540: "0243-trailer-540p-396cdbff506a4aa6bd032b91fc93f3e4"
       ),
-      vimeoId: 848841923
+      vimeoId: 848_841_923
     ),
     transcriptBlocks: loadTranscriptBlocks(forSequence: 243)
   )
