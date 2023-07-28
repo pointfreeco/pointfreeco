@@ -5,9 +5,9 @@ The library has been quite stable since its inception, but we weren't ready to p
 on it until we released its [navigation tools][nav-tools-blog], which happened just a few weeks ago.
 If you want to get started with the library today you have two options:
 
-* This week are beginning to release a [brand series of episodes][1.0-tour] to tour the 1.0 library.
-The first episodes build a simple application from scratch to demonstrate how to implement your
-first feature, execute side effects, control dependencies, and write a full test suite.
+* This week we are beginning to release a [brand series of episodes][1.0-tour] to tour the 1.0 
+library. The first episode builds a simple application from scratch to demonstrate how to implement 
+your first feature, execute side effects, control dependencies, and write a full test suite.
 
   Next week the tour continues by rebuilding Apple's [Scrumdinger][scrumdinger] from scratch, using
 the Composable Architecture. This involves composing together many isolated features, exploring
@@ -30,8 +30,8 @@ and fix any compiler errors for incompatible changes we made to the library.
 ## The future
 
 This is only the beginning for the Composable Architecture. We have [big plans][tca-edge-tweets]
-to implement all the new features of Swift 5.9 and iOS 17 into the library, such as the new 
-`Observable` protocol and macros. These tools will fundamentally change the ergnomics and power of
+to integrate all of the new features of Swift 5.9 and iOS 17 into the library, such as the  
+`Observable` protocol and macros. These tools will fundamentally change the ergonomics and power of
 the library, but as always we will aim to make these additions as backwards compatible as possible.
 
 ## Update today
