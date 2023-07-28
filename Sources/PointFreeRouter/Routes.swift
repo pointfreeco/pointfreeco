@@ -48,6 +48,7 @@ public enum SiteRoute: Equatable {
     useRegionalDiscount: Bool? = nil
   )
   case team(Team)
+  case teamInviteCode(TeamInviteCode)
   case useEpisodeCredit(Episode.ID)
   case webhooks(Webhooks)
 
@@ -606,6 +607,11 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.team)) { TeamRouter() }
+
+      Route(.case(SiteRoute.teamInviteCode)) {
+        Path { "join" }
+        JoinRouter()
+      }
 
       Route(.case(SiteRoute.useEpisodeCredit)) {
         Method.post

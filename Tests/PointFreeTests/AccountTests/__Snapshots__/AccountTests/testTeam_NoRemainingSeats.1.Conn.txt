@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 72017
+Content-Length: 77665
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1945,8 +1945,9 @@ html {
           content="http://localhost:8080/account">
     <meta name="twitter:url"
           content="http://localhost:8080/account">
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
     </script>
   </head>
   <body>
@@ -2211,14 +2212,48 @@ html {
                 <p>
                   Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
                 </p>
-                <ul>
-                  <li>
-                    <a class="underline-link"
-                       href="http://localhost:8080/subscribe/personal?ref=deadbeef">
-                      http://localhost:8080/subscribe/personal?ref=deadbeef
-                    </a>
-                  </li>
-                </ul>
+                <div class="flex
+                            m-pt1">
+                  <input class="font-family-inherit
+                                fg-black
+                                border-box
+                                rounded
+                                border
+                                border-gray-800
+                                h-2r
+                                m-pl1
+                                m-pr1
+                                m-pt1
+                                m-pb1
+                                align-middle
+                                w-100p"
+                         value="http://localhost:8080/subscribe/personal?ref=deadbeef"
+                         type="text"
+                         readonly
+                         onclick="this.select();">
+                  <input type="button"
+                         class="medium
+                                cursor-pointer
+                                nowrap
+                                btn-normal
+                                border-none
+                                text-decoration-none
+                                pf-link-black
+                                fg-black
+                                bg-white
+                                h6
+                                m-pl1
+                                m-pr1
+                                m-pt1
+                                m-pb1
+                                align-middle
+                                d-ml2
+                                m-ml1"
+                         value="Copy"
+                         onclick="navigator.clipboard.writeText("http://localhost:8080/subscribe/personal?ref=deadbeef");
+this.value = "Copied!";
+setTimeout(() => { this.value = "Copy"; }, 3000);">
+                </div>
               </div>
             </div>
           </div>
@@ -2378,6 +2413,13 @@ html {
                       </div>
                     </div>
                   </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Teammates
+                  </h2>
                   <div class="border-top
                               border-gray-800
                               m-pb3
@@ -2395,9 +2437,9 @@ html {
                                 col-m-9">
                       <div class="m-pl1
                                   m-pr1">
-                        <p>
+                        <h4 class="m-pb0">
                           Your current team:
-                        </p>
+                        </h4>
                         <div class="row">
                           <div class="col-m
                                       col-m-8">
@@ -2476,67 +2518,162 @@ html {
                                 col-m-3">
                       <div>
                         <p>
-                          Add teammate
+                          Invite via email
                         </p>
                       </div>
                     </div>
                     <div class="col-m
                                 col-m-9">
-                      <div class="m-pl1
-                                  m-pr1">
-                        <form action="/invites/add"
-                              method="post"
-                              class="flex
-                                     m-pt1">
-                          <input class="font-family-inherit
-                                        fg-black
-                                        border-box
-                                        rounded
-                                        border
-                                        border-gray-800
-                                        h-2r
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        align-middle
-                                        w-100p"
-                                 name="email"
-                                 placeholder="blob@example.com"
-                                 type="email"
-                                 required>
-                          <input type="submit"
-                                 class="medium
-                                        cursor-pointer
-                                        nowrap
-                                        btn-normal
-                                        border-none
-                                        text-decoration-none
-                                        pf-link-white
-                                        fg-white
-                                        bg-purple
-                                        h6
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        align-middle
-                                        d-ml2
-                                        m-ml1"
-                                 value="Add">
-                        </form>
-                        <p class="fg-black
+                      <div class="fg-black
                                   normal
-                                  h6
+                                  h5
                                   lh-4
-                                  fg-gray400
-                                  m-pt1">
-                          Add a teammate to your subscription for a discounted rate of $16
-per month. Your first invoice will be prorated based on your current billing cycle.
+                                  md-ctn">
+                        <p>Add a teammate to your subscription for a discounted rate of <strong>$16/month</strong>. Your first invoice will be prorated based on your current billing cycle.</p>
+
+                      </div>
+                      <form action="/invites/add"
+                            method="post"
+                            class="flex
+                                   m-pt1">
+                        <input class="font-family-inherit
+                                      fg-black
+                                      border-box
+                                      rounded
+                                      border
+                                      border-gray-800
+                                      h-2r
+                                      m-pl1
+                                      m-pr1
+                                      m-pt1
+                                      m-pb1
+                                      align-middle
+                                      w-100p"
+                               name="email"
+                               placeholder="blob@example.com"
+                               type="email"
+                               required>
+                        <input type="submit"
+                               class="medium
+                                      cursor-pointer
+                                      nowrap
+                                      btn-normal
+                                      border-none
+                                      text-decoration-none
+                                      pf-link-white
+                                      fg-white
+                                      bg-purple
+                                      h6
+                                      m-pl1
+                                      m-pr1
+                                      m-pt1
+                                      m-pb1
+                                      align-middle
+                                      d-ml2
+                                      m-ml1"
+                               value="Add">
+                      </form>
+                    </div>
+                  </div>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Invite via link
                         </p>
                       </div>
                     </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="fg-black
+                                  normal
+                                  h5
+                                  lh-4
+                                  md-ctn">
+                        <p>Invite your colleages to your subscription by sharing the following URL. Your credit
+card will be charged a prorated amount of <strong>$16/month</strong>
+when a teammate joins.</p>
+
+                      </div>
+                      <div class="flex
+                                  m-pt1">
+                        <input class="font-family-inherit
+                                      fg-black
+                                      border-box
+                                      rounded
+                                      border
+                                      border-gray-800
+                                      h-2r
+                                      m-pl1
+                                      m-pr1
+                                      m-pt1
+                                      m-pb1
+                                      align-middle
+                                      w-100p"
+                               value="http://localhost:8080/join/cafed00d"
+                               type="text"
+                               readonly
+                               onclick="this.select();">
+                        <input type="button"
+                               class="medium
+                                      cursor-pointer
+                                      nowrap
+                                      btn-normal
+                                      border-none
+                                      text-decoration-none
+                                      pf-link-black
+                                      fg-black
+                                      bg-white
+                                      h6
+                                      m-pl1
+                                      m-pr1
+                                      m-pt1
+                                      m-pb1
+                                      align-middle
+                                      d-ml2
+                                      m-ml1"
+                               value="Copy"
+                               onclick="navigator.clipboard.writeText("http://localhost:8080/join/cafed00d");
+this.value = "Copied!";
+setTimeout(() => { this.value = "Copy"; }, 3000);">
+                      </div>
+                      <form action="/account/regenerate-team-invite-code"
+                            class="fg-black
+                                   normal
+                                   h6
+                                   lh-4
+                                   fg-gray400
+                                   m-pt1"
+                            method="post"
+                            onsubmit="if (!confirm("Really invalidate the current invite link? Team mates will need an updated link to join.")) {
+  return false
+}">
+                        <button class="border-none
+                                       cursor-pointer
+                                       m-pl0
+                                       m-pr0
+                                       m-pt0
+                                       m-pb0
+                                       bg-white
+                                       underline">
+                          Click here
+                        </button>
+                         to invalidate the current invite link and generate a new one.
+                      </form>
+                    </div>
                   </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Payment info
+                  </h2>
                   <div class="border-top
                               border-gray-800
                               m-pb3

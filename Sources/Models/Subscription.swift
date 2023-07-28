@@ -28,3 +28,9 @@ public struct Subscription: Decodable, Identifiable {
 
   public typealias TeamInviteCode = Tagged<(Self, teamInviteCode: ()), String>
 }
+
+extension Tagged where Tag == (Subscription, teamInviteCode: ()), RawValue == String {
+  public var isDomain: Bool {
+    self.rawValue.contains(".")
+  }
+}

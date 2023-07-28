@@ -12,6 +12,8 @@ import XCTest
 @testable import PointFree
 
 open class TestCase: XCTestCase {
+  public var useMockBaseDependencies = true
+
   open override class func setUp() {
     super.setUp()
     Backtrace.install()
@@ -19,13 +21,15 @@ open class TestCase: XCTestCase {
 
   open override func invokeTest() {
     withDependencies {
-      $0.database = .mock
-      $0.date.now = .mock
-      $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-      $0.gitHub = .mock
-      $0.mailgun = .mock
-      $0.stripe = .mock
-      $0.uuid = .incrementing
+      if self.useMockBaseDependencies {
+        $0.database = .mock
+        $0.date.now = .mock
+        $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+        $0.gitHub = .mock
+        $0.mailgun = .mock
+        $0.stripe = .mock
+        $0.uuid = .incrementing
+      }
     } operation: {
       super.invokeTest()
     }
@@ -48,6 +52,7 @@ open class TestCase: XCTestCase {
 }
 
 open class LiveDatabaseTestCase: XCTestCase {
+  public var useMockBaseDependencies = true
   var pool: EventLoopGroupConnectionPool<PostgresConnectionSource>!
 
   open override class func setUp() {
@@ -65,13 +70,14 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   open override func invokeTest() {
     withDependencies {
-      $0.date.now = .mock
-      $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-      $0.gitHub = .mock
-      $0.mailgun = .mock
-      $0.stripe = .mock
-      $0.uuid = .incrementing
-
+      if self.useMockBaseDependencies {
+        $0.date.now = .mock
+        $0.envVars = $0.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+        $0.gitHub = .mock
+        $0.mailgun = .mock
+        $0.stripe = .mock
+        $0.uuid = .incrementing
+      }
       precondition(!$0.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(

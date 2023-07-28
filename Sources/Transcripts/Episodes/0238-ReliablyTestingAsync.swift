@@ -14,7 +14,9 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-06-19")!,
     references: [
-      .reliablyTestingAsync
+      .reliablyTestingAsync,
+      .concurrencyExtras,
+      .announcingConcurrencyExtras,
     ],
     sequence: 238,
     subtitle: "The Problem",

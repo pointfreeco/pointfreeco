@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 61654
+Content-Length: 64282
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1945,8 +1945,9 @@ html {
           content="http://localhost:8080/account">
     <meta name="twitter:url"
           content="http://localhost:8080/account">
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
+    <script defer
+            data-domain="pointfree.co"
+            src="https://plausible.io/js/script.js">
     </script>
   </head>
   <body>
@@ -2320,6 +2321,76 @@ html {
                       </div>
                     </div>
                   </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Teammates
+                  </h2>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Team
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="m-pl1
+                                  m-pr1">
+                        <h4 class="m-pb0">
+                          Your current team:
+                        </h4>
+                        <div class="row">
+                          <div class="col-m
+                                      col-m-8">
+                            <p>
+                              Blob (you)
+                            </p>
+                          </div>
+                          <div class="end-d
+                                      col-m
+                                      col-m-4">
+                            <form action="/account/team/members/00000000-0000-0000-0000-000000000000/remove"
+                                  method="post">
+                              <p>
+                                <input type="submit"
+                                       class="medium
+                                              cursor-pointer
+                                              nowrap
+                                              btn-normal
+                                              border-none
+                                              text-decoration-none
+                                              pf-link-white
+                                              fg-white
+                                              bg-purple
+                                              h6
+                                              m-pl1
+                                              m-pr1
+                                              m-pt1
+                                              m-pb1"
+                                       value="Remove">
+                              </p>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h2 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2">
+                    Payment info
+                  </h2>
                   <div class="border-top
                               border-gray-800
                               m-pb3

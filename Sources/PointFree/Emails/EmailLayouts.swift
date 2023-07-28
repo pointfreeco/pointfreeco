@@ -33,6 +33,7 @@ struct SimpleEmailLayoutData<A> {
   /// preview of the email in the inbox.
   let preheader: String
   let template: EmailLayoutTemplate
+  var hideFooter = false
   /// Any other data the email view needs to do its job.
   let data: A
 }
@@ -81,7 +82,9 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
               .td(
                 attributes: [.align(.center), .valign(.top)],
                 bodyView(layoutData.data),
-                emailFooterView(user: layoutData.user, newsletter: layoutData.newsletter)
+                layoutData.hideFooter
+                  ? []
+                  : emailFooterView(user: layoutData.user, newsletter: layoutData.newsletter)
               )
             )
           )
@@ -90,6 +93,28 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> Node) -> (SimpleEmailLayo
     ]
   }
     >>> { applyInlineStyles(node: $0, stylesheet: emailStylesheet) }
+}
+
+func simpleEmailLayout(
+  user: User?,
+  newsletter: EmailSetting.Newsletter?,
+  title: String,
+  preheader: String,
+  template: EmailLayoutTemplate,
+  hideFooter: Bool = false,
+  body: @escaping () -> Node
+) -> Node {
+  simpleEmailLayout(body)(
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: newsletter,
+      title: title,
+      preheader: preheader,
+      template: template,
+      hideFooter: hideFooter,
+      data: ()
+    )
+  )
 }
 
 let bodyTableStyles =

@@ -300,18 +300,6 @@ private func privateRssFeed(accountData: AccountData) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   let user = accountData.currentUser
-  let rssUrl = siteRouter.url(for: .account(.rss(salt: user.rssSalt)))
-  let rssLink: Node = [
-    .ul(
-      .li(
-        .a(
-          attributes: [.class([Class.pf.type.underlineLink]), .href(rssUrl)],
-          .text(String(rssUrl.prefix(40)) + "...")
-        )
-      )
-    ),
-    rssTerms(stripeSubscription: accountData.stripeSubscription),
-  ]
 
   return .gridRow(
     .gridColumn(
@@ -341,7 +329,7 @@ private func privateRssFeed(accountData: AccountData) -> Node {
         .p(
           """
           Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
-          to consume our videos: an RSS feed that can be used with podcast apps!
+          to consume our videos: an RSS feed that can be used with most podcast apps!
           """),
         .p(
           "The link below should work with most podcast apps out there today (please ",
@@ -355,7 +343,10 @@ private func privateRssFeed(accountData: AccountData) -> Node {
           " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
           " monitored, so please do not share with others."
         ),
-        rssLink
+        copyToPasteboard(
+          text: siteRouter.url(for: .account(.rss(salt: user.rssSalt))),
+          buttonColor: .black
+        )
       )
     )
   )
@@ -426,17 +417,7 @@ private func referAFriend(
           """
           Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
           """),
-        .ul(
-          .li(
-            .a(
-              attributes: [
-                .class([Class.pf.type.underlineLink]),
-                .href(referralUrl),
-              ],
-              .text(referralUrl)
-            )
-          )
-        )
+        copyToPasteboard(text: referralUrl, buttonColor: .black)
       )
     )
   )
@@ -455,10 +436,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
         paymentMethod: accountData.paymentMethod,
         currentDate: currentDate
       ),
-      subscriptionTeamRow(accountData),
-      subscriptionInvitesRowView(accountData.teamInvites),
-      subscriptionInviteMoreRowView(accountData),
-      addTeammateToSubscriptionRow(accountData),
+      teammatesSection(accountData: accountData),
       subscriptionPaymentInfoView(subscription, paymentMethod: accountData.paymentMethod),
     ]
 
@@ -472,6 +450,17 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       )
     )
   )
+}
+
+private func teammatesSection(
+  accountData: AccountData
+) -> Node {
+  [
+    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Teammates"]),
+    subscriptionTeamRow(accountData),
+    subscriptionInviteMoreRowView(accountData),
+    addTeammateToSubscriptionRow(accountData),
+  ]
 }
 
 private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
@@ -958,11 +947,36 @@ private func mainAction(
 }
 
 private func subscriptionTeamRow(_ data: AccountData) -> Node {
-  guard
-    !data.teammates.isEmpty,
-    data.isTeamSubscription,
+  let currentTeamNode: Node
+  if !data.teammates.isEmpty,
+    data.isSubscriptionOwner,
     !data.subscriberState.isEnterpriseSubscriber
-  else { return [] }
+  {
+    currentTeamNode = .div(
+      attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+      .h4(
+        attributes: [.class([Class.padding([.mobile: [.bottom: 0]])])],
+        "Your current team:"
+      ),
+      .fragment(data.teammates.map { teammateRowView(data.currentUser, $0) })
+    )
+  } else {
+    currentTeamNode = []
+  }
+
+  let invitesNode: Node
+  if !data.teamInvites.isEmpty {
+    invitesNode = .div(
+      attributes: [.class([Class.padding([.mobile: [.leftRight: 1, .top: 1]])])],
+      .h4(
+        attributes: [.class([Class.padding([.mobile: [.bottom: 0]])])],
+        "These teammates have been invited, but have not yet accepted."
+      ),
+      .fragment(data.teamInvites.map(inviteRowView))
+    )
+  } else {
+    invitesNode = []
+  }
 
   return .gridRow(
     attributes: [.class([subscriptionInfoRowClass])],
@@ -972,11 +986,8 @@ private func subscriptionTeamRow(_ data: AccountData) -> Node {
     ),
     .gridColumn(
       sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        .p("Your current team:"),
-        .fragment(data.teammates.map { teammateRowView(data.currentUser, $0) })
-      )
+      currentTeamNode,
+      invitesNode
     )
   )
 }
@@ -1001,26 +1012,6 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
             .value("Remove"),
           ])
         )
-      )
-    )
-  )
-}
-
-private func subscriptionInvitesRowView(_ invites: [TeamInvite]) -> Node {
-  guard !invites.isEmpty else { return [] }
-
-  return .gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Invites"))
-    ),
-    .gridColumn(
-      sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        .p("These teammates have been invited, but have not yet accepted."),
-        .fragment(invites.map(inviteRowView))
       )
     )
   )
@@ -1078,12 +1069,72 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 
 private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
-  guard let subscription = data.stripeSubscription else { return [] }
-  guard subscription.isRenewing else { return [] }
-  let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
-  guard invitesRemaining == 0 else { return [] }
+  guard let stripeSubscription = data.stripeSubscription else { return [] }
+  guard let subscription = data.subscription else { return [] }
+  guard data.isSubscriptionOwner else { return [] }
+  guard stripeSubscription.isRenewing else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
+
+  let amount =
+    stripeSubscription.plan.interval == .some(.year)
+    ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+  let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
+
+  let inviteViaEmail: Node
+  let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
+  if invitesRemaining <= 0 {
+    inviteViaEmail = .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Invite via email"))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 9],
+        .markdownBlock(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular
+            ])
+          ],
+          """
+          Add a teammate to your subscription for a discounted rate of **$\(amount.rawValue / 100)/\
+          \(interval)**. Your first invoice will be prorated based on your current billing cycle.
+          """
+        ),
+        .form(
+          attributes: [
+            .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
+            .method(.post),
+            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
+          ],
+          .input(
+            attributes: [
+              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+              .name("email"),
+              .placeholder("blob@example.com"),
+              .type(.email),
+              .required(true),
+            ]
+          ),
+          .input(
+            attributes: [
+              .type(.submit),
+              .class([
+                Class.pf.components.button(color: .purple, size: .small),
+                Class.align.middle,
+                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+              ]),
+              .value("Add"),
+            ]
+          )
+        )
+      )
+    )
+  } else {
+    inviteViaEmail = []
+  }
 
   guard data.paymentMethod != nil
   else {
@@ -1095,8 +1146,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.desktop: 9],
-        Node.gridRow(
-          Node.gridColumn(
+        .gridRow(
+          .gridColumn(
             sizes: [.mobile: 12, .desktop: 6],
             .div(
               attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
@@ -1125,70 +1176,72 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
     )
   }
 
-  let amount =
-    subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
-  let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
+  return [
+    inviteViaEmail,
 
-  return .gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Add teammate"))
-    ),
-    .gridColumn(
-      sizes: [.mobile: 9],
-      .div(
-        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+    .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Invite via link"))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 9],
+        .markdownBlock(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular
+            ])
+          ],
+          """
+          Invite your colleages to your subscription by sharing the following URL. Your credit
+          card will be charged a prorated amount of **$\(amount.rawValue / 100)/\(interval)**
+          when a teammate joins.
+          """
+        ),
+        copyToPasteboard(
+          text: siteRouter.url(for: .teamInviteCode(.landing(code: subscription.teamInviteCode))),
+          buttonColor: .white
+        ),
         .form(
           attributes: [
-            .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
-            .method(.post),
-            .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
-          .input(
-            attributes: [
-              .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
-              .name("email"),
-              .placeholder("blob@example.com"),
-              .type(.email),
-              .required(true),
-            ]
-          ),
-          .input(
-            attributes: [
-              .type(.submit),
-              .class([
-                Class.pf.components.button(color: .purple, size: .small),
-                Class.align.middle,
-                Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
-              ]),
-              .value("Add"),
-            ]
-          )
-        ),
-        .p(
-          attributes: [
+            .action(siteRouter.path(for: .account(.regenerateTeamInviteCode))),
             .class([
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray400,
               Class.padding([.mobile: [.top: 1]]),
-            ])
+            ]),
+            .method(.post),
+            .onsubmit(
+              unsafe: """
+                if (!confirm("Really invalidate the current invite link? Team mates will need an updated link to join.")) {
+                  return false
+                }
+                """),
           ],
-          .text(
-            """
-            Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
-            per \(interval). Your first invoice will be prorated based on your current billing cycle.
-            """)
+          .button(
+            attributes: [
+              .class([
+                Class.border.none,
+                Class.cursor.pointer,
+                Class.padding([.mobile: [.all: 0]]),
+                Class.pf.colors.bg.white,
+                Class.type.underline,
+              ])
+            ],
+            "Click here"
+          ),
+          " to invalidate the current invite link and generate a new one."
         )
       )
-    )
-  )
+    ),
+  ]
 }
 
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
-  guard subscription.quantity > 1 else { return [] }
+  guard data.isSubscriptionOwner else { return [] }
   let invites = data.teamInvites
   let teammates = data.teammates
   let invitesRemaining = subscription.quantity - invites.count - teammates.count
@@ -1267,55 +1320,58 @@ private func subscriptionPaymentInfoView(
     ]
   }
 
-  return Node.gridRow(
-    attributes: [.class([subscriptionInfoRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 3],
-      .div(.p("Payment"))
-    ),
-    Node.gridColumn(
-      sizes: [.desktop: 9],
-      Node.gridRow(
-        Node.gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          .div(
-            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            paymentInfo
-          )
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          .div(
-            attributes: [
-              .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
-            ],
-            .p(
-              .a(
-                attributes: [
-                  .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(siteRouter.path(for: .account(.paymentInfo()))),
-                ],
-                subscription.customer.right?.hasPaymentInfo == true
-                  ? "Update payment info"
-                  : "Add payment info"
-              )
-            ),
-            .p(
-              .a(
-                attributes: [
-                  .class([
-                    Class.pf.components.button(color: .black, size: .small, style: .underline)
-                  ]),
-                  .href(siteRouter.path(for: .account(.invoices()))),
-                ],
-                "Payment history"
+  return [
+    .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Payment info"]),
+    .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Payment"))
+      ),
+      Node.gridColumn(
+        sizes: [.desktop: 9],
+        Node.gridRow(
+          Node.gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+              paymentInfo
+            )
+          ),
+          .gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            .div(
+              attributes: [
+                .class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])
+              ],
+              .p(
+                .a(
+                  attributes: [
+                    .class([Class.pf.components.button(color: .purple, size: .small)]),
+                    .href(siteRouter.path(for: .account(.paymentInfo()))),
+                  ],
+                  subscription.customer.right?.hasPaymentInfo == true
+                    ? "Update payment info"
+                    : "Add payment info"
+                )
+              ),
+              .p(
+                .a(
+                  attributes: [
+                    .class([
+                      Class.pf.components.button(color: .black, size: .small, style: .underline)
+                    ]),
+                    .href(siteRouter.path(for: .account(.invoices()))),
+                  ],
+                  "Payment history"
+                )
               )
             )
           )
         )
       )
-    )
-  )
+    ),
+  ]
 }
 
 public func format(cents: Cents<Int>) -> String {
@@ -1337,6 +1393,43 @@ private var logoutView: Node {
         ],
         "Logout"
       )
+    )
+  )
+}
+
+private func copyToPasteboard(
+  text: String,
+  buttonColor: Class.pf.components.Color
+) -> Node {
+  .div(
+    attributes: [
+      .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
+    ],
+    .input(
+      attributes: [
+        .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+        .value(text),
+        .type(.text),
+        .readonly(true),
+        .onclick(safe: "this.select();"),
+      ]
+    ),
+    .input(
+      attributes: [
+        .type(.button),
+        .class([
+          Class.pf.components.button(color: .white, size: .small),
+          Class.align.middle,
+          Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+        ]),
+        .value("Copy"),
+        .onclick(
+          unsafe: """
+            navigator.clipboard.writeText("\(text)");
+            this.value = "Copied!";
+            setTimeout(() => { this.value = "Copy"; }, 3000);
+            """),
+      ]
     )
   )
 }
