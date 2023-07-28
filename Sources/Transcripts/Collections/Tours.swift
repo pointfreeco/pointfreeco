@@ -17,8 +17,21 @@ extension Episode.Collection {
           .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
           .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
         ],
+        isHidden: true,
         related: [],
         title: "Composable Architecture",
+        whereToGoFromHere: nil
+      ),
+      .init(
+        blurb: #"""
+          We open sourced the Composable Architecture after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
+          """#,
+        coreLessons: [
+          .init(episode: .ep243_tourOfTCA),
+        ],
+        isFinished: false,
+        related: [],
+        title: "Composable Architecture 1.0",
         whereToGoFromHere: nil
       ),
       update(.parsing) {

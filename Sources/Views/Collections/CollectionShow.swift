@@ -89,6 +89,9 @@ private func sectionRow(
   collection: Episode.Collection,
   section: Episode.Collection.Section
 ) -> Node {
+  guard !section.isHidden
+  else { return [] }
+  
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(
