@@ -5,27 +5,28 @@ The library has been quite stable since its inception, but we weren't ready to p
 on it until we released its [navigation tools][nav-tools-blog], which happened just a few weeks ago.
 If you want to get started with the library today you have two options:
 
-* This week we are beginning to release a [brand series of episodes][1.0-tour] to tour the 1.0 
-library. The first episode builds a simple application from scratch to demonstrate how to implement 
-your first feature, execute side effects, control dependencies, and write a full test suite.
+  * This week we are beginning to release a [brand series of episodes][1.0-tour] to tour the 1.0 
+    library. The first episode builds a simple application from scratch to demonstrate how to
+    implement your first feature, execute side effects, control dependencies, and write a full test
+    suite.
 
-  Next week the tour continues by rebuilding Apple's [Scrumdinger][scrumdinger] from scratch, using
-the Composable Architecture. This involves composing together many isolated features, exploring
-navigation patterns, dealing with complex side-effects, and writing tests to exercise all of the
-subtle and nuanced logic in the application.
+    Next week the tour continues by rebuilding Apple's [Scrumdinger][scrumdinger] from scratch,
+    using the Composable Architecture. This involves composing together many isolated features,
+    exploring navigation patterns, dealing with complex side-effects, and writing tests to exercise
+    all of the subtle and nuanced logic in the application.
 
-* The documentation has a [full tutorial][tutorial] that explores all of the fundamentals of 
-building a feature in the Composable Architecture. This includes implementing the core logic and
-behavior of your features with reducers, controlling dependencies, writing tests, and using the 
-library's navigation tools.
+  * The documentation has a [full tutorial][tutorial] that explores all of the fundamentals of 
+    building a feature in the Composable Architecture. This includes implementing the core logic and
+    behavior of your features with reducers, controlling dependencies, writing tests, and using the 
+    library's navigation tools.
 
 ## Upgrading to 1.0
 
-In tandem with the 1.0 release we are also releasing [0.57.0][0.57.0-release], which will be the
-last 0.x release in the library. It is a backwards compatible release that hard deprecates 
-everything that is removed in 1.0. This provides you a soft landing for upgrading your projects. We 
-recommend you first upgrade to 0.57.0, fix all deprecation warnings, and _then_ upgrade to 1.0
-and fix any compiler errors for incompatible changes we made to the library.
+In tandem with the 1.0 release we are also releasing [0.57.0][0.57.0-release], which is a
+backwards-compatible release that hard deprecates everything that is removed in 1.0. This provides
+you a soft landing for upgrading your projects. We recommend you first upgrade to 0.57.0, fix all
+deprecation warnings, and _then_ upgrade to 1.0 and fix any compiler errors for incompatible changes
+we made to the library.
 
 ## The future
 
