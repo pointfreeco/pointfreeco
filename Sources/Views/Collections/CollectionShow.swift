@@ -91,7 +91,7 @@ private func sectionRow(
 ) -> Node {
   guard !section.isHidden
   else { return [] }
-  
+
   @Dependency(\.siteRouter) var siteRouter
 
   return .div(
