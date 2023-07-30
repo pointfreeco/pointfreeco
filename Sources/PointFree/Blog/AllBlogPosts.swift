@@ -126,4 +126,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0109_ConcurrencyExtras,
   post0110_WritingReliableAsyncTests,
   post0111_TeamInviteCode,
+  post0112_TCA1_0Tour,
 ]

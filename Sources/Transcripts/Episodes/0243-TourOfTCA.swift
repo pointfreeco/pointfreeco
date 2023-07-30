@@ -25,7 +25,7 @@ extension Episode {
       .scrumdinger,
     ],
     sequence: 243,
-    subtitle: "The Point",
+    subtitle: "The Basics",
     title: "Tour of the Composable Architecture 1.0",
     trailerVideo: .init(
       bytesLength: 145_800_000,
