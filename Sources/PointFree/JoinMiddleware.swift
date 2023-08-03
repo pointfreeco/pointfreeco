@@ -192,13 +192,12 @@ private func add<A>(
     billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
     quantity: stripeSubscription.quantity + 1
   )
-  var didAddSubscriptionSeat: Bool
+  var shouldAddSubscriptionSeat: Bool
   do {
     let currentTotalSeatCount =
       try await database.fetchSubscriptionTeammatesByOwnerId(owner.id).count
       + database.fetchTeamInvites(owner.id).count
-      + (owner.subscriptionId == subscription.id ? 1 : 0)
-    didAddSubscriptionSeat = currentTotalSeatCount >= stripeSubscription.quantity
+    shouldAddSubscriptionSeat = currentTotalSeatCount >= stripeSubscription.quantity
     if currentTotalSeatCount > stripeSubscription.quantity {
       await fireAndForget {
         try await sendEmail(
@@ -206,7 +205,7 @@ private func add<A>(
           subject: "[PointFree Error] Stripe quantity mismatch detected",
           content: inj1(
             """
-            Database ID: \(subscription.id)
+            Database Subscription ID: \(subscription.id)
             Database Quantity: \(currentTotalSeatCount)
             Stripe Subscription ID: \(stripeSubscription.id)
             Stripe Quantity: \(stripeSubscription.quantity)
@@ -215,7 +214,7 @@ private func add<A>(
         )
       }
     }
-    if didAddSubscriptionSeat {
+    if shouldAddSubscriptionSeat {
       _ = try await stripe.updateSubscription(
         stripeSubscription,
         newPricing.billing.plan,
@@ -233,7 +232,7 @@ private func add<A>(
         )
       }
   }
-  await fireAndForget { [didAddSubscriptionSeat] in
+  await fireAndForget { [shouldAddSubscriptionSeat] in
     _ = try? await sendEmail(
       to: [owner.email],
       subject: """
@@ -243,7 +242,7 @@ private func add<A>(
         ownerNewTeammateJoinedEmail(
           currentUser: currentUser,
           owner: owner,
-          newPricing: didAddSubscriptionSeat
+          newPricing: shouldAddSubscriptionSeat
             ? newPricing
             : nil
         )
@@ -261,9 +260,15 @@ private func add<A>(
       content: inj2(newTeammateEmail(currentUser: currentUser, owner: owner, code: code))
     )
     _ = try? await sendEmail(
-      to: ["support@pointfree.co"],
+      to: adminEmails,
       subject: "Team invite link used",
-      content: .left("")
+      content: inj1(
+        """
+        Database Subscription ID: \(subscription.id)
+        Stripe Subscription ID: \(stripeSubscription.id)
+        Stripe Quantity: \(stripeSubscription.quantity)
+        """
+      )
     )
   }
 

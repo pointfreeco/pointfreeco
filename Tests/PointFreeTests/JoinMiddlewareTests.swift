@@ -258,7 +258,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       }
       $0.stripe.fetchSubscription = { _ in
         var stripeSubscription = Stripe.Subscription.mock
-        stripeSubscription.quantity = 2
+        stripeSubscription.quantity = 1
         return stripeSubscription
       }
       $0.stripe.updateSubscription = { stripeSubscription, plan, quantity in
@@ -300,7 +300,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         [
           "blob@pointfree.co",
           "blob.sr@pointfree.co",
-          "support@pointfree.co",
+          "brandon@pointfree.co",
+          "stephen@pointfree.co",
         ]
       )
       XCTAssertNoDifference(
@@ -313,7 +314,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
       XCTAssertEqual(updatedSubscription.value?.0.id, subscription.stripeSubscriptionId)
       XCTAssertEqual(updatedSubscription.value?.1, .monthly)
-      XCTAssertEqual(updatedSubscription.value?.2, 3)
+      XCTAssertEqual(updatedSubscription.value?.2, 2)
       let teammateIDs = Set(
         try await self.database.fetchSubscriptionTeammatesByOwnerId(owner.id).map(\.id))
       XCTAssertEqual(
@@ -574,7 +575,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       }
       $0.stripe.fetchSubscription = { _ in
         var stripeSubscription = Stripe.Subscription.mock
-        stripeSubscription.quantity = 2
+        stripeSubscription.quantity = 1
         return stripeSubscription
       }
       $0.stripe.updateSubscription = { stripeSubscription, plan, quantity in
@@ -619,7 +620,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         [
           "blob.sr@pointfree.co",
           "blob@pointfree.co",
-          "support@pointfree.co",
+          "brandon@pointfree.co",
+          "stephen@pointfree.co",
         ]
       )
       XCTAssertNoDifference(
@@ -632,7 +634,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       )
       XCTAssertEqual(updatedSubscription.value?.0.id, subscription.stripeSubscriptionId)
       XCTAssertEqual(updatedSubscription.value?.1, .monthly)
-      XCTAssertEqual(updatedSubscription.value?.2, 3)
+      XCTAssertEqual(updatedSubscription.value?.2, 2)
     }
   }
 
@@ -692,7 +694,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         [
           "blob.sr@pointfree.co",
           "blob@pointfree.co",
-          "support@pointfree.co",
+          "brandon@pointfree.co",
+          "stephen@pointfree.co",
         ]
       )
       XCTAssertNoDifference(
@@ -762,7 +765,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         [
           "blob.sr@pointfree.co",
           "blob@pointfree.co",
-          "support@pointfree.co",
+          "brandon@pointfree.co",
+          "stephen@pointfree.co",
         ]
       )
       XCTAssertNoDifference(
@@ -785,7 +789,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       $0.date = .constant(.mock)
       $0.stripe.fetchSubscription = { _ in
         var stripeSubscription = Stripe.Subscription.mock
-        stripeSubscription.quantity = 2
+        stripeSubscription.quantity = 1
         return stripeSubscription
       }
       $0.stripe.updateSubscription = { _, _, _ in
