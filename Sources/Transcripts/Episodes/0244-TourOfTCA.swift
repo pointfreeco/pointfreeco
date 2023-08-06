@@ -3,14 +3,16 @@ import Foundation
 extension Episode {
   public static let ep244_tourOfTCA = Episode(
     blurb: """
-      We continue our tour of the Composable Architecture 1.0 by rebuilding one of Apple's most complex sample projects: Scrumdinger. We will create our own "Standups" app using the tools of the Composable Architecture.
+      We continue our tour of the Composable Architecture 1.0 by rebuilding one of Apple's most
+      complex sample projects: [Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger).
+      We will create our own "Standups" app using the tools of the Composable Architecture.
       """,
     codeSampleDirectory: "0244-tca-tour-pt2",
     exercises: _exercises,
     id: 244,
     length: .init(.timestamp(minutes: 50, seconds: 30)),
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2023-07-31")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2023-08-07")!,
     references: [
       .theComposableArchitecture,
       .scrumdinger,
