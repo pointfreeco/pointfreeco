@@ -488,7 +488,7 @@ func ownerNewTeammateJoinedEmail(
               .markdownBlock(
                 attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
                 """
-                Your colleage \(colleagueName) has joined your Point-Free subscription. They
+                Your colleague \(colleagueName) has joined your Point-Free subscription. They
                 now have full access to all videos and transcripts of every Point-Free video.
                 You can manage your team by visiting your [account
                 page](\(siteRouter.url(for: .account()))).
