@@ -5,7 +5,7 @@ The library has been quite stable since its inception, but we weren't ready to p
 on it until we released its [navigation tools][nav-tools-blog], which happened just a few weeks ago.
 If you want to get started with the library today you have two options:
 
-  * This week we are beginning to release a [brand series of episodes][1.0-tour] to tour the 1.0 
+  * This week we are beginning to release a [brand new series of episodes][1.0-tour] to tour the 1.0
     library. The first episode builds a simple application from scratch to demonstrate how to
     implement your first feature, execute side effects, control dependencies, and write a full test
     suite.
