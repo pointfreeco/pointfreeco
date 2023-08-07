@@ -39,7 +39,7 @@ public func subscriptionConfirmation(
       episodeStats: episodeStats,
       lane: lane,
       coupon: coupon,
-      useRegionalDiscount: subscribeData.useRegionalDiscount
+      subscribeData: subscribeData
     ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) }
       ?? [],
@@ -202,7 +202,7 @@ private func header(
   episodeStats: EpisodeStats,
   lane: Pricing.Lane,
   coupon: Coupon?,
-  useRegionalDiscount: Bool
+  subscribeData: SubscribeConfirmationData
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -228,10 +228,11 @@ private func header(
     ),
     planFeatures(
       episodeStats: episodeStats,
-      lane: lane
+      lane: lane,
+      subscribeData: subscribeData
     ),
     additionalDiscountInfo(
-      referrer: referrer, coupon: coupon, useRegionalDiscount: useRegionalDiscount),
+      referrer: referrer, coupon: coupon, useRegionalDiscount: subscribeData.useRegionalDiscount),
   ]
 
   return [
@@ -254,7 +255,8 @@ private func header(
 func planFeatures(
   episodeStats: EpisodeStats,
   lane: Pricing.Lane,
-  showDiscountOptions: Bool = true
+  showDiscountOptions: Bool = true,
+  subscribeData: SubscribeConfirmationData
 ) -> Node {
   .gridColumn(
     sizes: [.mobile: 12],
@@ -274,6 +276,7 @@ func planFeatures(
         PricingPlan.personal(
           allEpisodeCount: episodeStats.allEpisodeCount,
           episodeHourCount: episodeStats.episodeHourCount,
+          referralCode: subscribeData.referralCode,
           showDiscountOptions: showDiscountOptions
         )
         .features
