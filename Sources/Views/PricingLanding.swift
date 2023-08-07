@@ -746,6 +746,7 @@ struct PricingPlan {
   static func personal(
     allEpisodeCount: EpisodeStats.AllEpisodeCount,
     episodeHourCount: EpisodeStats.EpisodeHourCount,
+    referralCode: User.ReferralCode? = nil,
     showDiscountOptions: Bool = true
   ) -> PricingPlan {
     @Dependency(\.siteRouter) var siteRouter
@@ -762,7 +763,7 @@ struct PricingPlan {
         + (showDiscountOptions
           ? [
             """
-            [Regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true))))
+            [Regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, referralCode: referralCode, useRegionalDiscount: true))))
             and [education](\(siteRouter.path(for: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
             available
             """
