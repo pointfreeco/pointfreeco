@@ -294,16 +294,18 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await resumeMiddleware(conn.map(const(())))
 
   case .robots:
-    return conn
+    return
+      conn
       .writeStatus(.ok)
-      .respond(text: """
-        User-Agent: *
-        /account
+      .respond(
+        text: """
+          User-Agent: *
+          /account
 
-        User-Agent: GPTBot
-        Disallow: /
-        """)
-    
+          User-Agent: GPTBot
+          Disallow: /
+          """)
+
   case .slackInvite:
     @Dependency(\.envVars) var envVars
     return await conn.redirect(to: envVars.slackInviteURL)
