@@ -37,6 +37,7 @@ public enum SiteRoute: Equatable {
   case pricingLanding
   case privacy
   case resume
+  case robots
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -438,6 +439,10 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.resume)) {
         Path { "resume" }
+      }
+
+      Route(.case(SiteRoute.robots)) {
+        Path { "robots.txt" }
       }
 
       Route(.case(SiteRoute.slackInvite)) {
