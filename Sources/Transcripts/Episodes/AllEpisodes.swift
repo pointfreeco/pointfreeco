@@ -247,5 +247,8 @@ extension Episode {
     .ep242_reliablyTestingAsync,
     .ep243_tourOfTCA,
     .ep244_tourOfTCA,
+    .ep245_tourOfTCA,
+    .ep246_tourOfTCA,
+    .ep247_tourOfTCA,
   ]
 }

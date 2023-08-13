@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep244_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-standups-part-1",
     blurb: """
       We continue our tour of the Composable Architecture 1.0 by rebuilding one of Apple's most
       complex sample projects: [Scrumdinger](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger).
@@ -18,7 +19,7 @@ extension Episode {
       .scrumdinger,
     ],
     sequence: 244,
-    subtitle: "Standups, Part 1",
+    subtitle: "Introducing Standups",
     title: "Tour of the Composable Architecture 1.0",
     trailerVideo: .init(
       bytesLength: 38_300_000,
