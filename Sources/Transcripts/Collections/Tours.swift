@@ -29,6 +29,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep243_tourOfTCA),
           .init(episode: .ep244_tourOfTCA),
+          .init(episode: .ep245_tourOfTCA),
         ],
         isFinished: false,
         related: [],
