@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep246_tourOfTCA = Episode(
     blurb: """
-      TODO
+      We show how to add stack-based navigation to a Composable Architecture application, how to
+      support many different kinds of screens, how to deep link into a navigation stack, and how to
+      write deep tests for how navigation is integrated into the application.
       """,
     codeSampleDirectory: "0246-tca-tour-pt4",
     exercises: _exercises,
