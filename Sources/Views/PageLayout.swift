@@ -414,8 +414,16 @@ func ghosterBanner(isGhosting: Bool) -> Node {
 }
 
 var pastDueBanner: Node {
-  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.subscriptionOwner) var subscriptionOwner
+
+  let ownerMessage: String
+  if let subscriptionOwner = subscriptionOwner {
+    ownerMessage = "\(subscriptionOwner.name ?? "the team owner") (<\(subscriptionOwner.email)>)"
+  } else {
+    ownerMessage = "the team owner"
+  }
 
   switch subscriberState {
   case .nonSubscriber:
@@ -427,8 +435,8 @@ var pastDueBanner: Node {
         .warning,
         """
         Your subscription is past-due! Please
-        [update your payment info](\(siteRouter.path(for: .account(.paymentInfo())))) to ensure access to
-        Point-Free!
+        [update your payment info](\(siteRouter.path(for: .account(.paymentInfo())))) to ensure 
+        access to Point-Free!
         """
       )
     )
@@ -466,8 +474,9 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-    .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+  case 
+      .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
+      .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
@@ -486,7 +495,8 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your team's subscription is past-due! Please contact the team owner to regain access to Point-Free.
+        Your team's subscription is past-due! Please contact \(ownerMessage) to regain access to
+        Point-Free.
         """
       )
     )
@@ -496,18 +506,21 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your team's subscription is canceled. Please contact the team owner to regain access to Point-Free.
+        Your team's subscription is canceled. Please contact \(ownerMessage) to regain access to
+        Point-Free.
         """
       )
     )
 
-  case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-    .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+  case
+      .teammate(status: .active, enterpriseAccount: _, deactivated: true),
+      .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
         """
-        Your team's subscription is deactivated. Please contact the team owner to regain access to Point-Free.
+        Your team's subscription is deactivated. Please contact \(ownerMessage) to regain access to
+        Point-Free.
         """
       )
     )
