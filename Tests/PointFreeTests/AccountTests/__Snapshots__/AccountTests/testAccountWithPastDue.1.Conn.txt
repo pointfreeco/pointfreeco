@@ -1961,8 +1961,8 @@ html {
                   col-m-12">
         <div class="md-ctn">
           <p>Your subscription is past-due! Please
-<a href="/account/payment-info">update your payment info</a> to ensure access to
-Point-Free!</p>
+<a href="/account/payment-info">update your payment info</a> to ensure
+access to Point-Free!</p>
 
         </div>
       </div>
