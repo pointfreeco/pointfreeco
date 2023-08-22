@@ -99,6 +99,9 @@ public func siteMiddleware(
       enterpriseAccount: enterpriseAccount
     )
     $0.subscription = subscription
+    if let ownerUserID = subscription?.userId {
+      $0.subscriptionOwner = try? await database.fetchUserById(ownerUserID)
+    }
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil
