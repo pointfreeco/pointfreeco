@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep247_tourOfTCA = Episode(
     blurb: """
-      TODO
+      We'll learn how to precisely model navigation in the Composable Architecture using an enum to eliminate impossible runtime states at compile time. And we'll begin to implement the app's most complex screen and most complex dependency: the record meeting view and the speech client.
       """,
     codeSampleDirectory: "0247-tca-tour-pt5",
     exercises: _exercises,
