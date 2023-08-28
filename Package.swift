@@ -45,7 +45,7 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.13.2"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
-    .package(url: "https://github.com/vapor/postgres-nio.git", exact: "1.12.1"),
+    .package(url: "https://github.com/vapor/postgres-nio.git", exact: "1.14.2"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
