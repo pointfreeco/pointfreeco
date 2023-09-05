@@ -8,9 +8,8 @@ import Prelude
 
 await PointFree.bootstrap()
 
-_ = try await EitherIO.debug(prefix: "📧 Sending welcome emails...")
-  .flatMap(const(sendWelcomeEmails()))
-  .performAsync()
+print("📧 Sending welcome emails...")
+try await sendWelcomeEmails()
 
 _ = try await EitherIO.debug(prefix: "📧 Delivering gifts...")
   .flatMap(const(deliverGifts()))
