@@ -33,6 +33,7 @@ public func sendWelcomeEmails() async throws {
         do {
           try await sentEmails.append(send(email: email))
           try await clock.sleep(for: .milliseconds(200))
+          break
         } catch where attempt < 3 {
           try await clock.sleep(for: .seconds(10))
         }
