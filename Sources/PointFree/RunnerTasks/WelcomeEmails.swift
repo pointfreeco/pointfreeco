@@ -29,21 +29,12 @@ public func sendWelcomeEmails() async throws {
     print("📧: Sending \(emails.count) welcome emails...")
     var sentEmails: [SendEmailResponse] = []
     for email in emails {
-      do {
-        try await sentEmails.append(send(email: email))
-        try await clock.sleep(for: .milliseconds(200))
-      } catch {
+      for attempt in 1...3 {
         do {
-          try await clock.sleep(for: .seconds(10))
           try await sentEmails.append(send(email: email))
-        } catch {
-          do {
-            try await clock.sleep(for: .seconds(10))
-            try await sentEmails.append(send(email: email))
-          } catch {
-            try await clock.sleep(for: .seconds(10))
-            try await sentEmails.append(send(email: email))
-          }
+          try await clock.sleep(for: .milliseconds(200))
+        } catch where attempt < 3 {
+          try await clock.sleep(for: .seconds(10))
         }
       }
     }
