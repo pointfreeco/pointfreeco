@@ -18,7 +18,11 @@ format. When you run the test the first time, a snapshot is recorded to disk, an
 the test will take a new snapshot of the value and compare it against what is on disk. If those 
 snapshots differ, then the test will fail.
 
-Perhaps the most canonical example of this is snapshot testing views into images. This is because testing views can be quite difficult in general. You can sometimes perform hacks to actually assert on what kinds of view components are on the screen and what data they hold, but this often feels like testing an implementation detail. And it’s also possible to perform UI tests, but those are very slow, can be flakey, and test a wide range of behavior that you may not really care about.
+Perhaps the most canonical example of this is snapshot testing views into images. This is because 
+testing views can be quite difficult in general. You can sometimes perform hacks to actually assert 
+on what kinds of view components are on the screen and what data they hold, but this often feels 
+like testing an implementation detail. And it’s also possible to perform UI tests, but those are 
+very slow, can be flakey, and test a wide range of behavior that you may not really care about.
 
 
 
