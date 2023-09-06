@@ -220,7 +220,8 @@ private func items(forUser user: User, subscription: Stripe.Subscription?) -> [R
     }
   }
 
-  return availableEpisodes
+  return
+    availableEpisodes
     .map { item(forUser: user, episode: $0) }
 }
 
