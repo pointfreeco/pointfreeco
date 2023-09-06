@@ -250,5 +250,7 @@ extension Episode {
     .ep245_tourOfTCA,
     .ep246_tourOfTCA,
     .ep247_tourOfTCA,
+    .ep248_tourOfTCA,
+    .ep249_tourOfTCA,
   ]
 }

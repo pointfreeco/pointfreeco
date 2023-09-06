@@ -204,11 +204,24 @@ let nonYearlyMaxRssItems = 4
 
 private func items(forUser user: User, subscription: Stripe.Subscription?) -> [RssItem] {
   @Dependency(\.episodes) var episodes
-
-  return episodes()
+  let allEpisodes = episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(\.sequence, >))
-    .prefix(subscription?.plan.interval == .some(.year) ? 99999 : nonYearlyMaxRssItems)
+
+  var availableEpisodes: [Episode] = []
+  var subscriberOnlyCount = 0
+  for episode in allEpisodes {
+    if !episode.subscriberOnly {
+      availableEpisodes.append(episode)
+    }
+    if subscription?.plan.interval == .year || subscriberOnlyCount < nonYearlyMaxRssItems {
+      subscriberOnlyCount += 1
+      availableEpisodes.append(episode)
+    }
+  }
+
+  return
+    availableEpisodes
     .map { item(forUser: user, episode: $0) }
 }
 
