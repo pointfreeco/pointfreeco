@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import Html
 import HttpPipeline
+import Mailgun
 import Models
 import PointFreePrelude
 import PointFreeTestSupport
@@ -21,26 +22,57 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
   func testIncrementEpisodeCredits() async throws {
-    var users: [User] = []
     for id in [1, 2, 3] {
       var env = GitHubUserEnvelope.mock
       env.gitHubUser.id = .init(rawValue: id)
-      try await users.append(
-        self.database.registerUser(
-          withGitHubEnvelope: env, email: .init(rawValue: "\(id)@pointfree.co"), now: { .mock }
-        )
+      let ids = try await self.database.execute(
+        """
+        INSERT INTO "users" (
+          "email",
+          "github_user_id",
+          "github_access_token",
+          "name",
+          "episode_credit_count",
+          "created_at"
+        ) VALUES (
+          \(bind: "\(id)@pointfree.co"),
+          \(bind: env.gitHubUser.id),
+          \(bind: env.accessToken.accessToken),
+          \(bind: env.gitHubUser.name),
+          1,
+          CURRENT_DATE - INTERVAL '\(raw: "\(id * 7)") DAY' + INTERVAL '12 HOUR'
+        ) RETURNING "id"
+        """
       )
+      for id in ids {
+        try await self.database.updateEmailSettings(
+          EmailSetting.Newsletter.allNewsletters, id.decode(column: "id")
+        )
+      }
     }
 
-    _ = try await self.database.incrementEpisodeCredits(users.map(\.id))
+    let sentEmails = LockIsolated<[Email]>([])
+    try await withDependencies {
+      $0.continuousClock = ImmediateClock()
+      $0.mailgun.sendEmail = { email in
+        sentEmails.withValue { $0.append(email) }
+        return SendEmailResponse(id: "", message: "")
+      }
+    } operation: {
+      let users2 = try await database.fetchUsersToWelcome(1)
+      let users3 = try await database.fetchUsersToWelcome(2)
+      let users4 = try await database.fetchUsersToWelcome(3)
 
-    var updatedUsers: [User] = []
-    for user in users {
-      try await updatedUsers.append(self.database.fetchUserById(user.id))
-    }
+      _ = try await sendWelcomeEmails()
 
-    zip(users, updatedUsers).forEach {
-      XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount)
+      XCTAssertEqual(4, sentEmails.count)
+
+      let user1 = try await database.fetchUserByGitHub(1)
+      XCTAssertEqual(1, user1.episodeCreditCount)
+      let user2 = try await database.fetchUserByGitHub(2)
+      XCTAssertEqual(1, user2.episodeCreditCount)
+      let user3 = try await database.fetchUserByGitHub(3)
+      XCTAssertEqual(2, user3.episodeCreditCount)
     }
   }
 }
@@ -98,6 +130,8 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testEpisodeEmails() async throws {
-    _ = try await sendWelcomeEmails().performAsync()
+   try await withDependencies { $0.continuousClock = ImmediateClock() } operation: {
+      _ = try await sendWelcomeEmails()
+    }
   }
 }

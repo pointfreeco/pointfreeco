@@ -12,49 +12,52 @@ import Prelude
 import Styleguide
 import Views
 
-public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
+public func sendWelcomeEmails() async throws {
+  @Dependency(\.continuousClock) var clock
   @Dependency(\.database) var database
 
-  let emails = EitherIO {
+  await notifyError(subject: "Welcome emails failed") {
     async let emails1 = database.fetchUsersToWelcome(1).map(welcomeEmail1)
     async let emails2 = database.fetchUsersToWelcome(2).map(welcomeEmail2)
-    async let emails3 = database.fetchUsersToWelcome(3).map(welcomeEmail3)
-    return try await emails1 + emails2 + emails3
-  }
-  .debug { "📧: Sending \($0.count) welcome emails..." }
+    async let users = database.fetchUsersToWelcome(3)
+    let emails3 = try await users.map(welcomeEmail3)
+    if try await !users.isEmpty {
+      _ = try await database.incrementEpisodeCredits(users.map(\.id))
+    }
 
-  let delayedSend = { email in
-    EitherIO { try await send(email: email) }
-      .delay(.milliseconds(200))
-      .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-  }
-
-  return
-    emails
-    .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
-    .flatMap { (emails: [Email]) -> EitherIO<Error, SendEmailResponse> in
-      let stats =
-        emails
-        .reduce(into: [String: [EmailAddress]]()) { dict, email in
-          dict[email.subject, default: []].append(contentsOf: email.to)
+    let emails = try await emails1 + emails2 + emails3
+    print("📧: Sending \(emails.count) welcome emails...")
+    var sentEmails: [SendEmailResponse] = []
+    for email in emails {
+      for attempt in 1...3 {
+        do {
+          try await sentEmails.append(send(email: email))
+          try await clock.sleep(for: .milliseconds(200))
+          break
+        } catch where attempt < 3 {
+          try await clock.sleep(for: .seconds(10))
         }
-        .map { subject, emails in
-          """
-          \(emails.count) \"\(subject)\" emails
-          \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
-          """
-        }
-        .joined(separator: "\n\n")
-      return EitherIO {
-        try await sendEmail(
-          to: adminEmails,
-          subject: "Welcome emails sent",
-          content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
-        )
       }
     }
-    .map(const(unit))
-    .catch(notifyAdmins(subject: "Welcome emails failed"))
+
+    let stats = emails
+      .reduce(into: [String: [EmailAddress]]()) { dict, email in
+        dict[email.subject, default: []].append(contentsOf: email.to)
+      }
+      .map { subject, emails in
+        """
+        \(emails.count) \"\(subject)\" emails
+        \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
+        """
+      }
+      .joined(separator: "\n\n")
+
+    try await sendEmail(
+      to: adminEmails,
+      subject: "Welcome emails sent",
+      content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
+    )
+  }
 }
 
 func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
