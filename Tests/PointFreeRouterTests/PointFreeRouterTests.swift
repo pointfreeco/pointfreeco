@@ -1,9 +1,9 @@
 import CustomDump
 import Dependencies
+import InlineSnapshotTesting
 import Models
 import PointFreePrelude
 import PointFreeTestSupport
-import SnapshotTesting
 import URLRouting
 import UrlFormEncoding
 import XCTest
@@ -51,13 +51,13 @@ class PointFreeRouterTests: TestCase {
     let route = SiteRoute.subscribe(subscribeData)
     let request = try! siteRouter.request(for: route)
 
-    await _assertInlineSnapshot(
-      matching: request, as: .raw,
-      with: """
-        POST http://localhost:8080/subscribe
+    await assertInlineSnapshot(of: request, as: .raw) {
+      """
+      POST http://localhost:8080/subscribe
 
-        coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
-        """)
+      coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
+      """
+    }
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
   }
