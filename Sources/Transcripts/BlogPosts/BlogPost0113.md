@@ -13,7 +13,7 @@ to see what our library has to offer and how it greatly improves upon the tools 
 
 After adding MacroTesting to your project and importing it into your test file, there is one
 primary tool for testing: [`assertMacro`][assert-macro-docs]. This function is similar to the 
-[`assertMacroExpansion`][assert-macro-expansion-source] method that comes with 
+[`assertMacroExpansion`][assert-macro-expansion-source] function that comes with 
 [SwiftSyntax][swift-syntax-gh], but our function does not require you to specify the source string
 that the macro expands to.
 
@@ -21,7 +21,7 @@ that the macro expands to.
 [assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
 [swift-syntax-gh]: https://github.com/apple/swift-syntax 
 
-For example, suppose you had a [`@AddCompletionHandler`][add-completion-handler-source] macro that
+For example, suppose you had an [`@AddCompletionHandler`][add-completion-handler-source] macro that
 can be applied to any `async` method in order to generate an equivalent callback-based method. To 
 test this we merely have to specify the input source string that we want to expand:
 
@@ -29,19 +29,13 @@ test this we merely have to specify the input source string that we want to expa
 [add-completion-handler-source]: https://github.com/pointfreeco/swift-macro-testing/blob/bd81bb61318cab572210943e43d7188415e20bdb/Tests/MacroTestingTests/MacroExamples/AddCompletionHandlerMacro.swift
 
 ```swift
-import MacroTesting
-
-class MyMacroTests: XCTestCase {
-  func testAddAsyncCompletionHandler() {
-    assertMacro {
-      """
-      struct MyStruct {
-        @AddCompletionHandler
-        func f(a: Int) async -> String {
-          return b
-        }
-      }
-      """
+func testAddAsyncCompletionHandler() {
+  assertMacro(["AddCompletionHandler": AddCompletionHandlerMacro.self]) {
+    """
+    struct MyStruct {
+    @AddCompletionHandler
+    func f(a: Int) async -> String {
+      return b
     }
   }
 }
@@ -51,34 +45,30 @@ Just that little bit of code is already compiling with our library. But, the fir
 this test, the macro will be automatically expanded and inserted into the test for you:
 
 ```swift
-import MacroTesting
-
-class MyMacroTests: XCTestCase {
-  func testAddAsyncCompletionHandler() {
-    assertMacro {
-      #"""
-      struct MyStruct {
-        @AddCompletionHandler
-        func f(a: Int) async -> String {
-          return b
-        }
+func testAddAsyncCompletionHandler() {
+  assertMacro {
+    """
+    struct MyStruct {
+      @AddCompletionHandler
+      func f(a: Int) async -> String {
+        return b
       }
-      """#
-    } matches: {
-      """
-      struct MyStruct {
-        func f(a: Int) async -> String {
-          return b
-        }
-
-        func f(a: Int, completionHandler: @escaping (String) -> Void) {
-          Task {
-            completionHandler(await f(a: a))
-          }
-        }
-      }
-      """
     }
+    """
+  } matches: {
+    """
+    struct MyStruct {
+      func f(a: Int) async -> String {
+        return b
+      }
+
+      func f(a: Int, completionHandler: @escaping (String) -> Void) {
+        Task {
+          completionHandler(await f(a: a))
+        }
+      }
+    }
+    """
   }
 }
 ```
