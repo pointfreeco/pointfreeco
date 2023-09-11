@@ -35,7 +35,6 @@ extension Episode.Collection {
           .init(episode: .ep248_tourOfTCA),
           .init(episode: .ep249_tourOfTCA),
         ],
-        isFinished: false,
         related: [],
         title: "Composable Architecture 1.0",
         whereToGoFromHere: nil
