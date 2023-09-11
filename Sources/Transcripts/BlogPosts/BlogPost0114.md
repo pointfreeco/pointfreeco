@@ -1,9 +1,9 @@
 We are excited to announce a major update to our popular [SnapshotTesting][gh-snapshot-testing]
 library: [_inline_ snapshot testing][gh-inline-snapshot-testing]!
 
-This allows allows your text-based snapshots to live right in the test source code, rather than 
-in an external file. This makes it simpler to verify your snapshots are correct, and even allows you
-to build your own testing tools on top of our tools. For example, our recently released
+This allows your text-based snapshots to live right in the test source code, rather than in an
+external file. This makes it simpler to verify your snapshots are correct, and even allows you to
+build your own testing tools on top of our tools. For example, our recently released
 [MacroTesting][gh-macro-testing] library uses inline snapshotting under the hood, but as a user of
 the library you would never know!
 
@@ -35,7 +35,7 @@ on what kinds of view components are on the screen and what data they hold, but 
 like testing an implementation detail. And it’s also possible to perform UI tests, but those are 
 very slow, can be flakey, and test a wide range of behavior that you may not really care about.
 
-Our [snapshot testing][gh-snapshot-testing] library allows you to test just the very basics of what 
+Our [snapshot testing library][gh-snapshot-testing] allows you to test just the very basics of what 
 a view looks like. For example, we could test a very small, simple SwiftUI view by asserting its 
 snapshot as an image like this:
 
@@ -69,12 +69,11 @@ class Test: XCTestCase {
 The first time we run this the test fails because there is no snapshot of this view already on 
 disk:
 
-> 🛑 testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
+> ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
 > 
-> open "/Users/pointfreeco/projects/Experimentation/Tests/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+> open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
 > 
 > Re-run "testView" to test against the newly-recorded snapshot.
-> 
 
 And it even helpfully let’s us know where the new snapshot was recorded so that we can easily 
 preview it:
@@ -93,13 +92,13 @@ But, if we change something in the view, say like swapping the order of the grad
 
 …then the test fails:
 
-> 🛑 testView(): failed - Snapshot does not match reference.
+> ❌ testView(): failed - Snapshot does not match reference.
 > 
 > @−
-> "file:///Users/pointfreeco/projects/Experimentation/Tests/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+> "file:///…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
 >
 > @+
-> "file:///Users/pointfreeco/Library/Developer/CoreSimulator/Devices/2067E107-79D4-4D34-8059-503F50325070/data/tmp/ExperimentationTests/testView.1.png"
+> "file:///…/tmp/ExperimentationTests/testView.1.png"
 > 
 > To configure output for a custom diff tool, like Kaleidoscope:
 > 
@@ -120,7 +119,9 @@ show us a very nice diff of the images:
 
 > 🛑 testView(): failed - Snapshot does not match reference.
 > 
-> ksdiff "/Users/pointfreeco/projects/Experimentation/Tests/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png" "/Users/pointfreeco/Library/Developer/CoreSimulator/Devices/2067E107-79D4-4D34-8059-503F50325070/data/tmp/ExperimentationTests/testView.1.png"
+>     ksdiff \
+>       "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+>       "…/tmp/ExperimentationTests/testView.1.png"
 > 
 > Newly-taken snapshot does not match reference.
 
@@ -156,13 +157,11 @@ assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
 
 Running this fails letting us know that a new file was saved to disk:
 
-> 🛑 testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
+> ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
 > 
-> 
-> open "/Users/pointfreeco/Downloads/Experimentation/Tests/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.json"
+>     open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.json"
 > 
 > Re-run "testView" to test against the newly-recorded snapshot.
-> 
 
 And that file contains the JSON representation of the data type:
 
@@ -200,8 +199,9 @@ You can assert an inline snapshot by first importing `InlineSnapshotTesting` ins
 
 And then change `assertSnapshot` to `assertInlineSnapshot`:
 
-```swift
-assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)
+```diff
+-assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
++assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)
 ```
 
 Running this test causes the library to see that you are not currently asserting against a 
