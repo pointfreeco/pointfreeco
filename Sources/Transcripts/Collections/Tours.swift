@@ -33,6 +33,7 @@ extension Episode.Collection {
           .init(episode: .ep246_tourOfTCA),
           .init(episode: .ep247_tourOfTCA),
           .init(episode: .ep248_tourOfTCA),
+          .init(episode: .ep249_tourOfTCA),
         ],
         isFinished: false,
         related: [],
