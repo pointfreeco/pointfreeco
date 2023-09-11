@@ -1,3 +1,0 @@
-DELETE https://api.stripe.com/v1/coupons/deadbeef
-Stripe-Version: 2020-08-27
-

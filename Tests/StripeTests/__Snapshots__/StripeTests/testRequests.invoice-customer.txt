@@ -1,4 +1,0 @@
-POST https://api.stripe.com/v1/invoices
-Stripe-Version: 2020-08-27
-
-customer=cus_test

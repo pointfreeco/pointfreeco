@@ -1,7 +1,7 @@
 import Either
 import PointFreeTestSupport
 import Prelude
-import SnapshotTesting
+import InlineSnapshotTesting
 import StripeTestSupport
 import XCTest
 
@@ -401,47 +401,77 @@ final class StripeTests: TestCase {
 
   func testRequests() async throws {
     // SnapshotTesting.isRecording = true
-    await assertSnapshot(
-      matching: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
-      as: .raw,
-      named: "cancel-subscription"
-    )
-    await assertSnapshot(
-      matching: Stripe.cancelSubscription(id: "sub_test", immediately: true).rawValue,
-      as: .raw,
-      named: "cancel-subscription-immediately"
-    )
-    await assertSnapshot(
-      matching: Stripe.createCoupon(
+    await assertInlineSnapshot(
+      of: Stripe.cancelSubscription(id: "sub_test", immediately: false).rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=true
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.cancelSubscription(id: "sub_test", immediately: true).rawValue,
+      as: .raw
+    ) {
+      """
+      DELETE https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.createCoupon(
         duration: .once,
         maxRedemptions: 1,
         name: "3 Months of Point-Free",
         rate: .amountOff(54_00)
       )
       .rawValue,
-      as: .raw,
-      named: "create-coupon"
-    )
-    await assertSnapshot(
-      matching: Stripe.createCustomer(
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/coupons
+      Stripe-Version: 2020-08-27
+
+      amount_off=5400&duration=once&max_redemptions=1&name=3%20Months%20of%20Point-Free
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.createCustomer(
         paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co",
         vatNumber: nil,
         balance: nil
       ).rawValue,
-      as: .raw,
-      named: "create-customer"
-    )
-    await assertSnapshot(
-      matching: Stripe.createCustomer(
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/customers
+      Stripe-Version: 2020-08-27
+
+      description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.createCustomer(
         paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co",
         vatNumber: "1",
         balance: -18_00
       ).rawValue,
-      as: .raw,
-      named: "create-customer-vat"
-    )
-    await assertSnapshot(
-      matching:
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/customers
+      Stripe-Version: 2020-08-27
+
+      balance=-1800&business_vat_id=1&description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test
+      """
+    }
+    await assertInlineSnapshot(
+      of:
         Stripe
         .createPaymentIntent(
           .init(
@@ -453,104 +483,198 @@ final class StripeTests: TestCase {
           )
         )
         .rawValue,
-      as: .raw,
-      named: "create-payment-intent"
-    )
-    await assertSnapshot(
-      matching:
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/payment_intents
+      Stripe-Version: 2020-08-27
+
+      amount=5400&currency=usd&description=3%20Months%20of%20Point-Free&receipt_email=generous.blob%40pointfree.co&statement_descriptor_suffix=3%20Months%20Gift
+      """
+    }
+    await assertInlineSnapshot(
+      of:
         Stripe
         .createSubscription(customer: "cus_test", plan: .yearly, quantity: 2, coupon: nil)
         .rawValue,
-      as: .raw,
-      named: "create-subscription"
-    )
-    await assertSnapshot(
-      matching:
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
+      Stripe-Version: 2020-08-27
+
+      customer=cus_test&items[0][plan]=yearly-2019&items[0][quantity]=2
+      """
+    }
+    await assertInlineSnapshot(
+      of:
         Stripe
         .createSubscription(customer: "cus_test", plan: .monthly, quantity: 1, coupon: "freebie")
         .rawValue,
-      as: .raw,
-      named: "create-subscription-coupon"
-    )
-    await assertSnapshot(
-      matching: Stripe.deleteCoupon(id: "deadbeef").rawValue,
-      as: .raw,
-      named: "delete-coupon"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchCoupon(id: "15-percent").rawValue,
-      as: .raw,
-      named: "fetch-coupon"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchCoupon(id: "give me free subscription").rawValue,
-      as: .raw,
-      named: "fetch-coupon-bad-data"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchCustomer(id: "cus_test").rawValue,
-      as: .raw,
-      named: "fetch-customer"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchInvoice(id: "in_test").rawValue,
-      as: .raw,
-      named: "fetch-invoice"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchInvoices(for: "cus_test", status: .paid).rawValue,
-      as: .raw,
-      named: "fetch-invoices"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchPaymentIntent(id: "pi_test").rawValue,
-      as: .raw,
-      named: "fetch-payment-intent"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchPlans().rawValue,
-      as: .raw,
-      named: "fetch-plans"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchPlan(id: .monthly).rawValue,
-      as: .raw,
-      named: "fetch-plan"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchSubscription(id: "sub_test").rawValue,
-      as: .raw,
-      named: "fetch-subscription"
-    )
-    await assertSnapshot(
-      matching: Stripe.fetchUpcomingInvoice("cus_test").rawValue,
-      as: .raw,
-      named: "fetch-upcoming-invoice"
-    )
-    await assertSnapshot(
-      matching: Stripe.invoiceCustomer("cus_test").rawValue,
-      as: .raw,
-      named: "invoice-customer"
-    )
-    await assertSnapshot(
-      matching: Stripe.updateCustomer(id: "cus_test", paymentMethodID: "pm_tok_test").rawValue,
-      as: .raw,
-      named: "update-customer"
-    )
-    await assertSnapshot(
-      matching: Stripe.updateSubscription(.mock, .yearly, 1)!.rawValue,
-      as: .raw,
-      named: "update-subscription"
-    )
-    await assertSnapshot(
-      matching: Stripe.updateSubscription(.discounted, .monthly, 1)!.rawValue,
-      as: .raw,
-      named: "update-subscription-discount-preserved"
-    )
-    await assertSnapshot(
-      matching: Stripe.updateSubscription(.discounted, .monthly, 2)!.rawValue,
-      as: .raw,
-      named: "update-subscription-discount-removed"
-    )
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
+      Stripe-Version: 2020-08-27
+
+      coupon=freebie&customer=cus_test&items[0][plan]=monthly-2019&items[0][quantity]=1
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.deleteCoupon(id: "deadbeef").rawValue,
+      as: .raw
+    ) {
+      """
+      DELETE https://api.stripe.com/v1/coupons/deadbeef
+      Stripe-Version: 2020-08-27
+
+
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchCoupon(id: "15-percent").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/coupons/15-percent
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchCoupon(id: "give me free subscription").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/coupons/give%20me%20free%20subscription
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchCustomer(id: "cus_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/customers/cus_test
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchInvoice(id: "in_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/invoices/in_test?expand%5B%5D=charge
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchInvoices(for: "cus_test", status: .paid).rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/invoices?customer=cus_test&expand%5B%5D=data.charge&limit=100&status=paid
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchPaymentIntent(id: "pi_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/payment_intents/pi_test
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchPlans().rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/plans
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchPlan(id: .monthly).rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/plans/monthly-2019
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchSubscription(id: "sub_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.fetchUpcomingInvoice("cus_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/invoices/upcoming?customer=cus_test&expand%5B%5D=charge
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.invoiceCustomer("cus_test").rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/invoices
+      Stripe-Version: 2020-08-27
+
+      customer=cus_test
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.updateCustomer(id: "cus_test", paymentMethodID: "pm_tok_test").rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/customers/cus_test
+      Stripe-Version: 2020-08-27
+
+      invoice_settings[default_payment_method]=pm_tok_test
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(.mock, .yearly, 1)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&items[0][id]=si_test&items[0][plan]=yearly-2019&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(.discounted, .monthly, 1)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(.discounted, .monthly, 2)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
   }
 }
