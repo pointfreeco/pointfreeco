@@ -117,7 +117,7 @@ diffTool = "ksdiff"
 Now the test fails with a command that we can copy-and-paste into terminal to open Kaleidoscope and 
 show us a very nice diff of the images:
 
-> 🛑 testView(): failed - Snapshot does not match reference.
+> ❌ testView(): failed - Snapshot does not match reference.
 > 
 >     ksdiff \
 >       "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
