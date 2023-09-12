@@ -1,205 +1,280 @@
-Today we are excited to announce [MacroTesting][gh-macro-testing], a brand new tool for testing
-macros in Swift that is simple to use and powerful. It allows you to assert on every aspect of
-your macros, incuding expanded source, diagnostics, fix-its, and more.
+We are excited to announce a major update to our popular [SnapshotTesting][gh-snapshot-testing]
+library: [_inline_ snapshot testing][gh-inline-snapshot-testing]! This allows your text-based 
+snapshots to live right in the test source code, rather than in an external file. This makes it 
+simpler to verify your snapshots are correct, and even allows you to build your own testing tools
+on top of our tools. 
 
+<!--For example, our recently released-->
+<!--[MacroTesting][gh-macro-testing] library uses inline snapshotting under the hood, but as a user of-->
+<!--the library you would never know!-->
+
+Join us for a quick overview of snapshot testing, and a preview of what inline snapshotting brings 
+to the table.
+
+[gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
+[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
 [gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
 
-Join us for a quick overview of the library, or watch [this week's _free_ episode][macro-testing-ep]
-to see what our library has to offer and how it greatly improves upon the tools Apple provides.
+* [Snapshot testing](#Snapshot-testing)
+* [_Inline_ snapshot testing](#Inline-snapshot-testing)
+* [Get started today](#Get-started-today)
 
-[macro-testing-ep]: todo
+<div id="Snapshot-testing"></div>
 
-## Using MacroTesting
+## Snapshot testing
 
-After adding MacroTesting to your project and importing it into your test file, there is one
-primary tool for testing: [`assertMacro`][assert-macro-docs]. This function is similar to the 
-[`assertMacroExpansion`][assert-macro-expansion-source] function that comes with 
-[SwiftSyntax][swift-syntax-gh], but our function does not require you to specify the source string
-that the macro expands to.
+Snapshot testing is a style of testing where you don't explicitly provide both values you are 
+asserting against, but rather you provide a single value that can be snapshot into some serializable 
+format. When you run the test the first time, a snapshot is recorded to disk, and future runs of 
+the test will take a new snapshot of the value and compare it against what is on disk. If those 
+snapshots differ, then the test will fail.
 
-[assert-macro-docs]: todo
-[assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
-[swift-syntax-gh]: https://github.com/apple/swift-syntax 
+The most canonical example of this is snapshot views into images. This is because 
+testing views can be quite difficult in general. You can sometimes perform hacks to actually assert 
+on what kinds of view components are on the screen and what data they hold, but this often feels 
+like testing an implementation detail. And it’s also possible to perform UI tests, but those are 
+very slow, can be flakey, and test a wide range of behavior that you may not really care about.
 
-For example, suppose you had an [`@AddCompletionHandler`][add-completion-handler-source] macro that
-can be applied to any `async` method in order to generate an equivalent callback-based method. To 
-test this we merely have to specify the input source string that we want to expand:
+Our [snapshot testing library][gh-snapshot-testing] allows you to test just the very basics of what 
+a view looks like. For example, we could test a very small, simple SwiftUI view by asserting its 
+snapshot as an image like this:
 
-<!-- todo: update link -->
-[add-completion-handler-source]: https://github.com/pointfreeco/swift-macro-testing/blob/bd81bb61318cab572210943e43d7188415e20bdb/Tests/MacroTestingTests/MacroExamples/AddCompletionHandlerMacro.swift
+[gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
 
 ```swift
-func testAddAsyncCompletionHandler() {
-  assertMacro(["AddCompletionHandler": AddCompletionHandlerMacro.self]) {
-    """
-    struct MyStruct {
-    @AddCompletionHandler
-    func f(a: Int) async -> String {
-      return b
+import SnapshotTesting
+import SwiftUI
+
+class Test: XCTestCase {
+  func testView() {
+    let view = ZStack {
+      Rectangle()
+        .fill(
+          LinearGradient(
+            gradient: Gradient(colors: [.white, .black]),
+            startPoint: .top,
+            endPoint: .bottom
+          )
+        )
+      Text("Point-Free").bold()
     }
+    .frame(width: 200, height: 200)
+    
+    assertSnapshot(of: view, as: .image)
   }
 }
 ```
 
-Just that little bit of code is already compiling with our library. But, the first time you run
-this test, the macro will be automatically expanded and inserted into the test for you:
+The first time we run this the test fails because there is no snapshot of this view already on 
+disk:
+
+> ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
+> 
+> open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+> 
+> Re-run "testView" to test against the newly-recorded snapshot.
+
+And it even helpfully let’s us know where the new snapshot was recorded so that we can easily 
+preview it:
+
+![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0114-inline-snapshot-testing/recorded.png)
+
+The next time we run this test it passes because it made a new snapshot of the image and compared 
+it to the previously recorded snapshot. Since nothing changed in the view, the test passes.
+
+But, if we change something in the view, say like swapping the order of the gradient:
+
+```diff
+-gradient: Gradient(colors: [.white, .black]),
++gradient: Gradient(colors: [.black, .white]),
+```
+
+…then the test fails:
+
+> ❌ testView(): failed - Snapshot does not match reference.
+> 
+> @−
+> "file:///…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+>
+> @+
+> "file:///…/tmp/ExperimentationTests/testView.1.png"
+> 
+> To configure output for a custom diff tool, like Kaleidoscope:
+> 
+>     SnapshotTesting.diffTool = "ksdiff"
+> 
+> Newly-taken snapshot does not match reference.
+
+And we helpfully get easy links to the expected and actual images so that we can see the difference. 
+Or, if we have an application on our computers that can do image diffing, such as 
+[Kaleidoscope][kaleidoscope], then we can use it:
 
 ```swift
-func testAddAsyncCompletionHandler() {
-  assertMacro {
-    """
-    struct MyStruct {
-      @AddCompletionHandler
-      func f(a: Int) async -> String {
-        return b
-      }
-    }
-    """
-  } matches: {
-    """
-    struct MyStruct {
-      func f(a: Int) async -> String {
-        return b
-      }
-
-      func f(a: Int, completionHandler: @escaping (String) -> Void) {
-        Task {
-          completionHandler(await f(a: a))
-        }
-      }
-    }
-    """
-  }
-}
+diffTool = "ksdiff"
 ```
 
-You can then visually inspect the expanded source string in order to make sure it is correct.
+Now the test fails with a command that we can copy-and-paste into terminal to open Kaleidoscope and 
+show us a very nice diff of the images:
 
-This is pretty amazing, but static code snippets do not do it justice. Here is a GIF of what this 
-looks like when you run the test in Xcode:
+> ❌ testView(): failed - Snapshot does not match reference.
+> 
+>     ksdiff \
+>       "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+>       "…/tmp/ExperimentationTests/testView.1.png"
+> 
+> Newly-taken snapshot does not match reference.
 
-![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-macro-testing/macro-testing.gif)
+Pasting this command into Terminal opens up Kaleidoscope with both the expected and actual images
+presented to make it easy to see what changed:
 
-This is a remarkable improvement over the `assertMacroExpansion` tool that SwiftSyntax gives us
-by default, which essentially requires us to run the test, get a test failure to see what the
-expanded source is, and then copy-and-paste that string back into our test file. That can be
-laborious and error prone.
+[kaleidoscope]: http://kaleidoscope.app
 
-## Testing diagnostics
+![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0114-inline-snapshot-testing/diff.png)
 
-But our [`assertMacro`][assert-macro-docs] goes even further for testing macros. It also renders
-diagnostics the macro emits directly into the source string so that it is crystal clear what line,
-column and even highlight range an error or warning is pointing to.
+So, this is pretty great, but snapshot testing goes well beyond just snapshotting views into images. 
+You can snapshot any Swift data type into any kind of format you want.
 
-For example, the `@AddCompletionHandler` macro can only be applied to functions. So, if we wanted
-to write a test to see what happens when it is erroneously applied to something else, say a struct,
-we can simply do the following:
+For example, if you have very custom JSON encoding and decoding logic in one of your models (see, 
+for example, [this][game-context-codable] complex `Codable` conformance in our 
+[isowords][isowords-gh] codebase), then you probably want to write a test to make sure you are 
+getting everything right. But doing so can be quite onerous. You have to assert against a big, 
+hardcoded JSON string, and you can easily get a test failure if your formatting is slightly wrong.
+
+[isowords-gh]: https://github.com/pointfreeco/isowords
+[game-context-codable]: https://github.com/pointfreeco/isowords/blob/4628db568226de01a69d7c9954d807aa372165f0/Sources/ClientModels/GameContext.swift#L22-L73
+
+Well, snapshot testing makes this incredibly easy. You can instantly test any data type that is 
+`Codable` by turning it into a JSON file:
 
 ```swift
-func testNonFunctionDiagnostic() {
-  assertMacro {
-    """
-    @AddCompletionHandler
-    struct Foo {}
-    """
-  } matches: {
-    """
-    @AddCompletionHandler
-    ┬────────────────────
-    ╰─ 🛑 @addCompletionHandler only works on functions
-    struct Foo {}
-    """
-  }
+struct User: Codable {
+  let id: Int
+  var name: String
+}
+assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
+```
+
+Running this fails letting us know that a new file was saved to disk:
+
+> ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
+> 
+>     open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.json"
+> 
+> Re-run "testView" to test against the newly-recorded snapshot.
+
+And that file contains the JSON representation of the data type:
+
+```json
+{
+  "id" : 42,
+  "name" : "Blob"
 }
 ```
 
-This helpfully shows that the macro will emit a diagnostic, in particular an error, and it will show
-the exact line, column and highlight range the error took place.
+And of course if this data type was a lot more complicated we would have a lot more JSON here.
 
-This is in stark contrast with Apple's `assertMacroExpansion` method, which only allows asserting
-against diagnostics by describing the [numeric line and column number][diagnostic-spec-line-column],
-which can be quite difficult to visualize exactly where the diagnostic points to in the source
-string. 
+<div id="Inline-snapshot-testing"></div>
 
-[diagnostic-spec-line-column]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Tests/SwiftSyntaxMacroExpansionTest/DeclarationMacroTests.swift#L96
+## _Inline_ snapshot testing
 
-## Testing fix-its
+So this is great, but also sometimes it can be a bit of a pain to have the snapshot stored in an 
+external file, especially for text-based snapshot formats.
 
-But our [`assertMacro`][assert-macro-docs] goes _even_ further for testing macros. Not only can
-macros emit diagnostics when being processed, but they can also emit "fix-its", which allow you to
-provide quick actions to the user of your macro to fix the problem in their code.
+Well, our library has another snapshotting tool that makes this a lot nicer, and it is called 
+“inline” snapshots. This was actually a tool [first contributed][inline-snapshot-pr] to the library 
+by a Point-Free viewer, [Rob Chatfield][rob-chatfield-twitter], over 4 years ago, and we have 
+finally put the final touches on it to make it ready for prime time.
 
-For example, the `@AddCompletionHandler` macro can only be added to functions that are marked as
-`async`, and using it on a non-`async` function is an error:
+[inline-snapshot-pr]: https://github.com/pointfreeco/swift-snapshot-testing/pull/199
+[rob-chatfield-twitter]: https://twitter.com/rjchatfield
+
+You can assert an inline snapshot by first importing `InlineSnapshotTesting` instead of 
+`SnapshotTesting`:
+
+```diff
+-import SnapshotTesting
++import InlineSnapshotTesting
+```
+
+And then change `assertSnapshot` to `assertInlineSnapshot`:
+
+```diff
+-assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
++assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)
+```
+
+Running this test causes the library to see that you are not currently asserting against a 
+particular snapshot, and so generates a fresh one and inserts it directly _into_ your test source
+code as a trailing closure:
 
 ```swift
-@AddCompletionHandler
-func f(a: Int) -> String {  // 🛑 can only add a completion-handler variant to an 'async' function
-  return b
-}
-```
-
-But the macro helpfully provides a "fix-it" that allows the user to automatically add `async` to 
-their function with a single click in Xcode. Our `assertMacro` helper allows us to test fix-its
-by expanding their definition directly inline where they can be applied:
-
-```swift
-assertMacro { 
+assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)  {
   """
-  @AddCompletionHandler
-  func f(a: Int) -> String {
-    return b
-  }
-  """
-} matches: {
-  """
-  @AddCompletionHandler
-  func f(a: Int) -> String {
-  ╰─ 🛑 can only add a completion-handler variant to an 'async' function
-     ✏️ add 'async'
-    return b
+  {
+    "id" : 42,
+    "name" : "Blob"
   }
   """
 }
 ```
 
-This very clearly shows that when the non-`async` diagnostic is emitted it will come with an 
-"add 'async'" diagnostic.
+And you can run this over and over and it will pass, but now the snapshot lives right alongside the 
+value you are snapshotting.
 
-But we can also test how the fix-it is applied. Simply pass `applyFixIts: true` to the `assertMacro`
-function and all fix-its will be automatically applied in the expanded source:
+<!--Even better, the `assertInlineSnapshot` testing tool is fully customizable so that you can build-->
+<!--your own testing helpers on top of it without your users even knowing they are using snapshot-->
+<!--testing. Our recently released [MacroTesting][macro-testing-blog] library does just that. Users-->
+<!--of our library can test their macros by simply invoking `assertMacro` with a fragment of Swift-->
+<!--source code using the macro:-->
+<!---->
+<!--```swift-->
+<!--func testStringify() {-->
+<!--  assertMacro {-->
+<!--    """-->
+<!--    let (result, code) = #stringify(a + b)-->
+<!--    """ -->
+<!--  }-->
+<!--}-->
+<!--```-->
+<!---->
+<!--And upon first run of the test it will automatically generate and insert the expanded macro Swift-->
+<!--code directly into the test file: -->
+<!---->
+<!--```swift-->
+<!--func testStringify() {-->
+<!--  assertMacro {-->
+<!--    """-->
+<!--    let (result, code) = #stringify(a + b)-->
+<!--    """ -->
+<!--  } matches: { -->
+<!--    """-->
+<!--    let (result, code) = (a + b, "a + b")-->
+<!--    """-->
+<!--  }-->
+<!--}-->
+<!--```-->
+<!---->
+<!--This allows one to easily test their macros and see when their expanded macro code changes, and-->
+<!--they never even have to know that under the hood our snapshot testing library is powering it.-->
 
-```swift
-assertMacro(applyFixIts: true) { 
-  """
-  @AddCompletionHandler
-  func f(a: Int) -> String {
-    return b
-  }
-  """
-} matches: {
-  """
-  @AddCompletionHandler
-  func f(a: Int) async -> String {
-    return b
-  }
-  """
-}
-```
+[macro-testing-gh]: http://github.com/pointfreeco/swift-macro-testing
+[macro-testing-blog]: /blog/posts/113-a-new-tool-for-testing-macros-in-swift
 
-This clearly shows that when the "add 'async'" fix-it is applied it inserts the `async` keyword
-after the arguments of the function. This is absolutely amazing. This makes it possible for you
-to really see what the final, expanded source code looks like so that you can be sure you are 
-generating valid code for your users.
+<div id="Get-started-today"></div>
 
 ## Get started today
 
-This is only scratching the surface of what our [MacroTesting][gh-macro-testing] is capable of.
-It is an essential tool for testing your macros and making sure you are providing the best 
-experience to your users. Consider adding it to your project today!
+Add our new [InlineSnapshotTesting][gh-inline-snapshot-testing] to your project today to start
+writing powerful tests in just a few lines of code. 
 
+<!--And if you are writing macros, be sure to -->
+<!--check out our [MacroTesting][gh-macro-testing] library too, which allows you to easy test the-->
+<!--expansion of your macros, as well as their diagnostics and fix-its. -->
+
+[macro-versioning]: https://github.com/apple/swift-syntax/blob/56b057ba77c3417f2873906d22a7caf5540c6a78/Sources/SwiftSyntax/Documentation.docc/Macro%20Versioning.md
+[swift-syntax-tags]: https://github.com/apple/swift-syntax/tags
+[swift-syntax-concerns]: https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588
+[gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
+[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
 [gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
-[assert-macro-docs]: todo
-[assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
-[swift-syntax-gh]: https://github.com/apple/swift-syntax 
-[macro-testing-ep]: todo
+[gh-swift-syntax]: http://github.com/apple/swift-syntax
