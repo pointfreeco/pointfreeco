@@ -1,2 +1,0 @@
-GET https://api.stripe.com/v1/customers/cus_test
-Stripe-Version: 2020-08-27

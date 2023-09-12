@@ -1,4 +1,0 @@
-POST https://api.stripe.com/v1/customers
-Stripe-Version: 2020-08-27
-
-balance=-1800&business_vat_id=1&description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test

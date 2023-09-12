@@ -1,4 +1,0 @@
-POST https://api.stripe.com/v1/payment_intents
-Stripe-Version: 2020-08-27
-
-amount=5400&currency=usd&description=3%20Months%20of%20Point-Free&receipt_email=generous.blob%40pointfree.co&statement_descriptor_suffix=3%20Months%20Gift

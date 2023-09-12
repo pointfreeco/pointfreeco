@@ -1,4 +1,0 @@
-POST https://api.stripe.com/v1/coupons
-Stripe-Version: 2020-08-27
-
-amount_off=5400&duration=once&max_redemptions=1&name=3%20Months%20of%20Point-Free
