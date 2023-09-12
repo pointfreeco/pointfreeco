@@ -1,15 +1,12 @@
-We are excited to announce a major update to our popular [SnapshotTesting][gh-snapshot-testing]
-library: [_inline_ snapshot testing][gh-inline-snapshot-testing]! This allows your text-based 
-snapshots to live right in the test source code, rather than in an external file:
+We are excited to announce the biggest update to our popular [SnapshotTesting][gh-snapshot-testing]
+library since 1.0: _inline_ snapshot testing.
 
 [gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
-[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
-[gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
 
 ![fullWidth](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/inline-snapshot.gif)
 
-This makes it simpler to verify your snapshots are correct, and even allows you to build your own 
-testing tools on top of our tools. 
+This makes it simpler to verify your snapshots are correct, and even allows you to build your own
+inline testing tools on top of it.
 
 <!--For example, our recently released-->
 <!--[MacroTesting][gh-macro-testing] library uses inline snapshotting under the hood, but as a user of-->
@@ -28,8 +25,8 @@ to the table.
 
 Snapshot testing is a style of testing where you don't explicitly provide both values you are 
 asserting against, but rather you provide a single value that can be snapshot into some serializable 
-format. When you run the test the first time, a snapshot is recorded to disk, and future runs of 
-the test will take a new snapshot of the value and compare it against what is on disk. If those 
+format. When you run the test the first time, a snapshot is recorded to disk, and future runs of the
+test will take a new snapshot of the value and compare it against what is on disk. If those
 snapshots differ, then the test will fail.
 
 The most canonical example of this is snapshot views into images. This is because 
@@ -73,7 +70,9 @@ disk:
 
 > ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
 > 
-> open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+> ```sh
+> open "file:///…/__Snapshots__/ExperimentationTests/testView.1.png"
+> ```
 > 
 > Re-run "testView" to test against the newly-recorded snapshot.
 
@@ -95,25 +94,25 @@ But, if we change something in the view, say like swapping the order of the grad
 …then the test fails:
 
 > ❌ testView(): failed - Snapshot does not match reference.
-> 
+>
 > @−
-> "file:///…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
+> "file:///…/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
 >
 > @+
 > "file:///…/tmp/ExperimentationTests/testView.1.png"
-> 
+>
 > To configure output for a custom diff tool, like Kaleidoscope:
-> 
->     SnapshotTesting.diffTool = "ksdiff"
-> 
-> Newly-taken snapshot does not match reference.
+>
+> ```swift
+> SnapshotTesting.diffTool = "ksdiff"
+> ```
 
 And we helpfully get easy links to the expected and actual images so that we can see the difference. 
 Or, if we have an application on our computers that can do image diffing, such as 
 [Kaleidoscope][kaleidoscope], then we can use it:
 
 ```swift
-diffTool = "ksdiff"
+SnapshotTesting.diffTool = "ksdiff"
 ```
 
 Now the test fails with a command that we can copy-and-paste into terminal to open Kaleidoscope and 
@@ -121,10 +120,12 @@ show us a very nice diff of the images:
 
 > ❌ testView(): failed - Snapshot does not match reference.
 > 
->     ksdiff \
->       "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.png"
->       "…/tmp/ExperimentationTests/testView.1.png"
-> 
+> ```sh
+> ksdiff \
+>   "…/__Snapshots__/ExperimentationTests/testView.1.png"
+>   "…/tmp/ExperimentationTests/testView.1.png"
+> ```
+>
 > Newly-taken snapshot does not match reference.
 
 Pasting this command into Terminal opens up Kaleidoscope with both the expected and actual images
@@ -135,7 +136,7 @@ presented to make it easy to see what changed:
 ![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/diff.png)
 
 So, this is pretty great, but snapshot testing goes well beyond just snapshotting views into images. 
-You can snapshot any Swift data type into any kind of format you want.
+You can snapshot _any_ Swift data type into _any_ kind of format you want.
 
 For example, if you have very custom JSON encoding and decoding logic in one of your models (see, 
 for example, [this][game-context-codable] complex `Codable` conformance in our 
@@ -163,8 +164,10 @@ Running this fails letting us know that a new file was saved to disk:
 
 > ❌ testView(): failed - No reference was found on disk. Automatically recorded snapshot: …
 > 
->     open "…/ExperimentationTests/\_\_Snapshots\_\_/ExperimentationTests/testView.1.json"
-> 
+> ```sh
+> open "file:///…/__Snapshots__/ExperimentationTests/testView.1.json"
+> ```
+>
 > Re-run "testView" to test against the newly-recorded snapshot.
 
 And that file contains the JSON representation of the data type:
@@ -189,7 +192,7 @@ external file, especially for text-based snapshot formats.
 Well, our library has another snapshotting tool that makes this a lot nicer, and it is called 
 “inline” snapshots. This was actually a tool [first contributed][inline-snapshot-pr] to the library 
 by a Point-Free viewer, [Rob Chatfield][rob-chatfield-twitter], over 4 years ago, and we have 
-finally put the final touches on it to make it ready for prime time.
+finally put the finishing touches to it to make it ready for prime time.
 
 [inline-snapshot-pr]: https://github.com/pointfreeco/swift-snapshot-testing/pull/199
 [rob-chatfield-twitter]: https://twitter.com/rjchatfield
@@ -225,8 +228,8 @@ assertInlineSnapshot(of: user, as: .json)  {
 }
 ```
 
-This is pretty incredible, but unfortunately static text in a blog post does not do it justice.
-This is what it looks like when you run the test in Xcode:
+It feels almost magical, but unfortunately static text in a blog post does not do it justice. This
+is what it looks like when you run the test in Xcode:
 
 ![fullWidth](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/inline-snapshot.gif)
 
@@ -321,8 +324,8 @@ of your application's logic.
 
 ## Get started today
 
-Add our new [InlineSnapshotTesting][gh-inline-snapshot-testing] to your project today to start
-writing powerful tests in just a few lines of code. 
+Bring [SnapshotTesting 1.13][gh-snapshot-testing-release]'s new `InlineSnapshotTesting` module into
+your project today to start writing powerful tests in just a few lines of code.
 
 <!--And if you are writing macros, be sure to -->
 <!--check out our [MacroTesting][gh-macro-testing] library too, which allows you to easy test the-->
@@ -332,6 +335,6 @@ writing powerful tests in just a few lines of code.
 [swift-syntax-tags]: https://github.com/apple/swift-syntax/tags
 [swift-syntax-concerns]: https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588
 [gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
-[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
+[gh-snapshot-testing-release]: http://github.com/pointfreeco/swift-snapshot-testing/releases/1.13.0
 [gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
 [gh-swift-syntax]: http://github.com/apple/swift-syntax
