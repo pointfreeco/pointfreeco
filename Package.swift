@@ -45,17 +45,16 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.13.2"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
-    .package(url: "https://github.com/vapor/postgres-nio.git", exact: "1.12.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
     .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.12.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "da5ead2"),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async-swift-syntax"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.5.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", revision: "89a82cf"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "2b7ed38"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.0.0"),
   ],
   targets: [
@@ -433,9 +432,6 @@ var package = Package(
         "Stripe",
         "StripeTestSupport",
         .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
-      ],
-      exclude: [
-        "__Snapshots__"
       ]
     ),
 
