@@ -568,16 +568,6 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         """
         POST http://localhost:8080/join/xyz
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
-
-        302 Found
-        Location: /account
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You cannot join this team as you already have an active subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
         """
       } response: {
         """
