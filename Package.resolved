@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "openssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Kitura/OpenSSL.git",
+      "state" : {
+        "revision" : "5dc8cb4f971135c17343e3c6df4f28904a0600e2",
+        "version" : "2.3.1"
+      }
+    },
+    {
       "identity" : "postgres-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-kit",
@@ -50,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-nio.git",
       "state" : {
-        "revision" : "7daf026e145de2c07d6e37f4171b1acb4b5f22b1",
-        "version" : "1.12.1"
+        "revision" : "2df54bc94607f44584ae6ffa74e3cd754fffafc7",
+        "version" : "1.14.2"
       }
     },
     {
