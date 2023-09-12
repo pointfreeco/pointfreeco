@@ -24,12 +24,13 @@ import XCTest
 @MainActor
 class ResumeTests: TestCase {
   func testNotLoggedIn() async {
-    let conn = await siteMiddleware(connection(from: request(to: .resume)))
-    await assertInlineSnapshot(of: conn, as: .conn) {
+    await assertRequest(connection(from: request(to: .resume))) {
       """
       GET http://localhost:8080/resume
       Cookie: pf_session={}
-
+      """
+    } response: {
+      """
       302 Found
       Location: /login?redirect=http://localhost:8080/resume
       Referrer-Policy: strict-origin-when-cross-origin
@@ -46,12 +47,13 @@ class ResumeTests: TestCase {
     await withDependencies {
       $0.episodeProgresses = [:]
     } operation: {
-      let conn = connection(from: request(to: .resume, session: .loggedIn))
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: request(to: .resume, session: .loggedIn))) {
         """
         GET http://localhost:8080/resume
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
@@ -82,12 +84,13 @@ class ResumeTests: TestCase {
         ]
       }
     } operation: {
-      let conn = connection(from: request(to: .resume, session: .loggedIn))
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: request(to: .resume, session: .loggedIn))) {
         """
         GET http://localhost:8080/resume
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /episodes/ep1-type-safe-html-in-swift
         Referrer-Policy: strict-origin-when-cross-origin
@@ -136,12 +139,13 @@ class ResumeTests: TestCase {
         ]
       }
     } operation: {
-      let conn = connection(from: request(to: .resume, session: .loggedIn))
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: request(to: .resume, session: .loggedIn))) {
         """
         GET http://localhost:8080/resume
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
@@ -204,12 +208,13 @@ class ResumeTests: TestCase {
         ]
       }
     } operation: {
-      let conn = connection(from: request(to: .resume, session: .loggedIn))
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: request(to: .resume, session: .loggedIn))) {
         """
         GET http://localhost:8080/resume
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /episodes/ep2-
         Referrer-Policy: strict-origin-when-cross-origin

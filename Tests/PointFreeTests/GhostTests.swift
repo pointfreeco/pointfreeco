@@ -37,17 +37,17 @@ final class GhostTests: TestCase {
         }
       }
     } operation: {
-      let conn = await siteMiddleware(
+      await assertRequest(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-      )
-
-      await assertInlineSnapshot(of: conn, as: .conn) {
+      ) {
         """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
         user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
-
+        """
+      } response: {
+        """
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
@@ -79,17 +79,17 @@ final class GhostTests: TestCase {
         }
       }
     } operation: {
-      let conn = await siteMiddleware(
+      await assertRequest(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession))
-      )
-
-      await assertInlineSnapshot(of: conn, as: .conn) {
+      ) {
         """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"12121212-1212-1212-1212-121212121212"}
 
         user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
-
+        """
+      } response: {
+        """
         302 Found
         Location: /admin/ghost
         Referrer-Policy: strict-origin-when-cross-origin
@@ -123,17 +123,17 @@ final class GhostTests: TestCase {
         }
       }
     } operation: {
-      let conn = await siteMiddleware(
+      await assertRequest(
         connection(from: request(to: .admin(.ghost(.start(ghostee.id))), session: session))
-      )
-
-      await assertInlineSnapshot(of: conn, as: .conn) {
+      ) {
         """
         POST http://localhost:8080/admin/ghost/start
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
         user_id=10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF
-
+        """
+      } response: {
+        """
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
@@ -167,15 +167,15 @@ final class GhostTests: TestCase {
         }
       }
     } operation: {
-      let conn = await siteMiddleware(
+      await assertRequest(
         connection(from: request(to: .endGhosting, session: adminSession))
-      )
-
-      await assertInlineSnapshot(of: conn, as: .conn) {
+      ) {
         """
         POST http://localhost:8080/ghosting/end
         Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin

@@ -51,16 +51,17 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
 
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
 
         fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-
+        """
+      } response: {
+        """
         302 Found
         Location: /gifts
         Referrer-Policy: strict-origin-when-cross-origin
@@ -72,7 +73,7 @@ class GiftTests: TestCase {
         X-XSS-Protection: 1; mode=block
         """
       }
-
+      
       XCTAssertNoDifference(
         createGiftRequest,
         .init(
@@ -114,16 +115,16 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
 
         fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=3&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-
+        """
+      } response: {
+        """
         302 Found
         Location: /gifts
         Referrer-Policy: strict-origin-when-cross-origin
@@ -163,16 +164,16 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
 
         fromEmail=blob%40pointfree.co&fromName=Blob&message=HBD%21&monthsFree=1&toEmail=blob.jr%40pointfree.co&toName=Blob%20Jr.
-
+        """
+      } response: {
+        """
         302 Found
         Location: /gifts
         Referrer-Policy: strict-origin-when-cross-origin
@@ -228,14 +229,14 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /account
         Referrer-Policy: strict-origin-when-cross-origin
@@ -289,14 +290,14 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /account
         Referrer-Policy: strict-origin-when-cross-origin
@@ -329,14 +330,14 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Referrer-Policy: strict-origin-when-cross-origin
@@ -372,14 +373,14 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /gifts
         Referrer-Policy: strict-origin-when-cross-origin
@@ -419,14 +420,14 @@ class GiftTests: TestCase {
           basicAuth: true
         )
       )
-      let result = await siteMiddleware(conn)
-
-      await assertInlineSnapshot(of: result, as: .conn) {
+      await assertRequest(conn) {
         """
         POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Authorization: Basic aGVsbG86d29ybGQ=
         Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
-
+        """
+      } response: {
+        """
         302 Found
         Location: /gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Referrer-Policy: strict-origin-when-cross-origin

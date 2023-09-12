@@ -497,9 +497,7 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
-
-      let conn = connection(from: hook)
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: hook)) {
         """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
@@ -518,7 +516,9 @@ final class StripeWebhooksTests: TestCase {
           "id" : "evt_test",
           "type" : "payment_intent.succeeded"
         }
-
+        """
+      } response: {
+        """
         200 OK
         Content-Length: 2
         Content-Type: text/plain
@@ -555,9 +555,7 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
-
-      let conn = connection(from: hook)
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: hook)) {
         """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
@@ -576,7 +574,9 @@ final class StripeWebhooksTests: TestCase {
           "id" : "evt_test",
           "type" : "payment_intent.succeeded"
         }
-
+        """
+      } response: {
+        """
         200 OK
         Content-Length: 2
         Content-Type: text/plain
@@ -610,9 +610,7 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
-
-      let conn = connection(from: hook)
-      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      await assertRequest(connection(from: hook)) {
         """
         POST http://localhost:8080/webhooks/stripe
         Cookie: pf_session={}
@@ -631,7 +629,9 @@ final class StripeWebhooksTests: TestCase {
           "id" : "evt_test",
           "type" : "payment_intent.payment_failed"
         }
-
+        """
+      } response: {
+        """
         200 OK
         Content-Length: 2
         Content-Type: text/plain
