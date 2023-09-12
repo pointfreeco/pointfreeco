@@ -94,7 +94,8 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     return EitherIO {
       let inviter = try await database.fetchUserById(teamInvite.inviterUserId)
       let subscription = try await database.fetchSubscriptionByOwnerId(inviter.id)
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       guard stripeSubscription.status.isActive else { throw unit }
       try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
@@ -157,7 +158,8 @@ let sendInviteMiddleware =
 
       async let subscription = database.fetchSubscriptionByOwnerId(inviter.id)
 
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       let seatsTaken = try await invites + teammates
 
@@ -273,7 +275,8 @@ private func redirectCurrentSubscribers<A, B>(
 
     let hasActiveSubscription = EitherIO {
       let subscription = try await database.fetchSubscriptionById(subscriptionId)
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       return stripeSubscription.isRenewing
     }

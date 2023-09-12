@@ -34,13 +34,14 @@ public func sendWelcomeEmails() async throws {
           try await sentEmails.append(send(email: email))
           try await clock.sleep(for: .milliseconds(200))
           break
-        } catch where attempt < 3 {
+        } catch  where attempt < 3 {
           try await clock.sleep(for: .seconds(10))
         }
       }
     }
 
-    let stats = emails
+    let stats =
+      emails
       .reduce(into: [String: [EmailAddress]]()) { dict, email in
         dict[email.subject, default: []].append(contentsOf: email.to)
       }
