@@ -237,9 +237,11 @@ Even better, the `assertInlineSnapshot` testing tool is fully customizable so th
 your own testing helpers on top of it without your users even knowing they are using snapshot
 testing. In fact, we do this to create a testing tool that helps us test the Swift code that powers
 this very site. It's called [`assertRequest`][assert-request-gh], and it allows you to 
-simultaneously asserts on the request being made to the server (including URL, query parameters, 
-headers, POST body) as well as the 
+simultaneously assert the request being made to the server (including URL, query parameters, 
+headers, POST body) as well as the response from the server (including status code and headers).
 
+For example, to test that when a request is made for a user to join a team subscription, we can
+[write the following][assert-request-example]:
 
 ```swift
 await assertRequest(
@@ -251,15 +253,15 @@ await assertRequest(
   )
 ) {
   """
-  POST http://localhost:8080/join/pointfree.co
+  POST http://localhost:8080/join/subscriptions-team_invite_code3
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
   """
 } response: {
   """
   302 Found
-  Location: /join/pointfree.co
+  Location: /account
   Referrer-Policy: strict-origin-when-cross-origin
-  Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+  Set-Cookie: pf_session={"flash":{"message":"You now have access to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
   X-Content-Type-Options: nosniff
   X-Download-Options: noopen
   X-Frame-Options: SAMEORIGIN
@@ -269,8 +271,13 @@ await assertRequest(
 }
 ```
 
+This shows that the response redirects the use back to their account page and shows them the flash
+message that they now have full access to Point-Free. This makes writing complex and nuanced tests
+incredibly easy, and so there is no reason to not right lots of tests for all the subtle edge cases
+of your application's logic.
+
 [assert-request-gh]: https://github.com/pointfreeco/pointfreeco/blob/5b5cd26d8240bd0e1afb77b7ef342458592c7366/Sources/PointFreeTestSupport/PointFreeTestSupport.swift#L42-L87
-[assert-request-example]: https://github.com/pointfreeco/pointfreeco/blob/a237ce693258b363ebfb4bdffe6025cc28ac891f/Tests/PointFreeTests/JoinMiddlewareTests.swift#L447-L471
+[assert-request-example]: https://github.com/pointfreeco/pointfreeco/blob/a237ce693258b363ebfb4bdffe6025cc28ac891f/Tests/PointFreeTests/JoinMiddlewareTests.swift#L285-L309
 
 
 <!--Our recently released [MacroTesting][macro-testing-blog] library does just that. Users-->
