@@ -37,15 +37,6 @@
       }
     },
     {
-      "identity" : "openssl",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kitura/OpenSSL.git",
-      "state" : {
-        "revision" : "5dc8cb4f971135c17343e3c6df4f28904a0600e2",
-        "version" : "2.3.1"
-      }
-    },
-    {
       "identity" : "postgres-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-kit",
