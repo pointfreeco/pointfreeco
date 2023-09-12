@@ -277,12 +277,11 @@ await assertRequest(
 
 This shows that the response redirects the use back to their account page and shows them the flash
 message that they now have full access to Point-Free. This makes writing complex and nuanced tests
-incredibly easy, and so there is no reason to not right lots of tests for all the subtle edge cases
+incredibly easy, and so there is no reason to not write lots of tests for all the subtle edge cases
 of your application's logic.
 
 [assert-request-gh]: https://github.com/pointfreeco/pointfreeco/blob/5b5cd26d8240bd0e1afb77b7ef342458592c7366/Sources/PointFreeTestSupport/PointFreeTestSupport.swift#L42-L87
 [assert-request-example]: https://github.com/pointfreeco/pointfreeco/blob/a237ce693258b363ebfb4bdffe6025cc28ac891f/Tests/PointFreeTests/JoinMiddlewareTests.swift#L285-L309
-
 
 <!--Our recently released [MacroTesting][macro-testing-blog] library does just that. Users-->
 <!--of our library can test their macros by simply invoking `assertMacro` with a fragment of Swift-->
