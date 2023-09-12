@@ -1,7 +1,7 @@
 import Foundation
 
 public let post0114_MacroTesting = BlogPost(
-  author: .pointfree,  
+  author: .pointfree,
   blurb: """
     TODO
     """,
