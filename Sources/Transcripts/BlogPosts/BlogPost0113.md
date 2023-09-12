@@ -1,8 +1,15 @@
 We are excited to announce a major update to our popular [SnapshotTesting][gh-snapshot-testing]
 library: [_inline_ snapshot testing][gh-inline-snapshot-testing]! This allows your text-based 
-snapshots to live right in the test source code, rather than in an external file. This makes it 
-simpler to verify your snapshots are correct, and even allows you to build your own testing tools
-on top of our tools. 
+snapshots to live right in the test source code, rather than in an external file:
+
+[gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
+[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
+[gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
+
+![fullWidth](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/inline-snapshot.gif)
+
+This makes it simpler to verify your snapshots are correct, and even allows you to build your own 
+testing tools on top of our tools. 
 
 <!--For example, our recently released-->
 <!--[MacroTesting][gh-macro-testing] library uses inline snapshotting under the hood, but as a user of-->
@@ -10,10 +17,6 @@ on top of our tools.
 
 Join us for a quick overview of snapshot testing, and a preview of what inline snapshotting brings 
 to the table.
-
-[gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
-[gh-inline-snapshot-testing]: http://github.com/pointfreeco/swift-inline-snapshot-testing
-[gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
 
 * [Snapshot testing](#Snapshot-testing)
 * [_Inline_ snapshot testing](#Inline-snapshot-testing)
@@ -149,9 +152,11 @@ Well, snapshot testing makes this incredibly easy. You can instantly test any da
 ```swift
 struct User: Codable {
   let id: Int
+  var isAdmin: Bool
   var name: String
 }
-assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
+let user = User(id: 42, isAdmin: true, name: "Blob")
+assertSnapshot(of: user, as: .json)
 ```
 
 Running this fails letting us know that a new file was saved to disk:
@@ -167,6 +172,7 @@ And that file contains the JSON representation of the data type:
 ```json
 {
   "id" : 42,
+  "isAdmin": true,
   "name" : "Blob"
 }
 ```
@@ -199,8 +205,8 @@ You can assert an inline snapshot by first importing `InlineSnapshotTesting` ins
 And then change `assertSnapshot` to `assertInlineSnapshot`:
 
 ```diff
--assertSnapshot(of: User(id: 42, name: "Blob"), as: .json)
-+assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)
+-assertSnapshot(of: user, as: .json)
++assertInlineSnapshot(of: user, as: .json)
 ```
 
 Running this test causes the library to see that you are not currently asserting against a 
@@ -208,15 +214,21 @@ particular snapshot, and so generates a fresh one and inserts it directly _into_
 code as a trailing closure:
 
 ```swift
-assertInlineSnapshot(of: User(id: 42, name: "Blob"), as: .json)  {
+assertInlineSnapshot(of: user, as: .json)  {
   """
   {
     "id" : 42,
+    "isAdmin": true,
     "name" : "Blob"
   }
   """
 }
 ```
+
+This is pretty incredible, but unfortunately static text in a blog post does not do it justice.
+This is what it looks like when you run the test in Xcode:
+
+![fullWidth](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/inline-snapshot.gif)
 
 And you can run this over and over and it will pass, but now the snapshot lives right alongside the 
 value you are snapshotting.

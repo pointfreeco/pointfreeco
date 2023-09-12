@@ -8,7 +8,7 @@ public let post0113_InlineSnapshotTesting = BlogPost(
     external file. 
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 113),
-  coverImage: nil,
+  coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/inline-snapshot.gif",
   id: 113,
   publishedAt: yearMonthDayFormatter.date(from: "2023-09-13")!,
   title: "Inline Snapshot Testing"
