@@ -73,7 +73,7 @@ class GiftTests: TestCase {
         X-XSS-Protection: 1; mode=block
         """
       }
-      
+
       XCTAssertNoDifference(
         createGiftRequest,
         .init(

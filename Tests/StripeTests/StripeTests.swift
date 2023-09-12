@@ -1,7 +1,7 @@
 import Either
+import InlineSnapshotTesting
 import PointFreeTestSupport
 import Prelude
-import InlineSnapshotTesting
 import StripeTestSupport
 import XCTest
 
