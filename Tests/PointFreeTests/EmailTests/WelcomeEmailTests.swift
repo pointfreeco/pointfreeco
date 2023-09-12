@@ -130,7 +130,9 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testEpisodeEmails() async throws {
-   try await withDependencies { $0.continuousClock = ImmediateClock() } operation: {
+    try await withDependencies {
+      $0.continuousClock = ImmediateClock()
+    } operation: {
       _ = try await sendWelcomeEmails()
     }
   }
