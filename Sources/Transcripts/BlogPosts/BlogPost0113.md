@@ -1,5 +1,6 @@
 We are excited to announce the biggest update to our popular [SnapshotTesting][gh-snapshot-testing]
-library since 1.0: _inline_ snapshot testing.
+library since 1.0: _inline_ snapshot testing. This allows your text-based snapshots to live right 
+in the test source code, rather than in an external file:
 
 [gh-snapshot-testing]: http://github.com/pointfreeco/swift-snapshot-testing
 
