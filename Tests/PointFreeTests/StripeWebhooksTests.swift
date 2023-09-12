@@ -3,11 +3,11 @@ import Either
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
+import InlineSnapshotTesting
 import Mailgun
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import SnapshotTesting
 import XCTest
 
 @testable import PointFree
@@ -497,41 +497,42 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
+      await assertRequest(connection(from: hook)) {
+        """
+        POST http://localhost:8080/webhooks/stripe
+        Cookie: pf_session={}
+        Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
 
-      let conn = connection(from: hook)
-      await _assertInlineSnapshot(
-        matching: await siteMiddleware(conn), as: .conn,
-        with: """
-          POST http://localhost:8080/webhooks/stripe
-          Cookie: pf_session={}
-          Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
+        {
+          "data" : {
+            "object" : {
+              "amount" : 5400,
+              "client_secret" : "pi_test_secret_test",
+              "currency" : "usd",
+              "id" : "pi_test",
+              "status" : "succeeded"
+            }
+          },
+          "id" : "evt_test",
+          "type" : "payment_intent.succeeded"
+        }
+        """
+      } response: {
+        """
+        200 OK
+        Content-Length: 2
+        Content-Type: text/plain
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
 
-          {
-            "data" : {
-              "object" : {
-                "amount" : 5400,
-                "client_secret" : "pi_test_secret_test",
-                "currency" : "usd",
-                "id" : "pi_test",
-                "status" : "succeeded"
-              }
-            },
-            "id" : "evt_test",
-            "type" : "payment_intent.succeeded"
-          }
+        OK
 
-          200 OK
-          Content-Length: 2
-          Content-Type: text/plain
-          Referrer-Policy: strict-origin-when-cross-origin
-          X-Content-Type-Options: nosniff
-          X-Download-Options: noopen
-          X-Frame-Options: SAMEORIGIN
-          X-Permitted-Cross-Domain-Policies: none
-          X-XSS-Protection: 1; mode=block
-
-          OK
-          """)
+        """
+      }
 
       XCTAssertEqual(delivered, true)
       XCTAssertEqual(didSendEmail, true)
@@ -554,41 +555,42 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
+      await assertRequest(connection(from: hook)) {
+        """
+        POST http://localhost:8080/webhooks/stripe
+        Cookie: pf_session={}
+        Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
 
-      let conn = connection(from: hook)
-      await _assertInlineSnapshot(
-        matching: await siteMiddleware(conn), as: .conn,
-        with: """
-          POST http://localhost:8080/webhooks/stripe
-          Cookie: pf_session={}
-          Stripe-Signature: t=1517356800,v1=56e9dda4effc9b385ee914757ab7b6c6b2ae8acc6d7d037e73870c0c27589988
+        {
+          "data" : {
+            "object" : {
+              "amount" : 5400,
+              "client_secret" : "pi_test_secret_test",
+              "currency" : "usd",
+              "id" : "pi_test",
+              "status" : "succeeded"
+            }
+          },
+          "id" : "evt_test",
+          "type" : "payment_intent.succeeded"
+        }
+        """
+      } response: {
+        """
+        200 OK
+        Content-Length: 2
+        Content-Type: text/plain
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
 
-          {
-            "data" : {
-              "object" : {
-                "amount" : 5400,
-                "client_secret" : "pi_test_secret_test",
-                "currency" : "usd",
-                "id" : "pi_test",
-                "status" : "succeeded"
-              }
-            },
-            "id" : "evt_test",
-            "type" : "payment_intent.succeeded"
-          }
+        OK
 
-          200 OK
-          Content-Length: 2
-          Content-Type: text/plain
-          Referrer-Policy: strict-origin-when-cross-origin
-          X-Content-Type-Options: nosniff
-          X-Download-Options: noopen
-          X-Frame-Options: SAMEORIGIN
-          X-Permitted-Cross-Domain-Policies: none
-          X-XSS-Protection: 1; mode=block
-
-          OK
-          """)
+        """
+      }
     }
   }
 
@@ -608,41 +610,42 @@ final class StripeWebhooksTests: TestCase {
         to: &hook,
         payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
       )
+      await assertRequest(connection(from: hook)) {
+        """
+        POST http://localhost:8080/webhooks/stripe
+        Cookie: pf_session={}
+        Stripe-Signature: t=1517356800,v1=0abe38e2637c25a8e99ea0cb9028534c41e240a3ca48fe7347ba23dd31f805a4
 
-      let conn = connection(from: hook)
-      await _assertInlineSnapshot(
-        matching: await siteMiddleware(conn), as: .conn,
-        with: """
-          POST http://localhost:8080/webhooks/stripe
-          Cookie: pf_session={}
-          Stripe-Signature: t=1517356800,v1=0abe38e2637c25a8e99ea0cb9028534c41e240a3ca48fe7347ba23dd31f805a4
+        {
+          "data" : {
+            "object" : {
+              "amount" : 5400,
+              "client_secret" : "pi_test_secret_test",
+              "currency" : "usd",
+              "id" : "pi_test",
+              "status" : "requires_confirmation"
+            }
+          },
+          "id" : "evt_test",
+          "type" : "payment_intent.payment_failed"
+        }
+        """
+      } response: {
+        """
+        200 OK
+        Content-Length: 2
+        Content-Type: text/plain
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
 
-          {
-            "data" : {
-              "object" : {
-                "amount" : 5400,
-                "client_secret" : "pi_test_secret_test",
-                "currency" : "usd",
-                "id" : "pi_test",
-                "status" : "requires_confirmation"
-              }
-            },
-            "id" : "evt_test",
-            "type" : "payment_intent.payment_failed"
-          }
+        OK
 
-          200 OK
-          Content-Length: 2
-          Content-Type: text/plain
-          Referrer-Policy: strict-origin-when-cross-origin
-          X-Content-Type-Options: nosniff
-          X-Download-Options: noopen
-          X-Frame-Options: SAMEORIGIN
-          X-Permitted-Cross-Domain-Policies: none
-          X-XSS-Protection: 1; mode=block
-
-          OK
-          """)
+        """
+      }
     }
   }
 
