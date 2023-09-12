@@ -233,9 +233,47 @@ This is what it looks like when you run the test in Xcode:
 And you can run this over and over and it will pass, but now the snapshot lives right alongside the 
 value you are snapshotting.
 
-<!--Even better, the `assertInlineSnapshot` testing tool is fully customizable so that you can build-->
-<!--your own testing helpers on top of it without your users even knowing they are using snapshot-->
-<!--testing. Our recently released [MacroTesting][macro-testing-blog] library does just that. Users-->
+Even better, the `assertInlineSnapshot` testing tool is fully customizable so that you can build
+your own testing helpers on top of it without your users even knowing they are using snapshot
+testing. In fact, we do this to create a testing tool that helps us test the Swift code that powers
+this very site. It's called [`assertRequest`][assert-request-gh], and it allows you to 
+simultaneously asserts on the request being made to the server (including URL, query parameters, 
+headers, POST body) as well as the 
+
+
+```swift
+await assertRequest(
+  connection(
+    from: request(
+      to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
+      session: .loggedIn(as: currentUser)
+    )
+  )
+) {
+  """
+  POST http://localhost:8080/join/pointfree.co
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+  """
+} response: {
+  """
+  302 Found
+  Location: /join/pointfree.co
+  Referrer-Policy: strict-origin-when-cross-origin
+  Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+  X-Content-Type-Options: nosniff
+  X-Download-Options: noopen
+  X-Frame-Options: SAMEORIGIN
+  X-Permitted-Cross-Domain-Policies: none
+  X-XSS-Protection: 1; mode=block
+  """
+}
+```
+
+[assert-request-gh]: https://github.com/pointfreeco/pointfreeco/blob/5b5cd26d8240bd0e1afb77b7ef342458592c7366/Sources/PointFreeTestSupport/PointFreeTestSupport.swift#L42-L87
+[assert-request-example]: https://github.com/pointfreeco/pointfreeco/blob/a237ce693258b363ebfb4bdffe6025cc28ac891f/Tests/PointFreeTests/JoinMiddlewareTests.swift#L447-L471
+
+
+<!--Our recently released [MacroTesting][macro-testing-blog] library does just that. Users-->
 <!--of our library can test their macros by simply invoking `assertMacro` with a fragment of Swift-->
 <!--source code using the macro:-->
 <!---->
