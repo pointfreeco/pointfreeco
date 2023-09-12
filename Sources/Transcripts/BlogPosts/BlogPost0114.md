@@ -78,7 +78,7 @@ You can then visually inspect the expanded source string in order to make sure i
 This is pretty amazing, but static code snippets do not do it justice. Here is a GIF of what this 
 looks like when you run the test in Xcode:
 
-![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-macro-testing/macro-testing.gif)
+![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0114-macro-testing/macro-testing.gif)
 
 This is a remarkable improvement over the `assertMacroExpansion` tool that SwiftSyntax gives us
 by default, which essentially requires us to run the test, get a test failure to see what the

@@ -77,7 +77,7 @@ disk:
 And it even helpfully let’s us know where the new snapshot was recorded so that we can easily 
 preview it:
 
-![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0114-inline-snapshot-testing/recorded.png)
+![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/recorded.png)
 
 The next time we run this test it passes because it made a new snapshot of the image and compared 
 it to the previously recorded snapshot. Since nothing changed in the view, the test passes.
@@ -129,7 +129,7 @@ presented to make it easy to see what changed:
 
 [kaleidoscope]: http://kaleidoscope.app
 
-![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0114-inline-snapshot-testing/diff.png)
+![inset](https://pointfreeco-blog.s3.amazonaws.com/posts/0113-inline-snapshot-testing/diff.png)
 
 So, this is pretty great, but snapshot testing goes well beyond just snapshotting views into images. 
 You can snapshot any Swift data type into any kind of format you want.
