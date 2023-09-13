@@ -25,21 +25,6 @@ extension Episode.Collection {
         whereToGoFromHere: nil
       ),
       .isowords,
-      .init(
-        blurb: #"""
-          We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
-          """#,
-        coreLessons: [
-          .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
-          .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
-          .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
-          .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
-        ],
-        isHidden: true,
-        related: [],
-        title: "Composable Architecture",
-        whereToGoFromHere: nil
-      ),
       update(.parsing) {
         $0.title = "Parser-Printers"
       },
@@ -63,6 +48,21 @@ extension Episode.Collection {
         ],
         related: [],
         title: "www.pointfree.co",
+        whereToGoFromHere: nil
+      ),
+      .init(
+        blurb: #"""
+        We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
+        """#,
+        coreLessons: [
+          .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
+          .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
+          .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
+          .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
+        ],
+        isHidden: true,
+        related: [],
+        title: "Composable Architecture",
         whereToGoFromHere: nil
       ),
     ],
