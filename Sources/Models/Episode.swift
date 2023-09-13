@@ -147,6 +147,7 @@ public struct Episode: Equatable, Identifiable {
     }
 
     public struct Section: Equatable {
+      public var alternateSlug: String?
       public var blurb: String
       public var coreLessons: [Lesson]
       public var isFinished: Bool
@@ -156,6 +157,7 @@ public struct Episode: Equatable, Identifiable {
       public var whereToGoFromHere: String?
 
       public init(
+        alternateSlug: String? = nil,
         blurb: String,
         coreLessons: [Lesson],
         isFinished: Bool = true,
@@ -164,6 +166,7 @@ public struct Episode: Equatable, Identifiable {
         title: String,
         whereToGoFromHere: String?
       ) {
+        self.alternateSlug = alternateSlug
         self.blurb = blurb
         self.coreLessons = coreLessons
         self.isFinished = isFinished
@@ -180,7 +183,8 @@ public struct Episode: Equatable, Identifiable {
       }
 
       public var slug: Slug {
-        .init(rawValue: Models.slug(for: self.title))
+        self.alternateSlug.map(Slug.init(rawValue:)) ??
+          Slug(rawValue: Models.slug(for: self.title))
       }
 
       public struct Lesson: Equatable {

@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep247_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-correctness",
     blurb: """
       We'll learn how to precisely model navigation in the Composable Architecture using an enum to eliminate impossible runtime states at compile time. And we'll begin to implement the app's most complex screen and most complex dependency: the record meeting view and the speech client.
       """,
@@ -16,8 +17,8 @@ extension Episode {
       .scrumdinger,
     ],
     sequence: 247,
-    subtitle: "Correctness",
-    title: "Tour of the Composable Architecture 1.0",
+    subtitle: "Domain Modeling",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 42_700_000,
       downloadUrls: .s3(
