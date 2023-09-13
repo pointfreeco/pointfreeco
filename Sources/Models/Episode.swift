@@ -183,8 +183,7 @@ public struct Episode: Equatable, Identifiable {
       }
 
       public var slug: Slug {
-        self.alternateSlug.map(Slug.init(rawValue:)) ??
-          Slug(rawValue: Models.slug(for: self.title))
+        self.alternateSlug.map(Slug.init(rawValue:)) ?? Slug(rawValue: Models.slug(for: self.title))
       }
 
       public struct Lesson: Equatable {
