@@ -245,7 +245,20 @@ simultaneously assert the request being made to the server (including URL, query
 headers, POST body) as well as the response from the server (including status code and headers).
 
 For example, to test that when a request is made for a user to join a team subscription, we can
-[write the following][assert-request-example]:
+write the following:
+
+```swift
+await assertRequest(
+  connection(
+    from: request(
+      to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
+      session: .loggedIn(as: currentUser)
+    )
+  )
+)
+```
+
+And when we first run the test it will automatically [expand][assert-request-example]:
 
 ```swift
 await assertRequest(
