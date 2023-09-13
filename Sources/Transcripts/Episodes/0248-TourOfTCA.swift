@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep248_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-dependencies",
     blurb: """
       We introduce a complex dependency to the record meeting screen: speech recognition. We will begin to integrate this dependency into our app's logic, and show how to control it for Xcode previews and tests
       """,
@@ -18,7 +19,7 @@ extension Episode {
     ],
     sequence: 248,
     subtitle: "Dependencies",
-    title: "Tour of the Composable Architecture 1.0",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 53_600_000,
       downloadUrls: .s3(

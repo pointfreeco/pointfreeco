@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep249_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-persistence",
     blurb: """
       We conclude the series by adding the final bit of functionality to our application: persistence. We'll see how adding a dependency on persistence can wreak havoc on previews and tests, and all the benefits of controlling it.
       """,
@@ -17,7 +18,7 @@ extension Episode {
     ],
     sequence: 249,
     subtitle: "Persistence",
-    title: "Tour of the Composable Architecture 1.0",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 18_400_000,
       downloadUrls: .s3(

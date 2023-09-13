@@ -6,23 +6,8 @@ extension Episode.Collection {
       We've open sourced a lot of software on Point-Free, and every once in awhile we like to give casual tours of one of our projects. This gives us an opportunity to show of some features and discuss topics that are hard to glean from reading the README or documentation.
       """#,
     sections: [
-      .isowords,
-      .init(
-        blurb: #"""
-          We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
-          """#,
-        coreLessons: [
-          .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
-          .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
-          .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
-          .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
-        ],
-        isHidden: true,
-        related: [],
-        title: "Composable Architecture",
-        whereToGoFromHere: nil
-      ),
-      .init(
+      Episode.Collection.Section(
+        alternateSlug: "composable-architecture-1-0",
         blurb: #"""
           We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
           """#,
@@ -36,9 +21,10 @@ extension Episode.Collection {
           .init(episode: .ep249_tourOfTCA),
         ],
         related: [],
-        title: "Composable Architecture 1.0",
+        title: "The Composable Architecture",
         whereToGoFromHere: nil
       ),
+      .isowords,
       update(.parsing) {
         $0.title = "Parser-Printers"
       },
@@ -62,6 +48,21 @@ extension Episode.Collection {
         ],
         related: [],
         title: "www.pointfree.co",
+        whereToGoFromHere: nil
+      ),
+      .init(
+        blurb: #"""
+        We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
+        """#,
+        coreLessons: [
+          .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
+          .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
+          .init(episode: .ep102_ATourOfTheComposableArchitecture_pt3),
+          .init(episode: .ep103_ATourOfTheComposableArchitecture_pt4),
+        ],
+        isHidden: true,
+        related: [],
+        title: "Composable Architecture",
         whereToGoFromHere: nil
       ),
     ],

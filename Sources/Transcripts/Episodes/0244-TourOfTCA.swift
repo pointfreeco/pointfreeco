@@ -20,7 +20,7 @@ extension Episode {
     ],
     sequence: 244,
     subtitle: "Introducing Standups",
-    title: "Tour of the Composable Architecture 1.0",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 38_300_000,
       downloadUrls: .s3(

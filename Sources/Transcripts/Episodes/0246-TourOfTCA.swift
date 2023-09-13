@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep246_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-stacks",
     blurb: """
       We show how to add stack-based navigation to a Composable Architecture application, how to
       support many different kinds of screens, how to deep link into a navigation stack, and how to
@@ -19,7 +20,7 @@ extension Episode {
     ],
     sequence: 246,
     subtitle: "Stacks",
-    title: "Tour of the Composable Architecture 1.0",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 79_500_000,
       downloadUrls: .s3(

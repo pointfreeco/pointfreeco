@@ -2,6 +2,7 @@ import Foundation
 
 extension Episode {
   public static let ep245_tourOfTCA = Episode(
+    alternateSlug: "tour-of-the-composable-architecture-1-0-navigation",
     blurb: """
       With the standups list and standup form features ready, it's time to integrate them together using the Composable Architecture's navigation tools. We will make it so you can add and edit standups via a sheet, and write comprehensive unit tests for this integration.
       """,
@@ -18,7 +19,7 @@ extension Episode {
     ],
     sequence: 245,
     subtitle: "Navigation",
-    title: "Tour of the Composable Architecture 1.0",
+    title: "Tour of the Composable Architecture",
     trailerVideo: .init(
       bytesLength: 33_300_000,
       downloadUrls: .s3(
