@@ -288,7 +288,7 @@ await assertRequest(
 }
 ```
 
-This shows that the response redirects the use back to their account page and shows them the flash
+This shows that the response redirects the user back to their account page and shows them the flash
 message that they now have full access to Point-Free. This makes writing complex and nuanced tests
 incredibly easy, and so there is no reason to not write lots of tests for all the subtle edge cases
 of your application's logic.
