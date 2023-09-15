@@ -1,3 +1,9 @@
+Today Swift 5.9 is officially released, bringing macros to the language. Macros are a powerful
+feature that allow you to implement functionality in the language as if it was built directly into
+the language. However, they can be tricky to get right, and as such one needs to write an extensive
+test suite to make sure you have covered all of the subtle and nuanced edge cases that are 
+possible.  
+
 Today we are excited to announce [MacroTesting][gh-macro-testing], a brand new tool for testing
 macros in Swift that is simple to use and powerful. It allows you to assert on every aspect of
 your macros, incuding expanded source, diagnostics, fix-its, and more.
