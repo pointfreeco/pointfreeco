@@ -52,7 +52,8 @@ public func sendWelcomeEmails() async throws {
       }
     }
 
-    let stats = emails
+    let stats =
+      emails
       .reduce(into: [String: [EmailAddress]]()) { dict, email in
         dict[email.subject, default: []].append(contentsOf: email.to)
       }

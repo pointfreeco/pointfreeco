@@ -9,6 +9,7 @@ import GitHubTestSupport
 import Html
 import HttpPipeline
 import HttpPipelineTestSupport
+import InlineSnapshotTesting
 import Logging
 import Mailgun
 import Models
@@ -17,7 +18,6 @@ import OrderedCollections
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
-import SnapshotTesting
 import Stripe
 import StripeTestSupport
 import URLRouting
@@ -34,6 +34,61 @@ import XCTestDynamicOverlay
 #if os(macOS)
   import WebKit
 #endif
+
+public enum PointFreeTestConfiguration {
+  @TaskLocal public static var middleware = siteMiddleware
+}
+
+public func assertRequest(
+  _ conn: Conn<StatusLineOpen, Prelude.Unit>,
+  request: (() -> String)? = nil,
+  response: (() -> String)? = nil,
+  file: StaticString = #filePath,
+  function: StaticString = #function,
+  line: UInt = #line,
+  column: UInt = #column
+) async {
+  let conn = await PointFreeTestConfiguration.middleware(conn)
+
+  await assertInlineSnapshot(
+    of: conn.request,
+    as: .raw,
+    message: """
+      Request output (\(actualPrefix)) differed from expected output (\(expectedPrefix)). \
+      Difference: …
+      """,
+    syntaxDescriptor: InlineSnapshotSyntaxDescriptor(
+      trailingClosureLabel: "request",
+      trailingClosureOffset: 0
+    ),
+    matches: request,
+    file: file,
+    function: function,
+    line: line,
+    column: column
+  )
+  await assertInlineSnapshot(
+    of: conn.response,
+    as: .response,
+    message: """
+      Response output (\(actualPrefix)) differed from expected output (\(expectedPrefix)). \
+      Difference: …
+      """,
+    syntaxDescriptor: InlineSnapshotSyntaxDescriptor(
+      trailingClosureLabel: "response",
+      trailingClosureOffset: 1
+    ),
+    matches: response,
+    file: file,
+    function: function,
+    line: line,
+    column: column
+  )
+}
+
+private let expectedPrefix = "\u{2212}"
+private let actualPrefix = "+"
+private let prefix = "\u{2007}"
 
 extension DependencyValues {
   public mutating func teamYearly() {

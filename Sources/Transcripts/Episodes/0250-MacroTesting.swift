@@ -3,13 +3,13 @@ import Foundation
 extension Episode {
   public static let ep250_macroTesting = Episode(
     blurb: """
-      <#TODO#>
+      Macros are here! To celebrate, we are releasing a brand new tool to aid in writing tests for them. First, let's explore testing macros using the tools that Apple provides, evaluate their shortcomings, and see how we can address them.
       """,
     codeSampleDirectory: "0250-macro-testing-pt1",
     exercises: _exercises,
     id: 250,
     length: .init(.timestamp(minutes: 46, seconds: 5)),
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-09-18")!,
     references: [
       .macroAdoptionConcerns,

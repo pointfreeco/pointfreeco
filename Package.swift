@@ -45,7 +45,6 @@ var package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace", exact: "1.3.1"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.13.2"),
     .package(url: "https://github.com/vapor/postgres-kit", exact: "2.2.0"),
-    .package(url: "https://github.com/vapor/postgres-nio.git", exact: "1.12.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
@@ -55,7 +54,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.9.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.5.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", revision: "0a44986"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "2b7ed38"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.0.0"),
   ],
   targets: [
@@ -141,7 +140,7 @@ var package = Package(
         "PointFreeTestSupport",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
@@ -178,7 +177,7 @@ var package = Package(
         "GitHub",
         "GitHubTestSupport",
         "PointFreeTestSupport",
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"
@@ -358,7 +357,7 @@ var package = Package(
         "PointFreeTestSupport",
         .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Overture", package: "swift-overture"),
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
@@ -381,7 +380,7 @@ var package = Package(
         .product(name: "HttpPipelineTestSupport", package: "swift-web"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "swift-prelude"),
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
@@ -432,10 +431,7 @@ var package = Package(
         "PointFreeTestSupport",
         "Stripe",
         "StripeTestSupport",
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ],
-      exclude: [
-        "__Snapshots__"
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
@@ -457,7 +453,7 @@ var package = Package(
         "Styleguide",
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
       ],
       exclude: [
         "__Snapshots__"

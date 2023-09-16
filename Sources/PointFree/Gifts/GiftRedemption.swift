@@ -20,13 +20,13 @@ let giftRedemptionLandingMiddleware: Middleware<StatusLineOpen, ResponseEnded, G
     layoutData: { gift, amount in
       @Dependency(\.episodes) var episodes
       return SimplePageLayoutData(
-          data: (gift, stats(forEpisodes: episodes())),
-          extraStyles: extraGiftLandingStyles <> testimonialStyle,
-          style: .base(.some(.minimal(.black))),
-          title: "Redeem your Point-Free gift"
-        )
-      }
-    )
+        data: (gift, stats(forEpisodes: episodes())),
+        extraStyles: extraGiftLandingStyles <> testimonialStyle,
+        style: .base(.some(.minimal(.black))),
+        title: "Redeem your Point-Free gift"
+      )
+    }
+  )
 
 let giftRedemptionMiddleware: Middleware<StatusLineOpen, ResponseEnded, Gift.ID, Data> =
   fetchAndValidateGiftAndDiscount
@@ -50,17 +50,18 @@ private func redeemGift(
     guard subscriberState.isOwner
     else {
       return conn
-      |> redirect(
-        to: .gifts(.redeem(gift.id)),
-        headersMiddleware: flash(
-          .error,
-          "You are already part of an active team subscription."
+        |> redirect(
+          to: .gifts(.redeem(gift.id)),
+          headersMiddleware: flash(
+            .error,
+            "You are already part of an active team subscription."
+          )
         )
-      )
     }
 
     return EitherIO {
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)
       // TODO: Should we disallow gifts from applying to team subscriptions?
       //guard stripeSubscription.quantity == 1
@@ -79,26 +80,26 @@ private func redeemGift(
       switch errorOrCustomer {
       case .left:
         return conn
-        |> redirect(
-          to: .gifts(.redeem(gift.id)),
-          headersMiddleware: flash(
-            .error,
+          |> redirect(
+            to: .gifts(.redeem(gift.id)),
+            headersMiddleware: flash(
+              .error,
               """
               We were unable to redeem your gift. Please try again, or contact \
               <support@pointfree.co> for more help.
               """
+            )
           )
-        )
 
       case .right:
         return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(
-            .notice,
-            "The gift has been applied to your account as credit."
+          |> redirect(
+            to: .account(),
+            headersMiddleware: flash(
+              .notice,
+              "The gift has been applied to your account as credit."
+            )
           )
-        )
       }
     }
   } else {
@@ -110,9 +111,11 @@ private func redeemGift(
         nil,
         -discount
       )
-      let stripeSubscription = try await stripe
+      let stripeSubscription =
+        try await stripe
         .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
-      _ = try await database
+      _ =
+        try await database
         .createSubscription(stripeSubscription, currentUser.id, true, nil)
       _ = try await database.updateGift(gift.id, stripeSubscription.id)
     }
@@ -166,10 +169,10 @@ private func fetchAndValidateGiftAndDiscount(
         guard gift.stripeSubscriptionId == nil
         else {
           return conn
-          |> redirect(
-            to: .gifts(),
-            headersMiddleware: flash(.error, "This gift was already redeemed.")
-          )
+            |> redirect(
+              to: .gifts(),
+              headersMiddleware: flash(.error, "This gift was already redeemed.")
+            )
         }
 
         return conn.map(const((gift, paymentIntent.amount))) |> middleware
