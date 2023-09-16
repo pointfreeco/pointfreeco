@@ -12,6 +12,22 @@ import Prelude
 import Styleguide
 import Views
 
+public func withRetries<R>(
+  _ attempts: Int,
+  operation: () async throws -> R,
+  backoff: (Int) -> Duration = { _ in .seconds(0) }
+) async throws -> R {
+  @Dependency(\.continuousClock) var clock
+  for attempt in 1...attempts {
+    do {
+      return try await operation()
+    } catch where attempt < attempts {
+      try await clock.sleep(for: backoff(attempt))
+    }
+  }
+  throw CancellationError()
+}
+
 public func sendWelcomeEmails() async throws {
   @Dependency(\.continuousClock) var clock
   @Dependency(\.database) var database
@@ -29,14 +45,10 @@ public func sendWelcomeEmails() async throws {
     print("📧: Sending \(emails.count) welcome emails...")
     var sentEmails: [SendEmailResponse] = []
     for email in emails {
-      for attempt in 1...3 {
-        do {
-          try await sentEmails.append(send(email: email))
-          try await clock.sleep(for: .milliseconds(200))
-          break
-        } catch  where attempt < 3 {
-          try await clock.sleep(for: .seconds(10))
-        }
+      try await withRetries(3) {
+        try await sentEmails.append(send(email: email))
+      } backoff: { _ in
+        .seconds(10)
       }
     }
 

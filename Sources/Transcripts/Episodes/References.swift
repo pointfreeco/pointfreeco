@@ -480,6 +480,16 @@ extension Episode.Reference {
     title: "libdispatch efficiency tips"
   )
 
+  public static let macroAdoptionConcerns = Episode.Reference(
+    author: "Stephen Celis & Brandon Williams",
+    blurb: """
+      > Macros are one of the most celebrated new features of Swift, and many of us are excited to adopt them in our projects. Many members of the core team are also excited to suggest macros as a solution to many problems. We’d love to hit the ground running and adopt macros in our projects, but the decision to adopt them raises some questions, particularly around the dependence on the swift-syntax package.
+      """,
+    link: "https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-08-04"),
+    title: "Macro Adoption Concerns around SwiftSyntax"
+  )
+
   public static let makeYourOwnCodeFormatterInSwift = Episode.Reference(
     author: "Yasuhiro Inami",
     blurb: #"""

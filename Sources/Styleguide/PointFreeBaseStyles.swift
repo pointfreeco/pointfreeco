@@ -435,10 +435,12 @@ private let prismJsTheme: Stylesheet = concat([
   (token & CssSelector.class("class-name")) % color(.other("#6f42c1")),
   (token & CssSelector.class("comment")) % color(.other("#6a737d")),
   (token & CssSelector.class("constant")) % _keywordStyle,
+  (token & CssSelector.class("directive")) % color(.other("#643820")),
   (token & CssSelector.class("directive-name")) % color(.other("#643820")),
   (token & CssSelector.class("function")) % color(.other("#005cc5")),
   (token & CssSelector.class("keyword")) % _keywordStyle,
   (token & CssSelector.class("number")) % color(.other("#a963ff")),
+  (token & CssSelector.class("other-directive")) % _keywordStyle,
   (token & CssSelector.class("string")) % color(.other("#032f62")),
   (token & (CssSelector.class("placeholder-open") | CssSelector.class("placeholder-close"))
     % display(.none)),
