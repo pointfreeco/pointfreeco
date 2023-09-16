@@ -79,10 +79,12 @@ public struct Client {
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.ID)
       async throws -> EnterpriseAccount,
     createEnterpriseEmail: @escaping (EmailAddress, User.ID) async throws -> EnterpriseEmail,
-    createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID) async
+    createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID)
+      async
       throws -> Void,
     createGift: @escaping (CreateGiftRequest) async throws -> Gift,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async
+    createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?)
+      async
       throws -> Models.Subscription,
     deleteEnterpriseEmail: @escaping (User.ID) async throws -> Void,
     deleteTeamInvite: @escaping (TeamInvite.ID) async throws -> Void,
@@ -121,7 +123,8 @@ public struct Client {
     migrate: @escaping () async throws -> Void,
     redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
     regenerateTeamInviteCode: @escaping (Models.Subscription.ID) async throws -> Void,
-    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async
+    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID)
+      async
       throws -> Void,
     sawUser: @escaping (Models.User.ID) async throws -> Void,
     updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws ->
@@ -129,10 +132,12 @@ public struct Client {
     updateEpisodeProgress: @escaping (Episode.Sequence, Int, Bool, Models.User.ID) async throws ->
       Void,
     updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
-    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool) async
+    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool)
+      async
       throws -> Gift,
     updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
-    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?) async
+    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?)
+      async
       throws -> Void,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
       Models.User

@@ -21,7 +21,7 @@ public func withRetries<R>(
   for attempt in 1...attempts {
     do {
       return try await operation()
-    } catch where attempt < attempts {
+    } catch  where attempt < attempts {
       try await clock.sleep(for: backoff(attempt))
     }
   }

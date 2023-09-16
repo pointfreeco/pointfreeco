@@ -12,7 +12,7 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-09-18")!,
     references: [
-      .macroAdoptionConcerns,
+      .macroAdoptionConcerns
     ],
     sequence: 250,
     subtitle: "Part 1",

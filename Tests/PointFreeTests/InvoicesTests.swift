@@ -42,11 +42,11 @@ final class InvoicesTests: TestCase {
     var customer = Stripe.Customer.mock
     customer.metadata = [
       "extraInvoiceInfo": """
-        123 Street
-        Brooklyn, NY
+      123 Street
+      Brooklyn, NY
 
-        VAT: 1234567890
-        """
+      VAT: 1234567890
+      """
     ]
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(customer)
