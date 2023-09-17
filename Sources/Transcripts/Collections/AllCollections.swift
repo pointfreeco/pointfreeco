@@ -4,6 +4,7 @@ extension Episode.Collection {
     .composableArchitecture,
     .concurrency,
     .dependencies,
+    .macros,
     .livestreams,
     .parsing,
     .caseStudies,

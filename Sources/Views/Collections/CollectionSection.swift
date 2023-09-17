@@ -73,7 +73,9 @@ private func coreLessons(
   collection: Episode.Collection,
   section: Episode.Collection.Section
 ) -> Node {
-  .div(
+  @Dependency(\.episodes) var episodes
+
+  return .div(
     attributes: [
       .style(backgroundColor(.other("#fafafa")))
     ],
@@ -104,9 +106,15 @@ private func coreLessons(
           "Core lessons"
         ),
         .fragment(
-          section.coreLessons.map {
-            coreLesson(collection: collection, section: section, lesson: $0)
-          }
+          section.coreLessons
+            .filter { lesson in
+              episodes().contains { episode in
+                episode.id == lesson.episode.id
+              }
+            }
+            .map {
+              coreLesson(collection: collection, section: section, lesson: $0)
+            }
             + (section.isFinished ? [] : [moreComingSoon])
         )
       )
