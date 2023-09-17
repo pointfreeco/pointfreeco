@@ -353,7 +353,7 @@ private var prismJsHead: ChildOf<Tag.Head> {
     .script(
       safe: #"""
         Prism.languages.swift.keyword = [
-          /\bany\b/,
+          /\b(any|macro)\b/,
           Prism.languages.swift.keyword
         ];
         Prism.languages.insertBefore('swift', 'operator', {
