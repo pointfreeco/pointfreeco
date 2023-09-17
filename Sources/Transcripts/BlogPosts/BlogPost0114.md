@@ -1,13 +1,13 @@
 Today we are excited to announce [MacroTesting][gh-macro-testing], a brand new tool for testing
 macros in Swift that is simple to use and powerful. It allows you to assert on every aspect of
-your macros, incuding expanded source, diagnostics, fix-its, and more.
+your macros, including expanded source, diagnostics, fix-its, and more.
 
-[gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
+[gh-macro-testing]: https://github.com/pointfreeco/swift-macro-testing
 
 Join us for a quick overview of the library, or watch [this week's _free_ episode][macro-testing-ep]
 to see what our library has to offer and how it greatly improves upon the tools Apple provides.
 
-[macro-testing-ep]: todo
+[macro-testing-ep]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
 
 ## Using MacroTesting
 
@@ -17,7 +17,7 @@ primary tool for testing: [`assertMacro`][assert-macro-docs]. This function is s
 [SwiftSyntax][swift-syntax-gh], but our function does not require you to specify the source string
 that the macro expands to.
 
-[assert-macro-docs]: todo
+[assert-macro-docs]: https://github.com/pointfreeco/swift-macro-testing/blob/0.1.0/Sources/MacroTesting/AssertMacro.swift#L11-L118
 [assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
 [swift-syntax-gh]: https://github.com/apple/swift-syntax 
 
@@ -25,8 +25,7 @@ For example, suppose you had an [`@AddCompletionHandler`][add-completion-handler
 can be applied to any `async` method in order to generate an equivalent callback-based method. To 
 test this we merely have to specify the input source string that we want to expand:
 
-<!-- todo: update link -->
-[add-completion-handler-source]: https://github.com/pointfreeco/swift-macro-testing/blob/bd81bb61318cab572210943e43d7188415e20bdb/Tests/MacroTestingTests/MacroExamples/AddCompletionHandlerMacro.swift
+[add-completion-handler-source]: https://github.com/pointfreeco/swift-macro-testing/blob/.1.0/Tests/MacroTestingTests/MacroExamples/AddCompletionHandlerMacro.swift
 
 ```swift
 func testAddAsyncCompletionHandler() {
@@ -199,7 +198,7 @@ It is an essential tool for testing your macros and making sure you are providin
 experience to your users. Consider adding it to your project today!
 
 [gh-macro-testing]: http://github.com/pointfreeco/swift-macro-testing
-[assert-macro-docs]: todo
+[assert-macro-docs]: https://github.com/pointfreeco/swift-macro-testing/blob/main/Sources/MacroTesting/AssertMacro.swift#L11-L118
 [assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
 [swift-syntax-gh]: https://github.com/apple/swift-syntax 
-[macro-testing-ep]: todo
+[macro-testing-ep]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
