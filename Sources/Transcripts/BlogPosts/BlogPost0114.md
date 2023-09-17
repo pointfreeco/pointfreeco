@@ -42,6 +42,7 @@ func testAddAsyncCompletionHandler() {
     func f(a: Int) async -> String {
       return b
     }
+    """
   }
 }
 ```
