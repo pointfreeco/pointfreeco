@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 74135
+Content-Length: 74258
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -411,6 +411,10 @@ a:link.btn-normal {
   font-weight : 600;
 }
 
+.token.directive {
+  color : #643820;
+}
+
 .token.directive-name {
   color : #643820;
 }
@@ -426,6 +430,11 @@ a:link.btn-normal {
 
 .token.number {
   color : #a963ff;
+}
+
+.token.other-directive {
+  color       : #d73a49;
+  font-weight : 600;
 }
 
 .token.string {
@@ -1931,7 +1940,7 @@ html {
     </script>
     <script>
       Prism.languages.swift.keyword = [
-  /\bany\b/,
+  /\b(any|macro)\b/,
   Prism.languages.swift.keyword
 ];
 Prism.languages.insertBefore('swift', 'operator', {
