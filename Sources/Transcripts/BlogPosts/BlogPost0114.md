@@ -13,7 +13,7 @@ your macros, incuding expanded source, diagnostics, fix-its, and more.
 Join us for a quick overview of the library, or watch [this week's _free_ episode][macro-testing-ep]
 to see what our library has to offer and how it greatly improves upon the tools Apple provides.
 
-[macro-testing-ep]: todo
+[macro-testing-ep]: /episodes/ep250-testing-debugging-macros-part-1
 
 ## Using MacroTesting
 
@@ -208,4 +208,4 @@ experience to your users. Consider adding it to your project today!
 [assert-macro-docs]: todo
 [assert-macro-expansion-source]: https://github.com/apple/swift-syntax/blob/13f113e8a180d4cf1b4460d7e3db697cdf3a3fa8/Sources/SwiftSyntaxMacrosTestSupport/Assertions.swift#L245-L259
 [swift-syntax-gh]: https://github.com/apple/swift-syntax 
-[macro-testing-ep]: todo
+[macro-testing-ep]: /episodes/ep250-testing-debugging-macros-part-1
