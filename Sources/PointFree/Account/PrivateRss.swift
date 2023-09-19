@@ -211,8 +211,10 @@ private func items(forUser user: User, subscription: Stripe.Subscription?) -> [R
   var availableEpisodes: [Episode] = []
   var subscriberOnlyCount = 0
   for episode in allEpisodes {
-    if !episode.subscriberOnly {
+    guard episode.subscriberOnly
+    else {
       availableEpisodes.append(episode)
+      continue
     }
     if subscription?.plan.interval == .year || subscriberOnlyCount < nonYearlyMaxRssItems {
       subscriberOnlyCount += 1
