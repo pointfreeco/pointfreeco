@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep251_macroTesting = Episode(
     blurb: """
-      Let's take our MacroTesting library for a spin with some more advanced macros, including those that Apple has gathered since the feature's introduction, as well as a well-tested library in the community: Ian Keen's MacroKit.
+      Let's take our MacroTesting library for a spin with some more advanced macros, including those
+      that Apple has gathered since the feature's introduction, as well as a well-tested library in
+      the community: Ian Keen's MacroKit.
       """,
     codeSampleDirectory: "0251-macro-testing-pt2",
     exercises: _exercises,
@@ -12,7 +14,20 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2023-09-25")!,
     references: [
-      .macroAdoptionConcerns
+      .macroAdoptionConcerns,
+      Episode.Reference(
+        author: "Ian Keen",
+        blurb: """
+          Exploring Swifts new macro system
+
+          > This repo contains some examples of what can be done with Swift macros. I am not an
+          > expert on SwiftSyntax so this repo is also for me to learn more and perhaps build out
+          > some helper code to make writing macros even easier
+          """,
+        link: "https://github.com/iankeen/MacroKit",
+        publishedAt: yearMonthDayFormatter.date(from: "2023-06-14"),
+        title: "MacroKit"
+      )
     ],
     sequence: 251,
     subtitle: "Part 2",
