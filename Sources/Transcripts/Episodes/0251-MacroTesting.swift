@@ -27,7 +27,7 @@ extension Episode {
         link: "https://github.com/iankeen/MacroKit",
         publishedAt: yearMonthDayFormatter.date(from: "2023-06-14"),
         title: "MacroKit"
-      )
+      ),
     ],
     sequence: 251,
     subtitle: "Part 2",
