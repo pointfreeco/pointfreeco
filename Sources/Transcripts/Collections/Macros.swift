@@ -9,7 +9,6 @@ extension Episode.Collection {
             .init(episode: .ep250_macroTesting),
             .init(episode: .ep251_macroTesting),
           ],
-          isFinished: false,
           related: [],
           title: "Macros",
           whereToGoFromHere: nil
