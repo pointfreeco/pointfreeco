@@ -11,5 +11,5 @@ public let post0115_MacroTesting020 = BlogPost(
   coverImage: nil,
   id: 115,
   publishedAt: yearMonthDayFormatter.date(from: "2023-10-03")!,
-  title: "swift-macro-testing 0.2.0: Test more with less"
+  title: "MacroTesting 0.2.0: Test more with less"
 )

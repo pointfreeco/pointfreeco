@@ -65,7 +65,9 @@ To test how the fix-it applies to the original source, you would need to write t
 over again, but with the `applyFixIts` argument set to `true`:
 
 ```swift
-assertMacro(applyFixIts: true) {
+assertMacro(
+  applyFixIts: true  // 👈
+) {
   """
   @AddCompletionHandler
   func f(a: Int, for b: String) -> String {
@@ -82,8 +84,8 @@ assertMacro(applyFixIts: true) {
 }
 ```
 
-And finally, if you wanted to test the expansion of the fixed source, you would need to write one
-final assertion:
+And finally, if you wanted to test the expansion of the fixed source, you would need to write an
+_additional_ assertion:
 
 ```swift
 assertMacro {
@@ -109,12 +111,13 @@ assertMacro {
 ```
 
 While the library does a lot of the work for you, this is still a lot of manual work you need to do
-in order to test every aspect of your macro.
+in order to test every aspect of your macro. And you may forget to test against applied fix-its,
+meaning you could be overlooking bugs lurking in the shadows.
 
 ## A even better `assertMacro`
 
-MacroTesting 0.2.0 takes care of these details for you, automatically, all at once. If we re-run the
-original assertion:
+[MacroTesting 0.2.0][gh-macro-testing-020] takes care of these details for you, automatically, all 
+at once. If we re-run the original assertion:
 
 ```swift
 assertMacro {
@@ -170,7 +173,8 @@ assertMacro {
 }
 ```
 
-This makes it even easier to test every aspect of your macros thoroughly, with very little work.
+This makes it even easier to test every aspect of your macros thoroughly, and make sure you never
+forget to assert against fix-its, all with very little work.
 
 ## Migrating from 0.1.0
 
@@ -182,9 +186,11 @@ re-record your entire suite's assertions in the new format:
 import MacroTesting
 import XCTest
 
-class MyTests: XCTestCase {
+class BaseTestCase: XCTestCase {
   override func invokeTest() {
-    withMacroTesting(isRecording: true) {
+    withMacroTesting(
+      isRecording: true  // 👈
+    ) {
       super.invokeTest()
     }
   }
