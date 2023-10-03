@@ -36,10 +36,9 @@ assertMacro {
 That's all you need to write. The library will write the rest of this assertion for you,
 automatically, the first time it runs, by inlining the result directly into your test file.
 
-In the library's initial release, it would decide what it was testing against depending on whether
-or not the macro emitted any diagnostics or fix-its. In the above case, in which the macro was
-applied to a non-`async` function, that meant inserting the diagnostic and fix-it in a readable
-fashion:
+In the library's initial release, it would decide what to assert against depending on whether or not
+the macro emitted any diagnostics or fix-its. In the above case, in which the macro was applied to a
+non-`async` function, that meant inserting the diagnostic and fix-it in an easy-to-read fashion:
 
 ```swift
 assertMacro {
