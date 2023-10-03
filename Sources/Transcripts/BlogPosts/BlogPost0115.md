@@ -127,7 +127,7 @@ assertMacro {
 }
 ```
 
-The library will now automatically insert the diagnostics, applied fix-its, and expansion into
+The library will now automatically insert diagnostics, applied fix-its, and the final expansion into
 separate trailing closures:
 
 ```swift
