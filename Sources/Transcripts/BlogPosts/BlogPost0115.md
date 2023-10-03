@@ -5,7 +5,7 @@ aspect of your Swift macros, including expanded source, diagnostics, fix-its, an
 This week we are releasing a [version 0.2.0][gh-macro-testing-020] of the library, which makes it
 even easier to assert on your macros in a holistic fashion.
 
-Join us for a quick overview of the library, or watch our
+Join us for a quick update on the library, or watch our
 [free collection of episodes][macros-collection] for an introduction of what the library has to
 offer and how it greatly improves upon the tools Apple provides.
 
