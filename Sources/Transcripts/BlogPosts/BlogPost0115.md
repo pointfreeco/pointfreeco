@@ -61,8 +61,8 @@ assertMacro {
 }
 ```
 
-To test against the fix-it, you would need to write the assertion all over again, but with the
-`applyFixIts` argument set to `true`:
+To test how the fix-it applies to the original source, you would need to write the assertion all
+over again, but with the `applyFixIts` argument set to `true`:
 
 ```swift
 assertMacro(applyFixIts: true) {
@@ -82,8 +82,8 @@ assertMacro(applyFixIts: true) {
 }
 ```
 
-And finally, if you wanted to test the full expansion of the fixed source, you would need to write
-one final assertion:
+And finally, if you wanted to test the expansion of the fixed source, you would need to write one
+final assertion:
 
 ```swift
 assertMacro {
@@ -109,9 +109,9 @@ assertMacro {
 ```
 
 While the library does a lot of the work for you, this is still a lot of manual work you need to do
-in order to test every aspect of your macro!
+in order to test every aspect of your macro.
 
-## Automatically asserting more at once
+## A even better `assertMacro`
 
 MacroTesting 0.2.0 takes care of these details for you, automatically, all at once. If we re-run the
 original assertion:
