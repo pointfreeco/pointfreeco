@@ -36,6 +36,8 @@ extension Episode.Collection {
       .navigation,
 
       .modernSwiftUI,
+
+      .observation,
     ],
     title: "SwiftUI"
   )
@@ -130,6 +132,25 @@ extension Episode.Collection.Section {
     whereToGoFromHere:
       #"""
       We will tackle an even larger topic: building a SwiftUI application using modern, best practices.
+      """#
+
+  )
+
+  public static let observation = Self(
+    blurb: #"""
+      TODO
+      """#,
+    coreLessons: [
+      .init(episode: .ep252_Observation),
+      .init(episode: .ep253_Observation),
+      .init(episode: .ep254_Observation),
+      .init(episode: .ep255_Observation),
+    ],
+    related: [],
+    title: "Observation",
+    whereToGoFromHere:
+      #"""
+      TODO
       """#
 
   )

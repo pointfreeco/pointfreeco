@@ -127,8 +127,10 @@ private func coreLesson(
   section: Episode.Collection.Section,
   lesson: Episode.Collection.Section.Lesson
 ) -> Node {
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
+  let isActive = lesson.episode.publishedAt <= now
   return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
@@ -136,14 +138,15 @@ private func coreLesson(
     ],
     contentRow(
       backgroundColor: Class.pf.colors.bg.white,
-      icon: playIconSvgBase64(),
+      icon: isActive ? playIconSvgBase64() : hourGlassSvgBase64(fill: "666"),
       title: lesson.episode.fullTitle,
       length: lesson.episode.length,
       url: siteRouter.path(
         for: .collections(
           .collection(collection.slug, .section(section.slug, .episode(.left(lesson.episode.slug))))
         )
-      )
+      ),
+      isActive: isActive
     )
   )
 }
@@ -435,28 +438,11 @@ private func contentRow(
   icon: String,
   title: String,
   length: Seconds<Int>,
-  url: String
+  url: String,
+  isActive: Bool = false
 ) -> Node {
-  .a(
-    attributes: [
-      .class([
-        Class.border.left,
-        Class.flex.items.center,
-        Class.grid.row,
-        Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
-        Class.pf.collections.hoverBackground,
-        Class.pf.collections.hoverLink,
-        Class.pf.colors.border.gray800,
-        backgroundColor,
-      ]),
-      .href(url),
-      .style(
-        borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> margin(top: .px(4))
-          <> flex(wrap: .nowrap)
-      ),
-    ],
+
+  let coreContent: Node = [
     .img(
       base64: icon,
       type: .image(.svg),
@@ -465,7 +451,18 @@ private func contentRow(
     ),
     .div(
       attributes: [.style(flex(grow: 1))],
-      .text(title)
+      .text(title),
+
+        .div(
+          attributes: [
+            .style(flex(grow: 1)),
+            .class([
+              Class.pf.colors.fg.gray400,
+              Class.type.italic,
+            ]),
+          ],
+          .text("Not yet released!")
+        )
     ),
     .div(
       attributes: [
@@ -474,14 +471,59 @@ private func contentRow(
         ]),
         .style(
           flex(wrap: .nowrap)
-            <> key("font-variant-numeric", "tabular-nums")
+          <> key("font-variant-numeric", "tabular-nums")
         ),
       ],
       length > 0
-        ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
-        : []
+      ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
+      : []
     )
-  )
+  ]
+
+  if isActive {
+    return .a(
+      attributes: [
+        .class([
+          Class.border.left,
+          Class.flex.items.center,
+          Class.grid.row,
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+          Class.pf.collections.hoverBackground,
+          Class.pf.collections.hoverLink,
+          Class.pf.colors.border.gray800,
+          backgroundColor,
+        ]),
+        .href(url),
+        .style(
+          borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> margin(top: .px(4))
+          <> flex(wrap: .nowrap)
+        ),
+      ],
+      coreContent
+    )
+  } else {
+    return .div(
+      attributes: [
+        .class([
+          Class.border.left,
+          Class.flex.items.center,
+          Class.grid.row,
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+          Class.pf.colors.border.gray800,
+          backgroundColor,
+        ]),
+        .style(
+          borderColor(all: .other("#e8e8e8"))
+          <> borderWidth(left: .px(4))
+          <> margin(top: .px(4))
+          <> flex(wrap: .nowrap)
+        ),
+      ],
+      coreContent
+    )
+  }
 }
 
 private let moreComingSoon = Node.gridColumn(
