@@ -452,8 +452,8 @@ private func contentRow(
     .div(
       attributes: [.style(flex(grow: 1))],
       .text(title),
-
-        .div(
+      isActive ? []
+      : .div(
           attributes: [
             .style(flex(grow: 1)),
             .class([

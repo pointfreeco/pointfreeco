@@ -151,6 +151,6 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "Observation",
-    whereToGoFromHere: ""
+    whereToGoFromHere: nil
   )
 }
