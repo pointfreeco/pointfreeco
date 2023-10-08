@@ -254,9 +254,9 @@ extension Episode {
     .ep249_tourOfTCA,
     .ep250_macroTesting,
     .ep251_macroTesting,
-    .ep252_Observation,
-    .ep253_Observation,
-    .ep254_Observation,
-    .ep255_Observation,
+    .ep252_observation,
+    .ep253_observation,
+    .ep254_observation,
+    .ep255_observation,
   ]
 }

@@ -1,33 +1,31 @@
 import Foundation
 
 extension Episode {
-  public static let ep254_Observation = Episode(
+  public static let ep254_observation = Episode(
     blurb: """
-      TODO
+      While the `@Observable` macro improves upon nearly every aspect of the `@State` and `@ObservedObject` property wrappers, it is not without its pitfalls. We will explore several gotchas that you should be aware of when adopting observation in your applications.
       """,
-    codeSampleDirectory: "TODO",
+    codeSampleDirectory: "0254-observation-pt3",
     exercises: _exercises,
-    fullVideo: .init(bytesLength: 0, downloadUrls: .s3(hd1080: "", hd720: "", sd540: ""), vimeoId: 0),  // Only for free episodes!
-    id: 254, 
-    length: 0 * 60 + 0,  // TODO
+    id: 254,
+    length: 49 * 60 + 44,
     permission: .subscriberOnly,
-    publishedAt: .distantFuture,  // TODO
+    publishedAt: yearMonthDayFormatter.date(from: "2023-10-23")!,
     references: [
       // TODO
     ],
     sequence: 254,
-    subtitle: "The gotchas",
+    subtitle: "The Gotchas",
     title: "Observation",
     trailerVideo: .init(
-      bytesLength: 0,  // TODO
+      bytesLength: 33_900_000,
       downloadUrls: .s3(
-        hd1080: "TODO",
-        hd720: "TODO",
-        sd540: "TODO"
+        hd1080: "0254-trailer-1080p-25d566ff1edb4693bcef58ca02ea5ee3",
+        hd720: "0254-trailer-720p-ae470a0337c047f98e29f55aa365d05a",
+        sd540: "0254-trailer-540p-c9ccc67fc5c8413997f935ca6e2f7932"
       ),
-      vimeoId: 0  // TODO
-    ),
-    transcriptBlocks: []
+      vimeoId: 872121166
+    )
   )
 }
 

@@ -144,10 +144,10 @@ extension Episode.Collection.Section {
       in Swift and Apple's platforms.
       """#,
     coreLessons: [
-      .init(episode: .ep252_Observation),
-      .init(episode: .ep253_Observation),
-      .init(episode: .ep254_Observation),
-      .init(episode: .ep255_Observation),
+      .init(episode: .ep252_observation),
+      .init(episode: .ep253_observation),
+      .init(episode: .ep254_observation),
+      .init(episode: .ep255_observation),
     ],
     related: [],
     title: "Observation",
