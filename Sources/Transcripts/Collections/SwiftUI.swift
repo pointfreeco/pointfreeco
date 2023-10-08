@@ -36,6 +36,8 @@ extension Episode.Collection {
       .navigation,
 
       .modernSwiftUI,
+
+      .observation,
     ],
     title: "SwiftUI"
   )
@@ -131,6 +133,24 @@ extension Episode.Collection.Section {
       #"""
       We will tackle an even larger topic: building a SwiftUI application using modern, best practices.
       """#
+  )
 
+  public static let observation = Self(
+    blurb: #"""
+      With the release of Swift 5.9 we have access to a powerful and general purpose Observation
+      framwork. It allows one to observe the inner works of a type from the outside and with a
+      minimal amount of invasive code. However, it can seem quite mysterious at first, and so we
+      de-mystify the new tools by discussing the past, present, future (and gotchas) of observation
+      in Swift and Apple's platforms.
+      """#,
+    coreLessons: [
+      .init(episode: .ep252_observation),
+      .init(episode: .ep253_observation),
+      .init(episode: .ep254_observation),
+      .init(episode: .ep255_observation),
+    ],
+    related: [],
+    title: "Observation",
+    whereToGoFromHere: nil
   )
 }
