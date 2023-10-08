@@ -452,8 +452,9 @@ private func contentRow(
     .div(
       attributes: [.style(flex(grow: 1))],
       .text(title),
-      isActive ? []
-      : .div(
+      isActive
+        ? []
+        : .div(
           attributes: [
             .style(flex(grow: 1)),
             .class([
@@ -471,13 +472,13 @@ private func contentRow(
         ]),
         .style(
           flex(wrap: .nowrap)
-          <> key("font-variant-numeric", "tabular-nums")
+            <> key("font-variant-numeric", "tabular-nums")
         ),
       ],
       length > 0
-      ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
-      : []
-    )
+        ? .raw(length.formattedDescription.replacingOccurrences(of: " ", with: "&nbsp;"))
+        : []
+    ),
   ]
 
   if isActive {
@@ -496,9 +497,9 @@ private func contentRow(
         .href(url),
         .style(
           borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> margin(top: .px(4))
-          <> flex(wrap: .nowrap)
+            <> borderWidth(left: .px(4))
+            <> margin(top: .px(4))
+            <> flex(wrap: .nowrap)
         ),
       ],
       coreContent
@@ -516,9 +517,9 @@ private func contentRow(
         ]),
         .style(
           borderColor(all: .other("#e8e8e8"))
-          <> borderWidth(left: .px(4))
-          <> margin(top: .px(4))
-          <> flex(wrap: .nowrap)
+            <> borderWidth(left: .px(4))
+            <> margin(top: .px(4))
+            <> flex(wrap: .nowrap)
         ),
       ],
       coreContent
