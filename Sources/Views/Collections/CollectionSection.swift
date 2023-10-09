@@ -107,11 +107,6 @@ private func coreLessons(
         ),
         .fragment(
           section.coreLessons
-            .filter { lesson in
-              episodes().contains { episode in
-                episode.id == lesson.episode.id
-              }
-            }
             .map {
               coreLesson(collection: collection, section: section, lesson: $0)
             }
