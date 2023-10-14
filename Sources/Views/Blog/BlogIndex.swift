@@ -14,8 +14,8 @@ public func blogIndexView(blogPosts: [BlogPost]) -> Node {
     blogPosts
     .sorted(by: their(\.id, >))
     .filter { !$0.hidden }
-  let newPosts = allPosts.prefix(3)
-  let oldPosts = allPosts.dropFirst(3)
+  let newPosts = allPosts.prefix(1)
+  let oldPosts = allPosts.dropFirst(1)
 
   return [
     .gridRow(
@@ -40,13 +40,14 @@ private func newBlogPostView(_ post: BlogPost) -> Node {
   ]
 }
 
-private func oldBlogPostsView(_ posts: ArraySlice<BlogPost>) -> Node {
+private func oldBlogPostsView(_ posts: some Collection<BlogPost>) -> Node {
   guard !posts.isEmpty else { return [] }
 
   return [
+    homeSubscriberCalloutView,
     .div(
       attributes: [.class([Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
-      .h5(attributes: [.class([Class.pf.type.responsiveTitle6])], ["Older blog posts"])
+      .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], ["Older blog posts"])
     ),
     .div(
       attributes: [.class([Class.padding([.mobile: [.bottom: 3]])])],
