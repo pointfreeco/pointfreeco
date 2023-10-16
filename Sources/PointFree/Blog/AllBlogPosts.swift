@@ -130,4 +130,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0113_InlineSnapshotTesting,
   post0114_MacroTesting,
   post0115_MacroTesting020,
+  post0116_SwiftSyntaxEcosystem,
 ]
