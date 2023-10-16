@@ -88,8 +88,8 @@ extension Episode.Collection.Section {
   static let tca1_0 = Self(
     alternateSlug: "composable-architecture-1-0",
     blurb: #"""
-          We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
-          """#,
+      We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
+      """#,
     coreLessons: [
       .init(episode: .ep243_tourOfTCA),
       .init(episode: .ep244_tourOfTCA),

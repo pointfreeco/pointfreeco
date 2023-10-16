@@ -301,8 +301,8 @@ extension Episode.Collection.Section {
 
   static let tca0_x = Self(
     blurb: #"""
-          After 9 long months of developing the Composable Architecture from first principles, we _finally_ [open sourced a library](http://github.com/pointfreeco/swift-composable-architecture) that you can drop into your application today. To celebrate we have a 4-part series on giving a tour of the library where we build a new app from scratch and explore some advanced aspects of the library that we didn't have time to cover in episodes.
-          """#,
+      After 9 long months of developing the Composable Architecture from first principles, we _finally_ [open sourced a library](http://github.com/pointfreeco/swift-composable-architecture) that you can drop into your application today. To celebrate we have a 4-part series on giving a tour of the library where we build a new app from scratch and explore some advanced aspects of the library that we didn't have time to cover in episodes.
+      """#,
     coreLessons: [
       .init(episode: .ep100_ATourOfTheComposableArchitecture_pt1),
       .init(episode: .ep101_ATourOfTheComposableArchitecture_pt2),
@@ -313,10 +313,10 @@ extension Episode.Collection.Section {
     related: [],
     title: "A Tour of the Composable Architecture",
     whereToGoFromHere: """
-          You have now completed a tour of the library from when it was first released, but there
-          have been many improvements and modernizations since then. The first big modernization
-          we performed was updating the `Effect` type to be better integrated with Swift's
-          concurrency tools.
-          """
+      You have now completed a tour of the library from when it was first released, but there
+      have been many improvements and modernizations since then. The first big modernization
+      we performed was updating the `Effect` type to be better integrated with Swift's
+      concurrency tools.
+      """
   )
 }
