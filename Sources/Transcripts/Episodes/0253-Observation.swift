@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep253_observation = Episode(
     blurb: """
-      The `@Observable` macro is here and we will see how it improves on nearly every aspect of the tools that originally shipped with SwiftUI. We will also take a peek behind the curtain to not only get comfortable with the code the macro expands to, but the actual open source code that powers the framework.
+      The `@Observable` macro is here and we will see how it improves on nearly every aspect of the old tools in SwiftUI. We will also take a peek behind the curtain to not only get comfortable with the code the macro expands to, but also the actual open source code that powers the framework.
       """,
     codeSampleDirectory: "0253-observation-pt2",
     exercises: _exercises,
@@ -12,7 +12,20 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2023-10-16")!,
     references: [
-      // TODO
+      Episode.Reference(
+        author: "Chris Eidhof and Florian Kugler",
+        blurb: """
+          Chris and Florian spent 2 episodes of [Swift Talk](https://talk.objc.io) building most
+          of Swift 5.9's Observation framework from scratch. Watch these episodes if you want an
+          even deeper dive into the concepts behind obsevation:
+
+          * [Swift Observation: Access Tracking](https://talk.objc.io/episodes/S01E362-swift-observation-access-tracking)
+          * [Swift Observation: Calling Observers](https://talk.objc.io/episodes/S01E363-swift-observation-calling-observers)
+          """,
+        link: "https://talk.objc.io/episodes/S01E362-swift-observation-access-tracking",
+        publishedAt: yearMonthDayFormatter.date(from: "2023-07-07"),
+        title: "Swift Observation: Access Tracking, Calling Observers"
+      )
     ],
     sequence: 253,
     subtitle: "The Present",
