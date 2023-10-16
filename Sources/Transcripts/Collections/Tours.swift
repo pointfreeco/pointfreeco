@@ -6,24 +6,7 @@ extension Episode.Collection {
       We've open sourced a lot of software on Point-Free, and every once in awhile we like to give casual tours of one of our projects. This gives us an opportunity to show of some features and discuss topics that are hard to glean from reading the README or documentation.
       """#,
     sections: [
-      Episode.Collection.Section(
-        alternateSlug: "composable-architecture-1-0",
-        blurb: #"""
-          We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
-          """#,
-        coreLessons: [
-          .init(episode: .ep243_tourOfTCA),
-          .init(episode: .ep244_tourOfTCA),
-          .init(episode: .ep245_tourOfTCA),
-          .init(episode: .ep246_tourOfTCA),
-          .init(episode: .ep247_tourOfTCA),
-          .init(episode: .ep248_tourOfTCA),
-          .init(episode: .ep249_tourOfTCA),
-        ],
-        related: [],
-        title: "The Composable Architecture",
-        whereToGoFromHere: nil
-      ),
+      .tca1_0,
       .isowords,
       update(.parsing) {
         $0.title = "Parser-Printers"
@@ -99,6 +82,25 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "Tour of Parser-Printers",
+    whereToGoFromHere: nil
+  )
+
+  static let tca1_0 = Self(
+    alternateSlug: "composable-architecture-1-0",
+    blurb: #"""
+          We open sourced the [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) after many, _many_ months of developing the concepts from first principles in Point-Free episodes. In this tour we build a small application from scratch, focus on breaking it down to into small understandable units, and write a full test suite to exercise every subtle aspect of the application.
+          """#,
+    coreLessons: [
+      .init(episode: .ep243_tourOfTCA),
+      .init(episode: .ep244_tourOfTCA),
+      .init(episode: .ep245_tourOfTCA),
+      .init(episode: .ep246_tourOfTCA),
+      .init(episode: .ep247_tourOfTCA),
+      .init(episode: .ep248_tourOfTCA),
+      .init(episode: .ep249_tourOfTCA),
+    ],
+    related: [],
+    title: "The Composable Architecture",
     whereToGoFromHere: nil
   )
 }
