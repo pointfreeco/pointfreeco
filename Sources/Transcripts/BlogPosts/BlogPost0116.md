@@ -98,7 +98,7 @@ This advice does not apply to libraries whose primary reason to exist is to prov
 
 ## The same goes for SwiftFormat
 
-Everything said above also applies to Apple’s SwiftFormat library, which has the same versioning style and even greater compilation costs, but depending on this library in application code is far less common. If you do need to depend on SwiftFormat, be as flexible with the major versions as possible (you can still use `#if canImport(SwiftSyntaxXYZ)` syntax since SwiftFormat depends on SwiftSyntax), and consider splitting it out into its own library if its functionality is not crucial to the core functionality of your package.
+Everything said above also applies to Apple’s [SwiftFormat library](https://github.com/apple/swift-format/), which has the same versioning style and even greater compilation costs, but depending on this library in application code is far less common. If you do need to depend on SwiftFormat, be as flexible with the major versions as possible (you can still use `#if canImport(SwiftSyntaxXYZ)` syntax since SwiftFormat depends on SwiftSyntax), and consider splitting it out into its own library if its functionality is not crucial to the core functionality of your package.
 
 ## A healthier Swift ecosystem
 
