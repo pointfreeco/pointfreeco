@@ -106,7 +106,7 @@ var holidaySpecialContent: Node {
   )
 }
 
-private var homeSubscriberCalloutView: Node {
+var homeSubscriberCalloutView: Node {
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
