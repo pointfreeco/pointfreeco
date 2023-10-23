@@ -434,7 +434,7 @@ private func contentRow(
   title: String,
   length: Seconds<Int>,
   url: String,
-  isActive: Bool = false
+  isActive: Bool = true
 ) -> Node {
 
   let coreContent: Node = [

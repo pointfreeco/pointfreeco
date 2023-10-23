@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 65260
+Content-Length: 65008
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2281,72 +2281,68 @@ html {
 
               </div>
             </div>
-            <div class="border-left
-                        items-center
-                        row
-                        m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2
-                        border-gray-800
-                        bg-gray900"
-                 style="border-top-color:#e8e8e8;
-                        border-right-color:#e8e8e8;
-                        border-bottom-color:#e8e8e8;
-                        border-left-color:#e8e8e8;
-                        border-left-width:4px;
-                        margin-top:4px;
-                        flex-wrap:nowrap">
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-gray900"
+               href="/episodes/ep2-proof-in-functions"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      margin-top:4px;
+                      flex-wrap:nowrap">
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                    alt
                    class="m-pr1">
               <div style="flex-grow:1">
                 Proof in Functions
-                <div style="flex-grow:1"
-                     class="fg-gray400
-                            italic">
-                  Not yet released!
-                </div>
               </div>
               <div class="m-pl1"
                    style="flex-wrap:nowrap;
                           font-variant-numeric:tabular-nums">
                 23&nbsp;min
               </div>
-            </div>
-            <div class="border-left
-                        items-center
-                        row
-                        m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2
-                        border-gray-800
-                        bg-gray900"
-                 style="border-top-color:#e8e8e8;
-                        border-right-color:#e8e8e8;
-                        border-bottom-color:#e8e8e8;
-                        border-left-color:#e8e8e8;
-                        border-left-width:4px;
-                        margin-top:4px;
-                        flex-wrap:nowrap">
+            </a>
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-gray900"
+               href="/episodes/ep2-proof-in-functions"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      margin-top:4px;
+                      flex-wrap:nowrap">
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                    alt
                    class="m-pr1">
               <div style="flex-grow:1">
                 Proof in Functions
-                <div style="flex-grow:1"
-                     class="fg-gray400
-                            italic">
-                  Not yet released!
-                </div>
               </div>
               <div class="m-pl1"
                    style="flex-wrap:nowrap;
                           font-variant-numeric:tabular-nums">
                 23&nbsp;min
               </div>
-            </div>
+            </a>
           </div>
           <div class="m-pb2
                       col-m
@@ -2358,39 +2354,37 @@ html {
 
               </div>
             </div>
-            <div class="border-left
-                        items-center
-                        row
-                        m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2
-                        border-gray-800
-                        bg-gray900"
-                 style="border-top-color:#e8e8e8;
-                        border-right-color:#e8e8e8;
-                        border-bottom-color:#e8e8e8;
-                        border-left-color:#e8e8e8;
-                        border-left-width:4px;
-                        margin-top:4px;
-                        flex-wrap:nowrap">
+            <a class="border-left
+                      items-center
+                      row
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2
+                      col-idx-hover
+                      col-idx-link
+                      border-gray-800
+                      bg-gray900"
+               href="/episodes/ep2-proof-in-functions"
+               style="border-top-color:#e8e8e8;
+                      border-right-color:#e8e8e8;
+                      border-bottom-color:#e8e8e8;
+                      border-left-color:#e8e8e8;
+                      border-left-width:4px;
+                      margin-top:4px;
+                      flex-wrap:nowrap">
               <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4="
                    alt
                    class="m-pr1">
               <div style="flex-grow:1">
                 Proof in Functions
-                <div style="flex-grow:1"
-                     class="fg-gray400
-                            italic">
-                  Not yet released!
-                </div>
               </div>
               <div class="m-pl1"
                    style="flex-wrap:nowrap;
                           font-variant-numeric:tabular-nums">
                 23&nbsp;min
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
