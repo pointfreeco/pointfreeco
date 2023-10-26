@@ -1,0 +1,13 @@
+import Foundation
+
+public let post0117_MacroBonanzaCasePaths = BlogPost(
+  author: .pointfree,
+  blurb: """
+    TODO
+    """,
+  contentBlocks: loadBlogTranscriptBlocks(forSequence: 117),  
+  coverImage: nil,  // TODO
+  id: 117,
+  publishedAt: yearMonthDayFormatter.date(from: "2023-11-14")!,
+  title: "Macro Bonanza: Case Paths"
+)
