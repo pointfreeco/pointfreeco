@@ -8,6 +8,6 @@ public let post0117_MacroBonanzaCasePaths = BlogPost(
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 117),  
   coverImage: nil,  // TODO
   id: 117,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-11-14")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2023-11-13")!,
   title: "Macro Bonanza: Case Paths"
 )

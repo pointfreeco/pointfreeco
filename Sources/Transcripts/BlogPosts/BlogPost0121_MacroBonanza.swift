@@ -1,13 +1,13 @@
 import Foundation
 
-public let post0120_MacroBonanza = BlogPost(
+public let post0121_MacroBonanza = BlogPost(
   author: .pointfree,
   blurb: """
     TODO
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 120),
+  contentBlocks: loadBlogTranscriptBlocks(forSequence: 121),
   coverImage: nil,  // TODO
-  id: 120,
+  id: 121,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-17")!,
-  title: "Macro Bonanza: Case Paths"
+  title: "Macro Bonanza"
 )
