@@ -105,6 +105,10 @@ that can be handed to the SwiftUI view modifiers:
 There's no need to deal with explicit case paths, or the `/` prefix operator for constructing case
 paths. It's simpler and more fluent Swift code.
 
+<!-- 
+TODO: can discuss this if we want: form bindings: self.$model.status.inStock
+-->
+
 ## Get started today
 
 Update your dependency on SwiftUINavigation to [1.1][sui-nav-1.1] today to start taking advantage of
