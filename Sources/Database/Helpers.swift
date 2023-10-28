@@ -32,6 +32,32 @@ extension SQLDatabase {
   }
 }
 
-extension Tagged: PostgresDataConvertible where RawValue: PostgresDataConvertible {}
+extension Tagged: PostgresEncodable where RawValue: PostgresEncodable {}
+
+extension Tagged: PostgresDecodable where RawValue: PostgresDecodable {
+  public init<JSONDecoder: PostgresJSONDecoder>(
+    from byteBuffer: inout ByteBuffer,
+    type: PostgresDataType,
+    format: PostgresFormat,
+    context: PostgresDecodingContext<JSONDecoder>
+  ) throws {
+    self.init(
+      rawValue: try RawValue(
+        from: &byteBuffer,
+        type: type,
+        format: format,
+        context: context
+      )
+    )
+  }
+}
+
+extension Tagged: PostgresArrayEncodable where RawValue: PostgresArrayEncodable {
+  public static var psqlArrayType: PostgresDataType {
+    RawValue.psqlArrayType
+  }
+}
+
+extension Tagged: PostgresThrowingDynamicTypeEncodable where RawValue: PostgresEncodable {}
 
 private let logger = Logger(label: "Postgres")
