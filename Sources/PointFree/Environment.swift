@@ -84,7 +84,7 @@ extension Database.Client: DependencyKey {
       var tlsConfiguration = TLSConfiguration.clientDefault
       tlsConfiguration.certificateVerification = .none
       sqlConfiguration.coreConfiguration
-        .tls = (try? .require(NIOSSLContext(configuration: .clientDefault))) ?? .disable
+        .tls = (try? .require(NIOSSLContext(configuration: tlsConfiguration))) ?? .disable
     }
 
     return .live(
