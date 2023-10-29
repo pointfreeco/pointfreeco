@@ -1,4 +1,4 @@
-FROM swift:5.8-focal
+FROM swift:5.9.1-focal
 
 RUN apt-get --fix-missing update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl python

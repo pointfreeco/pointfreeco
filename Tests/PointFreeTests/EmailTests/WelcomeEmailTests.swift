@@ -59,10 +59,6 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
         return SendEmailResponse(id: "", message: "")
       }
     } operation: {
-      let users2 = try await database.fetchUsersToWelcome(1)
-      let users3 = try await database.fetchUsersToWelcome(2)
-      let users4 = try await database.fetchUsersToWelcome(3)
-
       _ = try await sendWelcomeEmails()
 
       XCTAssertEqual(4, sentEmails.count)
