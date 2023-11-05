@@ -18,7 +18,7 @@ extension Episode {
         additionalBlurb: """
           The original series in which we build the application refactored in this episode.
           """
-      ),
+      )
     ],
     sequence: 256,
     subtitle: nil,
