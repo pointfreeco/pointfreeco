@@ -258,5 +258,8 @@ extension Episode {
     .ep253_observation,
     .ep254_observation,
     .ep255_observation,
+    .ep256_observationInPractice,
+    .ep257_macroCasePaths,
+    .ep258_macroCasePaths,
   ]
 }
