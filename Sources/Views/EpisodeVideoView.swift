@@ -93,6 +93,10 @@ private func progressPollingScript(isEpisodeViewable: Bool) -> Node {
               httpRequest.send();
             }
           });
+          player.setPlaybackRate( localStorage.getItem('pf_playbackrate') || 1.0);
+          player.on('playbackratechange', function(data) {
+            localStorage.setItem('pf_playbackrate', data.playbackRate);
+          });      
         });
         """)
     : []
