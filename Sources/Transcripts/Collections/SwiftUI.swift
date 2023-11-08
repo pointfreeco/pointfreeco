@@ -148,6 +148,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep253_observation),
       .init(episode: .ep254_observation),
       .init(episode: .ep255_observation),
+      .init(episode: .ep256_observationInPractice),
     ],
     related: [],
     title: "Observation",
