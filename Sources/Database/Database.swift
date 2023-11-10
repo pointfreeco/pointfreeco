@@ -20,8 +20,12 @@ public struct Client {
   public var createFeedRequestEvent:
     (FeedRequestEvent.FeedType, String, Models.User.ID) async throws -> Void
   public var createGift: (CreateGiftRequest) async throws -> Gift
-  public var createSubscription:
-    (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?) async throws -> Models.Subscription
+  public var createSubscription: (
+    _ subscription: Stripe.Subscription,
+    _ userID: Models.User.ID,
+    _ isOwnerTakingSeat: Bool,
+    _ referrerID: Models.User.ID?
+  ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (User.ID) async throws -> Void
   public var deleteTeamInvite: (TeamInvite.ID) async throws -> Void
   public var execute: (SQLQueryString) async throws -> [SQLRow]

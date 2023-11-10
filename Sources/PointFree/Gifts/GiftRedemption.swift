@@ -115,8 +115,12 @@ private func redeemGift(
         try await stripe
         .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
       _ =
-        try await database
-        .createSubscription(stripeSubscription, currentUser.id, true, nil)
+        try await database.createSubscription(
+          subscription: stripeSubscription,
+          userID: currentUser.id,
+          isOwnerTakingSeat: true,
+          referrerID: nil
+        )
       _ = try await database.updateGift(gift.id, stripeSubscription.id)
     }
     .run
