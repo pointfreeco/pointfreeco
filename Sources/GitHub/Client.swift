@@ -11,25 +11,18 @@ import Tagged
   import FoundationNetworking
 #endif
 
+import DependenciesMacros
+
+@DependencyClient
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  public var fetchAuthToken: (String) async throws -> Either<OAuthError, AccessToken>
+  public var fetchAuthToken: (_ code: String) async throws -> Either<OAuthError, AccessToken>
 
   /// Fetches a GitHub user's emails.
-  public var fetchEmails: (AccessToken) async throws -> [GitHubUser.Email]
+  public var fetchEmails: (_ accessToken: AccessToken) async throws -> [GitHubUser.Email]
 
   /// Fetches a GitHub user from an access token.
-  public var fetchUser: (AccessToken) async throws -> GitHubUser
-
-  public init(
-    fetchAuthToken: @escaping (String) async throws -> Either<OAuthError, AccessToken>,
-    fetchEmails: @escaping (AccessToken) async throws -> [GitHubUser.Email],
-    fetchUser: @escaping (AccessToken) async throws -> GitHubUser
-  ) {
-    self.fetchAuthToken = fetchAuthToken
-    self.fetchEmails = fetchEmails
-    self.fetchUser = fetchUser
-  }
+  public var fetchUser: (_ accessToken: AccessToken) async throws -> GitHubUser
 }
 
 extension Client {
@@ -112,7 +105,7 @@ private let gitHubJsonDecoder: JSONDecoder = {
 }()
 
 extension Client: TestDependencyKey {
-  public static let testValue: Client = .failing
+  public static let testValue = Client()
 }
 
 extension DependencyValues {

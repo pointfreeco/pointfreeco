@@ -1,4 +1,5 @@
 import Dependencies
+import DependenciesMacros
 import EmailAddress
 import Foundation
 import GitHub
@@ -9,6 +10,7 @@ import PostgresKit
 import Stripe
 import Tagged
 
+@DependencyClient
 public struct Client {
   public var addUserIdToSubscriptionId:
     (Models.User.ID, Models.Subscription.ID) async throws -> Void
@@ -72,125 +74,6 @@ public struct Client {
   public var upsertUser:
     (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
       Models.User
-
-  public init(
-    addUserIdToSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID) async throws ->
-      Void,
-    createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.ID)
-      async throws -> EnterpriseAccount,
-    createEnterpriseEmail: @escaping (EmailAddress, User.ID) async throws -> EnterpriseEmail,
-    createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.ID)
-      async
-      throws -> Void,
-    createGift: @escaping (CreateGiftRequest) async throws -> Gift,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.ID, Bool, Models.User.ID?)
-      async
-      throws -> Models.Subscription,
-    deleteEnterpriseEmail: @escaping (User.ID) async throws -> Void,
-    deleteTeamInvite: @escaping (TeamInvite.ID) async throws -> Void,
-    execute: @escaping (SQLQueryString) async throws -> [SQLRow],
-    fetchAdmins: @escaping () async throws -> [Models.User],
-    fetchEmailSettingsForUserId: @escaping (Models.User.ID) async throws -> [EmailSetting],
-    fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) async throws ->
-      EnterpriseAccount,
-    fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.ID) async throws ->
-      EnterpriseAccount,
-    fetchEnterpriseEmails: @escaping () async throws -> [EnterpriseEmail],
-    fetchEpisodeCredits: @escaping (Models.User.ID) async throws -> [EpisodeCredit],
-    fetchEpisodeProgress: @escaping (User.ID, Episode.Sequence) async throws -> EpisodeProgress,
-    fetchEpisodeProgresses: @escaping (User.ID) async throws -> [EpisodeProgress],
-    fetchFreeEpisodeUsers: @escaping () async throws -> [Models.User],
-    fetchGift: @escaping (Gift.ID) async throws -> Gift,
-    fetchGiftByStripePaymentIntentId: @escaping (PaymentIntent.ID) async throws -> Gift,
-    fetchGiftsToDeliver: @escaping () async throws -> [Gift],
-    fetchLivestreams: @escaping () async throws -> [Livestream],
-    fetchSubscriptionById: @escaping (Models.Subscription.ID) async throws -> Models.Subscription,
-    fetchSubscriptionByOwnerId: @escaping (Models.User.ID) async throws -> Models.Subscription,
-    fetchSubscriptionByTeamInviteCode: @escaping (Models.Subscription.TeamInviteCode) async throws
-      -> Models.Subscription,
-    fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.ID) async throws -> [Models.User],
-    fetchTeamInvite: @escaping (TeamInvite.ID) async throws -> TeamInvite,
-    fetchTeamInvites: @escaping (Models.User.ID) async throws -> [TeamInvite],
-    fetchUserByGitHub: @escaping (GitHubUser.ID) async throws -> Models.User,
-    fetchUserById: @escaping (Models.User.ID) async throws -> Models.User,
-    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) async throws -> Models.User,
-    fetchUserByRssSalt: @escaping (Models.User.RssSalt) async throws -> Models.User,
-    fetchUsersSubscribedToNewsletter: @escaping
-    (EmailSetting.Newsletter, Models.User.SubscriberState?) async throws -> [Models.User],
-    fetchUsersToWelcome: @escaping (Int) async throws -> [Models.User],
-    incrementEpisodeCredits: @escaping ([Models.User.ID]) async throws -> [Models.User],
-    insertTeamInvite: @escaping (EmailAddress, Models.User.ID) async throws -> TeamInvite,
-    migrate: @escaping () async throws -> Void,
-    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.ID) async throws -> Void,
-    regenerateTeamInviteCode: @escaping (Models.Subscription.ID) async throws -> Void,
-    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.ID, Models.Subscription.ID)
-      async
-      throws -> Void,
-    sawUser: @escaping (Models.User.ID) async throws -> Void,
-    updateEmailSettings: @escaping ([EmailSetting.Newsletter]?, Models.User.ID) async throws ->
-      Void,
-    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Bool, Models.User.ID) async throws ->
-      Void,
-    updateGift: @escaping (Gift.ID, Stripe.Subscription.ID) async throws -> Gift,
-    updateGiftStatus: @escaping (Gift.ID, Stripe.PaymentIntent.Status, _ delivered: Bool)
-      async
-      throws -> Gift,
-    updateStripeSubscription: @escaping (Stripe.Subscription) async throws -> Models.Subscription,
-    updateUser: @escaping (Models.User.ID, String?, EmailAddress?, Int?, Models.User.RssSalt?)
-      async
-      throws -> Void,
-    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress, @escaping () -> Date) async throws ->
-      Models.User
-  ) {
-    self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
-    self.createEnterpriseAccount = createEnterpriseAccount
-    self.createEnterpriseEmail = createEnterpriseEmail
-    self.createFeedRequestEvent = createFeedRequestEvent
-    self.createGift = createGift
-    self.createSubscription = createSubscription
-    self.deleteEnterpriseEmail = deleteEnterpriseEmail
-    self.deleteTeamInvite = deleteTeamInvite
-    self.execute = execute
-    self.fetchAdmins = fetchAdmins
-    self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
-    self.fetchEnterpriseAccountForDomain = fetchEnterpriseAccountForDomain
-    self.fetchEnterpriseAccountForSubscription = fetchEnterpriseAccountForSubscription
-    self.fetchEnterpriseEmails = fetchEnterpriseEmails
-    self.fetchEpisodeCredits = fetchEpisodeCredits
-    self.fetchEpisodeProgress = fetchEpisodeProgress
-    self.fetchEpisodeProgresses = fetchEpisodeProgresses
-    self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
-    self.fetchGift = fetchGift
-    self.fetchGiftByStripePaymentIntentId = fetchGiftByStripePaymentIntentId
-    self.fetchGiftsToDeliver = fetchGiftsToDeliver
-    self.fetchLivestreams = fetchLivestreams
-    self.fetchSubscriptionById = fetchSubscriptionById
-    self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
-    self.fetchSubscriptionByTeamInviteCode = fetchSubscriptionByTeamInviteCode
-    self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId
-    self.fetchTeamInvite = fetchTeamInvite
-    self.fetchTeamInvites = fetchTeamInvites
-    self.fetchUserByGitHub = fetchUserByGitHub
-    self.fetchUserById = fetchUserById
-    self.fetchUserByReferralCode = fetchUserByReferralCode
-    self.fetchUserByRssSalt = fetchUserByRssSalt
-    self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
-    self.fetchUsersToWelcome = fetchUsersToWelcome
-    self.incrementEpisodeCredits = incrementEpisodeCredits
-    self.insertTeamInvite = insertTeamInvite
-    self.migrate = migrate
-    self.redeemEpisodeCredit = redeemEpisodeCredit
-    self.regenerateTeamInviteCode = regenerateTeamInviteCode
-    self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
-    self.sawUser = sawUser
-    self.updateEmailSettings = updateEmailSettings
-    self.updateEpisodeProgress = updateEpisodeProgress
-    self.updateGift = updateGift
-    self.updateGiftStatus = updateGiftStatus
-    self.updateStripeSubscription = updateStripeSubscription
-    self.updateUser = updateUser
-    self.upsertUser = upsertUser
-  }
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {
@@ -289,7 +172,7 @@ public struct Client {
 }
 
 extension Client: TestDependencyKey {
-  public static let testValue = Self.failing
+  public static let testValue = Self()
 }
 
 extension DependencyValues {
