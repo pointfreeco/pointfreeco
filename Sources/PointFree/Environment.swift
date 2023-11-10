@@ -79,15 +79,17 @@ extension Database.Client: DependencyKey {
     guard !envVars.emergencyMode
     else { return .noop }
 
-    var config = PostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)!
+    var sqlConfiguration = try! SQLPostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)
     if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
-      config.tlsConfiguration = .clientDefault
-      config.tlsConfiguration?.certificateVerification = .none
+      var tlsConfiguration = TLSConfiguration.clientDefault
+      tlsConfiguration.certificateVerification = .none
+      sqlConfiguration.coreConfiguration
+        .tls = (try? .require(NIOSSLContext(configuration: tlsConfiguration))) ?? .disable
     }
 
     return .live(
       pool: EventLoopGroupConnectionPool(
-        source: PostgresConnectionSource(configuration: config),
+        source: PostgresConnectionSource(sqlConfiguration: sqlConfiguration),
         on: mainEventLoopGroup
       )
     )

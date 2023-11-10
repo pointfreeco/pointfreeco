@@ -1578,6 +1578,14 @@ extension Episode.Reference {
     episodeUrl: "https://www.pointfree.co/episodes/ep13-the-many-faces-of-map"
   )
 
+  public static func modernSwiftUI(additionalBlurb: String = "") -> Self {
+    reference(
+      forSection: .modernSwiftUI,
+      additionalBlurb: additionalBlurb,
+      sectionUrl: "https://www.pointfree.co/collections/swiftui/modern-swiftui"
+    )
+  }
+
   public static let pointFreePullbackAndContravariance = reference(
     forEpisode: .ep14_contravariance,
     additionalBlurb: """

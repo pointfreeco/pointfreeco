@@ -81,9 +81,9 @@ open class LiveDatabaseTestCase: XCTestCase {
       precondition(!$0.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(
         source: PostgresConnectionSource(
-          configuration: PostgresConfiguration(
+          sqlConfiguration: try! SQLPostgresConfiguration(
             url: $0.envVars.postgres.databaseUrl.rawValue
-          )!
+          )
         ),
         on: MultiThreadedEventLoopGroup(numberOfThreads: 1)
       )
