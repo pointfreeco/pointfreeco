@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0119_MacroBonanzaTCA = BlogPost(
+public let post0119_MacroBonanza = BlogPost(
   author: .pointfree,
   blurb: """
     """,
@@ -8,5 +8,5 @@ public let post0119_MacroBonanzaTCA = BlogPost(
   coverImage: nil,  // TODO
   id: 119,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-15")!,
-  title: "Macro Bonanza: Composable Architecture"
+  title: "Macro Bonanza: SwiftUI Navigation"
 )

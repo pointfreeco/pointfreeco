@@ -1,4 +1,4 @@
-To celebrate the release of Swift macros we releasing updates to 4 of our popular libraries to 
+To celebrate the release of Swift macros we are releasing updates to 4 of our popular libraries to 
 greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
 [SwiftUINavigation][sui-nav-gh], [ComposableArchitecture][tca-gh], and 
 [XCTestDynamicOverlay][xctdo-gh]. Each day this week we will detail how macros have allowed us to 
@@ -50,8 +50,8 @@ _and_ you can even use key path syntax to construct them:
 let activityCase = \Destination.Cases.activity  // CaseKeyPath<Destination, ActivityModel>
 ```
 
-Previous case paths were constructed by using a custom prefix operator, `/`, which meant there was
-no type inference or autocomplete help from the compiler:
+Previously, case paths were constructed by using a custom prefix operator, `/`, which meant there 
+was no type inference or autocomplete help from the compiler:
 
 ```swift
 let activityCase = /Destination.activity  // CasePath<Destination, ActivityModel>
@@ -80,7 +80,7 @@ Navigation][sui-nav-gh] library. But we will discuss that more later this week.
 
 ## Expressive case checking
 
-But even if you are not using one of our other libraries that uses case paths, you may still have 
+But even if you are not using a library out there that uses case paths, you may still have 
 use of case paths directly in your application. It makes it possible to easily check if an enum
 value is of a particular case, and you can immediately access getter properties for each case of 
 your enum.
@@ -151,7 +151,7 @@ navigation is driven from a particular case of a destination enum can be quite v
 )
 ```
 
-However, with the new properties added to an enum this can be shorted to just the following:
+With the new properties added to an enum this can be shorted to just the following:
 
 ```diff
  .sheet(
@@ -167,6 +167,6 @@ However, with the new properties added to an enum this can be shorted to just th
 
 Update your dependency on CasePaths to [1.1][case-paths-1.1] today to start taking advantage of
 the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case path tools have
-massively improved our [SwiftUINavigation][sui-nav-gh] library. 
+massively improved our [Composable Architecture][tca-gh] library. 
 
-[case-paths-1.1]: todo
+[case-paths-1.1]: https://github.com/pointfreeco/swift-case-paths/releases/tag/1.1.0

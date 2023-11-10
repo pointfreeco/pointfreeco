@@ -1,123 +1,118 @@
-To celebrate the release of Swift macros we releasing updates to 4 of our popular libraries to 
+To celebrate the release of Swift macros we are releasing updates to 4 of our popular libraries to 
 greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
 [SwiftUINavigation][sui-nav-gh], [ComposableArchitecture][tca-gh], and 
 [XCTestDynamicOverlay][xctdo-gh]. Each day this week we will detail how macros have allowed us to 
 massively simplify one of these libraries, and increase their powers.
 
-And today we are discussing our popular library, the [Composable Architecture][tca-gh]. A brand new 
-`@Reducer` macro has been introduced that can automate some of the aspects of building features
-in the library.
+And today we are discussing our [SwiftUINavigation][sui-nav-gh] library, which brings tools to 
+SwiftUI that allow you to better drive navigation from optionals and enums.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
 [xctdo-gh]: http://github.com/pointfreeco/xctest-dynamic-overlay
 
-## @Reducer
+## Better domain modeling tools
 
-The new [`@Reducer`][reducer-macro-docs] macro can now be used instead of directly conforming to
-the [`Reducer`][reducer-protocol-docs] protocol:
+The SwiftUINavigation library provides tools that allow you to drive navigation in your features
+using a single enum. This makes it possible to prove at compile time that only a single 
+destination can be active at a time, and helping to reduce the complexity of your features.
 
-```diff
--struct Feature: Reducer {
-+@Reducer
-+struct Feature {
-   // …
- }
-```
-
-It's a very tiny change, but it comes with a number of benefits.
-
-It will automatically add the `@CasePathable` macro to your `Action` enum, which immediately gives
-you keypath-like syntax for referring to the cases of your enum. This means you can invoke the 
-various reducer operators that require case paths for isolating a child feature's action with
-a simple key path:
-
-```diff
- Reduce { state, action in 
-   // …
- }
--.ifLet(\.child, action: /Action.child)
-+.ifLet(\.child, action: \.child)
-```
-
-Further, the macro is capable of detecting potential problems in your reducer and alerting you
-at compile time rather than runtime. For example, implementing your reducer by accidentally
-specifing the `reduce(into:action:)` method _and_ the `body` property like so: 
+For example, if you have an observable model for a meeting that is capable of showing an edit
+feature in a sheet, drilling down to a record meeting feature, or showing an alert, then an optimal
+way to design this domain is the following: 
 
 ```swift
-@Reducer
-struct Feature {
-  struct State {
+@Observable
+class MeetingDetailModel {
+  var destination: Destination?
+
+  enum Destination {
+    case alert(AlertState<AlertAction>)
+    case edit(EditMeetingModel)
+    case record(RecordMeetingModel)
   }
-  enum Action {
-  }
-  func reduce(into state: inout State, action: Action) -> EffectOf<Self> {
-    …
-  }
-  var body: some ReducerOf<Self> {
-    …
-  }
+
+  // ...
 }
 ```
 
-This is an invalid reducer because the `body` property will never be called. The `@Reducer` macro
-can diagnos the problem and provide you with a helpful warning:
+The single piece of optional `destination` state determines whether or not we are currently 
+navigated to a particular feature.
+
+This can be powerful, but unfortunately vanilla SwiftUI does not provide the tools to drive 
+navigation off of such a domain. It's tools, such as the `sheet`, `alert` and 
+`navigationDestination` view modifiers, are tuned for bindings of booleans, and sometimes bindings 
+of optionals.
+
+Well, our [SwiftUINavigation][sui-nav-gh] library tries to fill the gap, with the help of our
+[CasePaths][case-paths-gh] library, by providing view modifiers that allow you to drive navigation
+from the `Destination` enum:
 
 ```swift
-@Reducer
-struct Feature {
-  struct State {
-  }
-  enum Action {
-  }
-  func reduce(into state: inout State, action: Action) -> EffectOf<Self> {
-    // ┬─────
-    // ╰─ ⚠️ A 'reduce' method should not be defined in a reducer with a 
-    //       'body'; it takes precedence and 'body' will never be invoked.
-    …
-  }
-  var body: some ReducerOf<Self> {
-    …
-  }
+.alert(
+  unwrapping: self.$model.destination,
+  case: /MeetingDetailModel.Destination.alert
+) { action in
+  await self.model.alertButtonTapped(action)
+}
+.navigationDestination(
+  unwrapping: self.$model.destination,
+  case: /MeetingDetailModel.Destination.record
+) { $model in
+  RecordMeetingView(model: model)
+}
+.sheet(
+  unwrapping: self.$model.destination,
+  case: /MeetingDetailModel.Destination.edit
+) { $editModel in
+  EditMeetingView(model: editModel)
 }
 ```
 
-The `@Reducer` macro will also apply the `@CasePathable` macro to your feature's `State` type if it
-is an enum, and further apply the `@dynamicMemberLookup` annotation. Doing so allows you to
-simplify your use of our navigation view modifiers from something like this:
+This works incredibly well, but it also a bit verbose.
+
+## Navigation with @CasePathable
+
+Thanks to the new `@CasePathable` macro provided by our CasePaths library, we can greatly simplify
+the above view modifiers. We can start by annotating the `Destination` enum with the macro:
 
 ```swift
-.sheet(
-  store: self.store.scope(state: \.$destination, action: { .destination($0) }),
-  state: /Feature.Destination.State.editForm,
-  action: Feature.Destination.Action.editForm
-)
+@CasePathable
+enum Destination {
+  case alert(AlertState<AlertAction>)
+  case edit(EditMeetingModel)
+  case record(RecordMeetingModel)
+}
 ```
 
-…to something like this:
+Just that one line of additional code gives us the ability to perform dot-chaining syntax onto
+the `$model.destination` binding for each case of the enum. This allows us to derive bindings
+that can be handed to the SwiftUI view modifiers:
 
 ```swift
-.sheet(
-  store: self.store.scope(state: \.$destination, action: { .destination($0) }),
-  state: \.editForm,
-  action: { .editForm($0) }
-)
-```
+.alert(unwrapping: self.$model.destination.alert) { action in
+  await self.model.alertButtonTapped(action)
+}
+.navigationDestination(item: self.$model.destination.record) { model in
+  RecordMeetingView(model: model)
+}
+.sheet(item: self.$model.destination.edit) { editModel in
+  EditMeetingView(model: editModel)
+}
+``` 
 
-And in the future the `@Reducer` macro may acquire even more powers for helping you avoid the 
-boilerplate of implementing `Destination` features for [tree-based navigation][tree-nav-docs] and 
-`Path` features for [stack-based navigation][stack-docs]. 
+There's no need to deal with explicit case paths, or the `/` prefix operator for constructing case
+paths. It's simpler and more fluent Swift code.
+
+<!-- 
+TODO: can discuss this if we want: form bindings: self.$model.status.inStock
+-->
 
 ## Get started today
 
-Update your dependency on the Composable Architecture to [1.4][tca-1.4] today to start taking 
-advantage of the new `@Reducer` macro, and more. Tomorrow we will discuss how these new case 
-path tools have massively improved our [XCTestDynamicOverlay][xctdo-gh] library. 
+Update your dependency on SwiftUINavigation to [1.1][sui-nav-1.1] today to start taking advantage of
+the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case path tools have
+massively improved our [Composable Architecture][tca-gh] library. 
 
-[tca-1.4]: todo
-[reducer-macro-docs]: todo
-[reducer-protocol-docs]: todo
-[tree-nav-docs]: todo
-[stack-docs]: todo
-[xctdo-gh]: todo
+[sui-nav-1.1]: todo

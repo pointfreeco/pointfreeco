@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0117_MacroBonanzaCasePaths = BlogPost(
+public let post0117_MacroBonanza = BlogPost(
   author: .pointfree,
   blurb: """
     TODO

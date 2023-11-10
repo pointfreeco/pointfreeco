@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0120_MacroBonanzaXCTDO = BlogPost(
+public let post0120_MacroBonanza = BlogPost(
   author: .pointfree,
   blurb: """
     TODO
