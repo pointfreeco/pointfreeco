@@ -30,7 +30,7 @@ the [`Reducer`][reducer-protocol-docs] protocol:
 
 It's a very tiny change, but it comes with a number of benefits:
 
-### Simpler case paths for actions
+### Simpler case paths for integrating features
 
 The `@Reducer` macro automatically adds the `@CasePathable` macro to your feature's `Action` enum, 
 which immediately gives you keypath-like syntax for referring to the cases of your enum. This means 
