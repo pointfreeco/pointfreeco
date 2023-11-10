@@ -9,5 +9,5 @@ public let post0120_MacroBonanza = BlogPost(
   coverImage: nil,  // TODO
   id: 120,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-16")!,
-  title: "Macro Bonanza: XCTestDynamicOverlay"
+  title: "Macro Bonanza: Dependencies"
 )

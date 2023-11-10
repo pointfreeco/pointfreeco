@@ -1,13 +1,13 @@
 To celebrate the release of Swift macros we are releasing updates to 4 of our popular libraries to 
 greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
 [SwiftUINavigation][sui-nav-gh], [ComposableArchitecture][tca-gh], and 
-[XCTestDynamicOverlay][xctdo-gh]. Each day this week we will detail how macros have allowed us to 
+[Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
 massively simplify one of these libraries, and increase their powers.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
-[xctdo-gh]: http://github.com/pointfreeco/xctest-dynamic-overlay
+[dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
 <!--
 !> [preamble]: To celebrate the release of Swift macros we releasing updates to 4 of our popular 
