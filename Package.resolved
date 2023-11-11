@@ -150,7 +150,7 @@
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
         "branch" : "macros",
-        "revision" : "d57c16499f8b7d2608a16870f60bdd3ba278eddf"
+        "revision" : "9d5ba24c16e8ef7cb188056fcab8dc1024404891"
       }
     },
     {

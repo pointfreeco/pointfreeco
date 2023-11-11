@@ -38,7 +38,10 @@ private func cancelResponse(
     }
     _ =
       try await stripe
-      .cancelSubscription(stripeSubscription.id, stripeSubscription.status == .pastDue)
+      .cancelSubscription(
+        id: stripeSubscription.id,
+        immediately: stripeSubscription.status == .pastDue
+      )
     await fireAndForget {
       try await sendCancelEmail(to: user, for: stripeSubscription)
     }
@@ -69,7 +72,11 @@ private func reactivateResponse(
     else {
       return conn.redirect(to: .account()) { $0.flash(.error, genericSubscriptionError) }
     }
-    _ = try await stripe.updateSubscription(stripeSubscription, item.plan.id, item.quantity)
+    _ = try await stripe.update(
+      subscription: stripeSubscription,
+      planID: item.plan.id,
+      quantity: item.quantity
+    )
     Task { try await sendReactivateEmail(to: user, for: stripeSubscription) }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve reactivated your subscription.")
@@ -109,7 +116,7 @@ private func requireUserAndStripeSubscription(
     guard
       let stripeSubscription =
         try? await stripe
-        .fetchSubscription(subscription.stripeSubscriptionId)
+        .fetchSubscription(id: subscription.stripeSubscriptionId)
     else {
       return conn.redirect(to: .account()) {
         $0.flash(.error, genericSubscriptionError)

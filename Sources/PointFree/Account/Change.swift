@@ -47,7 +47,11 @@ func changeSubscription(
 
     return EitherIO {
       try await stripe
-        .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
+        .update(
+          subscription: currentSubscription,
+          planID: newPricing.billing.plan,
+          quantity: newPricing.quantity
+        )
     }
     .run
     .flatMap(

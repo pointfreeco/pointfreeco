@@ -1,6 +1,7 @@
 import AsyncHTTPClient
 import DecodableRequest
 import Dependencies
+import DependenciesMacros
 import Either
 import Foundation
 import FoundationPrelude

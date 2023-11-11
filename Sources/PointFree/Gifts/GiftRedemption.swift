@@ -159,7 +159,7 @@ private func fetchAndValidateGiftAndDiscount(
   return { conn in
     let giftId = conn.data
     return EitherIO<_, (Gift, PaymentIntent)> {
-      let gift = try await database.fetchGift(giftId)
+      let gift = try await database.fetchGift(id: giftId)
       let paymentIntent = try await stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
       return (gift, paymentIntent)
     }

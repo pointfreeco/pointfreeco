@@ -143,7 +143,7 @@ private func linkToEnterpriseSubscription<Z>(
   @Dependency(\.database) var database
 
   return EitherIO {
-    try await database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+    try await database.addUser(id: get1(data).id, toSubscriptionID: get2(data).subscriptionId)
   }
   .map(const(data))
   .run

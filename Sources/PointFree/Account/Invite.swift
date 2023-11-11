@@ -96,9 +96,9 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
       let subscription = try await database.fetchSubscriptionByOwnerId(inviter.id)
       let stripeSubscription =
         try await stripe
-        .fetchSubscription(subscription.stripeSubscriptionId)
+        .fetchSubscription(id: subscription.stripeSubscriptionId)
       guard stripeSubscription.status.isActive else { throw unit }
-      try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+      try await database.addUser(id: currentUser.id, toSubscriptionID: subscription.id)
 
       await fireAndForget {
         _ = try await sendEmail(
@@ -160,7 +160,7 @@ let sendInviteMiddleware =
 
       let stripeSubscription =
         try await stripe
-        .fetchSubscription(subscription.stripeSubscriptionId)
+        .fetchSubscription(id: subscription.stripeSubscriptionId)
       let seatsTaken = try await invites + teammates
 
       guard stripeSubscription.status.isActive && stripeSubscription.quantity > seatsTaken
@@ -277,7 +277,7 @@ private func redirectCurrentSubscribers<A, B>(
       let subscription = try await database.fetchSubscriptionById(subscriptionId)
       let stripeSubscription =
         try await stripe
-        .fetchSubscription(subscription.stripeSubscriptionId)
+        .fetchSubscription(id: subscription.stripeSubscriptionId)
       return stripeSubscription.isRenewing
     }
     .run

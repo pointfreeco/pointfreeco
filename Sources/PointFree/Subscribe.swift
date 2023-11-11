@@ -53,18 +53,20 @@ private func subscribe(
     let stripeSubscription: Stripe.Subscription
 
     if let stripeSubscriptionID = subscribeData.subscriptionID {
-      stripeSubscription = try await stripe.fetchSubscription(stripeSubscriptionID)
-      customer = try await stripe.fetchCustomer(stripeSubscription.customer.id)
+      stripeSubscription = try await stripe.fetchSubscription(id: stripeSubscriptionID)
+      customer = try await stripe.fetchCustomer(id: stripeSubscription.customer.id)
     } else {
       customer = try await stripe.createCustomer(
-        subscribeData.paymentMethodID,
-        user.id.rawValue.uuidString,
-        user.email,
-        nil,
-        subscribeData.pricing.interval == .year ? referrer.map(const(referredDiscount)) : nil
+        paymentMethodID: subscribeData.paymentMethodID,
+        description: user.id.rawValue.uuidString,
+        emailAddress: user.email,
+        vatNumber: nil,
+        balance: subscribeData.pricing.interval == .year
+          ? referrer.map(const(referredDiscount))
+          : nil
       )
 
-      let paymentMethod = try await stripe.fetchPaymentMethod(subscribeData.paymentMethodID)
+      let paymentMethod = try await stripe.fetchPaymentMethod(id: subscribeData.paymentMethodID)
       let country = paymentMethod.card?.country
       guard country != nil || !subscribeData.useRegionalDiscount else {
         throw StripeErrorEnvelope(
@@ -97,10 +99,10 @@ private func subscribe(
         : nil
 
       stripeSubscription = try await stripe.createSubscription(
-        customer.id,
-        subscribeData.pricing.billing.plan,
-        subscribeData.pricing.quantity,
-        subscribeData.coupon ?? regionalDiscountCouponId
+        customerID: customer.id,
+        planID: subscribeData.pricing.billing.plan,
+        quantity: subscribeData.pricing.quantity,
+        coupon: subscribeData.coupon ?? regionalDiscountCouponId
       )
     }
 
@@ -142,8 +144,8 @@ private func subscribe(
       if let referrer {
         async let updateReferrerBalance: Void = {
           _ = try await stripe.updateCustomerBalance(
-            referrer.stripeSubscription.customer.id,
-            (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
+            customerID: referrer.stripeSubscription.customer.id,
+            amount: (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
           )
           Task { try await sendReferralEmail(to: referrer.user).performAsync() }
         }()
@@ -152,7 +154,9 @@ private func subscribe(
           guard subscribeData.pricing.interval == .month
           else { return }
           _ = try await stripe.updateCustomerBalance(
-            stripeSubscription.customer.id, referredDiscount)
+            customerID: stripeSubscription.customer.id,
+            amount: referredDiscount
+          )
         }()
 
         // TODO: Log errors?
@@ -172,10 +176,10 @@ private func subscribe(
   } catch {
     let errorMessage =
       (error as? StripeErrorEnvelope)?.error.message
-        ?? """
-        Error creating subscription! If you believe you have been charged in error, please contact \
-        <support@pointfree.co>.
-        """
+      ?? """
+      Error creating subscription! If you believe you have been charged in error, please contact \
+      <support@pointfree.co>.
+      """
 
     if conn.acceptJSON {
       return try! conn.writeStatus(.ok).respond(
@@ -354,8 +358,7 @@ private func validateReferrer(
       let referrer = try await database.fetchUserByReferralCode(referralCode)
       let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
       let stripeSubscription =
-        try await stripe
-        .fetchSubscription(subscription.stripeSubscriptionId)
+        try await stripe.fetchSubscription(id: subscription.stripeSubscriptionId)
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)
     }
     .run
