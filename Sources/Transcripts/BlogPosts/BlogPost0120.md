@@ -175,6 +175,10 @@ extension AudioPlayerClient: DependencyKey {
 
 ## @DependencyClient in practice
 
+We have used this macro to massively clean up the code in our open-source word game, 
+[isowords][isowords-gh], as well as the code that powers this very site, which is 
+[open-source][pf-gh] and completely written in Swift.
+
 <!--
 todo: show how this improved isowords and pointfreeco
 -->
@@ -182,6 +186,8 @@ todo: show how this improved isowords and pointfreeco
 ## Get started today
 
 
+[pf-gh]: http://github.com/pointfreeco/pointfreeoc.
+[isowords-gh]: http://www.github.com/pointfreeco/isowords
 [designing-dependencies-pf]: https://www.pointfree.co/collections/dependencies
 [designing-dependencies-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/designingdependencies
 [dependency-client-docs]: todo
