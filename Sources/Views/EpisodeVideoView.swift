@@ -66,6 +66,13 @@ public func videoView(
             player.setCurrentTime(time)
             if (play) { player.play() }
           }
+        
+          player.setPlaybackRate( localStorage.getItem('pf_playbackrate') || 1.0
+          );
+          player.on('playbackratechange', function(data) {
+            localStorage.setItem('pf_playbackrate', data.playbackRate);
+          });
+
         });
         """
     ),
