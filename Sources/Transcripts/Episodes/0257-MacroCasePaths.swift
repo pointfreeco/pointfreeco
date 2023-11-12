@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep257_macroCasePaths = Episode(
     blurb: """
-      TODO
+      “Case paths” grant key path-like functionality to enum cases. They solve many problems in
+      navigation, parsing, and architecture, but fall short of native key paths…till now. Let’s
+      close this gap using macros that generate actual key paths to enum cases.
       """,
     codeSampleDirectory: "0257-macro-case-paths-pt1",
     exercises: _exercises,
@@ -15,7 +17,7 @@ extension Episode {
       // TODO
     ],
     sequence: 257,
-    subtitle: nil,
+    subtitle: "Part 1",
     title: "Macro Case Paths",
     trailerVideo: .init(
       bytesLength: 111_100_000,

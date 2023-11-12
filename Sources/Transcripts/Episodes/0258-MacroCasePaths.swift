@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep258_macroCasePaths = Episode(
     blurb: """
-      TODO
+      We have now totally reimagined the design of our case paths library to create actual key paths
+      for enum cases, but there is some boilerplate involved. Let’s create a macro that eliminates
+      all of it and explore a few of the possibilities it unlocks.
       """,
     codeSampleDirectory: "0258-macro-case-paths-pt2",
     exercises: _exercises,
@@ -15,7 +17,7 @@ extension Episode {
       // TODO
     ],
     sequence: 258,
-    subtitle: nil,
+    subtitle: "Part 2",
     title: "Macro Case Paths",
     trailerVideo: .init(
       bytesLength: 50_500_000,
