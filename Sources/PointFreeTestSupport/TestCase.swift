@@ -1,4 +1,3 @@
-import Backtrace
 import Database
 import Dependencies
 import Models

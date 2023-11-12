@@ -42,7 +42,6 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
-    .package(url: "https://github.com/ianpartridge/swift-backtrace", from: "1.3.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.0"),
@@ -271,7 +270,6 @@ var package = Package(
         "Syndication",
         "Views",
         "VimeoClient",
-        .product(name: "Backtrace", package: "swift-backtrace"),
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),
