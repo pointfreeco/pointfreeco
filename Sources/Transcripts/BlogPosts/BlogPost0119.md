@@ -15,8 +15,8 @@ SwiftUI that allow you to better drive navigation from optionals and enums.
 ## Better domain modeling tools
 
 The SwiftUINavigation library provides tools that allow you to drive navigation in your features
-using a single enum. This makes it possible to prove at compile time that only a single 
-destination can be active at a time, and helping to reduce the complexity of your features.
+using a single enum. This makes it possible to prove at compile time that only a single destination
+can be active at a time, helping reduce the complexity of your features.
 
 For example, if you have an observable model for a meeting that is capable of showing an edit
 feature in a sheet, drilling down to a record meeting feature, or showing an alert, then an optimal
@@ -33,7 +33,7 @@ class MeetingDetailModel {
     case record(RecordMeetingModel)
   }
 
-  // ...
+  …
 }
 ```
 
@@ -41,9 +41,8 @@ The single piece of optional `destination` state determines whether or not we ar
 navigated to a particular feature.
 
 This can be powerful, but unfortunately vanilla SwiftUI does not provide the tools to drive 
-navigation off of such a domain. It's tools, such as the `sheet`, `alert` and 
-`navigationDestination` view modifiers, are tuned for bindings of booleans, and sometimes bindings 
-of optionals.
+navigation off of such a domain. Its tools, such as the `sheet`, `alert` and `navigationDestination`
+view modifiers, are tuned for bindings of booleans, and sometimes bindings of optionals.
 
 Well, our [SwiftUINavigation][sui-nav-gh] library tries to fill the gap, with the help of our
 [CasePaths][case-paths-gh] library, by providing view modifiers that allow you to drive navigation
@@ -72,10 +71,11 @@ from the `Destination` enum:
 
 This works incredibly well, but it also a bit verbose.
 
-## Navigation with @CasePathable
+## Navigation with dynamic case lookup
 
-Thanks to the new `@CasePathable` macro provided by our CasePaths library, we can greatly simplify
-the above view modifiers. We can start by annotating the `Destination` enum with the macro:
+Thanks to [the new `@CasePathable` macro][case-path-bonanza-blog] provided by our CasePaths library,
+we can greatly simplify the above view modifiers. We can start by annotating the `Destination` enum
+with the macro:
 
 ```swift
 @CasePathable
@@ -94,18 +94,22 @@ that can be handed to the SwiftUI view modifiers:
 .alert(unwrapping: self.$model.destination.alert) { action in
   await self.model.alertButtonTapped(action)
 }
-.navigationDestination(item: self.$model.destination.record) { model in
+.navigationDestination(unwrapping: self.$model.destination.record) { model in
   RecordMeetingView(model: model)
 }
-.sheet(item: self.$model.destination.edit) { editModel in
+.sheet(unwrapping: self.$model.destination.edit) { editModel in
   EditMeetingView(model: editModel)
 }
 ``` 
 
-There's no need to deal with explicit case paths, or the `/` prefix operator for constructing case
+There's no need to deal with explicit case paths or the `/` prefix operator for constructing case
 paths. It's simpler and more fluent Swift code.
 
+[case-paths-bonanza-blog]: /blog/posts/117-macro-bonanza-case-paths
+
 <!-- 
+## Form bindings with dynamic case lookup
+
 TODO: can discuss this if we want: form bindings: self.$model.status.inStock
 -->
 

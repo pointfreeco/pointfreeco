@@ -20,15 +20,16 @@ highly encourage users of the library to design their dependencies in a specific
 avoiding protocols for modeling the interfaces of things like API clients, database clients, audio 
 players, and more, for a few reasons:
 
-* These interfaces tend to have a very specific set of conformances, typically a live and test
-implementation. They are not similar to the popular protocols in the Swift ecosystem, such as 
-`Collection`, `View`, `Reducer`, and others. Those protocols have hundreds or thousands of 
-conformances.
-* One does not typically use the full power of protocols with these kinds of interfaces, such as 
-primary associated types, operators for transforming conformances, static type preservation, etc.
-*  For dependencies in particular, it can be useful to override a single endpoint in tests while
-leaving all other endpoints unimplemented. This gives you exhaustive test coverage on exactly what
-parts of your dependencies are used in a particular execution flow.
+  * These interfaces tend to have a very specific, limited set of conformances, typically just live
+    and test implementations. They are not similar to the popular protocols in the Swift ecosystem,
+    such as `Collection`, `View`, `Reducer`, and others, which may have hundreds or thousands of 
+    conformances.
+  * One does not typically use the full power of protocols with these kinds of interfaces, such as 
+    primary associated types, operators for transforming conformances, static type preservation,
+    and more.
+  * For dependencies in particular, it can be useful to override a single endpoint in tests while
+    leaving all other endpoints unimplemented. This gives you exhaustive test coverage on exactly
+    what parts of your dependencies are used in a particular execution flow.
 
 For these reasons, and more, we think using structs with closure properties to model dependencies
 is typically a far better choice. We have talked extensively about it in 
@@ -107,7 +108,7 @@ player.play(URL(…))
 player.play(url: URL(…))
 ```
 
-That is unfortunate, but luckily we can fix this problem and a lot more…
+That is unfortunate, but luckily we can fix this problem and a whole lot more…
   
 ## Introducing the @DependencyClient macro
 
@@ -133,12 +134,13 @@ we defined now comes for free by applying the macro:
 
 ```diff
  extension AudioPlayerClient {
-   static let unimplemented = Self(
+-  static let unimplemented = Self(
 -    loop: unimplemented("loop"),
 -    play: unimplemented("play"),
 -    setVolume: unimplemented("setVolume"),
 -    stop: unimplemented("stop"),
-   )
+-  )
++  static let unimplemented = Self()
  }
 ```
 
@@ -186,7 +188,7 @@ todo: show how this improved isowords and pointfreeco
 ## Get started today
 
 
-[pf-gh]: http://github.com/pointfreeco/pointfreeoc.
+[pf-gh]: http://github.com/pointfreeco/pointfreeco
 [isowords-gh]: http://www.github.com/pointfreeco/isowords
 [designing-dependencies-pf]: https://www.pointfree.co/collections/dependencies
 [designing-dependencies-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/designingdependencies
