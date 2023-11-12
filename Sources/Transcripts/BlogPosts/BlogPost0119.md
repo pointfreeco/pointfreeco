@@ -156,4 +156,4 @@ Update your dependency on SwiftUINavigation to [version 1.1][sui-nav-1.1] today 
 advantage of the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case 
 path tools have massively improved our [Composable Architecture][tca-gh] library. 
 
-[sui-nav-1.1]: todo
+[sui-nav-1.1]: https://github.com/pointfreeco/swiftui-navigation/releases/tag/1.1.0

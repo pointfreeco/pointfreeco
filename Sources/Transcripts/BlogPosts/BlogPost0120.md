@@ -207,8 +207,14 @@ can now delete all of that code, and anytime we add a new endpoint to our databa
 to update any existing code. And we get nice methods with argument labels automatically:
 
 ```diff
--try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
-+try await database.addUser(id: currentUser.id, toSubscriptionID: subscription.id)
+-try await database.addUserIdToSubscriptionId(
+-  currentUser.id, 
+-  subscription.id
+-)
++try await database.addUser(
++  id: currentUser.id, 
++  toSubscriptionID: subscription.id
++)
 ```
 
 This gives us important information about the dependency endpoint so that we don't accidentally
