@@ -6,8 +6,6 @@ public func bootstrap() async {
   print("⚠️ Bootstrapping PointFree...")
   defer { print("✅ PointFree Bootstrapped!") }
 
-  Backtrace.install()
-
   #if !OSS
     print("  ⚠️ Bootstrapping transcripts")
     Episode.bootstrapPrivateEpisodes()
