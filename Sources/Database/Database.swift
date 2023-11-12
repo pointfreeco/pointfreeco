@@ -59,10 +59,12 @@ public struct Client {
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
+  @DependencyEndpoint(method: "fetchEnterpriseAccount")
   public var fetchEnterpriseAccountForDomain:
-    (EnterpriseAccount.Domain) async throws -> EnterpriseAccount
+  (_ forDomain: EnterpriseAccount.Domain) async throws -> EnterpriseAccount
+  @DependencyEndpoint(method: "fetchEnterpriseAccount")
   public var fetchEnterpriseAccountForSubscription:
-    (_ id: Models.Subscription.ID) async throws -> EnterpriseAccount
+    (_ forSubscriptionID: Models.Subscription.ID) async throws -> EnterpriseAccount
   public var fetchEnterpriseEmails: () async throws -> [EnterpriseEmail]
   public var fetchEpisodeCredits: (_ userID: Models.User.ID) async throws -> [EpisodeCredit]
   public var fetchEpisodeProgress:
@@ -88,6 +90,7 @@ public struct Client {
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionByTeamInviteCode:
     (_ teamInviteCode: Models.Subscription.TeamInviteCode) async throws -> Models.Subscription
+  @DependencyEndpoint(method: "fetchSubscriptionTeammates")
   public var fetchSubscriptionTeammatesByOwnerId:
     (_ ownerID: Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (_ id: TeamInvite.ID) async throws -> TeamInvite
@@ -154,9 +157,9 @@ public struct Client {
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {
-      return try await self.fetchSubscriptionById(user.subscriptionId.unwrap())
+      return try await self.fetchSubscription(id: user.subscriptionId.unwrap())
     } catch {
-      return try await self.fetchSubscriptionByOwnerId(user.id)
+      return try await self.fetchSubscription(ownerID: user.id)
     }
   }
 
@@ -165,8 +168,15 @@ public struct Client {
     email: EmailAddress,
     now: @escaping () -> Date
   ) async throws -> User {
-    let user = try await self.upsertUser(envelope, email, now)
-    try await self.updateEmailSettings(EmailSetting.Newsletter.allNewsletters, user.id)
+    let user = try await self.upsertUser(
+      gitHubUserEnvelope: envelope,
+      emailAddress: email,
+      date: now
+    )
+    try await self.updateEmailSettings(
+      newsletters: EmailSetting.Newsletter.allNewsletters,
+      userID: user.id
+    )
     return user
   }
 
@@ -178,8 +188,14 @@ public struct Client {
     episodeCreditCount: Int? = nil,
     rssSalt: Models.User.RssSalt? = nil
   ) async throws {
-    try await self.updateUser(id, name, email, episodeCreditCount, rssSalt)
-    try await self.updateEmailSettings(emailSettings, id)
+    try await self.updateUser(
+      id: id,
+      name: name,
+      emailAddress: email,
+      episodeCreditCount: episodeCreditCount,
+      rssSalt: rssSalt
+    )
+    try await self.updateEmailSettings(newsletters: emailSettings, userID: id)
   }
 
   #if DEBUG

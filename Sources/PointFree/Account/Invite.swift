@@ -44,7 +44,7 @@ let revokeInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     @Dependency(\.database) var database
     @Dependency(\.siteRouter) var siteRouter
 
-    return EitherIO { try await database.deleteTeamInvite(get1(conn.data).id) }
+    return EitherIO { try await database.deleteTeamInvite(id: get1(conn.data).id) }
       .run
       .flatMap(
         const(
@@ -92,8 +92,8 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
     let (teamInvite, currentUser) = lower(conn.data)
 
     return EitherIO {
-      let inviter = try await database.fetchUserById(teamInvite.inviterUserId)
-      let subscription = try await database.fetchSubscriptionByOwnerId(inviter.id)
+      let inviter = try await database.fetchUser(id: teamInvite.inviterUserId)
+      let subscription = try await database.fetchSubscription(ownerID: inviter.id)
       let stripeSubscription =
         try await stripe
         .fetchSubscription(id: subscription.stripeSubscriptionId)
@@ -109,7 +109,7 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
         )
       }
       await fireAndForget {
-        try await database.deleteTeamInvite(teamInvite.id)
+        try await database.deleteTeamInvite(id: teamInvite.id)
       }
     }
     .run
@@ -153,10 +153,10 @@ let sendInviteMiddleware =
     let (email, inviter) = lower(conn.data)
 
     return EitherIO<_, TeamInvite> {
-      async let invites = database.fetchTeamInvites(inviter.id).count
+      async let invites = database.fetchTeamInvites(inviterID: inviter.id).count
       async let teammates = database.fetchSubscriptionTeammatesByOwnerId(inviter.id).count
 
-      async let subscription = database.fetchSubscriptionByOwnerId(inviter.id)
+      async let subscription = database.fetchSubscription(ownerID: inviter.id)
 
       let stripeSubscription =
         try await stripe
@@ -166,7 +166,7 @@ let sendInviteMiddleware =
       guard stripeSubscription.status.isActive && stripeSubscription.quantity > seatsTaken
       else { throw unit }
 
-      return try await database.insertTeamInvite(email, inviter.id)
+      return try await database.insertTeamInvite(emailAddress: email, inviterUserID: inviter.id)
     }
     .run
     .flatMap { errorOrTeamInvite in
@@ -216,7 +216,7 @@ private func requireTeamInvite<A>(
   @Dependency(\.database) var database
 
   return { conn in
-    EitherIO { try await database.fetchTeamInvite(get1(conn.data)) }
+    EitherIO { try await database.fetchTeamInvite(id: get1(conn.data)) }
       .run
       .flatMap { errorOrTeamInvite in
         switch errorOrTeamInvite {
@@ -274,7 +274,7 @@ private func redirectCurrentSubscribers<A, B>(
     else { return middleware(conn) }
 
     let hasActiveSubscription = EitherIO {
-      let subscription = try await database.fetchSubscriptionById(subscriptionId)
+      let subscription = try await database.fetchSubscription(id: subscriptionId)
       let stripeSubscription =
         try await stripe
         .fetchSubscription(id: subscription.stripeSubscriptionId)
@@ -315,7 +315,7 @@ private func fetchTeamInviter<A>(_ data: T2<TeamInvite, A>) -> IO<T3<TeamInvite,
   @Dependency(\.database) var database
 
   return IO {
-    guard let inviter = try? await database.fetchUserById(get1(data).inviterUserId)
+    guard let inviter = try? await database.fetchUser(id: get1(data).inviterUserId)
     else { return nil }
     return get1(data) .*. inviter .*. data.second
   }

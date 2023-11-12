@@ -44,20 +44,22 @@ private func creditUserMiddleware(
 
   let (user, episode) = lower(conn.data)
 
-  return EitherIO { try await database.redeemEpisodeCredit(episode.sequence, user.id) }
-    .run
-    .flatMap(
-      const(
-        conn
-          |> redirect(to: .admin(.episodeCredits(.show)))
-      )
+  return EitherIO {
+    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
+  }
+  .run
+  .flatMap(
+    const(
+      conn
+      |> redirect(to: .admin(.episodeCredits(.show)))
     )
+  )
 }
 
 private func fetchUser(id: User.ID?) -> IO<User?> {
   @Dependency(\.database) var database
 
-  return IO { try? await database.fetchUserById(id.unwrap()) }
+  return IO { try? await database.fetchUser(id: id.unwrap()) }
 }
 
 private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {

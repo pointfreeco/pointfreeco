@@ -72,7 +72,7 @@ private func redeemGift(
         stripeSubscription.customer.id,
         (stripeSubscription.customer.right?.balance ?? 0) - discount
       )
-      async let gift = database.updateGift(gift.id, stripeSubscription.id)
+      async let gift = database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
       _ = try await (customer, gift)
     }
     .run
@@ -113,7 +113,12 @@ private func redeemGift(
       )
       let stripeSubscription =
         try await stripe
-        .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
+        .createSubscription(
+          customerID: customer.id,
+          planID: gift.monthsFree < 12 ? .monthly : .yearly,
+          quantity: 1,
+          coupon: nil
+        )
       _ =
         try await database.createSubscription(
           subscription: stripeSubscription,
@@ -121,7 +126,7 @@ private func redeemGift(
           isOwnerTakingSeat: true,
           referrerID: nil
         )
-      _ = try await database.updateGift(gift.id, stripeSubscription.id)
+      _ = try await database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
     }
     .run
     .flatMap { errorOrNot in

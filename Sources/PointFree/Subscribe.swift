@@ -135,10 +135,10 @@ private func subscribe(
         .performAsync()
 
       _ = try await database.createSubscription(
-        stripeSubscription,
-        user.id,
-        subscribeData.isOwnerTakingSeat,
-        referrer?.user.id
+        subscription: stripeSubscription,
+        userID: user.id,
+        isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+        referrerID: referrer?.user.id
       )
 
       if let referrer {
@@ -204,10 +204,15 @@ private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> Ei
         .filter { email in email.rawValue.contains("@") && email != inviter.email }
         .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
         .map { email in
-          EitherIO { try await database.insertTeamInvite(email, inviter.id) }
-            .flatMap { invite in sendInviteEmail(invite: invite, inviter: inviter) }
-            .run
-            .parallel
+          EitherIO {
+            let invite = try await database.insertTeamInvite(
+              emailAddress: email,
+              inviterUserID: inviter.id
+            )
+            return sendInviteEmail(invite: invite, inviter: inviter)
+          }
+          .run
+          .parallel
         }
     )
     .sequential
@@ -355,8 +360,8 @@ private func validateReferrer(
 
     return EitherIO {
       guard isSubscribeDataValidForReferral else { throw unit }
-      let referrer = try await database.fetchUserByReferralCode(referralCode)
-      let subscription = try await database.fetchSubscriptionByOwnerId(referrer.id)
+      let referrer = try await database.fetchUser(referralCode: referralCode)
+      let subscription = try await database.fetchSubscription(ownerID: referrer.id)
       let stripeSubscription =
         try await stripe.fetchSubscription(id: subscription.stripeSubscriptionId)
       return Referrer(user: referrer, stripeSubscription: stripeSubscription)

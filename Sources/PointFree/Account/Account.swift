@@ -42,7 +42,7 @@ private func fetchAccountData<I>(
   let owner =
     subscription
     .flatMap { subscription in
-      EitherIO { try await database.fetchUserById(subscription.userId) }
+      EitherIO { try await database.fetchUser(id: subscription.userId) }
     }
 
   let stripeSubscription =
@@ -88,10 +88,10 @@ private func fetchAccountData<I>(
         Invoice?
       )
     > = zip9(
-      IO { (try? await database.fetchEmailSettingsForUserId(user.id)) ?? [] }
+      IO { (try? await database.fetchEmailSettings(userID: user.id)) ?? [] }
         .parallel,
 
-      IO { (try? await database.fetchEpisodeCredits(user.id)) ?? [] }
+      IO { (try? await database.fetchEpisodeCredits(userID: user.id)) ?? [] }
         .parallel,
 
       paymentMethod.run.map { $0.right ?? nil }.parallel,
@@ -102,9 +102,9 @@ private func fetchAccountData<I>(
 
       owner.run.map(\.right).parallel,
 
-      IO { (try? await database.fetchTeamInvites(user.id)) ?? [] }.parallel,
+      IO { (try? await database.fetchTeamInvites(inviterID: user.id)) ?? [] }.parallel,
 
-      IO { (try? await database.fetchSubscriptionTeammatesByOwnerId(user.id)) ?? [] }
+      IO { (try? await database.fetchSubscriptionTeammates(ownerID: user.id)) ?? [] }
         .parallel,
 
       upcomingInvoice.run.map(\.right).parallel
@@ -191,7 +191,7 @@ func fetchSubscription<A>(
 
   return { conn in
     let subscription = IO {
-      try? await database.fetchSubscriptionByOwnerId(get1(conn.data).id)
+      try? await database.fetchSubscription(ownerID: get1(conn.data).id)
     }
 
     return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
@@ -229,7 +229,7 @@ func regenerateTeamInviteCode(
   guard
     let currentUser = currentUser,
     let subscriptionID = currentUser.subscriptionId,
-    let _ = try? await database.regenerateTeamInviteCode(subscriptionID)
+    let _ = try? await database.regenerateTeamInviteCode(subscriptionID: subscriptionID)
   else {
     return
       conn

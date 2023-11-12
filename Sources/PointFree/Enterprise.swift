@@ -131,9 +131,12 @@ private func createEnterpriseEmail(
   @Dependency(\.database) var database
 
   return IO {
-    guard (try? await database.createEnterpriseEmail(get3(data), get4(data))) != nil
-    else { return nil }
-    return data
+    do {
+      _ = try await database.createEnterpriseEmail(emailAddress: get3(data), userID: get4(data))
+      return data
+    } catch {
+      return nil
+    }
   }
 }
 
@@ -288,7 +291,7 @@ private func sendEnterpriseInvitation<Z>(
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
   @Dependency(\.database) var database
 
-  return IO { try? await database.fetchEnterpriseAccountForDomain(domain) }
+  return IO { try? await database.fetchEnterpriseAccount(forDomain: domain) }
 }
 
 let enterpriseInviteEmailView =
@@ -367,7 +370,7 @@ private func redirectCurrentSubscribers<Z>(
     else { return middleware(conn) }
 
     return EitherIO {
-      let subscription = try await database.fetchSubscriptionById(subscriptionId)
+      let subscription = try await database.fetchSubscription(id: subscriptionId)
       let stripeSubscription =
         try await stripe
         .fetchSubscription(subscription.stripeSubscriptionId)

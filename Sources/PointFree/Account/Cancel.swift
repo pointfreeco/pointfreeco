@@ -106,7 +106,7 @@ private func requireUserAndStripeSubscription(
     guard let user = conn.data
     else { return conn.loginAndRedirect() }
 
-    guard let subscription = try? await database.fetchSubscriptionByOwnerId(user.id)
+    guard let subscription = try? await database.fetchSubscription(ownerID: user.id)
     else {
       return conn.redirect(to: .account()) {
         $0.flash(.error, "Doesn’t look like you’re subscribed yet!")

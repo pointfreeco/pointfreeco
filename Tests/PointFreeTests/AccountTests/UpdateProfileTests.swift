@@ -65,7 +65,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
     )
-    let emailSettings = try await self.database.fetchEmailSettingsForUserId(user.id)
+    let emailSettings = try await self.database.fetchEmailSettings(userID: user.id)
 
     await assertSnapshot(
       matching: emailSettings,
@@ -85,7 +85,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
 
     let output = await siteMiddleware(connection(from: update))
 
-    let settings = try await self.database.fetchEmailSettingsForUserId(user.id)
+    let settings = try await self.database.fetchEmailSettings(userID: user.id)
     await assertSnapshot(
       matching: settings,
       as: .customDump,
