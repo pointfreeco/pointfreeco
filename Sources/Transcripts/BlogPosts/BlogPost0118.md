@@ -35,7 +35,7 @@ the [`Reducer`][reducer-protocol-docs] protocol:
 -struct Feature: Reducer {
 +@Reducer
 +struct Feature {
-   // …
+   // ...
  }
 ```
 
@@ -43,14 +43,17 @@ It's a very tiny change, but it comes with a number of benefits:
 
 ### Simpler case paths for integrating features
 
-The `@Reducer` macro automatically adds the `@CasePathable` macro to your feature's `Action` enum, 
-which immediately gives you keypath-like syntax for referring to the cases of your enum. This means 
-you can invoke the various reducer operators that require case paths for isolating a child feature's 
-action with a simple key path:
+The `@Reducer` macro automatically adds the `@CasePathable` macro
+[we announced yesterday][case-paths-bonanza-blog] to your feature's `Action` enum, which immediately
+gives you key path-like syntax for referring to the cases of your enum. This means you can invoke
+the various reducer operators that require case paths for isolating a child feature's action with a
+simple key path:
+
+[case-paths-bonanza-blog]: /blog/posts/117-macro-bonanza-case-paths
 
 ```diff
  Reduce { state, action in 
-   // …
+   // ...
  }
 -.ifLet(\.child, action: /Action.child)
 +.ifLet(\.child, action: \.child)
@@ -130,29 +133,32 @@ in reducers to be `Equatable`, which can be annoying sometimes.
 Well, now thanks to the `@Reducer` and `@CasePathable` macros we have a very short syntax for 
 describing which enum case we expect the store to receive without specifying the data:
 
-```swift
-store.receive(\.response.success) {
-  $0.message = "Hello"
-}
+```diff
+-store.receive(.response(.success("Hello"))) {
++store.receive(\.response.success) {
+   $0.message = "Hello"
+ }
 ```
 
 And it works especially well when testing deeply nested features too:
 
-```swift
-store.receive(\.destination.presented.child.response.success) {
-  $0.message = "Hello"
-}
+```diff
+-store.receive(.destination(.presented(.child(.response.success("Hello"))))) {
++store.receive(\.destination.child.response.success) {
+   $0.message = "Hello"
+ }
 ```
 
 And this works even if none of your actions are `Equatable`. In fact, because of the simplicity of
-this we have even decided to soft-deprecate [`TaskResult`][task-result-docs], which only exists to 
-help make actions equatable. Refer to the [1.4 migration guide][1.4-migration] for more information.
+this we have even decided to soft-deprecate a type included in the library,
+[`TaskResult`][task-result-docs], which only exists to help make actions equatable. Refer to the
+[1.4 migration guide][1.4-migration] for more information.
 
 ### Basic feature linting
 
 The macro is capable of detecting potential problems in your reducer and alerting you
 at compile time rather than runtime. For example, implementing your reducer by accidentally
-specifing the `reduce(into:action:)` method _and_ the `body` property like so: 
+specifying the `reduce(into:action:)` method _and_ the `body` property like so: 
 
 ```swift
 @Reducer
@@ -165,13 +171,15 @@ struct Feature {
     …
   }
   var body: some ReducerOf<Self> {
+    Reduce(self.reduce)
     …
   }
 }
 ```
 
 …is considered programmer error. This is an invalid reducer because the `body` property will never 
-be called. The `@Reducer` macro can diagnos the problem and provide you with a helpful warning:
+be called. The `@Reducer` macro can diagnose the problem, provide you with a helpful warning, and
+even help fix it for you:
 
 ```swift
 @Reducer
@@ -184,9 +192,11 @@ struct Feature {
     // ┬─────
     // ╰─ ⚠️ A 'reduce' method should not be defined in a reducer with a 
     //       'body'; it takes precedence and 'body' will never be invoked.
+    //    ✏️ Rename to 'update'
     …
   }
   var body: some ReducerOf<Self> {
+    Reduce(self.reduce)
     …
   }
 }

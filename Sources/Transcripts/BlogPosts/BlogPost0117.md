@@ -68,7 +68,7 @@ We can now use a more familiar syntax to do this composition:
  }
 ```
 
-Similarly, when enchancing a parent feature with the functionality of an optional feature one turns
+Similarly, when enhancing a parent feature with the functionality of an optional feature one turns
 to the [`ifLet`][iflet-docs] reducer operator, and we can again use familiar key path syntax to do 
 this:
 
@@ -76,7 +76,7 @@ this:
 
 ```diff
  Reduce { state, action in 
-   // …
+   // ...
  }
 -.ifLet(\.child, action: /Action.child)
 +.ifLet(\.child, action: \.child)
@@ -89,7 +89,7 @@ can use the [`forEach`][foreach-docs] operator, and again with familiar key path
 
 ```diff
  Reduce { state, action in 
-   // …
+   // ...
  }
 -.forEach(\.rows, action: /Action.row(id:action:))
 +.forEach(\.rows, action: \.rows)
@@ -99,8 +99,8 @@ And even better, the new key path syntax for case paths works better with Xcode 
 Swift type inference.
 
 This greatly simplifies nearly every reducer operator in the Composable Architecture, but it can
-also be used to simplify other libraries using case paths such as our [SwiftUI 
-Navigation][sui-nav-gh] library. But we will discuss that more later this week.
+also be used to simplify other libraries using case paths such as our 
+[SwiftUI Navigation][sui-nav-gh] library. But we will discuss that more later this week.
 
 ## Expressive case checking
 
@@ -125,9 +125,7 @@ the case of an enum value as an expression:
 ```swift
 let destination: Destination = .activity(ActivityModel())
 
-if destination.is(\.activity) {
-  // …
-}
+destination.is(\.activity)  // true
 ```
 
 Typically this must be done as a statement, such as with an `if case let` or `guard case let`.
@@ -161,41 +159,15 @@ out all of the values matching a particular case:
 
 ```swift
 let destinations: [Destination] = […]
-let activityModels = destinations.compactMap(\.activity)
+let activityModels = destinations.compactMap(\.activity)  // [ActivityModel]
 ```
 
 All of this comes for free with CasePaths, but you do have to opt into the functionality by applying
 `@dynamicMemberLookup` to your enum. If you only need the case paths for your enum and don't want
 to clutter your type with unneeded properties, then you can use `@CasePathable` by itself.
 
-This tool also helps simplify a common pattern in Composable Architecture applications. It is 
-common to represents the places a features can navigate to via a `Destination` reducer that has a 
-case for each destination. This is a style we like to call [tree-based navigation][tree-nav-docs].
-
-[tree-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
-
-However, the downside to this style of navigation is that the view modifier for specifying that 
-navigation is driven from a particular case of a destination enum can be quite verbose:
-
-```swift
-.sheet(
-  store: self.store.scope(state: \.$destination, action: { .destination($0) }),
-  state: /Feature.Destination.State.editForm,
-  action: Feature.Destination.Action.editForm
-)
-```
-
-With the new properties added to an enum this can be shorted to just the following:
-
-```diff
- .sheet(
-   store: self.store.scope(state: \.$destination, action: { .destination($0) }),
--  state: /Feature.Destination.State.editForm,
--  action: Feature.Destination.Action.editForm
-+  state: \.editForm,
-+  action: { .editForm($0) }
- )
-```
+This tool also helps simplify a common pattern in Composable Architecture applications, which we
+will show off tomorrow.
 
 ## Get started today
 
