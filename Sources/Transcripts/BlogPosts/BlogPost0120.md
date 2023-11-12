@@ -1,12 +1,22 @@
-To celebrate the release of Swift macros we are releasing updates to 4 of our popular libraries to 
-greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
-[SwiftUINavigation][sui-nav-gh], [ComposableArchitecture][tca-gh], and 
-[Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
-massively simplify one of these libraries, and increase their powers.
+!> [preamble]: To celebrate the release of Swift macros we releasing updates to 4 of our popular 
+> libraries to greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
+> [ComposableArchitecture][tca-gh], [SwiftUINavigation][sui-nav-gh], and 
+> [Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
+> massively simplify one of these libraries, and increase their powers.
+> * [Macro Bonanza: CasePaths](/blog/posts/117-macro-bonanza-case-paths)
+> * [Macro Bonanza: Composable Architecture](/blog/posts/118-macro-bonanza-composable-architecture)
+> * [Macro Bonanza: SwiftUINavigation](/blog/posts/119-macro-bonanza-swiftui-navigation)
+> * [**Macro Bonanza: Dependencies**](/blog/posts/120-macro-bonanza-dependencies)
+> 
+> [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
+> [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
+> [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
+> [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
-And today we are discussing our [Dependencies][sui-nav-gh] library, which gives you the tools
-necessary to model and control dependencies in your applications so that you can more easily
-preview and test your features.
+Today we are releasing [version 1.1][dependencies-1.1] of our popular [Dependencies][sui-nav-gh] 
+library, which introduces a new `@DependencyClient` macro for making it easier to design your 
+dependencies. The library now provides a complete toolkit for designing _and_ controlling your
+dependencies, and makes it easy to preview and test your features in isolation.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -179,14 +189,41 @@ extension AudioPlayerClient: DependencyKey {
 
 We have used this macro to massively clean up the code in our open-source word game, 
 [isowords][isowords-gh], as well as the code that powers this very site, which is 
-[open-source][pf-gh] and completely written in Swift.
+[open-source][pf-gh] and completely written in Swift. Each of those code bases have multiple large
+and complex dependencies which we had to manually maintain both a public initializer and 
+`testValue`, which meant that each time we added a new feature to the dependency we had multiple 
+places in our code we had to update.
 
-<!--
-todo: show how this improved isowords and pointfreeco
--->
+For example, in the Point-Free codebase we have a database client that has over 50 endpoints for
+making various queries on this site. Previously we had to maintain a [public 
+initializer][database-init] for this client so that it could be constructed outside its module.
+And we maintained a ["failing" version][database-failing] of the client that triggered an XCTest 
+failure for each endpoint. This was useful for exhaustively testing features and explicitly proving
+which database endpoints were used in a specific user flow, but this was a ton of code to maintain
+and a huge pain.
+
+By appling the [@DependencyClient][database-dependency-client] macro to the database interface we
+can now delete all of that code, and anytime we add a new endpoint to our database we will not have
+to update any existing code. And we get nice methods with argument labels automatically:
+
+```diff
+-try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
++try await database.addUser(id: currentUser.id, toSubscriptionID: subscription.id)
+```
+
+This gives us important information about the dependency endpoint so that we don't accidentally
+mix something up.
+
+
+[database-init]: https://github.com/pointfreeco/pointfreeco/blob/e7a2dbb2716459f13e7c67873c0a400aeaff92d1/Sources/Database/Database.swift#L76-L193
+[database-failing]: https://github.com/pointfreeco/pointfreeco/blob/e7a2dbb2716459f13e7c67873c0a400aeaff92d1/Sources/Database/Failing.swift#L4-L68
+[database-dependency-client]: https://github.com/pointfreeco/pointfreeco/blob/4c0a8f83f16f2b86996a59b9e1686476308ad8fc/Sources/Database/Database.swift#L13-L14
 
 ## Get started today
 
+Starting using the `@DependencyClient` macro today by updating or adding [Dependencies 
+1.1][dependencies-1.1] to your project today. It can help you write safer application code and 
+stronger tests with less code.
 
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [isowords-gh]: http://www.github.com/pointfreeco/isowords
@@ -194,3 +231,4 @@ todo: show how this improved isowords and pointfreeco
 [designing-dependencies-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/designingdependencies
 [dependency-client-docs]: todo
 [separating-interface]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation
+[dependencies-1.1]: https://github.com/pointfreeco/swift-dependencies/releases/tag/1.1.0

@@ -1,14 +1,25 @@
-To celebrate the release of Swift macros we are releasing updates to 4 of our popular libraries to 
-greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
-[SwiftUINavigation][sui-nav-gh], [ComposableArchitecture][tca-gh], and 
-[Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
-massively simplify one of these libraries, and increase their powers.
+!> [preamble]: To celebrate the release of Swift macros we releasing updates to 4 of our popular 
+> libraries to greatly simplify and enhance their abilities: [CasePaths][case-paths-gh], 
+> [ComposableArchitecture][tca-gh], [SwiftUINavigation][sui-nav-gh], and 
+> [Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
+> massively simplify one of these libraries, and increase their powers.
+> * [Macro Bonanza: CasePaths](/blog/posts/117-macro-bonanza-case-paths)
+> * [**Macro Bonanza: Composable Architecture**](/blog/posts/118-macro-bonanza-composable-architecture)
+> * _Macro Bonanza: SwiftUINavigation (tomorrow!)_
+> * _Macro Bonanza: Dependencies (in 2 days!)_
+> 
+> [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
+> [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
+> [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
+> [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
-And today we are discussing our popular library, the [Composable Architecture][tca-gh]. A brand new 
-`@Reducer` macro has been introduced that can automate some of the aspects of building features
-in the library, greatly simplify the library's tools, and even ensure the library is being used
-correctly at compile time.
+Today we are releasing [version 1.4][tca-1.4] of our popular library, [the Composable 
+Architecture][tca-gh]. It introduces a new `@Reducer` macro to the library which can automate some 
+of the aspects of building features in the library, and greatly simplify the tools of the library. 
+Join us for a quick overview, and be sure to check out the [1.4 migration guide][1.4-migration] 
+for more detailed information about how to update your applications.
 
+[tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
 [1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/Migratingto14
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -24,7 +35,7 @@ the [`Reducer`][reducer-protocol-docs] protocol:
 -struct Feature: Reducer {
 +@Reducer
 +struct Feature {
-   // ...
+   // …
  }
 ```
 
@@ -32,11 +43,10 @@ It's a very tiny change, but it comes with a number of benefits:
 
 ### Simpler case paths for integrating features
 
-The `@Reducer` macro automatically adds the `@CasePathable` macro
-[we announced yesterday][case-paths-bonanza-blog] to your feature's `Action` enum, which immediately
-gives you key path-like syntax for referring to the cases of your enum. This means you can invoke
-the various reducer operators that require case paths for isolating a child feature's action with a
-simple key path:
+The `@Reducer` macro automatically adds the `@CasePathable` macro to your feature's `Action` enum, 
+which immediately gives you keypath-like syntax for referring to the cases of your enum. This means 
+you can invoke the various reducer operators that require case paths for isolating a child feature's 
+action with a simple key path:
 
 ```diff
  Reduce { state, action in 
@@ -47,8 +57,6 @@ simple key path:
 ```
 
 Every API in the library that takes a case path has been updated to be usable with this new syntax.
-
-[case-paths-bonanza-blog]: /blog/posts/117-macro-bonanza-case-paths
 
 ### Enum state
 
@@ -131,21 +139,20 @@ store.receive(\.response.success) {
 And it works especially well when testing deeply nested features too:
 
 ```swift
-store.receive(\.destination.child.response.success) {
+store.receive(\.destination.presented.child.response.success) {
   $0.message = "Hello"
 }
 ```
 
 And this works even if none of your actions are `Equatable`. In fact, because of the simplicity of
-this we have even decided to soft-deprecate a type included in the library,
-[`TaskResult`][task-result-docs], which only exists to help make actions equatable. Refer to the
-[1.4 migration guide][1.4-migration] for more information.
+this we have even decided to soft-deprecate [`TaskResult`][task-result-docs], which only exists to 
+help make actions equatable. Refer to the [1.4 migration guide][1.4-migration] for more information.
 
 ### Basic feature linting
 
 The macro is capable of detecting potential problems in your reducer and alerting you
 at compile time rather than runtime. For example, implementing your reducer by accidentally
-specifying the `reduce(into:action:)` method _and_ the `body` property like so:
+specifing the `reduce(into:action:)` method _and_ the `body` property like so: 
 
 ```swift
 @Reducer
@@ -158,15 +165,13 @@ struct Feature {
     …
   }
   var body: some ReducerOf<Self> {
-    Reduce(self.reduce)
     …
   }
 }
 ```
 
 …is considered programmer error. This is an invalid reducer because the `body` property will never 
-be called. The `@Reducer` macro can diagnose the problem, provide you with a helpful warning, and
-even help fix it for you:
+be called. The `@Reducer` macro can diagnos the problem and provide you with a helpful warning:
 
 ```swift
 @Reducer
@@ -179,11 +184,9 @@ struct Feature {
     // ┬─────
     // ╰─ ⚠️ A 'reduce' method should not be defined in a reducer with a 
     //       'body'; it takes precedence and 'body' will never be invoked.
-    //    ✏️ Rename to 'update'
     …
   }
   var body: some ReducerOf<Self> {
-    Reduce(self.reduce)
     …
   }
 }
