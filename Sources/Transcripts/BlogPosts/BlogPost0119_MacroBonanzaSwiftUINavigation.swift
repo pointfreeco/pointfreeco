@@ -8,7 +8,7 @@ public let post0119_MacroBonanza = BlogPost(
     optionals and enums in SwiftUI.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 119),
-  coverImage: nil,  
+  coverImage: nil,
   id: 119,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-15")!,
   title: "Macro Bonanza: SwiftUI Navigation"

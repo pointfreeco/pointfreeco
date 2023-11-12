@@ -7,7 +7,7 @@ public let post0118_MacroBonanza = BlogPost(
     Architecture. It can make our feature code simpler, more succint and safer!
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 118),
-  coverImage: nil,  
+  coverImage: nil,
   id: 118,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-14")!,
   title: "Macro Bonanza: Composable Architecture"
