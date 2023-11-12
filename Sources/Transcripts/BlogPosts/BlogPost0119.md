@@ -119,8 +119,8 @@ that can be handed to the SwiftUI view modifiers, which massively simplifies the
 -.alert(
 -  self.$model.destination,
 -  case: /MeetingDetailModel.Destination.alert
+-) { action in
 +.alert(self.$model.destination.alert) { action in
-) { action in
    await self.model.alertButtonTapped(action)
  }
 -.navigationDestination(
