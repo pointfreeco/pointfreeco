@@ -218,4 +218,4 @@ these new case path tools have massively improved our [SwiftUINavigation][sui-na
 [testing-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
 [1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/Migratingto14
 [task-result-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/taskresult
-[casepathable-docs]: todo
+[casepathable-docs]: https://pointfreeco.github.io/swift-case-paths/main/documentation/casepaths/swift59

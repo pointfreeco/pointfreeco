@@ -177,4 +177,4 @@ the new [`@CasePathable`][casepathable-docs] macro, and more. Tomorrow we will d
 case path tools have massively improved our [Composable Architecture][tca-gh] library. 
 
 [case-paths-1.1]: https://github.com/pointfreeco/swift-case-paths/releases/tag/1.1.0
-[casepathable-docs]: todo
+[casepathable-docs]: https://pointfreeco.github.io/swift-case-paths/main/documentation/casepaths/swift59
