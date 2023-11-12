@@ -32,6 +32,7 @@ extension SQLDatabase {
   }
 }
 
+@available(*, deprecated, message: "'PostgresDataConvertible' is deprecated")
 extension Tagged: PostgresDataConvertible where RawValue: PostgresDataConvertible {}
 
 private let logger = Logger(label: "Postgres")
