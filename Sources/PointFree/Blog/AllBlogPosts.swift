@@ -131,4 +131,9 @@ private let _allBlogPosts: [BlogPost] = [
   post0114_MacroTesting,
   post0115_MacroTesting020,
   post0116_SwiftSyntaxEcosystem,
+  post0117_MacroBonanza,
+  post0118_MacroBonanza,
+  post0119_MacroBonanza,
+  post0120_MacroBonanza,
+  post0121_MacroBonanza,
 ]
