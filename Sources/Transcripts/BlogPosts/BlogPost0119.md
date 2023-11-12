@@ -82,8 +82,8 @@ from the `Destination` enum:
 .sheet(
   unwrapping: self.$model.destination,
   case: /MeetingDetailModel.Destination.edit
-) { $editModel in
-  EditMeetingView(model: editModel)
+) { $model in
+  EditMeetingView(model: model)
 }
 ```
 
@@ -113,19 +113,31 @@ enum Destination {
 
 Just that one line of additional code gives us the ability to perform dot-chaining syntax onto
 the `$model.destination` binding for each case of the enum. This allows us to derive bindings
-that can be handed to the SwiftUI view modifiers:
+that can be handed to the SwiftUI view modifiers, which massively simplifies the code we saw above:
 
-```swift
-.alert(self.$model.destination.alert) { action in
-  await self.model.alertButtonTapped(action)
-}
-.navigationDestination(item: self.$model.destination.record) { model in
-  RecordMeetingView(model: model)
-}
-.sheet(item: self.$model.destination.edit) { editModel in
-  EditMeetingView(model: editModel)
-}
-``` 
+```diff
+-.alert(
+-  self.$model.destination,
+-  case: /MeetingDetailModel.Destination.alert
++.alert(self.$model.destination.alert) { action in
+) { action in
+   await self.model.alertButtonTapped(action)
+ }
+-.navigationDestination(
+-  unwrapping: self.$model.destination,
+-  case: /MeetingDetailModel.Destination.record
+-) { $model in
++.navigationDestination(item: self.$model.destination.record) { model in
+   RecordMeetingView(model: model)
+ }
+-.sheet(
+-  unwrapping: self.$model.destination,
+-  case: /MeetingDetailModel.Destination.edit
+-) { $model in
++.sheet(item: self.$model.destination.edit) { model in  
+   EditMeetingView(model: model)
+ }
+```
 
 There's no need to deal with explicit case paths or the `/` prefix operator for constructing case
 paths. It's simpler and more fluent Swift code. We are even now using the vanilla SwiftUI view
@@ -140,8 +152,8 @@ TODO: can discuss this if we want: form bindings: self.$model.status.inStock
 
 ## Get started today
 
-Update your dependency on SwiftUINavigation to [1.1][sui-nav-1.1] today to start taking advantage of
-the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case path tools have
-massively improved our [Composable Architecture][tca-gh] library. 
+Update your dependency on SwiftUINavigation to [version 1.1][sui-nav-1.1] today to start taking 
+advantage of the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case 
+path tools have massively improved our [Composable Architecture][tca-gh] library. 
 
 [sui-nav-1.1]: todo
