@@ -9,7 +9,7 @@ public let post0120_MacroBonanza = BlogPost(
     can be greatly improved.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 120),
-  coverImage: nil,  
+  coverImage: nil,
   id: 120,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-16")!,
   title: "Macro Bonanza: Dependencies"
