@@ -14,9 +14,9 @@
 > [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
 Today we are releasing [version 1.1][dependencies-1.1] of our popular [Dependencies][sui-nav-gh] 
-library, which introduces a new `@DependencyClient` macro for making it easier to design your 
-dependencies. The library now provides a complete toolkit for designing _and_ controlling your
-dependencies, and makes it easy to preview and test your features in isolation.
+library, which introduces a new [`@DependencyClient`][dependency-client-docs] macro for making it 
+easier to design your dependencies. The library now provides a complete toolkit for designing _and_ 
+controlling your dependencies, and makes it easy to preview and test your features in isolation.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -171,8 +171,9 @@ in general, and not related to the struct-of-closures style of dependency design
 nonetheless.
 
 This is a common use case for management dependencies, and that is why we have made the 
-`@DependencyClient` automatically generate this initializer for you. This means in a different
-module you can immediately create an `AudioPlayerClient` with no additional work:
+[`@DependencyClient`][dependency-client-docs] automatically generate this initializer for you. This 
+means in a different module you can immediately create an `AudioPlayerClient` with no additional 
+work:
 
 ```swift
 extension AudioPlayerClient: DependencyKey {
@@ -227,9 +228,9 @@ mix something up.
 
 ## Get started today
 
-Starting using the `@DependencyClient` macro today by updating or adding [Dependencies 
-1.1][dependencies-1.1] to your project today. It can help you write safer application code and 
-stronger tests with less code.
+Starting using the [`@DependencyClient`][dependency-client-docs] macro today by updating or adding 
+[Dependencies 1.1][dependencies-1.1] to your project today. It can help you write safer application 
+code and stronger tests with less code.
 
 [pf-gh]: http://github.com/pointfreeco/pointfreeco
 [isowords-gh]: http://www.github.com/pointfreeco/isowords

@@ -23,8 +23,8 @@ us for a quick overview, and be sure to check out version [1.1 of CasePaths][cas
 
 ## `@CasePathable`
 
-The only macro added to the CasePaths library is `@CasePathable`, and it can be applied to any
-enum:
+The only macro added to the CasePaths library is [`@CasePathable`][casepathable-docs], and it can 
+be applied to any enum:
 
 ```swift
 @CasePathable
@@ -109,7 +109,7 @@ use of case paths directly in your application. It makes it possible to easily c
 value is of a particular case, and you can immediately access getter properties for each case of 
 your enum.
 
-For example, if you mark your enum with the `@CasePathable` macro: 
+For example, if you mark your enum with the [`@CasePathable`][casepathable-docs] macro: 
 
 ```swift
 @CasePathable
@@ -133,8 +133,8 @@ But now you can do it quickly, and inline as an expression.
 
 ## Case getters
 
-Further, if you mark the `Destination` enum from above with both the `@CasePathable` macro
-_and_ `@dynamicMemberLookup`:
+Further, if you mark the `Destination` enum from above with both the 
+[`@CasePathable`][casepathable-docs] macro _and_ `@dynamicMemberLookup`:
 
 ```swift
 @CasePathable
@@ -164,7 +164,8 @@ let activityModels = destinations.compactMap(\.activity)  // [ActivityModel]
 
 All of this comes for free with CasePaths, but you do have to opt into the functionality by applying
 `@dynamicMemberLookup` to your enum. If you only need the case paths for your enum and don't want
-to clutter your type with unneeded properties, then you can use `@CasePathable` by itself.
+to clutter your type with unneeded properties, then you can use [`@CasePathable`][casepathable-docs]
+by itself.
 
 This tool also helps simplify a common pattern in Composable Architecture applications, which we
 will show off tomorrow.
@@ -172,7 +173,8 @@ will show off tomorrow.
 ## Get started today
 
 Update your dependency on CasePaths to [1.1][case-paths-1.1] today to start taking advantage of
-the new `@CasePathable` macro, and more. Tomorrow we will discuss how these new case path tools have
-massively improved our [Composable Architecture][tca-gh] library. 
+the new [`@CasePathable`][casepathable-docs] macro, and more. Tomorrow we will discuss how these new 
+case path tools have massively improved our [Composable Architecture][tca-gh] library. 
 
 [case-paths-1.1]: https://github.com/pointfreeco/swift-case-paths/releases/tag/1.1.0
+[casepathable-docs]: todo

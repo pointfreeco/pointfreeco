@@ -43,11 +43,11 @@ It's a very tiny change, but it comes with a number of benefits:
 
 ### Simpler case paths for integrating features
 
-The `@Reducer` macro automatically adds the `@CasePathable` macro
-[we announced yesterday][case-paths-bonanza-blog] to your feature's `Action` enum, which immediately
-gives you key path-like syntax for referring to the cases of your enum. This means you can invoke
-the various reducer operators that require case paths for isolating a child feature's action with a
-simple key path:
+The [`@Reducer`][reducer-macro-docs] macro automatically adds the 
+[`@CasePathable`][casepathable-docs] macro [we announced yesterday][case-paths-bonanza-blog] to your 
+feature's `Action` enum, which immediately gives you key path-like syntax for referring to the cases 
+of your enum. This means you can invoke the various reducer operators that require case paths for 
+isolating a child feature's action with a simple key path:
 
 [case-paths-bonanza-blog]: /blog/posts/117-macro-bonanza-case-paths
 
@@ -63,10 +63,10 @@ Every API in the library that takes a case path has been updated to be usable wi
 
 ### Enum state
 
-The `@Reducer` macro will also apply the `@CasePathable` macro to your feature's `State` type if it
-is an enum, and further apply the `@dynamicMemberLookup` annotation. This allows you to greatly
-simplify how you use the library's navigation view modifiers when dealing with an enum of 
-destinations.
+The [`@Reducer`][reducer-macro-docs] macro will also apply the [`@CasePathable`][casepathable-docs] 
+macro to your feature's `State` type if it is an enum, and further apply the `@dynamicMemberLookup` 
+annotation. This allows you to greatly simplify how you use the library's navigation view modifiers 
+when dealing with an enum of destinations.
 
 For example, previously the following was necessary to describing driving a sheet from a particular
 case of an enum of destinations:
@@ -92,9 +92,9 @@ this:
 )
 ```
 
-And in the future the `@Reducer` macro may acquire even more powers for helping you avoid the 
-boilerplate of implementing `Destination` features for [tree-based navigation][tree-nav-docs] and 
-`Path` features for [stack-based navigation][stack-docs].
+And in the future the [`@Reducer`][reducer-macro-docs] macro may acquire even more powers for 
+helping you avoid the boilerplate of implementing `Destination` features for 
+[tree-based navigation][tree-nav-docs] and `Path` features for [stack-based navigation][stack-docs].
 
 ### Simpler testing of effects
 
@@ -130,8 +130,9 @@ typically we don't need to assert on the data _inside_ the action because we alr
 amount of coverage on that in the trailing state assertion closure. It also forces the `Action` enum
 in reducers to be `Equatable`, which can be annoying sometimes.
 
-Well, now thanks to the `@Reducer` and `@CasePathable` macros we have a very short syntax for 
-describing which enum case we expect the store to receive without specifying the data:
+Well, now thanks to the [`@Reducer`][reducer-macro-docs] and [`@CasePathable`][casepathable-docs] 
+macros we have a very short syntax for describing which enum case we expect the store to receive 
+without specifying the data:
 
 ```diff
 -store.receive(.response(.success("Hello"))) {
@@ -178,8 +179,8 @@ struct Feature {
 ```
 
 …is considered programmer error. This is an invalid reducer because the `body` property will never 
-be called. The `@Reducer` macro can diagnose the problem, provide you with a helpful warning, and
-even help fix it for you:
+be called. The [`@Reducer`][reducer-macro-docs] macro can diagnose the problem, provide you with a 
+helpful warning, and even help fix it for you:
 
 ```swift
 @Reducer
@@ -205,8 +206,8 @@ struct Feature {
 ## Get started today
 
 Update your dependency on the Composable Architecture to [1.4][tca-1.4] today to start taking 
-advantage of the new `@Reducer` macro, and more. Tomorrow we will discuss how these new case 
-path tools have massively improved our [SwiftUINavigation][sui-nav-gh] library. 
+advantage of the new [`@Reducer`][reducer-macro-docs] macro, and more. Tomorrow we will discuss how 
+these new case path tools have massively improved our [SwiftUINavigation][sui-nav-gh] library. 
 
 [tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
 [reducer-macro-docs]: todo
@@ -217,3 +218,4 @@ path tools have massively improved our [SwiftUINavigation][sui-nav-gh] library.
 [testing-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
 [1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/Migratingto14
 [task-result-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/taskresult
+[casepathable-docs]: todo
