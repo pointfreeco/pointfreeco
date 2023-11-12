@@ -277,7 +277,9 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         stripeSubscription.id = .init(subscription.stripeSubscriptionId.rawValue)
         stripeSubscription.plan = plan == .monthly ? .individualMonthly : .individualYearly
         stripeSubscription.quantity = quantity
-        updatedSubscription.withValue { $0 = (stripeSubscription, plan, quantity) }
+        updatedSubscription.withValue { [stripeSubscription] in
+          $0 = (stripeSubscription, plan, quantity)
+        }
         return stripeSubscription
       }
       $0.uuid = .incrementing
@@ -609,7 +611,9 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         stripeSubscription.id = .init(subscription.stripeSubscriptionId.rawValue)
         stripeSubscription.plan = plan == .monthly ? .individualMonthly : .individualYearly
         stripeSubscription.quantity = quantity
-        updatedSubscription.withValue { $0 = (stripeSubscription, plan, quantity) }
+        updatedSubscription.withValue { [stripeSubscription] in
+          $0 = (stripeSubscription, plan, quantity)
+        }
         return stripeSubscription
       }
       $0.uuid = .incrementing
