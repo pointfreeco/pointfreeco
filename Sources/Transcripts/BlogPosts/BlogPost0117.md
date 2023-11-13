@@ -178,3 +178,7 @@ case path tools have massively improved our [Composable Architecture][tca-gh] li
 
 [case-paths-1.1]: https://github.com/pointfreeco/swift-case-paths/releases/tag/1.1.0
 [casepathable-docs]: https://pointfreeco.github.io/swift-case-paths/main/documentation/casepaths/swift59
+[case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
+[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
+[sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
+[dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
