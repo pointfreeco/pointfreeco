@@ -14,13 +14,13 @@
 > [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
 Today we are releasing [version 1.4][tca-1.4] of our popular library, [the Composable 
-Architecture][tca-gh]. It introduces a new `@Reducer` macro to the library which can automate some 
-of the aspects of building features in the library, and greatly simplify the tools of the library. 
-Join us for a quick overview, and be sure to check out the [1.4 migration guide][1.4-migration] 
-for more detailed information about how to update your applications.
+Architecture][tca-gh]. It introduces a new `@Reducer` macro that can automate some of the aspects 
+of building features in the library, and greatly simplify the tools of the library. Join us for a 
+quick overview, and be sure to check out the [1.4 migration guide][1.4-migration] for more detailed 
+information about how to update your applications.
 
 [tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
-[1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/Migratingto14
+[1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.4
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
@@ -172,7 +172,6 @@ struct Feature {
     …
   }
   var body: some ReducerOf<Self> {
-    Reduce(self.reduce)
     …
   }
 }
@@ -193,11 +192,9 @@ struct Feature {
     // ┬─────
     // ╰─ ⚠️ A 'reduce' method should not be defined in a reducer with a 
     //       'body'; it takes precedence and 'body' will never be invoked.
-    //    ✏️ Rename to 'update'
     …
   }
   var body: some ReducerOf<Self> {
-    Reduce(self.reduce)
     …
   }
 }
@@ -216,6 +213,6 @@ these new case path tools have massively improved our [SwiftUINavigation][sui-na
 [stack-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 [sui-nav-gh]: https://github.com/pointfreeco/swiftui-navigation 
 [testing-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
-[1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/Migratingto14
+[1.4-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.4
 [task-result-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/taskresult
 [casepathable-docs]: https://pointfreeco.github.io/swift-case-paths/main/documentation/casepaths/swift59
