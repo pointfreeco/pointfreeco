@@ -190,7 +190,7 @@ struct Feature {
   }
   func reduce(into state: inout State, action: Action) -> EffectOf<Self> {
     // ┬─────
-    // ╰─ ⚠️ A 'reduce' method should not be defined in a reducer with a 
+    // ╰─ 🛑 A 'reduce' method should not be defined in a reducer with a 
     //       'body'; it takes precedence and 'body' will never be invoked.
     …
   }
