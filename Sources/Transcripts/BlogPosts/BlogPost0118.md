@@ -178,8 +178,8 @@ struct Feature {
 ```
 
 …is considered programmer error. This is an invalid reducer because the `body` property will never 
-be called. The [`@Reducer`][reducer-macro-docs] macro can diagnose the problem, provide you with a 
-helpful warning, and even help fix it for you:
+be called. The [`@Reducer`][reducer-macro-docs] macro can diagnose the problem, and provide you with 
+a helpful error message:
 
 ```swift
 @Reducer
