@@ -17,9 +17,11 @@ Today we are releasing [version 1.1][sui-nav-1.1] of our popular library,
 [SwiftUINavigation][sui-nav-gh], which is a collection of tools that help you better model 
 navigation using enums. This release does not introduce a macro to the library itself, but it
 does heavily make use of the new `@CasePathable` macro that we discussed [earlier this 
-week](/blog/posts/117-macro-bonanza-case-paths). We can now greatly simplify how you interact with
+week][case-path-bonanza-blog]. We can now greatly simplify how you interact with
 SwiftUI navigation view modifiers while still modeling your domains as concisely as possible
 with enums.
+
+[case-path-bonanza-blog]: /blog/posts/117-macro-bonanza-case-paths 
 
 Join us for a quick overview of the new tools, and be sure to update to [version 1.1][sui-nav-1.1]
 of the library to take advantage of these tools.
