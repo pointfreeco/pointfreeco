@@ -83,7 +83,7 @@ class GiftTests: TestCase {
       }
     }
 
-    await self.fulfillment(of: [expectation])
+    { self.wait(for: [expectation]) }()
   }
 
   func testGiftCreate_StripeFailure() async throws {
