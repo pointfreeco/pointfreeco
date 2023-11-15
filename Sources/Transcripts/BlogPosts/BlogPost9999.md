@@ -138,14 +138,17 @@ doing above because the view has no way to track changes to state accessed in th
 In fact, if you try to implement your view as above on iOS 16 and earlier, the library will emit
 a runtime warning letting you know that this will not work: 
 
-> 🟣 Warning: Observable state was accessed but is not being tracked. Track changes to store state 
-in a 'PerceptiveView' to ensure the delivery of view updates.
+!> [runtime-warning]: Perceptible state was accessed but is not being tracked. Track changes to 
+> state by wrapping your view in a 'WithPerceptionTracking' view.
 
-There is one small change you have to make to the view, and that is wrap it in `WithViewStore`:
+This warning is giving you a peek under the hood to see how this backporting works.
+
+There is one small change you have to make to the view, and that is wrap it in 
+`WithPerceptionTracking`:
 
 ```diff
  var body: some View {
-+  WithViewStore(self.store) {
++  WithPerceptionTracking {
      Form {
        if self.store.isDisplayingCount {
          Text(self.store.count.description)
