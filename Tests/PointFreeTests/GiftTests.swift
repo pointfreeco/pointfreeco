@@ -83,7 +83,7 @@ class GiftTests: TestCase {
       }
     }
 
-    { self.wait(for: [expectation]) }()
+    { self.wait(for: [expectation], timeout: 0) }()
   }
 
   func testGiftCreate_StripeFailure() async throws {
