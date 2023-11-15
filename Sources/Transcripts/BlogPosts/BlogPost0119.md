@@ -96,7 +96,7 @@ This works incredibly well, but it also a bit verbose.
 
 ## Navigation with dynamic case lookup
 
-Thanks to [the new `@CasePathable` macro](case-path-bonanza-blog) provided by our CasePaths library,
+Thanks to [the new `@CasePathable` macro][case-paths-bonanza-blog] provided by our CasePaths library,
 we can greatly simplify the above view modifiers. We can start by annotating the `Destination` enum
 with the macro:
 
