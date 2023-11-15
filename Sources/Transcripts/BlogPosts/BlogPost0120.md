@@ -236,6 +236,6 @@ code and stronger tests with less code.
 [isowords-gh]: http://www.github.com/pointfreeco/isowords
 [designing-dependencies-pf]: https://www.pointfree.co/collections/dependencies
 [designing-dependencies-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/designingdependencies
-[dependency-client-docs]: todo
+[dependency-client-docs]: https://swiftpackageindex.com/pointfreeco/swift-dependencies/1.1.0/documentation/dependenciesmacros/dependencyclient()
 [separating-interface]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation
 [dependencies-1.1]: https://github.com/pointfreeco/swift-dependencies/releases/tag/1.1.0
