@@ -20,7 +20,7 @@ public struct Client {
   public var attachPaymentMethod:
     (
       _ methodID: PaymentMethod.ID,
-      _ customID: Customer.ID
+      _ customerID: Customer.ID
     ) async throws -> PaymentMethod
   public var cancelSubscription:
     (
@@ -72,7 +72,7 @@ public struct Client {
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
   public var fetchPlan: (_ id: Plan.ID) async throws -> Plan
   public var fetchSubscription: (_ id: Subscription.ID) async throws -> Subscription
-  public var fetchUpcomingInvoice: (_ customID: Customer.ID) async throws -> Invoice
+  public var fetchUpcomingInvoice: (_ customerID: Customer.ID) async throws -> Invoice
   @DependencyEndpoint(method: "invoice")
   public var invoiceCustomer: (_ customerID: Customer.ID) async throws -> Invoice
   @DependencyEndpoint(method: "pay")

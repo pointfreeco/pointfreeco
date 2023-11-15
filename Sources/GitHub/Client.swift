@@ -12,8 +12,6 @@ import Tagged
   import FoundationNetworking
 #endif
 
-import DependenciesMacros
-
 @DependencyClient
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.

@@ -55,7 +55,7 @@ private func fetchAccountData<I>(
     .flatMap { stripeSubscription in
       EitherIO {
         guard stripeSubscription.isRenewing else { throw unit }
-        return try await stripe.fetchUpcomingInvoice(customID: stripeSubscription.customer.id)
+        return try await stripe.fetchUpcomingInvoice(customerID: stripeSubscription.customer.id)
       }
     }
 

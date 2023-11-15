@@ -67,7 +67,7 @@ let updatePaymentInfoMiddleware =
     return EitherIO {
       let paymentMethod = try await stripe.attachPaymentMethod(
         methodID: paymentMethodID,
-        customID: customerID
+        customerID: customerID
       )
       _ = try await stripe.updateCustomer(customerID: customerID, paymentMethodID: paymentMethod.id)
       if subscription.status == .pastDue {
