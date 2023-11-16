@@ -152,8 +152,7 @@ private func add<A>(
       }
   }
 
-  if 
-    let subscriptionID = currentUser.subscriptionId,
+  if let subscriptionID = currentUser.subscriptionId,
     let currentUserSubscription = try? await database.fetchSubscription(id: subscriptionID),
     currentUserSubscription.stripeSubscriptionStatus.isActive
   {

@@ -176,10 +176,10 @@ private func subscribe(
   } catch {
     let errorMessage =
       (error as? StripeErrorEnvelope)?.error.message
-      ?? """
-      Error creating subscription! If you believe you have been charged in error, please contact \
-      <support@pointfree.co>.
-      """
+        ?? """
+        Error creating subscription! If you believe you have been charged in error, please contact \
+        <support@pointfree.co>.
+        """
 
     if conn.acceptJSON {
       return try! conn.writeStatus(.ok).respond(

@@ -71,8 +71,9 @@ public func siteMiddleware(
     try? await database
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
-  let progresses = (try? await database.fetchEpisodeProgresses(userID: currentUser.unwrap().id))
-  ?? []
+  let progresses =
+    (try? await database.fetchEpisodeProgresses(userID: currentUser.unwrap().id))
+    ?? []
   let livestreams = (try? await database.fetchLivestreams()) ?? []
 
   let siteRoute: SiteRoute?

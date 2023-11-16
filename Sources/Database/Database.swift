@@ -61,7 +61,7 @@ public struct Client {
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
   public var fetchEnterpriseAccountForDomain:
-  (_ forDomain: EnterpriseAccount.Domain) async throws -> EnterpriseAccount
+    (_ forDomain: EnterpriseAccount.Domain) async throws -> EnterpriseAccount
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
   public var fetchEnterpriseAccountForSubscription:
     (_ forSubscriptionID: Models.Subscription.ID) async throws -> EnterpriseAccount

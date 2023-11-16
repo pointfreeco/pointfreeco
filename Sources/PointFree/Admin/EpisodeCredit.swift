@@ -51,7 +51,7 @@ private func creditUserMiddleware(
   .flatMap(
     const(
       conn
-      |> redirect(to: .admin(.episodeCredits(.show)))
+        |> redirect(to: .admin(.episodeCredits(.show)))
     )
   )
 }
