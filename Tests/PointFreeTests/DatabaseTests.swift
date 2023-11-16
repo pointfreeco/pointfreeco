@@ -32,11 +32,10 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
 
     let createdAccount = try await self.database.createEnterpriseAccount(
-      "Blob, Inc.",
-      "blob.biz",
-      subscription.id
+      companyName: "Blob, Inc.",
+      domain: "blob.biz",
+      subscriptionID: subscription.id
     )
-
     let fetchedAccount = try await self.database
       .fetchEnterpriseAccountForDomain(createdAccount.domain)
 

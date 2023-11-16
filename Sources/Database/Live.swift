@@ -51,7 +51,9 @@ extension Client {
           """
         )
       },
-      createGift: { request in
+      createGift: {
+        deliverAt, fromEmail, fromName, message, monthsFree, stripePaymentIntentId, toEmail, toName
+        in
         try await pool.sqlDatabase.first(
           """
           INSERT INTO "gifts" (
@@ -65,14 +67,14 @@ extension Client {
             "to_name"
           )
           VALUES (
-            \(bind: request.deliverAt),
-            \(bind: request.fromEmail),
-            \(bind: request.fromName),
-            \(bind: request.message),
-            \(bind: request.monthsFree),
-            \(bind: request.stripePaymentIntentId),
-            \(bind: request.toEmail),
-            \(bind: request.toName)
+            \(bind: deliverAt),
+            \(bind: fromEmail),
+            \(bind: fromName),
+            \(bind: message),
+            \(bind: monthsFree),
+            \(bind: stripePaymentIntentId),
+            \(bind: toEmail),
+            \(bind: toName)
           )
           RETURNING *
           """

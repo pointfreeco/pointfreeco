@@ -48,7 +48,7 @@ private func validateSubscription(
 
   guard !validation.mailboxVerification else { return pure(unit) }
 
-  return EitherIO { try await database.fetchUserById(enterpriseEmail.userId) }
+  return EitherIO { try await database.fetchUser(id: enterpriseEmail.userId) }
     .flatMap { user in unlinkSubscription(enterpriseEmail: enterpriseEmail, user: user) }
 }
 
@@ -75,21 +75,20 @@ private func notifyUserSubscriptionWasRemoved(
   enterpriseEmail: EnterpriseEmail
 ) -> EitherIO<Error, Prelude.Unit> {
   @Dependency(\.database) var database
+  @Dependency(\.fireAndForget) var fireAndForget
 
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
   return EitherIO {
-    try await database.fetchEnterpriseAccountForSubscription(subscriptionId)
-  }
-  .flatMap { enterpriseAccount in
-    EitherIO {
-      _ = try await sendEmail(
+    let account = try await database.fetchEnterpriseAccount(forSubscriptionID: subscriptionId)
+    await fireAndForget {
+      try await sendEmail(
         to: [user.email],
-        subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
+        subject: "You have been removed from \(account.companyName)’s Point-Free team",
+        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(account)))
       )
-      return unit
     }
+    return unit
   }
 }
 

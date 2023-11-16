@@ -72,7 +72,7 @@ private func redeemGift(
         stripeSubscription.customer.id,
         (stripeSubscription.customer.right?.balance ?? 0) - discount
       )
-      async let gift = database.updateGift(gift.id, stripeSubscription.id)
+      async let gift = database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
       _ = try await (customer, gift)
     }
     .run
@@ -113,11 +113,20 @@ private func redeemGift(
       )
       let stripeSubscription =
         try await stripe
-        .createSubscription(customer.id, gift.monthsFree < 12 ? .monthly : .yearly, 1, nil)
+        .createSubscription(
+          customerID: customer.id,
+          planID: gift.monthsFree < 12 ? .monthly : .yearly,
+          quantity: 1,
+          coupon: nil
+        )
       _ =
-        try await database
-        .createSubscription(stripeSubscription, currentUser.id, true, nil)
-      _ = try await database.updateGift(gift.id, stripeSubscription.id)
+        try await database.createSubscription(
+          subscription: stripeSubscription,
+          userID: currentUser.id,
+          isOwnerTakingSeat: true,
+          referrerID: nil
+        )
+      _ = try await database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
     }
     .run
     .flatMap { errorOrNot in
@@ -155,7 +164,7 @@ private func fetchAndValidateGiftAndDiscount(
   return { conn in
     let giftId = conn.data
     return EitherIO<_, (Gift, PaymentIntent)> {
-      let gift = try await database.fetchGift(giftId)
+      let gift = try await database.fetchGift(id: giftId)
       let paymentIntent = try await stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
       return (gift, paymentIntent)
     }

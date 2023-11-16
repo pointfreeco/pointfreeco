@@ -110,10 +110,10 @@ extension DependencyValues {
   }
 
   public mutating func failing() {
-    self.database = .failing
-    self.gitHub = .failing
-    self.mailgun = .failing
-    self.stripe = .failing
+    self.database = Database.Client()
+    self.gitHub = GitHub.Client()
+    self.mailgun = Mailgun.Client(appSecret: "deadbeef")
+    self.stripe = Stripe.Client(js: "")
   }
 }
 

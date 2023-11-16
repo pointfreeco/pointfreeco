@@ -93,7 +93,7 @@ public func prepareEmail(
 public func send(email: Email) async throws -> SendEmailResponse {
   @Dependency(\.mailgun) var mailgun
 
-  return try await mailgun.sendEmail(email)
+  return try await mailgun.sendEmail(to: email)
 }
 
 @discardableResult
@@ -110,7 +110,7 @@ public func sendEmail(
   @Dependency(\.mailgun) var mailgun
 
   return try await mailgun.sendEmail(
-    prepareEmail(
+    to: prepareEmail(
       from: from,
       to: to,
       cc: cc,

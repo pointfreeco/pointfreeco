@@ -77,7 +77,7 @@ extension Database.Client: DependencyKey {
     @Dependency(\.mainEventLoopGroup) var mainEventLoopGroup
 
     guard !envVars.emergencyMode
-    else { return .noop }
+    else { return Database.Client() }
 
     var sqlConfiguration = try! SQLPostgresConfiguration(url: envVars.postgres.databaseUrl.rawValue)
     if envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com") {
