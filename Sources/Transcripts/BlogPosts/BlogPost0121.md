@@ -111,18 +111,19 @@ perform the full transformation of describing the optional `destination` state a
 that powers navigation in a single line:
 
 ```diff
--.sheet(
+ .sheet(
 -  store: self.store.scope(
 -    state: \.$destination, 
 -    action: { .destination($0) }
 -  ),
 -  state: /Feature.Destination.State.editForm,
 -  action: Feature.Destination.Action.editForm
-+.sheet(
 +  store: self.store.scope(
-+    state: \.$destination.editForm, 
-+    action: \.destination.editForm
-+  ) 
++    state: \.$destination, 
++    action: { .destination($0) }
++  ),
++  state: \.editForm,
++  action: { .editForm($0) } 
  ) { store in
    EditForm(store: store) 
  }
