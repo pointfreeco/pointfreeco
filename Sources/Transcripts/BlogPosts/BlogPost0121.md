@@ -106,9 +106,8 @@ the APIs offered by the library. The various compositional operators, such as `S
  }
 ```
 
-The navigation view modifiers that the library provides can be massively simplified. You can now 
-perform the full transformation of describing the optional `destination` state and case of the enum 
-that powers navigation in a single line:
+The navigation view modifiers that the library provides can be massively simplified. You can now
+perform the state transformation using a simple, more familiar key path syntax:
 
 ```diff
  .sheet(
