@@ -51,6 +51,7 @@ Further, if you apply the `@dynamicMemberLookup` attribute to your enum:
 
 ```swift
 @CasePathable
+@dynamicMemberLookup
 enum Destination { 
   …
 }
