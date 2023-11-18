@@ -9,12 +9,12 @@ Here are just a few of our additions from this year:
 
 ## [Modern SwiftUI][modern-swiftui]
 
-At the beginning of the year we finished our 7-part series on what we feel it takes to build a 
-modern SwiftUI application. We took one Apple's moderately complex demos, the 
-[Scrumdinger][scrumdinger], and we rebuilt it with a focus on domain modeling for navigation,
-side effects, dependencies and testing. By the end we were able to accomplish things in our code
-base that were not so easy in Apple's, such as deep-linking, more cohesive previews, and simple
-unit testing.
+At the beginning of the year we finished our [7-part series][modern-swiftui] on what we feel it 
+takes to build a modern SwiftUI application. We took inspiration from one of Apple's moderately 
+complex demos, the [Scrumdinger][scrumdinger], and we rebuilt it with a focus on domain modeling for 
+navigation, side effects, dependencies and testing. By the end we were able to accomplish things in 
+our code base that were not so easy in Apple's, such as deep-linking, more cohesive previews, and 
+simple unit testing.
 
 We ended up open-sourcing the application we built, which we call [SyncUps][syncups]. We also 
 encouraged others to share how they like to build modern, complex SwiftUI applications by rebuilding
@@ -25,28 +25,6 @@ framework, and so we could not use any of those tools during the episodes. But w
 [dedicated episode][observation-in-practice] to refactoring the SyncUps app to use the new 
 `@Observable` macro. We found that we could delete a lot of code and simplify a lot of things, 
 although we did run into one gnarly gotcha with the Observation framework.
-
-## [Reliable Async Testing][reliable-testing]
-
-One of the best new features to be added to Swift in the past few years was concurrency. It makes 
-complex asynchronous code short and succinct, it provides all new tools for making concurrent code 
-safe, and it unlocks all new patterns that were previously difficult to imagine.
-
-However, testing code involving Swift's new asynchronous tools remained allusive. It seems the 
-moment you introduce the `async` or `await` keyword to your code you open up Pandora's box of 
-non-determinism and flakiness in your code that is nearly impossible to test. You are forced to
-sprinkly `Task.yield`s or `Task.sleep`s throughout your tests just to push things forward and assert
-on how your feature is behaving.
-
-Reliably testing async code was such a problem that we started a 
-[discussion][realiable-testing-forums] on the Swift forums to see what could be done about the 
-situation… and unfortunately there's not much. At least not much in the way of official tools 
-provided by Swift.
-
-But, over the course of [5 episodes][reliable-testing] we broken down why testing async code in 
-Swift is so difficult, and provided a solution. We even packaged the tool up into an
-[open-source library][concurrency-extras-gh] that can help any code base test their async code
-in a fast and non-deterministic manner.
 
 ## [Composable Architecture 1.0][tca-1.0-collection]
 
@@ -79,12 +57,34 @@ glitchy views.
 allowed to be applied to structs. There are a lot of reasons to what that, but unfortunately
 it's just not quite possible in Swift today.
 
+## [Reliable Async Testing][reliable-testing]
+
+One of the best new features to be added to Swift in the past few years was concurrency. It makes 
+complex asynchronous code short and succinct, it provides all new tools for making concurrent code 
+safe, and it unlocks all new patterns that were previously difficult to imagine.
+
+However, testing code involving Swift's new asynchronous tools remained allusive. It seems the 
+moment you introduce the `async` or `await` keyword to your code you open up Pandora's box of 
+non-determinism and flakiness in your code that is nearly impossible to test. You are forced to
+sprinkle `Task.yield`s or `Task.sleep`s throughout your tests just to push things forward and assert
+on how your feature is behaving.
+
+Reliably testing async code was such a problem that we started a 
+[discussion][realiable-testing-forums] on the Swift forums to see what could be done about the 
+situation… and unfortunately there's not much. At least not much in the way of official tools 
+provided by Swift.
+
+But, over the course of [5 episodes][reliable-testing] we broken down why testing async code in 
+Swift is so difficult, and provided a solution. We even packaged the tool up into an
+[open-source library][concurrency-extras-gh] that can help any code base test their async code
+in a fast and non-deterministic manner.
+
 ## Subscribe today!
 
-We have plenty of exciting topics planned for 2024, including bringing Swift 5.9's tools to
-the Composable Architecture, a new fundamental change to the Composable Architecture that will
-unlock capabilities currently impossible, and perhaps even start to dabble in some server-side
-Swift. 😀
+This only scratches the surface of what we covered in 2023, and we have plenty of exciting topics 
+planned for 2024, including bringing `@Observable` to the Composable Architecture, a new fundamental 
+change to the Composable Architecture that will unlock capabilities currently impossible, and 
+perhaps we will even start to explore some server-side Swift. 😀
 
 Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
