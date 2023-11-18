@@ -54,7 +54,7 @@ private func handleFailedPayment(
     let subscription = try await database.updateStripeSubscription(stripeSubscription)
 
     if subscription.stripeSubscriptionStatus == .pastDue {
-      let user = try await database.fetchUserById(subscription.userId)
+      let user = try await database.fetchUser(id: subscription.userId)
 
       await fireAndForget {
         try await sendPastDueEmail(to: user)

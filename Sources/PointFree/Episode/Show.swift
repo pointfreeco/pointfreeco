@@ -134,10 +134,10 @@ private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn 
 
     return EitherIO {
       try await database.updateEpisodeProgress(
-        episode.sequence,
-        percent,
-        percent >= 90,
-        currentUser.id
+        sequence: episode.sequence,
+        progress: percent,
+        isFinished: percent >= 90,
+        userID: currentUser.id
       )
     }
     .run
@@ -169,7 +169,7 @@ private func applyCreditMiddleware<Z>(
   }
 
   return EitherIO {
-    try await database.redeemEpisodeCredit(episode.sequence, user.id)
+    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
     try await database
       .updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
   }
@@ -233,7 +233,11 @@ func fetchEpisodeProgress<I, Z>(conn: Conn<I, T3<EpisodePermission, Episode, Z>>
 
   return EitherIO {
     guard let currentUser else { return nil }
-    return try await database.fetchEpisodeProgress(currentUser.id, episode.sequence).percent
+    return try await database.fetchEpisodeProgress(
+      userID: currentUser.id,
+      sequence: episode.sequence
+    )
+    .percent
   }
   .run
   .map {
@@ -258,7 +262,7 @@ func userEpisodePermission<I, Z>(
   }
 
   let hasCredit = IO {
-    guard let credits = try? await database.fetchEpisodeCredits(user.id)
+    guard let credits = try? await database.fetchEpisodeCredits(userID: user.id)
     else { return false }
     return credits.contains { $0.episodeSequence == episode.sequence }
   }

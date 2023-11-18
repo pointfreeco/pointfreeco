@@ -1,5 +1,6 @@
 import DecodableRequest
 import Dependencies
+import DependenciesMacros
 import Either
 import EmailAddress
 import Foundation
@@ -15,14 +16,15 @@ import UrlFormEncoding
   import FoundationNetworking
 #endif
 
+@DependencyClient
 public struct Client {
   public typealias ApiKey = Tagged<(Self, apiKey: ()), String>
   public typealias Domain = Tagged<(Self, domain: ()), String>
 
-  private let appSecret: AppSecret
+  public let appSecret: AppSecret
 
-  public var sendEmail: (Email) async throws -> SendEmailResponse
-  public var validate: (EmailAddress) async throws -> Validation
+  public var sendEmail: (_ to: Email) async throws -> SendEmailResponse
+  public var validate: (_ emailAddress: EmailAddress) async throws -> Validation
 
   public struct Validation: Codable {
     public var mailboxVerification: Bool
@@ -40,16 +42,6 @@ public struct Client {
       self.mailboxVerification =
         Bool(try container.decode(String.self, forKey: .mailboxVerification)) ?? false
     }
-  }
-
-  public init(
-    appSecret: AppSecret,
-    sendEmail: @escaping (Email) async throws -> SendEmailResponse,
-    validate: @escaping (EmailAddress) async throws -> Validation
-  ) {
-    self.appSecret = appSecret
-    self.sendEmail = sendEmail
-    self.validate = validate
   }
 
   public init(
@@ -216,7 +208,7 @@ private let jsonDecoder: JSONDecoder = {
 }()
 
 extension Client: TestDependencyKey {
-  public static let testValue: Client = .failing
+  public static let testValue = Client(appSecret: "deadbeefdeadbeefdeadbeefdeadbeef")
 }
 
 extension DependencyValues {

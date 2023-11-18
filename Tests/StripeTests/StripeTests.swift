@@ -472,15 +472,12 @@ final class StripeTests: TestCase {
     }
     await assertInlineSnapshot(
       of:
-        Stripe
-        .createPaymentIntent(
-          .init(
-            amount: 54_00,
-            currency: .usd,
-            description: "3 Months of Point-Free",
-            receiptEmail: "generous.blob@pointfree.co",
-            statementDescriptorSuffix: "3 Months Gift"
-          )
+        Stripe.createPaymentIntent(
+          amount: 54_00,
+          currency: .usd,
+          description: "3 Months of Point-Free",
+          receiptEmail: "generous.blob@pointfree.co",
+          statementDescriptorSuffix: "3 Months Gift"
         )
         .rawValue,
       as: .raw

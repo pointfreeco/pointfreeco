@@ -1,13 +1,13 @@
 import Dependencies
+import DependenciesMacros
 
+@DependencyClient
 public struct VimeoClient {
-  public var video: (VimeoVideo.ID) async throws -> VimeoVideo
+  public var video: (_ id: VimeoVideo.ID) async throws -> VimeoVideo
 }
 
 extension VimeoClient: TestDependencyKey {
-  public static let testValue = VimeoClient(
-    video: unimplemented("VimeoClient.video")
-  )
+  public static let testValue = VimeoClient()
 }
 
 extension DependencyValues {

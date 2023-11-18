@@ -11,7 +11,7 @@ extension Client {
     confirmPaymentIntent: { _ in .succeeded },
     createCoupon: { _, _, _, _ in .mock },
     createCustomer: { _, _, _, _, _ in .mock },
-    createPaymentIntent: { _ in .requiresConfirmation },
+    createPaymentIntent: { _, _, _, _, _, _ in .requiresConfirmation },
     createSubscription: { _, _, _, _ in .mock },
     deleteCoupon: { _ in },
     fetchCoupon: { _ in .mock },
@@ -28,7 +28,7 @@ extension Client {
     invoiceCustomer: { _ in .mock(charge: .right(.mock)) },
     payInvoice: { _ in .mock(charge: .right(.mock)) },
     updateCustomer: { _, _ in .mock },
-    updateCustomerBalance: { _, cents in update(.mock) { $0.balance = cents } },
+    updateCustomerBalance: { _, cents in PointFreePrelude.update(.mock) { $0.balance = cents } },
     updateCustomerExtraInvoiceInfo: { _, _ in .mock },
     updateSubscription: { _, _, _ in .mock },
     js: ""

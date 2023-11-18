@@ -86,7 +86,7 @@ private func sendNewEpisodeEmails<I>(
   let users = EitherIO {
     try await isTest
       ? database.fetchAdmins()
-      : database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
+      : database.fetchUsers(subscribedToNewsletter: .newEpisode, subscriberState: nil)
   }
 
   return

@@ -4,9 +4,9 @@
 > [Dependencies][dependencies-gh]. Each day this week we will detail how macros have allowed us to 
 > massively simplify one of these libraries, and increase their powers.
 > * [**Macro Bonanza: CasePaths**](/blog/posts/117-macro-bonanza-case-paths)
-> * _Macro Bonanza: Composable Architecture (tomorrow!)_
-> * _Macro Bonanza: SwiftUINavigation (in 2 days!)_
-> * _Macro Bonanza: Dependencies (in 3 days!)_
+> * [Macro Bonanza: Composable Architecture](/blog/posts/118-macro-bonanza-composable-architecture)
+> * [Macro Bonanza: SwiftUINavigation](/blog/posts/119-macro-bonanza-swiftui-navigation)
+> * [Macro Bonanza: Dependencies](/blog/posts/120-macro-bonanza-dependencies)
 > 
 > [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 > [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture

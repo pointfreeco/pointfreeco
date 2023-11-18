@@ -25,7 +25,7 @@ func accountRssMiddleware(
   }
 
   do {
-    guard let user = try? await database.fetchUserByRssSalt(conn.data)
+    guard let user = try? await database.fetchUser(rssSalt: conn.data)
     else {
       return conn.invalidatedFeedResponse(errorMessage: suspiciousError)
     }
@@ -33,9 +33,9 @@ func accountRssMiddleware(
     // Track feed request
     await notifyError(subject: "Create Feed Request Event Failed") {
       try await database.createFeedRequestEvent(
-        .privateEpisodesFeed,
-        conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-        user.id
+        feedType: .privateEpisodesFeed,
+        userAgent: conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
+        userID: user.id
       )
     }
 
@@ -56,7 +56,7 @@ func accountRssMiddleware(
     // Require active subscription
     let subscription =
       try await database
-      .fetchSubscriptionById(user.subscriptionId.unwrap())
+      .fetchSubscription(id: user.subscriptionId.unwrap())
     guard !subscription.deactivated
     else {
       return conn.invalidatedFeedResponse(errorMessage: deactivatedError)

@@ -1,5 +1,6 @@
 import DecodableRequest
 import Dependencies
+import DependenciesMacros
 import Either
 import EmailAddress
 import Foundation
@@ -14,124 +15,78 @@ import UrlFormEncoding
   import FoundationNetworking
 #endif
 
+@DependencyClient
 public struct Client {
-  public var attachPaymentMethod: (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod
-  public var cancelSubscription: (Subscription.ID, _ immediately: Bool) async throws -> Subscription
-  public var confirmPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
+  public var attachPaymentMethod:
+    (
+      _ methodID: PaymentMethod.ID,
+      _ customerID: Customer.ID
+    ) async throws -> PaymentMethod
+  public var cancelSubscription:
+    (
+      _ id: Subscription.ID,
+      _ immediately: Bool
+    ) async throws -> Subscription
+  public var confirmPaymentIntent: (_ id: PaymentIntent.ID) async throws -> PaymentIntent
   public var createCoupon:
-    (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate) async throws -> Coupon
+    (
+      _ duration: Coupon.Duration?,
+      _ maxRedemptions: Int?,
+      _ name: String?,
+      _ rate: Coupon.Rate
+    ) async throws -> Coupon
   public var createCustomer:
-    (PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?) async throws -> Customer
-  public var createPaymentIntent: (CreatePaymentIntentRequest) async throws -> PaymentIntent
+    (
+      _ paymentMethodID: PaymentMethod.ID?,
+      _ description: String?,
+      _ emailAddress: EmailAddress?,
+      _ vatNumber: Customer.Vat?,
+      _ balance: Cents<Int>?
+    ) async throws -> Customer
+  public var createPaymentIntent:
+    (
+      _ amount: Cents<Int>,
+      _ currency: Currency,
+      _ description: String?,
+      _ paymentMethodID: PaymentMethod.ID?,
+      _ receiptEmail: String?,
+      _ statementDescriptorSuffix: String?
+    ) async throws -> PaymentIntent
   public var createSubscription:
-    (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws -> Subscription
-  public var deleteCoupon: (Coupon.ID) async throws -> Void
-  public var fetchCoupon: (Coupon.ID) async throws -> Coupon
-  public var fetchCustomer: (Customer.ID) async throws -> Customer
-  public var fetchCustomerPaymentMethods: (Customer.ID) async throws -> ListEnvelope<PaymentMethod>
-  public var fetchInvoice: (Invoice.ID) async throws -> Invoice
-  public var fetchInvoices: (Customer.ID, Invoice.Status) async throws -> ListEnvelope<Invoice>
-  public var fetchPaymentIntent: (PaymentIntent.ID) async throws -> PaymentIntent
-  public var fetchPaymentMethod: (PaymentMethod.ID) async throws -> PaymentMethod
+    (
+      _ customerID: Customer.ID,
+      _ planID: Plan.ID,
+      _ quantity: Int,
+      _ coupon: Coupon.ID?
+    ) async throws -> Subscription
+  public var deleteCoupon: (_ id: Coupon.ID) async throws -> Void
+  public var fetchCoupon: (_ id: Coupon.ID) async throws -> Coupon
+  public var fetchCustomer: (_ id: Customer.ID) async throws -> Customer
+  public var fetchCustomerPaymentMethods:
+    (_ customerID: Customer.ID) async throws -> ListEnvelope<PaymentMethod>
+  public var fetchInvoice: (_ id: Invoice.ID) async throws -> Invoice
+  public var fetchInvoices:
+    (_ customerID: Customer.ID, _ status: Invoice.Status) async throws -> ListEnvelope<Invoice>
+  public var fetchPaymentIntent: (_ id: PaymentIntent.ID) async throws -> PaymentIntent
+  public var fetchPaymentMethod: (_ id: PaymentMethod.ID) async throws -> PaymentMethod
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
-  public var fetchPlan: (Plan.ID) async throws -> Plan
-  public var fetchSubscription: (Subscription.ID) async throws -> Subscription
-  public var fetchUpcomingInvoice: (Customer.ID) async throws -> Invoice
-  public var invoiceCustomer: (Customer.ID) async throws -> Invoice
-  public var payInvoice: (Invoice.ID) async throws -> Invoice
-  public var updateCustomer: (Customer.ID, PaymentMethod.ID) async throws -> Customer
-  public var updateCustomerBalance: (Customer.ID, Cents<Int>) async throws -> Customer
-  public var updateCustomerExtraInvoiceInfo: (Customer.ID, String) async throws -> Customer
-  public var updateSubscription: (Subscription, Plan.ID, Int) async throws -> Subscription
+  public var fetchPlan: (_ id: Plan.ID) async throws -> Plan
+  public var fetchSubscription: (_ id: Subscription.ID) async throws -> Subscription
+  public var fetchUpcomingInvoice: (_ customerID: Customer.ID) async throws -> Invoice
+  @DependencyEndpoint(method: "invoice")
+  public var invoiceCustomer: (_ customerID: Customer.ID) async throws -> Invoice
+  @DependencyEndpoint(method: "pay")
+  public var payInvoice: (_ invoiceID: Invoice.ID) async throws -> Invoice
+  public var updateCustomer:
+    (_ customerID: Customer.ID, _ paymentMethodID: PaymentMethod.ID) async throws -> Customer
+  public var updateCustomerBalance:
+    (_ customerID: Customer.ID, _ amount: Cents<Int>) async throws -> Customer
+  public var updateCustomerExtraInvoiceInfo:
+    (_ customerID: Customer.ID, _ info: String) async throws -> Customer
+  @DependencyEndpoint(method: "update")
+  public var updateSubscription:
+    (_ subscription: Subscription, _ planID: Plan.ID, _ quantity: Int) async throws -> Subscription
   public var js: String
-
-  public init(
-    attachPaymentMethod: @escaping (PaymentMethod.ID, Customer.ID) async throws -> PaymentMethod,
-    cancelSubscription: @escaping (Subscription.ID, _ immediately: Bool) async throws ->
-      Subscription,
-    confirmPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
-    createCoupon: @escaping (Coupon.Duration?, _ maxRedemptions: Int?, _ name: String?, Coupon.Rate)
-      async throws -> Coupon,
-    createCustomer: @escaping (
-      PaymentMethod.ID?, String?, EmailAddress?, Customer.Vat?, Cents<Int>?
-    ) async throws -> Customer,
-    createPaymentIntent: @escaping (CreatePaymentIntentRequest) async throws -> PaymentIntent,
-    createSubscription: @escaping (Customer.ID, Plan.ID, Int, Coupon.ID?) async throws ->
-      Subscription,
-    deleteCoupon: @escaping (Coupon.ID) async throws -> Void,
-    fetchCoupon: @escaping (Coupon.ID) async throws -> Coupon,
-    fetchCustomer: @escaping (Customer.ID) async throws -> Customer,
-    fetchCustomerPaymentMethods: @escaping (Customer.ID) async throws -> ListEnvelope<
-      PaymentMethod
-    >,
-    fetchInvoice: @escaping (Invoice.ID) async throws -> Invoice,
-    fetchInvoices: @escaping (Customer.ID, Invoice.Status) async throws -> ListEnvelope<Invoice>,
-    fetchPaymentIntent: @escaping (PaymentIntent.ID) async throws -> PaymentIntent,
-    fetchPaymentMethod: @escaping (PaymentMethod.ID) async throws -> PaymentMethod,
-    fetchPlans: @escaping () async throws -> ListEnvelope<Plan>,
-    fetchPlan: @escaping (Plan.ID) async throws -> Plan,
-    fetchSubscription: @escaping (Subscription.ID) async throws -> Subscription,
-    fetchUpcomingInvoice: @escaping (Customer.ID) async throws -> Invoice,
-    invoiceCustomer: @escaping (Customer.ID) async throws -> Invoice,
-    payInvoice: @escaping (Invoice.ID) async throws -> Invoice,
-    updateCustomer: @escaping (Customer.ID, PaymentMethod.ID) async throws -> Customer,
-    updateCustomerBalance: @escaping (Customer.ID, Cents<Int>) async throws -> Customer,
-    updateCustomerExtraInvoiceInfo: @escaping (Customer.ID, String) async throws -> Customer,
-    updateSubscription: @escaping (Subscription, Plan.ID, Int) async throws -> Subscription,
-    js: String
-  ) {
-    self.attachPaymentMethod = attachPaymentMethod
-    self.cancelSubscription = cancelSubscription
-    self.confirmPaymentIntent = confirmPaymentIntent
-    self.createCoupon = createCoupon
-    self.createCustomer = createCustomer
-    self.createPaymentIntent = createPaymentIntent
-    self.createSubscription = createSubscription
-    self.deleteCoupon = deleteCoupon
-    self.fetchCoupon = fetchCoupon
-    self.fetchCustomer = fetchCustomer
-    self.fetchCustomerPaymentMethods = fetchCustomerPaymentMethods
-    self.fetchInvoice = fetchInvoice
-    self.fetchInvoices = fetchInvoices
-    self.fetchPaymentIntent = fetchPaymentIntent
-    self.fetchPaymentMethod = fetchPaymentMethod
-    self.fetchPlans = fetchPlans
-    self.fetchPlan = fetchPlan
-    self.fetchSubscription = fetchSubscription
-    self.fetchUpcomingInvoice = fetchUpcomingInvoice
-    self.payInvoice = payInvoice
-    self.invoiceCustomer = invoiceCustomer
-    self.updateCustomer = updateCustomer
-    self.updateCustomerBalance = updateCustomerBalance
-    self.updateCustomerExtraInvoiceInfo = updateCustomerExtraInvoiceInfo
-    self.updateSubscription = updateSubscription
-    self.js = js
-  }
-
-  public struct CreatePaymentIntentRequest {
-    public var amount: Cents<Int>
-    public var currency: Currency
-    public var description: String?
-    public var paymentMethodID: PaymentMethod.ID?
-    public var receiptEmail: String?
-    public var statementDescriptorSuffix: String?
-
-    public init(
-      amount: Cents<Int>,
-      currency: Currency,
-      description: String?,
-      paymentMethodID: PaymentMethod.ID? = nil,
-      receiptEmail: String?,
-      statementDescriptorSuffix: String?
-    ) {
-      self.amount = amount
-      self.currency = currency
-      self.description = description
-      self.paymentMethodID = paymentMethodID
-      self.receiptEmail = receiptEmail
-      self.statementDescriptorSuffix = statementDescriptorSuffix
-    }
-  }
 }
 
 extension Client {
@@ -163,7 +118,16 @@ extension Client {
         )
       },
       createPaymentIntent: {
-        try await runStripe(secretKey)(Stripe.createPaymentIntent($0))
+        try await runStripe(secretKey)(
+          Stripe.createPaymentIntent(
+            amount: $0,
+            currency: $1,
+            description: $2,
+            paymentMethodID: $3,
+            receiptEmail: $4,
+            statementDescriptorSuffix: $5
+          )
+        )
       },
       createSubscription: {
         try await runStripe(secretKey)(
@@ -327,7 +291,14 @@ func createCustomer(
   return stripeRequest("customers", .post(params))
 }
 
-func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
+func createPaymentIntent(
+  amount: Cents<Int>,
+  currency: Currency,
+  description: String?,
+  paymentMethodID: PaymentMethod.ID? = nil,
+  receiptEmail: String?,
+  statementDescriptorSuffix: String?
+)
   -> DecodableRequest<PaymentIntent>
 {
 
@@ -335,12 +306,12 @@ func createPaymentIntent(_ request: Client.CreatePaymentIntentRequest)
     "payment_intents",
     .post(
       [
-        "amount": request.amount.rawValue,
-        "currency": request.currency,
-        "description": request.description as Any?,
-        "payment_method": request.paymentMethodID?.rawValue as Any?,
-        "receipt_email": request.receiptEmail,
-        "statement_descriptor_suffix": request.statementDescriptorSuffix,
+        "amount": amount.rawValue,
+        "currency": currency,
+        "description": description as Any?,
+        "payment_method": paymentMethodID?.rawValue as Any?,
+        "receipt_email": receiptEmail,
+        "statement_descriptor_suffix": statementDescriptorSuffix,
       ].compactMapValues { $0 }
     )
   )
@@ -565,7 +536,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey) -> (
 }
 
 extension Client: TestDependencyKey {
-  public static let testValue: Client = .failing
+  public static let testValue = Client(js: "")
 }
 
 extension DependencyValues {

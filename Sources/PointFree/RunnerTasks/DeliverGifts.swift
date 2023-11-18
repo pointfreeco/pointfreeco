@@ -18,7 +18,11 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
               .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
               .flatMap { _ in
                 EitherIO {
-                  try await database.updateGiftStatus(gift.id, .succeeded, true)
+                  try await database.updateGiftStatus(
+                    id: gift.id,
+                    status: .succeeded,
+                    delivered: true
+                  )
                 }
               }
             : pure(gift)

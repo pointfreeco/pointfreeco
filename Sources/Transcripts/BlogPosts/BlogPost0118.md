@@ -5,8 +5,8 @@
 > massively simplify one of these libraries, and increase their powers.
 > * [Macro Bonanza: CasePaths](/blog/posts/117-macro-bonanza-case-paths)
 > * [**Macro Bonanza: Composable Architecture**](/blog/posts/118-macro-bonanza-composable-architecture)
-> * _Macro Bonanza: SwiftUINavigation (tomorrow!)_
-> * _Macro Bonanza: Dependencies (in 2 days!)_
+> * [Macro Bonanza: SwiftUINavigation](/blog/posts/119-macro-bonanza-swiftui-navigation)
+> * [Macro Bonanza: Dependencies](/blog/posts/120-macro-bonanza-dependencies)
 > 
 > [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 > [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -178,8 +178,8 @@ struct Feature {
 ```
 
 …is considered programmer error. This is an invalid reducer because the `body` property will never 
-be called. The [`@Reducer`][reducer-macro-docs] macro can diagnose the problem, provide you with a 
-helpful warning, and even help fix it for you:
+be called. The [`@Reducer`][reducer-macro-docs] macro can diagnose the problem, and provide you with 
+a helpful error message:
 
 ```swift
 @Reducer
@@ -207,7 +207,7 @@ advantage of the new [`@Reducer`][reducer-macro-docs] macro, and more. Tomorrow 
 these new case path tools have massively improved our [SwiftUINavigation][sui-nav-gh] library. 
 
 [tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
-[reducer-macro-docs]: todo
+[reducer-macro-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducer()
 [reducer-protocol-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducer
 [tree-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
 [stack-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation

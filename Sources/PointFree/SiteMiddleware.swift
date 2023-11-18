@@ -60,8 +60,8 @@ public func siteMiddleware(
 
   let currentUser: Models.User?
   if let userID = conn.request.session.userId {
-    await fireAndForget { try await database.sawUser(userID) }
-    currentUser = try? await database.fetchUserById(userID)
+    await fireAndForget { try await database.sawUser(id: userID) }
+    currentUser = try? await database.fetchUser(id: userID)
   } else {
     currentUser = nil
   }
@@ -71,7 +71,9 @@ public func siteMiddleware(
     try? await database
     .fetchEnterpriseAccountForSubscription(subscription.unwrap().id)
 
-  let progresses = (try? await database.fetchEpisodeProgresses(currentUser.unwrap().id)) ?? []
+  let progresses =
+    (try? await database.fetchEpisodeProgresses(userID: currentUser.unwrap().id))
+    ?? []
   let livestreams = (try? await database.fetchLivestreams()) ?? []
 
   let siteRoute: SiteRoute?
@@ -100,7 +102,7 @@ public func siteMiddleware(
     )
     $0.subscription = subscription
     if let ownerUserID = subscription?.userId {
-      $0.subscriptionOwner = try? await database.fetchUserById(ownerUserID)
+      $0.subscriptionOwner = try? await database.fetchUser(id: ownerUserID)
     }
   } operation: {
     // Early out if route cannot be matched
