@@ -35,7 +35,7 @@ extension Episode.Collection {
           related: [],
           title: "Macro case paths",
           whereToGoFromHere: nil
-        )
+        ),
       ],
       title: "Macros"
     )
