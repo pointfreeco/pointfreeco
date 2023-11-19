@@ -17,7 +17,12 @@ func blogMiddleware(
 
   switch subRoute {
   case .feed:
-    return conn.map(const(blogPosts()))
+    return conn.map(
+      const(
+        blogPosts()
+          .filter { !$0.hideFromRSS }
+      )
+    )
       |> blogAtomFeedResponse
 
   case .index:

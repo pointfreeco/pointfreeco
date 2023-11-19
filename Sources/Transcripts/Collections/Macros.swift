@@ -4,13 +4,36 @@ extension Episode.Collection {
       blurb: macrosBlurb,
       sections: [
         .init(
-          blurb: macrosBlurb,
+          blurb: """
+            Macros can generate code for your application that is then compiled by Swift, and as
+            such it is very important to test macros deeply. If a macro generates invalid Swift
+            code you can be left with mystifying compiler errors. We explore a variety of techniques
+            for testing and debugging macros.
+            """,
           coreLessons: [
             .init(episode: .ep250_macroTesting),
             .init(episode: .ep251_macroTesting),
           ],
           related: [],
-          title: "Macros",
+          title: "Testing and debugging macros",
+          whereToGoFromHere: """
+            Now that we know how to test and debug macros, let's apply these ideas to improve a
+            concept that we explored many years ago: case paths.
+            """
+        ),
+        .init(
+          blurb: """
+            Case paths are a powerful concept that we introduced many years ago, and they aim to
+            bring key path-like affordances to enums and their cases. They never fully lived up
+            to their potential, but macros allow us to completely reimagine how they are defined
+            and used.
+            """,
+          coreLessons: [
+            .init(episode: .ep257_macroCasePaths),
+            .init(episode: .ep258_macroCasePaths),
+          ],
+          related: [],
+          title: "Macro case paths",
           whereToGoFromHere: nil
         )
       ],
