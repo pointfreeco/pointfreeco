@@ -9,9 +9,8 @@ public func allBlogPosts() -> [BlogPost] {
   return
     _allBlogPosts
     .filter {
-      appEnv == .production
-        ? $0.publishedAt <= now
-        : true
+      !$0.hideFromRSS
+      && (appEnv == .production ? $0.publishedAt <= now : true)
     }
 }
 
