@@ -10,8 +10,8 @@ Here are just a few of our additions from this year:
 ## [Modern SwiftUI][modern-swiftui]
 
 At the beginning of the year we finished our [7-part series][modern-swiftui] on what we feel it 
-takes to build a modern SwiftUI application. We took inspiration from one of Apple's moderately 
-complex demos, the [Scrumdinger][scrumdinger], and we rebuilt it with a focus on domain modeling for 
+takes to build a modern SwiftUI application. We took inspiration from one of Apple's own moderately 
+complex demos, [Scrumdinger][scrumdinger], and we rebuilt it with a focus on domain modeling for 
 navigation, side effects, dependencies and testing. By the end we were able to accomplish things in 
 our code base that were not so easy in Apple's, such as deep-linking, more cohesive previews, and 
 simple unit testing.
@@ -45,17 +45,17 @@ Most recently this year we dove _deep_ into the new Observation framework in Swi
 [4-part series][observation-collection]:
 
 * We showed off the past tools, pre-Observation, and demonstrated that while they got the job done 
-there was a lot to be desired. 
+  there was a lot to be desired. 
 * Then we showed off what the new tools were capable of, and it was quite amazing. You can build 
-your SwiftUI features in a simpler, more naive manner, and everything somehow just magically works!
-We even dipped our toes into the actual open source code in the Observation framework so that we 
-could get a better understanding of how everything works.
+  your SwiftUI features in a simpler, more naive manner, and everything somehow just magically
+  works! We even dipped our toes into the actual open source code in the Observation framework so
+  that we could get a better understanding of how everything works.
 * However, the Observation tools do have some gotchas, so we dedicated an entire episode to just 
-that so that you can best wield the tools. Otherwise you run the risk of over-observing state or 
-glitchy views.
+  that so that you can best wield the tools. Otherwise you run the risk of over-observing state or 
+  glitchy views.
 * And finally we explored a theoretical future of what `@Observable` could look like if it were
-allowed to be applied to structs. There are a lot of reasons to what that, but unfortunately
-it's just not quite possible in Swift today.
+  allowed to be applied to structs. There are a lot of reasons to want that, but unfortunately it's
+  just not quite possible in Swift today.
 
 ## [Reliable Async Testing][reliable-testing]
 
@@ -63,15 +63,15 @@ One of the best new features to be added to Swift in the past few years was conc
 complex asynchronous code short and succinct, it provides all new tools for making concurrent code 
 safe, and it unlocks all new patterns that were previously difficult to imagine.
 
-However, testing code involving Swift's new asynchronous tools remained allusive. It seems the 
-moment you introduce the `async` or `await` keyword to your code you open up Pandora's box of 
+However, testing code involving Swift's new asynchronous tools remained elusive. It seems the moment
+you introduce the `async` or `await` keyword to your code you open up Pandora's box of
 non-determinism and flakiness in your code that is nearly impossible to test. You are forced to
 sprinkle `Task.yield`s or `Task.sleep`s throughout your tests just to push things forward and assert
 on how your feature is behaving.
 
 Reliably testing async code was such a problem that we started a 
 [discussion][realiable-testing-forums] on the Swift forums to see what could be done about the 
-situation… and unfortunately there's not much. At least not much in the way of official tools 
+situation…and unfortunately there's not much. At least not much in the way of official tools 
 provided by Swift.
 
 But, over the course of [5 episodes][reliable-testing] we broken down why testing async code in 
