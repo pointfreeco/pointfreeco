@@ -305,7 +305,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .respond(
         text: """
           User-Agent: *
-          /account
+          Disallow: /account
 
           User-Agent: GPTBot
           Disallow: /
