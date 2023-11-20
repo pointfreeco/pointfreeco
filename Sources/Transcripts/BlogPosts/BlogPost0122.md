@@ -1,6 +1,8 @@
 We do this only a few times a year: we‘re having a [rare, Point-Free sale][black-friday-sale]
 this Black Friday by offering 30% of the first year of your subscription!
 
+[[Subscribe today!]](http://pointfree.co/discounts/black-friday-2023)
+
 Once subscribed you'll get instant access to all [259 episodes][pf] (163 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
 created or expanded this year, as well as all of the material we have planned for 2024!
@@ -89,7 +91,9 @@ perhaps we will even start to explore some server-side Swift. 😀
 Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
 
-[observation-collection]: http://localhost:8080/collections/swiftui/observation
+[[Subscribe today!]](http://pointfree.co/discounts/black-friday-2023)
+
+[observation-collection]: /collections/swiftui/observation
 [tca-1.0-blog]: /blog/posts/112-composable-architecture-1-0
 [tca-1.0-collection]: /collections/composable-architecture/composable-architecture-1-0
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
