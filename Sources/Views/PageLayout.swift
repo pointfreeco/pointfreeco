@@ -192,7 +192,7 @@ struct Banner {
   static let blackFriday2023 = Self(
     endAt: yearMonthDayFormatter.date(from: "2023-12-01")!,
     markdownContent: ###"""
-      🍎 [**Black Friday Sale!** Save 30% when you subscribe.](/discounts/black-friday-2023)
+      [**Black Friday Sale!** Save 30% when you subscribe.](/discounts/black-friday-2023)
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
