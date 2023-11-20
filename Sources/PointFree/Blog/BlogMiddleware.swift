@@ -17,18 +17,22 @@ func blogMiddleware(
 
   switch subRoute {
   case .feed:
-    return conn.map(
-      const(
-        blogPosts()
-          .filter { !$0.hideFromRSS }
-      )
-    )
+    return conn.map(const(blogPosts()))
       |> blogAtomFeedResponse
 
   case .index:
     @Dependency(\.blogPosts) var blogPosts
     return conn.map(const(blogPosts()))
       |> blogIndexMiddleware
+
+  case .slackFeed:
+    return conn.map(
+      const(
+        blogPosts()
+          .filter { !$0.hideFromSlackRSS }
+      )
+    )
+    |> blogAtomFeedResponse
 
   case let .show(postParam):
     return conn.map(const(postParam))

@@ -8,7 +8,7 @@ public struct BlogPost: Equatable, Identifiable {
   public var contentBlocks: [Episode.TranscriptBlock]
   public var coverImage: String?
   public var hidden: Bool
-  public var hideFromRSS: Bool
+  public var hideFromSlackRSS: Bool
   public var id: Tagged<Self, Int>
   public var publishedAt: Date
   public var title: String
@@ -19,7 +19,7 @@ public struct BlogPost: Equatable, Identifiable {
     contentBlocks: [Episode.TranscriptBlock],
     coverImage: String?,
     hidden: Bool = false,
-    hideFromRSS: Bool = false,
+    hideFromSlackRSS: Bool = false,
     id: ID,
     publishedAt: Date,
     title: String
@@ -29,7 +29,7 @@ public struct BlogPost: Equatable, Identifiable {
     self.contentBlocks = contentBlocks
     self.coverImage = coverImage
     self.hidden = hidden
-    self.hideFromRSS = hideFromRSS
+    self.hideFromSlackRSS = hideFromSlackRSS
     self.id = id
     self.publishedAt = publishedAt
     self.title = title

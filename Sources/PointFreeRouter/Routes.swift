@@ -56,6 +56,7 @@ public enum SiteRoute: Equatable {
   public enum Blog: Equatable {
     case feed
     case index
+    case slackFeed
     case show(Either<String, BlogPost.ID>)
 
     public static func show(slug: String) -> Blog { .show(.left(slug)) }
@@ -150,6 +151,13 @@ struct BlogRouter: ParserPrinter {
         Path {
           "feed"
           "atom.xml"
+        }
+      }
+
+      Route(.case(SiteRoute.Blog.slackFeed)) {
+        Path {
+          "feed"
+          "slack-atom.xml"
         }
       }
 

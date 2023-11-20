@@ -9,7 +9,7 @@ public let post0122_BlackFriday = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 122),
   coverImage: nil,
-  hideFromRSS: true,
+  hideFromSlackRSS: true,
   id: 122,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-20")!,
   title: "Black Friday Sale: 30% Off Point-Free"
