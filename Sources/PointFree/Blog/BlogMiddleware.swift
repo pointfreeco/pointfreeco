@@ -32,7 +32,7 @@ func blogMiddleware(
           .filter { !$0.hideFromSlackRSS }
       )
     )
-    |> blogAtomFeedResponse
+      |> blogAtomFeedResponse
 
   case let .show(postParam):
     return conn.map(const(postParam))
