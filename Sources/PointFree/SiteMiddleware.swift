@@ -307,8 +307,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
           User-Agent: *
           Disallow: /account
 
-          User-Agent: GPTBot
-          Disallow: /
+          #User-Agent: GPTBot
+          #Disallow: /
           """)
 
   case .slackInvite:
