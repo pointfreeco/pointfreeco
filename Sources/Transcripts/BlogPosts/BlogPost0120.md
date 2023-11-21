@@ -13,10 +13,11 @@
 > [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
 > [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
-Today we are releasing [version 1.1][dependencies-1.1] of our popular [Dependencies][sui-nav-gh] 
-library, which introduces a new [`@DependencyClient`][dependency-client-docs] macro for making it 
-easier to design your dependencies. The library now provides a complete toolkit for designing _and_ 
-controlling your dependencies, and makes it easy to preview and test your features in isolation.
+Today we are releasing [version 1.1][dependencies-1.1] of our popular 
+[Dependencies][dependencies-gh] library, which introduces a new 
+[`@DependencyClient`][dependency-client-docs] macro for making it easier to design your 
+dependencies. The library now provides a complete toolkit for designing _and_ controlling your 
+dependencies, and makes it easy to preview and test your features in isolation.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
