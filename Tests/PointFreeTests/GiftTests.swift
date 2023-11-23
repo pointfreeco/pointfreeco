@@ -26,10 +26,18 @@ class GiftTests: TestCase {
   }
 
   func testGiftCreate() async throws {
-    var createGiftRequest: Database.Client.CreateGiftRequest!
+    let expectation = self.expectation(description: "createGift")
     await withDependencies {
-      $0.database.createGift = { request in
-        createGiftRequest = request
+      $0.database.createGift = {
+        XCTAssertEqual($0, nil)
+        XCTAssertEqual($1, "blob@pointfree.co")
+        XCTAssertEqual($2, "Blob")
+        XCTAssertEqual($3, "HBD!")
+        XCTAssertEqual($4, 3)
+        XCTAssertEqual($5, "pi_test")
+        XCTAssertEqual($6, "blob.jr@pointfree.co")
+        XCTAssertEqual($7, "Blob Jr.")
+        expectation.fulfill()
         return .unfulfilled
       }
     } operation: {
@@ -73,26 +81,14 @@ class GiftTests: TestCase {
         X-XSS-Protection: 1; mode=block
         """
       }
-
-      XCTAssertNoDifference(
-        createGiftRequest,
-        .init(
-          deliverAt: nil,
-          fromEmail: "blob@pointfree.co",
-          fromName: "Blob",
-          message: "HBD!",
-          monthsFree: 3,
-          stripePaymentIntentId: "pi_test",
-          toEmail: "blob.jr@pointfree.co",
-          toName: "Blob Jr."
-        )
-      )
     }
+
+    { self.wait(for: [expectation], timeout: 0) }()
   }
 
   func testGiftCreate_StripeFailure() async throws {
     await withDependencies {
-      $0.stripe.createPaymentIntent = { _ in
+      $0.stripe.createPaymentIntent = { _, _, _, _, _, _ in
         struct Error: Swift.Error {}
         throw Error()
       }
@@ -141,7 +137,7 @@ class GiftTests: TestCase {
 
   func testGiftCreate_InvalidMonths() async throws {
     await withDependencies {
-      $0.stripe.createPaymentIntent = { _ in
+      $0.stripe.createPaymentIntent = { _, _, _, _, _, _ in
         struct Error: Swift.Error {}
         throw Error()
       }

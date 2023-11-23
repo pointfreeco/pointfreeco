@@ -6,7 +6,7 @@
 > * [Macro Bonanza: CasePaths](/blog/posts/117-macro-bonanza-case-paths)
 > * [**Macro Bonanza: Composable Architecture**](/blog/posts/118-macro-bonanza-composable-architecture)
 > * [Macro Bonanza: SwiftUINavigation](/blog/posts/119-macro-bonanza-swiftui-navigation)
-> * _Macro Bonanza: Dependencies (tomorrow!)_
+> * [Macro Bonanza: Dependencies](/blog/posts/120-macro-bonanza-dependencies)
 > 
 > [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 > [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -207,7 +207,7 @@ advantage of the new [`@Reducer`][reducer-macro-docs] macro, and more. Tomorrow 
 these new case path tools have massively improved our [SwiftUINavigation][sui-nav-gh] library. 
 
 [tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
-[reducer-macro-docs]: todo
+[reducer-macro-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducer()
 [reducer-protocol-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducer
 [tree-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
 [stack-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation

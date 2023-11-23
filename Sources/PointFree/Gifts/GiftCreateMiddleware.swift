@@ -41,27 +41,23 @@ func giftCreateMiddleware(
 
   return EitherIO<_, PaymentIntent> {
     var paymentIntent = try await stripe.createPaymentIntent(
-      .init(
-        amount: plan.amount,
-        currency: .usd,
-        description: "Gift subscription: \(plan.monthCount) months",
-        paymentMethodID: giftFormData.paymentMethodID,
-        receiptEmail: giftFormData.fromEmail.rawValue,
-        statementDescriptorSuffix: "Gift Subscription"
-      )
+      amount: plan.amount,
+      currency: .usd,
+      description: "Gift subscription: \(plan.monthCount) months",
+      paymentMethodID: giftFormData.paymentMethodID,
+      receiptEmail: giftFormData.fromEmail.rawValue,
+      statementDescriptorSuffix: "Gift Subscription"
     )
-    paymentIntent = try await stripe.confirmPaymentIntent(paymentIntent.id)
+    paymentIntent = try await stripe.confirmPaymentIntent(id: paymentIntent.id)
     _ = try await database.createGift(
-      .init(
-        deliverAt: deliverAt,
-        fromEmail: giftFormData.fromEmail,
-        fromName: giftFormData.fromName,
-        message: giftFormData.message,
-        monthsFree: giftFormData.monthsFree,
-        stripePaymentIntentId: paymentIntent.id,
-        toEmail: giftFormData.toEmail,
-        toName: giftFormData.toName
-      )
+      deliverAt: deliverAt,
+      fromEmail: giftFormData.fromEmail,
+      fromName: giftFormData.fromName,
+      message: giftFormData.message,
+      monthsFree: giftFormData.monthsFree,
+      stripePaymentIntentId: paymentIntent.id,
+      toEmail: giftFormData.toEmail,
+      toName: giftFormData.toName
     )
     return paymentIntent
   }

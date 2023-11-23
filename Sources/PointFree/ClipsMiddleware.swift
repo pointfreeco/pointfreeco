@@ -22,7 +22,7 @@ private func clipMiddleware(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.vimeoClient) var vimeoClient
   do {
-    let video = try await vimeoClient.video(conn.data)
+    let video = try await vimeoClient.video(id: conn.data)
     guard
       video.type == .video,
       video.privacy.view == .anybody

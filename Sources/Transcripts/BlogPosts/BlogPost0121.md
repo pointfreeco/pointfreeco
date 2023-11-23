@@ -11,7 +11,7 @@ Swift macros can be.
 * [@Reducer](#Reducer)
 * [Better SwiftUI navigation APIs](#Better-SwiftUI-navigation-APIs)
 * [@DependencyClient](#DependencyClient)
-
+* [Macro testing](#Macro-testing)
 
 <div id="CasePathable"></div>
 
@@ -51,6 +51,7 @@ Further, if you apply the `@dynamicMemberLookup` attribute to your enum:
 
 ```swift
 @CasePathable
+@dynamicMemberLookup
 enum Destination { 
   …
 }
@@ -106,23 +107,23 @@ the APIs offered by the library. The various compositional operators, such as `S
  }
 ```
 
-The navigation view modifiers that the library provides can be massively simplified. You can now 
-perform the full transformation of describing the optional `destination` state and case of the enum 
-that powers navigation in a single line:
+The navigation view modifiers that the library provides can be massively simplified. You can now
+perform the state transformation using a simple, more familiar key path syntax:
 
 ```diff
--.sheet(
+ .sheet(
 -  store: self.store.scope(
 -    state: \.$destination, 
 -    action: { .destination($0) }
 -  ),
 -  state: /Feature.Destination.State.editForm,
 -  action: Feature.Destination.Action.editForm
-+.sheet(
 +  store: self.store.scope(
-+    state: \.$destination.editForm, 
-+    action: \.destination.editForm
-+  ) 
++    state: \.$destination, 
++    action: { .destination($0) }
++  ),
++  state: \.editForm,
++  action: { .editForm($0) } 
  ) { store in
    EditForm(store: store) 
  }
@@ -186,7 +187,7 @@ class FeatureModel {
 -  unwrapping: self.$model.destination,
 -  case: /FeatureModel.Destination.settings
 -) { model in
-+.sheet(item: self.$model.destination.activity) { model in
++.sheet(item: self.$model.destination.settings) { model in
    SettingsView(model: model)
  }
 ```
@@ -229,11 +230,80 @@ That means you do not need to provide this initializer yourself if you
 [separate the interface][separating-interface] of your dependency from its implmenetation in 
 separate modules, as is recommended for dependencies that take a long time to compile.
 
+<div id="Macro-testing"></div>
+
+### Macro testing
+
+We did not release any updates to our [Macro Testing][macro-testing-gh] this week, but we did want
+to give it a special shoutout for making it possible to test each of the macros released this week.
+Our [`assertMacro`][assert-macro-docs] tool was immensely helpful in testing all of the tiny edge
+cases of our macros, of which there were many.
+
+Shortly after releasing `@CasePathable` it was brought to our attention that we were not handling
+cases with multiple wildcard argument labels, for example:
+
+```swift
+case action(_ id: Int, _ message: String)
+```
+
+Luckily [the fix][case-paths-pr] was straightforward, and in order to test the fix all one has to
+do is invoke `assertMacro` with the string of code that you want to be expanded: 
+
+```swift
+func testWildcard() {
+  assertMacro {
+    """
+    @CasePathable enum Foo {
+      case bar(_ int: Int, _ bool: Bool)
+    }
+    """
+  }
+}
+``` 
+
+Then run the test, and the expanded macro code will be generated and inserted [directly into the 
+test file][case-paths-pr-test]. This makes it incredible easy to write as many tests as it takes
+to get confidence that you have covered all of your bases.
+
+And we wrote _a lot_ of tests. For example, our [Dependencies][dependencies-gh] library has 40 tests
+for its macros, exercising every little edge case we could think of:
+
+* What happens when your client has a mixture of [`public` and `private`][public-private-test] 
+endpoints?
+* What happens when your client has [computed properties][computed-prop-test]?
+* What happens with [`@Sendable` and `@MainActor`][main-actor-test] attributes applied to closures?
+* [And _a lot_ more…][dep-macros-tests]
+
+We are even able to write simple tests that assert our macro's _diagnostics_ behave how we expect.
+For example, the `@Reducer` macro performs a [light touch of linting][reducer-diagnostic] on your 
+reducer in order to make sure you don't accidentally implement the `reduce(into:action:)` 
+requirement _and_ `body` requirement at the same time. Doing so is invalid, but the Swift compiler 
+can't help you, whereas our macro can.
+
+And if all of that wasn't good enough, if we ever make a fundamental change to our macro and want 
+to re-record _all_ macro expansions at once, that is as easy as a 
+[single line change][deps-invoke-test]:
+
+```swift
+override func invokeTest() {
+  withMacroTesting(
+    isRecording: true,
+    macros: [DependencyClientMacro.self]
+  ) {
+    super.invokeTest()
+  }
+}
+``` 
+
+By putting the test suite in "record mode", the Macro Testing library will automatically write the
+freshest macro expansion into the test files. 
+
 ### Get started today!
 
 That concludes this week's Macro Bonanza! Make sure you update all of your dependencies on our
 libraries to take advantage of these new tools, and let us know what you think! 
 
+[assert-macro-docs]: https://swiftpackageindex.com/pointfreeco/swift-macro-testing/main/documentation/macrotesting/assertmacro(_:record:of:diagnostics:fixes:expansion:file:function:line:column:)-6hxgm
 [separating-interface]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation
 [test-value-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Test-value
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
@@ -241,3 +311,14 @@ libraries to take advantage of these new tools, and let us know what you think!
 [tca-1.4]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0
 [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
 [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
+[macro-testing-gh]: http://github.com/pointfreeco/swift-macro-testing
+[reducer-diagnostic]: https://github.com/pointfreeco/swift-composable-architecture/blob/6bb85c8736cc58b41de35e6ef974563ccae77d6b/Tests/ComposableArchitectureMacrosTests/ReducerMacroTests.swift#L151-L155
+[deps-invoke-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyClientMacroTests.swift#L6-L13
+[dep-macros-tests]: https://github.com/pointfreeco/swift-dependencies/tree/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests
+[computed-prop-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyClientMacroTests.swift#L393-L426
+[public-private-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyClientMacroTests.swift#L274-L301
+[sendable-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyClientMacroTests.swift#L332-L357
+[main-actor-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyEndpointMacroTests.swift#L413-L448
+[case-paths-pr]: https://github.com/pointfreeco/swift-case-paths/pull/130/
+[case-paths-pr-test]: https://github.com/pointfreeco/swift-case-paths/pull/130/files#diff-54daa5f733b1f7882b9a27f25434806dd990deaaa7305470016c7c9c9556ca3bR307
+[deps-pr-test]: https://github.com/pointfreeco/swift-dependencies/blob/1b0c4b535d729f76ca6177f0ff1101ddfb0c8eaf/Tests/DependenciesMacrosPluginTests/DependencyClientMacroTests.swift#L501-L507

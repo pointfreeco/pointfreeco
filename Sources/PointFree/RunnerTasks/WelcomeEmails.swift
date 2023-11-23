@@ -33,12 +33,12 @@ public func sendWelcomeEmails() async throws {
   @Dependency(\.database) var database
 
   await notifyError(subject: "Welcome emails failed") {
-    async let emails1 = database.fetchUsersToWelcome(1).map(welcomeEmail1)
-    async let emails2 = database.fetchUsersToWelcome(2).map(welcomeEmail2)
-    async let users = database.fetchUsersToWelcome(3)
+    async let emails1 = database.fetchUsersToWelcome(registeredWeeksAgo: 1).map(welcomeEmail1)
+    async let emails2 = database.fetchUsersToWelcome(registeredWeeksAgo: 2).map(welcomeEmail2)
+    async let users = database.fetchUsersToWelcome(registeredWeeksAgo: 3)
     let emails3 = try await users.map(welcomeEmail3)
     if try await !users.isEmpty {
-      _ = try await database.incrementEpisodeCredits(users.map(\.id))
+      _ = try await database.incrementEpisodeCredits(userIDs: users.map(\.id))
     }
 
     let emails = try await emails1 + emails2 + emails3

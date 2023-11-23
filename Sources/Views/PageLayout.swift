@@ -120,7 +120,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.wwdc2023),
+          announcementBanner(.blackFriday2023),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -189,19 +189,19 @@ struct Banner {
   let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
-  static let wwdc2023 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2023-06-11")!,
+  static let blackFriday2023 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2023-12-01")!,
     markdownContent: ###"""
-      🍎 [**WWDC Sale!** Save 25% when you subscribe.](/discounts/wwdc-2023)
+      [**Black Friday Sale!** Save 30% when you subscribe.](/discounts/black-friday-2023)
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("107-wwdc-2023-sale"))) = route {
+      } else if case .blog(.show(.left("122-black-friday-sale-30-off-point-free"))) = route {
         return false
-      } else if case .blog(.show(.right(107))) = route {
+      } else if case .blog(.show(.right(122))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
@@ -209,7 +209,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2023-06-01")!
+    startAt: yearMonthDayFormatter.date(from: "2023-11-19")!
   )
 }
 

@@ -48,7 +48,7 @@ private func unsubscribeMiddleware<I>(
   let (userId, newsletter) = conn.data
 
   return EitherIO {
-    let settings = try await database.fetchEmailSettingsForUserId(userId)
+    let settings = try await database.fetchEmailSettings(userID: userId)
       .filter { $0.newsletter != newsletter }
     try await database.updateUser(id: userId, emailSettings: settings.map(\.newsletter))
   }

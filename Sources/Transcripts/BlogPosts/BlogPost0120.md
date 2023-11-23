@@ -13,10 +13,11 @@
 > [sui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
 > [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 
-Today we are releasing [version 1.1][dependencies-1.1] of our popular [Dependencies][sui-nav-gh] 
-library, which introduces a new [`@DependencyClient`][dependency-client-docs] macro for making it 
-easier to design your dependencies. The library now provides a complete toolkit for designing _and_ 
-controlling your dependencies, and makes it easy to preview and test your features in isolation.
+Today we are releasing [version 1.1][dependencies-1.1] of our popular 
+[Dependencies][dependencies-gh] library, which introduces a new 
+[`@DependencyClient`][dependency-client-docs] macro for making it easier to design your 
+dependencies. The library now provides a complete toolkit for designing _and_ controlling your 
+dependencies, and makes it easy to preview and test your features in isolation.
 
 [case-paths-gh]: http://github.com/pointfreeco/swift-case-paths
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -236,6 +237,6 @@ code and stronger tests with less code.
 [isowords-gh]: http://www.github.com/pointfreeco/isowords
 [designing-dependencies-pf]: https://www.pointfree.co/collections/dependencies
 [designing-dependencies-docs]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/designingdependencies
-[dependency-client-docs]: todo
+[dependency-client-docs]: https://swiftpackageindex.com/pointfreeco/swift-dependencies/1.1.0/documentation/dependenciesmacros/dependencyclient()
 [separating-interface]: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/livepreviewtest#Separating-interface-and-implementation
 [dependencies-1.1]: https://github.com/pointfreeco/swift-dependencies/releases/tag/1.1.0
