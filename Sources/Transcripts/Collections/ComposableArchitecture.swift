@@ -222,6 +222,7 @@ extension Episode.Collection {
       update(.tca1_0) {
         $0.title = "A tour of the Composable Architecture 1.0"
       },
+      .observableArchitecture
     ],
     title: "Composable Architecture"
   )
@@ -318,5 +319,16 @@ extension Episode.Collection.Section {
       we performed was updating the `Effect` type to be better integrated with Swift's
       concurrency tools.
       """
+  )
+
+  static let observableArchitecture = Self(
+    blurb: """
+      """,
+    coreLessons: [
+    ],
+    isFinished: false,
+    related: [],
+    title: "Observable Architecture",
+    whereToGoFromHere: nil
   )
 }

@@ -120,7 +120,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.blackFriday2023),
+          announcementBanner(.cyberMonday2023),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -189,19 +189,19 @@ struct Banner {
   let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
-  static let blackFriday2023 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2023-12-01")!,
+  static let cyberMonday2023 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2023-11-30")!,
     markdownContent: ###"""
-      [**Black Friday Sale!** Save 30% when you subscribe.](/discounts/black-friday-2023)
+      [**Cyber Monday Sale!** Save 30% when you subscribe.](/discounts/cyber-monday-2023)
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("122-black-friday-sale-30-off-point-free"))) = route {
+      } else if case .blog(.show(.left("124-cyber-monday-sale-30-off-point-free"))) = route {
         return false
-      } else if case .blog(.show(.right(122))) = route {
+      } else if case .blog(.show(.right(124))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
