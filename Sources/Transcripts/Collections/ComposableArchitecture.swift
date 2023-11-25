@@ -323,6 +323,10 @@ extension Episode.Collection.Section {
 
   static let observableArchitecture = Self(
     blurb: """
+      Swift 5.9 and iOS 17 brought all new observation tools to the Apple ecosystem, and it
+      completely revolutionized the way one builds features in SwiftUI. Learn how we integrated
+      those tools into the Composable Architecture, and how it revolutionized nearly every aspect
+      of the library.
       """,
     coreLessons: [
     ],

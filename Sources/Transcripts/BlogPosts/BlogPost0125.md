@@ -1,10 +1,12 @@
 Today we are announcing a [beta preview][tca-obs-beta-discussion] for the biggest change we have 
 made to the [Composable Architecture][tca-gh] in its history. We are integrating Swift's Observation 
-framework into the libray, and we are doing so in a way that is 100% backwards compatible with the 
+framework into the library, and we are doing so in a way that is 100% backwards compatible with the 
 current version of the library, _and_ back deployed to previous versions of iOS, going all the way 
 back to iOS 13.
 
-That's right. Even though `@Observable` is restricted to iOS 17+, we have been able to backport 
+That's right. 
+
+Even though `@Observable` is restricted to iOS 17+, we have been able to backport 
 those tools specifically for the Composable Architecture. So no matter what version of iOS your
 app is currently targeting, you will be able to take advantage of observation and all of the new
 tools we have added to the library.
@@ -17,6 +19,8 @@ any issues!
 [observable-arch-eps]: todo
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-obs-beta-discussion]: todo
+
+!> [warning]: There are some episode spoilers contained in this announcement! Reader beware!
 
 ## @ObservableState
 
@@ -57,7 +61,7 @@ Architecture _pre_-Observation. The only difference is that we have applied `@Ob
 the `State` struct.
 
 But that small change has huge ramifications to how we build features with the library. For example,
-a view to display this feature can be done simply like so:
+a view to display this feature is now allowed to access state directly in the view like so:
 
 ```swift
 struct CounterView: View {

@@ -12,7 +12,25 @@ Here are just a few of our additions from this year:
 
 ## [Observable Architecture][observable-architecture-collection]
 
+In conjunction with our Cyber Monday sale we are beginning a 
+[new series of episodes][observable-arch-first-ep] that brings Swift 5.9's observation tools to the 
+Composable Architecture. This revolutionizes nearly every aspect of the libary, and allows us to 
+remove many superfluous concepts and helpers that are just no longer needed.
+
+And we were able to accomplish all of this without breaking existing apps depending on the 
+Composable Architecture. When the final version of the tools are eventually released it will be a
+minor release of the library, and so people can adopt the new tools immediately.
+
+But even better, we even backported the tools to work on iOS 13 and later. That's right. You can
+start using the new observation tools immediately, even if you cannot yet target iOS 17.
+
+Be sure to checkout the [series][observable-architecture-collection] to see how we accomplished 
+this, and we are currently [running a beta][obs-arch-beta] of the new observation tools while we put 
+the final touches on it.  
+
+[obs-arch-beta]: todo
 [observable-architecture-collection]: /collections/composable-architecture/observable-architecture
+[observable-arch-first-ep]: todo
 
 ## [Modern SwiftUI][modern-swiftui]
 
