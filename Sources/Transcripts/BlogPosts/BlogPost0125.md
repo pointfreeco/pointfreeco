@@ -26,9 +26,7 @@ issues!
 
 The Composable Architecture provides a new macro called `@ObservableState` which unlocks the new
 observation super powers. As a very simple example, consider a counter reducer that has the 
-[`@ObservableState`][observable-state-docs] macro applied:
-
-[observable-state-docs]: todo
+`@ObservableState` macro applied:
 
 ```swift
 @Reducer
