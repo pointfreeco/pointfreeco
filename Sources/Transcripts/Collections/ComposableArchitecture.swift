@@ -222,7 +222,7 @@ extension Episode.Collection {
       update(.tca1_0) {
         $0.title = "A tour of the Composable Architecture 1.0"
       },
-      .observableArchitecture
+      .observableArchitecture,
     ],
     title: "Composable Architecture"
   )
@@ -329,7 +329,7 @@ extension Episode.Collection.Section {
       of the library.
       """,
     coreLessons: [
-      .init(episode: .ep259_observableArchitecture),
+      .init(episode: .ep259_observableArchitecture)
     ],
     isFinished: false,
     related: [],
