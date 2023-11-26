@@ -1,14 +1,36 @@
 We do this only a few times a year: we‘re having a 
-[rare, Point-Free sale](/discounts/black-friday-2023)
-this Black Friday by offering 30% off the first year of your subscription!
+[rare, Point-Free sale](/discounts/cyber-monday-2023)
+through this Cyber Monday by offering 30% off the first year of your subscription!
 
-[[Subscribe today!]](/discounts/black-friday-2023)
+[[Subscribe today!]](/discounts/cyber-monday-2023)
 
 Once subscribed you'll get instant access to all [259 episodes][pf] (163 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
 created or expanded this year, as well as all of the material we have planned for 2024!
 
 Here are just a few of our additions from this year:
+
+## [Observable Architecture][observable-architecture-collection]
+
+In conjunction with our Cyber Monday sale we are beginning a 
+[new series of episodes][observable-arch-first-ep] that brings Swift 5.9's observation tools to the 
+Composable Architecture. This revolutionizes nearly every aspect of the library, and allows us to 
+remove many superfluous concepts and helpers that are just no longer needed.
+
+And we were able to accomplish all of this without breaking existing apps depending on the 
+Composable Architecture. When the final version of the tools are eventually released it will be a
+minor release of the library, and so people can adopt the new tools immediately.
+
+But even better, we backported the tools to work on iOS 13 and later. That's right. You can start
+using the new observation tools immediately, even if you cannot yet target iOS 17.
+
+Be sure to [check out the full series][observable-architecture-collection] to see how we 
+accomplished this, and we are currently [running a beta][obs-arch-beta] of the new observation tools 
+while we put the finishing touches to it.  
+
+[obs-arch-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2594
+[observable-architecture-collection]: /collections/composable-architecture/observable-architecture
+[observable-arch-first-ep]: /episodes/ep259-observable-architecture-sneak-peek
 
 ## [Modern SwiftUI][modern-swiftui]
 
@@ -89,7 +111,7 @@ planned for 2024, including bringing `@Observable` to the Composable Architectur
 change to the Composable Architecture that will unlock capabilities currently impossible, and 
 perhaps we will even start to explore some server-side Swift. 😀
 
-Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
+Be sure to [subscribe today][cyber-monday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
 
 [observation-collection]: /collections/swiftui/observation
@@ -105,7 +127,7 @@ offer is valid for only a few days, so you better hurry!
 [modern-swiftui]: https://www.pointfree.co/collections/swiftui/modern-swiftui
 [observation-in-practice]: https://www.pointfree.co/collections/swiftui/observation/ep256-observation-in-practice
 [pf]: /
-[black-friday-sale]: http://pointfree.co/discounts/black-friday-2023
+[cyber-monday-sale]: http://pointfree.co/discounts/cyber-monday-2023
 [collections]: /collections
 
-[[Subscribe today!]](http://pointfree.co/discounts/black-friday-2023)
+[[Subscribe today!]](http://pointfree.co/discounts/cyber-monday-2023)

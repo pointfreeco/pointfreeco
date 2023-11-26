@@ -222,6 +222,7 @@ extension Episode.Collection {
       update(.tca1_0) {
         $0.title = "A tour of the Composable Architecture 1.0"
       },
+      .observableArchitecture
     ],
     title: "Composable Architecture"
   )
@@ -318,5 +319,21 @@ extension Episode.Collection.Section {
       we performed was updating the `Effect` type to be better integrated with Swift's
       concurrency tools.
       """
+  )
+
+  static let observableArchitecture = Self(
+    blurb: """
+      Swift 5.9 and iOS 17 brought all new observation tools to the Apple ecosystem, and it
+      completely revolutionized the way one builds features in SwiftUI. Learn how we integrated
+      those tools into the Composable Architecture, and how it revolutionized nearly every aspect
+      of the library.
+      """,
+    coreLessons: [
+      .init(episode: .ep259_observableArchitecture),
+    ],
+    isFinished: false,
+    related: [],
+    title: "Observable Architecture",
+    whereToGoFromHere: nil
   )
 }
