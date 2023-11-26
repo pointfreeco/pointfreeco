@@ -21,7 +21,7 @@ issues!
 
 [observable-arch-eps]: /collections/composable-architecture/observable-architecture
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
-[tca-obs-beta-discussion]: todo
+[tca-obs-beta-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2594
 
 ## @ObservableState
 
@@ -406,7 +406,7 @@ this (and more), and give the [beta][tca-obs-beta-discussion] a spin and let us 
 any issues!
 
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
-[tca-obs-beta-discussion]: todo
+[tca-obs-beta-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2594
 [ifletstore-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/ifletstore
 [foreachstore-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/foreachstore
 [observable-arch-eps]: /collections/composable-architecture/observable-architecture

@@ -28,7 +28,7 @@ Be sure to [check out the full series][observable-architecture-collection] to se
 accomplished this, and we are currently [running a beta][obs-arch-beta] of the new observation tools 
 while we put the finishing touches to it.  
 
-[obs-arch-beta]: todo
+[obs-arch-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2594
 [observable-architecture-collection]: /collections/composable-architecture/observable-architecture
 [observable-arch-first-ep]: /episodes/ep259-observable-architecture-sneak-peek
 
