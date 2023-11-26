@@ -1,6 +1,6 @@
 We do this only a few times a year: we‘re having a 
 [rare, Point-Free sale](/discounts/cyber-monday-2023)
-this Cyber Monday by offering 30% off the first year of your subscription!
+through this Cyber Monday by offering 30% off the first year of your subscription!
 
 [[Subscribe today!]](/discounts/cyber-monday-2023)
 
@@ -14,19 +14,19 @@ Here are just a few of our additions from this year:
 
 In conjunction with our Cyber Monday sale we are beginning a 
 [new series of episodes][observable-arch-first-ep] that brings Swift 5.9's observation tools to the 
-Composable Architecture. This revolutionizes nearly every aspect of the libary, and allows us to 
+Composable Architecture. This revolutionizes nearly every aspect of the library, and allows us to 
 remove many superfluous concepts and helpers that are just no longer needed.
 
 And we were able to accomplish all of this without breaking existing apps depending on the 
 Composable Architecture. When the final version of the tools are eventually released it will be a
 minor release of the library, and so people can adopt the new tools immediately.
 
-But even better, we even backported the tools to work on iOS 13 and later. That's right. You can
-start using the new observation tools immediately, even if you cannot yet target iOS 17.
+But even better, we backported the tools to work on iOS 13 and later. That's right. You can start
+using the new observation tools immediately, even if you cannot yet target iOS 17.
 
-Be sure to checkout the [series][observable-architecture-collection] to see how we accomplished 
+Be sure to check out the [series][observable-architecture-collection] to see how we accomplished 
 this, and we are currently [running a beta][obs-arch-beta] of the new observation tools while we put 
-the final touches on it.  
+the finishing touches to it.  
 
 [obs-arch-beta]: todo
 [observable-architecture-collection]: /collections/composable-architecture/observable-architecture

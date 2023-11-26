@@ -4,17 +4,17 @@ framework into the library, and we are doing so in a way that is 100% backwards 
 current version of the library, _and_ back deployed to previous versions of iOS, going all the way 
 back to iOS 13.
 
-That's right. 
+That's right!
 
-Even though `@Observable` is restricted to iOS 17+, we have been able to backport 
-those tools specifically for the Composable Architecture. So no matter what version of iOS your
-app is currently targeting, you will be able to take advantage of observation and all of the new
-tools we have added to the library.
+Even though `@Observable` is restricted to iOS 17+, we have been able to backport those tools
+specifically for the Composable Architecture. So no matter what version of iOS your app is currently
+targeting, you will be able to take advantage of observation and all of the new tools we have added
+to the library.
 
 This week we are kicking off a [new series of episodes][observable-arch-eps] to integrate these
-tools into the library from scratch. But, join us for a quick overview of what these tools look 
-like, and be sure to give the [beta][tca-obs-beta-discussion] a spin and let us know if you run into 
-any issues!
+tools into the library from scratch, but join us for a quick overview of what these tools look like,
+and be sure to give the [beta][tca-obs-beta-discussion] a spin and let us know if you run into any
+issues!
 
 [observable-arch-eps]: todo
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
@@ -173,10 +173,10 @@ There is one small change you have to make to the view, and that is wrap it in
  }
 ```
 
-However, this wrapper is not like the `WithViewStore` that was required in the 
-pre-Observation version of the Composable Architecture. First of all, `WithPerceptionTracking` is 
-only required when targeting iOS 16 or earlier. It is deprecated when targeting iOS 17 and later, 
-and in that situation can be deleted.
+However, this wrapper is not like the `WithViewStore` that was required in the pre-Observation
+version of the Composable Architecture. First of all, `WithPerceptionTracking` is only required when
+targeting iOS 16 or earlier. It is deprecated when targeting iOS 17 and later, and in that situation
+can be deleted.
 
 Second of all, `WithPerceptionTracking` does not take an `observe` argument for explicit observation
 and its trailing closure does not take a `ViewStore`. You can access the store's state directly 
@@ -194,11 +194,11 @@ that we now get to say goodbye to in favor of simpler constructs:
 
 ### 👋 IfLetStore
 
-The [`IfLetStore`][ifletstore-docs] is a helper view for transforming stores of optional state
-into stores of honest state. It's great for when you model your features so that a child feature
-can be shown and dismissed via some optional state.
+[`IfLetStore`][ifletstore-docs] is a helper view for transforming stores of optional state into
+stores of honest state. It's great for when you model your features so that a child feature can be
+shown and dismissed via some optional state.
 
-It's typical use looks something like this:
+Its typical use looks something like this:
 
 ```swift
 IfLetStore(
@@ -229,11 +229,11 @@ regular `if let` Swift syntax.
 
 ### 👋 ForEachStore
 
-The [`ForEachStore`][foreachstore-docs] is another helper view, but this one helps transform a store
-of a collection into stores for each element in the collection. It's great for when you need to a 
-list of complex features.
+[`ForEachStore`][foreachstore-docs] is another helper view, but this one helps transform a store of
+a collection into stores for each element in the collection. It's great for when you need to a list
+of complex features.
 
-It's typical use looks something like this:
+Its typical use looks something like this:
 
 ```swift
 ForEachStore(self.store.scope(state: \.rows, action: \.rows)) { rowStore in
@@ -252,8 +252,8 @@ ForEach(self.store.scope(state: \.rows, action: \.rows)) { rowStore in
 }
 ```
 
-There's no need to learn a whole new type to accomplish something so simple. You can just use
-the vanilla SwiftUI `ForEach`, and it all _just works_.
+There's no need to learn a whole new type to accomplish something so simple. You can just use a
+vanilla SwiftUI `ForEach`, and it all _just works_.
 
 ### 👋 SwitchStore and CaseLet
 
@@ -280,10 +280,9 @@ SwitchStore(self.store) {
 }
 ```
 
-While it's a powerful tool, there's a lot not to like about this. First, it's quite verbose. And
-we lose compile-time verification that we handled all cases of the enum, and instead have to 
-restort to runtime checks. And we cannot leverage type inference to shorten some of the types
-used.
+While it's a powerful tool, there's a lot not to like about this. First, it's quite verbose. And we
+lose compile-time verification that we handled all cases of the enum, and instead have to resort to
+runtime checks. And we cannot leverage type inference to shorten some of the types used.
 
 This code can now be simplified to the following when using `@ObservableState`:
 
@@ -308,7 +307,7 @@ and everything _just works_.
 ### 👋 NavigationStackStore 
 
 The most recent view helper we added to the library is the `NavigationStackStore`, and even it is
-now obselete in the world of observation tools. It's a dedicated view that helps derive stores
+now obsolete in the world of observation tools. It's a dedicated view that helps derive stores
 to each element of a collection of features to be used in stack navigation.
 
 It's typical use looks something like this:
@@ -385,10 +384,11 @@ This can now be simplified to the following:
 
 In particular, we are now using the vanilla SwiftUI modifier `sheet(item:)`, and the binding that
 is handed to that modifier is derived from the binding `$store`. It may not seem like a huge change, 
-but there are now hundreds of lines of code that the library no longer has to maintain to mimic the 
-SwiftUI APIs.
+but there are now hundreds of lines of code that the library no longer has to maintain to mimic and
+wrap the SwiftUI APIs.
 
-This also works when navigation is driven from an enum of destinations:
+This also works when navigation is driven from an enum of destinations by simply chaining into a
+case:
 
 ```swift
 .sheet(
