@@ -261,5 +261,8 @@ extension Episode {
     .ep256_observationInPractice,
     .ep257_macroCasePaths,
     .ep258_macroCasePaths,
+    .ep259_observableArchitecture,
+    .ep260_observableArchitecture,
+    .ep261_observableArchitecture,
   ]
 }
