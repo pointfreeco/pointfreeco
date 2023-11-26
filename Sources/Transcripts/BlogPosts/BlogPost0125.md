@@ -1,5 +1,8 @@
-Today we are announcing a [beta preview][tca-obs-beta-discussion] for the biggest change we have 
-made to the [Composable Architecture][tca-gh] in its history. We are integrating Swift's Observation 
+!> [warning]: There are some episode spoilers contained in this announcement! Reader beware!
+
+Two very exciting things happened today: the [Composable Architecture][tca-gh] has crossed
+10,000 stars on GitHub(!), and we are announcing a [beta preview][tca-obs-beta-discussion] for the 
+biggest change we have made to the library in its history. We are integrating Swift's Observation 
 framework into the library, and we are doing so in a way that is 100% backwards compatible with the 
 current version of the library, _and_ back deployed to previous versions of iOS, going all the way 
 back to iOS 13.
@@ -19,8 +22,6 @@ issues!
 [observable-arch-eps]: /collections/composable-architecture/observable-architecture
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-obs-beta-discussion]: todo
-
-!> [warning]: There are some episode spoilers contained in this announcement! Reader beware!
 
 ## @ObservableState
 

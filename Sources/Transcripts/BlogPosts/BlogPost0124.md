@@ -24,9 +24,9 @@ minor release of the library, and so people can adopt the new tools immediately.
 But even better, we backported the tools to work on iOS 13 and later. That's right. You can start
 using the new observation tools immediately, even if you cannot yet target iOS 17.
 
-Be sure to check out the [series][observable-architecture-collection] to see how we accomplished 
-this, and we are currently [running a beta][obs-arch-beta] of the new observation tools while we put 
-the finishing touches to it.  
+Be sure to [check out the full series][observable-architecture-collection] to see how we 
+accomplished this, and we are currently [running a beta][obs-arch-beta] of the new observation tools 
+while we put the finishing touches to it.  
 
 [obs-arch-beta]: todo
 [observable-architecture-collection]: /collections/composable-architecture/observable-architecture
