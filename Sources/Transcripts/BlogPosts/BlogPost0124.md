@@ -30,7 +30,7 @@ the finishing touches to it.
 
 [obs-arch-beta]: todo
 [observable-architecture-collection]: /collections/composable-architecture/observable-architecture
-[observable-arch-first-ep]: todo
+[observable-arch-first-ep]: /episodes/ep259-observable-architecture-sneak-peek
 
 ## [Modern SwiftUI][modern-swiftui]
 

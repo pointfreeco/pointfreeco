@@ -329,6 +329,7 @@ extension Episode.Collection.Section {
       of the library.
       """,
     coreLessons: [
+      .init(episode: .ep259_observableArchitecture),
     ],
     isFinished: false,
     related: [],

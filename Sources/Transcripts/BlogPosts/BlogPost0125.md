@@ -16,7 +16,7 @@ tools into the library from scratch, but join us for a quick overview of what th
 and be sure to give the [beta][tca-obs-beta-discussion] a spin and let us know if you run into any
 issues!
 
-[observable-arch-eps]: todo
+[observable-arch-eps]: /collections/composable-architecture/observable-architecture
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-obs-beta-discussion]: todo
 
@@ -258,8 +258,8 @@ vanilla SwiftUI `ForEach`, and it all _just works_.
 ### 👋 SwitchStore and CaseLet
 
 There's even more view helpers that completely go away with the new observation tools. The 
-`SwitchStore` and `CaseLet` views help transform a store of an enum of features into a store focused
-in on just one particular case of the enum.
+[`SwitchStore`][switchstore-docs] and [`CaseLet`][caselet-docs] views help transform a store of an 
+enum of features into a store focused in on just one particular case of the enum.
 
 It's typical use looks something like this:
 
@@ -408,6 +408,9 @@ any issues!
 
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-obs-beta-discussion]: todo
-[ifletstore-docs]: todo
-[foreachstore-docs]: todo
-[observable-arch-eps]: todo
+[ifletstore-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/ifletstore
+[foreachstore-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/foreachstore
+[observable-arch-eps]: /collections/composable-architecture/observable-architecture
+[nav-stack-store-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigationstackstore
+[switchstore-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/switchstore
+[caselet-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/caselet

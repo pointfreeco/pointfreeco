@@ -3,9 +3,10 @@ import Foundation
 extension Episode {
   public static let ep259_observableArchitecture = Episode(
     blurb: """
-      We're about to completely revolutionize the Composable Architecture with the new Observation
-      framework! But first, a sneak peek: we'll take the public beta (available today!) for a spin
-      to see what's possible.
+      We're about to completely revolutionize the Composable Architecture with Swift's new
+      Observation framework! But first, a sneak peek: we'll take the public beta (available today!)
+      for a spin to see how the concept of a "view store" completely vanishes when using the new
+      tools.
       """,
     codeSampleDirectory: "0259-observable-architecture-pt1",
     exercises: _exercises,
