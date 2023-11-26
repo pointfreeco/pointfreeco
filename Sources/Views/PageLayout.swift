@@ -199,7 +199,7 @@ struct Banner {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("124-cyber-monday-sale-30-off-point-free"))) = route {
+      } else if case .blog(.show(.left("124-30-off-point-free-for-cyber-monday"))) = route {
         return false
       } else if case .blog(.show(.right(124))) = route {
         return false
