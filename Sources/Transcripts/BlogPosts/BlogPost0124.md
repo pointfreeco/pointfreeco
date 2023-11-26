@@ -1,6 +1,6 @@
 We do this only a few times a year: we‘re having a 
 [rare, Point-Free sale](/discounts/cyber-monday-2023)
-this Cyber Monday by offering 30% of the first year of your subscription!
+this Cyber Monday by offering 30% off the first year of your subscription!
 
 [[Subscribe today!]](/discounts/cyber-monday-2023)
 

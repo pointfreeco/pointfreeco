@@ -1,6 +1,6 @@
 We do this only a few times a year: we‘re having a 
 [rare, Point-Free sale](/discounts/black-friday-2023)
-this Black Friday by offering 30% of the first year of your subscription!
+this Black Friday by offering 30% off the first year of your subscription!
 
 [[Subscribe today!]](/discounts/black-friday-2023)
 
