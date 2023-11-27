@@ -336,7 +336,7 @@ This code can now be simplified to the following when using `@ObservableState`:
 ```swift
 NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
   RootView()
-} destination: { $0 in
+} destination: {
   switch $0.state {
   case .activity:
     if let store = store.scope(state: \.activity, action: \.activity) {
