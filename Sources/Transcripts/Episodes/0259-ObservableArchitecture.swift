@@ -7,6 +7,9 @@ extension Episode {
       Observation framework! But first, a sneak peek: we'll take the public beta (available today!)
       for a spin to see how the concept of a "view store" completely vanishes when using the new
       tools.
+
+      Oh, and did we mention that the new observation tools in the library have been backported
+      all the way back to iOS 13? This means you can use the tools _immediately_. 🤯
       """,
     codeSampleDirectory: "0259-observable-architecture-pt1",
     exercises: _exercises,
