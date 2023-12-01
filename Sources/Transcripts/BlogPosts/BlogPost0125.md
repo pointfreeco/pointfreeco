@@ -32,7 +32,7 @@ observation super powers. As a very simple example, consider a counter reducer t
 ```swift
 @Reducer
 struct CounterFeature {
-  @ObservableState 
+  @ObservableState
   struct State {
     var count = 0
   }
@@ -44,12 +44,12 @@ struct CounterFeature {
     Reduce { state, action in
       switch action {
       case .decrementButtonTapped:
-        state.count -= 1 
+        state.count -= 1
         return .none
       case .incrementButtonTapped:
-        state.count += 1 
+        state.count += 1
         return .none
-      } 
+      }
     }
   }
 }
@@ -65,7 +65,7 @@ a view to display this feature is now allowed to access state directly in the vi
 ```swift
 struct CounterView: View {
   let store: StoreOf<CounterFeature>
-  
+
   var body: some View {
     Form {
       Text(self.store.count.description)
@@ -78,7 +78,7 @@ struct CounterView: View {
 
 There is no need to wrap everything in a `WithViewStore` or to explicitly describe what state is 
 being observed as was the case before. The view sees that the `count` field is accessed and 
-automatically subscribes to its changes so that it can re-render. 
+automatically subscribes to its changes so that it can re-render.
 
 Even better, this automatic observation is dynamic. If something happens in the view later so that
 `count` is no longer displayed, then the view will no longer re-render when that state changes. To
@@ -147,7 +147,7 @@ is running on iOS 16 or earlier, then you can't simply access state directly in 
 doing above because the view has no way to track changes to state accessed in the `body`.
 
 In fact, if you try to implement your view as above on iOS 16 and earlier, the library will emit
-a runtime warning letting you know that this will not work: 
+a runtime warning letting you know that this will not work:
 
 !> [runtime-warning]: Perceptible state was accessed but is not being tracked. Track changes to 
 > state by wrapping your view in a 'WithPerceptionTracking' view.
@@ -200,9 +200,7 @@ shown and dismissed via some optional state.
 Its typical use looks something like this:
 
 ```swift
-IfLetStore(
-  store: self.store.scope(state: \.child, action: \.child)
-) { childStore in 
+IfLetStore(self.store.scope(state: \.child, action: \.child)) { childStore in
   ChildView(store: childStore)
 } else: {
   Text("Nothing to show")
@@ -224,7 +222,7 @@ if let childStore = self.store.scope(state: \.child, action: \.child) {
 ```
 
 There's no need to learn a whole new type to accomplish something so simple. You can just use 
-regular `if let` Swift syntax. 
+regular `if let` Swift syntax.
 
 ### 👋 ForEachStore
 
@@ -236,7 +234,7 @@ Its typical use looks something like this:
 
 ```swift
 ForEachStore(self.store.scope(state: \.rows, action: \.rows)) { rowStore in
-  RowView(store: rowStore) 
+  RowView(store: rowStore)
 }
 ```
 
@@ -247,7 +245,7 @@ This code can now be simplified to the following when using `@ObservableState`:
 
 ```swift
 ForEach(self.store.scope(state: \.rows, action: \.rows)) { rowStore in
-  RowView(store: rowStore) 
+  RowView(store: rowStore)
 }
 ```
 
@@ -268,13 +266,13 @@ SwitchStore(self.store) {
     /Feature.State.loggedIn,
     action: Feature.Action.loggedIn
   ) { loggedInStore in
-    LoggedInView(store: loggedInStore) 
+    LoggedInView(store: loggedInStore)
   }
   CaseLet(
     /Feature.State.loggedOut,
     action: Feature.Action.loggedOut
   ) { loggedOutStore in
-    LoggedOutView(store: loggedOutStore) 
+    LoggedOutView(store: loggedOutStore)
   }
 }
 ```
@@ -301,9 +299,9 @@ case .loggedOut:
 
 This recovers compile-time exhaustivity and type inference, and there's no need to learn two new 
 types to accomplish something so simple. You can just use a vanilla Swift `switch` and `case`, 
-and everything _just works_. 
+and everything _just works_.
 
-### 👋 NavigationStackStore 
+### 👋 NavigationStackStore
 
 The most recent view helper we added to the library is the `NavigationStackStore`, and even it is
 now obsolete in the world of observation tools. It's a dedicated view that helps derive stores
@@ -352,7 +350,7 @@ NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
 
 We regain compile-time exhaustivity, and we do not have to learn a whole new type to accomplish
 something so simple. You can just use a vanilla SwiftUI `NavigationStack` and everything 
-_just works_. 
+_just works_.
 
 ### 👋 Navigation APIs
 

@@ -192,7 +192,7 @@ struct Banner {
   static let cyberMonday2023 = Self(
     endAt: yearMonthDayFormatter.date(from: "2023-11-30")!,
     markdownContent: ###"""
-      [**Cyber Monday Sale!** Save 30% when you subscribe.](/discounts/cyber-monday-2023)
+      [**Cyber Monday Sale!** Save 30% when you subscribe.](/discounts/cyber-monday-plus-2023)
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
