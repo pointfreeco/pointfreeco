@@ -15,7 +15,7 @@ extension Episode {
       // TODO
     ],
     sequence: 261,
-    subtitle: "TODO",
+    subtitle: "Observing Optionals",
     title: "Observable Architecture",
     trailerVideo: .init(
       bytesLength: 59_700_000,
