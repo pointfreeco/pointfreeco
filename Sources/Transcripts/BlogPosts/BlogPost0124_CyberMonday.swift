@@ -9,6 +9,7 @@ public let post0124_CyberMonday = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 124),
   coverImage: nil,
+  hidden: true,
   hideFromSlackRSS: true,
   id: 124,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-27")!,
