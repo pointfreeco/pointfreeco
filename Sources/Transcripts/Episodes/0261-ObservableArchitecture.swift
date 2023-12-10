@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep261_observableArchitecture = Episode(
     blurb: """
-      TODO
+      The Composable Architecture can now observe struct_state, but it requires a lot of boilerplate. Let's fix this by leveraging the `@Observable` macro from the Swift open source repository. And let's explore what it means to observe _optional_ state and eliminate the Composable Architecture's `IfLetStore` view for simple `if let` statements.
       """,
     codeSampleDirectory: "0261-observable-architecture-pt3",
     exercises: _exercises,
