@@ -47,7 +47,11 @@ func changeSubscription(
 
     return EitherIO {
       try await stripe
-        .updateSubscription(currentSubscription, newPricing.billing.plan, newPricing.quantity)
+        .update(
+          subscription: currentSubscription,
+          planID: newPricing.billing.plan,
+          quantity: newPricing.quantity
+        )
     }
     .run
     .flatMap(
@@ -140,7 +144,7 @@ private func fetchSeatsTaken<A>(
     let user = conn.data.first
 
     let invitesAndTeammates = IO {
-      async let invites = database.fetchTeamInvites(user.id).count
+      async let invites = database.fetchTeamInvites(inviterID: user.id).count
       async let teammates = database.fetchSubscriptionTeammatesByOwnerId(user.id).count
       return ((try? await invites) ?? 0) + ((try? await teammates) ?? 0)
     }

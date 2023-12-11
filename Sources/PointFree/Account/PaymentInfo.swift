@@ -42,7 +42,7 @@ private func fetchPaymentMethod<A>(
   return IO {
     var paymentMethod: PaymentMethod?
     if let paymentMethodID = subscription.customer.right?.invoiceSettings.defaultPaymentMethod {
-      paymentMethod = try? await stripe.fetchPaymentMethod(paymentMethodID)
+      paymentMethod = try? await stripe.fetchPaymentMethod(id: paymentMethodID)
     }
     return conn.map(const(paymentMethod .*. user .*. subscriberState .*. unit))
   }
@@ -62,21 +62,24 @@ let updatePaymentInfoMiddleware =
 
     let (subscription, _, paymentMethodID) = lower(conn.data)
 
-    let customer = subscription.customer.id
+    let customerID = subscription.customer.id
 
     return EitherIO {
-      let paymentMethod = try await stripe.attachPaymentMethod(paymentMethodID, customer)
-      _ = try await stripe.updateCustomer(customer, paymentMethod.id)
+      let paymentMethod = try await stripe.attachPaymentMethod(
+        methodID: paymentMethodID,
+        customerID: customerID
+      )
+      _ = try await stripe.updateCustomer(customerID: customerID, paymentMethodID: paymentMethod.id)
       if subscription.status == .pastDue {
-        for invoice in try await stripe.fetchInvoices(customer, .open).data {
+        for invoice in try await stripe.fetchInvoices(customerID: customerID, status: .open).data {
           if let id = invoice.id {
-            _ = try await stripe.payInvoice(id)
+            _ = try await stripe.pay(invoiceID: id)
           }
         }
       }
       // NB: Let's always eagerly fetch/update subscription info when updating payment info.
       //     We don't want the subscription state to get out of sync on failure.
-      let subscription = try await stripe.fetchSubscription(subscription.id)
+      let subscription = try await stripe.fetchSubscription(id: subscription.id)
       _ = try await database.updateStripeSubscription(subscription)
     }
     .run

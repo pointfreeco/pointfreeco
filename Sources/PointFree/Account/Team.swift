@@ -46,8 +46,8 @@ private func leaveTeam<Z>(
 
     return EitherIO {
       guard let subscriptionId = user.subscriptionId else { return }
-      try await database.removeTeammateUserIdFromSubscriptionId(user.id, subscriptionId)
-      try await database.deleteEnterpriseEmail(user.id)
+      try await database.removeTeammate(userID: user.id, fromSubscriptionID: subscriptionId)
+      try await database.deleteEnterpriseEmail(userID: user.id)
     }
     .run
     .flatMap(
@@ -78,14 +78,16 @@ let removeTeammateMiddleware =
     else { return pure(conn.map(const(unit))) }
 
     return EitherIO {
-      let subscription = try await database.fetchSubscriptionById(teammateSubscriptionId)
+      let subscription = try await database.fetchSubscription(id: teammateSubscriptionId)
       // Validate the current user is the subscription owner,
       // and the fetched user is in fact the current user's teammate.
       guard subscription.userId == currentUser.id && subscription.id == teammate.subscriptionId
       else { throw unit }
 
-      try await database
-        .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
+      try await database.removeTeammate(
+        userID: teammate.id,
+        fromSubscriptionID: teammateSubscriptionId
+      )
 
       if currentUser.id != teammate.id {
         Task {
@@ -112,7 +114,7 @@ let removeTeammateMiddleware =
 private let requireTeammate: MT<Tuple2<User.ID, User>, Tuple2<User, User>> = filterMap(
   over1 { id in
     @Dependency(\.database) var database
-    return IO { try? await database.fetchUserById(id) }
+    return IO { try? await database.fetchUser(id: id) }
   }
     >>> sequence1
     >>> map(require1),

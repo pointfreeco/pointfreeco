@@ -339,6 +339,12 @@ public struct Episode: Equatable, Identifiable {
             self = .note
           case "preamble":
             self = .preamble
+          case "runtime-warning":
+            self = Box(
+              title: "🟣 Warning",
+              backgroundColor: "eee2ff",
+              borderColor: "974dff"
+            )
           case "tip":
             self = .tip
           case "warning":

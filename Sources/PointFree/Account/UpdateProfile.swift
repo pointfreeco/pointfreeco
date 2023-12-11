@@ -165,7 +165,7 @@ let confirmEmailChangeMiddleware:
     }
 
     parallel(
-      EitherIO { try await database.fetchUserById(userId) }
+      EitherIO { try await database.fetchUser(id: userId) }
         .flatMap { user in
           EitherIO {
             try await sendEmail(

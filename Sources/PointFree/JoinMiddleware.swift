@@ -94,7 +94,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
 
   case let .landing(code):
     guard
-      let subscription = try? await database.fetchSubscriptionByTeamInviteCode(code),
+      let subscription = try? await database.fetchSubscription(teamInviteCode: code),
       subscription.stripeSubscriptionStatus.isActive
     else {
       return
@@ -131,7 +131,7 @@ private func add<A>(
 
   let subscription: Models.Subscription
   do {
-    subscription = try await database.fetchSubscriptionByTeamInviteCode(code)
+    subscription = try await database.fetchSubscription(teamInviteCode: code)
   } catch {
     return
       conn
@@ -153,7 +153,7 @@ private func add<A>(
   }
 
   if let subscriptionID = currentUser.subscriptionId,
-    let currentUserSubscription = try? await database.fetchSubscriptionById(subscriptionID),
+    let currentUserSubscription = try? await database.fetchSubscription(id: subscriptionID),
     currentUserSubscription.stripeSubscriptionStatus.isActive
   {
     return
@@ -168,7 +168,7 @@ private func add<A>(
 
   let owner: User
   do {
-    owner = try await database.fetchUserById(subscription.userId)
+    owner = try await database.fetchUser(id: subscription.userId)
   } catch {
     return
       conn
@@ -196,7 +196,7 @@ private func add<A>(
   do {
     let currentTotalSeatCount =
       try await database.fetchSubscriptionTeammatesByOwnerId(owner.id).count
-      + database.fetchTeamInvites(owner.id).count
+      + database.fetchTeamInvites(inviterID: owner.id).count
     shouldAddSubscriptionSeat = currentTotalSeatCount >= stripeSubscription.quantity
     if currentTotalSeatCount > stripeSubscription.quantity {
       await fireAndForget {
@@ -221,7 +221,10 @@ private func add<A>(
         newPricing.quantity
       )
     }
-    try await database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+    try await database.addUser(
+      id: currentUser.id,
+      toSubscriptionID: subscription.id
+    )
   } catch {
     return
       conn

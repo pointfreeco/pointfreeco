@@ -45,7 +45,7 @@ private func fetchGift(
   return { conn in
     let paymentIntent = conn.data
     return EitherIO {
-      try await database.fetchGiftByStripePaymentIntentId(paymentIntent.id)
+      try await database.fetchGift(paymentIntentID: paymentIntent.id)
     }
     .run
     .flatMap { errorOrGift in

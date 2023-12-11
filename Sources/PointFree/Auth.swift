@@ -81,7 +81,7 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
 {
   @Dependency(\.database) var database
 
-  return IO { try? await database.fetchUserById(get1(conn.data)) }
+  return IO { try? await database.fetchUser(id: get1(conn.data)) }
     .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
@@ -89,7 +89,7 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models
   @Dependency(\.database) var database
 
   do {
-    return try await database.fetchUserByGitHub(env.gitHubUser.id)
+    return try await database.fetchUser(gitHubID: env.gitHubUser.id)
   } catch {
     return try await registerUser(env: env)
   }
@@ -213,7 +213,7 @@ private func refreshStripeSubscription(for user: Models.User) async throws {
 
   guard let subscriptionId = user.subscriptionId else { return }
 
-  let subscription = try await database.fetchSubscriptionById(subscriptionId)
+  let subscription = try await database.fetchSubscription(id: subscriptionId)
   let stripeSubscription =
     try await stripe
     .fetchSubscription(subscription.stripeSubscriptionId)
