@@ -331,6 +331,11 @@ extension Episode.Collection.Section {
     coreLessons: [
       .init(episode: .ep259_observableArchitecture),
       .init(episode: .ep260_observableArchitecture),
+      .init(episode: .ep261_observableArchitecture),
+      .init(episode: .ep262_observableArchitecture),
+      .init(episode: .ep263_observableArchitecture),
+      .init(episode: .ep264_observableArchitecture),
+      //.init(episode: .ep265_observableArchitecture),
     ],
     isFinished: false,
     related: [],
