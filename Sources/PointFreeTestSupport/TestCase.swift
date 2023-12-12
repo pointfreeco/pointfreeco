@@ -1,4 +1,3 @@
-import Backtrace
 import Database
 import Dependencies
 import Models
@@ -16,7 +15,6 @@ open class TestCase: XCTestCase {
 
   open override class func setUp() {
     super.setUp()
-    Backtrace.install()
   }
 
   open override func invokeTest() {
@@ -57,7 +55,6 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   open override class func setUp() {
     super.setUp()
-    Backtrace.install()
   }
 
   override open func setUp() async throws {
