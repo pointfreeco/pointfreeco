@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61130
+Content-Length: 61141
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1954,11 +1954,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -2104,7 +2104,7 @@ html {
             About
           </h1>
           <div class="md-ctn">
-            <p>Point-Free is a video series about functional programming and the Swift programming language. Each
+            <p>Point-Free is a video series that explores advanced topics in the Swift programming language. Each
 episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
 At the end of each episode we’ll ask <em>“what’s the point?!”</em>, so that we can bring the concepts back
 down to earth and show how these ideas can improve the quality of your code today.</p>
@@ -2408,7 +2408,7 @@ functional convert and believer after years of objects.
                     h5
                     lh-4
                     fg-white">
-            A video series on functional programming and the Swift programming language. Hosted by 
+            A video series exploring advanced topics in the Swift programming language. Hosted by 
             <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">

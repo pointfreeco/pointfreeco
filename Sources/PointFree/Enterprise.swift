@@ -326,9 +326,8 @@ private func enterpriseInviteEmailBodyView(
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "You’re invited to join the ", .text(account.companyName),
-            " team on Point-Free, a video series ",
-            "about functional programming and the Swift programming language. To accept, simply click the ",
-            "link below!"
+            " team on Point-Free, a video series exploring advanced programming topics in Swift. ",
+            "To accept, simply click the link below!"
           ),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],

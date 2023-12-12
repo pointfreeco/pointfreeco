@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 207507
+Content-Length: 207506
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -4497,7 +4497,7 @@ transcripts and a detailed Q&amp;A section.</p>
                     h5
                     lh-4
                     fg-white">
-            A video series on functional programming and the Swift programming language. Hosted by 
+            A video series exploring advanced topics in the Swift programming language. Hosted by 
             <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">

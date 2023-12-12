@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/object-oriented-programming
 Cookie: pf_session={}
 
 404 Not Found
-Content-Length: 48128
+Content-Length: 48127
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2093,7 +2093,7 @@ html {
                     h5
                     lh-4
                     fg-white">
-            A video series on functional programming and the Swift programming language. Hosted by 
+            A video series exploring advanced topics in the Swift programming language. Hosted by 
             <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">

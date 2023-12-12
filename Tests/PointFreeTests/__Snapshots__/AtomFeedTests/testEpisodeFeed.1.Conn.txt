@@ -29,7 +29,7 @@ X-XSS-Protection: 1; mode=block
       en-US
     </language>
     <description>
-      Point-Free is a video series about functional programming and the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
+      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
     </description>
     <copyright>
       Copyright Point-Free, Inc. 2018
@@ -55,7 +55,7 @@ X-XSS-Protection: 1; mode=block
       Functional programming concepts explained simply.
     </itunes:subtitle>
     <itunes:summary>
-      Point-Free is a video series about functional programming and the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
+      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
     </itunes:summary>
     <itunes:explicit>
       no

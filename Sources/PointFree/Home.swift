@@ -20,7 +20,7 @@ let homeMiddleware: M<Void> =
         openGraphType: .website,
         style: .base(.mountains(.main)),
         title:
-          "Point-Free: A video series on functional programming and the Swift programming language.",
+          "Point-Free: A video series exploring advanced programming topics in Swift.",
         twitterCard: .summaryLargeImage
       )
     }
