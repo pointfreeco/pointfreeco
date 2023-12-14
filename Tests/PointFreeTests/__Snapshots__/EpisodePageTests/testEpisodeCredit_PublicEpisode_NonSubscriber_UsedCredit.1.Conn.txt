@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 91010
+Content-Length: 91009
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -3153,7 +3153,7 @@ window.addEventListener("load", function (event) {
                     h5
                     lh-4
                     fg-white">
-            A video series on functional programming and the Swift programming language. Hosted by 
+            A video series exploring advanced topics in the Swift programming language. Hosted by 
             <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">

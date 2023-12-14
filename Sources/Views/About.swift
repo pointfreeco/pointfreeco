@@ -153,7 +153,7 @@ private let aboutSectionView: Node = [
   .h1(attributes: [.class([Class.pf.type.responsiveTitle3])], "About"),
   .markdownBlock(
     """
-    Point-Free is a video series about functional programming and the Swift programming language. Each
+    Point-Free is a video series that explores advanced topics in the Swift programming language. Each
     episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
     At the end of each episode we’ll ask _“what’s the point?!”_, so that we can bring the concepts back
     down to earth and show how these ideas can improve the quality of your code today.

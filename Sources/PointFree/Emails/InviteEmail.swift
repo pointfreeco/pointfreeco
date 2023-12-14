@@ -39,8 +39,8 @@ private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> Node 
             "Your colleague ",
             .text(inviter.displayName),
             """
-             has invited you to join their team account on Point-Free, a video series about functional
-            programming and the Swift programming language. To accept, simply click the link below!
+             has invited you to join their team account on Point-Free, a video series exploring
+            advanced programming topics in Swift. To accept, simply click the link below!
             """
           ),
           .p(

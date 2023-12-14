@@ -76,7 +76,7 @@ private var pointFreeView: Node {
     ),
     .p(
       attributes: [.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])],
-      "A video series on functional programming and the Swift programming language. Hosted by ",
+      "A video series exploring advanced topics in the Swift programming language. Hosted by ",
       .a(
         attributes: [
           .href(TwitterRouter().url(for: .mbrandonw).absoluteString),

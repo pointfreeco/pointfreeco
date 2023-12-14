@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 77780
+Content-Length: 77791
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1929,11 +1929,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Point-Free is a video series exploring advanced programming topics in Swift.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -2819,7 +2819,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                     h5
                     lh-4
                     fg-white">
-            A video series on functional programming and the Swift programming language. Hosted by 
+            A video series exploring advanced topics in the Swift programming language. Hosted by 
             <a href="https://www.twitter.com/mbrandonw"
                class="text-decoration-none
                       pf-link-green">
