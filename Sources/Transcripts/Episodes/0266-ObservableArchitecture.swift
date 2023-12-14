@@ -1,28 +1,28 @@
 import Foundation
 
 extension Episode {
-  public static let ep265_observableArchitecture = Episode(
+  public static let ep266_observableArchitecture = Episode(
     blurb: """
       TODO
       """,
-    codeSampleDirectory: "0265-observable-architecture-pt7",
+    codeSampleDirectory: "0266-observable-architecture-pt8",
     exercises: _exercises,
-    id: 265,
+    id: 266,
     length: 0 * 60 + 0,  // TODO
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-01-22")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-01-29")!,
     references: [
       // TODO
     ],
-    sequence: 265,
-    subtitle: "Observing Bindings",
+    sequence: 266,
+    subtitle: "The Point",
     title: "Observable Architecture",
     trailerVideo: .init(
       bytesLength: 0,  // TODO
       downloadUrls: .s3(
-        hd1080: "0265-trailer-1080p-TODO",
-        hd720: "0265-trailer-720p-TODO",
-        sd540: "0265-trailer-540p-TODO"
+        hd1080: "0266-trailer-1080p-TODO",
+        hd720: "0266-trailer-720p-TODO",
+        sd540: "0266-trailer-540p-TODO"
       ),
       vimeoId: 0  // TODO
     )
