@@ -38,7 +38,7 @@ In practice it can be quite difficult to support multiple major versions of Swif
 
 1. First, SwiftSyntax provides an empty library for every minor version of Swift less than or equal to the one that SwiftSyntax is currently targeting. For example, in version 509 right now there is a [SwiftSyntax509 module](https://github.com/apple/swift-syntax/tree/27db1374d173cb595b52e75a6821bcb6d088873a/Sources/SwiftSyntax509). And once version 510 is released there will be both a SwiftSyntax509 and SwiftSyntax510 module provided.
 
-    This gives you the ability to conditionally write code depending on which version of SwiftSyntax is currently being compiled using `#if canImport`. For example, the [`SourceLocationConverter`](https://github.com/apple/swift-syntax/blob/27db1374d173cb595b52e75a6821bcb6d088873a/Sources/SwiftSyntax/SourceLocation.swift#L160) API had a slight naming change in its API change between version 508 and 509, and so in order to support both we can do the following:
+    This gives you the ability to conditionally write code depending on which version of SwiftSyntax is currently being compiled using `#if canImport`. For example, the [`SourceLocationConverter`](https://github.com/apple/swift-syntax/blob/27db1374d173cb595b52e75a6821bcb6d088873a/Sources/SwiftSyntax/SourceLocation.swift#L160) API had a slight naming change in its API between version 508 and 509, and so in order to support both we can do the following:
     
     ```swift
     #if canImport(SwiftSyntax509)

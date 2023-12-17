@@ -52,7 +52,7 @@ more…) in order to push the Swift language and SwiftUI to the limit of what th
 
 <div id="modern-swiftui"></div>
 
-### Modern SwiftUI
+### [Modern SwiftUI][modern-swiftui-collection]
 
 We began the year with a [7-part series][modern-swiftui-collection] discussing modern SwiftUI 
 techniques. This includes proper domain modeling for navigation, properly handling side effects,
@@ -100,7 +100,7 @@ and share with the world.
 [syncups-gh]: https://github.com/pointfreeco/syncups
 [syncups-cta]: https://github.com/pointfreeco/syncups#call-to-action
 
-### First ever live stream
+### [First ever live stream][live-stream]
 
 This year we also had our first ever [live stream][live-stream] where we discussed our newly
 released [dependencies][dependencies-gh] library, and we live refactored how navigation was 
@@ -122,18 +122,29 @@ stack-based navigation, so we did it [live][nav-live-stream]!
 [live-stream]: https://www.pointfree.co/episodes/ep221-point-free-live-dependencies-stacks
 [nav-live-stream]: https://www.pointfree.co/episodes/ep221-point-free-live-dependencies-stacks
 
-### Composable Architecture navigation
+### [Composable Architecture navigation][tca-nav-collection]
 
-todo: finish
+Early in the year we embarked on a [very long series][tca-nav-collection] of episodes to build
+first class navigation tools into the Composable Architecture. We didn't plan on it being that long
+from the outset, but we kept finding new interesting tools that we wanted to discuss.
 
-https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
-https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
+By the end of the series we built everything necessary to model your domains concisely for 
+navigation. We also talked at length about the two major styles of navigation, 
+[tree-based][tree-based-nav-docs] versus [stack-based][stack-based-nav-docs], as well as their
+pros and cons.
 
+For a comprehensive overview of this topic be sure to check out the [documentation][tca-nav-docs] 
+in the library, and if you want to know how to apply these techniques to a vanilla SwiftUI app,
+be sure to checkout our [SwiftUINavigation][swiftui-nav-gh] library.
+
+[swiftui-nav-gh]: http://github.com/pointfreeco/swiftui-navigation
+[tca-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigation
+[tree-based-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
+[stack-based-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 [what-is-nav]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/whatisnavigation
+[tca-nav-collection]: https://www.pointfree.co/collections/composable-architecture/navigation
 
-https://www.pointfree.co/collections/composable-architecture/navigation
-
-### Reliably testing async
+### [Reliably testing async][testing-async-code-collection]
 
 In 2022 we posted a seemingly innocent question about [how to reliably test async code in 
 Swift][reliably-testing-async-forums]. Well, 1.5 years later, 126 replies and 20k views later… there
@@ -174,7 +185,7 @@ deep dive into concurrency, as well as clocks and time-based asynchrony.
 [testing-async-code-collection]: https://www.pointfree.co/collections/concurrency/testing-async-code
 [concurrency-collection]: https://www.pointfree.co/collections/concurrency
 
-### Tour of the Composable Architecture 1.0
+### [Tour of the Composable Architecture 1.0][tca-1.0-collection]
 
 It's hard to believe, but it was only this year that we finally released 1.0 of our popular library,
 the [Composable Architecture][tca-gh]. To celebrate we released a brand new [tour of the 
@@ -198,14 +209,42 @@ state involves in the app and how effects feed data back into the system.
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-1.0-collection]: https://www.pointfree.co/collections/composable-architecture/composable-architecture-1-0
 
-### Testing & Debugging Macros
+### [Testing & Debugging Macros][testing-debugging-macros-1]
 
-todo: finish
+Macros were by far the biggest new feature in Swift 5.9, and we devoted two full episodes 
+([here][testing-debugging-macros-1] and [here][testing-debugging-macros-2]) to understanding
+how to debug and test them.
 
-https://www.pointfree.co/episodes/ep251-testing-debugging-macros-part-2
-https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
+The biggest complication to writing macros in Swift is becoming familiar with SwiftSyntax. We
+show off some techniques for exploring the syntax tree of your Swift code, including using 
+breakpoints while running your macro in tests, and copious amounts of lldb printing. 😆
 
-### Deep dive into Swift's observation tools
+The second biggest complication to writing macros in Swift is dealing with all of the edge cases
+that come up in everyday, real Swift code. For example, did you know that enum cases can all be
+listed on the same line if desired:
+
+```swift
+struct Destination {
+  case add(ItemFormModel), detail(ItemDetailModel), delete(AlertState)
+}
+```
+
+And the syntax tree for this is different than if the cases are all on their own line. So if you 
+have a macro dealing with enums you better deal with this situation.
+
+Also if your macro deals with closures in some manner, then you also better make sure to deal
+with the wide variety of closure annotations, such as `@Sendable`, `@escaping`, `@autoclosure`, 
+and more.
+
+And this is why it can be very important to write tests for your macros, and write as many as 
+possible to cover each strange naunce and edge case. But the default testing tool that comes with
+SwiftSyntax is a little cumbersome, and so we built a testing tool that makes it very easy to 
+assert how your macro expands, as well as how it's diagnostics and fix-its are emitted.
+
+[testing-debugging-macros-1]: https://www.pointfree.co/episodes/ep251-testing-debugging-macros-part-2
+[testing-debugging-macros-2]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
+
+### [Deep dive into Swift's observation tools][observation-collection]
 
 We released a [collection][observation-collection] of episodes that dive deep into Swift 5.9's 
 observation tools, including the new `@Observable` macro and the `withObservationTracking` function. 
@@ -259,11 +298,24 @@ any enum, and we dedicated 2 episodes ([part 1][macro-case-paths-1] and
 [macro-case-paths-1]: https://www.pointfree.co/episodes/ep258-macro-case-paths-part-2
 [macro-case-paths-2]: https://www.pointfree.co/episodes/ep257-macro-case-paths-part-1
 
-### Observable Architecture
+### [Observable Architecture][obs-arch-collection]
 
-todo: finish
+We finished the year with a bang! 💥
 
-https://www.pointfree.co/collections/composable-architecture/observable-architecture
+We started a brand new series on [Observable Architecture][obs-arch-collection], which aims to
+bring Swift 5.9's observation tools to the Composable Architecture, and we [released a public 
+beta][obs-arch-beta-blog] of the tools so that people can test them out today while we polish them
+for the final release.
+
+The observation tools of Swift 5.9 are going to completely revolutionize the library. We are able
+to remove many superfluous concepts that were necessary pre-observation, such as `ViewStore`, 
+`WithViewStore`, `IfLetStore`, `ForEachStore`, `SwitchStore`, binding helpers, navigation
+view modifiers, and even more! It allows us to write our features in a style that looks closer
+to vanilla SwiftUI, while still getting all of the benefits from the library, such as getting
+to use value types for our domains, concise domain modeling tools, easy testing, and more.
+
+[obs-arch-beta-blog]: https://www.pointfree.co/blog/posts/125-observable-architecture-beta
+[obs-arch-collection]: https://www.pointfree.co/collections/composable-architecture/observable-architecture
 
 ## Open source
 
@@ -281,7 +333,7 @@ existing libraries:
 
 [pf-gh]: http://github.com/pointfreeco
 
-### Dependencies
+### [Dependencies][dependencies-gh]
 
 In October of last year we released a [large update][reducer-protocol-blog] to the Composable 
 Architecture, introducing the `Reducer` protocol to the library. That simple change to the library
@@ -365,7 +417,7 @@ func testAdd() async throws {
 [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 [dependencies-blog]: https://www.pointfree.co/blog/posts/92-a-new-library-to-control-dependencies-and-avoid-letting-them-control-you
 
-### Concurrency extras
+### [Concurrency extras][concurrency-extras-gh]
 
 After finishing our series of episodes on [testing async code][testing-async-code-collection], we
 [open sourced][concurrency-extras-gh] the tool we built during that series, as well as a few other 
@@ -389,7 +441,7 @@ of the time.
 [concurrency-extras-blog]: https://www.pointfree.co/blog/posts/109-announcing-concurrency-extras-useful-testable-swift-concurrency
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
 
-### Inline snapshot testing
+### [Inline snapshot testing][inline-snapshot-testing-blog]
 
 We released our popular [snapshot testing][snapshot-testing-gh] library over 5 years ago, but this
 year we added a huge new feature: [inline snapshot testing][inline-snapshot-testing-blog]. It
@@ -434,7 +486,7 @@ testing tools on top of it. And in fact, that's exactly what we did for
 
 <div id="Swift-macro-testing"></div>
 
-### Swift macro testing
+### [Swift macro testing][swift-macro-testing-blog-1]
 
 One of the major new features of Swift 5.9 is macros. They are compiler plugins that can generate
 code to be inserted into your code during the compilation process. It's an incredibly powerful tool
@@ -512,27 +564,60 @@ macro.
 [swift-macro-testing-blog-1]: https://www.pointfree.co/blog/posts/114-a-new-tool-for-testing-macros-in-swift
 [swift-macro-testing-blog-2]: https://www.pointfree.co/blog/posts/115-macrotesting-0-2-0-test-more-with-less
 
-### Observable architecture beta
+### [Observable architecture beta][obs-arch-beta-blog]
 
-todo: finish
+In unison with the beginning of our new [Observable Architecture][obs-arch-collection] series (and
+coincidentally the same day the library hit 10,000 stars on GitHub) we launched a [public 
+beta][obs-arch-beta-blog] of the new observation tools. One can simply point their existing
+Composable Architecture project to the observation-beta branch and start using the new tools.
 
-https://www.pointfree.co/blog/posts/125-observable-architecture-beta
+We like to have these public beta periods because it allows people to give the new tools for a spin
+and find any problems with them or backwards compatibility problems when upgrading. The community
+has also been great in helping fix problems. We already have 6 outside contributors to the 
+[observation-beta PR][observation-beta-pr], and there are still a few weeks left of the beta period.
+
+We will release the final version of the tools sometime in January, and at that time it will be
+the biggest revolution to the library since its release 3 years ago. Even better, it will be a 
+fully backwards compatibile release, so people will be able to upgrade immediately. _And_ the 
+tools include a backport of Swift 5.9's obesrvation machinery so that you can use the new tools
+even if you are targeting an older version of iOS, going all the way back to iOS 13! 
+
+[observation-beta-pr]: https://github.com/pointfreeco/swift-composable-architecture/pull/2593
+[obs-arch-beta-blog]: https://www.pointfree.co/blog/posts/125-observable-architecture-beta
 
 ## Blog posts
 
-todo: finish
+This year we published 27 blog posts, most of which cover things already discussed above, but 
+there were 3 specific posts we wanted to call out.
 
-### Modern SwiftUI
+### [Modern SwiftUI][modern-swiftui-blog-summary]
 
-todo: finish
+When we finished our [Modern SwiftUI][modern-swiftui-collection] series of episodes we released
+a [blog-post-a-day][modern-swiftui-blog-summary] for an entire week to highlight some of the 
+techniques that we think go into building a modern SwiftUI application. We focused on:
 
-https://www.pointfree.co/blog/posts/99-modern-swiftui
+* [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
+* [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
+* [Modern SwiftUI: State-driven
+navigation](/blog/posts/96-modern-swiftui-state-driven-navigation)
+* [Modern SwiftUI: Dependencies](/blog/posts/97-modern-swiftui-dependencies)
+* [Modern SwiftUI: Testing](/blog/posts/98-modern-swiftui-testing)
 
-### Being a good citizen in the land of Swift Syntax
+Be sure to check out the blog series if you do have time to watch all of the videos.
 
-todo: finish
+[modern-swiftui-blog-summary]: https://www.pointfree.co/blog/posts/99-modern-swiftui
 
-https://www.pointfree.co/blog/posts/116-being-a-good-citizen-in-the-land-of-swiftsyntax
+### [Being a good citizen in the land of Swift Syntax][swift-syntax-citizen]
+
+When Swift macros were officially released we jumped into the head first. But we quickly noticed a
+few big issues with doing so, primarily due to [using SwiftSyntax][swift-syntax-concerns-forums].
+
+After much research and experimentation we came up with a few guiding principles that could be 
+followed to mitigate the problems of using SwiftSyntax in your project. We wrote up our findings
+to help everyone be a better citizen in the land of Swift Syntax.
+
+[swift-syntax-citizen]: https://www.pointfree.co/blog/posts/116-being-a-good-citizen-in-the-land-of-swiftsyntax
+[swift-syntax-concerns-forums]: https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588
 
 ### Macro bonanza
 
@@ -553,19 +638,18 @@ libraries, and we are thankful to all the community members that spend their tim
 
 ## See you in 2024! 🥳
 
-todo: finish
+We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
+episodes and support our open source libraries. We could not do it without you!
 
-We're thankful to all of our subscribers for supporting us and helping us create this
-content and these libraries. We could not do it without you!
-
-Next year we have even more planned, including TODO
+Next year we have even more planned, including the final release of the observation tools in the
+Composable Architecture, more advanced content on how to best leverage the library (including
+new techniques for modeling shared state), a deep dive into value types versus reference types, 
+and more that we are not yet ready to reveal. 😉
 
 To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year
 for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
 is the time!
 
-See you in 2023!
-
-
 [eoy-discount]: /discounts/2023-eoy
 
+[[Subscribe today!]](/discounts/2023-eoy)
