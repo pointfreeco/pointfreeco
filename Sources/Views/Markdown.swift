@@ -40,7 +40,7 @@ private let darkMarkdownContainerClass = CssSelector.class("md-ctn-dark")
 private let baseMarkdownBlockStyles: Stylesheet =
   markdownContainerClass
   % (hrMarkdownStyles
-//    <> ulMarkdownStyles
+    <> ulMarkdownStyles
     <> blockquoteMarkdownStyles
     <> pMarkdownStyles
     <> codeMarkdownStyles)
