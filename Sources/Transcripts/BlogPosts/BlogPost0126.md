@@ -59,7 +59,7 @@ techniques. This includes proper domain modeling for navigation, properly handli
 controlling dependencies, and writing extensive tests for features, including how multiple features
 integrate together. 
 
-We demonstrated these principles by rebuilding one of Apple's more interesting demo apps, the
+We demonstrated these principles by rebuilding one of Apple's more interesting demo apps,
 [Scrumdinger][scrumdinger]. We recreated the entire app from scratch, but using modern techniques
 each step of the way. If you put in a little bit of upfront work while building your applications 
 you get a ton of benefits down the road, such as easy deep-linking, simple communication patterns
@@ -84,15 +84,15 @@ between features, a [unified API for navigation][gut-syncups]:
 
 …and a lot more.
 
-And at the end of the series we even [open-sourced][syncups-gh] the app, built in two different 
-styles: one using what we call ["tree-based" navigation][tree-based-syncups] (i.e. when navigation 
-is driven by optional state) and the other using ["stack-based" navigation][stack-based-syncups] 
-(i.e. when navigation is  driven by a collection).
+At the end of the series we even [open-sourced][syncups-gh] the app, built in two different styles:
+one using what we call ["tree-based" navigation][tree-based-syncups] (_i.e._ when navigation is
+driven by optional state) and the other using ["stack-based" navigation][stack-based-syncups] 
+(_i.e._ when navigation is driven by a collection).
 
 We even made a [call-to-action][syncups-cta] to the community to rebuild the app in the style that
 they enjoy the most. Architecture debates in the community tend to be a lot of abstract platitudes
-and hand wringing, but there's no better way to show off your ideas that to build it concretely
-and share with the world.
+and hand waving, but there's no better way to show off your ideas that to build it concretely and
+share with the world.
 
 [modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
 [scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
@@ -103,7 +103,7 @@ and share with the world.
 ### [First ever live stream][live-stream]
 
 This year we also had our first ever [live stream][live-stream] where we discussed our newly
-released [dependencies][dependencies-gh] library, and we live refactored how navigation was 
+released [dependencies library][dependencies-gh], and we live-refactored how navigation was 
 modeled in the SyncUps application we built for our [Modern SwiftUI][modern-swiftui-collection] 
 series.
 
@@ -150,7 +150,7 @@ In 2022 we posted a seemingly innocent question about [how to reliably test asyn
 Swift][reliably-testing-async-forums]. Well, 1.5 years later, 126 replies and 20k views later… there
 still is no official word from Apple on how to accomplish this.  
 
-Even something as straightfoward as this:
+Even something as straightforward as this:
 
 ```swift
 func buttonTapped() async throws {
@@ -170,7 +170,7 @@ So, this year we took matters into our own hands by releasing a
 [5-part series][testing-async-code-collection] exploring how one can embrace the amazing concurrency 
 tools of Swift while not sacrificing testability. We start with two free(!) episodes 
 ([here][testing-async-the-problem-1] and [here][testing-async-the-problem-2]) exploring the problem 
-space and seeing why it is essentially impossible to determinstically test any moderately complex 
+space and seeing why it is essentially impossible to deterministically test any moderately complex 
 Swift code that uses `await`. And by the end of the series we built a tool that allows one to test
 async code in a style that is more familiar to testing synchronous and Combine/reactive code. And we 
 [released a library][concurrency-extras-gh] to give everyone access to this tool.
@@ -188,21 +188,21 @@ deep dive into concurrency, as well as clocks and time-based asynchrony.
 ### [Tour of the Composable Architecture 1.0][tca-1.0-collection]
 
 It's hard to believe, but it was only this year that we finally released 1.0 of our popular library,
-the [Composable Architecture][tca-gh]. To celebrate we released a brand new [tour of the 
-library][tca-1.0-collection] where we rebuilt Apple's demo application, the 
+the [Composable Architecture][tca-gh]. To celebrate we released a brand new
+[tour of the library][tca-1.0-collection] where we rebuilt Apple's demo application,
 [Scrumdinger][scrumdinger], using the Composable Architecture. (Incidentally we also rebuilt this
-app without the Composable Architecture, and using only [modern, vanilla SwiftUI 
-techniques](#modern-swiftui).)
+app without the Composable Architecture, and using only
+[modern, vanilla SwiftUI techniques](#modern-swiftui).)
 
 Along the way we uncovered many benefits to using the Composable Architecture over vanilla SwiftUI,
 such as:
 
-* The ability to use value types for our domain rather than being forced to use reference types
-and incur the complexity that comes with them.
-* Easy integration of features together so that they can easily communicate with each other. 
-* Immediate ability to deep-link into any state of our application.
-* Instant testability, including how features integrate together and exhaustively proving how
-state involves in the app and how effects feed data back into the system.
+  * The ability to use value types for our domain rather than being forced to use reference types
+    and incur the complexity that comes with them.
+  * Easy integration of features together so that they can easily communicate with each other. 
+  * Immediate ability to deep-link into any state of our application.
+  * Instant testability, including how features integrate together and exhaustively proving how
+    state involves in the app and how effects feed data back into the system.
 
 …and a whole bunch more.
 
@@ -232,12 +232,11 @@ struct Destination {
 And the syntax tree for this is different than if the cases are all on their own line. So if you 
 have a macro dealing with enums you better deal with this situation.
 
-Also if your macro deals with closures in some manner, then you also better make sure to deal
-with the wide variety of closure annotations, such as `@Sendable`, `@escaping`, `@autoclosure`, 
-and more.
+Also if your macro deals with closures in some manner, then you also better make sure to deal with
+the wide variety of closure annotations, such as `@Sendable`, `@escaping`, `@autoclosure`, and more.
 
 And this is why it can be very important to write tests for your macros, and write as many as 
-possible to cover each strange naunce and edge case. But the default testing tool that comes with
+possible to cover each strange nuance and edge case. But the default testing tool that comes with
 SwiftSyntax is a little cumbersome, and so we built a testing tool that makes it very easy to 
 assert how your macro expands, as well as how it's diagnostics and fix-its are emitted.
 
@@ -253,28 +252,28 @@ powerful.
 
 We broke the series up into 5 major parts:
 
-* We begin with a look at the tools of the past, including the `@State` and `@ObservedObject` 
-property wrappers that were in SwiftUI since it's first release. They were handy, but they also 
-came with some gotchas, and forced you to write your features in an unnatural style.
-* Next we move onto the new observation tools in Swift 5.9, and show how they improve upon every
-aspect of the `@State` and `@ObservedObject` property wrappers. We even dive into some of the code
-in the open source Swift repository.
-* Then we show that although the new tools are amazing, even ✨magical✨, they do come with some
-gotchas. It is very important to be familiar with these subtleties in order to best wield these
-tools.
-* Next we show off a very theoretical _future_ direction of observation in Swift, and that is 
-"observable structs." Now unfortunately Swift's observation tools do not work with structs, and
-for good reason. But that doesn't mean we can't try!
-* And finally we demonstrate "observation in practice" by taking the application we built during 
-our [Modern SwiftUI][modern-swiftui-collection] series and refactoring it to use the new 
-`@Observable` macro.
+  * We begin with a look at the tools of the past, including the `@State` and `@ObservedObject` 
+    property wrappers that were in SwiftUI since it's first release. They were handy, but they also 
+    came with some gotchas, and forced you to write your features in an unnatural style.
+  * Next we move onto the new observation tools in Swift 5.9, and show how they improve upon every
+    aspect of the `@State` and `@ObservedObject` property wrappers. We even dive into some of the
+    code in the open source Swift repository.
+  * Then we show that although the new tools are amazing, even ✨magical✨, they do come with some
+    gotchas. It is very important to be familiar with these subtleties in order to best wield these
+    tools.
+  * Next we show off a very theoretical _future_ direction of observation in Swift, and that is 
+    "observable structs." Now unfortunately Swift's observation tools do not work with structs, and
+    for good reason. But that doesn't mean we can't try!
+  * And finally we demonstrate "observation in practice" by taking the application we built during 
+    our [Modern SwiftUI][modern-swiftui-collection] series and refactoring it to use the new 
+    `@Observable` macro.
 
 [observation-collection]: https://www.pointfree.co/collections/swiftui/observation
 
 ### Case paths revolution
 
 Key paths are an amazing feature of Swift. They allow you to abstractly isolate a particular field
-from the whole of a struct, and they unlock a lot of amazing capabillities that we all probably take
+from the whole of a struct, and they unlock a lot of amazing capabilities that we all probably take
 for granted these days. But to our knowledge, Swift is the _only_ modern programming language 
 that has first class support for something like key paths. 
 
@@ -287,7 +286,7 @@ This is why we introduced the concept of "case paths" nearly [4 years ago][case-
 Since then they have found use cases in many places, such as in the Composable Architecture, our
 [parsing library][parsing-gh], vanilla [SwiftUI navigation][swiftui-nav-gh], and more.
 
-However, the ergnomoics were never quite right. That all changed with Swift 5.9 was released, which
+However, the ergonomics were never quite right. That all changed with Swift 5.9 was released, which
 brought with it macros. They allow us to generate more correct and more performant case paths for
 any enum, and we dedicated 2 episodes ([part 1][macro-case-paths-1] and 
 [part 2][macro-case-paths-2]) to exploring how.
