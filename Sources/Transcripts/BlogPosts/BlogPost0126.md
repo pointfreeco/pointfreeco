@@ -89,6 +89,8 @@ one using what we call ["tree-based" navigation][tree-based-syncups] (_i.e._ whe
 driven by optional state) and the other using ["stack-based" navigation][stack-based-syncups] 
 (_i.e._ when navigation is driven by a collection).
 
+<div id="call-to-action"></div>
+
 We even made a [call-to-action][syncups-cta] to the community to rebuild the app in the style that
 they enjoy the most. Architecture debates in the community tend to be a lot of abstract platitudes
 and hand waving, but there's no better way to show off your ideas that to build it concretely and
@@ -322,13 +324,15 @@ On average, our [open source libraries][pf-gh] are cloned over **120,000 times**
 used by thousands of developers and companies all across the globe. It's a lot of work to main them,
 but it's all made possible thanks to our wonderful [subscribers][eoy-discount].
 
-This year we released 4 new open source libraries, two of which were incubated in the
-[Composable Architecture][tca-gh] and later split out, as well as dozens of updates to our
-existing libraries:
-
 <!--
 38000+175000+48000+12000+52000+620000+18000+56000+85000+58000+112000
 -->
+
+[eoy-discount]: /discounts/2023-eoy
+
+This year we released 4 new open source libraries, two of which were incubated in the
+[Composable Architecture][tca-gh] and later split out, as well as dozens of updates to our
+existing libraries:
 
 [pf-gh]: http://github.com/pointfreeco
 
@@ -445,6 +449,9 @@ of the time.
 We released our popular [snapshot testing][snapshot-testing-gh] library over 5 years ago, but this
 year we added a huge new feature: [inline snapshot testing][inline-snapshot-testing-blog]. It
 allows you to record the textual snapshot of your types directly into the test file.
+
+[snapshot-testing-gh]: https://github.com/pointfreeco/swift-snapshot-testing
+[inline-snapshot-testing-blog]: https://www.pointfree.co/blog/posts/113-inline-snapshot-testing
 
 For example, if you wanted to test the JSON encoding of a `user` value, you could do it like so: 
 
@@ -570,6 +577,8 @@ coincidentally the same day the library hit 10,000 stars on GitHub) we launched 
 beta][obs-arch-beta-blog] of the new observation tools. One can simply point their existing
 Composable Architecture project to the observation-beta branch and start using the new tools.
 
+[obs-arch-collection]: https://www.pointfree.co/collections/composable-architecture/observable-architecture
+
 We like to have these public beta periods because it allows people to give the new tools for a spin
 and find any problems with them or backwards compatibility problems when upgrading. The community
 has also been great in helping fix problems. We already have 6 outside contributors to the 
@@ -594,6 +603,8 @@ there were 3 specific posts we wanted to call out.
 When we finished our [Modern SwiftUI][modern-swiftui-collection] series of episodes we released
 a [blog-post-a-day][modern-swiftui-blog-summary] for an entire week to highlight some of the 
 techniques that we think go into building a modern SwiftUI application. We focused on:
+
+[modern-swiftui-collection]: https://www.pointfree.co/collections/swiftui/modern-swiftui
 
 * [Modern SwiftUI: Parent-child communication](/blog/posts/94-modern-swiftui-parent-child-communication)
 * [Modern SwiftUI: Identified arrays](/blog/posts/95-modern-swiftui-identified-arrays)
@@ -620,7 +631,19 @@ to help everyone be a better citizen in the land of Swift Syntax.
 
 ### [Macro bonanza][macro-bonanza]
 
-todo: finish
+When macros were released in Swift 5.9 we kinda went bonanza with them. We released big updates to
+4 of our libraries to bring all new capabilities with macros, and we released a brand new library
+to make testing macros easier. We catalogued these big releases in our [Macro Bonanza blog 
+post][macro-bonanza]:
+
+* We revolutionized our CasePaths library with the new `@CasePathable` macro.
+* We heavily integrated the new case path capabilities into the Composable Architecture, along 
+with a new `@Reducer` macro.
+* We made navigation in vanilla SwiftUI even easier in our SwiftUINavigation library.
+* We introduced a `@DependencyClient` macro that makes it very easy to design dependencies in a way
+that is flexible and ergonomic.
+* And finally we released a new library, [Macro Testing][swift-macro-testing], for testing macros,
+including their diagnostics and fix-its.
 
 [macro-bonanza]: https://www.pointfree.co/blog/posts/121-macro-bonanza
 
