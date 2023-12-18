@@ -618,11 +618,11 @@ to help everyone be a better citizen in the land of Swift Syntax.
 [swift-syntax-citizen]: https://www.pointfree.co/blog/posts/116-being-a-good-citizen-in-the-land-of-swiftsyntax
 [swift-syntax-concerns-forums]: https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588
 
-### Macro bonanza
+### [Macro bonanza][macro-bonanza]
 
 todo: finish
 
-https://www.pointfree.co/blog/posts/121-macro-bonanza
+[macro-bonanza]: https://www.pointfree.co/blog/posts/121-macro-bonanza
 
 ## Point-Free community
 
