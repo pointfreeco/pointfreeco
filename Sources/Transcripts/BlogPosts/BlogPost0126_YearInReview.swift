@@ -7,7 +7,7 @@ public let post0126_YearInReview = BlogPost(
     and a whole bunch more!
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 126),
-  coverImage: nil,  // TODO
+  coverImage: nil,
   id: 126,
   publishedAt: yearMonthDayFormatter.date(from: "2023-12-19")!,
   title: "2023 Year-in-review"
