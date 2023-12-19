@@ -120,7 +120,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.cyberMonday2023),
+          announcementBanner(.eoy2023),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -189,19 +189,19 @@ struct Banner {
   let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
-  static let cyberMonday2023 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2023-11-30")!,
+  static let eoy2023 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2024-01-01")!,
     markdownContent: ###"""
-      [**Cyber Monday Sale!** Save 30% when you subscribe.](/discounts/cyber-monday-plus-2023)
+      **🎁 End-of-year sale!** Save 25% when you [subscribe](/discounts/2023-eoy).
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("124-30-off-point-free-for-cyber-monday"))) = route {
+      } else if case .blog(.show(.left("blog/posts/126-2023-year-in-review"))) = route {
         return false
-      } else if case .blog(.show(.right(124))) = route {
+      } else if case .blog(.show(.right(126))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
@@ -209,7 +209,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2023-11-19")!
+    startAt: yearMonthDayFormatter.date(from: "2023-12-18")!
   )
 }
 
