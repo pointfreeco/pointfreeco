@@ -35,7 +35,7 @@ private func atomEntry(for post: BlogPost) -> AtomEntry {
   @Dependency(\.siteRouter) var siteRouter
 
   return AtomEntry(
-    content: .p(.text(post.blurb)),
+    content: .markdownBlock(post.blurb),
     siteUrl: siteRouter.url(for: .blog(.show(slug: post.slug))),
     title: post.title,
     updated: post.publishedAt
