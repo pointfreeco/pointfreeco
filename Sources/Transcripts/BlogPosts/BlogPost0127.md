@@ -37,12 +37,6 @@ only remain valid through the end of the year! 🥳
 [observation-collection]: https://www.pointfree.co/collections/swiftui/observation
 [testing-debugging-macros]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
 [eoy-discount]: /discounts/2023-eoy
-[swiftui-nav-collection]: /collections/swiftui/navigation
 [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
-[parsers-collection]: /collections/parsing
-[tca-collection]: /collections/composable-architecture
 [concurrency-collection]: /collections/concurrency
-[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
-[parsing-gh]: http://github.com/pointfreeco/swift-parsing
 [eoy-2023]: /blog/posts/126-2023-year-in-review
-
