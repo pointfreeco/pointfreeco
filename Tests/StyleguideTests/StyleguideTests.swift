@@ -85,28 +85,4 @@ class StyleguideTests: TestCase {
       }
     #endif
   }
-
-  func testTwitterLink() async throws {
-    let doc: Node = [
-      .doctype,
-      .html(
-        .head(
-          .style(unsafe: render(config: .compact, css: styleguide))
-        ),
-        .body(
-          .twitterShareLink(text: "Tweet", url: "https://www.pointfree.co", via: "pointfreeco")
-        )
-      ),
-    ]
-
-    await assertSnapshot(matching: doc, as: .html)
-
-    #if !os(Linux)
-      if ProcessInfo.processInfo.environment["CI"] == nil {
-        let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
-  }
 }

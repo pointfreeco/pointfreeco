@@ -56,17 +56,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
         .class([Class.flex.flex, Class.flex.items.baseline]),
         .style(flex(direction: .row)),
       ],
-      .div(.p(.text(episodeDateFormatter.string(from: post.publishedAt)))),
-      .div(
-        attributes: [.class([Class.margin([.mobile: [.left: 1]])])],
-        [
-          .twitterShareLink(
-            text: post.title,
-            url: siteRouter.url(for: .blog(.show(slug: post.slug))),
-            via: "pointfreeco"
-          )
-        ]
-      )
+      .div(.p(.text(episodeDateFormatter.string(from: post.publishedAt))))
     ),
 
     .div(
