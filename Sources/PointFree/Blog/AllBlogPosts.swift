@@ -140,4 +140,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0123_BlackFriday,
   post0124_CyberMonday,
   post0125_ObservableBeta,
+  post0126_YearInReview,
 ]
