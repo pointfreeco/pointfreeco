@@ -286,6 +286,7 @@ extension Client {
           FROM "users"
           INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
           WHERE "subscriptions"."user_id" = \(bind: ownerId)
+          where "stripe_subscription_status" = 'active'
           """
         )
       },
