@@ -21,28 +21,30 @@ streamed.
 
 But these high-level stats don’t even scratch the surface of what we covered in 2023:
 
-* [Episodes](#)
-  * [Modern SwiftUI](#)
-  * [First ever live stream](#)
-  * [Composable Architecture navigation](#)
-  * [Reliably testing async](#)
-  * [Tour of the Composable Architecture 1.0](#)
-  * [Testing & Debugging Macros](#)
-  * [Deep dive into Swift's observation tools](#)
-  * [Case paths revolution](#)
-  * [Observable Architecture](#)
-* [Open source](#)
-  * [Dependencies](#)
-  * [Concurrency extras](#)
-  * [Inline snapshot testing](#)
-  * [Swift macro testing](#)
-  * [Observable architecture beta](#)
-* [Blog posts](#)
-  * [Modern SwiftUI](#)
-  * [Being a good citizen in the land of Swift Syntax](#)
-  * [Macro bonanza](#)
-* [Point-Free community](#)
-* [See you in 2024! 🥳](#)
+* [Episodes](#episodes)
+  * [Modern SwiftUI](#modern-swiftui)
+  * [First ever live stream](#first-ever-live-stream)
+  * [Composable Architecture navigation](#composable-architecture-navigation)
+  * [Reliably testing async](#reliably-testing-async)
+  * [Tour of the Composable Architecture 1.0](#tour-of-the-composable-architecture-1.0)
+  * [Testing & Debugging Macros](#testing-debugging-macros)
+  * [Deep dive into Swift's observation tools](#deep-dive-into-swifts-observation-tools)
+  * [Case paths revolution](#case-paths-revolution)
+  * [Observable Architecture](#observable-architecture)
+* [Open source](#open-source)
+  * [Dependencies](#dependencies)
+  * [Concurrency extras](#concurrency-extras)
+  * [Inline snapshot testing](#inline-snapshot-testing)
+  * [Swift macro testing](#swift-macro-testing)
+  * [Observable architecture beta](#observable-architecture-beta)
+* [Blog posts](#blog-posts)
+  * [Modern SwiftUI](#modern-swiftui-blog)
+  * [Being a good citizen in the land of Swift Syntax](#being-a-good-citizen-in-the-land-of-swift-syntax)
+  * [Macro bonanza](#macro-bonanza)
+* [Point-Free community](#point-free-community)
+* [See you in 2024! 🥳](#see-you-in-2024)
+
+<div id="episodes"></div>
 
 ## Episodes
 
@@ -102,6 +104,8 @@ share with the world.
 [syncups-gh]: https://github.com/pointfreeco/syncups
 [syncups-cta]: https://github.com/pointfreeco/syncups#call-to-action
 
+<div id="first-ever-live-stream"></div>
+
 ### [First ever live stream][live-stream]
 
 This year we also had our first ever [live stream][live-stream] where we discussed our newly
@@ -124,6 +128,8 @@ stack-based navigation, so we did it [live][nav-live-stream]!
 [live-stream]: https://www.pointfree.co/episodes/ep221-point-free-live-dependencies-stacks
 [nav-live-stream]: https://www.pointfree.co/episodes/ep221-point-free-live-dependencies-stacks
 
+<div id="composable-architecture-navigation"></div>
+
 ### [Composable Architecture navigation][tca-nav-collection]
 
 Early in the year we embarked on a [very long series][tca-nav-collection] of episodes to build
@@ -145,6 +151,8 @@ be sure to checkout our [SwiftUINavigation][swiftui-nav-gh] library.
 [stack-based-nav-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 [what-is-nav]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/whatisnavigation
 [tca-nav-collection]: https://www.pointfree.co/collections/composable-architecture/navigation
+
+<div id="reliably-testing-async"></div>
 
 ### [Reliably testing async][testing-async-code-collection]
 
@@ -187,6 +195,8 @@ deep dive into concurrency, as well as clocks and time-based asynchrony.
 [testing-async-code-collection]: https://www.pointfree.co/collections/concurrency/testing-async-code
 [concurrency-collection]: https://www.pointfree.co/collections/concurrency
 
+<div id="tour-of-the-composable-architecture-1.0"></div>
+
 ### [Tour of the Composable Architecture 1.0][tca-1.0-collection]
 
 It's hard to believe, but it was only this year that we finally released 1.0 of our popular library,
@@ -210,6 +220,8 @@ such as:
 
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [tca-1.0-collection]: https://www.pointfree.co/collections/composable-architecture/composable-architecture-1-0
+
+<div id="testing-debugging-macros"></div>
 
 ### [Testing & Debugging Macros][testing-debugging-macros-1]
 
@@ -245,6 +257,8 @@ assert how your macro expands, as well as how it's diagnostics and fix-its are e
 [testing-debugging-macros-1]: https://www.pointfree.co/episodes/ep251-testing-debugging-macros-part-2
 [testing-debugging-macros-2]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
 
+<div id="deep-dive-into-swifts-observation-tools"></div>
+
 ### [Deep dive into Swift's observation tools][observation-collection]
 
 We released a [collection][observation-collection] of episodes that dive deep into Swift 5.9's 
@@ -271,6 +285,8 @@ We broke the series up into 5 major parts:
     `@Observable` macro.
 
 [observation-collection]: https://www.pointfree.co/collections/swiftui/observation
+
+<div id="case-paths-revolution"></div>
 
 ### Case paths revolution
 
@@ -299,6 +315,8 @@ any enum, and we dedicated 2 episodes ([part 1][macro-case-paths-1] and
 [macro-case-paths-1]: https://www.pointfree.co/episodes/ep258-macro-case-paths-part-2
 [macro-case-paths-2]: https://www.pointfree.co/episodes/ep257-macro-case-paths-part-1
 
+<div id="observable-architecture"></div>
+
 ### [Observable Architecture][obs-arch-collection]
 
 We finished the year with a bang! 💥
@@ -318,6 +336,8 @@ to use value types for our domains, concise domain modeling tools, easy testing,
 [obs-arch-beta-blog]: https://www.pointfree.co/blog/posts/125-observable-architecture-beta
 [obs-arch-collection]: https://www.pointfree.co/collections/composable-architecture/observable-architecture
 
+<div id="open-source"></div>
+
 ## Open source
 
 On average, our [open source libraries][pf-gh] are cloned over **120,000 times** per day! They are
@@ -335,6 +355,8 @@ This year we released 4 new open source libraries, two of which were incubated i
 existing libraries:
 
 [pf-gh]: http://github.com/pointfreeco
+
+<div id="dependencies"></div>
 
 ### [Dependencies][dependencies-gh]
 
@@ -420,6 +442,8 @@ func testAdd() async throws {
 [dependencies-gh]: http://github.com/pointfreeco/swift-dependencies
 [dependencies-blog]: https://www.pointfree.co/blog/posts/92-a-new-library-to-control-dependencies-and-avoid-letting-them-control-you
 
+<div id="concurrency-extras"></div>
+
 ### [Concurrency extras][concurrency-extras-gh]
 
 After finishing our series of episodes on [testing async code][testing-async-code-collection], we
@@ -443,6 +467,8 @@ of the time.
 [withMainSerialExecutor-docs]: https://pointfreeco.github.io/swift-concurrency-extras/main/documentation/concurrencyextras/withmainserialexecutor(operation:)-79jpc
 [concurrency-extras-blog]: https://www.pointfree.co/blog/posts/109-announcing-concurrency-extras-useful-testable-swift-concurrency
 [concurrency-extras-gh]: https://github.com/pointfreeco/swift-concurrency-extras
+
+<div id="inline-snapshot-testing"></div>
 
 ### [Inline snapshot testing][inline-snapshot-testing-blog]
 
@@ -490,7 +516,7 @@ testing tools on top of it. And in fact, that's exactly what we did for
 [snapshot-testing-gh]: https://github.com/pointfreeco/swift-snapshot-testing
 [inline-snapshot-testing-blog]: https://www.pointfree.co/blog/posts/113-inline-snapshot-testing
 
-<div id="Swift-macro-testing"></div>
+<div id="swift-macro-testing"></div>
 
 ### [Swift macro testing][swift-macro-testing-blog-1]
 
@@ -570,6 +596,8 @@ macro.
 [swift-macro-testing-blog-1]: https://www.pointfree.co/blog/posts/114-a-new-tool-for-testing-macros-in-swift
 [swift-macro-testing-blog-2]: https://www.pointfree.co/blog/posts/115-macrotesting-0-2-0-test-more-with-less
 
+<div id="observable-architecture-beta"></div>
+
 ### [Observable architecture beta][obs-arch-beta-blog]
 
 In unison with the beginning of our new [Observable Architecture][obs-arch-collection] series (and
@@ -593,10 +621,14 @@ even if you are targeting an older version of iOS, going all the way back to iOS
 [observation-beta-pr]: https://github.com/pointfreeco/swift-composable-architecture/pull/2593
 [obs-arch-beta-blog]: https://www.pointfree.co/blog/posts/125-observable-architecture-beta
 
+<div id="blog-posts"></div>
+
 ## Blog posts
 
 This year we published 27 blog posts, most of which cover things already discussed above, but 
 there were 3 specific posts we wanted to call out.
+
+<div id="modern-swiftui-blog"></div>
 
 ### [Modern SwiftUI][modern-swiftui-blog-summary]
 
@@ -617,6 +649,8 @@ Be sure to check out the blog series if you do have time to watch all of the vid
 
 [modern-swiftui-blog-summary]: https://www.pointfree.co/blog/posts/99-modern-swiftui
 
+<div id="being-a-good-citizen-in-the-land-of-swift-syntax"></div>
+
 ### [Being a good citizen in the land of Swift Syntax][swift-syntax-citizen]
 
 When Swift macros were officially released we jumped into the head first. But we quickly noticed a
@@ -628,6 +662,8 @@ to help everyone be a better citizen in the land of Swift Syntax.
 
 [swift-syntax-citizen]: https://www.pointfree.co/blog/posts/116-being-a-good-citizen-in-the-land-of-swiftsyntax
 [swift-syntax-concerns-forums]: https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588
+
+<div id="macro-bonanza"></div>
 
 ### [Macro bonanza][macro-bonanza]
 
@@ -647,6 +683,8 @@ including their diagnostics and fix-its.
 
 [macro-bonanza]: https://www.pointfree.co/blog/posts/121-macro-bonanza
 
+<div id="point-free-community"></div>
+
 ## Point-Free community
 
 This year we launched our first big community initiative: the [Point-Free Slack][pf-slack]. In
@@ -657,6 +695,8 @@ libraries, and we are thankful to all the community members that spend their tim
 [Join today][pf-slack] to learn more about our libraries or to help out someone out!
 
 [pf-slack]: http://pointfree.co/slack-invite
+
+<div id="see-you-in-2024"></div>
 
 ## See you in 2024! 🥳
 
