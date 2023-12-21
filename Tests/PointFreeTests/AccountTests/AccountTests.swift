@@ -103,7 +103,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       email: "blob@pointfree.co",
       now: Date.init
     )
-    
+
     var cancelledStripeSubscription = Stripe.Subscription.teamYearly
     cancelledStripeSubscription.id = "sub_cancelled"
     cancelledStripeSubscription.status = .canceled
