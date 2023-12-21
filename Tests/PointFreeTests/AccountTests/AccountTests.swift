@@ -96,6 +96,45 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       newTeamInviteCode
     )
   }
+
+  func testFetchTeammates_PastCancelledSubscription() async throws {
+    let user = try await self.database.registerUser(
+      withGitHubEnvelope: .mock,
+      email: "blob@pointfree.co",
+      now: Date.init
+    )
+    
+    var cancelledStripeSubscription = Stripe.Subscription.teamYearly
+    cancelledStripeSubscription.id = "sub_cancelled"
+    cancelledStripeSubscription.status = .canceled
+    let firstSubscription = try await self.database.createSubscription(
+      subscription: cancelledStripeSubscription,
+      userID: user.id,
+      isOwnerTakingSeat: true,
+      referrerID: nil
+    )
+
+    let teammate = try await self.database.registerUser(
+      withGitHubEnvelope: GitHubUserEnvelope(
+        accessToken: AccessToken(accessToken: "deadbeef"),
+        gitHubUser: .init(createdAt: Date(), id: 123, name: "Blob Jr.")),
+      email: "blob.jr@pointfree.co",
+      now: Date.init
+    )
+    try await self.database.addUser(id: teammate.id, toSubscriptionID: firstSubscription.id)
+
+    var activeStripeSubscription = Stripe.Subscription.teamYearly
+    activeStripeSubscription.id = "sub_active"
+    _ = try await self.database.createSubscription(
+      subscription: activeStripeSubscription,
+      userID: user.id,
+      isOwnerTakingSeat: true,
+      referrerID: nil
+    )
+
+    let teammates = try await self.database.fetchSubscriptionTeammates(ownerID: user.id)
+    XCTAssertEqual(teammates.count, 1)
+  }
 }
 
 @MainActor
