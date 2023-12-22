@@ -32,11 +32,11 @@ That's a very brief recap of our 2023 (see more [here][eoy-2023]), and we have e
 plans for 2024! [Click here][eoy-discount]🎁 to redeem the coupon code now. The offer will
 only remain valid through the end of the year! 🥳
 
-[[Subscribe today!]](/discounts/2023-eoy)
-
 [observation-collection]: https://www.pointfree.co/collections/swiftui/observation
 [testing-debugging-macros]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
 [eoy-discount]: /discounts/2023-eoy
 [modern-swiftui-collection]: /collections/swiftui/modern-swiftui
 [concurrency-collection]: /collections/concurrency
 [eoy-2023]: /blog/posts/126-2023-year-in-review
+
+[[Subscribe today!]](/discounts/2023-eoy)
