@@ -8,7 +8,7 @@ public let post0128_EOYSale = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 128),
   coverImage: nil,
-  hidden: false,
+  hidden: true,
   hideFromSlackRSS: true,
   id: 128,
   publishedAt: yearMonthDayFormatter.date(from: "2023-12-26")!,
