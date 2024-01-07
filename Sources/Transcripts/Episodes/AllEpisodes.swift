@@ -266,5 +266,8 @@ extension Episode {
     .ep261_observableArchitecture,
     .ep262_observableArchitecture,
     .ep263_observableArchitecture,
+    .ep264_observableArchitecture,
+    .ep265_observableArchitecture,
+    .ep266_observableArchitecture,
   ]
 }
