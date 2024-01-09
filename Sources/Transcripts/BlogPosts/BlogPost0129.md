@@ -67,7 +67,7 @@ view where you are accessing state without being inside `WithPerceptionTracking`
 
 ## How the Perception library works
 
-The new Observation framework is apart of the Swift open source project, which means all of the 
+The new Observation framework is a part of the Swift open source project, which means all of the 
 [source code][observation-library-gh] is immediately available, including the 
 [source for the @Observable macro][observation-macros-gh]. So, we were able to copy all of that
 code to a new project, and with a few small changes we were able to get it all compiling.
