@@ -143,4 +143,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0126_YearInReview,
   post0127_EOYSale,
   post0128_EOYSale,
+  post0129_Perception,
 ]
