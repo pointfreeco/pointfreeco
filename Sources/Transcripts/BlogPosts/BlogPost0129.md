@@ -60,7 +60,7 @@ runtime warning will be triggered:
 > 🟣 Runtime Warning: Perceptible state was accessed but is not being tracked. Track changes to 
 state by wrapping your view in a 'WithPerceptionTracking' view.
 
-This let's you instantly know when something is not set up correctly, and do so in a noticeable
+This lets you instantly know when something is not set up correctly, and do so in a noticeable
 yet [unobstrusive][unobstrusive-warnings] way. To debug this, expand the warning in the Issue 
 Navigator of Xcode (cmd+5), and click through the stack frames displayed to find the line in your 
 view where you are accessing state without being inside `WithPerceptionTracking`.
