@@ -18,7 +18,7 @@ you will use our `@Perceptible` macro:
 ```diff
 +import Perception
 
- @Observable
+-@Observable
 +@Perceptible
  class FeatureModel {
    var count = 0
