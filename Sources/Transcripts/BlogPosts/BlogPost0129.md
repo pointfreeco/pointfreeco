@@ -1,11 +1,11 @@
 Swift 5.9 brought powerful observation tools to the language, but unfortunately they only work in
-iOS 17, macOS 14, tvOS 17, watchOS 10 and newer. But by some accounts, less than 50% of devices are
-on iOS 17, and so most developers will not be able to make use of the tools for a few more years.
+iOS 17, macOS 14, tvOS 17, watchOS 10, and newer. But by some accounts, less than 50% of devices are
+on iOS 17, and so most developers will not be able to make use of these tools for a few more years.
 
-So, we have back-ported the observation tools to work on Apple's platforms going all the way back
+So we have backported the observation tools to work on Apple's platforms going all the way back
 to iOS 13, macOS 10.15, tvOS 13, watchOS 6, and we've released it as an 
 [open-source library][perception-gh]. This means you can massively simplify your SwiftUI views 
-_today_ by using our library. You just have to do a few things first.
+_today_ by using our library.
 
 Join us for a quick overview of our new library: [Perception][perception-gh].
 
@@ -18,17 +18,17 @@ you will use our `@Perceptible` macro:
 ```diff
 +import Perception
 
- @Observable
+-@Observable
 +@Perceptible
  class FeatureModel {
    var count = 0
  }
 ```
 
-That is all it takes for the `FeatureModel` class to track accesses to its properties and to 
-broadcast when those properties are mutated.
+That is all it takes for the `FeatureModel` class to track access to its properties and to broadcast
+when those properties are mutated.
 
-This model can be used in a SwiftUI view, but there is one additional step that must be taken to 
+This model can be used in a SwiftUI view, but there is one additional step that must be taken to
 guarantee that the view subscribes to the model's changes. We must wrap the view in a special
 view called `WithPerceptionTracking`:
 
@@ -58,26 +58,26 @@ And the library will help you out if you forget to use `WithPerceptionTracking`.
 runtime warning will be triggered:
 
 > 🟣 Runtime Warning: Perceptible state was accessed but is not being tracked. Track changes to 
-state by wrapping your view in a 'WithPerceptionTracking' view.
+> state by wrapping your view in a 'WithPerceptionTracking' view.
 
-This let's you instantly know when something is not set up correctly, and do so in a noticeable
-yet [unobstrusive][unobstrusive-warnings] way. To debug this, expand the warning in the Issue 
-Navigator of Xcode (cmd+5), and click through the stack frames displayed to find the line in your 
-view where you are accessing state without being inside `WithPerceptionTracking`.
+This lets you instantly know when something is not set up correctly, and do so in a noticeable yet
+[unobstrusive][unobstrusive-warnings] way. To debug this, expand the warning in the Issue 
+Navigator of Xcode (⌘5), and click through the stack frames displayed to find the line in your view
+where you are accessing state without being inside `WithPerceptionTracking`.
 
 ## How the Perception library works
 
-The new Observation framework is apart of the Swift open source project, which means all of the 
+The new Observation framework is a part of the Swift open source project, which means all of the 
 [source code][observation-library-gh] is immediately available, including the 
 [source for the @Observable macro][observation-macros-gh]. So, we were able to copy all of that
 code to a new project, and with a few small changes we were able to get it all compiling.
 
 We also made some major changes to the code to have it behave the way we wanted. The first major 
-change we made to the code was to rename all variations of "observation" to 
-"perception" (e.g. `@Observable` becomes `@Perceptible`). We did this so to make it clear that these
-are tools separate from the ones that Apple ships directly in the Swift tool chain. But we also
-[deprecated][percetible-deprecation-gh] all of the back-ported tools with renames so that once you
-can set your minimum deployment target to iOS 17 you will have an easy way to transition off of 
+change we made to the code was to rename all variations of "observation" to "perception" (_e.g._,
+`@Observable` becomes `@Perceptible`). We did this so to make it clear that these are tools separate
+from the ones that Apple ships directly in the Swift tool chain. But we also
+[deprecated][percetible-deprecation-gh] all of the backported tools with renames so that once
+you can set your minimum deployment target to iOS 17 you will have an easy way to transition off of
 our library.
 
 Further, we wanted our tools to be able to defer to Apple's native Observation framework when 
@@ -120,15 +120,15 @@ extension PerceptionRegistrar {
 }
 ```
 
-Note that this properties are technically unsafe since we are force casting. But we can be careful
+Note that these properties are technically unsafe since we are force casting. But we can be careful
 to only invoke the properties when the underlying wrapped value is of the type of registrar we
 expect.
 
 Then we need to implement the `access`, `willSet`, `didSet` and `withMutation` methods on 
 `PerceptionRegistrar`, and do so in a way that can dynamically, at runtime, choose to invoke our
-back-ported tools or Apple's native tools. 
+backported tools or Apple's native tools. 
 
-For example, `access` can be implemented as a method constrained to work with the back-ported 
+For example, `access` can be implemented as a method constrained to work with the backported 
 `Perceptible` types rather than `Observable` types:
 
 ```swift
@@ -143,7 +143,7 @@ extension PerceptionRegistrar {
 ```
 
 Then in the body of this method we can dynamically check if iOS 17 is available, and if so try
-casting the object to the `Observable` protocol, as well as do some fancy manuevers to open
+casting the object to the `Observable` protocol, as well as do some fancy maneuvers to open
 the existential and cast the key path to the right type:
 
 ```swift
@@ -180,8 +180,8 @@ and new devices will use the native observation tools in Swift 5.9.
 
 ## Get started today
 
-Try out the [Perception][perception-gh] in your project today to start making use of Swift's 
-amazing observation tools, even if you can't target the newest Apple platforms.
+Try out [Perception][perception-gh] in your project today to start making use of Swift's amazing
+observation tools, even if you can't target the newest Apple platforms.
 
 [perception-gh]: http://github.com/pointfreeco/swift-perception
 [unobstrusive-warnings]: https://www.pointfree.co/blog/posts/70-unobtrusive-runtime-warnings-for-libraries
