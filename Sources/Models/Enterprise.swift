@@ -5,17 +5,20 @@ import Tagged
 public struct EnterpriseAccount: Decodable, Equatable, Identifiable {
   public var companyName: String
   public var domain: Domain
+  public var domains: [Domain]
   public var id: Tagged<Self, UUID>
   public var subscriptionId: Subscription.ID
 
   public init(
     companyName: String,
     domain: Domain,
+    domains: [Domain],
     id: ID,
     subscriptionId: Subscription.ID
   ) {
     self.companyName = companyName
     self.domain = domain
+    self.domains = domains
     self.id = id
     self.subscriptionId = subscriptionId
   }

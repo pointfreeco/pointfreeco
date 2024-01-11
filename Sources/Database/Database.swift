@@ -18,12 +18,6 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
-  public var createEnterpriseAccount:
-    (
-      _ companyName: String,
-      _ domain: EnterpriseAccount.Domain,
-      _ subscriptionID: Models.Subscription.ID
-    ) async throws -> EnterpriseAccount
   public var createEnterpriseEmail:
     (
       _ emailAddress: EmailAddress,

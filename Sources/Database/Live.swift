@@ -17,17 +17,6 @@ extension Client {
           """
         )
       },
-      createEnterpriseAccount: { companyName, domain, subscriptionId in
-        try await pool.sqlDatabase.first(
-          """
-          INSERT INTO "enterprise_accounts"
-          ("company_name", "domain", "subscription_id")
-          VALUES
-          (\(bind: companyName), \(bind: domain), \(bind: subscriptionId))
-          RETURNING *
-          """
-        )
-      },
       createEnterpriseEmail: { email, userId in
         try await pool.sqlDatabase.first(
           """
@@ -140,7 +129,7 @@ extension Client {
       fetchEnterpriseAccountForDomain: { domain in
         try await pool.sqlDatabase.first(
           """
-          SELECT "company_name", "domain", "id", "subscription_id"
+          SELECT "company_name", "domain", "domains", "id", "subscription_id"
           FROM "enterprise_accounts"
           WHERE "domain" = \(bind: domain)
           LIMIT 1
@@ -150,7 +139,7 @@ extension Client {
       fetchEnterpriseAccountForSubscription: { subscriptionId in
         try await pool.sqlDatabase.first(
           """
-          SELECT "company_name", "domain", "id", "subscription_id"
+          SELECT "company_name", "domain", "domains", "id", "subscription_id"
           FROM "enterprise_accounts"
           WHERE "subscription_id" = \(bind: subscriptionId)
           LIMIT 1
@@ -833,6 +822,13 @@ extension Client {
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "updated_at" timestamp without time zone
           )
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "enterprise_accounts"
+          ADD COLUMN IF NOT EXISTS
+          "domains" text[] NOT NULL DEFAULT '{}'
           """
         )
       },

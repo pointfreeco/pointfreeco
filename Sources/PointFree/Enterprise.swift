@@ -218,7 +218,7 @@ private func validateInvitation(
   else { return nil }
 
   // Make sure email address is on the same domain as the enterprise account
-  guard email.hasDomain(account.domain)
+  guard account.domains.contains(where: email.hasDomain)
   else { return nil }
 
   // Make sure user id decrypts correctly.
@@ -253,13 +253,14 @@ private func sendEnterpriseInvitation<Z>(
 
     let (account, request) = (get1(conn.data), get2(conn.data))
 
-    if !request.email.hasDomain(account.domain) {
+    if !account.domains.contains(where: request.email.hasDomain) {
+      let domains = account.domains.map { "\"\($0)\"" }.joined(separator: ", ")
       return conn
         |> redirect(
           to: siteRouter.path(for: .enterprise(account.domain)),
           headersMiddleware: flash(
             .error,
-            "The email you entered does not come from the @\(account.domain) domain."
+            "The email you entered must be on one of the following domains: \(domains)"
           )
         )
     } else if let encryptedEmail = Encrypted(
