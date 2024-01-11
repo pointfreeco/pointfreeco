@@ -17,17 +17,6 @@ extension Client {
           """
         )
       },
-      createEnterpriseAccount: { companyName, domain, subscriptionId in
-        try await pool.sqlDatabase.first(
-          """
-          INSERT INTO "enterprise_accounts"
-          ("company_name", "domain", "subscription_id")
-          VALUES
-          (\(bind: companyName), \(bind: domain), \(bind: subscriptionId))
-          RETURNING *
-          """
-        )
-      },
       createEnterpriseEmail: { email, userId in
         try await pool.sqlDatabase.first(
           """

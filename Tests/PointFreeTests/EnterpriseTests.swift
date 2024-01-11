@@ -89,9 +89,62 @@ class EnterpriseTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  func testRequestInvitation_GoodEmail() async throws {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
+
+    await withDependencies {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchUserById = { _ in loggedInUser }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .requestInvite(EnterpriseRequestFormData(email: "blob@pointfree.biz"))
+        ),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  func testRequestInvitation_BadEmail() async throws {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
+
+    await withDependencies {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchUserById = { _ in loggedInUser }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .requestInvite(EnterpriseRequestFormData(email: "blob@pointfree.gov"))
+        ),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
   func testAcceptInvitation_BadEmail() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock
@@ -115,6 +168,7 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_BadUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
     let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     var loggedInUser = User.mock
@@ -138,6 +192,7 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_EmailDoesntMatchEnterpriseDomain() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
+    account.domains = ["pointfree.co"]
     let encryptedEmail = Encrypted("blob@pointfree.biz", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
@@ -163,6 +218,7 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_RequesterUserDoesntMatchAccepterUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
     let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
@@ -191,6 +247,7 @@ class EnterpriseTests: TestCase {
     } operation: {
       var account = EnterpriseAccount.mock
       account.domain = "pointfree.co"
+      account.domains = ["pointfree.co", "pointfree.biz"]
       let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
       let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
       let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
@@ -210,7 +267,36 @@ class EnterpriseTests: TestCase {
   func testAcceptInvitation_HappyPath() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
     let encryptedEmail = Encrypted("blob@pointfree.co", with: self.envVars.appSecret)!
+    let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
+    var loggedInUser = User.mock
+    loggedInUser.id = userId
+    loggedInUser.subscriptionId = nil
+
+    await withDependencies {
+      $0.database = .mock
+      $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionById = { _ in throw unit }
+    } operation: {
+      let req = request(
+        to: .enterprise(
+          account.domain, .acceptInvite(email: encryptedEmail, userId: encryptedUserId)),
+        session: .loggedIn(as: loggedInUser)
+      )
+      let conn = connection(from: req)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+
+    // todo: more verifications that subscription was linked
+  }
+
+  func testAcceptInvitation_HappyPath_SecondaryDomain() async throws {
+    var account = EnterpriseAccount.mock
+    account.domain = "pointfree.co"
+    account.domains = ["pointfree.co", "pointfree.biz"]
+    let encryptedEmail = Encrypted("blob@pointfree.biz", with: self.envVars.appSecret)!
     let userId = User.ID(uuidString: "00000000-0000-0000-0000-123456789012")!
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: self.envVars.appSecret)!
     var loggedInUser = User.mock

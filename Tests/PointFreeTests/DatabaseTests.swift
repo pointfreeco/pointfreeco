@@ -31,18 +31,22 @@ final class DatabaseTests: LiveDatabaseTestCase {
     )
     let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
 
-    let createdAccount = try await self.database.createEnterpriseAccount(
-      companyName: "Blob, Inc.",
-      domain: "blob.biz",
-      subscriptionID: subscription.id
+    _ = try await self.database.execute(
+      """
+      INSERT INTO "enterprise_accounts"
+      ("company_name", "domain", "subscription_id")
+      VALUES
+      ('Blob, Inc.', 'blob.biz', \(bind: subscription.id))
+      RETURNING *
+      """
     )
-    let fetchedAccount = try await self.database
-      .fetchEnterpriseAccountForDomain(createdAccount.domain)
 
-    XCTAssertNoDifference(createdAccount, fetchedAccount)
-    XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
-    XCTAssertEqual("blob.biz", createdAccount.domain)
-    XCTAssertEqual(subscription.id, createdAccount.subscriptionId)
+    let fetchedAccount = try await self.database
+      .fetchEnterpriseAccountForDomain("blob.biz")
+
+    XCTAssertEqual("Blob, Inc.", fetchedAccount.companyName)
+    XCTAssertEqual("blob.biz", fetchedAccount.domain)
+    XCTAssertEqual(subscription.id, fetchedAccount.subscriptionId)
   }
 
   func testCreateSubscription_OwnerIsNotTakingSeat() async throws {

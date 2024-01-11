@@ -16,6 +16,7 @@ extension EnterpriseAccount {
   public static let mock = EnterpriseAccount(
     companyName: "Blob Inc.",
     domain: "blob.biz",
+    domains: ["blob.biz"],
     id: .init(uuidString: "b10b17c1-b10b-17c1-b10b-17c1b10b17c1")!,
     subscriptionId: .init(uuidString: "00000000-0000-0000-0000-000000000000")!
   )
