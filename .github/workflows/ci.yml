@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - delayed
   pull_request:
     branches:
       - '*'
