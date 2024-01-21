@@ -252,7 +252,7 @@ the wide variety of closure annotations, such as `@Sendable`, `@escaping`, `@aut
 And this is why it can be very important to write tests for your macros, and write as many as 
 possible to cover each strange nuance and edge case. But the default testing tool that comes with
 SwiftSyntax is a little cumbersome, and so we built a testing tool that makes it very easy to 
-assert how your macro expands, as well as how it's diagnostics and fix-its are emitted.
+assert how your macro expands, as well as how its diagnostics and fix-its are emitted.
 
 [testing-debugging-macros-1]: https://www.pointfree.co/episodes/ep251-testing-debugging-macros-part-2
 [testing-debugging-macros-2]: https://www.pointfree.co/episodes/ep250-testing-debugging-macros-part-1
@@ -341,7 +341,7 @@ to use value types for our domains, concise domain modeling tools, easy testing,
 ## Open source
 
 On average, our [open source libraries][pf-gh] are cloned over **120,000 times** per day! They are
-used by thousands of developers and companies all across the globe. It's a lot of work to main them,
+used by thousands of developers and companies all across the globe. It's a lot of work to maintain them,
 but it's all made possible thanks to our wonderful [subscribers][eoy-discount].
 
 <!--
