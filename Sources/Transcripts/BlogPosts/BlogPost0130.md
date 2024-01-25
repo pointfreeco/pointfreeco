@@ -1,5 +1,5 @@
-After [2 months][obs-beta-blob] in beta, we are finally releasing the 
-[Composable Architecture][tca-gh] with Swift 5.9's observation tools tightly integrated. This 
+After [2 months][obs-beta-blob] in beta, we are [finally releasing][1.7-release] the 
+Composable Architecture with Swift 5.9's observation tools tightly integrated. This 
 simplifies nearly every facet of the library, and allows us to drastically reduce the APIs in the 
 library and leverage SwiftUI's APIs more fully.
 
@@ -12,8 +12,8 @@ all of the benefits.
 
 ## 👋 Goodbye view stores!
 
-By far the most substantial improvement to the library is that view stores and a flurry of related
-concepts are no longer needed. View stores were necessary in the beginning because one needed to 
+By far the most substantial improvement to the library is that view stores, and a flurry of related
+concepts, are no longer needed. View stores were necessary in the beginning because one needed to 
 be able to hold a lot of state in a feature, yet observe only a small part of the state. Now that
 is all handled automatically for us thanks to Swift's new observation tools.
 
@@ -40,8 +40,8 @@ from the store:
 -  WithViewStore(store, observe: ViewState.init) { store in
      Form {
 -      Text(viewStore.count.description)
--      Button("+") { viewStore.send(.incrementButtonTapped) }
 +      Text(store.count.description)
+-      Button("+") { viewStore.send(.incrementButtonTapped) }
 +      Button("+") { store.send(.incrementButtonTapped) }
      }
 -  }
