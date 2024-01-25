@@ -68,12 +68,12 @@ earlier. But, in order for observation to be tracked properly, you must wrap you
  }
 ``` 
 
-That's all it takes to get automatically observation tracking, and you can run the app on iOS
+That's all it takes to automatically get observation tracking, and you can run the app on iOS
 versions going all the way back to 13!
 
 ## 👋 Goodbye IfLetStore, ForEachStore, SwitchStore, NavigationStackStore and navigation view modifiers!
 
-The Composable Architecture needed to maintain a whole zoo of tools, views and view modifiers in
+The Composable Architecture needed to maintain a whole zoo of tools, views, and view modifiers in
 order to make SwiftUI work with the library, _and_ for state to be observed in the most minimal
 way possible. But now that observation happens automatically, and is based on what state is 
 accessed, we can completely get rid of those tools.
@@ -101,7 +101,7 @@ scoped to a collection of features:
  }
 ```
 
-The library also had to provide a tools for efficiently switching over enums of features called
+The library also had to provide tools for efficiently switching over enums of features called
 `SwitchStore` and `CaseLet`. These concepts now completely go away and one can use a regular 
 `switch` statement:
 
@@ -120,7 +120,7 @@ The library also had to provide a tools for efficiently switching over enums of 
 -    }
 +    store.scope(state: \.settings, action: \.settings).map(SettingsView.init)
    }
- }
+-}
 ```
 
 Even navigation stacks needed their own helper, called `NavigationStackStore`. This too goes away
@@ -132,8 +132,9 @@ feature:
 -NavigationStackStore(store.scope(state: \.path, action: \.path)) {
 +NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
    RootView()
- } destination: {
+-} destination: {
 -  switch $0 {
++} destination: { store in
 +  switch store.state {
    case .activity:
 -    CaseLet(/Feature.State.activity, action: Feature.Action.activity) { store in
@@ -185,8 +186,7 @@ override func viewDidLoad() {
   super.viewDidLoad()
 
   observe { [weak self] in
-    guard let self
-    else { return }
+    guard let self else { return }
 
     countLabel.isHidden = store.isObservingCount
     if !countLabel.isHidden {
