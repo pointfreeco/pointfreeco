@@ -16,7 +16,7 @@ public func liveView() -> Node {
       ])
     ],
     .gridColumn(
-      sizes: [.mobile: 12, .desktop: 8],
+      sizes: [.mobile: 12, .desktop: 9],
       attributes: [
         .class([
           Class.grid.center(.desktop)
@@ -35,7 +35,7 @@ public func liveView() -> Node {
         """)
     ),
     .gridColumn(
-      sizes: [.mobile: 12, .desktop: 4],
+      sizes: [.mobile: 12, .desktop: 3],
       attributes: [
         .class([
           Class.grid.center(.desktop)
