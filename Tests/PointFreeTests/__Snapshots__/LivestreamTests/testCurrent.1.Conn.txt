@@ -2066,7 +2066,7 @@ explore our open source libraries, and take questions from our viewers.">
                 row">
       <div class="center-d
                   col-m
-                  col-d-8
+                  col-d-9
                   col-m-12">
         <div style="padding:56.25% 0 0 0;position:relative;">
   <iframe src="https://vimeo.com/event/42/embed"
@@ -2079,7 +2079,7 @@ explore our open source libraries, and take questions from our viewers.">
       </div>
       <div class="center-d
                   col-m
-                  col-d-4
+                  col-d-3
                   col-m-12">
         <iframe src="https://vimeo.com/event/42/chat/"
         width="100%"
