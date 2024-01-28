@@ -333,6 +333,8 @@ public struct Episode: Equatable, Identifiable {
 
         public init?(name: String) {
           switch name.lowercased() {
+          case "announcement":
+            self = .announcement
           case "correction":
             self = .correction
           case "note":
@@ -340,13 +342,11 @@ public struct Episode: Equatable, Identifiable {
           case "preamble":
             self = .preamble
           case "runtime-warning":
-            self = Box(
-              title: "🟣 Warning",
-              backgroundColor: "eee2ff",
-              borderColor: "974dff"
-            )
+            self = .runtimeWarning
           case "tip":
             self = .tip
+          case "update":
+            self = .update
           case "warning":
             self = .warning
           default:
@@ -356,14 +356,20 @@ public struct Episode: Equatable, Identifiable {
 
         public var name: String? {
           switch self {
+          case .announcement:
+            return "announcement"
           case .correction:
             return "correction"
           case .note:
             return "note"
           case .preamble:
             return "preamble"
+          case .runtimeWarning:
+            return "runtime-warning"
           case .tip:
             return "tip"
+          case .update:
+            return "update"
           case .warning:
             return "warning"
           default:
@@ -371,6 +377,11 @@ public struct Episode: Equatable, Identifiable {
           }
         }
 
+        public static let announcement = Self(
+          title: "📣 Announcement",
+          backgroundColor: "dcf4e7",
+          borderColor: "79f2b0"
+        )
         public static let correction = Self(
           title: "Correction",
           backgroundColor: "ffdbdd",
@@ -386,8 +397,18 @@ public struct Episode: Equatable, Identifiable {
           backgroundColor: "eee2ff",
           borderColor: "974dff"
         )
+        public static let runtimeWarning = Self(
+          title: "🟣 Warning",
+          backgroundColor: "eee2ff",
+          borderColor: "974dff"
+        )
         public static let tip = Self(
           title: "Tip",
+          backgroundColor: "dcf4e7",
+          borderColor: "79f2b0"
+        )
+        public static let update = Self(
+          title: "📣 Update",
           backgroundColor: "dcf4e7",
           borderColor: "79f2b0"
         )
