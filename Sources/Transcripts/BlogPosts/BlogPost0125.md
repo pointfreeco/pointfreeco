@@ -1,3 +1,5 @@
+!> [Update]: The beta period is now over, and these tools have been officially released. [See the announcement](/blog/posts/130-observation-comes-to-the-composable-architecture) for more details.
+
 Two very exciting things happened today: the [Composable Architecture][tca-gh] has crossed
 10,000 stars on GitHub(!), and we are announcing a [beta preview][tca-obs-beta-discussion] for the 
 biggest change we have made to the library in its history. We are integrating Swift's Observation 

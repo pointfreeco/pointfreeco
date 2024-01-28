@@ -345,6 +345,8 @@ public struct Episode: Equatable, Identifiable {
             self = .runtimeWarning
           case "tip":
             self = .tip
+          case "update":
+            self = .update
           case "warning":
             self = .warning
           default:
@@ -354,6 +356,8 @@ public struct Episode: Equatable, Identifiable {
 
         public var name: String? {
           switch self {
+          case .announcement:
+            return "announcement"
           case .correction:
             return "correction"
           case .note:
@@ -362,6 +366,8 @@ public struct Episode: Equatable, Identifiable {
             return "preamble"
           case .tip:
             return "tip"
+          case .update:
+            return "update"
           case .warning:
             return "warning"
           default:
@@ -396,6 +402,11 @@ public struct Episode: Equatable, Identifiable {
         )
         public static let tip = Self(
           title: "Tip",
+          backgroundColor: "dcf4e7",
+          borderColor: "79f2b0"
+        )
+        public static let update = Self(
+          title: "📣 Update",
           backgroundColor: "dcf4e7",
           borderColor: "79f2b0"
         )
