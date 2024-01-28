@@ -364,6 +364,8 @@ public struct Episode: Equatable, Identifiable {
             return "note"
           case .preamble:
             return "preamble"
+          case .runtimeWarning:
+            return "runtime-warning"
           case .tip:
             return "tip"
           case .update:
