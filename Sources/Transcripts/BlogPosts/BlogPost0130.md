@@ -1,4 +1,4 @@
-After [2 months][obs-beta-blob] in beta, we are [finally releasing][1.7-release] the 
+After [2 months][obs-beta-blog] in beta, we are [finally releasing][1.7-release] the 
 Composable Architecture with Swift 5.9's observation tools tightly integrated. This 
 simplifies nearly every facet of the library, and allows us to drastically reduce the APIs in the 
 library and leverage SwiftUI's APIs more fully.
@@ -10,6 +10,15 @@ Join us for a quick overview of the changes, and also be sure to check out the
 [migration guide][1.7-migration-guide] and [update your project to 1.7][1.7-release] today to get
 all of the benefits.
 
+[1.7-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.7.0
+[obs-beta-blog]: /blog/posts/125-observable-architecture-beta
+[1.7-migration-guide]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.7
+[perception-blog-post]: /blog/posts/129-perception-a-back-port-of-observable
+[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
+[isowords-gh]: https://github.com/pointfreeco/isowords 
+
+!> [announcement]: Today is our [6 year anniversary](/blog/posts/131-point-free-turns-6)! 🥳 <br><br> To celebrate we have announced a [live stream](/live) for next week, Feburary 5th at 9am PST / 5pm GMT. We will dive into the observation tools live, field questions from our viewers, and announce two brand new features of the Composable Architecture that no one has seen. 😲
+
 ## 👋 Goodbye view stores!
 
 By far the most substantial improvement to the library is that view stores, and a flurry of related
@@ -18,17 +27,14 @@ be able to hold a lot of state in a feature, yet observe only a small part of th
 is all handled automatically for us thanks to Swift's new observation tools.
 
 To update your features, simply annotate the `State` type of your reducers with the 
-`@ObservableState` macro:
+`@ObservableState` macro (it works with both structs and enums):
 
 ```diff
  @Reducer
  struct Feature {
 +  @ObservableState
    struct State { /* ... */ }
-   enum Action { /* ... */ }
-   var body: some ReducerOf<Self> {
-     // ...
-   }
+   …
  }
 ``` 
 
@@ -38,12 +44,12 @@ from the store:
 ```diff
  var body: some View {
 -  WithViewStore(store, observe: ViewState.init) { store in
-     Form {
--      Text(viewStore.count.description)
-+      Text(store.count.description)
--      Button("+") { viewStore.send(.incrementButtonTapped) }
-+      Button("+") { store.send(.incrementButtonTapped) }
-     }
+   Form {
+-    Text(viewStore.count.description)
++    Text(store.count.description)
+-    Button("+") { viewStore.send(.incrementButtonTapped) }
++    Button("+") { store.send(.incrementButtonTapped) }
+   }
 -  }
  }
 ```
@@ -73,10 +79,10 @@ versions going all the way back to 13!
 
 ## 👋 Goodbye IfLetStore, ForEachStore, SwitchStore, NavigationStackStore and navigation view modifiers!
 
-The Composable Architecture needed to maintain a whole zoo of tools, views, and view modifiers in
-order to make SwiftUI work with the library, _and_ for state to be observed in the most minimal
-way possible. But now that observation happens automatically, and is based on what state is 
-accessed, we can completely get rid of those tools.
+Historically, the Composable Architecture needed to maintain a whole zoo of tools, views, and view 
+modifiers in order to make SwiftUI work with the library, _and_ for state to be observed in the most 
+minimal way possible. But now that observation happens automatically, and is based on what state is 
+accessed in the view, we can completely get rid of those tools.
 
 For example, to derive a `Store` to an optional child domain, one would previously use the 
 `IfLetStore` helper view. But now one can simply use a vanilla Swift `if let` statement:
@@ -152,7 +158,7 @@ feature:
 
 And the library also needed to supply a whole plethora of navigation view modifiers that mimic
 the vanilla SwiftUI APIs, but tuned specifically for the Composable Architecture. This included
-`sheet(store:)`, `popover(store:)`, fullScreenCover(store:)`, and more. But now all of those go
+`sheet(store:)`, `popover(store:)`, `fullScreenCover(store:)`, and more. But now all of those go
 away, and instead you can use the vanlla SwiftUI modifiers by deriving a binding from the store
 for the feature you want to present:
 
@@ -164,7 +170,10 @@ for the feature you want to present:
 ```
 
 This is only scratching the surface of what Swift's observation tools have allowed us to 
-simplify. And once we decided to release our next major version (2.0), we will be able to delete
+simplify. Be sure to follow the [migration guide][1.7-migration-guide] to update your application
+to use all the newest tools.
+
+And once we decide to release our next major version (2.0), we will be able to delete
 thousands of lines of code and documentation, making the library lighter weight and improving
 compile times for complex features. 
 
@@ -204,15 +213,14 @@ update the label's text.
 
 ## Get started today
 
-Upgrade your projects to [version 1.7][1.7-release] of the Composable Architecture to start
-making use of its new observation tools today. And we have some big plans for the library in the 
-coming months, so stay tuned!
+Follow the [migration guide][1.7-migration-guide] to upgrade your projects to 
+[version 1.7][1.7-release] of the Composable Architecture to start making use of its new observation 
+tools today. And we have some big plans for the library in the coming months, so stay tuned!
 
 [1.7-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.7.0
-[obs-beta-blob]: /blog/posts/125-observable-architecture-beta
+[obs-beta-blog]: /blog/posts/125-observable-architecture-beta
 [1.7-migration-guide]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.7
 [perception-blog-post]: /blog/posts/129-perception-a-back-port-of-observable
 [tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
 [isowords-gh]: https://github.com/pointfreeco/isowords 
-[observe-docs]: todo
-
+[observe-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/objectivec/nsobject/observe(_:)

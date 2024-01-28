@@ -3,7 +3,8 @@ import Foundation
 public let post0131_PFAnniversary = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We launched Point-Free 6 years ago today! To celebrate we are announcing a live stream taking \
+    place next week, Feburary 5th at 9am PST / 5pm GMT.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 131),
   coverImage: nil,
