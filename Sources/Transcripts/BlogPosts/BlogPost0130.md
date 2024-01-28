@@ -4,7 +4,10 @@ simplifies nearly every facet of the library, and allows us to drastically reduc
 library and leverage SwiftUI's APIs more fully.
 
 And best of all, this release is 100% backwards compatible with the last release of the library, 
-which means you can start incrementally using these tools _today_. 
+which means you can start incrementally using these tools _today_. Oh, and we also 
+[backported][perception-blog-post] all of the observation tools so that they work on older Apple 
+platforms going all the way back to
+iOS 13!
 
 Join us for a quick overview of the changes, and also be sure to check out the 
 [migration guide][1.7-migration-guide] and [update your project to 1.7][1.7-release] today to get
