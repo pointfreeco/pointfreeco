@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=tr
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 76125
+Content-Length: 76511
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2422,6 +2422,9 @@ below we will apply a
                           Kenya
                         </li>
                         <li>
+                          Kyrgyzstan
+                        </li>
+                        <li>
                           Laos
                         </li>
                         <li>
@@ -2533,10 +2536,16 @@ below we will apply a
                           Tanzania
                         </li>
                         <li>
+                          Tajikistan
+                        </li>
+                        <li>
                           Togo
                         </li>
                         <li>
                           Turkey
+                        </li>
+                        <li>
+                          Turkmenistan
                         </li>
                         <li>
                           Trinidad and Tobago
@@ -2552,6 +2561,9 @@ below we will apply a
                         </li>
                         <li>
                           Uruguay
+                        </li>
+                        <li>
+                          Uzbekistan
                         </li>
                         <li>
                           Venezuela
