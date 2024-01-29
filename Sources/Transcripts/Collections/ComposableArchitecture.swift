@@ -338,7 +338,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep265_observableArchitecture),
       .init(episode: .ep266_observableArchitecture),
     ],
-    isFinished: false,
+    isFinished: true,
     related: [],
     title: "Observable Architecture",
     whereToGoFromHere: nil
