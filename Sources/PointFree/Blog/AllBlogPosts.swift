@@ -147,4 +147,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0130_TCAObservationRelease,
   post0131_PFAnniversary,
   post0132_WereLive,
+  post0133_ReducerMacroUpdates,
 ]
