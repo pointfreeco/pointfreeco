@@ -143,12 +143,94 @@ trailing closure:
 ```
 
 The same simplifications can be made to `Path` reducers when using navigation stacks, as detailed
-in our [stack-based navigation article][stack-based-nav-article].
+in our [stack-based navigation article][stack-based-nav-article]. However, there is an additional
+super power that comes with `@Reducer` to further simplify constructing navigation stacks.
+
+Typically in stack-based applications you would model a single `Path` reducer that encapsulates all
+of the logic and behavior for each screen that can be pushed onto the stack. This can now be done 
+in a super concise syntax thanks to the new powers of `@Reducer`:
+
+```swift
+@Reducer
+enum Path {
+  case detail(DetailFeature)
+  case meeting(MeetingFeature)
+  case record(RecordFeature)
+} 
+```
+
+But there's another part to path reducers that can also be simplified. When constructing the 
+`NavigationStack` we need to specify a trailing closure that switches on the `Path.State` enum
+and decides what view to drill-down to. Currently it can be quite verbose to do this:
+
+```swift
+NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+  // Root view
+} destination: { store in 
+  switch store.state {
+  case .detail:
+    if let store = store.scope(state: \.detail, action: \.detail) {
+      DetailView(store: store)
+    }
+  case .meeting:
+    if let store = store.scope(state: \.meeting, action: \.meeting) {
+      MeetingView(store: store)
+    }
+  case .record:
+    if let store = store.scope(state: \.record, action: \.record) {
+      RecordView(store: store)
+    }
+  }
+}
+```
+
+This requires a two-step process of first destructuring the `Path.State` enum to figure out which 
+case the state is in, and then further scoping the store down to a particular case of the 
+`Path.State` enum. And since such extraction is failable, we have to `if let` unwrap the scoped
+store, and only then can we pass it to the child view being navigated to.
+
+The new super powers of the `@Reducer` macro greatly improve this code. The macro adds a `case`
+computed property to the store so that you can switch on the `Path.State` enum _and_ extract out
+a store in one step:
+
+```diff
+ NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+   // Root view
+ } destination: { store in 
+-  switch store.state {
++  switch store.case {
+-  case .detail:
+-    if let store = store.scope(state: \.detail, action: \.detail) {
+-      DetailView(store: store)
+-    }
++  case let .detail(store):
++    DetailView(store: store)
+
+-  case .meeting:
+-    if let store = store.scope(state: \.meeting, action: \.meeting) {
+-      MeetingView(store: store)
+-    }
++  case let .meeting(store):
++    MeetingView(store: store)
+
+-  case .record:
+-    if let store = store.scope(state: \.record, action: \.record) {
+-      RecordView(store: store)
+-    }
++  case let .record(store):
++    RecordView(store: store)
+   }
+ }
+```
+
+This is far simpler, and comes for free when using the `@Reducer` macro on your enum `Path` 
+reducers.
 
 ## Get started today
 
 Update your projects to [version 1.8][1.8-release-notes] of the Composable Architecture today to 
-make use of these new super powers of the `@Reducer` macro.
+make use of these new super powers of the `@Reducer` macro, and be sure to check out the 
+[migration guide][1.8-migration] for more details.
 
 [1.8-migration]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.8
 [1.8-release-notes]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.8.0
