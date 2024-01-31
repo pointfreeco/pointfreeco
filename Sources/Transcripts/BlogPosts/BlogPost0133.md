@@ -121,7 +121,7 @@ implemented simply as this:
 
 ```swift
 @Reducer
-struct Destination {
+enum Destination {
   case add(FormFeature)
   case detail(DetailFeature)
   case edit(EditFeature)
@@ -132,11 +132,14 @@ That's right, 24 lines of code becomes just 4. And further, when integrating the
 reducer into the parent feature, one can use the `ifLet` operator without even specifying a 
 trailing closure:  
 
-```swift
-Reduce { state, action in
-  // Core feature logic 
-}
-.ifLet(\.$destination, action: \.destination)
+```diff
+ Reduce { state, action in
+   // Core feature logic 
+ }
+ .ifLet(\.$destination, action: \.destination)
+-{
+-  Destination()
+-}
 ```
 
 The same simplifications can be made to `Path` reducers when using navigation stacks, as detailed
