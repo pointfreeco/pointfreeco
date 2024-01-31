@@ -66,7 +66,7 @@ destination pattern is described in our [tree-based navigation article][tree-bas
 and it is the process of representing all the places a feature can navigate to by integrating
 them all together into a single `Destination` reducer.
 
-For example, suppose an inventory feature could navigate to "Add" feature, a "Detail" feature,
+For example, suppose an inventory feature could navigate to an "Add" feature, a "Detail" feature,
 and an "Edit" feature. This can be represented by the following single reducer that composes all
 of those features together:
 
@@ -107,10 +107,11 @@ struct State {
 }
 ```
 
-The pros of this style is that we have one single piece of optional state that determines 
-whether or not a navigation is active. The alternative is to hold onto an optional piece of state
-for each destination, but that create 2^3 = 8 possibile combinations of `nil` and non-`nil` state, 
-only 4 of which are actually valid: they are either all `nil` or exactly one is non-`nil`.
+There are many pros to this style of domain modeling, but most important we have just one single 
+piece of optional state that determines whether or not a navigation is active. The alternative is 
+to hold onto an optional piece of state for each destination, but that create 2^3 = 8 possibile 
+combinations of `nil` and non-`nil` state, only 4 of which are actually valid: they are either all 
+`nil` or exactly one is non-`nil`.
 
 So, it's a powerful pattern, but maintaining the `Destination` reducer can be a bit of a pain.
 Each new destination that is added requires adding a new case to the `State` enum, a new case to
@@ -193,34 +194,19 @@ The new super powers of the `@Reducer` macro greatly improve this code. The macr
 computed property to the store so that you can switch on the `Path.State` enum _and_ extract out
 a store in one step:
 
-```diff
- NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-   // Root view
- } destination: { store in 
--  switch store.state {
-+  switch store.case {
--  case .detail:
--    if let store = store.scope(state: \.detail, action: \.detail) {
--      DetailView(store: store)
--    }
-+  case let .detail(store):
-+    DetailView(store: store)
-
--  case .meeting:
--    if let store = store.scope(state: \.meeting, action: \.meeting) {
--      MeetingView(store: store)
--    }
-+  case let .meeting(store):
-+    MeetingView(store: store)
-
--  case .record:
--    if let store = store.scope(state: \.record, action: \.record) {
--      RecordView(store: store)
--    }
-+  case let .record(store):
-+    RecordView(store: store)
-   }
- }
+```swift
+NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+  // Root view
+} destination: { store in 
+  switch store.case {
+  case let .detail(store):
+    DetailView(store: store)
+  case let .meeting(store):
+    MeetingView(store: store)
+  case let .record(store):
+    RecordView(store: store)
+  }
+}
 ```
 
 This is far simpler, and comes for free when using the `@Reducer` macro on your enum `Path` 
