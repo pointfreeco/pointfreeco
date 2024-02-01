@@ -88,7 +88,7 @@ public let post0100_Anniversary = BlogPost(
 
         ## To 5 more years!
 
-        We are enternally grateful to all of our subscribers, who make it possible for us to create
+        We are eternally grateful to all of our subscribers, who make it possible for us to create
         our episodes and work on open source projects. We wouldn't be here without you. Here's
         to five more years! 🥳
 
