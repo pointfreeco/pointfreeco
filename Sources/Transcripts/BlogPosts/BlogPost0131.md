@@ -13,6 +13,8 @@ next week:
 
 [[Watch Feb 5 @ 9am PST / 5pm GMT]](/live)
 
+!> [correction]: Due to severe weather and power outages in California the livestream has been delayed until later in the week. Stay tuned!
+
 We will be discussing the latest release of the Composable Architecture, but we will also unveil a
 surprise release of the library bringing all new super powers to the `@Reducer` macro, _and_ we
 will announce a new beta for the library that solves one of the most frequent problems people ask
