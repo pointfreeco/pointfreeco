@@ -28,7 +28,7 @@ public let post0100_Anniversary = BlogPost(
 
         We are extremely excited to announce our first ever livestream. Everyone can access this
         livestream, whether you are a [subscriber](/pricing) or not, and it will begin at 9am PST
-        (5pm GMT) this Wednesday, Feburary 1st:
+        (5pm GMT) this Wednesday, February 1st:
         """###,
       type: .paragraph
     ),

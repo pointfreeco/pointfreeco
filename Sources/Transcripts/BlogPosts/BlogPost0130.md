@@ -20,7 +20,7 @@ all of the benefits.
 [tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
 [isowords-gh]: https://github.com/pointfreeco/isowords 
 
-!> [announcement]: Today is our [6 year anniversary](/blog/posts/131-point-free-turns-6)! 🥳 <br><br> To celebrate we have announced a [live stream](/live) for next week, Feburary 5th at 9am PST / 5pm GMT. We will dive into the observation tools live, field questions from our viewers, and announce two brand new features of the Composable Architecture that no one has seen. 😲
+!> [announcement]: Today is our [6 year anniversary](/blog/posts/131-point-free-turns-6)! 🥳 <br><br> To celebrate we have announced a [live stream](/live) for next week, February 5th at 9am PST / 5pm GMT. We will dive into the observation tools live, field questions from our viewers, and announce two brand new features of the Composable Architecture that no one has seen. 😲
 
 ## 👋 Goodbye view stores!
 

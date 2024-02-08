@@ -5,7 +5,7 @@ public let post0132_LivestreamRescheduled = BlogPost(
   blurb: """
     This week we had to cancel our livestream due to historic rain in California and the resulting
     power outages. But things are settled, and we're ready to go live again! Join us on
-    Feburary 12th at 9am PST and 5pm GMT.
+    February 12th at 9am PST and 5pm GMT.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 132),
   coverImage: nil,

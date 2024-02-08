@@ -1,7 +1,7 @@
 This week we had to cancel our livestream due to historic rain in California and the resulting
 power outages. But things are settled, and we're ready to go live again!
 
-The livestream is now planned for Feburary 12th at 9am PST and 5pm GMT.
+The livestream is now planned for February 12th at 9am PST and 5pm GMT.
 
 [[Watch Feb 12 @ 9am PST / 5pm GMT]](/live)
 
