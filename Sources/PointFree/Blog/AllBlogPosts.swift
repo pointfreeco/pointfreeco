@@ -146,5 +146,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0129_Perception,
   post0130_TCAObservationRelease,
   post0131_PFAnniversary,
-  //post0132_WereLive,
+  post0132_LivestreamRescheduled,
+  post0133_WereLive,
 ]

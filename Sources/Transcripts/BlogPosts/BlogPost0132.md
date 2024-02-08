@@ -1,14 +1,11 @@
-We are officially [live](/live)! 
+This week we had to cancel our livestream due to historic rain in California and the resulting
+power outages. But things are settled, and we're ready to go live again!
 
-[[Join livestream]](/live)
+The livestream is now planned for Feburary 12th at 9am PST and 5pm GMT.
 
-Join us to discuss the [latest release][1.7-release] of the 
-[Composable Architecture][tca-gh], which brought brand new observation tools to the library.
-We will also unveil a surprise release of the library bringing all new super powers to the 
-`@Reducer` macro, _and_ we will announce a new beta for the library that solves one of the most
+[[Watch Feb 12 @ 9am PST / 5pm GMT]](/live)
+
+We will be discussing the latest release of the Composable Architecture, but we will also unveil a
+surprise release of the library bringing all new super powers to the `@Reducer` macro, _and_ we
+will give a sneak peek at a brand new feature coming to the library that solves one of the most 
 frequent problems people ask about when using the library.
-
-It's going to be action packed, so be sure to tune in and bring your questions!
-
-[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
-[1.7-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.7.0
