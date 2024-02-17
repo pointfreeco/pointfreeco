@@ -18,16 +18,14 @@ extension Episode {
         hd720: "0267-720p-3a57abad7e0342c19b94f2b525a200ea",
         sd540: "0267-540p-648b6325eaa14bbba1ed7b95a1a83fec"
       ),
-      vimeoId: 912461576
+      vimeoId: 912_461_576
     ),
     id: 267,
     length: 114 * 60 + 34,
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2024-02-19")!,
-    questions: [
-    ],
-    references: [
-    ],
+    questions: [],
+    references: [],
     sequence: 267,
     subtitle: "Observation in Practice",
     title: "Point-Free Live",
@@ -38,11 +36,10 @@ extension Episode {
         hd720: "0267-720p-3a57abad7e0342c19b94f2b525a200ea",
         sd540: "0267-540p-648b6325eaa14bbba1ed7b95a1a83fec"
       ),
-      vimeoId: 912461576
+      vimeoId: 912_461_576
     ),
     transcriptBlocks: loadTranscriptBlocks(forSequence: 267)
   )
 }
 
-private let _exercises: [Episode.Exercise] = [
-]
+private let _exercises: [Episode.Exercise] = []
