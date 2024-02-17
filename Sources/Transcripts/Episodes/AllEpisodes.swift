@@ -269,5 +269,6 @@ extension Episode {
     .ep264_observableArchitecture,
     .ep265_observableArchitecture,
     .ep266_observableArchitecture,
+    .ep267_pfLive_observationInPractice,
   ]
 }
