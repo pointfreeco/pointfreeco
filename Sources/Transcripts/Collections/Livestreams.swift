@@ -7,7 +7,7 @@ extension Episode.Collection {
           blurb: livesteramBlurb,
           coreLessons: [
             .init(episode: .ep221_pfLive_dependenciesStacks)
-            .init(episode: .ep267_pfLive_observationInPractice),
+              .init(episode: .ep267_pfLive_observationInPractice)
           ],
           related: [],
           title: "Livestreams",
