@@ -1,29 +1,28 @@
 import Foundation
 
 extension Episode {
-  public static let epN_TODO = Episode(
+  public static let ep274_sharedState = Episode(
     blurb: """
       TODO
       """,
-    codeSampleDirectory: "TODO",
+    codeSampleDirectory: "0274-shared-state-pt7",
     exercises: _exercises,
-    fullVideo: nil,  // Only for free episodes!
-    id: 0,  // TODO
+    id: 274,
     length: 0 * 60 + 0,  // TODO
     permission: .subscriberOnly,
-    publishedAt: .distantFuture,  // TODO
+    publishedAt: yearMonthDayFormatter.date(from: "2024-04-08")!,
     references: [
       // TODO
     ],
-    sequence: 0,  // TODO
+    sequence: 274,
     subtitle: nil,
-    title: "TODO",
+    title: "Shared State in Practice",
     trailerVideo: .init(
       bytesLength: 0,  // TODO
       downloadUrls: .s3(
-        hd1080: "<#xyzw#>-trailer-1080p-<#deadbeef#>",
-        hd720: "<#xyzw#>-trailer-720p-<#deadbeef#>",
-        sd540: "<#xyzw#>-trailer-540p-<#deadbeef#>"
+        hd1080: "TODO",
+        hd720: "TODO",
+        sd540: "TODO"
       ),
       vimeoId: 0  // TODO
     )
