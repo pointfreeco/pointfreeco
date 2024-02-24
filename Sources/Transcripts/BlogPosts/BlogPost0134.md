@@ -5,10 +5,9 @@ Past betas have included the [concurrency beta][concurrency-beta], the
 [`Reducer` protocol beta][protocol-beta], and most recently the 
 [observation beta][observation-beta]. And we think this one may be more exciting than all of those!
 
-This beta focuses on providing the tools necessary for sharing state through your applications. We
+This beta focuses on providing the tools necessary for sharing state throughout your app. We
 also went above and beyond by providing tools for persisting state to user defaults and the file
-system, as well as provide a way for users of the library to create their own persistence 
-strategies.
+system, as well as providing a way create your own persistence strategies.
 
 Join us for a quick overview of the tools, and be sure to [check out the beta][shared-state-beta]
 today!
