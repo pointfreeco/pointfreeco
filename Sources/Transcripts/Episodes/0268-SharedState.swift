@@ -3,10 +3,10 @@ import Foundation
 extension Episode {
   public static let ep268_sharedState = Episode(
     blurb: """
-      Unidirectional architectures like the Composable Architecture often boast having a "single
-      source of truth" for state, but this topic becomes surprisingly muddy when it comes to how to
-      "share state" among many, independent features, and is one of the most common questions in the
-      community. Let's explore the problem to better understand it before tackling a solution.
+      We tackle one of the biggest problems when it comes to "single source of truth" applications,
+      and that is: how do you share state? Let's begin by analyzing the problem, and truly
+      understanding what vague mantras like "single source of truth" even mean, and then we will
+      be in a good position to provide a wonderful solution.
       """,
     codeSampleDirectory: "0268-shared-state-pt1",
     exercises: _exercises,
