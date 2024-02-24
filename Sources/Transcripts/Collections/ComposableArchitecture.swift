@@ -223,6 +223,7 @@ extension Episode.Collection {
         $0.title = "A tour of the Composable Architecture 1.0"
       },
       .observableArchitecture,
+      .sharedState,
     ],
     title: "Composable Architecture"
   )
@@ -346,17 +347,18 @@ extension Episode.Collection.Section {
 
   static let sharedState = Self(
     blurb: """
-      Swift 5.9 and iOS 17 brought all new observation tools to the Apple ecosystem, and it
-      completely revolutionized the way one builds features in SwiftUI. Learn how we integrated
-      those tools into the Composable Architecture, and how it revolutionized nearly every aspect
-      of the library.
+      Shared state is a tough problem to tackle in the Composable Architecture due to its preference
+      for modeling domains with value types rather than reference types. In this section we
+      demonstrate how to introduce reference types to a feature in a controlled manner so to
+      embrace the pros of references without incurring their negative costs. And as a bonus, we
+      also show how to persist application state in a lightweight manner.
       """,
     coreLessons: [
-      .init(episode: .ep259_observableArchitecture),
+      .init(episode: .ep268_sharedState),
     ],
-    isFinished: true,
+    isFinished: false,
     related: [],
-    title: "Observable Architecture",
+    title: "Sharing and Persisting State",
     whereToGoFromHere: nil
   )
 }
