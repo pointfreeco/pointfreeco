@@ -160,7 +160,7 @@ It is even possible for you to create your own persistence strategies! You can s
 type to the [`PersistentKey`][persistentkey-docs] protocol, implement a few requirements, and then
 it will be available to use with `@Shared`.
 
-[persistentkey-docs]
+[persistentkey-docs]: https://github.com/pointfreeco/swift-composable-architecture/blob/9e03cb40f3097290f85c3663109a468a513a7ba6/Sources/ComposableArchitecture/SharedState/PersistenceKey.swift#L12
 
 ## Testing
 
