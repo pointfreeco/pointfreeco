@@ -9,7 +9,7 @@ public let post0132_LivestreamRescheduled = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 132),
   coverImage: nil,
-  hidden: false,
+  hidden: true,
   hideFromSlackRSS: false,
   id: 132,
   publishedAt: yearMonthDayFormatter.date(from: "2024-02-08")!,
