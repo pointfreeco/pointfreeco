@@ -9,8 +9,6 @@ public let post0105_TCANavBeta2 = BlogPost(
   contentBlocks: .transcript {
     Array.paragraphs(
       ###"""
-      !> [warning]: There are some episode spoilers contained in this announcement!
-
       It's been just under two months since we kicked off our [navigation beta](https://github.com/pointfreeco/swift-composable-architecture/discussions/1944), in
       which we released an assortment of tools to manage presentation in the Composable
       Architecture. This included tools for dealing with alerts, confirmation dialogs, sheets,

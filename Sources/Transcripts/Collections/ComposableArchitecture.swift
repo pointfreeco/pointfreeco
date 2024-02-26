@@ -223,6 +223,7 @@ extension Episode.Collection {
         $0.title = "A tour of the Composable Architecture 1.0"
       },
       .observableArchitecture,
+      .sharedState,
     ],
     title: "Composable Architecture"
   )
@@ -341,6 +342,23 @@ extension Episode.Collection.Section {
     isFinished: true,
     related: [],
     title: "Observable Architecture",
+    whereToGoFromHere: nil
+  )
+
+  static let sharedState = Self(
+    blurb: """
+      Shared state is a tough problem to tackle in the Composable Architecture due to its preference
+      for modeling domains with value types rather than reference types. In this section we
+      demonstrate how to introduce reference types to a feature in a controlled manner so to
+      embrace the pros of references without incurring their negative costs. And as a bonus, we
+      also show how to persist application state in a lightweight manner.
+      """,
+    coreLessons: [
+      .init(episode: .ep268_sharedState),
+    ],
+    isFinished: false,
+    related: [],
+    title: "Sharing and Persisting State",
     whereToGoFromHere: nil
   )
 }

@@ -9,8 +9,6 @@ public let post0104_TCANavBeta = BlogPost(
   contentBlocks: .transcript {
     Array.paragraphs(
       ###"""
-      !> [warning]: There are some episode spoilers contained in this announcement!
-
       We’ve been teasing navigation tools for the [Composable
       Architecture](http://github.com/pointfreeco/swift-composable-architecture) for a _long_
       time, and been working on the tools for even longer, but it is finally time to get a
