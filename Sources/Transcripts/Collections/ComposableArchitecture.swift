@@ -354,7 +354,7 @@ extension Episode.Collection.Section {
       also show how to persist application state in a lightweight manner.
       """,
     coreLessons: [
-      .init(episode: .ep268_sharedState),
+      .init(episode: .ep268_sharedState)
     ],
     isFinished: false,
     related: [],
