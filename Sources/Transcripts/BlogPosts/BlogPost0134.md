@@ -12,7 +12,7 @@ system, as well as providing a way create your own persistence strategies.
 Join us for a quick overview of the tools, and be sure to [check out the beta][shared-state-beta]
 today!
 
-[shared-state-beta]: todo
+[shared-state-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2857
 [concurrency-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1186
 [protocol-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/1282
 [observation-beta]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2594
@@ -24,7 +24,7 @@ represents a piece of state that will be shared with another part of the applica
 with the _entire_ application. It can be used with any data type, and it cannot be set to a default
 value.
 
-[shared-pw-docs]: todo
+[shared-pw-docs]: https://github.com/pointfreeco/swift-composable-architecture/blob/9e03cb40f3097290f85c3663109a468a513a7ba6/Sources/ComposableArchitecture/SharedState/Shared.swift#L13
 
 For example, suppose you have a feature that holds a count and you want to be able to hand a shared
 reference to that count to other features. You can do so by holding onto a `@Shared` property in the
