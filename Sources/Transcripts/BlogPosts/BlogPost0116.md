@@ -10,7 +10,9 @@ But that all changed with Swift 5.9 and the introduction of macros. Now applicat
 
 In this post we would like to outline what you can do to be a good citizen in the new world of SwiftSyntax proliferation to minimize these problems. This advice is primarily directed at Swift library authors, but we think everyone should be familiar with these ideas.
 
-## Be as flexible as possible in your dependency on SwiftSyntax
+<div id="Be-as-flexible-as-possible-in-your-dependence-on-SwiftSyntax"></div>
+
+## Be as flexible as possible in your dependence on SwiftSyntax
 
 In order to avoid dependency graph nightmares, where you are unable to update or use a package due to conflicting dependency versions, we suggest being as flexible in your dependency on SwiftSyntax as possible. 
 
