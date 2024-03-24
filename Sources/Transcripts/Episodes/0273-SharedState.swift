@@ -15,7 +15,7 @@ extension Episode {
       // TODO
     ],
     sequence: 273,
-    subtitle:  "Ubiquity & Persistence",
+    subtitle: "Ubiquity & Persistence",
     title: "Shared State",
     trailerVideo: .init(
       bytesLength: 83_800_000,
@@ -24,7 +24,7 @@ extension Episode {
         hd720: "0273-trailer-720p-cf662cf56df54c439192568118d27a30",
         sd540: "0273-trailer-540p-ccf24d44f8d9400898427e903631f06b"
       ),
-      vimeoId: 924700451
+      vimeoId: 924_700_451
     )
   )
 }
