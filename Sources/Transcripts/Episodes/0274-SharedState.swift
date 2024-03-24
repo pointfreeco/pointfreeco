@@ -8,23 +8,23 @@ extension Episode {
     codeSampleDirectory: "0274-shared-state-pt7",
     exercises: _exercises,
     id: 274,
-    length: 0 * 60 + 0,  // TODO
+    length: 26 * 60 + 32,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2024-04-08")!,
     references: [
       // TODO
     ],
     sequence: 274,
-    subtitle: nil,
-    title: "Shared State in Practice",
+    subtitle: "Advanced Persistence: User Defaults",
+    title: "Shared State",
     trailerVideo: .init(
-      bytesLength: 0,  // TODO
+      bytesLength: 31_300_000,
       downloadUrls: .s3(
-        hd1080: "TODO",
-        hd720: "TODO",
-        sd540: "TODO"
+        hd1080: "0274-trailer-1080p-4e9584f227904ff4a375f0cfbd993f59",
+        hd720: "0274-trailer-720p-a9dda8abff6842c69fb51adaf799f8e3",
+        sd540: "0274-trailer-540p-78749e99c0604f8fb17b38ca4d572179"
       ),
-      vimeoId: 0  // TODO
+      vimeoId: 924701200
     )
   )
 }
