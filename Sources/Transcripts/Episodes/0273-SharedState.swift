@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep273_sharedState = Episode(
     blurb: """
-      TODO
+      We have solved a lot of limitations of reference types with the `@Shared` property wrapper, and we could stop here with an incredibly useful tool. But let's take things one step further. Sometimes we want shared state to be local and explicit, but there are other times we want shared state to be ubiquitous throughout our application. Let's beef up our property wrapper to do just that.
       """,
     codeSampleDirectory: "0273-shared-state-pt6",
     exercises: _exercises,
