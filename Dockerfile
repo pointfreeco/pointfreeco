@@ -5,6 +5,7 @@ RUN apt-get install -y build-essential cmake libpq-dev libssl-dev libz-dev opens
 
 WORKDIR /build
 
+COPY Package.resolved .
 COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
