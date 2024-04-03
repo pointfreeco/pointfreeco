@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep276_sharedState = Episode(
     blurb: """
-      TODO
+      It's incredible how easy `@Shared` makes it to persist complex data types to the file \
+      system, but currently it completely ruins our ability to test features that use it. Let's \
+      fix that, and we will also explore what it means to derive a small piece of shared state \
+      from a bigger piece of shared state.
       """,
     codeSampleDirectory: "0276-shared-state-pt9",
     exercises: _exercises,
@@ -15,7 +18,7 @@ extension Episode {
       // TODO
     ],
     sequence: 276,
-    subtitle: "Advanced Persistence, The Point",
+    subtitle: "File Storage, Part 2",
     title: "Shared State",
     trailerVideo: .init(
       bytesLength: 35_300_000,

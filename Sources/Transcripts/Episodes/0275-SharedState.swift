@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep275_sharedState = Episode(
     blurb: """
-      TODO
+      While user defaults is convenient for persisting simple bits of state, more complex data \
+      types should be saved to the file system. This can be tricky to get right, and so we take \
+      the time to properly handle all of the edge cases.
       """,
     codeSampleDirectory: "0275-shared-state-pt8",
     exercises: _exercises,
@@ -15,7 +17,7 @@ extension Episode {
       // TODO
     ],
     sequence: 275,
-    subtitle: "Advanced Persistence: File System",
+    subtitle: "File Storage, Part 1",
     title: "Shared State",
     trailerVideo: .init(
       bytesLength: 61_800_000,
