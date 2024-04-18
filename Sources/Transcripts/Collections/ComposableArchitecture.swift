@@ -361,6 +361,8 @@ extension Episode.Collection.Section {
       .init(episode: .ep272_sharedState),
       .init(episode: .ep273_sharedState),
       .init(episode: .ep274_sharedState),
+      .init(episode: .ep275_sharedState),
+      .init(episode: .ep276_sharedState),
     ],
     isFinished: false,
     related: [],
