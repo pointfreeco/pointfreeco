@@ -166,7 +166,7 @@ it to write tests that pass deterministically, 100% of the time.
 And so if Apple can write tests like this, why can't we?
 
 Well, now we can thanks to a new package that we have open sourced called [Concurrency 
-Extras][concurrency-extras-blog]. It provides a tool, [`withMainSerialExecutor`][wmse-docs], 
+Extras][concurrency-extras-gh]. It provides a tool, [`withMainSerialExecutor`][wmse-docs], 
 that temporarily alters the manner in which Swift enqueues asynchronous work in order to serialize 
 it to the main thread. This allows you to test every facet of the async code, including what happens 
 between each suspension point, in a manner that is 100% deterministic.
