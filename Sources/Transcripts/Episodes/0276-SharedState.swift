@@ -11,7 +11,7 @@ extension Episode {
     codeSampleDirectory: "0276-shared-state-pt9",
     exercises: _exercises,
     id: 276,
-    length: 0 * 60 + 0,  // TODO
+    length: 34 * 60 + 59,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2024-04-22")!,
     references: [
