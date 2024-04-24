@@ -1,5 +1,3 @@
-!> [warning]: There are some [episode spoilers](/collections/composable-architecture/sharing-and-persisting-state) contained in this announcement!
-
 Today we are excited to announce a [new beta][shared-state-beta] for the Composable Architecture.
 Past betas have included the [concurrency beta][concurrency-beta], the 
 [`Reducer` protocol beta][protocol-beta], and most recently the 
