@@ -55,6 +55,6 @@ box, including `.appStorage` and `.fileStorage`:
 ```swift
 struct State {
   @Shared(.appStorage("hasSeenOnboarding")) var hasSeenOnboarding = false
-  @Shared(.)
+  @Shared(.fileStorage()
 }
 ```
