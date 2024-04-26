@@ -13,13 +13,6 @@ Join us for a quick overview of the new tools in this release, and be sure to re
 [migration guide][migration-guide-1.10] and [documentation][sharing-state-article] to best 
 wield the new tools.
 
-[shared-state-collection]: /collections/composable-architecture/sharing-and-persisting-state
-[shared-state-beta-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2857
-[tca-1.10]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.10.0
-[migration-guide-1.10]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.10/
-[sharing-state-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
-[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture/
-
 ## @Shared
 
 The core tool added to the Composable Architecture is the `@Shared` property wrapper. It allows you
@@ -54,7 +47,65 @@ box, including `.appStorage` and `.fileStorage`:
 
 ```swift
 struct State {
-  @Shared(.appStorage("hasSeenOnboarding")) var hasSeenOnboarding = false
-  @Shared(.fileStorage()
+  @Shared(.appStorage("hasSeenOnboarding")) 
+  var hasSeenOnboarding = false
+  
+  @Shared(.fileStorage(.currentUserURL))
+  var currentUser: User?
 }
 ```
+
+The `.appStorage` persistence strategy allows multiple features hold onto the same boolean value,
+and any changes made to it will be automatically synchronized to user defaults on the device. 
+Similarly, the `.fileStorage` persistence strategy allows all features to see the currently 
+logged in user, and any changes to the user will be automatically saved to disk.
+
+Further, one can define their own persistence strategies for allowing the shared state to be
+driven from an external system. Really the sky is the limit! With just a little bit of work you
+can integrate `@Shared` into a remote config and feature flag system so that you have a simple way 
+of determining when to show certain features:
+
+```swift
+struct State {
+  @Shared(.remoteConfig("showEndOfYearPromotionBanner"))
+  var showBanner = false
+  
+  @Shared(.featureFlag("creatorDashboardV2"))
+  var showNewCreatorDashboard = false
+}
+``` 
+
+And of course, if done with care, everything will be 100% testable so that you can make sure your
+features continue to work correctly even when certain remote config values and feature flags are
+turned on.
+
+## A new tutorial
+
+We have also released a [brand new tutorial][syncups-tutorial] for building a moderately complex 
+application from scratch, using the Composable Architecture. The app is called 
+[SyncUps][syncups-tca], and it was originally built for our  [tour of the 1.0 release][tour-1.0].
+It features multiple navigation patterns, subtle validation logic, complex side effects, and it
+comes with a complete test suite.
+
+It's a long tutorial! 😄 But if you are willing to put in the work you will be exposed to a lot of
+the most important concepts in the library, such as domain modeling, sharing state, navigation,
+dependencies, and testing.
+
+[syncups-tca]: https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/SyncUps
+[tour-1.0]: https://www.pointfree.co/collections/composable-architecture/composable-architecture-1-0
+
+## Get started today
+
+We feel that this is one of the most exciting releases we've had in the Composable Architecture, and
+that it solves real problems that users have had from the beginning. Update your apps to version
+1.10 of the library to start using the tools today, and be sure to check out the
+[migration guide][migration-guide-1.10] and [documentation][sharing-state-article] to best 
+wield the new tools.
+
+[shared-state-collection]: /collections/composable-architecture/sharing-and-persisting-state
+[shared-state-beta-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2857
+[tca-1.10]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.10.0
+[migration-guide-1.10]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.10/
+[sharing-state-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
+[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture/
+[syncups-tutorial]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/buildingsyncups
