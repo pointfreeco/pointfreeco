@@ -3,7 +3,9 @@ import Foundation
 public let post0135_SharedStateRelease = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We are releasing power state sharing tools in the Composable Architecture that can keep
+    state synchronized between many features, and can persist state to external systems such as
+    user defaults and the file system.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 135),
   coverImage: nil, 
