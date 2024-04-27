@@ -1098,7 +1098,7 @@ extension Episode.Reference {
     title: "Some news about contramap"
   )
 
-  public static let standupsApp = Self(
+  public static let syncUpsApp = Self(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
       A rebuild of Apple's ["Scrumdinger"](https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger)
@@ -1106,8 +1106,8 @@ extension Episode.Reference {
       many forms of navigation (e.g., sheets, drill-downs, alerts), many side effects (timers,
       speech recognizer, data persistence), and do so in a way that is testable and modular.
       """,
-    link: "https://github.com/pointfreeco/standups",
-    title: "Standups App"
+    link: "https://github.com/pointfreeco/syncups",
+    title: "SyncUps App"
   )
 
   public static let stateObjectAndObservableObjectInSwiftUI = Self(
