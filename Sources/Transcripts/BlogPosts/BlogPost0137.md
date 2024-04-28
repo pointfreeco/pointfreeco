@@ -44,16 +44,10 @@ the Composable Architecture or not. They help you develop features that are conc
 ## App architecture live stream
 
 To celebrate this new milestone, we are hosting a live stream to discuss all things app 
-architecture.
+architecture. Have a question about the Composable Architecture? Want to know how it compares to 
+other styles of building apps? Or just want to discuss the philosophy of app architecture in 
+general? Well, we have the live stream for you!
 
-Have a question about the Composable Architecture? Want to know how it compares to other styles
-of building apps? Or just want to discuss the philosophy of app architecture in general?
-Well, we have the live stream for you!
-
-It's going to be action packed, so be sure to tune in and bring your questions!
-
-Q&A is open
-https://www.pointfree.co/live
-
+The Q&A is open so you can already ask questions and upvote any existing questions: 
 
 [[Watch May 9 @ 9am PST / 5pm GMT]](/live)
