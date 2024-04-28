@@ -13,7 +13,7 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1_673_244_000),
     references: [
       .scrumdinger,
-      .standupsApp,
+      .syncUpsApp,
       .swiftDependencies,
       .scrumdinger,
       .swiftClocks,
