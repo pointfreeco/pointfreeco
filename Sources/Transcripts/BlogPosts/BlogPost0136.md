@@ -27,7 +27,7 @@ and letting SwiftUI do the heavy lifting.
 
 The Composable Architecture gives you all of the tools you need to model your domains as concisely 
 as possible. If a feature can navigate to 5 different places, there's no need to model that 
-as 5 separate optionals, giving you 25 invalid states (2<sup>5</sup> − 6 = 25). Instead it should be
+as 5 separate optionals, giving you 26 invalid states (2<sup>5</sup> − 6 = 26). Instead it should be
 one single optional enum with 5 cases, allowing you to prove that at most a single navigation
 destination can be active at a time.
 
