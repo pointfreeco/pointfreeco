@@ -80,6 +80,7 @@ And of course, if done with care, everything will be 100% testable so that you c
 features continue to work correctly even when certain remote config values and feature flags are
 turned on.
 
+<!--
 ## A new tutorial
 
 We have also released a [brand new tutorial][syncups-tutorial] for building a moderately complex 
@@ -94,6 +95,7 @@ dependencies, and testing.
 
 [syncups-tca]: https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/SyncUps
 [tour-1.0]: https://www.pointfree.co/collections/composable-architecture/composable-architecture-1-0
+-->
 
 ## Get started today
 

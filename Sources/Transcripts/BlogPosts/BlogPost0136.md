@@ -9,7 +9,8 @@ It is the same application we built during our [1.0 tour][tour-1.0] of the libra
 SyncUps, and we also built this app in our ["Modern SwiftUI"][modern-swiftui] series and later
 [open sourced][syncups-gh] it.
 
-In the tutorial you will learn about many of the core tenets of the library, such as:
+In the [tutorial][syncups-tutorial] you will learn about many of the core tenets of the library, 
+such as:
 
 #### Use value types to model your domains.
 
