@@ -15,7 +15,7 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1_673_848_800),
     references: [
       .scrumdinger,
-      .standupsApp,
+      .syncUpsApp,
       .swiftCustomDump,
       .swiftUINavigation,
       .combineSchedulers,

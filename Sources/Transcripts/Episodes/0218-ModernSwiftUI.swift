@@ -13,7 +13,7 @@ extension Episode {
     publishedAt: Date(timeIntervalSince1970: 1_672_639_200),
     references: [
       .scrumdinger,
-      .standupsApp,
+      .syncUpsApp,
     ],
     sequence: 218,
     subtitle: "Effects, Part 2",

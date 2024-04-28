@@ -266,7 +266,7 @@ extension Episode {
       .swiftDependencies,
       .dependenciesSeparatingInterfaceAndImplementation,
       .designingDependencies,
-      .standupsApp,
+      .syncUpsApp,
       .swiftUINav,
       .swiftUINavigation,
       .theComposableArchitecture,
