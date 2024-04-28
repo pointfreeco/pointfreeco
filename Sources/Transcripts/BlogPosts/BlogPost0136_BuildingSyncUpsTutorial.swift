@@ -3,7 +3,9 @@ import Foundation
 public let post0136_SyncUpsTutorial = BlogPost(
   author: .pointfree,
   blurb: """
-    TODO
+    We have released a new tutorial for the Composable Architecture, building a complex
+    application from scratch with a focus on domain modeling, navigation, dependencies and
+    testing.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 136),
   coverImage: nil, 
