@@ -3,32 +3,32 @@
 tools allow you to seamlessly share state between multiple features, persist state to external
 systems such as user defaults and the file system, _and_ your features remain 100% testable.
 
-Today we are excited to announce that we are releasing a [brand new tutorial][syncups-tutorial] that 
-shows step-by-step how to build a complex SwiftUI application using the Composable Architecture.
-It is the same application we built during our [1.0 tour][tour-1.0] of the library, called 
-SyncUps, and we also built this app in our ["Modern SwiftUI"][modern-swiftui] series and later
-[open sourced][syncups-gh] it.
+Today we are excited to announce a [brand new tutorial][syncups-tutorial] that shows step-by-step
+how to build a complex SwiftUI application using the Composable Architecture. It is the same
+application we built during our [1.0 tour][tour-1.0] of the library, called SyncUps, and we also
+built this app in our ["Modern SwiftUI"][modern-swiftui] series and later [open sourced][syncups-gh]
+it.
 
-In the [tutorial][syncups-tutorial] you will learn about many of the core tenets of the library, 
+In the [tutorial][syncups-tutorial] you will learn about many of the core tenets of the library,
 such as:
 
 #### Use value types to model your domains.
 
-In the Composable Architecture we prefer one to represent their features' domains with simple value 
-types. This makes their logic easier to understand, more isolatable, and most testable.
+In the Composable Architecture we prefer to represent our features' domains with simple value types.
+This makes their logic easier to understand, more isolatable, and most testable.
 
 #### Drive navigation from state.
 
 Model the destinations a feature can navigate to in the feature's state. This makes deep linking
-from push notifications, URLs, etc. as simple as constructing state, handing it off to SwiftUI, 
+from push notifications, URLs, _etc._, as simple as constructing state, handing it off to the view, 
 and letting SwiftUI do the heavy lifting.
 
 #### Model your domains as concisely as possible.
 
 The Composable Architecture gives you all of the tools you need to model your domains as concisely 
 as possible. If a feature can navigate to 5 different places, there's no need to model that 
-as 5 separate optionals, giving you 25 invalid states (`2^5 - 6 = 25`). Instead it should be one 
-single optional enum with 5 cases, allowing you to prove that at most a single navigation
+as 5 separate optionals, giving you 25 invalid states (2<sup>5</sup> − 6 = 25). Instead it should be
+one single optional enum with 5 cases, allowing you to prove that at most a single navigation
 destination can be active at a time.
 
 #### Control your dependencies rather than letting them control you.

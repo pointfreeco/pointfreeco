@@ -17,8 +17,8 @@ wield the new tools.
 
 The core tool added to the Composable Architecture is the `@Shared` property wrapper. It allows you
 to introduce state to your features that can be shared with other features, all while embracing
-value types and not sacrificing testability. One can think of it as being similar to `Binding`
-in vanilla SwiftUI, except it is tuned specifically for the Composable Architecture.
+value types and not sacrificing testability. One can think of it as being similar to `Binding` in
+vanilla SwiftUI, except it is tuned specifically for the Composable Architecture.
 
 To share state in one feature with another feature, simply use the `@Shared` property wrapper:
 
