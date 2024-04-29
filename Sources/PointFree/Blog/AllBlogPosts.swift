@@ -149,4 +149,8 @@ private let _allBlogPosts: [BlogPost] = [
   post0132_LivestreamRescheduled,
   post0133_WereLive,
   post0134_SharedStateBeta,
+  post0135_SharedStateRelease,
+  post0136_SyncUpsTutorial,
+  post0137_TCABDay,
+  post0138_WereLive
 ]

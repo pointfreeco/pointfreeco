@@ -364,7 +364,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep275_sharedState),
       .init(episode: .ep276_sharedState),
     ],
-    isFinished: false,
+    isFinished: true,
     related: [],
     title: "Sharing and Persisting State",
     whereToGoFromHere: nil

@@ -1,5 +1,3 @@
-!> [warning]: There are some [episode spoilers](/collections/composable-architecture/sharing-and-persisting-state) contained in this announcement!
-
 Today we are excited to announce a [new beta][shared-state-beta] for the Composable Architecture.
 Past betas have included the [concurrency beta][concurrency-beta], the 
 [`Reducer` protocol beta][protocol-beta], and most recently the 
@@ -84,7 +82,7 @@ exhaustively prove how it changes.
 
 However, there are now solutions to both of these problems:
 
-* Thanks to Swift's new observation tools (and our [backport][perception-blog] of those tools),
+* Thanks to Swift's new observation tools (and our [back-port][perception-blog] of those tools),
 reference types can now properly communicate to views when they change so that the view can
 invalidate and re-render.
 * And thanks to the `@Shared` property wrapper, we are able to make shared test 100% testable, even
@@ -116,7 +114,7 @@ persistence strategy with `@Shared`:
  }
 ```
 
-!> [note]: You must provide a default value when using a persistence stategy. It is only used upon first access of the state and when there is no previously saved state (for example, the first launch of the app).
+!> [note]: You must provide a default value when using a persistence strategy. It is only used upon first access of the state and when there is no previously saved state (for example, the first launch of the app).
 
 That's all it takes. Now any part of the application can instantly access this state by using
 the same `@Shared` configuration, and it does not even need to be explicitly passed in from the 
@@ -174,8 +172,8 @@ before and after an action is sent.
 [testing-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
 
 For this reason, the `@Shared` property wrapper does extra working during testing to preserve a 
-previous snapshot of the state so that one can still exhaustive assert on shared state, even though 
-it is a reference.
+previous snapshot of the state so that one can still exhaustively assert on shared state, even
+though  it is a reference.
 
 For the most part, shared state can be tested just like any regular state held in your features. For
 example, consider the following simple counter feature that uses in-memory shared state for the
