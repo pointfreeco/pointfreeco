@@ -8,7 +8,7 @@ public let post0135_SharedStateRelease = BlogPost(
     defaults and the file system.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 135),
-  coverImage: nil, 
+  coverImage: nil,
   hidden: false,
   hideFromSlackRSS: false,
   id: 135,

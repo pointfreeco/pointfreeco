@@ -8,7 +8,7 @@ public let post0136_SyncUpsTutorial = BlogPost(
     testing.
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 136),
-  coverImage: nil, 
+  coverImage: nil,
   hidden: false,
   hideFromSlackRSS: false,
   id: 136,
