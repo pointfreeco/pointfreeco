@@ -1,67 +1,53 @@
-[Earlier this week][shared-state-blog-post] we released version 1.10 of the 
-[Composable Architecture][tca-gh] that brought powerful state sharing tools to the library. These
-tools allow you to seamlessly share state between multiple features, persist state to external
-systems such as user defaults and the file system, _and_ your features remain 100% testable.
+The Composable Architecture is now 4 years old! We released version 0.1.0 of the library on
+[May 4th, 2020][tca-0.1-blog], and since then have had **191** contributors, 
+**116** releases, **1,270** pull requests, **57,000** [Slack messages][slack-invite] and more than 
+**1,200** GitHub discussions.
 
-Today we are excited to announce a [brand new tutorial][syncups-tutorial] that shows step-by-step
-how to build a complex SwiftUI application using the Composable Architecture. It is the same
-application we built during our [1.0 tour][tour-1.0] of the library, called SyncUps, and we also
-built this app in our ["Modern SwiftUI"][modern-swiftui] series and later [open sourced][syncups-gh]
-it.
+In the past 4 years we have had many big updates to the library, making sure to support each new
+major feature in Swift and SwiftUI, and do so in backwards compatible ways, including:
 
-In the [tutorial][syncups-tutorial] you will learn about many of the core tenets of the library,
-such as:
+* Async effects ([0.39.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.39.0))
+* Reducer protocol and builders ([0.41.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.41.0))
+* Non-exhaustive test stores ([0.45.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.45.0))
+* Navigation tools ([0.54.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.54.0))
+* Reliable async testing ([0.56.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.56.0))
+* Official 1.0 release ([1.0.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.0.0))
+* Macros ([1.4.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.4.0))
+* Observation tools ([1.7.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.7.0))
+* Shared state ([1.10.0](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.10.0))
 
-#### Use value types to model your domains.
+And even for those that cannot or do not want to use the Composable Architecture, we have split out
+multiple standalone libraries from it:
 
-In the Composable Architecture we prefer to represent our features' domains with simple value types.
-This makes their logic easier to understand, more isolatable, and most testable.
+* [swift-clocks](https://www.github.com/pointfreeco/swift-clocks)
+* [swift-case-paths](https://www.github.com/pointfreeco/swift-case-paths)
+* [swift-perception](https://www.github.com/pointfreeco/swift-perception)
+* [swiftui-navigation](https://www.github.com/pointfreeco/swiftui-navigation)
+* [swift-custom-dump](https://www.github.com/pointfreeco/swift-custom-dump)
+* [swift-dependencies](https://www.github.com/pointfreeco/swift-dependencies)
+* [swift-macro-testing](https://www.github.com/pointfreeco/swift-macro-testing)
+* [combine-schedulers](https://www.github.com/pointfreeco/combine-schedulers)
+* [xctest-dynamic-overlay](https://www.github.com/pointfreeco/xctest-dynamic-overlay)
+* [swift-concurrency-extras](https://www.github.com/pointfreeco/swift-concurrency-extras)
+* [swift-identified-collections](https://www.github.com/pointfreeco/swift-identified-collections)
 
-#### Drive navigation from state.
+We feel that these libraries can be helpful building any kind of application, whether you are using
+the Composable Architecture or not. They help you develop features that are concise and testable.
 
-Model the destinations a feature can navigate to in the feature's state. This makes deep linking
-from push notifications, URLs, _etc._, as simple as constructing state, handing it off to the view, 
-and letting SwiftUI do the heavy lifting.
+[discussions]: https://github.com/pointfreeco/swift-composable-architecture/discussions
+[tca-0.1-blog]: /blog/posts/41-composable-architecture-the-library
+[closed-prs]: https://github.com/pointfreeco/swift-composable-architecture/pulls?q=is%3Apr+is%3Aclosed
+[slack-invite]: http://pointfree.co/slack-invite
+[releases]: https://github.com/pointfreeco/swift-composable-architecture/releases
+[contributors]: https://github.com/pointfreeco/swift-composable-architecture/graphs/contributors
 
-#### Model your domains as concisely as possible.
+## App architecture live stream
 
-The Composable Architecture gives you all of the tools you need to model your domains as concisely 
-as possible. If a feature can navigate to 5 different places, there's no need to model that 
-as 5 separate optionals, giving you 26 invalid states (2<sup>5</sup> − 6 = 26). Instead it should be
-one single optional enum with 5 cases, allowing you to prove that at most a single navigation
-destination can be active at a time.
+To celebrate this new milestone, we are hosting a live stream to discuss all things app 
+architecture. Have a question about the Composable Architecture? Want to know how it compares to 
+other styles of building apps? Or just want to discuss the philosophy of app architecture in 
+general? Well, we have the live stream for you!
 
-#### Control your dependencies rather than letting them control you.
+The Q&A is open so you can already ask questions and upvote any existing questions: 
 
-Dependencies are by far the #1 source of complexity leaking into applications. With a little bit of 
-upfront work you can take control over your dependencies so that you can run your app in completely
-controlled environments, such as in Xcode previews, tests, and more. And the Composable 
-Architecture gives you all the tools you need to model, control and propagate dependences in your 
-app.
-
-#### Test the subtle edge cases of your app's logic.
-
-The Composable Architecture comes with [world class testing tools][tca-testing-article] that force 
-you to prove how every bit of logic and behavior executes in your features, including asynchronous 
-effects and dependencies! Test failures are printed with nicely formatted messages letting you know 
-exactly what went wrong, and you can even control how exhaustive you want your tests to be.
-
-## Start the tutorial today!
-
-And that is only scratching the surface of what the tutorial covers and what the library is 
-capable of. [Start the tutorial today][syncups-tutorial] to learn about the Composable Architecture!
-
-
-[tca-testing-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
-[shared-state-blog-post]: /blog/posts/135-shared-state-in-the-composable-architecture
-[syncups-tca]: https://github.com/pointfreeco/swift-composable-architecture/tree/main/Examples/SyncUps
-[tour-1.0]: /collections/composable-architecture/composable-architecture-1-0
-[shared-state-collection]: /collections/composable-architecture/sharing-and-persisting-state
-[shared-state-beta-discussion]: https://github.com/pointfreeco/swift-composable-architecture/discussions/2857
-[tca-1.10]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.10.0
-[migration-guide-1.10]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.10/
-[sharing-state-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
-[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture/
-[syncups-tutorial]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/buildingsyncups
-[syncups-gh]: https://github.com/pointfreeco/syncups
-[modern-swiftui]: /collections/swiftui/modern-swiftui
+[[Watch May 9 @ 9am PST / 5pm GMT]](/live)

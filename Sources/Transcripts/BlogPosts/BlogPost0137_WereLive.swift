@@ -7,11 +7,11 @@ public let post0138_WereLive = BlogPost(
     observation tools in the Composable Architecture, and we will announce some brand new \
     features that have never been discussed before. 🫢
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 138),
+  contentBlocks: loadBlogTranscriptBlocks(forSequence: 137),
   coverImage: nil,
   hidden: false,
   hideFromSlackRSS: false,
-  id: 138,
+  id: 137,
   publishedAt: yearMonthDayFormatter.date(from: "2024-05-09")!
     .addingTimeInterval(60 * 60 * 17 - 60 * 40),  // 4:20pm GMT
   title: "We’re live!"
