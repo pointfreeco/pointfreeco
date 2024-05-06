@@ -3,14 +3,17 @@ import Foundation
 extension Episode {
   public static let ep278_sharedStateInPractice = Episode(
     blurb: """
-      TODO
+      We finish refactoring the SyncUps application to use the Composable Architecture's all new \
+      state sharing tools. We will see that we can delete hundreds of lines of boilerplate of \
+      coordination between parent and child features, _and_ we we won't have to sacrifice any \
+      testability, including the _exhaustive_ testability provided by the library.
       """,
     codeSampleDirectory: "0278-shared-state-in-practice-pt2",
     exercises: _exercises,
     id: 278,
     length: 35 * 60 + 59,
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-05-03")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-05-06")!,
     references: [
       // TODO
     ],

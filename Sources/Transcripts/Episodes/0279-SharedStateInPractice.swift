@@ -10,12 +10,12 @@ extension Episode {
     id: 279,
     length: 58 * 60 + 48,
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-05-12")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-05-13")!,
     references: [
       // TODO
     ],
     sequence: 279,
-    subtitle: "isowords",
+    subtitle: "isowords, Part 1",
     title: "Shared State in Practice",
     trailerVideo: .init(
       bytesLength: 86_800_000,

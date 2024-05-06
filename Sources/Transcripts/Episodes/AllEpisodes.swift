@@ -280,5 +280,7 @@ extension Episode {
     .ep275_sharedState,
     .ep276_sharedState,
     .ep277_sharedStateInPractice,
+    .ep278_sharedStateInPractice,
+    .ep279_sharedStateInPractice,
   ]
 }
