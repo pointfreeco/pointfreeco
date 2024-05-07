@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
       We finish refactoring the SyncUps application to use the Composable Architecture's all new \
       state sharing tools. We will see that we can delete hundreds of lines of boilerplate of \
-      coordination between parent and child features, _and_ we we won't have to sacrifice any \
+      coordination between parent and child features, _and_ we won't have to sacrifice any \
       testability, including the _exhaustive_ testability provided by the library.
       """,
     codeSampleDirectory: "0278-shared-state-in-practice-pt2",
