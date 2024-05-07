@@ -48,6 +48,6 @@ architecture. Have a question about the Composable Architecture? Want to know ho
 other styles of building apps? Or just want to discuss the philosophy of app architecture in 
 general? Well, we have the live stream for you!
 
-The Q&A is already open so you can already ask questions and upvote any existing questions: 
+The Q&A is already open so you can ask questions and upvote any existing questions: 
 
-[[Watch May 9 @ 9am PST / 5pm GMT]](/live)
+[[Watch May 9 @ 9am PST / 4pm GMT]](/live)
