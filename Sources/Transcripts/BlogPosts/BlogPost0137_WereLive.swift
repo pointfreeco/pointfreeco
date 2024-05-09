@@ -12,7 +12,6 @@ public let post0138_WereLive = BlogPost(
   hidden: false,
   hideFromSlackRSS: false,
   id: 137,
-  publishedAt: yearMonthDayFormatter.date(from: "2024-05-09")!
-    .addingTimeInterval(60 * 60 * 17 - 60 * 40),  // 4:20pm GMT
+  publishedAt: yearMonthDayFormatter.date(from: "2024-05-09")!,
   title: "We’re live!"
 )
