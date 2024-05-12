@@ -3,12 +3,15 @@ import Foundation
 extension Episode {
   public static let ep279_sharedStateInPractice = Episode(
     blurb: """
-      TODO
+      Let's apply the Composable Architecture's new state sharing tools to something even more \
+      real world: our open source word game, isowords. It currently models its user settings as a \
+      cumbersome dependency that requires a lot of code to keep features in sync when settings \
+      change. We should be able to greatly simplify things with the `@Shared` property wrapper.
       """,
     codeSampleDirectory: "0279-shared-state-in-practice-pt3",
     exercises: _exercises,
     id: 279,
-    length: 58 * 60 + 48,
+    length: 25 * 60 + 39,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2024-05-13")!,
     references: [
