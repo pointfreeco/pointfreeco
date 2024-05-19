@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep280_sharedStateInPractice = Episode(
     blurb: """
-      TODO
+      We conclude the series by stretching our use of the `@Shared` property wrapper in isowords \
+      to two more features: saved games and user defaults. In the process we'll eliminate hundreds \
+      of lines of boilerplate and some truly gnarly code.
       """,
     codeSampleDirectory: "0280-shared-state-in-practice-pt4",
     exercises: _exercises,
