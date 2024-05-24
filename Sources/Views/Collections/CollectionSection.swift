@@ -28,7 +28,7 @@ public func collectionSection(
   }
   let nextSection = currentIndex.flatMap {
     $0 == collection.sections.index(before: collection.sections.endIndex)
-    || collection.sections[collection.sections.index(after: $0)].isHidden
+      || collection.sections[collection.sections.index(after: $0)].isHidden
       ? nil
       : collection.sections[collection.sections.index(after: $0)]
   }
