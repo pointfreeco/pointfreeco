@@ -1,18 +1,18 @@
 This week we are giving a [sneak peek][modern-uikit-collection] into what our next major series of 
-episodes will be on [Point-Free][pf], and it's free for everyone to watch! We will be discussing
+episodes will be on [Point-Free][pf], and it's **free** for everyone to watch! We will be discussing
 how to build modern UIKit features, with an eye on domain modeling, bindings, and navigation!
 
 [pf]: http://pointfree.co
-[modern-uikit-collection]: todo
+[modern-uikit-collection]: /collections/uikit
 
-[[Watch now!]](todo)
+[[Watch now!]](/episodes/ep281-modern-uikit-sneak-peek-part-1)
 
 ### Why UIKit??
 
 It may seem a little strange for us to devote time to "modern UIKit". After all, isn't SwiftUI
 all the rage? Well, as much as we want our apps to be 100% SwiftUI, there are going to be times
 we need to drop down to UIKit. It could be due to lack of functionality in SwiftUI, or perhaps
-certain tools in UIKit are more performant (`UICollectionView` 👀).
+certain tools in UIKit are more performant (`UICollectionView` 😍).
 
 And so once you have started writing your first `UIViewController` subclass in ages, the question
 becomes: what is the most modern way to do it? SwiftUI completely revolutionized how we think
@@ -121,11 +121,11 @@ a mere shadow of what is possible when porting an application to other platforms
 
 ### Start learning about modern UIKit today!
 
-There's no better time to learn about [modern UIKit](todo). We will show how a few simple tools built on
-Swift's Observation framework allows one to model domains concisely and describe complex 
-navigation patterns in just a few lines of code.
+There's no better time to learn about [modern UIKit][modern-uikit-collection]. We will show how a 
+few simple tools built on Swift's Observation framework allows one to model domains concisely and 
+describe complex navigation patterns in just a few lines of code.
 
 [pf]: http://pointfree.co
-[modern-uikit-collection]: todo
+[modern-uikit-collection]: /collections/uikit
 
-[[Watch now!]](todo)
+[[Watch now!]](/episodes/ep281-modern-uikit-sneak-peek-part-1)
