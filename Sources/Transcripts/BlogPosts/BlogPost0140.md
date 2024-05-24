@@ -83,10 +83,10 @@ func viewDidLoad() {
   observe { [weak self] in
     guard let self else { return }
     
-     countLabel.text = "\(model.count)"
-     decrementButton.isEnabled = !model.isLoadingFact
-     incrementButton.isEnabled = !model.isLoadingFact
-     activityIndicator.isHidden = !model.isLoadingFact 
+    countLabel.text = "\(model.count)"
+    decrementButton.isEnabled = !model.isLoadingFact
+    incrementButton.isEnabled = !model.isLoadingFact
+    activityIndicator.isHidden = !model.isLoadingFact 
   }
 
   present(item: $model.fact) { fact in
@@ -114,7 +114,7 @@ With that done you can let the view _flow_ from the domain. Then it doesn't matt
 paradigm you use. You are free to use your models in either UIKit or SwiftUI because none of the
 view-specific concepts infiltrated your domain.
 
-But even more interesting, you are also free to your domain models in other _platforms_. Cross
+But even more interesting, you are also free to use your domain models in other _platforms_. Cross
 platform Swift is becoming more popular these days, with efforts to bring Swift applications to
 Windows, Linux, and even the web using Wasm. Our explorations into modern UIKit development are
 a mere shadow of what is possible when porting an application to other platforms. 
