@@ -54,8 +54,8 @@ class CounterFeature {
 ```swift
 Form {
   Text("\(model.count)")
-  Button("Increment") { model.count += 1 }
   Button("Decrement") { model.count -= 1 }
+  Button("Increment") { model.count += 1 }
   if model.isLoadingFact {
     ProgressView()
   }
@@ -71,14 +71,14 @@ only the fields accessed on `model`), _and_ drive navigation from state (i.e. sh
 when `fact` is non-`nil` and dismissed when `nil`).
 
 What if we had the ability to minimally observe the model in UIKit in order to update UI controls?
-And what if we could drive the presentation of view controllers purely from state? What if we could
-do all of this in a short, concise syntax like this:
+And what if we could drive the presentation of view controllers purely from state? And further,
+what if we could do all of this in a short, concise syntax like this:
 
 ```swift
 func viewDidLoad() {
   super.viewDidLoad()
   
-  // Set up view hierarchy
+  // Set up view hierarchy…
 
   observe { [weak self] in
     guard let self else { return }
@@ -95,7 +95,13 @@ func viewDidLoad() {
 }
 ```
 
-This is absolutely possible, and _this_ is what we call modern UIKit.
+The `observe` tool would observe only the `model` fields accessed in the trailing closure, and 
+would automatically be invoked when those fields change. And the `present(item:)` function would
+observe changes to `fact` in order to present the `FactViewController` when the state becomes
+non-`nil`, and dismiss when it becomes `nil`. And further, if the user dismisses the controller
+by swiping down, then the `model.fact` state will automatically be `nil`'d out. 
+
+All of this is absolutely possible, and _this_ is what we call modern UIKit.
 
 ### Don't miss the forest from the trees
 
