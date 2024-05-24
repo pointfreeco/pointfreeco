@@ -3,7 +3,7 @@ import Foundation
 public let post0140_ModernUIKit = BlogPost(
   author: .pointfree,
   blurb: """
-    If you think you know what modern UIKit looks like, you've got another thing coming. We show
+    If you think you know what modern UIKit looks like, think again. We show
     how Swift's new observation tools completely revolutionize the way one interacts with UIKit,
     including 2-way bindings, navigation, and more!
     """,
