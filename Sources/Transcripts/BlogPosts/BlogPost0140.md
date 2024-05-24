@@ -7,7 +7,7 @@ how to build modern UIKit features, with an eye on domain modeling, bindings, an
 
 [[Watch now!]](todo)
 
-### Why UIKit?
+### Why UIKit??
 
 It may seem a little strange for us to devote time to "modern UIKit". After all, isn't SwiftUI
 all the rage? Well, as much as we want our apps to be 100% SwiftUI, there are going to be times
@@ -15,7 +15,7 @@ we need to drop down to UIKit. It could be due to lack of functionality in Swift
 certain tools in UIKit are more performant (`UICollectionView` 👀).
 
 And so once you have started writing your first `UIViewController` subclass in ages, the question
-becomes: what is the most modern way to do this? SwiftUI completely revolutionized how we think
+becomes: what is the most modern way to do it? SwiftUI completely revolutionized how we think
 about building apps for Apple's platform, but its powers can be broken down into roughly two 
 categories:
 
@@ -37,7 +37,7 @@ It is actually pretty incredible to see!
 ### What is modern UIKit?
 
 In our series, "modern UIKit" refers to the style of building UIKit apps with concise and powerful
-state management tools inspired by UIKit. In SwiftUI, one can model the domain of their feature
+state management tools inspired by SwiftUI. In SwiftUI, one can model the domain of their feature
 in an observable object like so:
 
 ```swift
