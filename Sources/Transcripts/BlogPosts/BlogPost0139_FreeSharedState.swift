@@ -11,6 +11,6 @@ public let post0139_FreeSharedState = BlogPost(
   hidden: false,
   hideFromSlackRSS: false,
   id: 139,
-  publishedAt: yearMonthDayFormatter.date(from: "2024-06-24")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2024-05-24")!,
   title: "Sharing shared state with everyone!"
 )
