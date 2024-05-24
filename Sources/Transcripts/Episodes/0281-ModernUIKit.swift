@@ -24,7 +24,8 @@ extension Episode {
 
           The sample code that inspired the code for this episode.
           """,
-        link: "https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/implementing_modern_collection_views",
+        link:
+          "https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/implementing_modern_collection_views",
         publishedAt: yearMonthDayFormatter.date(from: "2019-07-03"),
         title: "Implementing Modern Collection Views"
       ),
@@ -37,7 +38,7 @@ extension Episode {
         link: "https://developer.apple.com/videos/play/wwdc2019/215/",
         publishedAt: yearMonthDayFormatter.date(from: "2019-07-03"),
         title: "Advances in Collection View Layout"
-      )
+      ),
     ],
     sequence: 281,
     subtitle: "Sneak Peek, Part 1",
@@ -49,7 +50,7 @@ extension Episode {
         hd720: "0281-trailer-720p-c2bd4683ef564a9f92ed09d79e630f38",
         sd540: "0281-trailer-540p-06aabed32cf342f3ac871c3ee04d94df"
       ),
-      vimeoId: 949774069
+      vimeoId: 949_774_069
     )
   )
 }
@@ -57,4 +58,3 @@ extension Episode {
 private let _exercises: [Episode.Exercise] = [
   // TODO
 ]
-
