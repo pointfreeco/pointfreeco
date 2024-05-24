@@ -12,10 +12,10 @@ possible, _and_ allowing us to exhaustively test how shared state changes in our
 you are interested in learning how those tools were built you can watch 
 [all 9 episodes here][shared-state-collection].
 
-But, if you first interested in learning how to best _use_ these tools, then today we are excited
-to make our [4-part series "Shared State in Practice"][shared-state-in-practice] free to everyone!
-In these series we analyze two different real world applications, and show how we can delete
-hundreds of lines of code and minimize indirection in the code, all thanks to the new `@Shared`
+But, if you are first interested in learning how to best _use_ these tools, then today we are excited
+to make our [4-part series "Shared State in Practice"][shared-state-in-practice] free for everyone!
+In these episodes we analyze two different real world applications, and show how we can delete
+hundreds of lines of code and minimize indirection, all thanks to the new `@Shared`
 property wrapper.
 
 [shared-state-blog]: /blog/posts/135-shared-state-in-the-composable-architecture
