@@ -224,6 +224,7 @@ extension Episode.Collection {
       },
       .observableArchitecture,
       .sharedState,
+      .sharedStateInPractice,
     ],
     title: "Composable Architecture"
   )
@@ -367,6 +368,25 @@ extension Episode.Collection.Section {
     isFinished: true,
     related: [],
     title: "Sharing and Persisting State",
+    whereToGoFromHere: nil
+  )
+
+  static let sharedStateInPractice = Self(
+    blurb: """
+      We refactor two real world code bases to take advantage of the state sharing tools of the
+      Composable Architecture. Along the way we get to delete hundreds of lines of code and
+      massively simplify the logic of all features, all without sacrificing testability.
+      """,
+    coreLessons: [
+      .init(episode: .ep277_sharedStateInPractice),
+      .init(episode: .ep278_sharedStateInPractice),
+      .init(episode: .ep279_sharedStateInPractice),
+      .init(episode: .ep280_sharedStateInPractice),
+    ],
+    isFinished: true,
+    isHidden: true,
+    related: [],
+    title: "Shared State in Practice",
     whereToGoFromHere: nil
   )
 }

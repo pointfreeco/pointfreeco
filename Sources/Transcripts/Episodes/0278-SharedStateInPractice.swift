@@ -12,7 +12,7 @@ extension Episode {
     exercises: _exercises,
     id: 278,
     length: 35 * 60 + 59,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2024-05-06")!,
     references: [
       // TODO
