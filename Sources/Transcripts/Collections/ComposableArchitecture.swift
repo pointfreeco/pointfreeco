@@ -365,7 +365,21 @@ extension Episode.Collection.Section {
       .init(episode: .ep276_sharedState),
     ],
     isFinished: true,
-    related: [],
+    related: [
+      .init(
+        blurb: """
+          Shared state!
+          """,
+        content: .episodes(
+          [
+            .ep277_sharedStateInPractice,
+            .ep278_sharedStateInPractice,
+            .ep279_sharedStateInPractice,
+            .ep280_sharedStateInPractice,
+          ]
+        )
+      )
+    ],
     title: "Sharing and Persisting State",
     whereToGoFromHere: nil
   )
