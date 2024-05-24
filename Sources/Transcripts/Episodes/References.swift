@@ -1247,6 +1247,16 @@ extension Episode.Reference {
     title: "Swift Overture"
   )
 
+  public static let swiftPerception = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      Our back-port of Swift's observation tools.
+      """,
+    link: "https://github.com/pointfreeco/swift-perception",
+    publishedAt: yearMonthDayFormatter.date(from: "2024-01-08"),
+    title: "Clocks"
+  )
+
   public static let swiftParsing = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
