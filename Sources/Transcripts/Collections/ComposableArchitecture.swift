@@ -224,6 +224,7 @@ extension Episode.Collection {
       },
       .observableArchitecture,
       .sharedState,
+      .sharedStateInPractice,
     ],
     title: "Composable Architecture"
   )
@@ -365,22 +366,25 @@ extension Episode.Collection.Section {
       .init(episode: .ep276_sharedState),
     ],
     isFinished: true,
-    related: [
-      .init(
-        blurb: """
-          Shared state!
-          """,
-        content: .episodes(
-          [
-            .ep277_sharedStateInPractice,
-            .ep278_sharedStateInPractice,
-            .ep279_sharedStateInPractice,
-            .ep280_sharedStateInPractice,
-          ]
-        )
-      )
-    ],
+    related: [],
     title: "Sharing and Persisting State",
+    whereToGoFromHere: nil
+  )
+
+  static let sharedStateInPractice = Self(
+    blurb: """
+      TODO
+      """,
+    coreLessons: [
+      .init(episode: .ep277_sharedStateInPractice),
+      .init(episode: .ep278_sharedStateInPractice),
+      .init(episode: .ep279_sharedStateInPractice),
+      .init(episode: .ep280_sharedStateInPractice),
+    ],
+    isFinished: true,
+    isHidden: true,
+    related: [],
+    title: "Shared State in Practice",
     whereToGoFromHere: nil
   )
 }
