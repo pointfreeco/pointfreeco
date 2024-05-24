@@ -373,7 +373,9 @@ extension Episode.Collection.Section {
 
   static let sharedStateInPractice = Self(
     blurb: """
-      TODO
+      We refactor two real world code bases to take advantage of the state sharing tools of the
+      Composable Architecture. Along the way we get to delete hundreds of lines of code and
+      massively simplify the logic of all features, all without sacrificing testability.
       """,
     coreLessons: [
       .init(episode: .ep277_sharedStateInPractice),
