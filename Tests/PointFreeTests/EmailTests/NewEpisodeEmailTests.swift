@@ -13,7 +13,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class NewEpisodeEmailTests: TestCase {
   @Dependency(\.episodes) var episodes
 
@@ -22,6 +21,7 @@ class NewEpisodeEmailTests: TestCase {
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testNewEpisodeEmail_Subscriber() async throws {
     let doc = newEpisodeEmail((self.episodes().first!, "", "", .mock))
 
@@ -40,6 +40,7 @@ class NewEpisodeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewEpisodeEmail_FreeEpisode_NonSubscriber() async throws {
     var episode = self.episodes().first!
     episode.permission = .free
@@ -61,6 +62,7 @@ class NewEpisodeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewEpisodeEmail_Announcement_NonSubscriber() async throws {
     let episode = self.episodes().first!
 
@@ -87,6 +89,7 @@ class NewEpisodeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewEpisodeEmail_Announcement_Subscriber() async throws {
     let episode = self.episodes().first!
 
@@ -113,6 +116,7 @@ class NewEpisodeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewEpisodeEmail_Markdown() async throws {
     var episode = self.episodes().first!
     episode.blurb = """

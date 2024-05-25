@@ -15,13 +15,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class PaymentInfoTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testRender() async throws {
     let conn = connection(from: request(to: .account(.paymentInfo()), session: .loggedIn))
 
@@ -40,6 +40,7 @@ class PaymentInfoTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNoBillingInfo() async throws {
     var customer = Stripe.Customer.mock
     customer.invoiceSettings = .init(defaultPaymentMethod: nil)
@@ -55,6 +56,7 @@ class PaymentInfoTests: TestCase {
     }
   }
 
+  @MainActor
   func testUpdate() async throws {
     await withDependencies {
       $0.failing()
@@ -78,6 +80,7 @@ class PaymentInfoTests: TestCase {
     }
   }
 
+  @MainActor
   func testUpdate_pastDue() async throws {
     await withDependencies {
       $0.failing()

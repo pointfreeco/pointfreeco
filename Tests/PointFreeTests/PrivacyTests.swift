@@ -10,13 +10,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class PrivacyTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testPrivacy() async throws {
     let conn = connection(from: request(to: .privacy))
 

@@ -20,10 +20,10 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 final class AccountIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
+  @MainActor
   func testLeaveTeam() async throws {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .init(
@@ -67,6 +67,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(emails, [])
   }
 
+  @MainActor
   func testRegenerateTeamInviteCode() async throws {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .init(
@@ -97,6 +98,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     )
   }
 
+  @MainActor
   func testFetchTeammates_PastCancelledSubscription() async throws {
     let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock,
@@ -137,13 +139,13 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 final class AccountTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     // SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testAccount() async throws {
     await withDependencies {
       $0.teamYearly()
@@ -165,6 +167,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccount_InvoiceBilling() async throws {
     var customer = Stripe.Customer.mock
     customer.invoiceSettings.defaultPaymentMethod = nil
@@ -192,6 +195,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_OwnerIsNotSubscriber() async throws {
     var currentUser = User.nonSubscriber
     currentUser.episodeCreditCount = 2
@@ -224,6 +228,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_NoRemainingSeats() async throws {
     let currentUser = User.nonSubscriber
     var subscription = Models.Subscription.mock
@@ -259,6 +264,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_AsTeammate() async throws {
     await withDependencies {
       $0.teamYearlyTeammate()
@@ -280,6 +286,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_AsTeammate_previousSubscription() async throws {
     await withDependencies {
       $0.teamYearlyTeammate()
@@ -304,6 +311,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccount_WithExtraInvoiceInfo() async throws {
     var customer = Stripe.Customer.mock
     customer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
@@ -331,6 +339,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccountWithFlashNotice() async throws {
     var session = Session.loggedIn
     session.flash = Flash(.notice, "You’ve subscribed!")
@@ -353,6 +362,7 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testAccountWithFlashWarning() async throws {
     var session = Session.loggedIn
     session.flash = Flash(.warning, "Your subscription is past-due!")
@@ -374,6 +384,7 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testAccountWithFlashError() async throws {
     var session = Session.loggedIn
     session.flash = Flash(.error, "An error has occurred!")
@@ -395,6 +406,7 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testAccountWithPastDue() async throws {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
@@ -425,6 +437,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccountCancelingSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .canceling }
@@ -446,6 +459,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccountCanceledSubscription() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in .canceled }
@@ -495,6 +509,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeCredits_1Credit_1Chosen() async throws {
     var user = User.mock
     user.subscriptionId = nil
@@ -522,6 +537,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccountWithDiscount() async throws {
     var subscription = Stripe.Subscription.mock
     subscription.discount = .mock
@@ -547,6 +563,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testAccountWithCredit() async throws {
     var subscription = Stripe.Subscription.mock
     subscription.customer = .right(update(.mock) { $0.balance = -18_00 })

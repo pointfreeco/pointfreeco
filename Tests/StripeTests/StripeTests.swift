@@ -7,9 +7,7 @@ import XCTest
 
 @testable import Stripe
 
-@MainActor
 final class StripeTests: TestCase {
-
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
@@ -399,6 +397,7 @@ final class StripeTests: TestCase {
     _ = try Stripe.jsonDecoder.decode(PaymentIntent.self, from: Data(jsonString.utf8))
   }
 
+  @MainActor
   func testRequests() async throws {
     // SnapshotTesting.isRecording = true
     await assertInlineSnapshot(

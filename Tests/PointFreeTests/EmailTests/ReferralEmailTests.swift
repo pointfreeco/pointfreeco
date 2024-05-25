@@ -13,13 +13,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class ReferralEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testReferralEmail() async throws {
     let doc = referralEmailView(unit)
 

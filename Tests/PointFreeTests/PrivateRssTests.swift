@@ -23,7 +23,6 @@ private let episodes: [Episode] = [
   .ep22_aTourOfPointFree,
 ].map { update($0) { $0.image = "http://localhost:8080/images/\($0.sequence).jpg" } }
 
-@MainActor
 class PrivateRssTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
@@ -38,6 +37,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -57,6 +57,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -76,6 +77,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_Subscriber_Yearly_StripeDown() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -96,6 +98,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -115,6 +118,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_InActiveSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -137,6 +141,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_Authenticated_DeactivatedSubscriber() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -159,6 +164,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_BadSalt() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -174,6 +180,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
@@ -198,6 +205,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef-dead-beef-dead-beefdeadbeef"
@@ -220,6 +228,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testFeed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef"
@@ -242,6 +251,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_Authenticated_Subscriber_Monthly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
@@ -262,6 +272,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_Authenticated_Subscriber_Yearly() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
@@ -282,6 +293,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_Authenticated_NonSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
@@ -301,6 +313,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_Authenticated_InActiveSubscriber() async throws {
     var user = Models.User.nonSubscriber
     user.rssSalt = "deadbeef/cafebeef"
@@ -323,6 +336,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_Authenticated_DeactivatedSubscriber() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
@@ -345,6 +359,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_BadSalt() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -361,6 +376,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_InvalidUserAgent() async throws {
     let user = Models.User.mock
     var feedRequestEventCreated = false
@@ -387,6 +403,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_ValidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"
@@ -409,6 +426,7 @@ class PrivateRssTests: TestCase {
     }
   }
 
+  @MainActor
   func testLegacy_Feed_BadSalt_InvalidUserAgent() async throws {
     var user = Models.User.mock
     user.rssSalt = "deadbeef/cafebeef"

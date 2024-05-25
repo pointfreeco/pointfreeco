@@ -9,12 +9,10 @@ import Models
 import ModelsTestSupport
 import PointFreeTestSupport
 import Prelude
-import SnapshotTesting
 import XCTest
 
 @testable import PointFree
 
-@MainActor
 final class DatabaseTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 

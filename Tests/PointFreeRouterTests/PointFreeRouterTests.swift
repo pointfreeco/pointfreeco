@@ -14,10 +14,10 @@ import XCTest
   import FoundationNetworking
 #endif
 
-@MainActor
 class PointFreeRouterTests: TestCase {
   @Dependency(\.siteRouter) var siteRouter
 
+  @MainActor
   func testUpdateProfile() async throws {
     let profileData = ProfileData(
       email: "blobby@blob.co",
@@ -37,6 +37,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(route, try siteRouter.match(request: request))
   }
 
+  @MainActor
   func testSubscribeRoute_FormData() async throws {
     let subscribeData = SubscribeData(
       coupon: "student-discount",
@@ -62,6 +63,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.match(request: request), route)
   }
 
+  @MainActor
   func testEpisodeShowRoute() async throws {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 
@@ -78,6 +80,7 @@ class PointFreeRouterTests: TestCase {
     )
   }
 
+  @MainActor
   func testEpisodeProgressRoute() async throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/episodes/ep10-hello-world/progress?percent=50")!
@@ -97,6 +100,7 @@ class PointFreeRouterTests: TestCase {
     )
   }
 
+  @MainActor
   func testTeamJoinLanding() async throws {
     let request = URLRequest(
       url: URL(string: "http://localhost:8080/team/deadbeef/join")!
@@ -115,6 +119,7 @@ class PointFreeRouterTests: TestCase {
     )
   }
 
+  @MainActor
   func testTeamJoin() async throws {
     var request = URLRequest(url: .init(string: "http://localhost:8080/team/deadbeef/join")!)
     request.httpMethod = "POST"
@@ -132,6 +137,7 @@ class PointFreeRouterTests: TestCase {
     )
   }
 
+  @MainActor
   func testGiftsIndex() async throws {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts")!)
 
@@ -141,6 +147,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
+  @MainActor
   func testGiftsPlan() async throws {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
 
@@ -150,6 +157,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
+  @MainActor
   func testGiftsRedeemLanding() async throws {
     let request = URLRequest.init(
       url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
@@ -161,6 +169,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
+  @MainActor
   func testGiftsRedeem() async throws {
     var request = URLRequest.init(
       url: .init(string: "http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7")!)
@@ -173,6 +182,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
+  @MainActor
   func testLive() async throws {
     var request = URLRequest.init(
       url: .init(string: "http://localhost:8080/live")!)
@@ -187,6 +197,7 @@ class PointFreeRouterTests: TestCase {
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
+  @MainActor
   func testCollectionEpisodeProgress() throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!

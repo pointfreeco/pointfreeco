@@ -21,8 +21,8 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class ResumeTests: TestCase {
+  @MainActor
   func testNotLoggedIn() async {
     await assertRequest(connection(from: request(to: .resume))) {
       """
@@ -43,6 +43,7 @@ class ResumeTests: TestCase {
     }
   }
 
+  @MainActor
   func testNoEpisodeProgress() async {
     await withDependencies {
       $0.episodeProgresses = [:]
@@ -68,6 +69,7 @@ class ResumeTests: TestCase {
     }
   }
 
+  @MainActor
   func testUnfinishedEpisodeProgress() async {
     await withDependencies {
       $0.database.fetchEpisodeProgresses = { _ in
@@ -105,6 +107,7 @@ class ResumeTests: TestCase {
     }
   }
 
+  @MainActor
   func testAllCaughtUp() async {
     await withDependencies {
       $0.episodes = {
@@ -160,6 +163,7 @@ class ResumeTests: TestCase {
     }
   }
 
+  @MainActor
   func testStartingNextEpisode() async {
     await withDependencies {
       $0.episodes = {

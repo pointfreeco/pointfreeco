@@ -11,13 +11,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class ChangeEmailConfirmationTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record=true
   }
 
+  @MainActor
   func testChangeEmailConfirmationEmail() async throws {
     let emailNodes = confirmEmailChangeEmailView(
       (
@@ -37,6 +37,7 @@ class ChangeEmailConfirmationTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangedEmail() async throws {
     let emailNodes = emailChangedEmailView((.mock, "blobby@blob.co"))
 

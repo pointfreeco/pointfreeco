@@ -7,8 +7,8 @@ import XCTest
 @testable import AsyncHTTPClient
 @testable import GitHub
 
-@MainActor
 final class GitHubTests: TestCase {
+  @MainActor
   func testRequests() async throws {
     let fetchAuthToken = fetchGitHubAuthToken(
       clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")

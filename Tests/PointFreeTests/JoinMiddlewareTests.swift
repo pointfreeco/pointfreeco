@@ -16,7 +16,6 @@ import XCTest
   import FoundationNetworking
 #endif
 
-@MainActor
 class JoinMiddlewareTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
@@ -28,6 +27,7 @@ class JoinMiddlewareTests: TestCase {
     super.invokeTest()
   }
 
+  @MainActor
   func testLanding() async throws {
     await withDependencies {
       $0.database.fetchLivestreams = { [] }
@@ -41,6 +41,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_Domain() async throws {
     await withDependencies {
       $0.database.fetchLivestreams = { [] }
@@ -54,6 +55,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_InvalidTeamCode() async throws {
     await withDependencies {
       $0.database.fetchLivestreams = { [] }
@@ -88,6 +90,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_InactiveSubscription() async throws {
     await withDependencies {
       $0.database.fetchLivestreams = { [] }
@@ -119,6 +122,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testJoin_InvalidEmail() async throws {
     await withDependencies {
       struct SomeError: Error {}
@@ -162,6 +166,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedOut() async throws {
     let user = User.mock
     try await withDependencies {
@@ -194,6 +199,7 @@ class JoinMiddlewareTests: TestCase {
     }
   }
 
+  @MainActor
   func testConfirm_InvalidCode() async throws {
     let user = User.nonSubscriber
     await withDependencies {
@@ -237,7 +243,6 @@ class JoinMiddlewareTests: TestCase {
   }
 }
 
-@MainActor
 class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -253,6 +258,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   #endif
 
+  @MainActor
   func testJoin_LoggedIn_Code() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -339,6 +345,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedIn_Domain() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -394,6 +401,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedIn_Domain_StripeFetchError() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -435,6 +443,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedIn_InactiveSubscription() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -474,6 +483,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedIn_InvalidDomain() async throws {
     let currentUser = try await self.registerBlob()
 
@@ -509,6 +519,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedOut() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -548,6 +559,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testJoin_LoggedIn_CurrentUserHasActiveSubscription() async throws {
     let currentUser = try await self.registerBlob()
     let _ = try await self.createSubscription(owner: currentUser)
@@ -587,6 +599,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_Domain() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -670,6 +683,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_Domain_OpenSeats_OwnerNonSubscriber() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -743,6 +757,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_Domain_OpenSeats() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -816,6 +831,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_Domain_StripeFailure() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -865,6 +881,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_ExpiredCode() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -910,6 +927,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_UserIDMismatch() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -955,6 +973,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testConfirm_LoggedIn_CodeMismatch() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()

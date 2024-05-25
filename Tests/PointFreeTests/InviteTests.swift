@@ -17,7 +17,6 @@ import XCTest
 
 @testable import PointFree
 
-@MainActor
 class InviteIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -26,6 +25,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testSendInvite_HappyPath() async throws {
     let inviterUser = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -45,6 +45,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testSendInvite_UnhappyPath_NoSeats() async throws {
     let inviterUser = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -67,6 +68,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testResendInvite_HappyPath() async throws {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -84,6 +86,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testRevokeInvite_HappyPath() async throws {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -104,6 +107,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNil(invite)
   }
 
+  @MainActor
   func testRevokeInvite_CurrentUserIsNotInviter() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -131,6 +135,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNotNil(invite)
   }
 
+  @MainActor
   func testAcceptInvitation_HappyPath() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -165,6 +170,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNotNil(subscriptionId, "Current user now has a subscription")
   }
 
+  @MainActor
   func testAcceptInvitation_InviterIsNotSubscriber() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -192,6 +198,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNil(subscriptionId, "Current user does not have a subscription")
   }
 
+  @MainActor
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -226,6 +233,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -261,6 +269,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testAddTeammate() async throws {
     try await withDependencies {
       $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
@@ -304,6 +313,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testResendInvite_CurrentUserIsNotInviter() async throws {
     var env = GitHubUserEnvelope.mock
     env.gitHubUser.id = 1
@@ -329,13 +339,13 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 class InviteTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testShowInvite_LoggedOut() async throws {
     let showInvite = request(to: .invite(.invitation(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
@@ -355,6 +365,7 @@ class InviteTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testShowInvite_LoggedIn_NonSubscriber() async throws {
     var currentUser = Models.User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!
@@ -393,6 +404,7 @@ class InviteTests: TestCase {
     }
   }
 
+  @MainActor
   func testShowInvite_LoggedIn_Subscriber() async throws {
     var currentUser = User.mock
     currentUser.id = .init(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!

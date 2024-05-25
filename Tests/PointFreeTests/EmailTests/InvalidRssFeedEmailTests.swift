@@ -12,13 +12,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class InvalidRssFeedEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testEmail() async throws {
     let doc = invalidRssFeedEmail((.mock, "slack"))
 

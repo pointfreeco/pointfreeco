@@ -20,7 +20,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 final class StripeWebhooksTests: TestCase {
   @Dependency(\.date.now) var now
 
@@ -29,6 +28,7 @@ final class StripeWebhooksTests: TestCase {
     // SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testDecoding() async throws {
     let json = """
       {
@@ -316,6 +316,7 @@ final class StripeWebhooksTests: TestCase {
         """#.utf8))
   }
 
+  @MainActor
   func testValidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
@@ -330,6 +331,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testStaleHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
@@ -345,6 +347,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testInvalidHook() async throws {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscriptions(.invoice))))
@@ -356,6 +359,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNoInvoiceSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
@@ -378,6 +382,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
@@ -403,6 +408,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNoInvoiceNumber() async throws {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
@@ -425,6 +431,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testIncompleteSubscription() async throws {
     #if !os(Linux)
       try await withDependencies {
@@ -453,6 +460,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testPastDueEmail() async throws {
     let doc = pastDueEmailView(unit)
 
@@ -471,6 +479,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testPaymentIntent_Gift() async throws {
     var delivered = false
     var didSendEmail = false
@@ -539,6 +548,7 @@ final class StripeWebhooksTests: TestCase {
     }
   }
 
+  @MainActor
   func testPaymentIntent_NoGift() async throws {
     try await withDependencies {
       $0.date.now = .mock
@@ -594,6 +604,7 @@ final class StripeWebhooksTests: TestCase {
     }
   }
 
+  @MainActor
   func testFailedPaymentIntent() async throws {
     try await withDependencies {
       $0.date.now = .mock

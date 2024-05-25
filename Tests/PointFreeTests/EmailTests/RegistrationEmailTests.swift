@@ -13,13 +13,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class RegistrationEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record=true
   }
 
+  @MainActor
   func testRegistrationEmail() async throws {
     let doc = registrationEmailView(.mock)
 

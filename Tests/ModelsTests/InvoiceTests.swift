@@ -6,7 +6,6 @@ import XCTest
 @testable import Models
 @testable import Stripe
 
-@MainActor
 final class InvoiceTests: TestCase {
   func testDecoding() async throws {
     _ = try Stripe.jsonDecoder.decode(ListEnvelope<Invoice>.self, from: Data(invoicesJSON.utf8))

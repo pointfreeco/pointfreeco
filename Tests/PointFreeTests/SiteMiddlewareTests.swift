@@ -19,13 +19,13 @@ private func secureRequest(_ urlString: String) -> URLRequest {
   return request
 }
 
-@MainActor
 class SiteMiddlewareTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testWithoutWWW() async throws {
     await assertSnapshot(
       matching: await siteMiddleware(
@@ -42,6 +42,7 @@ class SiteMiddlewareTests: TestCase {
     )
   }
 
+  @MainActor
   func testWithoutHeroku() async throws {
     await assertSnapshot(
       matching: await siteMiddleware(
@@ -58,6 +59,7 @@ class SiteMiddlewareTests: TestCase {
     )
   }
 
+  @MainActor
   func testWithWWW() async throws {
     await assertSnapshot(
       matching: await siteMiddleware(
@@ -74,6 +76,7 @@ class SiteMiddlewareTests: TestCase {
     )
   }
 
+  @MainActor
   func testWithHttps() async throws {
     await assertSnapshot(
       matching: await siteMiddleware(

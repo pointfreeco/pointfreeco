@@ -14,7 +14,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class HomeTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
@@ -43,6 +42,7 @@ class HomeTests: TestCase {
     }
   }
 
+  @MainActor
   func testHomepage_LoggedOut() async throws {
     let conn = connection(from: request(to: .home))
     let result = await siteMiddleware(conn)
@@ -62,6 +62,7 @@ class HomeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testHomepage_Subscriber() async throws {
     await withDependencies {
       $0.database.fetchEpisodeProgresses = { [dependencies = $0] userID in
@@ -114,6 +115,7 @@ class HomeTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodesIndex() async throws {
     let conn = connection(from: request(to: .episode(.index)))
 

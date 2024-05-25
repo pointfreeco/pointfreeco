@@ -10,8 +10,8 @@ import XCTest
 @testable import Models
 @testable import PointFree
 
-@MainActor
 class AtomFeedTests: TestCase {
+  @MainActor
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true

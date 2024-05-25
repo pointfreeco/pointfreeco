@@ -13,7 +13,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class FreeEpisodeEmailTests: TestCase {
   @Dependency(\.episodes) var episodes
 
@@ -22,6 +21,7 @@ class FreeEpisodeEmailTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testFreeEpisodeEmail() async throws {
     let doc = freeEpisodeEmail((self.episodes().first!, .mock))
 

@@ -3,7 +3,6 @@ import XCTest
 
 @testable import Models
 
-@MainActor
 final class EpisodeTests: TestCase {
   func testSlug() async throws {
     var episode = Episode.mock

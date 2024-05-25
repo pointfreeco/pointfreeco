@@ -16,7 +16,6 @@ import XCTest
 @testable import HttpPipeline
 @testable import PointFree
 
-@MainActor
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.database) var database
@@ -28,6 +27,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     //    SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testExpressUnsubscribe() async throws {
     let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -62,6 +62,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     )
   }
 
+  @MainActor
   func testExpressUnsubscribeReply() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(
@@ -103,6 +104,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     #endif
   }
 
+  @MainActor
   func testExpressUnsubscribeReply_IncorrectSignature() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(
@@ -144,6 +146,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
     #endif
   }
 
+  @MainActor
   func testExpressUnsubscribeReply_UnknownNewsletter() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(

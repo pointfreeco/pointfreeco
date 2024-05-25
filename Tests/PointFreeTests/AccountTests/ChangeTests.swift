@@ -15,13 +15,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 final class ChangeTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record = true
   }
 
+  @MainActor
   func testChangeRedirect() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -34,6 +34,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateUpgradeIndividualPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -51,6 +52,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateDowngradeIndividualPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -68,6 +70,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateUpgradeTeamPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -85,6 +88,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateDowngradeTeamPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -102,6 +106,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateAddSeatsIndividualPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -115,6 +120,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpgradeIndividualMonthlyToTeamYearly() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -128,6 +134,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateAddSeatsTeamPlan() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -144,6 +151,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateRemoveSeats() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -164,6 +172,7 @@ final class ChangeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testChangeUpdateRemoveSeatsInvalidNumber() async throws {
     #if !os(Linux)
       var subscription = Stripe.Subscription.mock
