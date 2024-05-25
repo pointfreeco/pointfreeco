@@ -491,7 +491,11 @@ var package = Package(
       dependencies: [
         "TranscriptParser"
       ],
-      resources: transcripts()
+      resources: [
+        .process("BlogPosts/Resources"),
+        .process("Resources"),
+        .process("PrivateTranscripts/Resources"),
+      ]
     ),
 
     .testTarget(
@@ -554,8 +558,8 @@ let isOss = !FileManager.default.fileExists(
 extension SwiftSetting {
   static let warnLongExpressionTypeChecking = unsafeFlags(
     [
-      //      "-Xfrontend", "-warn-long-expression-type-checking=200",
-      //      "-Xfrontend", "-warn-long-function-bodies=200",
+      //"-Xfrontend", "-warn-long-expression-type-checking=200",
+      //"-Xfrontend", "-warn-long-function-bodies=200",
     ],
     .when(configuration: .debug)
   )
@@ -572,48 +576,4 @@ for index in package.targets.indices {
   if package.targets[index].type != .system {
     package.targets[index].swiftSettings = .pointFreeSettings
   }
-}
-
-func transcripts() -> [Resource] {
-  let publicTranscripts: [Resource] = try! FileManager.default
-    .contentsOfDirectory(
-      atPath: URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .appendingPathComponent("Sources")
-        .appendingPathComponent("Transcripts")
-        .appendingPathComponent("Resources")
-        .path
-    )
-    .filter { $0.hasSuffix(".md") }
-    .map { .copy("Resources/\($0)") }
-
-  let privateTranscripts: [Resource] =
-    (try? FileManager.default
-      .contentsOfDirectory(
-        atPath: URL(fileURLWithPath: #filePath)
-          .deletingLastPathComponent()
-          .appendingPathComponent("Sources")
-          .appendingPathComponent("Transcripts")
-          .appendingPathComponent("PrivateTranscripts")
-          .path
-      )
-      .filter { $0.hasSuffix(".md") }
-      .map { .copy("PrivateTranscripts/\($0)") })
-    ?? []
-
-  let blogPostTranscripts: [Resource] =
-    (try? FileManager.default
-      .contentsOfDirectory(
-        atPath: URL(fileURLWithPath: #filePath)
-          .deletingLastPathComponent()
-          .appendingPathComponent("Sources")
-          .appendingPathComponent("Transcripts")
-          .appendingPathComponent("BlogPosts")
-          .path
-      )
-      .filter { $0.hasSuffix(".md") }
-      .map { .copy("BlogPosts/\($0)") })
-    ?? []
-
-  return publicTranscripts + privateTranscripts + blogPostTranscripts
 }
