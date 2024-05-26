@@ -49,7 +49,8 @@ class CounterFeature {
 }
 ```
 
-…and then construct a simple view hierarchy that accesses whatever state from the model is needed: 
+…and then construct a simple view hierarchy that accesses whatever state from the `model` that is 
+needed: 
 
 ```swift
 Form {
