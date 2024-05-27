@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep281_modernUIKit = Episode(
     blurb: """
-      As we approach WWDC23 and 5 years of SwiftUI, let's talk about… UIKit! 😜 We love SwiftUI,
+      As we approach WWDC24 and 5 years of SwiftUI, let's talk about… UIKit! 😜 We love SwiftUI,
       but there will still be times you must drop down to UIKit, and so we want to show what modern
       UIKit development can look like if you put in a little bit of effort to build tools that allow
       you to model your domains as concisely as possible.
