@@ -21,7 +21,9 @@ App architecture is filled with trade-offs, and it is important to think deeply 
 
 ### Should TCA be used for every kind of app?
 
-We do not recommend people use TCA when they are first learning Swift or SwiftUI, and we don’t think TCA really shines when building simple “reader” apps that mostly load JSON from the network and display it. Such apps don’t tend to have much in the way of nuanced logic or complex side effects, and so the benefits of TCA aren’t as clear.
+We do not recommend people use TCA when they are first learning Swift or SwiftUI. TCA is not a substitute or replacement for SwiftUI, but rather is meant to be paired with SwiftUI. You will need to be familiar with all of SwiftUI's standard concepts to wield TCA correctly.
+
+We also don't think TCA really shines when building simple “reader” apps that mostly load JSON from the network and display it. Such apps don’t tend to have much in the way of nuanced logic or complex side effects, and so the benefits of TCA aren’t as clear.
 
 In general it can be fine to start a project with vanilla SwiftUI (with a concentration on concise domain modeling), and then transition to TCA later if there is a need for any of its powers.
 
@@ -29,17 +31,17 @@ In general it can be fine to start a project with vanilla SwiftUI (with a concen
 
 We actually feel that TCA complements SwiftUI quite well! The design of TCA has been heavily inspired by SwiftUI, and so you will find a lot of similarities:
 
-* TCA features can minimally and implicitly observe minimal state changes just as in SwiftUI, but one uses the ``ObservableState()`` macro to do so, which is like Swift's `@Observable`. We even [back-ported](<doc:ObservationBackport>) Swift's observation tools so that they could be used with iOS 16 and earlier.
-* One composes TCA features together much like one composes SwiftUI features, by implementing a ``Reducer/body-20w8t`` property and using result builder syntax.
-* Dependencies are declared using the [`@Dependency`](<doc:DependencyManagement>) property wrapper, which behaves much like SwiftUI's `@Environment` property wrapper, but it works outside of views.
-* The library's [state sharing](<doc:SharingState>) tools work a lot like SwiftUI's `@Binding` tool, but it works outside of views and it is 100% testable.
+* TCA features can minimally and implicitly observe minimal state changes just as in SwiftUI, but one uses the [`ObservableState`][observable-state-docs] macro to do so, which is like Swift's `@Observable`. We even [back-ported][observation-backport-article] Swift's observation tools so that they could be used with iOS 16 and earlier.
+* One composes TCA features together much like one composes SwiftUI features, by implementing a [`body`](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducer/body-20w8t) property and using result builder syntax.
+* Dependencies are declared using the [`@Dependency`][deps-article] property wrapper, which behaves much like SwiftUI's `@Environment` property wrapper, but it works outside of views.
+* The library's [state sharing][sharing-state-article] tools work a lot like SwiftUI's `@Binding` tool, but it works outside of views and it is 100% testable.
 
 We also feel that often TCA allows one to even more fully embrace some of the super powers of SwiftUI:
 
-* TCA apps are allowed to use Swift's observation tools with value types, whereas vanilla SwiftUI is limited to only reference types. The author of the observation proposal even intended for `@Observable` to work with value types but ultimately had to abandon it due to limitations of Swift. But we are able to overcome those limitations thanks to the ``Store`` type.
-* Navigation in TCA uses all of the same tools from vanilla SwiftUI, such as `sheet(item:)`, `popover(item:)`, and even `NavigationStack`. But we also provide tools for [driving navigation](<doc:Navigation>) from more concise domains, such as enums and optionals.
+* TCA apps are allowed to use Swift's observation tools with value types, whereas vanilla SwiftUI is limited to only reference types. The author of the observation proposal even intended for `@Observable` to work with value types but ultimately had to abandon it due to limitations of Swift. But we are able to overcome those limitations thanks to the [`Store`](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/store) type.
+* Navigation in TCA uses all of the same tools from vanilla SwiftUI, such as `sheet(item:)`, `popover(item:)`, and even `NavigationStack`. But we also provide tools for [driving navigation][nav-article] from more concise domains, such as enums and optionals.
 * TCA allows one to “hot swap” a feature’s logic and behavior for alternate versions, with essentially no extra work. For example when showing a “placeholder” version of a UI using SwiftUI’s `redacted` API, you can [swap the feature’s logic](https://www.pointfree.co/collections/swiftui/redactions) for an “inert” version that does nothing when interacted with.
-* TCA features tend to be easier to view in Xcode previews because [dependencies are controlled](<doc:DependencyManagement>) from the beginning. There are many dependencies that don't work in previews (_e.g._ location managers), and some that are dangerous to use in previews (_e.g._ analytics clients), but one does not need to worry about that when controlling dependencies properly.
+* TCA features tend to be easier to view in Xcode previews because [dependencies are controlled][deps-article] from the beginning. There are many dependencies that don't work in previews (_e.g._ location managers), and some that are dangerous to use in previews (_e.g._ analytics clients), but one does not need to worry about that when controlling dependencies properly.
 * TCA features can be fully tested, including how dependencies execute and feed data back into the system, all without needing to run a UI test.
 
 And the more familiar you are with SwiftUI and its patterns, the better you will be able to leverage the Composable Architecture. We’ve never said that you must abandon SwiftUI in order to use TCA, and in fact we think the opposite is true!
@@ -52,18 +54,18 @@ TCA broadened the focus to include tools for a lot of common problems one runs i
 
 * …tools for concise domain modeling.
 * Allowing one to embrace value types fully instead of reference types.
-* A full suite of tools are provided for integrating with Apple’s platforms (SwiftUI, UIKit, AppKit, _etc._), including [navigation](<doc:Navigation>).
-* A powerful [dependency management system](<doc:DependencyManagement>) for controlling and propagating dependencies throughout your app.
-* A [testing tool](<doc:Testing>) that makes it possible to exhaustively test how your feature behaves with user actions, including how side effects execute and feed data back into the system.
+* A full suite of tools are provided for integrating with Apple’s platforms (SwiftUI, UIKit, AppKit, _etc._), including [navigation][nav-article].
+* A powerful [dependency management system][deps-article] for controlling and propagating dependencies throughout your app.
+* A [testing tool][testing-article] that makes it possible to exhaustively test how your feature behaves with user actions, including how side effects execute and feed data back into the system.
 * …and more!
 
 Redux does not provide tools itself for any of the above problems.
 
-And you can certainly opt to build your own TCA-inspired library instead of depending directly on TCA, and in fact many large companies do just that. But it is also worth considering if it is worth losing out on the continual development and improvements TCA makes over the years. With each major release of iOS we have made sure to keep TCA up-to-date, including concurrency tools, `NavigationStack`, and [Swift 5.9’s observation tools](<doc:MigratingTo1.7>) (of which we even [back-ported](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/observationbackport) so that they could be used all the way back to iOS 13), [state sharing](<doc:SharingState>) tools, and more. And further you will be missing out on the community of thousands of developers that use TCA and frequent our GitHub discussions and [Slack](http://pointfree.co/slack-invite).
+And you can certainly opt to build your own TCA-inspired library instead of depending directly on TCA, and in fact many large companies do just that. But it is also worth considering if it is worth losing out on the continual development and improvements TCA makes over the years. With each major release of iOS we have made sure to keep TCA up-to-date, including concurrency tools, `NavigationStack`, and [Swift 5.9’s observation tools][migration-guide-1.7] (of which we even [back-ported](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/observationbackport) so that they could be used all the way back to iOS 13), [state sharing][sharing-state-article] tools, and more. And further you will be missing out on the community of thousands of developers that use TCA and frequent our GitHub discussions and [Slack](http://pointfree.co/slack-invite).
 
 ### Do features built in TCA have a lot of boilerplate?
 
-Often people complain of boilerplate in TCA, especially with regards a legacy concept known as “view stores”. Those were objects that allowed views to observe the minimal amount of state in a view, and they were [deprecated a long time ago](<doc:MigratingTo1.7>) after Swift 5.9 released with the Observation framework. Features built with modern TCA do not need to worry about view stores and instead can access state directly off of stores and the view will observe the minimal amount of state, just as in vanilla SwiftUI.
+Often people complain of boilerplate in TCA, especially with regards a legacy concept known as “view stores”. Those were objects that allowed views to observe the minimal amount of state in a view, and they were [deprecated a long time ago][migration-guide-1.7] after Swift 5.9 released with the Observation framework. Features built with modern TCA do not need to worry about view stores and instead can access state directly off of stores and the view will observe the minimal amount of state, just as in vanilla SwiftUI.
 
 In our experience, a standard TCA feature should not require very many more lines of code than an equivalent vanilla SwiftUI feature, and if you write tests or integrate features together using the tools TCA provides, it should require much *less* code than the equivalent vanilla code.
 
@@ -89,7 +91,7 @@ Modeling user actions with an enum rather than methods defined on some object is
 
   This is quite complex logic that was easy to implement thanks to the enum description of actions. And on top of that, it was all 100% unit testable.
 
-- Having a data type of all actions in your feature makes it possible to write powerful debugging tools. For example, the ``Reducer/_printChanges()`` reducer operator gives you insight into every action that enters the system, and prints a nicely formatted message showing exactly how state changed when the action was processed:
+- Having a data type of all actions in your feature makes it possible to write powerful debugging tools. For example, the [`_printChanges`](https://github.com/pointfreeco/swift-composable-architecture/blob/7d54fdbc5e5337ec4376436efca19454fad5c278/Sources/ComposableArchitecture/Reducer/Reducers/DebugReducer.swift#L6-L16) reducer operator gives you insight into every action that enters the system, and prints a nicely formatted message showing exactly how state changed when the action was processed:
 
   ```
   received action:
@@ -108,9 +110,9 @@ Modeling user actions with an enum rather than methods defined on some object is
     )
   ```
 
-  You can also create a tool, ``Reducer/signpost(_:log:)``, that automatically instruments every action of your feature with signposts to find any potential performance problems in your app. And 3rd parties have built their own tools for tracking and instrumenting features, all thanks to the fact that there is a data representation of every action in the app.
+  You can also create a tool, [`signpost`](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reduce/signpost(_:log:)), that automatically instruments every action of your feature with signposts to find any potential performance problems in your app. And 3rd parties have built their own tools for tracking and instrumenting features, all thanks to the fact that there is a data representation of every action in the app.
 
-- Having a data type of all actions in your feature also makes it possible to write exhaustive tests on every aspect of your feature. Using something known as a ``TestStore`` you can emulate user flows by sending it actions and asserting how state changes each step of the way. And further, you must also assert on how effects feed their data back into the system by asserting on actions received:
+- Having a data type of all actions in your feature also makes it possible to write exhaustive tests on every aspect of your feature. Using something known as a [``TestStore``](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/teststore) you can emulate user flows by sending it actions and asserting how state changes each step of the way. And further, you must also assert on how effects feed their data back into the system by asserting on actions received:
 
   ```swift
   store.send(.refreshButtonTapped) {
@@ -122,7 +124,7 @@ Modeling user actions with an enum rather than methods defined on some object is
   }
   ```
 
-  Again this is only possible thanks to the data type of all actions in the feature. See <doc:Testing> for more information on testing in TCA.
+  Again this is only possible thanks to the data type of all actions in the feature. See [this article][testing-article] for more information on testing in TCA.
 
 <!-- TODO: Navigation tools? -->
 
@@ -172,7 +174,7 @@ case .refreshButtonTapped:
   }
 ```
 
-And if you really do need to perform state mutations between each of these asynchronous operations then you will incur a bit of ping-ponging. But, [as mentioned above](#Maintaining-a-separate-enum-of-actions-is-unnecessary-work), there are great benefits to having a data description of actions, such as an extreme decoupling of logic from the view, the ability to test every aspect of your feature, including how effects execute, and more.
+And if you really do need to perform state mutations between each of these asynchronous operations then you will incur a bit of ping-ponging. But, [as mentioned above](#Maintaining-a-separate-enum-of-actions-is-unnecessary-work), there are great benefits to having a data description of actions, such as an extreme decoupling of logic from the view, powerful debugging tools, the ability to test every aspect of your feature, and more. If you were to try to reproduce those abilities in a non-TCA app you would be inevitably led to the same ping-ponging.
 
 <!-- TODO: We should be able to completely eliminate ping-ponging in TCA 2.0 -->
 
@@ -207,3 +209,13 @@ However, certain concepts of functional programming languages are quite importan
 including how side effects execute and feed data back into the system.
 
 However, one does not need to have any prior experience with these concepts. The ideas are imbued into the library and documentation, and so you will gain experience by simply following our materials and demo apps.
+
+
+[deps-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/dependencymanagement
+[nav-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/navigation
+[testing-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing
+[migration-guide-1.7]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.7
+[sharing-state-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
+[observation-backport-article]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/observationbackport
+
+[observable-state-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/observablestate()
