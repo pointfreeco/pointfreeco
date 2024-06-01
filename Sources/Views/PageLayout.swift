@@ -120,7 +120,7 @@ public func simplePageLayout<A>(
           ghosterBanner(isGhosting: layoutData.isGhosting),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.eoy2023),
+          announcementBanner(.wwdc24),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(layoutData),
@@ -189,19 +189,19 @@ struct Banner {
   let shouldShow: (SubscriberState, SiteRoute) -> Bool
   let startAt: Date
 
-  static let eoy2023 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2024-01-01")!,
+  static let wwdc24 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2024-06-18")!,
     markdownContent: ###"""
-      **🎁 End-of-year sale!** Save 25% when you [subscribe](/discounts/2023-eoy).
+      **🎉 WWDC '24 Sale!** Save 25% when you [subscribe today](/discounts/dubdub24).
       """###,
     shouldShow: { subscriberState, route in
       if subscriberState.isActiveSubscriber {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("blog/posts/126-2023-year-in-review"))) = route {
+      } else if case .blog(.show(.left("blog/posts/142-10-years-of-swift-25-off-point-free"))) = route {
         return false
-      } else if case .blog(.show(.right(126))) = route {
+      } else if case .blog(.show(.right(142))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
@@ -209,7 +209,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2023-12-18")!
+    startAt: yearMonthDayFormatter.date(from: "2024-01-06")!
   )
 }
 
@@ -229,7 +229,7 @@ private func announcementBanner(_ banner: Banner? = nil) -> Node {
   let announcementClass =
     Class.type.align.center
     | Class.padding([.mobile: [.topBottom: 3]])
-    | Class.pf.colors.bg.purple
+    | Class.pf.colors.bg.gray150
     | Class.pf.colors.fg.white
     | Class.pf.colors.link.white
     | Class.pf.type.body.leading
