@@ -65,6 +65,13 @@ concepts of [map, zip and flatMap][map-zip-flatmap], the most advanced content o
 [tour-tca-1.0]: /collections/composable-architecture/composable-architecture-1-0
 [macros-collection]: /collections/macros
 
+## Livestream
+
+We are also excited to announce that we will be holding a WWDC retrospective livestream. Tune in
+on TODO at 9am PST / 4pm GMT to hear our thoughts on all of the WWDC announcements, ask us your
+questions, and we will also have a very special announcement to make. Trust us… you do not want to
+miss it!
+
 ## Subscribe today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
