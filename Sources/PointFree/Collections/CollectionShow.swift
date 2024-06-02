@@ -44,5 +44,5 @@ private let fetchCollectionMiddleware: MT<Episode.Collection.Slug, Episode.Colle
 
 private func fetchCollection(_ slug: Episode.Collection.Slug) -> Episode.Collection? {
   @Dependency(\.collections) var collections
-  return collections.first(where: { $0.slug == slug })
+  return collections.all().first(where: { $0.slug == slug })
 }

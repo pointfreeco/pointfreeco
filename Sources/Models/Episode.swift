@@ -1,3 +1,4 @@
+import CasePaths
 import Dependencies
 import Foundation
 import Tagged
@@ -138,7 +139,7 @@ public struct Episode: Equatable, Identifiable {
 
     public var length: Seconds<Int> {
       self.sections
-        .flatMap { $0.coreLessons.map(\.episode.length) }
+        .flatMap { $0.coreLessons.map(\.duration) }
         .reduce(into: 0, +=)
     }
 
@@ -178,7 +179,7 @@ public struct Episode: Equatable, Identifiable {
 
       public var length: Seconds<Int> {
         self.coreLessons
-          .map(\.episode.length)
+          .map(\.duration)
           .reduce(into: 0, +=)
       }
 
@@ -186,13 +187,49 @@ public struct Episode: Equatable, Identifiable {
         self.alternateSlug.map(Slug.init(rawValue:)) ?? Slug(rawValue: Models.slug(for: self.title))
       }
 
-      public struct Lesson: Equatable {
-        public var episode: Episode
+      @CasePathable
+      @dynamicMemberLookup
+      public enum Lesson: Equatable {
+        case clip(Clip)
+        case episode(Episode)
+
+        public init(
+          clip: Clip
+        ) {
+          self = .clip(clip)
+        }
 
         public init(
           episode: Episode
         ) {
-          self.episode = episode
+          self = .episode(episode)
+        }
+
+        public var duration: Seconds<Int> {
+          switch self {
+          case let .clip(clip):
+            clip.duration
+          case let .episode(episode):
+            episode.length
+          }
+        }
+
+        public var publishedAt: Date {
+          switch self {
+          case .clip(let clip):
+            clip.createdAt
+          case .episode(let episode):
+            episode.publishedAt
+          }
+        }
+
+        public var title: String {
+          switch self {
+          case .clip(let clip):
+            clip.title
+          case .episode(let episode):
+            episode.fullTitle
+          }
         }
       }
 
@@ -588,7 +625,7 @@ public func reference(
       > \(section.blurb)
       """,
     link: sectionUrl,
-    publishedAt: section.coreLessons.first?.episode.publishedAt,
+    publishedAt: section.coreLessons.first?.publishedAt,
     title: "Collection: \(section.title)"
   )
 }

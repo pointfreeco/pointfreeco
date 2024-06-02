@@ -126,7 +126,18 @@ private func coreLesson(
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
-  let isActive = lesson.episode.publishedAt <= now
+  let isActive = lesson.publishedAt <= now
+  let url: String
+  switch lesson {
+  case .clip(let clip):
+    url = siteRouter.path(for: .clips(.clip(videoID: clip.vimeoID)))
+  case .episode(let episode):
+    url = siteRouter.path(
+      for: .collections(
+        .collection(collection.slug, .section(section.slug, .episode(.left(episode.slug))))
+      )
+    )
+  }
   return .gridColumn(
     sizes: [.mobile: 12],
     attributes: [
@@ -135,13 +146,9 @@ private func coreLesson(
     contentRow(
       backgroundColor: Class.pf.colors.bg.white,
       icon: isActive ? playIconSvgBase64() : hourGlassSvgBase64(fill: "666"),
-      title: lesson.episode.fullTitle,
-      length: lesson.episode.length,
-      url: siteRouter.path(
-        for: .collections(
-          .collection(collection.slug, .section(section.slug, .episode(.left(lesson.episode.slug))))
-        )
-      ),
+      title: lesson.title,
+      length: lesson.duration,
+      url: url,
       isActive: isActive
     )
   )

@@ -56,7 +56,7 @@ private func episodePageData(
   @Dependency(\.date.now) var now
 
   let context: EpisodePageData.Context
-  if let collection = collections.first(where: { $0.slug == collectionSlug }) {
+  if let collection = collections.all().first(where: { $0.slug == collectionSlug }) {
     context = .collection(collection)
   } else {
     context = .direct(

@@ -14,7 +14,7 @@ let collectionsIndexMiddleware: M<Void> =
     layoutData: {
       @Dependency(\.collections) var collections
       return SimplePageLayoutData(
-        data: collections,
+        data: collections.all(),
         extraStyles: collectionIndexStyles,
         style: .base(.some(.minimal(.black))),
         title: "Point-Free Collections"

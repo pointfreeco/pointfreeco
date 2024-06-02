@@ -6,8 +6,9 @@ extension Episode.Collection {
         .init(
           blurb: livesteramBlurb,
           coreLessons: [
-            Episode.Collection.Section.Lesson(episode: .ep221_pfLive_dependenciesStacks),
-            Episode.Collection.Section.Lesson(episode: .ep267_pfLive_observationInPractice),
+            .episode(.ep221_pfLive_dependenciesStacks),
+            .episode(.ep267_pfLive_observationInPractice),
+            .clip(Clip(vimeoID: 944549956)),
           ],
           related: [],
           title: "Livestreams",

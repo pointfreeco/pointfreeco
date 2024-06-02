@@ -41,9 +41,8 @@ func reference(forCollection collection: Episode.Collection, additionalBlurb: St
       """,
     link: siteRouter.url(for: .collections(.collection(collection.slug))),
     publishedAt: collection.sections
-      .flatMap { $0.coreLessons.map(\.episode) }
-      .first?
-      .publishedAt,
+      .flatMap { $0.coreLessons.map(\.publishedAt) }
+      .first,
     title: collection.title
   )
 }

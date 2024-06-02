@@ -861,6 +861,7 @@ extension Client {
           CREATE TABLE IF NOT EXISTS "clips" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "duration" integer NOT NULL,
             "description" character varying NOT NULL,
             "poster_url" character varying NOT NULL,
             "title" character varying NOT NULL,
@@ -921,6 +922,7 @@ extension Client {
           INSERT INTO "clips" (
             "created_at",
             "description",
+            "duration",
             "poster_url",
             "title",
             "vimeo_id"
@@ -928,6 +930,7 @@ extension Client {
           VALUES (
             \(bind: video.created),
             \(bind: video.description),
+            \(bind: video.duration),
             \(bind: "image.png"),
             \(bind: video.name),
             \(bind: videoID)

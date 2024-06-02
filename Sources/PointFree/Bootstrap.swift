@@ -44,6 +44,7 @@ private func updateClips() async {
     print("  ✅ Vimeo clips updated!")
   }
 
+  @Dependency(\.collections) var collections
   @Dependency(\.database) var database
   @Dependency(\.vimeoClient) var vimeoClient
 
@@ -59,5 +60,13 @@ private func updateClips() async {
     }
   } catch {
     print("  ❌ Vimeo error: \(error)")
+  }
+
+  print("  ⚠️ Updating collection clips")
+  do {
+    try await collections.bootstrap()
+    print("  ✅ Updated collection clips")
+  } catch {
+    print("  ❌ Updating collection clips")
   }
 }

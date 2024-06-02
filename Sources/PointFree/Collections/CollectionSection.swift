@@ -37,7 +37,7 @@ private let fetchCollectionSectionMiddleware:
       @Dependency(\.collections) var collections
       let (collectionSlug, sectionSlug) = lower($0)
       return pure(
-        collections.first(where: { $0.slug == collectionSlug }).flatMap { collection in
+        collections.all().first(where: { $0.slug == collectionSlug }).flatMap { collection in
           collection.sections.first(where: { $0.slug == sectionSlug }).map { section in
             lift((collection, section))
           }

@@ -1,10 +1,11 @@
 import Foundation
 import Tagged
+import TaggedTime
 
 public struct VimeoVideo: Decodable, Equatable {
   public let created: Date
   public let description: String
-  public let duration: Int
+  public let duration: Seconds<Int>
   public let name: String
   public let privacy: Privacy
   public let type: VideoType
@@ -39,7 +40,7 @@ public struct VimeoVideo: Decodable, Equatable {
   public init(
     created: Date,
     description: String,
-    duration: Int,
+    duration: Seconds<Int>,
     name: String,
     privacy: Privacy,
     type: VideoType,
