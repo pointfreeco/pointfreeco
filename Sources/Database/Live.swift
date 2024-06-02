@@ -2,13 +2,15 @@ import Models
 import PointFreePrelude
 import PostgresKit
 import Stripe
+import VimeoClient
 
 extension Client {
   public static func live(
     pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
   ) -> Self {
     Self(
-      addUserIdToSubscriptionId: { userId, subscriptionId in
+      addUserIdToSubscriptionId: {
+        userId, subscriptionId in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
@@ -41,7 +43,14 @@ extension Client {
         )
       },
       createGift: {
-        deliverAt, fromEmail, fromName, message, monthsFree, stripePaymentIntentId, toEmail, toName
+        deliverAt,
+        fromEmail,
+        fromName,
+        message,
+        monthsFree,
+        stripePaymentIntentId,
+        toEmail,
+        toName
         in
         try await pool.sqlDatabase.first(
           """
@@ -114,6 +123,13 @@ extension Client {
           SELECT *
           FROM "users"
           WHERE "users"."is_admin" = TRUE
+          """
+        )
+      }, 
+      fetchClipByVimeoVideoID: { vimeoVideoID in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "clips" where "vimeo_id" = \(bind: vimeoVideoID)
           """
         )
       },
@@ -361,7 +377,7 @@ extension Client {
         let daysAgo = weeksAgo * 7
         let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo)") DAY'"
         let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo - 1)") DAY'"
-
+        
         return try await pool.sqlDatabase.all(
           """
           SELECT
@@ -831,6 +847,27 @@ extension Client {
           "domains" text[] NOT NULL DEFAULT '{}'
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "livestreams"
+          ADD COLUMN IF NOT EXISTS "scheduled_at" timestamp with time zone,
+          ADD COLUMN IF NOT EXISTS "title" character varying NOT NULL DEFAULT '',
+          ADD COLUMN IF NOT EXISTS "description" character varying NOT NULL DEFAULT '',
+          ADD COLUMN IF NOT EXISTS "is_subscriber_only" boolean NOT NULL DEFAULT FALSE
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "clips" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "description" character varying NOT NULL,
+            "poster_url" character varying NOT NULL,
+            "title" character varying NOT NULL,
+            "vimeo_id" integer NOT NULL UNIQUE
+          )
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -865,6 +902,42 @@ extension Client {
           UPDATE "users"
           SET "updated_at" = NOW()
           WHERE "id" = \(bind: userId)
+          """
+        )
+      },
+      updateClip: { video in
+        guard let videoID = video.id
+        else {
+          struct InvalidID: Error {
+            let message: String
+            init(vimeoVideo: VimeoVideo) {
+              message = "Could not extract ID from URI: \(vimeoVideo.uri)"
+            }
+          }
+          throw InvalidID(vimeoVideo: video)
+        }
+        try await pool.sqlDatabase.run(
+          """
+          INSERT INTO "clips" (
+            "created_at",
+            "description",
+            "poster_url",
+            "title",
+            "vimeo_id"
+          )
+          VALUES (
+            \(bind: video.created),
+            \(bind: video.description),
+            \(bind: "image.png"),
+            \(bind: video.name),
+            \(bind: videoID)
+          )
+          ON CONFLICT ("vimeo_id") DO UPDATE
+          SET
+            "created_at" = \(bind: video.created),
+            "description" = \(bind: video.description),
+            "poster_url" = \(bind: "image.png"),
+            "title" = \(bind: video.name)
           """
         )
       },

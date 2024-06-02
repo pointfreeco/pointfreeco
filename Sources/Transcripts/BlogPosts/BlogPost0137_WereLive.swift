@@ -9,7 +9,7 @@ public let post0137_WereLive = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 137),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 137,
   publishedAt: yearMonthDayFormatter.date(from: "2024-05-09")!,

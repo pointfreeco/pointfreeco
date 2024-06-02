@@ -66,7 +66,7 @@ public let post0029_enterpriseSubscriptions = BlogPost(
   ],
   coverImage:
     "https://d1iqsrac68iyd8.cloudfront.net/posts/0029-enterprise-subscriptions/poster.jpg",
-  hidden: true,
+  hidden: .yes,
   id: 29,
   publishedAt: .init(timeIntervalSince1970: 1_557_381_600),
   title: "Enterprise Subscriptions"

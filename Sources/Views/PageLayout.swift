@@ -141,11 +141,9 @@ private var liveStreamBanner: Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.livestreams) var livestreams
 
-  // NB: Can't do the negation of a `if case` so can't do this as a guard.
-  if case .live(.current) = currentRoute {
-    return []
-  }
-  guard livestreams.first(where: \.isLive) != nil
+  guard 
+    !currentRoute.is(\.live),
+    livestreams.first(where: \.isLive) != nil
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter

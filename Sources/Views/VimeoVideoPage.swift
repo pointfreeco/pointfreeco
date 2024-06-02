@@ -72,7 +72,7 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
                 Class.pf.type.body.regular,
               ])
             ],
-            video.description.map { .markdownBlock($0) } ?? []
+            .markdownBlock(video.description)
           )
         )
       )

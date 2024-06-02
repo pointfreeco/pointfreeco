@@ -7,18 +7,34 @@ public struct BlogPost: Equatable, Identifiable {
   public var blurb: String
   public var contentBlocks: [Episode.TranscriptBlock]
   public var coverImage: String?
-  public var hidden: Bool
+  public var hidden: Hidden
   public var hideFromSlackRSS: Bool
   public var id: Tagged<Self, Int>
   public var publishedAt: Date
   public var title: String
+
+  public enum Hidden: Equatable {
+    case no
+    case noUntil(Date)
+    case yes
+    public func isCurrentlyHidden(date currentDate: Date) -> Bool {
+      switch self {
+      case .no:
+        false
+      case let .noUntil(date):
+        currentDate >= date
+      case .yes:
+        true
+      }
+    }
+  }
 
   public init(
     author: Author?,
     blurb: String,
     contentBlocks: [Episode.TranscriptBlock],
     coverImage: String?,
-    hidden: Bool = false,
+    hidden: Hidden = .no,
     hideFromSlackRSS: Bool = false,
     id: ID,
     publishedAt: Date,

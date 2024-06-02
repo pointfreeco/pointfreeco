@@ -32,7 +32,7 @@ public let post0051_2020EOYSale = BlogPost(
     )
   ],
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   id: 51,
   publishedAt: Date(timeIntervalSince1970: 1_608_703_200),
   title: "End-of-year sale: 25% off Point-Free"

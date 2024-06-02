@@ -8,7 +8,7 @@ public let post0141_TCAFAQ = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 141),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 141,
   publishedAt: yearMonthDayFormatter.date(from: "2024-06-04")!,

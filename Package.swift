@@ -75,6 +75,7 @@ var package = Package(
         "Models",
         "PointFreePrelude",
         "Stripe",
+        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "Logging", package: "swift-log"),

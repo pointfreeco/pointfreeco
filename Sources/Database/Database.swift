@@ -9,6 +9,7 @@ import PointFreePrelude
 import PostgresKit
 import Stripe
 import Tagged
+import VimeoClient
 
 @DependencyClient
 public struct Client {
@@ -51,6 +52,8 @@ public struct Client {
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
+  @DependencyEndpoint(method: "fetchClip")
+  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: VimeoVideo.ID) async throws -> Clip
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
@@ -124,6 +127,7 @@ public struct Client {
       _ fromSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
+  public var updateClip: (_ vimeoVideo: VimeoVideo) async throws -> Void
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:

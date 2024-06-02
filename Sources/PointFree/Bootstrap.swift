@@ -1,17 +1,23 @@
 import Dependencies
 import Models
+import VimeoClient
 
 public func bootstrap() async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
   print("⚠️ Bootstrapping PointFree...")
   defer { print("✅ PointFree Bootstrapped!") }
+
+  await connectToPostgres()
+  await fireAndForget {
+    await updateClips()
+  }
 
   #if !OSS
     print("  ⚠️ Bootstrapping transcripts")
     Episode.bootstrapPrivateEpisodes()
     print("  ✅ \(Episode.all.count) transcripts loaded")
   #endif
-
-  await connectToPostgres()
 }
 
 private func connectToPostgres() async {
@@ -29,5 +35,29 @@ private func connectToPostgres() async {
       print("     Make sure you are running postgres: pg_ctl -D /usr/local/var/postgres start")
       try? await Task.sleep(for: .seconds(1))
     }
+  }
+}
+
+private func updateClips() async {
+  print("  ⚠️ Updating Vimeo clips")
+  defer {
+    print("  ✅ Vimeo clips updated!")
+  }
+
+  @Dependency(\.database) var database
+  @Dependency(\.vimeoClient) var vimeoClient
+
+  do {
+    let clipsCollectionID = 15685787
+    for vimeoVideo in try await vimeoClient.videos(inCollection: clipsCollectionID).data {
+      do {
+        try await database.updateClip(vimeoVideo: vimeoVideo)
+        print("    ✅ Vimeo clip updated: \(vimeoVideo.name)")
+      } catch {
+        print("    ❌ Clip error: \(error)")
+      }
+    }
+  } catch {
+    print("  ❌ Vimeo error: \(error)")
   }
 }

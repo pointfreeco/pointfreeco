@@ -8,7 +8,7 @@ public let post0129_Perception = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 129),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 129,
   publishedAt: yearMonthDayFormatter.date(from: "2024-01-09")!,

@@ -3,12 +3,20 @@ import Tagged
 
 public struct VimeoVideo: Decodable, Equatable {
   public let created: Date
-  public let description: String?
+  public let description: String
+  public let duration: Int
   public let name: String
   public let privacy: Privacy
   public let type: VideoType
+  public let uri: String
 
   public typealias ID = Tagged<Self, Int>
+
+  public var id: ID? {
+    uri.split(separator: "/").last
+      .flatMap { Int(String($0)) }
+      .map { ID(rawValue: $0) }
+  }
 
   public struct Privacy: Decodable, Equatable {
     public let view: View?
@@ -30,23 +38,29 @@ public struct VimeoVideo: Decodable, Equatable {
 
   public init(
     created: Date,
-    description: String?,
+    description: String,
+    duration: Int,
     name: String,
     privacy: Privacy,
-    type: VideoType
+    type: VideoType,
+    uri: String
   ) {
     self.created = created
     self.description = description
+    self.duration = duration
     self.name = name
     self.privacy = privacy
     self.type = type
+    self.uri = uri
   }
 
   enum CodingKeys: String, CodingKey {
     case created = "created_time"
     case description
+    case duration
     case name
     case privacy
     case type
+    case uri
   }
 }
