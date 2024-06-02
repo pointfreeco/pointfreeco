@@ -63,8 +63,32 @@ private func updateClips() async {
   }
 
   print("  ⚠️ Updating collection clips")
+
+  var updatedCollections = Episode.Collection.all
+  for (collectionIndex, var collection) in updatedCollections.enumerated() {
+    defer { updatedCollections[collectionIndex] = collection }
+    for (sectionIndex, var section) in collection.sections.enumerated() {
+      defer { collection.sections[sectionIndex] = section }
+      for (lessonIndex, var lesson) in section.coreLessons.enumerated() {
+        defer { section.coreLessons[lessonIndex] = lesson }
+
+        switch lesson {
+        case .clip(let clip):
+          do {
+            let clip = try await database.fetchClip(vimeoVideoID: clip.vimeoID)
+            lesson = .clip(clip)
+          } catch {
+            print("    ❌ Clip error: \(error)")
+          }
+        case .episode:
+          break
+        }
+      }
+    }
+  }
+
   do {
-    try await collections.bootstrap()
+    try await collections.update(updatedCollections)
     print("  ✅ Updated collection clips")
   } catch {
     print("  ❌ Updating collection clips")
