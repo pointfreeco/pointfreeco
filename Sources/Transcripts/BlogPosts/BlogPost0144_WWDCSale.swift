@@ -10,6 +10,6 @@ public let post0144_WWDCSale = BlogPost(
   coverImage: nil,
   hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-06-18")!),
   id: 144,
-  publishedAt: yearMonthDayFormatter.date(from: "2024-06-11")!,
+  publishedAt: yearMonthDayFormatter.date(from: "2024-06-12")!,
   title: "10 years of Swift, 25% off Point-Free 🎉"
 )
