@@ -1,5 +1,5 @@
+import Models
 import URLRouting
-import VimeoClient
 
 public enum ClipsRoute: Equatable {
   case clip(videoID: VimeoVideo.ID)

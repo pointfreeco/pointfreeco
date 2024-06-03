@@ -2,7 +2,6 @@ import Models
 import PointFreePrelude
 import PostgresKit
 import Stripe
-import VimeoClient
 
 extension Client {
   public static func live(

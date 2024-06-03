@@ -207,7 +207,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2024-01-06")!
+    startAt: yearMonthDayFormatter.date(from: "2024-06-06")!
   )
 }
 

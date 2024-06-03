@@ -193,9 +193,9 @@ class EpisodePageTests: TestCase {
     let episode = request(
       to: .collections(
         .collection(
-          self.collections[0].slug,
+          self.collections.all()[0].slug,
           .section(
-            self.collections[0].sections[0].slug,
+            self.collections.all()[0].sections[0].slug,
             .episode(.left(self.episodes()[0].slug))
           )
         )
@@ -224,9 +224,9 @@ class EpisodePageTests: TestCase {
     let episode = request(
       to: .collections(
         .collection(
-          self.collections[0].slug,
+          self.collections.all()[0].slug,
           .section(
-            self.collections[0].sections[0].slug,
+            self.collections.all()[0].sections[0].slug,
             .episode(.left(self.episodes()[1].slug))
           )
         )

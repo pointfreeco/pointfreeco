@@ -12,7 +12,6 @@ import ModelsTestSupport
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import VimeoClient
 import XCTest
 
 @testable import PointFree

@@ -9,7 +9,6 @@ import PointFreePrelude
 import PostgresKit
 import Stripe
 import Tagged
-import VimeoClient
 
 @DependencyClient
 public struct Client {

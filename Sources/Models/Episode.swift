@@ -3,7 +3,6 @@ import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
-import VimeoClient
 
 public struct Episode: Equatable, Identifiable {
   public var alternateSlug: String?

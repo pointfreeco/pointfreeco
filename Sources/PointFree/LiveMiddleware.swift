@@ -6,7 +6,6 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
-import VimeoClient
 
 func liveMiddleware(
   _ conn: Conn<StatusLineOpen, Live>
@@ -53,25 +52,20 @@ private func currentLivestream(
 private func stream(
   _ conn: Conn<StatusLineOpen, VimeoVideo.ID>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.vimeoClient) var vimeoClient
+  @Dependency(\.database) var database
   do {
-    let video = try await vimeoClient.video(conn.data)
-    guard video.type == .live
-    else {
-      return await routeNotFoundMiddleware(conn).performAsync()
-    }
-
+    let clip = try await database.fetchClip(vimeoVideoID: conn.data)
     return
       conn
       .writeStatus(.ok)
       .respond(
-        view: vimeoVideoView(video:videoID:),
+        view: clipView(clip:),
         layoutData: { videoID in
           SimplePageLayoutData(
-            data: (video, videoID),
-            description: video.description,
+            data: clip,
+            description: clip.description,
             style: .base(.minimal(.black)),
-            title: "\(video.name)"
+            title: clip.title
           )
         }
       )

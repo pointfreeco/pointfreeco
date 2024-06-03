@@ -10,9 +10,8 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
-import VimeoClient
 
-public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
+public func clipView(clip: Models.Clip) -> Node {
   @Dependency(\.subscriberState) var subscriberState
 
   return [
@@ -47,7 +46,7 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
               ]),
               .style(lineHeight(1.2)),
             ],
-            .raw(nonBreaking(title: video.name))
+            .raw(nonBreaking(title: clip.title))
           ),
           .div(
             attributes: [
@@ -60,8 +59,7 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
             ],
             .text(
               """
-              \(video.type == .live ? "Livestream" : "Episode Clip") • Free • \
-              \(headerDateFormatter.string(from: video.created))
+              Episode Clip • Free • \(headerDateFormatter.string(from: clip.createdAt))
               """)
           ),
           .div(
@@ -72,7 +70,7 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
                 Class.pf.type.body.regular,
               ])
             ],
-            .markdownBlock(video.description)
+            .markdownBlock(clip.blurb)
           )
         )
       )
@@ -115,7 +113,7 @@ public func vimeoVideoView(video: VimeoVideo, videoID: VimeoVideo.ID) -> Node {
               )
             ),
           ],
-          videoView(videoID: videoID)
+          videoView(videoID: clip.vimeoVideoID)
         ),
 
         subscriberCalloutView
@@ -217,8 +215,6 @@ private func cardView(
   index: Int
 ) -> ChildOf<Tag.Ul> {
   @Dependency(\.siteRouter) var siteRouter
-
-  //let (lower, upper) = combos[index % combos.count]
 
   return .li(
     attributes: [

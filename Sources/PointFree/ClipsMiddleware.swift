@@ -6,7 +6,6 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
-import VimeoClient
 
 func clipsMiddleware(
   _ conn: Conn<StatusLineOpen, ClipsRoute>
@@ -24,26 +23,20 @@ private func clipMiddleware(
   videoID: VimeoVideo.ID,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.vimeoClient) var vimeoClient
+  @Dependency(\.database) var database
   do {
-    let video = try await vimeoClient.video(id: videoID)
-    guard
-      video.type == .video,
-      video.privacy.view == .anybody
-    else {
-      return await routeNotFoundMiddleware(conn).performAsync()
-    }
+    let clip = try await database.fetchClip(vimeoVideoID: videoID)
 
     return conn
       .writeStatus(.ok)
       .respond(
-        view: vimeoVideoView(video:videoID:),
-        layoutData: { 
+        view: clipView(clip:),
+        layoutData: {
           SimplePageLayoutData(
-            data: (video, videoID),
-            description: video.description,
+            data: clip,
+            description: clip.description,
             style: .base(.minimal(.black)),
-            title: "\(video.name)"
+            title: clip.title
           )
         }
       )
@@ -69,7 +62,7 @@ private func clipsMiddleware(
           SimplePageLayoutData(
             data: clips,
             description: """
-              A collection of clips from our episodes.
+              A collection of some of our favorite moments from Point-Free episodes.
               """,
             extraStyles: cardStyles,
             style: .base(.minimal(.black)),

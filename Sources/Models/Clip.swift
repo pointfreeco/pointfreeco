@@ -1,5 +1,4 @@
 import Foundation
-import VimeoClient
 import Tagged
 import TaggedTime
 

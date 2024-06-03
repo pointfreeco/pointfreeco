@@ -12,7 +12,6 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-import VimeoClient
 import XCTest
 
 @testable import PointFree
@@ -58,19 +57,7 @@ class LivestreamTests: TestCase {
 
   func testPastLivestream() async {
     await withDependencies {
-      $0.vimeoClient.video = { _ in
-        VimeoVideo(
-          created: .mock,
-          description: """
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor \
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud \
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            """,
-          name: "Video Title",
-          privacy: VimeoVideo.Privacy(view: .anybody),
-          type: .live
-        )
-      }
+      _ = $0
     } operation: {
       let episode = request(to: .live(.stream(id: 42)))
 

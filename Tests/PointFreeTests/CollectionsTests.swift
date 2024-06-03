@@ -26,37 +26,35 @@ class CollectionsTests: TestCase {
   }
 
   func testCollectionIndex() async throws {
-    await withDependencies {
-      $0.collections = [
-        .mock,
-        .mock,
-        .mock,
-        .mock,
-      ]
-    } operation: {
-      let conn = connection(
-        from: request(to: .collections(), basicAuth: true)
+    await collections.update([
+      .mock,
+      .mock,
+      .mock,
+      .mock,
+    ])
+
+    let conn = connection(
+      from: request(to: .collections(), basicAuth: true)
+    )
+
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+
+#if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      await assertSnapshots(
+        matching: await siteMiddleware(conn),
+        as: [
+          "desktop": .connWebView(size: .init(width: 1100, height: 1500)),
+          "mobile": .connWebView(size: .init(width: 500, height: 1900)),
+        ]
       )
-
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
-
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          await assertSnapshots(
-            matching: await siteMiddleware(conn),
-            as: [
-              "desktop": .connWebView(size: .init(width: 1100, height: 1500)),
-              "mobile": .connWebView(size: .init(width: 500, height: 1900)),
-            ]
-          )
-        }
-      #endif
     }
+#endif
   }
 
   func testCollectionShow() async throws {
     let conn = connection(
-      from: request(to: .collections(.collection(self.collections[0].slug)), basicAuth: true)
+      from: request(to: .collections(.collection(self.collections.all()[0].slug)), basicAuth: true)
     )
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -79,8 +77,8 @@ class CollectionsTests: TestCase {
       from: request(
         to: .collections(
           .collection(
-            self.collections[0].slug,
-            .section(self.collections[0].sections[1].slug)
+            self.collections.all()[0].slug,
+            .section(self.collections.all()[0].sections[1].slug)
           )
         ),
         basicAuth: true

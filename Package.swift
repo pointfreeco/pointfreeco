@@ -36,7 +36,6 @@ var package = Package(
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
-    .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
@@ -76,7 +75,6 @@ var package = Package(
         "Models",
         "PointFreePrelude",
         "Stripe",
-        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "Logging", package: "swift-log"),
@@ -220,7 +218,6 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
-        "VimeoClient",
         .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Overture", package: "swift-overture"),
@@ -276,7 +273,6 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
-        "VimeoClient",
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),
@@ -344,7 +340,6 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
-        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -507,16 +502,6 @@ var package = Package(
     ),
 
     .target(
-      name: "VimeoClient",
-      dependencies: [
-        "DecodableRequest",
-        "FoundationPrelude",
-        .product(name: "DependenciesMacros", package: "swift-dependencies"),
-        .product(name: "Tagged", package: "swift-tagged"),
-      ]
-    ),
-
-    .target(
       name: "Views",
       dependencies: [
         "Ccmark",
@@ -526,7 +511,6 @@ var package = Package(
         "PointFreeRouter",
         "Styleguide",
         "Transcripts",
-        "VimeoClient",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Dependencies", package: "swift-dependencies"),

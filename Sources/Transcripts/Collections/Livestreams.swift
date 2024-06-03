@@ -1,5 +1,3 @@
-import VimeoClient
-
 extension Episode.Collection {
   public static var livestreams: Self {
     Self(
