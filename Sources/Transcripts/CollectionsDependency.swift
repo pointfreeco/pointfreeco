@@ -3,9 +3,13 @@ import DependenciesMacros
 import Models
 
 @DependencyClient
-public struct CollectionsClient {
+public struct CollectionsClient: Sequence {
   public var all: () -> [Episode.Collection] = { [] }
   public var update: ([Episode.Collection]) async -> Void
+
+  public func makeIterator() -> some IteratorProtocol<Episode.Collection> {
+    self.all().makeIterator()
+  }
 }
 
 extension CollectionsClient {

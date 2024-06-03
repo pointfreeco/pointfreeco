@@ -1,6 +1,5 @@
 import Dependencies
 import Models
-import VimeoClient
 
 public func bootstrap() async {
   @Dependency(\.fireAndForget) var fireAndForget
@@ -15,7 +14,7 @@ public func bootstrap() async {
 
   #if !DEBUG && !OSS
     print("  ⚠️ Bootstrapping transcripts")
-    //Episode.bootstrapPrivateEpisodes()
+    Episode.bootstrapPrivateEpisodes()
     print("  ✅ \(Episode.all.count) transcripts loaded")
   #endif
 }
@@ -46,7 +45,6 @@ private func updateCollectionClips() async {
 
   @Dependency(\.collections) var collections
   @Dependency(\.database) var database
-  @Dependency(\.vimeoClient) var vimeoClient
 
   var updatedCollections = Episode.Collection.all
   for (collectionIndex, var collection) in updatedCollections.enumerated() {
