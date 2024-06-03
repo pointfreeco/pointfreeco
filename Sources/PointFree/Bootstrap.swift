@@ -73,10 +73,10 @@ private func updateClips() async {
         defer { section.coreLessons[lessonIndex] = lesson }
 
         switch lesson {
-        case .clip(let clip):
+        case .vimeoVideo(let vimeoVideo):
           do {
-            let clip = try await database.fetchClip(vimeoVideoID: clip.vimeoID)
-            lesson = .clip(clip)
+            let refreshedVimeoVideo = try await vimeoClient.video(id: vimeoVideo.id ?? 0)
+            lesson = .vimeoVideo(refreshedVimeoVideo)
           } catch {
             print("    ❌ Clip error: \(error)")
           }

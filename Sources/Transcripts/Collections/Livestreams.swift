@@ -1,3 +1,5 @@
+import VimeoClient
+
 extension Episode.Collection {
   public static var livestreams: Self {
     Self(
@@ -8,7 +10,7 @@ extension Episode.Collection {
           coreLessons: [
             .episode(.ep221_pfLive_dependenciesStacks),
             .episode(.ep267_pfLive_observationInPractice),
-            .clip(Clip(vimeoID: 944549956)),
+            .vimeoVideo(VimeoVideo(id: 944549956)),
           ],
           related: [],
           title: "Livestreams",

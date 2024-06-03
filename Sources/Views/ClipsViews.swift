@@ -143,7 +143,7 @@ public func clipsView(clips: [Models.Clip]) -> Node {
         sizes: [.mobile: 12],
         attributes: [
           .class([
-            Class.padding([.mobile: [.bottom: 2, .leftRight: 2], .desktop: [.leftRight: 3]])
+            Class.padding([.mobile: [.bottom: 3, .leftRight: 2], .desktop: [.leftRight: 3]])
           ])
         ],
         .h3(
