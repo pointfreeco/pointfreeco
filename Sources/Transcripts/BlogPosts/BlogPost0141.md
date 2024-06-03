@@ -1,4 +1,4 @@
-We often see articles and discussions online concerning the [Composable Architecture][tca-gh] (TCA for short) that are outdated or slightly misinformed. Often these articles and discussions focus solely on “cons” of using TCA without giving time to what “pros” are unlocked by embracing any “cons” should they still exist in the latest version of TCA.
+We often see articles and discussions online concerning the [Composable Architecture][tca-gh] (TCA for short) that are outdated or slightly misinformed. Often these articles and discussions focus solely on “cons” of using TCA without giving time to what “pros” are unlocked by embracing any “cons” (should they still exist in the latest version of TCA).
 
 [tca-gh]: http://www.github.com/pointfreeco/swift-composable-architecture 
 
