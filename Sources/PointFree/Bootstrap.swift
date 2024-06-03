@@ -64,6 +64,7 @@ private func updateClips() async {
 
   print("  ⚠️ Updating collection clips")
 
+  // TODO: move this to the collections middleware?
   var updatedCollections = Episode.Collection.all
   for (collectionIndex, var collection) in updatedCollections.enumerated() {
     defer { updatedCollections[collectionIndex] = collection }

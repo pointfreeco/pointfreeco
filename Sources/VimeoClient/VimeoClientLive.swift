@@ -17,7 +17,6 @@ extension VimeoClient {
           fields: videoFields
         )
       },
-      //https://api.vimeo.com/users/100830020/projects/15685787/videos?fields=uri,name,description,duration,type,privacy&per_page=100
       videos: { projectID in
         try await dataTask(
           bearer: bearer,
