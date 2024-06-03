@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 100219
+Content-Length: 100487
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -3417,6 +3417,16 @@ window.addEventListener("load", function (event) {
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

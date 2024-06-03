@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62125
+Content-Length: 53068
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2196,249 +2196,6 @@ background: linear-gradient(0deg, #4cccff 0%, #79f2b0 100%)">
           </div>
         </div>
       </li>
-      <li class="d-pb4
-                 d-pt0
-                 m-pb3
-                 m-pt2
-                 m-pl2
-                 m-pr2
-                 m-ml0
-                 m-mr0
-                 m-mt0
-                 m-mb0
-                 flex
-                 collection-item">
-        <div class="flex-column
-                    w-100p
-                    flex
-                    rounded
-                    overflow-hidden
-                    border
-                    border-gray-850">
-          <a class="flex
-                    justify-center
-                    align-center"
-             href="http://localhost:8080/collections/functions"
-             style="background: #4cccff;
-                    
-background: linear-gradient(45deg, #4cccff 0%, #fff080 100%)">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMyIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTQwIC4wN0w3OS45MyA0MCA0MCA3OS45My4wNyA0MCA0MCAuMDd6IiBvcGFjaXR5PSIuMjUiLz48cGF0aCBkPSJNOTQuOTMgMjlIODJ2MjJoMTIuOTNMNjYgNzkuOTMgMjYuMDcgNDAgNjYgLjA3IDk0LjkzIDI5em03LjA3IDcuMDdsMy45MyAzLjkzLTMuOTMgMy45M3YtNy44NnoiIG9wYWNpdHk9Ii41Ii8+PHBhdGggZD0iTTkyIC4wN0wxMzEuOTMgNDAgOTIgNzkuOTMgNTIuMDcgNDAgOTIgLjA3em0tNi42NTUgNDYuNTg1YzMuNTAzIDMuNTAzIDkuNTU3IDMuNzUzIDEzLjMxIDAgMy44MDMtMy44MDMgMy41MDMtOS44MDcgMC0xMy4zMXMtOS41MDctMy44MDMtMTMuMzEgMGMtMy43NTMgMy43NTMtMy41MDMgOS44MDcgMCAxMy4zMXoiLz48L2c+PC9zdmc+"
-                 alt
-                 style="margin-top:5rem;
-                        margin-bottom:5rem">
-          </a>
-          <div class="m-pb2
-                      m-pt3
-                      m-pl3
-                      m-pr3">
-            <h6 class="fg-gray400
-                       normal
-                       fg-black
-                       bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       m-ml0
-                       m-mr0
-                       m-mt0
-                       m-mb0">
-              Collection
-            </h6>
-            <h4 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2
-                       normal
-                       m-mt0">
-              <a href="http://localhost:8080/collections/functions">
-                Functions
-              </a>
-            </h4>
-            <p class="m-pl0
-                      m-pr0
-                      m-pt0
-                      m-pb0
-                      fg-black
-                      normal
-                      h5
-                      lh-4
-                      fg-black"
-               style="flex-grow:1;
-                      flex-shrink:0;
-                      flex-basis:auto">
-              <div>
-                <div class="md-ctn">
-                  <p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-
-                </div>
-              </div>
-            </p>
-          </div>
-        </div>
-      </li>
-      <li class="d-pb4
-                 d-pt0
-                 m-pb3
-                 m-pt2
-                 m-pl2
-                 m-pr2
-                 m-ml0
-                 m-mr0
-                 m-mt0
-                 m-mb0
-                 flex
-                 collection-item">
-        <div class="flex-column
-                    w-100p
-                    flex
-                    rounded
-                    overflow-hidden
-                    border
-                    border-gray-850">
-          <a class="flex
-                    justify-center
-                    align-center"
-             href="http://localhost:8080/collections/functions"
-             style="background: #4cccff;
-                    
-background: linear-gradient(90deg, #4cccff 0%, #974dff 100%)">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMyIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTQwIC4wN0w3OS45MyA0MCA0MCA3OS45My4wNyA0MCA0MCAuMDd6IiBvcGFjaXR5PSIuMjUiLz48cGF0aCBkPSJNOTQuOTMgMjlIODJ2MjJoMTIuOTNMNjYgNzkuOTMgMjYuMDcgNDAgNjYgLjA3IDk0LjkzIDI5em03LjA3IDcuMDdsMy45MyAzLjkzLTMuOTMgMy45M3YtNy44NnoiIG9wYWNpdHk9Ii41Ii8+PHBhdGggZD0iTTkyIC4wN0wxMzEuOTMgNDAgOTIgNzkuOTMgNTIuMDcgNDAgOTIgLjA3em0tNi42NTUgNDYuNTg1YzMuNTAzIDMuNTAzIDkuNTU3IDMuNzUzIDEzLjMxIDAgMy44MDMtMy44MDMgMy41MDMtOS44MDcgMC0xMy4zMXMtOS41MDctMy44MDMtMTMuMzEgMGMtMy43NTMgMy43NTMtMy41MDMgOS44MDcgMCAxMy4zMXoiLz48L2c+PC9zdmc+"
-                 alt
-                 style="margin-top:5rem;
-                        margin-bottom:5rem">
-          </a>
-          <div class="m-pb2
-                      m-pt3
-                      m-pl3
-                      m-pr3">
-            <h6 class="fg-gray400
-                       normal
-                       fg-black
-                       bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       m-ml0
-                       m-mr0
-                       m-mt0
-                       m-mb0">
-              Collection
-            </h6>
-            <h4 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2
-                       normal
-                       m-mt0">
-              <a href="http://localhost:8080/collections/functions">
-                Functions
-              </a>
-            </h4>
-            <p class="m-pl0
-                      m-pr0
-                      m-pt0
-                      m-pb0
-                      fg-black
-                      normal
-                      h5
-                      lh-4
-                      fg-black"
-               style="flex-grow:1;
-                      flex-shrink:0;
-                      flex-basis:auto">
-              <div>
-                <div class="md-ctn">
-                  <p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-
-                </div>
-              </div>
-            </p>
-          </div>
-        </div>
-      </li>
-      <li class="d-pb4
-                 d-pt0
-                 m-pb3
-                 m-pt2
-                 m-pl2
-                 m-pr2
-                 m-ml0
-                 m-mr0
-                 m-mt0
-                 m-mb0
-                 flex
-                 collection-item">
-        <div class="flex-column
-                    w-100p
-                    flex
-                    rounded
-                    overflow-hidden
-                    border
-                    border-gray-850">
-          <a class="flex
-                    justify-center
-                    align-center"
-             href="http://localhost:8080/collections/functions"
-             style="background: #79f2b0;
-                    
-background: linear-gradient(135deg, #79f2b0 0%, #4cccff 100%)">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMyIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTQwIC4wN0w3OS45MyA0MCA0MCA3OS45My4wNyA0MCA0MCAuMDd6IiBvcGFjaXR5PSIuMjUiLz48cGF0aCBkPSJNOTQuOTMgMjlIODJ2MjJoMTIuOTNMNjYgNzkuOTMgMjYuMDcgNDAgNjYgLjA3IDk0LjkzIDI5em03LjA3IDcuMDdsMy45MyAzLjkzLTMuOTMgMy45M3YtNy44NnoiIG9wYWNpdHk9Ii41Ii8+PHBhdGggZD0iTTkyIC4wN0wxMzEuOTMgNDAgOTIgNzkuOTMgNTIuMDcgNDAgOTIgLjA3em0tNi42NTUgNDYuNTg1YzMuNTAzIDMuNTAzIDkuNTU3IDMuNzUzIDEzLjMxIDAgMy44MDMtMy44MDMgMy41MDMtOS44MDcgMC0xMy4zMXMtOS41MDctMy44MDMtMTMuMzEgMGMtMy43NTMgMy43NTMtMy41MDMgOS44MDcgMCAxMy4zMXoiLz48L2c+PC9zdmc+"
-                 alt
-                 style="margin-top:5rem;
-                        margin-bottom:5rem">
-          </a>
-          <div class="m-pb2
-                      m-pt3
-                      m-pl3
-                      m-pr3">
-            <h6 class="fg-gray400
-                       normal
-                       fg-black
-                       bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       m-ml0
-                       m-mr0
-                       m-mt0
-                       m-mb0">
-              Collection
-            </h6>
-            <h4 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2
-                       normal
-                       m-mt0">
-              <a href="http://localhost:8080/collections/functions">
-                Functions
-              </a>
-            </h4>
-            <p class="m-pl0
-                      m-pr0
-                      m-pt0
-                      m-pb0
-                      fg-black
-                      normal
-                      h5
-                      lh-4
-                      fg-black"
-               style="flex-grow:1;
-                      flex-shrink:0;
-                      flex-basis:auto">
-              <div>
-                <div class="md-ctn">
-                  <p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-
-                </div>
-              </div>
-            </p>
-          </div>
-        </div>
-      </li>
     </ul>
     <footer class="row
                    d-pl4
@@ -2539,6 +2296,16 @@ background: linear-gradient(135deg, #79f2b0 0%, #4cccff 100%)">
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 79739
+Content-Length: 80007
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2947,6 +2947,16 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

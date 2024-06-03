@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 83059
+Content-Length: 83327
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2972,6 +2972,16 @@ that timestamp jumps the video to that spot.</p>
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

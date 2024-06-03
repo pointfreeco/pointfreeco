@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 118170
+Content-Length: 118438
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2379,6 +2379,16 @@ Swift. Consider <a href="/pricing">subscribing</a> today!</p>
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>
