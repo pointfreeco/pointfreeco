@@ -17,6 +17,20 @@ public struct Clip: Codable, Equatable {
   public typealias ID = Tagged<Self, UUID>
 
   public init(
+    vimeoID: VimeoVideo.ID
+  ) {
+    self.id = ID(rawValue: UUID())
+    self.blurb = ""
+    self.createdAt = Date(timeIntervalSince1970: 0)
+    self.description = ""
+    self.duration = 0
+    self.order = 0
+    self.posterURL = "image.png"
+    self.title = ""
+    self.vimeoID = vimeoID
+  }
+
+  public init(
     id: ID,
     blurb: String,
     createdAt: Date,

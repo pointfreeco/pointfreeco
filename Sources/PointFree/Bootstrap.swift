@@ -10,7 +10,7 @@ public func bootstrap() async {
 
   await connectToPostgres()
   await fireAndForget {
-    await updateClips()
+    await updateCollectionClips()
   }
 
   #if !DEBUG && !OSS
@@ -38,33 +38,16 @@ private func connectToPostgres() async {
   }
 }
 
-private func updateClips() async {
-  print("  ⚠️ Updating Vimeo clips")
+private func updateCollectionClips() async {
+  print("  ⚠️ Updating collection clips")
   defer {
-    print("  ✅ Vimeo clips updated!")
+    print("  ✅ Vimeo collection updated!")
   }
 
   @Dependency(\.collections) var collections
   @Dependency(\.database) var database
   @Dependency(\.vimeoClient) var vimeoClient
 
-  do {
-    let clipsCollectionID = 15685787
-    for vimeoVideo in try await vimeoClient.videos(inCollection: clipsCollectionID).data {
-      do {
-        try await database.updateClip(vimeoVideo: vimeoVideo)
-        print("    ✅ Vimeo clip updated: \(vimeoVideo.name)")
-      } catch {
-        print("    ❌ Clip error: \(error)")
-      }
-    }
-  } catch {
-    print("  ❌ Vimeo error: \(error)")
-  }
-
-  print("  ⚠️ Updating collection clips")
-
-  // TODO: move this to the collections middleware?
   var updatedCollections = Episode.Collection.all
   for (collectionIndex, var collection) in updatedCollections.enumerated() {
     defer { updatedCollections[collectionIndex] = collection }
@@ -74,10 +57,10 @@ private func updateClips() async {
         defer { section.coreLessons[lessonIndex] = lesson }
 
         switch lesson {
-        case .vimeoVideo(let vimeoVideo):
+        case .clip(let clip):
           do {
-            let refreshedVimeoVideo = try await vimeoClient.video(id: vimeoVideo.id ?? 0)
-            lesson = .vimeoVideo(refreshedVimeoVideo)
+            let clip = try await database.fetchClip(vimeoVideoID: clip.vimeoID)
+            lesson = .clip(clip)
           } catch {
             print("    ❌ Clip error: \(error)")
           }
@@ -88,10 +71,5 @@ private func updateClips() async {
     }
   }
 
-  do {
-    try await collections.update(updatedCollections)
-    print("  ✅ Updated collection clips")
-  } catch {
-    print("  ❌ Updating collection clips")
-  }
+  await collections.update(updatedCollections)
 }

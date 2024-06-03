@@ -197,8 +197,14 @@ public struct Episode: Equatable, Identifiable {
       @CasePathable
       @dynamicMemberLookup
       public enum Lesson: Equatable {
+        case clip(Clip)
         case episode(Episode)
-        case vimeoVideo(VimeoVideo)
+
+        public init(
+          clip: Clip
+        ) {
+          self = .clip(clip)
+        }
 
         public init(
           episode: Episode
@@ -206,36 +212,30 @@ public struct Episode: Equatable, Identifiable {
           self = .episode(episode)
         }
 
-        public init(
-          vimeoVideo: VimeoVideo
-        ) {
-          self = .vimeoVideo(vimeoVideo)
-        }
-
         public var duration: Seconds<Int> {
           switch self {
+          case let .clip(clip):
+            clip.duration
           case let .episode(episode):
             episode.length
-          case let .vimeoVideo(vimeoVideo):
-            vimeoVideo.duration
           }
         }
 
         public var publishedAt: Date {
           switch self {
+          case .clip(let clip):
+            clip.createdAt
           case .episode(let episode):
             episode.publishedAt
-          case .vimeoVideo(let vimeoVideo):
-            vimeoVideo.created
           }
         }
 
         public var title: String {
           switch self {
+          case .clip(let clip):
+            clip.title
           case .episode(let episode):
             episode.fullTitle
-          case .vimeoVideo(let vimeoVideo):
-            vimeoVideo.name
           }
         }
       }

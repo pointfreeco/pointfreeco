@@ -5,7 +5,7 @@ import Models
 @DependencyClient
 public struct CollectionsClient {
   public var all: () -> [Episode.Collection] = { [] }
-  public var update: ([Episode.Collection]) async throws -> Void
+  public var update: ([Episode.Collection]) async -> Void
 }
 
 extension CollectionsClient {

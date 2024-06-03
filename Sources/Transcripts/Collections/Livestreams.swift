@@ -10,7 +10,7 @@ extension Episode.Collection {
           coreLessons: [
             .episode(.ep221_pfLive_dependenciesStacks),
             .episode(.ep267_pfLive_observationInPractice),
-            .vimeoVideo(VimeoVideo(id: 944549956)),
+            .clip(Clip(vimeoID: 944549956)),
           ],
           related: [],
           title: "Livestreams",

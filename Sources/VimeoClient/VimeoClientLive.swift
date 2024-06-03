@@ -16,15 +16,6 @@ extension VimeoClient {
           path: "videos/\(videoID)",
           fields: videoFields
         )
-      },
-      videos: { projectID in
-        try await dataTask(
-          bearer: bearer,
-          // TODO: move user ID to secrets?
-          path: "users/100830020/projects/\(projectID)/videos",
-          fields: videoFields,
-          perPage: 100
-        )
       }
     )
   }

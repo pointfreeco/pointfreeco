@@ -44,20 +44,7 @@ public struct VimeoVideo: Decodable, Equatable {
     case live
     case video
   }
-
-  public init(
-    id: VimeoVideo.ID
-  ) {
-    self.created = Date(timeIntervalSince1970: 0)
-    self.description = ""
-    self.duration = 0
-    self.name = ""
-    self.pictures = Pictures(baseLink: "image.png")
-    self.privacy = Privacy(view: .anybody)
-    self.type = .video
-    self.uri = "video/\(id)"
-  }
-
+  
   public init(
     created: Date,
     description: String,

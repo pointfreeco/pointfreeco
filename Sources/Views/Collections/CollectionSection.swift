@@ -129,15 +129,14 @@ private func coreLesson(
   let isActive = lesson.publishedAt <= now
   let url: String
   switch lesson {
+  case .clip(let clip):
+    url = siteRouter.path(for: .clips(.clip(videoID: clip.vimeoID)))
   case .episode(let episode):
     url = siteRouter.path(
       for: .collections(
         .collection(collection.slug, .section(section.slug, .episode(.left(episode.slug))))
       )
     )
-  case .vimeoVideo(let vimeoVideo):
-    url = vimeoVideo.id.map { siteRouter.path(for: .clips(.clip(videoID: $0))) }
-      ?? "#"
   }
   return .gridColumn(
     sizes: [.mobile: 12],
