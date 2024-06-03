@@ -128,7 +128,6 @@ public struct Client {
       _ fromSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
-  public var updateClip: (_ vimeoVideo: VimeoVideo) async throws -> Void
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:

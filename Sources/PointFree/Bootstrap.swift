@@ -59,7 +59,7 @@ private func updateCollectionClips() async {
         switch lesson {
         case .clip(let clip):
           do {
-            let clip = try await database.fetchClip(vimeoVideoID: clip.vimeoID)
+            let clip = try await database.fetchClip(vimeoVideoID: clip.vimeoVideoID)
             lesson = .clip(clip)
           } catch {
             print("    ❌ Clip error: \(error)")

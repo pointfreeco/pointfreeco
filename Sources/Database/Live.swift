@@ -129,7 +129,7 @@ extension Client {
       fetchClipByVimeoVideoID: { vimeoVideoID in
         try await pool.sqlDatabase.first(
           """
-          SELECT * FROM "clips" where "vimeo_id" = \(bind: vimeoVideoID)
+          SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
           """
         )
       },
@@ -874,7 +874,7 @@ extension Client {
             "order" integer NOT NULL DEFAULT 0,
             "poster_url" character varying NOT NULL,
             "title" character varying NOT NULL,
-            "vimeo_id" integer NOT NULL UNIQUE
+            "vimeo_video_id" integer NOT NULL UNIQUE
           )
           """
         )
@@ -912,46 +912,6 @@ extension Client {
           UPDATE "users"
           SET "updated_at" = NOW()
           WHERE "id" = \(bind: userId)
-          """
-        )
-      },
-      updateClip: { video in
-        guard let videoID = video.id
-        else {
-          struct InvalidID: Error {
-            let message: String
-            init(vimeoVideo: VimeoVideo) {
-              message = "Could not extract ID from URI: \(vimeoVideo.uri)"
-            }
-          }
-          throw InvalidID(vimeoVideo: video)
-        }
-        try await pool.sqlDatabase.run(
-          """
-          INSERT INTO "clips" (
-            "created_at",
-            "blurb",
-            "description",
-            "duration",
-            "poster_url",
-            "title",
-            "vimeo_id"
-          )
-          VALUES (
-            \(bind: video.created),
-            \(bind: video.description),
-            \(bind: video.description),
-            \(bind: video.duration),
-            \(bind: video.pictures.baseLink),
-            \(bind: video.name),
-            \(bind: videoID)
-          )
-          ON CONFLICT ("vimeo_id") DO UPDATE
-          SET
-            "created_at" = \(bind: video.created),
-            "description" = \(bind: video.description),
-            "poster_url" = \(bind: video.pictures.baseLink),
-            "title" = \(bind: video.name)
           """
         )
       },

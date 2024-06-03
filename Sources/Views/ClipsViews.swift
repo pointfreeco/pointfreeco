@@ -177,7 +177,7 @@ public func clipsView(clips: [Models.Clip]) -> Node {
             title: clip.title,
             subtitle: nil,
             blurb: clip.blurb,
-            url: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoID))),
+            url: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID))),
             imageURL: clip.posterURL,
             index: index
           )

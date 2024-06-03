@@ -12,12 +12,12 @@ public struct Clip: Codable, Equatable {
   public let order: Int
   public let posterURL: String
   public let title: String
-  public let vimeoID: VimeoVideo.ID
+  public let vimeoVideoID: VimeoVideo.ID
 
   public typealias ID = Tagged<Self, UUID>
 
   public init(
-    vimeoID: VimeoVideo.ID
+    vimeoVideoID: VimeoVideo.ID
   ) {
     self.id = ID(rawValue: UUID())
     self.blurb = ""
@@ -27,7 +27,7 @@ public struct Clip: Codable, Equatable {
     self.order = 0
     self.posterURL = "image.png"
     self.title = ""
-    self.vimeoID = vimeoID
+    self.vimeoVideoID = vimeoVideoID
   }
 
   public init(
@@ -39,7 +39,7 @@ public struct Clip: Codable, Equatable {
     order: Int,
     posterURL: String,
     title: String,
-    vimeoID: VimeoVideo.ID
+    vimeoVideoID: VimeoVideo.ID
   ) {
     self.id = id
     self.blurb = blurb
@@ -49,7 +49,7 @@ public struct Clip: Codable, Equatable {
     self.order = order
     self.posterURL = posterURL
     self.title = title
-    self.vimeoID = vimeoID
+    self.vimeoVideoID = vimeoVideoID
   }
 
   enum CodingKeys: String, CodingKey {
@@ -61,6 +61,6 @@ public struct Clip: Codable, Equatable {
     case order
     case posterURL = "poster_url"
     case title
-    case vimeoID = "vimeo_id"
+    case vimeoVideoID = "vimeo_video_id"
   }
 }

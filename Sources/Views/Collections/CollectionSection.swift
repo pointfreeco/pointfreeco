@@ -130,7 +130,7 @@ private func coreLesson(
   let url: String
   switch lesson {
   case .clip(let clip):
-    url = siteRouter.path(for: .clips(.clip(videoID: clip.vimeoID)))
+    url = siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))
   case .episode(let episode):
     url = siteRouter.path(
       for: .collections(
