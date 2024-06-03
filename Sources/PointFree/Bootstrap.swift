@@ -15,7 +15,7 @@ public func bootstrap() async {
 
   #if !OSS
     print("  ⚠️ Bootstrapping transcripts")
-    Episode.bootstrapPrivateEpisodes()
+    //Episode.bootstrapPrivateEpisodes()
     print("  ✅ \(Episode.all.count) transcripts loaded")
   #endif
 }

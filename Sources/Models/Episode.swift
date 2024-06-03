@@ -143,6 +143,12 @@ public struct Episode: Equatable, Identifiable {
         .reduce(into: 0, +=)
     }
 
+    public var numberOfEpisodes: Int {
+      self.sections
+        .map { $0.coreLessons.count }
+        .reduce(into: 0, +=)
+    }
+
     public var slug: Slug {
       .init(rawValue: Models.slug(for: self.title))
     }

@@ -75,6 +75,7 @@ private let videoFields = [
   "description",
   "duration",
   "name",
+  "pictures.base_link",
   "privacy",
   "type",
   "uri",

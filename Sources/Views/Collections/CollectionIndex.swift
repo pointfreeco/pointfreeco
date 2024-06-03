@@ -159,26 +159,24 @@ private func collectionItem(collection: Episode.Collection, index: Int) -> Child
           ],
           .div(.markdownBlock(collection.blurb))
         )
-        // TODO: bring this back when we have time
-        //        .a(
-        //          attributes: [
-        //            // TODO: figure out force unwrap
-        //            .href(url(to: .collections(.show(collection.slug!)))),
-        //            .class([
-        //              Class.align.middle,
-        //              Class.pf.colors.link.purple,
-        //              Class.pf.type.body.regular,
-        //              Class.margin([.mobile: [.top: 4]])
-        //            ])
-        //          ],
-        //          .text("See collection (\(10) episodes)"),
-        //          .img(
-        //            base64: rightArrowSvgBase64(fill: "#974DFF"),
-        //            type: .image(.svg),
-        //            alt: "",
-        //            attributes: [.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
-        //          )
-        //        )
+//        , .a(
+//          attributes: [
+//            .href(siteRouter.url(for: .collections(.collection(collection.slug)))),
+//            .class([
+//              Class.align.middle,
+//              Class.pf.colors.link.purple,
+//              Class.pf.type.body.regular,
+//              Class.margin([.mobile: [.top: 4]])
+//            ])
+//          ],
+//          .text("See collection (\(collection.numberOfEpisodes) episodes)"),
+//          .img(
+//            base64: rightArrowSvgBase64(fill: "#974DFF"),
+//            type: .image(.svg),
+//            alt: "",
+//            attributes: [.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
+//          )
+//        )
       )
     )
   )

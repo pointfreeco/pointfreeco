@@ -133,6 +133,13 @@ extension Client {
           """
         )
       },
+      fetchClips: {
+        try await pool.sqlDatabase.all(
+          """
+          SELECT * from "clips"
+          """
+        )
+      },
       fetchEmailSettingsForUserId: { userId in
         try await pool.sqlDatabase.all(
           """
@@ -860,9 +867,11 @@ extension Client {
           """
           CREATE TABLE IF NOT EXISTS "clips" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "blurb" character varying NOT NULL DEFAULT '',
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "duration" integer NOT NULL,
             "description" character varying NOT NULL,
+            "order" integer NOT NULL DEFAULT 0,
             "poster_url" character varying NOT NULL,
             "title" character varying NOT NULL,
             "vimeo_id" integer NOT NULL UNIQUE
@@ -921,6 +930,7 @@ extension Client {
           """
           INSERT INTO "clips" (
             "created_at",
+            "blurb",
             "description",
             "duration",
             "poster_url",
@@ -930,8 +940,9 @@ extension Client {
           VALUES (
             \(bind: video.created),
             \(bind: video.description),
+            \(bind: video.description),
             \(bind: video.duration),
-            \(bind: "image.png"),
+            \(bind: video.pictures.baseLink),
             \(bind: video.name),
             \(bind: videoID)
           )
@@ -939,7 +950,7 @@ extension Client {
           SET
             "created_at" = \(bind: video.created),
             "description" = \(bind: video.description),
-            "poster_url" = \(bind: "image.png"),
+            "poster_url" = \(bind: video.pictures.baseLink),
             "title" = \(bind: video.name)
           """
         )

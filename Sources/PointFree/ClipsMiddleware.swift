@@ -13,16 +13,20 @@ func clipsMiddleware(
 ) async -> Conn<ResponseEnded, Data> {
   switch conn.data {
   case let .clip(videoID: videoID):
-    return await clipMiddleware(conn.map(const(videoID)))
+    return await clipMiddleware(videoID: videoID, conn: conn.map(const(())))
+
+  case .clips:
+    return await clipsMiddleware(conn.map(const(())))
   }
 }
 
 private func clipMiddleware(
-  _ conn: Conn<StatusLineOpen, VimeoVideo.ID>
+  videoID: VimeoVideo.ID,
+  conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.vimeoClient) var vimeoClient
   do {
-    let video = try await vimeoClient.video(id: conn.data)
+    let video = try await vimeoClient.video(id: videoID)
     guard
       video.type == .video,
       video.privacy.view == .anybody
@@ -30,17 +34,45 @@ private func clipMiddleware(
       return await routeNotFoundMiddleware(conn).performAsync()
     }
 
-    return
-      conn
+    return conn
       .writeStatus(.ok)
       .respond(
         view: vimeoVideoView(video:videoID:),
-        layoutData: { videoID in
+        layoutData: { 
           SimplePageLayoutData(
             data: (video, videoID),
             description: video.description,
             style: .base(.minimal(.black)),
             title: "\(video.name)"
+          )
+        }
+      )
+  } catch {
+    return await routeNotFoundMiddleware(conn).performAsync()
+  }
+}
+
+private func clipsMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  do {
+    let clips = try await database.fetchClips()
+      .sorted { $0.order < $1.order }
+
+    return conn
+      .writeStatus(.ok)
+      .respond(
+        view: clipsView(clips:),
+        layoutData: {
+          SimplePageLayoutData(
+            data: clips,
+            description: """
+              A collection of clips from our episodes.
+              """,
+            extraStyles: cardStyles,
+            style: .base(.minimal(.black)),
+            title: "Point-Free clips"
           )
         }
       )

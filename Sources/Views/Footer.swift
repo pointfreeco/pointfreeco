@@ -122,6 +122,12 @@ private func contentColumnView(currentUser: User?) -> Node {
           "Collections")
       ),
       .li(
+        .a(
+          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .clips(.clips)))],
+          "Clips"
+        )
+      ),
+      .li(
         .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
       )
     )
