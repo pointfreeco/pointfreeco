@@ -13,7 +13,7 @@ public func bootstrap() async {
     await updateClips()
   }
 
-  #if !OSS
+  #if !DEBUG && !OSS
     print("  ⚠️ Bootstrapping transcripts")
     //Episode.bootstrapPrivateEpisodes()
     print("  ✅ \(Episode.all.count) transcripts loaded")
