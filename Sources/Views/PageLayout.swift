@@ -197,7 +197,9 @@ struct Banner {
         return false
       } else if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("blog/posts/142-10-years-of-swift-25-off-point-free"))) = route {
+      } else if case .blog(.show(.left("142-10-years-of-swift-25-off-point-free"))) = route {
+        return false
+      } else if case .blog(.show(.left("144-10-years-of-swift-25-off-point-free"))) = route {
         return false
       } else if case .blog(.show(.right(142))) = route {
         return false
