@@ -252,11 +252,6 @@ private func cardView(
             Class.flex.align.center,
           ]),
           .href(url),
-//          .style(
-//            unsafe: """
-//              background: \(lower);
-//              background: linear-gradient(\(index * 45)deg, \(lower) 0%, \(upper) 100%);
-//              """),
         ],
         .img(
           src: imageURL,
@@ -309,25 +304,6 @@ private func cardView(
           ],
           .div(.markdownBlock(blurb))
         )
-        // TODO: Do when we figure out spacing. this link should be at bottom of card.
-        //        , .a(
-        //          attributes: [
-        //            .href(url),
-        //            .class([
-        //              Class.align.middle,
-        //              Class.pf.colors.link.purple,
-        //              Class.pf.type.body.regular,
-        //              Class.margin([.mobile: [.top: 4]])
-        //            ])
-        //          ],
-        //          .text("See collection (\(collection.numberOfEpisodes) episodes)"),
-        //          .img(
-        //            base64: rightArrowSvgBase64(fill: "#974DFF"),
-        //            type: .image(.svg),
-        //            alt: "",
-        //            attributes: [.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
-        //          )
-        //        )
       )
     )
   )
