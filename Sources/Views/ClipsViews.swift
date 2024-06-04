@@ -70,7 +70,7 @@ public func clipView(clip: Models.Clip) -> Node {
                 Class.pf.type.body.regular,
               ])
             ],
-            .markdownBlock(clip.blurb)
+            .markdownBlock(clip.description)
           )
         )
       )
