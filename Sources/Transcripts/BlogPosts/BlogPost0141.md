@@ -19,6 +19,7 @@ App architecture is filled with trade-offs, and it is important to think deeply 
 * [Do I need a Point-Free subscription to learn or use TCA?](#Do-I-need-a-Point-Free-subscription-to-learn-or-use-TCA)
 * [Do I need to be familiar with "functional programming" to use TCA?](#Do-I-need-to-be-familiar-with-functional-programming-to-use-TCA)
 
+<a name="Should-TCA-be-used-for-every-kind-of-app"></a>
 ### Should TCA be used for every kind of app?
 
 We do not recommend people use TCA when they are first learning Swift or SwiftUI. TCA is not a substitute or replacement for SwiftUI, but rather is meant to be paired with SwiftUI. You will need to be familiar with all of SwiftUI's standard concepts to wield TCA correctly.
@@ -27,6 +28,7 @@ We also don't think TCA really shines when building simple “reader” apps tha
 
 In general it can be fine to start a project with vanilla SwiftUI (with a concentration on concise domain modeling), and then transition to TCA later if there is a need for any of its powers.
 
+<a name="Should-I-adopt-a-3rd-party-library-for-my-apps-architecture"></a>
 ### Should I adopt a 3rd party library for my app’s architecture?
 
 Adopting a 3rd party library is a big decision that should be had by you and your team after thoughtful discussion and consideration. We cannot make that decision for you. 🙂
@@ -37,6 +39,7 @@ Blog posts tend to be written from the perspective of something that was interes
 
 So, in comparison, we do not feel the adoption of a 3rd party library is significantly riskier than adopting ideas from blog posts, but it is up to you and your team to figure out your priorities for your application.
 
+<a name="Does-TCA-go-against-the-grain-of-SwiftUI"></a>
 ### Does TCA go against the grain of SwiftUI?
 
 We actually feel that TCA complements SwiftUI quite well! The design of TCA has been heavily inspired by SwiftUI, and so you will find a lot of similarities:
@@ -56,6 +59,7 @@ We also feel that often TCA allows one to even more fully embrace some of the su
 
 And the more familiar you are with SwiftUI and its patterns, the better you will be able to leverage the Composable Architecture. We’ve never said that you must abandon SwiftUI in order to use TCA, and in fact we think the opposite is true!
 
+<a name="Isnt-TCA-just-a-port-of-Redux-Is-there-a-need-for-a-library"></a>
 ### Isn't TCA just a port of Redux? Is there a need for a library?
 
 While TCA certainly shares some ideas and terminology with Redux, the two libraries are quite different. First, Redux is a JavaScript library, not a Swift library, and it was never meant to be an opinionated and cohesive solution to many app architecture problems. It focused on a particular problem, and stuck with it.
@@ -73,12 +77,14 @@ Redux does not provide tools itself for any of the above problems.
 
 And you can certainly opt to build your own TCA-inspired library instead of depending directly on TCA, and in fact many large companies do just that. But it is also worth considering if it is worth losing out on the continual development and improvements TCA makes over the years. With each major release of iOS we have made sure to keep TCA up-to-date, including concurrency tools, `NavigationStack`, and [Swift 5.9’s observation tools][migration-1.7-article] (of which we even [back-ported][observation-backport-article] so that they could be used all the way back to iOS 13), [state sharing][sharing-state-article] tools, and more. And further you will be missing out on the community of thousands of developers that use TCA and frequent our GitHub discussions and [Slack](http://pointfree.co/slack-invite).
 
+<a name="Do-features-built-in-TCA-have-a-lot-of-boilerplate"></a>
 ### Do features built in TCA have a lot of boilerplate?
 
 Often people complain of boilerplate in TCA, especially with regards a legacy concept known as “view stores”. Those were objects that allowed views to observe the minimal amount of state in a view, and they were [deprecated a long time ago][migration-1.7-article] after Swift 5.9 released with the Observation framework. Features built with modern TCA do not need to worry about view stores and instead can access state directly off of stores and the view will observe the minimal amount of state, just as in vanilla SwiftUI.
 
 In our experience, a standard TCA feature should not require very many more lines of code than an equivalent vanilla SwiftUI feature, and if you write tests or integrate features together using the tools TCA provides, it should require much *less* code than the equivalent vanilla code.
 
+<a name="Isnt-maintaining-a-separate-enum-of-actions-unnecessary-work"></a>
 ### Isn't maintaining a separate enum of “actions” unnecessary work?
 
 Modeling user actions with an enum rather than methods defined on some object is certainly a big decision to make, and some people find it off-putting, but it wasn’t made just for the fun of it. There are massive benefits one gains from having a data description of every action in your application:
@@ -138,24 +144,29 @@ Modeling user actions with an enum rather than methods defined on some object is
 
 <!-- TODO: Navigation tools? -->
 
+<a name="Are-TCA-features-inefficient-because-all-of-an-apps-state-is-held-in-one-massive-type"></a>
 ### Are TCA features inefficient because all of an app’s state is held in one massive type?
 
 This comes up often, but this misunderstands how real world features are actually modeled in practice. An app built with TCA does not literally hold onto the state of every possible screen of the app all at once. In reality most features of an app are not presented at once, but rather incrementally. Features are presented in sheets, drill-downs and other forms of navigation, and those forms of navigation are gated by optional state. This means if a feature is not presented, then its state is `nil`, and hence not represented in the app state.
 
-* ##### Does that cause views to over-render?
+* ##<a name="Does-that-cause-views-to-over-render"></a>
+### Does that cause views to over-render?
 
   In reality views re-compute the minimal number of times based off of what state is accessed in the view, just as it does in vanilla SwiftUI with the `@Observable` macro. But because we [back-ported][observation-backport-article] the observation framework to iOS 13 you can make use of the tools today, and not wait until you can drop iOS 16 support.
 
 <!-- [ ] Other redux libraries-->
 
-* ##### Are large value types expensive to mutate?
+* ##<a name="Are-large-value-types-expensive-to-mutate"></a>
+### Are large value types expensive to mutate?
 
   This doesn’t really seem to be the case with in-place mutation in Swift. Mutation _via_ `inout` has been quite efficient from our testing, and there’s a chance that Swift’s new borrowing and consuming tools will allow us to make it even more efficient.
 
-* ##### Can large value types cause stack overflows?
+* ##<a name="Can-large-value-types-cause-stack-overflows"></a>
+### Can large value types cause stack overflows?
 
   While it is true that large value types can overflow the stack, in practice this does not really happen if you are using the navigation tools of the library. The navigation tools insert a heap allocated, copy-on-write wrapper at each presentation node of your app’s state. So if feature A can present feature B, then feature A’s state does not literally contain feature B’s state.
 
+<a name="Dont-TCA-features-have-excessive-ping-ponging"></a>
 ### Don't TCA features have excessive “ping-ponging"?
 
 There have been complaints of action “ping-ponging”, where one wants to perform multiple effects and so has to send multiple actions:
@@ -188,16 +199,19 @@ And if you really do need to perform state mutations between each of these async
 
 <!-- TODO: We should be able to completely eliminate ping-ponging in TCA 2.0 -->
 
+<a name="If-features-are-built-with-value-types-doesnt-that-mean-they-cannot-share-state-since-value-types-are-copied"></a>
 ### If features are built with value types, doesn't that mean they cannot share state since value types are copied?
 
 This *used* to be true, but in [version 1.10][migration-1.10-article] of the library we released all new [state sharing][sharing-state-article] tools that allow you to easily share state between multiple features, and even persist state to external systems, such as user defaults and the file system. 
 
 Further, one of the dangers of introducing shared state to an app, any app, is that it can make it difficult to understand since it introduces reference semantics into your domain. But we put in extra work to make sure that shared state remains 100% testable, and even _exhaustively_ testable, which makes it far easier to keep track of how shared state is mutated in your features.
 
+<a name="Do-I-need-a-Point-Free-subscription-to-learn-or-use-TCA"></a>
 ### Do I need a Point-Free subscription to learn or use TCA?
 
 While we do release a lot of material on our website that is subscriber-only, we also release a _ton_ of material completely for free. The [documentation][tca-docs] for TCA contains numerous articles and tutorials, including a [massive tutorial][sync-ups-tutorial] building a complex app from scratch that demonstrates domain modeling, navigation, dependencies, testing, and more.
 
+<a name="Do-I-need-to-be-familiar-with-functional-programming-to-use-TCA"></a>
 ### Do I need to be familiar with "functional programming" to use TCA?
 
 TCA does not describe itself as a "functional programming" library, and never has. At the end of the day Swift is not a functional language, and so there is no way to force functional patterns at  compile time, such as "pure" functions. And so familiarity of "functional programming" is not necessary.
