@@ -141,7 +141,7 @@ private var liveStreamBanner: Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.livestreams) var livestreams
 
-  guard 
+  guard
     !currentRoute.is(\.live),
     livestreams.first(where: \.isLive) != nil
   else { return [] }

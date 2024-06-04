@@ -27,7 +27,8 @@ private func clipMiddleware(
   do {
     let clip = try await database.fetchClip(vimeoVideoID: videoID)
 
-    return conn
+    return
+      conn
       .writeStatus(.ok)
       .respond(
         view: clipView(clip:),
@@ -54,7 +55,8 @@ private func clipsMiddleware(
       .filter { $0.order >= 0 }
       .sorted { $0.order < $1.order }
 
-    return conn
+    return
+      conn
       .writeStatus(.ok)
       .respond(
         view: clipsView(clips:),

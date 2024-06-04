@@ -134,7 +134,7 @@ public func clipsView(clips: [Models.Clip]) -> Node {
         ]),
         .style(
           maxWidth(.px(1080))
-          <> margin(leftRight: .auto)
+            <> margin(leftRight: .auto)
         ),
       ],
       .gridColumn(
@@ -152,7 +152,8 @@ public func clipsView(clips: [Models.Clip]) -> Node {
         ),
         .p(
           attributes: [],
-          .text("""
+          .text(
+            """
             A collection of some of our favorite moments from Point-Free episodes.
             """)
         )
@@ -306,11 +307,11 @@ private func cardView(
 }
 
 public let cardStyles: Stylesheet =
-Breakpoint.mobile.query(only: screen) {
-  cardClass % width(.pct(100))
-}
-<> Breakpoint.desktop.query(only: screen) {
-  cardClass % width(.pct(50))
-}
+  Breakpoint.mobile.query(only: screen) {
+    cardClass % width(.pct(100))
+  }
+  <> Breakpoint.desktop.query(only: screen) {
+    cardClass % width(.pct(50))
+  }
 
 private let cardClass = CssSelector.class("card")

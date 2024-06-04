@@ -91,12 +91,12 @@ extension Episode.Collection {
           Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the map operation and giving it a little flip!
           """#,
         coreLessons: [
-          .init(episode: .ep14_contravariance),
+          .init(episode: .ep14_contravariance)
         ],
         related: [],
         title: "Contravariance",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Map, Zip, Flat‑Map"
   )

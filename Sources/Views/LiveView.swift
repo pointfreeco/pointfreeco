@@ -27,7 +27,7 @@ public func liveView() -> Node {
           ],
           "🔴 "
         ),
-        .text("We are live right now!")
+        .text("We are live right now!"),
       ]
     } else {
       messageNode = .text(
@@ -65,8 +65,8 @@ public func liveView() -> Node {
         sizes: [.mobile: 12],
         attributes: [
           .class([
-            Class.type.align.center,
-          ]),
+            Class.type.align.center
+          ])
         ],
         .gitHubLink(
           text: "Log in to be notified",
@@ -97,7 +97,7 @@ public func liveView() -> Node {
             .mobile: [
               .leftRight: 3,
               .top: 4,
-              .bottom: currentUser != nil || activeLivestream.isLive ? 4 : 3
+              .bottom: currentUser != nil || activeLivestream.isLive ? 4 : 3,
             ],
           ]),
         ]),
@@ -147,16 +147,16 @@ public func liveView() -> Node {
           ])
         ],
         .raw(
-      """
-      <div style="padding:56.25% 0 0 0;position:relative;">
-        <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/embed"
-                frameborder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowfullscreen
-                style="position:absolute;top:0;left:0;width:100%;height:100%;">
-        </iframe>
-      </div>
-      """)
+          """
+          <div style="padding:56.25% 0 0 0;position:relative;">
+            <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/embed"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;">
+            </iframe>
+          </div>
+          """)
       ),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 3],
@@ -166,14 +166,14 @@ public func liveView() -> Node {
           ])
         ],
         .raw(
-      """
-      <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/chat/"
-              width="100%"
-              height="100%"
-              frameborder="0"
-              style="min-height: 30rem;">
-      </iframe>
-      """)
+          """
+          <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/chat/"
+                  width="100%"
+                  height="100%"
+                  frameborder="0"
+                  style="min-height: 30rem;">
+          </iframe>
+          """)
       )
     )
   )

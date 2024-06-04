@@ -39,17 +39,17 @@ class CollectionsTests: TestCase {
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
-#if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      await assertSnapshots(
-        matching: await siteMiddleware(conn),
-        as: [
-          "desktop": .connWebView(size: .init(width: 1100, height: 1500)),
-          "mobile": .connWebView(size: .init(width: 500, height: 1900)),
-        ]
-      )
-    }
-#endif
+    #if !os(Linux)
+      if self.isScreenshotTestingAvailable {
+        await assertSnapshots(
+          matching: await siteMiddleware(conn),
+          as: [
+            "desktop": .connWebView(size: .init(width: 1100, height: 1500)),
+            "mobile": .connWebView(size: .init(width: 500, height: 1900)),
+          ]
+        )
+      }
+    #endif
   }
 
   func testCollectionShow() async throws {
