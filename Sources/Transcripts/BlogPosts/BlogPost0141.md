@@ -213,7 +213,7 @@ Adopting a 3rd party library is a big decision that should be had by you and you
 
 But the "not invented here" mentality cannot be the _sole_ reason to not adopt a library. If a library's core tenets align with your priorities for building your app, then adopting a library can be a sensible choice. It would be better to coalesce on a well-defined set of tools with a consistent history of maintenance and a strong community than to glue together many "tips and tricks" found in blog posts scattered around the internet. 
 
-Blog posts tend to be written from the perspective of something that was interesting and helpful in a particular moment, but it doesn't necessarily stand the test of time. How many blog posts have been vetted for the many real world edge cases one actually encouters in app development? How many blog post techniques are still used by their authors 4 years later? How many blog posts have follow-up retrospectives describing how the technique worked in practice and evolved over time?
+Blog posts tend to be written from the perspective of something that was interesting and helpful in a particular moment, but it doesn't necessarily stand the test of time. How many blog posts have been vetted for the many real world edge cases one actually encounters in app development? How many blog post techniques are still used by their authors 4 years later? How many blog posts have follow-up retrospectives describing how the technique worked in practice and evolved over time?
 
 So, in comparison, we do not feel the adoption of a 3rd party library is significantly riskier than adopting ideas from blog posts, but it is up to you and your team to figure out your priorities for your application.
 
@@ -222,7 +222,7 @@ So, in comparison, we do not feel the adoption of a 3rd party library is signifi
 
 TCA does not describe itself as a "functional programming" library, and never has. At the end of the day Swift is not a functional language, and so there is no way to force functional patterns at  compile time, such as "pure" functions. And so familiarity of "functional programming" is not necessary.
 
-However, certain concepts of functional programming languages are quite important to us, and we have used those concepts to guide aspects of the library. For example, a core tenet of the library is to build as much of your domain using value types, which are easy to understand and behaviorless, as opposed to reference types, which allow for "action at a distance". The library also values  separating side effects from pure logic transformations. This allows for great testability, 
+However, certain concepts of functional programming languages are quite important to us, and we have used those concepts to guide aspects of the library. For example, a core tenet of the library is to build as much of your domain using value types, which are easy to understand and behavior-less, as opposed to reference types, which allow for "action at a distance". The library also values  separating side effects from pure logic transformations. This allows for great testability, 
 including how side effects execute and feed data back into the system.
 
 However, one does not need to have any prior experience with these concepts. The ideas are imbued into the library and documentation, and so you will gain experience by simply following our materials and demo apps.
