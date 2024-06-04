@@ -6,7 +6,6 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
-import VimeoClient
 
 func resumeMiddleware(
   _ conn: Conn<StatusLineOpen, Void>

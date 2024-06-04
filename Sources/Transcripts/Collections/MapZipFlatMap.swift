@@ -84,12 +84,19 @@ extension Episode.Collection {
           )
         ],
         title: "Flat‑Map",
-        whereToGoFromHere: #"""
-          Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the `map` operation and giving it a little _flip_!
-
-          * [Contravariance](/episodes/\#(Episode.ep14_contravariance.slug))
-          """#
+        whereToGoFromHere: nil
       ),
+      .init(
+        blurb: #"""
+          Now that you have the functional trio toolkit under your belt, it’s time to level up your understanding of how functional operations can be discovered. In this episode we introduce the idea of contravariance, and show that it can be viewed through a functional lens by taking the signature of the map operation and giving it a little flip!
+          """#,
+        coreLessons: [
+          .init(episode: .ep14_contravariance),
+        ],
+        related: [],
+        title: "Contravariance",
+        whereToGoFromHere: nil
+      )
     ],
     title: "Map, Zip, Flat‑Map"
   )

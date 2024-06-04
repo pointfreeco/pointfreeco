@@ -123,19 +123,19 @@ private func sideBar(
         .first(where: { section in
           section.coreLessons.contains(where: { lesson in
             // TODO: equatable
-            lesson.episode.id == data.episode.id
+            lesson.episode?.id == data.episode.id
           })
         })
       // TODO: is it possible for a section to not be found?
     else { return [] }
     guard
       let currentEpisodeIndex = section.coreLessons.firstIndex(where: {
-        $0.episode.id == data.episode.id
+        $0.episode?.id == data.episode.id
       })
     else { return [] }
 
-    let previousEpisodes = section.coreLessons[0..<currentEpisodeIndex].map(\.episode)
-    let nextEpisodes = section.coreLessons[(currentEpisodeIndex + 1)...].map(\.episode)
+    let previousEpisodes = section.coreLessons[0..<currentEpisodeIndex].compactMap(\.episode)
+    let nextEpisodes = section.coreLessons[(currentEpisodeIndex + 1)...].compactMap(\.episode)
 
     return .div(
       attributes: [.class([sideBarClasses])],

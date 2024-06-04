@@ -9,7 +9,7 @@ public let post0140_ModernUIKit = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 140),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 140,
   publishedAt: yearMonthDayFormatter.date(from: "2024-05-27")!,

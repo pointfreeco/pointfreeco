@@ -36,7 +36,6 @@ var package = Package(
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
-    .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
@@ -44,6 +43,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
+    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
@@ -218,6 +218,7 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
+        .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -272,7 +273,6 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
-        "VimeoClient",
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),
@@ -340,7 +340,6 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
-        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -503,16 +502,6 @@ var package = Package(
     ),
 
     .target(
-      name: "VimeoClient",
-      dependencies: [
-        "DecodableRequest",
-        "FoundationPrelude",
-        .product(name: "DependenciesMacros", package: "swift-dependencies"),
-        .product(name: "Tagged", package: "swift-tagged"),
-      ]
-    ),
-
-    .target(
       name: "Views",
       dependencies: [
         "Ccmark",
@@ -522,7 +511,6 @@ var package = Package(
         "PointFreeRouter",
         "Styleguide",
         "Transcripts",
-        "VimeoClient",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Dependencies", package: "swift-dependencies"),

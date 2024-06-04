@@ -9,11 +9,12 @@ import Prelude
 import Styleguide
 
 public func blogIndexView(blogPosts: [BlogPost]) -> Node {
+  @Dependency(\.date.now) var now
 
   let allPosts =
     blogPosts
     .sorted(by: their(\.id, >))
-    .filter { !$0.hidden }
+    .filter { !$0.hidden.isCurrentlyHidden(date: now) }
   let newPosts = allPosts.prefix(1)
   let oldPosts = allPosts.dropFirst(1)
 

@@ -1,6 +1,5 @@
 import Models
 import URLRouting
-import VimeoClient
 
 public enum Live: Equatable {
   case current

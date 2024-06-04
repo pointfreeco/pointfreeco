@@ -47,7 +47,7 @@ class BlogTests: TestCase {
     var shortMock = BlogPost.testValue()[0]
     shortMock.contentBlocks = [shortMock.contentBlocks[1]]
     var hiddenMock = shortMock
-    hiddenMock.hidden = true
+    hiddenMock.hidden = .yes
     let posts = [
       shortMock,
       shortMock,

@@ -6,41 +6,67 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
-import VimeoClient
 
 func clipsMiddleware(
   _ conn: Conn<StatusLineOpen, ClipsRoute>
 ) async -> Conn<ResponseEnded, Data> {
   switch conn.data {
   case let .clip(videoID: videoID):
-    return await clipMiddleware(conn.map(const(videoID)))
+    return await clipMiddleware(videoID: videoID, conn: conn.map(const(())))
+
+  case .clips:
+    return await clipsMiddleware(conn.map(const(())))
   }
 }
 
 private func clipMiddleware(
-  _ conn: Conn<StatusLineOpen, VimeoVideo.ID>
+  videoID: VimeoVideo.ID,
+  conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.vimeoClient) var vimeoClient
+  @Dependency(\.database) var database
   do {
-    let video = try await vimeoClient.video(id: conn.data)
-    guard
-      video.type == .video,
-      video.privacy.view == .anybody
-    else {
-      return await routeNotFoundMiddleware(conn).performAsync()
-    }
+    let clip = try await database.fetchClip(vimeoVideoID: videoID)
 
-    return
-      conn
+    return conn
       .writeStatus(.ok)
       .respond(
-        view: vimeoVideoView(video:videoID:),
-        layoutData: { videoID in
+        view: clipView(clip:),
+        layoutData: {
           SimplePageLayoutData(
-            data: (video, videoID),
-            description: video.description,
+            data: clip,
+            description: clip.description,
             style: .base(.minimal(.black)),
-            title: "\(video.name)"
+            title: clip.title
+          )
+        }
+      )
+  } catch {
+    return await routeNotFoundMiddleware(conn).performAsync()
+  }
+}
+
+private func clipsMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  do {
+    let clips = try await database.fetchClips()
+      .filter { $0.order >= 0 }
+      .sorted { $0.order < $1.order }
+
+    return conn
+      .writeStatus(.ok)
+      .respond(
+        view: clipsView(clips:),
+        layoutData: {
+          SimplePageLayoutData(
+            data: clips,
+            description: """
+              A collection of some of our favorite moments from Point-Free episodes.
+              """,
+            extraStyles: cardStyles,
+            style: .base(.minimal(.black)),
+            title: "Point-Free clips"
           )
         }
       )
