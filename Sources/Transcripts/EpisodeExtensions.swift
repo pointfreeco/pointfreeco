@@ -2,9 +2,6 @@ import Models
 import Tagged
 
 extension Episode {
-  public static var allPrivateTranscripts: [ID: [TranscriptBlock]] = [:]
-  public static var allPrivateVideos: [ID: Video] = [:]
-
   public var fullVideo: Video {
     let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
     assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
