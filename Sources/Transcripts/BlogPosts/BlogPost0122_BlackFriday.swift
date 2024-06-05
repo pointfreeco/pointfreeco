@@ -9,7 +9,7 @@ public let post0122_BlackFriday = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 122),
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   hideFromSlackRSS: true,
   id: 122,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-20")!,

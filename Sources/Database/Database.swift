@@ -51,6 +51,9 @@ public struct Client {
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
+  @DependencyEndpoint(method: "fetchClip")
+  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: VimeoVideo.ID) async throws -> Clip
+  public var fetchClips: () async throws -> [Clip]
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")

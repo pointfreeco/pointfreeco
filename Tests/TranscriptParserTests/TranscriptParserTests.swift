@@ -6,6 +6,8 @@ import XCTest
 @testable import TranscriptParser
 
 class TranscriptParserTests: XCTestCase {
+  let blocksParser = BlocksParser()
+
   func testPrefixUpTo() throws {
     var input = "Hello, world!"[...]
 
@@ -71,12 +73,12 @@ class TranscriptParserTests: XCTestCase {
     ]
 
     XCTAssertNoDifference(
-      try blocksParser.parse(input),
+      try BlocksParser().parse(input),
       output
     )
 
     XCTAssertNoDifference(
-      try String(Substring(blocksParser.print(output))),
+      try String(Substring(BlocksParser().print(output))),
       input
     )
   }

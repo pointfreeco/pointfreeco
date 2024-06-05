@@ -36,7 +36,6 @@ var package = Package(
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
-    .library(name: "VimeoClient", targets: ["VimeoClient"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
@@ -44,6 +43,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
+    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
@@ -218,6 +218,7 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
+        .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -272,7 +273,6 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
-        "VimeoClient",
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),
@@ -340,7 +340,6 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
-        "VimeoClient",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
@@ -491,24 +490,10 @@ var package = Package(
       dependencies: [
         "TranscriptParser"
       ],
-      resources: transcripts()
-    ),
-
-    .testTarget(
-      name: "TranscriptsTests",
-      dependencies: [
-        "Transcripts",
-        .product(name: "CustomDump", package: "swift-custom-dump"),
-      ]
-    ),
-
-    .target(
-      name: "VimeoClient",
-      dependencies: [
-        "DecodableRequest",
-        "FoundationPrelude",
-        .product(name: "DependenciesMacros", package: "swift-dependencies"),
-        .product(name: "Tagged", package: "swift-tagged"),
+      resources: [
+        .process("BlogPosts/Resources"),
+        .process("Resources"),
+        .process("PrivateTranscripts/Resources"),
       ]
     ),
 
@@ -522,7 +507,6 @@ var package = Package(
         "PointFreeRouter",
         "Styleguide",
         "Transcripts",
-        "VimeoClient",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),
         .product(name: "Dependencies", package: "swift-dependencies"),
@@ -537,83 +521,5 @@ var package = Package(
     .target(
       name: "WebPreview"
     ),
-
   ]
 )
-
-let isOss = !FileManager.default.fileExists(
-  atPath: URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("PrivateTranscripts")
-    .appendingPathComponent(".git")
-    .path
-)
-
-extension SwiftSetting {
-  static let warnLongExpressionTypeChecking = unsafeFlags(
-    [
-      //      "-Xfrontend", "-warn-long-expression-type-checking=200",
-      //      "-Xfrontend", "-warn-long-function-bodies=200",
-    ],
-    .when(configuration: .debug)
-  )
-}
-
-extension Array where Element == SwiftSetting {
-  static let pointFreeSettings: Array =
-    isOss
-    ? [.define("OSS"), .warnLongExpressionTypeChecking]
-    : [.warnLongExpressionTypeChecking]
-}
-
-for index in package.targets.indices {
-  if package.targets[index].type != .system {
-    package.targets[index].swiftSettings = .pointFreeSettings
-  }
-}
-
-func transcripts() -> [Resource] {
-  let publicTranscripts: [Resource] = try! FileManager.default
-    .contentsOfDirectory(
-      atPath: URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .appendingPathComponent("Sources")
-        .appendingPathComponent("Transcripts")
-        .appendingPathComponent("Resources")
-        .path
-    )
-    .filter { $0.hasSuffix(".md") }
-    .map { .copy("Resources/\($0)") }
-
-  let privateTranscripts: [Resource] =
-    (try? FileManager.default
-      .contentsOfDirectory(
-        atPath: URL(fileURLWithPath: #filePath)
-          .deletingLastPathComponent()
-          .appendingPathComponent("Sources")
-          .appendingPathComponent("Transcripts")
-          .appendingPathComponent("PrivateTranscripts")
-          .path
-      )
-      .filter { $0.hasSuffix(".md") }
-      .map { .copy("PrivateTranscripts/\($0)") })
-    ?? []
-
-  let blogPostTranscripts: [Resource] =
-    (try? FileManager.default
-      .contentsOfDirectory(
-        atPath: URL(fileURLWithPath: #filePath)
-          .deletingLastPathComponent()
-          .appendingPathComponent("Sources")
-          .appendingPathComponent("Transcripts")
-          .appendingPathComponent("BlogPosts")
-          .path
-      )
-      .filter { $0.hasSuffix(".md") }
-      .map { .copy("BlogPosts/\($0)") })
-    ?? []
-
-  return publicTranscripts + privateTranscripts + blogPostTranscripts
-}

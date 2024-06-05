@@ -2,7 +2,7 @@ GET http://localhost:8080/join/pointfree.co
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52042
+Content-Length: 52310
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2224,6 +2224,16 @@ access to all videos, transcripts, code samples and more.
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

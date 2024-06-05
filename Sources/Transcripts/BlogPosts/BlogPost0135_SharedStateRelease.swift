@@ -9,7 +9,7 @@ public let post0135_SharedStateRelease = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 135),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 135,
   publishedAt: yearMonthDayFormatter.date(from: "2024-04-29")!,

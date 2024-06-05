@@ -154,4 +154,9 @@ private let _allBlogPosts: [BlogPost] = [
   post0137_WereLive,
   post0138_SyncUpsTutorial,
   post0139_FreeSharedState,
+  post0140_ModernUIKit,
+  post0141_TCAFAQ,
+  post0142_WWDCSale,
+  post0143_WWDCLivestream,
+  post0144_WWDCSale,
 ]

@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 205818
+Content-Length: 206086
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -4469,6 +4469,16 @@ directly to that point in the video.
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

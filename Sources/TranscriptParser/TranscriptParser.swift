@@ -331,19 +331,23 @@ public struct CodeBlockParser: ParserPrinter {
   }
 }
 
-public let blocksParser = Many {
-  OneOf {
-    CodeBlockParser()
-    ButtonParser()
-    BoxParser()
-    ImageParser()
-    TitleParser()
-    ParagraphParser()
+public struct BlocksParser: ParserPrinter {
+  public var body: some ParserPrinter<Substring.UTF8View, [Episode.TranscriptBlock]> {
+    Many {
+      OneOf {
+        CodeBlockParser()
+        ButtonParser()
+        BoxParser()
+        ImageParser()
+        TitleParser()
+        ParagraphParser()
+      }
+    } separator: {
+      "\n\n".utf8
+    } terminator: {
+      Whitespace()
+    }
   }
-} separator: {
-  "\n\n".utf8
-} terminator: {
-  Whitespace()
 }
 
 extension UTF8.CodeUnit {

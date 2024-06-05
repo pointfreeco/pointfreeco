@@ -8,7 +8,8 @@ extension Client {
     pool: EventLoopGroupConnectionPool<PostgresConnectionSource>
   ) -> Self {
     Self(
-      addUserIdToSubscriptionId: { userId, subscriptionId in
+      addUserIdToSubscriptionId: {
+        userId, subscriptionId in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
@@ -41,7 +42,14 @@ extension Client {
         )
       },
       createGift: {
-        deliverAt, fromEmail, fromName, message, monthsFree, stripePaymentIntentId, toEmail, toName
+        deliverAt,
+        fromEmail,
+        fromName,
+        message,
+        monthsFree,
+        stripePaymentIntentId,
+        toEmail,
+        toName
         in
         try await pool.sqlDatabase.first(
           """
@@ -114,6 +122,20 @@ extension Client {
           SELECT *
           FROM "users"
           WHERE "users"."is_admin" = TRUE
+          """
+        )
+      },
+      fetchClipByVimeoVideoID: { vimeoVideoID in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
+          """
+        )
+      },
+      fetchClips: {
+        try await pool.sqlDatabase.all(
+          """
+          SELECT * from "clips"
           """
         )
       },
@@ -829,6 +851,30 @@ extension Client {
           ALTER TABLE "enterprise_accounts"
           ADD COLUMN IF NOT EXISTS
           "domains" text[] NOT NULL DEFAULT '{}'
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "livestreams"
+          ADD COLUMN IF NOT EXISTS "scheduled_at" timestamp with time zone,
+          ADD COLUMN IF NOT EXISTS "title" character varying NOT NULL DEFAULT '',
+          ADD COLUMN IF NOT EXISTS "description" character varying NOT NULL DEFAULT '',
+          ADD COLUMN IF NOT EXISTS "is_subscriber_only" boolean NOT NULL DEFAULT FALSE
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "clips" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "blurb" character varying NOT NULL DEFAULT '',
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "duration" integer NOT NULL,
+            "description" character varying NOT NULL,
+            "order" integer NOT NULL DEFAULT 0,
+            "poster_url" character varying NOT NULL,
+            "title" character varying NOT NULL,
+            "vimeo_video_id" integer NOT NULL UNIQUE
+          )
           """
         )
       },

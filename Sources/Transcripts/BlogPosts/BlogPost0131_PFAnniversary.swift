@@ -8,7 +8,7 @@ public let post0131_PFAnniversary = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 131),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 131,
   publishedAt: yearMonthDayFormatter.date(from: "2024-01-29")!,

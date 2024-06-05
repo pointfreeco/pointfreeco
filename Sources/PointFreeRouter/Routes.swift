@@ -1,3 +1,4 @@
+import CasePaths
 import Either
 import EmailAddress
 import Foundation
@@ -11,6 +12,7 @@ import UrlFormEncoding
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
+@CasePathable
 public enum SiteRoute: Equatable {
   case about
   case account(Account = .index)
