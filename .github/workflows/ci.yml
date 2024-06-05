@@ -18,6 +18,10 @@ jobs:
     name: Ubuntu
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        repository: pointfreeco/episode-transcripts
+        token: ${{ secrets.GH_PAT }}
+        path: Sources/Transcripts/PrivateTranscripts
     - name: Run tests
       run: make test-linux
