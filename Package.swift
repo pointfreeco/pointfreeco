@@ -497,14 +497,6 @@ var package = Package(
       ]
     ),
 
-    .testTarget(
-      name: "TranscriptsTests",
-      dependencies: [
-        "Transcripts",
-        .product(name: "CustomDump", package: "swift-custom-dump"),
-      ]
-    ),
-
     .target(
       name: "Views",
       dependencies: [
@@ -529,39 +521,5 @@ var package = Package(
     .target(
       name: "WebPreview"
     ),
-
   ]
 )
-
-let isOss = !FileManager.default.fileExists(
-  atPath: URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Sources")
-    .appendingPathComponent("Transcripts")
-    .appendingPathComponent("PrivateTranscripts")
-    .appendingPathComponent(".git")
-    .path
-)
-
-extension SwiftSetting {
-  static let warnLongExpressionTypeChecking = unsafeFlags(
-    [
-      //"-Xfrontend", "-warn-long-expression-type-checking=200",
-      //"-Xfrontend", "-warn-long-function-bodies=200",
-    ],
-    .when(configuration: .debug)
-  )
-}
-
-extension Array where Element == SwiftSetting {
-  static let pointFreeSettings: Array =
-    isOss
-    ? [.define("OSS"), .warnLongExpressionTypeChecking]
-    : [.warnLongExpressionTypeChecking]
-}
-
-for index in package.targets.indices {
-  if package.targets[index].type != .system {
-    package.targets[index].swiftSettings = .pointFreeSettings
-  }
-}

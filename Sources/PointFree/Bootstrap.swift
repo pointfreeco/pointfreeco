@@ -12,11 +12,9 @@ public func bootstrap() async {
     await updateCollectionClips()
   }
 
-  #if !DEBUG && !OSS
-    print("  ⚠️ Bootstrapping transcripts")
-    Episode.bootstrapPrivateEpisodes()
-    print("  ✅ \(Episode.all.count) transcripts loaded")
-  #endif
+  print("  ⚠️ Bootstrapping transcripts")
+  Episode.bootstrapPrivateEpisodes()
+  print("  ✅ \(Episode.all.count) transcripts loaded")
 }
 
 private func connectToPostgres() async {
