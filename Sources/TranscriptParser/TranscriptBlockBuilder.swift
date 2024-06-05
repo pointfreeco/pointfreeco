@@ -11,7 +11,7 @@ extension Array where Element == Episode.TranscriptBlock {
   public static func paragraphs(
     _ input: String
   ) -> Self {
-    try! TranscriptParser.blocksParser.parse(input)
+    try! BlocksParser().parse(input)
   }
 }
 

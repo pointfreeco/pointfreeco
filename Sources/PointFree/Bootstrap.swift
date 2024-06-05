@@ -7,16 +7,14 @@ public func bootstrap() async {
   print("⚠️ Bootstrapping PointFree...")
   defer { print("✅ PointFree Bootstrapped!") }
 
+  print("  ⚠️ Bootstrapping transcripts")
+  Episode.bootstrapPrivateEpisodes()
+  print("  ✅ \(Episode.all.count) transcripts loaded")
+
   await connectToPostgres()
   await fireAndForget {
     await updateCollectionClips()
   }
-
-  #if !DEBUG && !OSS
-    print("  ⚠️ Bootstrapping transcripts")
-    Episode.bootstrapPrivateEpisodes()
-    print("  ✅ \(Episode.all.count) transcripts loaded")
-  #endif
 }
 
 private func connectToPostgres() async {
