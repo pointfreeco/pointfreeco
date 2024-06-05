@@ -11,12 +11,12 @@ import XCTest
 @testable import PointFree
 
 class AtomFeedTests: TestCase {
-  @MainActor
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testAtomFeed() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -27,6 +27,7 @@ class AtomFeedTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeFeed() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -37,6 +38,7 @@ class AtomFeedTests: TestCase {
     }
   }
 
+  @MainActor
   func testSlackFeed() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
@@ -47,6 +49,7 @@ class AtomFeedTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeFeed_WithRecentlyFreeEpisode() async throws {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)

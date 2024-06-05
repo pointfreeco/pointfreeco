@@ -22,6 +22,7 @@ final class NotFoundMiddlewareTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testNotFound() async throws {
     let conn = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
 
@@ -40,6 +41,7 @@ final class NotFoundMiddlewareTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNotFound_LoggedIn() async throws {
     await withDependencies {
       $0 = .test

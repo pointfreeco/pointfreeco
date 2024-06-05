@@ -482,6 +482,7 @@ final class AccountTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeCredits_1Credit_NoneChosen() async throws {
     var user = User.mock
     user.subscriptionId = nil

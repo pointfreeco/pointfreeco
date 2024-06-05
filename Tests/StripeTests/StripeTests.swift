@@ -13,6 +13,7 @@ final class StripeTests: TestCase {
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testDecodingCustomer() async throws {
     let jsonString = """
       {
@@ -72,6 +73,7 @@ final class StripeTests: TestCase {
     }
   }
 
+  @MainActor
   func testDecodingCustomer_Metadata() async throws {
     let jsonString = """
       {
@@ -130,6 +132,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
   }
 
+  @MainActor
   func testDecodingPlan_WithNickname() async throws {
     let jsonString = """
       {
@@ -162,6 +165,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("Individual Monthly", plan.nickname)
   }
 
+  @MainActor
   func testDecodingSubscriptionWithDiscount() async throws {
     let jsonString = """
       {
@@ -300,6 +304,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual("15-percent", subscription.discount?.coupon.id)
   }
 
+  @MainActor
   func testDecodingDiscountJson() async throws {
     let jsonString = """
         {
@@ -336,6 +341,7 @@ final class StripeTests: TestCase {
     XCTAssertEqual(.repeating(months: 12), discount.coupon.duration)
   }
 
+  @MainActor
   func testDecodingPaymentIntentJson() async throws {
     let jsonString = """
       {

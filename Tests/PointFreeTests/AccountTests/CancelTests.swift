@@ -76,6 +76,7 @@ final class CancelTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testCancelNoSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in throw unit }
