@@ -7,7 +7,7 @@ public let post0136_TCABDay = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 136),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 136,
   publishedAt: yearMonthDayFormatter.date(from: "2024-05-06")!,

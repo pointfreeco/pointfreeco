@@ -24,7 +24,7 @@ public let post0058_WWDCSale = BlogPost(
     )
   ],
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   id: 58,
   publishedAt: Date(timeIntervalSince1970: 1_623_042_000),
   title: "WWDC Sale"

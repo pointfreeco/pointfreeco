@@ -8,7 +8,7 @@ public let post0108_WWDCSale = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 108),
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   id: 108,
   publishedAt: yearMonthDayFormatter.date(from: "2023-06-07")!,
   title: "WWDC 2023 Sale!"

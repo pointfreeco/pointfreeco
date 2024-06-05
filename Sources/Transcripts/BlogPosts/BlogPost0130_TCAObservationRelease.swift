@@ -9,7 +9,7 @@ public let post0130_TCAObservationRelease = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 130),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 130,
   publishedAt: yearMonthDayFormatter.date(from: "2024-01-29")!,

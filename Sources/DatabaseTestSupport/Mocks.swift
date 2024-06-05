@@ -16,6 +16,8 @@ extension Client {
     deleteTeamInvite: { _ in },
     execute: { _ in throw unit },
     fetchAdmins: { [] },
+    fetchClipByVimeoVideoID: { _ in throw unit },
+    fetchClips: { throw unit },
     fetchEmailSettingsForUserId: { _ in [.mock] },
     fetchEnterpriseAccountForDomain: { _ in .mock },
     fetchEnterpriseAccountForSubscription: { _ in throw unit },

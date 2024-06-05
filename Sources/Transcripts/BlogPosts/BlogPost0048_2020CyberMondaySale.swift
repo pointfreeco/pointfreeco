@@ -31,7 +31,7 @@ public let post0048_CyberMondaySale = BlogPost(
     )
   ],
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   id: 48,
   publishedAt: Date(timeIntervalSince1970: 1_606_690_440),
   title: "Cyber Monday Sale: 30% Off Point-Free"

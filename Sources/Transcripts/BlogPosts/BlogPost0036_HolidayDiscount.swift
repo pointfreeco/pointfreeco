@@ -16,7 +16,7 @@ public let post0036_HolidayDiscount = BlogPost(
       type: .paragraph)
   ],
   coverImage: nil,
-  hidden: true,
+  hidden: .yes,
   id: 36,
   publishedAt: Date(timeIntervalSince1970: 1_577_080_800),
   title: "🎉 Holiday Sale: 30% Off Point-Free"

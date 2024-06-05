@@ -2,7 +2,7 @@ GET http://localhost:8080/live
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 49494
+Content-Length: 50895
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2063,12 +2063,52 @@ explore our open source libraries, and take questions from our viewers.">
       </div>
     </div>
     <div class="bg-black
-                row">
-      <div class="center-d
-                  col-m
-                  col-d-9
-                  col-m-12">
-        <div style="padding:56.25% 0 0 0;position:relative;">
+                border-top"
+         style="border-top-color:#000">
+      <div class="middle-d
+                  d-pl5
+                  d-pr5
+                  m-pb4
+                  m-pt4
+                  m-pl3
+                  m-pr3
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="col-m
+                    col-m-12">
+          <h1 class="fg-white
+                     fg-black
+                     bold
+                     ts-d-r3
+                     ts-m-r2
+                     lh-2
+                     center"
+              style="line-height:1.2">
+          </h1>
+          <div class="d-pl4
+                      d-pr4
+                      m-pt1
+                      m-pl0
+                      m-pr0
+                      fg-gray850
+                      fg-black
+                      normal
+                      h5
+                      lh-4">
+            <div class="md-ctn">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-black
+                  row">
+        <div class="center-d
+                    col-m
+                    col-d-9
+                    col-m-12">
+          <div style="padding:56.25% 0 0 0;position:relative;">
   <iframe src="https://vimeo.com/event/42/embed"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture"
@@ -2076,17 +2116,18 @@ explore our open source libraries, and take questions from our viewers.">
           style="position:absolute;top:0;left:0;width:100%;height:100%;">
   </iframe>
 </div>
-      </div>
-      <div class="center-d
-                  col-m
-                  col-d-3
-                  col-m-12">
-        <iframe src="https://vimeo.com/event/42/chat/"
+        </div>
+        <div class="center-d
+                    col-m
+                    col-d-3
+                    col-m-12">
+          <iframe src="https://vimeo.com/event/42/chat/"
         width="100%"
         height="100%"
         frameborder="0"
         style="min-height: 30rem;">
 </iframe>
+        </div>
       </div>
     </div>
     <footer class="row
@@ -2188,6 +2229,16 @@ explore our open source libraries, and take questions from our viewers.">
                         lh-4"
                  href="/collections">
                 Collections
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/clips">
+                Clips
               </a>
             </li>
             <li>

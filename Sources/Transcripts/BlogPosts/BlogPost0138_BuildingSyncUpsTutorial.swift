@@ -9,7 +9,7 @@ public let post0138_SyncUpsTutorial = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 138),
   coverImage: nil,
-  hidden: false,
+  hidden: .no,
   hideFromSlackRSS: false,
   id: 138,
   publishedAt: yearMonthDayFormatter.date(from: "2024-05-09")!,
