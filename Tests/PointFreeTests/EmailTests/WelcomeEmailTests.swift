@@ -17,7 +17,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -73,13 +72,13 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 final class WelcomeEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testWelcomeEmail1() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -95,6 +94,7 @@ final class WelcomeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testWelcomeEmail2() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -110,6 +110,7 @@ final class WelcomeEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testWelcomeEmail3() async throws {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {

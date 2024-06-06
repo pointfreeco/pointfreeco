@@ -21,7 +21,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class NewBlogPostEmailTests: TestCase {
   @Dependency(\.blogPosts) var blogPosts
   @Dependency(\.siteRouter) var siteRouter
@@ -31,6 +30,7 @@ class NewBlogPostEmailTests: TestCase {
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() async throws {
     let doc = newBlogPostEmail((post, "", "", .mock))
 
@@ -49,6 +49,7 @@ class NewBlogPostEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewBlogPostEmail_NoAnnouncements_NonSubscriber() async throws {
     let doc = newBlogPostEmail((post, "", "", .nonSubscriber))
 
@@ -67,6 +68,7 @@ class NewBlogPostEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewBlogPostEmail_Announcements_Subscriber() async throws {
     let doc = newBlogPostEmail(
       (post, "Hey, thanks for being a subscriber! You're the best!", "", .mock))
@@ -86,6 +88,7 @@ class NewBlogPostEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewBlogPostEmail_Announcements_NonSubscriber() async throws {
     let doc = newBlogPostEmail(
       (
@@ -109,6 +112,7 @@ class NewBlogPostEmailTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNewBlogPostRoute() async throws {
     let blogPost = self.blogPosts().first!
 
@@ -138,6 +142,7 @@ class NewBlogPostEmailTests: TestCase {
     )
   }
 
+  @MainActor
   func testNewBlogPostEmail_NoCoverImage() async throws {
     var p = post
     p.coverImage = nil

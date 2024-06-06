@@ -20,6 +20,7 @@ final class InvoicesTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testInvoices() async throws {
     let conn = connection(from: request(to: .account(.invoices()), session: .loggedIn))
 
@@ -38,6 +39,7 @@ final class InvoicesTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testInvoice() async throws {
     var customer = Stripe.Customer.mock
     customer.metadata = [
@@ -73,6 +75,7 @@ final class InvoicesTests: TestCase {
     }
   }
 
+  @MainActor
   func testInvoice_InvoiceBilling() async throws {
     var charge = Charge.mock
     charge.paymentMethodDetails = .init()
@@ -101,6 +104,7 @@ final class InvoicesTests: TestCase {
     }
   }
 
+  @MainActor
   func testInvoiceWithDiscount() async throws {
     var invoice = Stripe.Invoice.mock(charge: .right(.mock))
     invoice.discount = .mock

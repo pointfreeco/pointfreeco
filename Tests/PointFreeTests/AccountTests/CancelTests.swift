@@ -18,7 +18,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 final class CancelTests: TestCase {
   @Dependency(\.stripe) var stripe
 
@@ -27,6 +26,7 @@ final class CancelTests: TestCase {
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testCancel() async throws {
     var immediately: Bool?
     let expectation = self.expectation(description: "sendEmail")
@@ -51,6 +51,7 @@ final class CancelTests: TestCase {
     _ = { self.wait(for: [expectation], timeout: 0) }()
   }
 
+  @MainActor
   func testCancelPastDue() async throws {
     var immediately: Bool?
 
@@ -68,12 +69,14 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testCancelLoggedOut() async throws {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testCancelNoSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in throw unit }
@@ -83,6 +86,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testCancelCancelingSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .canceling }
@@ -92,6 +96,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testCancelCanceledSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .canceled }
@@ -101,6 +106,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testCancelStripeFailure() async throws {
     await withDependencies {
       $0.stripe.cancelSubscription = { _, _ in throw unit }
@@ -110,6 +116,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testCancelEmail() async throws {
     let doc = cancelEmailView((.mock, .mock))
 
@@ -128,6 +135,7 @@ final class CancelTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testReactivate() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .canceling }
@@ -138,12 +146,14 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testReactivateLoggedOut() async throws {
     let conn = connection(from: request(to: .account(.subscription(.reactivate))))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testReactivateNoSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in throw unit }
@@ -154,6 +164,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testReactivateActiveSubscription() async throws {
     let conn = connection(
       from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
@@ -161,6 +172,7 @@ final class CancelTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testReactivateCanceledSubscription() async throws {
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .canceled }
@@ -171,6 +183,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testReactivateStripeFailure() async throws {
     await withDependencies {
       $0.stripe.updateSubscription = { _, _, _ in throw unit }
@@ -181,6 +194,7 @@ final class CancelTests: TestCase {
     }
   }
 
+  @MainActor
   func testReactivateEmail() async throws {
     let doc = reactivateEmailView((.mock, .mock))
 

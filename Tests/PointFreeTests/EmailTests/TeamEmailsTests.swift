@@ -11,13 +11,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class TeamEmailsTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record=true
   }
 
+  @MainActor
   func testYouHaveBeenRemovedEmailView() async throws {
     let emailNodes = youHaveBeenRemovedEmailView(.teamOwner(.mock))
 
@@ -33,6 +33,7 @@ class TeamEmailsTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testTeammateRemovedEmailView() async throws {
     let emailNodes = teammateRemovedEmailView((.mock, .mock))
 

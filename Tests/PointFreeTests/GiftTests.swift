@@ -18,13 +18,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class GiftTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testGiftCreate() async throws {
     let expectation = self.expectation(description: "createGift")
     await withDependencies {
@@ -86,6 +86,7 @@ class GiftTests: TestCase {
     { self.wait(for: [expectation], timeout: 0) }()
   }
 
+  @MainActor
   func testGiftCreate_StripeFailure() async throws {
     await withDependencies {
       $0.stripe.createPaymentIntent = { _, _, _, _, _, _ in
@@ -135,6 +136,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftCreate_InvalidMonths() async throws {
     await withDependencies {
       $0.stripe.createPaymentIntent = { _, _, _, _, _, _ in
@@ -184,6 +186,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeem_NonSubscriber() async throws {
     let user = User.nonSubscriber
     var credit: Cents<Int>?
@@ -251,6 +254,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeem_Subscriber() async throws {
     let user = User.owner
     var credit: Cents<Int>?
@@ -311,6 +315,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeem_Invalid_LoggedOut() async throws {
     await withDependencies {
       $0.stripe.fetchCoupon = { _ in update(.mock) { $0.rate = .amountOff(54_00) } }
@@ -347,6 +352,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeem_Invalid_Redeemed() async throws {
     let user = User.nonSubscriber
 
@@ -391,6 +397,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeem_Invalid_Teammate() async throws {
     let user = User.teammate
 
@@ -438,6 +445,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftLanding() async throws {
     await withDependencies {
       $0.date.now = .mock
@@ -461,6 +469,7 @@ class GiftTests: TestCase {
     }
   }
 
+  @MainActor
   func testGiftRedeemLanding() async throws {
     await withDependencies {
       $0.date.now = .mock

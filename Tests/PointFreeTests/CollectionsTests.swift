@@ -16,7 +16,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class CollectionsTests: TestCase {
   @Dependency(\.collections) var collections
 
@@ -25,6 +24,7 @@ class CollectionsTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testCollectionIndex() async throws {
     await collections.update([
       .mock,
@@ -52,6 +52,7 @@ class CollectionsTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testCollectionShow() async throws {
     let conn = connection(
       from: request(to: .collections(.collection(self.collections.all()[0].slug)), basicAuth: true)
@@ -72,6 +73,7 @@ class CollectionsTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testCollectionSection() async throws {
     let conn = connection(
       from: request(

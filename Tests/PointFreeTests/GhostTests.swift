@@ -11,13 +11,13 @@ import XCTest
 
 @testable import PointFree
 
-@MainActor
 final class GhostTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testStartGhosting_HappyPath() async throws {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
@@ -62,6 +62,7 @@ final class GhostTests: TestCase {
     }
   }
 
+  @MainActor
   func testStartGhosting_InvalidGhostee() async throws {
     let adminUser = User.admin
     var adminSession = Session.loggedIn
@@ -104,6 +105,7 @@ final class GhostTests: TestCase {
     }
   }
 
+  @MainActor
   func testStartGhosting_NonAdmin() async throws {
     let user = User.mock
     var session = Session.loggedIn
@@ -148,6 +150,7 @@ final class GhostTests: TestCase {
     }
   }
 
+  @MainActor
   func testEndGhosting_HappyPath() async throws {
     var ghostee = User.mock
     ghostee.id = User.ID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!

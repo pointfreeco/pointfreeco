@@ -18,13 +18,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class MinimalNavViewTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testNav_Html() async throws {
     for (key, state) in states {
       let doc = testDocView(state)
@@ -33,6 +33,7 @@ class MinimalNavViewTests: TestCase {
     }
   }
 
+  @MainActor
   func testNav_Screenshots() async throws {
     for (key, state) in states {
       let doc = testDocView(state)

@@ -5,7 +5,6 @@ import XCTest
 
 @testable import PointFree
 
-@MainActor
 class EitherIOTests: TestCase {
   func testRetry_Fails() async throws {
     var count = 0

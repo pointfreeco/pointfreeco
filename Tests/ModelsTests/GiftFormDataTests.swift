@@ -4,8 +4,8 @@ import XCTest
 
 @testable import Models
 
-@MainActor
 final class GiftFormDataTests: TestCase {
+  @MainActor
   func testCodable_PaymentIntent() async throws {
     let giftFormData = GiftFormData(
       deliverAt: nil,
@@ -37,6 +37,7 @@ final class GiftFormDataTests: TestCase {
     XCTAssertEqual(roundtripGiftFormData, giftFormData)
   }
 
+  @MainActor
   func testCodable_PaymentMethod() async throws {
     let giftFormData = GiftFormData(
       deliverAt: nil,

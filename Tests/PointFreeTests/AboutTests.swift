@@ -10,8 +10,8 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class AboutTests: TestCase {
+  @MainActor
   func testAbout() async throws {
     //SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))

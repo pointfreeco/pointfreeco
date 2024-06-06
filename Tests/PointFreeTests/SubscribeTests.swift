@@ -17,7 +17,6 @@ import XCTest
 @testable import PointFree
 @testable import Stripe
 
-@MainActor
 final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
   @Dependency(\.envVars.regionalDiscountCouponId) var regionalDiscountCouponId
@@ -27,6 +26,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testCoupon_Individual() async throws {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
@@ -52,6 +52,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     #endif
   }
 
+  @MainActor
   func testCoupon_Team() async throws {
     var subscribeData = SubscribeData.teamYearly(quantity: 4)
     subscribeData.coupon = "deadbeef"
@@ -74,6 +75,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertNil(subscription)
   }
 
+  @MainActor
   func testHappyPath() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -112,6 +114,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testHappyPath_Yearly() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -150,6 +153,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testHappyPath_Team() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -184,6 +188,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map(\.email))
   }
 
+  @MainActor
   func testHappyPath_Team_OwnerIsNotTakingSeat() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -224,6 +229,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
+  @MainActor
   func testHappyPath_Referral_Monthly() async throws {
     let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
@@ -297,6 +303,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testHappyPath_Referral_Yearly() async throws {
     let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
@@ -361,6 +368,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testHappyPath_RegionalDiscount() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -422,6 +430,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testUnhappyPath_RegionalDiscount() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -478,6 +487,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRegionalDiscountWithReferral_Monthly() async throws {
     let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
@@ -569,6 +579,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRegionalDiscountWithReferral_Yearly() async throws {
     let referrer = try await self.database
       .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
@@ -660,6 +671,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testSubscribingWithRegionalDiscountAndCoupon() async throws {
     let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
@@ -693,7 +705,6 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 final class SubscribeTests: TestCase {
   @Dependency(\.database) var database
 
@@ -702,6 +713,7 @@ final class SubscribeTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testNotLoggedIn_IndividualMonthly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly))))
@@ -712,6 +724,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testCouponFailure_Individual() async throws {
     try await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -735,6 +748,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testNotLoggedIn_IndividualYearly() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualYearly))))
@@ -745,6 +759,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testNotLoggedIn_Team() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
@@ -755,6 +770,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testCurrentSubscribers() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn))
@@ -765,6 +781,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testInvalidQuantity() async throws {
     #if !os(Linux)
       await withDependencies {
@@ -790,6 +807,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testCreateCustomerFailure() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -806,6 +824,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testCreateStripeSubscriptionFailure() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -822,6 +841,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -849,6 +869,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -876,6 +897,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testCreateDatabaseSubscriptionFailure() async throws {
     await withDependencies {
       $0.database.createSubscription = { _, _, _, _ in throw unit }
@@ -892,6 +914,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testReferrals_InvalidCode() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -919,6 +942,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testReferrals_InvalidLane() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -945,6 +969,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testReferrals_InactiveCode() async throws {
     await withDependencies {
       $0.database.fetchSubscriptionById = { _ in throw unit }
@@ -972,6 +997,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testReferrals_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)
@@ -1003,6 +1029,7 @@ final class SubscribeTests: TestCase {
     }
   }
 
+  @MainActor
   func testJSON_success() async throws {
     #if !os(Linux)
       let user = User.nonSubscriber
@@ -1029,6 +1056,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testJSON_3DSecureRequired() async throws {
     #if !os(Linux)
       let user = User.nonSubscriber
@@ -1065,6 +1093,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testJSON_3DSecureConfirmed() async throws {
     #if !os(Linux)
       let user = User.nonSubscriber
@@ -1095,6 +1124,7 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testJSON_IncompleteSubscription() async throws {
     #if !os(Linux)
       let user = User.nonSubscriber

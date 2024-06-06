@@ -16,13 +16,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class SubscriptionConfirmationTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testPersonal_LoggedIn() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -53,6 +53,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedIn_SwitchToMonthly() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -83,6 +84,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedIn_SwitchToMonthly_RegionalDiscount() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -113,6 +115,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn() async throws {
     var user = User.mock
     user.gitHubUserId = -1
@@ -146,6 +149,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn_WithDefaults() async throws {
     var user = User.mock
     user.gitHubUserId = -1
@@ -185,6 +189,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() async throws {
     var user = User.mock
     user.gitHubUserId = -1
@@ -224,6 +229,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn_SwitchToMonthly() async throws {
     var user = User.mock
     user.gitHubUserId = -1
@@ -257,6 +263,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn_AddTeamMember() async throws {
     var user = User.mock
     user.gitHubUserId = 1
@@ -301,6 +308,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedIn_ActiveSubscriber() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -319,6 +327,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedOut() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
@@ -349,6 +358,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedIn_WithDiscount() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -375,6 +385,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testTeam_LoggedIn_RemoveOwnerFromTeam() async throws {
     var user = User.mock
     user.gitHubUserId = 1
@@ -410,6 +421,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedOut_ReferralCode() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
@@ -446,6 +458,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_ReferralCodeAndRegionalDiscount() async throws {
     await withDependencies {
       $0.database.fetchUserByReferralCode = { code in update(.mock) { $0.referralCode = code } }
@@ -478,6 +491,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedOut_InactiveReferralCode() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
@@ -502,6 +516,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedOut_InvalidReferralCode() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
@@ -524,6 +539,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedOut_InvalidReferralLane() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in throw unit }
@@ -548,6 +564,7 @@ class SubscriptionConfirmationTests: TestCase {
     }
   }
 
+  @MainActor
   func testPersonal_LoggedIn_PreviouslyReferred() async throws {
     let user = update(User.nonSubscriber) {
       $0.referrerId = .init(rawValue: .mock)

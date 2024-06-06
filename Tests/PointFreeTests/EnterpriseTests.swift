@@ -17,7 +17,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class EnterpriseTests: TestCase {
   @Dependency(\.envVars) var envVars
 
@@ -26,6 +25,7 @@ class EnterpriseTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testLanding_LoggedOut() async throws {
     let account = EnterpriseAccount.mock
 
@@ -50,6 +50,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_NonExistentEnterpriseAccount() async throws {
     let account = EnterpriseAccount.mock
 
@@ -62,6 +63,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_AlreadySubscribedToEnterprise() async throws {
     let subscriptionId = Subscription.ID(uuidString: "00000000-0000-0000-0000-012387451903")!
     var account = EnterpriseAccount.mock
@@ -78,6 +80,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_LoggedOut() async throws {
     let account = EnterpriseAccount.mock
 
@@ -89,6 +92,7 @@ class EnterpriseTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testRequestInvitation_GoodEmail() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -115,6 +119,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testRequestInvitation_BadEmail() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -141,6 +146,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_BadEmail() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -165,6 +171,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_BadUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -189,6 +196,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_EmailDoesntMatchEnterpriseDomain() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -215,6 +223,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_RequesterUserDoesntMatchAccepterUserId() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -240,6 +249,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_EnterpriseAccountDoesntExist() async throws {
     await withDependencies {
       $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
@@ -264,6 +274,7 @@ class EnterpriseTests: TestCase {
     }
   }
 
+  @MainActor
   func testAcceptInvitation_HappyPath() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"
@@ -292,6 +303,7 @@ class EnterpriseTests: TestCase {
     // todo: more verifications that subscription was linked
   }
 
+  @MainActor
   func testAcceptInvitation_HappyPath_SecondaryDomain() async throws {
     var account = EnterpriseAccount.mock
     account.domain = "pointfree.co"

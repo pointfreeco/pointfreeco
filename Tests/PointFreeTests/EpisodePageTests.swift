@@ -20,7 +20,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -29,6 +28,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testRedeemEpisodeCredit_HappyPath() async throws {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
@@ -58,6 +58,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRedeemEpisodeCredit_NotEnoughCredits() async throws {
     var episode = Episode.mock
     episode.permission = .subscriberOnly
@@ -86,6 +87,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRedeemEpisodeCredit_PublicEpisode() async throws {
     var episode = Episode.mock
     episode.permission = .free
@@ -114,6 +116,7 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRedeemEpisodeCredit_AlreadyCredited() async throws {
     var episode = Episode.mock
     episode.permission = .free
@@ -145,7 +148,6 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 class EpisodePageTests: TestCase {
   @Dependency(\.collections) var collections
   @Dependency(\.episodes) var episodes
@@ -155,6 +157,7 @@ class EpisodePageTests: TestCase {
     // SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testEpisodePage() async throws {
     let titles = ["Domain-Specific Languages", "Proof in Functions", "Composable Architecture"]
     let episodes = (0...2).map { idx -> Episode in
@@ -189,6 +192,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodePage_InCollectionContext() async throws {
     let episode = request(
       to: .collections(
@@ -220,6 +224,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testEpisodePage_InCollectionContext_LastEpisode() async throws {
     let episode = request(
       to: .collections(
@@ -251,6 +256,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testEpisodePageSubscriber() async throws {
     let episode = request(
       to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
@@ -272,6 +278,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testEpisodePageSubscriber_Deactivated() async throws {
     let deactivated = update(Subscription.mock) { $0.deactivated = true }
 
@@ -300,6 +307,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testFreeEpisodePage() async throws {
     var freeEpisode = self.episodes()[0]
     freeEpisode.permission = .free
@@ -327,6 +335,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testFreeEpisodePageSubscriber() async throws {
     var freeEpisode = self.episodes()[0]
     freeEpisode.permission = .free
@@ -354,6 +363,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeNotFound() async throws {
     let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
 
@@ -371,6 +381,7 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
@@ -405,6 +416,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
@@ -440,6 +452,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
@@ -475,6 +488,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_NoCredits() async throws {
     var user = Models.User.mock
     user.subscriptionId = nil
@@ -510,6 +524,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func test_permission() async throws {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
@@ -535,6 +550,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodePage_ExercisesAndReferences() async throws {
     var episode = self.episodes()[0]
     episode.exercises = [.mock, .mock]
@@ -581,6 +597,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodePage_Trialing() async throws {
     var subscription = Subscription.mock
     subscription.stripeSubscriptionStatus = .trialing
@@ -597,6 +614,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testProgress_LoggedIn() async throws {
     var didUpdate = false
 
@@ -616,6 +634,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testProgress_LoggedOut() async throws {
     var didUpdate = false
     await withDependencies {
@@ -634,6 +653,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testEpisodePage_WithEpisodeProgress() async throws {
     await withDependencies {
       $0.database.fetchEpisodeProgress = { _, _ in
@@ -657,6 +677,7 @@ class EpisodePageTests: TestCase {
     }
   }
 
+  @MainActor
   func testTranscriptTypes() async {
     let episode = Episode(
       blurb: """

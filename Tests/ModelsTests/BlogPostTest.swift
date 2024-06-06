@@ -3,8 +3,8 @@ import ModelsTestSupport
 import PointFreeTestSupport
 import XCTest
 
-@MainActor
 final class BlogPostTests: TestCase {
+  @MainActor
   func testSlug() async throws {
     var post = BlogPost.testValue()[0]
     post.id = 42

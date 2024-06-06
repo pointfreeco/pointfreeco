@@ -16,7 +16,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class BlogTests: TestCase {
   @Dependency(\.blogPosts) var blogPosts
 
@@ -25,6 +24,7 @@ class BlogTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testBlogIndex() async throws {
     let conn = connection(from: request(to: .blog()))
 
@@ -43,6 +43,7 @@ class BlogTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testBlogIndex_WithLotsOfPosts() async throws {
     var shortMock = BlogPost.testValue()[0]
     shortMock.contentBlocks = [shortMock.contentBlocks[1]]
@@ -78,6 +79,7 @@ class BlogTests: TestCase {
     }
   }
 
+  @MainActor
   func testBlogShow() async throws {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
@@ -97,6 +99,7 @@ class BlogTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testBlogShow_Unauthed() async throws {
     let slug = self.blogPosts().first!.slug
     let conn = connection(from: request(to: .blog(.show(slug: slug))))
@@ -104,11 +107,13 @@ class BlogTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testBlogAtomFeed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testBlogAtomFeed_Unauthed() async throws {
     let conn = connection(from: request(to: .blog(.feed)))
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)

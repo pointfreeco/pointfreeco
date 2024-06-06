@@ -7,8 +7,8 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-@MainActor
 class HtmlCssInlinerTests: TestCase {
+  @MainActor
   func testHtmlCssInliner() async throws {
     let stylesheet1: Stylesheet =
       body % fontSize(.px(16))

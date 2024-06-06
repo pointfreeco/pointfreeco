@@ -11,6 +11,7 @@ final class SessionTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testEncodable() async throws {
     var session: Session
     let encoder = JSONEncoder()
@@ -58,6 +59,7 @@ final class SessionTests: TestCase {
     }
   }
 
+  @MainActor
   func testDecodable() async throws {
     XCTAssertEqual(
       Session(flash: nil, user: nil),

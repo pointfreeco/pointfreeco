@@ -11,7 +11,6 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class StyleguideTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
@@ -19,16 +18,19 @@ class StyleguideTests: TestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testStyleguide() async throws {
     await assertSnapshot(matching: styleguide, as: .css, named: "pretty")
     await assertSnapshot(matching: styleguide, as: .css(.compact), named: "mini")
   }
 
+  @MainActor
   func testPointFreeStyles() async throws {
     await assertSnapshot(matching: pointFreeBaseStyles, as: .css, named: "pretty")
     await assertSnapshot(matching: pointFreeBaseStyles, as: .css(.compact), named: "mini")
   }
 
+  @MainActor
   func testGitHubLink_Black() async throws {
     let doc: Node = [
       .doctype,
@@ -57,6 +59,7 @@ class StyleguideTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testGitHubLink_White() async throws {
     let doc: Node = [
       .doctype,

@@ -15,13 +15,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class PricingLandingIntegrationTests: LiveDatabaseTestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testLanding_LoggedIn_InactiveSubscriber() async throws {
     var user = User.mock
     user.subscriptionId = nil
@@ -49,13 +49,13 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 class PricingLandingTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testLanding_LoggedIn_ActiveSubscriber() async throws {
     await withDependencies {
       $0.database.fetchUserById = { _ in .mock }
@@ -80,6 +80,7 @@ class PricingLandingTests: TestCase {
     }
   }
 
+  @MainActor
   func testLanding_LoggedOut() async throws {
     let conn = connection(from: request(to: .pricingLanding, session: .loggedOut))
     let result = await siteMiddleware(conn)

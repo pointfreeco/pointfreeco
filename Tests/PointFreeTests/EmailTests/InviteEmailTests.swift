@@ -12,13 +12,13 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class EmailInviteTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.record=true
   }
 
+  @MainActor
   func testEmailInvite() async throws {
     let doc = teamInviteEmailView((.mock, .mock))
 
@@ -37,6 +37,7 @@ class EmailInviteTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testInviteAcceptance() async throws {
     let doc = inviteeAcceptedEmailView((.mock, .mock))
 

@@ -109,12 +109,11 @@ uninstall-colortheme:
 
 test-oss: db
 	@$(SWIFT) test \
-		--enable-test-discovery \
-		-Xswiftc -D -Xswiftc OSS
+		--enable-test-discovery
 
 test-linux:
 	docker-compose build && docker-compose run \
-		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
+		--entrypoint "swift test --enable-test-discovery --skip-build" web
 
 linux-start:
 	docker compose up --build

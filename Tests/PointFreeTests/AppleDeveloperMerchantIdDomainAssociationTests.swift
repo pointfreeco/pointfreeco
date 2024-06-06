@@ -7,8 +7,8 @@ import XCTest
 
 @testable import PointFree
 
-@MainActor
 final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
+  @MainActor
   func testAssociationFile() async throws {
     let conn = await siteMiddleware(
       connection(from: request(to: .appleDeveloperMerchantIdDomainAssociation))

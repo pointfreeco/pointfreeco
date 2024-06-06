@@ -8,10 +8,9 @@ import XCTest
 @testable import HttpPipeline
 @testable import Views
 
-@MainActor
 class MetaLayoutTests: TestCase {
+  @MainActor
   func testMetaTagsWithStyleTag() async throws {
-
     func view(_: Prelude.Unit) -> Node {
       return [
         .doctype,

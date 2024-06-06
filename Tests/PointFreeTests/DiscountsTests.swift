@@ -14,13 +14,13 @@ import XCTest
   import FoundationNetworking
 #endif
 
-@MainActor
 class DiscountsTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
   }
 
+  @MainActor
   func testDiscounts_LoggedOut() async throws {
     await assertSnapshot(
       matching: await siteMiddleware(
@@ -44,6 +44,7 @@ class DiscountsTests: TestCase {
     #endif
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_PercentOff_Forever() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .forever,
@@ -81,6 +82,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_5DollarsOff_Forever() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .forever,
@@ -104,6 +106,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_PercentOff_Repeating() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .repeating(months: 12),
@@ -127,6 +130,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_5DollarsOff_Repeating() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .repeating(months: 12),
@@ -150,6 +154,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_PercentOff_Once() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .once,
@@ -173,6 +178,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_LoggedIn_5DollarsOff_Once() async throws {
     let fiftyPercentOffForever = Coupon(
       duration: .once,
@@ -196,6 +202,7 @@ class DiscountsTests: TestCase {
     }
   }
 
+  @MainActor
   func testDiscounts_UsingRegionalCouponId() async throws {
     @Dependency(\.envVars.regionalDiscountCouponId) var regionalDiscountCouponId: Coupon.ID
 

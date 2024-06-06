@@ -14,7 +14,6 @@ import XCTest
 @testable import PointFree
 @testable import Stripe
 
-@MainActor
 class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -23,6 +22,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testUpdateNameAndEmail() async throws {
     var user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -61,6 +61,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
     #endif
   }
 
+  @MainActor
   func testUpdateEmailSettings() async throws {
     let user = try await self.database.registerUser(
       withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
@@ -98,13 +99,13 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 class UpdateProfileTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording = true
   }
 
+  @MainActor
   func testUpdateExtraInvoiceInfo() async throws {
     var updatedCustomerWithExtraInvoiceInfo: String!
 

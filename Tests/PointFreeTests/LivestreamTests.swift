@@ -20,8 +20,8 @@ import XCTest
   import WebKit
 #endif
 
-@MainActor
 class LivestreamTests: TestCase {
+  @MainActor
   func testCurrent() async {
     await withDependencies {
       $0.database.fetchLivestreams = {
@@ -55,6 +55,7 @@ class LivestreamTests: TestCase {
     }
   }
 
+  @MainActor
   func testPastLivestream() async {
     await withDependencies {
       $0.database.fetchClipByVimeoVideoID = { id in
@@ -99,6 +100,7 @@ class LivestreamTests: TestCase {
     }
   }
 
+  @MainActor
   func testBanner() async {
     await withDependencies {
       $0.database.fetchLivestreams = {

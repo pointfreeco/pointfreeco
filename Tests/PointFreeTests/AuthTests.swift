@@ -11,7 +11,6 @@ import XCTest
 @testable import GitHub
 @testable import PointFree
 
-@MainActor
 class AuthIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -20,6 +19,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     //SnapshotTesting.record = true
   }
 
+  @MainActor
   func testRegister() async throws {
     let now = Date.mock
 
@@ -51,6 +51,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testRegisterRecentAccount() async throws {
     let now = Date.mock
 
@@ -82,6 +83,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     }
   }
 
+  @MainActor
   func testAuth() async throws {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
@@ -89,6 +91,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testLoginWithRedirect() async throws {
     @Dependency(\.siteRouter) var siteRouter
 
@@ -100,7 +103,6 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-@MainActor
 class AuthTests: TestCase {
 
   override func setUp() async throws {
@@ -108,6 +110,7 @@ class AuthTests: TestCase {
     //SnapshotTesting.record = true
   }
 
+  @MainActor
   func testAuth_WithFetchAuthTokenFailure() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in throw unit }
@@ -118,6 +121,7 @@ class AuthTests: TestCase {
     }
   }
 
+  @MainActor
   func testAuth_WithFetchAuthTokenBadVerificationCode() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in
@@ -130,6 +134,7 @@ class AuthTests: TestCase {
     }
   }
 
+  @MainActor
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in
@@ -146,6 +151,7 @@ class AuthTests: TestCase {
     }
   }
 
+  @MainActor
   func testAuth_WithFetchUserFailure() async throws {
     await withDependencies {
       $0.gitHub.fetchUser = { _ in throw unit }
@@ -156,6 +162,7 @@ class AuthTests: TestCase {
     }
   }
 
+  @MainActor
   func testAuth_WithRegisterUserFailure() async throws {
     await withDependencies {
       $0.database.fetchUserByGitHub = { _ in throw unit }
@@ -169,6 +176,7 @@ class AuthTests: TestCase {
     }
   }
 
+  @MainActor
   func testLogin() async throws {
     let login = request(to: .login(redirect: nil))
     let conn = connection(from: login)
@@ -176,6 +184,7 @@ class AuthTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testLogin_AlreadyLoggedIn() async throws {
     let login = request(to: .login(redirect: nil), session: .loggedIn)
     let conn = connection(from: login)
@@ -183,18 +192,21 @@ class AuthTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testLogout() async throws {
     let conn = connection(from: request(to: .logout))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testHome_LoggedOut() async throws {
     let conn = connection(from: request(to: .home, session: .loggedOut))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
   func testHome_LoggedIn() async throws {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
