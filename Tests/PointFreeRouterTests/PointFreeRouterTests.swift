@@ -198,7 +198,7 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
-  func testCollectionEpisodeProgress() throws {
+  func testCollectionEpisodeProgress() async throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!
     )
