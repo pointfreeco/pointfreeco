@@ -157,10 +157,7 @@ class EnterpriseTests: TestCase {
 
     await withDependencies {
       $0.database = .mock
-      $0.database.fetchUserById = { id in
-        if id == loggedInUser.id { return loggedInUser }
-        throw unit
-      }
+      $0.database.fetchUserById = { _ in loggedInUser }
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
