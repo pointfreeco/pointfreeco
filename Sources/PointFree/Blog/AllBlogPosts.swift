@@ -157,6 +157,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0140_ModernUIKit,
   post0141_TCAFAQ,
   post0142_WWDCSale,
-  post0143_WWDCLivestream,
-  post0144_WWDCSale,
+//  post0143_WWDCLivestream,
+//  post0144_WWDCSale,
 ]
