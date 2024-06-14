@@ -199,7 +199,7 @@ to a cross-platform application.
 This is the topic of our newest series of episodes, [Modern UIKit][modern-uikit-collection]. The
 tools are largely powered by Swift's amazing Observation framework, but there is a lot of additional
 work that must be done to make it all work correctly. Follow along in the series to learn about 
-advanced Swift topics (existentials, sendability, …), witness a masterclass in API design and 
+advanced Swift topics (existentials, sendability, …), receive a masterclass in API design and 
 ergnomics, watch us build SwiftUI's `@Binding` _from scratch_, and a lot more. 
 
 [modern-uikit-collection]: /collections/uikit
