@@ -13,5 +13,5 @@ public let post0145_UIKitNavBeta = BlogPost(
   hideFromSlackRSS: false,
   id: 145,
   publishedAt: yearMonthDayFormatter.date(from: "2024-06-18")!,
-  title: "Beta preview: UIKitNavigation"
+  title: "A preview of our upcoming UIKitNavigation library"
 )
