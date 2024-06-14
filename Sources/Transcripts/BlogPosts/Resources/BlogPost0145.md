@@ -212,9 +212,3 @@ feedback by [opening a GitHub discussion][swift-nav-discussions].
 
 [beta-gh-discussion]: TODO
 [swift-nav-discussions]: https://github.com/pointfreeco/swiftui-navigation/discussions
-
-all the improvements listed above still do not tell the whole store of how
-Swift 5.9's Observation framework has revolutionized the Composable Architecture. Be sure to
-follow along in our [new series of episodes][observable-arch-eps] to see how we accomplished all of
-this (and more), and give the [beta][tca-obs-beta-discussion] a spin and let us know if you run into
-any issues!
