@@ -14,7 +14,7 @@ UIKitNavigation is a new library that provides powerful state management and nav
 UIKit that are heavily inspired by the tools we have in SwiftUI. The library currently lives in
 our [SwiftUINavigation][swiftu-nav-repo] package, but soon that package will be generalized and
 renamed to simply SwiftNavigation, and it will house a variety of tools for all of Apple's 
-platforms (SwiftUI, UIKit, AppKit, …), as well as tools that can be used cross-platform. 
+platforms (SwiftUI, UIKit, AppKit, _etc._), as well as tools that can be used cross-platform. 
 
 [swiftu-nav-repo]: https://github.com/pointfreeco/swiftui-navigation
 
@@ -27,10 +27,10 @@ The tools from the library broadly fall into 3 main categories:
   SwiftUI makes use of the `@Observable` macro to allow one to encapsulate the logic and behavior of 
   a feature in a reference type, and the view will minimally observe changes to the model depending
   on what fields it accesses. It was clear from the beginning that Swift's observation tools were
-  designed with primarily SwiftUI in mind, but that doesn't mean we can't' make use of those tools
-  in UIKit.
+  designed with primarily SwiftUI in mind, but that doesn't mean we can't make use of those tools in
+  UIKit.
   
-  The library provides a powerful state observation tools, aptly named [`observe`](todo). It allows 
+  The library provides a powerful state observation tool, aptly named [`observe`](todo). It allows 
   you to use the `@Observable` macro to power UIKit features. For example, if you designed an 
   observable model like so:
   
@@ -68,7 +68,7 @@ The tools from the library broadly fall into 3 main categories:
  
   We are omitting the creation and layout of the UI components because it is up to you how you want 
   to do that. You can either do it in code, or with a storyboard, or by using a 3rd party library. 
-  But our library does not aim to try to solve this problem, and instead let's UIKit be UIKit. 
+  But our library does not aim to try to solve this problem, and instead lets UIKit be UIKit. 
   
   The `observe` closure automatically observes changes to any field accessed, and when one of those
   fields is mutated the trailing closure will be invoked again, thus updating the UI with the 
@@ -80,7 +80,7 @@ The tools from the library broadly fall into 3 main categories:
 
 * ### 2-way bindings
 
-  Bindings in SwiftUI are a powerful tool for allowing two independent features share a bit of 
+  Bindings in SwiftUI are a powerful tool for allowing two independent features to share a bit of 
   state. They are so powerful that it is easy to take for granted these days, and to forget how
   difficult UI controls used to be in UIKit.
   
@@ -102,7 +102,7 @@ The tools from the library broadly fall into 3 main categories:
   that doesn't mean it wasn't possible to achieve in UIKit.
   
   To begin, you annotate your model with the [`@UIBindable`] property wrapper, which is like
-  `@Bindable` from SwiftUI but made to work for UIKit:
+  `@Bindable` from SwiftUI but made to work with UIKit:
   
   ```swift
   @UIBindable var model: FeatureModel
@@ -117,7 +117,7 @@ The tools from the library broadly fall into 3 main categories:
   That single line is packing a punch. Any changes made to the text field are played back to 
   `model.name`, and any changes to the model will be automatically played back to the text field.
   That makes the model the "source of truth", and you never have to worry about the UI getting 
-  out of sync with th model.
+  out of sync with the model.
 
 * ### Navigation
 
@@ -156,9 +156,9 @@ The tools from the library broadly fall into 3 main categories:
   `DetailViewController` to be created, and the drill-down will occur. Also, when `detail` 
   becomes `nil` the detail controller will automatically be popped off the stack.
   
-  _Further_, if the user manually dismisses the detail, e.g. by tapping the "Back" button or swiping
-  from the left edge of the screen, then `nil` will automatically be written to the `$model.detail`
-  binding. That guarantees that the model and UI always state in sync.
+  _Further_, if the user manually dismisses the detail, _e.g._ by tapping the "Back" button or
+  swiping from the left edge of the screen, then `nil` will automatically be written to the
+  `$model.detail` binding. That guarantees that the model and UI always state in sync.
   
   And if all of that wasn't amazing enough, we also have support for a state-driven
   `UINavigationController`, and it's called `NavigationStackController`. It allows you to control
@@ -181,11 +181,11 @@ And let's not miss the forest from the trees.
 While the library we have developed primarily deals with UIKit, there is something a lot more 
 interesting happening behind the scenes. The foundational tools built by the library, such as 
 `observe`, `@UIBinding` and `@UIBindable`, are all built in 100% pure Swift. That means these tools
-compile for Linux, Windows, WASM, and more, and so theoretically they could be used to build
+compile for Linux, Windows, Wasm, and more, and so theoretically they could be used to build
 state management and navigation tools for non-Apple platforms.
 
 It is possible for you to implement the logic and behavior of your features using pure Swift code
-and Swift's Observation framework, without a care in the world for how the feature will actually
+and Swift's Observation framework without a care in the world for how the feature will actually
 be displayed. This has the added benefit of allowing you to fully concentrate on your business
 domain without being sidetracked by view-level concerns.
 
@@ -200,7 +200,7 @@ This is the topic of our newest series of episodes, [Modern UIKit][modern-uikit-
 tools are largely powered by Swift's amazing Observation framework, but there is a lot of additional
 work that must be done to make it all work correctly. Follow along in the series to learn about 
 advanced Swift topics (existentials, sendability, …), receive a masterclass in API design and 
-ergnomics, watch us build SwiftUI's `@Binding` _from scratch_, and a lot more. 
+ergonomics, watch us build SwiftUI's `@Binding` _from scratch_, and a lot more. 
 
 [modern-uikit-collection]: /collections/uikit
 
