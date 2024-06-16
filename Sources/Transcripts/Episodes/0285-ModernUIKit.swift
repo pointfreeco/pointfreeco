@@ -8,7 +8,7 @@ extension Episode {
     codeSampleDirectory: "0285-modern-uikit-pt5",
     exercises: _exercises,
     id: 285,
-    length: 0 * 60 + 0, // TODO
+    length: 0 * 60 + 0,  // TODO
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2024-07-01")!,
     references: [
@@ -22,13 +22,13 @@ extension Episode {
     subtitle: "Unified Navigation",
     title: "Modern UIKit",
     trailerVideo: .init(
-      bytesLength: 0, // TODO
+      bytesLength: 0,  // TODO
       downloadUrls: .s3(
         hd1080: "0285-trailer-1080p-TODO",
         hd720: "0285-trailer-720p-TODO",
         sd540: "0285-trailer-540p-TODO"
       ),
-      vimeoId: 0 // TODO
+      vimeoId: 0  // TODO
     )
   )
 }
