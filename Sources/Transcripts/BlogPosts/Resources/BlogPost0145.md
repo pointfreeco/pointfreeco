@@ -63,6 +63,7 @@ The tools from the library broadly fall into 3 main categories:
       activityIndicator.isHidden = !model.isLoadingFact
       factLabel.isHidden = model.fact == nil
       factLabel.text = model.fact
+    }
   }
   ```
  
