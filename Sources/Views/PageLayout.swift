@@ -188,7 +188,7 @@ struct Banner {
   let startAt: Date
 
   static let wwdc24 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2024-06-18")!,
+    endAt: yearMonthDayFormatter.date(from: "2024-06-19")!,
     markdownContent: ###"""
       **🎉 WWDC '24 Sale!** Save 25% when you [subscribe today](/discounts/dubdub24).
       """###,

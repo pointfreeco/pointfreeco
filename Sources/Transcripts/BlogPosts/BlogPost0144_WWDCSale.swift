@@ -10,7 +10,7 @@ public let post0144_WWDCSale = BlogPost(
     """,
   contentBlocks: loadBlogTranscriptBlocks(forSequence: 144),
   coverImage: nil,
-  hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-06-18")!),
+  hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-06-19")!),
   hideFromSlackRSS: true,
   id: 144,
   publishedAt: yearMonthDayFormatter.date(from: "2024-06-14")!,
