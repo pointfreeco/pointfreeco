@@ -20,6 +20,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep281_modernUIKit),
           .init(episode: .ep282_modernUIKit),
+          .init(episode: .ep283_modernUIKit),
         ],
         isFinished: false,
         isHidden: false,

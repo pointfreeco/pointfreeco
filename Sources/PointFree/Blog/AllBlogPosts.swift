@@ -159,4 +159,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0142_WWDCSale,
   post0143_WWDCSale,
   post0144_WWDCSale,
+  post0145_UIKitNavBeta,
 ]
