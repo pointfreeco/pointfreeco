@@ -4,7 +4,7 @@ a surprising amount of interested from the community, and now we are ready to sh
 tools so that everyone can give them a spin and share their feedback.
 
 [peek-uikit-blog]: /blog/posts/140-this-is-what-peak-uikit-looks-like
-[modern-uikit-collection]: https://www.pointfree.co/collections/uikit
+[modern-uikit-collection]: /collections/uikit
 
 [[Go to the beta on GitHub]](/TODO)
 
@@ -60,9 +60,7 @@ The tools from the library broadly fall into 3 main categories:
       countLabel.text = "\(model.count)"
       activityIndicator.isHidden = !model.isLoadingFact
       factLabel.isHidden = model.fact == nil
-      if let fact = model.fact {
-        factLabel.text = fact
-      }
+      factLabel.text = model.fact
   }
   ```
  
@@ -101,7 +99,7 @@ The tools from the library broadly fall into 3 main categories:
   number of bugs and spaghetti code in UIKit apps. And so SwiftUI greatly improved upon this, but
   that doesn't mean it wasn't possible to achieve in UIKit.
   
-  To begin, you annotate your model with the [`@UIBindable`] property wrapper, which is like
+  To begin, you annotate your model with the [`@UIBindable`](todo) property wrapper, which is like
   `@Bindable` from SwiftUI but made to work with UIKit:
   
   ```swift
