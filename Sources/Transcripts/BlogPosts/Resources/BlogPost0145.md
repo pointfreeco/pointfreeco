@@ -30,8 +30,8 @@ The tools from the library broadly fall into 3 main categories:
   designed with primarily SwiftUI in mind, but that doesn't mean we can't make use of those tools in
   UIKit.
   
-  The library provides a powerful state observation tool, aptly named [`observe`][observe-gh-code]. \
-  It allows you to use the `@Observable` macro to power UIKit features. For example, if you \
+  The library provides a powerful state observation tool, aptly named [`observe`][observe-gh-code]. 
+  It allows you to use the `@Observable` macro to power UIKit features. For example, if you
   designed an observable model like so:
   
   [observe-gh-code]: https://github.com/pointfreeco/swiftui-navigation/blob/e9b13608a4f8ef1f094586ac77103531920862ab/Sources/UIKitNavigation/Observe.swift#L5-L111
@@ -101,7 +101,7 @@ The tools from the library broadly fall into 3 main categories:
   number of bugs and spaghetti code in UIKit apps. And so SwiftUI greatly improved upon this, but
   that doesn't mean it wasn't possible to achieve in UIKit.
   
-  To begin, you annotate your model with the [`@UIBindable`][uibindable-gh-code] property wrapper, \
+  To begin, you annotate your model with the [`@UIBindable`][uibindable-gh-code] property wrapper, 
   which is like `@Bindable` from SwiftUI but made to work with UIKit:
   
   [uibindable-gh-code]: https://github.com/pointfreeco/swiftui-navigation/blob/e9b13608a4f8ef1f094586ac77103531920862ab/Sources/SwiftNavigation/UIBindable.swift#L7-L47
@@ -145,7 +145,7 @@ The tools from the library broadly fall into 3 main categories:
   }
   ```
   
-  And then in the view you can use [`navigationDestination(item:)`][nav-destination-gh-code] in \
+  And then in the view you can use [`navigationDestination(item:)`][nav-destination-gh-code] in 
   order to drive the navigation from the optionality of `detail`:
   
   [nav-destination-gh-code]: https://github.com/pointfreeco/swiftui-navigation/blob/01d03e2a366a1323acfd912a15909f08b6558d3e/Sources/UIKitNavigation/Navigation/Presentation.swift#L310-L347
