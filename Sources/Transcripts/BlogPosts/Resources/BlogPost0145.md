@@ -6,7 +6,7 @@ tools so that everyone can give them a spin and share their feedback.
 [peek-uikit-blog]: /blog/posts/140-this-is-what-peak-uikit-looks-like
 [modern-uikit-collection]: /collections/uikit
 
-[[Go to the beta on GitHub]](/TODO)
+[[Go to the beta on GitHub]](https://github.com/pointfreeco/swiftui-navigation/discussions/168)
 
 ## What is UIKitNavigation?
 
@@ -214,5 +214,5 @@ And unbelievably, we have barely scratched the surface of what the library provi
 store for the future. Be sure to [check out the beta][beta-gh-discussion] today, and please give
 feedback by [opening a GitHub discussion][swift-nav-discussions].
 
-[beta-gh-discussion]: TODO
+[beta-gh-discussion]: https://github.com/pointfreeco/swiftui-navigation/discussions/168
 [swift-nav-discussions]: https://github.com/pointfreeco/swiftui-navigation/discussions
