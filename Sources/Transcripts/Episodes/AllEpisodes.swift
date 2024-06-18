@@ -285,5 +285,8 @@ extension Episode {
     .ep280_sharedStateInPractice,
     .ep281_modernUIKit,
     .ep282_modernUIKit,
+    .ep283_modernUIKit,
+    .ep284_modernUIKit,
+    .ep285_modernUIKit,
   ]
 }
