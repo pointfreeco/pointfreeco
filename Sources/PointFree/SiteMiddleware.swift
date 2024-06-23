@@ -249,6 +249,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await homeMiddleware(conn.map(const(())))
       .performAsync()
 
+  case .homeV2:
+    return await homeV2Middleware(conn.map(const(())))
+
   case let .invite(.addTeammate(email)):
     return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))
       .performAsync()

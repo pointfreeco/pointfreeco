@@ -324,7 +324,7 @@ private let favicons: ChildOf<Tag.Head> = .fragment([
   ),
 ])
 
-private var prismJsHead: ChildOf<Tag.Head> {
+public var prismJsHead: ChildOf<Tag.Head> {
   let plugins: ChildOf<Tag.Head> = .fragment(
     ["swift", "clike", "css", "diff", "javascript", "ruby"]
       .map {

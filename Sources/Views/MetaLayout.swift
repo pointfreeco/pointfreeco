@@ -113,6 +113,27 @@ public struct Metadata<A> {
   }
 }
 
+extension Metadata<Void> {
+  public init(
+    description: String?,
+    image: String?,
+    title: String?,
+    twitterCard: TwitterCard?,
+    twitterSite: String?,
+    type: OpenGraphType?,
+    url: String?
+  ) {
+    self.description = description
+    self.image = image
+    self.rest = ()
+    self.title = title
+    self.twitterCard = twitterCard
+    self.twitterSite = twitterSite
+    self.type = type
+    self.url = url
+  }
+}
+
 private func inserted<A>(meta: Metadata<A>, intoHeadOf node: Node) -> Node {
 
   switch node {

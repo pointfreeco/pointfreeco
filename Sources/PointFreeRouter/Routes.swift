@@ -32,6 +32,7 @@ public enum SiteRoute: Equatable {
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
   case home
+  case homeV2
   case invite(Invite)
   case live(Live)
   case login(redirect: String?)
@@ -415,6 +416,9 @@ struct SiteRouter: ParserPrinter {
   var body: some Router<SiteRoute> {
     OneOf {
       Route(.case(SiteRoute.home))
+      Route(.case(SiteRoute.homeV2)) {
+        Path { "home" }
+      }
 
       Route(.case(SiteRoute.about)) {
         Path { "about" }
