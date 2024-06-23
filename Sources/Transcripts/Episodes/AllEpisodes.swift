@@ -288,5 +288,8 @@ extension Episode {
     .ep283_modernUIKit,
     .ep284_modernUIKit,
     .ep285_modernUIKit,
+    .ep286_modernUIKit,
+    .ep287_modernUIKit,
+    .ep288_modernUIKit,
   ]
 }
