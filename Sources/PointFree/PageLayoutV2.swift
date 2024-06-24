@@ -30,11 +30,18 @@ extension Conn where Step == HeadersOpen {
 //    >>> metaLayout(simplePageLayout(view))
 //    >>> addPlausibleAnalytics
 
-    return
-    self
+    return self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: renderHtml(pageLayoutV2(view: view, layoutData: layoutData, metadata: metadata)),
+        body: renderHtml(
+          pageLayoutV2(
+            view: view,
+            layoutData: layoutData,
+            metadata: metadata,
+            cssConfig: .pretty, // TODO
+            emergencyMode: false // TODO
+          )
+        ),
         contentType: .html
       )
   }

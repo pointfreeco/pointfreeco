@@ -123,7 +123,7 @@ public func simplePageLayout<A>(
           announcementBanner(.wwdc24),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
-          navView(layoutData),
+          navView(style: layoutData.style),
           contentView(layoutData.data),
           layoutData.style.isMinimal
             ? []
@@ -137,7 +137,7 @@ public func simplePageLayout<A>(
   }
 }
 
-private var liveStreamBanner: Node {
+var liveStreamBanner: Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.livestreams) var livestreams
 
@@ -213,7 +213,7 @@ struct Banner {
   )
 }
 
-private func announcementBanner(_ banner: Banner? = nil) -> Node {
+func announcementBanner(_ banner: Banner? = nil) -> Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
@@ -273,8 +273,8 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
   )
 }
 
-func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
-  switch data.style {
+func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
+  switch style {
   case let .base(.some(.mountains(style))):
     return mountainNavView(mountainsStyle: style)
 
@@ -286,7 +286,7 @@ func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
   }
 }
 
-private let favicons: ChildOf<Tag.Head> = .fragment([
+let favicons: ChildOf<Tag.Head> = .fragment([
   .link(
     attributes: [
       .rel(.init(rawValue: "apple-touch-icon")),

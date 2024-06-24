@@ -13,14 +13,14 @@ func homeV2Middleware(
       view: homeV2View(),
       layoutData: SimplePageLayoutData(
         data: (),
-        description: "Testing",
+        description: "Point-Free 2.0",
         extraHead: [],
         extraStyles: .empty,
         image: "",
         isGhosting: false,
         openGraphType: .website,
-        style: .minimal,
-        title: "Testing",
+        style: .base(.minimal(.dark)),
+        title: "Point-Free 2.0",
         twitterCard: .summaryLargeImage,
         usePrismJs: false
       )
