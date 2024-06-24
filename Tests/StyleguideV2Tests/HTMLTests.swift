@@ -44,6 +44,8 @@ struct HTMLTests {
       }
     }
 
+    print(type(of: MyPage().body))
+
     print(MyPage().render())
   }
 }

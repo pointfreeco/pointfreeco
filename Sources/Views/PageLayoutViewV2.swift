@@ -81,6 +81,14 @@ public func pageLayoutV2(
   ]
 }
 
+struct Page: Doc {
+  body: some … {
+    Document {
+      
+    }
+  }
+}
+
 public func navViewV2() -> Node {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
@@ -222,6 +230,7 @@ struct TrailingNavItems: NodeView {
       Class.grid.end(.mobile),
       Class.pf.type.body.small
     ])
+    .attribute("whatever", true ? "something": nil)
   }
 }
 

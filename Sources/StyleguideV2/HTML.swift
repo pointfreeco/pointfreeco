@@ -138,9 +138,13 @@ public func input(@NodeBuilder _ children: () -> Node) -> Node { Node("input", c
 extension Node {
   public func attribute(
     _ attributeName: String,
-    _ value: String,
-    _ separator: String = ";"
+    _ value: String?,
+    _ separator: String? = nil
   ) -> Node {
+    // TODO: ok to do no-op for nil value?
+    guard let value
+    else { return self }
+
     guard
       case .element(let tagName, var attributes, let children) = self
     else {
@@ -156,11 +160,9 @@ extension Node {
       return .element(tagName, attributes, children)
     }
 
-    if attributes[index].value != nil {
+    if attributes[index].value != nil, let separator {
       attributes[index].value! += separator
       attributes[index].value! += value
-    } else {
-      attributes[index].value = value
     }
 
     return .element(tagName, attributes, children)
