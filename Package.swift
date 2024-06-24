@@ -32,6 +32,7 @@ var package = Package(
     .library(name: "Stripe", targets: ["Stripe"]),
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
+    .library(name: "StyleguideV2", targets: ["StyleguideV2"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
@@ -462,6 +463,21 @@ var package = Package(
     ),
 
     .target(
+      name: "StyleguideV2",
+      dependencies: [
+        "Styleguide",
+        .product(name: "Html", package: "swift-html"),
+      ]
+    ),
+
+    .testTarget(
+      name: "StyleguideV2Tests",
+      dependencies: [
+        "StyleguideV2"
+      ]
+    ),
+
+    .target(
       name: "Syndication",
       dependencies: [
         "Models",
@@ -506,6 +522,7 @@ var package = Package(
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
+        "StyleguideV2",
         "Transcripts",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),

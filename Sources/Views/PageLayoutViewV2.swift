@@ -7,6 +7,7 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
+import StyleguideV2
 
 public func pageLayoutV2(
   view: Node,
@@ -114,7 +115,7 @@ public func navViewV2() -> Node {
               Class.hide(.mobile),
             ])
           ],
-          centeredNavItemsView()
+          centeredNavItemsViewBuilder()
         ),
         .gridColumn(
           sizes: [.desktop: 2],
@@ -257,40 +258,45 @@ func trailingNavItemsView() -> Node {
   }
 }
 
-func centeredNavItemsView() -> Node {
+@NodeBuilder
+func centeredNavItemsViewBuilder() -> Node {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRouter) var siteRouter
 
-  return .ul(
-    attributes: [
-      .class([
-        Class.type.list.reset,
-        Class.grid.middle(.mobile),
-        Class.pf.type.body.small,
-      ])
-    ],
-    currentUser != nil
-      ? .li(attributes: [.class([centerListItemClasses])], episodesLinkView())
-      : [],
-    .li(
-      attributes: [.class([centerListItemClasses])],
-      collectionsLinkView()
-    ),
-    subscriberState.isNonSubscriber
-      ? .li(attributes: [.class([centerListItemClasses])], subscribeLinkView())
-      : [],
-    .li(
-      attributes: [.class([centerListItemClasses])],
-      blogLinkView()
-    ),
-    .li(attributes: [.class([centerListItemClasses])], giftLinkView())
-  )
+  ul {
+    if currentUser != nil {
+      navListItem("Episodes", route: .homeV2)
+    }
+    navListItem("Collections", route: .collections())
+    if subscriberState.isNonSubscriber {
+      navListItem("Pricing", route: .pricingLanding)
+    }
+    navListItem("Blog", route: .blog())
+    navListItem("Gifts", route: .gifts(.index))
+  }
+  .class([
+    Class.type.list.reset,
+    Class.grid.middle(.mobile),
+    Class.pf.type.body.small,
+  ])
 }
 
-private let centerListItemClasses =
-  Class.padding([.mobile: [.left: 3]])
-  | Class.display.inline
+@NodeBuilder
+func navListItem(_ title: String, route: SiteRoute) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  li {
+    a {
+      Node.text(title)
+    }
+    .attribute("href", siteRouter.path(for: route))
+    .class([Class.pf.colors.link.gray650])
+  }
+  .class([
+    Class.padding([.mobile: [.left: 3]]),
+    Class.display.inline
+  ])
+}
 
 private let trailingNavListItemClasses =
   Class.padding([.mobile: [.left: 2]])

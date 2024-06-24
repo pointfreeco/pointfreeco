@@ -12,7 +12,6 @@ func homeV2Middleware(
     .respondV2(
       view: homeV2View(),
       layoutData: SimplePageLayoutData(
-        data: (),
         description: "Point-Free 2.0",
         extraHead: [],
         extraStyles: .empty,

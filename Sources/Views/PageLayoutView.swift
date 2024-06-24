@@ -36,7 +36,7 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    data: A,
+    data: A = (),
     description: String? =
       "Point-Free is a video series exploring advanced programming topics in Swift.",
     extraHead: ChildOf<Tag.Head> = [],
