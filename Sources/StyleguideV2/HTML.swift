@@ -2,40 +2,114 @@ import Css
 import FunctionalCss
 import Html
 
+public protocol NodeView {
+  @NodeBuilder
+  var body: Node { get }
+}
+
+extension NodeView {
+  public func render() -> String {
+    Html.render(body)
+  }
+}
+
+extension Node: NodeView {
+  public var body: Node { self }
+}
+
+public struct Tuple<A: NodeView, B: NodeView>: NodeView {
+  let a: A
+  let b: B
+  public var body: Node {
+    Node.fragment([a.body, b.body])
+  }
+}
+extension Optional: NodeView where Wrapped: NodeView {
+  public var body: Node {
+    if let wrapped = self {
+      return wrapped.body
+    } else {
+      return []
+    }
+  }
+}
+public enum ConditionalNode<A: NodeView, B: NodeView>: NodeView {
+  case first(A)
+  case second(B)
+  public var body: Node {
+    switch self {
+    case .first(let view):
+      return view.body
+    case .second(let view):
+      return view.body
+    }
+  }
+}
+
+public struct ArrayNode<A: NodeView>: NodeView {
+  let components: [A]
+  public var body: Node {
+    Node.fragment(components.map(\.body))
+  }
+}
+
+public struct TextNode: NodeView {
+  let text: String
+  init(_ text: String) {
+    self.text = text
+  }
+  public var body: Node {
+    Node.text(text)
+  }
+}
+
 @resultBuilder
 public enum NodeBuilder {
   public static func buildBlock() -> Node {
     []
   }
 
-  public static func buildBlock(_ components: Node...) -> Node {
-    .fragment(components)
+  public static func buildPartialBlock<N: NodeView>(first: N) -> N {
+    first
   }
 
-  public static func buildOptional(_ component: Node?) -> Node {
-    guard let component
-    else { return [] }
-    return component
+  public static func buildPartialBlock<A: NodeView, B: NodeView>(
+    accumulated: A,
+    next: B
+  ) -> Tuple<A, B> {
+    Tuple(a: accumulated, b: next)
   }
 
-  public static func buildEither(first component: Node) -> Node {
+  public static func buildOptional<A: NodeView>(_ component: A?) -> A? {
     component
   }
 
-  public static func buildEither(second component: Node) -> Node {
-    component
+  public static func buildEither<A: NodeView, B: NodeView>(first component: A) -> ConditionalNode<A, B> {
+    .first(component)
   }
 
-  public static func buildArray(_ components: [Node]) -> Node {
-    .fragment(components)
+  public static func buildEither<A: NodeView, B: NodeView>(second component: B) -> ConditionalNode<A, B> {
+    .second(component)
   }
 
-  public static func buildExpression(_ expression: Node) -> Node {
+  public static func buildArray<A: NodeView>(_ components: [A]) -> ArrayNode<A> {
+    ArrayNode(components: components)
+  }
+
+  public static func buildExpression<A: NodeView>(_ expression: A) -> A {
     expression
   }
 
-  public static func buildExpression(_ expression: String) -> Node {
-    .text(expression)
+  public static func buildExpression(_ expression: String) -> TextNode {
+    TextNode(expression)
+  }
+
+  public static func buildFinalResult(_ component: some NodeView) -> Node {
+    component.body
+  }
+
+  public static func buildFinalResult(_ component: Node) -> Node {
+    component
   }
 }
 
@@ -58,6 +132,8 @@ public func div(@NodeBuilder _ children: () -> Node) -> Node { Node("div", child
 public func a(@NodeBuilder _ children: () -> Node) -> Node { Node("a", children: children) }
 public func ul(@NodeBuilder _ children: () -> Node) -> Node { Node("ul", children: children) }
 public func li(@NodeBuilder _ children: () -> Node) -> Node { Node("li", children: children) }
+public func label(@NodeBuilder _ children: () -> Node) -> Node { Node("label", children: children) }
+public func input(@NodeBuilder _ children: () -> Node) -> Node { Node("input", children: children) }
 
 extension Node {
   public func attribute(
@@ -68,8 +144,10 @@ extension Node {
     guard
       case .element(let tagName, var attributes, let children) = self
     else {
-      // TODO: Runtime warn?
-      return self
+      guard case .fragment(let array) = self else {
+        return self
+      }
+      return .fragment(array.map { $0.attribute(attributeName, value, separator) })
     }
 
     guard let index = attributes.firstIndex(where: { name, _ in name == attributeName })
@@ -93,6 +171,10 @@ extension Node {
   }
 
   public func `class`(_ selectors: [CssSelector]) -> Node {
-    `class`(render(classes: selectors))
+    `class`(FunctionalCss.render(classes: selectors))
+  }
+
+  public func style(_ name: String, _ value: String) -> Node {
+    attribute("style", "\(name): \(value)")
   }
 }

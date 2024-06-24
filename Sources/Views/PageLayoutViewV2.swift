@@ -115,7 +115,7 @@ public func navViewV2() -> Node {
               Class.hide(.mobile),
             ])
           ],
-          centeredNavItemsViewBuilder()
+          CenteredNavItems().body
         ),
         .gridColumn(
           sizes: [.desktop: 2],
@@ -125,7 +125,7 @@ public func navViewV2() -> Node {
               Class.hide(.mobile)
             ])
           ],
-          trailingNavItemsView()
+          TrailingNavItems().body
         ),
         .gridColumn(
           sizes: [.mobile: 10],
@@ -135,247 +135,137 @@ public func navViewV2() -> Node {
               Class.hide(.desktop)
             ])
           ],
-          mobileMenuView()
+          MobileMenu().body
         )
       )
     )
   )
 }
 
-func mobileMenuView() -> Node {
-  func menuBar(index: Int) -> Node {
-    .div(
-      attributes: [
-        //menuBarClasses
-        .class([
-          Class.display.block,
-          Class.pf.colors.bg.white,
-          Class.position.absolute,
-          .class("menu-bar-\(index)")
-        ]),
-        .style(
-          //    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
-          height(.px(4))
-          <> width(.px(30))
-          <> borderRadius(all: .px(2))
-          <> content(Content.none)
-          <> margin(top: .px(Double(index) * 8))
-        )
-      ]
-    )
-  }
+struct MobileMenu: NodeView {
+  var body: Node {
+    div {
+      label {
+        for index in -1...1 {
+          div {}
+          .class([
+            Class.display.block,
+            Class.pf.colors.bg.white,
+            Class.position.absolute,
+            .class("menu-bar-\(index)")
+          ])
+          .style("width", "30px")
+          .style("height", "4px")
+          .style("border-radius", "2px")
+          .style("width", "30px")
+          .style("content", "")
+          .style("margin-top", "\(index * 8)px")
+          .style("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+        }
+      }
+      .attribute("for", "menu-checkbox")
+      .style("height", "100%")
+      .style("width", "30px")
+      .style("justify-content", "center")
+      .style("align-items", "center")
+      .class([
+        .class("menu-checkbox-container"),
+        Class.flex.flex,
+        Class.flex.column,
+        Class.cursor.pointer,
+      ])
 
-  return [
-    .div(
-      attributes: [
-        .class([
-          Class.grid.end(.mobile),
-        ])
-      ],
-      .label(
-        attributes: [
-          .class([			
-            .class("menu-checkbox-container"),
-            Class.flex.flex,
-            Class.flex.column,
-            Class.cursor.pointer,
-          ]),
-          .style(
-            height(.pct(100))
-            <> width(.px(30))
-            <> justify(content: .center)
-            <> align(items: .center)
-          ),
-          .for("menu-checkbox")
-        ],
-        menuBar(index: -1),
-        menuBar(index: 0),
-        menuBar(index: 1)
-      ),
-      .input(
-        attributes: [
-          .id("menu-checkbox"),
-          .type(.checkbox),
-          .class([Class.hide]),
-        ]
-      )
-    )
-  ]
+      input {}
+        .attribute("id", "menu-checkbox")
+        .attribute("type", "checkbox")
+        .class([Class.hide])
+    }
+    .class([
+      Class.grid.end(.mobile),
+    ])
+  }
 }
 
-func trailingNavItemsView() -> Node {
+struct TrailingNavItems: NodeView {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  let classes = [
-    Class.type.list.reset,
-    Class.grid.end(.mobile),
-    Class.pf.type.body.small
-  ]
-
-  if currentUser != nil {
-    return .ul(
-      attributes: [
-        .class(classes)
-      ],
-      .li(
-        attributes: [.class([trailingNavListItemClasses])],
-        .a(
-          attributes: [
-            .class([Class.pf.components.button(color: .purple, size: .small)]),
-            .href(siteRouter.path(for: .account(.index))),
-          ],
-          "Account"
-        )
-      )
-    )
-  } else {
-    return .ul(
-      attributes: [
-        .class(classes)
-      ],
-      .li(
-        attributes: [.class([trailingNavListItemClasses])],
-        .a(
-          attributes: [
-            .class([Class.pf.components.button(color: .purple, size: .small, style: .outline)]),
-            .href(siteRouter.path(for: .account(.index))),
-          ],
-          "Login"
-        )
-      ),
-      .li(
-        attributes: [.class([trailingNavListItemClasses])],
-        .a(
-          attributes: [
-            .class([Class.pf.components.button(color: .purple, size: .small)]),
-            .href(siteRouter.path(for: .account(.index))),
-          ],
-          "Sign up"
-        )
-      )
-    )
+  var body: Node {
+    ul {
+      Node {
+        if currentUser != nil {
+          li {
+            a { "Account" }
+              .attribute("href", siteRouter.path(for: .account(.index)))
+              .class([Class.pf.components.button(color: .purple, size: .small)])
+          }
+        } else {
+          li {
+            a { "Login" }
+              .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+              .class([Class.pf.components.button(color: .purple, size: .small, style: .outline)])
+          }
+          li {
+            a { "Sign up" }
+              .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+              .class([Class.pf.components.button(color: .purple, size: .small)])
+          }
+        }
+      }
+      .class([
+        Class.padding([.mobile: [.left: 2]]),
+        Class.display.inline
+      ])
+    }
+    .class([
+      Class.type.list.reset,
+      Class.grid.end(.mobile),
+      Class.pf.type.body.small
+    ])
   }
 }
 
-@NodeBuilder
-func centeredNavItemsViewBuilder() -> Node {
+struct CenteredNavItems: NodeView {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
 
-  ul {
-    if currentUser != nil {
-      navListItem("Episodes", route: .homeV2)
+  var body: Node {
+    ul {
+      if currentUser != nil {
+        NavListItem("Episodes", route: .homeV2)
+      }
+      NavListItem("Collections", route: .collections())
+      if subscriberState.isNonSubscriber {
+        NavListItem("Pricing", route: .pricingLanding)
+      }
+      NavListItem("Blog", route: .blog())
+      NavListItem("Gifts", route: .gifts(.index))
     }
-    navListItem("Collections", route: .collections())
-    if subscriberState.isNonSubscriber {
-      navListItem("Pricing", route: .pricingLanding)
-    }
-    navListItem("Blog", route: .blog())
-    navListItem("Gifts", route: .gifts(.index))
+    .class([
+      Class.type.list.reset,
+      Class.grid.middle(.mobile),
+      Class.pf.type.body.small,
+    ])
   }
-  .class([
-    Class.type.list.reset,
-    Class.grid.middle(.mobile),
-    Class.pf.type.body.small,
-  ])
 }
 
-@NodeBuilder
-func navListItem(_ title: String, route: SiteRoute) -> Node {
+struct NavListItem: NodeView {
   @Dependency(\.siteRouter) var siteRouter
-
-  li {
-    a {
-      Node.text(title)
-    }
-    .attribute("href", siteRouter.path(for: route))
-    .class([Class.pf.colors.link.gray650])
+  let title: String
+  let route: SiteRoute
+  init(_ title: String, route: SiteRoute) {
+    self.title = title
+    self.route = route
   }
-  .class([
-    Class.padding([.mobile: [.left: 3]]),
-    Class.display.inline
-  ])
-}
-
-private let trailingNavListItemClasses =
-  Class.padding([.mobile: [.left: 2]])
-  | Class.display.inline
-
-private func collectionsLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [
-      .class([Class.pf.colors.link.gray650]),
-      .href(siteRouter.path(for: .collections())),
-    ], "Collections"
-  )
-}
-
-private func blogLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [.href(siteRouter.path(for: .blog())), .class([Class.pf.colors.link.gray650])],
-    "Blog")
-}
-
-private func episodesLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [.href(siteRouter.path(for: .homeV2)), .class([Class.pf.colors.link.gray650])],
-    "Episodes"
-  )
-}
-
-private func subscribeLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [
-      .href(siteRouter.path(for: .pricingLanding)), .class([Class.pf.colors.link.gray650]),
-    ],
-    "Pricing")
-}
-
-private func giftLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [.href(siteRouter.path(for: .gifts())), .class([Class.pf.colors.link.gray650])],
-    "Gifts"
-  )
-}
-
-private func accountLinkView() -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .a(
-    attributes: [.href(siteRouter.path(for: .account())), .class([Class.pf.colors.link.gray650])],
-    "Account")
-}
-
-private func logInLinkView() -> Node {
-  @Dependency(\.currentRoute) var currentRoute
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .gitHubLink(
-    text: "Log in",
-    type: gitHubLinkType(for: .black),
-    href: siteRouter.loginPath(redirect: currentRoute),
-    size: .small
-  )
-}
-
-private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {
-  switch style {
-  case .black:
-    return .white
-  case .dark:
-    return .white
-  case .light:
-    return .black
+  var body: Node {
+    li {
+      a { title }
+        .attribute("href", siteRouter.path(for: route))
+        .class([Class.pf.colors.link.gray650])
+    }
+    .class([
+      Class.padding([.mobile: [.left: 3]]),
+      Class.display.inline
+    ])
   }
 }
