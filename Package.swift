@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 
 import Foundation
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v13)
+    .macOS(.v14)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
