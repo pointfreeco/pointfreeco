@@ -34,13 +34,15 @@ extension Conn where Step == HeadersOpen {
       .writeSessionCookie { $0.flash = nil }
       .respond(
         body: renderHtml(
-          pageLayoutV2(
-            view: view,
+          PageLayout(
             layoutData: layoutData,
             metadata: metadata,
             cssConfig: .pretty, // TODO
             emergencyMode: false // TODO
-          )
+          ) {
+            view
+          }
+            .body
         ),
         contentType: .html
       )

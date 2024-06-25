@@ -134,22 +134,35 @@ public func ul(@NodeBuilder _ children: () -> Node) -> Node { Node("ul", childre
 public func li(@NodeBuilder _ children: () -> Node) -> Node { Node("li", children: children) }
 public func label(@NodeBuilder _ children: () -> Node) -> Node { Node("label", children: children) }
 public func input(@NodeBuilder _ children: () -> Node) -> Node { Node("input", children: children) }
+public func html(@NodeBuilder _ children: () -> Node) -> Node { Node("html", children: children) }
+public func head(@NodeBuilder _ children: () -> Node) -> Node { Node("head", children: children) }
+public func body(@NodeBuilder _ children: () -> Node) -> Node { Node("body", children: children) }
+public func meta(@NodeBuilder _ children: () -> Node) -> Node { Node("meta", children: children) }
+extension NodeView {
+  public func body(@NodeBuilder _ children: () -> Node) -> Node { Node("body", children: children) }
+}
 
-extension Node {
+extension NodeView {
   public func attribute(
     _ attributeName: String,
     _ value: String?,
     _ separator: String? = nil
   ) -> Node {
+    // TODO: awful hacks
+    guard let node = self as? Node 
+    else {
+      return body.attribute(attributeName, value, separator)
+    }
+
     // TODO: ok to do no-op for nil value?
     guard let value
-    else { return self }
+    else { return node }
 
     guard
-      case .element(let tagName, var attributes, let children) = self
+      case .element(let tagName, var attributes, let children) = node
     else {
-      guard case .fragment(let array) = self else {
-        return self
+      guard case .fragment(let array) = node else {
+        return node
       }
       return .fragment(array.map { $0.attribute(attributeName, value, separator) })
     }

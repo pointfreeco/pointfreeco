@@ -9,6 +9,110 @@ import Prelude
 import Styleguide
 import StyleguideV2
 
+public struct PageLayout<Content: NodeView>: NodeView {
+  let content: Content
+  let layoutData: SimplePageLayoutData<Void>
+  let metadata: Metadata<Void>
+  let cssConfig: Css.Config
+  let emergencyMode: Bool
+
+  public init(
+    layoutData: SimplePageLayoutData<Void>,
+    metadata: Metadata<Void>,
+    cssConfig: Css.Config,
+    emergencyMode: Bool,
+    @NodeBuilder content: () -> Content
+  ) {
+    self.content = content()
+    self.layoutData = layoutData
+    self.metadata = metadata
+    self.cssConfig = cssConfig
+    self.emergencyMode = emergencyMode
+  }
+
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
+
+  public var body: Node {
+    Node.doctype
+
+    html {
+      head {
+        meta {}
+          .attribute("charset", "utf8")
+
+        meta {}
+          .attribute("name", "viewport")
+          .attribute("content", "width=device-width, initial-scale=1")
+
+        Node("title") { layoutData.title }
+
+        layoutData.extraHead.rawValue
+        favicons.rawValue
+        if layoutData.usePrismJs {
+          prismJsHead.rawValue
+        }
+
+        //        .style(safe: renderedNormalizeCss),
+        //        .style(styleguide, config: cssConfig),
+        //        .style(markdownBlockStyles, config: cssConfig),
+        //        .style(layoutData.extraStyles, config: cssConfig),
+        //        .style(
+        //          safe: """
+        //            @keyframes Pulse {
+        //              from { opacity: 1; }
+        //              50% { opacity: 0; }
+        //              to { opacity: 1; }
+        //            }
+        //            """),
+
+        //        .link(
+        //          attributes: [
+        //            .href(siteRouter.url(for: .feed(.episodes))),
+        //            .rel(.alternate),
+        //            .title("Point-Free Episodes"),
+        //            .type(.application(.init(rawValue: "atom+xml"))),
+        //          ]
+        //        ),
+        //        .link(
+        //          attributes: [
+        //            .href(siteRouter.url(for: .blog(.feed))),
+        //            .rel(.alternate),
+        //            .title("Point-Free Blog"),
+        //            // TODO: add .atom to Html
+        //            .type(.application(.init(rawValue: "atom+xml"))),
+        //          ]
+        //        ),
+        //
+        //
+        //      ),
+
+        //    )
+      }
+      body {
+        ghosterBanner(isGhosting: layoutData.isGhosting)
+        pastDueBanner
+        if let flash = layoutData.flash {
+          flashView(flash)
+        }
+        announcementBanner(.wwdc24)
+        liveStreamBanner
+        emergencyModeBanner(emergencyMode, layoutData)
+        NavView()
+        content
+        if !layoutData.style.isMinimal {
+          footerView(
+            user: currentUser,
+            year: Calendar(identifier: .gregorian).component(.year, from: now)
+          )
+        }
+      }
+    }
+    .attribute("lang", "en")
+  }
+}
+
 public func pageLayoutV2(
   view: Node,
   layoutData: SimplePageLayoutData<Void>,
@@ -68,7 +172,7 @@ public func pageLayoutV2(
         announcementBanner(.wwdc24),
         liveStreamBanner,
         emergencyModeBanner(emergencyMode, layoutData),
-        navViewV2(),
+        NavView().body,
         view,
         layoutData.style.isMinimal
           ? []
@@ -81,73 +185,63 @@ public func pageLayoutV2(
   ]
 }
 
-struct Page: Doc {
-  body: some … {
-    Document {
-      
-    }
-  }
-}
-
-public func navViewV2() -> Node {
+struct NavView: NodeView {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.currentRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
-  return .div(
-    attributes: [.class([newNavBarClass(for: .black)])],
-    .div(
-      attributes: [
-        .style(.concat(maxWidth(.px(1080)), margin(topBottom: nil, leftRight: .auto)))
-      ],
-      .gridRow(
-        attributes: [.class([Class.flex.items.center])],
-        .gridColumn(
-          sizes: [.mobile: 2],
-          .a(
-            attributes: [.href(siteRouter.path(for: .home))],
-            .img(
-              base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-              type: .image(.svg),
-              alt: "Point-Free"
-            )
-          )
-        ),
-        .gridColumn(
-          sizes: [.desktop: 8],
-          attributes: [
-            .class([
+  var body: Node {
+    div {
+      div {
+        GridRow(alignment: .center) {
+          GridColumn {
+            a {
+              Node.img(
+                base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+                type: .image(.svg),
+                alt: "Point-Free"
+              )
+            }
+            .attribute("href", siteRouter.path(for: .home))
+          }
+          .columns(2, breakpoint: .mobile)
+
+          GridColumn {
+            CenteredNavItems()
+          }
+          .columns(8, breakpoint: .desktop)
+          .class([
               Class.flex.items.center,
               Class.grid.center(.mobile),
               Class.hide(.mobile),
-            ])
-          ],
-          CenteredNavItems().body
-        ),
-        .gridColumn(
-          sizes: [.desktop: 2],
-          attributes: [
-            .class([
-              Class.flex.items.end,
-              Class.hide(.mobile)
-            ])
-          ],
-          TrailingNavItems().body
-        ),
-        .gridColumn(
-          sizes: [.mobile: 10],
-          attributes: [
-            .class([
-              Class.flex.items.end,
-              Class.hide(.desktop)
-            ])
-          ],
-          MobileMenu().body
-        )
-      )
-    )
-  )
+          ])
+          
+          GridColumn {
+            TrailingNavItems()
+          }
+          .columns(2, breakpoint: .desktop)
+          .class([
+            Class.flex.items.end,
+            Class.hide(.mobile)
+          ])
+
+          GridColumn {
+            MobileMenu()
+          }
+          .columns(10, breakpoint: .mobile)
+          .class([
+            Class.flex.items.end,
+            Class.hide(.desktop)
+          ])
+        }
+      }
+      .style("max-width", "1080px")
+      .style("margin-left", "auto")
+      .style("margin-right", "auto")
+    }
+    .class([newNavBarClass(for: .black)])
+  }
 }
 
 struct MobileMenu: NodeView {
@@ -155,20 +249,7 @@ struct MobileMenu: NodeView {
     div {
       label {
         for index in -1...1 {
-          div {}
-          .class([
-            Class.display.block,
-            Class.pf.colors.bg.white,
-            Class.position.absolute,
-            .class("menu-bar-\(index)")
-          ])
-          .style("width", "30px")
-          .style("height", "4px")
-          .style("border-radius", "2px")
-          .style("width", "30px")
-          .style("content", "")
-          .style("margin-top", "\(index * 8)px")
-          .style("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+          MenuBar(index: index)
         }
       }
       .attribute("for", "menu-checkbox")
@@ -191,6 +272,26 @@ struct MobileMenu: NodeView {
     .class([
       Class.grid.end(.mobile),
     ])
+  }
+
+  private struct MenuBar: NodeView {
+    let index: Int
+    var body: Node {
+      div {}
+        .class([
+          Class.display.block,
+          Class.pf.colors.bg.white,
+          Class.position.absolute,
+          .class("menu-bar-\(index)")
+        ])
+        .style("width", "30px")
+        .style("height", "4px")
+        .style("border-radius", "2px")
+        .style("width", "30px")
+        .style("content", "")
+        .style("margin-top", "\(index * 8)px")
+        .style("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+    }
   }
 }
 
