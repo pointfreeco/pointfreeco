@@ -1,13 +1,13 @@
 public struct Button<Label: HTML>: HTML {
   let tag: HTMLTag
-  let color: PointFreeColor?
+  let color: Color
   let size: Size
   let style: Style
   let label: Label
 
   public init(
     tag: HTMLTag = a,
-    color: PointFreeColor? = nil,
+    color: Color,
     size: Size = .regular,
     style: Style = .normal,
     @HTMLBuilder label: () -> Label
@@ -23,13 +23,50 @@ public struct Button<Label: HTML>: HTML {
     tag {
       label
     }
+    .inlineStyle("border", style.border)
+    .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: "hover")
     .inlineStyle("cursor", "pointer")
-    .inlineStyle("font-weight", "medium")
+    .inlineStyle("font-weight", "500")
+    .inlineStyle("text-decoration", style.textDecoration)
+    .inlineStyle("text-decoration", style.textDecoration, media: nil, pseudo: "link")
     .inlineStyle("white-space", "nowrap")
-    .backgroundColor(color)
-    .color(.black)
-    .fontStyle(.body(.small))
+    .backgroundColor(color.backgroundColor(for: style))
+    .color(color.foregroundColor(for: style))
+    .color(color.foregroundColor(for: style), .link)
+    .color(color.foregroundColor(for: style), .visited)
+    .fontScale(size.fontScale)
     .padding(size.padding)
+  }
+
+  public enum Color {
+    case black
+    case purple
+    case red
+    case white
+
+    fileprivate var rawValue: PointFreeColor {
+      switch self {
+      case .black: .black
+      case .purple: .purple
+      case .red: .red
+      case .white: .white
+      }
+    }
+
+    fileprivate func backgroundColor(for style: Style) -> PointFreeColor? {
+      switch (style, self) {
+      case (.normal, _): rawValue
+      default: nil
+      }
+    }
+
+    fileprivate func foregroundColor(for style: Style) -> PointFreeColor {
+      switch (style, self) {
+      case (.normal, .black), (.normal, .purple), (.normal, .red): .white
+      case (.normal, .white): .black
+      case (.outline, _), (.underline, _): rawValue
+      }
+    }
   }
 
   public enum Size {
@@ -44,100 +81,32 @@ public struct Button<Label: HTML>: HTML {
       }
     }
 
-    // var typeScale: TypeScale {
-    //
+    fileprivate var fontScale: FontScale {
+      switch self {
+      case .small: .h6
+      case .regular: .h5
+      case .large: .h4
+      }
+    }
   }
 
   public enum Style {
     case normal
     case outline
     case underline
+
+    fileprivate var border: String {
+      switch self {
+      case .normal, .underline: "none"
+      case .outline: "rounded"
+      }
+    }
+
+    fileprivate var textDecoration: String {
+      switch self {
+      case .normal, .outline: "none"
+      case .underline: "underline"
+      }
+    }
   }
 }
-
-//  let sizeStyles: CssSelector
-//  switch size {
-//  case .small:
-//    sizeStyles = Class.h6 | Class.padding([.mobile: [.leftRight: 1, .topBottom: 1]])
-//  case .regular:
-//    sizeStyles = Class.h5 | Class.padding([.mobile: [.leftRight: 2]])
-//  case .large:
-//    sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 2]])
-//  }
-
-
-// TODO:
-//  switch style {
-//  case .normal:
-//    borderStyles =
-//      baseNormalButtonClass
-//      | Class.border.none
-//      | Class.type.textDecorationNone
-//  case .outline:
-//    borderStyles =
-//      Class.border.rounded.all
-//      | Class.border.all
-//      | Class.type.textDecorationNone
-//  case .underline:
-//    borderStyles =
-//      baseUnderlineButtonClass
-//      | Class.border.none
-//      | Class.type.underline
-//  }
-//
-//  let colorStyles: CssSelector
-//  switch (style, color) {
-//  case (.normal, .black):
-//    colorStyles =
-//      Class.pf.colors.link.white
-//      | Class.pf.colors.fg.white
-//      | Class.pf.colors.bg.black
-//  case (.normal, .purple):
-//    colorStyles =
-//      Class.pf.colors.link.white
-//      | Class.pf.colors.fg.white
-//      | Class.pf.colors.bg.purple
-//  case (.normal, .red):
-//    colorStyles =
-//      Class.pf.colors.link.white
-//      | Class.pf.colors.fg.white
-//      | Class.pf.colors.bg.red
-//  case (.normal, .white):
-//    colorStyles =
-//      Class.pf.colors.link.black
-//      | Class.pf.colors.fg.black
-//      | Class.pf.colors.bg.white
-//  case (.outline, .black), (.underline, .black):
-//    colorStyles =
-//      Class.pf.colors.link.black
-//      | Class.pf.colors.fg.black
-//      | Class.pf.colors.bg.inherit
-//  case (.outline, .purple), (.underline, .purple):
-//    colorStyles =
-//      Class.pf.colors.link.purple
-//      | Class.pf.colors.fg.purple
-//      | Class.pf.colors.bg.inherit
-//  case (.outline, .red), (.underline, .red):
-//    colorStyles =
-//      Class.pf.colors.link.red
-//      | Class.pf.colors.fg.red
-//      | Class.pf.colors.bg.inherit
-//  case (.outline, .white), (.underline, .white):
-//    colorStyles =
-//      Class.pf.colors.link.white
-//      | Class.pf.colors.fg.white
-//      | Class.pf.colors.bg.inherit
-//  }
-//
-//  let sizeStyles: CssSelector
-//  switch size {
-//  case .small:
-//    sizeStyles = Class.h6 | Class.padding([.mobile: [.leftRight: 1, .topBottom: 1]])
-//  case .regular:
-//    sizeStyles = Class.h5 | Class.padding([.mobile: [.leftRight: 2]])
-//  case .large:
-//    sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 2]])
-//  }
-//
-//  return baseStyles | borderStyles | colorStyles | sizeStyles
-//}

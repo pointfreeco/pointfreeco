@@ -62,8 +62,40 @@ public struct PageLayout<Content: NodeView>: NodeView {
                 font-size: 16px;
               }
             }
+            @media only screen and (max-width: 831px) {
+              html {
+                font-size: 14px;
+              }
+            }
+
             html {
-              font-size: 14px;
+              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+              line-height: 1.5;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              -ms-box-sizing: border-box;
+              -o-box-sizing: border-box;
+              box-sizing: border-box;
+            }
+
+            body {
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              -ms-box-sizing: border-box;
+              -o-box-sizing: border-box;
+              box-sizing:border-box
+            }
+
+            *, * ::before, * ::after {
+              -webkit-box-sizing: inherit;
+              -moz-box-sizing: inherit;
+              -ms-box-sizing: inherit;
+              -o-box-sizing: inherit;
+              box-sizing:inherit
+            }
+
+            body, html {
+              height:100%
             }
             """
           }
@@ -312,38 +344,38 @@ struct TrailingNavItems: NodeView {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: Node {
-    ul {
-      Node {
-        if currentUser != nil {
-          li {
-            a { "Account" }
+    Node {
+      ul {
+        HTMLGroup {
+          if currentUser != nil {
+            li {
+              Button(color: .purple, size: .small) {
+                "Account"
+              }
               .attribute("href", siteRouter.path(for: .account(.index)))
-              .class([Class.pf.components.button(color: .purple, size: .small)])
-          }
-        } else {
-          li {
-            a { "Login" }
+            }
+          } else {
+            li {
+              Button(color: .purple, size: .small, style: .outline) {
+                "Login"
+              }
               .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
-              .class([Class.pf.components.button(color: .purple, size: .small, style: .outline)])
-          }
-          li {
-            a { "Sign up" }
+            }
+            li {
+              Button(color: .purple, size: .small) {
+                "Sign up"
+              }
               .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
-              .class([Class.pf.components.button(color: .purple, size: .small)])
+            }
           }
         }
+        .padding(left: .small)
+        .attribute("display", "inline")
       }
-      .class([
-        Class.padding([.mobile: [.left: 2]]),
-        Class.display.inline
-      ])
+      .fontStyle(.body(.small))
+      .listStyle(.reset)
     }
-    .class([
-      Class.type.list.reset,
-      Class.grid.end(.mobile),
-      Class.pf.type.body.small
-    ])
-    .attribute("whatever", true ? "something": nil)
+    .class([Class.grid.end(.mobile)])
   }
 }
 
