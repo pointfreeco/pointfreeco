@@ -1,7 +1,7 @@
 extension HTML {
   public func size(width: CSSSize, height: CSSSize) -> some HTML {
-    inlineStyle("height", "\(height)px")
-      .inlineStyle("width", "\(width)px")
+    inlineStyle("height", "\(height)")
+      .inlineStyle("width", "\(width)")
   }
 }
 

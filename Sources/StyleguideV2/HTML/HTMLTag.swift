@@ -52,6 +52,8 @@ public func tag(
   HTMLElement(tag: tag, content: content)
 }
 
+// TODO: Doing `div` by itself generates "<div>" which is invalid.
+
 public var a: HTMLTag { #function }
 public var abbr: HTMLTag { #function }
 public var acronym: HTMLTag { #function }

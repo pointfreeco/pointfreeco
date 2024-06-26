@@ -47,8 +47,8 @@ struct Home: HTML {
         GridColumnV2 {
           p {
             """
-            Point-Free is a video series about combining functional programming concepts with the
-            Swift programming language.
+            Point-Free is a a video series exploring advanced programming topics in the Swift
+            programming language.
             """
           }
           .fontStyle(.body(.regular))
@@ -62,7 +62,7 @@ struct Home: HTML {
       .padding(topBottom: .large, leftRight: .medium)
       .padding(.extraLarge, .desktop)
     }
-    .backgroundColor(.black)
+    .inlineStyle("background", "linear-gradient(#121212, #2A1A40)")
   }
 }
 

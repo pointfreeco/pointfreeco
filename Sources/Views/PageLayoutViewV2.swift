@@ -159,78 +159,6 @@ public struct PageLayout<Content: NodeView>: NodeView {
   }
 }
 
-public func pageLayoutV2(
-  view: Node,
-  layoutData: SimplePageLayoutData<Void>,
-  metadata: Metadata<Void>,
-  cssConfig: Css.Config,
-  emergencyMode: Bool
-) -> Node {
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.date.now) var now
-  @Dependency(\.siteRouter) var siteRouter
-
-  return [
-    .doctype,
-    .html(
-      attributes: [.lang(.en)],
-      .head(
-        .meta(attributes: [.charset(.utf8)]),
-        .title(layoutData.title),
-        .style(safe: renderedNormalizeCss),
-        .style(styleguide, config: cssConfig),
-        .style(markdownBlockStyles, config: cssConfig),
-        .style(layoutData.extraStyles, config: cssConfig),
-        .style(
-          safe: """
-            @keyframes Pulse {
-              from { opacity: 1; }
-              50% { opacity: 0; }
-              to { opacity: 1; }
-            }
-            """),
-        .meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        .link(
-          attributes: [
-            .href(siteRouter.url(for: .feed(.episodes))),
-            .rel(.alternate),
-            .title("Point-Free Episodes"),
-            .type(.application(.init(rawValue: "atom+xml"))),
-          ]
-        ),
-        .link(
-          attributes: [
-            .href(siteRouter.url(for: .blog(.feed))),
-            .rel(.alternate),
-            .title("Point-Free Blog"),
-            // TODO: add .atom to Html
-            .type(.application(.init(rawValue: "atom+xml"))),
-          ]
-        ),
-        (layoutData.usePrismJs ? prismJsHead : []),
-        favicons,
-        layoutData.extraHead
-      ),
-      .body(
-        ghosterBanner(isGhosting: layoutData.isGhosting),
-        pastDueBanner,
-        (layoutData.flash.map(flashView) ?? []),
-        announcementBanner(.wwdc24),
-        liveStreamBanner,
-        emergencyModeBanner(emergencyMode, layoutData),
-        Node { NavView() }.body,
-        view,
-        layoutData.style.isMinimal
-          ? []
-          : footerView(
-            user: currentUser,
-            year: Calendar(identifier: .gregorian).component(.year, from: now)
-          )
-      )
-    ),
-  ]
-}
-
 struct SVG: HTML {
   let base64: String
   let description: String
@@ -288,9 +216,11 @@ struct NavView: HTML {
       .inlineStyle("max-width", "1080px")
       .inlineStyle("margin-left", "auto")
       .inlineStyle("margin-right", "auto")
+      .attribute("id", "nav-2")
     }
     .backgroundColor(.black)
     .padding(topBottom: .small, leftRight: .small)
+    .attribute("id", "nav-1")
   }
 }
 
@@ -322,11 +252,11 @@ struct MobileMenu: HTML {
   private struct MenuBar: HTML {
     let index: Int
     var body: some HTML {
-      div
+      div {}
         .attribute("class", "menu-bar-\(index)")
         .backgroundColor(.white)
         .inlineStyle("border-radius", "2px")
-        .inlineStyle("content", "")
+        .inlineStyle("content", "''")
         .inlineStyle("display", "block")
         .inlineStyle("height", "4px")
         .inlineStyle("margin-top", "\(index * 8)px")

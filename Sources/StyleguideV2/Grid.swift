@@ -31,43 +31,13 @@ public struct GridRowV2<Content: HTML>: HTML {
     case stretch = "stretch"
   }
 }
-
-public struct GridRow<Content: NodeView>: NodeView {
-  let alignment: Alignment
-  @NodeBuilder let content: Content
-  public init(alignment: Alignment, @NodeBuilder content: () -> Content) {
-    self.alignment = alignment
-    self.content = content()
-  }
-
-  public var body: Node {
-    div {
-      content
-    }
-    .class([Class.grid.row, .class(alignment.rawValue)])
-  }
-
-  public enum Alignment: String {
-    case start = "items-start"
-    case end = "items-end"
-    case center = "items-center"
-    case baseline = "items-baseline"
-    case stretch = "items-stretch"
-  }
-}
-
-extension HTML {
-  public func column(count: Int, media: MediaQuery? = nil) -> some HTML {
-    self
-      .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
-      .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
-  }
-  public func column(alignment: GridColumnV2<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
-    self
-      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
-      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
-  }
-}
+//extension HTML {
+//  public func row(alignment: GridColumnV2<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
+//    self
+//      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
+//      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
+//  }
+//}
 
 public struct GridColumnV2<Content: HTML>: HTML {
   @HTMLBuilder let content: Content
@@ -92,27 +62,15 @@ public struct GridColumnV2<Content: HTML>: HTML {
   }
 }
 
-public struct GridColumn<Content: NodeView>: NodeView {
-  var sizes: [Breakpoint: Int] = [:]
-  @NodeBuilder let content: Content
-  public init(@NodeBuilder content: () -> Content) {
-    self.content = content()
+extension HTML {
+  public func column(count: Int, media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
+      .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
   }
-
-  public var body: Node {
-    div {
-      content
-    }
-    .class(
-      [Class.grid.col(.mobile, nil)] + sizes
-        .sorted(by: { $0.key.rawValue < $1.key.rawValue })
-        .map(Class.grid.col(_:_:))
-    )
-  }
-  
-  public func columns(_ count: Int, breakpoint: Breakpoint) -> Self {
-    var copy = self
-    copy.sizes[breakpoint] = count
-    return copy
+  public func column(alignment: GridColumnV2<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
+      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
   }
 }
