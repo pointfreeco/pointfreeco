@@ -33,25 +33,31 @@ struct Home: HTML {
       GridRowV2(alignment: .center) {
         GridColumnV2 {
           h1 {
-            "Explore the wonderful world of Swift."
+            "Explore&nbsp;the&nbsp;wonderful world&nbsp;of&nbsp;Swift."
           }
+          .inlineStyle("line-height", "1.2")
+          .fontScale(.h2)
           .color(.white)
-          //.inlineStyle("margin", "0 auto")
         }
         .column(count: 12)
-        .column(alignment: .center)
+        .column(count: 9, media: .desktop)
+        .column(alignment: .center, media: .desktop)
+        .inlineStyle("margin", "0 auto")
 
         GridColumnV2 {
           p {
-          """
-          Point-Free is a video series about combining functional programming concepts with the
-          Swift programming language.
-          """
+            """
+            Point-Free is a video series about combining functional programming concepts with the
+            Swift programming language.
+            """
           }
-          .color(.white)
+          .fontStyle(.body(.regular))
+          .color(.gray800)
         }
         .column(count: 12)
-        .column(alignment: .center)
+        .column(count: 9, media: .desktop)
+        .column(alignment: .center, media: .desktop)
+        .inlineStyle("margin", "0 auto")
       }
       .padding(topBottom: .large, leftRight: .medium)
       .padding(.extraLarge, .desktop)

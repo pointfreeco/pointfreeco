@@ -10,7 +10,12 @@ extension HTML {
     case .body(.small):
       fontScale(.h6)
         .inlineStyle("font-weight", "normal")
-        .inlineStyle("line-height", "4")
+        .inlineStyle("line-height", "1.5")
+
+    case .body(.regular):
+      fontScale(.h5)
+        .inlineStyle("font-weight", "normal")
+        .inlineStyle("line-height", "1.5")
     }
   }
 }
@@ -28,6 +33,7 @@ public enum FontStyle {
   case body(Body)
 
   public enum Body {
+    case regular
     case small
   }
 }
