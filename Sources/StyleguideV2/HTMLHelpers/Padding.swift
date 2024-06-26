@@ -12,10 +12,10 @@ extension HTML {
   }
 
   public func padding(
-    _ top: Spacing? = nil,
-    _ left: Spacing? = nil,
-    _ bottom: Spacing? = nil,
-    _ right: Spacing? = nil,
+    top: Spacing? = nil,
+    left: Spacing? = nil,
+    bottom: Spacing? = nil,
+    right: Spacing? = nil,
     _ media: MediaQuery? = nil
   ) -> some HTML {
     padding(Padding(top: top, left: left, bottom: bottom, right: right), media)

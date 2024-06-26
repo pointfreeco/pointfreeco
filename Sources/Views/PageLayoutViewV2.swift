@@ -54,6 +54,21 @@ public struct PageLayout<Content: NodeView>: NodeView {
           prismJsHead.rawValue
         }
 
+        Node {
+          tag("style") {
+            """
+            @media only screen and (min-width: 832px) {
+              html {
+                font-size: 16px;
+              }
+            }
+            html {
+              font-size: 14px;
+            }
+            """
+          }
+        }
+
         ChildOf<Tag.Head>(arrayLiteral: .fragment([
           .style(safe: renderedNormalizeCss),
           .style(styleguide, config: cssConfig),
