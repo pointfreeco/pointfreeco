@@ -31,21 +31,27 @@ struct Home: HTML {
   var body: some HTML {
     div {
       GridRowV2(alignment: .center) {
-        GridColumnV2(mobile: 12, desktop: 6) {
+        GridColumnV2 {
           h1 {
             "Explore the wonderful world of Swift."
           }
           .color(.white)
           //.inlineStyle("margin", "0 auto")
         }
+        .column(count: 12)
+        .column(alignment: .center)
 
-//        p {
-//          """
-//          Point-Free is a video series about combining functional programming concepts with the
-//          Swift programming language.
-//          """
-//        }
-//        .color(.white)
+        GridColumnV2 {
+          p {
+          """
+          Point-Free is a video series about combining functional programming concepts with the
+          Swift programming language.
+          """
+          }
+          .color(.white)
+        }
+        .column(count: 12)
+        .column(alignment: .center)
       }
       .padding(topBottom: .large, leftRight: .medium)
       .padding(.extraLarge, .desktop)

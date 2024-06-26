@@ -19,7 +19,8 @@ public struct GridRowV2<Content: HTML>: HTML {
     .inlineStyle("flex-grow", "0")
     .inlineStyle("flex-shrink", "1")
     .inlineStyle("flex-basis", "auto")
-    .inlineStyle("flex-direction", "wrap")
+    .inlineStyle("flex-direction", "row")
+    .inlineStyle("flex-wrap", "wrap")
   }
 
   public enum Alignment: String {
@@ -55,23 +56,22 @@ public struct GridRow<Content: NodeView>: NodeView {
   }
 }
 
-public struct GridColumnV2<Content: HTML>: HTML {
-  var mobile: Int
-  var desktop: Int?
-  @HTMLBuilder let content: Content
-  public init(
-    _ mobile: Int,
-    @HTMLBuilder content: () -> Content
-  ) {
-    self.init(mobile: mobile, desktop: nil, content: content)
+extension HTML {
+  public func column(count: Int, media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
+      .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
   }
-  public init(
-    mobile: Int,
-    desktop: Int?,
-    @HTMLBuilder content: () -> Content
-  ) {
-    self.mobile = mobile
-    self.desktop = desktop ?? mobile
+  public func column(alignment: GridColumnV2<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("justify-content", alignment.rawValue, media: media?.rawValue)
+      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
+  }
+}
+
+public struct GridColumnV2<Content: HTML>: HTML {
+  @HTMLBuilder let content: Content
+  public init(@HTMLBuilder content: () -> Content) {
     self.content = content()
   }
 
@@ -80,15 +80,15 @@ public struct GridColumnV2<Content: HTML>: HTML {
       content
     }
     .inlineStyle("flex-grow", "1")
-    .inlineStyle("flex-grow", "1", media: MediaQuery.desktop.rawValue)
-    .inlineStyle("flex-basis", "0")
+    .inlineStyle("flex-grow", "0", media: MediaQuery.desktop.rawValue)
     .inlineStyle("flex-shrink", "0")
     .inlineStyle("max-width", "100%")
     .inlineStyle("box-sizing", "border-box")
-    .inlineStyle("flex-basis", "\(Double(mobile) / 0.12)%")
-    .inlineStyle("max-width", "\(Double(mobile) / 0.12)%")
-    .inlineStyle("flex-basis", desktop.map { "\(Double($0) / 0.12)%" }, media: MediaQuery.desktop.rawValue)
-    .inlineStyle("max-width", desktop.map { "\(Double($0) / 0.12)%" }, media: MediaQuery.desktop.rawValue)
+  }
+
+  public enum Alignment: String {
+    case end = "flex-end"
+    case center = "center"
   }
 }
 
