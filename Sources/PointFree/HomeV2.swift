@@ -31,11 +31,13 @@ struct Home: HTML {
   var body: some HTML {
     div {
       GridRowV2(alignment: .center) {
-        h1 {
-          "Explore the wonderful world of Swift."
+        GridColumnV2(mobile: 12, desktop: 6) {
+          h1 {
+            "Explore the wonderful world of Swift."
+          }
+          .color(.white)
+          //.inlineStyle("margin", "0 auto")
         }
-        .color(.white)
-        .inlineStyle("margin", "0 auto")
 
 //        p {
 //          """

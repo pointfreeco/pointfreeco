@@ -56,9 +56,22 @@ public struct GridRow<Content: NodeView>: NodeView {
 }
 
 public struct GridColumnV2<Content: HTML>: HTML {
-  var sizes: [MediaQuery?: Int] = [:]
+  var mobile: Int
+  var desktop: Int?
   @HTMLBuilder let content: Content
-  public init(@HTMLBuilder content: () -> Content) {
+  public init(
+    _ mobile: Int,
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.init(mobile: mobile, desktop: nil, content: content)
+  }
+  public init(
+    mobile: Int,
+    desktop: Int?,
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.mobile = mobile
+    self.desktop = desktop ?? mobile
     self.content = content()
   }
 
@@ -66,33 +79,16 @@ public struct GridColumnV2<Content: HTML>: HTML {
     div {
       content
     }
-
-    // .col-m
     .inlineStyle("flex-grow", "1")
+    .inlineStyle("flex-grow", "1", media: MediaQuery.desktop.rawValue)
     .inlineStyle("flex-basis", "0")
+    .inlineStyle("flex-shrink", "0")
     .inlineStyle("max-width", "100%")
     .inlineStyle("box-sizing", "border-box")
-    
-//    .col-m-1 {
-//      flex-basis: 8.333333333333334%;
-//      max-width:8.333333333333334%
-//    }
-
-//    Class.grid.col(breakpoint, idx)
-//    % (flex(basis: .pct(100 * Double(idx) / 12))
-//       <> maxWidth(.pct(100 * Double(idx) / 12)))
-
-//    .class(
-//      [Class.grid.col(.mobile, nil)] + sizes
-//        .sorted(by: { $0.key.rawValue < $1.key.rawValue })
-//        .map(Class.grid.col(_:_:))
-//    )
-  }
-
-  public func columns(_ count: Int, media: MediaQuery?) -> Self {
-    var copy = self
-    copy.sizes[media] = count
-    return copy
+    .inlineStyle("flex-basis", "\(Double(mobile) / 0.12)%")
+    .inlineStyle("max-width", "\(Double(mobile) / 0.12)%")
+    .inlineStyle("flex-basis", desktop.map { "\(Double($0) / 0.12)%" }, media: MediaQuery.desktop.rawValue)
+    .inlineStyle("max-width", desktop.map { "\(Double($0) / 0.12)%" }, media: MediaQuery.desktop.rawValue)
   }
 }
 

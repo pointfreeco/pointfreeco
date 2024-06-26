@@ -9,10 +9,10 @@ struct HTMLInlineStyle<Content: HTML>: HTML {
     fatalError()
   }
   static func _render(_ html: consuming HTMLInlineStyle<Content>, into printer: inout HTMLPrinter) {
-    let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
-    defer {
-      printer.attributes["class"] = previousClass
-    }
+//    let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
+//    defer {
+//      printer.attributes["class"] = previousClass
+//    }
 
     // TODO: better hashing/compression (lossless)
     let className = "\(html.property)-\(html.value.hashValue)-\(html.mediaQuery?.hashValue ?? 0)"
