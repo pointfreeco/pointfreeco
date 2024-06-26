@@ -12,12 +12,16 @@ public enum HTMLBuilder {
     HTMLTuple(content: repeat each content)
   }
 
-  public static func buildEither<First: HTML, Second: HTML>(first component: First) -> some HTML {
-    HTMLConditional<First, Second>.first(component)
+  public static func buildEither<First: HTML, Second: HTML>(
+    first component: First
+  ) -> _HTMLConditional<First, Second> {
+    .first(component)
   }
 
-  public static func buildEither<First: HTML, Second: HTML>(second component: Second) -> some HTML {
-    HTMLConditional<First, Second>.second(component)
+  public static func buildEither<First: HTML, Second: HTML>(
+    second component: Second
+  ) -> _HTMLConditional<First, Second> {
+    .second(component)
   }
 
   public static func buildExpression<T: HTML>(_ expression: T) -> T {
@@ -43,10 +47,10 @@ private struct HTMLArray<Element: HTML>: HTML {
   var body: Never { fatalError() }
 }
 
-private enum HTMLConditional<First: HTML, Second: HTML>: HTML {
+public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
   case first(First)
   case second(Second)
-  static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
     switch html {
     case let .first(first):
       First._render(first, into: &printer)
@@ -54,7 +58,7 @@ private enum HTMLConditional<First: HTML, Second: HTML>: HTML {
       Second._render(second, into: &printer)
     }
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
 private struct HTMLText: HTML {
@@ -62,10 +66,10 @@ private struct HTMLText: HTML {
   init(_ text: String) {
     self.text = text
   }
-  var body: Never { fatalError() }
   static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
     printer.bytes.append(contentsOf: html.text.utf8)
   }
+  var body: Never { fatalError() }
 }
 
 private struct HTMLTuple<each Content: HTML>: HTML {
@@ -73,12 +77,10 @@ private struct HTMLTuple<each Content: HTML>: HTML {
   init(content: repeat each Content) {
     self.content = (repeat each content)
   }
-  var body: Never {
-    fatalError()
-  }
   static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
     repeat (each Content)._render(each html.content, into: &printer)
   }
+  var body: Never { fatalError() }
 }
 
 extension Optional: HTML where Wrapped: HTML {

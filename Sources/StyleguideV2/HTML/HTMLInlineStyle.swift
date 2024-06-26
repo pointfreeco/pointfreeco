@@ -26,7 +26,16 @@ struct HTMLInlineStyle<Content: HTML>: HTML {
 }
 
 extension HTML {
-  public func inlineStyle(_ property: String, _ value: String, media mediaQuery: String? = nil) -> some HTML {
-    HTMLInlineStyle(content: self, property: property, value: value, mediaQuery: mediaQuery)
+  @HTMLBuilder
+  public func inlineStyle(
+    _ property: String,
+    _ value: String?,
+    media mediaQuery: String? = nil
+  ) -> some HTML {
+    if let value {
+      HTMLInlineStyle(content: self, property: property, value: value, mediaQuery: mediaQuery)
+    } else {
+      self
+    }
   }
 }

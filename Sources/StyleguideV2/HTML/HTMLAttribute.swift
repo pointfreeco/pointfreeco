@@ -9,9 +9,7 @@ private struct HTMLAttribute<Content: HTML>: HTML {
   let name: String
   let value: String
 
-  var body: Never { fatalError() }
-
-  public static func _render(_ html: consuming HTMLAttribute, into printer: inout HTMLPrinter) {
+  static func _render(_ html: consuming HTMLAttribute, into printer: inout HTMLPrinter) {
     let previousValue = printer.attributes[html.name]  // TODO: should we optimize this?
     defer {
       printer.attributes[html.name] = previousValue
@@ -19,4 +17,5 @@ private struct HTMLAttribute<Content: HTML>: HTML {
     printer.attributes[html.name] = html.value  // TODO: append, replace, etc...
     Content._render(html.content, into: &printer)
   }
+  var body: Never { fatalError() }
 }
