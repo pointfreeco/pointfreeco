@@ -8,8 +8,7 @@ extension HTML {
   public func fontStyle(_ fontStyle: FontStyle) -> some HTML {
     switch fontStyle {
     case .body(.small):
-      color(.black)
-        .fontScale(.h6)
+      fontScale(.h6)
         .inlineStyle("font-weight", "normal")
         .inlineStyle("line-height", "4")
     }

@@ -252,17 +252,23 @@ struct NavView: NodeView {
           .columns(2, breakpoint: .mobile)
 
           GridColumn {
-            CenteredNavItems()
+            Node {
+              CenteredNavItems()
+            }
+            .class([Class.grid.middle(.mobile)])
           }
           .columns(8, breakpoint: .desktop)
           .class([
-              Class.flex.items.center,
-              Class.grid.center(.mobile),
-              Class.hide(.mobile),
+            Class.flex.items.center,
+            Class.grid.center(.mobile),
+            Class.hide(.mobile),
           ])
           
           GridColumn {
-            TrailingNavItems()
+            Node {
+              TrailingNavItems()
+            }
+            .class([Class.grid.end(.mobile)])
           }
           .columns(2, breakpoint: .desktop)
           .class([
@@ -271,11 +277,14 @@ struct NavView: NodeView {
           ])
 
           GridColumn {
-            MobileMenu()
+            Node {
+              MobileMenu()
+            }
           }
           .columns(10, breakpoint: .mobile)
           .class([
             Class.flex.items.end,
+            Class.grid.end(.mobile),
             Class.hide(.desktop)
           ])
         }
@@ -288,102 +297,91 @@ struct NavView: NodeView {
   }
 }
 
-struct MobileMenu: NodeView {
-  var body: Node {
+struct MobileMenu: HTML {
+  var body: some HTML {
     div {
       label {
         for index in -1...1 {
           MenuBar(index: index)
         }
       }
+      .attribute("class", "menu-checkbox-container")
       .attribute("for", "menu-checkbox")
-      .style("height", "100%")
-      .style("width", "30px")
-      .style("justify-content", "center")
-      .style("align-items", "center")
-      .class([
-        .class("menu-checkbox-container"),
-        Class.flex.flex,
-        Class.flex.column,
-        Class.cursor.pointer,
-      ])
-
-      input {}
-        .attribute("id", "menu-checkbox")
-        .attribute("type", "checkbox")
-        .class([Class.hide])
+      .inlineStyle("align-items", "center")
+      .inlineStyle("cursor", "pointer")
+      .inlineStyle("display", "flex")
+      .inlineStyle("flex-direction", "column")
+      .inlineStyle("height", "100%")
+      .inlineStyle("width", "30px")
+      .inlineStyle("justify-content", "center")
     }
-    .class([
-      Class.grid.end(.mobile),
-    ])
+
+    input
+      .hidden()
+      .attribute("id", "menu-checkbox")
+      .attribute("type", "checkbox")
   }
 
-  private struct MenuBar: NodeView {
+  private struct MenuBar: HTML {
     let index: Int
-    var body: Node {
-      div {}
-        .class([
-          Class.display.block,
-          Class.pf.colors.bg.white,
-          Class.position.absolute,
-          .class("menu-bar-\(index)")
-        ])
-        .style("width", "30px")
-        .style("height", "4px")
-        .style("border-radius", "2px")
-        .style("width", "30px")
-        .style("content", "")
-        .style("margin-top", "\(index * 8)px")
-        .style("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+    var body: some HTML {
+      div
+        .attribute("class", "menu-bar-\(index)")
+        .backgroundColor(.white)
+        .inlineStyle("border-radius", "2px")
+        .inlineStyle("content", "")
+        .inlineStyle("display", "block")
+        .inlineStyle("height", "4px")
+        .inlineStyle("margin-top", "\(index * 8)px")
+        .inlineStyle("position", "absolute")
+        .inlineStyle("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+        .inlineStyle("width", "30px")
     }
   }
 }
 
-struct TrailingNavItems: NodeView {
+struct TrailingNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  var body: Node {
-    Node {
-      ul {
-        HTMLGroup {
-          if currentUser != nil {
-            li {
-              Button(color: .purple, size: .small) {
-                "Account"
-              }
-              .attribute("href", siteRouter.path(for: .account(.index)))
+  var body: some HTML {
+    ul {
+      HTMLGroup {
+        if currentUser != nil {
+          li {
+            Button(color: .purple, size: .small) {
+              "Account"
             }
-          } else {
-            li {
-              Button(color: .purple, size: .small, style: .outline) {
-                "Login"
-              }
-              .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            .attribute("href", siteRouter.path(for: .account(.index)))
+          }
+        } else {
+          li {
+            Button(color: .purple, size: .small, style: .outline) {
+              "Login"
             }
-            li {
-              Button(color: .purple, size: .small) {
-                "Sign up"
-              }
-              .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+          }
+          li {
+            Button(color: .purple, size: .small) {
+              "Sign up"
             }
+            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
           }
         }
-        .padding(left: .small)
-        .attribute("display", "inline")
       }
-      .fontStyle(.body(.small))
-      .listStyle(.reset)
+      .padding(left: .small)
+      .attribute("display", "inline")
     }
-    .class([Class.grid.end(.mobile)])
+    .fontStyle(.body(.small))
+    .listStyle(.reset)
   }
 }
 
-struct CenteredNavItems: NodeView {
+struct CenteredNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
 
-  var body: Node {
+  var body: some HTML {
     ul {
       if currentUser != nil {
         NavListItem("Episodes", route: .homeV2)
@@ -395,15 +393,12 @@ struct CenteredNavItems: NodeView {
       NavListItem("Blog", route: .blog())
       NavListItem("Gifts", route: .gifts(.index))
     }
-    .class([
-      Class.type.list.reset,
-      Class.grid.middle(.mobile),
-      Class.pf.type.body.small,
-    ])
+    .listStyle(.reset)
+    .fontStyle(.body(.small))
   }
 }
 
-struct NavListItem: NodeView {
+struct NavListItem: HTML {
   @Dependency(\.siteRouter) var siteRouter
   let title: String
   let route: SiteRoute
@@ -411,15 +406,14 @@ struct NavListItem: NodeView {
     self.title = title
     self.route = route
   }
-  var body: Node {
+  var body: some HTML {
     li {
       a { title }
         .attribute("href", siteRouter.path(for: route))
-        .class([Class.pf.colors.link.gray650])
+        .color(.gray650, .link)
+        .color(.gray650, .visited)
     }
-    .class([
-      Class.padding([.mobile: [.left: 3]]),
-      Class.display.inline
-    ])
+    .padding(left: .medium)
+    .inlineStyle("display", "inline")
   }
 }
