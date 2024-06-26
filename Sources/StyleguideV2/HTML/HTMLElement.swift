@@ -30,6 +30,10 @@ public struct HTMLElement<Content: HTML>: HTML {
     }
     printer.bytes.append(UInt8(ascii: ">"))
     if let content = html.content {
+      let oldAttributes = printer.attributes
+      defer { printer.attributes = oldAttributes }
+
+      printer.attributes.removeAll()
       Content._render(content, into: &printer)
       printer.bytes.append(contentsOf: "</".utf8)
       html.tag.withUTF8Buffer { printer.bytes.append(contentsOf: $0) }
