@@ -1,7 +1,5 @@
-//
-//  MediaQuery.swift
-//  
-//
-//  Created by Stephen Celis on 6/26/24.
-//
+public struct MediaQuery {
+  public var rawValue: String
 
+  public static let desktop = Self(rawValue: "only screen and (min-width: 832px)")
+}

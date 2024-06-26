@@ -54,41 +54,38 @@ public struct PageLayout<Content: NodeView>: NodeView {
           prismJsHead.rawValue
         }
 
-        //        .style(safe: renderedNormalizeCss),
-        //        .style(styleguide, config: cssConfig),
-        //        .style(markdownBlockStyles, config: cssConfig),
-        //        .style(layoutData.extraStyles, config: cssConfig),
-        //        .style(
-        //          safe: """
-        //            @keyframes Pulse {
-        //              from { opacity: 1; }
-        //              50% { opacity: 0; }
-        //              to { opacity: 1; }
-        //            }
-        //            """),
+        ChildOf<Tag.Head>(arrayLiteral: .fragment([
+          .style(safe: renderedNormalizeCss),
+          .style(styleguide, config: cssConfig),
+          .style(markdownBlockStyles, config: cssConfig),
+          .style(layoutData.extraStyles, config: cssConfig),
+          .style(
+            safe: """
+              @keyframes Pulse {
+                from { opacity: 1; }
+                50% { opacity: 0; }
+                to { opacity: 1; }
+              }
+              """),
 
-        //        .link(
-        //          attributes: [
-        //            .href(siteRouter.url(for: .feed(.episodes))),
-        //            .rel(.alternate),
-        //            .title("Point-Free Episodes"),
-        //            .type(.application(.init(rawValue: "atom+xml"))),
-        //          ]
-        //        ),
-        //        .link(
-        //          attributes: [
-        //            .href(siteRouter.url(for: .blog(.feed))),
-        //            .rel(.alternate),
-        //            .title("Point-Free Blog"),
-        //            // TODO: add .atom to Html
-        //            .type(.application(.init(rawValue: "atom+xml"))),
-        //          ]
-        //        ),
-        //
-        //
-        //      ),
-
-        //    )
+          .link(
+            attributes: [
+              .href(siteRouter.url(for: .feed(.episodes))),
+              .rel(.alternate),
+              .title("Point-Free Episodes"),
+              .type(.application(.init(rawValue: "atom+xml"))),
+            ]
+          ),
+          .link(
+            attributes: [
+              .href(siteRouter.url(for: .blog(.feed))),
+              .rel(.alternate),
+              .title("Point-Free Blog"),
+              // TODO: add .atom to Html
+              .type(.application(.init(rawValue: "atom+xml"))),
+            ]
+          )
+        ])).rawValue
       }
       body {
         ghosterBanner(isGhosting: layoutData.isGhosting)

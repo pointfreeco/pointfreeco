@@ -1,50 +1,70 @@
 extension HTML {
-  public func padding(_ all: CSSSize, _ media: MediaQuery? = nil) -> some HTML {
-    padding(top: all, left: all, bottom: all, right: all, media)
+  public func padding(_ padding: Padding, _ media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("padding-top", padding.top.map { "\($0.rawValue)rem" }, media: media?.rawValue)
+      .inlineStyle("padding-left", padding.left.map { "\($0.rawValue)rem" }, media: media?.rawValue)
+      .inlineStyle(
+        "padding-bottom", padding.bottom.map { "\($0.rawValue)rem" }, media: media?.rawValue
+      )
+      .inlineStyle(
+        "padding-right", padding.right.map { "\($0.rawValue)rem" }, media: media?.rawValue
+      )
   }
 
   public func padding(
-    top: CSSSize? = nil,
-    left: CSSSize? = nil,
-    bottom: CSSSize? = nil,
-    right: CSSSize? = nil,
+    _ top: Spacing? = nil,
+    _ left: Spacing? = nil,
+    _ bottom: Spacing? = nil,
+    _ right: Spacing? = nil,
     _ media: MediaQuery? = nil
   ) -> some HTML {
-    inlineStyle("padding-top", top.map(\.description), media: media?.rawValue)
-      .inlineStyle("padding-left", left.map(\.description), media: media?.rawValue)
-      .inlineStyle("padding-bottom", bottom.map(\.description), media: media?.rawValue)
-      .inlineStyle("padding-right", right.map(\.description), media: media?.rawValue)
+    padding(Padding(top: top, left: left, bottom: bottom, right: right), media)
   }
 
-  @HTMLBuilder
+  @_disfavoredOverload
   public func padding(
-    _ all: Spacing,
+    topBottom: Spacing? = nil,
+    leftRight: Spacing? = nil,
     _ media: MediaQuery? = nil
   ) -> some HTML {
-    let all = CSSSize.rem(all.rawValue)
-    padding(top: all, left: all, bottom: all, right: all)
+    padding(Padding(topBottom: topBottom, leftRight: leftRight), media)
   }
 
-  public func padding(
-    top: Spacing? = nil,
-    left: Spacing? = nil,
-    bottom: Spacing? = nil,
-    right: Spacing? = nil,
-    _ media: MediaQuery? = nil
-  ) -> some HTML {
-    padding(
-      top: top.map { .rem($0.rawValue) },
-      left: left.map { .rem($0.rawValue) },
-      bottom: bottom.map { .rem($0.rawValue) },
-      right: right.map { .rem($0.rawValue) }
-    )
+  public func padding(_ all: Spacing, _ media: MediaQuery? = nil) -> some HTML {
+    padding(Padding(all: all), media)
   }
 }
 
-public struct MediaQuery {
-  public var rawValue: String
+public struct Padding {
+  public var top: Spacing?
+  public var left: Spacing?
+  public var bottom: Spacing?
+  public var right: Spacing?
 
-  public static let desktop = Self(rawValue: "only screen and (min-width: 832px)")
+  public init(
+    top: Spacing? = nil,
+    left: Spacing? = nil,
+    bottom: Spacing? = nil,
+    right: Spacing? = nil
+  ) {
+    self.top = top
+    self.left = left
+    self.bottom = bottom
+    self.right = right
+  }
+
+  public init(
+    topBottom: Spacing? = nil,
+    leftRight: Spacing? = nil
+  ) {
+    self.init(top: topBottom, left: leftRight, bottom: topBottom, right: leftRight)
+  }
+
+  public init(
+    all: Spacing? = nil
+  ) {
+    self.init(topBottom: all, leftRight: all)
+  }
 }
 
 public enum Spacing: Double, CaseIterable, ExpressibleByIntegerLiteral {

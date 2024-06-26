@@ -1,15 +1,21 @@
 public struct Button<Label: HTML>: HTML {
   let tag: HTMLTag
   let color: PointFreeColor?
+  let size: Size
+  let style: Style
   let label: Label
 
   public init(
     tag: HTMLTag = a,
     color: PointFreeColor? = nil,
+    size: Size = .regular,
+    style: Style = .normal,
     @HTMLBuilder label: () -> Label
   ) {
     self.tag = tag
     self.color = color
+    self.size = size
+    self.style = style
     self.label = label()
   }
 
@@ -23,7 +29,29 @@ public struct Button<Label: HTML>: HTML {
     .backgroundColor(color)
     .color(.black)
     .fontStyle(.body(.small))
-    .padding(left: 2, right: 2)
+    .padding(size.padding)
+  }
+
+  public enum Size {
+    case small
+    case regular
+    case large
+
+    fileprivate var padding: Padding {
+      switch self {
+      case .small: Padding(topBottom: 1, leftRight: 1)
+      case .regular, .large: Padding(topBottom: 1, leftRight: 2)
+      }
+    }
+
+    // var typeScale: TypeScale {
+    //
+  }
+
+  public enum Style {
+    case normal
+    case outline
+    case underline
   }
 }
 
