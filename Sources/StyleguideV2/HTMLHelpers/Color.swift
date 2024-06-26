@@ -1,14 +1,14 @@
 extension HTML {
-  public func backgroundColor(_ color: HTMLColor) -> some HTML {
-    inlineStyle("background-color", color.rawValue)
+  public func backgroundColor(_ color: PointFreeColor?) -> some HTML {
+    inlineStyle("background-color", color?.rawValue)
   }
 
-  public func color(_ color: HTMLColor) -> some HTML {
-    inlineStyle("color", color.rawValue)
+  public func color(_ color: PointFreeColor?) -> some HTML {
+    inlineStyle("color", color?.rawValue)
   }
 }
 
-public struct HTMLColor {
+public struct PointFreeColor {
   public let rawValue: String
 
   init(rawValue: String) {

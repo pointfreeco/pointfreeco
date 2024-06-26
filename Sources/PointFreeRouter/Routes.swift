@@ -13,7 +13,7 @@ public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
 @CasePathable
-public enum SiteRoute: Equatable {
+public indirect enum SiteRoute: Equatable {
   case about
   case account(Account = .index)
   case admin(Admin = .index)

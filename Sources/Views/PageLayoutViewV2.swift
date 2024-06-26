@@ -208,7 +208,7 @@ struct NavView: NodeView {
           .columns(2, breakpoint: .mobile)
 
           GridColumn {
-            Node { CenteredNavItems() }
+            CenteredNavItems()
           }
           .columns(8, breakpoint: .desktop)
           .class([
@@ -227,7 +227,7 @@ struct NavView: NodeView {
           ])
 
           GridColumn {
-            Node { MobileMenu() }
+            MobileMenu()
           }
           .columns(10, breakpoint: .mobile)
           .class([
@@ -244,44 +244,53 @@ struct NavView: NodeView {
   }
 }
 
-struct MobileMenu: HTML {
-  var body: some HTML {
+struct MobileMenu: NodeView {
+  var body: Node {
     div {
       label {
         for index in -1...1 {
           MenuBar(index: index)
         }
       }
-      .size(width: .px(30), height: .percent(100))
       .attribute("for", "menu-checkbox")
-      .attribute("class", "menu-checkbox-container")
-      .inlineStyle("align-items", "center")
-      .inlineStyle("cursor", "pointer")
-      .inlineStyle("display", "flex")  // Class.flex.flex
-      .inlineStyle("flex-direction", "column")  // Class.flex.column
-      .inlineStyle("justify-content", "center")
+      .style("height", "100%")
+      .style("width", "30px")
+      .style("justify-content", "center")
+      .style("align-items", "center")
+      .class([
+        .class("menu-checkbox-container"),
+        Class.flex.flex,
+        Class.flex.column,
+        Class.cursor.pointer,
+      ])
 
-      input
-        .hidden()
+      input {}
         .attribute("id", "menu-checkbox")
         .attribute("type", "checkbox")
+        .class([Class.hide])
     }
-    // TODO: .class([Class.grid.end(.mobile)])
+    .class([
+      Class.grid.end(.mobile),
+    ])
   }
 
-  private struct MenuBar: HTML {
+  private struct MenuBar: NodeView {
     let index: Int
-    var body: some HTML {
-      div
-        .backgroundColor(.white)
-        .size(width: .px(4), height: .px(30))
-        .attribute("class", "menu-bar-\(index)")
-        .inlineStyle("border-radius", "2px")
-        .inlineStyle("content", "")
-        .inlineStyle("display", "block")
-        .inlineStyle("margin-top", "\(index * 8)px")
-        .inlineStyle("position", "absolute")
-        .inlineStyle("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+    var body: Node {
+      div {}
+        .class([
+          Class.display.block,
+          Class.pf.colors.bg.white,
+          Class.position.absolute,
+          .class("menu-bar-\(index)")
+        ])
+        .style("width", "30px")
+        .style("height", "4px")
+        .style("border-radius", "2px")
+        .style("width", "30px")
+        .style("content", "")
+        .style("margin-top", "\(index * 8)px")
+        .style("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
     }
   }
 }
@@ -326,11 +335,11 @@ struct TrailingNavItems: NodeView {
   }
 }
 
-struct CenteredNavItems: HTML {
+struct CenteredNavItems: NodeView {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
 
-  var body: some HTML {
+  var body: Node {
     ul {
       if currentUser != nil {
         NavListItem("Episodes", route: .homeV2)
@@ -342,13 +351,15 @@ struct CenteredNavItems: HTML {
       NavListItem("Blog", route: .blog())
       NavListItem("Gifts", route: .gifts(.index))
     }
-    .listStyle(.reset)
-    .fontStyle(.body(.small))
-    // TODO: Class.grid.middle(.mobile)
+    .class([
+      Class.type.list.reset,
+      Class.grid.middle(.mobile),
+      Class.pf.type.body.small,
+    ])
   }
 }
 
-struct NavListItem: HTML {
+struct NavListItem: NodeView {
   @Dependency(\.siteRouter) var siteRouter
   let title: String
   let route: SiteRoute
@@ -356,13 +367,15 @@ struct NavListItem: HTML {
     self.title = title
     self.route = route
   }
-  var body: some HTML {
+  var body: Node {
     li {
       a { title }
         .attribute("href", siteRouter.path(for: route))
-        .color(.gray650)
+        .class([Class.pf.colors.link.gray650])
     }
-    .padding(left: .medium)  // TODO: Class.padding([.mobile: [.left: 3]])
-    .inlineStyle("display", "inline")
+    .class([
+      Class.padding([.mobile: [.left: 3]]),
+      Class.display.inline
+    ])
   }
 }
