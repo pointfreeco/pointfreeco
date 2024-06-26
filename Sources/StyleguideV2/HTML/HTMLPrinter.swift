@@ -1,6 +1,6 @@
 import OrderedCollections
 
-public struct HTMLPrinter: ~Copyable {
+public struct HTMLPrinter {
   public typealias Content = Never
   var attributes: OrderedDictionary<String, String?> = [:]
   var bytes: ContiguousArray<UInt8> = []

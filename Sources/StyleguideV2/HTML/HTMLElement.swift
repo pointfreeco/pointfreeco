@@ -10,7 +10,7 @@ public struct HTMLElement<Content: HTML>: HTML {
     self.tag = tag
     self.content = content()
   }
-  public static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     printer.bytes.append(UInt8(ascii: "<"))
     html.tag.withUTF8Buffer { printer.bytes.append(contentsOf: $0) }
     for (name, value) in printer.attributes {

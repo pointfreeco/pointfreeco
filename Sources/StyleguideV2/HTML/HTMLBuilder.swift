@@ -39,7 +39,7 @@ public enum HTMLBuilder {
 
 private struct HTMLArray<Element: HTML>: HTML {
   let elements: [Element]
-  static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     for element in html.elements {
       Element._render(element, into: &printer)
     }
@@ -50,7 +50,7 @@ private struct HTMLArray<Element: HTML>: HTML {
 public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
   case first(First)
   case second(Second)
-  public static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     switch html {
     case let .first(first):
       First._render(first, into: &printer)
@@ -66,7 +66,7 @@ private struct HTMLText: HTML {
   init(_ text: String) {
     self.text = text
   }
-  static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     printer.bytes.append(contentsOf: html.text.utf8)
   }
   var body: Never { fatalError() }
@@ -77,7 +77,7 @@ private struct HTMLTuple<each Content: HTML>: HTML {
   init(content: repeat each Content) {
     self.content = (repeat each content)
   }
-  static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     func render<T: HTML>(_ html: T) {
       let oldAttributes = printer.attributes
       defer { printer.attributes = oldAttributes }
@@ -89,7 +89,7 @@ private struct HTMLTuple<each Content: HTML>: HTML {
 }
 
 extension Optional: HTML where Wrapped: HTML {
-  public static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     guard let html else { return }
     Wrapped._render(html, into: &printer)
   }
