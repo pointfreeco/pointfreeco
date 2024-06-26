@@ -66,11 +66,24 @@ public struct ArrayNode<A: NodeView>: NodeView {
 
 public struct TextNode: NodeView {
   let text: String
-  init(_ text: String) {
+  public init(_ text: String) {
     self.text = text
   }
   public var body: Node {
     Node.text(text)
+  }
+}
+
+public struct Raw: NodeView {
+  let raw: String
+  public init(_ raw: String) {
+    self.raw = raw
+  }
+  public init(_ text: StaticString) {
+    self.raw = String(describing: text)
+  }
+  public var body: Node {
+    Node.raw(raw)
   }
 }
 
@@ -149,20 +162,26 @@ public func html(@NodeBuilder _ children: () -> Node) -> Node { Node("html", chi
 public func head(@NodeBuilder _ children: () -> Node) -> Node { Node("head", children: children) }
 public func body(@NodeBuilder _ children: () -> Node) -> Node { Node("body", children: children) }
 public func meta(@NodeBuilder _ children: () -> Node) -> Node { Node("meta", children: children) }
+public func style(@NodeBuilder _ children: () -> Node) -> Node { Node("style", children: children) }
+public func link(@NodeBuilder _ children: () -> Node) -> Node { Node("link", children: children) }
+public func script(@NodeBuilder _ children: () -> Node) -> Node { Node("link", children: children) }
 extension NodeView {
   public func body(@NodeBuilder _ children: () -> Node) -> Node { Node("body", children: children) }
+}
+extension NodeView {
+  public func style(@NodeBuilder _ children: () -> Node) -> Node { Node("style", children: children) }
 }
 
 extension NodeView {
   public func attribute(
     _ attributeName: String,
     _ value: String?,
-    _ separator: String? = nil
+    separator: String? = nil
   ) -> Node {
     // TODO: awful hacks
     guard let node = self as? Node 
     else {
-      return body.attribute(attributeName, value, separator)
+      return body.attribute(attributeName, value, separator: separator)
     }
 
     // TODO: ok to do no-op for nil value?
@@ -175,7 +194,7 @@ extension NodeView {
       guard case .fragment(let array) = node else {
         return node
       }
-      return .fragment(array.map { $0.attribute(attributeName, value, separator) })
+      return .fragment(array.map { $0.attribute(attributeName, value, separator: separator) })
     }
 
     guard let index = attributes.firstIndex(where: { name, _ in name == attributeName })
@@ -193,7 +212,7 @@ extension NodeView {
   }
 
   public func `class`(_ value: String) -> Node {
-    attribute("class", value, " ")
+    attribute("class", value, separator: " ")
   }
 
   public func `class`(_ selectors: [CssSelector]) -> Node {
@@ -201,6 +220,6 @@ extension NodeView {
   }
 
   public func style(_ name: String, _ value: String) -> Node {
-    attribute("style", "\(name): \(value)")
+    attribute("style", "\(name): \(value)", separator: ";")
   }
 }

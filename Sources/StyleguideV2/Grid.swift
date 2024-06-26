@@ -35,7 +35,6 @@ public struct GridColumn<Content: NodeView>: NodeView {
     div {
       content
     }
-    .class([Class.grid.col(.mobile, nil)])
     .class(
       [Class.grid.col(.mobile, nil)] + sizes
         .sorted(by: { $0.key.rawValue < $1.key.rawValue })
