@@ -1,7 +1,7 @@
 struct HTMLInlineStyle<Content: HTML>: HTML {
   let content: Content
-  let property: String  // margin-top
-  let value: String     // 8px          ~~~~> mt-8px
+  let property: String
+  let value: String
   let mediaQuery: String?
   let pseudo: String?
 

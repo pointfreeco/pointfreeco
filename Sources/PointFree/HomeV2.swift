@@ -1,6 +1,7 @@
 import Foundation
 import Html
 import HttpPipeline
+import StyleguideV2
 import Views
 
 func homeV2Middleware(
@@ -10,26 +11,45 @@ func homeV2Middleware(
   conn
     .writeStatus(.ok)
     .respondV2(
-      view: homeV2View(),
+      view: Node { Home() },
       layoutData: SimplePageLayoutData(
-        description: "Point-Free 2.0",
+        description: "Point-Free: A video series exploring advanced programming topics in Swift.",
         extraHead: [],
         extraStyles: .empty,
         image: "",
         isGhosting: false,
         openGraphType: .website,
         style: .base(.minimal(.dark)),
-        title: "Point-Free 2.0",
+        title: "Point-Free",
         twitterCard: .summaryLargeImage,
         usePrismJs: false
       )
     )
 }
 
-func homeV2View() -> Node {
-  [
-    "Homepage!"
-  ]
+struct Home: HTML {
+  var body: some HTML {
+    div {
+      GridRowV2(alignment: .center) {
+        h1 {
+          "Explore the wonderful world of Swift."
+        }
+        .color(.white)
+        .inlineStyle("margin", "0 auto")
+
+//        p {
+//          """
+//          Point-Free is a video series about combining functional programming concepts with the
+//          Swift programming language.
+//          """
+//        }
+//        .color(.white)
+      }
+      .padding(topBottom: .large, leftRight: .medium)
+      .padding(.extraLarge, .desktop)
+    }
+    .backgroundColor(.black)
+  }
 }
 
 //let homeMiddleware: M<Void> =
@@ -45,7 +65,7 @@ func homeV2View() -> Node {
 //      openGraphType: .website,
 //      style: .base(.mountains(.main)),
 //      title:
-//        "Point-Free: A video series exploring advanced programming topics in Swift.",
+//        ,
 //      twitterCard: .summaryLargeImage
 //    )
 //  }
