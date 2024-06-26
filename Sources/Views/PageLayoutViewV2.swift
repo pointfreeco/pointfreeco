@@ -143,7 +143,9 @@ public struct PageLayout<Content: NodeView>: NodeView {
         announcementBanner(.wwdc24)
         liveStreamBanner
         emergencyModeBanner(emergencyMode, layoutData)
-        NavView()
+        Node {
+          NavView()
+        }
         content
         if !layoutData.style.isMinimal {
           footerView(
@@ -216,7 +218,7 @@ public func pageLayoutV2(
         announcementBanner(.wwdc24),
         liveStreamBanner,
         emergencyModeBanner(emergencyMode, layoutData),
-        NavView().body,
+        Node { NavView() }.body,
         view,
         layoutData.style.isMinimal
           ? []
@@ -229,71 +231,66 @@ public func pageLayoutV2(
   ]
 }
 
-struct NavView: NodeView {
+struct SVG: HTML {
+  let base64: String
+  let description: String
+
+  var body: some HTML {
+    img
+      .attribute("src", "data:image/svg+xml;base64,\(base64)")
+      .attribute("alt", description)
+  }
+}
+
+struct NavView: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.currentRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
 
-  var body: Node {
+  var body: some HTML {
     div {
       div {
-        GridRow(alignment: .center) {
-          GridColumn {
+        GridRowV2(alignment: .center) {
+          GridColumnV2 {
             a {
-              Node.img(
+              SVG(
                 base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-                type: .image(.svg),
-                alt: "Point-Free"
+                description: "Point-Free"
               )
             }
             .attribute("href", siteRouter.path(for: .home))
           }
-          .columns(2, breakpoint: .mobile)
+          .column(count: 2)
 
-          GridColumn {
-            Node {
-              CenteredNavItems()
-            }
-            .class([Class.grid.middle(.mobile)])
+          GridColumnV2 {
+            CenteredNavItems()
           }
-          .columns(8, breakpoint: .desktop)
-          .class([
-            Class.flex.items.center,
-            Class.grid.center(.mobile),
-            Class.hide(.mobile),
-          ])
-          
-          GridColumn {
-            Node {
-              TrailingNavItems()
-            }
-            .class([Class.grid.end(.mobile)])
-          }
-          .columns(2, breakpoint: .desktop)
-          .class([
-            Class.flex.items.end,
-            Class.hide(.mobile)
-          ])
+          .column(alignment: .center)
+          .column(count: 8, media: .desktop)
+          .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
 
-          GridColumn {
-            Node {
-              MobileMenu()
-            }
+          GridColumnV2 {
+            TrailingNavItems()
           }
-          .columns(10, breakpoint: .mobile)
-          .class([
-            Class.flex.items.end,
-            Class.grid.end(.mobile),
-            Class.hide(.desktop)
-          ])
+          .column(alignment: .end)
+          .column(count: 2, media: .desktop)
+          .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
+
+          GridColumnV2 {
+            MobileMenu()
+          }
+          .column(alignment: .end)
+          .column(count: 10)
+          .inlineStyle("display", "none", media: MediaQuery.desktop.rawValue)
         }
       }
-      .style("max-width", "1080px")
-      .style("margin-left", "auto")
-      .style("margin-right", "auto")
+      .inlineStyle("max-width", "1080px")
+      .inlineStyle("margin-left", "auto")
+      .inlineStyle("margin-right", "auto")
     }
-    .class([newNavBarClass(for: .black)])
+    .backgroundColor(.black)
+    .padding(topBottom: .small, leftRight: .small)
   }
 }
 

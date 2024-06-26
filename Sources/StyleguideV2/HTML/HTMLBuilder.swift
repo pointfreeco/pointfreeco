@@ -78,7 +78,12 @@ private struct HTMLTuple<each Content: HTML>: HTML {
     self.content = (repeat each content)
   }
   static func _render(_ html: consuming Self, into printer: inout HTMLPrinter) {
-    repeat (each Content)._render(each html.content, into: &printer)
+    func render<T: HTML>(_ html: T) {
+      let oldAttributes = printer.attributes
+      defer { printer.attributes = oldAttributes }
+      T._render(html, into: &printer)
+    }
+    repeat render(each html.content)
   }
   var body: Never { fatalError() }
 }

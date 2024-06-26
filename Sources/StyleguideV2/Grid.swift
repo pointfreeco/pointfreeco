@@ -64,7 +64,7 @@ extension HTML {
   }
   public func column(alignment: GridColumnV2<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("justify-content", alignment.rawValue, media: media?.rawValue)
+      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
       .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
   }
 }
@@ -87,7 +87,7 @@ public struct GridColumnV2<Content: HTML>: HTML {
   }
 
   public enum Alignment: String {
-    case end = "flex-end"
+    case end = "end"
     case center = "center"
   }
 }
