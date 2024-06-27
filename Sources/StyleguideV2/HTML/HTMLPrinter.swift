@@ -8,7 +8,7 @@ public struct HTMLPrinter {
 
   var stylesheet: String {
     var sheet = ""
-    for (mediaQuery, styles) in styles {
+    for (mediaQuery, styles) in styles.sorted(by: { $0.key == nil ? $1.key != nil : false }) {
       if let mediaQuery {
         sheet.append("@media \(mediaQuery){")
       }

@@ -43,8 +43,8 @@ private struct TaglineColumn: HTML {
         }
         .fontScale(.h4)
         .margin(bottom: 0, .mobile)
-        .inlineStyle("font-size", "1.25", media: MediaQuery.mobile.rawValue)
-        .inlineStyle("font-size", "1.25", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("font-size", "1.25")
+        .inlineStyle("font-size", "1.5", media: MediaQuery.desktop.rawValue)
         .inlineStyle("line-height", "1.45")
 
         p {
