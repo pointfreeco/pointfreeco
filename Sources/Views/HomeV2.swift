@@ -1,4 +1,5 @@
 import Dependencies
+import Models
 import PointFreeRouter
 import StyleguideV2
 
@@ -18,45 +19,34 @@ public struct Home: HTML {
   }
 
   public var body: some HTML {
-    if currentUser != nil {
-      LoggedInHero(title: "Welcome back") {
-        HTMLGroup {
-          span { "Want to see what’s coming up next? " }
-          Link("Follow us on Twitter", href: "http://www.twitter.com/pointfreeco")
-        }
-        .linkUnderline(true)
-        .color(.gray800)
-      }
-
-      if creditCount > 0 {
-        HomeModule(theme: .light) {
-          EpisodeCredits(creditCount: creditCount)
-        }
-      }
+    if let currentUser {
+      LoggedIn(currentUser: currentUser, creditCount: creditCount)
     } else {
-      LoggedOutHero(
-        title: "Explore the wonderful world of advanced&nbsp;Swift.",
-        blurb: """
-          Point-Free is a a video series exploring advanced topics in the \
-          Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
-          Brandon&nbsp;and&nbsp;Stephen.
-          """,
-        ctaTitle: "Start with a free episode →",
-        ctaURL: siteRouter.loginPath(redirect: .homeV2)
-      )
+      LoggedOut(allFreeEpisodeCount: allFreeEpisodeCount)
+    }
+  }
+}
 
-      HomeModule(theme: .dark, isSmallTitle: true) {
-        Companies()
-      } title: {
-        Header(6) { "Trusted by teams" }
-          .inlineStyle("font-weight", "700")
-          .inlineStyle("text-transform", "uppercase")
+private struct LoggedIn: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  let currentUser: User
+  let creditCount: Int
+
+  var body: some HTML {
+    MinimalHero(title: "Welcome back") {
+      HTMLGroup {
+        span { "Want to see what’s coming up next? " }
+        Link("Follow us on Twitter", href: "http://www.twitter.com/pointfreeco")
       }
+      .linkUnderline(true)
+      .color(.gray800)
+    }
 
-      HomeModule(theme: .offLight) {
-        WhatToExpect()
-      } title: {
-        Header(2) { "What to expect" }
+    if creditCount > 0 {
+      HomeModule(theme: .light) {
+        EpisodeCredits(creditCount: creditCount)
       }
     }
 
@@ -65,7 +55,127 @@ public struct Home: HTML {
     } title: {
       Header(2) { "Episodes" }
     }
-    
+
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+      Collections()
+    } title: {
+      Header(2) { "Collections" }
+    }
+
+    if subscriberState.isActiveSubscriber {
+      MaximalHero(
+        title: "Refer a friend",
+        blurb: """
+        You'll both get one month free ($18 credit) when they sign up from your personal referral \
+        link:
+        """
+      ) {
+        let url = siteRouter.url(
+          for: .subscribeConfirmation(
+            lane: .personal,
+            referralCode: currentUser.referralCode
+          )
+        )
+
+        Grid {
+          GridColumn {
+            input {}
+              .attribute("value", url)
+              .attribute("type", "text")
+              .attribute("readonly", "true")
+              .attribute("onclick", "this.select();")
+              .inlineStyle("width", "100%")
+              .inlineStyle("border-radius", "0.5rem")
+              .color(.gray500)
+              .inlineStyle("padding", "1rem")
+              .inlineStyle("border", "none")
+              .inlineStyle("outline", "none")
+          }
+          .flexible()
+          .inlineStyle("padding-right", "1rem")
+
+          GridColumn {
+            Button(tag: input, color: .purple, size: .regular, style: .normal) {}
+              .attribute("type", "button")
+              .attribute("value", "Copy")
+              .attribute("onclick", """
+                navigator.clipboard.writeText("\(url)");
+                this.value = "Copied!";
+                setTimeout(() => { this.value = "Copy"; }, 3000);
+                """)
+          }
+          .inflexible()
+        }
+        .grid(alignment: .center)
+        .inlineStyle("margin", "2rem 4rem")
+      }
+    }
+//      .input(
+//        attributes: [
+//          .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+//          .value(text),
+//          .type(.text),
+//          .readonly(true),
+//          .onclick(safe: "this.select();"),
+//        ]
+//      ),
+//      .input(
+//        attributes: [
+//          .type(.button),
+//          .class([
+//            Class.pf.components.button(color: .white, size: .small),
+//            Class.align.middle,
+//            Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
+//          ]),
+//          .value("Copy"),
+//          .onclick(
+//            unsafe: """
+//            navigator.clipboard.writeText("\(text)");
+//            this.value = "Copied!";
+//            setTimeout(() => { this.value = "Copy"; }, 3000);
+//            """),
+//        ]
+//      )
+  }
+}
+
+private struct LoggedOut: HTML {
+  let allFreeEpisodeCount: Int
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    MaximalHero(
+      title: "Explore the wonderful world of advanced&nbsp;Swift.",
+      blurb: """
+          Point-Free is a a video series exploring advanced topics in the \
+          Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
+          Brandon&nbsp;and&nbsp;Stephen.
+          """,
+      ctaTitle: "Start with a free episode →",
+      ctaURL: siteRouter.loginPath(redirect: .homeV2)
+    )
+
+    HomeModule(theme: .dark, isSmallTitle: true) {
+      Companies()
+    } title: {
+      Header(6) { "Trusted by teams" }
+        .inlineStyle("font-weight", "700")
+        .inlineStyle("text-transform", "uppercase")
+    }
+
+    HomeModule(theme: .offLight) {
+      WhatToExpect()
+    } title: {
+      Header(2) { "What to expect" }
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+      Episodes()
+    } title: {
+      Header(2) { "Episodes" }
+    }
+
     HomeModule(seeAllRoute: .homeV2, theme: .light) {
       Collections()
     } title: {
@@ -78,7 +188,7 @@ public struct Home: HTML {
       Header(2) { "What people are saying" }
     }
 
-    LoggedOutHero(
+    MaximalHero(
       title: "Get started with our free&nbsp;plan",
       blurb: """
         Our free plan includes 1 subscriber-only episode of your choice, access to \
@@ -103,19 +213,24 @@ private struct EpisodeCredits: HTML {
         SVG.info
       }
       .inlineStyle("line-height", "0")
+      .inflexible()
+
       GridColumn {
         span { "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice." }
       }
-      .inlineStyle("padding-left", "1rem")
+      .flexible()
+      .inlineStyle("padding", "0 1rem")
+
       GridColumn {
         Link("Browse episodes", href: siteRouter.path(for: .home))
           .linkStyle(LinkStyle(color: .black, underline: true))
       }
       .column(alignment: .end)
-      .inlineStyle("flex-grow", "1")
+      .inflexible()
     }
     .grid(alignment: .center)
     .inlineStyle("padding", "1rem")
+    .inlineStyle("flex-wrap", "initial")
     .inlineStyle("border-radius", "0.5rem")
     .inlineStyle("width", "100%")
     .backgroundColor(.yellow)
@@ -207,7 +322,7 @@ private struct WhatPeopleAreSaying: HTML {
     for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
       GridColumn {
         for testimonial in group {
-          TestimonialComponent(testimonial: testimonial)
+          TestimonialCard(testimonial: testimonial)
         }
       }
       .inlineStyle("padding-left", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:nth-child(2))")
@@ -229,7 +344,7 @@ private struct WhatPeopleAreSaying: HTML {
     .inlineStyle("margin-top", "3rem")
   }
 
-  struct TestimonialComponent: HTML {
+  struct TestimonialCard: HTML {
     let testimonial: Testimonial
 
     var body: some HTML {
@@ -267,12 +382,12 @@ private struct WhatPeopleAreSaying: HTML {
       .color(.white, media: .dark)
       .attribute("href", testimonial.tweetUrl)
       .grid(alignment: .center)
-      .backgroundColor(.offWhite)
+      .backgroundColor(.white)
       .backgroundColor(.gray150, media: .dark)
       .inlineStyle("text-decoration-line", "none")
       .inlineStyle("display", "block")
       .inlineStyle("border", "1px solid #e8e8e8")
-      .inlineStyle("border", "1px solid \(PointFreeColor.gray300.rawValue)", media: MediaQuery.dark.rawValue)
+      .inlineStyle("border", "1px solid #353535", media: MediaQuery.dark.rawValue)
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("padding", "1.5rem")
       .inlineStyle("margin-bottom", "1rem", pseudo: "not(:last-child)")
@@ -280,7 +395,7 @@ private struct WhatPeopleAreSaying: HTML {
   }
 }
 
-private struct LoggedInHero<Blurb: HTML>: HTML {
+private struct MinimalHero<Blurb: HTML>: HTML {
   var title: String
   @HTMLBuilder var blurb: Blurb
 
@@ -307,13 +422,45 @@ private struct LoggedInHero<Blurb: HTML>: HTML {
   }
 }
 
-private struct LoggedOutHero: HTML {
+private struct MaximalHero<PrimaryCTA: HTML>: HTML {
   var title: String
   var blurb: String
-  var ctaTitle: String
-  var ctaURL: String
+  let primaryCTA: PrimaryCTA
   var secondaryCTATitle: String?
   var secondaryCTAURL: String?
+
+  init(
+    title: String,
+    blurb: String,
+    secondaryCTATitle: String? = nil,
+    secondaryCTAURL: String? = nil,
+    @HTMLBuilder primaryCTA: () -> PrimaryCTA
+  ) {
+    self.title = title
+    self.blurb = blurb
+    self.primaryCTA = primaryCTA()
+    self.secondaryCTATitle = secondaryCTATitle
+    self.secondaryCTAURL = secondaryCTAURL
+  }
+
+  init(
+    title: String,
+    blurb: String,
+    ctaTitle: String,
+    ctaURL: String,
+    secondaryCTATitle: String? = nil,
+    secondaryCTAURL: String? = nil
+  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLText>>> {
+    self.title = title
+    self.blurb = blurb
+    self.primaryCTA = Button(color: .purple, size: .regular, style: .normal) {
+      HTMLText(ctaTitle)
+    }
+    .attribute("href", ctaURL)
+    .inlineStyle("display", "inline-block")
+    self.secondaryCTATitle = secondaryCTATitle
+    self.secondaryCTAURL = secondaryCTAURL
+  }
 
   var body: some HTML {
     Grid {
@@ -326,12 +473,8 @@ private struct LoggedOutHero: HTML {
           .color(.gray800)
           .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
 
-        Button(color: .purple, size: .regular, style: .normal) {
-          HTMLText(ctaTitle)
-        }
-        .attribute("href", ctaURL)
-        .inlineStyle("margin-top", "3rem")
-        .inlineStyle("display", "inline-block")
+        primaryCTA
+          .inlineStyle("margin-top", "3rem")
       }
       .column(count: 12)
       .column(alignment: .start)

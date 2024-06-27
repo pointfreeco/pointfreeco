@@ -46,8 +46,6 @@ public struct GridColumn<Content: HTML>: HTML {
     div {
       content
     }
-    .inlineStyle("flex-grow", "0")
-    .inlineStyle("flex-shrink", "0")
     .inlineStyle("max-width", "100%")
     .inlineStyle("box-sizing", "border-box")
   }
@@ -89,5 +87,17 @@ extension HTML {
     self
       .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
       .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
+  }
+
+  public func inflexible() -> some HTML {
+    self
+      .inlineStyle("flex-grow", "0")
+      .inlineStyle("flex-shrink", "0")
+  }
+
+  public func flexible() -> some HTML {
+    self
+      .inlineStyle("flex-grow", "1")
+      .inlineStyle("flex-shrink", "1")
   }
 }
