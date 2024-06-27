@@ -9,18 +9,18 @@ public struct Footer: HTML {
     footer {
       Grid {
         TaglineColumn()
-          .column(count: 12, media: .mobile)
+          .column(count: 12)
           .column(count: 6, media: .desktop)
 
         HTMLGroup {
           ContentColumn()
           MoreColumn()
         }
-        .column(count: 4, media: .mobile)
+        .column(count: 4)
         .column(count: 2, media: .desktop)
 
         LegalColumn()
-          .column(count: 12, media: .mobile)
+          .column(count: 12)
           .column(count: 6, media: .desktop)
       }
       .grid(alignment: .baseline)
@@ -175,7 +175,7 @@ private struct LegalColumn: HTML {
       .linkColor(.gray650)
       .padding(top: 2, .mobile)
     }
+    .column(count: 12)
     .column(count: 6, media: .desktop)
-    .column(count: 12, media: .mobile)
   }
 }

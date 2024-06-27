@@ -115,13 +115,13 @@ public struct Metadata<A> {
 
 extension Metadata<Void> {
   public init(
-    description: String?,
-    image: String?,
-    title: String?,
-    twitterCard: TwitterCard?,
-    twitterSite: String?,
-    type: OpenGraphType?,
-    url: String?
+    description: String? = nil,
+    image: String? = nil,
+    title: String? = nil,
+    twitterCard: TwitterCard? = nil,
+    twitterSite: String? = nil,
+    type: OpenGraphType? = nil,
+    url: String? = nil
   ) {
     self.description = description
     self.image = image

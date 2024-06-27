@@ -40,6 +40,7 @@ var package = Package(
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
@@ -465,8 +466,10 @@ var package = Package(
     .target(
       name: "StyleguideV2",
       dependencies: [
+        "Ccmark",
         "Styleguide",
         .product(name: "Html", package: "swift-html"),
+        .product(name: "OrderedCollections", package: "swift-collections"),
       ]
     ),
 

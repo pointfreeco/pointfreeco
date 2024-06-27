@@ -5,8 +5,9 @@ extension HTML {
     _HTMLAttributes(content: self, attributes: [name: value])
   }
 
-  public func href(_ href: String) -> _HTMLAttributes<Self> { attribute("href", href) }
-  public func title(_ href: String) -> _HTMLAttributes<Self> { attribute("title", href) }
+  public func alt(_ value: String) -> _HTMLAttributes<Self> { attribute("alt", value) }
+  public func href(_ value: String) -> _HTMLAttributes<Self> { attribute("href", value) }
+  public func title(_ value: String) -> _HTMLAttributes<Self> { attribute("title", value) }
 }
 
 public struct _HTMLAttributes<Content: HTML>: HTML {

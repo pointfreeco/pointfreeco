@@ -18,9 +18,9 @@ public struct PageLayout<Content: HTML>: NodeView {
 
   public init(
     layoutData: SimplePageLayoutData<Void>,
-    metadata: Metadata<Void>,
-    cssConfig: Css.Config,
-    emergencyMode: Bool,
+    metadata: Metadata<Void> = Metadata(),
+    cssConfig: Css.Config = .compact,
+    emergencyMode: Bool = false,
     @HTMLBuilder content: () -> Content
   ) {
     self.content = content()
@@ -44,6 +44,8 @@ public struct PageLayout<Content: HTML>: NodeView {
         if layoutData.usePrismJs {
           prismJsHead.rawValue
         }
+
+        ChildOf.style(markdownBlockStyles, config: cssConfig).rawValue
 
         Node {
           meta().attribute("charset", "utf8")
@@ -111,6 +113,7 @@ public struct PageLayout<Content: HTML>: NodeView {
             .attribute("rel", "alternate")
             .title("Point-Free Episodes")
             .attribute("type", "application/atom+xml")
+
           link()
             .href(siteRouter.url(for: .blog(.feed)))
             .attribute("rel", "alternate")
