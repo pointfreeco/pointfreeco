@@ -9,8 +9,21 @@ import Views
 func homeV2Middleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
+  @Dependency(\.database) var database
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
 
-  conn
+  let creditCount: Int
+  if let credits = currentUser?.episodeCreditCount, !subscriberState.isActiveSubscriber {
+    creditCount = credits
+  } else {
+    creditCount = 0
+  }
+
+  return conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
@@ -26,6 +39,12 @@ func homeV2Middleware(
         usePrismJs: false
       )
     ) {
-      Home()
+      Home(
+        allFreeEpisodeCount: episodes()
+          .count(
+            where: { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
+          ), 
+        creditCount: creditCount
+      )
     }
 }

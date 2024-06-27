@@ -3,83 +3,137 @@ import PointFreeRouter
 import StyleguideV2
 
 public struct Home: HTML {
+  let allFreeEpisodeCount: Int
+  let creditCount: Int
+
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  public init() {}
+  public init(
+    allFreeEpisodeCount: Int,
+    creditCount: Int
+  ) {
+    self.allFreeEpisodeCount = allFreeEpisodeCount
+    self.creditCount = creditCount
+  }
 
   public var body: some HTML {
-    Hero()
+    if currentUser != nil {
+      LoggedInHero(title: "Welcome back") {
+        HTMLGroup {
+          span { "Want to see what’s coming up next? " }
+          Link("Follow us on Twitter", href: "http://www.twitter.com/pointfreeco")
+        }
+        .linkUnderline(true)
+        .color(.gray800)
+      }
 
-    Module(theme: .dark, isSmallTitle: true) {
-      Companies()
-    } title: {
-      Header(6) { "Trusted by teams" }
-        .inlineStyle("font-weight", "700")
-        .inlineStyle("text-transform", "uppercase")
+      if creditCount > 0 {
+        HomeModule(theme: .light) {
+          EpisodeCredits(creditCount: creditCount)
+        }
+      }
+    } else {
+      LoggedOutHero(
+        title: "Explore the wonderful world of advanced&nbsp;Swift.",
+        blurb: """
+          Point-Free is a a video series exploring advanced topics in the \
+          Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
+          Brandon&nbsp;and&nbsp;Stephen.
+          """,
+        ctaTitle: "Start with a free episode →",
+        ctaURL: siteRouter.loginPath(redirect: .homeV2)
+      )
+
+      HomeModule(theme: .dark, isSmallTitle: true) {
+        Companies()
+      } title: {
+        Header(6) { "Trusted by teams" }
+          .inlineStyle("font-weight", "700")
+          .inlineStyle("text-transform", "uppercase")
+      }
+
+      HomeModule(theme: .offLight) {
+        WhatToExpect()
+      } title: {
+        Header(2) { "What to expect" }
+      }
     }
 
-    Module(theme: .offLight) {
-      WhatToExpect()
-    } title: {
-      Header(2) { "What to expect" }
-    }
-    
-    Module(seeAllRoute: .homeV2, theme: .light) {
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
       Episodes()
     } title: {
-      Header(2) { "What you can expect" }
+      Header(2) { "Episodes" }
     }
     
-    Module(seeAllRoute: .homeV2, theme: .light) {
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
       Collections()
     } title: {
       Header(2) { "Collections" }
     }
 
-    Module(theme: .offLight) {
+    HomeModule(theme: .offLight) {
       WhatPeopleAreSaying()
     } title: {
       Header(2) { "What people are saying" }
     }
+
+    LoggedOutHero(
+      title: "Get started with our free&nbsp;plan",
+      blurb: """
+        Our free plan includes 1 subscriber-only episode of your choice, access to \
+        \(allFreeEpisodeCount) free episodes with transcripts and code samples, and weekly updates \
+        from our newsletter.
+        """,
+      ctaTitle: "Sign up for free →",
+      ctaURL: siteRouter.loginPath(redirect: .homeV2),
+      secondaryCTATitle: "View plans and pricing",
+      secondaryCTAURL: siteRouter.path(for: .pricingLanding)
+    )
   }
 }
 
-private struct Hero: HTML {
+private struct EpisodeCredits: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
+  let creditCount: Int
   var body: some HTML {
     Grid {
       GridColumn {
-        Header(2) { "Explore the wonderful world of advanced&nbsp;Swift." }
-          .color(.white)
-
-        Paragraph(.big) {
-            """
-            Point-Free is a a video series exploring advanced topics in the Swift&nbsp;\
-            programming&nbsp;language.
-            """
-        }
-        .fontStyle(.body(.regular))
-        .color(.gray800)
-        .inlineStyle("margin", "0 3rem", media: MediaQuery.desktop.rawValue)
-
-        Button(color: .purple, size: .regular, style: .normal) {
-          "Start with a free episode →"
-        }
-        .attribute("href", siteRouter.loginPath(redirect: .homeV2))
-        .inlineStyle("margin-top", "3rem")
-        .inlineStyle("display", "inline-block")
+        SVG.info
       }
-      .column(count: 12)
-      .column(alignment: .start)
-      .column(alignment: .center, media: .desktop)
-      .inlineStyle("margin", "0 auto")
+      .inlineStyle("line-height", "0")
+      GridColumn {
+        span { "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice." }
+      }
+      .inlineStyle("padding-left", "1rem")
+      GridColumn {
+        Link("Browse episodes", href: siteRouter.path(for: .home))
+          .linkStyle(LinkStyle(color: .black, underline: true))
+      }
+      .column(alignment: .end)
+      .inlineStyle("flex-grow", "1")
     }
     .grid(alignment: .center)
-    .padding(topBottom: .large, leftRight: .medium)
-    .padding(.extraLarge, .desktop)
-    .inlineStyle("background", "linear-gradient(#121212, #291a40)")
+    .inlineStyle("padding", "1rem")
+    .inlineStyle("border-radius", "0.5rem")
+    .inlineStyle("width", "100%")
+    .backgroundColor(.yellow)
   }
+  var creditsLeft: String {
+    "\(creditCount) credit\(creditCount == 1 ? "" : "s")"
+  }
+}
+
+extension SVG {
+  static let info = Self(
+    base64: base64EncodedString("""
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V9H11V15ZM11 7H9V5H11V7Z" fill="black"/>
+    </svg>
+    """),
+    description: ""
+  )
 }
 
 private struct Companies: HTML {
@@ -119,7 +173,7 @@ private struct WhatToExpect: HTML {
 
         Header(4) { HTMLText(item.title) }
         .color(.black)
-        .color(.white, media: .dark)
+        .color(.offWhite, media: .dark)
         .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
 
         Paragraph {
@@ -188,8 +242,7 @@ private struct WhatPeopleAreSaying: HTML {
               .backgroundColor(.gray650)
               .backgroundColor(.gray300, media: .dark)
           }
-//          .column(count: 1)
-//          .column(count: 2, media: .desktop)
+
           GridColumn {
             Header(5) {
               HTMLText(testimonial.subscriber ?? "")
@@ -203,8 +256,6 @@ private struct WhatPeopleAreSaying: HTML {
             .color(.gray400)
             .color(.gray650, media: .dark)
           }
-//          .column(count: 11)
-//          .column(count: 10, media: .desktop)
           .inlineStyle("padding-left", "1rem")
         }
         Paragraph {
@@ -229,10 +280,88 @@ private struct WhatPeopleAreSaying: HTML {
   }
 }
 
-private struct Module<Title: HTML, Content: HTML>: HTML {
+private struct LoggedInHero<Blurb: HTML>: HTML {
+  var title: String
+  @HTMLBuilder var blurb: Blurb
+
+  var body: some HTML {
+    Grid {
+      GridColumn {
+        Header(2) { HTMLText(title) }
+          .color(.white)
+
+        Paragraph(.big) { blurb }
+          .fontStyle(.body(.regular))
+          .color(.gray800)
+          .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+      }
+      .column(count: 12)
+      .column(alignment: .start)
+      .column(alignment: .center, media: .desktop)
+      .inlineStyle("margin", "0 auto")
+    }
+    .grid(alignment: .center)
+    .padding(topBottom: .large, leftRight: .medium)
+    .padding(.extraLarge, .desktop)
+    .inlineStyle("background", "linear-gradient(#121212, #242424)")
+  }
+}
+
+private struct LoggedOutHero: HTML {
+  var title: String
+  var blurb: String
+  var ctaTitle: String
+  var ctaURL: String
+  var secondaryCTATitle: String?
+  var secondaryCTAURL: String?
+
+  var body: some HTML {
+    Grid {
+      GridColumn {
+        Header(2) { HTMLText(title) }
+          .color(.white)
+
+        Paragraph(.big) { HTMLText(blurb) }
+          .fontStyle(.body(.regular))
+          .color(.gray800)
+          .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+
+        Button(color: .purple, size: .regular, style: .normal) {
+          HTMLText(ctaTitle)
+        }
+        .attribute("href", ctaURL)
+        .inlineStyle("margin-top", "3rem")
+        .inlineStyle("display", "inline-block")
+      }
+      .column(count: 12)
+      .column(alignment: .start)
+      .column(alignment: .center, media: .desktop)
+      .inlineStyle("margin", "0 auto")
+
+      GridColumn {
+        if let secondaryCTAURL, let secondaryCTATitle {
+          Link(secondaryCTATitle, href: secondaryCTAURL)
+        }
+      }
+      .column(count: 12)
+      .column(alignment: .start)
+      .column(alignment: .center, media: .desktop)
+      .linkColor(.gray400)
+      .fontStyle(.body(.small))
+      .inlineStyle("margin-top", "1rem")
+      .inlineStyle("text-decoration-line", "underline")
+    }
+    .grid(alignment: .center)
+    .padding(topBottom: .large, leftRight: .medium)
+    .padding(.extraLarge, .desktop)
+    .inlineStyle("background", "linear-gradient(#121212, #291a40)")
+  }
+}
+
+private struct HomeModule<Title: HTML, Content: HTML>: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
-  let title: Title
+  let title: Title?
   var seeAllRoute: SiteRoute?
   var theme: Theme
   var isSmallTitle: Bool
@@ -250,23 +379,37 @@ private struct Module<Title: HTML, Content: HTML>: HTML {
     self.isSmallTitle = isSmallTitle
     self.content = content()
   }
+  init(
+    seeAllRoute: SiteRoute? = nil,
+    theme: Theme,
+    isSmallTitle: Bool = false,
+    @HTMLBuilder content: () -> Content
+  ) where Title == Never {
+    self.title = nil
+    self.seeAllRoute = seeAllRoute
+    self.theme = theme
+    self.isSmallTitle = isSmallTitle
+    self.content = content()
+  }
 
   var body: some HTML {
     div {
       Grid {
-        GridColumn {
-          title
-            .color(theme.color)
-            .color(theme.darkModeColor, media: .dark)
-        }
-        .column(count: seeAllRoute == nil ? 12 : 10)
-        .column(alignment: seeAllRoute == nil ? .center : .start)
-        .inlineStyle(
-          "margin-bottom",
-          isSmallTitle ? "2rem"
+        if let title {
+          GridColumn {
+            title
+              .color(theme.color)
+              .color(theme.darkModeColor, media: .dark)
+          }
+          .column(count: seeAllRoute == nil ? 12 : 10)
+          .column(alignment: seeAllRoute == nil ? .center : .start)
+          .inlineStyle(
+            "margin-bottom",
+            isSmallTitle ? "2rem"
             : seeAllRoute == nil ? "4rem"
             : "1.5rem"
-        )
+          )
+        }
 
         if let seeAllRoute {
           GridColumn {
@@ -305,7 +448,7 @@ struct Theme {
     backgroundColor: .white,
     darkModeBackgroundColor: .black,
     color: .black,
-    darkModeColor: .white
+    darkModeColor: .offWhite
   )
   static let offLight = Self(
     backgroundColor: .offWhite,

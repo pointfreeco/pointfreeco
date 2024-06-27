@@ -33,7 +33,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
       }
 
       // TODO: better hashing/compression (lossless)
-      let className = "\(property)-\(value.hashValue)-\(mediaQuery?.hashValue ?? 0)"
+      let className = "\(property)-\((value + (mediaQuery ?? "") + (pseudo ?? "")).hashValue)"
       let pseudo = "\(className)\(pseudo.map { ":\($0)" } ?? "")"
 
       if printer.styles[mediaQuery, default: [:]][pseudo] == nil {

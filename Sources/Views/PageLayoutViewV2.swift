@@ -306,8 +306,10 @@ struct NavListItem: HTML {
     self.route = route
   }
   var body: some HTML {
-    li { Link(title, href: siteRouter.path(for: route)) }
-      .padding(left: .medium)
-      .inlineStyle("display", "inline")
+    li {
+      Link(title, href: siteRouter.path(for: route))
+    }
+    .padding(left: .medium)
+    .inlineStyle("display", "inline")
   }
 }

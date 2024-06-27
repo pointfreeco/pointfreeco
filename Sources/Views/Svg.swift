@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-private func base64EncodedString(_ string: String) -> String {
+func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
