@@ -177,5 +177,7 @@ private struct LegalColumn: HTML {
       .fontStyle(.body(.small))
       .padding(top: 2, .mobile)
     }
+    .column(count: 6, media: .desktop)
+    .column(count: 12, media: .mobile)
   }
 }
