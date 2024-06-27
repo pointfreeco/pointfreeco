@@ -9,7 +9,7 @@ import Prelude
 import Styleguide
 import StyleguideV2
 
-public struct PageLayout<Content: NodeView>: NodeView {
+public struct PageLayout<Content: HTML>: NodeView {
   let content: Content
   let layoutData: SimplePageLayoutData<Void>
   let metadata: Metadata<Void>
@@ -21,7 +21,7 @@ public struct PageLayout<Content: NodeView>: NodeView {
     metadata: Metadata<Void>,
     cssConfig: Css.Config,
     emergencyMode: Bool,
-    @NodeBuilder content: () -> Content
+    @HTMLBuilder content: () -> Content
   ) {
     self.content = content()
     self.layoutData = layoutData
@@ -145,10 +145,8 @@ public struct PageLayout<Content: NodeView>: NodeView {
         emergencyModeBanner(emergencyMode, layoutData)
         Node {
           NavView()
-        }
-        content
-        if !layoutData.style.isMinimal {
-          Node {
+          content
+          if !layoutData.style.isMinimal {
             Footer()
           }
         }

@@ -13,7 +13,6 @@ func homeV2Middleware(
   conn
     .writeStatus(.ok)
     .respondV2(
-      view: Node { Home() },
       layoutData: SimplePageLayoutData(
         description: "Point-Free: A video series exploring advanced programming topics in Swift.",
         extraHead: [],
@@ -26,5 +25,7 @@ func homeV2Middleware(
         twitterCard: .summaryLargeImage,
         usePrismJs: false
       )
-    )
+    ) {
+      Home()
+    }
 }

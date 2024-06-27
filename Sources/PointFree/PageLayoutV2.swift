@@ -2,12 +2,13 @@ import Dependencies
 import Foundation
 import Html
 import HttpPipeline
+import StyleguideV2
 import Views
 
 extension Conn where Step == HeadersOpen {
   func respondV2(
-    view: Node,
-    layoutData: SimplePageLayoutData<Void>
+    layoutData: SimplePageLayoutData<Void>,
+    @HTMLBuilder view: () -> some HTML
   ) -> Conn<ResponseEnded, Data> {
     @Dependency(\.currentRoute) var siteRoute
     @Dependency(\.renderHtml) var renderHtml
@@ -38,11 +39,10 @@ extension Conn where Step == HeadersOpen {
             layoutData: layoutData,
             metadata: metadata,
             cssConfig: .pretty, // TODO
-            emergencyMode: false // TODO
-          ) {
-            view
-          }
-            .body
+            emergencyMode: false, // TODO,
+            content: view
+          )
+          .body
         ),
         contentType: .html
       )
