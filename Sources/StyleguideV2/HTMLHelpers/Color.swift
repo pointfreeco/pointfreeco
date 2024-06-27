@@ -5,12 +5,16 @@ public enum Pseudo: String {
 }
 
 extension HTML {
-  public func backgroundColor(_ color: PointFreeColor?) -> some HTML {
-    inlineStyle("background-color", color?.rawValue)
+  public func backgroundColor(_ color: PointFreeColor?, media: MediaQuery? = nil) -> some HTML {
+    inlineStyle("background-color", color?.rawValue, media: media?.rawValue)
   }
 
-  public func color(_ color: PointFreeColor?, _ pseudo: Pseudo? = nil) -> some HTML {
-    inlineStyle("color", color?.rawValue, media: nil, pseudo: pseudo?.rawValue)
+  public func color(
+    _ color: PointFreeColor?,
+    _ pseudo: Pseudo? = nil,
+    media: MediaQuery? = nil
+  ) -> some HTML {
+    inlineStyle("color", color?.rawValue, media: media?.rawValue, pseudo: pseudo?.rawValue)
   }
 }
 

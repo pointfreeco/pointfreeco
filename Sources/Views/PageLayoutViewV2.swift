@@ -204,11 +204,9 @@ struct NavView: HTML {
       .inlineStyle("max-width", "1080px")
       .inlineStyle("margin-left", "auto")
       .inlineStyle("margin-right", "auto")
-      .attribute("id", "nav-2")
     }
     .backgroundColor(.black)
     .padding(topBottom: .small, leftRight: .small)
-    .attribute("id", "nav-1")
   }
 }
 

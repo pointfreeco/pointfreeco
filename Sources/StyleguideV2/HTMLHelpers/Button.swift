@@ -35,7 +35,9 @@ public struct Button<Label: HTML>: HTML {
     .color(color.foregroundColor(for: style), .link)
     .color(color.foregroundColor(for: style), .visited)
     .fontScale(size.fontScale)
-    .padding(size.padding)
+    .inlineStyle("padding", "\(size.topBottomPadding)rem \(size.leftRightPadding)rem")
+    .inlineStyle("border-radius", "0.5rem")
+    .inlineStyle("transition", "0.3s")
   }
 
   public enum Color {
@@ -74,10 +76,18 @@ public struct Button<Label: HTML>: HTML {
     case regular
     case large
 
-    fileprivate var padding: Insets {
+    fileprivate var leftRightPadding: Double {
       switch self {
-      case .small: Insets(topBottom: 1, leftRight: 1)
-      case .regular, .large: Insets(topBottom: 1, leftRight: 2)
+      case .small: 1
+      case .regular: 1.25
+      case .large: 1.5
+      }
+    }
+    fileprivate var topBottomPadding: Double {
+      switch self {
+      case .small: 0.75
+      case .regular: 1
+      case .large: 1.25
       }
     }
 

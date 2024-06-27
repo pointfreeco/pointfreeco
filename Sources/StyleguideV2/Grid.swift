@@ -51,8 +51,20 @@ public struct GridColumn<Content: HTML>: HTML {
   }
 
   public enum Alignment: String {
-    case end = "end"
-    case center = "center"
+    case end
+    case center
+    var justifyContent: String {
+      switch self {
+      case .end: "flex-end"
+      case .center: "center"
+      }
+    }
+    var textAlign: String {
+      switch self {
+      case .end: "end"
+      case .center: "center"
+      }
+    }
   }
 }
 
@@ -64,7 +76,7 @@ extension HTML {
   }
   public func column(alignment: GridColumn<HTMLText>.Alignment, media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
-      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
+      .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
+      .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
   }
 }
