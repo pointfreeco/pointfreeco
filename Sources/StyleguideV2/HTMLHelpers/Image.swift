@@ -8,7 +8,7 @@ public struct Image: HTML {
   }
 
   public var body: some HTML {
-      img()
+    img()
       .attribute("src", source)
       .attribute("alt", description)
   }

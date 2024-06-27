@@ -303,7 +303,7 @@ private struct Episodes: HTML {
 
   var body: some HTML {
     Grid {
-      for episode in episodes().suffix(3) {
+      for episode in episodes().dropLast(5).suffix(3) {
         EpisodeCard(episode, emergencyMode: false)  // TODO
       }
     }
@@ -578,7 +578,7 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
         content
       }
       .grid(alignment: .baseline)
-      .inlineStyle("max-width", "1080px")
+      .inlineStyle("max-width", "1184px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle("padding", "4rem 2rem")
       .inlineStyle("padding", "4rem 3rem", media: MediaQuery.desktop.rawValue)

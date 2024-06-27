@@ -92,6 +92,10 @@ public indirect enum SiteRoute: Equatable {
     case index
     case progress(param: Either<String, Episode.ID>, percent: Int)
     case show(Either<String, Episode.ID>)
+
+    public static func show(_ episode: Episode) -> Self {
+      .show(.left(episode.slug))
+    }
   }
 
   public enum Feed: Equatable {

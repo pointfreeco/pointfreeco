@@ -16,23 +16,30 @@ public struct Card<Content: HTML, Header: HTML>: HTML {
 
   public var body: some HTML {
     GridColumn {
-      header
       div {
-        content
+        header
+        div {
+          content
+        }
+        .inlineStyle("padding", "1rem 2rem 2rem 2rem")
       }
       .backgroundColor(.white)
-      .inlineStyle("padding", "1rem 2rem 2rem 2rem")
-      .inlineStyle("margin", "1rem 1rem 2rem 1rem")
-      .inlineStyle("border-radius", "5px")
+      .backgroundColor(.gray150, media: .dark)
       .inlineStyle("box-shadow", "0 2px 10px -2px rgba(0,0,0,0.3)")
+      .inlineStyle("border-radius", "5px")
+      .inlineStyle("margin", "1rem 0 2rem 0")
+      .inlineStyle("overflow", "hidden")
     }
     .column(count: 12)
     .column(count: 4, media: .desktop)
+    .inlineStyle("padding-left", "1rem", pseudo: "not(:first-child)")
+    .inlineStyle("padding-right", "1rem", pseudo: "not(:last-child)")
   }
 }
 
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
 
   let episode: Episode
   let emergencyMode: Bool
@@ -48,16 +55,21 @@ public struct EpisodeCard: HTML {
         "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.formatted(.dateTime.day().month().year()))"
       }
       .color(.gray650)
+      .color(.gray400, media: .dark)
       .fontStyle(.body(.small))
 
       Header(4) {
-        HTMLText(episode.title)
+//        Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+          HTMLText(episode.fullTitle)
+//        }
       }
+      .color(.white, media: .dark)
 
       div {
         HTMLMarkdown(episode.blurb)
       }
-      .color(.gray500)
+      .color(.gray400)
+      .color(.gray650, media: .dark)
 
       Grid {
         if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
@@ -69,11 +81,13 @@ public struct EpisodeCard: HTML {
         Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
       }
       .color(.gray650)
+      .color(.gray400, media: .dark)
       .grid(alignment: .center)
     } header: {
-      img()
-        .href(episode.image)
-        .attribute("alt")
+      Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+        Image(source: episode.image, description: "")
+          .inlineStyle("width", "100%")
+      }
     }
   }
 
