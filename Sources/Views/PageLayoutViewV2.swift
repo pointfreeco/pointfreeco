@@ -148,10 +148,9 @@ public struct PageLayout<Content: NodeView>: NodeView {
         }
         content
         if !layoutData.style.isMinimal {
-          footerView(
-            user: currentUser,
-            year: Calendar(identifier: .gregorian).component(.year, from: now)
-          )
+          Node {
+            Footer()
+          }
         }
       }
     }

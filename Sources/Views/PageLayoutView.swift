@@ -127,10 +127,7 @@ public func simplePageLayout<A>(
           contentView(layoutData.data),
           layoutData.style.isMinimal
             ? []
-            : footerView(
-              user: currentUser,
-              year: Calendar(identifier: .gregorian).component(.year, from: now)
-            )
+            : Node { Footer() }
         )
       ),
     ]

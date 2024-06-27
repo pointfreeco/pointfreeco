@@ -7,14 +7,8 @@ import Models
 import PointFreeRouter
 import StyleguideV2
 
-public func footerView(user: User?, year: Int) -> Node {
-  Node {
-    Footer()
-  }
-}
-
-private struct Footer: HTML {
-  var body: some HTML {
+public struct Footer: HTML {
+  public var body: some HTML {
     footer {
       GridRow(alignment: .baseline) {
         TaglineColumn()
