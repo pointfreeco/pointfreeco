@@ -19,11 +19,11 @@ public struct Link<Label: HTML>: HTML {
   public var body: some HTML {
     a { label }
       .attribute("href", href)
-      .color(linkColor, .link)
       .color(linkColor, .visited)
-      .inlineStyle("text-decoration", "underline", pseudo: "hover")
-      .inlineStyle("text-decoration", "none", pseudo: "link")
+      .color(linkColor, .link)
       .inlineStyle("text-decoration", "none", pseudo: "visited")
+      .inlineStyle("text-decoration", "none", pseudo: "link")
+      .inlineStyle("text-decoration", "underline", pseudo: "hover")
   }
 }
 
