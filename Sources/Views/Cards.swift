@@ -54,6 +54,44 @@ public struct EpisodeCard: HTML {
   }
 }
 
+public struct ClipCard: HTML {
+  @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
+
+  let clip: Clip
+
+  public init(_ clip: Clip) {
+    self.clip = clip
+  }
+
+  public var body: some HTML {
+    Card {
+      Header(5) {
+        // Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+        HTMLText(clip.title)
+        // }
+      }
+      .color(.white, media: .dark)
+
+      div {
+        HTMLMarkdown(clip.blurb)
+      }
+      .color(.gray400)
+      .color(.gray650, media: .dark)
+    } header: {
+      Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
+        Image(source: clip.posterURL, description: "")
+          .inlineStyle("width", "100%")
+      }
+      .inlineStyle("display", "block")
+      .inlineStyle("line-height", "0")
+    } footer: {
+      Label("Watch", icon: .play)
+      Label(clip.duration.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+    }
+  }
+}
+
 public struct CollectionCard: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -129,7 +167,7 @@ extension SVG {
     """
   }
 
-  static let play = Self("Episodes") {
+  static let play = Self("Play") {
     """
     <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="#7D7D7D"/>

@@ -23,6 +23,8 @@ func homeV2Middleware(
     creditCount = 0
   }
 
+  let clips = (try? await database.fetchClips()) ?? []
+
   return conn
     .writeStatus(.ok)
     .respondV2(
@@ -43,7 +45,8 @@ func homeV2Middleware(
         allFreeEpisodeCount: episodes()
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
           .count,
-        creditCount: creditCount
+        creditCount: creditCount,
+        clips: clips
       )
     }
 }

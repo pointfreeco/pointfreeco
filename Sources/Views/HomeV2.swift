@@ -6,23 +6,26 @@ import StyleguideV2
 public struct Home: HTML {
   let allFreeEpisodeCount: Int
   let creditCount: Int
+  let clips: [Clip]
 
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   public init(
     allFreeEpisodeCount: Int,
-    creditCount: Int
+    creditCount: Int,
+    clips: [Clip]
   ) {
     self.allFreeEpisodeCount = allFreeEpisodeCount
     self.creditCount = creditCount
+    self.clips = clips
   }
 
   public var body: some HTML {
     if let currentUser {
-      LoggedIn(currentUser: currentUser, creditCount: creditCount)
+      LoggedIn(currentUser: currentUser, creditCount: creditCount, clips: clips)
     } else {
-      LoggedOut(allFreeEpisodeCount: allFreeEpisodeCount)
+      LoggedOut(allFreeEpisodeCount: allFreeEpisodeCount, clips: clips)
     }
   }
 }
@@ -33,6 +36,7 @@ private struct LoggedIn: HTML {
 
   let currentUser: User
   let creditCount: Int
+  let clips: [Clip]
 
   var body: some HTML {
     MinimalHero(title: "Welcome back") {
@@ -63,10 +67,12 @@ private struct LoggedIn: HTML {
       Upgrade()
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
-      Clips()
-    } title: {
-      Header(2) { "Clips" }
+    if !clips.isEmpty {
+      HomeModule(seeAllRoute: .homeV2, theme: .light) {
+        Clips(clips: clips)
+      } title: {
+        Header(2) { "Clips" }
+      }
     }
 
     HomeModule(seeAllRoute: .homeV2, theme: .light) {
@@ -128,6 +134,7 @@ private struct LoggedIn: HTML {
 
 private struct LoggedOut: HTML {
   let allFreeEpisodeCount: Int
+  let clips: [Clip]
 
   @Dependency(\.siteRouter) var siteRouter
 
@@ -163,10 +170,12 @@ private struct LoggedOut: HTML {
       Header(2) { "Episodes" }
     }
 
-    HomeModule(seeAllRoute: .clips(.clips), theme: .light) {
-      Clips()
-    } title: {
-      Header(2) { "Clips" }
+    if !clips.isEmpty {
+      HomeModule(seeAllRoute: .clips(.clips), theme: .light) {
+        Clips(clips: clips)
+      } title: {
+        Header(2) { "Clips" }
+      }
     }
 
     HomeModule(seeAllRoute: .collections(), theme: .light) {
@@ -312,8 +321,15 @@ private struct Episodes: HTML {
 }
 
 private struct Clips: HTML {
+  let clips: [Clip]
+
   var body: some HTML {
-    "Clips!"
+    Grid {
+      for clip in clips.prefix(3) {
+        ClipCard(clip)
+      }
+    }
+    .grid(alignment: .stretch)
   }
 }
 
