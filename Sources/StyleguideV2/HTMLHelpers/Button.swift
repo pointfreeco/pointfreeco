@@ -74,10 +74,10 @@ public struct Button<Label: HTML>: HTML {
     case regular
     case large
 
-    fileprivate var padding: Padding {
+    fileprivate var padding: Insets {
       switch self {
-      case .small: Padding(topBottom: 1, leftRight: 1)
-      case .regular, .large: Padding(topBottom: 1, leftRight: 2)
+      case .small: Insets(topBottom: 1, leftRight: 1)
+      case .regular, .large: Insets(topBottom: 1, leftRight: 2)
       }
     }
 

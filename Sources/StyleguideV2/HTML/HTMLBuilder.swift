@@ -65,10 +65,13 @@ public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
 
 public struct HTMLText: HTML {
   let text: String
-  public init(_ text: String) {
+  let raw: Bool
+  public init(_ text: String, raw: Bool = false) {
     self.text = text
+    self.raw = raw
   }
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
+    // TODO: Escape
     printer.bytes.append(contentsOf: html.text.utf8)
   }
   public var body: Never { fatalError() }

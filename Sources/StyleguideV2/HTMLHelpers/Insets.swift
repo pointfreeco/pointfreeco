@@ -1,5 +1,40 @@
 extension HTML {
-  public func padding(_ padding: Padding, _ media: MediaQuery? = nil) -> some HTML {
+  public func margin(_ margin: Insets, _ media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("margin-top", margin.top.map { "\($0.rawValue)rem" }, media: media?.rawValue)
+      .inlineStyle("margin-left", margin.left.map { "\($0.rawValue)rem" }, media: media?.rawValue)
+      .inlineStyle(
+        "margin-bottom", margin.bottom.map { "\($0.rawValue)rem" }, media: media?.rawValue
+      )
+      .inlineStyle(
+        "margin-right", margin.right.map { "\($0.rawValue)rem" }, media: media?.rawValue
+      )
+  }
+
+  public func margin(
+    top: Spacing? = nil,
+    left: Spacing? = nil,
+    bottom: Spacing? = nil,
+    right: Spacing? = nil,
+    _ media: MediaQuery? = nil
+  ) -> some HTML {
+    margin(Insets(top: top, left: left, bottom: bottom, right: right), media)
+  }
+
+  @_disfavoredOverload
+  public func margin(
+    topBottom: Spacing? = nil,
+    leftRight: Spacing? = nil,
+    _ media: MediaQuery? = nil
+  ) -> some HTML {
+    margin(Insets(topBottom: topBottom, leftRight: leftRight), media)
+  }
+
+  public func margin(_ all: Spacing, _ media: MediaQuery? = nil) -> some HTML {
+    margin(Insets(all: all), media)
+  }
+
+  public func padding(_ padding: Insets, _ media: MediaQuery? = nil) -> some HTML {
     self
       .inlineStyle("padding-top", padding.top.map { "\($0.rawValue)rem" }, media: media?.rawValue)
       .inlineStyle("padding-left", padding.left.map { "\($0.rawValue)rem" }, media: media?.rawValue)
@@ -18,7 +53,7 @@ extension HTML {
     right: Spacing? = nil,
     _ media: MediaQuery? = nil
   ) -> some HTML {
-    padding(Padding(top: top, left: left, bottom: bottom, right: right), media)
+    padding(Insets(top: top, left: left, bottom: bottom, right: right), media)
   }
 
   @_disfavoredOverload
@@ -27,15 +62,15 @@ extension HTML {
     leftRight: Spacing? = nil,
     _ media: MediaQuery? = nil
   ) -> some HTML {
-    padding(Padding(topBottom: topBottom, leftRight: leftRight), media)
+    padding(Insets(topBottom: topBottom, leftRight: leftRight), media)
   }
 
   public func padding(_ all: Spacing, _ media: MediaQuery? = nil) -> some HTML {
-    padding(Padding(all: all), media)
+    padding(Insets(all: all), media)
   }
 }
 
-public struct Padding {
+public struct Insets {
   public var top: Spacing?
   public var left: Spacing?
   public var bottom: Spacing?
