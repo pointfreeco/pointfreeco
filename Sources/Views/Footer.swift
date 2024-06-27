@@ -39,7 +39,8 @@ private struct TaglineColumn: HTML {
     GridColumn {
       div {
         h4 {
-          Link("Point-Free", color: .white, href: siteRouter.path(for: .home))
+          Link("Point-Free", href: siteRouter.path(for: .home))
+            .linkColor(.white)
         }
         .fontScale(.h4)
         .margin(bottom: 0, .mobile)
@@ -56,6 +57,7 @@ private struct TaglineColumn: HTML {
         }
         .color(.white)
         .fontStyle(.body(.regular))
+        .linkColor(.green)
       }
       .padding(right: 4, .desktop)
       .padding(bottom: 2, .mobile)
@@ -63,11 +65,9 @@ private struct TaglineColumn: HTML {
   }
 
   func twitterLink(_ name: String, _ route: TwitterRoute) -> some HTML {
-    Link(color: .green, href: twitterRouter.url(for: route).absoluteString) {
+    Link(href: twitterRouter.url(for: route).absoluteString) {
       HTMLText(name, raw: true)
     }
-    .inlineStyle("text-decoration", "none", pseudo: "link")
-    .inlineStyle("text-decoration", "none", pseudo: "visited")
   }
 }
 
@@ -120,14 +120,14 @@ private struct Column<Links: HTML>: HTML {
           .inlineStyle("line-height", "1.25")
           .inlineStyle("text-transform", "uppercase")
 
-        ol { links }
+        ol { links.linkColor(.purple) }
           .listStyle(.reset)
       }
     }
   }
 }
 
-public struct FooterLink: HTML {
+private struct FooterLink: HTML {
   let href: String
   let label: String
 
@@ -136,8 +136,8 @@ public struct FooterLink: HTML {
     self.label = label
   }
 
-  public var body: some HTML {
-    li { Link(label, color: .purple, href: href) }
+  var body: some HTML {
+    li { Link(label, href: href) }
   }
 }
 
@@ -156,25 +156,23 @@ private struct LegalColumn: HTML {
         """
         Link(
           "CC BY-NC-SA 4.0",
-          color: .gray650,
           href: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
         )
         ", and the underlying "
         Link(
           "source code",
-          color: .gray650,
           href: gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString
         )
         " to run this site is licensed under the "
         Link(
           "MIT License",
-          color: .gray650,
           href: gitHubRouter.url(for: .license).absoluteString
         )
         "."
       }
       .color(.gray400)
       .fontStyle(.body(.small))
+      .linkColor(.gray650)
       .padding(top: 2, .mobile)
     }
     .column(count: 6, media: .desktop)
