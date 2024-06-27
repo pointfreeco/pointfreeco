@@ -232,7 +232,7 @@ struct MobileMenu: HTML {
       .inlineStyle("justify-content", "center")
     }
 
-    input
+    input()
       .hidden()
       .attribute("id", "menu-checkbox")
       .attribute("type", "checkbox")

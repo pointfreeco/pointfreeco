@@ -1,4 +1,4 @@
-public struct HTMLTag: HTML, ExpressibleByStringLiteral {
+public struct HTMLTag: ExpressibleByStringLiteral {
   let rawValue: StaticString
 
   init(_ rawValue: StaticString) {
@@ -9,7 +9,7 @@ public struct HTMLTag: HTML, ExpressibleByStringLiteral {
     self.init(value)
   }
 
-  public var body: some HTML {
+  public func callAsFunction() -> some HTML {
     tag(self.rawValue)
   }
 
@@ -21,7 +21,7 @@ public struct HTMLTag: HTML, ExpressibleByStringLiteral {
   // public var a: HTMLTag { ... }
 }
 
-public struct HTMLTextTag: HTML, ExpressibleByStringLiteral {
+public struct HTMLTextTag: ExpressibleByStringLiteral {
   let rawValue: StaticString
 
   init(_ rawValue: StaticString) {
@@ -30,10 +30,6 @@ public struct HTMLTextTag: HTML, ExpressibleByStringLiteral {
 
   public init(stringLiteral value: StaticString) {
     self.init(value)
-  }
-
-  public var body: some HTML {
-    tag(self.rawValue)
   }
 
   public func callAsFunction(_ content: String) -> some HTML {

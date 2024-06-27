@@ -8,7 +8,7 @@ public struct SVG: HTML {
   }
 
   public var body: some HTML {
-    img
+    img()
       .attribute("src", "data:image/svg+xml;base64,\(base64)")
       .attribute("alt", description)
   }
