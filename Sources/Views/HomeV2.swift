@@ -306,8 +306,15 @@ private struct WhatToExpect: HTML {
 }
 
 private struct Episodes: HTML {
+  @Dependency(\.episodes) var episodes
+
   var body: some HTML {
-    "Episodes"
+    Grid {
+      for episode in episodes().prefix(3) {
+        EpisodeCard(episode, emergencyMode: false)  // TODO
+      }
+    }
+    .grid(alignment: .stretch)
   }
 }
 
@@ -450,7 +457,7 @@ private struct MaximalHero<PrimaryCTA: HTML>: HTML {
     ctaURL: String,
     secondaryCTATitle: String? = nil,
     secondaryCTAURL: String? = nil
-  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLText>>> {
+  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLRaw>>> {
     self.title = title
     self.blurb = blurb
     self.primaryCTA = Button(color: .purple, size: .regular, style: .normal) {
@@ -465,10 +472,10 @@ private struct MaximalHero<PrimaryCTA: HTML>: HTML {
   var body: some HTML {
     Grid {
       GridColumn {
-        Header(2) { HTMLText(title) }
+        Header(2) { HTMLRaw(title) }
           .color(.white)
 
-        Paragraph(.big) { HTMLText(blurb) }
+        Paragraph(.big) { HTMLRaw(blurb) }
           .fontStyle(.body(.regular))
           .color(.gray800)
           .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)

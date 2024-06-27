@@ -24,7 +24,7 @@ public struct Card<Content: HTML, Header: HTML>: HTML {
       .inlineStyle("padding", "2rem 2rem 2rem 2rem")
       .inlineStyle("margin", "1rem 1rem 2rem 1rem")
       .inlineStyle("border-radius", "5px")
-      .inlineStyle("box-shadow", "0 2px 10px 0 rgba(0,0,0,0.3)")
+      .inlineStyle("box-shadow", "0 2px 10px -2px rgba(0,0,0,0.3)")
     }
     .column(count: 12)
     .column(count: 4, media: .desktop)
@@ -48,25 +48,47 @@ public struct EpisodeCard: HTML {
         HTMLText(episode.title)
       }
 
-      HTMLMarkdown(episode.blurb)
-        .color(.gray650)
+      div {
+        HTMLMarkdown(episode.blurb)
+      }
+      .color(.gray500)
 
       Grid {
         if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-          SVG.locked
-          "Subscriber-only"
+          Label("Subscriber-only", icon: .locked)
         } else {
-          SVG.unlocked
-          "Free"
+          Label("Free", icon: .unlocked)
         }
+
+        Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
       }
       .grid(alignment: .center)
-      .color(.gray650)
-
     } header: {
       img()
         .href(episode.image)
         .attribute("alt")
+    }
+  }
+
+  struct Label: HTML {
+    let icon: SVG
+    let title: String
+
+    init(_ title: String, icon: SVG) {
+      self.icon = icon
+      self.title = title
+    }
+
+    var body: some HTML {
+      Grid {
+        icon
+          .inlineStyle("padding-right", "0.5rem")
+
+        HTMLText(title)
+          .inlineStyle("padding-right", "1rem")
+      }
+      .color(.gray650)
+      .grid(alignment: .center)
     }
   }
 }
@@ -87,24 +109,32 @@ extension SVG {
     </svg>
     """
   }
-}
 
-import SwiftUI
-
-#Preview {
-  NodePreview {
-    PageLayout(
-      layoutData: SimplePageLayoutData(
-        style: .minimal,
-        title: ""
-      )
-    ) {
-      Grid {
-        HTMLForEach(Episode.all.dropLast(5).suffix(3)) { episode in
-          EpisodeCard(episode, emergencyMode: false)
-        }
-      }
-    }
+  static let clock = Self("Running time") {
+    """
+    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="#7D7D7D"/>
+    </svg>
+    """
   }
-  .frame(width: 900, height: 800)
 }
+
+//import SwiftUI
+//
+//#Preview {
+//  NodePreview {
+//    PageLayout(
+//      layoutData: SimplePageLayoutData(
+//        style: .minimal,
+//        title: ""
+//      )
+//    ) {
+//      Grid {
+//        HTMLForEach(Episode.all.dropLast(5).suffix(3)) { episode in
+//          EpisodeCard(episode, emergencyMode: false)
+//        }
+//      }
+//    }
+//  }
+//  .frame(width: 1200, height: 800)
+//}

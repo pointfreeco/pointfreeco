@@ -41,9 +41,8 @@ func homeV2Middleware(
     ) {
       Home(
         allFreeEpisodeCount: episodes()
-          .count(
-            where: { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
-          ), 
+          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
+          .count,
         creditCount: creditCount
       )
     }
