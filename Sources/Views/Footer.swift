@@ -4,6 +4,7 @@ import FunctionalCss
 import Html
 import Models
 import PointFreeRouter
+import StyleguideV2
 
 public func footerView(user: User?, year: Int) -> Node {
   return .footer(
@@ -15,15 +16,11 @@ public func footerView(user: User?, year: Int) -> Node {
 private func footerInfoColumnsView(user: User?, year: Int) -> Node {
   return [
     .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView),
-    linksColumnsView(currentUser: user),
+    Node {
+      ContentColumn()
+      MoreColumn()
+    },
     .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year)),
-  ]
-}
-
-private func linksColumnsView(currentUser: User?) -> Node {
-  return [
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView),
   ]
 }
 
@@ -97,102 +94,89 @@ private var pointFreeView: Node {
   )
 }
 
-private func contentColumnView(currentUser: User?) -> Node {
+private struct ContentColumn: HTML {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  return .div(
-    .h5(attributes: [.class([columnTitleClass])], "Content"),
-    .ol(
-      attributes: [.class([Class.type.list.reset])],
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))],
-          "Pricing")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))],
-          "Collections")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .clips(.clips)))],
-          "Clips"
-        )
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
-      )
-    )
-  )
+  var body: some HTML {
+    Column(title: "Content") {
+      FooterLink("Pricing", href: siteRouter.path(for: .pricingLanding))
+      FooterLink("Gifts", href: siteRouter.path(for: .gifts()))
+      FooterLink("Videos", href: siteRouter.path(for: .home))
+      FooterLink("Collections", href: siteRouter.path(for: .collections()))
+      FooterLink("Clips", href: siteRouter.path(for: .clips(.clips)))
+      FooterLink("Blog", href: siteRouter.path(for: .blog()))
+    }
+  }
 }
 
-private var moreColumnView: Node {
+private struct MoreColumn: HTML {
   @Dependency(\.siteRouter) var siteRouter
+  let gitHubRouter = GitHubRouter()
+  let twitterRouter = TwitterRouter()
 
-  return .div(
-    .h5(attributes: [.class([columnTitleClass])], "More"),
-    .ol(
-      attributes: [.class([Class.type.list.reset])],
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@pointfreeco"),
-            .rel(.init(rawValue: "me")),
-          ], "Mastodon")
-      ),
-      .li(
-        attributes: [.class([Class.display.none])],
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@mbrandonw"),
-            .rel(.init(rawValue: "me")),
-          ], "@mbrandonw")
-      ),
-      .li(
-        attributes: [.class([Class.display.none])],
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@stephencelis"),
-            .rel(.init(rawValue: "me")),
-          ], "@stephencelis")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]), .href(TwitterRouter().url(for: .pointfreeco).absoluteString),
-          ], "Twitter")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]), .href(GitHubRouter().url(for: .organization).absoluteString),
-          ], "GitHub")
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))],
-          "Privacy Policy")
-      )
-    )
-  )
+  var body: some HTML {
+    Column(title: "More") {
+      FooterLink("About Us", href: siteRouter.path(for: .about))
+      FooterLink("Mastodon", href: "https://hachyderm.io/@pointfreeco")
+        .attribute("rel", "me")
+      FooterLink("Twitter", href: twitterRouter.url(for: .pointfreeco).absoluteString)
+      FooterLink("GitHub", href: gitHubRouter.url(for: .organization).absoluteString)
+      FooterLink("Contact Us", href: "mailto:support@pointfree.co")
+      FooterLink("Privacy Policy", href: siteRouter.path(for: .privacy))
+    }
+  }
+}
+
+private struct Column<Links: HTML>: HTML {
+  let title: String
+  @HTMLBuilder let links: Links
+
+  var body: some HTML {
+    GridColumn {
+      div {
+        h5 { title }
+          .color(.white)
+          .inlineStyle("font-size", "0.75rem")
+          .inlineStyle("font-size", "0.875rem", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("letter-spacing", "0.54pt")
+          .inlineStyle("line-height", "1.25")
+          .inlineStyle("text-transform", "uppercase")
+        ol {
+          links
+        }
+        .listStyle(.reset)
+      }
+    }
+    .column(count: 4, media: .mobile)
+    .column(count: 2, media: .desktop)
+  }
+}
+
+public struct FooterLink<Label: HTML>: HTML {
+  let href: String
+  let label: Label
+
+  init(href: String, @HTMLBuilder label: () -> Label) {
+    self.href = href
+    self.label = label()
+  }
+
+  init(_ label: String, href: String) where Label == HTMLText {
+    self.href = href
+    self.label = HTMLText(label)
+  }
+
+  public var body: some HTML {
+    li {
+      a {
+        label
+      }
+      .attribute("href", href)
+      .color(.purple, .link)
+      .color(.purple, .visited)
+    }
+  }
 }
 
 private let footerClass =

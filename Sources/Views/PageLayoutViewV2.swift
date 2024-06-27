@@ -159,17 +159,6 @@ public struct PageLayout<Content: NodeView>: NodeView {
   }
 }
 
-struct SVG: HTML {
-  let base64: String
-  let description: String
-
-  var body: some HTML {
-    img
-      .attribute("src", "data:image/svg+xml;base64,\(base64)")
-      .attribute("alt", description)
-  }
-}
-
 struct NavView: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
@@ -179,8 +168,8 @@ struct NavView: HTML {
   var body: some HTML {
     div {
       div {
-        GridRowV2(alignment: .center) {
-          GridColumnV2 {
+        GridRow(alignment: .center) {
+          GridColumn {
             a {
               SVG(
                 base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
@@ -191,21 +180,21 @@ struct NavView: HTML {
           }
           .column(count: 2)
 
-          GridColumnV2 {
+          GridColumn {
             CenteredNavItems()
           }
           .column(alignment: .center)
           .column(count: 8, media: .desktop)
           .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
 
-          GridColumnV2 {
+          GridColumn {
             TrailingNavItems()
           }
           .column(alignment: .end)
           .column(count: 2, media: .desktop)
           .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
 
-          GridColumnV2 {
+          GridColumn {
             MobileMenu()
           }
           .column(alignment: .end)

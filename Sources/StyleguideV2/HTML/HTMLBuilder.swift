@@ -8,8 +8,10 @@ public enum HTMLBuilder {
     content
   }
 
-  public static func buildBlock<each Content: HTML>(_ content: repeat each Content) -> some HTML {
-    HTMLTuple(content: repeat each content)
+  public static func buildBlock<each Content: HTML>(
+    _ content: repeat each Content
+  ) -> _HTMLTuple<repeat each Content> {
+    _HTMLTuple(content: repeat each content)
   }
 
   public static func buildEither<First: HTML, Second: HTML>(
@@ -61,23 +63,23 @@ public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
   public var body: Never { fatalError() }
 }
 
-private struct HTMLText: HTML {
+public struct HTMLText: HTML {
   let text: String
-  init(_ text: String) {
+  public init(_ text: String) {
     self.text = text
   }
-  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     printer.bytes.append(contentsOf: html.text.utf8)
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
-private struct HTMLTuple<each Content: HTML>: HTML {
+public struct _HTMLTuple<each Content: HTML>: HTML {
   let content: (repeat each Content)
-  init(content: repeat each Content) {
+  public init(content: repeat each Content) {
     self.content = (repeat each content)
   }
-  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     func render<T: HTML>(_ html: T) {
       let oldAttributes = printer.attributes
       defer { printer.attributes = oldAttributes }
@@ -85,7 +87,7 @@ private struct HTMLTuple<each Content: HTML>: HTML {
     }
     repeat render(each html.content)
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
 extension Optional: HTML where Wrapped: HTML {

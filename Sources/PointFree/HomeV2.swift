@@ -30,8 +30,8 @@ func homeV2Middleware(
 struct Home: HTML {
   var body: some HTML {
     div {
-      GridRowV2(alignment: .center) {
-        GridColumnV2 {
+      GridRow(alignment: .center) {
+        GridColumn {
           h1 {
             "Explore&nbsp;the&nbsp;wonderful world&nbsp;of&nbsp;Swift."
           }
@@ -44,7 +44,7 @@ struct Home: HTML {
         .column(alignment: .center, media: .desktop)
         .inlineStyle("margin", "0 auto")
 
-        GridColumnV2 {
+        GridColumn {
           p {
             """
             Point-Free is a a video series exploring advanced programming topics in the Swift
