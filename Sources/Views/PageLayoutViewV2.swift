@@ -167,7 +167,7 @@ struct NavView: HTML {
   var body: some HTML {
     div {
       div {
-        GridRow(alignment: .center) {
+        Grid {
           GridColumn {
             a {
               SVG(
@@ -200,6 +200,7 @@ struct NavView: HTML {
           .column(count: 10)
           .inlineStyle("display", "none", media: MediaQuery.desktop.rawValue)
         }
+        .grid(alignment: .center)
       }
       .inlineStyle("max-width", "1080px")
       .inlineStyle("margin-left", "auto")

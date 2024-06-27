@@ -1,11 +1,9 @@
 import Html
 import FunctionalCss
 
-public struct GridRow<Content: HTML>: HTML {
-  let alignment: Alignment
+public struct Grid<Content: HTML>: HTML {
   @HTMLBuilder let content: Content
-  public init(alignment: Alignment, @HTMLBuilder content: () -> Content) {
-    self.alignment = alignment
+  public init(@HTMLBuilder content: () -> Content) {
     self.content = content()
   }
 
@@ -13,7 +11,6 @@ public struct GridRow<Content: HTML>: HTML {
     div {
       content
     }
-    .inlineStyle("align-items", alignment.rawValue)
     .inlineStyle("box-sizing", "border-box")
     .inlineStyle("display", "flex")
     .inlineStyle("flex-grow", "0")
@@ -29,6 +26,13 @@ public struct GridRow<Content: HTML>: HTML {
     case end = "flex-end"
     case start = "flex-start"
     case stretch = "stretch"
+  }
+}
+
+extension HTML {
+  public func grid(alignment: Grid<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
+    self
+      .inlineStyle("align-items", alignment.rawValue)
   }
 }
 
@@ -51,20 +55,8 @@ public struct GridColumn<Content: HTML>: HTML {
   }
 
   public enum Alignment: String {
-    case end
-    case center
-    var justifyContent: String {
-      switch self {
-      case .end: "flex-end"
-      case .center: "center"
-      }
-    }
-    var textAlign: String {
-      switch self {
-      case .end: "end"
-      case .center: "center"
-      }
-    }
+    case end = "end"
+    case center = "center"
   }
 }
 
@@ -76,7 +68,7 @@ extension HTML {
   }
   public func column(alignment: GridColumn<HTMLText>.Alignment, media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
-      .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
+      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
+      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
   }
 }

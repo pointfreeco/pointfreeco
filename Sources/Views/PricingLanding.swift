@@ -852,10 +852,12 @@ extension Array where Element == Faq {
   }
 }
 
-private struct WhatToExpectItem {
+struct WhatToExpectItem {
   let imageSrc: String
   let title: String
   let description: String
+
+  static let all: [Self] = [.newContent, .topics, .playgrounds, .transcripts]
 
   static let newContent = WhatToExpectItem(
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
