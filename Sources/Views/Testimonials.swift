@@ -1,11 +1,11 @@
 struct Testimonial {
+  var avatarURL: String?
   let quote: String
   let subscriber: String?
   let tweetUrl: String
   let twitterHandle: String
 
   static let all: [Testimonial] = [
-
     Testimonial(
       quote: #"""
         The best technical video series I've ever watched.
@@ -25,8 +25,9 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1204889173984854016/fUfbYhRq_400x400.jpg",
       quote: #"""
-        Three recent @pointfreeco episodes were so interesting I stayed in the treadmill 3x as long as usual and watched them all in a row! Walking may be challenging later/tomorrow…  😮
+        Three recent @pointfreeco episodes were so interesting I stayed in the treadmill 3x as long as usual and watched them all in a row! Walking may be challenging later/tomorrow... 😮
         """#,
       subscriber: "Dad",
       tweetUrl: "https://twitter.com/GeekAndDad/status/1226287417134436353",
@@ -43,6 +44,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1143645394041225216/n-jYEqew_400x400.jpg",
       quote: #"""
         This is surely one of the best shows for Swift folks out there! The content and explanation is at a really high bar!
         """#,
@@ -52,6 +54,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1630879010682011654/rA8miyba_400x400.jpg",
       quote: #"""
         Honestly, I'm an Android developer, I write applications in Kotlin. My colleague iOS developer told me about your course. And I liked it so I decided to buy a subscription.
         """#,
@@ -70,6 +73,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1681590474019151872/JnbVvgVC_400x400.jpg",
       quote: """
         I bought the annual subscription and after I watched all videos and played with the sample code and libraries I can say it was the best money I spent in the last 12 months.
         """,
@@ -88,6 +92,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1215783878620786691/n1ZTMtRg_400x400.jpg",
       quote: """
         Their content pushes the boundary of my knowledge, and it's fun to watch!
         """,
@@ -97,6 +102,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1073853658272620544/zCJYVA8i_400x400.jpg",
       quote: """
         The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.
         """,
@@ -115,6 +121,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1618745535615176705/knLwgG_O_400x400.jpg",
       quote: """
         tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
         """,
@@ -124,6 +131,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1408444495532892166/nMBLo1XT_400x400.jpg",
       quote: """
         My new favourite morning routine is feeding 👶🏻 while watching
         @pointfreeco
@@ -134,6 +142,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/902152561519714305/OXfUmvUR_400x400.jpg",
       quote: """
         After diving into @pointfreeco series reading Real World Haskell doesn’t seem all that intimidating after all. Major takeaway: the lesser is word “monad” is mentioned the better 😅
         """,
@@ -152,6 +161,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1367960107284316160/Jj0L3YdX_400x400.jpg",
       quote: """
         @pointfreeco ❤️: Thank you! 🧠: … The brain can’t say anything. It is blown away (🤯)!
         """,
@@ -179,6 +189,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1290571711772073984/JVxS-IBR_400x400.jpg",
       quote: """
         I really love the dynamics of @pointfreeco. The dance of “this is super nice because…” “yes, BUT….”. they clearly show what’s good, what’s not so good and keep continuously improving.
         """,
@@ -188,6 +199,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/509216357003436032/LNnMv-xT_400x400.png",
       quote: """
         Thanks @mbrandonw @stephencelis for the very pedagogical series with @pointfreeco Excited and looking forward to learn from the series
         """,
@@ -197,6 +209,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/978861228394237953/P7xRRANY_400x400.jpg",
       quote: """
         Just became a subscriber! I'm binge watching episodes now! Great content! I'm learning so much from you guys. The repo for the site is the best go-to reference for a well done project and swift-web is something I am definitely going to use in my projects. Thanks for everything!
         """,
@@ -206,6 +219,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/807791434405277697/1EGkJMWe_400x400.jpg",
       quote: """
         We have this thing called WWTV at #PlanGrid where we mostly just listen to @mbrandonw and @stephencelis talk about functions.
         """,
@@ -215,6 +229,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/619094299733544960/qoA4yQfc_400x400.jpg",
       quote: #"""
         Please stop releasing one amazing video after the other! I'm still at Episode 15! #pointfreemarathon #androiddevhere
         """#,
@@ -224,6 +239,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1429153871184777220/BTYTDOvY_400x400.jpg",
       quote: """
         Due to the amount of discussions that reference @pointfreeco, we added their logo as an emoji in our slack.
         """,
@@ -244,6 +260,7 @@ struct Testimonial {
     // MARK: - Re: specific episodes
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/531922501652070400/xOa-Duws_400x400.jpeg",
       quote: """
         I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
         """,
@@ -253,6 +270,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/631576027102318592/5CpSbSne_400x400.jpg",
       quote: """
         Every episode has been amazing on Pointfree, yet somehow, you've managed to make these Parser combinator episodes even better!!! ⭐️⭐️⭐️⭐️⭐️
         """,
@@ -262,6 +280,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1789022009420021761/5jruWdfY_400x400.jpg",
       quote: """
         Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super cool
         """,
@@ -280,6 +299,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1618745535615176705/knLwgG_O_400x400.jpg",
       quote: """
         Really love this episode - thanks @mbrandonw + @stephencelis! Understanding Swift types in terms of algebraic data types is such an elegant way of seeing the # of possible values your Swift types will represent 🤯 #Simplifyallthethings #GoodbyeComplexity
         """,
@@ -289,6 +309,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1605878160855375874/zHCJI9am_400x400.jpg",
       quote: """
         Just finished the mini-series on enum properties by @pointfreeco! They pointed out what’s missing from enums in Swift and used SwiftSyntax to generate code to add the missing parts. Thanks for your work @stephencelis and @mbrandonw! #pointfree
         """,
@@ -298,6 +319,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1136170626853400576/c0yWG11Q_400x400.jpg",
       quote: """
         So many concepts presented at #WWDC19  reminded me of @pointfreeco video series. 👏👏 So happy I watched it before coming to San Jose.
         """,
@@ -307,6 +329,7 @@ struct Testimonial {
     ),
 
     Testimonial(
+      avatarURL: "https://pbs.twimg.com/profile_images/1215783878620786691/n1ZTMtRg_400x400.jpg",
       quote: """
         Through videos you constantly introduce ideas and patterns only to later reformulate them into more general ideas. This is awesome and helped me understand a lot of programming concepts. Well done!
         """,
@@ -314,6 +337,6 @@ struct Testimonial {
       tweetUrl: "https://twitter.com/ferranpujolca/status/1240992924701261825",
       twitterHandle: "ferranpujolca"
     ),
-
   ]
+  .filter { $0.avatarURL != nil }
 }

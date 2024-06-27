@@ -148,49 +148,83 @@ private struct Collections: HTML {
   }
 }
 
-extension Array {
-  func grouped(into numberOfGroups: Int) -> [Array] {
-    var groups: [Array] = []
-    for (offset, element) in self.enumerated() {
-      let index = offset.quotientAndRemainder(dividingBy: numberOfGroups).remainder
-      if index < groups.count { groups[index] = [] }
-      groups[index].append(element)
-    }
-    return groups
-  }
-}
-
 private struct WhatPeopleAreSaying: HTML {
   var body: some HTML {
-    for group in Testimonial.all.grouped(into: 4) {
+    for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
       GridColumn {
         for testimonial in group {
           TestimonialComponent(testimonial: testimonial)
         }
       }
+      .inlineStyle("padding-left", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:nth-child(2))")
+      .inlineStyle("padding-right", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:last-child)")
       .column(count: 12)
-      .column(count: 3, media: .desktop)
+      .column(count: 4, media: .desktop)
+      .inlineStyle("display", offset == 0 ? nil : "none")
+      .inlineStyle("display", "block", media: MediaQuery.desktop.rawValue)
     }
+
+    GridColumn {
+      Button(color: .purple, size: .regular, style: .normal) {
+        "Read more testimonials →"
+      }
+      .attribute("href", "TODO")
+    }
+    .column(count: 12)
+    .column(alignment: .center)
+    .inlineStyle("margin-top", "3rem")
   }
 
   struct TestimonialComponent: HTML {
     let testimonial: Testimonial
 
     var body: some HTML {
-      div {
-        Header(5) {
-          HTMLText(testimonial.subscriber ?? "")
-        }
-        Header(6) {
-          HTMLText("@" + testimonial.twitterHandle)
+      a {
+        Grid {
+          GridColumn {
+            Image(source: testimonial.avatarURL ?? "", description: "")
+              .size(width: .rem(3), height: .rem(3))
+              .inlineStyle("border-radius", "1.5rem")
+              .backgroundColor(.gray650)
+              .backgroundColor(.gray300, media: .dark)
+          }
+//          .column(count: 1)
+//          .column(count: 2, media: .desktop)
+          GridColumn {
+            Header(5) {
+              HTMLText(testimonial.subscriber ?? "")
+            }
+            .inlineStyle("margin-bottom", "0")
+            Header(6) {
+              HTMLText("@" + testimonial.twitterHandle)
+            }
+            .inlineStyle("font-weight", "normal")
+            .inlineStyle("margin-top", "0")
+            .color(.gray400)
+            .color(.gray650, media: .dark)
+          }
+//          .column(count: 11)
+//          .column(count: 10, media: .desktop)
+          .inlineStyle("padding-left", "1rem")
         }
         Paragraph {
           HTMLText(testimonial.quote)
         }
+        .inlineStyle("padding-top", "1rem")
       }
+      .color(.black)
+      .color(.white, media: .dark)
+      .attribute("href", testimonial.tweetUrl)
+      .grid(alignment: .center)
+      .backgroundColor(.offWhite)
+      .backgroundColor(.gray150, media: .dark)
+      .inlineStyle("text-decoration-line", "none")
+      .inlineStyle("display", "block")
       .inlineStyle("border", "1px solid #e8e8e8")
+      .inlineStyle("border", "1px solid \(PointFreeColor.gray300.rawValue)", media: MediaQuery.dark.rawValue)
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("padding", "1.5rem")
+      .inlineStyle("margin-bottom", "1rem", pseudo: "not(:last-child)")
     }
   }
 }
@@ -279,4 +313,16 @@ struct Theme {
     color: .offBlack,
     darkModeColor: .offWhite
   )
+}
+
+extension Collection {
+  fileprivate func grouped(into numberOfGroups: Int) -> [[Element]] {
+    var groups: [[Element]] = []
+    for (offset, element) in self.enumerated() {
+      let index = offset.quotientAndRemainder(dividingBy: numberOfGroups).remainder
+      if index >= groups.count { groups.append([]) }
+      groups[index].append(element)
+    }
+    return groups
+  }
 }

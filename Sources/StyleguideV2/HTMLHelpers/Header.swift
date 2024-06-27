@@ -64,8 +64,8 @@ public struct Header<Content: HTML>: HTML {
     case 2: 1.75
     case 3: 1.5
     case 4: 1.5
-    case 5: 1
-    default: 1
+    case 5: 0.5
+    default: 0.5
     }
   }
 }

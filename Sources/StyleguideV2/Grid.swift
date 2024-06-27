@@ -46,8 +46,7 @@ public struct GridColumn<Content: HTML>: HTML {
     div {
       content
     }
-    .inlineStyle("flex-grow", "1")
-    .inlineStyle("flex-grow", "0", media: MediaQuery.desktop.rawValue)
+    .inlineStyle("flex-grow", "0")
     .inlineStyle("flex-shrink", "0")
     .inlineStyle("max-width", "100%")
     .inlineStyle("box-sizing", "border-box")
@@ -75,12 +74,18 @@ public struct GridColumn<Content: HTML>: HTML {
 }
 
 extension HTML {
-  public func column(count: Int, media: MediaQuery? = nil) -> some HTML {
+  public func column(
+    count: Int,
+    media: MediaQuery? = nil
+  ) -> HTMLInlineStyle<Self> {
     self
       .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
       .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
   }
-  public func column(alignment: GridColumn<Never>.Alignment, media: MediaQuery? = nil) -> some HTML {
+  public func column(
+    alignment: GridColumn<Never>.Alignment,
+    media: MediaQuery? = nil
+  ) -> HTMLInlineStyle<Self> {
     self
       .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
       .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
