@@ -15,7 +15,7 @@ public struct Home: HTML {
 
         Paragraph(.big) {
           """
-          Point-Free is a a video series exploring advanced topics in the Swift&nbsp;programming\
+          Point-Free is a video series exploring advanced topics in the Swift&nbsp;programming\
           &nbsp;language.
           """
         }
