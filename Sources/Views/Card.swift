@@ -21,7 +21,7 @@ public struct Card<Content: HTML, Header: HTML>: HTML {
         content
       }
       .backgroundColor(.white)
-      .inlineStyle("padding", "2rem 2rem 2rem 2rem")
+      .inlineStyle("padding", "1rem 2rem 2rem 2rem")
       .inlineStyle("margin", "1rem 1rem 2rem 1rem")
       .inlineStyle("border-radius", "5px")
       .inlineStyle("box-shadow", "0 2px 10px -2px rgba(0,0,0,0.3)")
@@ -44,6 +44,12 @@ public struct EpisodeCard: HTML {
 
   public var body: some HTML {
     Card {
+      div {
+        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.formatted(.dateTime.day().month().year()))"
+      }
+      .color(.gray650)
+      .fontStyle(.body(.small))
+
       Header(4) {
         HTMLText(episode.title)
       }
@@ -62,6 +68,7 @@ public struct EpisodeCard: HTML {
 
         Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
       }
+      .color(.gray650)
       .grid(alignment: .center)
     } header: {
       img()
@@ -82,12 +89,14 @@ public struct EpisodeCard: HTML {
     var body: some HTML {
       Grid {
         icon
-          .inlineStyle("padding-right", "0.5rem")
+          .inlineStyle("padding-right", "0.25rem")
 
-        HTMLText(title)
-          .inlineStyle("padding-right", "1rem")
+        span {
+          HTMLText(title)
+        }
+        .inlineStyle("padding-right", "0.5rem")
       }
-      .color(.gray650)
+      .fontStyle(.body(.small))
       .grid(alignment: .center)
     }
   }
