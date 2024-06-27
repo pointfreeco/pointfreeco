@@ -11,11 +11,6 @@ public struct Home: HTML {
     Hero()
 
     Module(theme: .dark, isSmallTitle: true) {
-          """
-          Point-Free is a video series exploring advanced topics in the Swift&nbsp;programming\
-          &nbsp;language.
-          """
-        }
       Companies()
     } title: {
       Header(6) { "Trusted by teams" }
@@ -35,13 +30,13 @@ public struct Home: HTML {
       Header(2) { "What you can expect" }
     }
     
-    Module(seeAllRoute: .homeV2, theme: .offLight) {
+    Module(seeAllRoute: .homeV2, theme: .light) {
       Collections()
     } title: {
       Header(2) { "Collections" }
     }
 
-    Module(theme: .light) {
+    Module(theme: .offLight) {
       WhatPeopleAreSaying()
     } title: {
       Header(2) { "What people are saying" }
@@ -153,18 +148,49 @@ private struct Collections: HTML {
   }
 }
 
+extension Array {
+  func grouped(into numberOfGroups: Int) -> [Array] {
+    var groups: [Array] = []
+    for (offset, element) in self.enumerated() {
+      let index = offset.quotientAndRemainder(dividingBy: numberOfGroups).remainder
+      if index < groups.count { groups[index] = [] }
+      groups[index].append(element)
+    }
+    return groups
+  }
+}
+
 private struct WhatPeopleAreSaying: HTML {
   var body: some HTML {
-    "Testimonials"
+    for group in Testimonial.all.grouped(into: 4) {
+      GridColumn {
+        for testimonial in group {
+          TestimonialComponent(testimonial: testimonial)
+        }
+      }
+      .column(count: 12)
+      .column(count: 3, media: .desktop)
+    }
   }
 
-  struct Testimonial: HTML {
+  struct TestimonialComponent: HTML {
+    let testimonial: Testimonial
+
     var body: some HTML {
       div {
-        "Hello!"
+        Header(5) {
+          HTMLText(testimonial.subscriber ?? "")
+        }
+        Header(6) {
+          HTMLText("@" + testimonial.twitterHandle)
+        }
+        Paragraph {
+          HTMLText(testimonial.quote)
+        }
       }
       .inlineStyle("border", "1px solid #e8e8e8")
       .inlineStyle("border-radius", "0.5rem")
+      .inlineStyle("padding", "1.5rem")
     }
   }
 }
