@@ -21,7 +21,7 @@ extension HTML {
 public struct PointFreeColor {
   public let rawValue: String
 
-  init(rawValue: String) {
+  public init(rawValue: String) {
     self.rawValue = rawValue
   }
 

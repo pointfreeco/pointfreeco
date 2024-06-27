@@ -11,8 +11,8 @@ public struct Header<Content: HTML>: HTML {
       content
     }
     .inlineStyle("margin", "0")
-    .inlineStyle("margin-top", "\(margin)rem", pseudo: "not(:first-child)")
-    .inlineStyle("margin-bottom", "\(margin)rem", pseudo: "not(:last-child)")
+    .inlineStyle("margin-top", "\(marginTop)rem", pseudo: "not(:first-child)")
+    .inlineStyle("margin-bottom", "\(marginBottom)rem", pseudo: "not(:last-child)")
     .inlineStyle("font-size", "\(fontSize)rem")
     .inlineStyle("font-weight", "700")
     .inlineStyle("line-height", "\(lineHeight)")
@@ -48,7 +48,7 @@ public struct Header<Content: HTML>: HTML {
     default: 1.15
     }
   }
-  var margin: Double {
+  var marginBottom: Double {
     switch size {
     case 1: 1
     case 2: 0.75
@@ -56,6 +56,16 @@ public struct Header<Content: HTML>: HTML {
     case 4: 0.5
     case 5: 0.5
     default: 0.3
+    }
+  }
+  var marginTop: Double {
+    switch size {
+    case 1: 2
+    case 2: 1.75
+    case 3: 1.5
+    case 4: 1.5
+    case 5: 1
+    default: 1
     }
   }
 }
