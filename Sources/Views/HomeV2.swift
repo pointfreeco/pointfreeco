@@ -56,6 +56,19 @@ private struct LoggedIn: HTML {
       Header(2) { "Episodes" }
     }
 
+//    MinimalHero(title: "Upgrade your plan") {
+//      "Access all past and future episodes when you upgrade."
+//    }
+    HomeModule(theme: .callout) {
+      Upgrade()
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+      Clips()
+    } title: {
+      Header(2) { "Clips" }
+    }
+
     HomeModule(seeAllRoute: .homeV2, theme: .light) {
       Collections()
     } title: {
@@ -148,6 +161,12 @@ private struct LoggedOut: HTML {
       Episodes()
     } title: {
       Header(2) { "Episodes" }
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+      Clips()
+    } title: {
+      Header(2) { "Clips" }
     }
 
     HomeModule(seeAllRoute: .homeV2, theme: .light) {
@@ -292,9 +311,21 @@ private struct Episodes: HTML {
   }
 }
 
+private struct Clips: HTML {
+  var body: some HTML {
+    "Clips!"
+  }
+}
+
 private struct Collections: HTML {
   var body: some HTML {
     "Collections"
+  }
+}
+
+private struct Upgrade: HTML {
+  var body: some HTML {
+    "Upgrade"
   }
 }
 
@@ -551,6 +582,8 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
       .inlineStyle("margin", "0 auto")
       .inlineStyle("padding", "4rem 2rem")
       .inlineStyle("padding", "4rem 3rem", media: MediaQuery.desktop.rawValue)
+      .backgroundColor(theme.contentBackgroundColor)
+      .backgroundColor(theme.contentDarkModeBackgroundColor, media: .dark)
     }
     .backgroundColor(theme.backgroundColor)
     .backgroundColor(theme.darkModeBackgroundColor, media: .dark)
@@ -560,6 +593,8 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
 struct Theme {
   var backgroundColor: PointFreeColor?
   var darkModeBackgroundColor: PointFreeColor?
+  var contentBackgroundColor: PointFreeColor?
+  var contentDarkModeBackgroundColor: PointFreeColor?
   var color: PointFreeColor
   var darkModeColor: PointFreeColor
   static let dark = Self(
@@ -579,6 +614,14 @@ struct Theme {
     darkModeBackgroundColor: .offBlack,
     color: .offBlack,
     darkModeColor: .offWhite
+  )
+  static let callout = Self(
+    backgroundColor: .white,
+    darkModeBackgroundColor: .black,
+    contentBackgroundColor: .init(rawValue: "#fafafa"),
+    contentDarkModeBackgroundColor: .init(rawValue: "#050505"),
+    color: .purple,
+    darkModeColor: .purple
   )
 }
 

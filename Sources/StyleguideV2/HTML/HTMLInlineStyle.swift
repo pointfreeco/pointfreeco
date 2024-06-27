@@ -1,6 +1,6 @@
 public struct HTMLInlineStyle<Content: HTML>: HTML {
   let content: Content
-  var styles: [(String, String?, String?, String?)]
+  var styles: [(String, String, String?, String?)]
 
   init(
     content: Content,
@@ -10,7 +10,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     pseudo: String?
   ) {
     self.content = content
-    self.styles = [(property, value, mediaQuery, pseudo)]
+    self.styles = value.map { [(property, $0, mediaQuery, pseudo)] } ?? []
   }
 
   public var body: Never {
@@ -18,20 +18,15 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   }
 
   public static func _render(_ html: HTMLInlineStyle<Content>, into printer: inout HTMLPrinter) {
-//    let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
-//    defer {
-//      printer.attributes["class"] = previousClass
-//    }
+    //    let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
+    //    defer {
+    //      printer.attributes["class"] = previousClass
+    //    }
     defer {
       Content._render(html.content, into: &printer)
     }
 
     for (property, value, mediaQuery, pseudo) in html.styles {
-      guard let value = value
-      else {
-        continue
-      }
-
       // TODO: better hashing/compression (lossless)
       let className = "\(property)-\((value + (mediaQuery ?? "") + (pseudo ?? "")).hashValue)"
       let pseudo = "\(className)\(pseudo.map { ":\($0)" } ?? "")"
@@ -69,7 +64,9 @@ extension HTMLInlineStyle {
     pseudo: String? = nil
   ) -> HTMLInlineStyle {
     var copy = self
-    copy.styles.append((property, value, mediaQuery, pseudo))
+    if let value {
+      copy.styles.append((property, value, mediaQuery, pseudo))
+    }
     return copy
   }
 }
