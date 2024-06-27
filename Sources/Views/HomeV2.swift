@@ -110,32 +110,6 @@ private struct LoggedIn: HTML {
         .inlineStyle("margin", "2rem 4rem")
       }
     }
-//      .input(
-//        attributes: [
-//          .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
-//          .value(text),
-//          .type(.text),
-//          .readonly(true),
-//          .onclick(safe: "this.select();"),
-//        ]
-//      ),
-//      .input(
-//        attributes: [
-//          .type(.button),
-//          .class([
-//            Class.pf.components.button(color: .white, size: .small),
-//            Class.align.middle,
-//            Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
-//          ]),
-//          .value("Copy"),
-//          .onclick(
-//            unsafe: """
-//            navigator.clipboard.writeText("\(text)");
-//            this.value = "Copied!";
-//            setTimeout(() => { this.value = "Copy"; }, 3000);
-//            """),
-//        ]
-//      )
   }
 }
 

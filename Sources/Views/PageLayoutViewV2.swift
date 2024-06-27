@@ -49,7 +49,9 @@ public struct PageLayout<Content: HTML>: NodeView {
 
         Node {
           meta().attribute("charset", "utf8")
-
+          meta()
+            .attribute("theme-color")
+            .attribute("#000")
           meta()
             .attribute("name", "viewport")
             .attribute("content", "width=device-width, initial-scale=1")
