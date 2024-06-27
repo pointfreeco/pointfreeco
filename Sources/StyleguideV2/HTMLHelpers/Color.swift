@@ -26,6 +26,7 @@ public struct PointFreeColor {
   }
 
   public static let black = Self(rawValue: "#121212")
+  public static let offBlack = Self(rawValue: "#171717")
   public static let blue = Self(rawValue: "#4cccff")
   public static let blue900 = Self(rawValue: "#e6f8ff")
   public static let gray150 = Self(rawValue: "#242424")
@@ -42,4 +43,5 @@ public struct PointFreeColor {
   public static let red = Self(rawValue: "#eb1c26")
   public static let yellow = Self(rawValue: "#fff080")
   public static let white = Self(rawValue: "#fff")
+  public static let offWhite = Self(rawValue: "#fafafa")
 }

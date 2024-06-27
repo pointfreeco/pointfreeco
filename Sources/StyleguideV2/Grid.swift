@@ -30,12 +30,11 @@ public struct Grid<Content: HTML>: HTML {
 }
 
 extension HTML {
-  public func grid(alignment: Grid<HTMLTag>.Alignment, media: MediaQuery? = nil) -> some HTML {
+  public func grid(alignment: Grid<Never>.Alignment, media: MediaQuery? = nil) -> some HTML {
     self
       .inlineStyle("align-items", alignment.rawValue)
   }
 }
-
 
 public struct GridColumn<Content: HTML>: HTML {
   @HTMLBuilder let content: Content
@@ -55,8 +54,23 @@ public struct GridColumn<Content: HTML>: HTML {
   }
 
   public enum Alignment: String {
-    case end = "end"
-    case center = "center"
+    case center
+    case end
+    case start
+    var justifyContent: String {
+      switch self {
+      case .center: "center"
+      case .end: "flex-end"
+      case .start: "flex-start"
+      }
+    }
+    var textAlign: String {
+      switch self {
+      case .center: "center"
+      case .end: "end"
+      case .start: "start"
+      }
+    }
   }
 }
 
@@ -66,9 +80,9 @@ extension HTML {
       .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
       .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
   }
-  public func column(alignment: GridColumn<HTMLText>.Alignment, media: MediaQuery? = nil) -> some HTML {
+  public func column(alignment: GridColumn<Never>.Alignment, media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("justify-content", "flex-\(alignment.rawValue)", media: media?.rawValue)
-      .inlineStyle("text-align", alignment.rawValue, media: media?.rawValue)
+      .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
+      .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
   }
 }

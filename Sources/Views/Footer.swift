@@ -7,7 +7,7 @@ import StyleguideV2
 public struct Footer: HTML {
   public var body: some HTML {
     footer {
-      GridRow(alignment: .baseline) {
+      Grid {
         TaglineColumn()
           .column(count: 12, media: .mobile)
           .column(count: 6, media: .desktop)
@@ -23,6 +23,7 @@ public struct Footer: HTML {
           .column(count: 12, media: .mobile)
           .column(count: 6, media: .desktop)
       }
+      .grid(alignment: .baseline)
     }
     .backgroundColor(.black)
     .padding(3, .mobile)
