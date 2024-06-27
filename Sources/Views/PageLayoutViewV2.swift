@@ -169,13 +169,12 @@ struct NavView: HTML {
       div {
         Grid {
           GridColumn {
-            a {
+            Link(href: siteRouter.path(for: .home)) {
               SVG(
                 base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
                 description: "Point-Free"
               )
             }
-            .attribute("href", siteRouter.path(for: .home))
           }
           .column(count: 2)
 
@@ -307,6 +306,7 @@ struct CenteredNavItems: HTML {
       NavListItem("Blog", route: .blog())
       NavListItem("Gifts", route: .gifts(.index))
     }
+    .linkColor(.gray650)
     .listStyle(.reset)
     .fontStyle(.body(.small))
   }
@@ -321,13 +321,8 @@ struct NavListItem: HTML {
     self.route = route
   }
   var body: some HTML {
-    li {
-      a { title }
-        .attribute("href", siteRouter.path(for: route))
-        .color(.gray650, .link)
-        .color(.gray650, .visited)
-    }
-    .padding(left: .medium)
-    .inlineStyle("display", "inline")
+    li { Link(title, href: siteRouter.path(for: route)) }
+      .padding(left: .medium)
+      .inlineStyle("display", "inline")
   }
 }

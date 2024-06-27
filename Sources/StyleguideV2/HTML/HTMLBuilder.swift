@@ -1,7 +1,7 @@
 @resultBuilder
 public enum HTMLBuilder {
-  public static func buildArray(_ components: [some HTML]) -> some HTML {
-    HTMLArray(elements: components)
+  public static func buildArray<Element: HTML>(_ components: [Element]) -> _HTMLArray<Element> {
+    _HTMLArray(elements: components)
   }
 
   public static func buildBlock<Content: HTML>(_ content: Content) -> Content {
@@ -30,8 +30,8 @@ public enum HTMLBuilder {
     expression
   }
 
-  public static func buildExpression(_ expression: String) -> some HTML {
-    HTMLText(expression)
+  public static func buildExpression(_ expression: HTMLText) -> HTMLText {
+    expression
   }
 
   public static func buildOptional<T: HTML>(_ component: T?) -> T? {
@@ -39,14 +39,14 @@ public enum HTMLBuilder {
   }
 }
 
-private struct HTMLArray<Element: HTML>: HTML {
+public struct _HTMLArray<Element: HTML>: HTML {
   let elements: [Element]
-  static func _render(_ html: Self, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     for element in html.elements {
       Element._render(element, into: &printer)
     }
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
 public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
@@ -76,6 +76,14 @@ public struct HTMLText: HTML {
   }
   public var body: Never { fatalError() }
 }
+
+extension HTMLText: ExpressibleByStringLiteral {
+  public init(stringLiteral value: String) {
+    self.init(value)
+  }
+}
+
+extension HTMLText: ExpressibleByStringInterpolation {}
 
 public struct _HTMLTuple<each Content: HTML>: HTML {
   let content: (repeat each Content)

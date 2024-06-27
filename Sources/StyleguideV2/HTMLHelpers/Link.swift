@@ -43,30 +43,3 @@ extension DependencyValues {
     set { self[LinkColorKey.self] = newValue }
   }
 }
-
-extension HTML {
-  public func dependency<Value>(
-    _ keyPath: WritableKeyPath<DependencyValues, Value>,
-    _ value: Value
-  ) -> some HTML {
-    DependencyWritingHTML(base: self, keyPath: keyPath, value: value)
-  }
-}
-
-public struct DependencyWritingHTML<Base: HTML, Value>: HTML {
-  let base: Base
-  let keyPath: WritableKeyPath<DependencyValues, Value>
-  let value: Value
-
-  public static func _render(
-    _ html: DependencyWritingHTML<Base, Value>,
-    into printer: inout HTMLPrinter
-  ) {
-    withDependencies {
-      $0[keyPath: html.keyPath] = html.value
-    } operation: {
-      Base._render(html.base, into: &printer)
-    }
-  }
-  public var body: Never { fatalError() }
-}

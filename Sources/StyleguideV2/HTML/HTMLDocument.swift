@@ -27,7 +27,7 @@ private struct Document<Head: HTML>: HTML {
       tag("head") {
         head
         style {
-          stylesheet
+          HTMLText(stylesheet)
         }
       }
       tag("body") {

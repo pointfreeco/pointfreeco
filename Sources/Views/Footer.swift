@@ -112,7 +112,7 @@ private struct Column<Links: HTML>: HTML {
   var body: some HTML {
     GridColumn {
       div {
-        h5 { title }
+        h5 { HTMLText(title) }
           .color(.white)
           .inlineStyle("font-size", "0.75rem")
           .inlineStyle("font-size", "0.875rem", media: MediaQuery.desktop.rawValue)

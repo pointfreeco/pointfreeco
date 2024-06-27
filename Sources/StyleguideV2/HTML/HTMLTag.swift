@@ -9,11 +9,11 @@ public struct HTMLTag: ExpressibleByStringLiteral {
     self.init(value)
   }
 
-  public func callAsFunction() -> some HTML {
+  public func callAsFunction() -> HTMLElement<Never> {
     tag(self.rawValue)
   }
 
-  public func callAsFunction(@HTMLBuilder _ content: () -> some HTML) -> some HTML {
+  public func callAsFunction<T: HTML>(@HTMLBuilder _ content: () -> T) -> HTMLElement<T> {
     tag(self.rawValue, content)
   }
 
@@ -32,19 +32,19 @@ public struct HTMLTextTag: ExpressibleByStringLiteral {
     self.init(value)
   }
 
-  public func callAsFunction(_ content: String) -> some HTML {
-    tag(self.rawValue) { content }
+  public func callAsFunction(_ content: String) -> HTMLElement<HTMLText> {
+    tag(self.rawValue) { HTMLText(content) }
   }
 
-  public func callAsFunction(_ content: () -> String) -> some HTML {
+  public func callAsFunction(_ content: () -> HTMLText) -> HTMLElement<HTMLText> {
     tag(self.rawValue) { content() }
   }
 }
 
 // extension HTML {
-public func tag(
-  _ tag: StaticString, @HTMLBuilder _ content: () -> (some HTML)? = { Never?.none }
-) -> some HTML {
+public func tag<T: HTML>(
+  _ tag: StaticString, @HTMLBuilder _ content: () -> T? = { Never?.none }
+) -> HTMLElement<T> {
   HTMLElement(tag: tag, content: content)
 }
 

@@ -1,11 +1,11 @@
-import StyleguideV2
 import Dependencies
 import PointFreeRouter
+import StyleguideV2
 
 public struct Home: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
-  public init () {}
+  public init() {}
 
   public var body: some HTML {
     Grid {
@@ -14,10 +14,10 @@ public struct Home: HTML {
           .color(.white)
 
         Paragraph(.big) {
-            """
-            Point-Free is a a video series exploring advanced topics in the Swift&nbsp;\
-            programming&nbsp;language.
-            """
+          """
+          Point-Free is a a video series exploring advanced topics in the Swift&nbsp;programming\
+          &nbsp;language.
+          """
         }
         .fontStyle(.body(.regular))
         .color(.gray800)
@@ -115,13 +115,13 @@ struct WhatToExpect: HTML {
     let item: WhatToExpectItem
     var body: some HTML {
       GridColumn {
-        Header(4) { item.title }
+        Header(4) { HTMLText(item.title) }
         .color(.black)
         .color(.white, media: .dark)
         .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
 
         Paragraph {
-          item.description
+          HTMLText(item.description)
         }
         .color(.gray300)
         .color(.gray850, media: .dark)

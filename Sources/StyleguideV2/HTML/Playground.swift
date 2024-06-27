@@ -3,7 +3,7 @@ struct PageLayout<Content: HTML>: HTMLDocument {
   @HTMLBuilder let content: Content
 
   var head: some HTML {
-    title { pageTitle }
+    title(pageTitle)
   }
 
   var body: some HTML {
