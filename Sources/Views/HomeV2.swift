@@ -163,13 +163,13 @@ private struct LoggedOut: HTML {
       Header(2) { "Episodes" }
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+    HomeModule(seeAllRoute: .clips(.clips), theme: .light) {
       Clips()
     } title: {
       Header(2) { "Clips" }
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+    HomeModule(seeAllRoute: .collections(), theme: .light) {
       Collections()
     } title: {
       Header(2) { "Collections" }
@@ -318,8 +318,15 @@ private struct Clips: HTML {
 }
 
 private struct Collections: HTML {
+  @Dependency(\.collections) var collections
+
   var body: some HTML {
-    "Collections"
+    Grid {
+      for collection in collections.prefix(3) {
+        CollectionCard(collection)
+      }
+    }
+    .grid(alignment: .stretch)
   }
 }
 
