@@ -39,15 +39,6 @@ public struct PageLayout<Content: HTML>: NodeView {
 
     html {
       head {
-        meta {}
-          .attribute("charset", "utf8")
-
-        meta {}
-          .attribute("name", "viewport")
-          .attribute("content", "width=device-width, initial-scale=1")
-
-        Node("title") { layoutData.title }
-
         layoutData.extraHead.rawValue
         favicons.rawValue
         if layoutData.usePrismJs {
@@ -55,6 +46,15 @@ public struct PageLayout<Content: HTML>: NodeView {
         }
 
         Node {
+          meta().attribute("charset", "utf8")
+
+          meta()
+            .attribute("name", "viewport")
+            .attribute("content", "width=device-width, initial-scale=1")
+
+          title { HTMLText(layoutData.title) }
+
+          tag("style") { HTMLText("\(renderedNormalizeCss)", raw: true) }
           tag("style") {
             """
             @media only screen and (min-width: 832px) {
@@ -97,42 +97,26 @@ public struct PageLayout<Content: HTML>: NodeView {
             body, html {
               height:100%
             }
+
+            @keyframes Pulse {
+              from { opacity: 1; }
+              50% { opacity: 0; }
+              to { opacity: 1; }
+            }
             """
           }
+
+          link()
+            .href(siteRouter.url(for: .feed(.episodes)))
+            .attribute("rel", "alternate")
+            .title("Point-Free Episodes")
+            .attribute("type", "application/atom+xml")
+          link()
+            .href(siteRouter.url(for: .blog(.feed)))
+            .attribute("rel", "alternate")
+            .title("Point-Free Blog")
+            .attribute("type", "application/atom+xml")
         }
-
-        ChildOf<Tag.Head>(arrayLiteral: .fragment([
-          .style(safe: renderedNormalizeCss),
-          //.style(styleguide, config: cssConfig),
-          //.style(markdownBlockStyles, config: cssConfig),
-          //.style(layoutData.extraStyles, config: cssConfig),
-          .style(
-            safe: """
-              @keyframes Pulse {
-                from { opacity: 1; }
-                50% { opacity: 0; }
-                to { opacity: 1; }
-              }
-              """),
-
-          .link(
-            attributes: [
-              .href(siteRouter.url(for: .feed(.episodes))),
-              .rel(.alternate),
-              .title("Point-Free Episodes"),
-              .type(.application(.init(rawValue: "atom+xml"))),
-            ]
-          ),
-          .link(
-            attributes: [
-              .href(siteRouter.url(for: .blog(.feed))),
-              .rel(.alternate),
-              .title("Point-Free Blog"),
-              // TODO: add .atom to Html
-              .type(.application(.init(rawValue: "atom+xml"))),
-            ]
-          )
-        ])).rawValue
       }
       body {
         ghosterBanner(isGhosting: layoutData.isGhosting)

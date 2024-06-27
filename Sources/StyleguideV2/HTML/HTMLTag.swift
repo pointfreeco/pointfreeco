@@ -120,7 +120,7 @@ public var link: HTMLTag { #function }
 public var main: HTMLTag { #function }
 public var map: HTMLTag { #function }
 public var mark: HTMLTag { #function }
-public var meta: HTMLTextTag { #function }
+public var meta: HTMLTag { #function }
 public var meter: HTMLTag { #function }
 public var nav: HTMLTag { #function }
 public var noframes: HTMLTag { #function }

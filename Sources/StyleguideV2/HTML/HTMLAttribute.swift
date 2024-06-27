@@ -4,6 +4,9 @@ extension HTML {
   public func attribute(_ name: String, _ value: String? = nil) -> _HTMLAttributes<Self> {
     _HTMLAttributes(content: self, attributes: [name: value])
   }
+
+  public func href(_ href: String) -> _HTMLAttributes<Self> { attribute("href", href) }
+  public func title(_ href: String) -> _HTMLAttributes<Self> { attribute("title", href) }
 }
 
 public struct _HTMLAttributes<Content: HTML>: HTML {
