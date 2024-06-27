@@ -457,7 +457,7 @@ private struct MaximalHero<PrimaryCTA: HTML>: HTML {
     ctaURL: String,
     secondaryCTATitle: String? = nil,
     secondaryCTAURL: String? = nil
-  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLRaw>>> {
+  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLText>>> {
     self.title = title
     self.blurb = blurb
     self.primaryCTA = Button(color: .purple, size: .regular, style: .normal) {
