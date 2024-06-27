@@ -66,7 +66,7 @@ private struct TaglineColumn: HTML {
 
   func twitterLink(_ name: String, _ route: TwitterRoute) -> some HTML {
     Link(href: twitterRouter.url(for: route).absoluteString) {
-      HTMLText(name, raw: true)
+      HTMLRaw(name)
     }
   }
 }

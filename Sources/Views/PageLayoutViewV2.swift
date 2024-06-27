@@ -56,7 +56,7 @@ public struct PageLayout<Content: HTML>: NodeView {
 
           title { HTMLText(layoutData.title) }
 
-          tag("style") { HTMLText("\(renderedNormalizeCss)", raw: true) }
+          tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
           tag("style") {
             """
             @media only screen and (min-width: 832px) {

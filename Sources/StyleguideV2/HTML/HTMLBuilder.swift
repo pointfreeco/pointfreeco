@@ -65,16 +65,27 @@ public enum _HTMLConditional<First: HTML, Second: HTML>: HTML {
 
 public struct HTMLText: HTML {
   let text: String
-  let raw: Bool
-  public init(_ text: String, raw: Bool = false) {
+  public init(_ text: String) {
     self.text = text
-    self.raw = raw
   }
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
-    // TODO: Escape
-    printer.bytes.append(contentsOf: html.text.utf8)
+    printer.bytes.reserveCapacity(printer.bytes.count + html.text.utf8.count)
+    for byte in html.text.utf8 {
+      switch byte {
+      case UInt8(ascii: "&"):
+        printer.bytes.append(contentsOf: "&amp;".utf8)
+      case UInt8(ascii: "<"):
+        printer.bytes.append(contentsOf: "&lt;".utf8)
+      default:
+        printer.bytes.append(byte)
+      }
+    }
   }
   public var body: Never { fatalError() }
+
+  public static func + (lhs: Self, rhs: Self) -> Self {
+    HTMLText(lhs.text + rhs.text)
+  }
 }
 
 extension HTMLText: ExpressibleByStringLiteral {

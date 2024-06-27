@@ -31,19 +31,8 @@ private struct Document<Head: HTML>: HTML {
         }
       }
       tag("body") {
-        HTMLBytes(bodyBytes)
+        HTMLRaw(bodyBytes)
       }
     }
   }
-}
-
-struct HTMLBytes: HTML {
-  let bytes: ContiguousArray<UInt8>
-  init(_ bytes: ContiguousArray<UInt8>) {
-    self.bytes = bytes
-  }
-  static func _render(_ html: HTMLBytes, into printer: inout HTMLPrinter) {
-    printer.bytes.append(contentsOf: html.bytes)
-  }
-  var body: Never { fatalError() }
 }
