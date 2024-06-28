@@ -80,6 +80,7 @@ extension HTML {
       .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
       .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
   }
+  
   public func column(
     alignment: GridColumn<Never>.Alignment,
     media: MediaQuery? = nil

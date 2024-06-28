@@ -51,7 +51,7 @@ public struct PageLayout<Content: HTML>: NodeView {
           meta().attribute("charset", "utf8")
           meta()
             .attribute("theme-color")
-            .attribute("#000")
+            .attribute("#121212")
           meta()
             .attribute("name", "viewport")
             .attribute("content", "width=device-width, initial-scale=1")
@@ -99,7 +99,14 @@ public struct PageLayout<Content: HTML>: NodeView {
             }
 
             body, html {
-              height:100%
+              height:100%;
+              background: #fff;
+            }
+            @media (prefers-color-scheme: dark) {
+              body, html {
+                height:100%;
+                background: #121212;
+              }
             }
 
             @keyframes Pulse {

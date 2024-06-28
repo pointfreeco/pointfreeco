@@ -43,91 +43,67 @@ private struct LoggedIn: HTML {
       HTMLGroup {
         span { "Want to see what’s coming up next? " }
         Link("Follow us on Twitter", href: "http://www.twitter.com/pointfreeco")
+          .linkUnderline(true)
       }
-      .linkUnderline(true)
       .color(.gray800)
     }
 
     if creditCount > 0 {
-      HomeModule(theme: .light) {
+      HomeModule(theme: .credits) {
         EpisodeCredits(creditCount: creditCount)
       }
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+    if !subscriberState.isActiveSubscriber {
+      HomeModule(seeAllRoute: .homeV2/*TODO*/, theme: .content) {
+        FreeEpisodes()
+      } title: {
+        Header(2) { "Free episodes" }
+      }
+
+      Divider()
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .content) {
       Episodes()
     } title: {
-      Header(2) { "Episodes" }
+      Header(2) { "All episodes" }
     }
 
-//    MinimalHero(title: "Upgrade your plan") {
-//      "Access all past and future episodes when you upgrade."
-//    }
-    HomeModule(theme: .callout) {
+    if !subscriberState.isActive {
       Upgrade()
+    } else {
+      Divider()
     }
 
-    if !clips.isEmpty {
-      HomeModule(seeAllRoute: .homeV2, theme: .light) {
-        Clips(clips: clips)
-      } title: {
-        Header(2) { "Clips" }
-      }
-    }
-
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+    HomeModule(seeAllRoute: .homeV2, theme: .content) {
       Collections()
     } title: {
       Header(2) { "Collections" }
     }
 
+    if subscriberState.isActive {
+      Gifts()
+    } else {
+      Divider()
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+      Clips(clips: clips)
+    } title: {
+      Header(2) { "Clips" }
+    }
+
+    Divider()
+
+    HomeModule(seeAllRoute: .blog(.index), theme: .content) {
+      BlogPosts()
+    } title: {
+      Header(2) { "Blog" }
+    }
+
     if subscriberState.isActiveSubscriber {
-      MaximalHero(
-        title: "Refer a friend",
-        blurb: """
-        You'll both get one month free ($18 credit) when they sign up from your personal referral \
-        link:
-        """
-      ) {
-        let url = siteRouter.url(
-          for: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: currentUser.referralCode
-          )
-        )
-
-        Grid {
-          GridColumn {
-            input {}
-              .attribute("value", url)
-              .attribute("type", "text")
-              .attribute("readonly", "true")
-              .attribute("onclick", "this.select();")
-              .inlineStyle("width", "100%")
-              .inlineStyle("border-radius", "0.5rem")
-              .color(.gray500)
-              .inlineStyle("padding", "1rem")
-              .inlineStyle("border", "none")
-              .inlineStyle("outline", "none")
-          }
-          .flexible()
-          .inlineStyle("padding-right", "1rem")
-
-          GridColumn {
-            Button(tag: input, color: .purple, size: .regular, style: .normal) {}
-              .attribute("type", "button")
-              .attribute("value", "Copy")
-              .attribute("onclick", """
-                navigator.clipboard.writeText("\(url)");
-                this.value = "Copied!";
-                setTimeout(() => { this.value = "Copy"; }, 3000);
-                """)
-          }
-          .inflexible()
-        }
-        .grid(alignment: .center)
-        .inlineStyle("margin", "2rem 4rem")
-      }
+      ReferAFriend(currentUser: currentUser)
     }
   }
 }
@@ -136,6 +112,7 @@ private struct LoggedOut: HTML {
   let allFreeEpisodeCount: Int
   let clips: [Clip]
 
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
@@ -150,7 +127,7 @@ private struct LoggedOut: HTML {
       ctaURL: siteRouter.loginPath(redirect: .homeV2)
     )
 
-    HomeModule(theme: .dark, isSmallTitle: true) {
+    HomeModule(theme: .companies) {
       Companies()
     } title: {
       Header(6) { "Trusted by teams" }
@@ -158,33 +135,47 @@ private struct LoggedOut: HTML {
         .inlineStyle("text-transform", "uppercase")
     }
 
-    HomeModule(theme: .offLight) {
+    HomeModule(theme: .informational) {
       WhatToExpect()
     } title: {
       Header(2) { "What to expect" }
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .light) {
+    if !subscriberState.isActiveSubscriber {
+      HomeModule(seeAllRoute: .homeV2/*TODO*/, theme: .content) {
+        FreeEpisodes()
+      } title: {
+        Header(2) { "Free episodes" }
+      }
+
+      Divider()
+    }
+
+    HomeModule(seeAllRoute: .homeV2, theme: .content) {
       Episodes()
     } title: {
-      Header(2) { "Episodes" }
+      Header(2) { "All episodes" }
+    }
+
+    Divider()
+
+    HomeModule(seeAllRoute: .collections(), theme: .content) {
+      Collections()
+    } title: {
+      Header(2) { "Collections" }
     }
 
     if !clips.isEmpty {
-      HomeModule(seeAllRoute: .clips(.clips), theme: .light) {
+      Divider()
+
+      HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
         Clips(clips: clips)
       } title: {
         Header(2) { "Clips" }
       }
     }
 
-    HomeModule(seeAllRoute: .collections(), theme: .light) {
-      Collections()
-    } title: {
-      Header(2) { "Collections" }
-    }
-
-    HomeModule(theme: .offLight) {
+    HomeModule(theme: .informational) {
       WhatPeopleAreSaying()
     } title: {
       Header(2) { "What people are saying" }
@@ -240,17 +231,6 @@ private struct EpisodeCredits: HTML {
   var creditsLeft: String {
     "\(creditCount) credit\(creditCount == 1 ? "" : "s")"
   }
-}
-
-extension SVG {
-  static let info = Self(
-    base64: base64EncodedString("""
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V9H11V15ZM11 7H9V5H11V7Z" fill="black"/>
-    </svg>
-    """),
-    description: ""
-  )
 }
 
 private struct Companies: HTML {
@@ -310,7 +290,29 @@ private struct Episodes: HTML {
 
   var body: some HTML {
     Grid {
-      for episode in episodes().dropLast(5).suffix(3) {
+      let episodes = episodes()
+        .suffix(3)
+        .reversed()
+
+      for episode in episodes {
+        EpisodeCard(episode, emergencyMode: false)  // TODO
+      }
+    }
+    .grid(alignment: .stretch)
+  }
+}
+
+private struct FreeEpisodes: HTML {
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
+
+  var body: some HTML {
+    Grid {
+      let episodes = episodes()
+        .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
+        .suffix(3)
+        .reversed()
+      for episode in episodes {
         EpisodeCard(episode, emergencyMode: false)  // TODO
       }
     }
@@ -331,6 +333,51 @@ private struct Clips: HTML {
   }
 }
 
+private struct BlogPosts: HTML {
+  @Dependency(\.blogPosts) var blogPosts
+  @Dependency(\.date.now) var now
+
+  var body: some HTML {
+    let posts = blogPosts().filter { !$0.hidden.isCurrentlyHidden(date: now) }.suffix(3).reversed()
+    ul {
+      for post in posts {
+        li {
+          BlogPost(post: post)
+        }
+        li {
+          Divider()
+        }
+        .inlineStyle("margin", "2rem 0")
+        .inlineStyle("display", "none", pseudo: "last-child")
+      }
+    }
+    .listStyle(.reset)
+  }
+
+  struct BlogPost: HTML {
+    let post: Models.BlogPost
+    @Dependency(\.siteRouter) var siteRouter
+
+    var body: some HTML {
+      div {
+        HTMLText(post.publishedAt.formatted(.dateTime.day().month().year()))
+      }
+      .color(.gray500.dark(.gray650))
+      div {
+        Header(4) {
+          Link(post.title, href: siteRouter.path(for: .blog(.show(.left(post.slug)))))
+            .color(.offBlack.dark(.offWhite))
+        }
+      }
+      .inlineStyle("margin-top", "0.5rem")
+      div {
+        HTMLMarkdown(post.blurb)
+      }
+      .color(.gray400.dark(.gray650))
+    }
+  }
+}
+
 private struct Collections: HTML {
   @Dependency(\.collections) var collections
 
@@ -345,8 +392,108 @@ private struct Collections: HTML {
 }
 
 private struct Upgrade: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
-    "Upgrade"
+    HomeModule(theme: .callout) {
+      Button(color: .purple, size: .regular, style: .normal) {
+        "See plans and pricing"
+      }
+      .attribute("href", siteRouter.path(for: .pricingLanding))
+      .inlineStyle("margin", "0 auto")
+    } title: {
+      Header(2) { "Upgrade your plan" }
+        .color(.gray150)
+
+      Paragraph(.big) { "Access all past and future episodes." }
+        .fontStyle(.body(.regular))
+        .color(.gray300)
+        .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+    }
+  }
+}
+
+private struct Gifts: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    HomeModule(theme: .callout) {
+      Button(color: .purple, size: .regular, style: .normal) {
+        "See gifts options"
+      }
+      .attribute("href", siteRouter.path(for: .gifts(.index)))
+      .inlineStyle("margin", "0 auto")
+    } title: {
+      GridColumn {
+        Header(2) { "Give the gift of Point-Free" }
+          .color(.gray150)
+
+        Paragraph(.big) {
+          "Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one."
+        }
+        .fontStyle(.body(.regular))
+        .color(.gray300)
+        .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+      }
+      .inlineStyle("text-align", "start", media: MediaQuery.mobile.rawValue)
+    }
+  }
+}
+
+private struct ReferAFriend: HTML {
+  let currentUser: User
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    MaximalHero(
+      title: "Refer a friend",
+      blurb: """
+        You'll both get one month free ($18 credit) when they sign up from your personal referral \
+        link:
+        """
+    ) {
+      let url = siteRouter.url(
+        for: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: currentUser.referralCode
+        )
+      )
+
+      Grid {
+        GridColumn {
+          input {}
+            .attribute("value", url)
+            .attribute("type", "text")
+            .attribute("readonly", "true")
+            .attribute("onclick", "this.select();")
+            .inlineStyle("width", "100%")
+            .inlineStyle("border-radius", "0.5rem")
+            .color(.gray500)
+            .inlineStyle("padding", "1rem")
+            .inlineStyle("border", "none")
+            .inlineStyle("outline", "none")
+        }
+        .flexible()
+        .inlineStyle("padding-right", "1rem")
+        .inlineStyle("max-width", "60%", media: MediaQuery.desktop.rawValue)
+
+        GridColumn {
+          Button(tag: input, color: .purple, size: .regular, style: .normal) {}
+            .attribute("type", "button")
+            .attribute("value", "Copy")
+            .attribute("onclick", """
+                navigator.clipboard.writeText("\(url)");
+                this.value = "Copied!";
+                setTimeout(() => { this.value = "Copy"; }, 3000);
+                """)
+        }
+        .inflexible()
+      }
+      .grid(alignment: .center)
+      .inlineStyle("justify-content", "center")
+      .inlineStyle("margin", "2rem 4rem")
+    }
   }
 }
 
@@ -421,6 +568,15 @@ private struct WhatPeopleAreSaying: HTML {
       .inlineStyle("padding", "1.5rem")
       .inlineStyle("margin-bottom", "1rem", pseudo: "not(:last-child)")
     }
+  }
+}
+
+private struct Divider: HTML {
+  var body: some HTML {
+    div {}
+      .backgroundColor(.gray800.dark(.gray300))
+      .inlineStyle("margin", "0 30%")
+      .inlineStyle("height", "1px")
   }
 }
 
@@ -536,31 +692,27 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
   let title: Title?
   var seeAllRoute: SiteRoute?
   var theme: Theme
-  var isSmallTitle: Bool
   let content: Content
+
   init(
     seeAllRoute: SiteRoute? = nil,
     theme: Theme,
-    isSmallTitle: Bool = false,
     @HTMLBuilder content: () -> Content,
     @HTMLBuilder title: () -> Title
   ) {
     self.title = title()
     self.seeAllRoute = seeAllRoute
     self.theme = theme
-    self.isSmallTitle = isSmallTitle
     self.content = content()
   }
   init(
     seeAllRoute: SiteRoute? = nil,
     theme: Theme,
-    isSmallTitle: Bool = false,
     @HTMLBuilder content: () -> Content
   ) where Title == Never {
     self.title = nil
     self.seeAllRoute = seeAllRoute
     self.theme = theme
-    self.isSmallTitle = isSmallTitle
     self.content = content()
   }
 
@@ -576,9 +728,9 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
           .column(alignment: seeAllRoute == nil ? .center : .start)
           .inlineStyle(
             "margin-bottom",
-            isSmallTitle ? "2rem"
-            : seeAllRoute == nil ? "4rem"
-            : "1.5rem"
+            seeAllRoute == nil 
+            ? "\(theme.titleMarginBottom)rem"
+            : "\(theme.titleMarginBottom/2)rem"
           )
         }
 
@@ -596,8 +748,15 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
       .grid(alignment: .baseline)
       .inlineStyle("max-width", "1184px")
       .inlineStyle("margin", "0 auto")
-      .inlineStyle("padding", "4rem 2rem")
-      .inlineStyle("padding", "4rem 3rem", media: MediaQuery.desktop.rawValue)
+      .inlineStyle(
+        "padding",
+        "\(theme.topMargin)rem \(theme.leftRightMargin)rem \(theme.bottomMargin)rem"
+      )
+      .inlineStyle(
+        "padding",
+        "\(theme.topMargin)rem \(theme.leftRightMarginDesktop)rem \(theme.bottomMargin)rem",
+        media: MediaQuery.desktop.rawValue
+      )
       .backgroundColor(theme.contentBackgroundColor)
     }
     .backgroundColor(theme.backgroundColor)
@@ -608,22 +767,61 @@ struct Theme {
   var backgroundColor: PointFreeColor?
   var contentBackgroundColor: PointFreeColor?
   var color: PointFreeColor
-  static let dark = Self(
-    backgroundColor: .black,
-    color: .purple
-  )
-  static let light = Self(
+  let topMargin: Double
+  let bottomMargin: Double
+  let leftRightMargin: Double
+  let leftRightMarginDesktop: Double
+  let titleMarginBottom: Double
+
+  static let credits = Self(
     backgroundColor: .white.dark(.black),
-    color: .black.dark(.offWhite)
+    color: .black.dark(.offWhite),
+    topMargin: 2,
+    bottomMargin: 0,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 3
   )
-  static let offLight = Self(
-    backgroundColor: .offWhite.dark(.offBlack),
-    color: .offBlack.dark(.offWhite)
+
+  static let content = Self(
+    backgroundColor: .white.dark(.black),
+    color: .black.dark(.offWhite),
+    topMargin: 4,
+    bottomMargin: 4,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 3
   )
+
   static let callout = Self(
     backgroundColor: .white.dark(.black),
     contentBackgroundColor: .init(rawValue: "#fafafa").dark(.init(rawValue: "#050505")),
-    color: .purple
+    color: .offBlack.dark(.offWhite),
+    topMargin: 4,
+    bottomMargin: 4,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 3
+  )
+
+  static let informational = Self(
+    backgroundColor: .offWhite.dark(.offBlack),
+    color: .offBlack.dark(.offWhite),
+    topMargin: 4,
+    bottomMargin: 4,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 3
+  )
+
+  static let companies = Self(
+    backgroundColor: .black,
+    color: .purple,
+    topMargin: 4,
+    bottomMargin: 4,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 2
   )
 }
 
@@ -637,4 +835,15 @@ extension Collection {
     }
     return groups
   }
+}
+
+extension SVG {
+  static let info = Self(
+    base64: base64EncodedString("""
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V9H11V15ZM11 7H9V5H11V7Z" fill="black"/>
+    </svg>
+    """),
+    description: ""
+  )
 }
