@@ -12,7 +12,10 @@ public struct HTMLMarkdown: HTML {
   }
 
   public var body: some HTML {
-    HTMLRaw(unsafeCmark(markdown))
+    div {
+      HTMLRaw(unsafeCmark(markdown))
+    }
+    .attribute("class", "markdown")
   }
 }
 

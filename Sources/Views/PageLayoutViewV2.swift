@@ -114,6 +114,8 @@ public struct PageLayout<Content: HTML>: NodeView {
               50% { opacity: 0; }
               to { opacity: 1; }
             }
+
+            .markdown *:link, .markdown *:visited { color: inherit; }
             """
           }
 
