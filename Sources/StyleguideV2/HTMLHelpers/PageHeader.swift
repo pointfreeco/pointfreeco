@@ -33,7 +33,7 @@ public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
       .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle("padding", "6rem 2rem")
-      .inlineStyle("padding", "8rem 3rem", media: MediaQuery.desktop.rawValue)
+      .inlineStyle("padding", "8rem 3rem", media: .desktop)
     }
     .inlineStyle("box-sizing", "border-box")
     .grid(alignment: .center)

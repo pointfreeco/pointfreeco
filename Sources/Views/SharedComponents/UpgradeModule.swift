@@ -18,7 +18,7 @@ struct UpgradeModule: HTML {
       Paragraph(.big) { "Access all past and future episodes." }
         .fontStyle(.body(.regular))
         .color(.gray300)
-        .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("margin", "0 6rem", media: .desktop)
     }
   }
 }

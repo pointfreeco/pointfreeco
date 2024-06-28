@@ -104,7 +104,10 @@ private struct EpisodesModule<Episodes: Collection<Episode>>: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.free))), theme: .content) {
+    HomeModule(
+      seeAllURL: title == nil ? nil : siteRouter.path(for: .episodes(.list(.free))),
+      theme: .content
+    ) {
       Grid {
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO

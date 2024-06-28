@@ -293,7 +293,7 @@ struct CenteredNavItems: HTML {
   var body: some HTML {
     ul {
       if currentUser != nil {
-        NavListItem("Episodes", route: .homeV2)
+        NavListItem("Episodes", route: .episodes(.list(.all)))
       }
       NavListItem("Collections", route: .collections())
       if subscriberState.isNonSubscriber {

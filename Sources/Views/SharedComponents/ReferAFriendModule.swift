@@ -32,7 +32,7 @@ struct ReferAFriendModule: HTML {
         }
         .flexible()
         .inlineStyle("padding-right", "1rem")
-        .inlineStyle("max-width", "60%", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("max-width", "60%", media: .desktop)
 
         GridColumn {
           Button(tag: input, color: .purple, size: .regular, style: .normal) {}
@@ -62,7 +62,7 @@ struct ReferAFriendModule: HTML {
       }
       .fontStyle(.body(.regular))
       .color(.gray300)
-      .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+      .inlineStyle("margin", "0 6rem", media: .desktop)
     }
   }
 }

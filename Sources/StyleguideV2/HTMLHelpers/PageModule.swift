@@ -68,7 +68,7 @@ public struct HomeModule<Title: HTML, Content: HTML>: HTML {
       .inlineStyle(
         "padding",
         "\(theme.topMargin)rem \(theme.leftRightMarginDesktop)rem \(theme.bottomMargin)rem",
-        media: MediaQuery.desktop.rawValue
+        media: .desktop
       )
       .backgroundColor(theme.contentBackgroundColor)
     }
