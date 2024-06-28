@@ -100,10 +100,12 @@ public struct Progress: HTML {
     div {
       div {}
         .inlineStyle("background-color", "#363636")
+        .inlineStyle("background-color", "#e8e8e8", media: .dark)
         .inlineStyle("height", "100%")
         .inlineStyle("width", "\(Int(value * 100))%")
     }
     .inlineStyle("background-color", "#e8e8e8")
+    .inlineStyle("background-color", "#363636", media: .dark)
     .inlineStyle("border-radius", "4px")
     .inlineStyle("display", "inline-block")
     .inlineStyle("height", "8px")

@@ -112,7 +112,7 @@ private struct LoggedOut: HTML {
     MaximalHero(
       title: "Explore the wonderful world of advanced&nbsp;Swift.",
       blurb: """
-          Point-Free is a a video series exploring advanced topics in the \
+          Point-Free is a video series exploring advanced topics in the \
           Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
           Brandon&nbsp;and&nbsp;Stephen.
           """,
