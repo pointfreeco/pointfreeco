@@ -31,6 +31,8 @@ public struct Home: HTML {
 }
 
 private struct LoggedIn: HTML {
+  @Dependency(\.episodeProgresses) var episodeProgresses
+  @Dependency(\.episodes) var episodes
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
@@ -46,6 +48,21 @@ private struct LoggedIn: HTML {
           .linkUnderline(true)
       }
       .color(.gray800)
+    }
+
+    let inProgressEpisodes = episodeProgresses.values
+      .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
+      .prefix(while: { $0.percent < 90 })
+      .compactMap({ progress in
+        episodes().first(where: { $0.sequence == progress.episodeSequence })
+      })
+      .prefix(3)
+    if !inProgressEpisodes.isEmpty {
+      HomeModule(seeAllRoute: .homeV2, theme: .content) {
+        InProgressEpisodes(episodes: Array(inProgressEpisodes))
+      } title: {
+        Header(2) { "Continue watching" }
+      }
     }
 
     if creditCount > 0 {
@@ -312,6 +329,19 @@ private struct FreeEpisodes: HTML {
         .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
         .suffix(3)
         .reversed()
+      for episode in episodes {
+        EpisodeCard(episode, emergencyMode: false)  // TODO
+      }
+    }
+    .grid(alignment: .stretch)
+  }
+}
+
+private struct InProgressEpisodes: HTML {
+  let episodes: [Episode]
+
+  var body: some HTML {
+    Grid {
       for episode in episodes {
         EpisodeCard(episode, emergencyMode: false)  // TODO
       }
