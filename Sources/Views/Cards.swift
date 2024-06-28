@@ -46,14 +46,46 @@ public struct EpisodeCard: HTML {
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-        Label("Subscriber-only", icon: .locked)
-      } else {
-        Label("Free", icon: .unlocked)
+      GridColumn {
+        if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+          Label("Subscriber-only", icon: .locked)
+        } else {
+          Label("Free", icon: .unlocked)
+        }
       }
 
-      Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+      GridColumn {
+        Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+      }
+
+      GridColumn {
+        Progress(value: 0.5)
+          .inlineStyle("width", "80px")
+      }
+      .column(alignment: .end)
     }
+  }
+}
+
+public struct Progress: HTML {
+  let value: Float
+
+  init(value: Float) {
+    self.value = value
+  }
+
+  public var body: some HTML {
+    div {
+      div {}
+        .inlineStyle("background-color", "currentColor")
+        .inlineStyle("height", "100%")
+        .inlineStyle("width", "\(Int(value * 100))%")
+    }
+    .inlineStyle("background-color", "#eee")
+    .inlineStyle("border-radius", "4px")
+    .inlineStyle("display", "inline-block")
+    .inlineStyle("height", "8px")
+    .inlineStyle("overflow", "hidden")
   }
 }
 
