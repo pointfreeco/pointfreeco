@@ -4,7 +4,9 @@ import Models
 
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
+  @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
 
   let episode: Episode
   let emergencyMode: Bool
@@ -41,17 +43,20 @@ public struct EpisodeCard: HTML {
     } header: {
       Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
         Image(source: episode.image, description: "")
-          .inlineStyle("width", "100%")
           .attribute("loading", "lazy")
+          .inlineStyle("width", "100%")
+          .inlineStyle("filter", progress?.isFinished == true ? "grayscale(1)" : nil)
       }
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      GridColumn {
-        if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-          Label("Subscriber-only", icon: .locked)
-        } else {
-          Label("Free", icon: .unlocked)
+      if !subscriberState.isActive {
+        GridColumn {
+          if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+            Label("Subscriber-only", icon: .locked)
+          } else {
+            Label("Free", icon: .unlocked)
+          }
         }
       }
 
@@ -59,31 +64,45 @@ public struct EpisodeCard: HTML {
         Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
       }
 
-      GridColumn {
-        Progress(value: 0.5)
-          .inlineStyle("width", "80px")
+      if let progress {
+        GridColumn {
+          if progress.isFinished {
+            "Watched"  // TODO: Icon?
+          } else {
+            let value = Double(progress.percent) / 100
+            let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
+
+            Progress(value: value)
+              .inlineStyle("width", "80px")
+              .title("\(Int(minutes)) min to finish")
+          }
+        }
+        .column(alignment: .end)
+        .flexible()
       }
-      .column(alignment: .end)
-      .flexible()
     }
+  }
+
+  var progress: EpisodeProgress? {
+    episodeProgresses[episode.sequence]
   }
 }
 
 public struct Progress: HTML {
-  let value: Float
+  let value: Double
 
-  init(value: Float) {
+  init(value: Double) {
     self.value = value
   }
 
   public var body: some HTML {
     div {
       div {}
-        .inlineStyle("background-color", "currentColor")
+        .inlineStyle("background-color", "#363636")
         .inlineStyle("height", "100%")
         .inlineStyle("width", "\(Int(value * 100))%")
     }
-    .inlineStyle("background-color", "#eee")
+    .inlineStyle("background-color", "#e8e8e8")
     .inlineStyle("border-radius", "4px")
     .inlineStyle("display", "inline-block")
     .inlineStyle("height", "8px")
