@@ -5,25 +5,33 @@ public enum Pseudo: String {
 }
 
 extension HTML {
-  public func backgroundColor(_ color: PointFreeColor?, media: MediaQuery? = nil) -> some HTML {
-    inlineStyle("background-color", color?.rawValue, media: media?.rawValue)
+  public func backgroundColor(_ color: PointFreeColor?) -> some HTML {
+    inlineStyle("background-color", color?.rawValue)
+      .inlineStyle("background-color", color?.darkValue, media: MediaQuery.dark.rawValue)
   }
 
   public func color(
     _ color: PointFreeColor?,
-    _ pseudo: Pseudo? = nil,
-    media: MediaQuery? = nil
+    _ pseudo: Pseudo? = nil
   ) -> some HTML {
-    inlineStyle("color", color?.rawValue, media: media?.rawValue, pseudo: pseudo?.rawValue)
+    inlineStyle("color", color?.rawValue, pseudo: pseudo?.rawValue)
+      .inlineStyle(
+        "color", color?.darkValue, media: MediaQuery.dark.rawValue, pseudo: pseudo?.rawValue
+      )
   }
 }
 
 public struct PointFreeColor {
-  public let rawValue: String
+  public var rawValue: String
+  public var darkValue: String?
 
-  public init(rawValue: String) {
+  public init(rawValue: String, darkValue: String? = nil) {
     self.rawValue = rawValue
+    self.darkValue = darkValue
   }
+
+  public func dark(_ other: Self) -> Self { Self(rawValue: rawValue, darkValue: other.rawValue) }
+  public func light(_ other: Self) ->  Self { Self(rawValue: other.rawValue, darkValue: darkValue) }
 
   public static let black = Self(rawValue: "#121212")
   public static let offBlack = Self(rawValue: "#171717")

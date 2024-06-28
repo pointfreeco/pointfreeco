@@ -29,13 +29,13 @@ public struct Link<Label: HTML>: HTML {
 
 extension HTML {
   public func linkColor(_ linkColor: PointFreeColor?) -> some HTML {
-    self.dependency(\.linkStyle.color, linkColor)
+    dependency(\.linkStyle.color, linkColor)
   }
   public func linkUnderline(_ linkUnderline: Bool) -> some HTML {
-    self.dependency(\.linkStyle.underline, linkUnderline)
+    dependency(\.linkStyle.underline, linkUnderline)
   }
   public func linkStyle(_ linkStyle: LinkStyle) -> some HTML {
-    self.dependency(\.linkStyle, linkStyle)
+    dependency(\.linkStyle, linkStyle)
   }
 }
 

@@ -18,20 +18,19 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
       div {
         header
           .inlineStyle("border-bottom", "1px solid #e8e8e8")
+          .inlineStyle("border-bottom", "1px solid #3d3d3d", media: MediaQuery.dark.rawValue)
         div {
           content
 
           Grid {
             footer
           }
-          .color(.gray650)
-          .color(.gray400, media: .dark)
+          .color(.gray650.dark(.gray400))
           .grid(alignment: .center)
         }
         .inlineStyle("padding", "1rem 2rem 2rem 2rem")
       }
-      .backgroundColor(.white)
-      .backgroundColor(.gray150, media: .dark)
+      .backgroundColor(.white.dark(.gray150))
       .inlineStyle("box-shadow", "0 2px 10px -2px rgba(0,0,0,0.3)")
       .inlineStyle("border-radius", "5px")
       .inlineStyle("margin", "1rem 0 2rem 0")

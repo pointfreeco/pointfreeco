@@ -19,8 +19,7 @@ public struct EpisodeCard: HTML {
       div {
         "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.formatted(.dateTime.day().month().year()))"
       }
-      .color(.gray650)
-      .color(.gray400, media: .dark)
+      .color(.gray650.dark(.gray400))
       .fontStyle(.body(.small))
 
       Header(5) {
@@ -28,13 +27,12 @@ public struct EpisodeCard: HTML {
         HTMLText(episode.fullTitle)
         // }
       }
-      .color(.white, media: .dark)
+      .color(.black.dark(.white))
 
       div {
         HTMLMarkdown(episode.blurb)
       }
-      .color(.gray400)
-      .color(.gray650, media: .dark)
+      .color(.gray400.dark(.gray650))
     } header: {
       Link(href: siteRouter.path(for: .episode(.show(episode)))) {
         Image(source: episode.image, description: "")
@@ -71,13 +69,12 @@ public struct ClipCard: HTML {
         HTMLText(clip.title)
         // }
       }
-      .color(.white, media: .dark)
+      .color(.black.dark(.white))
 
       div {
         HTMLMarkdown(clip.blurb)
       }
-      .color(.gray400)
-      .color(.gray650, media: .dark)
+      .color(.gray400.dark(.gray650))
     } header: {
       Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
         Image(source: clip.posterURL, description: "")
@@ -106,22 +103,21 @@ public struct CollectionCard: HTML {
       div {
         HTMLMarkdown(collection.blurb)
       }
-      .color(.gray400)
-      .color(.gray650, media: .dark)
+      .color(.gray400.dark(.gray650))
     } header: {
       div {
-        // Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
-        SVG.collection
-        Header(5) {
-          HTMLText(collection.title)
+        Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
+          SVG.collection
+          Header(5) {
+            HTMLText(collection.title)
+          }
         }
-        .color(.white, media: .dark)
+        .linkColor(.black.dark(.white))
 
         div {
           "Collection"
         }
-        .color(.gray650)
-        .color(.gray400, media: .dark)
+        .color(.gray650.dark(.gray400))
         .fontStyle(.body(.small))
         // }
       }

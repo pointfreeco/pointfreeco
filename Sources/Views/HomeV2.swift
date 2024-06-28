@@ -289,15 +289,13 @@ private struct WhatToExpect: HTML {
           .inlineStyle("max-width", "100%")
 
         Header(4) { HTMLText(item.title) }
-        .color(.black)
-        .color(.offWhite, media: .dark)
-        .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
+          .color(.black.dark(.offWhite))
+          .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
 
         Paragraph {
           HTMLText(item.description)
         }
-        .color(.gray300)
-        .color(.gray850, media: .dark)
+        .color(.gray300.dark(.gray850))
         .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
       }
       .column(count: 6, media: .desktop)
@@ -389,8 +387,7 @@ private struct WhatPeopleAreSaying: HTML {
             Image(source: testimonial.avatarURL ?? "", description: "")
               .size(width: .rem(3), height: .rem(3))
               .inlineStyle("border-radius", "1.5rem")
-              .backgroundColor(.gray650)
-              .backgroundColor(.gray300, media: .dark)
+              .backgroundColor(.gray650.dark(.gray300))
           }
 
           GridColumn {
@@ -403,8 +400,7 @@ private struct WhatPeopleAreSaying: HTML {
             }
             .inlineStyle("font-weight", "normal")
             .inlineStyle("margin-top", "0")
-            .color(.gray400)
-            .color(.gray650, media: .dark)
+            .color(.gray400.dark(.gray400))
           }
           .inlineStyle("padding-left", "1rem")
         }
@@ -413,12 +409,10 @@ private struct WhatPeopleAreSaying: HTML {
         }
         .inlineStyle("padding-top", "1rem")
       }
-      .color(.black)
-      .color(.white, media: .dark)
+      .color(.black.dark(.white))
       .attribute("href", testimonial.tweetUrl)
       .grid(alignment: .center)
-      .backgroundColor(.white)
-      .backgroundColor(.gray150, media: .dark)
+      .backgroundColor(.white.dark(.gray150))
       .inlineStyle("text-decoration-line", "none")
       .inlineStyle("display", "block")
       .inlineStyle("border", "1px solid #e8e8e8")
@@ -577,7 +571,6 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
           GridColumn {
             title
               .color(theme.color)
-              .color(theme.darkModeColor, media: .dark)
           }
           .column(count: seeAllRoute == nil ? 12 : 10)
           .column(alignment: seeAllRoute == nil ? .center : .start)
@@ -606,45 +599,31 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
       .inlineStyle("padding", "4rem 2rem")
       .inlineStyle("padding", "4rem 3rem", media: MediaQuery.desktop.rawValue)
       .backgroundColor(theme.contentBackgroundColor)
-      .backgroundColor(theme.contentDarkModeBackgroundColor, media: .dark)
     }
     .backgroundColor(theme.backgroundColor)
-    .backgroundColor(theme.darkModeBackgroundColor, media: .dark)
   }
 }
 
 struct Theme {
   var backgroundColor: PointFreeColor?
-  var darkModeBackgroundColor: PointFreeColor?
   var contentBackgroundColor: PointFreeColor?
-  var contentDarkModeBackgroundColor: PointFreeColor?
   var color: PointFreeColor
-  var darkModeColor: PointFreeColor
   static let dark = Self(
     backgroundColor: .black,
-    darkModeBackgroundColor: .black,
-    color: .purple,
-    darkModeColor: .purple
+    color: .purple
   )
   static let light = Self(
-    backgroundColor: .white,
-    darkModeBackgroundColor: .black,
-    color: .black,
-    darkModeColor: .offWhite
+    backgroundColor: .white.dark(.black),
+    color: .black.dark(.offWhite)
   )
   static let offLight = Self(
-    backgroundColor: .offWhite,
-    darkModeBackgroundColor: .offBlack,
-    color: .offBlack,
-    darkModeColor: .offWhite
+    backgroundColor: .offWhite.dark(.offBlack),
+    color: .offBlack.dark(.offWhite)
   )
   static let callout = Self(
-    backgroundColor: .white,
-    darkModeBackgroundColor: .black,
-    contentBackgroundColor: .init(rawValue: "#fafafa"),
-    contentDarkModeBackgroundColor: .init(rawValue: "#050505"),
-    color: .purple,
-    darkModeColor: .purple
+    backgroundColor: .white.dark(.black),
+    contentBackgroundColor: .init(rawValue: "#fafafa").dark(.init(rawValue: "#050505")),
+    color: .purple
   )
 }
 
