@@ -195,7 +195,7 @@ struct NavView: HTML {
         }
         .grid(alignment: .center)
       }
-      .inlineStyle("max-width", "1184px")
+      .inlineStyle("max-width", "1280px")
       .inlineStyle("margin-left", "auto")
       .inlineStyle("margin-right", "auto")
     }

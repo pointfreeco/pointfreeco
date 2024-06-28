@@ -50,24 +50,17 @@ private struct LoggedIn: HTML {
       .color(.gray800)
     }
 
-    let inProgressEpisodes = episodeProgresses.values
-      .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
-      .prefix(while: { $0.percent < 90 })
-      .compactMap({ progress in
-        episodes().first(where: { $0.sequence == progress.episodeSequence })
-      })
-      .prefix(3)
+    if creditCount > 0 {
+      HomeModule(theme: .credits) {
+        EpisodeCredits(creditCount: creditCount)
+      }
+    }
+
     if !inProgressEpisodes.isEmpty {
       HomeModule(seeAllRoute: .homeV2, theme: .content) {
         InProgressEpisodes(episodes: Array(inProgressEpisodes))
       } title: {
         Header(2) { "Continue watching" }
-      }
-    }
-
-    if creditCount > 0 {
-      HomeModule(theme: .credits) {
-        EpisodeCredits(creditCount: creditCount)
       }
     }
 
@@ -122,6 +115,18 @@ private struct LoggedIn: HTML {
     if subscriberState.isActiveSubscriber {
       ReferAFriend(currentUser: currentUser)
     }
+  }
+
+  var inProgressEpisodes: [Episode] {
+    Array(
+      episodeProgresses.values
+        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
+        .prefix(while: { $0.percent < 90 })
+        .compactMap({ progress in
+          episodes().first(where: { $0.sequence == progress.episodeSequence })
+        })
+        .prefix(3)
+    )
   }
 }
 
@@ -776,7 +781,7 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
         content
       }
       .grid(alignment: .baseline)
-      .inlineStyle("max-width", "1184px")
+      .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle(
         "padding",

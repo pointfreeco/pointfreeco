@@ -28,7 +28,7 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
           .color(.gray650.dark(.gray400))
           .grid(alignment: .center)
         }
-        .inlineStyle("padding", "1rem 2rem 2rem 2rem")
+        .inlineStyle("padding", "1.5rem")
       }
       .backgroundColor(.white.dark(.gray150))
       .inlineStyle("border", "1px #353535 solid", media: MediaQuery.dark.rawValue)
@@ -39,8 +39,11 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
     }
     .column(count: 12)
     .column(count: 4, media: .desktop)
-    .inlineStyle("padding-left", "1rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:first-child)")
-    .inlineStyle("padding-right", "1rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:last-child)")
+    .inlineStyle("padding-left", "0.75rem")
+    .inlineStyle("padding-right", "0.75rem")
+
+//    .inlineStyle("margin-left", "-0.75rem", media: MediaQuery.desktop.rawValue, pseudo: "first-child")
+//    .inlineStyle("margin-right", "-0.75rem", media: MediaQuery.desktop.rawValue, pseudo: "last-child")
   }
 }
 

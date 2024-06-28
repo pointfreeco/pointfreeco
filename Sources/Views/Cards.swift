@@ -22,9 +22,14 @@ public struct EpisodeCard: HTML {
       .color(.gray650.dark(.gray400))
       .fontStyle(.body(.small))
 
-      Header(5) {
+      Header(4) {
         // Link(href: siteRouter.path(for: .episode(.show(episode)))) {
-        HTMLText(episode.fullTitle)
+        HTMLText(episode.title)
+        if let subtitle = episode.subtitle {
+          ":"
+          br()
+          HTMLText(subtitle)
+        }
         // }
       }
       .color(.black.dark(.white))
@@ -64,7 +69,7 @@ public struct ClipCard: HTML {
 
   public var body: some HTML {
     Card {
-      Header(5) {
+      Header(4) {
         // Link(href: siteRouter.path(for: .episode(.show(episode)))) {
         HTMLText(clip.title)
         // }
@@ -108,7 +113,7 @@ public struct CollectionCard: HTML {
       div {
         Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
           SVG.collection
-          Header(5) {
+          Header(4) {
             HTMLText(collection.title)
           }
         }
