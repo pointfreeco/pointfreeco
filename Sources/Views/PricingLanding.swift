@@ -122,7 +122,7 @@ private func titleColumn() -> Node {
           ]),
           .style(lineHeight(1.2)),
         ],
-        .raw("Explore the wonderful world of&nbsp;functional programming in Swift.")
+        .raw("Explore the wonderful world of advanced&nbsp;Swift.")
       )
     )
 }
@@ -863,8 +863,8 @@ struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
     title: "New content regularly",
     description: """
-      We dissect some of the most important topics in functional programming frequently, and deliver them straight
-      to your inbox.
+      We dissect some of the most important and interesting topics in Swift programming \
+      frequently, and deliver them straight to your inbox.
       """
   )
 
@@ -872,7 +872,8 @@ struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg",
     title: "Wide variety of topics",
     description: """
-      We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+      We cover both abstract ideas and practical concepts you can start using in your code base \
+      immediately.
       """
   )
 
@@ -880,8 +881,8 @@ struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
     title: "Playground downloads",
     description: """
-      Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
-      discussed.
+      Download a fully-functioning Swift playground from the episode so you can experiment with \
+      the concepts discussed.
       """
   )
 
@@ -889,8 +890,8 @@ struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg",
     title: "Video transcripts",
     description: """
-      We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
-      directly to that point in the video.
+      We transcribe each video by hand so you can search and reference easily. Click on a \
+      timestamp to jump directly to that point in the video.
       """
   )
 }

@@ -11,7 +11,7 @@ public func giftsLanding(
   episodeStats: EpisodeStats
 ) -> Node {
   [
-    landingHero(title: "Share the wonderful world of&nbsp;functional programming in Swift."),
+    landingHero(title: "Share the wonderful world of advanced &nbsp;Swift."),
     options(episodeStats: episodeStats),
     whatToExpect,
     faq(faqs: .giftFaqs),

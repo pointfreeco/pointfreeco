@@ -144,8 +144,8 @@ func welcomeEmail1Content(user: User) -> Node {
       👋 Howdy!
 
       It's been a week since you signed up for [Point-Free](\(siteRouter.url(for: .home))). We hope
-      you've learned something new about functional programming, and maybe even introduced it into
-      your codebase!
+      you've learned a thing or two new about Swift, and maybe even introduced a learning into your
+      codebase!
 
       We'd love to [have you as a subscriber](\(siteRouter.url(for: .pricingLanding))), so please
       let us know if you have any questions. Just reply to this email!

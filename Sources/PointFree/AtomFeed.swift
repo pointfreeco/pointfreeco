@@ -55,7 +55,7 @@ var freeEpisodeRssChannel: RssChannel {
 
   return RssChannel(
     copyright:
-      "Copyright Point-Free, Inc. \(calendar.component(.year, from: now))",
+      "Copyright Point-Free Inc. \(calendar.component(.year, from: now))",
     description: description,
     image: .init(
       link: siteRouter.url(for: .home),
@@ -86,7 +86,7 @@ var freeEpisodeRssChannel: RssChannel {
       image: .init(
         href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
       owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
-      subtitle: "Functional programming concepts explained simply.",
+      subtitle: "Advanced programming concepts explained simply.",
       summary: description,
       type: .episodic
     ),
