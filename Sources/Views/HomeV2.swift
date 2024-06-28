@@ -418,8 +418,8 @@ private struct Collections: HTML {
 
   var body: some HTML {
     Grid {
-      for collection in collections.prefix(3) {
-        CollectionCard(collection)
+      for (index, collection) in collections.prefix(3).enumerated() {
+        CollectionCard(collection, index: index)
       }
     }
     .grid(alignment: .stretch)

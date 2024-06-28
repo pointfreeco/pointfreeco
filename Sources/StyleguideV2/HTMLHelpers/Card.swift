@@ -41,9 +41,6 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
     .column(count: 4, media: .desktop)
     .inlineStyle("padding-left", "0.75rem")
     .inlineStyle("padding-right", "0.75rem")
-
-//    .inlineStyle("margin-left", "-0.75rem", media: MediaQuery.desktop.rawValue, pseudo: "first-child")
-//    .inlineStyle("margin-right", "-0.75rem", media: MediaQuery.desktop.rawValue, pseudo: "last-child")
   }
 }
 
@@ -59,12 +56,11 @@ public struct Label: HTML {
   public var body: some HTML {
     Grid {
       icon
-        .inlineStyle("padding-right", "0.25rem")
 
       span {
         HTMLText(title)
       }
-      .inlineStyle("padding-right", "0.5rem")
+      .inlineStyle("padding", "0 0.5rem 0 0.25rem")
     }
     .fontStyle(.body(.small))
     .grid(alignment: .center)
