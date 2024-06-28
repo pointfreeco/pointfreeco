@@ -50,24 +50,22 @@ public struct EpisodeCard: HTML {
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      if !subscriberState.isActive {
-        GridColumn {
-          if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-            Label("Subscriber-only", icon: .locked)
-          } else {
-            Label("Free", icon: .unlocked)
-          }
-        }
-      }
-
       GridColumn {
+        if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+          if !subscriberState.isActive {
+            Label("Subscriber-only", icon: .locked)
+          }
+        } else {
+          Label("Free", icon: .unlocked)
+        }
+
         Label(episode.length.formatted(), icon: .clock)
       }
 
       if let progress {
         GridColumn {
           if progress.isFinished {
-            "Watched"  // TODO: Icon?
+            Label("Watched", icon: .checkmark)
           } else {
             let value = Double(progress.percent) / 100
             let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
@@ -199,6 +197,14 @@ public struct CollectionCard: HTML {
 }
 
 extension SVG {
+  static let checkmark = Self("Finished") {
+    """
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+    <path d="M389-267 195-460l51-52 143 143 325-324 51 51-376 375Z"/>
+    </svg>
+    """
+  }
+
   static func collection(linearGradientStart start: String, stop: String) -> Self {
     Self("Collection") {
       """
