@@ -8,7 +8,7 @@ public struct Grid<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    div {
+    tag("grid") {
       content
     }
     .inlineStyle("box-sizing", "border-box")
@@ -43,7 +43,7 @@ public struct GridColumn<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    div {
+    tag("column") {
       content
     }
     .inlineStyle("max-width", "100%")

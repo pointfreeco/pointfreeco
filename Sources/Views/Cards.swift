@@ -64,6 +64,7 @@ public struct EpisodeCard: HTML {
           .inlineStyle("width", "80px")
       }
       .column(alignment: .end)
+      .flexible()
     }
   }
 }
