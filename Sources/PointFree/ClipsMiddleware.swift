@@ -52,8 +52,6 @@ private func clipsMiddleware(
   @Dependency(\.database) var database
   do {
     let clips = try await database.fetchClips()
-      .filter { $0.order >= 0 }
-      .sorted { $0.order < $1.order }
 
     return
       conn

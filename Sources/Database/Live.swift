@@ -136,6 +136,8 @@ extension Client {
         try await pool.sqlDatabase.all(
           """
           SELECT * from "clips"
+          WHERE "order" >= 0
+          ORDER BY "order" ASC
           """
         )
       },
