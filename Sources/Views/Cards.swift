@@ -61,7 +61,7 @@ public struct EpisodeCard: HTML {
       }
 
       GridColumn {
-        Label(episode.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+        Label(episode.length.formatted(), icon: .clock)
       }
 
       if let progress {
@@ -123,11 +123,11 @@ public struct ClipCard: HTML {
   public var body: some HTML {
     Card {
       Header(4) {
-        // Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
-        HTMLText(clip.title)
-        // }
+        Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
+          HTMLText(clip.title)
+        }
+        .linkColor(.black.dark(.white))
       }
-      .color(.black.dark(.white))
 
       div {
         HTMLMarkdown(clip.blurb)
@@ -142,7 +142,7 @@ public struct ClipCard: HTML {
       .inlineStyle("line-height", "0")
     } footer: {
       Label("Watch", icon: .play)
-      Label(clip.duration.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+      Label(clip.duration.formatted(), icon: .clock)
     }
   }
 }
@@ -193,7 +193,7 @@ public struct CollectionCard: HTML {
     } footer: {
       Label("\(collection.numberOfEpisodes) episodes", icon: .play)
 
-      Label(collection.length.duration.formatted(.units(allowed: [.hours, .minutes])), icon: .clock)
+      Label(collection.length.formatted(), icon: .clock)
     }
   }
 }
