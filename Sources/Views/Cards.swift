@@ -53,15 +53,22 @@ public struct EpisodeCard: HTML {
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      GridColumn {
-        if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-          if !subscriberState.isActive {
-            Label("Subscriber-only", icon: .locked)
+      if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+        if !subscriberState.isActive {
+          GridColumn {
+            Link(href: siteRouter.path(for: .pricingLanding)) {
+              Label("Subscriber-only", icon: .locked)
+            }
+            .linkColor(.currentColor)
           }
-        } else {
+        }
+      } else {
+        GridColumn {
           Label("Free", icon: .unlocked)
         }
+      }
 
+      GridColumn {
         Label(episode.length.formatted(), icon: .clock)
       }
 

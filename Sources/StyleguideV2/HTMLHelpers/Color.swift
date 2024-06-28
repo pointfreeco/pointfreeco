@@ -44,4 +44,6 @@ public struct PointFreeColor {
   public static let yellow = Self(rawValue: "#fff080")
   public static let white = Self(rawValue: "#fff")
   public static let offWhite = Self(rawValue: "#fafafa")
+
+  public static let currentColor = Self(rawValue: "currentColor")
 }
