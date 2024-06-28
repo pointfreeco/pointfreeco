@@ -21,19 +21,22 @@ public struct EpisodeCard: HTML {
       div {
         "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
       }
+      .inlineStyle("margin", "1rem 0 0.5rem 0")
       .color(.gray650.dark(.gray400))
       .fontStyle(.body(.small))
 
-      Header(4) {
-        Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
-          HTMLText(episode.title)
-          if let subtitle = episode.subtitle {
-            ":"
-            br()
-            HTMLText(subtitle)
+      div {
+        Header(4) {
+          Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+            HTMLText(episode.title)
+            if let subtitle = episode.subtitle {
+              ":"
+              br()
+              HTMLText(subtitle)
+            }
           }
+          .linkColor(.black.dark(.white))
         }
-        .linkColor(.black.dark(.white))
       }
 
       div {

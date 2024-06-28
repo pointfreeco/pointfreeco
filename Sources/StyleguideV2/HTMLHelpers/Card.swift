@@ -28,7 +28,7 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
           .color(.gray650.dark(.gray400))
           .grid(alignment: .center)
         }
-        .inlineStyle("padding", "1.5rem")
+        .inlineStyle("padding", "0.5rem 1.5rem 1.5rem 1.5rem")
       }
       .backgroundColor(.white.dark(.gray150))
       .inlineStyle("border", "1px #353535 solid", media: MediaQuery.dark.rawValue)
