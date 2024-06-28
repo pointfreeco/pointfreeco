@@ -19,7 +19,7 @@ public struct EpisodeCard: HTML {
   public var body: some HTML {
     Card {
       div {
-        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.formatted(.dateTime.day().month().year()))"
+        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
       }
       .color(.gray650.dark(.gray400))
       .fontStyle(.body(.small))

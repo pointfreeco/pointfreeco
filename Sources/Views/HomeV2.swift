@@ -361,7 +361,7 @@ private struct BlogPosts: HTML {
 
     var body: some HTML {
       div {
-        HTMLText(post.publishedAt.formatted(.dateTime.day().month().year()))
+        HTMLText(post.publishedAt.monthDayYear())
       }
       .color(.gray500.dark(.gray650))
       div {
