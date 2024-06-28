@@ -45,7 +45,7 @@ private struct TaglineColumn: HTML {
         .fontScale(.h4)
         .margin(bottom: 0, .mobile)
         .inlineStyle("font-size", "1.25")
-        .inlineStyle("font-size", "1.5", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("font-size", "1.5", media: .desktop)
         .inlineStyle("line-height", "1.45")
 
         p {
@@ -115,7 +115,7 @@ private struct Column<Links: HTML>: HTML {
         h5 { HTMLText(title) }
           .color(.white)
           .inlineStyle("font-size", "0.75rem")
-          .inlineStyle("font-size", "0.875rem", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("font-size", "0.875rem", media: .desktop)
           .inlineStyle("letter-spacing", "0.54pt")
           .inlineStyle("line-height", "1.25")
           .inlineStyle("text-transform", "uppercase")

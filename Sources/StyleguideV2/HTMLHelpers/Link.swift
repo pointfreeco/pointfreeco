@@ -22,13 +22,13 @@ public struct Link<Label: HTML>: HTML {
       .color(linkStyle.color, .visited)
       .color(linkStyle.color, .link)
       .inlineStyle(
-        "text-decoration", linkStyle.underline == true ? "underline" : "none", pseudo: "visited"
+        "text-decoration", linkStyle.underline == true ? "underline" : "none", pseudo: .visited
       )
       .inlineStyle(
-        "text-decoration", linkStyle.underline == true ? "underline" : "none", pseudo: "link"
+        "text-decoration", linkStyle.underline == true ? "underline" : "none", pseudo: .link
       )
       .inlineStyle(
-        "text-decoration", linkStyle.underline == false ? "none" : "underline", pseudo: "hover"
+        "text-decoration", linkStyle.underline == false ? "none" : "underline", pseudo: .hover
       )
   }
 }

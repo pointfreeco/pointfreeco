@@ -11,8 +11,8 @@ public struct Header<Content: HTML>: HTML {
       content
     }
     .inlineStyle("margin", "0")
-    .inlineStyle("margin-top", "\(marginTop)rem", pseudo: "not(:first-child)")
-    .inlineStyle("margin-bottom", "\(marginBottom)rem", pseudo: "not(:last-child)")
+    .inlineStyle("margin-top", "\(marginTop)rem", pseudo: .not(.firstChild))
+    .inlineStyle("margin-bottom", "\(marginBottom)rem", pseudo: .not(.lastChild))
     .inlineStyle("font-size", "\(fontSize)rem")
     .inlineStyle("font-weight", "700")
     .inlineStyle("line-height", "\(lineHeight)")

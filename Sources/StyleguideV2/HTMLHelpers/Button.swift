@@ -24,11 +24,11 @@ public struct Button<Label: HTML>: HTML {
       label
     }
     .inlineStyle("border", style.border)
-    .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: "hover")
+    .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: .hover)
     .inlineStyle("cursor", "pointer")
     .inlineStyle("font-weight", "500")
     .inlineStyle("text-decoration", style.textDecoration)
-    .inlineStyle("text-decoration", style.textDecoration, media: nil, pseudo: "link")
+    .inlineStyle("text-decoration", style.textDecoration, media: nil, pseudo: .link)
     .inlineStyle("white-space", "nowrap")
     .backgroundColor(color.backgroundColor(for: style))
     .color(color.foregroundColor(for: style))

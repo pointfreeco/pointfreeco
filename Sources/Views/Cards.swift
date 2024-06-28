@@ -129,6 +129,7 @@ public struct ClipCard: HTML {
         }
         .linkColor(.black.dark(.white))
       }
+      .inlineStyle("margin-top", "1rem")
 
       div {
         HTMLMarkdown(clip.blurb)

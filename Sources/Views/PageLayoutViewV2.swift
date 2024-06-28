@@ -179,21 +179,21 @@ struct NavView: HTML {
           }
           .column(alignment: .center)
           .column(count: 8, media: .desktop)
-          .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
+          .inlineStyle("display", "none", media: .mobile)
 
           GridColumn {
             TrailingNavItems()
           }
           .column(alignment: .end)
           .column(count: 2, media: .desktop)
-          .inlineStyle("display", "none", media: MediaQuery.mobile.rawValue)
+          .inlineStyle("display", "none", media: .mobile)
 
           GridColumn {
             MobileMenu()
           }
           .column(alignment: .end)
           .column(count: 10)
-          .inlineStyle("display", "none", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("display", "none", media: .desktop)
         }
         .grid(alignment: .center)
       }

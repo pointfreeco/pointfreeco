@@ -10,7 +10,7 @@ public struct Paragraph<Content: HTML>: HTML {
     tag("p") {
       content
     }
-    .inlineStyle("padding-bottom", "0.5rem", pseudo: "not(:last-child)")
+    .inlineStyle("padding-bottom", "0.5rem", pseudo: .not(.lastChild))
     .inlineStyle("padding-top", "0")
     .inlineStyle("padding-left", "0")
     .inlineStyle("padding-right", "0")

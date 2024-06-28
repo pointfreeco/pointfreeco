@@ -1,23 +1,15 @@
-public enum Pseudo: String {
-  case hover
-  case link
-  case visited
-}
-
 extension HTML {
   public func backgroundColor(_ color: PointFreeColor?) -> some HTML {
     inlineStyle("background-color", color?.rawValue)
-      .inlineStyle("background-color", color?.darkValue, media: MediaQuery.dark.rawValue)
+      .inlineStyle("background-color", color?.darkValue, media: .dark)
   }
 
   public func color(
     _ color: PointFreeColor?,
     _ pseudo: Pseudo? = nil
   ) -> some HTML {
-    inlineStyle("color", color?.rawValue, pseudo: pseudo?.rawValue)
-      .inlineStyle(
-        "color", color?.darkValue, media: MediaQuery.dark.rawValue, pseudo: pseudo?.rawValue
-      )
+    inlineStyle("color", color?.rawValue, pseudo: pseudo)
+      .inlineStyle("color", color?.darkValue, media: .dark, pseudo: pseudo)
   }
 }
 

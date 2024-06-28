@@ -1,14 +1,10 @@
 extension HTML {
   public func margin(_ margin: Insets, _ media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("margin-top", margin.top.map { "\($0.rawValue)rem" }, media: media?.rawValue)
-      .inlineStyle("margin-left", margin.left.map { "\($0.rawValue)rem" }, media: media?.rawValue)
-      .inlineStyle(
-        "margin-bottom", margin.bottom.map { "\($0.rawValue)rem" }, media: media?.rawValue
-      )
-      .inlineStyle(
-        "margin-right", margin.right.map { "\($0.rawValue)rem" }, media: media?.rawValue
-      )
+      .inlineStyle("margin-top", margin.top.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("margin-left", margin.left.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("margin-bottom", margin.bottom.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("margin-right", margin.right.map { "\($0.rawValue)rem" }, media: media)
   }
 
   public func margin(
@@ -36,14 +32,10 @@ extension HTML {
 
   public func padding(_ padding: Insets, _ media: MediaQuery? = nil) -> some HTML {
     self
-      .inlineStyle("padding-top", padding.top.map { "\($0.rawValue)rem" }, media: media?.rawValue)
-      .inlineStyle("padding-left", padding.left.map { "\($0.rawValue)rem" }, media: media?.rawValue)
-      .inlineStyle(
-        "padding-bottom", padding.bottom.map { "\($0.rawValue)rem" }, media: media?.rawValue
-      )
-      .inlineStyle(
-        "padding-right", padding.right.map { "\($0.rawValue)rem" }, media: media?.rawValue
-      )
+      .inlineStyle("padding-top", padding.top.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("padding-left", padding.left.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("padding-bottom", padding.bottom.map { "\($0.rawValue)rem" }, media: media)
+      .inlineStyle("padding-right", padding.right.map { "\($0.rawValue)rem" }, media: media)
   }
 
   public func padding(

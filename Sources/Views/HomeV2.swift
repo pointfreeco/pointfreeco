@@ -238,17 +238,17 @@ private struct WhatToExpect: HTML {
 
         Header(4) { HTMLText(item.title) }
           .color(.black.dark(.offWhite))
-          .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("text-align", "center", media: .desktop)
 
         Paragraph {
           HTMLText(item.description)
         }
         .color(.gray300.dark(.gray850))
-        .inlineStyle("text-align", "center", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("text-align", "center", media: .desktop)
       }
       .column(count: 6, media: .desktop)
-      .inlineStyle("padding", "0rem 1.5rem 4rem 0", media: MediaQuery.desktop.rawValue, pseudo: "nth-child(even)")
-      .inlineStyle("padding", "0rem 0 4rem 1.5rem", media: MediaQuery.desktop.rawValue, pseudo: "nth-child(odd)")
+      .inlineStyle("padding", "0rem 1.5rem 4rem 0", media: .desktop, pseudo: .nthChild("even"))
+      .inlineStyle("padding", "0rem 0 4rem 1.5rem", media: .desktop, pseudo: .nthChild("odd"))
     }
   }
 }
@@ -346,7 +346,7 @@ private struct BlogPosts: HTML {
             Divider()
           }
           .inlineStyle("margin", "2rem 0")
-          .inlineStyle("display", "none", pseudo: "last-child")
+          .inlineStyle("display", "none", pseudo: .lastChild)
         }
       }
       .listStyle(.reset)
@@ -413,7 +413,7 @@ private struct Upgrade: HTML {
       Paragraph(.big) { "Access all past and future episodes." }
         .fontStyle(.body(.regular))
         .color(.gray300)
-        .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("margin", "0 6rem", media: .desktop)
     }
   }
 }
@@ -438,9 +438,9 @@ private struct Gifts: HTML {
         }
         .fontStyle(.body(.regular))
         .color(.gray300.dark(.gray800))
-        .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("margin", "0 6rem", media: .desktop)
       }
-      .inlineStyle("text-align", "start", media: MediaQuery.mobile.rawValue)
+      .inlineStyle("text-align", "start", media: .mobile)
     }
   }
 }
@@ -481,7 +481,7 @@ private struct ReferAFriend: HTML {
         }
         .flexible()
         .inlineStyle("padding-right", "1rem")
-        .inlineStyle("max-width", "60%", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("max-width", "60%", media: .desktop)
 
         GridColumn {
           Button(tag: input, color: .purple, size: .regular, style: .normal) {}
@@ -511,12 +511,12 @@ private struct WhatPeopleAreSaying: HTML {
             TestimonialCard(testimonial: testimonial)
           }
         }
-        .inlineStyle("padding-left", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:nth-child(2))")
-        .inlineStyle("padding-right", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:last-child)")
+        .inlineStyle("padding-left", "0.5rem", media: .desktop, pseudo: .not(.nthChild("2")))
+        .inlineStyle("padding-right", "0.5rem", media: .desktop, pseudo: .not(.lastChild))
         .column(count: 12)
         .column(count: 4, media: .desktop)
         .inlineStyle("display", offset == 0 ? nil : "none")
-        .inlineStyle("display", "block", media: MediaQuery.desktop.rawValue)
+        .inlineStyle("display", "block", media: .desktop)
       }
 
       GridColumn {
@@ -572,10 +572,10 @@ private struct WhatPeopleAreSaying: HTML {
       .inlineStyle("text-decoration-line", "none")
       .inlineStyle("display", "block")
       .inlineStyle("border", "1px solid #e8e8e8")
-      .inlineStyle("border", "1px solid #353535", media: MediaQuery.dark.rawValue)
+      .inlineStyle("border", "1px solid #353535", media: .dark)
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("padding", "1.5rem")
-      .inlineStyle("margin-bottom", "1rem", pseudo: "not(:last-child)")
+      .inlineStyle("margin-bottom", "1rem", pseudo: .not(.lastChild))
     }
   }
 }
@@ -602,7 +602,7 @@ private struct MinimalHero<Blurb: HTML>: HTML {
         Paragraph(.big) { blurb }
           .fontStyle(.body(.regular))
           .color(.gray800)
-          .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("margin", "0 6rem", media: .desktop)
       }
       .column(count: 12)
       .column(alignment: .start)
@@ -665,7 +665,7 @@ private struct MaximalHero<PrimaryCTA: HTML>: HTML {
         Paragraph(.big) { HTMLRaw(blurb) }
           .fontStyle(.body(.regular))
           .color(.gray800)
-          .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
+          .inlineStyle("margin", "0 6rem", media: .desktop)
 
         primaryCTA
           .inlineStyle("margin-top", "3rem")
@@ -766,7 +766,7 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
       .inlineStyle(
         "padding",
         "\(theme.topMargin)rem \(theme.leftRightMarginDesktop)rem \(theme.bottomMargin)rem",
-        media: MediaQuery.desktop.rawValue
+        media: .desktop
       )
       .backgroundColor(theme.contentBackgroundColor)
     }

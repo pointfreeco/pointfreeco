@@ -77,8 +77,8 @@ extension HTML {
     media: MediaQuery? = nil
   ) -> HTMLInlineStyle<Self> {
     self
-      .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media?.rawValue)
-      .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media?.rawValue)
+      .inlineStyle("flex-basis", "\(Double(count) / 0.12)%", media: media)
+      .inlineStyle("max-width", "\(Double(count) / 0.12)%", media: media)
   }
   
   public func column(
@@ -86,8 +86,8 @@ extension HTML {
     media: MediaQuery? = nil
   ) -> HTMLInlineStyle<Self> {
     self
-      .inlineStyle("justify-content", alignment.justifyContent, media: media?.rawValue)
-      .inlineStyle("text-align", alignment.textAlign, media: media?.rawValue)
+      .inlineStyle("justify-content", alignment.justifyContent, media: media)
+      .inlineStyle("text-align", alignment.textAlign, media: media)
   }
 
   public func inflexible() -> some HTML {
