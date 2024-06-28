@@ -42,6 +42,7 @@ public struct EpisodeCard: HTML {
       Link(href: siteRouter.path(for: .episode(.show(episode)))) {
         Image(source: episode.image, description: "")
           .inlineStyle("width", "100%")
+          .attribute("loading", "lazy")
       }
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")

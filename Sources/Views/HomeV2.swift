@@ -109,7 +109,7 @@ private struct LoggedIn: HTML {
     HomeModule(seeAllRoute: .blog(.index), theme: .content) {
       BlogPosts()
     } title: {
-      Header(2) { "Blog" }
+      Header(2) { "Newsletter" }
     }
 
     if subscriberState.isActiveSubscriber {

@@ -27,8 +27,21 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for (property, value, mediaQuery, pseudo) in html.styles {
-      // TODO: better hashing/compression (lossless)
-      let className = "\(property)-\((value + (mediaQuery ?? "") + (pseudo ?? "")).hashValue)"
+      let uniqueID = "\(property)\(value)\(mediaQuery ?? "")\(pseudo ?? "")"
+      let id = classes.withValue { classes in
+        guard let index = classes.firstIndex(of: uniqueID)
+        else {
+          classes.append(uniqueID)
+          return classes.count - 1
+        }
+        return index
+      }
+
+      #if DEBUG
+        let className = "\(property)-\(id)"
+      #else
+        let className = "c\(id)"
+      #endif
       let pseudo = "\(className)\(pseudo.map { ":\($0)" } ?? "")"
 
       if printer.styles[mediaQuery, default: [:]][pseudo] == nil {
@@ -38,6 +51,10 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
   }
 }
+
+import ConcurrencyExtras
+import OrderedCollections
+let classes = LockIsolated<OrderedSet<String>>([])
 
 extension HTML {
   public func inlineStyle(
