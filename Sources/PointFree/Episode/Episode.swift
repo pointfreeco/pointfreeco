@@ -21,7 +21,7 @@ func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.
 
       > \(episode.blurb)
       """,
-    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episodes(.show(.left(episode.slug)))),
     publishedAt: episode.publishedAt,
     title: episode.fullTitle
   )

@@ -23,7 +23,7 @@ public struct EpisodeCard: HTML {
       .fontStyle(.body(.small))
 
       Header(4) {
-        Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+        Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
           HTMLText(episode.title)
           if let subtitle = episode.subtitle {
             ":"
@@ -39,7 +39,7 @@ public struct EpisodeCard: HTML {
       }
       .color(.gray400.dark(.gray650))
     } header: {
-      Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+      Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
         Image(source: episode.image, description: "")
           .inlineStyle("width", "100%")
           .attribute("loading", "lazy")
@@ -103,7 +103,7 @@ public struct ClipCard: HTML {
   public var body: some HTML {
     Card {
       Header(4) {
-        // Link(href: siteRouter.path(for: .episode(.show(episode)))) {
+        // Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
         HTMLText(clip.title)
         // }
       }

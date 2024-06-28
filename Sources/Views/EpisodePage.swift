@@ -60,12 +60,12 @@ public struct EpisodePageData {
             $0.episode == self.episode
           })
         })
-      else { return .episode(.show(.left(self.episode.slug))) }
+      else { return .episodes(.show(.left(self.episode.slug))) }
       return .collections(
         .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
       )
     case .direct:
-      return .episode(.show(.left(self.episode.slug)))
+      return .episodes(.show(.left(self.episode.slug)))
     }
   }
 }
@@ -193,7 +193,7 @@ private func sequentialEpisodes(
             .class([Class.type.align.center])
           ],
           .a(
-            attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
+            attributes: [.href(siteRouter.url(for: .episodes(.show(.left(episode.slug)))))],
             .img(
               base64: playIconSvgBase64(),
               type: .image(.svg),
@@ -414,7 +414,7 @@ private func sequentialEpisodeRow(
           .class([Class.type.align.center])
         ],
         .a(
-          attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
+          attributes: [.href(siteRouter.url(for: .episodes(.show(.left(episode.slug)))))],
           .img(
             base64: playIconSvgBase64(),
             type: .image(.svg),
@@ -448,7 +448,7 @@ private func sequentialEpisodeRow(
               Class.padding([.mobile: [.all: 0]]),
               Class.margin([.mobile: [.all: 0]]),
             ]),
-            .href(siteRouter.url(for: .episode(.show(.left(episode.slug))))),
+            .href(siteRouter.url(for: .episodes(.show(.left(episode.slug))))),
           ],
           .text(episode.fullTitle)
         )

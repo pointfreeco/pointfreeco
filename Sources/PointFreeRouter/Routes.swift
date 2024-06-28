@@ -26,7 +26,7 @@ public indirect enum SiteRoute: Equatable {
   case gifts(Gifts = .index)
   case endGhosting
   case enterprise(EnterpriseAccount.Domain, Enterprise = .landing)
-  case episode(EpisodeRoute = .index)
+  case episodes(EpisodesRoute = .list(.all))
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -88,13 +88,19 @@ public indirect enum SiteRoute: Equatable {
     case requestInvite(EnterpriseRequestFormData)
   }
 
-  public enum EpisodeRoute: Equatable {
-    case index
+  public enum EpisodesRoute: Equatable {
+    case list(ListType)
     case progress(param: Either<String, Episode.ID>, percent: Int)
     case show(Either<String, Episode.ID>)
 
     public static func show(_ episode: Episode) -> Self {
       .show(.left(episode.slug))
+    }
+
+    public enum ListType: Equatable {
+      case all
+      case free
+      case history
     }
   }
 
@@ -214,16 +220,26 @@ struct CollectionsRouter: ParserPrinter {
   }
 }
 
-struct EpisodeRouter: ParserPrinter {
-  var body: some Router<SiteRoute.EpisodeRoute> {
+struct EpisodesRouter: ParserPrinter {
+  var body: some Router<SiteRoute.EpisodesRoute> {
     OneOf {
-      Route(.case(SiteRoute.EpisodeRoute.index))
+      Route(.case(SiteRoute.EpisodesRoute.list)) {
+        OneOf {
+          Route(.case(SiteRoute.EpisodesRoute.ListType.all))
+          Route(.case(SiteRoute.EpisodesRoute.ListType.free)) {
+            Path { "free" }
+          }
+          Route(.case(SiteRoute.EpisodesRoute.ListType.history)) {
+            Path { "history" }
+          }
+        }
+      }
 
-      Route(.case(SiteRoute.EpisodeRoute.show)) {
+      Route(.case(SiteRoute.EpisodesRoute.show)) {
         Path { SlugOrID<Episode.ID>() }
       }
 
-      Route(.case(SiteRoute.EpisodeRoute.progress)) {
+      Route(.case(SiteRoute.EpisodesRoute.progress)) {
         Method.post
         Path {
           SlugOrID<Episode.ID>()
@@ -477,9 +493,9 @@ struct SiteRouter: ParserPrinter {
         CollectionsRouter()
       }
 
-      Route(.case(SiteRoute.episode)) {
+      Route(.case(SiteRoute.episodes)) {
         Path { "episodes" }
-        EpisodeRouter()
+        EpisodesRouter()
       }
 
       Route(.case(SiteRoute.enterprise)) {

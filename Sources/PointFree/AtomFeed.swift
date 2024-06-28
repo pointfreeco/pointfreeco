@@ -201,7 +201,7 @@ private func item(episode: Episode) -> RssItem {
       season: 1,
       title: title(episode: episode)
     ),
-    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episodes(.show(.left(episode.slug)))),
     media: .init(
       content: mediaContent(episode: episode),
       title: title(episode: episode)
@@ -230,7 +230,7 @@ private func slackItem(episode: Episode) -> RssItem {
       season: 1,
       title: episode.title
     ),
-    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episodes(.show(.left(episode.slug)))),
     media: nil,
     pubDate: episode.freeSince ?? episode.publishedAt,
     title: episode.title

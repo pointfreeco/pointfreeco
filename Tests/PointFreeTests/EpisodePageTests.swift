@@ -172,7 +172,7 @@ class EpisodePageTests: TestCase {
       $0.episodes = { episodes }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(self.episodes()[1].slug))), session: .loggedOut)
+        to: .episodes(.show(.left(self.episodes()[1].slug))), session: .loggedOut)
 
       let conn = connection(from: episode)
 
@@ -259,7 +259,7 @@ class EpisodePageTests: TestCase {
   @MainActor
   func testEpisodePageSubscriber() async throws {
     let episode = request(
-      to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+      to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
@@ -287,7 +287,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in deactivated }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+        to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
 
       let conn = connection(from: episode)
 
@@ -315,7 +315,7 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.episodes = { [freeEpisode] }
     } operation: {
-      let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
+      let episode = request(to: .episodes(.show(.left(freeEpisode.slug))), session: .loggedOut)
 
       let conn = connection(from: episode)
 
@@ -343,7 +343,7 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.episodes = { [freeEpisode] }
     } operation: {
-      let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
+      let episode = request(to: .episodes(.show(.left(freeEpisode.slug))), session: .loggedIn)
 
       let conn = connection(from: episode)
 
@@ -365,7 +365,7 @@ class EpisodePageTests: TestCase {
 
   @MainActor
   func testEpisodeNotFound() async throws {
-    let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
+    let episode = request(to: .episodes(.show(.left("object-oriented-programming"))))
 
     let conn = connection(from: episode)
 
@@ -397,7 +397,7 @@ class EpisodePageTests: TestCase {
       $0.episodes = { [episode] }
     } operation: {
       let conn = connection(
-        from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
+        from: request(to: .episodes(.show(.left(episode.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -433,7 +433,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+          to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -469,7 +469,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+          to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -505,7 +505,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+          to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -563,7 +563,7 @@ class EpisodePageTests: TestCase {
     } operation: {
       let conn = connection(
         from: request(
-          to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+          to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
       )
 
       #if !os(Linux)
@@ -606,7 +606,7 @@ class EpisodePageTests: TestCase {
       $0.database.fetchSubscriptionById = { _ in subscription }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(self.episodes().first!.slug))), session: .loggedIn(as: .mock))
+        to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn(as: .mock))
 
       let conn = connection(from: episode)
 
@@ -669,7 +669,7 @@ class EpisodePageTests: TestCase {
       }
     } operation: {
       let episode = request(
-        to: .episode(.show(.left(self.episodes()[1].slug))), session: .loggedIn)
+        to: .episodes(.show(.left(self.episodes()[1].slug))), session: .loggedIn)
 
       let conn = connection(from: episode)
 
@@ -739,7 +739,7 @@ class EpisodePageTests: TestCase {
     await withDependencies {
       $0.episodes = { [episode] }
     } operation: {
-      let episode = request(to: .episode(.show(.left(episode.slug))), session: .loggedOut)
+      let episode = request(to: .episodes(.show(.left(episode.slug))), session: .loggedOut)
 
       let conn = connection(from: episode)
 

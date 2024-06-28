@@ -51,13 +51,11 @@ private struct LoggedIn: HTML {
     }
 
     if creditCount > 0 {
-      HomeModule(theme: .credits) {
-        EpisodeCredits(creditCount: creditCount)
-      }
+      EpisodeCredits(creditCount: creditCount)
     }
 
     if !inProgressEpisodes.isEmpty {
-      HomeModule(seeAllRoute: .homeV2, theme: .content) {
+      HomeModule(seeAllRoute: .episodes(.list(.history)), theme: .content) {
         InProgressEpisodes(episodes: Array(inProgressEpisodes))
       } title: {
         Header(2) { "Continue watching" }
@@ -65,16 +63,11 @@ private struct LoggedIn: HTML {
     }
 
     if !subscriberState.isActiveSubscriber {
-      HomeModule(seeAllRoute: .homeV2/*TODO*/, theme: .content) {
-        FreeEpisodes()
-      } title: {
-        Header(2) { "Free episodes" }
-      }
-
+      FreeEpisodes()
       Divider()
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+    HomeModule(seeAllRoute: .episodes(.list(.all)), theme: .content) {
       Episodes()
     } title: {
       Header(2) { "All episodes" }
@@ -86,7 +79,7 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+    HomeModule(seeAllRoute: .collections(.index), theme: .content) {
       Collections()
     } title: {
       Header(2) { "Collections" }
@@ -98,7 +91,7 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+    HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
       Clips(clips: clips)
     } title: {
       Header(2) { "Clips" }
@@ -223,32 +216,34 @@ private struct EpisodeCredits: HTML {
 
   let creditCount: Int
   var body: some HTML {
-    Grid {
-      GridColumn {
-        SVG.info
-      }
-      .inlineStyle("line-height", "0")
-      .inflexible()
+    HomeModule(theme: .credits) {
+      Grid {
+        GridColumn {
+          SVG.info
+        }
+        .inlineStyle("line-height", "0")
+        .inflexible()
 
-      GridColumn {
-        span { "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice." }
-      }
-      .flexible()
-      .inlineStyle("padding", "0 1rem")
+        GridColumn {
+          span { "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice." }
+        }
+        .flexible()
+        .inlineStyle("padding", "0 1rem")
 
-      GridColumn {
-        Link("Browse episodes", href: siteRouter.path(for: .home))
-          .linkStyle(LinkStyle(color: .black, underline: true))
+        GridColumn {
+          Link("Browse episodes", href: siteRouter.path(for: .home))
+            .linkStyle(LinkStyle(color: .black, underline: true))
+        }
+        .column(alignment: .end)
+        .inflexible()
       }
-      .column(alignment: .end)
-      .inflexible()
+      .grid(alignment: .center)
+      .inlineStyle("padding", "1rem")
+      .inlineStyle("flex-wrap", "initial")
+      .inlineStyle("border-radius", "0.5rem")
+      .inlineStyle("width", "100%")
+      .backgroundColor(.yellow)
     }
-    .grid(alignment: .center)
-    .inlineStyle("padding", "1rem")
-    .inlineStyle("flex-wrap", "initial")
-    .inlineStyle("border-radius", "0.5rem")
-    .inlineStyle("width", "100%")
-    .backgroundColor(.yellow)
   }
   var creditsLeft: String {
     "\(creditCount) credit\(creditCount == 1 ? "" : "s")"
@@ -329,16 +324,20 @@ private struct FreeEpisodes: HTML {
   @Dependency(\.date.now) var now
 
   var body: some HTML {
-    Grid {
-      let episodes = episodes()
-        .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
-        .suffix(3)
-        .reversed()
-      for episode in episodes {
-        EpisodeCard(episode, emergencyMode: false)  // TODO
+    HomeModule(seeAllRoute: .episodes(.list(.free)), theme: .content) {
+      Grid {
+        let episodes = episodes()
+          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
+          .suffix(3)
+          .reversed()
+        for episode in episodes {
+          EpisodeCard(episode, emergencyMode: false)  // TODO
+        }
       }
+      .grid(alignment: .stretch)
+    } title: {
+      Header(2) { "Free episodes" }
     }
-    .grid(alignment: .stretch)
   }
 }
 

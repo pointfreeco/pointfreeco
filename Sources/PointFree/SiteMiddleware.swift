@@ -186,17 +186,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await endGhostingMiddleware(conn.map(const(unit)))
       .performAsync()
 
-  case .episode(.index):
-    return await redirect(to: siteRouter.path(for: .home))(conn)
-      .performAsync()
-
-  case let .episode(.progress(param: param, percent: percent)):
-    return await progressResponse(conn.map(const(param .*. percent .*. unit)))
-      .performAsync()
-
-  case let .episode(.show(param)):
-    return await episodeResponse(conn.map(const(param .*. nil .*. unit)))
-      .performAsync()
+  case .episodes(let route):
+    return await episodesMiddleware(route: route, conn.map(const(())))
 
   case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
     return await enterpriseAcceptInviteMiddleware(
