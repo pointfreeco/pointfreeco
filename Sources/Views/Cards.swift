@@ -177,19 +177,23 @@ public struct CollectionCard: HTML {
         let (start, stop) = Self.combos[index % Self.combos.count]
 
         SVG.collection(linearGradientStart: start, stop: stop)
-        Header(4) {
-          HTMLText(collection.title)
-        }
-
         div {
-          "Collection"
+          Header(4) {
+            HTMLText(collection.title)
+          }
+
+          div {
+            "Collection"
+          }
+          .color(.gray650.dark(.gray400))
+          .fontStyle(.body(.small))
         }
-        .color(.gray650.dark(.gray400))
-        .fontStyle(.body(.small))
+        .inlineStyle("padding-top", "1rem")
+
       }
       .linkStyle(LinkStyle(color: .black.dark(.white), underline: false))
       .inlineStyle("display", "block")
-      .inlineStyle("padding", "2.5rem 2rem 3rem 2.5rem")
+      .inlineStyle("padding", "2rem 2rem 2rem 2.5rem")
       .inlineStyle("text-align", "center")
     } footer: {
       Label("\(collection.numberOfEpisodes) episodes", icon: .play)

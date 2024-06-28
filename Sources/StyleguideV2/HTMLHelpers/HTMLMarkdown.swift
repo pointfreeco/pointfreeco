@@ -1,4 +1,5 @@
 import Ccmark
+import Foundation
 
 public struct HTMLMarkdown: HTML {
   let markdown: String
