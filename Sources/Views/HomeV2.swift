@@ -456,13 +456,13 @@ private struct Gifts: HTML {
     } title: {
       GridColumn {
         Header(2) { "Give the gift of Point-Free" }
-          .color(.gray150)
+          .color(.gray150.dark(.gray850))
 
         Paragraph(.big) {
           "Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one."
         }
         .fontStyle(.body(.regular))
-        .color(.gray300)
+        .color(.gray300.dark(.gray800))
         .inlineStyle("margin", "0 6rem", media: MediaQuery.desktop.rawValue)
       }
       .inlineStyle("text-align", "start", media: MediaQuery.mobile.rawValue)
